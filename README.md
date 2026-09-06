@@ -1,0 +1,36 @@
+# LiveRefu — 复古未来（Retro-futurism）知识库与 AI 开发工作室
+
+> 本工作区专注 **复古未来（Retro-futurism）相关项目的开发**：
+> 一侧是复古未来主义的系统知识库（[`doc/`](doc/)），另一侧是基于这套知识做项目开发的 AI 工作室（[`studio/`](studio/)）。
+
+## 一、工作区是什么
+
+- **doc/**：复古未来主义题材的研究知识库。以《复古未来主义论文集》为核心（21 篇总卷：理论地基、未来的考古、回收的未来、当代乡愁与多元、收束五段），并含蒸汽朋克、原子朋克、柴油朋克、赛博朋克、生物朋克等独立专题卷，以及合订本（PDF/HTML）与再生脚本。
+- **studio/**：AI 开发角色的模拟工作场所。把参与本工作区复古未来项目开发的 AI 角色（主策划、主程序、主美术、数值策划 A、图形程序员 A、UI 设计美术 A）按角色组织，各角色一个子目录存放身份卡与工作文档。
+
+## 二、目录导览
+
+| 路径 | 内容 | 入口 |
+| --- | --- | --- |
+| [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
+| [`doc/steampunk/`](doc/steampunk/README.md) 等专题卷 | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 | 各卷 `README.md` |
+| [`studio/`](studio/README.md) | AI 开发工作室：工作室主 README + 六个角色子目录 | [`studio/README.md`](studio/README.md) |
+
+## 三、文档约定
+
+1. 简体中文，Markdown（UTF-8）。
+2. **doc/** 编号体例：`00_总论_…`、`01_理论篇_…`；专题卷 `00_对读篇_…` 起。
+3. **studio/** 体例：角色目录内 `README.md` 为身份入口，工作文档为 `两位序号_主题.md`；草案标 `v0.x`，未决问题标 `【待定】`，结论记入各文档「决策记录」。
+4. 跨目录引用优先使用相对路径链接。
+
+## 四、Git 与自动提交约定
+
+- 本工作区的文件改动由 AI 代理 **自动提交到 Git**（无需人工提醒），提交信息沿用仓库既有中文风格，如 `docs: …`。
+- 提交粒度：一次逻辑改动一个提交；提交前确认工作树状态（`git status`）与提交历史风格。
+- 非文档类生成物（合订本 PDF/HTML 等）是否入库以当期提交记录为准。
+
+## 五、快速上手
+
+- 想读题材理论 → 从 [`doc/retro-futurism/00_总论_未来的考古学与全卷地图.md`](doc/retro-futurism/00_总论_未来的考古学与全卷地图.md) 开始。
+- 想以某角色身份协作开发 → 打开 [`studio/`](studio/)，按角色目录读取其 README。
+- 想看工作室整体结构与协作拓扑 → [`studio/README.md`](studio/README.md)。
