@@ -1,0 +1,20 @@
+[
+  {
+    "track_id": "tape_track_hum",
+    "name_zh": "嗡鸣",
+    "category": "hum",
+    "channel_id": "tape_warm",
+    "bus": "Ambience_Hum",
+    "default_volume": 0.5,
+    "muted_by_default": false
+  },
+  {
+    "track_id": "tape_track_tapes_hiss",
+    "name_zh": "磁带底噪",
+    "category": "tape_hiss",
+    "channel_id": "tape_warm",
+    "bus": "Ambience_TapeHiss",
+    "default_volume": 0.35,
+    "muted_by_default": false
+  }
+]

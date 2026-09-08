@@ -43,8 +43,7 @@ func is_focusing() -> bool:
 	return current == State.FOCUS
 
 
-## 广播当前状态（供 event_bus 接入；当前为骨架说明）。
+## 广播当前状态（经 event_bus.state_changed 广播，供 UI/逻辑层订阅）。
 func _emit_state_changed() -> void:
-	# TODO(M1): 接入 event_bus 后取消注释。
-	# EventBus.state_changed.emit(State.keys()[current])
-	pass
+	# 逻辑层不直接依赖 UI：只经事件总线广播字符串状态名。
+	event_bus.state_changed.emit(State.keys()[current])

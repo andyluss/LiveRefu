@@ -3,7 +3,7 @@
 > 存放《明日频道》的 **Godot 4.7.x 程序工程**（项目配置、场景、脚本、加载逻辑）。主程序牵头，图形程序员 A（渲染）与 UI 设计美术 A（UI 骨架）在此协作。
 > 引擎与技术主线依据 [`docs/lead-programmer/03_godot-engine-research.md`](../docs/lead-programmer/03_godot-engine-research.md)、[`../docs/lead-programmer/01_tech-stack-draft.md`](../docs/lead-programmer/01_tech-stack-draft.md)。
 
-> **工程状态**：**工程骨架已建**（Godot 4.7.x / 渲染器 = Compatibility）。已建 `project.godot`、`scenes/`（app/channel/timer/mixer/ui 占位，含 `scenes/app/main.tscn` 主场景）、`scripts/`（`autoload/` 单例 `config_loader` / `event_bus` / `focus_state_machine` + 核心系统骨架 `channel_loader` / `pomodoro_timer` / `mixer_controller` / `app_controller`）、`shaders/`、`data/`、`addons/` 骨架。各空目录以 `.gitkeep` 占位。详见下方目录约定。
+> **工程状态**：**已接线，可运行闭环（骨架级）**（Godot 4.7.x / 渲染器 = Compatibility）。主程序已完成 AppController 全局接线：`config_loader` 读取 meta/channel/timer/mixer_track 四表 → `channel_loader` 装载磁带频道 `tape_warm`（含皮肤 Token）→ 后处理栈 `channel_fx`（三层 CanvasLayer + 4 shader）→ 三态 UI 骨架 `channel_shell`（三面板数据驱动装配）→ 番茄计时 + 混音台经 `event_bus` 事件驱动。已用 `godot --headless` 实机验证 **无 SCRIPT ERROR、全局类注册齐、闭环自检 VERIFY PASS**。详见下方 §六。
 
 ## 一、目录约定（Godot 4.7.x 工程根 + 数据驱动）
 
@@ -134,3 +134,100 @@ M1 单频道（磁带暖未来）闭环 → M2 三频道滤镜 → M3 完整一�
 > - 四个 `.gdshader` 的编译与 `uniform`（`hint_range`/`source_color`/纹理 `repeat_enable`）映射；
 > - `ShaderMaterial.set_shader_parameter`（`vec4`←`Vector4`、`vec3`←`Vector3`）与 `ColorRect` 全屏锚点在 `CanvasLayer` 下的缩放。
 > 通过 Godot 4.7.x 打开 `game/` 工程（Compatibility）后按以上逐项确认。
+
+---
+
+## 六、工程状态：M1 单频道闭环已接线（主程序 · 2026-09-08）
+
+> **已接线，可运行闭环（骨架级）**。此前四角色骨架（主程序工程 / 数值数据 / 图形后处理 / UI 面板）已由主程序 AppController 全局串联成**数据驱动 + 事件驱动**的最小闭环。本机实机验证：`godot --headless --path game --import` 无 SCRIPT ERROR、全局类注册齐；运行主场景 `--quit-after` 闭环自检 **VERIFY PASS**（详见 §6.4）。
+
+### 6.1 接线链路（一行读懂）
+
+```
+app/main.tscn: Main(AppController)
+ ├─ ChannelLoader   └─ PomodoroTimer   └─ MixerController
+ └─（运行时实例化）ChannelFX（后处理栈） + ChannelShell（三态 UI→TapeChannelPanel/FocusTimerPanel/MixerPanel）
+
+AppController._ready()
+  config_loader 读 meta/channel/timer/mixer_track 四表
+  → channel_loader.load_channel("tape_warm")   # 读 channel.json + 皮肤 Token（loaded_skin）
+  → _init_channel_fx(skin)                     # 三层 CanvasLayer + 4 shader，注入 skin
+  → _init_channel_shell(skin)                  # 三态骨架装配：Roam/专注视图挂三面板（数据驱动）
+  → 订阅 event_bus.state_changed：进入 FOCUS ⇒ pomodoro_timer.start_focus()（事件驱动）
+```
+
+事件驱动闭环：`focus_state_machine` 切换 → `event_bus.state_changed` → `ChannelShell` 改三视图可见度 + `AppController` 启动番茄；`MixerPanel` 滑杆 → `event_bus.mixer_volume_changed` → `MixerController` 订阅生效；`PomodoroTimer` 起/收 → `event_bus.pomodoro_started/finished` → `FocusTimerPanel` 呈现。
+
+### 6.2 如何打开 / 运行
+
+- **编辑器运行**：用 Godot 4.7.x 打开 `game/` 工程（Compatibility），F5 运行主场景 `res://scenes/app/main.tscn`。默认进入**漫游态**（磁带频道窗口 + 后处理栈 + 氛围）；按 **F 或空格** 在 漫游↔专注 间切换。切换不夺焦、不打断专注（M1 口径）。
+- **命令行导入自检**（无 SCRIPT ERROR）：`godot --headless --path game --import`
+- **命令行运行一帧自检**（闭环 VERIFY PASS，stderr 输出判定）：`godot --headless --path game --quit-after 5`
+  - ⚠️ 本机 `--headless` 会因 `user://` 目录创建失败而崩溃（沙箱限制）；可 `export HOME=/tmp/gdhome` 规避。此与工程无关。
+
+### 6.3 当前可跑什么（骨架级验收）
+
+| 项 | 状态 |
+| --- | --- |
+| 数据驱动装载 | ✅ `config_loader` 读 `game/data/tables/{meta,channel,timer,mixer_track}.json` 四表（含类型化取值；channel/timer/mixer_track 副本已从 `../../data/tables/` 派生到 `game/data/tables/`） |
+| 频道装载 | ✅ `channel_loader.load_channel("tape_warm")` 读 channel.json，装载 `loaded_channel` + 皮肤 Token `loaded_skin` |
+| 磁带动效栈 | ✅ `channel_fx` 自建三层 CanvasLayer，加载 4 个 `.gdshader`（扫描线/微噪/窗口遮罩/容器暖光），注入 skin 参数；动效可关 |
+| 频道皮肤 Token | ✅ `tape_channel_skin.tres`（ChannelSkin）注入 channel_fx / 三面板；各面板 `_apply_skin()` 从 token 取色，零硬编码 |
+| 三态 shell 可见度 | ✅ `ChannelShell` 订阅 `state_changed`，漫游↔专注 切换只改视图可见度（焦点不劫持） |
+| 番茄专注 | ✅ 进入 FOCUS 时 `pomodoro_timer.start_focus()`（meta/timer 表 25min → 1500s），`FocusTimerPanel` 读 25min；后台/最小化准确性后置 |
+| 混音台 | ✅ `MixerPanel` 滑杆由 `mixer_track` 表数据生成（2 轨：嗡鸣/磁带底噪），滑杆→事件→`MixerController` 生效；音量实时生效（骨架级，无真实音频） |
+| 静默可用 | ✅ `channel_fx` 动效可一键关（motion/scanline/noise），基底（暖光常亮/遮罩）保留 |
+
+### 6.4 实机验证证据（headless）
+
+`--quit-after 5`（`HOME=/tmp/gdhome`）输出（stderr）节选：
+
+```
+AppController: meta loaded [25.0] channel=[1] timer=[2] mixer_track=[2]
+AppController: 频道装载完成 id=tape_warm name=磁带暖未来 skin=ok
+OK   meta 装载 pomodoro_work=25
+OK   channel 装载 current=tape_warm
+OK   皮肤 Token 装载 loaded_skin!=null
+OK   混音轨数据 = 2 轨
+OK   后处理栈 channel_fx 已挂接
+OK   默认 ROAM 可见
+OK   请求 FOCUS 成功 / 进入 FOCUS 态 / FOCUS 视图可见
+OK   番茄已启动 / 番茄剩余 ≈ 25min
+OK   混音事件生效 嗡鸣=0.8 / 混音台面板数据驱动 2 轨 / 含嗡鸣轨
+OK   专注计时面板 = 25min
+OK   回切 ROAM 成功 / 回切后番茄继续（不打断）
+VERIFY PASS: M1 单频道闭环全部检查通过
+```
+
+> 说明：headless 走 `DisplayServer.get_name()=="headless"` 判定（4.7 下 `OS.has_feature("headless")` 不可靠）。`--import` 与 `--quit-after` 均 **EXIT=0、无 SCRIPT ERROR**；全局类 `ChannelFX/ChannelSkin/TapeChannelPanel/MixerPanel/MixerTrack/FocusTimerPanel/ChannelShell/ConfigLoader/EventBus/FocusStateMachine/AppController/ChannelLoader/MixerController/PomodoroTimer` 注册齐。
+
+### 6.5 还差什么（M1 出口缺口，交对应角色）
+
+> 以下为 M1 验收里**尚未完成**或**需编辑器/真实资产**项；骨架已就位，属实现/资产缺口而非接线缺口。标【待定】交对应角色，不改动其文档。
+
+| 缺口 | 说明 | 责任人 |
+| --- | --- | --- |
+| **收藏 1 卡**（M1 出口标准 #4） | 尚无 `content_card.json` 数据 + 内容卡池/收藏列表；`content_card` schema 数值侧契约已落（`data/schema/content_card*.schema.json`），但数据与 `card_collected` 事件消费端（本地最小列表 1 条 + 归档反馈）未实现。`TapeChannelPanel._on_collect_pressed()` 现为占位。 | 主程序（内容池收纳）+ 数值策划 A（数据）+ 主策划（版权 taxonomy） |
+| **双光实机渲染在编辑器验证**（README §5.5） | headless 不加载体，`SCREEN_PIXEL_SIZE` 在 fragment 的可用性、四个 `.gdshader` 的编译与 `uniform` 映射（`hint_range`/`source_color`/纹理 `repeat_enable`）、`ShaderMaterial.set_shader_parameter`（`vec4`←`Vector4`/`vec3`←`Vector3`）与全屏锚点缩放。**需在 Godot 编辑器（Compatibility）逐项确认**。 | 图形程序员 A |
+| 真实氛围音景 / AudioBus | `mixer_track` 表已定义 `bus`（`Ambience_Hum`/`Ambience_TapeHiss`），但无音频资源、无 bus 布局；`MixerController` 现为"内存音量真值"（未映射 `AudioStreamPlayer.volume_db`），"音量实时生效"为骨架级。需音景资产 + `default_bus_layout.tres`（衔接主程序/音频）。 | 主程序（bus 布局）+ 音频/主美术（音景资源） |
+| 番茄结束轻提示 + 一次极简泛光 | `pomodoro_finished("completed")` 已广播，但结束的频道音色 + 一次泛光副作用未实现（可关、不弹窗）。 | 主程序（泛光，衔接图形 A）+ 音频 |
+| 频道路由表（channel_id → skin/资源） | `channel_loader` 用 `SKIN_RESOURCE_BY_CHANNEL`（程序侧资源路由）关联 `channel.json` → `skins/*.tres`。M2 三频道需扩充；【待定】是否下沉到数据表（`channel.json` 增 `skin_resource` 字段，需数值 A/主程序共定 schema）。 | 主程序 + 数值策划 A |
+| 焦点回收/防打断细化 | 状态机 `request_transition` 已实现漫游↔专注可切、不打断计时；设置/图鉴态只定骨架（M3）。专注段内真实"自动降噪"与"不打断"细化（如定时器重置、切换时计时器语义）【待定】。 | 主程序 |
+| 中文字体回退 & 数字等宽资产 | UI 骨架已按 `SystemFont`（PingFang SC/Microsoft YaHei）+ tabular 数字口径占位；**正式字体资产/子集化 + macOS/Windows 双端验证**后置（05_ §七/§八 ⑤）。 | UI 设计美术 A |
+
+### 6.6 本次接线跨角色改动登记（【待定】已交对应角色，未改其职责）
+
+> 主程序只做全局串联；对 UI/图形脚本做了**最小编译修正**与**接口接线**，改动登记如下，交对应角色知悉（不改动其文档）。
+
+| 文件 | 改动 | 性质 |
+| --- | --- | --- |
+| `scenes/channel/channel_fx.gd` | `_kelvin_to_rgb()`：`var t := clamp(...)` 无法推断类型 → 改 `var t: float = clampf(...)`（Godot 4 下 `clamp` 返回 Variant，`:=` 推断失败）。**仅编译修正，未改行为/接口。** | 编译修正（图形 A） |
+| `scripts/autoload/config_loader.gd` | `_load_json_table()` 支持 object/array 两类表（原只收 object，channel/timer/mixer_track 为 array 会被拒 + 运行时类型错）；新增 channel/timer/mixer_track 加载与类型化取值（`get_channel`/`get_timer_by_mode`/`get_focus_minutes`/`get_mixer_tracks`）。 | 主程序（数据驱动接入） |
+| `scripts/autoload/focus_state_machine.gd` | `_emit_state_changed()` 接通 `event_bus.state_changed`（取消骨架注释）。 | 事件驱动接线 |
+| `scripts/pomodoro_timer.gd` | 接通 `event_bus.pomodoro_started/finished`，`_get_meta_work_min()` 走 `config_loader.get_focus_minutes()`（数据驱动）。 | 事件驱动 + 数据驱动 |
+| `scripts/mixer_controller.gd` | 从 `mixer_track` 表装载轨音量（数据驱动），订阅 `event_bus.mixer_volume_changed`，`set_track_volume` 广播。 | 数据 + 事件驱动 |
+| `scripts/channel_loader.gd` | `load_channel()` 读 `config_loader` 频道数据 + 皮肤 Token；完成后广播 `event_bus.channel_loaded`。 | 数据 + 事件驱动 |
+| `scripts/app_controller.gd` / `scenes/app/main.tscn` | AppController 全局接线（§6.1）；main.tscn 挂 `ChannelLoader/PomodoroTimer/MixerController` 子节点（其余运行时实例化）。 | 主程序接线 |
+| `game/data/tables/{channel,timer,mixer_track}.json` | 工程加载用副本（权威源 `../../data/tables/`，数值策划 A 维护）；`game/data/` 只放加载副本，见 README §一。 | 数据副本 |
+
+> 注：`OS.has_feature("headless")` 在 Godot 4.7 下不可靠（`--headless` 仍返回 false），凡无头判定用 `DisplayServer.get_name()=="headless"`。

@@ -16,24 +16,40 @@ extends Node
 ## 全局数值参数运行时容器（meta.json）。
 var meta: Dictionary = {}
 
-## 加载表 —— meta 表路径（game/data/tables/ 副本；权威源在 ../../data/tables/meta.json）。
+## 频道表（channel.json，Array[Dictionary]）。
+var channels: Array = []
+
+## 计时时段表（timer.json，Array[Dictionary]）。
+var timer_sessions: Array = []
+
+## 混音轨表（mixer_track.json，Array[Dictionary]）。
+var mixer_tracks: Array = []
+
+## 加载表路径（game/data/tables/ 副本；权威源在 ../../data/tables/）。
 const META_PATH: String = "res://data/tables/meta.json"
+const CHANNEL_PATH: String = "res://data/tables/channel.json"
+const TIMER_PATH: String = "res://data/tables/timer.json"
+const MIXER_TRACK_PATH: String = "res://data/tables/mixer_track.json"
 
 
 func _ready() -> void:
 	load_all()
 
 
-## 一次性加载全部 M1 表（当前仅 meta）；其余表接入时在此追加。
+## 一次性加载全部 M1 表（meta / channel / timer / mixer_track）。
+## 权威副本在 game/data/tables/（由 ../../data/tables/ 派生，数值策划 A 维护）。
 func load_all() -> void:
 	meta = _load_json_table(META_PATH, "meta")
-	# TODO(M1): channel / timer / mixer_track / collectible 表随 schema 冻结后接入。
+	channels = _load_json_table(CHANNEL_PATH, "channel")
+	timer_sessions = _load_json_table(TIMER_PATH, "timer")
+	mixer_tracks = _load_json_table(MIXER_TRACK_PATH, "mixer_track")
+	# TODO(M2): collectible / content_card 表随内容管线接入。
 	# TODO(M1): schema 自校验闸门——按 data/schema/*.schema.json 校验，内容卡强制版权字段（risk 闸门）。
 
 
-## 读取一张 JSON 配置表，返回 Dictionary；失败时 push_error 并返回空表。
-## 表结构应为扁平 object（字段→值）。
-func _load_json_table(path: String, table_name: String) -> Dictionary:
+## 读取一张 JSON 配置表，返回 Dictionary 或 Array（取决于表是 object 还是 array）；
+## 失败时 push_error 并返回空表。
+func _load_json_table(path: String, table_name: String) -> Variant:
 	if not FileAccess.file_exists(path):
 		push_error("ConfigLoader: 配置表不存在 [%s] -> %s" % [table_name, path])
 		return {}
@@ -46,8 +62,8 @@ func _load_json_table(path: String, table_name: String) -> Dictionary:
 	if data == null:
 		push_error("ConfigLoader: 配置表 JSON 解析失败 [%s] -> %s" % [table_name, path])
 		return {}
-	if typeof(data) != TYPE_DICTIONARY:
-		push_error("ConfigLoader: 配置表应为 object [%s] -> %s" % [table_name, path])
+	if typeof(data) != TYPE_DICTIONARY and typeof(data) != TYPE_ARRAY:
+		push_error("ConfigLoader: 配置表应为 object 或 array [%s] -> %s" % [table_name, path])
 		return {}
 	return data
 
@@ -79,3 +95,67 @@ func get_focus_max() -> int:
 ## 完成一段专注（一个番茄）给予的正反馈碎片初值（frag）。
 func get_fragment_base_per_tomato() -> int:
 	return int(meta.get("fragment_base_per_tomato", 8))
+
+
+# ---------------------------------------------------------------------------
+# 频道表便捷取值（channel.json，Array[Dictionary]）
+# ---------------------------------------------------------------------------
+
+## 按 channel_id 取频道记录；不存在时返回空字典。
+func get_channel(channel_id: String) -> Dictionary:
+	for c in channels:
+		if c is Dictionary and c.get("channel_id", "") == channel_id:
+			return c
+	return {}
+
+
+## 全部频道列表（Array[Dictionary]）。
+func get_all_channels() -> Array:
+	return channels
+
+
+## 频道中文名（channel_id 不存在时回退空串）。
+func get_channel_name(channel_id: String) -> String:
+	var c := get_channel(channel_id)
+	return String(c.get("name_zh", ""))
+
+
+# ---------------------------------------------------------------------------
+# 计时时段表便捷取值（timer.json，Array[Dictionary]）
+# ---------------------------------------------------------------------------
+
+## 按 timer_id 取时段记录；不存在时返回空字典。
+func get_timer(timer_id: String) -> Dictionary:
+	for t in timer_sessions:
+		if t is Dictionary and t.get("timer_id", "") == timer_id:
+			return t
+	return {}
+
+
+## 取指定 mode（"focus" / "break"）的默认时段记录。
+func get_timer_by_mode(mode: String) -> Dictionary:
+	for t in timer_sessions:
+		if t is Dictionary and t.get("mode", "") == mode:
+			return t
+	return {}
+
+
+## 专注段时长（min）：优先 timer 表 focus 项的 duration_min，兜底 meta.pomodoro_work。
+func get_focus_minutes() -> int:
+	var focus_timer := get_timer_by_mode("focus")
+	if not focus_timer.is_empty():
+		return int(focus_timer.get("duration_min", get_pomodoro_work_min()))
+	return get_pomodoro_work_min()
+
+
+# ---------------------------------------------------------------------------
+# 混音轨表便捷取值（mixer_track.json，Array[Dictionary]）
+# ---------------------------------------------------------------------------
+
+## 取指定频道（channel_id）的全部混音轨（Array[Dictionary]）。
+func get_mixer_tracks(channel_id: String) -> Array:
+	var result: Array = []
+	for t in mixer_tracks:
+		if t is Dictionary and t.get("channel_id", "") == channel_id:
+			result.append(t)
+	return result

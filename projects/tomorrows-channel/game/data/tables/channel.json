@@ -1,0 +1,35 @@
+[
+  {
+    "channel_id": "tape_warm",
+    "name_zh": "磁带暖未来",
+    "tier": "首期·默认专注",
+    "tagline": "一台点着暖灯的旧接收机",
+    "lut": {
+      "primary_token": "tape_lut_phosphor_amber",
+      "tokens": [
+        "tape_lut_base_dark",
+        "tape_lut_mid_beige",
+        "tape_lut_lit_warm",
+        "tape_lut_phosphor_amber",
+        "tape_lut_phosphor_green",
+        "tape_lut_emphasis"
+      ]
+    },
+    "soundscape": {
+      "track_ids": ["tape_track_hum", "tape_track_tapes_hiss"]
+    },
+    "skin": {
+      "skin_token": "tape_skin_bezel_01",
+      "container_tokens": [
+        "tape_container_housing_beige",
+        "tape_container_housing_dark",
+        "tape_container_dial_amber",
+        "tape_container_device_warm_k",
+        "tape_container_lamp_warm_k",
+        "tape_container_glow_ratio",
+        "tape_container_glow_radius",
+        "tape_container_lamp_direction"
+      ]
+    }
+  }
+]

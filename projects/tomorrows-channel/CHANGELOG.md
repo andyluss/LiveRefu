@@ -8,6 +8,13 @@
 ### 新增
 - 六角色开发计划会：产出 [`plans/00-project-plan.md`](plans/00-project-plan.md)（M1 单频道闭环排期 / M2 三频道顺序 / 跨角色依赖与风险 / 文档待办）；各角色意见存 `plans/meetings/20260908-1202-devplan/`。
 
+### 变更（程序工程）
+- **M1 单频道闭环已接线（骨架级，可运行）**：`AppController` 全局串联 `config_loader`（读 meta/channel/timer/mixer_track 四表）→ `channel_loader`（装载磁带频道 `tape_warm` + 皮肤 Token）→ `channel_fx`（后处理栈）→ `channel_shell`（三态 UI + 三面板数据驱动）→ 番茄计时/混音台（`event_bus` 事件驱动）。
+- `game/data/tables/` 增 `channel.json` / `timer.json` / `mixer_track.json` 工程加载副本（权威源 `../../data/tables/`）。
+- `main.tscn` 补全节点树：挂 `ChannelLoader` / `PomodoroTimer` / `MixerController` 子节点（其余运行时实例化）。
+- 实机验证：`godot --headless --path game --import` 无 SCRIPT ERROR、全局类注册齐；运行主场景闭环自检 **VERIFY PASS**。详见 `game/README.md` §六。
+- 已登记 M1 出口缺口（收藏 1 卡、双光实机渲染编辑器验证、真实音景/AudioBus、番茄结束提示等），交对应角色【待定】。
+
 ### 变更（结构）
 - 项目目录扩展为"文档 + 开发产出"分层：新增强 `game/`（Godot 工程）、`data/`（数值 schema+表）、`art/`（美术源文件工程）；`assets/` 明确定位为"最终导出/运行资源"。
 - 各新目录补 `README.md` 说明用途/命名/规范；项目 README 目录结构图同步。

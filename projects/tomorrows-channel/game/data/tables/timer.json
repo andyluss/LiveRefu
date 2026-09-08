@@ -1,0 +1,18 @@
+[
+  {
+    "timer_id": "focus_default",
+    "name_zh": "专注",
+    "mode": "focus",
+    "duration_min": 25,
+    "signal_frag": 8,
+    "derived_from": ["meta.pomodoro_work", "meta.fragment_base_per_tomato"]
+  },
+  {
+    "timer_id": "break_default",
+    "name_zh": "休息",
+    "mode": "break",
+    "duration_min": 5,
+    "signal_frag": 0,
+    "derived_from": ["meta.pomodoro_break"]
+  }
+]

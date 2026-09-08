@@ -167,7 +167,7 @@ func _apply_skin_params() -> void:
 
 # sRGB 暖色温 → RGB 的经典近似（Tanner Helland / Neil Bartlett，lg 为自然对数）。
 static func _kelvin_to_rgb(kelvin: float) -> Vector3:
-	var t := clamp(kelvin, 1000.0, 40000.0) / 100.0
+	var t: float = clampf(kelvin, 1000.0, 40000.0) / 100.0
 	var r: float
 	var g: float
 	var b: float

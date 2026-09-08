@@ -31,7 +31,7 @@ func start_focus() -> void:
 	_duration_sec = work_min * 60
 	remaining_sec = float(_duration_sec)
 	is_running = true
-	# TODO(M1): EventBus.pomodoro_started.emit(_duration_sec)
+	event_bus.pomodoro_started.emit(_duration_sec)
 
 
 ## 暂停 / 恢复（后台常驻场景）。
@@ -44,7 +44,7 @@ func set_paused(paused: bool) -> void:
 
 ## 取消当前段（reason "aborted"）。
 func abort() -> void:
-	# TODO(M1): EventBus.pomodoro_finished.emit("aborted")
+	event_bus.pomodoro_finished.emit("aborted")
 	is_running = false
 	remaining_sec = 0.0
 
@@ -55,12 +55,15 @@ func _process(delta: float) -> void:
 		return
 	remaining_sec -= delta
 	if remaining_sec <= 0.0:
-		# TODO(M1): 完成段——EventBus.pomodoro_finished.emit("completed") + 轻提示 + 极简泛光。
+		# 完成段：广播 pomodoro_finished("completed") + 轻提示 + 极简泛光（后置实现）。
 		is_running = false
 		remaining_sec = 0.0
+		event_bus.pomodoro_finished.emit("completed")
 
 
-## 从配置读取默认专注分钟（骨架：直接取 ConfigLoader）。
+## 从配置读取默认专注分钟（经 ConfigLoader，禁止硬编码）。
 func _get_meta_work_min() -> int:
-	# TODO(M1): 通过 ConfigLoader 取（单例）。当前骨架提供默认值，避免硬编码依赖。
+	# 数据驱动：先读 timer 表 focus 时段，兜底 meta.pomodoro_work，再兜底 25。
+	if config_loader != null:
+		return config_loader.get_focus_minutes()
 	return 25
