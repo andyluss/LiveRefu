@@ -1,0 +1,13 @@
+[package]
+name = "data-validator"
+version = "0.1.0"
+edition = "2024"
+description = "数据契约校验子集引擎/原型(实验A): 把 JSON 数据与 Schema 契约的校验交给 Rust 编译器/clippy/属性测试判定。"
+license = "MIT"
+
+[dependencies]
+serde_json = "1"
+regex = "1"
+
+[dev-dependencies]
+proptest = "1"
