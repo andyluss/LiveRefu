@@ -1,0 +1,37 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="明日频道"
+config/description="氛围陪伴应用（Ambient Companion，非传统游戏）：单频道（磁带暖未来）M1 工程骨架。"
+config/version="0.1.0"
+run/main_scene="res://scenes/app/main.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[autoload]
+
+config_loader="*res://scripts/autoload/config_loader.gd"
+event_bus="*res://scripts/autoload/event_bus.gd"
+focus_state_machine="*res://scripts/autoload/focus_state_machine.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+
+; 渲染器锁定 Compatibility（OpenGL/WebGL）。
+; 依据 docs/graphics-programmer-a/05_m1-render-slice.md：磁带频道 2D 后处理（双层光+扫描线+微噪）
+; 不需要 Forward+/HDR/真 bloom；Web 降级天然要求 Compatibility；整包三频道建议统一单后端。
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

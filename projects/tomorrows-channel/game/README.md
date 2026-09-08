@@ -3,6 +3,8 @@
 > 存放《明日频道》的 **Godot 4.7.x 程序工程**（项目配置、场景、脚本、加载逻辑）。主程序牵头，图形程序员 A（渲染）与 UI 设计美术 A（UI 骨架）在此协作。
 > 引擎与技术主线依据 [`docs/lead-programmer/03_godot-engine-research.md`](../docs/lead-programmer/03_godot-engine-research.md)、[`../docs/lead-programmer/01_tech-stack-draft.md`](../docs/lead-programmer/01_tech-stack-draft.md)。
 
+> **工程状态**：**工程骨架已建**（Godot 4.7.x / 渲染器 = Compatibility）。已建 `project.godot`、`scenes/`（app/channel/timer/mixer/ui 占位，含 `scenes/app/main.tscn` 主场景）、`scripts/`（`autoload/` 单例 `config_loader` / `event_bus` / `focus_state_machine` + 核心系统骨架 `channel_loader` / `pomodoro_timer` / `mixer_controller` / `app_controller`）、`shaders/`、`data/`、`addons/` 骨架。各空目录以 `.gitkeep` 占位。详见下方目录约定。
+
 ## 一、目录约定（Godot 4.7.x 工程根 + 数据驱动）
 
 > `game/` 即 **Godot 工程根**（`project.godot` 直接位于 `game/` 下，import 后即为项目根），**不再嵌套 `project/` 层**。系统级新增目录以 `scenes/` 顶层子目录映射。
@@ -52,4 +54,4 @@ game/                        # Godot 工程根
 对齐 [`docs/lead-programmer/02_milestone-plan.md`](../plans/milestones/20260906-1534-milestone-plan.md)：
 M1 单频道（磁带暖未来）闭环 → M2 三频道滤镜 → M3 完整一天 → M4 量产。
 
-> 占位：工程建立前 `game/` 以 `.gitkeep` 占位；启动工程时移除。
+> 占位：`game/` 顶层 `.gitkeep` 已在工程骨架建成后移除；各空子目录（`scenes/*`、`shaders/`、`addons/`）以 `.gitkeep` 占位，目录内出现实际文件后可移除该占位。

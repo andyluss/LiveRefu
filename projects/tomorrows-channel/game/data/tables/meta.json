@@ -1,0 +1,7 @@
+{
+  "pomodoro_work": 25,
+  "pomodoro_break": 5,
+  "focus_min": 5,
+  "focus_max": 120,
+  "fragment_base_per_tomato": 8
+}
