@@ -6,13 +6,21 @@
 
 本工作区文档大量使用跨目录相对链接（如 `studio/主策划/` 指向 `doc/` 知识库）。相对链接一旦把深度写错（`../doc` 应为 `../../doc`），在本地 IDE / 预览器 / 网页版都会变成失效链接。钩子把它挡在提交之前，避免坏链接进入仓库。
 
-## 启用（本仓库已配置）
+## 启用（clone 后运行一次）
+
+> 注意：git 出于安全设计，**不跨 clone 传递 `core.hooksPath`**（它存于本地 `.git/config`，而 `.git` 目录不随克隆传输）。因此「clone 即自动启用」无法用 git 原生做到。本仓库提供一键安装脚本，clone 后运行一次即生效。
+
+```bash
+./tools/install_hooks.sh
+```
+
+脚本会设置 `git config --local core.hooksPath tools/hooks`（用**相对路径**，故 clone 到任意路径、或从子目录运行都有效），幂等可重跑。启用后，**每次 `git commit` 自动校验**本次暂存的 md 相对链接。
+
+手动等价的配置方式（效果相同，但需手动记得跑）：
 
 ```bash
 git config core.hooksPath tools/hooks
 ```
-
-这一行把 git 的钩子目录指向本目录，使 `pre-commit` 自动生效。它写入**本地 git 配置**（不回传仓库），所以**换一台机器 / 重新克隆后需再执行一次**。
 
 ## 校验内容
 
