@@ -1,7 +1,7 @@
 # 主美术 · 对「M1/M2 美术投入」的会议意见
 
-> 主美术 · 2026-09-08 · 《明日频道》开发计划会 · 属 [`plans/README`](../../plans/README.md) 会议意见（非正式产出）
-> 关联：GDD §5.2 频道谱系 / §9 美术风格要点 / §11 里程碑；主程序 [`02_milestone-plan.md`](../milestones/20260908-milestone-plan.md)；图形程序员 A [`04_response-gdd.md`](../../docs/graphics-programmer-a/04_response-gdd.md)；UI 设计美术 A；主美术 [`04_response-gdd.md`](../../docs/lead-artist/04_response-gdd.md)。
+> 主美术 · 2026-09-08 12:02 · 《明日频道》开发计划会 · 属 [`plans/README`](../../plans/README.md) 会议意见（非正式产出）
+> 关联：GDD §5.2 频道谱系 / §9 美术风格要点 / §11 里程碑；主程序 [`02_milestone-plan.md`](../milestones/20260906-1534-milestone-plan.md)；图形程序员 A [`04_response-gdd.md`](../../docs/graphics-programmer-a/04_response-gdd.md)；UI 设计美术 A；主美术 [`04_response-gdd.md`](../../docs/lead-artist/04_response-gdd.md)。
 
 ## 一句话立场
 
@@ -46,7 +46,7 @@
 
 ## 五、决策记录
 
-- **2026-09-08**：主美术对 M1/M2 美术投入的意见：
+- **2026-09-08 12:02**：主美术对 M1/M2 美术投入的意见：
   1. M1 用 placeholder 美术**可行**，但磁带频道需投"最小可辨关键氛围"（灰盒 + 暖底 LUT + 终端皮肤 + 扫描线一版），以守住"陪伴手感"这一 M1 真正要验的体验；
   2. M1 主美术投入约 0.25–0.5 周，产出 = 磁带氛围定调灰盒 + 关键氛围一版 + 静态验收基图，**不投正式美术**；
   3. M2 **不建议三频道并行**，顺序为"磁带定稿 + 母意象/双层光/资源规格共用层 → 太空（方向 C 肃穆）→ 蒸汽波"；M2 建议拆两段（前段磁带 + 共用层、后段太空 + 蒸汽波）；

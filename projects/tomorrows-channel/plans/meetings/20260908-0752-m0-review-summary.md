@@ -1,6 +1,6 @@
 # 《明日频道》GDD 全工作室评审纪要（汇总 v0.2 · M0 通过）
 
-> 主策划 · 2026-09-08 · 评审对象：[`../../docs/_shared/gdd-tomorrows-channel.md`](../../docs/_shared/gdd-tomorrows-channel.md)（v0.1）
+> 主策划 · 2026-09-08 07:52 · 评审对象：[`../../docs/_shared/gdd-tomorrows-channel.md`](../../docs/_shared/gdd-tomorrows-channel.md)（v0.1）
 > 来源：五个角色按 GDD 附录 B 各自回执，各回执文档见其角色目录 `04_response-gdd.md`。本纪要为跨角色汇总，供 M0 概念评审使用。
 > 已定前提：项目名 **《明日频道》**；首期平台 **桌面双端（macOS + Windows）**。
 

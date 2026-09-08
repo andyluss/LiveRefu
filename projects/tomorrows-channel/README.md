@@ -28,9 +28,19 @@ projects/tomorrows-channel/
 > 说明：
 > - **分层**：`art/`＝源文件（可编辑）→ `assets/`＝最终导出（运行资源）→ `game/`＝加载运行的工程；`docs/`＝文档/草案/规范；`data/`＝数值配置表。
 > - **管理 vs 产出**：`plans/`＝**项目管理**（计划/里程碑/会议记录/决策/完成情况/工作日志）；`docs/`＝**设计与角色产出**（GDD、各角色草案/回执）。`CHANGELOG.md`＝项目日志（对外视角）单独处理，不与 `plans/logs/` 工作日志合并。
-> - `assets/`、`art/`、`game/`、`data/`、`plans/`、`references/` 各含 `README.md` 说明用途/命名/规范；`plans/` 下另有模板（`_0000-template`、`_meeting-template`）。
+> - `assets/`、`art/`、`game/`、`data/`、`plans/`、`references/` 各含 `README.md` 说明用途/命名/规范；`plans/` 下另有模板（`_0000-template`、`_meeting-template`、`_progress-template`、`_worklog-template`）。
 > - `docs/lead-artist/moodboard/` 是**参考/灵感素材**（风格案例图），属主美术文档域，仍在 docs 下。
 > - 空目录以 `.gitkeep` 占位（git 不跟踪空目录）。
+
+## 项目管理约定
+
+项目管理统一放 [`plans/`](plans/README.md)，六类分工：**计划**（`00-project-plan.md`）、**里程碑**（`milestones/`）、**会议记录**（`meetings/`）、**决策**（`decisions/`）、**完成情况**（`progress/`）、**工作日志**（`logs/`）。
+
+- **`CHANGELOG.md` 单独处理**：项目日志（对外/里程碑视角）在项目根；`plans/logs/` 是**工作日志**（内部工作流水），两者不合并。
+- **时间精确到分（重要）**：因 AI 开发节奏较快，**所有时间记录相关的地方都精确到分**，用东八区（`date '+%Y%m%d-%H%M'`）取值、不脑内手写。
+  - **文件名**（里程碑/会议/进度/日志等随时间产生的文件）：`YYYYMMDD-HHMM-{关键词}.md`，时间戳在关键词前、精确到分（如 `20260908-1202-devplan-lead-designer.md`、里程碑 `20260906-1534-milestone-plan.md`）；
+  - **文档内时间记录**：变更/决策/日志等具体时刻写成 `YYYY-MM-DD HH:MM`（如 `2026-09-08 12:02`）；**项目节点类日期**（如"M0 通过日"）无具体时刻，保留日期不臆造。
+- 命名规范详见 [`plans/README.md`](plans/README.md)。
 
 ## 项目状态
 

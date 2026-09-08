@@ -24,7 +24,7 @@
 
 ## 三、里程碑（工程侧）
 
-对齐 [`docs/lead-programmer/02_milestone-plan.md`](../plans/milestones/20260908-milestone-plan.md)：
+对齐 [`docs/lead-programmer/02_milestone-plan.md`](../plans/milestones/20260906-1534-milestone-plan.md)：
 M1 单频道（磁带暖未来）闭环 → M2 三频道滤镜 → M3 完整一天 → M4 量产。
 
 > 占位：工程建立前 `game/` 以 `.gitkeep` 占位；启动工程时移除。

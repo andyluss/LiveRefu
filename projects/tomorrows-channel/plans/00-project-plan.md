@@ -1,7 +1,7 @@
 # 《明日频道》项目开发计划（开发计划会结论 v0.1）
 
-> 主策划（主持）· 2026-09-08 · 结论来源：六角色开发计划会意见（`meetings/devplan-*.md`，见下）· 状态：**待项目方确认后进入 M1**（本文为正式产出，节点性结论另入 `decisions/` 的 ADR）。
-> 输入基线：GDD [`../docs/_shared/gdd-tomorrows-channel.md`](../docs/_shared/gdd-tomorrows-channel.md) v0.2、评审纪要 [`meetings/20260908-m0-review-summary.md`](meetings/20260908-m0-review-summary.md)、各角色 [`meetings/devplan-*.md`](meetings/)。
+> 主策划（主持）· 2026-09-08 12:04 · 结论来源：六角色开发计划会意见（`meetings/devplan-*.md`，见下）· 状态：**待项目方确认后进入 M1**（本文为正式产出，节点性结论另入 `decisions/` 的 ADR）。
+> 输入基线：GDD [`../docs/_shared/gdd-tomorrows-channel.md`](../docs/_shared/gdd-tomorrows-channel.md) v0.2、评审纪要 [`meetings/20260908-0752-m0-review-summary.md`](meetings/20260908-0752-m0-review-summary.md)、各角色 [`meetings/devplan-*.md`](meetings/)。
 
 ## 一、会议结论（一句话）
 
@@ -89,5 +89,5 @@
 
 ## 七、决策记录
 
-- 2026-09-08：开发计划会召开，六角色提交意见（`meetings/devplan-*.md`，提交 `60e7660/616fb31/af7c77f/6129018/a0eef77/4175095`）。
-- 2026-09-08：汇总形成本开发计划——M1 单频道闭环（核心 2–3 周/全套 3–4 周），M2 磁带→太空→蒸汽波（蒸汽波并行提前）；M1 第一周锁定渲染器/schema/版权；关键节点性与架构决策将入 `decisions/` ADR。
+^- 2026-09-08 12:04：开发计划会召开，六角色提交意见（`meetings/devplan-*.md`，提交 `60e7660/616fb31/af7c77f/6129018/a0eef77/4175095`）。
+^- 2026-09-08 12:04：汇总形成本开发计划——M1 单频道闭环（核心 2–3 周/全套 3–4 周），M2 磁带→太空→蒸汽波（蒸汽波并行提前）；M1 第一周锁定渲染器/schema/版权；关键节点性与架构决策将入 `decisions/` ADR。

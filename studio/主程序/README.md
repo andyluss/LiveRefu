@@ -13,7 +13,7 @@
 ## 二、输出物（本目录内）
 
 - [`../../projects/tomorrows-channel/docs/lead-programmer/01_tech-stack-draft.md`](../../projects/tomorrows-channel/docs/lead-programmer/01_tech-stack-draft.md) — 技术栈、工程结构与规范初稿。
-- [`../../projects/tomorrows-channel/plans/milestones/20260908-milestone-plan.md`](../../projects/tomorrows-channel/plans/milestones/20260908-milestone-plan.md) — 立项到垂直切片的节奏草案。
+- [`../../projects/tomorrows-channel/plans/milestones/20260906-1534-milestone-plan.md`](../../projects/tomorrows-channel/plans/milestones/20260906-1534-milestone-plan.md) — 立项到垂直切片的节奏草案。
 - [`../../projects/tomorrows-channel/docs/lead-programmer/03_godot-engine-research.md`](../../projects/tomorrows-channel/docs/lead-programmer/03_godot-engine-research.md) — Godot 4.7.x 引擎调研（版本/许可/渲染/2D·UI/3D/脚本/平台/风险/适配评估）。
 
 ## 三、与其他角色的接口

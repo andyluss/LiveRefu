@@ -12,12 +12,13 @@
 - 项目目录扩展为"文档 + 开发产出"分层：新增强 `game/`（Godot 工程）、`data/`（数值 schema+表）、`art/`（美术源文件工程）；`assets/` 明确定位为"最终导出/运行资源"。
 - 各新目录补 `README.md` 说明用途/命名/规范；项目 README 目录结构图同步。
 - **项目管理收敛到 `plans/`**：开发计划（`00-project-plan.md`）、里程碑（`plans/milestones/`）、会议记录（`plans/meetings/`，时间戳命名）、决策（`plans/decisions/`）、完成情况（`plans/progress/`）、工作日志（`plans/logs/`）；顶层 `decisions/`、`notes/` 移除。`CHANGELOG.md` 单独处理（对外/里程碑视角）。
+- **时间记录精确到分**（AI 节奏快）：文件名 `YYYYMMDD-HHMM-{关键词}`；文档内具体时刻 `YYYY-MM-DD HH:MM`；项目节点类日期保留。里程碑/评审纪要/会议意见等时间戳与文件名已补齐。
 
 ### 待推进
 - M1 单频道（磁带暖未来）闭环启动：主程序排期细化、数值策划 A 落 P0 配置表。
 - 各角色 `01_/02_` 草案细化（GDD 主风格定稿后）。
 - 主美术补素材：蒸汽波黄昏频道（moodboard 方向缺）、旧接收机本体参考图。
-- 项目团队按 [`docs/_shared/`](docs/_shared/) 评审纪要的【待定】项逐条收敛。
+- 项目团队按 [`plans/meetings/`](plans/meetings/) 评审纪要的【待定】项逐条收敛。
 
 ---
 

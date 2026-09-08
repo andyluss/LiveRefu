@@ -1,7 +1,7 @@
 # 开发计划会意见：M1/M2 渲染投入（图形程序员 A）
 
-> 图形程序员 A · 2026-09-08 · M1/M2 渲染投入意见（《明日频道》开发计划会）
-> 依据：本角色 [01_渲染与后处理技术草案](../../docs/graphics-programmer-a/01_rendering-tech-draft.md)、[02_性能预算与渲染任务清单](../../docs/graphics-programmer-a/02_perf-budget-tasks.md)、[04_回执GDD](../../docs/graphics-programmer-a/04_response-gdd.md)（含 §八 双层光）；主策划 [GDD](../../docs/_shared/gdd-tomorrows-channel.md)；[M0评审汇总](20260908-m0-review-summary.md)。
+> 图形程序员 A · 2026-09-08 12:02 · M1/M2 渲染投入意见（《明日频道》开发计划会）
+> 依据：本角色 [01_渲染与后处理技术草案](../../docs/graphics-programmer-a/01_rendering-tech-draft.md)、[02_性能预算与渲染任务清单](../../docs/graphics-programmer-a/02_perf-budget-tasks.md)、[04_回执GDD](../../docs/graphics-programmer-a/04_response-gdd.md)（含 §八 双层光）；主策划 [GDD](../../docs/_shared/gdd-tomorrows-channel.md)；[M0评审汇总](20260908-0752-m0-review-summary.md)。
 > 已定前提：技术主线 **Godot 4.7.x 桌面导出**；M1 = 单频道（磁带暖未来）闭环。
 
 ---
@@ -60,4 +60,4 @@
 
 ## 五、决策记录
 
-- 2026-09-08：以图形程序员 A 身份提交《明日频道》开发计划会 M1/M2 渲染投入意见——M1 同时落地"双层光（容器暖光 × 频道色, Way A 分层合成）+ 磁带动效（扫描线+微噪）"，并把性能切片第一刀放到 M1 验证"单次全屏 pass + tileable 叠加"杠杆；M2 三频道滤镜按"先磁带建栈、再共享扩展"排期（一个栈 + 三个 feature 分支，非并行）；建议主程序在 M2 开工前拍板"是否每频道切渲染后端"（若能统一 Compatibility/2D 则单后端最省）、暖光用 2D 假辉光。
+- 2026-09-08 12:02：以图形程序员 A 身份提交《明日频道》开发计划会 M1/M2 渲染投入意见——M1 同时落地"双层光（容器暖光 × 频道色, Way A 分层合成）+ 磁带动效（扫描线+微噪）"，并把性能切片第一刀放到 M1 验证"单次全屏 pass + tileable 叠加"杠杆；M2 三频道滤镜按"先磁带建栈、再共享扩展"排期（一个栈 + 三个 feature 分支，非并行）；建议主程序在 M2 开工前拍板"是否每频道切渲染后端"（若能统一 Compatibility/2D 则单后端最省）、暖光用 2D 假辉光。

@@ -2,7 +2,7 @@
 
 > 主程序 · 2026-09-08 · 状态：回执主策划 GDD《明日频道》v0.1 附录 B 协作请求单
 > 本文回应 GDD 附录 B「主程序：M1 原型范围与平台选型回执（对照主程序 `01_`/`02_`）」，并回执 GDD §12 第 2 项「首期平台桌面双端（macOS + Windows）」。
-> 依据：[`03_godot-engine-research.md`](03_godot-engine-research.md)、[`01_tech-stack-draft.md`](01_tech-stack-draft.md)、[`02_milestone-plan.md`](../../plans/milestones/20260908-milestone-plan.md)。
+> 依据：[`03_godot-engine-research.md`](03_godot-engine-research.md)、[`01_tech-stack-draft.md`](01_tech-stack-draft.md)、[`02_milestone-plan.md`](../../plans/milestones/20260906-1534-milestone-plan.md)。
 > 说明：本回执为**待主策划/工作室确认后的反馈文档**，用于收敛 GDD §12 待定项；较 `01_`/`02_` 更具体，且以其为准执行。
 
 ---
