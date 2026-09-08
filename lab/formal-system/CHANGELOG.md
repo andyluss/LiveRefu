@@ -40,4 +40,21 @@
 - 用主项目现成 schema 样例驱动校验（`projects/tomorrows-channel/data/schema/*.schema.json`），验证能拦截 4 类非法数据（越上限 / 低于下限 / 类型错 / 负值）。
 - 决策与教训同步记入 `notes/`。
 
+## [0.2.0] · 2026-09-08 · 实验 A 原型落地（Rust 数据契约校验器）
+
+### Added
+- [`prototypes/data-validator/`](prototypes/data-validator/README.md)（Rust crate，lib + bin）落地，功能对齐 [`tools/check_data.py`](../../tools/check_data.py)。
+  - **校验引擎**（`src/lib.rs`）：支持 JSON Schema 子集 `type`/`enum`/`const`/`minimum`/`maximum`/`minLength`/`maxLength`/`minItems`/`maxItems`/`required`/`properties`/`additionalProperties`/`items`/`pattern`。
+  - **CLI**（`src/main.rs`）：单文件或 `--schema-dir`/`--data-dir` 目录校验，退出码作门禁（0=通过，1=违规）。
+  - **测试**：单元 5 + 拦截 4（非法越界/枚举/pattern/未知字段）+ 属性 5（proptest 随机生成）+ 真实数据 1 — 共 15 个。
+  - 附 crate `README.md` 与 `.gitignore`（排除 `target/`）。
+- **实测结果**：主项目 5 张表（meta/timer/channel/mixer_track/content_card）**零误报**全部通过；对非法数据（如 `channel_id:"Tape_Warm"` 违反 snake_case）精确报路径、exit 1。
+
+### Changed（验证 / 门禁兑现）
+- **验证契约 §0 已实际兑现**：`cargo build` 通过、`cargo clippy --all-targets -- -D warnings` 零警告、`cargo test` 全绿、CLI 目录校验 exit 0 —— 每条都是一条命令可复现、结果确定。
+- **比 Python 版更强的约束**：新增 `pattern`（snake_case 校验）、`minLength`、`minItems`、`additionalProperties:false`（拒绝未知字段）等，均被 clippy / 测试机械判定。
+
+### 笔记
+- 记边想边试的教训到 [`notes/2026-09-08-experiment-a-rust-validator.md`](notes/2026-09-08-experiment-a-rust-validator.md)。
+
 ---
