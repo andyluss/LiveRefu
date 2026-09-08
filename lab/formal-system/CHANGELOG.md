@@ -1,0 +1,43 @@
+# 形式化协作实验 · 日志（CHANGELOG）
+
+> 记录 `lab/formal-system` 实验的里程碑、决策与产出。遵循 Keep a Changelog：`Added`（新增）/ `Changed`（变更）/ `Fixed`（修复）/ `Removed`（移除）。
+> 实验目标与方法分层见 [README.md](README.md)；交接启动见 [EXPERIMENT.md](EXPERIMENT.md)；主项目形式化现状见 [`../../tech/formalization.md`](../../tech/formalization.md)。
+
+## 0. 什么是"可被人类验证"（本实验的验证契约）
+
+本实验不再接受"AI 自述我验证过了"。任何"能进门槛"的产出必须满足**其中至少一条**：
+
+1. **编译**：`cargo build` / `rustc` 通过（类型 / 所有权 / 借用检查）。
+2. **静态检查**：`cargo clippy` 零警告（或显式豁免并注明理由）。
+3. **契约校验**：输入不符合声明契约时，校验器以非零退出拒绝（CUE `vet` / schema 校验）。
+4. **属性测试**：某性质被随机生成的输入反复验证通过（`cargo test` / proptest）。
+
+以上每条都是**一条命令即可重跑**、结果确定、**不依赖任何"角色心智"**的判定；人类只需重跑命令即可**可复现地**确认"它通过了"。
+
+## [0.1.0] · 2026-09-08 · 起步：读档、工具链实测、选定实验 A
+
+### Added
+- 建立本日志，记录实验过程与决策。
+- 工具链实测（系统实际时间 2026-09-08，见下方表格）：
+
+  | 工具 | 版本/状态 | 用途 | 归属层 |
+  | --- | --- | --- | --- |
+  | rustc / cargo | 1.96.0 ✅ | 类型化语言层（编译器验证） | A |
+  | cargo clippy | 0.1.96 ✅ | 静态 lint（零警告门禁） | A |
+  | node | v22.23.2 ✅ | 工具 / TS 运行 | A |
+  | deno | 2.7.7 ✅ | TS 直接运行 | A |
+  | CUE / Alloy / TLA+ | ❌ 未装 | 配置契约 / 模型检验 / 规格 | B/C |
+
+### Changed（决策）
+- **选定第一个实验（MVP）= 实验 A · Rust 数据契约校验器**。
+  - 按 [EXPERIMENT.md](EXPERIMENT.md) §五默认建议：本机 Rust 现成，编译器验证最"硬"，最贴合"AI 产出被**独立机器验证**而非自述"的目标。
+  - 产出定位：`prototypes/data-validator/`（Rust crate + 校验逻辑），功能对齐现网 [`tools/check_data.py`](../../tools/check_data.py)（读 JSON → 校验 schema 契约），但由 `cargo build` / `clippy` / `test` 判定，比 Python 版更硬、可接入 CI。
+  - 范围以**可判定**为准：必填 / type / enum / 数值范围 / 嵌套 `copyright`（与 `check_data.py` 保持一致），不扩展到 Lean/Coq 定理证明（成本高，见 [EXPERIMENT.md](EXPERIMENT.md) §八）。
+- **明确验证契约**（见上 §0）作为本实验所有产出的入库门槛；"人类可复现" = 一条命令重跑。
+
+### 待推进（下一步）
+- 在 `prototypes/data-validator/` 建 Rust crate（`cargo init`），实现等价校验逻辑；`cargo clippy` 零警告；补属性测试（proptest）。
+- 用主项目现成 schema 样例驱动校验（`projects/tomorrows-channel/data/schema/*.schema.json`），验证能拦截 4 类非法数据（越上限 / 低于下限 / 类型错 / 负值）。
+- 决策与教训同步记入 `notes/`。
+
+---
