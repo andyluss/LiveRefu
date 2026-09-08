@@ -17,20 +17,20 @@ projects/tomorrows-channel/
 ├── CHANGELOG.md       # 项目日志(统一记录)
 ├── docs/              # 设计与角色项目文档(按角色分子目录, 见下)
 │   └── _shared/       # 跨角色共享(GDD/评审纪要)
-├── assets/            # 项目产出资产(非参考图)
-│   ├── art/           # 美术正式产出(角色/场景/图标素材)
-│   ├── audio/         # 音频/音景/环境混音轨
-│   └── ui/            # UI 切图/九宫格/字体
+├── game/              # ★ Godot 程序工程(scenes/scripts/shaders)  主程序/图形/UI 程序
+├── data/              # ★ 数值与配置表  schema/=表结构, tables/=数据  数值策划 A
+├── art/               # ★ 美术源文件工程(PSD/AI/Blender源)  主美术工作区
+├── assets/            # 最终导出的运行资源(供 game/ 加载)   art/audio/ui
 ├── decisions/         # 决策记录(ADR: 架构/设计/范围决策)
 ├── notes/             # 会议纪要、灵感暂存、杂项笔记
 └── references/        # 参考资料(外部链接快照、知识库引用索引)
 ```
 
 > 说明：
-> - `docs/lead-artist/moodboard/` 是**参考/灵感素材**（风格案例图），属主美术文档域，仍在 docs 下；
-> - `assets/` 放**最终可用于产品的产出**（正式美术/音频/UI 资源），与 docs 下的"文档/草案/参考"区分；
-> - 空目录以 `.gitkeep` 占位（git 不跟踪空目录）；
-> - `assets/`、`decisions/`、`notes/`、`references/` 各含 `README.md` 说明用途与命名规范；`decisions/`、`notes/` 下另有模板（ADR / 会议纪要）。
+> - **分层**：`art/`＝源文件（可编辑）→ `assets/`＝最终导出（运行资源）→ `game/`＝加载运行的工程；`docs/`＝文档/草案/规范；`data/`＝数值配置表。
+> - `assets/`、`art/`、`game/`、`data/`、`decisions/`、`notes/`、`references/` 各含 `README.md` 说明用途/命名/规范；`decisions/`、`notes/` 下另有模板（ADR / 会议纪要）。
+> - `docs/lead-artist/moodboard/` 是**参考/灵感素材**（风格案例图），属主美术文档域，仍在 docs 下。
+> - 空目录以 `.gitkeep` 占位（git 不跟踪空目录）。
 
 ## 项目状态
 
