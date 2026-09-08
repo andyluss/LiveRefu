@@ -6,7 +6,8 @@
 ## 一、工作区是什么
 
 - **doc/**：复古未来主义题材的研究知识库。以《复古未来主义论文集》为核心（21 篇总卷：理论地基、未来的考古、回收的未来、当代乡愁与多元、收束五段），并含蒸汽朋克、原子朋克、柴油朋克、赛博朋克、生物朋克等独立专题卷，以及合订本（PDF/HTML）与再生脚本。
-- **studio/**：AI 开发角色的模拟工作场所。把参与本工作区复古未来项目开发的 AI 角色（主策划、主程序、主美术、数值策划 A、图形程序员 A、UI 设计美术 A）按角色组织，各角色一个子目录存放身份卡与工作文档。
+- **studio/**：AI 开发角色的模拟工作场所。把参与本工作区复古未来项目开发的 AI 角色（主策划、主程序、主美术、数值策划 A、图形程序员 A、UI 设计美术 A）按角色组织，各角色一个子目录存放**身份卡（README）**；角色项目文档迁至对应 `projects/<项目>/docs/<角色>/`（见下）。
+- **projects/**：项目工作区。每个实际开发中的项目一个子目录（如 [`projects/tomorrows-channel/`](projects/tomorrows-channel/README.md)），内含项目 README、`CHANGELOG.md`（项目日志）与 `docs/`（按角色分目录的项目文档）。
 
 ## 二、目录导览
 
@@ -14,7 +15,8 @@
 | --- | --- | --- |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
 | [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |
-| [`studio/`](studio/README.md) | AI 开发工作室：工作室主 README + 六个角色子目录 | [`studio/README.md`](studio/README.md) |
+| [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：当前项目《明日频道》（含项目 README、CHANGELOG 日志、docs 按角色分目录） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
+| [`studio/`](studio/README.md) | AI 开发工作室：六个角色身份卡（角色项目文档在 projects/ 对应项目下） | [`studio/README.md`](studio/README.md) |
 | [`tech/`](tech/README.md) | 仓库级技术文档：Git 与提交约定、文档约定、相对链接校验（钩子+CI） | [`tech/README.md`](tech/README.md) |
 | [`tools/`](tools/check_links.py) | 仓库工具：链接校验脚本与 pre-commit 钩子 | [`tools/check_links.py`](tools/check_links.py) |
 

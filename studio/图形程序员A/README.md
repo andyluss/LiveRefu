@@ -12,8 +12,8 @@
 
 ## 二、输出物（本目录内）
 
-- [`01_渲染与后处理技术草案.md`](01_渲染与后处理技术草案.md) — 渲染路线与后处理栈初稿。
-- [`02_性能预算与渲染任务清单.md`](02_性能预算与渲染任务清单.md) — 性能目标与任务拆解。
+- [`../../projects/tomorrows-channel/docs/graphics-programmer-a/01_rendering-tech-draft.md`](../../projects/tomorrows-channel/docs/graphics-programmer-a/01_rendering-tech-draft.md) — 渲染路线与后处理栈初稿。
+- [`../../projects/tomorrows-channel/docs/graphics-programmer-a/02_perf-budget-tasks.md`](../../projects/tomorrows-channel/docs/graphics-programmer-a/02_perf-budget-tasks.md) — 性能目标与任务拆解。
 
 ## 三、与其他角色的接口
 

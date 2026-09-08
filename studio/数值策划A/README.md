@@ -12,8 +12,8 @@
 
 ## 二、输出物（本目录内）
 
-- [`01_数值框架与表结构草案.md`](01_数值框架与表结构草案.md) — 数值骨架与表结构初稿。
-- [`02_数值工作表与调参流程模板.md`](02_数值工作表与调参流程模板.md) — 调参闭环与表格模板。
+- [`../../projects/tomorrows-channel/docs/systems-designer-a/01_numerics-framework.md`](../../projects/tomorrows-channel/docs/systems-designer-a/01_numerics-framework.md) — 数值骨架与表结构初稿。
+- [`../../projects/tomorrows-channel/docs/systems-designer-a/02_numerics-workbook-template.md`](../../projects/tomorrows-channel/docs/systems-designer-a/02_numerics-workbook-template.md) — 调参闭环与表格模板。
 
 ## 三、与其他角色的接口
 

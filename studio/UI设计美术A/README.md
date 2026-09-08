@@ -12,8 +12,8 @@
 
 ## 二、输出物（本目录内）
 
-- [`01_UI视觉与字体规范草案.md`](01_UI视觉与字体规范草案.md) — UI 语言与排印初稿。
-- [`02_UI组件与资源清单模板.md`](02_UI组件与资源清单模板.md) — 界面/组件清单与资源规格模板。
+- [`../../projects/tomorrows-channel/docs/ui-artist-a/01_ui-visual-font-draft.md`](../../projects/tomorrows-channel/docs/ui-artist-a/01_ui-visual-font-draft.md) — UI 语言与排印初稿。
+- [`../../projects/tomorrows-channel/docs/ui-artist-a/02_ui-components-template.md`](../../projects/tomorrows-channel/docs/ui-artist-a/02_ui-components-template.md) — 界面/组件清单与资源规格模板。
 
 ## 三、与其他角色的接口
 

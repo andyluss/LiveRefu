@@ -12,9 +12,9 @@
 
 ## 二、输出物（本目录内）
 
-- [`01_美术风格方向草案.md`](01_美术风格方向草案.md) — 主风格锚定与允许混搭谱系。
-- [`02_美术风格规范与资源规格草案.md`](02_美术风格规范与资源规格草案.md) — 落地规范初稿。
-- [`素材库/`](素材库/README.md) — 复古未来风格参考图片（三个候选方向分目录，来源 Wikimedia Commons，附逐张许可元数据）。
+- [`../../projects/tomorrows-channel/docs/lead-artist/01_art-direction-draft.md`](../../projects/tomorrows-channel/docs/lead-artist/01_art-direction-draft.md) — 主风格锚定与允许混搭谱系。
+- [`../../projects/tomorrows-channel/docs/lead-artist/02_art-spec-draft.md`](../../projects/tomorrows-channel/docs/lead-artist/02_art-spec-draft.md) — 落地规范初稿。
+- [`素材库/`](../../projects/tomorrows-channel/docs/lead-artist/moodboard/README.md) — 复古未来风格参考图片（三个候选方向分目录，来源 Wikimedia Commons，附逐张许可元数据）。
 
 ## 三、与其他角色的接口
 

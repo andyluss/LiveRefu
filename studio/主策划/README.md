@@ -12,9 +12,9 @@
 
 ## 二、输出物（本目录内）
 
-- [`01_立项概念草案.md`](01_立项概念草案.md) — 立项草案 v0.2：方向 D「复古未来氛围陪伴」为当前立项；A/B/C 为候选保留。
+- [`../../projects/tomorrows-channel/docs/lead-designer/01_concept-draft.md`](../../projects/tomorrows-channel/docs/lead-designer/01_concept-draft.md) — 立项草案 v0.2：方向 D「复古未来氛围陪伴」为当前立项；A/B/C 为候选保留。
 - [`02_GDD模板与写作规范.md`](02_GDD模板与写作规范.md) — 玩法设计文档的模板与分章规范。
-- [`03_GDD草案_明日频道_氛围陪伴.md`](03_GDD草案_明日频道_氛围陪伴.md) — 方向 D 正式 GDD v0.1：《明日频道》氛围陪伴应用（定名已锁定，五角色回执已齐，见[评审纪要](../评审纪要_GDD明日频道.md)）。
+- [`../../projects/tomorrows-channel/docs/_shared/gdd-tomorrows-channel.md`](../../projects/tomorrows-channel/docs/_shared/gdd-tomorrows-channel.md) — 方向 D 正式 GDD v0.1：《明日频道》氛围陪伴应用（定名已锁定，五角色回执已齐，见[评审纪要](../../projects/tomorrows-channel/docs/_shared/review-meeting-summary.md)）。
 
 ## 三、与其他角色的接口
 
@@ -36,4 +36,4 @@
 - 2026-09-06：工作室建立，主策划目录初始化；立项概念草案 v0.1 待评审。
 - 2026-09-06：立项转向——项目方指定**方向 D「复古未来氛围陪伴」**为当前立项；草案升 v0.2，产出 GDD《明日频道》v0.1，待全工作室评审。
 - 2026-09-08：项目方拍板——定名**《明日频道》**，首期平台**桌面双端（macOS + Windows）**；据此更新 GDD §12 待定项。
-- 2026-09-08：五角色回执齐（数值策划A/主美术/图形程序员A/UI设计美术A/主程序，含图形程序员A"双层光"补充），跨角色汇总见[评审纪要](../评审纪要_GDD明日频道.md)；待主策划拍板 M0 四项【待定】后 GDD 升 v0.2。
+- 2026-09-08：五角色回执齐（数值策划A/主美术/图形程序员A/UI设计美术A/主程序，含图形程序员A"双层光"补充），跨角色汇总见[评审纪要](../../projects/tomorrows-channel/docs/_shared/review-meeting-summary.md)；待主策划拍板 M0 四项【待定】后 GDD 升 v0.2。

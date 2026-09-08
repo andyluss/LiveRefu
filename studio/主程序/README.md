@@ -12,9 +12,9 @@
 
 ## 二、输出物（本目录内）
 
-- [`01_技术选型与工程规范草案.md`](01_技术选型与工程规范草案.md) — 技术栈、工程结构与规范初稿。
-- [`02_里程碑与原型计划.md`](02_里程碑与原型计划.md) — 立项到垂直切片的节奏草案。
-- [`03_Godot引擎调研.md`](03_Godot引擎调研.md) — Godot 4.7.x 引擎调研（版本/许可/渲染/2D·UI/3D/脚本/平台/风险/适配评估）。
+- [`../../projects/tomorrows-channel/docs/lead-programmer/01_tech-stack-draft.md`](../../projects/tomorrows-channel/docs/lead-programmer/01_tech-stack-draft.md) — 技术栈、工程结构与规范初稿。
+- [`../../projects/tomorrows-channel/docs/lead-programmer/02_milestone-plan.md`](../../projects/tomorrows-channel/docs/lead-programmer/02_milestone-plan.md) — 立项到垂直切片的节奏草案。
+- [`../../projects/tomorrows-channel/docs/lead-programmer/03_godot-engine-research.md`](../../projects/tomorrows-channel/docs/lead-programmer/03_godot-engine-research.md) — Godot 4.7.x 引擎调研（版本/许可/渲染/2D·UI/3D/脚本/平台/风险/适配评估）。
 
 ## 三、与其他角色的接口
 
