@@ -19,9 +19,10 @@
 | 表 | 结构 schema | 数据 | 说明 | 状态 |
 | --- | --- | --- | --- | --- |
 | 专注参数（meta） | `schema/meta.schema.json` | `tables/meta.json` | 番茄参数 + 聚焦反馈初值等全局（`pomodoro_work/pomodoro_break/focus_min/focus_max/fragment_base_per_tomato`）。M1 入口冻结 | **已落**（M1） |
-| 内容卡数值字段契约 | `schema/content_card_numerics.schema.json` | — | 内容卡数值位插槽契约：`rarity`（enum common/rare/cult）+ `collect_frag`（首次收藏初值）；版权字段由主程序强制，数值侧只给数值位 | **已落**（M1，契约非数据） |
-| 频道表 | `schema/channel.schema.json` | `tables/channels.json` | 频道解锁/音景/皮肤 | 【待定·M3】 |
-| 混音轨表 | `schema/mixer_track.schema.json` | `tables/mixer_track.json` | 频道内 2–3 轨音量等 | 【待定】· 主程序内容池/加载器落地 |
+| 内容卡数值字段契约 | `schema/content_card_numerics.schema.json` + `schema/content_card.schema.json` | — | 内容卡数值位插槽契约：`rarity`（enum common/rare/cult）+ `collect_frag`（首次收藏初值）；版权字段由主程序强制，数值侧只给数值位并标【待定】交主程序/主策划 | **已落**（M1，契约非数据） |
+| 频道表 | `schema/channel.schema.json` | `tables/channel.json` | 单频道 `tape_warm`（视觉 LUT/音景/皮肤 token）；schema 支持多频道、为 M2 扩展预留。频道解锁时间线（M3）不在此 | **已落**（M1） |
+| 计时时段表 | `schema/timer.schema.json` | `tables/timer.json` | 番茄时段预设（专注 25 / 休息 5 + 正反馈 `signal_frag`）；由 `meta` 派生，不与其双重权威、不冲突 | **已落**（M1） |
+| 混音轨表 | `schema/mixer_track.schema.json` | `tables/mixer_track.json` | M1 ≥2 轨（嗡鸣 / 磁带底噪）：id、默认音量、bus；schema 支持 3–4 轨 | **已落**（M1） |
 | 图鉴稀有度/保底 | `schema/probability_rarity.schema.json` | `tables/probability_rarity.json` | 稀有度配比（70/25/5）/保底 | 【待定·M3】 |
 | 完整解锁/碎片曲线 | `schema/economy_fragments.schema.json` | `tables/economy_fragments.json` | 碎片递减倍率/档位、收藏、消耗 | 【待定·M3】 |
 

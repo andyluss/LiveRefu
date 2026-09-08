@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "channel.schema.json",
+  "title": "channel（频道）表结构",
+  "description": "《明日频道》频道表结构。频道 = 一个复古未来时间线的完整氛围包（视觉 LUT/色调 + 音景 + 内容池 + 皮肤）；每个频道一条记录。字段一律 snake_case、带 type/minimum/maximum/required 元数据，供主程序数据驱动加载器自校验、编辑期拦截非法值、UI 取值；中文说明放 description。",
+  "$comment": "数值策划 A · M1 落表。M1 只有 1 个频道 tape_warm（磁带暖未来），本 schema 支持多频道、为 M2 三频道（太空时代/蒸汽波等）与后续扩展预留。视觉 LUT/容器 token 名引用主美术 docs/lead-artist/05_m1-tape-baseline.md §一/§二（tape_lut_* / tape_container_*）；音景轨引用 data/schema/mixer_track.schema.json 的 track_id。频道解锁时间线（unlock_cummin / 增量 3–6h）与皮肤定价（60/120/40/20）属完整解锁/经济曲线，均为 M3（见 docs/systems-designer-a/04_response-gdd.md §1.1/§1.3 与 plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md §2『明确不做』）。",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["channel_id", "name_zh", "tier", "lut", "soundscape", "skin"],
+    "properties": {
+      "channel_id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "description": "频道唯一标识（snake_case）。M1 = tape_warm。程序以此为主键关联 mixer_track.channel_id 与内容池。"
+      },
+      "name_zh": {
+        "type": "string",
+        "minLength": 1,
+        "description": "频道中文名（展示用）。M1 = 磁带暖未来。"
+      },
+      "tier": {
+        "type": "string",
+        "description": "频道档位/阶段标签（如『首期·默认专注』）。仅描述性分类，不承载解锁逻辑（解锁时间线 M3）。"
+      },
+      "tagline": {
+        "type": "string",
+        "description": "一句话基调（可选），供 UI 顶栏/皮肤文案参考。M1 引用主美术 05_ §〇『一台点着暖灯的旧接收机』。"
+      },
+      "lut": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["primary_token", "tokens"],
+        "properties": {
+          "primary_token": {
+            "type": "string",
+            "description": "主荧光/主色调 token 名，引用主美术 05_m1-tape-baseline.md §一。M1 = tape_lut_phosphor_amber（琥珀主荧光）。"
+          },
+          "tokens": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "该频道信号层 LUT 用到的全部 tape_lut_* token 名，供图形/程序取色。M1 引用 05_ §一 共 6 个 token。"
+          }
+        }
+      },
+      "soundscape": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["track_ids"],
+        "properties": {
+          "track_ids": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "该频道默认起播的音景轨 track_id 列表，引用 mixer_track.schema.json。M1 = 嗡鸣 + 磁带底噪。"
+          }
+        }
+      },
+      "skin": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["skin_token", "container_tokens"],
+        "properties": {
+          "skin_token": {
+            "type": "string",
+            "description": "占位皮肤/机身塑壳 token 名，引用主美术 05_ §5.3。M1 = tape_skin_bezel_01。"
+          },
+          "container_tokens": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "容器层（接收机机身）暖光/色温 token 名，引用主美术 05_ §二（tape_container_*）。"
+          }
+        }
+      }
+    }
+  }
+}

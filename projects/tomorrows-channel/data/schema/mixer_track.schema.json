@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mixer_track.schema.json",
+  "title": "mixer_track（混音轨）表结构",
+  "description": "《明日频道》环境混音轨表。每个可独立调节音量的环境音轨一条记录。字段一律 snake_case、带 type/unit/minimum/maximum/required 元数据，供主程序混音台加载器自校验与 UI 取值。",
+  "$comment": "数值策划 A · M1 落表。M1 ≥2 轨（嗡鸣 tape_track_hum / 磁带底噪 tape_track_tapes_hiss），本 schema 支持 3–4 轨（雨 / 空调 / 星海等，见 GDD §环境音轨）。轨道归属 channel_id 引用 channel.schema.json；default_volume 为线性 0–1（程序层换算 dB 与淡入）。混音台按 bus 路由；预置读取/保存 M1 不做。【待定】主程序内容池/加载器落地轨道目录与音频资源名。",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["track_id", "name_zh", "category", "channel_id", "bus", "default_volume"],
+    "properties": {
+      "track_id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "description": "音轨唯一标识（snake_case）。M1 = tape_track_hum / tape_track_tapes_hiss。"
+      },
+      "name_zh": {
+        "type": "string",
+        "minLength": 1,
+        "description": "音轨中文名（嗡鸣 / 磁带底噪 / 雨…）。"
+      },
+      "category": {
+        "type": "string",
+        "description": "音轨类别（hum / hiss / rain…），用于 UI 分组与未来预置。"
+      },
+      "channel_id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "description": "该轨所属频道（M1 = tape_warm）。程序用它把音景轨与频道绑定；M2 多频道各自归轨。"
+      },
+      "bus": {
+        "type": "string",
+        "description": "Godot AudioBus 名，混音台按此路由。M1 = Ambience_Hum / Ambience_TapeHiss。"
+      },
+      "default_volume": {
+        "type": "number",
+        "unit": "linear",
+        "minimum": 0,
+        "maximum": 1,
+        "default": 0.5,
+        "description": "默认音量（线性 0–1）。程序层换算为 dB。M1：嗡鸣 0.5 / 磁带底噪 0.35。"
+      },
+      "muted_by_default": {
+        "type": "boolean",
+        "default": false,
+        "description": "是否默认静音。M1 两轨均默认开。"
+      }
+    }
+  }
+}

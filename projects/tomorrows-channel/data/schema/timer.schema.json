@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "timer.schema.json",
+  "title": "timer（计时时段）表结构",
+  "description": "《明日频道》番茄计时时段（session）表。每个时段预设一条记录（专注段/休息段），供计时器与正反馈读取。字段一律 snake_case、带 type/unit/minimum/maximum/required 元数据，供主程序加载器自校验、编辑期拦截非法值。",
+  "$comment": "数值策划 A · M1 落表。番茄全局参数（pomodoro_work / pomodoro_break / focus_min / focus_max / fragment_base_per_tomato）的权威源是 data/schema/meta.schema.json（已冻结）。本表为『时段预设 / UI 呈现』层级：duration_min 与 signal_frag 由 meta 派生（取同值 25/5、8/0），不改 meta 即不冲突。若未来做多预设，duration_min 必须落在 [focus_min, focus_max] 内（meta 编辑期拦截非法值）。休息段 signal_frag=0（休息不产出碎片，见 meta 描述与 GDD §7）。取整（floor/round）与跨日本地日零点清零口径【待定·主程序】。",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["timer_id", "name_zh", "mode", "duration_min", "signal_frag", "derived_from"],
+    "properties": {
+      "timer_id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "description": "时段唯一标识（snake_case）。M1 = focus_default / break_default。"
+      },
+      "name_zh": {
+        "type": "string",
+        "minLength": 1,
+        "description": "时段中文名（专注 / 休息）。"
+      },
+      "mode": {
+        "type": "string",
+        "enum": ["focus", "break"],
+        "description": "时段类型：focus 专注段（产出正反馈碎片），break 休息段（不产出碎片，由 meta 语义约束）。"
+      },
+      "duration_min": {
+        "type": "integer",
+        "unit": "min",
+        "minimum": 1,
+        "maximum": 240,
+        "description": "时段默认时长（分钟）。由 meta 派生：focus=pomodoro_work(25)，break=pomodoro_break(5)。程序层换算为秒；必须在 [focus_min, focus_max] 内。"
+      },
+      "signal_frag": {
+        "type": "integer",
+        "unit": "frag",
+        "minimum": 0,
+        "description": "完成该时段给予的正反馈碎片初值。focus=fragment_base_per_tomato(8)；break=0（休息不产出碎片）。"
+      },
+      "derived_from": {
+        "type": "array",
+        "items": { "type": "string" },
+        "minItems": 1,
+        "description": "本时段字段的权威源字段（meta.*），显式声明『派生/引用』关系，避免与 meta 形成双重权威、防止冲突。"
+      }
+    }
+  }
+}

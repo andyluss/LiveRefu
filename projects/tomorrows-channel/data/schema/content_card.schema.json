@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "content_card.schema.json",
+  "title": "内容卡 schema（数值侧契约说明，非完整 schema）",
+  "description": "《明日频道》内容卡 schema 的『数值侧契约说明』。内容卡完整 schema（含 id/type/title/body/art/duration 等类型字段 + 强制版权字段 source/license/license_url/status）由主程序内容池 schema 收纳、主策划定版权 taxonomy；数值侧只提供数值位契约（rarity / collect_frag，权威见 content_card_numerics.schema.json）。此处给出契约说明，并把版权字段标【待定】交主程序/主策划。",
+  "$comment": "数值策划 A · M1 落表（契约非数据，无 tables/content_card.json——M1 只收藏 1 卡，卡片数据由主程序内容池/内容管线提供）。版权字段为法定强制（GDD §12·3 / 主程序 01_ §4.3 合规闸门），数值侧【不提供、不改动其结构】，只留契约位；版权 taxonomy（公版 / CC0 / 自产 / CC BY / BY-SA…）与 license 取值域【待定·主策划】。本 schema 仅强制数值侧必填（rarity / collect_frag），对其余字段 additionalProperties:true 放行、不拒绝主程序字段。rarity 与 collect_frag 一致性校验（collect_frag 按 rarity 取值）【待定·主程序】。",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["rarity", "collect_frag"],
+  "properties": {
+    "rarity": {
+      "type": "string",
+      "enum": ["common", "rare", "cult"],
+      "description": "稀有度枚举：common 普通 / rare 稀有 / cult 典藏。对应图鉴稀有度配比（70 / 25 / 5，配比随最终内容量回填，M3 前，见 04_response-gdd.md §1.3）。"
+    },
+    "collect_frag": {
+      "type": "integer",
+      "unit": "frag",
+      "minimum": 0,
+      "description": "首次收藏该卡获得的正反馈碎片初值（每卡仅首次）。按 rarity 初值：common=3 / rare=5 / cult=8（依据 04_response-gdd.md B-2）。"
+    },
+    "id": {
+      "type": "string",
+      "description": "内容卡唯一标识。【主程序】"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["image_text", "motion", "quote"],
+      "description": "卡类型：图文 / 影音 / 引言。【主程序】"
+    },
+    "title": {
+      "type": "string",
+      "description": "标题。【主程序】"
+    },
+    "body": {
+      "type": "string",
+      "description": "正文 / 引言文本。【主程序】"
+    },
+    "art": {
+      "type": "string",
+      "description": "美术资源引用。【主程序】"
+    },
+    "duration": {
+      "type": "number",
+      "unit": "s",
+      "description": "影音卡时长（秒）。M1 影音卡用静态/占位替代。【主程序】"
+    },
+    "source": {
+      "type": "string",
+      "description": "内容来源（必填，版权闸门）。【待定·主程序/主策划】"
+    },
+    "license": {
+      "type": "string",
+      "description": "版权类型（必填；取值域【待定·主策划】）。【待定·主程序/主策划】"
+    },
+    "license_url": {
+      "type": "string",
+      "description": "授权 / 来源链接（必填）。【待定·主程序/主策划】"
+    },
+    "status": {
+      "type": "string",
+      "description": "授权状态（必填，如 审核中 / 已入库 / 需复核）。【待定·主程序/主策划】"
+    }
+  }
+}
