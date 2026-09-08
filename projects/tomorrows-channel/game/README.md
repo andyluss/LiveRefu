@@ -3,7 +3,7 @@
 > 存放《明日频道》的 **Godot 4.7.x 程序工程**（项目配置、场景、脚本、加载逻辑）。主程序牵头，图形程序员 A（渲染）与 UI 设计美术 A（UI 骨架）在此协作。
 > 引擎与技术主线依据 [`docs/lead-programmer/03_godot-engine-research.md`](../docs/lead-programmer/03_godot-engine-research.md)、[`../docs/lead-programmer/01_tech-stack-draft.md`](../docs/lead-programmer/01_tech-stack-draft.md)。
 
-> **工程状态**：**已接线，可运行闭环（骨架级）**（Godot 4.7.x / 渲染器 = Compatibility）。主程序已完成 AppController 全局接线：`config_loader` 读取 meta/channel/timer/mixer_track 四表 → `channel_loader` 装载磁带频道 `tape_warm`（含皮肤 Token）→ 后处理栈 `channel_fx`（三层 CanvasLayer + 4 shader）→ 三态 UI 骨架 `channel_shell`（三面板数据驱动装配）→ 番茄计时 + 混音台经 `event_bus` 事件驱动。已用 `godot --headless` 实机验证 **无 SCRIPT ERROR、全局类注册齐、闭环自检 VERIFY PASS**。详见下方 §六。
+> **工程状态**：**已接线，可运行闭环（骨架级）**（Godot 4.7.x / 渲染器 = Compatibility）。主程序已完成 AppController 全局接线：`config_loader` 读取 meta/channel/timer/mixer_track/content_card 五表 → `channel_loader` 装载磁带频道 `tape_warm`（含皮肤 Token）→ 后处理栈 `channel_fx`（三层 CanvasLayer + 4 shader）→ 三态 UI 骨架 `channel_shell`（三面板数据驱动装配）→ 番茄计时 + 混音台 + **收藏 1 卡** 经 `event_bus` 事件驱动。已用 `godot --headless` 实机验证 **无 SCRIPT ERROR、全局类注册齐、闭环自检 VERIFY PASS**。详见下方 §六。
 
 ## 一、目录约定（Godot 4.7.x 工程根 + 数据驱动）
 
@@ -169,13 +169,14 @@ AppController._ready()
 
 | 项 | 状态 |
 | --- | --- |
-| 数据驱动装载 | ✅ `config_loader` 读 `game/data/tables/{meta,channel,timer,mixer_track}.json` 四表（含类型化取值；channel/timer/mixer_track 副本已从 `../../data/tables/` 派生到 `game/data/tables/`） |
+| 数据驱动装载 | ✅ `config_loader` 读 `game/data/tables/{meta,channel,timer,mixer_track,content_card}.json` 五表（含类型化取值；channel/timer/mixer_track/content_card 副本已从 `../../data/tables/` 派生到 `game/data/tables/`；content_card 权威源已由数值策划 A 建，3 张卡） |
 | 频道装载 | ✅ `channel_loader.load_channel("tape_warm")` 读 channel.json，装载 `loaded_channel` + 皮肤 Token `loaded_skin` |
 | 磁带动效栈 | ✅ `channel_fx` 自建三层 CanvasLayer，加载 4 个 `.gdshader`（扫描线/微噪/窗口遮罩/容器暖光），注入 skin 参数；动效可关 |
 | 频道皮肤 Token | ✅ `tape_channel_skin.tres`（ChannelSkin）注入 channel_fx / 三面板；各面板 `_apply_skin()` 从 token 取色，零硬编码 |
 | 三态 shell 可见度 | ✅ `ChannelShell` 订阅 `state_changed`，漫游↔专注 切换只改视图可见度（焦点不劫持） |
 | 番茄专注 | ✅ 进入 FOCUS 时 `pomodoro_timer.start_focus()`（meta/timer 表 25min → 1500s），`FocusTimerPanel` 读 25min；后台/最小化准确性后置 |
 | 混音台 | ✅ `MixerPanel` 滑杆由 `mixer_track` 表数据生成（2 轨：嗡鸣/磁带底噪），滑杆→事件→`MixerController` 生效；音量实时生效（骨架级，无真实音频） |
+| 收藏 1 卡 | ✅ `TapeChannelPanel` 收藏按钮 → `event_bus.collect_requested` → `CollectionController` 从 `content_card` 池校验（存在 + 版权 status 合规闸门）→ 记录图鉴最小列表（内存 `id→{rarity, collected_at}`）→ 首次收藏记 `collect_frag` 碎片 → 广播 `event_bus.card_collected`（UI「已归档」反馈） |
 | 静默可用 | ✅ `channel_fx` 动效可一键关（motion/scanline/noise），基底（暖光常亮/遮罩）保留 |
 
 ### 6.4 实机验证证据（headless）
@@ -183,7 +184,7 @@ AppController._ready()
 `--quit-after 5`（`HOME=/tmp/gdhome`）输出（stderr）节选：
 
 ```
-AppController: meta loaded [25.0] channel=[1] timer=[2] mixer_track=[2]
+AppController: meta loaded [25.0] channel=[1] timer=[2] mixer_track=[2] content_card=[3]
 AppController: 频道装载完成 id=tape_warm name=磁带暖未来 skin=ok
 OK   meta 装载 pomodoro_work=25
 OK   channel 装载 current=tape_warm
@@ -196,10 +197,13 @@ OK   番茄已启动 / 番茄剩余 ≈ 25min
 OK   混音事件生效 嗡鸣=0.8 / 混音台面板数据驱动 2 轨 / 含嗡鸣轨
 OK   专注计时面板 = 25min
 OK   回切 ROAM 成功 / 回切后番茄继续（不打断）
+OK   内容卡池装载非空 / 当前卡 id 非空 / 当前卡存在
+OK   收藏完成 图鉴=1 / 归档卡存在 rarity 正确 / 首次收藏碎片=collect_frag
+OK   重复收藏幂等 图鉴仍=1 / 不存在卡拒绝收集 / 版权未批准拒绝收集
 VERIFY PASS: M1 单频道闭环全部检查通过
 ```
 
-> 说明：headless 走 `DisplayServer.get_name()=="headless"` 判定（4.7 下 `OS.has_feature("headless")` 不可靠）。`--import` 与 `--quit-after` 均 **EXIT=0、无 SCRIPT ERROR**；全局类 `ChannelFX/ChannelSkin/TapeChannelPanel/MixerPanel/MixerTrack/FocusTimerPanel/ChannelShell/ConfigLoader/EventBus/FocusStateMachine/AppController/ChannelLoader/MixerController/PomodoroTimer` 注册齐。
+> 说明：headless 走 `DisplayServer.get_name()=="headless"` 判定（4.7 下 `OS.has_feature("headless")` 不可靠）。`--import` 与 `--quit-after` 均 **EXIT=0、无 SCRIPT ERROR**；全局类 `ChannelFX/ChannelSkin/TapeChannelPanel/MixerPanel/MixerTrack/FocusTimerPanel/ChannelShell/ConfigLoader/EventBus/FocusStateMachine/AppController/ChannelLoader/MixerController/PomodoroTimer/CollectionController` 注册齐。
 
 ### 6.5 还差什么（M1 出口缺口，交对应角色）
 
@@ -207,7 +211,6 @@ VERIFY PASS: M1 单频道闭环全部检查通过
 
 | 缺口 | 说明 | 责任人 |
 | --- | --- | --- |
-| **收藏 1 卡**（M1 出口标准 #4） | 尚无 `content_card.json` 数据 + 内容卡池/收藏列表；`content_card` schema 数值侧契约已落（`data/schema/content_card*.schema.json`），但数据与 `card_collected` 事件消费端（本地最小列表 1 条 + 归档反馈）未实现。`TapeChannelPanel._on_collect_pressed()` 现为占位。 | 主程序（内容池收纳）+ 数值策划 A（数据）+ 主策划（版权 taxonomy） |
 | **双光实机渲染在编辑器验证**（README §5.5） | headless 不加载体，`SCREEN_PIXEL_SIZE` 在 fragment 的可用性、四个 `.gdshader` 的编译与 `uniform` 映射（`hint_range`/`source_color`/纹理 `repeat_enable`）、`ShaderMaterial.set_shader_parameter`（`vec4`←`Vector4`/`vec3`←`Vector3`）与全屏锚点缩放。**需在 Godot 编辑器（Compatibility）逐项确认**。 | 图形程序员 A |
 | 真实氛围音景 / AudioBus | `mixer_track` 表已定义 `bus`（`Ambience_Hum`/`Ambience_TapeHiss`），但无音频资源、无 bus 布局；`MixerController` 现为"内存音量真值"（未映射 `AudioStreamPlayer.volume_db`），"音量实时生效"为骨架级。需音景资产 + `default_bus_layout.tres`（衔接主程序/音频）。 | 主程序（bus 布局）+ 音频/主美术（音景资源） |
 | 番茄结束轻提示 + 一次极简泛光 | `pomodoro_finished("completed")` 已广播，但结束的频道音色 + 一次泛光副作用未实现（可关、不弹窗）。 | 主程序（泛光，衔接图形 A）+ 音频 |
@@ -229,5 +232,17 @@ VERIFY PASS: M1 单频道闭环全部检查通过
 | `scripts/channel_loader.gd` | `load_channel()` 读 `config_loader` 频道数据 + 皮肤 Token；完成后广播 `event_bus.channel_loaded`。 | 数据 + 事件驱动 |
 | `scripts/app_controller.gd` / `scenes/app/main.tscn` | AppController 全局接线（§6.1）；main.tscn 挂 `ChannelLoader/PomodoroTimer/MixerController` 子节点（其余运行时实例化）。 | 主程序接线 |
 | `game/data/tables/{channel,timer,mixer_track}.json` | 工程加载用副本（权威源 `../../data/tables/`，数值策划 A 维护）；`game/data/` 只放加载副本，见 README §一。 | 数据副本 |
+
+**收藏 1 卡（M1 出口标准 #4，补）**：
+
+| 文件 | 改动 | 性质 |
+| --- | --- | --- |
+| `scripts/autoload/event_bus.gd` | 新增 `collect_requested(card_id)` 事件（请求）；`card_collected(card_id, rarity)` 已有。 | 事件驱动（主程序） |
+| `scripts/autoload/config_loader.gd` | 新增 `content_cards` 表加载 + `get_content_card`/`get_content_card_pool`（读取接口，数据驱动）。 | 数据驱动（主程序） |
+| `scripts/collection_controller.gd` | **新增`CollectionController`**：订阅 `collect_requested` → 从内容卡池校验（存在 + 版权 status 合规闸门）→ 记录图鉴最小列表（内存 `id→{rarity, collected_at}`）→ 首次收藏记 `collect_frag` → 广播 `card_collected`。 | 收藏逻辑（主程序） |
+| `scenes/app/main.tscn` | 挂 `CollectionController` 子节点。 | 装配（主程序） |
+| `scripts/app_controller.gd` | 装配时从内容卡池注入 `TapeChannelPanel.current_card_id`（数据驱动）+ 闭环自检增收藏链路校验。 | 接线（主程序） |
+| `game/data/tables/content_card.json` | **内容卡池**（M1 收藏 1 卡：权威源已由数值策划 A 建 `../../data/tables/content_card.json`，3 张：1 张 approved + 测试用，用于验证合规闸门）；此处为工程加载副本 | 数据（数值策划 A 权威源 / 主程序派生副本） |
+| `scenes/channel/tape_channel_panel.gd` + `.tscn` | **接线 + 最小 UI（UI 美术 A）**：`_on_collect_pressed()` 由占位改为广播 `collect_requested(current_card_id)`；新增 `current_card_id` 导出（供 AppController 注入，数据驱动）+ `card_collected` 订阅 → 置「已归档」态 + 轻反馈。收藏卡 UI **改为场景节点**（`CardBox`：`CardTitle`/`CardMeta`/`CardBody` 呈现 title/rarity/摘要 + `CollectButton` 常态/已收藏态 + `CollectFeedback`「已归档」），非代码构建；按钮/反馈/窗口色取值自 `skin`（`ChannelSkin`，无硬编码 hex）。**未改骨架结构。** | 呈现 + 事件接线（UI 美术 A） |
 
 > 注：`OS.has_feature("headless")` 在 Godot 4.7 下不可靠（`--headless` 仍返回 false），凡无头判定用 `DisplayServer.get_name()=="headless"`。
