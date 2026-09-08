@@ -1,0 +1,10 @@
+# 系统文件
+.DS_Store
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# Godot 生成缓存（工程内已在 game/.gitignore 处理）
+.godot/

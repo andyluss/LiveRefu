@@ -1,56 +1,53 @@
 #!/usr/bin/env bash
 #
-# git pre-commit 钩子：拦截"包含失效内部相对链接"的 Markdown 提交。
+# git pre-commit 钩子：拦截两类提交问题。
+#   1. 失效内部相对链接(检查暂存的 *.md, 交 tools/check_links.py)。
+#   2. 数据表不符合 schema(检查暂存涉及的 data/tables 变更, 交 tools/check_data.py)。
 #
-# 启用方式(二选一)：
-#   1. 仓库级：设置本钩子为 git hooks 路径(由本仓库提交的那一行 git config 完成)
-#          git config core.hooksPath tools/hooks
-#      之后每次 git commit 自动运行本钩子。
-#   2. 临时跳过：git commit --no-verify 可绕过(紧急时用, 提交前请自行确认链接)。
+# 启用方式：git config core.hooksPath tools/hooks（仓库已配置）。
+# 临时跳过：git commit --no-verify。
 #
-# 逻辑：
-#   - 取出本次暂存区(staged)中新增/修改/复制的 *.md 文件；
-#   - 交给 tools/check_links.py --files 校验内部相对链接；
-#   - 任一文件存在失效链接 => 打印明细并以非零退出码阻止本次提交。
-#
-# 只校验暂存文件，不扫全工作区，避免误拦与本次改动无关的既有问题。
-# 用 NUL 分隔读取文件名，兼容中文与含空格路径。
+# 只校验暂存相关文件，不扫全工作区，避免误拦与本次改动无关的既有问题。
 
 set -euo pipefail
 
-# 定位仓库根(钩子可能从任意子目录被调用)
 GIT_ROOT="$(git rev-parse --show-toplevel)"
-SCRIPT="$GIT_ROOT/tools/check_links.py"
 
-# 无脚本则不拦截(提示但放行, 不阻断仓库正常使用)
-if [ ! -f "$SCRIPT" ]; then
-  echo "[pre-commit:check-links] 未找到 $SCRIPT，跳过链接校验。" >&2
-  exit 0
-fi
-
-# 收集暂存的 *.md 文件(NUL 分隔, 兼容中文/空格)
-STAGED=()
-while IFS= read -r -d '' f; do
-  STAGED+=("$f")
-done < <(git diff --cached --name-only -z --diff-filter=ACM -- '*.md')
-
-if [ "${#STAGED[@]}" -eq 0 ]; then
-  # 本次不涉及 md 改动, 直接放行
-  exit 0
-fi
-
-echo "[pre-commit:check-links] 校验 ${#STAGED[@]} 个暂存 Markdown 的相对链接..."
-
-# 将文件路径转成绝对路径传给脚本: 传"相对工作区根"的路径即可。
-# 说明: check_links.py 以工作区根为基准解析, 对相对路径会按"文件真正所在目录"
-# 解析其内部相对链接; 传绝对路径反而会偏离基准。故直接传 git 的相对路径 $f。
-if python3 "$SCRIPT" --files "${STAGED[@]}" >&2; then
-  echo "[pre-commit:check-links] 通过。" >&2
-  exit 0
+# ---- 1) 暂存的 Markdown 相对链接校验 ----
+LINK_SCRIPT="$GIT_ROOT/tools/check_links.py"
+if [ ! -f "$LINK_SCRIPT" ]; then
+  echo "[pre-commit:check-links] 未找到 $LINK_SCRIPT，跳过链接校验。" >&2
 else
-  rc=$?
-  echo "[pre-commit:check-links] 存在失效的 Markdown 相对链接，已拦截提交。" >&2
-  echo "  请修复相对链接深度(如 studio/主策划/ 指向 doc 应为 ../../doc)。" >&2
-  echo "  若确认无需修复, 可用 git commit --no-verify 跳过。" >&2
-  exit "$rc"
+  STAGED=()
+  while IFS= read -r -d '' f; do STAGED+=("$f"); done \
+    < <(git diff --cached --name-only -z --diff-filter=ACM -- '*.md')
+  if [ "${#STAGED[@]}" -gt 0 ]; then
+    echo "[pre-commit:check-links] 校验 ${#STAGED[@]} 个暂存 Markdown 的相对链接..." >&2
+    if python3 "$LINK_SCRIPT" --files "${STAGED[@]}" >&2; then
+      echo "[pre-commit:check-links] 通过。" >&2
+    else
+      echo "[pre-commit:check-links] 存在失效链接，已拦截提交。" >&2
+      exit 1
+    fi
+  fi
 fi
+
+# ---- 2) 数据表 schema 校验 ----
+DATA_SCRIPT="$GIT_ROOT/tools/check_data.py"
+if [ ! -f "$DATA_SCRIPT" ]; then
+  echo "[pre-commit:check-data] 未找到 $DATA_SCRIPT，跳过数据校验。" >&2
+  exit 0
+fi
+# 只要本次暂存涉及 data/ 下任何表(json/schema), 就跑全量数据校验(数据表彼此多依赖)
+if git diff --cached --name-only --diff-filter=ACM | grep -qE '^projects/tomorrows-channel/data/(tables|schema)/'; then
+  echo "[pre-commit:check-data] 暂存涉及数据表变更，校验 schema 契约..." >&2
+  if python3 "$DATA_SCRIPT" >&2; then
+    echo "[pre-commit:check-data] 通过。" >&2
+  else
+    echo "[pre-commit:check-data] 数据表不符合 schema，已拦截提交。" >&2
+    echo "  请检查 data/schema 与 data/tables 一致性(必填/type/enum/数值范围)。" >&2
+    exit 1
+  fi
+fi
+
+exit 0
