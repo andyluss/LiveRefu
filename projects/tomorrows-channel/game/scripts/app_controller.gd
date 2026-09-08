@@ -28,17 +28,18 @@ const MIXER_PANEL_SCENE: String = "res://scenes/mixer/mixer_panel.tscn"
 @onready var _channel_loader: ChannelLoader = $ChannelLoader
 @onready var _pomodoro: PomodoroTimer = $PomodoroTimer
 @onready var _mixer_controller: MixerController = $MixerController
+@onready var _collection: CollectionController = $CollectionController
 
 ## 运行时实例引用（供测试/后续系统挂接）。
 var channel_fx: ChannelFX
 var channel_shell: Node
+var _tape_panel: TapeChannelPanel
 var _focus_timer_panel: FocusTimerPanel
 var _mixer_panel: Node
 var _pomodoro_started: bool = false
 
 ## 无头自检失败计数（仅 headless 校验用）。
 var _verify_fails: int = 0
-
 
 ## 后台常驻是否启用（低功耗模式，见 01_tech-stack-draft.md §二）。
 var _enable_background: bool = false
@@ -97,11 +98,12 @@ func _verify_config_loaded() -> void:
 		return
 	if config_loader.meta.is_empty():
 		config_loader.load_all()
-	_gdprint("AppController: meta loaded [%s] channel=[%d] timer=[%d] mixer_track=[%d]" % [
+	_gdprint("AppController: meta loaded [%s] channel=[%d] timer=[%d] mixer_track=[%d] content_card=[%d]" % [
 		config_loader.meta.get("pomodoro_work", "?"),
 		config_loader.channels.size(),
 		config_loader.timer_sessions.size(),
 		config_loader.mixer_tracks.size(),
+		config_loader.content_cards.size(),
 	])
 
 
@@ -134,15 +136,29 @@ func _init_channel_shell(skin: ChannelSkin) -> void:
 	if skin != null:
 		channel_shell.skin = skin
 
-	# 装入漫游视图：磁带频道最小面板（接收机中央窗口）。
+	# 装入漫游视图：磁带频道最小面板（接收机中央窗口）+ 注入当前内容卡 id（数据驱动，收藏用）。
 	var roam_view: Node = channel_shell.get_node("RoamView")
 	if skin != null:
-		_mount_panel(roam_view, TAPE_PANEL_SCENE, skin)
+		_tape_panel = _mount_panel(roam_view, TAPE_PANEL_SCENE, skin)
+		_inject_current_card(_tape_panel)
 
 	# 装入专注视图：专注计时 + 混音台（均数据驱动）。
 	var focus_view: Node = channel_shell.get_node("FocusView")
 	_focus_timer_panel = _mount_panel(focus_view, FOCUS_TIMER_SCENE, skin)
 	_mount_mixer_panel(focus_view, skin)
+
+
+## 从内容卡池选出「当前展示卡」id 并注入面板（数据驱动：M1 取卡池第一张，代码零硬编码 id）。
+## 收藏按钮将以该 id 发出 collect_requested；合规过滤（status）由 CollectionController 校验。
+func _inject_current_card(panel: Node) -> void:
+	if panel == null:
+		return
+	var pool := config_loader.get_content_card_pool()
+	if pool.is_empty():
+		_gdprint("AppController: 内容卡池为空，当前卡 id 置空（收藏按钮不可用）")
+		return
+	if "current_card_id" in panel:
+		panel.current_card_id = String(pool[0].get("id", ""))
 
 
 ## 实例化混音台面板：在入树前注入数据驱动的轨（MixerTrack 资源，来自 mixer_track 表），
@@ -239,6 +255,34 @@ func _verify_closed_loop() -> void:
 	_check("回切 ROAM 成功", ok2)
 	_check("ROAM 视图可见", shell_roam.visible and not shell_focus.visible)
 	_check("回切后番茄继续（不打断）", _pomodoro.is_running)
+
+	# 收藏 1 卡闭环（数据驱动 + 事件驱动）：逻辑层经 event_bus.collect_requested → CollectionController
+	# 校验归档 → card_collected。校验自足（不依赖 UI 面板当前态，面板接线归 UI 侧）。
+	_check("内容卡池装载非空", config_loader.content_cards.size() > 0)
+	var pool := config_loader.get_content_card_pool()
+	var current_card_id := String(pool[0].get("id", ""))
+	_check("当前卡 id 非空", current_card_id != "")
+	var current_card := config_loader.get_content_card(current_card_id)
+	_check("当前卡存在", not current_card.is_empty())
+	_check("当前卡版权合规", _collection.is_compliant(current_card))
+	var expected_frag := int(current_card.get("collect_frag", 0))
+
+	# 事件驱动：直接经 event_bus 发 collect_requested，由 CollectionController 订阅处理。
+	event_bus.collect_requested.emit(current_card_id)
+	_check("收藏完成 图鉴=1", _collection.get_collected_count() == 1)
+	_check("归档卡存在 rarity 正确", _collection.is_collected(current_card_id)
+		and _collection.get_gallery()[current_card_id]["rarity"] == String(current_card.get("rarity", "")))
+	_check("首次收藏碎片=collect_frag", _collection.get_collect_frag(current_card_id) == expected_frag)
+
+	# 幂等：重复收藏不重复归档、不给第二次碎片。
+	event_bus.collect_requested.emit(current_card_id)
+	_check("重复收藏幂等 图鉴仍=1", _collection.get_collected_count() == 1)
+
+	# 合规闸门：不存在卡 → request_collect 拒绝；版权块 status != approved / 缺版权字段 → is_compliant 拒绝。
+	_check("不存在卡拒绝收集", not _collection.request_collect("card_not_exist"))
+	var non_compliant := {"copyright": {"source": "x", "license": "original_own", "license_url": "x", "status": "pending_review"}}
+	_check("版权未批准拒绝合规", not _collection.is_compliant(non_compliant))
+	_check("缺版权字段拒绝合规", not _collection.is_compliant({}))
 
 	if _verify_fails == 0:
 		printerr("VERIFY PASS: M1 单频道闭环全部检查通过")

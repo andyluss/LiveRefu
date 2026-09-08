@@ -25,25 +25,32 @@ var timer_sessions: Array = []
 ## 混音轨表（mixer_track.json，Array[Dictionary]）。
 var mixer_tracks: Array = []
 
+## 内容卡表（content_card.json，Array[Dictionary]；含数值位 rarity/collect_frag + 嵌套版权块 copyright）。
+## 权威源在 ../../data/tables/content_card.json（数值策划 A 已建，见 data/schema/content_card.schema.json
+## §copyright 契约）；本副本为工程加载用（已派生，随权威源更新重派生）。
+var content_cards: Array = []
+
 ## 加载表路径（game/data/tables/ 副本；权威源在 ../../data/tables/）。
 const META_PATH: String = "res://data/tables/meta.json"
 const CHANNEL_PATH: String = "res://data/tables/channel.json"
 const TIMER_PATH: String = "res://data/tables/timer.json"
 const MIXER_TRACK_PATH: String = "res://data/tables/mixer_track.json"
+const CONTENT_CARD_PATH: String = "res://data/tables/content_card.json"
 
 
 func _ready() -> void:
 	load_all()
 
 
-## 一次性加载全部 M1 表（meta / channel / timer / mixer_track）。
+## 一次性加载全部 M1 表（meta / channel / timer / mixer_track / content_card）。
 ## 权威副本在 game/data/tables/（由 ../../data/tables/ 派生，数值策划 A 维护）。
 func load_all() -> void:
 	meta = _load_json_table(META_PATH, "meta")
 	channels = _load_json_table(CHANNEL_PATH, "channel")
 	timer_sessions = _load_json_table(TIMER_PATH, "timer")
 	mixer_tracks = _load_json_table(MIXER_TRACK_PATH, "mixer_track")
-	# TODO(M2): collectible / content_card 表随内容管线接入。
+	content_cards = _load_json_table(CONTENT_CARD_PATH, "content_card")
+	# TODO(M2): collectible 表随内容管线接入。
 	# TODO(M1): schema 自校验闸门——按 data/schema/*.schema.json 校验，内容卡强制版权字段（risk 闸门）。
 
 
@@ -159,3 +166,22 @@ func get_mixer_tracks(channel_id: String) -> Array:
 		if t is Dictionary and t.get("channel_id", "") == channel_id:
 			result.append(t)
 	return result
+
+
+# ---------------------------------------------------------------------------
+# 内容卡表便捷取值（content_card.json，Array[Dictionary]）
+# ---------------------------------------------------------------------------
+
+## 取指定内容卡 id 的卡记录；不存在时返回空字典。
+## 卡记录含：id/type/title/body/art/duration + 强制版权字段（source/license/license_url/status）
+## + 数值位（rarity/collect_frag）。字段契约见 data/schema/content_card*.schema.json。
+func get_content_card(card_id: String) -> Dictionary:
+	for c in content_cards:
+		if c is Dictionary and c.get("id", "") == card_id:
+			return c
+	return {}
+
+
+## 全部内容卡列表（Array[Dictionary]，M1 最小卡池）。
+func get_content_card_pool() -> Array:
+	return content_cards

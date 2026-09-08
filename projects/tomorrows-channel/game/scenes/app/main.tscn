@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/app_controller.gd" id="1_app"]
 [ext_resource type="Script" path="res://scripts/channel_loader.gd" id="2_cl"]
 [ext_resource type="Script" path="res://scripts/pomodoro_timer.gd" id="3_pt"]
 [ext_resource type="Script" path="res://scripts/mixer_controller.gd" id="4_mc"]
+[ext_resource type="Script" path="res://scripts/collection_controller.gd" id="5_cc"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_app")
@@ -16,3 +17,6 @@ script = ExtResource("3_pt")
 
 [node name="MixerController" type="Node" parent="."]
 script = ExtResource("4_mc")
+
+[node name="CollectionController" type="Node" parent="."]
+script = ExtResource("5_cc")

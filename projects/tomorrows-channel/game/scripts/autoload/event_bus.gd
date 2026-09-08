@@ -30,7 +30,11 @@ signal ambient_track_started(track_id: String)
 signal ambient_track_stopped(track_id: String)
 
 
-## 收藏：点卡收藏（local_id 为本地列表 id）。
+## 收藏：用户点卡请求收藏（UI/动作入口发出，逻辑层订阅）。card_id 为内容卡唯一 id。
+## M1 由 TapeChannelPanel 收藏按钮发出 → CollectionController 订阅校验/归档。
+signal collect_requested(card_id: String)
+
+## 收藏：某卡已成功收集（校验/归档完成后发出）。rarity 为内容卡稀有度（common/rare/cult）。
 signal card_collected(card_id: String, rarity: String)
 
 

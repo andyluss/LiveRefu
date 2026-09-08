@@ -1,0 +1,65 @@
+[
+  {
+    "id": "card_tape_warm_understood_future",
+    "type": "quote",
+    "title": "可理解的明天",
+    "body": "它许诺的不是某种更快的明天，而是一种「技术仍然可理解」的昨天。",
+    "art": "art_placeholder_tape_common_01",
+    "duration": 0,
+    "rarity": "common",
+    "collect_frag": 3,
+    "copyright": {
+      "source": "《明日频道》doc 卷「磁带篇·磁带未来主义」（团队自产改写引用）",
+      "license": "original_own",
+      "license_url": "doc/retro-futurism/14_磁带篇_磁带未来主义_模拟接口的暖未来.md",
+      "status": "approved",
+      "author": "《明日频道》策略/内容（doc 卷）",
+      "attribution_text": "",
+      "verified_date": "2026-09-08",
+      "reviewer": "主策划",
+      "notes": "正文摘自 doc 卷 14 磁带篇 §七（v0 自产）。license=original_own（团队自产，默认入池 A 档，无需人工复核，status 建档预判通过）；license_url 为内部可回溯来源路径，非外部许可 deed（自产无需外部凭证，见主策划 05 §3.1）。"
+    }
+  },
+  {
+    "id": "card_cancelled_future_ruin",
+    "type": "quote",
+    "title": "被取消的明天",
+    "body": "被取消的未来的乡愁，悼念的从来不是死亡，而是那个还没学会害怕死亡的自己。",
+    "art": "art_placeholder_tape_rare_01",
+    "duration": 0,
+    "rarity": "rare",
+    "collect_frag": 5,
+    "copyright": {
+      "source": "《明日频道》doc 卷「末日篇·被取消的未来」（团队自产改写引用）",
+      "license": "original_own",
+      "license_url": "doc/retro-futurism/16_末日篇_被取消的未来_复古末日与废墟乡愁.md",
+      "status": "approved",
+      "author": "《明日频道》策略/内容（doc 卷）",
+      "attribution_text": "",
+      "verified_date": "2026-09-08",
+      "reviewer": "主策划",
+      "notes": "正文摘自 doc 卷 16 末日篇 §六（v0 自产）。license=original_own（团队自产，默认入池 A 档，无需人工复核，status 建档预判通过）；license_url 为内部可回溯来源路径。"
+    }
+  },
+  {
+    "id": "card_atomic_pushbutton_optimism",
+    "type": "quote",
+    "title": "按一下就有明天",
+    "body": "人们怀念的，是那个相信「按一下就有明天」的镀铬年代——连同它屏蔽掉的那枚炸弹。",
+    "art": "art_placeholder_tape_cult_01",
+    "duration": 0,
+    "rarity": "cult",
+    "collect_frag": 8,
+    "copyright": {
+      "source": "《明日频道》doc 卷「原子篇·原子朋克」（团队自产改写引用）",
+      "license": "original_own",
+      "license_url": "doc/retro-futurism/08_原子篇_原子朋克_幸福原子与镀铬郊区.md",
+      "status": "approved",
+      "author": "《明日频道》策略/内容（doc 卷）",
+      "attribution_text": "",
+      "verified_date": "2026-09-08",
+      "reviewer": "主策划",
+      "notes": "正文摘自 doc 卷 08 原子篇 §六（v0 自产）。license=original_own（团队自产，默认入池 A 档，无需人工复核，status 建档预判通过）；license_url 为内部可回溯来源路径。"
+    }
+  }
+]
