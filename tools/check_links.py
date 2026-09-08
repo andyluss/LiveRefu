@@ -7,15 +7,18 @@
 编码写错、或指向已移动/删除文件的链接。
 
 用法：
-    python3 tools/check_links.py            # 扫描全部 md
-    python3 tools/check_links.py --sub studio   # 只扫描 studio/ 子目录
-    python3 tools/check_links.py -v         # 连同"有效链接"一起打印(默认只列失效)
+    python3 tools/check_links.py              # 扫描全部 md
+    python3 tools/check_links.py --sub studio # 只扫描 studio/ 子目录
+    python3 tools/check_links.py --files README.md studio/README.md   # 只校验指定文件
+    python3 tools/check_links.py -v           # 连同"有效链接"一起打印(默认只列失效)
 
 说明：
     - 仅处理 Markdown 相对/内部链接(含 ![] 图片)。外链(http/https/mailto)、纯锚点(#)、
       以及无目标(仅锚点)的条目会被跳过。
     - 使用工作区根目录作为基准: 以 "/" 开头的链接按工作区根解析(根相对);
       否则按"链接所在文件目录 + 链接"解析(常规相对), 与本地 IDE/预览器行为一致。
+    - --files 用于"只校验若干指定文件"(如 git pre-commit 钩子传入本次暂存的 md)。
+      生成的链接列表会保持给定顺序并去重; --files 与 --sub 同时给出时以 --files 优先。
 """
 
 import os
@@ -77,6 +80,7 @@ def collect_links(path):
 def main():
     argv = sys.argv[1:]
     sub = None
+    files_mode = None      # None=未指定; 否则为文件路径列表
     verbose = False
     i = 0
     while i < len(argv):
@@ -87,17 +91,43 @@ def main():
                 i += 1
             else:
                 print("--sub 需要一个目录参数"); return 2
+        elif a == "--files":
+            # 收集其后所有非 '-' 开头的参数作为文件路径; 允许空格
+            rest = []
+            j = i + 1
+            while j < len(argv) and not argv[j].startswith("-"):
+                rest.append(argv[j]); j += 1
+            if not rest:
+                print("--files 需要至少一个文件路径"); return 2
+            files_mode = rest
+            i = j - 1
         elif a in ("-v", "--verbose"):
             verbose = True
         else:
             print(f"未知参数: {a}"); return 2
         i += 1
 
-    start = os.path.join(ROOT, sub) if sub else ROOT
-    if not os.path.isdir(start):
-        print(f"目录不存在: {start}"); return 2
+    # 确定待校验文件集合
+    if files_mode is not None:
+        # 以工作区根为基准解析相对路径; 去重保持顺序; 仅保留存在的 md
+        files = []
+        seen = set()
+        for p in files_mode:
+            ap = p if os.path.isabs(p) else os.path.normpath(os.path.join(ROOT, p))
+            if ap in seen:
+                continue
+            seen.add(ap)
+            if os.path.isfile(ap):
+                files.append(ap)
+        if not files:
+            print("--files 指定的文件均不存在或非 md"); return 2
+        files = sorted(files)
+    else:
+        start = os.path.join(ROOT, sub) if sub else ROOT
+        if not os.path.isdir(start):
+            print(f"目录不存在: {start}"); return 2
+        files = sorted(walk_md(start))
 
-    files = sorted(walk_md(start))
     total = 0
     broken = []
     for path in files:
