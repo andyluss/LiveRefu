@@ -29,7 +29,8 @@ projects/tomorrows-channel/
 > 说明：
 > - `docs/lead-artist/moodboard/` 是**参考/灵感素材**（风格案例图），属主美术文档域，仍在 docs 下；
 > - `assets/` 放**最终可用于产品的产出**（正式美术/音频/UI 资源），与 docs 下的"文档/草案/参考"区分；
-> - 空目录以 `.gitkeep` 占位（git 不跟踪空目录）。
+> - 空目录以 `.gitkeep` 占位（git 不跟踪空目录）；
+> - `assets/`、`decisions/`、`notes/`、`references/` 各含 `README.md` 说明用途与命名规范；`decisions/`、`notes/` 下另有模板（ADR / 会议纪要）。
 
 ## 项目状态
 
