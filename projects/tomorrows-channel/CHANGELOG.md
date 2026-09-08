@@ -5,6 +5,9 @@
 
 ## [Unreleased]
 
+### 新增
+- 六角色开发计划会：产出 [`docs/_shared/development-plan.md`](docs/_shared/development-plan.md)（M1 单频道闭环排期 / M2 三频道顺序 / 跨角色依赖与风险 / 文档待办）；各角色意见存 `notes/devplan-*.md`。
+
 ### 变更（结构）
 - 项目目录扩展为"文档 + 开发产出"分层：新增强 `game/`（Godot 工程）、`data/`（数值 schema+表）、`art/`（美术源文件工程）；`assets/` 明确定位为"最终导出/运行资源"。
 - 各新目录补 `README.md` 说明用途/命名/规范；项目 README 目录结构图同步。
