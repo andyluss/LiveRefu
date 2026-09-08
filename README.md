@@ -15,6 +15,7 @@
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
 | [`doc/steampunk/`](doc/steampunk/README.md) 等专题卷 | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 | 各卷 `README.md` |
 | [`studio/`](studio/README.md) | AI 开发工作室：工作室主 README + 六个角色子目录 | [`studio/README.md`](studio/README.md) |
+| [`tools/`](tools/check_links.py) | 仓库工具：链接校验（`check_links.py`，检查全工作区 md 内链是否失效） | [`tools/check_links.py`](tools/check_links.py) |
 
 ## 三、文档约定
 
@@ -22,6 +23,11 @@
 2. **doc/** 编号体例：`00_总论_…`、`01_理论篇_…`；专题卷 `00_对读篇_…` 起。
 3. **studio/** 体例：角色目录内 `README.md` 为身份入口，工作文档为 `两位序号_主题.md`；草案标 `v0.x`，未决问题标 `【待定】`，结论记入各文档「决策记录」。
 4. 跨目录引用优先使用相对路径链接。
+5. **相对链接深度**：链接必须以「目标文件相对当前文档的正确深度」书写，保证在本地 IDE / 预览器 / 网页版都能跳转。具体规则：
+   - 以文件自身所在目录为基准逐级向上（`../` 表示上一级目录），**朝向工作区根时每深一层权重就多一个 `../`**；
+   - 反例（写错深度）：`studio/主策划/01_立项概念草案.md` 指向 `doc/` 知识库，因它在 `studio/主策划/`（比工作区根深两级），须写 `../../doc/...`——写成 `../doc/...` 会落在 `studio/doc/` 而失效；
+   - 写法校验：**改动含相对链接的 Markdown 后，运行 `python3 tools/check_links.py`（或 `--sub studio`）确认「失效链接: 0」再提交**。脚本会扫描全工作区 md 的内链，发现写错深度的链接并给出目标缺失路径。
+   - 尽量用工作区相对（`doc/...`、`studio/...`）而非每个文档手算 `../../`，因为相对链接一旦文档被移动就会失效；确需跨大目录（如 studio↔doc）时，优先在目录 README 集中建索引，减少深层 `../../`。
 
 ## 四、Git 与提交信息约定
 
