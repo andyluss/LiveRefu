@@ -13,7 +13,7 @@
 | 路径 | 内容 | 入口 |
 | --- | --- | --- |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
-| [`doc/steampunk/`](doc/steampunk/README.md) 等专题卷 | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 | 各卷 `README.md` |
+| [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |
 | [`studio/`](studio/README.md) | AI 开发工作室：工作室主 README + 六个角色子目录 | [`studio/README.md`](studio/README.md) |
 | [`tech/`](tech/README.md) | 仓库级技术文档：Git 与提交约定、文档约定、相对链接校验（钩子+CI） | [`tech/README.md`](tech/README.md) |
 | [`tools/`](tools/check_links.py) | 仓库工具：链接校验脚本与 pre-commit 钩子 | [`tools/check_links.py`](tools/check_links.py) |
