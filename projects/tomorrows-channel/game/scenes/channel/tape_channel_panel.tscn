@@ -51,6 +51,54 @@ custom_minimum_size = Vector2(0, 320)
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="CardBox" type="VBoxContainer" parent="Layout/Window"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CardTitle" type="Label" parent="Layout/Window/CardBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "第一盏暖灯"
+
+[node name="CardMeta" type="Label" parent="Layout/Window/CardBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "普通 · 图文"
+
+[node name="CardBody" type="Label" parent="Layout/Window/CardBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 17
+autowrap_mode = 2
+text = "旧接收机点亮的第一盏暖灯，在夜里静静亮着。"
+
+[node name="CollectButton" type="Button" parent="Layout/Window/CardBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "收藏"
+
+[node name="CollectFeedback" type="Label" parent="Layout/Window/CardBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "已归档"
+visible = false
+horizontal_alignment = 1
+
 [node name="BottomBand" type="Control" parent="Layout"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
