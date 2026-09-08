@@ -1,0 +1,32 @@
+name: Markdown link check
+
+# 每次 push / PR 时，校验工作区 Markdown 的内部相对链接是否失效。
+# 用于兜底：即使贡献者本地未启用 pre-commit 钩子(未跑 tools/install_hooks.sh)，
+# 推上来也会被这里拦下。逻辑与本地钩子一致，复用 tools/check_links.py。
+#
+# 注：本仓库当前无远端(remote)；配置托管平台(如 GitHub)后，此文件即自动生效。
+# 若用 GitLab，请改写为 .gitlab-ci.yml 的对应 job(一个跑 check_links.py 的步骤)。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Run link check
+        run: |
+          set -e
+          # check_links.py 只用标准库，无需 pip install
+          python3 tools/check_links.py -v
