@@ -1,0 +1,395 @@
+{
+  "generated": "2026-09-08T22:14:38.146409+08:00",
+  "counts": {
+    "docs": 240,
+    "links": 261,
+    "open": 173,
+    "closed": 11,
+    "orphans": 139,
+    "stale": 0
+  },
+  "themes": {
+    "其他": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "太空篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "总论": {
+      "docs": 4,
+      "open": 0,
+      "closed": 0,
+      "orphan": 2
+    },
+    "红旗篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "索引": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "赛博篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "末日篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "多元篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "机器篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "古典篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "千禧篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "奠基篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "原子篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "远古篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "磁带篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "战间篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "近代篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "中国篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "蒸汽篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "谱系篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "理论篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "蒸汽波篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "赛博朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "生物朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "太阳朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "原子朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "柴油朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "蒸汽朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "千禧美学卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "总索引与字数统计.md": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "README.md": {
+      "docs": 2,
+      "open": 1,
+      "closed": 1,
+      "orphan": 0
+    },
+    "biopunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "atompunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "steampunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "dieselpunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "合订本": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "cyberpunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "项目:tomorrows-channel": {
+      "docs": 7,
+      "open": 10,
+      "closed": 1,
+      "orphan": 0
+    },
+    "项目:计划": {
+      "docs": 43,
+      "open": 64,
+      "closed": 1,
+      "orphan": 8
+    },
+    "项目:systems-designer-a": {
+      "docs": 3,
+      "open": 9,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:ui-artist-a": {
+      "docs": 5,
+      "open": 8,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:graphics-programmer-a": {
+      "docs": 4,
+      "open": 36,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:lead-programmer": {
+      "docs": 3,
+      "open": 25,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:_shared": {
+      "docs": 1,
+      "open": 1,
+      "closed": 8,
+      "orphan": 0
+    },
+    "项目:lead-designer": {
+      "docs": 2,
+      "open": 3,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:lead-artist": {
+      "docs": 5,
+      "open": 10,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:数据": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "主美术": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "UI设计美术A": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "图形程序员A": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "主策划": {
+      "docs": 2,
+      "open": 4,
+      "closed": 0,
+      "orphan": 0
+    },
+    "主程序": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "数值策划A": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "技术规范": {
+      "docs": 5,
+      "open": 2,
+      "closed": 0,
+      "orphan": 0
+    },
+    "实验区": {
+      "docs": 5,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    }
+  },
+  "top_open": [
+    {
+      "title": "回执：GDD《明日频道》频道滤镜可行性切片与性能初估（v0.1）",
+      "rel": "projects/tomorrows-channel/docs/graphics-programmer-a/04_response-gdd.md",
+      "open": 23
+    },
+    {
+      "title": "回执 · 《明日频道》M1 原型范围与平台选型回执（回执 v0.1）",
+      "rel": "projects/tomorrows-channel/docs/lead-programmer/04_response-gdd.md",
+      "open": 16
+    },
+    {
+      "title": "开发计划会意见 · 主策划（M1 单频道原型 & M2 三频道）",
+      "rel": "projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-lead-designer.md",
+      "open": 15
+    },
+    {
+      "title": "M1 渲染切片：磁带频道「渲染器选择」对照结论 + 磁带滤镜 2D 后处理性能预算（初估 v0.1）",
+      "rel": "projects/tomorrows-channel/docs/graphics-programmer-a/05_m1-render-slice.md",
+      "open": 10
+    },
+    {
+      "title": "里程碑与原型计划（M1 基线 v0.2）",
+      "rel": "projects/tomorrows-channel/plans/milestones/20260906-1534-milestone-plan.md",
+      "open": 8
+    },
+    {
+      "title": "技术选型与工程规范（M1 基线 v0.2）",
+      "rel": "projects/tomorrows-channel/docs/lead-programmer/01_tech-stack-draft.md",
+      "open": 7
+    },
+    {
+      "title": "M1 磁带频道美术基线：最小可辨关键氛围（基线 v0.1）",
+      "rel": "projects/tomorrows-channel/docs/lead-artist/05_m1-tape-baseline.md",
+      "open": 6
+    },
+    {
+      "title": "game · Godot 程序工程",
+      "rel": "projects/tomorrows-channel/game/README.md",
+      "open": 5
+    },
+    {
+      "title": "工作日志：UI 设计美术 A · M1 阶段（2026-09-08）",
+      "rel": "projects/tomorrows-channel/plans/logs/ui-artist-a/20260908-1428-ui-artist-a-m1.md",
+      "open": 4
+    },
+    {
+      "title": "工作日志：主策划 · M1 阶段（2026-09-08）",
+      "rel": "projects/tomorrows-channel/plans/logs/lead-designer/20260908-1428-lead-designer-m1.md",
+      "open": 4
+    }
+  ]
+}
