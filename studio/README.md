@@ -17,7 +17,7 @@
 ## 二、工作区专注方向
 
 - 本工作区的长期主题是 **复古未来（Retro-futurism）** 题材的项目开发。
-- 题材/美学知识库沉淀在 [`doc/retro-futurism/`](../doc/retro-futurism/README.md)（21 篇总卷）及各专题卷：`doc/atompunk`、`doc/biopunk`、`doc/cyberpunk`、`doc/dieselpunk`、`doc/steampunk` 等。
+- 题材/美学知识库沉淀在 [`doc/retro-futurism/`](../doc/retro-futurism/README.md)（21 篇总卷）及各专题卷 [`doc/punks/`](../doc/punks/README.md)（atompunk / biopunk / cyberpunk / dieselpunk / steampunk 等）。
 - 各角色草案里的美学关键词（磁带未来主义、原子朋克、太空时代、蒸汽波、Y2K/Frutiger Aero 等）均可在知识库中查阅原始论述。
 
 ## 三、角色目录速览
