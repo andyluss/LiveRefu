@@ -1,0 +1,96 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scenes/timer/focus_timer_panel.gd" id="1_timer"]
+
+[sub_resource type="StyleBoxFlat" id="sb_badge"]
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="sb_progress"]
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="FocusTimerPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+script = ExtResource("1_timer")
+
+[node name="Badge" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_right = 180.0
+offset_bottom = 44.0
+theme_override_styles/panel = SubResource("sb_badge")
+
+[node name="BadgeDigits" type="Label" parent="Badge"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = -12.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "25:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BadgeProgress" type="ProgressBar" parent="Badge"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+show_percentage = false
+theme_override_styles/background = SubResource("sb_progress")
+theme_override_styles/fill = SubResource("sb_progress")
+
+[node name="Immersive" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+focus_mode = 0
+
+[node name="ImmersiveDigits" type="Label" parent="Immersive"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -60.0
+offset_right = 220.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "25:00"
+horizontal_alignment = 1
+vertical_alignment = 1

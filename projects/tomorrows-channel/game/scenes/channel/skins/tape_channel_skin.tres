@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ChannelSkin" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/channel/channel_skin.gd" id="1_skin"]
+
+[resource]
+script = ExtResource("1_skin")
+lut_base_dark = Color(0.133333, 0.0862745, 0.0627451, 1)
+lut_mid_beige = Color(0.780392, 0.701961, 0.580392, 1)
+lut_lit_warm = Color(0.960784, 0.913725, 0.807843, 1)
+lut_phosphor_amber = Color(1, 0.690196, 0, 1)
+lut_phosphor_green = Color(0.498039, 0.788235, 0.541176, 1)
+lut_emphasis = Color(0.890196, 0.603922, 0.298039, 1)
+housing_beige = Color(0.780392, 0.705882, 0.568627, 1)
+housing_dark = Color(0.172549, 0.129412, 0.0745098, 1)
+dial_amber = Color(1, 0.690196, 0.290196, 1)
+device_warm_k = 2400.0
+lamp_warm_k = 2800.0
+glow_ratio = Vector2(0.6, 0.4)
+decor_enabled = true
+scanline_opacity = 0.08
+decor_font_name = ""
