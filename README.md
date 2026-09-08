@@ -17,7 +17,7 @@
 | [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |
 | [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：当前项目《明日频道》（含项目 README、CHANGELOG 日志、docs 按角色分目录） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
 | [`studio/`](studio/README.md) | AI 开发工作室：六个角色身份卡（角色项目文档在 projects/ 对应项目下） | [`studio/README.md`](studio/README.md) |
-| [`tech/`](tech/README.md) | 仓库级技术文档：Git 与提交约定、文档约定、相对链接校验（钩子+CI） | [`tech/README.md`](tech/README.md) |
+| [`tech/`](tech/README.md) | 仓库级技术文档：Git 与提交约定、文档约定、相对链接与数据 schema 校验（钩子+CI）、形式化验证 | [`tech/README.md`](tech/README.md) |
 | [`tools/`](tools/check_links.py) | 仓库工具：链接校验脚本与 pre-commit 钩子 | [`tools/check_links.py`](tools/check_links.py) |
 
 ## 三、文档约定

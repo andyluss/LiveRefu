@@ -10,14 +10,16 @@
 | [`git-convention.md`](git-convention.md) | Git 与提交信息约定（Conventional Commits、自动提交、历史约定） |
 | [`docs-convention.md`](docs-convention.md) | 文档约定（md 体例、**相对链接深度**与校验机制） |
 | [`hooks-readme.md`](hooks-readme.md) | 相对链接校验：pre-commit 钩子 + CI 的启用/跳过/常见处理 |
+| [`formalization.md`](formalization.md) | 形式化验证：数据 schema 校验 + CI Godot 加载检查，GDScript 边界与演进路线 |
 
 ## 相关工具（脚本，仍在 `tools/`）
 
 | 工具 | 作用 |
 | --- | --- |
 | [`tools/check_links.py`](../tools/check_links.py) | 校验工作区 md 内链（支持 `--sub`、`--files`） |
+| [`tools/check_data.py`](../tools/check_data.py) | 校验数据表是否符合 schema 契约（必填/type/enum/范围），纯标准库 |
 | [`tools/install_hooks.sh`](../tools/install_hooks.sh) | 一键启用 pre-commit 钩子 |
-| [`tools/hooks/pre-commit`](../tools/hooks/pre-commit) | 钩子本体（校验暂存 md 内链） |
+| [`tools/hooks/pre-commit`](../tools/hooks/pre-commit) | 钩子本体（校验暂存 md 内链 + 数据 schema） |
 
 ## 约定
 
