@@ -14,7 +14,7 @@ plans/
 ├── decisions/           # 决策记录(ADR)
 ├── issues/              # 问题与困难汇总(技术/设计/内容/流程/风险)
 ├── progress/            # 完成情况/进度跟踪
-└── logs/                # 工作日志(团队工作留痕)
+└── logs/                # 工作日志(按角色分子文件夹, 记工作+问题心得)
 ```
 
 ## 二、各类别用途
@@ -27,7 +27,7 @@ plans/
 | `decisions/` | ADR 架构/设计/范围决策 | `NNNN-{keywords}.md`（模板 `_0000-template.md`） |
 | `issues/` | 问题与困难汇总（技术/设计/内容/流程/风险 5 类） | `YYYYMMDD-HHMM-{序号}-{keywords}.md`（类内序号递增） |
 | `progress/` | 完成情况、进度快照、验收结果 | `YYYYMMDD-HHMM-{keywords}.md` |
-| `logs/` | 工作日志（非 CHANGELOG，团队工作留痕） | `YYYYMMDD-HHMM-{keywords}.md` |
+| `logs/` | 工作日志（非 CHANGELOG；**按角色分子文件夹**，记工作 + 角色问题/心得） | `YYYYMMDD-HHMM-{角色}-{keywords}.md` |
 
 ## 三、命名与时间戳约定
 
