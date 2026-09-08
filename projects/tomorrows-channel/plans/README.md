@@ -12,6 +12,7 @@ plans/
 ├── milestones/          # 里程碑(含里程碑草案)
 ├── meetings/            # 会议记录(各角色意见/评审/例会纪要)
 ├── decisions/           # 决策记录(ADR)
+├── issues/              # 问题与困难汇总(技术/设计/内容/流程/风险)
 ├── progress/            # 完成情况/进度跟踪
 └── logs/                # 工作日志(团队工作留痕)
 ```
@@ -24,6 +25,7 @@ plans/
 | `milestones/` | 里程碑定义与排期 | `YYYYMMDD-{keywords}.md` |
 | `meetings/` | **一次会议一个文件夹**（`YYYYMMDD-HHMM-{主题}/`），内含会议纪要/各角色意见 + `000-{主题}-summary.md` 汇总 | 见下 |
 | `decisions/` | ADR 架构/设计/范围决策 | `NNNN-{keywords}.md`（模板 `_0000-template.md`） |
+| `issues/` | 问题与困难汇总（技术/设计/内容/流程/风险 5 类） | `YYYYMMDD-HHMM-{序号}-{keywords}.md`（类内序号递增） |
 | `progress/` | 完成情况、进度快照、验收结果 | `YYYYMMDD-HHMM-{keywords}.md` |
 | `logs/` | 工作日志（非 CHANGELOG，团队工作留痕） | `YYYYMMDD-HHMM-{keywords}.md` |
 
