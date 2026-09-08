@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "content_card.schema.json",
   "title": "内容卡 schema（数值侧契约说明，非完整 schema）",
-  "description": "《明日频道》内容卡 schema 的『数值侧契约说明』。内容卡完整 schema（含 id/type/title/body/art/duration 等类型字段 + 强制版权字段 source/license/license_url/status）由主程序内容池 schema 收纳、主策划定版权 taxonomy；数值侧只提供数值位契约（rarity / collect_frag，权威见 content_card_numerics.schema.json）。此处给出契约说明，并把版权字段标【待定】交主程序/主策划。",
-  "$comment": "数值策划 A · M1 落表（契约非数据，无 tables/content_card.json——M1 只收藏 1 卡，卡片数据由主程序内容池/内容管线提供）。版权字段为法定强制（GDD §12·3 / 主程序 01_ §4.3 合规闸门），数值侧【不提供、不改动其结构】，只留契约位；版权 taxonomy（公版 / CC0 / 自产 / CC BY / BY-SA…）与 license 取值域【待定·主策划】。本 schema 仅强制数值侧必填（rarity / collect_frag），对其余字段 additionalProperties:true 放行、不拒绝主程序字段。rarity 与 collect_frag 一致性校验（collect_frag 按 rarity 取值）【待定·主程序】。",
+  "description": "《明日频道》内容卡 schema 的『数值侧契约说明』。内容卡完整 schema（含 id/type/title/body/art/duration 等类型字段 + 版权块 copyright 对象）由主程序内容池 schema 收纳、主策划定版权 taxonomy；数值侧只提供数值位契约（rarity / collect_frag，权威见 content_card_numerics.schema.json）。此处给出契约说明，并把版权块结构照主策划 taxonomy 冻结为『嵌套 copyright 对象』（4 强制 + 5 支撑），主程序 content-pool schema 冻结时引用。",
+  "$comment": "数值策划 A · M1 落表（契约非数据，无 tables/content_card.json——M1 只收藏 1 卡，卡片数据由主程序内容池/内容管线提供）。版权块为法定强制（GDD §12·3 / 主程序 01_ §4.3 合规闸门），数值侧【不提供、不改动其结构】，只留契约位；版权块的字段与枚举语义以主策划 taxonomy（docs/lead-designer/05_copyright-taxonomy.md §2/§4）为权威。经 2026-09-08 reconcile 定案：版权字段采用『嵌套 copyright 对象』（原顶层 source/license/license_url/status 迁移至 copyright.*，并补 author/attribution_text/verified_date/reviewer/notes 五支撑字段，承载署名+复核留痕）。本 schema 仅强制数值侧必填（rarity / collect_frag），对其余字段 additionalProperties:true 放行、不拒绝主程序字段；copyright 块作为『给主程序引用的结构契约』列出（含 4 强制 + 条件必填，见 allOf）。rarity 与 collect_frag 一致性校验（collect_frag 按 rarity 取值）【待定·主程序】。",
   "type": "object",
   "additionalProperties": true,
   "required": ["rarity", "collect_frag"],
@@ -11,13 +11,71 @@
     "rarity": {
       "type": "string",
       "enum": ["common", "rare", "cult"],
-      "description": "稀有度枚举：common 普通 / rare 稀有 / cult 典藏。对应图鉴稀有度配比（70 / 25 / 5，配比随最终内容量回填，M3 前，见 04_response-gdd.md §1.3）。"
+      "description": "稀有度枚举：common 普通 / rare 稀有 / cult 典藏。对应图鉴稀有度配比（70 / 25 / 5，配比随最终内容量回填，M3 前，见 04_response-gdd.md §1.3）。数值位不变：common=3 / rare=5 / cult=8。"
     },
     "collect_frag": {
       "type": "integer",
       "unit": "frag",
       "minimum": 0,
       "description": "首次收藏该卡获得的正反馈碎片初值（每卡仅首次）。按 rarity 初值：common=3 / rare=5 / cult=8（依据 04_response-gdd.md B-2）。"
+    },
+    "copyright": {
+      "type": "object",
+      "description": "版权块【嵌套】。每张卡一个 copyright 对象。结构语义以主策划 taxonomy（docs/lead-designer/05_copyright-taxonomy.md §2/§3/§4）为权威；本块为给主程序引用的契约（4 强制 + 5 支撑，字段名 snake_case）。2026-09-08 reconcile 定案：采用嵌套 copyright 对象。",
+      "required": ["source", "license", "license_url", "status"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "来源说明（可追溯，必填）：如 doc 卷『xx 篇』改写、程序化生成。判定方：主策划/内容管线。"
+        },
+        "license": {
+          "type": "string",
+          "enum": ["public_domain", "cc0", "cc_by", "cc_by_sa", "original_own", "licensed", "unknown"],
+          "description": "版权类型（必填，版本无关枚举）。【取值域·主策划权威】：public_domain 公版 / cc0 / original_own 自产 / cc_by / cc_by_sa / licensed 已授权 / unknown 未登记。具体版本由 license_url + source 承载。"
+        },
+        "license_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "许可凭证 URL（必填；外部来源必填）：指向许可协议 deed 页或承载许可/条款的原始来源页；自产可用内部可回溯路径。"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "pending_review", "approved", "rejected", "blocked"],
+          "description": "授权/复核状态（必填，状态机）：draft 草稿 / pending_review 待复核 / approved 已通过【可入池】/ rejected 已拒绝 / blocked 存疑。流转见主策划 taxonomy §3.3。"
+        },
+        "author": {
+          "type": "string",
+          "description": "作者 / 著作权人（署名类 cc_by/cc_by_sa 必填，视 licensed 条款；其余可选）。"
+        },
+        "attribution_text": {
+          "type": "string",
+          "description": "拟用署名文案（界面展示用）；署名类必填；为空则界面不展示署名。"
+        },
+        "verified_date": {
+          "type": "string",
+          "format": "date",
+          "description": "复核日期（须复核类 cc_by/cc_by_sa/licensed 在 approved 时必填）。"
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "复核人（默认主策划）；须复核类在 approved 时必填。"
+        },
+        "notes": {
+          "type": "string",
+          "description": "备注 / 存疑说明（blocked 时必填，记归属疑点与待核证项）。"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "license": { "enum": ["cc_by", "cc_by_sa"] } } },
+          "then": { "required": ["author", "attribution_text"] }
+        },
+        {
+          "if": { "properties": { "license": { "const": "licensed" } } },
+          "then": { "required": ["license_url"] }
+        }
+      ]
     },
     "id": {
       "type": "string",
@@ -44,22 +102,6 @@
       "type": "number",
       "unit": "s",
       "description": "影音卡时长（秒）。M1 影音卡用静态/占位替代。【主程序】"
-    },
-    "source": {
-      "type": "string",
-      "description": "内容来源（必填，版权闸门）。【待定·主程序/主策划】"
-    },
-    "license": {
-      "type": "string",
-      "description": "版权类型（必填；取值域【待定·主策划】）。【待定·主程序/主策划】"
-    },
-    "license_url": {
-      "type": "string",
-      "description": "授权 / 来源链接（必填）。【待定·主程序/主策划】"
-    },
-    "status": {
-      "type": "string",
-      "description": "授权状态（必填，如 审核中 / 已入库 / 需复核）。【待定·主程序/主策划】"
     }
   }
 }
