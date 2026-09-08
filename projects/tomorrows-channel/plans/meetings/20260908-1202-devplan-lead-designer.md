@@ -1,7 +1,7 @@
 # 开发计划会意见 · 主策划（M1 单频道原型 & M2 三频道）
 
-> 主策划 · 2026-09-08 · 类型：开发计划会（对主程序 [`02_milestone-plan.md`](../docs/lead-programmer/02_milestone-plan.md) v0.1 与 [`04_response-gdd.md`](../docs/lead-programmer/04_response-gdd.md) 的 M1/M2 排期与范围提意见）
-> 关联：GDD [`../docs/_shared/gdd-tomorrows-channel.md`](../docs/_shared/gdd-tomorrows-channel.md) §3/§4/§6/§10/§11；评审汇总 [04_response-gdd.md](../docs/lead-programmer/04_response-gdd.md)（M0 通过）
+> 主策划 · 2026-09-08 · 类型：开发计划会（对主程序 [`02_milestone-plan.md`](../milestones/20260908-milestone-plan.md) v0.1 与 [`04_response-gdd.md`](../../docs/lead-programmer/04_response-gdd.md) 的 M1/M2 排期与范围提意见）
+> 关联：GDD [`../../docs/_shared/gdd-tomorrows-channel.md`](../../docs/_shared/gdd-tomorrows-channel.md) §3/§4/§6/§10/§11；评审汇总 [04_response-gdd.md](../../docs/lead-programmer/04_response-gdd.md)（M0 通过）
 > 本文为**过程意见**（notes），非正式产出；成熟结论另入 `docs/` 与 `decisions/`。
 
 ---
@@ -86,7 +86,7 @@
 
 ## 5. 决策记录
 
-- 2026-09-08：以主策划身份参加开发计划会，对主程序 [`02_milestone-plan.md`](../docs/lead-programmer/02_milestone-plan.md) 与 [`04_response-gdd.md`](../docs/lead-programmer/04_response-gdd.md) 的 M1/M2 排期意见——**确认 M1 = 单频道（磁带暖未来）闭环成立、M2 = 三频道氛围成立的方向与规模**；从策划侧补强 M1 验收口径（氛围世界观成立 / 番茄不打断 / 三态可切换 / 收藏落位 / 混音可用 / 正反馈占位），并确认 M1 范围克制（不含勿扰/快捷键/完整图鉴/解锁经济/今日信号/呼吸引导/正式资源）。
+- 2026-09-08：以主策划身份参加开发计划会，对主程序 [`02_milestone-plan.md`](../milestones/20260908-milestone-plan.md) 与 [`04_response-gdd.md`](../../docs/lead-programmer/04_response-gdd.md) 的 M1/M2 排期意见——**确认 M1 = 单频道（磁带暖未来）闭环成立、M2 = 三频道氛围成立的方向与规模**；从策划侧补强 M1 验收口径（氛围世界观成立 / 番茄不打断 / 三态可切换 / 收藏落位 / 混音可用 / 正反馈占位），并确认 M1 范围克制（不含勿扰/快捷键/完整图鉴/解锁经济/今日信号/呼吸引导/正式资源）。
 - 2026-09-08：对 M2 提出优先级建议──**三频道不必同时**，采用"磁带（定稿第一）→ 太空时代（差异化验证第二）→ 蒸汽波黄昏（跟进第三）"；建议把 M2 出口口径调整为"磁带+太空两套定稿、蒸汽波跟进"，以验证"骨架+Token 换肤"架构的频道区分度。
 - 2026-09-08：登记对主程序 / 图形程序员 A / 主美术 / UI 设计美术 A / 数值策划 A 的【待定】阻塞项（见 §3），其中引擎定稿、渲染器选择、M1 磁带走 Compatibility/2D、容器暖光 Way A、占位皮肤基调为 M1 开工前置。
 

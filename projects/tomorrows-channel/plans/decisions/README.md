@@ -20,9 +20,9 @@
 
 ## 三、模板
 
-新决策用 [`0000-template.md`](0000-template.md) 复制为 `NNNN-主题.md` 后填写。
+新决策用 [`_0000-template.md`](_0000-template.md) 复制为 `NNNN-主题.md` 后填写。
 
 ## 四、与其它文档的关系
 
-- ADR 记录**决策与理由**；具体交付看 [`docs/`](../docs/) 下的角色文档与 GDD。
-- 汇总的项目日志见 [`CHANGELOG.md`](../CHANGELOG.md)。
+- ADR 记录**决策与理由**；具体交付看 [`docs/`](../../docs/) 下的角色文档与 GDD。
+- 汇总的项目日志见 [`CHANGELOG.md`](../../CHANGELOG.md)。

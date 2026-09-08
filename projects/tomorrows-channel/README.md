@@ -14,21 +14,21 @@
 ```
 projects/tomorrows-channel/
 ├── README.md          # 项目首页(本文件)
-├── CHANGELOG.md       # 项目日志(统一记录)
+├── CHANGELOG.md       # 项目日志(对外/里程碑视角, 单独处理)
 ├── docs/              # 设计与角色项目文档(按角色分子目录, 见下)
-│   └── _shared/       # 跨角色共享(GDD/评审纪要)
+│   └── _shared/       # 跨角色共享(GDD)
+├── plans/             # ★ 项目管理(怎么推进项目): 计划/里程碑/会议/决策/完成情况/工作日志
 ├── game/              # ★ Godot 程序工程(scenes/scripts/shaders)  主程序/图形/UI 程序
 ├── data/              # ★ 数值与配置表  schema/=表结构, tables/=数据  数值策划 A
 ├── art/               # ★ 美术源文件工程(PSD/AI/Blender源)  主美术工作区
 ├── assets/            # 最终导出的运行资源(供 game/ 加载)   art/audio/ui
-├── decisions/         # 决策记录(ADR: 架构/设计/范围决策)
-├── notes/             # 会议纪要、灵感暂存、杂项笔记
 └── references/        # 参考资料(外部链接快照、知识库引用索引)
 ```
 
 > 说明：
 > - **分层**：`art/`＝源文件（可编辑）→ `assets/`＝最终导出（运行资源）→ `game/`＝加载运行的工程；`docs/`＝文档/草案/规范；`data/`＝数值配置表。
-> - `assets/`、`art/`、`game/`、`data/`、`decisions/`、`notes/`、`references/` 各含 `README.md` 说明用途/命名/规范；`decisions/`、`notes/` 下另有模板（ADR / 会议纪要）。
+> - **管理 vs 产出**：`plans/`＝**项目管理**（计划/里程碑/会议记录/决策/完成情况/工作日志）；`docs/`＝**设计与角色产出**（GDD、各角色草案/回执）。`CHANGELOG.md`＝项目日志（对外视角）单独处理，不与 `plans/logs/` 工作日志合并。
+> - `assets/`、`art/`、`game/`、`data/`、`plans/`、`references/` 各含 `README.md` 说明用途/命名/规范；`plans/` 下另有模板（`_0000-template`、`_meeting-template`）。
 > - `docs/lead-artist/moodboard/` 是**参考/灵感素材**（风格案例图），属主美术文档域，仍在 docs 下。
 > - 空目录以 `.gitkeep` 占位（git 不跟踪空目录）。
 
