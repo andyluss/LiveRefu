@@ -1,7 +1,7 @@
 # 主美术 · 对「M1/M2 美术投入」的会议意见
 
-> 主美术 · 2026-09-08 12:02 · 《明日频道》开发计划会 · 属 [`plans/README`](../../plans/README.md) 会议意见（非正式产出）
-> 关联：GDD §5.2 频道谱系 / §9 美术风格要点 / §11 里程碑；主程序 [`02_milestone-plan.md`](../milestones/20260906-1534-milestone-plan.md)；图形程序员 A [`04_response-gdd.md`](../../docs/graphics-programmer-a/04_response-gdd.md)；UI 设计美术 A；主美术 [`04_response-gdd.md`](../../docs/lead-artist/04_response-gdd.md)。
+> 主美术 · 2026-09-08 12:02 · 《明日频道》开发计划会 · 属 [`plans/README`](../../README.md) 会议意见（非正式产出）
+> 关联：GDD §5.2 频道谱系 / §9 美术风格要点 / §11 里程碑；主程序 [`02_milestone-plan.md`](../../milestones/20260906-1534-milestone-plan.md)；图形程序员 A [`04_response-gdd.md`](../../../docs/graphics-programmer-a/04_response-gdd.md)；UI 设计美术 A；主美术 [`04_response-gdd.md`](../../../docs/lead-artist/04_response-gdd.md)。
 
 ## 一句话立场
 
@@ -11,7 +11,7 @@
 
 - **投入量级**：低。约 **0.25–0.5 周**（主美术本人），不投正式美术资产、不投量产。
 - **产出（灰盒 + 关键氛围）**：
-  1. **磁带频道一张氛围定调灰盒**（placeholder 拼贴）——用 [`moodboard/方向A_磁带暖未来/`](../../docs/lead-artist/moodboard/方向A_磁带暖未来/) 现有素材拼一张"琥珀暖底 + 终端边框 + 表盘"的参考，作为 M1/M2 共用的定调基准；
+  1. **磁带频道一张氛围定调灰盒**（placeholder 拼贴）——用 [`moodboard/方向A_磁带暖未来/`](../../../docs/lead-artist/moodboard/方向A_磁带暖未来/) 现有素材拼一张"琥珀暖底 + 终端边框 + 表盘"的参考，作为 M1/M2 共用的定调基准；
   2. **关键氛围一版**：暖底 LUT + 终端边框（容器"中央窗口"）+ 扫描线/微噪（先静态）、指示灯呼吸 → 交给图形程序员 A 收敛进 `data/fx_preset.json`；
   3. **静态验收基图**：磁带频道"动效关"一态截图标准（对齐 GDD §9 静默可用）。
 - **理由**：M1 出口标准 = 专注 25min 不打断 / 混音台可用 / 可收藏 1 卡（功能驱动），所以**纯灰块也可接受**；但 M1 真正要验的是**"陪伴手感"**这一体验，磁带又是 M1 唯一频道——若连"暖未来"的辨识度都没有，体验指标会误判成"题材没钩子"。因此 M1 的 placeholder 应**带温度**，而非无差别灰色占位。

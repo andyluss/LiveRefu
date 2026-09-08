@@ -22,7 +22,7 @@ plans/
 | --- | --- | --- |
 | `00-project-plan.md` | 项目开发主计划（里程碑排期/范围/依赖/风险） | 固定名 `00-project-plan.md` |
 | `milestones/` | 里程碑定义与排期 | `YYYYMMDD-{keywords}.md` |
-| `meetings/` | 会议纪要/各角色意见/评审汇总 | `YYYYMMDD-HHMM-{keywords}.md` |
+| `meetings/` | **一次会议一个文件夹**（`YYYYMMDD-HHMM-{主题}/`），内含会议纪要/各角色意见 + `000-{主题}-summary.md` 汇总 | 见下 |
 | `decisions/` | ADR 架构/设计/范围决策 | `NNNN-{keywords}.md`（模板 `_0000-template.md`） |
 | `progress/` | 完成情况、进度快照、验收结果 | `YYYYMMDD-HHMM-{keywords}.md` |
 | `logs/` | 工作日志（非 CHANGELOG，团队工作留痕） | `YYYYMMDD-HHMM-{keywords}.md` |
@@ -32,6 +32,7 @@ plans/
 - **临时性/随时间产生的文件**（会议/完成情况/工作日志）文件名**时间戳在关键词前**：`YYYYMMDD-HHMM-{关键词}.md`（精确到分，东八区，见根 `tech/docs-convention.md` 日期约定）。
 - **稳定名文件**（主计划、ADR、模板）**不带时间戳**，用固定/递增命名，避免频繁改名。
 - **时间精确到分（重要，AI 节奏快）**：所有时间记录相关处都精确到分。文件名用 `YYYYMMDD-HHMM`；文档内的变更/决策/日志等具体时刻写成 `YYYY-MM-DD HH:MM`。项目节点类日期（如"M0 通过日"）无具体时刻，保留日期不臆造。时间戳一律用系统实际时间 `date '+%Y%m%d-%H%M'` 取值，不脑内手写。
+- **会议文件夹（meetings/）**：**一场会议一个文件夹**，命名 `YYYYMMDD-HHMM-{会议主题}/`；文件夹内放该场会议的文件，并以 `000-{主题}-summary.md` 作为汇总入口（一句话结论 + 文件列表），便于按会议聚焦。
 
 ## 四、与其它目录的关系
 

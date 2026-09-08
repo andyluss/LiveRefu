@@ -1,7 +1,7 @@
 # 开发计划会意见：M1/M2 渲染投入（图形程序员 A）
 
 > 图形程序员 A · 2026-09-08 12:02 · M1/M2 渲染投入意见（《明日频道》开发计划会）
-> 依据：本角色 [01_渲染与后处理技术草案](../../docs/graphics-programmer-a/01_rendering-tech-draft.md)、[02_性能预算与渲染任务清单](../../docs/graphics-programmer-a/02_perf-budget-tasks.md)、[04_回执GDD](../../docs/graphics-programmer-a/04_response-gdd.md)（含 §八 双层光）；主策划 [GDD](../../docs/_shared/gdd-tomorrows-channel.md)；[M0评审汇总](20260908-0752-m0-review-summary.md)。
+> 依据：本角色 [01_渲染与后处理技术草案](../../../docs/graphics-programmer-a/01_rendering-tech-draft.md)、[02_性能预算与渲染任务清单](../../../docs/graphics-programmer-a/02_perf-budget-tasks.md)、[04_回执GDD](../../../docs/graphics-programmer-a/04_response-gdd.md)（含 §八 双层光）；主策划 [GDD](../../../docs/_shared/gdd-tomorrows-channel.md)；[M0评审汇总](../20260908-0752-m0-review/m0-review-meeting.md)。
 > 已定前提：技术主线 **Godot 4.7.x 桌面导出**；M1 = 单频道（磁带暖未来）闭环。
 
 ---

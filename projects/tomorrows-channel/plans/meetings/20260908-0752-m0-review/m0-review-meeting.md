@@ -1,6 +1,6 @@
 # 《明日频道》GDD 全工作室评审纪要（汇总 v0.2 · M0 通过）
 
-> 主策划 · 2026-09-08 07:52 · 评审对象：[`../../docs/_shared/gdd-tomorrows-channel.md`](../../docs/_shared/gdd-tomorrows-channel.md)（v0.1）
+> 主策划 · 2026-09-08 07:52 · 评审对象：[`../../../docs/_shared/gdd-tomorrows-channel.md`](../../../docs/_shared/gdd-tomorrows-channel.md)（v0.1）
 > 来源：五个角色按 GDD 附录 B 各自回执，各回执文档见其角色目录 `04_response-gdd.md`。本纪要为跨角色汇总，供 M0 概念评审使用。
 > 已定前提：项目名 **《明日频道》**；首期平台 **桌面双端（macOS + Windows）**。
 
@@ -14,11 +14,11 @@
 
 | 角色 | 回执 | 一句话结论 | 提交 |
 | --- | --- | --- | --- |
-| 数值策划 A | [回执](../../docs/systems-designer-a/04_response-gdd.md) | §7 数值成立、可落表、无冲突；唯一需定界 §12.6 放松 vs 解锁边界 | `55c14c9` |
-| 主美术 | [回执](../../docs/lead-artist/04_response-gdd.md) | 三首期频道 + "灯下接收机"母意象成立；母意象需走"双层光"合成 | `d609f18` |
-| 图形程序员 A | [回执](../../docs/graphics-programmer-a/04_response-gdd.md) | 三频道滤镜完全可行（2D 屏幕级，低负载、可开关、可静态回退） | `405a460` |
-| UI 设计美术 A | [回执](../../docs/ui-artist-a/04_response-gdd.md) | 三态界面 + 频道皮肤骨架 + 计时器提案成立（共用骨架 + Token 换肤） | `5d1f43a` |
-| 主程序 | [回执](../../docs/lead-programmer/04_response-gdd.md) | 推荐 Godot 4.7.x 桌面导出为主线；M1 单频道闭环 | `cd5adcd` |
+| 数值策划 A | [回执](../../../docs/systems-designer-a/04_response-gdd.md) | §7 数值成立、可落表、无冲突；唯一需定界 §12.6 放松 vs 解锁边界 | `55c14c9` |
+| 主美术 | [回执](../../../docs/lead-artist/04_response-gdd.md) | 三首期频道 + "灯下接收机"母意象成立；母意象需走"双层光"合成 | `d609f18` |
+| 图形程序员 A | [回执](../../../docs/graphics-programmer-a/04_response-gdd.md) | 三频道滤镜完全可行（2D 屏幕级，低负载、可开关、可静态回退） | `405a460` |
+| UI 设计美术 A | [回执](../../../docs/ui-artist-a/04_response-gdd.md) | 三态界面 + 频道皮肤骨架 + 计时器提案成立（共用骨架 + Token 换肤） | `5d1f43a` |
+| 主程序 | [回执](../../../docs/lead-programmer/04_response-gdd.md) | 推荐 Godot 4.7.x 桌面导出为主线；M1 单频道闭环 | `cd5adcd` |
 
 （图形程序员 A 另有"双层光"补充小节，见 §四-依赖对齐。）
 
@@ -59,5 +59,5 @@
 
 - **M0 概念评审通过**（2026-09-08）：方向 D《明日频道》v0.2，技术主线 Godot 4.7.x 桌面导出，M1 = 单频道（磁带暖未来）闭环。
 - 主策划已把 `03_GDD` 升 v0.2（§12 第 3–6 项收口为【已定】）。
-- 工作室待办：[`studio/README.md`](../../../../studio/README.md) §五。
+- 工作室待办：[`studio/README.md`](../../../../../studio/README.md) §五。
 - 下一步：主程序据此定稿 `01_` 引擎/目录；数值策划A 按 §7 附表落 P0 配置表；图形程序员A/UI美术A/主美术在 M0 后推进各自 `01_`/`02_` 细化与素材补缺。

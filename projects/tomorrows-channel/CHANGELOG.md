@@ -6,13 +6,14 @@
 ## [Unreleased]
 
 ### 新增
-- 六角色开发计划会：产出 [`plans/00-project-plan.md`](plans/00-project-plan.md)（M1 单频道闭环排期 / M2 三频道顺序 / 跨角色依赖与风险 / 文档待办）；各角色意见存 `plans/meetings/devplan-*.md`。
+- 六角色开发计划会：产出 [`plans/00-project-plan.md`](plans/00-project-plan.md)（M1 单频道闭环排期 / M2 三频道顺序 / 跨角色依赖与风险 / 文档待办）；各角色意见存 `plans/meetings/20260908-1202-devplan/`。
 
 ### 变更（结构）
 - 项目目录扩展为"文档 + 开发产出"分层：新增强 `game/`（Godot 工程）、`data/`（数值 schema+表）、`art/`（美术源文件工程）；`assets/` 明确定位为"最终导出/运行资源"。
 - 各新目录补 `README.md` 说明用途/命名/规范；项目 README 目录结构图同步。
 - **项目管理收敛到 `plans/`**：开发计划（`00-project-plan.md`）、里程碑（`plans/milestones/`）、会议记录（`plans/meetings/`，时间戳命名）、决策（`plans/decisions/`）、完成情况（`plans/progress/`）、工作日志（`plans/logs/`）；顶层 `decisions/`、`notes/` 移除。`CHANGELOG.md` 单独处理（对外/里程碑视角）。
 - **时间记录精确到分**（AI 节奏快）：文件名 `YYYYMMDD-HHMM-{关键词}`；文档内具体时刻 `YYYY-MM-DD HH:MM`；项目节点类日期保留。里程碑/评审纪要/会议意见等时间戳与文件名已补齐。
+- **会议记录改为"一次会议一个文件夹"**：`plans/meetings/` 下每场会议一个 `YYYYMMDD-HHMM-{主题}/` 文件夹，内含 `000-{主题}-summary.md` 汇总 + 会议文件（M0 评审会、开发计划会）。
 
 ### 待推进
 - M1 单频道（磁带暖未来）闭环启动：主程序排期细化、数值策划 A 落 P0 配置表。

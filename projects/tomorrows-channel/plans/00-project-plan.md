@@ -1,7 +1,7 @@
 # 《明日频道》项目开发计划（开发计划会结论 v0.1）
 
 > 主策划（主持）· 2026-09-08 12:04 · 结论来源：六角色开发计划会意见（`meetings/devplan-*.md`，见下）· 状态：**待项目方确认后进入 M1**（本文为正式产出，节点性结论另入 `decisions/` 的 ADR）。
-> 输入基线：GDD [`../docs/_shared/gdd-tomorrows-channel.md`](../docs/_shared/gdd-tomorrows-channel.md) v0.2、评审纪要 [`meetings/20260908-0752-m0-review-summary.md`](meetings/20260908-0752-m0-review-summary.md)、各角色 [`meetings/devplan-*.md`](meetings/)。
+> 输入基线：GDD [`../docs/_shared/gdd-tomorrows-channel.md`](../docs/_shared/gdd-tomorrows-channel.md) v0.2、评审纪要 [`meetings/20260908-0752-m0-review/m0-review-meeting.md`](meetings/20260908-0752-m0-review/m0-review-meeting.md)、各角色 [`meetings/devplan-*.md`](meetings/)。
 
 ## 一、会议结论（一句话）
 
