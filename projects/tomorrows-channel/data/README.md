@@ -14,13 +14,16 @@
 
 ## 二、表清单（对齐 GDD §7 / 数值策划 A 附表）
 
-| 表 | 位置 | 说明 |
-| --- | --- | --- |
-| 成长表 | `tables/progression.csv` | 等级/所需经验/解锁 |
-| 经济表 | `tables/economy.csv` | 资源产出/消耗 |
-| 频道表 | `tables/channels.csv` | 频道解锁/音景/皮肤 |
-| 随机表 | `tables/probability.csv` | 图鉴稀有度/保底 |
-| 专注参数 | `tables/meta.json` | 番茄/碎片初值等全局 |
+> 状态标注：**已落** = schema + 数据已交付；**【待定·M3】** = 推迟到 M3 垂直切片前冻结（数值策划 A devplan 意见 §2）。
+
+| 表 | 结构 schema | 数据 | 说明 | 状态 |
+| --- | --- | --- | --- | --- |
+| 专注参数（meta） | `schema/meta.schema.json` | `tables/meta.json` | 番茄参数 + 聚焦反馈初值等全局（`pomodoro_work/pomodoro_break/focus_min/focus_max/fragment_base_per_tomato`）。M1 入口冻结 | **已落**（M1） |
+| 内容卡数值字段契约 | `schema/content_card_numerics.schema.json` | — | 内容卡数值位插槽契约：`rarity`（enum common/rare/cult）+ `collect_frag`（首次收藏初值）；版权字段由主程序强制，数值侧只给数值位 | **已落**（M1，契约非数据） |
+| 频道表 | `schema/channel.schema.json` | `tables/channels.json` | 频道解锁/音景/皮肤 | 【待定·M3】 |
+| 混音轨表 | `schema/mixer_track.schema.json` | `tables/mixer_track.json` | 频道内 2–3 轨音量等 | 【待定】· 主程序内容池/加载器落地 |
+| 图鉴稀有度/保底 | `schema/probability_rarity.schema.json` | `tables/probability_rarity.json` | 稀有度配比（70/25/5）/保底 | 【待定·M3】 |
+| 完整解锁/碎片曲线 | `schema/economy_fragments.schema.json` | `tables/economy_fragments.json` | 碎片递减倍率/档位、收藏、消耗 | 【待定·M3】 |
 
 ## 三、约定
 

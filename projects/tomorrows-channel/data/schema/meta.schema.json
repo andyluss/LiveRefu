@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "meta.schema.json",
+  "title": "meta（全局数值参数）表结构",
+  "description": "《明日频道》全局数值参数表结构（JSON Schema）。字段一律 snake_case；每个字段带 type / unit / min / max / required 元数据，供主程序数据驱动加载器自校验、编辑期拦截非法值、UI 取值。中文说明放 description。",
+  "$comment": "数值策划 A · M1 入口冻结。M1 数值 = 参数非曲线：只冻结『番茄参数 + 聚焦反馈初值』，不投产完整经济曲线。时间类参数在 meta 内以分钟（min）存，程序层换算为秒；禁止魔法数，常数全进 meta。取整（floor/round）与跨日本地日零点清零口径【待定·主程序】。碎片递减/保底曲线参数（fragment_mult_seq / fragment_floor / beat_min）【待定·M3】，不在 M1 冻结（见 docs/systems-designer-a/04_response-gdd.md §1.5 与 plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md §2）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pomodoro_work",
+    "pomodoro_break",
+    "focus_min",
+    "focus_max",
+    "fragment_base_per_tomato"
+  ],
+  "properties": {
+    "pomodoro_work": {
+      "type": "integer",
+      "unit": "min",
+      "minimum": 1,
+      "maximum": 120,
+      "default": 25,
+      "description": "默认单段专注时长（完成一个番茄）。对应 M1 验收『专注 25min 不打断』。程序层按此换算秒数。"
+    },
+    "pomodoro_break": {
+      "type": "integer",
+      "unit": "min",
+      "minimum": 1,
+      "maximum": 60,
+      "default": 5,
+      "description": "默认单段休息时长。休息不计正反馈（不产出碎片），避免『把休息也变刷』。"
+    },
+    "focus_min": {
+      "type": "integer",
+      "unit": "min",
+      "minimum": 1,
+      "maximum": 120,
+      "default": 5,
+      "description": "玩家可调的专注时长下限（编辑期用此拦截非法值）。"
+    },
+    "focus_max": {
+      "type": "integer",
+      "unit": "min",
+      "minimum": 5,
+      "maximum": 240,
+      "default": 120,
+      "description": "玩家可调的专注时长上限。默认 120min。"
+    },
+    "fragment_base_per_tomato": {
+      "type": "integer",
+      "unit": "frag",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 8,
+      "description": "完成一段专注（一个番茄）给予的正反馈碎片初值。M1 只做单段基础值（1 次正反馈）；递减倍率/保底曲线到 M3（见 04_response-gdd.md B-1）。"
+    }
+  }
+}
