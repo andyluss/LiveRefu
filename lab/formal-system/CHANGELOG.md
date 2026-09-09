@@ -113,7 +113,7 @@
 ## [0.6.0] · 2026-09-09 · 元规则实验稿（M1 文件组织方式定稿）
 
 ### Added
-- [**meta-rules.md**](meta-rules.md)：工作区"规则之规则"实验稿（先放本基地试，成熟后回流主项目）。
+- [**meta-rules/**](meta-rules/)（初版为 `meta-rules.md`，[0.7.0] 升级为文件夹）：工作区"规则之规则"实验稿（先放本基地试，成熟后回流主项目）。
   - 定义元规则（普通规则约束产物；元规则约束"如何收敛出好结构并保持可读"）、规则总表（M0/M1/M2/M3）。
   - 每条元规则的结构（id/目标/决策/判定标准/权衡/自检/可验证）。
 
@@ -126,5 +126,24 @@
 
 ### 待推进
 - M2 命名/类型词表固定（把 docs/data/code/test/plans/tool 定为项目内统一词表）。
+
+## [0.7.0] · 2026-09-09 · 元规则升级为文件夹 + M2 定稿
+
+### Added
+- **元规则文件夹** `lab/formal-system/meta-rules/`：**一条元规则一个文件**，均含"**主选 + 多条备选**"与"**演进历史**"。
+  - [`README.md`](meta-rules/README.md)：元规则定义 + 规则总表 + 单规则模板。
+  - [`M0-rule-governance.md`](meta-rules/M0-rule-governance.md)：规则成文/按域/编号。
+  - [`M1-file-organization.md`](meta-rules/M1-file-organization.md)：关注点优先/类型其次（含备选表 A1.1-A1.3 + 演进历史 v1→v2）。
+  - [`M2-naming-vocabulary.md`](meta-rules/M2-naming-vocabulary.md)：**命名与类型词表**（新）。
+  - [`M3-rule-evolution.md`](meta-rules/M3-rule-evolution.md)：建议→已定 状态机 + 版本化历史。
+- 原 `meta-rules.md` 合并进文件夹（删除）。
+
+### Changed（M2 定稿，实验期）
+- **M2 命名与类型词表**：
+  - 固定类型词表：`README/docs/data/code|game|src/test|tests/plans/art/assets/references`（只建有内容的，不过度碎片化）。
+  - 可排序命名：主题/章节用 `NN_` 前缀；时事件用 `YYYYMMDD-HHMM-`；其余 snake_case 语义名；时间一律系统 `date`（东八区）。
+  - 多角色团队 `docs/<角色>/` 作为允许的子规则（与 M1"子关注点再切"一致）。
+  - 备选 A2.1-A2.4（无词表/纯编号/纯日期/一律按角色）及否定依据。
+- 对照 [`tech/docs-convention.md`](../../tech/docs-convention.md) 已固化的日期/NN_/时间戳约定，M2 将其提升为元规则。
 
 ---

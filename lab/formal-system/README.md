@@ -86,7 +86,7 @@
 
 ## 四、展开方向
 
-- [`meta-rules.md`](meta-rules.md)：工作区**元规则**实验稿（规则之规则；M1 文件组织方式=关注点优先/类型其次）。
+- [`meta-rules/`](meta-rules/)：工作区**元规则**（规则之规则，每条一个文件：主选+备选+演进历史；M1 已定、M2 定稿）。
 - [`methods/`](methods/)：深入研究某方法（待写）。
 - [`specs/`](specs/)：用 Alloy/CUE 写的形式化规格样例（待写）。
 - [`prototypes/`](prototypes/)：用 Rust/CUE 的最小可运行原型（待写）。
