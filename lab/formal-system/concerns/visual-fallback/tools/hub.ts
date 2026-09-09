@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // hub —— 可视验证面统一入口/导航页。
 //
-// 把 S1+S2(文档健康) / S3(一致性) / S4(需求追踪) / S5(数据不变量) / S6(设计复核) / ①③复核账本 汇成一个
-// 自包含 viz/index.html。`--run` 可先全量刷新所有面再生成。
-// 等价于 ../tools/hub.py，可被 node / deno / bun 直接运行。
+// 把 S1+S2(文档健康) / S3(一致性) / S4(需求追踪) / S5(数据不变量) / S6(设计复核) / P1(元规则状态阶梯) / ①③复核账本
+// 汇成一个自包含 viz/index.html。`--run` 可先全量刷新所有面(全 TS)再生成。
+// 可被 node / deno / bun 直接运行（脚本均为 TS，见 tech/rules/T02 全链路 TS）。
 
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -82,31 +82,49 @@ function surfaces() {
     return [`${recs.length} 条复核记录`, false];
   };
 
+  const s_p1 = () => {
+    let d = null;
+    try { d = JSON.parse(fs.readFileSync(path.join(VF, "evolution-history", "rule-evolution-timeline.json"), "utf8")); } catch (_e) {}
+    if (!d) return ["（未生成）", false];
+    const rules = d.rules || [];
+    const drifted = rules.filter((r) => new Set(r.states.map((s) => String(s.state).split(".")[0])).size > 2).length;
+    return [`${rules.length} 条元规则轨迹 · 多状态 ${drifted}`, drifted > 0];
+  };
+
   return [
     ["当前状态 / 自检", [
-      ["S1+S2", "文档健康仪表盘", "visual_health.py", "doc-health.html", s_doc_health],
+      ["S1+S2", "文档健康仪表盘", "visual_health.ts", "doc-health.html", s_doc_health],
     ]],
     ["一致性 / 追踪", [
-      ["S3", "跨文档一致性热力图", "consistency_heatmap.py", "consistency-heatmap.html", s_consistency],
-      ["S4", "需求←→文档追踪矩阵", "req_trace.py", "req-trace.html", s_req_trace],
+      ["S3", "跨文档一致性热力图", "consistency_heatmap.ts", "consistency-heatmap.html", s_consistency],
+      ["S4", "需求←→文档追踪矩阵", "req_trace.ts", "req-trace.html", s_req_trace],
     ]],
     ["数据 / 设计", [
-      ["S5", "数据不变量可视化", "data_invariants.py", "data-invariants.html", s_data_invariants],
-      ["S6", "设计/手感复核面", "design_review.py", "design-review.html", s_design_review],
+      ["S5", "数据不变量可视化", "data_invariants.ts", "data-invariants.html", s_data_invariants],
+      ["S6", "设计/手感复核面", "design_review.ts", "design-review.html", s_design_review],
+    ]],
+    ["演进历史 / 元规则", [
+      ["P1", "元规则状态阶梯", "evolution-history/rule_evolution_timeline.ts", "../evolution-history/rule-evolution-timeline.html", s_p1],
     ]],
     ["第③层", [
-      ["①③", "人工复核账本", "review_ledger.py", "review-ledger.json", s_ledger],
+      ["①③", "人工复核账本", "review_ledger.ts", "review-ledger.json", s_ledger],
     ]],
   ];
 }
 
 function run_all() {
-  // 按序刷新各面。visual_health.py 未提供 .ts 版本，故仅在存在 .ts 时运行。
-  const scripts = ["visual_health", "consistency_heatmap", "req_trace", "data_invariants", "design_review"];
-  for (const s of scripts) {
-    const tsPath = path.join(TOOLS, s + ".ts");
+  // 按序刷新各面（均用 TS；内部一个运行其它 .ts）。visual_health 会顺带跑 meta_rules_check。
+  const jobs = [
+    ["visual_health", path.join(TOOLS, "visual_health.ts")],
+    ["consistency_heatmap", path.join(TOOLS, "consistency_heatmap.ts")],
+    ["req_trace", path.join(TOOLS, "req_trace.ts")],
+    ["data_invariants", path.join(TOOLS, "data_invariants.ts")],
+    ["design_review", path.join(TOOLS, "design_review.ts")],
+    ["rule_evolution_timeline", path.join(VF, "evolution-history", "rule_evolution_timeline.ts")],
+  ];
+  for (const [name, tsPath] of jobs) {
     if (!fs.existsSync(tsPath)) continue;
-    console.log(`  -> node --experimental-strip-types ${s}.ts`);
+    console.log(`  -> node --experimental-strip-types ${name}.ts`);
     spawnSync(process.execPath, ["--experimental-strip-types", tsPath], { cwd: ROOT, stdio: "inherit" });
   }
 }

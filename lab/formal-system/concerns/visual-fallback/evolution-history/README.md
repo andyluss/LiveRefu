@@ -6,13 +6,21 @@
 
 ## 现阶段状态
 
-- **只写文档（探讨）**：本目录当前仅有探讨文档，供人阅读、判断方向；**尚未实现任何可视化脚本**。
-- 未来将按文档结论逐步增加具体可视化，并接入 `visualizer`/辅助脚本。
+- **文档 + 首个可视化脚本**：
+  - [`evolution-visualization-exploration.md`](evolution-visualization-exploration.md)：**总探讨**——有哪些"演进/时间序"可视化。
+  - [`rule_evolution_timeline.ts`](tools/rule_evolution_timeline.ts)：**P1 · 元规则状态阶梯**（TS，node/deno/bun 兼容）。
+- 后续按探讨文档的优先级逐项增加（Git 活动图、CHANGELOG 时间线、文档质量演化等）。
 
-## 文档
+## 脚本
 
-- [`evolution-visualization-exploration.md`](evolution-visualization-exploration.md)：**总探讨**——有哪些"演进/时间序"可视化，
-  各画什么、暴露什么异常、数据源是什么、优先级如何排、先做哪个 MVP。
+**P1 · 元规则状态阶梯**（[`rule_evolution_timeline.ts`](tools/rule_evolution_timeline.ts)）
+
+```bash
+node --experimental-strip-types lab/formal-system/concerns/visual-fallback/evolution-history/tools/rule_evolution_timeline.ts
+```
+
+读 [`../../meta-rules/M*-*.md`](../../meta-rules/) 的演进历史表，把每条约规则的**状态机轨迹**画成阶梯图（x=版本，y=状态层级）：
+产出 `viz/rule-evolution-timeline.html` + `.json`。一眼看出"谁一路升到已定、谁在回退/震荡、谁卡在 proposed"（见 M3 状态机）。
 
 ## 范围（什么是"演进/时间序"事实）
 

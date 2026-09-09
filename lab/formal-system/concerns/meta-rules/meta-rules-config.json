@@ -28,10 +28,13 @@
       "sub_configs": {
         "evolution-history": {
           "root_docs": ["README.md"],
-          "type_vocab": [],
-          "code_types": [],
+          "type_vocab": ["viz"],
+          "code_types": ["tools"],
           "empty_ok_types": [],
-          "doc_naming": { "default": ["^[a-z][a-z0-9_-]*\\.md$", "^README$"] },
+          "doc_naming": {
+            "default": ["^[a-z][a-z0-9_-]*\\.md$", "^README$"],
+            "viz": ["^[a-z][a-z0-9_-]*\\.(html|json)$", "^README$"]
+          },
           "skip_dirs": ["__pycache__", "target", ".git", "node_modules"],
           "skip_prefixes": [".", "_"],
           "sub_concerns": []

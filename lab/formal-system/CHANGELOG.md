@@ -302,4 +302,18 @@
 ### 至此
 技术规则从 **T01（默认 TS）** 到 **T02（全链路 TS）** 两层约定：后续 CI / 钩子 / 脚本都走 TS、同源同语言，与本仓库现状一致。
 
+## [0.18.0] · 2026-09-09 · 演进历史可视化 P1：元规则状态阶梯（TS）
+
+### Added
+- [`evolution-history/tools/rule_evolution_timeline.ts`](concerns/visual-fallback/evolution-history/tools/rule_evolution_timeline.ts)（TS，node/deno/bun 兼容，符合 T01/T02）：
+  读 [`concerns/meta-rules/M*-*.md`](concerns/meta-rules/) 的演进历史表，画**元规则状态阶梯**（x=版本，y=状态层级 `draft..retired`，每规则一条折线）。
+  产出 `evolution-history/viz/rule-evolution-timeline.html` + `.json`。
+- **接入统一入口 hub**：新增"演进历史 / 元规则"分类的 **P1** 卡片；`hub.ts --run` 也会刷新 P1（[`viz/index.html`](concerns/visual-fallback/viz/index.html) 现含 P1 卡）。
+- 结构按 M1 组装：evolution-history 下分 **`tools/`**（脚本）+ **`viz/`**（输出）；`meta-rules-config` 的 evolution-history sub_config 补 `type_vocab=viz`、`code_types=tools`。
+- 文档：evolution-history README 增补 P1 脚本；探讨文档 §八 把 P1 标为"已实现为 `.ts`"。
+
+### 实测
+- P1 输出 **5 条元规则轨迹**（`M1` 完整阶梯 `proposed→experimental→accepted.applied`；`M0`/`M4` 一次到 `accepted`；`M2`/`M3`）。
+- structure_check **20 目录/0 不合格**；递归 **51 合规/0 违规**；evolution **5 规则全合法**；全量链接 **558 内链 / 0 失效**。
+
 ---
