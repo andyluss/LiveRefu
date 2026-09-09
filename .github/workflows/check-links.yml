@@ -33,6 +33,9 @@ jobs:
       - name: Data table schema check
         run: python3 tools/check_data.py -v
 
+      - name: Meta-rules structure check (M1+M2)
+        run: python3 lab/formal-system/tools/meta_rules_check.py
+
       - name: Godot project load check
         uses: addnab/action-run-docker@v3
         with:

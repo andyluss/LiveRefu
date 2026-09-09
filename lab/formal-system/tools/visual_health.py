@@ -58,6 +58,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "viz", "doc-health.html")
 DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "viz", "review-ledger.json")
+META_COMPLIANCE = os.path.join(ROOT, "lab", "formal-system", "viz", "meta-compliance.json")
 
 # 扫描范围（相对工作区根），避免把 .git/target 等算进来。
 SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"]
@@ -331,6 +332,52 @@ def annotate_review(nodes, ledger):
             n["review_state"] = VERDICT_TO_STATE.get(rec.get("verdict")) if rec else None
 
 
+def refresh_compliance():
+    """运行 meta_rules_check.py 生成元规则合规 JSON 供仪表盘读取（失败不阻断仪表盘）。"""
+    script = os.path.join(HERE, "meta_rules_check.py")
+    try:
+        subprocess.run([sys.executable, script, "--json", META_COMPLIANCE],
+                       cwd=ROOT, capture_output=True, timeout=60, check=False)
+    except Exception:
+        pass
+    return META_COMPLIANCE if os.path.exists(META_COMPLIANCE) else None
+
+
+def compliance_snippet():
+    """读取元规则合规 JSON，渲染成一个"元规则合规"面板（无数据返回空串）。"""
+    if not os.path.exists(META_COMPLIANCE):
+        return ""
+    try:
+        with open(META_COMPLIANCE, encoding="utf-8") as f:
+            d = json.load(f)
+    except (OSError, ValueError):
+        return ""
+    items = d.get("items", [])
+    ok_items = [i["text"] for i in items if i.get("status") == "ok"]
+    bad_items = [i["text"] for i in items if i.get("status") == "violation"]
+    c = d.get("counts", {})
+
+    def lis(seq):
+        return "".join(f"<li>{escape(x)}</li>" for x in seq[:14]) or "<li class=dim>—</li>"
+
+    return f"""
+<div class="card">
+  <h2>元规则合规（M1 文件组织 + M2 命名 · {escape(d.get('concern', ''))}）
+    <span class="badge">{"✅ 已合规" if d.get("compliant") else "⚠ 需修正"}</span>
+  </h2>
+  <div class="revtiles">
+    <div class="tile"><b>{c.get("ok", 0)}</b><span>合规项</span></div>
+    <div class="tile"><b>{c.get("violations", 0)}</b><span>违规</span></div>
+    <div class="tile"><b>{len(items)}</b><span>检查项</span></div>
+  </div>
+  <div class="cols">
+    <div class="innercard"><h2>合规明细</h2><ul>{lis(ok_items)}</ul></div>
+    <div class="innercard"><h2>违规（如有）</h2><ul>{lis(bad_items)}</ul></div>
+  </div>
+</div>
+"""
+
+
 # ----------------------------------------------------------------------------
 # 颜色 / 布局
 # ----------------------------------------------------------------------------
@@ -498,6 +545,7 @@ def render_html(nodes, edges, pos, out_path):
     orphans_all, high_open, stale_top, rows = anomaly_panel(nodes, edges)
     anomalies, approved, flagged, unreviewed = review_summary(nodes)
     svg, _ = svg_graph(nodes, edges, pos)
+    compliance_html = compliance_snippet()
 
     legend = sorted({n["theme"] for n in nodes})
     legend_html = "".join(
@@ -593,6 +641,8 @@ th {{ color:var(--dim); font-weight:600; }}
   <div class="innercard"><h2>已通过（approve）</h2><ul>{review_rows(approved)}</ul></div>
 </div>
 
+{compliance_html}
+
 <div class="cols">
   <div class="card"><h2>孤立文档（无任何互链）</h2><ul>{rows(orphans_all)}</ul></div>
   <div class="card"><h2>高【待定】文档（打开问题最多）</h2><ul>{rows(high_open)}</ul></div>
@@ -662,6 +712,7 @@ def main():
     nodes, edges = build_graph(docs)
     is_anomaly(nodes)
     annotate_review(nodes, load_ledger(ledger_path))
+    refresh_compliance()  # 生成元规则合规 JSON, 供仪表盘"元规则合规"面板读取
     pos = radial_positions(nodes)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     render_html(nodes, edges, pos, out)

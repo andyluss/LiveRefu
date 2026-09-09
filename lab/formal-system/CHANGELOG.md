@@ -162,4 +162,22 @@
 ### 实测
 - 检查对象 `lab/formal-system`：**22 合规 / 0 违规，exit 0**；`--self-test` 能造违规并逐条捕获（PASS）。
 
+## [0.9.0] · 2026-09-09 · M1 引入"递归子关注点" + 元规则合规可视化 + 接入 pre-commit/CI
+
+### Changed（M1 完善）
+- [M1-file-organization.md](meta-rules/M1-file-organization.md) **新增 §2.1 递归子关注点**：关注点内可有**子关注点**
+  （自包含，递归套用）；给出"子关注点 vs 类型目录"判据（可独立命名的"什么"→子关注点；某关注点的一类产物→类型）。
+- 判定标准新增 **问题 0**（是否可自成一体 → 建子关注点）；演进历史 + **v3**。
+
+### Added
+- **递归可运行检查**：`meta_rules_check.py` 支持 `sub_concerns` + `sub_configs`，对子关注点**递归校验**
+  （须有 README + 内部同样遵守类型词表/命名）；新增 `--json <path>` 机器可读输出。
+  - 现对 `meta-rules/` 递归通过；`--self-test` 含"递归子关注点通过"与"无 README 子目录被检出"两例。
+- **元规则合规可视化**：`visual_health.py` 生成仪表盘时运行检查，读取 `viz/meta-compliance.json`，
+  新增"**元规则合规（M1+M2）**"面板（合规项/违规数 + 合规明细/违规列表）。实测：**25 合规 / 0 违规**，仪表盘含该面板。
+- **接入 pre-commit/CI**：`tools/hooks/pre-commit` 新增第 3 步——暂存涉及 `lab/formal-system/` 时跑
+  `meta_rules_check.py`；`.github/workflows/check-links.yml` 新增 "Meta-rules structure check" job。
+- **推荐目标结构（待执行）**：`meta-rules/README.md` §示样给出三个子关注点（data-validator / visual-fallback / meta-rules）
+  的重组建议表；物理迁移待确认后执行（检查已支持递归，迁移后可校验）。
+
 ---

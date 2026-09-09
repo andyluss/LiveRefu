@@ -50,4 +50,21 @@ if git diff --cached --name-only --diff-filter=ACM | grep -qE '^projects/tomorro
   fi
 fi
 
+# ---- 3) 元规则 M1+M2 结构校验(仅当暂存涉及 lab/formal-system) ----
+META_SCRIPT="$GIT_ROOT/lab/formal-system/tools/meta_rules_check.py"
+if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system/'; then
+  if [ ! -f "$META_SCRIPT" ]; then
+    echo "[pre-commit:meta-rules] 未找到 $META_SCRIPT，跳过元规则校验。" >&2
+  else
+    echo "[pre-commit:meta-rules] 暂存涉及 lab/formal-system，校验元规则 M1+M2 结构..." >&2
+    if python3 "$META_SCRIPT" >&2; then
+      echo "[pre-commit:meta-rules] 通过。" >&2
+    else
+      echo "[pre-commit:meta-rules] 文件组织/命名不符合元规则(M1 关注点优先/类型其次 + M2 命名词表)，已拦截提交。" >&2
+      echo "  参考: lab/formal-system/meta-rules/M1-file-organization.md / M2-naming-vocabulary.md" >&2
+      exit 1
+    fi
+  fi
+fi
+
 exit 0

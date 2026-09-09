@@ -48,6 +48,21 @@
 不符合 M2 日期前缀，已改名为 `20260908-experiment-a-rust-validator.md`；并给 `meta-rules/` 的命名词表补充其
 机器可读配置 `meta-rules-config.json`（`^meta-rules-config\.json$`）——这正是一次"元规则捉住自身偏差"的实例。
 
+### 建议目标结构（递归子关注点 · 待执行）
+
+`lab/formal-system` 内实际藏着三个**子关注点**（数据验证器 / 可视化兜底 / 元规则），其文件现散在各类型目录，
+按 [M1](M1-file-organization.md) §2.1 应改为**自包含子关注点**（每个有 README 出入口 + 自身产物）：
+
+| 子关注点 | 现在的散落 | 建议并入 |
+| --- | --- | --- |
+| `data-validator/`（数据验证器） | `prototypes/data-validator/`（Rust crate）+ `notes/20260908-…`（教训） | 整 crate + 迁入其教训 |
+| `visual-fallback/`（可视化兜底） | `tools/visual_health,review_ledger,consistency_heatmap.py` + `viz/`(README+输出) + 相关说明 | 工具 + 输出 + 说明 |
+| `meta-rules/`（元规则） | `meta-rules/`(规则+配置) + `tools/meta_rules_check.py`(检查) | 规则 + 配置 + 检查工具 |
+
+`methods/`、`specs/` 保留为类型目录（研究/规格）。这样每个子关注点自包含、可独立演进。
+> **说明**：检查已完成"递归子关注点"校验支持（[`../tools/meta_rules_check.py`](../tools/meta_rules_check.py)，
+> 现对 `meta-rules/` 递归通过）；但**物理迁移改动较大**（多处相对路径与链接），**待你确认后再执行**。
+
 ## 相关
 
 - 工作区具体规则：[`../../../tech/README.md`](../../../tech/README.md)（docs-convention / git-convention / formalization / hooks-readme）。
