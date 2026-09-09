@@ -87,7 +87,8 @@
 ## 四、目录与展开方向（关注点 → 子关注点 / 类型）
 
 - [`data-validator/`](concerns/data-validator/)：**子关注点** · 数据验证器（Rust 契约校验器 + 测试 + 试用教训）。
-- [`visual-fallback/`](concerns/visual-fallback/)：**子关注点** · 可视化兜底（文档健康 / 一致性热力图 / 复核账本 的工具+输出）。
+- [`visual-fallback/`](concerns/visual-fallback/)：**子关注点** · 可视化兜底（文档健康 / 一致性热力图 / 需求追踪 / 数据不变量 / 设计复核 / 复核账本）。
+  🚪 统一入口：[`viz/index.html`](concerns/visual-fallback/viz/index.html)（`python3 lab/formal-system/concerns/visual-fallback/tools/hub.py --run`）。
 - [`meta-rules/`](concerns/meta-rules/)：**子关注点** · 工作区元规则（规则之规则；每条一文件含主选/备选/演进历史；含递归结构检查）。
 - [`methods/`](methods/)：类型 · 深入研究某方法（待写）。
 - [`specs/`](specs/)：类型 · 用 Alloy/CUE 写的形式化规格样例（待写）。

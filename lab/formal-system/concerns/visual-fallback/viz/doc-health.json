@@ -1,8 +1,8 @@
 {
-  "generated": "2026-09-09T11:25:49.629104+08:00",
+  "generated": "2026-09-09T12:23:32.332552+08:00",
   "counts": {
-    "docs": 249,
-    "links": 291,
+    "docs": 265,
+    "links": 314,
     "open": 192,
     "closed": 20,
     "orphans": 139,
@@ -340,7 +340,7 @@
       "orphan": 0
     },
     "实验区": {
-      "docs": 14,
+      "docs": 30,
       "open": 19,
       "closed": 9,
       "orphan": 0

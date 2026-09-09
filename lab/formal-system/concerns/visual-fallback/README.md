@@ -7,6 +7,8 @@
 
 > **子关注点**：[`evolution-history/`](evolution-history/README.md) —— 一切"演进/时间序"可视化（Git/CHANGELOG/元规则演进史/文档历史）的探讨（当前仅文档）。
 
+> 🚪 **统一入口 / 导航页**：[`viz/index.html`](viz/index.html)（由 [`tools/hub.py`](tools/hub.py) 生成；`python3 lab/formal-system/concerns/visual-fallback/tools/hub.py --run` 一键刷新全部面 + 重建入口）。
+
 ## 一、机制（三层协同）
 
 | 层 | 谁在做 | 性质 |

@@ -13,7 +13,8 @@ formal-system/
     ├─ STRUCTURE.md
     ├─ concerns
     ├─ methods
-    └─ specs
+    ├─ specs
+    └─ visual-fallback
 ```
 
 ## 二、条目说明
@@ -27,6 +28,7 @@ formal-system/
 | `concerns` | （子目录，见其 STRUCTURE.md） |
 | `methods` | （子目录，见其 STRUCTURE.md） |
 | `specs` | （子目录，见其 STRUCTURE.md） |
+| `visual-fallback` | （子目录，见其 STRUCTURE.md） |
 
 
 ## 三、文件关系图（mermaid）
@@ -40,4 +42,5 @@ graph TD
     N4{{concerns}}
     N5{{methods}}
     N6{{specs}}
+    N7{{visual-fallback}}
 ```

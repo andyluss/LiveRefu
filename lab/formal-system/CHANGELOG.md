@@ -243,4 +243,16 @@
 - **S4**：8 需求 × 58 文档（R5 可插拔 bundle 覆盖偏少=潜在缺口）；**S5**：5 项不变量（稀有度配比 33/33/33 vs 设计 70/25/5 被标注 ⚠——M1 仅 3 卡所致，属预期）；**S6**：1 频道复核卡（tape_warm）。
 - structure_check **16 目录/0 不合格**；递归 **38 合规/0 违规**；evolution **5 规则全合法**；全量链接 **0 失效**。
 
+## [0.14.0] · 2026-09-09 · 可视验证面统一入口/导航页（hub）
+
+### Added
+- [**hub.py**](concerns/visual-fallback/tools/hub.py)：**统一入口/导航页**生成器。
+  - 读取各面 JSON 摘要，生成自包含 `viz/index.html`：按分类（当前状态 / 一致性·追踪 / 数据·设计 / 第③层）
+    网格卡片，每卡 = 面名 + 链接 + **状态摘要** + `✓ 健康 / ⚠ 复核`。
+  - `--run`：一键**依次刷新全部面**（visual_health / consistency_heatmap / req_trace / data_invariants / design_review）再重建入口。
+- visual-fallback README 顶部 + lab README §四 增补统一入口链接。
+
+### 实测
+- `hub.py --run` 刷新 5 个面 + 重建 `viz/index.html`（6 张卡片）；structure_check **18 目录/0 不合格**；递归 **44 合规/0 违规**；evolution **5 规则全合法**；全量链接 **0 失效**。
+
 ---

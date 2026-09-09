@@ -1,10 +1,10 @@
 {
-  "generated": "2026-09-09T11:25:49.621484+08:00",
+  "generated": "2026-09-09T12:23:32.323065+08:00",
   "concern": "lab/formal-system",
   "root": "/Users/lu/work/fab/LiveRefu/lab/formal-system",
   "compliant": true,
   "counts": {
-    "ok": 33,
+    "ok": 45,
     "violations": 0
   },
   "items": [
@@ -23,6 +23,10 @@
     {
       "status": "ok",
       "text": "[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 根文档 ✔ STRUCTURE.md"
     },
     {
       "status": "ok",
@@ -50,7 +54,15 @@
     },
     {
       "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ M4-directory-index.md"
+    },
+    {
+      "status": "ok",
       "text": "concerns/meta-rules/[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ STRUCTURE.md"
     },
     {
       "status": "ok",
@@ -78,11 +90,19 @@
     },
     {
       "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 根文档 ✔ STRUCTURE.md"
+    },
+    {
+      "status": "ok",
       "text": "concerns/visual-fallback/evolution-history/[M1] 出入口 README.md ✔"
     },
     {
       "status": "ok",
       "text": "concerns/visual-fallback/evolution-history/[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M2] 根文档 ✔ STRUCTURE.md"
     },
     {
       "status": "ok",
@@ -110,6 +130,22 @@
     },
     {
       "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/data-invariants.html"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/data-invariants.json"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/design-review.html"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/design-review.json"
+    },
+    {
+      "status": "ok",
       "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/doc-health.html"
     },
     {
@@ -118,7 +154,19 @@
     },
     {
       "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/index.html"
+    },
+    {
+      "status": "ok",
       "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/meta-compliance.json"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/req-trace.html"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/req-trace.json"
     },
     {
       "status": "ok",
