@@ -1,0 +1,311 @@
+{
+  "generated": "2026-09-09T08:55:43.139807+08:00",
+  "entities": [
+    {
+      "entity": "pomodoro_work(专注)",
+      "field": "pomodoro_work",
+      "authoritative": 25,
+      "docs": 3,
+      "match": 3,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "pomodoro_break(休息)",
+      "field": "pomodoro_break",
+      "authoritative": 5,
+      "docs": 2,
+      "match": 2,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "focus_min(下限)",
+      "field": "focus_min",
+      "authoritative": 5,
+      "docs": 2,
+      "match": 2,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "focus_max(上限)",
+      "field": "focus_max",
+      "authoritative": 120,
+      "docs": 2,
+      "match": 2,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "fragment_base_per_tomato",
+      "field": "fragment_base_per_tomato",
+      "authoritative": 8,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "collect_frag=common",
+      "field": "common",
+      "authoritative": 3,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "collect_frag=rare",
+      "field": "rare",
+      "authoritative": 5,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "collect_frag=cult",
+      "field": "cult",
+      "authoritative": 8,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    }
+  ],
+  "docs": [
+    "projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md",
+    "projects/tomorrows-channel/game/README.md",
+    "projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md",
+    "projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md"
+  ],
+  "summary": [
+    {
+      "entity": "pomodoro_work(专注)",
+      "auth": 25,
+      "docs": 3,
+      "match": 3,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "pomodoro_break(休息)",
+      "auth": 5,
+      "docs": 2,
+      "match": 2,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "focus_min(下限)",
+      "auth": 5,
+      "docs": 2,
+      "match": 2,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "focus_max(上限)",
+      "auth": 120,
+      "docs": 2,
+      "match": 2,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "fragment_base_per_tomato",
+      "auth": 8,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "collect_frag=common",
+      "auth": 3,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "collect_frag=rare",
+      "auth": 5,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    },
+    {
+      "entity": "collect_frag=cult",
+      "auth": 8,
+      "docs": 1,
+      "match": 1,
+      "mismatch": 0,
+      "conflict": 0
+    }
+  ],
+  "cells": {
+    "pomodoro_work::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "25",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "pomodoro_work::projects/tomorrows-channel/game/README.md": {
+      "value": "25",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "pomodoro_work::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "pomodoro_work::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "25",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "pomodoro_break::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "5",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "pomodoro_break::projects/tomorrows-channel/game/README.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "pomodoro_break::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "pomodoro_break::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "5",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "focus_min::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "5",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "focus_min::projects/tomorrows-channel/game/README.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "focus_min::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "focus_min::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "5",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "focus_max::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "120",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "focus_max::projects/tomorrows-channel/game/README.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "focus_max::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "focus_max::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "120",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "fragment_base_per_tomato::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "8",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "fragment_base_per_tomato::projects/tomorrows-channel/game/README.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "fragment_base_per_tomato::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "fragment_base_per_tomato::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "common::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "common::projects/tomorrows-channel/game/README.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "common::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "3",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "common::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "rare::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "rare::projects/tomorrows-channel/game/README.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "rare::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "5",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "rare::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "cult::projects/tomorrows-channel/docs/systems-designer-a/04_response-gdd.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "cult::projects/tomorrows-channel/game/README.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    },
+    "cult::projects/tomorrows-channel/plans/issues/technical/20260908-1401-001-copyright-field-structure.md": {
+      "value": "8",
+      "kind": "match",
+      "note": "与权威一致"
+    },
+    "cult::projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-systems-designer-a.md": {
+      "value": "—",
+      "kind": "na",
+      "note": ""
+    }
+  }
+}

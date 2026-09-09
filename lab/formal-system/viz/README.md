@@ -39,6 +39,19 @@ python3 lab/formal-system/tools/visual_health.py
 > 说明：生成物 `<doc-health.html>` 为大体积派生文件，已 gitignore（一键重跑即得）；`*.json`
 > 为小体积机器摘要，作为当前快照提交；**`review-ledger.json` 为人工复核账本（持久记录，入库）**。
 
+### 工具 B：跨文档一致性热力图（S3）
+
+```bash
+python3 lab/formal-system/tools/consistency_heatmap.py            # 生成热力图
+python3 lab/formal-system/tools/consistency_heatmap.py --self-test  # 自检检测逻辑(统一致/不一致/冲突/未提及)
+```
+
+产出 `viz/consistency-heatmap.html` + `.json`。把**同一契约字段**（如 `pomodoro_work`、`focus_max`、
+`collect_frag` 的 common/rare/cult→初值映射）在**各文档的具体取值**与**权威源**（`data/tables/*.json`）
+对拍成热力矩阵：
+
+> 绿=与权威一致 / 红=不一致(≠权威) / 琥珀=同文档冲突(多值) / 灰=未提及。人类扫一行即可知"哪个契约在哪儿写岔了"。
+
 ## 四、人工复核账本（第③层）
 
 `visual_health.py` 算出的每个异常（孤立 / 高【待定】 / 陈旧）都是"**待复核项**"。**人**用
@@ -74,6 +87,6 @@ python3 lab/formal-system/tools/visual_health.py            # 重跑, 让复核�
 
 ## 六、后续候选（本层扩展方向）
 
-- S3 跨文档一致性热力图（抽同一契约的多文档取值，标红不一致）。
+- ~~S3 跨文档一致性热力图~~（**已实现**，见 §三·工具 B）
 - S5 数据不变量图表（配比 / 范围 / 数量）。
 - S6 设计/手感复核面（渲染缩略图 + 基调锚点，纯美学兜底）。
