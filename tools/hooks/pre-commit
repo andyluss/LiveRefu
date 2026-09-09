@@ -1,20 +1,24 @@
 #!/usr/bin/env bash
 #
-# git pre-commit 钩子：拦截两类提交问题。
-#   1. 失效内部相对链接(检查暂存的 *.md, 交 tools/check_links.py)。
-#   2. 数据表不符合 schema(检查暂存涉及的 data/tables 变更, 交 tools/check_data.py)。
+# git pre-commit 钩子：拦截提交问题（全部用 TS 脚本跑，node --experimental-strip-types，见
+#   lab/formal-system/tech/rules/T01-default-ts-scripts.md）。
+#   1. 失效内部相对链接(检查暂存的 *.md, 交 tools/check_links.ts)。
+#   2. 数据表不符合 schema(检查暂存涉及的 data/tables 变更, 交 tools/check_data.ts)。
+#   3. 元规则结构/演进状态/STRUCTURE.md（暂存涉及 lab/formal-system 时, 交 meta-rules/*.ts）。
 #
 # 启用方式：git config core.hooksPath tools/hooks（仓库已配置）。
 # 临时跳过：git commit --no-verify。
-#
 # 只校验暂存相关文件，不扫全工作区，避免误拦与本次改动无关的既有问题。
 
 set -euo pipefail
 
 GIT_ROOT="$(git rev-parse --show-toplevel)"
 
+# 用 node 的 type-stripping 直接跑 TS（本仓库脚本 node/deno/bun 兼容）。
+run_ts() { node --experimental-strip-types "$1" "${@:2}"; }
+
 # ---- 1) 暂存的 Markdown 相对链接校验 ----
-LINK_SCRIPT="$GIT_ROOT/tools/check_links.py"
+LINK_SCRIPT="$GIT_ROOT/tools/check_links.ts"
 if [ ! -f "$LINK_SCRIPT" ]; then
   echo "[pre-commit:check-links] 未找到 $LINK_SCRIPT，跳过链接校验。" >&2
 else
@@ -23,7 +27,7 @@ else
     < <(git diff --cached --name-only -z --diff-filter=ACM -- '*.md')
   if [ "${#STAGED[@]}" -gt 0 ]; then
     echo "[pre-commit:check-links] 校验 ${#STAGED[@]} 个暂存 Markdown 的相对链接..." >&2
-    if python3 "$LINK_SCRIPT" --files "${STAGED[@]}" >&2; then
+    if run_ts "$LINK_SCRIPT" --files "${STAGED[@]}" >&2; then
       echo "[pre-commit:check-links] 通过。" >&2
     else
       echo "[pre-commit:check-links] 存在失效链接，已拦截提交。" >&2
@@ -33,7 +37,7 @@ else
 fi
 
 # ---- 2) 数据表 schema 校验 ----
-DATA_SCRIPT="$GIT_ROOT/tools/check_data.py"
+DATA_SCRIPT="$GIT_ROOT/tools/check_data.ts"
 if [ ! -f "$DATA_SCRIPT" ]; then
   echo "[pre-commit:check-data] 未找到 $DATA_SCRIPT，跳过数据校验。" >&2
   exit 0
@@ -41,7 +45,7 @@ fi
 # 只要本次暂存涉及 data/ 下任何表(json/schema), 就跑全量数据校验(数据表彼此多依赖)
 if git diff --cached --name-only --diff-filter=ACM | grep -qE '^projects/tomorrows-channel/data/(tables|schema)/'; then
   echo "[pre-commit:check-data] 暂存涉及数据表变更，校验 schema 契约..." >&2
-  if python3 "$DATA_SCRIPT" >&2; then
+  if run_ts "$DATA_SCRIPT" >&2; then
     echo "[pre-commit:check-data] 通过。" >&2
   else
     echo "[pre-commit:check-data] 数据表不符合 schema，已拦截提交。" >&2
@@ -51,13 +55,13 @@ if git diff --cached --name-only --diff-filter=ACM | grep -qE '^projects/tomorro
 fi
 
 # ---- 3) 元规则 M1+M2 结构校验(仅当暂存涉及 lab/formal-system) ----
-META_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/tools/meta_rules_check.py"
+META_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts"
 if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system/'; then
   if [ ! -f "$META_SCRIPT" ]; then
     echo "[pre-commit:meta-rules] 未找到 $META_SCRIPT，跳过元规则校验。" >&2
   else
     echo "[pre-commit:meta-rules] 暂存涉及 lab/formal-system，校验元规则 M1+M2 结构..." >&2
-    if python3 "$META_SCRIPT" >&2; then
+    if run_ts "$META_SCRIPT" >&2; then
       echo "[pre-commit:meta-rules] 通过。" >&2
     else
       echo "[pre-commit:meta-rules] 文件组织/命名不符合元规则(M1 关注点优先/类型其次 + M2 命名词表)，已拦截提交。" >&2
@@ -65,10 +69,10 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system
       exit 1
     fi
     # 元规则演进状态检查（M3 状态机）
-    EVOL_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.py"
+    EVOL_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.ts"
     if [ -f "$EVOL_SCRIPT" ]; then
       echo "[pre-commit:meta-rules:evolution] 校验元规则演进状态(多状态/子状态/迁移)..." >&2
-      if python3 "$EVOL_SCRIPT" >&2; then
+      if run_ts "$EVOL_SCRIPT" >&2; then
         echo "[pre-commit:meta-rules:evolution] 通过。" >&2
       else
         echo "[pre-commit:meta-rules:evolution] 某条元规则的演进状态/迁移非法，已拦截提交。" >&2
@@ -77,14 +81,14 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system
       fi
     fi
     # 每个目录 STRUCTURE.md 检测（M4 目录说明与统一索引）
-    STRUCT_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/tools/structure_check.py"
+    STRUCT_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/tools/structure_check.ts"
     if [ -f "$STRUCT_SCRIPT" ]; then
       echo "[pre-commit:meta-rules:structure] 校验目录 STRUCTURE.md(M4)..." >&2
-      if python3 "$STRUCT_SCRIPT" >&2; then
+      if run_ts "$STRUCT_SCRIPT" >&2; then
         echo "[pre-commit:meta-rules:structure] 通过。" >&2
       else
         echo "[pre-commit:meta-rules:structure] 有目录缺/不合格 STRUCTURE.md，已拦截提交。" >&2
-        echo "  参考: lab/formal-system/concerns/meta-rules/tools/structure_gen.py" >&2
+        echo "  参考: lab/formal-system/concerns/meta-rules/tools/structure_gen.ts" >&2
         exit 1
       fi
     fi
