@@ -92,6 +92,7 @@
 - [`meta-rules/`](concerns/meta-rules/)：**子关注点** · 工作区元规则（规则之规则；每条一文件含主选/备选/演进历史；含递归结构检查）。
 - [`methods/`](methods/)：类型 · 深入研究某方法（待写）。
 - [`specs/`](specs/)：类型 · 用 Alloy/CUE 写的形式化规格样例（待写）。
+- [`tech/`](tech/)：类型 · **技术性规则**（实验性质，默认 TS 脚本等，规则在 `tech/rules/`；成熟后回流入工作区 `tech/`）。
 
 > 结构是否符合元规则 M1/M2（含递归子关注点），由 [`meta-rules/tools/meta_rules_check.py`](concerns/meta-rules/tools/meta_rules_check.py) 可运行检查判定。
 
@@ -108,4 +109,4 @@
     - [`tools/`](concerns/meta-rules/tools/STRUCTURE.md) · [`evolution/`](concerns/meta-rules/evolution/STRUCTURE.md)
   - [`visual-fallback/`](concerns/visual-fallback/STRUCTURE.md)（可视化兜底）
     - [`tools/`](concerns/visual-fallback/tools/STRUCTURE.md) · [`viz/`](concerns/visual-fallback/viz/STRUCTURE.md) · [`evolution-history/`](concerns/visual-fallback/evolution-history/STRUCTURE.md)
-- [`methods/`](methods/STRUCTURE.md) · [`specs/`](specs/STRUCTURE.md)（类型目录）
+- [`methods/`](methods/STRUCTURE.md) · [`specs/`](specs/STRUCTURE.md) · [`tech/`](tech/STRUCTURE.md)（类型目录；`tech/` 下 [`rules/`](tech/rules/STRUCTURE.md)）

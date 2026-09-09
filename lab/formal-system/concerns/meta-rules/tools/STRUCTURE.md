@@ -9,8 +9,11 @@
 tools/
     ├─ STRUCTURE.md
     ├─ meta_rules_check.py
+    ├─ meta_rules_check.ts
     ├─ structure_check.py
-    └─ structure_gen.py
+    ├─ structure_check.ts
+    ├─ structure_gen.py
+    └─ structure_gen.ts
 ```
 
 ## 二、条目说明
@@ -19,8 +22,11 @@ tools/
 | --- | --- |
 | `STRUCTURE.md` | 目录结构(本文件) |
 | `meta_rules_check.py` | （代码文件） |
+| `meta_rules_check.ts` | （文件） |
 | `structure_check.py` | （代码文件） |
+| `structure_check.ts` | （文件） |
 | `structure_gen.py` | （代码文件） |
+| `structure_gen.ts` | （文件） |
 
 
 ## 三、文件关系图（mermaid）
@@ -29,6 +35,9 @@ tools/
 graph TD
     N0[STRUCTURE.md]
     N1[meta_rules_check.py]
-    N2[structure_check.py]
-    N3[structure_gen.py]
+    N2[meta_rules_check.ts]
+    N3[structure_check.py]
+    N4[structure_check.ts]
+    N5[structure_gen.py]
+    N6[structure_gen.ts]
 ```

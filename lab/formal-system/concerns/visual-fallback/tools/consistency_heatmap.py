@@ -40,7 +40,7 @@ def find_workspace_root():
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = find_workspace_root()
-DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "visual-fallback", "viz", "consistency-heatmap.html")
+DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "concerns", "visual-fallback", "viz", "consistency-heatmap.html")
 
 SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"]
 SKIP_DIRS = {".git", "target", "node_modules"}

@@ -8,6 +8,8 @@
 > **子关注点**：[`evolution-history/`](evolution-history/README.md) —— 一切"演进/时间序"可视化（Git/CHANGELOG/元规则演进史/文档历史）的探讨（当前仅文档）。
 
 > 🚪 **统一入口 / 导航页**：[`viz/index.html`](viz/index.html)（由 [`tools/hub.py`](tools/hub.py) 生成；`python3 lab/formal-system/concerns/visual-fallback/tools/hub.py --run` 一键刷新全部面 + 重建入口）。
+>
+> 🧩 **工具均为双语言**：每个 `tools/*.py` 旁有同名 `*.ts`（node/deno/bun 零依赖直接跑，见 [`../../tech/rules/T01-default-ts-scripts.md`](../../tech/rules/T01-default-ts-scripts.md)）。
 
 ## 一、机制（三层协同）
 

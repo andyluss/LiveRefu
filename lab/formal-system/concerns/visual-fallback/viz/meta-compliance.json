@@ -1,10 +1,10 @@
 {
-  "generated": "2026-09-09T12:23:32.323065+08:00",
+  "generated": "2026-09-09T12:44:37.542506+08:00",
   "concern": "lab/formal-system",
   "root": "/Users/lu/work/fab/LiveRefu/lab/formal-system",
   "compliant": true,
   "counts": {
-    "ok": 45,
+    "ok": 47,
     "violations": 0
   },
   "items": [
@@ -187,6 +187,14 @@
     {
       "status": "ok",
       "text": "[M2] 类型目录 ✔ specs (文档/类型)"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 类型目录 ✔ tech (文档/类型)"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 子目录(子关注点/再切) · tech/rules"
     }
   ]
 }

@@ -3,11 +3,12 @@
   "concern": "lab/formal-system",
   "root": ".",
   "root_docs": ["README.md", "CHANGELOG.md", "EXPERIMENT.md"],
-  "type_vocab": ["methods", "specs"],
+  "type_vocab": ["methods", "specs", "tech"],
   "code_types": [],
   "empty_ok_types": ["methods", "specs"],
   "doc_naming": {
-    "default": ["^\\d{2}_", "^\\d{8}(-\\d{4})?-", "^[a-z][a-z0-9_-]*$"]
+    "default": ["^\\d{2}_", "^\\d{8}(-\\d{4})?-", "^[a-z][a-z0-9_-]*$"],
+    "tech": ["^README$", "^[a-z][a-z0-9_-]*$"]
   },
   "skip_dirs": ["__pycache__", "target", ".git", "node_modules"],
   "skip_prefixes": [".", "_"],

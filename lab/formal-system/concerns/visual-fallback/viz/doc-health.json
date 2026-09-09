@@ -1,8 +1,8 @@
 {
-  "generated": "2026-09-09T12:23:32.332552+08:00",
+  "generated": "2026-09-09T12:44:37+08:00",
   "counts": {
-    "docs": 265,
-    "links": 314,
+    "docs": 269,
+    "links": 319,
     "open": 192,
     "closed": 20,
     "orphans": 139,
@@ -21,11 +21,53 @@
       "closed": 0,
       "orphan": 0
     },
-    "太空篇": {
+    "README.md": {
+      "docs": 2,
+      "open": 1,
+      "closed": 1,
+      "orphan": 0
+    },
+    "总索引与字数统计.md": {
       "docs": 1,
       "open": 0,
       "closed": 0,
-      "orphan": 0
+      "orphan": 1
+    },
+    "atompunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "biopunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "cyberpunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "dieselpunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "steampunk": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "合订本": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
     },
     "总论": {
       "docs": 4,
@@ -33,17 +75,89 @@
       "closed": 0,
       "orphan": 2
     },
+    "理论篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "远古篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "古典篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "近代篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "奠基篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 1
+    },
+    "机器篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "战间篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "原子篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "太空篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
     "红旗篇": {
       "docs": 1,
       "open": 0,
       "closed": 0,
       "orphan": 1
     },
-    "索引": {
+    "中国篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "谱系篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "蒸汽篇": {
       "docs": 1,
       "open": 0,
       "closed": 0,
       "orphan": 1
+    },
+    "磁带篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
     },
     "赛博篇": {
       "docs": 1,
@@ -57,23 +171,11 @@
       "closed": 0,
       "orphan": 0
     },
-    "多元篇": {
+    "蒸汽波篇": {
       "docs": 1,
       "open": 0,
       "closed": 0,
       "orphan": 0
-    },
-    "机器篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "古典篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 1
     },
     "千禧篇": {
       "docs": 1,
@@ -81,85 +183,19 @@
       "closed": 0,
       "orphan": 0
     },
-    "奠基篇": {
+    "多元篇": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "索引": {
       "docs": 1,
       "open": 0,
       "closed": 0,
       "orphan": 1
     },
-    "原子篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "远古篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 1
-    },
-    "磁带篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "战间篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "近代篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 1
-    },
-    "中国篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "蒸汽篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 1
-    },
-    "谱系篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "理论篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "蒸汽波篇": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "赛博朋克卷": {
-      "docs": 10,
-      "open": 0,
-      "closed": 0,
-      "orphan": 10
-    },
-    "生物朋克卷": {
-      "docs": 10,
-      "open": 0,
-      "closed": 0,
-      "orphan": 10
-    },
-    "太阳朋克卷": {
+    "千禧美学卷": {
       "docs": 10,
       "open": 0,
       "closed": 0,
@@ -171,7 +207,19 @@
       "closed": 0,
       "orphan": 10
     },
+    "太阳朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
     "柴油朋克卷": {
+      "docs": 10,
+      "open": 0,
+      "closed": 0,
+      "orphan": 10
+    },
+    "生物朋克卷": {
       "docs": 10,
       "open": 0,
       "closed": 0,
@@ -183,55 +231,7 @@
       "closed": 0,
       "orphan": 10
     },
-    "千禧美学卷": {
-      "docs": 10,
-      "open": 0,
-      "closed": 0,
-      "orphan": 10
-    },
-    "总索引与字数统计.md": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 1
-    },
-    "README.md": {
-      "docs": 2,
-      "open": 1,
-      "closed": 1,
-      "orphan": 0
-    },
-    "biopunk": {
-      "docs": 10,
-      "open": 0,
-      "closed": 0,
-      "orphan": 10
-    },
-    "atompunk": {
-      "docs": 10,
-      "open": 0,
-      "closed": 0,
-      "orphan": 10
-    },
-    "steampunk": {
-      "docs": 10,
-      "open": 0,
-      "closed": 0,
-      "orphan": 10
-    },
-    "dieselpunk": {
-      "docs": 10,
-      "open": 0,
-      "closed": 0,
-      "orphan": 10
-    },
-    "合订本": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 1
-    },
-    "cyberpunk": {
+    "赛博朋克卷": {
       "docs": 10,
       "open": 0,
       "closed": 0,
@@ -243,11 +243,41 @@
       "closed": 1,
       "orphan": 0
     },
-    "项目:计划": {
-      "docs": 43,
-      "open": 64,
-      "closed": 1,
-      "orphan": 8
+    "项目:数据": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:_shared": {
+      "docs": 1,
+      "open": 1,
+      "closed": 8,
+      "orphan": 0
+    },
+    "项目:graphics-programmer-a": {
+      "docs": 4,
+      "open": 36,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:lead-artist": {
+      "docs": 5,
+      "open": 10,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:lead-designer": {
+      "docs": 2,
+      "open": 3,
+      "closed": 0,
+      "orphan": 0
+    },
+    "项目:lead-programmer": {
+      "docs": 3,
+      "open": 25,
+      "closed": 0,
+      "orphan": 0
     },
     "项目:systems-designer-a": {
       "docs": 3,
@@ -261,47 +291,11 @@
       "closed": 0,
       "orphan": 0
     },
-    "项目:graphics-programmer-a": {
-      "docs": 4,
-      "open": 36,
-      "closed": 0,
-      "orphan": 0
-    },
-    "项目:lead-programmer": {
-      "docs": 3,
-      "open": 25,
-      "closed": 0,
-      "orphan": 0
-    },
-    "项目:_shared": {
-      "docs": 1,
-      "open": 1,
-      "closed": 8,
-      "orphan": 0
-    },
-    "项目:lead-designer": {
-      "docs": 2,
-      "open": 3,
-      "closed": 0,
-      "orphan": 0
-    },
-    "项目:lead-artist": {
-      "docs": 5,
-      "open": 10,
-      "closed": 0,
-      "orphan": 0
-    },
-    "项目:数据": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
-    },
-    "主美术": {
-      "docs": 1,
-      "open": 0,
-      "closed": 0,
-      "orphan": 0
+    "项目:计划": {
+      "docs": 43,
+      "open": 64,
+      "closed": 1,
+      "orphan": 8
     },
     "UI设计美术A": {
       "docs": 1,
@@ -309,7 +303,7 @@
       "closed": 0,
       "orphan": 0
     },
-    "图形程序员A": {
+    "主程序": {
       "docs": 1,
       "open": 0,
       "closed": 0,
@@ -321,7 +315,13 @@
       "closed": 0,
       "orphan": 0
     },
-    "主程序": {
+    "主美术": {
+      "docs": 1,
+      "open": 0,
+      "closed": 0,
+      "orphan": 0
+    },
+    "图形程序员A": {
       "docs": 1,
       "open": 0,
       "closed": 0,
@@ -340,7 +340,7 @@
       "orphan": 0
     },
     "实验区": {
-      "docs": 30,
+      "docs": 34,
       "open": 19,
       "closed": 9,
       "orphan": 0

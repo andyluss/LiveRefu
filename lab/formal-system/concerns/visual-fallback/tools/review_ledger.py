@@ -37,7 +37,7 @@ def find_workspace_root():
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = find_workspace_root()
-DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "visual-fallback", "viz", "review-ledger.json")
+DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "concerns", "visual-fallback", "viz", "review-ledger.json")
 SCHEMA = "lab/formal-system/review-ledger v1"
 
 

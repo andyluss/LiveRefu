@@ -9,12 +9,19 @@
 tools/
     ├─ STRUCTURE.md
     ├─ consistency_heatmap.py
+    ├─ consistency_heatmap.ts
     ├─ data_invariants.py
+    ├─ data_invariants.ts
     ├─ design_review.py
+    ├─ design_review.ts
     ├─ hub.py
+    ├─ hub.ts
     ├─ req_trace.py
+    ├─ req_trace.ts
     ├─ review_ledger.py
-    └─ visual_health.py
+    ├─ review_ledger.ts
+    ├─ visual_health.py
+    └─ visual_health.ts
 ```
 
 ## 二、条目说明
@@ -23,12 +30,19 @@ tools/
 | --- | --- |
 | `STRUCTURE.md` | 目录结构(本文件) |
 | `consistency_heatmap.py` | （代码文件） |
+| `consistency_heatmap.ts` | （文件） |
 | `data_invariants.py` | （代码文件） |
+| `data_invariants.ts` | （文件） |
 | `design_review.py` | （代码文件） |
+| `design_review.ts` | （文件） |
 | `hub.py` | （代码文件） |
+| `hub.ts` | （文件） |
 | `req_trace.py` | （代码文件） |
+| `req_trace.ts` | （文件） |
 | `review_ledger.py` | （代码文件） |
+| `review_ledger.ts` | （文件） |
 | `visual_health.py` | （代码文件） |
+| `visual_health.ts` | （文件） |
 
 
 ## 三、文件关系图（mermaid）
@@ -37,10 +51,17 @@ tools/
 graph TD
     N0[STRUCTURE.md]
     N1[consistency_heatmap.py]
-    N2[data_invariants.py]
-    N3[design_review.py]
-    N4[hub.py]
-    N5[req_trace.py]
-    N6[review_ledger.py]
-    N7[visual_health.py]
+    N2[consistency_heatmap.ts]
+    N3[data_invariants.py]
+    N4[data_invariants.ts]
+    N5[design_review.py]
+    N6[design_review.ts]
+    N7[hub.py]
+    N8[hub.ts]
+    N9[req_trace.py]
+    N10[req_trace.ts]
+    N11[review_ledger.py]
+    N12[review_ledger.ts]
+    N13[visual_health.py]
+    N14[visual_health.ts]
 ```

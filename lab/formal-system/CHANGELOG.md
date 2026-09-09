@@ -255,4 +255,21 @@
 ### 实测
 - `hub.py --run` 刷新 5 个面 + 重建 `viz/index.html`（6 张卡片）；structure_check **18 目录/0 不合格**；递归 **44 合规/0 违规**；evolution **5 规则全合法**；全量链接 **0 失效**。
 
+## [0.15.0] · 2026-09-09 · 技术规则目录 + 规则 T01（默认 TS）+ formal-system 11 脚本补同名 TS
+
+### Added
+- **技术规则目录** `lab/formal-system/tech/rules/`（实验性质，服务本形式化系统；成熟后回流入工作区 `tech/`）。
+  - [`rules/README.md`](tech/rules/README.md)（索引）+ [`T01-default-ts-scripts.md`](tech/rules/T01-default-ts-scripts.md)（一条规则一文件：主选/备选/判定/自检/演进历史）。
+  - **T01 · 技术脚本默认 TypeScript**：新增脚本默认 `.ts`，同功能双语言（`X.py`↔`X.ts`），`node --experimental-strip-types` / `deno run --allow-read` / `bun` **三者零依赖直接跑**（只用 `node:fs`/`node:path`/`process.argv` + type-stripping 子集）。
+- **11 个脚本补同名 TS**（子代理翻译；node 验证通过，多者在 deno/bun 亦通过，输出与 Python 逐项一致）：
+  - `visual-fallback/tools/`：`visual_health` `consistency_heatmap` `review_ledger` `req_trace` `data_invariants` `design_review` `hub` → `.ts`
+  - `meta-rules/tools/`：`meta_rules_check` `structure_check` `structure_gen` → `.ts`；`evolution/rule_evolution_check` → `.ts`
+- lab/formal-system 新增 `tech` 类型（meta-rules-config `type_vocab`）；lab README §四/§五 更新。
+
+### Fixed
+- **修复 latent bug**：`consistency_heatmap.py` / `review_ledger.py` 默认输出路径少了 `concerns/`（旧路径，运行会重建散置目录并被结构检查拦截）→ 已改为 `concerns/visual-fallback/viz/`。
+
+### 实测
+- 每个 `.ts` 在 `node --experimental-strip-types` 通过；`hub.ts`（默认/`--run`）可跑；structure_check **18 目录/0 不合格**；递归 **47 合规/0 违规**；evolution **5 规则全合法**；全量链接 **0 失效**。
+
 ---

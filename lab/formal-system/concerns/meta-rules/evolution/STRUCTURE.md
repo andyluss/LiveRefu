@@ -9,7 +9,8 @@
 evolution/
     ├─ README.md
     ├─ STRUCTURE.md
-    └─ rule_evolution_check.py
+    ├─ rule_evolution_check.py
+    └─ rule_evolution_check.ts
 ```
 
 ## 二、条目说明
@@ -19,6 +20,7 @@ evolution/
 | `README.md` | 出入口说明 |
 | `STRUCTURE.md` | 目录结构(本文件) |
 | `rule_evolution_check.py` | （代码文件） |
+| `rule_evolution_check.ts` | （文件） |
 
 
 ## 三、文件关系图（mermaid）
@@ -28,4 +30,5 @@ graph TD
     N0[README.md]
     N1[STRUCTURE.md]
     N2[rule_evolution_check.py]
+    N3[rule_evolution_check.ts]
 ```
