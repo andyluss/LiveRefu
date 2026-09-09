@@ -9,7 +9,8 @@
 rules/
     ├─ README.md
     ├─ STRUCTURE.md
-    └─ T01-default-ts-scripts.md
+    ├─ T01-default-ts-scripts.md
+    └─ T02-full-chain-ts.md
 ```
 
 ## 二、条目说明
@@ -19,6 +20,7 @@ rules/
 | `README.md` | 出入口说明 |
 | `STRUCTURE.md` | 目录结构(本文件) |
 | `T01-default-ts-scripts.md` | T01 · 技术脚本默认 TypeScript（同功能双语言，node/deno/bun 兼容） |
+| `T02-full-chain-ts.md` | T02 · 全链路 TS：脚本 / hooks / CI 同源同语言（已定） |
 
 
 ## 三、文件关系图（mermaid）
@@ -28,4 +30,5 @@ graph TD
     N0[README.md]
     N1[STRUCTURE.md]
     N2[T01-default-ts-scripts.md]
+    N3[T02-full-chain-ts.md]
 ```

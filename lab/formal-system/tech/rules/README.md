@@ -9,6 +9,7 @@
 | id | 文件 | 一句话 | 状态 |
 | --- | --- | --- | --- |
 | T01 | [T01-default-ts-scripts.md](T01-default-ts-scripts.md) | 技术脚本默认 TS（同功能双语言，node/deno/bun 兼容） | 已定 |
+| T02 | [T02-full-chain-ts.md](T02-full-chain-ts.md) | 全链路 TS：脚本 / hooks / CI 同源同语言（避免双轨） | 已定 |
 
 ## 结构与演进
 

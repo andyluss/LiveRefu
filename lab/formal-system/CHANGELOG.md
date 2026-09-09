@@ -287,4 +287,19 @@
 ### 至此
 从规则（T01）→ 脚本（全 TS 双语言）→ 入口（hub）→ 本地钩子（pre-commit）→ CI（verify.yml）全链路统一为 **TS、跨 node/deno/bun、可自动刷新**。
 
+## [0.17.0] · 2026-09-09 · 技术规则 T02 全链路 TS（脚本/hooks/CI 同源）
+
+### Added
+- [`tech/rules/T02-full-chain-ts.md`](tech/rules/T02-full-chain-ts.md)：**全链路 TS**——技术脚本 / pre-commit 钩子 / CI 三者跑**同一套 `.ts`**（`node --experimental-strip-types`），避免"本地 Python + CI TS"双轨。
+  - 主选：检查统一 TS、钩子与 CI 运行 `.ts`、`.py` 仅作对照不进链、`hub.ts --run` 入 `verify.yml`。
+  - 判定标准：新检查写 `.ts` 并**同时接入 pre-commit 钩子与 verify.yml**；两者引用脚本均为 `.ts`。
+  - 备选（A2.1 钩子/CI 各用一种语言 / A2.2 双轨都跑 / A2.3 全 Python）＋ 自检 ＋ 可验证（grep 钩子与 CI 无 `.py`）＋ 演进历史。
+- `tech/rules/README.md` 索引导入 T02。
+
+### 实测
+- structure_check **18 目录/0 不合格**；递归 **47 合规/0 违规**；evolution **5 规则全合法**；全量链接 **489 内链 / 0 失效**。
+
+### 至此
+技术规则从 **T01（默认 TS）** 到 **T02（全链路 TS）** 两层约定：后续 CI / 钩子 / 脚本都走 TS、同源同语言，与本仓库现状一致。
+
 ---
