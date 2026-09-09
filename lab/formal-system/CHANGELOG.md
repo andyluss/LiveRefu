@@ -55,7 +55,7 @@
 - **比 Python 版更强的约束**：新增 `pattern`（snake_case 校验）、`minLength`、`minItems`、`additionalProperties:false`（拒绝未知字段）等，均被 clippy / 测试机械判定。
 
 ### 笔记
-- 记边想边试的教训到 [`notes/2026-09-08-experiment-a-rust-validator.md`](notes/2026-09-08-experiment-a-rust-validator.md)。
+- 记边想边试的教训到 [`notes/20260908-experiment-a-rust-validator.md`](notes/20260908-experiment-a-rust-validator.md)。
 
 ## [0.3.0] · 2026-09-08 · 建立"可视验证面"（人类兜底验证层，S1+S2）
 
@@ -145,5 +145,21 @@
   - 多角色团队 `docs/<角色>/` 作为允许的子规则（与 M1"子关注点再切"一致）。
   - 备选 A2.1-A2.4（无词表/纯编号/纯日期/一律按角色）及否定依据。
 - 对照 [`tech/docs-convention.md`](../../tech/docs-convention.md) 已固化的日期/NN_/时间戳约定，M2 将其提升为元规则。
+
+## [0.8.0] · 2026-09-09 · M1+M2 落地示样（以本基地为样本）+ 元规则可运行检查
+
+### Added
+- [**meta_rules_check.py**](tools/meta_rules_check.py)：把元规则 M1+M2 接入**可运行**检查（`--self-test` 自检）。
+  - M1：关注点根有 `README.md`(出入口)；子项=类型目录+根文档，无散落。
+  - M2：子目录在类型词表；根文件在白名单；文档类类型内文件命名符合（`NN_`/`YYYYMMDD(HHMM)-`/`snake_case`）；代码类豁免。
+- [**meta-rules-config.json**](meta-rules/meta-rules-config.json)：元规则的**机器可读判定配置**（词表/根文档/命名模式/豁免）。
+- **示样**（[`meta-rules/README.md`](meta-rules/README.md) §示样）：以 `lab/formal-system` 自身演示 M1+M2 已落地，并由检查证实。
+
+### Changed（落地修正一处真实偏差）
+- `notes/` 原 `2026-09-08-experiment-a-rust-validator.md`（`YYYY-MM-DD-`）不符合 M2 日期前缀 → 改名 `20260908-experiment-a-rust-validator.md`。
+- 给 `meta-rules/` 命名词表补充其机器可读配置 `^meta-rules-config\.json$`——元规则检查首跑即抓住该偏差（exit 1），修正后通过（exit 0）。
+
+### 实测
+- 检查对象 `lab/formal-system`：**22 合规 / 0 违规，exit 0**；`--self-test` 能造违规并逐条捕获（PASS）。
 
 ---

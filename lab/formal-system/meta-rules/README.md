@@ -29,6 +29,25 @@
 6. **自检问题**：一句反问。
 7. **演进历史**：版本 / 日期 / 变更 / 依据。
 
+## 示样：lab/formal-system（M1+M2 落地示例）
+
+以本基地自身为样本，验证 M1/M2 **已落地**（并被可运行检查证实）：
+
+- **M1**：`lab/formal-system` 是一个**关注点**（实验）；根有出入口 [`README.md`](../README.md)。
+  子项 = **类型目录 + 根文档**（`CHANGELOG.md`、`EXPERIMENT.md`），无散落文件。
+- **M2 类型词表**：`meta-rules/`(治理) · `methods/` `specs/`(待写) · `prototypes/`(代码) · `notes/`(教训) ·
+  `tools/`(工具) · `viz/`(可视输出)。
+  - 代码类 `prototypes/`、`tools/`：按各自工程约定（Rust 工程/脚本），**命名豁免**。
+  - `methods/`、`specs/` 为空类型（允许，标注"待写"）。
+- **M2 命名**：规则文档 `M0-…M3-…`（`M<编号>-` 前缀）；`notes/20260908-…`（`YYYYMMDD-` 日期前缀）；时间/日期一律系统 `date`（东八区）。
+
+**可运行检查**：[`../tools/meta_rules_check.py`](../tools/meta_rules_check.py)
+`python3 lab/formal-system/tools/meta_rules_check.py`（`--self-test` 验证检测逻辑）→ 退出码 0 = 全部符合。
+
+**落地时被规则抓住的一处（真实修正）**：`notes/` 里原 `2026-09-08-experiment-a-rust-validator.md`（`YYYY-MM-DD-`）
+不符合 M2 日期前缀，已改名为 `20260908-experiment-a-rust-validator.md`；并给 `meta-rules/` 的命名词表补充其
+机器可读配置 `meta-rules-config.json`（`^meta-rules-config\.json$`）——这正是一次"元规则捉住自身偏差"的实例。
+
 ## 相关
 
 - 工作区具体规则：[`../../../tech/README.md`](../../../tech/README.md)（docs-convention / git-convention / formalization / hooks-readme）。

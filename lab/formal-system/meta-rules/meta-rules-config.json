@@ -1,0 +1,17 @@
+{
+  "_comment": "元规则 M1(文件组织) + M2(命名/类型词表) 的可运行判定配置。对应的规则见 M1-file-organization.md / M2-naming-vocabulary.md。默认示范对象 = lab/formal-system。",
+  "concern": "lab/formal-system",
+  "root": ".",
+  "root_docs": ["README.md", "CHANGELOG.md", "EXPERIMENT.md"],
+  "type_vocab": ["meta-rules", "methods", "specs", "prototypes", "notes", "tools", "viz"],
+  "code_types": ["prototypes", "tools"],
+  "empty_ok_types": ["methods", "specs"],
+  "doc_naming": {
+    "default": ["^\\d{2}_", "^\\d{8}(-\\d{4})?-", "^[a-z][a-z0-9_-]*$"],
+    "meta-rules": ["^M\\d+-", "^README$", "^meta-rules-config\\.json$"],
+    "notes": ["^\\d{8}(-\\d{4})?-", "^[a-z][a-z0-9_-]*$"],
+    "viz": ["^[a-z][a-z0-9_-]*\\.(json|html)$", "^README$"]
+  },
+  "skip_dirs": ["__pycache__", "target", ".git", "node_modules"],
+  "skip_prefixes": [".", "_"]
+}
