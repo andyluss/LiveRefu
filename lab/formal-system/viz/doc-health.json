@@ -1,12 +1,18 @@
 {
-  "generated": "2026-09-08T22:14:38.146409+08:00",
+  "generated": "2026-09-09T08:38:36.054471+08:00",
   "counts": {
-    "docs": 240,
-    "links": 261,
-    "open": 173,
-    "closed": 11,
+    "docs": 241,
+    "links": 263,
+    "open": 188,
+    "closed": 17,
     "orphans": 139,
     "stale": 0
+  },
+  "review": {
+    "anomaly_total": 179,
+    "approved": 0,
+    "flagged": 1,
+    "unreviewed": 178
   },
   "themes": {
     "其他": {
@@ -334,9 +340,9 @@
       "orphan": 0
     },
     "实验区": {
-      "docs": 5,
-      "open": 0,
-      "closed": 0,
+      "docs": 6,
+      "open": 15,
+      "closed": 6,
       "orphan": 0
     }
   },
@@ -362,6 +368,11 @@
       "open": 10
     },
     {
+      "title": "可视验证面（Visual Verification Surface）—— 人类兜底验证层",
+      "rel": "lab/formal-system/viz/README.md",
+      "open": 9
+    },
+    {
       "title": "里程碑与原型计划（M1 基线 v0.2）",
       "rel": "projects/tomorrows-channel/plans/milestones/20260906-1534-milestone-plan.md",
       "open": 8
@@ -377,19 +388,14 @@
       "open": 6
     },
     {
+      "title": "形式化协作实验 · 日志（CHANGELOG）",
+      "rel": "lab/formal-system/CHANGELOG.md",
+      "open": 6
+    },
+    {
       "title": "game · Godot 程序工程",
       "rel": "projects/tomorrows-channel/game/README.md",
       "open": 5
-    },
-    {
-      "title": "工作日志：UI 设计美术 A · M1 阶段（2026-09-08）",
-      "rel": "projects/tomorrows-channel/plans/logs/ui-artist-a/20260908-1428-ui-artist-a-m1.md",
-      "open": 4
-    },
-    {
-      "title": "工作日志：主策划 · M1 阶段（2026-09-08）",
-      "rel": "projects/tomorrows-channel/plans/logs/lead-designer/20260908-1428-lead-designer-m1.md",
-      "open": 4
     }
   ]
 }

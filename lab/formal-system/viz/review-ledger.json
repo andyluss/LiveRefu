@@ -1,0 +1,14 @@
+{
+  "schema": "lab/formal-system/review-ledger v1",
+  "records": [
+    {
+      "id": "02aa2332",
+      "rel": "projects/tomorrows-channel/docs/graphics-programmer-a/04_response-gdd.md",
+      "verdict": "flag",
+      "reason": "单个文档含 23 个【待定】，需复核并收敛",
+      "reviewer": "human",
+      "reviewed_at": "2026-09-09T08:35:42+08:00",
+      "action": "复核并收敛 open questions"
+    }
+  ]
+}

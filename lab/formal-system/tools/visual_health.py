@@ -8,12 +8,17 @@ visual_health —— 文档健康仪表盘生成器（"可视验证面"，实验
 直觉**兜底扫出"哪里不对"。本脚本生成一份**零依赖、可一键重跑、自包含**的 HTML 仪表盘。
 
 产出：
-  lab/formal-system/viz/doc-health.html        # 自包含仪表盘（图谱 + 异常面板 + 清单）
+  lab/formal-system/viz/doc-health.html        # 自包含仪表盘（图谱 + 复核账本 + 异常面板 + 清单）
+  lab/formal-system/viz/doc-health.json        # 机器可读摘要（计数/主题/复核覆盖）
 
 可视化内容（详见 README）：
-  - 文档图谱：节点=md 文档，边=文档间相对链接，按主题着色；节点大小∝活跃度，红环=陈旧。
+  - 文档图谱：节点=md 文档，边=文档间相对链接，按主题着色；节点大小∝活跃度；
+    绿环=已通过 / 橙环=已标记 / 虚线=未复核异常 / 红点=陈旧。
   - 开放问题密度 / 决策密度：每文档的【待定】/【已定】计数。
-  - 异常面板：孤立文档、高【待定】文档、陈旧文档。
+  - 人工复核账本：读取 viz/review-ledger.json（由 tools/review_ledger.py 登记），
+    把异常标注为 未复核/已通过/已标记，并给出复核覆盖率。
+
+可选：--ledger <path> 指向自定义账本。
 
 原则（防"好看但没用"）：
   1. 只锚定**可验证事实**（链接、【待定】标记、git/mtime 可得的变更时间、主题），不做主观判断。
@@ -52,6 +57,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # tools -> formal-system -> lab -> 工作区根
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "viz", "doc-health.html")
+DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "viz", "review-ledger.json")
 
 # 扫描范围（相对工作区根），避免把 .git/target 等算进来。
 SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"]
@@ -59,6 +65,13 @@ STALE_DAYS = 60            # 超过即视为"陈旧"
 HIGH_OPEN_TOP = 10         # 高【待定】取前 N
 ANOMALY_LIST_LEN = 10
 MAX_EDGES_PER_NODE = 60    # 图谱里单节点最多画的边，避免乱成线团
+
+# 复核状态下节点的描边样式（绿=已通过, 橙=已标记, 虚线=未复核异常）
+REVIEW_STYLE = {
+    "approved": ('stroke="#2a9d8f" stroke-width="2.5"', "approved"),
+    "flagged": ('stroke="#f4a261" stroke-width="2.5"', "flagged"),
+    "unreviewed": ('stroke="#333" stroke-width="1.5" stroke-dasharray="3 2"', "anomaly"),
+}
 
 
 # ----------------------------------------------------------------------------
@@ -271,6 +284,53 @@ def build_graph(docs):
     return nodes, sorted(edges)
 
 
+def load_ledger(path):
+    """读取人工复核账本，返回 rel -> 该文档最新一条记录 的映射（追加式，最后写入者=当前态）。"""
+    if not path or not os.path.exists(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return {}
+    latest = {}
+    for rec in data.get("records", []):
+        latest[rec.get("rel", "").replace("\\", "/")] = rec
+    return latest
+
+
+def is_anomaly(nodes):
+    """计算每个节点的异常类别（孤立/开放问题/陈旧）与是否异常。"""
+    for n in nodes:
+        cats = set()
+        if n["degree"] == 0:
+            cats.add("孤立")
+        if n["open"] > 0:
+            cats.add("待定")
+        if n["day"] is not None and n["day"] > STALE_DAYS:
+            cats.add("陈旧")
+        n["cats"] = cats
+        n["is_anomaly"] = bool(cats)
+
+
+# 账本里的 verdict(approve/flag) -> 仪表盘/图谱用的状态(approved/flagged)
+VERDICT_TO_STATE = {"approve": "approved", "flag": "flagged"}
+
+
+def annotate_review(nodes, ledger):
+    """把人工复核账本合并到节点：review_state ∈ {approved, flagged, unreviewed, None}。"""
+    for n in nodes:
+        rec = ledger.get(n["rel"])
+        if n["is_anomaly"]:
+            n["review"] = rec
+            n["review_state"] = (
+                VERDICT_TO_STATE.get(rec.get("verdict"), "unreviewed") if rec else "unreviewed"
+            )
+        else:
+            n["review"] = rec
+            n["review_state"] = VERDICT_TO_STATE.get(rec.get("verdict")) if rec else None
+
+
 # ----------------------------------------------------------------------------
 # 颜色 / 布局
 # ----------------------------------------------------------------------------
@@ -343,21 +403,22 @@ def svg_graph(nodes, edges, pos):
         x, y, _ = pos[n["id"]]
         r = 3 + min(14.0, 4 * math.sqrt(n["degree"] + 1))
         fill = color_for(n["theme"])
-        stroke = ""
-        cls = []
-        if n["day"] is not None and n["day"] > STALE_DAYS:
-            stroke = 'stroke="#c1121f" stroke-width="2"'
-            cls.append("stale")
-        if n["degree"] == 0:
-            stroke = 'stroke="#333" stroke-width="1.5" stroke-dasharray="2 2"'
-            cls.append("orphan")
+        if n["is_anomaly"]:
+            stroke, cls = REVIEW_STYLE.get(
+                n["review_state"],
+                ('stroke="#333" stroke-width="1.5" stroke-dasharray="3 2"', "anomaly"),
+            )
+        else:
+            stroke, cls = "", ""
         label = escape(n["rel"])
         title = escape(n["title"])
-        node_circles.append(
-            f'<circle class="node {" ".join(cls)}" data-rel="{label}" '
-            f'data-title="{title}" cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" '
-            f'fill="{fill}" opacity="0.9" {stroke}/>'
-        )
+        parts = [
+            f'<circle class="node {cls}" data-rel="{label}" data-title="{title}" '
+            f'cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="{fill}" opacity="0.9" {stroke}/>'
+        ]
+        if n["day"] is not None and n["day"] > STALE_DAYS:
+            parts.append(f'<circle cx="{x:.0f}" cy="{y - r:.0f}" r="2.2" fill="#c1121f"/>')
+        node_circles.append("".join(parts))
 
     vb_w = 1600
     vb_h = 1600
@@ -402,9 +463,40 @@ def anomaly_panel(nodes, edges):
     return orphans, high_open, stale, rows
 
 
+REVIEW_STATE_LABEL = {"approved": "已通过", "flagged": "已标记", "unreviewed": "未复核"}
+
+
+def review_summary(nodes):
+    anomalies = [n for n in nodes if n["is_anomaly"]]
+    approved = [n for n in anomalies if n["review_state"] == "approved"]
+    flagged = [n for n in anomalies if n["review_state"] == "flagged"]
+    unreviewed = [n for n in anomalies if n["review_state"] == "unreviewed"]
+    return anomalies, approved, flagged, unreviewed
+
+
+def review_rows(items, with_reason=False):
+    parts = []
+    for n in items:
+        cats = "、".join(sorted(n["cats"]))
+        state_label = REVIEW_STATE_LABEL.get(n["review_state"], n["review_state"])
+        rec = n.get("review")
+        reason = escape(rec.get("reason", "")) if rec and with_reason else ""
+        who = escape(rec.get("reviewer", "")) if rec else ""
+        when = rec.get("reviewed_at", "") if rec else ""
+        meta = f'异常 = {cats}' + (f' · 因:{reason}' if reason else "")
+        who_when = f' · {who}@{when}' if (rec and who) else (" · " + when if rec else "")
+        parts.append(
+            f'<li><b>{escape(n["title"])}</b> <span class=dim>{escape(n["rel"])}</span> '
+            f'<span class=meta>{meta}{who_when}</span> '
+            f'<span class="rev {escape(n["review_state"])}">{state_label}</span></li>'
+        )
+    return "".join(parts) if parts else "<li class=dim>无</li>"
+
+
 def render_html(nodes, edges, pos, out_path):
     orphans, stale, total_open, total_closed = html_summary(nodes, edges)
     orphans_all, high_open, stale_top, rows = anomaly_panel(nodes, edges)
+    anomalies, approved, flagged, unreviewed = review_summary(nodes)
     svg, _ = svg_graph(nodes, edges, pos)
 
     legend = sorted({n["theme"] for n in nodes})
@@ -451,6 +543,13 @@ svg circle.node:hover {{ stroke:#1d2b3a; stroke-width:2; }}
 .dot {{ width:10px; height:10px; border-radius:50%; display:inline-block; }}
 .cols {{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }}
 li {{ margin:5px 0; font-size:13px; }}
+.revtiles {{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px; }}
+.badge {{ float:right; font-size:12px; color:var(--dim); font-weight:400; }}
+.innercard {{ border:1px solid var(--line); border-radius:10px; padding:12px; background:#fbfcfe; }}
+.rev {{ display:inline-block; padding:1px 7px; border-radius:999px; font-size:11px; margin-left:6px; }}
+.rev.approved {{ background:#d8f3dc; color:#1b7a3d; }}
+.rev.flagged {{ background:#fdebd0; color:#b45309; }}
+.rev.unreviewed {{ background:#e5e7eb; color:#6b7280; }}
 .dim {{ color:var(--dim); }} .meta {{ color:var(--dim); margin-left:6px; font-size:12px; }}
 table {{ width:100%; border-collapse:collapse; font-size:12px; }}
 th,td {{ text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); }}
@@ -472,9 +571,26 @@ th {{ color:var(--dim); font-weight:600; }}
 </div>
 
 <div class="card">
-  <h2>文档图谱（节点∝活跃度 · 主题着色 · 红环=陈旧 · 虚线=孤立）</h2>
+  <h2>文档图谱（节点∝活跃度 · 主题着色 · 绿环=已通过 · 橙环=已标记 · 虚线=未复核异常 · 红点=陈旧）</h2>
   {svg}
   <div class="legend">{legend_html}</div>
+</div>
+
+<div class="card">
+  <h2>人工复核账本（第③层 · 机器标记→人复核→可追踪）
+    <span class="badge">异常 {len(anomalies)} · 已通过 {len(approved)} · 已标记 {len(flagged)} · 未复核 {len(unreviewed)}</span>
+  </h2>
+  <div class="revtiles">
+    <div class="tile"><b>{len(anomalies)}</b><span>异常总数</span></div>
+    <div class="tile"><b>{len(approved)}</b><span>已通过</span></div>
+    <div class="tile"><b>{len(flagged)}</b><span>已标记</span></div>
+    <div class="tile"><b>{len(unreviewed)}</b><span>未复核</span></div>
+  </div>
+  <div class="cols">
+    <div class="innercard"><h2>未复核异常（待人工）</h2><ul>{review_rows(unreviewed)}</ul></div>
+    <div class="innercard"><h2>已标记（flag · 带理由）</h2><ul>{review_rows(flagged, with_reason=True)}</ul></div>
+  </div>
+  <div class="innercard"><h2>已通过（approve）</h2><ul>{review_rows(approved)}</ul></div>
 </div>
 
 <div class="cols">
@@ -506,12 +622,20 @@ def write_json(out_html, nodes, edges):
         if n["degree"] == 0:
             th["orphan"] += 1
     orphans, stale, total_open, total_closed = html_summary(nodes, edges)
+    anomalies = [n for n in nodes if n["is_anomaly"]]
+    approved = sum(1 for n in anomalies if n["review_state"] == "approved")
+    flagged = sum(1 for n in anomalies if n["review_state"] == "flagged")
+    unreviewed = sum(1 for n in anomalies if n["review_state"] == "unreviewed")
     top_open = sorted([n for n in nodes if n["open"] > 0], key=lambda n: -n["open"])[:10]
     data = {
         "generated": datetime.datetime.now().astimezone().isoformat(),
         "counts": {
             "docs": len(nodes), "links": len(edges), "open": total_open,
             "closed": total_closed, "orphans": len(orphans), "stale": len(stale),
+        },
+        "review": {
+            "anomaly_total": len(anomalies), "approved": approved,
+            "flagged": flagged, "unreviewed": unreviewed,
         },
         "themes": themes,
         "top_open": [{"title": n["title"], "rel": n["rel"], "open": n["open"]} for n in top_open],
@@ -524,22 +648,31 @@ def write_json(out_html, nodes, edges):
 
 def main():
     out = DEFAULT_OUT
+    ledger_path = DEFAULT_LEDGER
     if "--out" in sys.argv:
         i = sys.argv.index("--out")
         if i + 1 < len(sys.argv):
             out = sys.argv[i + 1]
+    if "--ledger" in sys.argv:
+        i = sys.argv.index("--ledger")
+        if i + 1 < len(sys.argv):
+            ledger_path = sys.argv[i + 1]
 
     docs = collect_docs()
     nodes, edges = build_graph(docs)
+    is_anomaly(nodes)
+    annotate_review(nodes, load_ledger(ledger_path))
     pos = radial_positions(nodes)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     render_html(nodes, edges, pos, out)
     json_path = write_json(out, nodes, edges)
 
     orphans, stale, total_open, total_closed = html_summary(nodes, edges)
+    anomalies, approved, flagged, unreviewed = review_summary(nodes)
     print(f"文档 {len(nodes)} 张, 互链 {len(edges)} 条")
     print(f"【待定】{total_open} / 【已定】{total_closed}")
     print(f"孤立文档 {len(orphans)} 张, 陈旧(>{STALE_DAYS}天) {len(stale)} 张")
+    print(f"复核账本: 异常 {len(anomalies)} / 已通过 {len(approved)} / 已标记 {len(flagged)} / 未复核 {len(unreviewed)}")
     print(f"仪表盘已生成: {out}")
     print(f"数据已生成:   {json_path}")
 
