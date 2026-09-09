@@ -176,7 +176,7 @@
 - **元规则合规可视化**：`visual_health.py` 生成仪表盘时运行检查，读取 `visual-fallback/viz/meta-compliance.json`，
   新增"**元规则合规（M1+M2）**"面板（合规项/违规数 + 合规明细/违规列表）。实测：**25 合规 / 0 违规**，仪表盘含该面板。
 - **接入 pre-commit/CI**：`tools/hooks/pre-commit` 新增第 3 步——暂存涉及 `lab/formal-system/` 时跑
-  `meta_rules_check.py`；`.github/workflows/check-links.yml` 新增 "Meta-rules structure check" job。
+  `meta_rules_check.py`；`.github/workflows/verify.yml` 新增 "Meta-rules structure check" job。
 - **推荐目标结构（待执行）**：`meta-rules/README.md` §示样给出三个子关注点（data-validator / visual-fallback / meta-rules）
   的重组建议表；物理迁移待确认后执行（检查已支持递归，迁移后可校验）。
 

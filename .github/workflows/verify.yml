@@ -1,0 +1,63 @@
+name: Verify
+
+# 每次 push / PR 时，验证整个工作区（链接/数据契约/元规则结构/演进/STRUCTURE.md/可视面刷新/Godot 加载），全部用 TS 脚本
+# （node --experimental-strip-types 直接跑；脚本均为 node/deno/bun 兼容，见
+#   lab/formal-system/tech/rules/T01-default-ts-scripts.md）：
+#   1. Markdown 相对链接是否失效 (tools/check_links.ts)
+#   2. 数据表是否符合 schema 契约 (tools/check_data.ts)
+#   3. 元规则结构(M1+M2)/演进状态(M3)/STRUCTURE.md(M4) (lab/formal-system/concerns/meta-rules/*.ts)
+#   4. 刷新入口页（hub.ts --run 一键重新生成全部可视面）
+#   5. Godot 脚本静态检查 (godot --headless --import/--check-only --path game)
+# 用于兜底：即使本地未启用 pre-commit 钩子，推上来也会被这里拦下。
+#
+# 注：本仓库当前无远端(remote)；配置托管平台后此文件即自动生效。
+# 若用 GitLab，请改写为 .gitlab-ci.yml 的对应 job。Godot 检查用 godotengine/godot 镜像。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Markdown link check (TS)
+        run: node --experimental-strip-types tools/check_links.ts -v
+
+      - name: Data table schema check (TS)
+        run: node --experimental-strip-types tools/check_data.ts -v
+
+      - name: Meta-rules structure check (M1+M2, TS)
+        run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts
+
+      - name: Meta-rule evolution state check (M3, TS)
+        run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.ts
+
+      - name: Directory STRUCTURE.md check (M4, TS)
+        run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/tools/structure_check.ts
+
+      - name: Refresh visual surfaces (hub.ts --run)
+        run: node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/hub.ts --run
+
+      - name: Godot project load check
+        uses: addnab/action-run-docker@v3
+        with:
+          image: ghcr.io/godotengine/godot:4.7-mono
+          options: -v ${{ github.workspace }}:/app
+          run: |
+            # 让 Godot 真正加载工程(主场景+autoload链编译+_verify_closed_loop自检)，
+            # 暴露脚本编译错误/资源加载错误。GDScript 弱类型, 无法整工程静态扫描,
+            # 故用运行时加载 + 已内建的自检(closed_loop VERIFY)作为"编译期/回归"验证。
+            # 沙箱下需 HOME 指向可写目录, 否则 user:// 创建失败。
+            cd /app/projects/tomorrows-channel/game
+            HOME=/tmp/gdhome godot --headless --path . --quit-after 5 || exit 1

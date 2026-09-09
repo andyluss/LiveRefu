@@ -54,7 +54,7 @@ echo $?   # 0=通过, 1=有失效链接
 
 即使本地未启用钩子（例如贡献者在未运行 `install_hooks.sh` 的机器上提交），推送到托管平台后由 CI 兜底拦截。
 
-- **平台**：本仓库暂未配置远端。下面给 **GitHub Actions** 版（`.github/workflows/check-links.yml`）；若你在 GitLab，用对应的 `.gitlab-ci.yml` 语法改写（触发器 + 一个跑 `python3 tools/check_links.py` 的 job），或在其它 CI 中复用一个执行同命令的步骤即可。
+- **平台**：本仓库暂未配置远端。下面给 **GitHub Actions** 版（`.github/workflows/verify.yml`）；若你在 GitLab，用对应的 `.gitlab-ci.yml` 语法改写（触发器 + 一个跑 `python3 tools/check_links.py` 的 job），或在其它 CI 中复用一个执行同命令的步骤即可。
 - **逻辑**：检出代码 → 用 Python 直接运行 `tools/check_links.py`（纯标准库，无需安装依赖）→ 若返回非零则失败。默认扫描全工作区（`--sub` 不传即全量）；可按需加 `--sub studio` 缩小范围。
 - **影响**：提交涉及失效相对链接时，CI 会标记检查失败，提示修复后再合入。
 
