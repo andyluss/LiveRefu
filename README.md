@@ -38,7 +38,7 @@
 
 ## 四、Git 与提交信息约定
 
-本工作区的文件改动由 AI 代理 **自动提交到 Git**（无需人工提醒）。提交信息遵循 Conventional Commits 规范（`<type>(<scope>): <subject>`，type 含 `feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert`），完整规则见 [`tech/git-convention.md`](tech/git-convention.md)。
+本工作区的文件改动由 AI 代理 **自动提交到 Git**（无需人工提醒）。提交信息遵循 Conventional Commits 规范（`<type>(<scope>): <subject>`，type 含 `feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert`）；**描述用简体中文**，`type`/`scope` 等功能性标记保持英文。完整规则见 [`tech/git-convention.md`](tech/git-convention.md)。
 
 ## 五、快速上手
 
