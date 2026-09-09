@@ -272,4 +272,19 @@
 ### 实测
 - 每个 `.ts` 在 `node --experimental-strip-types` 通过；`hub.ts`（默认/`--run`）可跑；structure_check **18 目录/0 不合格**；递归 **47 合规/0 违规**；evolution **5 规则全合法**；全量链接 **0 失效**。
 
+## [0.16.0] · 2026-09-09 · CI + pre-commit 全 TS + verify.yml 改名 + hub.ts --run 刷新入口页
+
+### Changed（CI / 钩子全 TS）
+- **CI 改名**：`.github/workflows/check-links.yml` → **`verify.yml`**，`name: Checks → Verify`（已不只链接，覆盖全工作区验证）。
+- **CI 全 TS**：`setup-python` → `setup-node@22`；五项检查全部 `node --experimental-strip-types ... .ts`；并**新增 `hub.ts --run`** 步骤（CI 一键刷新全部可视面 + 入口页）。
+- **pre-commit 钩子全 TS**：所有检查脚本 `.py → .ts`（`check_links.ts` / `check_data.ts` / `meta_rules_check.ts` / `rule_evolution_check.ts` / `structure_check.ts`），用新增 `run_ts()` 助手跑。
+- 补齐工作区工具 TS：`tools/check_links.ts`、`tools/check_data.ts`（翻译自 `.py`，含处理 `os.path.join` 绝对路径语义等坑）。
+- `tech/hooks-readme.md` 同步为"用 Node 跑 TS"。
+
+### 实测
+- `hub.ts --run` 刷新 5 面 + 入口；`check_links.ts` 486 链接 / 0 失效；`check_data.ts` 5 表 / 0 错；structure **18 目录/0 不合格**；递归 **47 合规/0 违规**；evolution **5 规则全合法**；新 pre-commit 钩子在真实提交上运行通过。
+
+### 至此
+从规则（T01）→ 脚本（全 TS 双语言）→ 入口（hub）→ 本地钩子（pre-commit）→ CI（verify.yml）全链路统一为 **TS、跨 node/deno/bun、可自动刷新**。
+
 ---
