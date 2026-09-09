@@ -102,8 +102,10 @@ def run_check(root, cfg, prefix=""):
                 kind = "代码类(命名豁免)" if entry in code_types else "文档/类型"
                 mark(True, f"[M2] 类型目录 ✔ {entry} ({kind})")
             elif sub_concerns_dir and entry == sub_concerns_dir:
-                # 子关注点统一目录：其下每个子目录是一个子关注点
+                # 子关注点统一目录：其下每个子目录是一个子关注点(允许 README/STRUCTURE 说明文件)
                 for sub in sorted(os.listdir(ep)):
+                    if sub in ("README.md", "STRUCTURE.md"):
+                        continue
                     sub_ep = os.path.join(ep, sub)
                     if os.path.isdir(sub_ep):
                         validate_sub(sub_ep, cfg["sub_configs"].get(sub, {}),
@@ -119,7 +121,7 @@ def run_check(root, cfg, prefix=""):
             else:
                 mark(False, f"[M2] 未知类型目录(不在词表,也非子关注点) ✗ {entry}")
         else:
-            if entry in root_docs or _named(default_naming, entry):
+            if entry in root_docs or entry == "STRUCTURE.md" or _named(default_naming, entry):
                 mark(True, f"[M2] 根文档 ✔ {entry}")
             else:
                 mark(False, f"[M2] 根目录未声明文件 ✗ {entry}")
@@ -141,7 +143,7 @@ def run_check(root, cfg, prefix=""):
         patterns = cfg["doc_naming"].get(t, cfg["doc_naming"].get("default", []))
         regs = [re.compile(p) for p in patterns]
         for name in sorted(os.listdir(tpath)):
-            if name == "README.md":
+            if name in ("README.md", "STRUCTURE.md"):
                 continue
             if any(name.startswith(pfx) for pfx in cfg["skip_prefixes"]):
                 continue

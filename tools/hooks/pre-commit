@@ -76,6 +76,18 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system
         exit 1
       fi
     fi
+    # 每个目录 STRUCTURE.md 检测（M4 目录说明与统一索引）
+    STRUCT_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/tools/structure_check.py"
+    if [ -f "$STRUCT_SCRIPT" ]; then
+      echo "[pre-commit:meta-rules:structure] 校验目录 STRUCTURE.md(M4)..." >&2
+      if python3 "$STRUCT_SCRIPT" >&2; then
+        echo "[pre-commit:meta-rules:structure] 通过。" >&2
+      else
+        echo "[pre-commit:meta-rules:structure] 有目录缺/不合格 STRUCTURE.md，已拦截提交。" >&2
+        echo "  参考: lab/formal-system/concerns/meta-rules/tools/structure_gen.py" >&2
+        exit 1
+      fi
+    fi
   fi
 fi
 

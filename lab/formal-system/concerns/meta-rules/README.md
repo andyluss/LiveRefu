@@ -15,7 +15,8 @@
 | M0 | [M0-rule-governance.md](M0-rule-governance.md) | 规则的组织方式（成文/按域/编号） | 已定 |
 | M1 | [M1-file-organization.md](M1-file-organization.md) | 文件组织 = 关注点优先，类型其次 | 已定(实验期) |
 | M2 | [M2-naming-vocabulary.md](M2-naming-vocabulary.md) | 命名与类型词表 | 已定(实验期) |
-| M3 | [M3-rule-evolution.md](M3-rule-evolution.md) | 元规则自身演进（建议→已定） | 已定 |
+| M3 | [M3-rule-evolution.md](M3-rule-evolution.md) | 元规则自身演进（多状态/子状态+迁移） | 已定 |
+| M4 | [M4-directory-index.md](M4-directory-index.md) | 目录说明与统一索引（每目录 STRUCTURE.md + 根 README 索引） | 已定(已落地) |
 
 ## 每条规则的结构（机器/人可核对）
 

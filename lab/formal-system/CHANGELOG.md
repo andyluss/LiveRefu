@@ -216,4 +216,19 @@
 ### 待办
 - 按探讨文档推进具体可视化脚本（P1：元规则演进状态阶梯 / Git 活动图）。
 
+## [0.12.0] · 2026-09-09 · M4 目录说明与统一索引（每目录 STRUCTURE.md + 生成/检测脚本 + 根 README 索引）
+
+### Added
+- [**M4-directory-index.md**](concerns/meta-rules/M4-directory-index.md)：新元规则——每个目录以 `STRUCTURE.md` 自我描述
+  （目录结构 + 条目说明 + 文件关系图 mermaid），并在**树根 README 末尾统一索引**；整合进 M1/M2（每目录自解释 + `STRUCTURE.md` 命名）。
+- [**structure_gen.py**](concerns/meta-rules/tools/structure_gen.py)：**生成**每个目录的 STRUCTURE.md（自动列结构树/条目说明/mermaid 关系图；
+  `--only` 单目录、`--check` 只探测）。
+- [**structure_check.py**](concerns/meta-rules/tools/structure_check.py)：**检测**每目录 STRUCTURE.md（存在 + 含"目录结构/条目说明/文件关系图"三小节 + 有 mermaid；`--self-test`）。
+- 生成 15 个目录的 STRUCTURE.md（formal-system 树：根 / concerns / 子关注点及其子目录 / methods、specs）。
+- **lab/formal-system/README.md §五**：目录结构说明索引（统一链接全部 STRUCTURE.md）。
+- 接入 pre-commit（meta-rules:structure）与 CI（"Directory STRUCTURE.md check (M4)"）；递归检查已允许 `STRUCTURE.md`。
+
+### 实测
+- structure_check：**16 目录 / 0 不合格**；recursive meta_rules_check：**38 合规 / 0 违规**；evolution check（5 规则）：全合法；全量链接 **0 失效**。
+
 ---

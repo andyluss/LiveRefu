@@ -93,3 +93,18 @@
 - [`specs/`](specs/)：类型 · 用 Alloy/CUE 写的形式化规格样例（待写）。
 
 > 结构是否符合元规则 M1/M2（含递归子关注点），由 [`meta-rules/tools/meta_rules_check.py`](concerns/meta-rules/tools/meta_rules_check.py) 可运行检查判定。
+
+## 五、目录结构说明索引（元规则 M4）
+
+> 每个目录以 `STRUCTURE.md` 自我描述（目录结构 + 条目说明 + 文件关系图），此处统一索引；生成/检测见
+> [`meta-rules/tools/structure_gen.py`](concerns/meta-rules/tools/structure_gen.py) / [`structure_check.py`](concerns/meta-rules/tools/structure_check.py)。
+
+- [`. / 根目录`](STRUCTURE.md)
+- [`concerns/`](concerns/STRUCTURE.md)（子关注点统一目录）
+  - [`data-validator/`](concerns/data-validator/STRUCTURE.md)（数据验证器）
+    - [`src/`](concerns/data-validator/src/STRUCTURE.md) · [`tests/`](concerns/data-validator/tests/STRUCTURE.md) · [`notes/`](concerns/data-validator/notes/STRUCTURE.md)
+  - [`meta-rules/`](concerns/meta-rules/STRUCTURE.md)（元规则）
+    - [`tools/`](concerns/meta-rules/tools/STRUCTURE.md) · [`evolution/`](concerns/meta-rules/evolution/STRUCTURE.md)
+  - [`visual-fallback/`](concerns/visual-fallback/STRUCTURE.md)（可视化兜底）
+    - [`tools/`](concerns/visual-fallback/tools/STRUCTURE.md) · [`viz/`](concerns/visual-fallback/viz/STRUCTURE.md) · [`evolution-history/`](concerns/visual-fallback/evolution-history/STRUCTURE.md)
+- [`methods/`](methods/STRUCTURE.md) · [`specs/`](specs/STRUCTURE.md)（类型目录）
