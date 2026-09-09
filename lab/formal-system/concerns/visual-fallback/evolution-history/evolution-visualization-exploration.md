@@ -115,12 +115,12 @@
 
 | 优先级 | 脚本 | 画法 | 数据源 |
 | --- | --- | --- | --- |
-| P1 | `rule_evolution_timeline.py` | 元规则状态阶梯（状态机轨迹） | `M*-*.md` 演进历史表 |
-| P1 | `git_activity.py` | 提交次数趋势 + 提交图 | `git log` |
+| ~~P1~~ | ~~`rule_evolution_timeline.py`~~（**已实现为 `.ts`**：[`rule_evolution_timeline.ts`](tools/rule_evolution_timeline.ts)） | 元规则状态阶梯（状态机轨迹） | `M*-*.md` 演进历史表 |
+| P1 | `git_activity.ts` | 提交次数趋势 + 提交图 | `git log` |
 | P2 | `changelog_timeline.py` | 版本时间线 + Added/Changed/Fixed 趋势 | `CHANGELOG.md` |
 | P2 | `doc_health_history.py` | 待定/已定/复核/互链 随时间曲线 | `visual_health` 快照存档 |
 | P3 | `cochange.py` | 文件共变网络 | `git log --name-only` |
 | P3 | `milestone_vs_actual.py` | 里程碑甘特/燃尽 | `plans/milestones` |
 
 ---
-*本文档只定方向；实现脚本前，先就"P1 选哪些、用什么画法"与你商定。*
+*本文档只定方向。**P1·元规则状态阶梯** 已按 TS 实现（[`rule_evolution_timeline.ts`](tools/rule_evolution_timeline.ts)），其余按优先级推进。*

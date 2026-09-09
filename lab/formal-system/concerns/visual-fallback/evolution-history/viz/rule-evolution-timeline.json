@@ -1,0 +1,78 @@
+{
+  "generated": "2026-09-09T12:12:16.758Z",
+  "rules": [
+    {
+      "rule": "M0-rule-governance",
+      "states": [
+        {
+          "v": 1,
+          "date": "2026-09-09",
+          "state": "accepted.active",
+          "change": "初定：规则成文、按域、编号、可追踪"
+        }
+      ]
+    },
+    {
+      "rule": "M1-file-organization",
+      "states": [
+        {
+          "v": 1,
+          "date": "2026-09-09",
+          "state": "proposed.discussion",
+          "change": "建议：concern-first/type-secondary（讨论稿）"
+        },
+        {
+          "v": 2,
+          "date": "2026-09-09",
+          "state": "experimental",
+          "change": "**定稿(实验期)**：采纳\"关注点优先，类型其次\"；本期仅固化规则+判据，不改现有结构"
+        },
+        {
+          "v": 3,
+          "date": "2026-09-09",
+          "state": "accepted.applied",
+          "change": "**引入\"递归子关注点\"**：关注点内可有子关注点（自包含，递归套用）；给出\"子关注点 vs 类型\"判据；已落地重组与检查"
+        }
+      ]
+    },
+    {
+      "rule": "M2-naming-vocabulary",
+      "states": [
+        {
+          "v": 1,
+          "date": "2026-09-09",
+          "state": "experimental",
+          "change": "初定：固定类型词表 + 可排序命名 + 系统时钟；后落地检查"
+        }
+      ]
+    },
+    {
+      "rule": "M3-rule-evolution",
+      "states": [
+        {
+          "v": 1,
+          "date": "2026-09-09",
+          "state": "experimental",
+          "change": "初定：建议→已定 二态状态机 + 版本化历史"
+        },
+        {
+          "v": 2,
+          "date": "2026-09-09",
+          "state": "accepted.applied",
+          "change": "**扩展为多状态+子状态**（8 主状态 + 子状态 + 允许迁移表）；补充\"鼓励演进\"立场；落 [`evolution/`](evolution/README.md) 形式化检查"
+        }
+      ]
+    },
+    {
+      "rule": "M4-directory-index",
+      "states": [
+        {
+          "v": 1,
+          "date": "2026-09-09",
+          "state": "accepted.applied",
+          "change": "初定：每目录 STRUCTURE.md（结构+细节+关系图）+ 树根 README 末尾索引；配套生成/检测脚本"
+        }
+      ]
+    }
+  ]
+}
