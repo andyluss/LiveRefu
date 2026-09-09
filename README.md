@@ -12,7 +12,7 @@
 - **indie/**：独立项目区。存放与工作区主线无直接关联的**独立项目**，每个项目一个子目录、自成体系（见 [`indie/README.md`](indie/README.md)）。
 - **lab/**：实验项目区。小范围探索新协作路径、新形式化方法等**实验项目**（见 [`lab/README.md`](lab/README.md)，其下 [`lab/formal-system/`](lab/formal-system/README.md) 为形式化协作实验基地），成熟后回流主项目。
 
-> **约定豁免**：`indie/`（独立项目区）与 `lab/`（实验项目区）下的子目录**默认豁免 [`rules/`](rules/README.md) 中的全部根规则**——当前为 **R01 文档约定**、**R02 Git 与提交信息约定**、**R03 相对链接校验**、**R04 数据 schema 校验**——除非**特别约定**。各子项目/实验可自定约定；若需引用某条根规则，在该子项目 README 中写明即可。
+> **约定豁免**：`indie/`（独立项目区）与 `lab/`（实验项目区）下的子目录**默认豁免 [`rules/`](rules/README.md) 中的全部根规则**——当前为 **R01 文档约定**、**R02 Git 与提交信息约定**、**R03 相对链接校验**、**R04 数据 schema 校验**、**R05 变更日志记录约定**——除非**特别约定**。各子项目/实验可自定约定；若需引用某条根规则，在该子项目 README 中写明即可。
 
 ## 二、目录导览
 
@@ -45,3 +45,7 @@
 - 想读题材理论 → 从 [`doc/retro-futurism/00_总论_未来的考古学与全卷地图.md`](doc/retro-futurism/00_总论_未来的考古学与全卷地图.md) 开始。
 - 想以某角色身份协作开发 → 打开 [`studio/`](studio/)，按角色目录读取其 README。
 - 想看工作室整体结构与协作拓扑 → [`studio/README.md`](studio/README.md)。
+
+## 六、变更日志
+
+工作区根级变更记于 [`CHANGELOG.md`](CHANGELOG.md)，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [SemVer](https://semver.org/)；**每次（非琐碎）变更都须记录**（规则见 [`rules/R05-changelog.md`](rules/R05-changelog.md)，格式规格见 [`tech/changelog-convention.md`](tech/changelog-convention.md)）。琐碎改动（如改错别字、纯格式）豁免。

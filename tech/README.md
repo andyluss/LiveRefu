@@ -9,6 +9,7 @@
 | --- | --- |
 | [`git-convention.md`](git-convention.md) | Git 与提交信息约定（Conventional Commits、自动提交、历史约定） |
 | [`docs-convention.md`](docs-convention.md) | 文档约定（md 体例、**相对链接深度**与校验机制） |
+| [`changelog-convention.md`](changelog-convention.md) | 变更日志约定（Keep a Changelog + SemVer；每次非琐碎变更须记录） |
 | [`hooks-readme.md`](hooks-readme.md) | 相对链接校验：pre-commit 钩子 + CI 的启用/跳过/常见处理 |
 | [`formalization.md`](formalization.md) | 形式化验证：数据 schema 校验 + CI Godot 加载检查，GDScript 边界与演进路线 |
 
