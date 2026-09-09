@@ -17,8 +17,8 @@
 ## 运行
 
 ```bash
-python3 lab/formal-system/meta-rules/evolution/rule_evolution_check.py        # 校验全部元规则
-python3 lab/formal-system/meta-rules/evolution/rule_evolution_check.py --self-test  # 自检(能抓非法迁移/状态)
+python3 lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.py        # 校验全部元规则
+python3 lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.py --self-test  # 自检(能抓非法迁移/状态)
 ```
 
 退出码：0=全部合法；1=有违规。

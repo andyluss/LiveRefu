@@ -1,0 +1,144 @@
+{
+  "generated": "2026-09-09T11:25:49.621484+08:00",
+  "concern": "lab/formal-system",
+  "root": "/Users/lu/work/fab/LiveRefu/lab/formal-system",
+  "compliant": true,
+  "counts": {
+    "ok": 33,
+    "violations": 0
+  },
+  "items": [
+    {
+      "status": "ok",
+      "text": "[M1] 出入口 README.md ✔"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 根文档 ✔ CHANGELOG.md"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 根文档 ✔ EXPERIMENT.md"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "[M1] 代码子关注点(命名豁免) ✔ data-validator/"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M1] 出入口 README.md ✔"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ M0-rule-governance.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ M1-file-organization.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ M2-naming-vocabulary.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ M3-rule-evolution.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M1] 代码子关注点(命名豁免) ✔ evolution/"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 根文档 ✔ meta-rules-config.json"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/meta-rules/[M2] 类型目录 ✔ tools (代码类(命名豁免))"
+    },
+    {
+      "status": "ok",
+      "text": "[M1] 子关注点 ✔ meta-rules/"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M1] 出入口 README.md ✔"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M1] 出入口 README.md ✔"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M2] 根文档 ✔ evolution-visualization-exploration.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M1] 子关注点 ✔ evolution-history/"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 类型目录 ✔ tools (代码类(命名豁免))"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 类型目录 ✔ viz (文档/类型)"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/consistency-heatmap.html"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/consistency-heatmap.json"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/doc-health.html"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/doc-health.json"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/meta-compliance.json"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/[M2] 命名 ✔ viz/review-ledger.json"
+    },
+    {
+      "status": "ok",
+      "text": "[M1] 子关注点 ✔ visual-fallback/"
+    },
+    {
+      "status": "ok",
+      "text": "[M1] 子关注点统一目录 ✔ concerns/"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 类型目录 ✔ methods (文档/类型)"
+    },
+    {
+      "status": "ok",
+      "text": "[M2] 类型目录 ✔ specs (文档/类型)"
+    }
+  ]
+}

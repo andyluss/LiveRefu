@@ -11,10 +11,10 @@ review_ledger —— 人工复核账本 CLI（可视验证面第③层）。
 只做登记/查询，不推导或伪造结论——approve/flag 与理由由人类填写。
 
 用法：
-  python3 lab/formal-system/visual-fallback/tools/review_ledger.py record --rel <path> --verdict approve|flag --reason "<原因>" [--reviewer <人>] [--action "<行动>"]
-  python3 lab/formal-system/visual-fallback/tools/review_ledger.py list
-  python3 lab/formal-system/visual-fallback/tools/review_ledger.py status
-  python3 lab/formal-system/visual-fallback/tools/review_ledger.py delete <id>
+  python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py record --rel <path> --verdict approve|flag --reason "<原因>" [--reviewer <人>] [--action "<行动>"]
+  python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py list
+  python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py status
+  python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py delete <id>
 
 --ledger <path> 可覆盖默认账本路径。
 """

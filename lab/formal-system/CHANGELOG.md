@@ -43,7 +43,7 @@
 ## [0.2.0] · 2026-09-08 · 实验 A 原型落地（Rust 数据契约校验器）
 
 ### Added
-- [`prototypes/data-validator/`](data-validator/README.md)（Rust crate，lib + bin）落地，功能对齐 [`tools/check_data.py`](../../tools/check_data.py)。
+- [`prototypes/data-validator/`](concerns/data-validator/README.md)（Rust crate，lib + bin）落地，功能对齐 [`tools/check_data.py`](../../tools/check_data.py)。
   - **校验引擎**（`src/lib.rs`）：支持 JSON Schema 子集 `type`/`enum`/`const`/`minimum`/`maximum`/`minLength`/`maxLength`/`minItems`/`maxItems`/`required`/`properties`/`additionalProperties`/`items`/`pattern`。
   - **CLI**（`src/main.rs`）：单文件或 `--schema-dir`/`--data-dir` 目录校验，退出码作门禁（0=通过，1=违规）。
   - **测试**：单元 5 + 拦截 4（非法越界/枚举/pattern/未知字段）+ 属性 5（proptest 随机生成）+ 真实数据 1 — 共 15 个。
@@ -55,14 +55,14 @@
 - **比 Python 版更强的约束**：新增 `pattern`（snake_case 校验）、`minLength`、`minItems`、`additionalProperties:false`（拒绝未知字段）等，均被 clippy / 测试机械判定。
 
 ### 笔记
-- 记边想边试的教训到 [`notes/20260908-experiment-a-rust-validator.md`](data-validator/notes/20260908-experiment-a-rust-validator.md)。
+- 记边想边试的教训到 [`notes/20260908-experiment-a-rust-validator.md`](concerns/data-validator/notes/20260908-experiment-a-rust-validator.md)。
 
 ## [0.3.0] · 2026-09-08 · 建立"可视验证面"（人类兜底验证层，S1+S2）
 
 ### Added
-- [**可视化机制**](visual-fallback/README.md)：为「难以形式化」的产物（文档/创意/设计）建立"三层"验证——
+- [**可视化机制**](concerns/visual-fallback/README.md)：为「难以形式化」的产物（文档/创意/设计）建立"三层"验证——
   ① 机器判定层（已做）→ ② **可视异常面**（本层）→ ③ 人工复核账本。核心原则：只锚定可验证事实、异常优先、确定性可复现。
-- [**文档健康仪表盘**](visual-fallback/tools/visual_health.py)（原型 S1+S2）：纯 Python 标准库、零依赖、一键重跑，产出
+- [**文档健康仪表盘**](concerns/visual-fallback/tools/visual_health.py)（原型 S1+S2）：纯 Python 标准库、零依赖、一键重跑，产出
   `viz/doc-health.html`（自包含仪表盘：文档图谱/主题着色/孤立虚线/陈旧红环 + 异常面板 + 清单）与 `viz/doc-health.json`（机器摘要）。
   - **文档图谱**：节点=md，边=文档间相对链接；大小∝活跃度；主题着色。
   - 每文档 `【待定】/【已定】` 密度 + 孤立/高待定/陈旧异常面板。
@@ -80,9 +80,9 @@
 ## [0.4.0] · 2026-09-09 · 打通"人工复核账本"（第③层）
 
 ### Added
-- [**复核账本 CLI**](visual-fallback/tools/review_ledger.py)：`record --rel --verdict approve|flag --reason [--reviewer] [--action]`、
+- [**复核账本 CLI**](concerns/visual-fallback/tools/review_ledger.py)：`record --rel --verdict approve|flag --reason [--reviewer] [--action]`、
   `list`、`status`、`delete`；写入**追加式**、可追踪的 `viz/review-ledger.json`（时间/人/理由/id 留痕）。
-- [**visual_health.py**](visual-fallback/tools/visual_health.py) 读取账本：把每个异常标注为 `未复核 / 已通过 / 已标记`，
+- [**visual_health.py**](concerns/visual-fallback/tools/visual_health.py) 读取账本：把每个异常标注为 `未复核 / 已通过 / 已标记`，
   新增"人工复核账本"卡片（异常总数/已通过/已标记/未复核 + 按复核态分组的异常清单 + 复核覆盖率）；
   图谱以描边颜色表达（绿=已通过、橙=已标记、虚线=未复核异常、红点=陈旧）。
 - `--ledger <path>` 可指向其它账本。
@@ -99,7 +99,7 @@
 ## [0.5.0] · 2026-09-09 · S3 跨文档一致性热力图
 
 ### Added
-- [**consistency_heatmap.py**](visual-fallback/tools/consistency_heatmap.py)：把同一契约字段（`pomodoro_work`/`focus_max`/
+- [**consistency_heatmap.py**](concerns/visual-fallback/tools/consistency_heatmap.py)：把同一契约字段（`pomodoro_work`/`focus_max`/
   `collect_frag` 的 common/rare/cult→初值映射 等 8 项）在**各文档的具体取值**与**权威源**（`data/tables/*.json`）
   对拍，渲染 `viz/consistency-heatmap.html` + `.json` 热力矩阵。
 - **编码**：绿=与权威一致 / 红=不一致 / 琥珀=同文档冲突(多值) / 灰=未提及。`--self-test` 自检检测逻辑
@@ -113,7 +113,7 @@
 ## [0.6.0] · 2026-09-09 · 元规则实验稿（M1 文件组织方式定稿）
 
 ### Added
-- [**meta-rules/**](meta-rules/)（初版为 `meta-rules.md`，[0.7.0] 升级为文件夹）：工作区"规则之规则"实验稿（先放本基地试，成熟后回流主项目）。
+- [**meta-rules/**](concerns/meta-rules/)（初版为 `meta-rules.md`，[0.7.0] 升级为文件夹）：工作区"规则之规则"实验稿（先放本基地试，成熟后回流主项目）。
   - 定义元规则（普通规则约束产物；元规则约束"如何收敛出好结构并保持可读"）、规则总表（M0/M1/M2/M3）。
   - 每条元规则的结构（id/目标/决策/判定标准/权衡/自检/可验证）。
 
@@ -130,12 +130,12 @@
 ## [0.7.0] · 2026-09-09 · 元规则升级为文件夹 + M2 定稿
 
 ### Added
-- **元规则文件夹** `lab/formal-system/meta-rules/`：**一条元规则一个文件**，均含"**主选 + 多条备选**"与"**演进历史**"。
-  - [`README.md`](meta-rules/README.md)：元规则定义 + 规则总表 + 单规则模板。
-  - [`M0-rule-governance.md`](meta-rules/M0-rule-governance.md)：规则成文/按域/编号。
-  - [`M1-file-organization.md`](meta-rules/M1-file-organization.md)：关注点优先/类型其次（含备选表 A1.1-A1.3 + 演进历史 v1→v2）。
-  - [`M2-naming-vocabulary.md`](meta-rules/M2-naming-vocabulary.md)：**命名与类型词表**（新）。
-  - [`M3-rule-evolution.md`](meta-rules/M3-rule-evolution.md)：建议→已定 状态机 + 版本化历史。
+- **元规则文件夹** `lab/formal-system/concerns/meta-rules/`：**一条元规则一个文件**，均含"**主选 + 多条备选**"与"**演进历史**"。
+  - [`README.md`](concerns/meta-rules/README.md)：元规则定义 + 规则总表 + 单规则模板。
+  - [`M0-rule-governance.md`](concerns/meta-rules/M0-rule-governance.md)：规则成文/按域/编号。
+  - [`M1-file-organization.md`](concerns/meta-rules/M1-file-organization.md)：关注点优先/类型其次（含备选表 A1.1-A1.3 + 演进历史 v1→v2）。
+  - [`M2-naming-vocabulary.md`](concerns/meta-rules/M2-naming-vocabulary.md)：**命名与类型词表**（新）。
+  - [`M3-rule-evolution.md`](concerns/meta-rules/M3-rule-evolution.md)：建议→已定 状态机 + 版本化历史。
 - 原 `meta-rules.md` 合并进文件夹（删除）。
 
 ### Changed（M2 定稿，实验期）
@@ -149,11 +149,11 @@
 ## [0.8.0] · 2026-09-09 · M1+M2 落地示样（以本基地为样本）+ 元规则可运行检查
 
 ### Added
-- [**meta_rules_check.py**](meta-rules/tools/meta_rules_check.py)：把元规则 M1+M2 接入**可运行**检查（`--self-test` 自检）。
+- [**meta_rules_check.py**](concerns/meta-rules/tools/meta_rules_check.py)：把元规则 M1+M2 接入**可运行**检查（`--self-test` 自检）。
   - M1：关注点根有 `README.md`(出入口)；子项=类型目录+根文档，无散落。
   - M2：子目录在类型词表；根文件在白名单；文档类类型内文件命名符合（`NN_`/`YYYYMMDD(HHMM)-`/`snake_case`）；代码类豁免。
-- [**meta-rules-config.json**](meta-rules/meta-rules-config.json)：元规则的**机器可读判定配置**（词表/根文档/命名模式/豁免）。
-- **示样**（[`meta-rules/README.md`](meta-rules/README.md) §示样）：以 `lab/formal-system` 自身演示 M1+M2 已落地，并由检查证实。
+- [**meta-rules-config.json**](concerns/meta-rules/meta-rules-config.json)：元规则的**机器可读判定配置**（词表/根文档/命名模式/豁免）。
+- **示样**（[`meta-rules/README.md`](concerns/meta-rules/README.md) §示样）：以 `lab/formal-system` 自身演示 M1+M2 已落地，并由检查证实。
 
 ### Changed（落地修正一处真实偏差）
 - `notes/` 原 `2026-09-08-experiment-a-rust-validator.md`（`YYYY-MM-DD-`）不符合 M2 日期前缀 → 改名 `20260908-experiment-a-rust-validator.md`。
@@ -165,7 +165,7 @@
 ## [0.9.0] · 2026-09-09 · M1 引入"递归子关注点" + 元规则合规可视化 + 接入 pre-commit/CI
 
 ### Changed（M1 完善）
-- [M1-file-organization.md](meta-rules/M1-file-organization.md) **新增 §2.1 递归子关注点**：关注点内可有**子关注点**
+- [M1-file-organization.md](concerns/meta-rules/M1-file-organization.md) **新增 §2.1 递归子关注点**：关注点内可有**子关注点**
   （自包含，递归套用）；给出"子关注点 vs 类型目录"判据（可独立命名的"什么"→子关注点；某关注点的一类产物→类型）。
 - 判定标准新增 **问题 0**（是否可自成一体 → 建子关注点）；演进历史 + **v3**。
 
@@ -189,14 +189,31 @@
 - Rust 数据验证器随迁至 `data-validator/`（`cargo test` 15 项通过）。
 
 ### Changed（M3 演进机扩展）
-- [M3-rule-evolution.md](meta-rules/M3-rule-evolution.md) 扩展为**多状态+子状态**生命周期：主状态
+- [M3-rule-evolution.md](concerns/meta-rules/M3-rule-evolution.md) 扩展为**多状态+子状态**生命周期：主状态
   `draft/proposed/experimental/accepted/in-review/superseded/deprecated/retired` + 子状态 + **允许迁移表**；补充"**鼓励演进**"立场。
 - 每条规则（M0-M3）演进历史加**状态列**；标题状态对齐状态机。
 
 ### Added（演进状态检查子关注点）
-- [`meta-rules/evolution/`](meta-rules/evolution/)：**形式化检查演进状态**的元规则子关注点。
-  - [`rule_evolution_check.py`](meta-rules/evolution/rule_evolution_check.py)：扫描 `M*-*.md`，校验状态合法/日期非降序/相邻迁移合法/最新态=当前态；`--self-test` 可抓非法迁移。**4 规则全合法**。
+- [`meta-rules/evolution/`](concerns/meta-rules/evolution/)：**形式化检查演进状态**的元规则子关注点。
+  - [`rule_evolution_check.py`](concerns/meta-rules/evolution/rule_evolution_check.py)：扫描 `M*-*.md`，校验状态合法/日期非降序/相邻迁移合法/最新态=当前态；`--self-test` 可抓非法迁移。**4 规则全合法**。
   - 接入 pre-commit（meta-rules 变更时）与 CI（"Meta-rule evolution state check (M3)"）。
 - **递归检查**对 `meta-rules → evolution` 递归通过；整体 **28 合规 / 0 违规**；全量链接检查 **0 失效**。
+
+## [0.11.0] · 2026-09-09 · 子关注点统一目录 concerns/ + 演进历史可视化子关注点（探讨文档）
+
+### Changed（结构）
+- 给所有子关注点加**统一父目录**：`lab/formal-system/concerns/{data-validator,visual-fallback,meta-rules}/`，
+  与根文档（README/CHANGELOG/EXPERIMENT）及类型目录（methods/specs）分离，避免混杂。
+- 检查新增 `sub_concerns_dir`（子关注点统一目录，递归校验其下每个子关注点）；路径类工具已适配（`.git` 定位工作区根）。
+
+### Added
+- [`concerns/visual-fallback/evolution-history/`](concerns/visual-fallback/evolution-history/)：**演进历史可视化**子关注点（仅文档，暂不实现脚本）。
+  - [`evolution-visualization-exploration.md`](concerns/visual-fallback/evolution-history/evolution-visualization-exploration.md)：**总探讨**——
+    所有"演化/时间序"可视化（Git 记录 / CHANGELOG / 元规则演进史 / 文档历史 / 里程碑 vs 实际），含通用画法工具箱、
+    逐对象展开、优先级与 MVP 建议、边界与**未来脚本候选清单**。
+- 递归检查复核 `concerns/` 容器 + 各子关注点（含 `evolution-history`、`evolution`）：**33 合规 / 0 违规**；全量链接 **0 失效**。
+
+### 待办
+- 按探讨文档推进具体可视化脚本（P1：元规则演进状态阶梯 / Git 活动图）。
 
 ---

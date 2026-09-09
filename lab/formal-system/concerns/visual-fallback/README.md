@@ -1,9 +1,11 @@
 # 可视验证面（Visual Verification Surface）—— 人类兜底验证层
 
-> 归属 [`lab/formal-system`](../README.md)。前置认识：形式化（编译/契约/测试）只能判定
+> 归属 [`lab/formal-system`](../../README.md)。前置认识：形式化（编译/契约/测试）只能判定
 > **可判定**的东西；对文档、创意、设计这类**不可形式化**的产物，用**信息可视化**把它的
 > "结构 / 覆盖 / 一致性 / 异常"渲染成图，让**人类用视觉直觉兜底验证**（`tech/formalization.md`
 > 已明确"温暖、可久处"只能靠人评审，无法形式化——本层正是那条"人的兜底"路径）。
+
+> **子关注点**：[`evolution-history/`](evolution-history/README.md) —— 一切"演进/时间序"可视化（Git/CHANGELOG/元规则演进史/文档历史）的探讨（当前仅文档）。
 
 ## 一、机制（三层协同）
 
@@ -23,7 +25,7 @@
 ## 三、工具：文档健康仪表盘（S1+S2）
 
 ```bash
-python3 lab/formal-system/visual-fallback/tools/visual_health.py
+python3 lab/formal-system/concerns/visual-fallback/tools/visual_health.py
 ```
 
 产出：
@@ -42,8 +44,8 @@ python3 lab/formal-system/visual-fallback/tools/visual_health.py
 ### 工具 B：跨文档一致性热力图（S3）
 
 ```bash
-python3 lab/formal-system/visual-fallback/tools/consistency_heatmap.py            # 生成热力图
-python3 lab/formal-system/visual-fallback/tools/consistency_heatmap.py --self-test  # 自检检测逻辑(统一致/不一致/冲突/未提及)
+python3 lab/formal-system/concerns/visual-fallback/tools/consistency_heatmap.py            # 生成热力图
+python3 lab/formal-system/concerns/visual-fallback/tools/consistency_heatmap.py --self-test  # 自检检测逻辑(统一致/不一致/冲突/未提及)
 ```
 
 产出 `viz/consistency-heatmap.html` + `.json`。把**同一契约字段**（如 `pomodoro_work`、`focus_max`、
@@ -59,13 +61,13 @@ python3 lab/formal-system/visual-fallback/tools/consistency_heatmap.py --self-te
 异常即被标注为 `未复核 / 已通过 / 已标记`，并给出**复核覆盖率**。
 
 ```bash
-python3 lab/formal-system/visual-fallback/tools/review_ledger.py status   # 先看每个文档的当前复核态
+python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py status   # 先看每个文档的当前复核态
 # 登记一条(对异常文档)
-python3 lab/formal-system/visual-fallback/tools/review_ledger.py record \
+python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py record \
   --rel <文档相对路径> --verdict approve|flag --reason "<原因>" [--reviewer <人>] [--action "<行动>"]
-python3 lab/formal-system/visual-fallback/tools/review_ledger.py list       # 全部记录(含 时间/人/理由/id)
-python3 lab/formal-system/visual-fallback/tools/review_ledger.py delete <id>  # 更正/撤销
-python3 lab/formal-system/visual-fallback/tools/visual_health.py            # 重跑, 让复核状态并入仪表盘
+python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py list       # 全部记录(含 时间/人/理由/id)
+python3 lab/formal-system/concerns/visual-fallback/tools/review_ledger.py delete <id>  # 更正/撤销
+python3 lab/formal-system/concerns/visual-fallback/tools/visual_health.py            # 重跑, 让复核状态并入仪表盘
 ```
 
 - 账本是**追加式历史**（同文档可多次复核，最新一条=当前态），实现"每条复核留痕、可追溯"。

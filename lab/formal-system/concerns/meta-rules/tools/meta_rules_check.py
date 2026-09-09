@@ -14,10 +14,10 @@ meta_rules_check —— 把元规则 M1+M2 接入一条**可运行**的检查（
 配置：[`../meta-rules/meta-rules-config.json`](../meta-rules/meta-rules-config.json)。
 
 用法：
-  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py                    # 默认检查 lab/formal-system
-  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py --root <dir> --config <json>
-  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py --json <path>     # 额外写机器可读结果
-  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py --self-test
+  python3 lab/formal-system/concerns/meta-rules/tools/meta_rules_check.py                    # 默认检查 lab/formal-system
+  python3 lab/formal-system/concerns/meta-rules/tools/meta_rules_check.py --root <dir> --config <json>
+  python3 lab/formal-system/concerns/meta-rules/tools/meta_rules_check.py --json <path>     # 额外写机器可读结果
+  python3 lab/formal-system/concerns/meta-rules/tools/meta_rules_check.py --self-test
 退出码：0=全部符合；1=存在违规。
 """
 import argparse
@@ -28,8 +28,8 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# 本脚本位于 lab/formal-system/meta-rules/tools/ 下
-DEFAULT_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))       # lab/formal-system
+# 本脚本位于 lab/formal-system/concerns/meta-rules/tools/ 下
+DEFAULT_ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))  # lab/formal-system (formal-system)
 DEFAULT_CONFIG = os.path.normpath(os.path.join(HERE, "..", "meta-rules-config.json"))
 
 
@@ -44,6 +44,7 @@ def _clean_cfg(cfg):
         "skip_dirs": cfg.get("skip_dirs", ["__pycache__", "target", ".git", "node_modules"]),
         "skip_prefixes": cfg.get("skip_prefixes", [".", "_"]),
         "sub_concerns": cfg.get("sub_concerns", []),
+        "sub_concerns_dir": cfg.get("sub_concerns_dir"),
         "sub_configs": cfg.get("sub_configs", {}),
     }
 
@@ -72,8 +73,25 @@ def run_check(root, cfg, prefix=""):
     type_vocab = set(cfg["type_vocab"])
     code_types = set(cfg["code_types"])
     sub_concerns = set(cfg["sub_concerns"])
+    sub_concerns_dir = cfg.get("sub_concerns_dir")
     skill_dirs = set(cfg["skip_dirs"])
     default_naming = [re.compile(p) for p in cfg["doc_naming"].get("default", [])]
+
+    def validate_sub(ep, sub_cfg, child_label, child_prefix):
+        """校验一个子关注点（代码型 或 递归）。"""
+        if sub_cfg.get("code"):
+            if os.path.isfile(os.path.join(ep, "README.md")):
+                mark(True, f"[M1] 代码子关注点(命名豁免) ✔ {child_label}/")
+            else:
+                issues.append(f"{prefix}[M1] 代码子关注点缺 README ✗ {child_label}/")
+        else:
+            sub_issues, sub_info = run_check(ep, sub_cfg, prefix=child_prefix)
+            issues.extend(sub_issues)
+            info.extend(sub_info)
+            if not sub_issues:
+                mark(True, f"[M1] 子关注点 ✔ {child_label}/")
+            else:
+                issues.append(f"{prefix}[M1] 子关注点有违规 ✗ {child_label}/")
 
     for entry in sorted(os.listdir(root)):
         ep = os.path.join(root, entry)
@@ -83,25 +101,21 @@ def run_check(root, cfg, prefix=""):
             if entry in type_vocab or entry in code_types:
                 kind = "代码类(命名豁免)" if entry in code_types else "文档/类型"
                 mark(True, f"[M2] 类型目录 ✔ {entry} ({kind})")
+            elif sub_concerns_dir and entry == sub_concerns_dir:
+                # 子关注点统一目录：其下每个子目录是一个子关注点
+                for sub in sorted(os.listdir(ep)):
+                    sub_ep = os.path.join(ep, sub)
+                    if os.path.isdir(sub_ep):
+                        validate_sub(sub_ep, cfg["sub_configs"].get(sub, {}),
+                                     child_label=sub, child_prefix=prefix + entry + "/" + sub + "/")
+                    else:
+                        mark(False, f"[M1] 子关注点容器内非常规条目 ✗ {entry}/{sub}")
+                mark(True, f"[M1] 子关注点统一目录 ✔ {entry}/")
             elif entry in sub_concerns or (
                 entry not in type_vocab and os.path.isfile(os.path.join(ep, "README.md"))
             ):
-                # 递归子关注点
-                sub_cfg = cfg["sub_configs"].get(entry, {})
-                if sub_cfg.get("code"):
-                    # 代码型子关注点：只需出入口 README，内部按各自工程约定(命名豁免)
-                    if os.path.isfile(os.path.join(ep, "README.md")):
-                        mark(True, f"[M1] 代码子关注点(命名豁免) ✔ {entry}/")
-                    else:
-                        issues.append(f"{prefix}[M1] 代码子关注点缺 README ✗ {entry}/")
-                else:
-                    sub_issues, sub_info = run_check(ep, sub_cfg, prefix=prefix + entry + "/")
-                    issues += sub_issues
-                    info += sub_info
-                    if not sub_issues:
-                        mark(True, f"[M1] 子关注点 ✔ {entry}/")
-                    else:
-                        issues.append(f"{prefix}[M1] 子关注点有违规 ✗ {entry}/")
+                validate_sub(ep, cfg["sub_configs"].get(entry, {}),
+                             child_label=entry, child_prefix=prefix + entry + "/")
             else:
                 mark(False, f"[M2] 未知类型目录(不在词表,也非子关注点) ✗ {entry}")
         else:
@@ -110,7 +124,9 @@ def run_check(root, cfg, prefix=""):
             else:
                 mark(False, f"[M2] 根目录未声明文件 ✗ {entry}")
 
-    # 声明的子关注点须已建立
+    # 子关注点统一目录 / 声明的子关注点须已建立
+    if sub_concerns_dir and not os.path.isdir(os.path.join(root, sub_concerns_dir)):
+        mark(False, f"[M1] 声明了子关注点统一目录但未建立 ✗ {sub_concerns_dir}/")
     for name in sorted(sub_concerns):
         if not os.path.isdir(os.path.join(root, name)):
             mark(False, f"[M1] 声明了子关注点但目录未建立 ✗ {name}/")

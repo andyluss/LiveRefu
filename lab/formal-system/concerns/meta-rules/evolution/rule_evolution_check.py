@@ -13,8 +13,8 @@ rule_evolution_check —— 形式化检查"元规则演进状态"（属 meta-ru
 状态机依据: [`M3-rule-evolution.md`](../M3-rule-evolution.md)。自检: `--self-test`。
 
 用法：
-  python3 lab/formal-system/meta-rules/evolution/rule_evolution_check.py
-  python3 lab/formal-system/meta-rules/evolution/rule_evolution_check.py --self-test
+  python3 lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.py
+  python3 lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.py --self-test
 退出码：0=全部合法；1=有违规。
 """
 import datetime

@@ -11,7 +11,7 @@ use std::path::PathBuf;
 /// 从本 crate 定位主项目数据目录(LiveRefu/projects/tomorrows-channel/data)。
 fn real_data_dirs() -> (PathBuf, PathBuf) {
     let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    let root = manifest.join("../../../"); // data-validator -> LiveRefu 根
+    let root = manifest.join("../../../../"); // concerns/data-validator -> LiveRefu 根
     (
         root.join("projects/tomorrows-channel/data/schema"),
         root.join("projects/tomorrows-channel/data/tables"),

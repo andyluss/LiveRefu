@@ -1,18 +1,18 @@
 {
-  "generated": "2026-09-09T11:06:39.616652+08:00",
+  "generated": "2026-09-09T11:25:49.629104+08:00",
   "counts": {
-    "docs": 247,
-    "links": 286,
-    "open": 188,
-    "closed": 17,
+    "docs": 249,
+    "links": 291,
+    "open": 192,
+    "closed": 20,
     "orphans": 139,
     "stale": 0
   },
   "review": {
-    "anomaly_total": 179,
+    "anomaly_total": 181,
     "approved": 0,
     "flagged": 1,
-    "unreviewed": 178
+    "unreviewed": 180
   },
   "themes": {
     "其他": {
@@ -340,9 +340,9 @@
       "orphan": 0
     },
     "实验区": {
-      "docs": 12,
-      "open": 15,
-      "closed": 6,
+      "docs": 14,
+      "open": 19,
+      "closed": 9,
       "orphan": 0
     }
   },
@@ -369,7 +369,7 @@
     },
     {
       "title": "可视验证面（Visual Verification Surface）—— 人类兜底验证层",
-      "rel": "lab/formal-system/visual-fallback/README.md",
+      "rel": "lab/formal-system/concerns/visual-fallback/README.md",
       "open": 9
     },
     {

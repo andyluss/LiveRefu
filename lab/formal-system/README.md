@@ -86,10 +86,10 @@
 
 ## 四、目录与展开方向（关注点 → 子关注点 / 类型）
 
-- [`data-validator/`](data-validator/)：**子关注点** · 数据验证器（Rust 契约校验器 + 测试 + 试用教训）。
-- [`visual-fallback/`](visual-fallback/)：**子关注点** · 可视化兜底（文档健康 / 一致性热力图 / 复核账本 的工具+输出）。
-- [`meta-rules/`](meta-rules/)：**子关注点** · 工作区元规则（规则之规则；每条一文件含主选/备选/演进历史；含递归结构检查）。
+- [`data-validator/`](concerns/data-validator/)：**子关注点** · 数据验证器（Rust 契约校验器 + 测试 + 试用教训）。
+- [`visual-fallback/`](concerns/visual-fallback/)：**子关注点** · 可视化兜底（文档健康 / 一致性热力图 / 复核账本 的工具+输出）。
+- [`meta-rules/`](concerns/meta-rules/)：**子关注点** · 工作区元规则（规则之规则；每条一文件含主选/备选/演进历史；含递归结构检查）。
 - [`methods/`](methods/)：类型 · 深入研究某方法（待写）。
 - [`specs/`](specs/)：类型 · 用 Alloy/CUE 写的形式化规格样例（待写）。
 
-> 结构是否符合元规则 M1/M2（含递归子关注点），由 [`meta-rules/tools/meta_rules_check.py`](meta-rules/tools/meta_rules_check.py) 可运行检查判定。
+> 结构是否符合元规则 M1/M2（含递归子关注点），由 [`meta-rules/tools/meta_rules_check.py`](concerns/meta-rules/tools/meta_rules_check.py) 可运行检查判定。

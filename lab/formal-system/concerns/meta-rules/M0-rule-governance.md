@@ -10,9 +10,9 @@
 
 - 规则**成文**为 Markdown，不只在会话或口头约定里。
 - 按"域"归类：
-  - 工作区**具体规则** → [`../../../tech/`](../../../tech/README.md)（docs-convention / git-convention / formalization / hooks-readme）；
-  - **元规则**（本目录）→ `lab/formal-system/meta-rules/`；
-  - **项目规则** → `projects/<项目>/`（如 `docs/`、[`../README.md`](../README.md)）。
+  - 工作区**具体规则** → [`../../../tech/`](../../../../tech/README.md)（docs-convention / git-convention / formalization / hooks-readme）；
+  - **元规则**（本目录）→ `lab/formal-system/concerns/meta-rules/`；
+  - **项目规则** → `projects/<项目>/`（如 `docs/`、[`../README.md`](../../README.md)）。
 - 每条规则一个**唯一 id**，变更写入其"演进历史"表（见 [M3](M3-rule-evolution.md)）。
 
 **权衡**：成文要花一点时间，但换来"可引用、可核对、可演进"，且 AI/人都能依据同一条规则行事。

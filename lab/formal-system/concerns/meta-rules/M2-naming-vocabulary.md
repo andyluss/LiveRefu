@@ -20,7 +20,7 @@
    - 顺序相关的主题/篇/章节/角色 → **编号前缀** `NN_`（如 `00_总论_…`、`14_磁带篇_…`）。
    - 时间戳事件（会议/日志/决策/里程碑）→ `YYYYMMDD-HHMM-关键词`；文档内时刻 `YYYY-MM-DD HH:MM`。
    - 无顺序/时间的普通文件 → snake_case 语义名（如 `config_loader.gd`）。
-3. **时间一律用系统 `date`（东八区）**，禁止"脑内手写"——依据 [`../../../tech/docs-convention.md`](../../../tech/docs-convention.md)。
+3. **时间一律用系统 `date`（东八区）**，禁止"脑内手写"——依据 [`../../../tech/docs-convention.md`](../../../../tech/docs-convention.md)。
 
 **权衡**：需要一次成文、并让各项目"断言同构"；换来跨目录的**统一、可预期、可机器排序**。
 
@@ -47,4 +47,4 @@
 
 | 版本 | 日期 | 状态 | 变更 | 依据 |
 | --- | --- | --- | --- | --- |
-| v1 | 2026-09-09 | `experimental` | 初定：固定类型词表 + 可排序命名 + 系统时钟；后落地检查 | 用户决定继续 M2；对照 [`../../../tech/docs-convention.md`](../../../tech/docs-convention.md) 与项目现状 |
+| v1 | 2026-09-09 | `experimental` | 初定：固定类型词表 + 可排序命名 + 系统时钟；后落地检查 | 用户决定继续 M2；对照 [`../../../tech/docs-convention.md`](../../../../tech/docs-convention.md) 与项目现状 |

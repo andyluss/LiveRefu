@@ -8,8 +8,8 @@ visual_health —— 文档健康仪表盘生成器（"可视验证面"，实验
 直觉**兜底扫出"哪里不对"。本脚本生成一份**零依赖、可一键重跑、自包含**的 HTML 仪表盘。
 
 产出：
-  lab/formal-system/visual-fallback/viz/doc-health.html        # 自包含仪表盘（图谱 + 复核账本 + 异常面板 + 清单）
-  lab/formal-system/visual-fallback/viz/doc-health.json        # 机器可读摘要（计数/主题/复核覆盖）
+  lab/formal-system/concerns/visual-fallback/viz/doc-health.html        # 自包含仪表盘（图谱 + 复核账本 + 异常面板 + 清单）
+  lab/formal-system/concerns/visual-fallback/viz/doc-health.json        # 机器可读摘要（计数/主题/复核覆盖）
 
 可视化内容（详见 README）：
   - 文档图谱：节点=md 文档，边=文档间相对链接，按主题着色；节点大小∝活跃度；
@@ -26,8 +26,8 @@ visual_health —— 文档健康仪表盘生成器（"可视验证面"，实验
   3. 确定可复现：纯 Python 标准库，越界路径容错，一键重跑。
 
 用法：
-  python3 lab/formal-system/visual-fallback/tools/visual_health.py            # 生成默认仪表盘
-  python3 lab/formal-system/visual-fallback/tools/visual_health.py --out <path>  # 自定义输出
+  python3 lab/formal-system/concerns/visual-fallback/tools/visual_health.py            # 生成默认仪表盘
+  python3 lab/formal-system/concerns/visual-fallback/tools/visual_health.py --out <path>  # 自定义输出
 """
 
 import datetime
@@ -67,10 +67,10 @@ def find_workspace_root():
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = find_workspace_root()
-DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "visual-fallback", "viz", "doc-health.html")
-DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "visual-fallback", "viz", "review-ledger.json")
-META_COMPLIANCE = os.path.join(ROOT, "lab", "formal-system", "visual-fallback", "viz", "meta-compliance.json")
-META_CHECK_SCRIPT = os.path.join(ROOT, "lab", "formal-system", "meta-rules", "tools", "meta_rules_check.py")
+DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "concerns", "visual-fallback", "viz", "doc-health.html")
+DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "concerns", "visual-fallback", "viz", "review-ledger.json")
+META_COMPLIANCE = os.path.join(ROOT, "lab", "formal-system", "concerns", "visual-fallback", "viz", "meta-compliance.json")
+META_CHECK_SCRIPT = os.path.join(ROOT, "lab", "formal-system", "concerns", "meta-rules", "tools", "meta_rules_check.py")
 
 # 扫描范围（相对工作区根），避免把 .git/target 等算进来。
 SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"]
@@ -619,7 +619,7 @@ th {{ color:var(--dim); font-weight:600; }}
 <body><div class="wrap">
 <h1>文档健康仪表盘</h1>
 <div class="sub">formal-system 可视验证面（实验层F）· 生成时间 {datetime.datetime.now().astimezone():%Y-%m-%d %H:%M %Z} ·
-零依赖自包含 · 由 <code>lab/formal-system/visual-fallback/tools/visual_health.py</code> 一键重跑</div>
+零依赖自包含 · 由 <code>lab/formal-system/concerns/visual-fallback/tools/visual_health.py</code> 一键重跑</div>
 
 <div class="tiles">
   <div class="tile"><b>{len(nodes)}</b><span>文档</span></div>
