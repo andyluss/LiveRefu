@@ -9,6 +9,9 @@
 tools/
     ├─ STRUCTURE.md
     ├─ consistency_heatmap.py
+    ├─ data_invariants.py
+    ├─ design_review.py
+    ├─ req_trace.py
     ├─ review_ledger.py
     └─ visual_health.py
 ```
@@ -19,6 +22,9 @@ tools/
 | --- | --- |
 | `STRUCTURE.md` | 目录结构(本文件) |
 | `consistency_heatmap.py` | （代码文件） |
+| `data_invariants.py` | （代码文件） |
+| `design_review.py` | （代码文件） |
+| `req_trace.py` | （代码文件） |
 | `review_ledger.py` | （代码文件） |
 | `visual_health.py` | （代码文件） |
 
@@ -29,6 +35,9 @@ tools/
 graph TD
     N0[STRUCTURE.md]
     N1[consistency_heatmap.py]
-    N2[review_ledger.py]
-    N3[visual_health.py]
+    N2[data_invariants.py]
+    N3[design_review.py]
+    N4[req_trace.py]
+    N5[review_ledger.py]
+    N6[visual_health.py]
 ```

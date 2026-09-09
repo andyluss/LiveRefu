@@ -10,9 +10,15 @@ viz/
     ├─ STRUCTURE.md
     ├─ consistency-heatmap.html
     ├─ consistency-heatmap.json
+    ├─ data-invariants.html
+    ├─ data-invariants.json
+    ├─ design-review.html
+    ├─ design-review.json
     ├─ doc-health.html
     ├─ doc-health.json
     ├─ meta-compliance.json
+    ├─ req-trace.html
+    ├─ req-trace.json
     └─ review-ledger.json
 ```
 
@@ -23,9 +29,15 @@ viz/
 | `STRUCTURE.md` | 目录结构(本文件) |
 | `consistency-heatmap.html` | （资源/产物） |
 | `consistency-heatmap.json` | （JSON 配置/数据） |
+| `data-invariants.html` | （资源/产物） |
+| `data-invariants.json` | （JSON 配置/数据） |
+| `design-review.html` | （资源/产物） |
+| `design-review.json` | （JSON 配置/数据） |
 | `doc-health.html` | （资源/产物） |
 | `doc-health.json` | （JSON 配置/数据） |
 | `meta-compliance.json` | 配置：lab/formal-system |
+| `req-trace.html` | （资源/产物） |
+| `req-trace.json` | （JSON 配置/数据） |
 | `review-ledger.json` | （JSON 配置/数据） |
 
 
@@ -36,8 +48,14 @@ graph TD
     N0[STRUCTURE.md]
     N1[consistency-heatmap.html]
     N2[consistency-heatmap.json]
-    N3[doc-health.html]
-    N4[doc-health.json]
-    N5[meta-compliance.json]
-    N6[review-ledger.json]
+    N3[data-invariants.html]
+    N4[data-invariants.json]
+    N5[design-review.html]
+    N6[design-review.json]
+    N7[doc-health.html]
+    N8[doc-health.json]
+    N9[meta-compliance.json]
+    N10[req-trace.html]
+    N11[req-trace.json]
+    N12[review-ledger.json]
 ```

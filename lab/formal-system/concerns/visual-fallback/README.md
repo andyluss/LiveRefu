@@ -54,6 +54,30 @@ python3 lab/formal-system/concerns/visual-fallback/tools/consistency_heatmap.py 
 
 > 绿=与权威一致 / 红=不一致(≠权威) / 琥珀=同文档冲突(多值) / 灰=未提及。人类扫一行即可知"哪个契约在哪儿写岔了"。
 
+### 工具 C：需求 ←→ 文档 追踪矩阵（S4）
+
+```bash
+python3 lab/formal-system/concerns/visual-fallback/tools/req_trace.py
+```
+产出 `viz/req-trace.html` + `.json`。行=需求/验收（来源 milestone M1 验收+任务），列=文档（docs/plans/game 的 md），
+单元格=该文档是否**引用**该需求（关键词命中，启发式）。**找"整行空白/横向稀疏"** = 覆盖缺口。
+
+### 工具 D：数据不变量可视化（S5）
+
+```bash
+python3 lab/formal-system/concerns/visual-fallback/tools/data_invariants.py
+```
+产出 `viz/data-invariants.html` + `.json`。把 **稀有度配比 / duration_min 范围 / default_volume[0,1] / collect_frag / 频道 LUT·容器 token 数**
+画成条形图，⚠ 标出偏离设计的不变量（如 M1 仅 3 卡 → 配比 33/33/33 vs 设计 70/25/5）。
+
+### 工具 E：设计/手感复核面（S6）
+
+```bash
+python3 lab/formal-system/concerns/visual-fallback/tools/design_review.py
+```
+产出 `viz/design-review.html` + `.json`。每频道一张**复核卡**：**基调锚点(tagline)** + 视觉/音景 token 摘要 +
+**截图槽位(待渲染)** + 人工复核清单。针对"温暖、可久处"这类**不可形式化**美学的人工兜底（对照基调锚点逐格判断）。
+
 ## 四、人工复核账本（第③层）
 
 `visual_health.py` 算出的每个异常（孤立 / 高【待定】 / 陈旧）都是"**待复核项**"。**人**用
@@ -90,5 +114,7 @@ python3 lab/formal-system/concerns/visual-fallback/tools/visual_health.py       
 ## 六、后续候选（本层扩展方向）
 
 - ~~S3 跨文档一致性热力图~~（**已实现**，见 §三·工具 B）
-- S5 数据不变量图表（配比 / 范围 / 数量）。
-- S6 设计/手感复核面（渲染缩略图 + 基调锚点，纯美学兜底）。
+- ~~S4 需求←→文档追踪矩阵~~（**已实现**，见 §三·工具 C）
+- ~~S5 数据不变量图表~~（**已实现**，见 §三·工具 D）
+- ~~S6 设计/手感复核面~~（**已实现**，见 §三·工具 E）
+- （S1+S2 文档健康仪器 / 第③层复核账本 已实现）

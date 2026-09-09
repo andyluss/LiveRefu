@@ -1,0 +1,63 @@
+{
+  "generated": "2026-09-09T12:07:51.480959+08:00",
+  "invariants": [
+    {
+      "title": "稀有度配比",
+      "ok": false,
+      "note": "实际 {'common': 33, 'rare': 33, 'cult': 33} vs 设计 70/25/5（M1 仅 3 卡 → 偏离属预期，量产需回填配比）"
+    },
+    {
+      "title": "各时段 duration_min（应在 [focus_min, focus_max]）",
+      "ok": [
+        [
+          "focus_default",
+          25,
+          true
+        ],
+        [
+          "break_default",
+          5,
+          true
+        ]
+      ],
+      "note": "范围 [5, 120]"
+    },
+    {
+      "title": "各轨 default_volume（应在 [0,1]）",
+      "ok": [
+        [
+          "tape_track_hum",
+          0.5,
+          true
+        ],
+        [
+          "tape_track_tapes_hiss",
+          0.35,
+          true
+        ]
+      ],
+      "note": "线性 0–1"
+    },
+    {
+      "title": "collect_frag 初值（设计 common3/rare5/cult8）",
+      "ok": true,
+      "note": "按 GDD B-2"
+    },
+    {
+      "title": "每频道 LUT/容器 token 数量（≥1）",
+      "ok": [
+        [
+          "tape_warm · LUT",
+          6,
+          true
+        ],
+        [
+          "tape_warm · 容器",
+          8,
+          true
+        ]
+      ],
+      "note": "M1 磁带 6 LUT / 8 容器"
+    }
+  ]
+}

@@ -231,4 +231,16 @@
 ### 实测
 - structure_check：**16 目录 / 0 不合格**；recursive meta_rules_check：**38 合规 / 0 违规**；evolution check（5 规则）：全合法；全量链接 **0 失效**。
 
+## [0.13.0] · 2026-09-09 · 可视验证面 S4/S5/S6 落地（需求追踪 / 数据不变量 / 设计复核）
+
+### Added
+- [**req_trace.py**](concerns/visual-fallback/tools/req_trace.py)：**S4 需求←→文档追踪矩阵**（行=需求/验收，列=文档，单元格=关键词命中；找"整行空白"=覆盖缺口）。产出 `viz/req-trace.html/.json`。
+- [**data_invariants.py**](concerns/visual-fallback/tools/data_invariants.py)：**S5 数据不变量可视化**（稀有度配比/duration 范围/音量[0,1]/collect_frag/频道 LUT·容器 token 数，条形图 + ⚠ 偏离标注）。产出 `viz/data-invariants.html/.json`。
+- [**design_review.py**](concerns/visual-fallback/tools/design_review.py)：**S6 设计/手感复核面**（每频道复核卡：基调锚点 + token 摘要 + 截图槽位(待渲染) + 人工复核清单；对照不可形式化美学）。产出 `viz/design-review.html/.json`。
+- visual-fallback README 更新：§三 增补工具 C/D/E；§六 后续候选标"已实现"。
+
+### 实测
+- **S4**：8 需求 × 58 文档（R5 可插拔 bundle 覆盖偏少=潜在缺口）；**S5**：5 项不变量（稀有度配比 33/33/33 vs 设计 70/25/5 被标注 ⚠——M1 仅 3 卡所致，属预期）；**S6**：1 频道复核卡（tape_warm）。
+- structure_check **16 目录/0 不合格**；递归 **38 合规/0 违规**；evolution **5 规则全合法**；全量链接 **0 失效**。
+
 ---
