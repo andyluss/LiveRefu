@@ -1,6 +1,6 @@
 # 实验笔记 · 实验 A：Rust 数据契约校验器
 
-> 日期：2026-09-08（系统实际时间）。实验 A 落地于 [`prototypes/data-validator/`](../prototypes/data-validator/README.md)。
+> 日期：2026-09-08（系统实际时间）。实验 A 落地于 [`prototypes/data-validator/`](../README.md)。
 
 ## 做了什么
 

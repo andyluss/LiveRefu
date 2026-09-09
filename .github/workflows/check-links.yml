@@ -34,7 +34,10 @@ jobs:
         run: python3 tools/check_data.py -v
 
       - name: Meta-rules structure check (M1+M2)
-        run: python3 lab/formal-system/tools/meta_rules_check.py
+        run: python3 lab/formal-system/meta-rules/tools/meta_rules_check.py
+
+      - name: Meta-rule evolution state check (M3)
+        run: python3 lab/formal-system/meta-rules/evolution/rule_evolution_check.py
 
       - name: Godot project load check
         uses: addnab/action-run-docker@v3

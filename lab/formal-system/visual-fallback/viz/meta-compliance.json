@@ -1,10 +1,10 @@
 {
-  "generated": "2026-09-09T10:45:02.588615+08:00",
+  "generated": "2026-09-09T11:06:39.609060+08:00",
   "concern": "lab/formal-system",
   "root": "/Users/lu/work/fab/LiveRefu/lab/formal-system",
   "compliant": true,
   "counts": {
-    "ok": 25,
+    "ok": 28,
     "violations": 0
   },
   "items": [
@@ -23,6 +23,10 @@
     {
       "status": "ok",
       "text": "[M2] 根文档 ✔ README.md"
+    },
+    {
+      "status": "ok",
+      "text": "[M1] 代码子关注点(命名豁免) ✔ data-validator/"
     },
     {
       "status": "ok",
@@ -50,7 +54,15 @@
     },
     {
       "status": "ok",
+      "text": "meta-rules/[M1] 代码子关注点(命名豁免) ✔ evolution/"
+    },
+    {
+      "status": "ok",
       "text": "meta-rules/[M2] 根文档 ✔ meta-rules-config.json"
+    },
+    {
+      "status": "ok",
+      "text": "meta-rules/[M2] 类型目录 ✔ tools (代码类(命名豁免))"
     },
     {
       "status": "ok",
@@ -62,51 +74,51 @@
     },
     {
       "status": "ok",
-      "text": "[M2] 类型目录 ✔ notes (文档/类型)"
-    },
-    {
-      "status": "ok",
-      "text": "[M2] 类型目录 ✔ prototypes (代码类(命名豁免))"
-    },
-    {
-      "status": "ok",
       "text": "[M2] 类型目录 ✔ specs (文档/类型)"
     },
     {
       "status": "ok",
-      "text": "[M2] 类型目录 ✔ tools (代码类(命名豁免))"
+      "text": "visual-fallback/[M1] 出入口 README.md ✔"
     },
     {
       "status": "ok",
-      "text": "[M2] 类型目录 ✔ viz (文档/类型)"
+      "text": "visual-fallback/[M2] 根文档 ✔ README.md"
     },
     {
       "status": "ok",
-      "text": "[M2] 命名 ✔ notes/20260908-experiment-a-rust-validator.md"
+      "text": "visual-fallback/[M2] 类型目录 ✔ tools (代码类(命名豁免))"
     },
     {
       "status": "ok",
-      "text": "[M2] 命名 ✔ viz/consistency-heatmap.html"
+      "text": "visual-fallback/[M2] 类型目录 ✔ viz (文档/类型)"
     },
     {
       "status": "ok",
-      "text": "[M2] 命名 ✔ viz/consistency-heatmap.json"
+      "text": "visual-fallback/[M2] 命名 ✔ viz/consistency-heatmap.html"
     },
     {
       "status": "ok",
-      "text": "[M2] 命名 ✔ viz/doc-health.html"
+      "text": "visual-fallback/[M2] 命名 ✔ viz/consistency-heatmap.json"
     },
     {
       "status": "ok",
-      "text": "[M2] 命名 ✔ viz/doc-health.json"
+      "text": "visual-fallback/[M2] 命名 ✔ viz/doc-health.html"
     },
     {
       "status": "ok",
-      "text": "[M2] 命名 ✔ viz/meta-compliance.json"
+      "text": "visual-fallback/[M2] 命名 ✔ viz/doc-health.json"
     },
     {
       "status": "ok",
-      "text": "[M2] 命名 ✔ viz/review-ledger.json"
+      "text": "visual-fallback/[M2] 命名 ✔ viz/meta-compliance.json"
+    },
+    {
+      "status": "ok",
+      "text": "visual-fallback/[M2] 命名 ✔ viz/review-ledger.json"
+    },
+    {
+      "status": "ok",
+      "text": "[M1] 子关注点 ✔ visual-fallback/"
     }
   ]
 }

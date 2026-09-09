@@ -23,7 +23,7 @@
 ## 三、工具：文档健康仪表盘（S1+S2）
 
 ```bash
-python3 lab/formal-system/tools/visual_health.py
+python3 lab/formal-system/visual-fallback/tools/visual_health.py
 ```
 
 产出：
@@ -42,8 +42,8 @@ python3 lab/formal-system/tools/visual_health.py
 ### 工具 B：跨文档一致性热力图（S3）
 
 ```bash
-python3 lab/formal-system/tools/consistency_heatmap.py            # 生成热力图
-python3 lab/formal-system/tools/consistency_heatmap.py --self-test  # 自检检测逻辑(统一致/不一致/冲突/未提及)
+python3 lab/formal-system/visual-fallback/tools/consistency_heatmap.py            # 生成热力图
+python3 lab/formal-system/visual-fallback/tools/consistency_heatmap.py --self-test  # 自检检测逻辑(统一致/不一致/冲突/未提及)
 ```
 
 产出 `viz/consistency-heatmap.html` + `.json`。把**同一契约字段**（如 `pomodoro_work`、`focus_max`、
@@ -59,13 +59,13 @@ python3 lab/formal-system/tools/consistency_heatmap.py --self-test  # 自检检�
 异常即被标注为 `未复核 / 已通过 / 已标记`，并给出**复核覆盖率**。
 
 ```bash
-python3 lab/formal-system/tools/review_ledger.py status   # 先看每个文档的当前复核态
+python3 lab/formal-system/visual-fallback/tools/review_ledger.py status   # 先看每个文档的当前复核态
 # 登记一条(对异常文档)
-python3 lab/formal-system/tools/review_ledger.py record \
+python3 lab/formal-system/visual-fallback/tools/review_ledger.py record \
   --rel <文档相对路径> --verdict approve|flag --reason "<原因>" [--reviewer <人>] [--action "<行动>"]
-python3 lab/formal-system/tools/review_ledger.py list       # 全部记录(含 时间/人/理由/id)
-python3 lab/formal-system/tools/review_ledger.py delete <id>  # 更正/撤销
-python3 lab/formal-system/tools/visual_health.py            # 重跑, 让复核状态并入仪表盘
+python3 lab/formal-system/visual-fallback/tools/review_ledger.py list       # 全部记录(含 时间/人/理由/id)
+python3 lab/formal-system/visual-fallback/tools/review_ledger.py delete <id>  # 更正/撤销
+python3 lab/formal-system/visual-fallback/tools/visual_health.py            # 重跑, 让复核状态并入仪表盘
 ```
 
 - 账本是**追加式历史**（同文档可多次复核，最新一条=当前态），实现"每条复核留痕、可追溯"。

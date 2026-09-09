@@ -34,34 +34,30 @@
 以本基地自身为样本，验证 M1/M2 **已落地**（并被可运行检查证实）：
 
 - **M1**：`lab/formal-system` 是一个**关注点**（实验）；根有出入口 [`README.md`](../README.md)。
-  子项 = **类型目录 + 根文档**（`CHANGELOG.md`、`EXPERIMENT.md`），无散落文件。
-- **M2 类型词表**：`meta-rules/`(治理) · `methods/` `specs/`(待写) · `prototypes/`(代码) · `notes/`(教训) ·
-  `tools/`(工具) · `viz/`(可视输出)。
-  - 代码类 `prototypes/`、`tools/`：按各自工程约定（Rust 工程/脚本），**命名豁免**。
-  - `methods/`、`specs/` 为空类型（允许，标注"待写"）。
+  子项 = **子关注点 + 类型目录 + 根文档**（`CHANGELOG.md`、`EXPERIMENT.md`），无散落文件。
+- **子关注点**（自包含，递归套用本规则）：[`../data-validator/`](../data-validator/)（数据验证器）·
+  [`../visual-fallback/`](../visual-fallback/)（可视化兜底）· [`meta-rules/`](README.md)（元规则，其下再有 `evolution/` 子关注点）。
+- **类型目录**：`methods/`、`specs/`（研究/规格，待写，允许为空）。
 - **M2 命名**：规则文档 `M0-…M3-…`（`M<编号>-` 前缀）；`notes/20260908-…`（`YYYYMMDD-` 日期前缀）；时间/日期一律系统 `date`（东八区）。
 
-**可运行检查**：[`../tools/meta_rules_check.py`](../tools/meta_rules_check.py)
-`python3 lab/formal-system/tools/meta_rules_check.py`（`--self-test` 验证检测逻辑）→ 退出码 0 = 全部符合。
+**可运行检查**：[`tools/meta_rules_check.py`](tools/meta_rules_check.py)（含递归子关注点）+ [`evolution/rule_evolution_check.py`](evolution/rule_evolution_check.py)（演进状态）。
+`python3 lab/formal-system/meta-rules/tools/meta_rules_check.py` → 退出码 0 = 结构合法（实测 28 合规 / 0 违规）。
 
 **落地时被规则抓住的一处（真实修正）**：`notes/` 里原 `2026-09-08-experiment-a-rust-validator.md`（`YYYY-MM-DD-`）
 不符合 M2 日期前缀，已改名为 `20260908-experiment-a-rust-validator.md`；并给 `meta-rules/` 的命名词表补充其
 机器可读配置 `meta-rules-config.json`（`^meta-rules-config\.json$`）——这正是一次"元规则捉住自身偏差"的实例。
 
-### 建议目标结构（递归子关注点 · 待执行）
+### 已执行：递归子关注点重组
 
-`lab/formal-system` 内实际藏着三个**子关注点**（数据验证器 / 可视化兜底 / 元规则），其文件现散在各类型目录，
-按 [M1](M1-file-organization.md) §2.1 应改为**自包含子关注点**（每个有 README 出入口 + 自身产物）：
+`lab/formal-system` 已把三个内在**子关注点**收拢为**自包含目录**（而非散在各类型目录）：
 
-| 子关注点 | 现在的散落 | 建议并入 |
-| --- | --- | --- |
-| `data-validator/`（数据验证器） | `prototypes/data-validator/`（Rust crate）+ `notes/20260908-…`（教训） | 整 crate + 迁入其教训 |
-| `visual-fallback/`（可视化兜底） | `tools/visual_health,review_ledger,consistency_heatmap.py` + `viz/`(README+输出) + 相关说明 | 工具 + 输出 + 说明 |
-| `meta-rules/`（元规则） | `meta-rules/`(规则+配置) + `tools/meta_rules_check.py`(检查) | 规则 + 配置 + 检查工具 |
+| 子关注点 | 重组后 |
+| --- | --- |
+| `data-validator/` | Rust crate + `notes/`(教训) |
+| `visual-fallback/` | `tools/`(visual_health/review_ledger/consistency_heatmap) + `viz/`(输出) + README |
+| `meta-rules/` | 规则 + 配置 + `tools/`(meta_rules_check) + `evolution/`(演进状态检查) |
 
-`methods/`、`specs/` 保留为类型目录（研究/规格）。这样每个子关注点自包含、可独立演进。
-> **说明**：检查已完成"递归子关注点"校验支持（[`../tools/meta_rules_check.py`](../tools/meta_rules_check.py)，
-> 现对 `meta-rules/` 递归通过）；但**物理迁移改动较大**（多处相对路径与链接），**待你确认后再执行**。
+`methods/`、`specs/` 保留为类型目录。重组后由递归检查证实：**28 合规 / 0 违规**；各子关注点自包含、可独立演进。
 
 ## 相关
 

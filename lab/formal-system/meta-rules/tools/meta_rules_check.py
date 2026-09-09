@@ -14,10 +14,10 @@ meta_rules_check —— 把元规则 M1+M2 接入一条**可运行**的检查（
 配置：[`../meta-rules/meta-rules-config.json`](../meta-rules/meta-rules-config.json)。
 
 用法：
-  python3 lab/formal-system/tools/meta_rules_check.py                    # 默认检查 lab/formal-system
-  python3 lab/formal-system/tools/meta_rules_check.py --root <dir> --config <json>
-  python3 lab/formal-system/tools/meta_rules_check.py --json <path>     # 额外写机器可读结果
-  python3 lab/formal-system/tools/meta_rules_check.py --self-test
+  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py                    # 默认检查 lab/formal-system
+  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py --root <dir> --config <json>
+  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py --json <path>     # 额外写机器可读结果
+  python3 lab/formal-system/meta-rules/tools/meta_rules_check.py --self-test
 退出码：0=全部符合；1=存在违规。
 """
 import argparse
@@ -28,8 +28,9 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_ROOT = os.path.normpath(os.path.join(HERE, ".."))  # lab/formal-system
-DEFAULT_CONFIG = os.path.normpath(os.path.join(HERE, "..", "meta-rules", "meta-rules-config.json"))
+# 本脚本位于 lab/formal-system/meta-rules/tools/ 下
+DEFAULT_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))       # lab/formal-system
+DEFAULT_CONFIG = os.path.normpath(os.path.join(HERE, "..", "meta-rules-config.json"))
 
 
 def _clean_cfg(cfg):
@@ -79,7 +80,7 @@ def run_check(root, cfg, prefix=""):
         if entry in skill_dirs:
             continue
         if os.path.isdir(ep):
-            if entry in type_vocab:
+            if entry in type_vocab or entry in code_types:
                 kind = "代码类(命名豁免)" if entry in code_types else "文档/类型"
                 mark(True, f"[M2] 类型目录 ✔ {entry} ({kind})")
             elif entry in sub_concerns or (
@@ -87,13 +88,20 @@ def run_check(root, cfg, prefix=""):
             ):
                 # 递归子关注点
                 sub_cfg = cfg["sub_configs"].get(entry, {})
-                sub_issues, sub_info = run_check(ep, sub_cfg, prefix=prefix + entry + "/")
-                issues += sub_issues
-                info += sub_info
-                if not sub_issues:
-                    mark(True, f"[M1] 子关注点 ✔ {entry}/")
+                if sub_cfg.get("code"):
+                    # 代码型子关注点：只需出入口 README，内部按各自工程约定(命名豁免)
+                    if os.path.isfile(os.path.join(ep, "README.md")):
+                        mark(True, f"[M1] 代码子关注点(命名豁免) ✔ {entry}/")
+                    else:
+                        issues.append(f"{prefix}[M1] 代码子关注点缺 README ✗ {entry}/")
                 else:
-                    issues.append(f"{prefix}[M1] 子关注点有违规 ✗ {entry}/")
+                    sub_issues, sub_info = run_check(ep, sub_cfg, prefix=prefix + entry + "/")
+                    issues += sub_issues
+                    info += sub_info
+                    if not sub_issues:
+                        mark(True, f"[M1] 子关注点 ✔ {entry}/")
+                    else:
+                        issues.append(f"{prefix}[M1] 子关注点有违规 ✗ {entry}/")
             else:
                 mark(False, f"[M2] 未知类型目录(不在词表,也非子关注点) ✗ {entry}")
         else:
@@ -101,6 +109,11 @@ def run_check(root, cfg, prefix=""):
                 mark(True, f"[M2] 根文档 ✔ {entry}")
             else:
                 mark(False, f"[M2] 根目录未声明文件 ✗ {entry}")
+
+    # 声明的子关注点须已建立
+    for name in sorted(sub_concerns):
+        if not os.path.isdir(os.path.join(root, name)):
+            mark(False, f"[M1] 声明了子关注点但目录未建立 ✗ {name}/")
 
     # ---- M2: 文档类类型目录内命名 ----
     for t in sorted(type_vocab - code_types):

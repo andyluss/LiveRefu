@@ -18,7 +18,7 @@
 //!   `default` / `$schema` / `$id` / `title` / `description` / `unit` / `$comment`。
 //!   这些要么是元数据，要么是条件/引用语义；MVP 只覆盖主项目表格实际用到的可判定子集。
 //!   注：`content_card.schema.json` 的 `allOf`(条件必填) 不在本引擎覆盖内，与工具
-//!   [`check_data.py`](../../../../../tools/check_data.py) 行为一致；现有表格数据不依赖它。
+//!   [`check_data.py`](../../../../tools/check_data.py) 行为一致；现有表格数据不依赖它。
 
 use regex::Regex;
 use serde_json::Value;

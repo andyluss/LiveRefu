@@ -11,10 +11,10 @@ review_ledger —— 人工复核账本 CLI（可视验证面第③层）。
 只做登记/查询，不推导或伪造结论——approve/flag 与理由由人类填写。
 
 用法：
-  python3 lab/formal-system/tools/review_ledger.py record --rel <path> --verdict approve|flag --reason "<原因>" [--reviewer <人>] [--action "<行动>"]
-  python3 lab/formal-system/tools/review_ledger.py list
-  python3 lab/formal-system/tools/review_ledger.py status
-  python3 lab/formal-system/tools/review_ledger.py delete <id>
+  python3 lab/formal-system/visual-fallback/tools/review_ledger.py record --rel <path> --verdict approve|flag --reason "<原因>" [--reviewer <人>] [--action "<行动>"]
+  python3 lab/formal-system/visual-fallback/tools/review_ledger.py list
+  python3 lab/formal-system/visual-fallback/tools/review_ledger.py status
+  python3 lab/formal-system/visual-fallback/tools/review_ledger.py delete <id>
 
 --ledger <path> 可覆盖默认账本路径。
 """
@@ -24,9 +24,20 @@ import json
 import os
 import uuid
 
+def find_workspace_root():
+    d = os.path.dirname(os.path.abspath(__file__))
+    while True:
+        if os.path.isdir(os.path.join(d, ".git")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            return d
+        d = parent
+
+
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "viz", "review-ledger.json")
+ROOT = find_workspace_root()
+DEFAULT_LEDGER = os.path.join(ROOT, "lab", "formal-system", "visual-fallback", "viz", "review-ledger.json")
 SCHEMA = "lab/formal-system/review-ledger v1"
 
 

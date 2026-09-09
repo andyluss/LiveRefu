@@ -1,20 +1,20 @@
 # data-validator —— Rust 数据契约校验器（实验 A 原型）
 
-> 归属 [`lab/formal-system`](../../README.md) 实验 A。目标：用 **Rust 编译器 + clippy + 属性测试** 独立判定
+> 归属 [`lab/formal-system`](../README.md) 实验 A。目标：用 **Rust 编译器 + clippy + 属性测试** 独立判定
 > "这份数据是否符合契约"，把"AI 产出是否可验证"从**自述**降到**机器判定**。
-> 功能对齐主项目 [`tools/check_data.py`](../../../../tools/check_data.py)（读 JSON → 校验 schema 契约），
+> 功能对齐主项目 [`tools/check_data.py`](../../../tools/check_data.py)（读 JSON → 校验 schema 契约），
 > 但验证由 `cargo build` / `clippy` / `test` 判定，比 Python 版更硬、可入 CI。
 
 ## 一、这解决什么问题
 
 主项目用"虚拟工作室 + 角色"协作，但**验证与生成耦合在同一个角色心智**里（见
-[`tech/formalization.md`](../../../../tech/formalization.md)）。本原型把"数据契约"变成一条可重跑、
+[`tech/formalization.md`](../../../tech/formalization.md)）。本原型把"数据契约"变成一条可重跑、
 结果确定的命令：`cargo test` / `cargo run` 直接判定"这份数据是否合规"，无需信任任何 agent 的自述。
 
 ## 二、怎么验证（一条命令即可重跑；结果确定、不依赖人）
 
 ```bash
-cd lab/formal-system/prototypes/data-validator
+cd lab/formal-system/data-validator
 cargo build                                  # 编译期验证(类型/借用)
 cargo clippy --all-targets -- -D warnings     # 静态 lint 零警告门禁
 cargo test                                    # 单元 + 拦截 + 属性 + 真实数据 → 15 tests

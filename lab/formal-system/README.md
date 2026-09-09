@@ -84,10 +84,12 @@
 3. **Property test** 把"行为正确性"从"样例/自述"提升为"属性被随机验证"；
 4. 三者都是**机械可判定**，都可接入 pre-commit/CI——真正把 AI 隔离在"未验证不进"的门后。
 
-## 四、展开方向
+## 四、目录与展开方向（关注点 → 子关注点 / 类型）
 
-- [`meta-rules/`](meta-rules/)：工作区**元规则**（规则之规则，每条一个文件：主选+备选+演进历史；M1 已定、M2 定稿）。
-- [`methods/`](methods/)：深入研究某方法（待写）。
-- [`specs/`](specs/)：用 Alloy/CUE 写的形式化规格样例（待写）。
-- [`prototypes/`](prototypes/)：用 Rust/CUE 的最小可运行原型（待写）。
-- [`notes/`](notes/)：实验笔记与教训（待写）。
+- [`data-validator/`](data-validator/)：**子关注点** · 数据验证器（Rust 契约校验器 + 测试 + 试用教训）。
+- [`visual-fallback/`](visual-fallback/)：**子关注点** · 可视化兜底（文档健康 / 一致性热力图 / 复核账本 的工具+输出）。
+- [`meta-rules/`](meta-rules/)：**子关注点** · 工作区元规则（规则之规则；每条一文件含主选/备选/演进历史；含递归结构检查）。
+- [`methods/`](methods/)：类型 · 深入研究某方法（待写）。
+- [`specs/`](specs/)：类型 · 用 Alloy/CUE 写的形式化规格样例（待写）。
+
+> 结构是否符合元规则 M1/M2（含递归子关注点），由 [`meta-rules/tools/meta_rules_check.py`](meta-rules/tools/meta_rules_check.py) 可运行检查判定。

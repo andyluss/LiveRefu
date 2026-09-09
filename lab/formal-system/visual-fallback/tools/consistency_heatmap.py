@@ -12,14 +12,14 @@ consistency_heatmap —— 跨文档一致性热力图（可视验证面 S3）�
 **可视化扫异常**（正是 formaliation.md 里 '文档间对同一契约的表述是否一致' 这一难形式化的真实风险）。
 
 产出：
-  lab/formal-system/viz/consistency-heatmap.html   # 自包含热力图
-  lab/formal-system/viz/consistency-heatmap.json   # 机器可读矩阵
+  lab/formal-system/visual-fallback/viz/consistency-heatmap.html   # 自包含热力图
+  lab/formal-system/visual-fallback/viz/consistency-heatmap.json   # 机器可读矩阵
 
 只锚定**字段名 + 数值**这种可验证事实；用字段名锚定（避免误抓"25分钟"的裸数字）。
 
 用法：
-  python3 lab/formal-system/tools/consistency_heatmap.py
-  python3 lab/formal-system/tools/consistency_heatmap.py --out <path>
+  python3 lab/formal-system/visual-fallback/tools/consistency_heatmap.py
+  python3 lab/formal-system/visual-fallback/tools/consistency_heatmap.py --out <path>
 """
 import datetime
 import json
@@ -27,9 +27,20 @@ import os
 import re
 import sys
 
+def find_workspace_root():
+    d = os.path.dirname(os.path.abspath(__file__))
+    while True:
+        if os.path.isdir(os.path.join(d, ".git")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            return d
+        d = parent
+
+
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "viz", "consistency-heatmap.html")
+ROOT = find_workspace_root()
+DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "visual-fallback", "viz", "consistency-heatmap.html")
 
 SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"]
 SKIP_DIRS = {".git", "target", "node_modules"}

@@ -51,7 +51,7 @@ if git diff --cached --name-only --diff-filter=ACM | grep -qE '^projects/tomorro
 fi
 
 # ---- 3) 元规则 M1+M2 结构校验(仅当暂存涉及 lab/formal-system) ----
-META_SCRIPT="$GIT_ROOT/lab/formal-system/tools/meta_rules_check.py"
+META_SCRIPT="$GIT_ROOT/lab/formal-system/meta-rules/tools/meta_rules_check.py"
 if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system/'; then
   if [ ! -f "$META_SCRIPT" ]; then
     echo "[pre-commit:meta-rules] 未找到 $META_SCRIPT，跳过元规则校验。" >&2
@@ -63,6 +63,18 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system
       echo "[pre-commit:meta-rules] 文件组织/命名不符合元规则(M1 关注点优先/类型其次 + M2 命名词表)，已拦截提交。" >&2
       echo "  参考: lab/formal-system/meta-rules/M1-file-organization.md / M2-naming-vocabulary.md" >&2
       exit 1
+    fi
+    # 元规则演进状态检查（M3 状态机）
+    EVOL_SCRIPT="$GIT_ROOT/lab/formal-system/meta-rules/evolution/rule_evolution_check.py"
+    if [ -f "$EVOL_SCRIPT" ]; then
+      echo "[pre-commit:meta-rules:evolution] 校验元规则演进状态(多状态/子状态/迁移)..." >&2
+      if python3 "$EVOL_SCRIPT" >&2; then
+        echo "[pre-commit:meta-rules:evolution] 通过。" >&2
+      else
+        echo "[pre-commit:meta-rules:evolution] 某条元规则的演进状态/迁移非法，已拦截提交。" >&2
+        echo "  参考: lab/formal-system/meta-rules/M3-rule-evolution.md" >&2
+        exit 1
+      fi
     fi
   fi
 fi
