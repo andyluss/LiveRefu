@@ -5,18 +5,20 @@
 
 ## 一、工作区是什么
 
+- **rules/**：规则目录。面向工作区整体的具体规则在此集中（当前为占位，见 [`rules/README.md`](rules/README.md)）。**正式规则仍在 [`lab/`](lab/README.md) 里实验**，成熟后迁移至此。
 - **doc/**：复古未来主义题材的研究知识库。以《复古未来主义论文集》为核心（21 篇总卷：理论地基、未来的考古、回收的未来、当代乡愁与多元、收束五段），并含蒸汽朋克、原子朋克、柴油朋克、赛博朋克、生物朋克等独立专题卷，以及合订本（PDF/HTML）与再生脚本。
 - **studio/**：AI 开发角色的模拟工作场所。把参与本工作区复古未来项目开发的 AI 角色（主策划、主程序、主美术、数值策划 A、图形程序员 A、UI 设计美术 A）按角色组织，各角色一个子目录存放**身份卡（README）**；角色项目文档迁至对应 `projects/<项目>/docs/<角色>/`（见下）。
 - **projects/**：项目工作区。每个实际开发中的项目一个子目录（如 [`projects/tomorrows-channel/`](projects/tomorrows-channel/README.md)），内含项目 README、`CHANGELOG.md`（项目日志）与 `docs/`（按角色分目录的项目文档）。
 - **indie/**：独立项目区。存放与工作区主线无直接关联的**独立项目**，每个项目一个子目录、自成体系（见 [`indie/README.md`](indie/README.md)）。
 - **lab/**：实验项目区。小范围探索新协作路径、新形式化方法等**实验项目**（见 [`lab/README.md`](lab/README.md)，其下 [`lab/formal-system/`](lab/formal-system/README.md) 为形式化协作实验基地），成熟后回流主项目。
 
-> **约定豁免**：`indie/`（独立项目区）与 `lab/`（实验项目区）下的子目录**默认无须遵守本工作区根目录的规则**——包括文档体例、相对链接深度及其校验（pre-commit 钩子 + CI）、Git 提交信息（Conventional Commits）等面向工作区整体的约定——除非**特别约定**。各子项目/实验可自定约定；若需引用某条根规则，在该子项目 README 中写明即可。
+> **约定豁免**：`indie/`（独立项目区）与 `lab/`（实验项目区）下的子目录**默认豁免 [`rules/`](rules/README.md) 中的全部根规则**——当前为 **R01 文档约定**、**R02 Git 与提交信息约定**、**R03 相对链接校验**、**R04 数据 schema 校验**——除非**特别约定**。各子项目/实验可自定约定；若需引用某条根规则，在该子项目 README 中写明即可。
 
 ## 二、目录导览
 
 | 路径 | 内容 | 入口 |
 | --- | --- | --- |
+| [`rules/`](rules/README.md) | 规则目录：面向工作区整体的具体规则集中收口（当前为占位，正式规则源于 lab/ 实验，未来迁入） | [`rules/README.md`](rules/README.md) |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
 | [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |
 | [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：当前项目《明日频道》（含项目 README、CHANGELOG 日志、docs 按角色分目录） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
