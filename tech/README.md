@@ -12,7 +12,7 @@
 | [`hooks-readme.md`](hooks-readme.md) | 相对链接校验：pre-commit 钩子 + CI 的启用/跳过/常见处理 |
 | [`formalization.md`](formalization.md) | 形式化验证：数据 schema 校验 + CI Godot 加载检查，GDScript 边界与演进路线 |
 
-> 注：**技术性规则**现以实验形式放于 [`lab/formal-system/tech/rules/`](../lab/formal-system/tech/rules/README.md)（服务本形式化系统），成熟后再回流入 `tech/`。
+> 注：**技术性规则**现以实验形式放于 [`lab/formal-system/tech/rules/`](../lab/formal-system/tech/rules/README.md)（服务本形式化系统），成熟后再回流入工作区根 [`rules/`](../rules/README.md)（规则目录）。
 
 ## 相关工具（脚本，仍在 `tools/`）
 
