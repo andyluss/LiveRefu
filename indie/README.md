@@ -12,4 +12,6 @@
 
 ## 子目录
 
-_（暂无。新建独立项目时，在此建立子目录并放置项目 README。）_
+| 目录 | 内容 | 入口 |
+| --- | --- | --- |
+| [`dsh-pet-refu/`](dsh-pet-refu/README.md) | 复古未来风格电子宠物 DeepSeek Harness 插件（📝 规划中，两份方案：复古未来掌机 / 星际争霸主题） | [`README.md`](dsh-pet-refu/README.md) |

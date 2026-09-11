@@ -8,3 +8,7 @@ __pycache__/
 
 # Godot 生成缓存（工程内已在 game/.gitignore 处理）
 .godot/
+
+# 独立子仓库（各自有自己的 .git 与远程，见 indie/README.md）
+# 忽略而非提交，避免父仓库把它误存成 gitlink（嵌入式仓库）
+indie/dsh-pet-refu/
