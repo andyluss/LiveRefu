@@ -14,4 +14,5 @@
 
 | 目录 | 内容 | 入口 |
 | --- | --- | --- |
-| [`dsh-pet-refu/`](dsh-pet-refu/README.md) | 复古未来风格电子宠物 DeepSeek Harness 插件（📝 规划中，两份方案：复古未来掌机 / 星际争霸主题） | [`README.md`](dsh-pet-refu/README.md) |
+| [`dsh-pet-refu/`](dsh-pet-refu/README.md) | 复古未来风格电子宠物 DeepSeek Harness 插件（v1.0.0，**独立 Git 仓库**） | [`README.md`](dsh-pet-refu/README.md) |
+| [`live-rpg/`](live-rpg/README.md) | **LiveRPG 活世界工作台**：多世界观「世界包」编辑器 + 图文创作台 DeepSeek Harness 插件（v0.1.0，**独立 Git 仓库**） | [`README.md`](live-rpg/README.md) |
