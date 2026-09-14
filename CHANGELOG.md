@@ -13,6 +13,7 @@
 - 新增根 [`rules/`](rules/README.md) **规则目录**：集中收口工作区具体规则；初始为占位规则 **R01**（文档约定）、**R02**（Git 与提交信息约定）、**R03**（相对链接校验）、**R04**（数据 schema 校验）。
 - 新增 [`rules/R05-changelog.md`](rules/R05-changelog.md)：要求**每次（非琐碎）变更都写变更日志**；琐碎改动（如改错别字、纯格式）豁免。
 - 新增 [`tech/changelog-convention.md`](tech/changelog-convention.md)：变更日志**格式规格**（Keep a Changelog 类目 + SemVer + 东八区日期，面向复杂情形）。
+- 新增 [`rules/meta/`](rules/meta/README.md)：把 lab 的**元规则体系**（**M0** 规则组织 / **M1** 文件组织 / **M2** 命名词表 / **M3** 规则演进；**M4 除外**）复制整合进规则目录——含索引 `README.md`、判定配置 `meta-rules-config.json`、可运行检查 `tools/meta_rules_check.ts`（M1+M2 结构）与 `evolution/rule_evolution_check.ts`（M3 演进状态，TS 实现）；lab 原件原样保留为实验源。
 - 新增 [`indie/dsh-pet-refu/`](indie/dsh-pet-refu/README.md)：**独立 Git 仓库**项目 —— 复古未来风格电子宠物 DeepSeek Harness 插件（当前为规划阶段）；自带协作规范（`CONTRIBUTING.md`）与 Git 钩子，已推送到 [andyluss/dsh-pet-refu](https://github.com/andyluss/dsh-pet-refu)。
 - 新增 [`indie/live-rpg/`](indie/live-rpg/README.md)：**独立 Git 仓库**项目 —— **LiveRPG 活世界工作台**（DeepSeek Harness 插件，v0.1.0）：多世界观「世界包」编辑器 + 图文创作台；含三份原创内置世界观、种子确定性生成的地貌与徽记、命令行工具与 158 个测试用例。自带协作规范与 Git 钩子。
 
@@ -26,3 +27,5 @@
 - [`indie/README.md`](indie/README.md) 子目录表新增 `live-rpg/` 入口。
 - 根 `.gitignore` 新增忽略 `indie/dsh-pet-refu/`：独立子仓库由自身 Git 与远程管理，父仓库忽略而非提交，避免误存为 gitlink（嵌入式仓库）。
 - 根 `.gitignore` 新增忽略 `indie/live-rpg/`：同上，独立子仓库由自身 Git 管理。
+- [`rules/README.md`](rules/README.md) 索引改为两族：**具体规则 R 系列** + **元规则 M 系列**（`rules/meta/`）。
+- 根 [`README.md`](README.md) 的 `rules/` 目录说明、导览行与「约定豁免」同步更新（豁免范围含元规则 M0–M3）。
