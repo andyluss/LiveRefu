@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 决策与落地关系</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1120px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.d{display:grid;grid-template-columns:64px 1fr 240px;gap:10px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:var(--card);margin-bottom:8px;cursor:pointer;transition:.15s}
+.d:hover{border-color:var(--accent)}.d.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.d.tone{opacity:.32}
+.d .no{font-weight:700;font-size:15px;color:var(--accent);font-variant-numeric:tabular-nums}
+.d .t{font-size:13px;font-weight:600}.d .b{font-size:12.5px;color:var(--muted)}
+.d .g{font-size:11.5px;color:var(--muted);border-left:1px solid var(--border);padding-left:10px}
+@media (max-width:760px){.d{grid-template-columns:52px 1fr}.d .g{border-left:none;padding-left:0;grid-column:1/-1}}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card);font-size:12.5px;margin-top:12px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;color:var(--muted)}
+svg{width:100%;height:auto;display:block;margin-top:12px}.ax{fill:var(--muted);font-size:10.5px}.lbl{fill:var(--fg);font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>决策与落地关系</h1>
+<div class="sub">D1–D11 锁定了什么、落在哪份文档、被哪张图读取。依据：00_决策记录（已裁决 v1.3）。</div>
+<div class="controls" id="ctrl" role="group" aria-label="筛选"></div>
+<div id="list"></div>
+<div class="panel" id="panel"></div>
+<svg id="graph" viewBox="0 0 1040 210" role="img" aria-label="决策到实现的关系"></svg>
+</div>
+<script>
+(function(){
+var D=[
+{n:'D1',t:'种族原型与命名',b:'保留三族"互克且体系完整"的结构方法，命名与世界观原创；从族同为原创。',doc:'03_种族总览',vis:'08 三族 12 卡逐卡对比'},
+{n:'D2',t:'塔防核心形态',b:'固定路径 + 固定塔位；路障改道与自由迷宫留作未来规则卡组，不进首发。',doc:'04_塔防核心战斗',vis:'09 关卡地图俯视图'},
+{n:'D3',t:'卡片化深度',b:'全要素卡化（含地图与事件）；"高内聚松耦合"是规则目标而非 UI 皮肤。',doc:'02_卡片规则系统',vis:'07 卡牌体系总览'},
+{n:'D4',t:'从族定位',b:'每主族配一个从族，以支援／召唤卡形态随主族出战，不单独成阵营。',doc:'03_种族总览',vis:'17 从族功能链路（叙事侧）'},
+{n:'D5',t:'单局节奏',b:'碎片关 3–5 分钟（6–8 波）+ 周常长局；随时可退并自动存档。',doc:'07_移动端与界面',vis:'12 移动端界面线框'},
+{n:'D6',t:'商业化',b:'外观与便利付费，不卖数值；卡牌只通过游玩解锁。',doc:'08_成长与经济',vis:'10 能量与经济循环'},
+{n:'D7',t:'美术基调',b:'延续工作区"复古未来"，与 doc/retro-futurism/ 联动。',doc:'doc/retro-futurism/',vis:'叙事侧 4 张图'},
+{n:'D8',t:'对抗形态',b:'PvE 为主 + 异步 PvP（对手波次卡组快照）；实时 PvP 留作远期实验。',doc:'09_路线图与融合玩法',vis:'14 路线图与融合玩法'},
+{n:'D9',t:'难度修饰',b:'采纳"挑战卡"（旧称合约卡）：局前选 1–3 张，声明代价与额外奖励。',doc:'13_卡表_挑战卡样例',vis:'05 挑战卡与掉落系数'},
+{n:'D10',t:'编辑器与 UGC',b:'先内测服务内部关卡生产，验证审核成本与内容质量后再开放 UGC 分发。',doc:'06_关卡与地图卡',vis:'14 路线图与融合玩法'},
+{n:'D11',t:'首个融合玩法',b:'首发融合包定为 Roguelike 远征（5–8 节点、三选一永久修饰、失败即结束）。',doc:'23_规则卡组_Roguelike远征',vis:'11 远征节点链'},
+{n:'—',t:'数值口径（冻结）',b:'B_ref=158、λ0=1.35、γ=3、cap=3、D50=1.25、k=7；五章与远征共用一套参数。',doc:'21_模拟验算表_章节胜率矩阵',vis:'01 难度与胜率曲线'}];
+var st={sel:null},list=document.getElementById('list'),panel=document.getElementById('panel'),ctrl=document.getElementById('ctrl');
+function groups(){return ['全部','玩法','经济与商业','内容与表现','数值']}
+function group(d){if(/D[23]/.test(d.n))return '玩法';if(/D[569]/.test(d.n))return '经济与商业';if(/D[1478]|D10|D11/.test(d.n))return '内容与表现';return '数值'}
+var cur='全部';
+function render(){ctrl.innerHTML='';groups().forEach(function(g){var b=document.createElement('button');b.type='button';b.textContent=g;b.setAttribute('aria-pressed',cur===g?'true':'false');b.onclick=function(){cur=g;st.sel=null;render()};ctrl.appendChild(b)});
+list.innerHTML='';
+D.forEach(function(d,i){var g=group(d);if(cur!=='全部'&&g!==cur)return;
+var el=document.createElement('div');el.className='d'+(st.sel===i?' on':'');
+el.innerHTML='<div class="no">'+d.n+'</div><div><div class="t">'+d.t+'</div><div class="b">'+d.b+'</div></div><div class="g">落地：'+d.doc+'<br>读取：'+d.vis+'</div>';
+el.onclick=function(){st.sel=(st.sel===i)?null:i;render()};list.appendChild(el)});
+if(st.sel==null){panel.innerHTML='<h4>怎么读</h4><p>上半排是"玩法与内容"的决策，下半排是"经济与数值"的决策。每条决策都写明落地文档与读取它的图——如果有决策找不到落地文档，说明它还没被兑现；如果某张图没有对应决策，说明它可能超出了当前锁定范围。' ;return}
+var d=D[st.sel];panel.innerHTML='<h4>'+d.n+'　<span style="color:var(--muted);font-size:12px">'+d.t+'　｜　分组：'+group(d)+'</span></h4><p>'+d.b+'</p><p>落地文档：'+d.doc+'　｜　可视化：'+d.vis+'</p>'}
+render();
+var svg=document.getElementById('graph');var NS='http://www.w3.org/2000/svg';
+function E(t,a,x){var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;return n}
+var cols=[['决策','D1–D11'],['规范','02/03/04/07/08'],['内容','13/14/15/16/19/23'],['验算','数值/04,05 + 21'],['可视','01–14 号图']];
+cols.forEach(function(c,i){var x=30+i*200;
+svg.appendChild(E('rect',{x:x,y:70,width:170,height:52,rx:10,fill:'none',stroke:'var(--border)'}));
+svg.appendChild(E('text',{x:x+85,y:92,'text-anchor':'middle',class:'lbl','font-size':12.5},c[0]));
+svg.appendChild(E('text',{x:x+85,y:110,'text-anchor':'middle',class:'ax'},c[1]));
+if(i<cols.length-1)svg.appendChild(E('path',{d:'M '+(x+170)+' 96 L '+(x+198)+' 96',stroke:'var(--muted)','stroke-width':1.5,'marker-end':'url(#a)'}))});
+svg.appendChild(E('defs',{})).appendChild(E('marker',{id:'a',viewBox:'0 0 10 10',refX:'8',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'})).appendChild(E('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'var(--muted)'}));
+svg.appendChild(E('text',{x:30,y:150,class:'ax'},'决策 → 规范 → 内容 → 验算 → 可视：任何一层改动都要沿这条链回到 CHANGELOG 记账。'));
+svg.appendChild(E('text',{x:30,y:170,class:'ax'},'数值口径是被冻结点：改它必须重跑 tools/sim_refu_game_001.ts 的九项校验，并刷新 01–06 号图。'));
+})();
+</script>
+</body>
+</html>

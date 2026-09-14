@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 三族 12 卡逐卡对比</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+select{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg)}
+.group{margin-top:16px}.group h2{font-size:14.5px;margin:0 0 8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}
+.c{border:1px solid var(--border);border-left-width:4px;border-radius:9px;padding:8px 10px;background:var(--card);font-size:12.5px}
+.c .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.c .nm{font-weight:600;font-size:13px}.c .id{color:var(--muted);font-size:11px}
+.c .cost{font-variant-numeric:tabular-nums;font-weight:600}
+.c .slots{margin-top:3px;color:var(--muted);font-size:11.5px}
+.c .txt{margin-top:4px}.tag{display:inline-block;font-size:11px;padding:0 6px;border-radius:999px;border:1px solid var(--border);color:var(--muted);margin-right:4px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.st{border:1px solid var(--border);border-radius:10px;padding:8px 10px;background:var(--card);font-size:12.5px}
+.st .l{color:var(--muted);font-size:12px}.st .v{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:14px;background:var(--card);font-size:12.5px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>三族 12 卡逐卡对比</h1>
+<div class="sub">36 张核心卡（每族：塔 4 / 支援 3 / 技能 2 / 修饰 3）。按族、槽位、标签筛选；费用与数值块要点均引自 14/15/16 号卡表。</div>
+<div class="controls" id="ctrl"></div>
+<div class="stats" id="stats"></div>
+<div id="groups"></div>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var RACE={'铁砧联邦':{c:'var(--s1)',doc:'14_卡表_铁砧联邦核心12卡'},'涌潮虫群':{c:'var(--s2)',doc:'15_卡表_涌潮虫群核心12卡'},'星辉议会':{c:'var(--s3)',doc:'16_卡表_星辉议会核心12卡'}};
+var CARDS=[
+['ANV-T01','铁砧联邦','塔区','模块炮塔',20,'标准','弹药','伤害 12 / 攻速 1.0/s / 射程中','on_kill：能量 +1'],
+['ANV-T02','铁砧联邦','塔区','交叉火力网',28,'标准','弹药','伤害 8 / 攻速 1.2/s / 小范围溅射','on_hit：同标签塔攻速 +2%（可叠）'],
+['ANV-T03','铁砧联邦','塔区','磁轨钉枪',32,'标准','穿甲','伤害 26 / 攻速 0.6/s / 直线穿透 3','on_kill：穿透 +1（上限 5）'],
+['ANV-T04','铁砧联邦','塔区','路障工事',18,'标准','工事','生命 400 / 减速 30% / 不攻击','on_destroy：返还 6 能量'],
+['ANV-M01','铁砧联邦','支援区','齿轮帮·维修工',15,'支援','维修','修复 8/s、持续 6s、人口 1','on_wave_end：修复量 +50%'],
+['ANV-M02','铁砧联邦','支援区','齿轮帮·搬运工',12,'支援','弹药','光环：同标签塔攻速 +10%','on_deploy：为相邻塔 +2 能量'],
+['ANV-M03','铁砧联邦','支援区','齿轮帮·路障小队',20,'路径','工事','生命 200 / 阻挡 2 / 存在 15s','on_expire：减速残留 3s'],
+['ANV-S01','铁砧联邦','技能区','过载射击',15,'技能','弹药','全场攻速 +40%、持续 6s','on_cast：同标签塔额外 +10%'],
+['ANV-S02','铁砧联邦','技能区','应急修复',12,'技能','维修','单体塔修复 200 / 护盾 80','on_shield_break：返还 5 能量'],
+['ANV-X01','铁砧联邦','修饰区','交叉火力',5,'修饰','弹药','同标签塔 +15% 攻速，最多叠 2 层',''],
+['ANV-X02','铁砧联邦','修饰区','贫铀弹芯',8,'修饰','弹药/穿甲','+25% 伤害，−10% 攻速',''],
+['ANV-X03','铁砧联邦','修饰区','模块化基座',6,'修饰','工事','为本塔额外附加 1 个标签（弹药或工事）','支撑"模块换装"'],
+['TID-T01','涌潮虫群','塔区','孵化巢',16,'标准','孵化','每 8s 产出 1 只幼虫（上限 3）','on_wave_start：立即产出 1 只'],
+['TID-T02','涌潮虫群','塔区','腐蚀喷口',22,'标准','腐蚀','区域内敌人 6 伤害/s、腐蚀 +1 层/s','on_stack5：范围 +20%'],
+['TID-T03','涌潮虫群','塔区','酸液喷射者',26,'标准','腐蚀/范围','伤害 10 / 攻速 0.9/s / 溅射，附加腐蚀','on_kill：腐蚀残留 3s'],
+['TID-T04','涌潮虫群','塔区','群落粘网',20,'标准','拦截','敌人移速 −40%；腐蚀目标额外 −10%','on_wave_end：粘网持续不重置'],
+['TID-M01','涌潮虫群','支援区','菌毯扩张',14,'支援','孵化','范围内敌人 −10% 移速；友方腐蚀伤害 +10%','on_wave_start：范围 +1 格'],
+['TID-M02','涌潮虫群','支援区','孢子孵化',18,'支援','孵化','召唤 3 只幼虫，人口 1','on_expire：留下腐蚀地 5s'],
+['TID-M03','涌潮虫群','支援区','腐蚀附着',12,'支援','腐蚀','为 1 张塔卡附加「腐蚀」标签（本局有效）','on_attach：目标腐蚀 +1 层'],
+['TID-S01','涌潮虫群','技能区','群体孵化',16,'技能','孵化','立即召唤 6 只幼虫','on_cast：本波孵化速度 +20%'],
+['TID-S02','涌潮虫群','技能区','腐蚀风暴',20,'技能','腐蚀','全场腐蚀伤害 +100%、持续 6s','on_cast：已有腐蚀层数不重置'],
+['TID-X01','涌潮虫群','修饰区','酸蚀腺体',5,'修饰','腐蚀','腐蚀伤害 +20%',''],
+['TID-X02','涌潮虫群','修饰区','快速孵化',7,'修饰','孵化','孵化速度 +30%，召唤物生命 −15%',''],
+['TID-X03','涌潮虫群','修饰区','过度繁殖',6,'修饰','孵化','本塔额外叠 1 层「孵化」标签','用于羁绊与进化条件'],
+['AST-T01','星辉议会','塔区','棱镜哨塔',24,'标准','能量','伤害 16 / 攻速 0.8/s / 单体（能量伤害，无视 50% 护甲）','on_shield_break：攻速 +10%（10s）'],
+['AST-T02','星辉议会','塔区','共鸣方尖碑',30,'标准','共鸣','不攻击；相邻塔 +15% 攻速与射程','on_wave_start：共鸣计数 +1'],
+['AST-T03','星辉议会','塔区','相位炮台',34,'标准','能量/穿甲','蓄力 2.5s，伤害 45，直线穿透 3','on_charge：可被共鸣加速'],
+['AST-T04','星辉议会','塔区','棱光屏障',20,'标准','护盾','为路径上友方提供护盾 120（每波刷新）','on_shield_break：反弹 10 伤害'],
+['AST-M01','星辉议会','支援区','光尘导引',14,'支援','共鸣','相邻塔射程 +15%','on_deploy：共鸣计数 +1'],
+['AST-M02','星辉议会','支援区','护盾充能',16,'支援','护盾','全场塔护盾 +80、持续 10s','on_wave_start：护盾不满时额外 +20'],
+['AST-M03','星辉议会','支援区','视野棱镜',12,'支援','共鸣','揭示隐身；本塔与相邻塔射程 +10%','on_deploy：可标记 1 个优先目标'],
+['AST-S01','星辉议会','技能区','共鸣过载',18,'技能','共鸣','全场共鸣效果 ×2、持续 6s','on_cast：共鸣计数 +2'],
+['AST-S02','星辉议会','技能区','时空缓滞',20,'技能','能量','全场敌人 −30% 移速、持续 5s','on_cast：被减速敌人受能量伤害 +10%'],
+['AST-X01','星辉议会','修饰区','聚焦棱镜',6,'修饰','能量','伤害 +20%，射程 −10%',''],
+['AST-X02','星辉议会','修饰区','护盾矩阵',8,'修饰','护盾','每波开始：本塔 +60 护盾',''],
+['AST-X03','星辉议会','修饰区','共鸣节点',6,'修饰','共鸣','本塔视为相邻所有塔的共鸣源（共鸣计数 +1）','']];
+var st={race:null,slot:null,card:null};
+var ctrl=document.getElementById('ctrl'),groups=document.getElementById('groups'),panel=document.getElementById('panel'),stats=document.getElementById('stats');
+function renderCtrl(){
+ctrl.innerHTML='';
+[['全部',null]].concat(Object.keys(RACE).map(function(r){return [r,r]})).forEach(function(p){
+var b=document.createElement('button');b.type='button';b.textContent=p[0];b.setAttribute('aria-pressed',(p[1]===null&&!st.race)||st.race===p[1]?'true':'false');
+b.onclick=function(){st.race=p[1];render()};ctrl.appendChild(b)});
+var s=document.createElement('select');['全部槽位','标准','支援','路径','技能','修饰'].forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)});
+s.value=st.slot||'全部槽位';s.onchange=function(){st.slot=(s.value==='全部槽位')?null:s.value;render()};ctrl.appendChild(s)}
+function filtered(){return CARDS.filter(function(c){return (!st.race||c[1]===st.race)&&(!st.slot||c[4]===st.slot)})}
+function render(){
+renderCtrl();
+var fs=filtered();
+var costs=fs.map(function(c){return c[4]});
+var avg=costs.length?(costs.reduce(function(a,b){return a+b},0)/costs.length):0;
+stats.innerHTML='<div class="st"><div class="l">卡数</div><div class="v">'+fs.length+'</div></div>'+
+'<div class="st"><div class="l">费用合计 / 平均</div><div class="v">'+(costs.reduce(function(a,b){return a+b},0))+' / '+avg.toFixed(1)+'</div></div>'+
+'<div class="st"><div class="l">费用区间</div><div class="v">'+(costs.length?Math.min.apply(null,costs):0)+'–'+(costs.length?Math.max.apply(null,costs):0)+'</div></div>';
+groups.innerHTML='';
+Object.keys(RACE).forEach(function(r){
+var rows=fs.filter(function(c){return c[1]===r});if(!rows.length)return;
+var h='<div class="group"><h2 style="color:'+RACE[r].c+'">'+r+'　<span style="font-size:12px;color:var(--muted)">'+rows.length+' 张 · 来源 '+RACE[r].doc+'</span></h2><div class="cards">';
+rows.forEach(function(c){var idx=CARDS.indexOf(c);
+h+='<div class="c" data-i="'+idx+'" style="border-left-color:'+RACE[r].c+'"><div class="top"><span class="nm">'+c[3]+'</span><span class="cost">'+c[4]+' 费</span></div><div class="id">'+c[0]+'</div><div class="slots">'+c[2]+' · '+c[5]+(c[6]?' · <span class="tag">'+c[6]+'</span>':'')+'</div><div class="txt">'+c[7]+'</div>'+(c[8]?'<div class="slots">钩子：'+c[8]+'</div>':'')+'</div>'});
+h+='</div></div>';groups.innerHTML+=h});
+groups.querySelectorAll('.c').forEach(function(d){d.onclick=function(){st.card=(st.card===+d.dataset.i)?null:+d.dataset.i;render()}});
+if(st.card!=null){var c=CARDS[st.card];
+panel.innerHTML='<h4>'+c[3]+'　<span style="color:var(--muted);font-size:12px">'+c[0]+' ｜ '+c[1]+' ｜ '+c[2]+'</span></h4><p>费用 '+c[4]+'　｜　槽位 '+c[5]+'　｜　标签 '+c[6]+'</p><p>'+c[7]+(c[8]?('　｜　钩子：'+c[8]):'')+'</p><p>对照读法：同费段三族的取向不同——铁砧用标签堆羁绊、涌潮用层数与数量拖时间、星辉用蓄力与护盾换爆发。跨族混编时先看费用，再看标签能不能凑够阈值。</p>'}
+else panel.innerHTML='<h4>怎么读</h4><p>三族各 12 张，结构完全对齐（塔 4 / 支援 3 / 技能 2 / 修饰 3），这是"三族体系完整度相等"的硬约束。点任意一张卡看细节；上面可筛族与槽位。混编的难点不在强度，而在标签：一个 20 张的卡组要塞进两到三套标签，往往只能保一条主线羁绊。</p>';
+}
+render();})();
+</script>
+</body>
+</html>

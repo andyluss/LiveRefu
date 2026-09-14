@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 路线图与融合玩法</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1100px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+.tl{position:relative;margin:10px 0 4px;padding-left:8px}
+.tl:before{content:"";position:absolute;left:14px;top:6px;bottom:6px;width:2px;background:var(--border)}
+.step{position:relative;padding:0 0 14px 40px}
+.step:before{content:"";position:absolute;left:8px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.step h4{margin:0;font-size:13.5px}.step p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:11px;padding:0 7px;border-radius:999px;border:1px solid var(--border);color:var(--muted);margin-left:6px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:10px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card);font-size:12.5px;margin-top:14px}
+.panel h4{margin:0 0 6px;font-size:13.5px}.panel p{margin:2px 0;color:var(--muted)}
+ol{margin:6px 0 0;padding-left:20px;font-size:12.5px}
+.hot{color:var(--accent);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>路线图与融合玩法</h1>
+<div class="sub">核心机制：玩法＝规则卡组。任何新玩法都由 1–3 张规则卡 + N 张内容卡表达，不改既有卡。依据：09_路线图与融合玩法、00_决策记录 D10/D11。</div>
+<div class="tl">
+<div class="step"><h4>v0.1 原型 <span class="tag">单主族</span></h4><p>10 张卡、2 张地图卡，验证"卡片即规则"的手感。对应图：07 卡牌体系总览。</p></div>
+<div class="step"><h4>v0.3 三族 PvE <span class="tag">三族 + 三从族</span></h4><p>20 张卡组、战役前 3 章、首批挑战卡。对应图：08 三族 12 卡、03 对空矩阵、05 挑战卡。</p></div>
+<div class="step"><h4>v0.6 赛季与异步 <span class="tag">周常 + 异步 PvP</span></h4><p>周常长局、异步 PvP、挑战卡总分排行榜、赛季通行证（外观）。对应图：01 难度与胜率曲线。</p></div>
+<div class="step"><h4>v1.0 融合玩法包 <span class="tag hot">Roguelike 远征（D11）</span></h4><p>接入首个融合包 + 关卡编辑器内测（D10）。对应图：11 远征节点链、02 PMOD 增益。</p></div>
+<div class="step"><h4>v1.x 之后 <span class="tag">UGC 分发</span></h4><p>编辑器内测达标后开放玩家 UGC（门槛与审核按 D10 细化）。</p></div>
+</div>
+<h2 style="font-size:15px;margin:16px 0 0">可规划的融合包（按优先级）</h2>
+<table>
+<thead><tr><th>包</th><th>规则卡要点</th><th>复用的既有卡</th><th>与远征的关系</th></tr></thead>
+<tbody>
+<tr><td><b>Roguelike 远征</b>（首发，D11）</td><td>关卡链、每关三选一永久修饰、失败即结束</td><td>塔卡、修饰卡、地图卡</td><td>规则卡接口的第一个实现，验证节点链与种子</td></tr>
+<tr><td>潜行 / 护送</td><td>目标卡、视野与警戒、限时</td><td>单位卡、事件卡、地图卡</td><td>复用事件卡与地图槽，新增目标卡</td></tr>
+<tr><td>自动战斗</td><td>预设卡组自动施放，玩家只调卡组</td><td>全部战斗卡</td><td>把远征的"局前准备"变成唯一操作</td></tr>
+<tr><td>异步 PvP</td><td>双方波次卡组互为对手，录像/快照结算</td><td>波次卡、规则卡（公平模式）</td><td>远征的种子机制天然适配快照对比</td></tr>
+<tr><td>双人合作</td><td>共享基地、分工卡池</td><td>支援卡、事件卡</td><td>从族的"支援位"概念延伸到两名玩家</td></tr>
+</tbody>
+</table>
+<div class="panel">
+<h4>扩展性验收标准（新增玩法包必须三项都成立）</h4>
+<ol>
+<li>不改动既有卡的规则层字段；</li>
+<li>新玩法可由 1–3 张规则卡 + N 张内容卡完整表达；</li>
+<li>移除该玩法包后，其余模式与存档不受影响（remove-safe）。</li>
+</ol>
+<p>三项里第 3 条最容易被忽略：它要求玩法包是"可拔掉的插件"，而不是改写引擎的地基。远征之所以能首发，正是因为它是纯规则卡 + 既有卡池的组合。</p>
+</div>
+</div>
+</body>
+</html>

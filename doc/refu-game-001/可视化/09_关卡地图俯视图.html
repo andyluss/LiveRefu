@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 关卡地图俯视图</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.maps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.maps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.maps{grid-template-columns:1fr}}
+.m{border:1px solid var(--border);border-radius:10px;padding:8px;background:var(--card);cursor:pointer;transition:.15s}
+.m:hover{border-color:var(--accent)}.m.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.m h3{margin:2px 0 4px;font-size:12.5px}.m .meta{color:var(--muted);font-size:11px}
+svg{width:100%;height:auto;display:block}.pathline{fill:none;stroke:var(--muted);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;opacity:.35}
+.slot{stroke:var(--bg);stroke-width:1.5}.terr{font-size:9.5px;fill:var(--muted)}.lbl{font-size:9.5px;fill:var(--fg)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:10px 0}
+.k{display:inline-flex;align-items:center;gap:5px}.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card);margin-top:12px;font-size:12.5px}
+.panel h4{margin:0 0 6px;font-size:14px}.panel p{margin:2px 0;color:var(--muted)}
+.panel table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:8px}th,td{border:1px solid var(--border);padding:4px 7px;text-align:left}
+th{color:var(--muted);font-weight:500;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>关卡地图俯视图</h1>
+<div class="sub">六张地图的俯视示意（按 19_地图卡表字段重绘的示意图，非美术稿）：方块＝标准塔位，菱形＝支援位，圆＝修饰位，圆点＝入口，粗线＝路径。</div>
+<div class="legend">
+<span class="k"><span class="sw" style="background:var(--s1)"></span>标准塔位</span>
+<span class="k"><span class="sw" style="background:var(--s4);transform:rotate(45deg)"></span>支援位</span>
+<span class="k"><span class="sw" style="background:var(--s3);border-radius:50%"></span>修饰位</span>
+<span class="k"><span class="sw" style="background:var(--s5);border-radius:50%"></span>入口</span>
+<span class="k"><span class="sw" style="background:var(--s2)"></span>地形标记</span>
+</div>
+<div class="maps" id="maps"></div>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var MAPS=[
+{id:'MAP-ANV-01',name:'峡谷哨站',race:'铁砧联邦',entries:[[16,100]],base:[302,140],
+ path:[[22,100],[80,100],[112,64],[170,64],[210,64],[242,110],[300,140]],
+ std:[[58,80],[58,120],[100,44],[132,84],[168,44],[196,84],[248,92],[272,122]],sup:[[132,116],[214,92],[284,158]],mod:[[152,32]],
+ terr:[['高台',100,28],['高台',196,32],['沼泽',160,116]],
+ dual:false,slots:'标准 8 / 支援 3 / 修饰 1',len:'约 40s 通行',events:1,ch:'第 1–2 章',
+ waves:'WAV-ANV-A 普通 ｜ WAV-ANV-B 精英 ｜ WAV-ANV-C 周常',
+ note:'教学图：单入口、两个高台加射程、一片沼泽给减速示范。第 1 章 94.9% 胜率就是在这里打出来的。'},
+{id:'MAP-ANV-02',name:'双闸峡谷',race:'铁砧联邦',entries:[[16,40],[16,160]],base:[300,100],
+ path:[[20,40],[80,54],[118,86],[150,100],[220,100],[298,100]],
+ path2:[[20,160],[80,146],[118,114],[150,100]],
+ std:[[56,28],[92,42],[130,62],[188,72],[238,68],[284,80],[56,172],[92,158],[130,138],[188,128],[238,132]],sup:[[112,100],[166,48],[166,152],[262,112]],mod:[[206,40],[206,160]],
+ terr:[['工事平台',86,100],['铁闸',150,100],['高台',120,30],['高台',248,44]],
+ dual:true,slots:'标准 11 / 支援 4 / 修饰 2',len:'约 33s × 2（中段铁闸合流）',events:2,ch:'第 3–4 章',
+ waves:'WAV-ANV-D 普通 ｜ WAV-ANV-E 精英 ｜ WAV-ANV-F 周常',
+ note:'铁砧的双入口图：工事平台让工事卡生命 +20%，可破坏铁闸是第一个会变的地图元素。可挂「双流」。'},
+{id:'MAP-TID-01',name:'腐殖洼地',race:'涌潮虫群',entries:[[16,50],[16,150]],base:[300,100],
+ path:[[22,50],[110,50],[190,64],[268,100],[296,100]],
+ path2:[[22,150],[110,150],[190,136],[268,100]],
+ std:[[58,34],[58,166],[112,34],[112,166],[160,48],[160,152],[212,78],[212,122],[248,62]],sup:[[86,100],[136,100],[196,100],[252,134]],mod:[[222,42]],
+ terr:[['腐蚀地',70,100],['腐蚀地',150,100],['腐蚀地',244,100]],
+ dual:true,slots:'标准 9 / 支援 4 / 修饰 1',len:'约 35s × 2（并行）',events:2,ch:'第 3 章',
+ waves:'WAV-TID-A 普通 ｜ WAV-TID-B 精英 ｜ WAV-TID-C 周常',
+ note:'两条并行路 + 三块腐蚀地：敌人越待越弱，虫群卡在这里反而 +10% 腐蚀伤害。涌潮的主场图。'},
+{id:'MAP-AST-01',name:'棱镜回廊',race:'星辉议会',entries:[[62,100]],base:[62,100],
+ ring:true,std:[[62,32],[120,20],[196,28],[258,60],[262,140],[200,172],[120,180],[62,168]],sup:[[130,100],[192,64],[192,136]],mod:[[160,100],[240,100]],
+ terr:[['共鸣石',108,44],['共鸣石',228,44],['共鸣石',228,156]],
+ dual:false,slots:'标准 10 / 支援 3 / 修饰 2',len:'约 45s 一圈（环形）',events:1,ch:'第 4 章',
+ waves:'WAV-AST-A 普通 ｜ WAV-AST-B 精英 ｜ WAV-AST-C 周常',
+ note:'环形路径 + 三块共鸣石 + 一块虚空（不可放置）。这是"相邻既是力量也是脆弱"这张图的来源。'},
+{id:'MAP-AST-02',name:'棱镜双子回廊',race:'星辉议会',entries:[[16,40],[16,160]],base:[300,100],
+ path:[[20,40],[76,52],[120,82],[170,100],[240,100],[298,100]],
+ path2:[[20,160],[76,148],[120,118],[170,100]],
+ std:[[54,26],[90,40],[128,60],[186,72],[236,68],[282,80],[54,174],[90,160],[128,140],[186,128]],sup:[[110,100],[200,48],[200,152],[262,112]],mod:[[214,36],[214,164]],
+ terr:[['共鸣石',148,100],['共鸣石',242,44],['虚空',242,156],['棱镜厅',170,100]],
+ dual:true,slots:'标准 10 / 支援 4 / 修饰 2',len:'约 32s × 2（中段棱镜厅合流）',events:2,ch:'第 4–5 章',
+ waves:'WAV-AST-D 普通 ｜ WAV-AST-E 精英 ｜ WAV-AST-F 周常',
+ note:'合流点额外给共鸣范围 +1，双子回廊是星辉版的双入口图：合流之后共鸣链最好看，也最怕破盾反噬。'},
+{id:'MAP-MULTI-01',name:'双岔要塞',race:'中立',entries:[[16,40],[16,160]],base:[300,100],
+ path:[[20,40],[78,52],[124,84],[170,100],[242,100],[298,100]],
+ path2:[[20,160],[78,148],[124,116],[170,100]],
+ std:[[56,28],[92,42],[132,62],[190,70],[240,66],[286,80],[56,172],[92,158],[132,138],[190,130],[240,134],[286,120]],sup:[[112,100],[204,44],[204,156],[266,108]],mod:[[216,32],[216,168]],
+ terr:[['合流点',170,100],['可破坏桥',104,66]],
+ dual:true,slots:'标准 12 / 支援 4 / 修饰 2',len:'约 30s × 2（共享基地）',events:2,ch:'第 5 章',
+ waves:'WAV-MUL-A 普通 ｜ WAV-MUL-B 精英 ｜ WAV-MUL-C 周常（BOSS 波）',
+ note:'塔位最多、入口最短、共享基地：合流点让敌人 +10% 受伤，是全书与长篇第八节点的同一张图。'}];
+var st={sel:null},box=document.getElementById('maps'),panel=document.getElementById('panel');
+function renderMini(m,big){
+var W=320,H=200;
+var s='<svg viewBox="0 0 '+W+' '+H+'" aria-label="'+m.name+'">';
+if(m.ring){s+='<ellipse class="pathline" cx="160" cy="100" rx="104" ry="66"></ellipse>'}
+else{s+='<path class="pathline" d="M '+m.path.map(function(p){return p[0]+' '+p[1]}).join(' L ')+'"></path>';
+ if(m.path2)s+='<path class="pathline" d="M '+m.path2.map(function(p){return p[0]+' '+p[1]}).join(' L ')+'"></path>'}
+(m.terr||[]).forEach(function(t){s+='<circle cx="'+t[1]+'" cy="'+t[2]+'" r="9" fill="var(--s2)" opacity=".35"></circle><text class="terr" x="'+t[1]+'" y="'+(t[2]+3)+'" text-anchor="middle">'+t[0].slice(0,2)+'</text>'});
+(m.std||[]).forEach(function(p){s+='<rect class="slot" x="'+(p[0]-5)+'" y="'+(p[1]-5)+'" width="10" height="10" rx="2" fill="var(--s1)"></rect>'});
+(m.sup||[]).forEach(function(p){s+='<rect class="slot" x="'+(p[0]-5)+'" y="'+(p[1]-5)+'" width="10" height="10" rx="2" fill="var(--s4)" transform="rotate(45 '+p[0]+' '+p[1]+')"></rect>'});
+(m.mod||[]).forEach(function(p){s+='<circle class="slot" cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="var(--s3)"></circle>'});
+(m.entries||[]).forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="6" fill="var(--s5)"></circle>'});
+if(m.base)s+='<rect x="'+(m.base[0]-8)+'" y="'+(m.base[1]-8)+'" width="16" height="16" rx="3" fill="none" stroke="var(--fg)" stroke-width="2"></rect>';
+s+='</svg>';return s}
+function render(){box.innerHTML='';MAPS.forEach(function(m,i){var d=document.createElement('div');d.className='m'+(st.sel===i?' on':'');
+d.innerHTML='<h3>'+m.name+'　<span class="meta">'+m.id+'</span></h3>'+renderMini(m)+'<div class="meta">'+m.race+' ｜ '+m.slots+' ｜ '+(m.dual?'双入口（双流可用）':'单入口')+'</div>';
+d.onclick=function(){st.sel=(st.sel===i)?null:i;render()};box.appendChild(d)});
+if(st.sel==null){panel.innerHTML='<h4>怎么读</h4><p>六张图分三族 + 一张中立图。看三件事：路径形状（单线 / 双线 / 环形）、塔位数量（8 → 12）、地形（高台给射程、沼泽给减速、腐蚀地给持续伤害、共鸣石给共鸣计数、虚空不可放置、合流点让敌人多受伤）。点任意一张看字段与波次卡组。</p>';return}
+var m=MAPS[st.sel];
+panel.innerHTML='<h4>'+m.id+' '+m.name+'　<span style="color:var(--muted);font-size:12px">'+m.race+'</span></h4>'+
+'<p>塔位：'+m.slots+'　｜　路径：'+m.len+'　｜　事件槽：'+m.events+'　｜　推荐章节：'+m.ch+'</p>'+
+'<p>地形：'+(m.terr||[]).map(function(t){return t[0]}).join('、')+'</p>'+
+'<p>双入口：'+(m.dual?'是（可挂挑战卡「双流」）':'否（挂双流会被编辑器拦截）')+'</p>'+
+'<p>波次卡组复用：'+m.waves+'</p>'+
+'<p>设计读法：'+m.note+'</p>'}
+render();})();
+</script>
+</body>
+</html>

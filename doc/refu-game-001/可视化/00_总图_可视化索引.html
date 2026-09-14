@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 可视化总图</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626;--s6:#0891b2}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171;--s6:#22d3ee}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1240px;margin:0 auto}h1{font-size:20px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:10px}
+.k{display:inline-flex;align-items:center;gap:5px}.sw{width:14px;height:10px;border-radius:3px;display:inline-block}
+svg{width:100%;height:auto;display:block}.lbl{fill:var(--fg);font-size:11.5px}.sub2{fill:var(--muted);font-size:10px}
+a{color:inherit;text-decoration:none}a:hover rect{stroke:var(--accent);stroke-width:2.5}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:14px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}
+h2{font-size:15px;margin:20px 0 6px}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card);font-size:12.5px;margin-top:14px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>可视化总图</h1>
+<div class="sub">从策划文档到图，再到图与图之间的关系：点任意方块直接打开对应页面。左起第一列是数据底座，最后一列是叙事侧。</div>
+<div class="legend">
+<span class="k"><span class="sw" style="background:var(--muted)"></span>策划文档（数据底座）</span>
+<span class="k"><span class="sw" style="background:var(--s1)"></span>数值与验证（01–06）</span>
+<span class="k"><span class="sw" style="background:var(--s2)"></span>内容与关卡（08/09/11）</span>
+<span class="k"><span class="sw" style="background:var(--s3)"></span>系统与流程（07/10/12/13/14）</span>
+<span class="k"><span class="sw" style="background:var(--s5)"></span>叙事侧（4 张）</span>
+</div>
+<svg id="g" viewBox="0 0 1220 620" role="img" aria-label="可视化总图"></svg>
+
+<h2>图与图的关系（为什么按这个顺序看）</h2>
+<table>
+<thead><tr><th>关系</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>07 卡牌体系 → 08 三族 12 卡</td><td>先有规则底座（七类卡／槽位／羁绊），才谈得上逐卡对比。</td></tr>
+<tr><td>08 三族 12 卡 → 10 能量与经济</td><td>卡的费用决定一局的现金流；能量图是卡表的"钱包视角"。</td></tr>
+<tr><td>09 地图俯视 → 11 远征节点链</td><td>节点链的每一格都落在一张地图上；地图决定塔位与地形。</td></tr>
+<tr><td>03 对空矩阵 → 04 空地混编</td><td>先看单形态（空袭档位）的族间差，再看形态之间的差，才知道混编为何是默认。</td></tr>
+<tr><td>01 难度曲线 → 11 远征节点链</td><td>同一个模型（B/D/胜率）在主线与远征上各跑一遍。</td></tr>
+<tr><td>05 挑战卡 → 10 能量与经济</td><td>挑战卡是局前难度与奖励的接口，落在经济图上。</td></tr>
+<tr><td>13 决策与落地 → 全部图</td><td>每张图都能追到 D1–D11 中的某条决策；追不到就说明它超范围了。</td></tr>
+<tr><td>14 路线图 → 11 远征节点链</td><td>远征是 v1.0 的首个融合包，也是规则卡接口的第一个实现。</td></tr>
+<tr><td>策划侧 → 叙事侧</td><td>长篇与短篇都建立在这些数值之上：阵营、从族、远征与排行榜都有对应的叙事图。</td></tr>
+</tbody>
+</table>
+
+<h2>全部页面</h2>
+<table id="all"></table>
+
+<div class="panel">
+<h4>维护约定</h4>
+<p>这些页面是<b>只读视图</b>：数值改动先改策划文档，再重跑 <code>tools/sim_refu_game_001.ts</code> 的九项校验，然后刷新本目录。若某张图与文档不一致，以文档为准，并把图改回来。</p>
+</div>
+</div>
+<script>
+(function(){
+var D=['数值/04 敌人数值与波次威胁值','数值/05 能量与关卡预算曲线','21 章节胜率矩阵','23/24/26 远征与种子','14/15/16 三族卡表','19 地图卡表','02 卡片规则系统','00 决策记录','09 路线图与融合玩法','07 移动端与界面','08 成长与经济'];
+var B=[['01','难度与胜率曲线','01_难度与胜率曲线.html'],['02','PMOD 增益','02_PMOD增益.html'],['03','对空矩阵','03_对空矩阵.html'],['04','空地混编','04_空地混编.html'],['05','挑战卡与掉落系数','05_挑战卡与掉落系数.html'],['06','敌人数值与能量节奏','06_敌人数值与能量节奏.html']];
+var C=[['08','三族 12 卡逐卡对比','08_三族12卡逐卡对比.html'],['09','关卡地图俯视图','09_关卡地图俯视图.html'],['11','远征节点链','11_远征节点链.html']];
+var S=[['07','卡牌体系总览','07_卡牌体系总览.html'],['10','能量与经济循环','10_能量与经济循环.html'],['12','移动端界面线框','12_移动端界面线框.html'],['13','决策与规则卡关系','13_决策与规则卡关系.html'],['14','路线图与融合玩法','14_路线图与融合玩法.html']];
+var N=[['人物关系图','../故事/小说_节点之海/可视化/人物关系图.html'],['时间线关系演化','../故事/小说_节点之海/可视化/时间线关系演化.html'],['从族功能链路','../故事/小说_节点之海/可视化/从族功能链路.html'],['阵营对抗','../故事/小说_节点之海/可视化/阵营对抗.html']];
+var COL={D:'var(--muted)',B:'var(--s1)',C:'var(--s2)',S:'var(--s3)',N:'var(--s5)'};
+var svg=document.getElementById('g'),NS='http://www.w3.org/2000/svg';
+function E(t,a,x){var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;return n}
+var nodes=[],edges=[];
+function col(list,x,kind,label){list.forEach(function(it,i){var y=64+i*((560-64)/Math.max(1,list.length-1||1));if(list.length===1)y=300;
+nodes.push({id:kind+'-'+i,x:x,y:y,label:it[0],sub:it[1]||'',link:it[2]||null,kind:kind})});
+svg.appendChild(E('text',{x:x+52,y:34,'text-anchor':'middle',class:'sub2'},label))}
+col(D.map(function(d){return [d,'',null]}),110,'D','策划文档');
+col(B,340,'B','数值与验证');
+col(C,570,'C','内容与关卡');
+col(S,800,'S','系统与流程');
+col(N.map(function(n){return [n[0],'',n[1]]}),1060,'N','叙事侧');
+function idx(kind,i){return nodes.findIndex(function(n){return n.kind===kind&&n.label===(kind==='D'?D[i]:(kind==='B'?B[i][1]:(kind==='C'?C[i][1]:(kind==='S'?S[i][1]:N[i][0]))))})}
+function byLabel(kind,label){for(var i=0;i<nodes.length;i++)if(nodes[i].kind===kind&&nodes[i].label===label)return i;return -1}
+function link(a,b){var A=nodes[a],Bb=nodes[b];if(!A||!Bb)return;edges.push([a,b]);
+svg.appendChild(E('path',{d:'M '+(A.x+104)+' '+A.y+' C '+(A.x+150)+' '+A.y+', '+(Bb.x-46)+' '+Bb.y+', '+(Bb.x-4)+' '+Bb.y,fill:'none',stroke:COL[A.kind],'stroke-width':1.1,opacity:.35}))}
+D.forEach(function(d,i){var a=byLabel('D',d);
+if(d.indexOf('数值/04')===0){link(a,byLabel('B','对空矩阵'));link(a,byLabel('B','空地混编'));link(a,byLabel('B','敌人数值与能量节奏'));link(a,byLabel('C','关卡地图俯视图'))}
+if(d.indexOf('数值/05')===0){link(a,byLabel('B','难度与胜率曲线'));link(a,byLabel('B','挑战卡与掉落系数'));link(a,byLabel('B','敌人数值与能量节奏'));link(a,byLabel('S','能量与经济循环'))}
+if(d.indexOf('21')===0){link(a,byLabel('B','难度与胜率曲线'));link(a,byLabel('B','PMOD 增益'))}
+if(d.indexOf('23/24/26')===0){link(a,byLabel('B','PMOD 增益'));link(a,byLabel('C','远征节点链'));link(a,byLabel('B','难度与胜率曲线'))}
+if(d.indexOf('14/15/16')===0){link(a,byLabel('C','三族 12 卡逐卡对比'));link(a,byLabel('S','卡牌体系总览'))}
+if(d.indexOf('19')===0){link(a,byLabel('C','关卡地图俯视图'));link(a,byLabel('C','远征节点链'))}
+if(d.indexOf('02')===0){link(a,byLabel('S','卡牌体系总览'))}
+if(d.indexOf('00')===0){link(a,byLabel('S','决策与规则卡关系'))}
+if(d.indexOf('09')===0){link(a,byLabel('S','路线图与融合玩法'));link(a,byLabel('C','远征节点链'))}
+if(d.indexOf('07')===0){link(a,byLabel('S','移动端界面线框'))}
+if(d.indexOf('08')===0){link(a,byLabel('S','能量与经济循环'))}});
+link(byLabel('S','卡牌体系总览'),byLabel('C','三族 12 卡逐卡对比'));
+link(byLabel('C','三族 12 卡逐卡对比'),byLabel('S','能量与经济循环'));
+link(byLabel('B','对空矩阵'),byLabel('B','空地混编'));
+link(byLabel('B','难度与胜率曲线'),byLabel('C','远征节点链'));
+link(byLabel('C','关卡地图俯视图'),byLabel('C','远征节点链'));
+link(byLabel('B','挑战卡与掉落系数'),byLabel('S','能量与经济循环'));
+link(byLabel('S','路线图与融合玩法'),byLabel('C','远征节点链'));
+link(byLabel('S','卡牌体系总览'),byLabel('N','从族功能链路'));
+link(byLabel('D','03_种族总览'),byLabel('N','阵营对抗'));
+nodes.forEach(function(n){var g=E('g',{});
+if(n.link){var a=E('a',{href:n.link});g.appendChild(a);g=a}
+g.appendChild(E('rect',{x:n.x,y:n.y-15,width:208,height:34,rx:8,fill:'var(--card)',stroke:'var(--border)','stroke-width':1.2}));
+g.appendChild(E('rect',{x:n.x,y:n.y-15,width:5,height:34,rx:2,fill:COL[n.kind]}));
+g.appendChild(E('text',{x:n.x+12,y:n.y-1,class:'lbl'},n.label.length>20?n.label.slice(0,19)+'…':n.label));
+if(n.sub)g.appendChild(E('text',{x:n.x+12,y:n.y+12,class:'sub2'},n.sub));
+svg.appendChild(g)});
+var all=[['01','数值与验证','难度与胜率曲线','主线五章 + 远征八节点的胜率、目标带与 D 曲线','数值/04、数值/05、21、23'],
+['02','数值与验证','PMOD 增益','五张永久修饰的平均增益与契合流派增益','23、数值/体检报告'],
+['03','数值与验证','对空矩阵','三档空袭 × 三族热力表与行内极差','数值/04、数值/体检报告'],
+['04','数值与验证','空地混编','纯空军／混编／纯地面三形态对比','数值/04、数值/体检报告'],
+['05','数值与验证','挑战卡与掉落系数','难度分 → 掉落系数与评级加成（可拖动）','数值/05、13、25'],
+['06','数值与验证','敌人数值与能量节奏','六种敌方原型、能量来源与模型参数','数值/04、数值/05、21'],
+['07','系统与流程','卡牌体系总览','七类卡、槽位、组合四法则、内聚五律、羁绊九条','02、05、14/15/16'],
+['08','内容与关卡','三族 12 卡逐卡对比','36 张核心卡的费用、槽位、标签与钩子','14、15、16'],
+['09','内容与关卡','关卡地图俯视图','六张地图的塔位、地形、入口与波次卡组','19、06'],
+['10','系统与流程','能量与经济循环','局内能量现金流与局外远征点经济','数值/05、08、23'],
+['11','内容与关卡','远征节点链','八节点预算／难度／胜率与样例种子路线','23、24、26'],
+['12','系统与流程','移动端界面线框','五屏线框与手势约定、会话节奏','07、09'],
+['13','系统与流程','决策与规则卡关系','D1–D11 的落地文档与读取图','00、02–09'],
+['14','系统与流程','路线图与融合玩法','版本路线、五个融合包与扩展性验收','09、00'],
+['00','本页','可视化总图','全部页面的索引与关系','全部'],
+['叙事 ×4','叙事侧','人物关系图 / 时间线关系演化 / 从族功能链路 / 阵营对抗','长篇《节点之海》的关系与阵营可视化','故事/小说_节点之海/02_人物关系图 等']];
+document.getElementById('all').innerHTML='<thead><tr><th>编号</th><th>分组</th><th>页面</th><th>内容</th><th>数据来源</th></tr></thead><tbody>'+
+all.map(function(r){var file=null;['01','02','03','04','05','06','07','08','09','10','11','12','13','14'].forEach(function(k){if(r[0]===k)file=(k==='08'?'08_三族12卡逐卡对比.html':k==='02'?'02_PMOD增益.html':k==='04'?'04_空地混编.html':k==='05'?'05_挑战卡与掉落系数.html':k==='06'?'06_敌人数值与能量节奏.html':k==='07'?'07_卡牌体系总览.html':k==='09'?'09_关卡地图俯视图.html':k==='10'?'10_能量与经济循环.html':k==='11'?'11_远征节点链.html':k==='12'?'12_移动端界面线框.html':k==='13'?'13_决策与规则卡关系.html':k==='14'?'14_路线图与融合玩法.html':k==='03'?'03_对空矩阵.html':'01_难度与胜率曲线.html')});
+var name=file?('<a href="'+file+'">'+r[2]+'</a>'):
+(r[0]==='叙事 ×4'?'<a href="../故事/小说_节点之海/可视化/README.md">'+r[2]+'</a>':r[2]);
+return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+name+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td></tr>'}).join('')+'</tbody>';
+})();
+</script>
+</body>
+</html>
