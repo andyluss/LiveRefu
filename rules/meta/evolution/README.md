@@ -1,12 +1,12 @@
-# evolution · 元规则演进状态检查（rules/meta 的子关注点）
+# evolution · 规则演进状态检查（rules/meta 的子关注点）
 
-> 属于 [`../README.md`](../README.md)（元规则）的一个**子关注点**：用**形式化检查**校验每条元规则的**演进状态**
+> 属于 [`../README.md`](../README.md)（元规则）的一个**子关注点**：用**形式化检查**校验每条规则（元规则 **M** 与具体规则 **R**）的**演进状态**
 > 是否符合 [`M3-rule-evolution.md`](../M3-rule-evolution.md) 的多状态/子状态机与允许迁移。
 > 整合自 `lab/formal-system/concerns/meta-rules/evolution/`。
 
 ## 做什么
 
-扫描 [`../M*-*.md`](../) 的**演进历史**表（含 `状态` 列），校验：
+扫描元规则 [`../M*-*.md`](../)（`rules/meta/`）与具体规则 [`../../R*-*.md`](../../)（`rules/`）的**演进历史**表（含 `状态` 列），校验：
 
 1. 每条规则有"演进历史"表（含 `状态` 列）。
 2. 每个状态合法：主状态 ∈ `draft/proposed/experimental/accepted/in-review/superseded/deprecated/retired`，
@@ -18,7 +18,7 @@
 ## 运行
 
 ```bash
-node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts             # 校验全部元规则
+node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts             # 校验全部规则（M + R）
 node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts --self-test  # 自检(能抓非法迁移/状态)
 ```
 

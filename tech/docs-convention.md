@@ -1,6 +1,8 @@
 # 文档约定
 
 > 工作区级文档规范。本文是仓库 Markdown 书写与「相对链接」约束的权威说明；根 [`README.md`](../README.md) 仅保留入口。
+>
+> **规则权威**：[`rules/R01-docs-convention.md`](../rules/R01-docs-convention.md)（R01 文档约定）。本文为**技术详解 / 实施说明**，供实施与背景查阅。
 
 ## 一、通用
 

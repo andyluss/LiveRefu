@@ -1,17 +1,18 @@
 # 技术文档目录
 
-> 本目录集中存放 **仓库级技术规范与工具说明**（不含角色业务文档——那些归属 `studio/<角色>/`）。
+> 本目录集中存放 **仓库级技术详解与工具说明**（不含角色业务文档——那些归属 `studio/<角色>/`）。
+> **规则权威在 [`rules/`](../rules/README.md)**（R 系列）：本目录各文档为**技术详解 / 实施说明**（非规则权威），供实施与背景查阅。
 > 根 [`README.md`](../README.md) 对各目录做导览；本文是技术文档的入口与索引。
 
 ## 文档清单
 
-| 文档 | 内容 |
-| --- | --- |
-| [`git-convention.md`](git-convention.md) | Git 与提交信息约定（Conventional Commits、自动提交、历史约定） |
-| [`docs-convention.md`](docs-convention.md) | 文档约定（md 体例、**相对链接深度**与校验机制） |
-| [`changelog-convention.md`](changelog-convention.md) | 变更日志约定（Keep a Changelog + SemVer；每次非琐碎变更须记录） |
-| [`hooks-readme.md`](hooks-readme.md) | 相对链接校验：pre-commit 钩子 + CI 的启用/跳过/常见处理 |
-| [`formalization.md`](formalization.md) | 形式化验证：数据 schema 校验 + CI Godot 加载检查，GDScript 边界与演进路线 |
+| 文档 | 内容 | 对应规则（权威） |
+| --- | --- | --- |
+| [`git-convention.md`](git-convention.md) | Git 与提交信息约定（Conventional Commits、自动提交、历史约定） | [R02](../rules/R02-git-convention.md) |
+| [`docs-convention.md`](docs-convention.md) | 文档约定（md 体例、**相对链接深度**与校验机制） | [R01](../rules/R01-docs-convention.md) |
+| [`changelog-convention.md`](changelog-convention.md) | 变更日志约定（Keep a Changelog + SemVer；每次非琐碎变更须记录） | [R05](../rules/R05-changelog.md) |
+| [`hooks-readme.md`](hooks-readme.md) | 相对链接校验：pre-commit 钩子 + CI 的启用/跳过/常见处理 | [R03](../rules/R03-link-validation.md) |
+| [`formalization.md`](formalization.md) | 形式化验证：数据 schema 校验 + CI Godot 加载检查，GDScript 边界与演进路线 | [R04](../rules/R04-data-validation.md)（仅「数据 schema 校验」部分） |
 
 > 注：**技术性规则**现以实验形式放于 [`lab/formal-system/tech/rules/`](../lab/formal-system/tech/rules/README.md)（服务本形式化系统），成熟后再回流入工作区根 [`rules/`](../rules/README.md)（规则目录）。
 

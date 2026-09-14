@@ -1,6 +1,8 @@
 # Git 与提交信息约定
 
 > 工作区级技术规范。本文是仓库 `Git` 行为的唯一权威说明；根 [`README.md`](../README.md) 仅保留指向本文件的入口。
+>
+> **规则权威**：[`rules/R02-git-convention.md`](../rules/R02-git-convention.md)（R02 Git 与提交信息约定）。本文为**技术详解 / 实施说明**。
 
 ## 一、自动提交
 

@@ -1,6 +1,7 @@
 # 相对链接校验：pre-commit 钩子 + CI
 
 > 本文说明本仓库用**两级闸门**校验 Markdown 相对链接：本地 pre-commit 钩子（提交前）+ CI 链接检查（提交后兜底）。工具脚本见 [`../tools/check_links.ts`](../tools/check_links.ts)、[`../tools/install_hooks.sh`](../tools/install_hooks.sh)、[`../tools/hooks/pre-commit`](../tools/hooks/pre-commit)。
+> **规则权威**：[`rules/R03-link-validation.md`](../rules/R03-link-validation.md)（R03 相对链接校验）。本文为**技术详解 / 实施说明**。
 > 为什么需要：本工作区文档大量使用跨目录相对链接（如 `studio/主策划/` 指向 `doc/` 知识库），深度写错（`../doc` 应为 `../../doc`）会在本地 IDE / 预览器 / 网页版变成失效链接。
 
 ---

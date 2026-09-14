@@ -12,7 +12,7 @@
 - 按"域"归类：
   - 工作区**具体规则**（R 系列）→ [`../`](../README.md)（即 `rules/`，如 [R01 文档约定](../R01-docs-convention.md)、[R05 变更日志记录约定](../R05-changelog.md)）；
   - **元规则**（M 系列，本目录）→ `rules/meta/`；
-  - **技术规范文档**（具体规则当前的正文权威来源）→ [`../../tech/`](../../tech/README.md)（docs-convention / git-convention / changelog-convention / formalization / hooks-readme）；
+  - **技术详解 / 实施说明**（**非规则权威**；具体规则的正文权威在 `rules/R*.md`）→ [`../../tech/`](../../tech/README.md)（docs-convention / git-convention / changelog-convention / formalization / hooks-readme）；
   - **项目规则** → `projects/<项目>/`（如 `docs/`、项目 [`README.md`](../../projects/tomorrows-channel/README.md)）。
 - 每条规则一个**唯一 id**，变更写入其"演进历史"表（见 [M3](M3-rule-evolution.md)）。
 
@@ -40,3 +40,4 @@
 | --- | --- | --- | --- | --- |
 | v1 | 2026-09-09 | `accepted.active` | 初定：规则成文、按域、编号、可追踪 | 建立元规则文件夹，明确"规则之规则" |
 | v2 | 2026-09-14 | `accepted.active` | **整合至工作区根 `rules/meta/`**（自 lab 复制）：具体规则归 `rules/`（R 系列）、元规则归 `rules/meta/`（M 系列） | 用户要求把元规则体系复制整合到 `rules/`（M4 除外） |
+| v3 | 2026-09-14 | `accepted.active` | **R 系列转正**：具体规则正文权威由 `tech/` 移入 `rules/R*.md`；`tech/` 降为**技术详解**（非规则权威），分工保留 | 用户要求 R 系列转正（分工保留 `tech/`） |

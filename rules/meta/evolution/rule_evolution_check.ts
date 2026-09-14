@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// rule_evolution_check —— 形式化检查"元规则演进状态"（属 rules/meta 的 evolution 子关注点）。
-// 校验每条元规则（rules/meta/M<编号>-*.md）的演进状态是否符合 M3 状态机。
+// rule_evolution_check —— 形式化检查"规则演进状态"（属 rules/meta 的 evolution 子关注点）。
+// 校验**元规则**（rules/meta/M<编号>-*.md）与**具体规则**（rules/R<编号>-*.md）的演进状态是否符合 M3 状态机。
 // 跨运行时 TypeScript（node/deno/bun 直接运行）。整合自 lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.ts。
 
 import * as fs from "node:fs";
@@ -8,7 +8,8 @@ import * as path from "node:path";
 import * as os from "node:os";
 
 const HERE = path.dirname(decodeURIComponent(new URL(import.meta.url).pathname));
-const META_DIR = path.normalize(path.join(HERE, "..")); // rules/meta/
+const META_DIR = path.normalize(path.join(HERE, "..")); // rules/meta/ （元规则 M 系列）
+const RULES_DIR = path.normalize(path.join(HERE, "..", "..")); // rules/ （具体规则 R 系列）
 
 // ---- M3 状态机 ----
 const PRIMARY: Record<string, string> = {
@@ -154,20 +155,23 @@ function selfTest(): number {
 function main(): number {
   if (process.argv.includes("--self-test")) return selfTest();
   const files: string[] = [];
-  try {
-    const all = fs.readdirSync(META_DIR, { encoding: "utf8" });
-    sortCmp(all);
-    for (const f of all) {
-      if (/^M.*-.*\.md$/.test(f) && fs.existsSync(path.join(META_DIR, f)) && fs.statSync(path.join(META_DIR, f)).isFile()) {
-        files.push(path.join(META_DIR, f));
+  const collect = (dir: string, re: RegExp): void => {
+    try {
+      const all = fs.readdirSync(dir, { encoding: "utf8" });
+      sortCmp(all);
+      for (const f of all) {
+        const fp = path.join(dir, f);
+        if (re.test(f) && fs.existsSync(fp) && fs.statSync(fp).isFile()) files.push(fp);
       }
+    } catch (e) {
+      /* 目录不存在则跳过 */
     }
-  } catch (e) {
-    files.length = 0;
-  }
+  };
+  collect(META_DIR, /^M\d+-.*\.md$/);  // 元规则：rules/meta/M<编号>-*.md
+  collect(RULES_DIR, /^R\d+-.*\.md$/); // 具体规则：rules/R<编号>-*.md
   const issues: string[] = [];
   for (const f of files) issues.push(...checkFile(f));
-  console.log(`演进状态检查 · ${files.length} 条元规则`);
+  console.log(`演进状态检查 · ${files.length} 条规则（元规则 M + 具体规则 R）`);
   for (const i of issues) console.log("  ✗ " + i);
   if (!issues.length) console.log("  全部合法 ✔");
   console.log(`\n判定: 规则 ${files.length} · 违规 ${issues.length}`);

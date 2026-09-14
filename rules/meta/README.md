@@ -43,7 +43,7 @@
 **可运行检查**（TS，跨运行时 node/deno/bun 直接运行）：
 
 - M1+M2 结构：[`tools/meta_rules_check.ts`](tools/meta_rules_check.ts)
-- M3 演进状态：[`evolution/rule_evolution_check.ts`](evolution/rule_evolution_check.ts)
+- M3 演进状态（**覆盖元规则 M 与具体规则 R**）：[`evolution/rule_evolution_check.ts`](evolution/rule_evolution_check.ts)
 
 ```bash
 node --experimental-strip-types rules/meta/tools/meta_rules_check.ts            # 默认检查 rules/
@@ -58,7 +58,7 @@ node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts --s
 
 - 本目录内容**复制整合自** [`lab/formal-system/concerns/meta-rules/`](../../lab/formal-system/concerns/meta-rules/README.md)；lab 原件**原样保留**（实验源）。
 - **M4（目录说明与统一索引）本次未迁入**，原件仍在 lab：见 [`M4-directory-index.md`](../../lab/formal-system/concerns/meta-rules/M4-directory-index.md)。
-- 相关具体规则：[`../README.md`](../README.md)（R 系列）；技术规范文档：[`../../tech/README.md`](../../tech/README.md)。
+- 相关具体规则：[`../README.md`](../README.md)（R 系列）；技术详解：[`../../tech/README.md`](../../tech/README.md)。
 
 ## 相关
 

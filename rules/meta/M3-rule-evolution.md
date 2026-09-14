@@ -75,7 +75,7 @@ retired      → (终态)
 
 - 一条规则的状态迁移应遵循 §2.3；演进历史表须有**状态列**且迁移合法。
 - **形式化检查**：[`evolution/rule_evolution_check.ts`](evolution/rule_evolution_check.ts)（属 [`evolution/`](evolution/README.md) 子关注点）
-  扫描 `M*-*.md`，校验：状态合法（主+子）、历史非空、日期递增、相邻迁移合法。用 `--self-test` 自检。
+  扫描 `M*-*.md`（元规则，`rules/meta/`）与 `R*-*.md`（具体规则，`rules/`），校验：状态合法（主+子）、历史非空、日期递增、相邻迁移合法。用 `--self-test` 自检。
 
 ## 六、自检问题
 
@@ -88,3 +88,4 @@ retired      → (终态)
 | v1 | 2026-09-09 | `experimental` | 初定：建议→已定 二态状态机 + 版本化历史 | 用户要求"每条元规则含演进历史" |
 | v2 | 2026-09-09 | `accepted.applied` | **扩展为多状态+子状态**（8 主状态 + 子状态 + 允许迁移表）；补充"鼓励演进"立场；落 [`evolution/`](evolution/README.md) 形式化检查 | 用户要求"更多状态/子状态、鼓励演进、形式化检查演进" |
 | v3 | 2026-09-14 | `accepted.applied` | **整合至工作区根 `rules/meta/`**（自 lab 复制）；检查脚本随 TS 约定改为 `rule_evolution_check.ts` | 用户要求把元规则体系复制整合到 `rules/`（M4 除外） |
+| v4 | 2026-09-14 | `accepted.applied` | **演进检查扩展到具体规则**：`rule_evolution_check.ts` 由只扫 `M*-*.md` 扩为同时扫 `R*-*.md`；R 系列转正后纳入 M3 状态机（R03/R04=`accepted.applied`、R01/R02/R05=`accepted.active`） | 用户要求 R 系列转正并采用 M3（分档） |

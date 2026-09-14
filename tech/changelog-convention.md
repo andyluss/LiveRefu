@@ -2,7 +2,7 @@
 
 > 工作区级规范：**每次（非琐碎）变更都须写入变更日志**（规则见 [`../rules/R05-changelog.md`](../rules/R05-changelog.md)）。
 > 本文定义变更日志的**格式规格**，供根 `CHANGELOG.md` 及各项目/实验的 `CHANGELOG.md` 共同遵循。
-> 本文件是工作区变更日志书写的权威说明；根 [`README.md`](../README.md) 仅保留入口。
+> 本文件是变更日志书写的**格式规格 / 技术详解**（规则权威在 [`rules/R05-changelog.md`](../rules/R05-changelog.md)）；根 [`README.md`](../README.md) 仅保留入口。
 
 ## 一、基准规格（业界惯例）
 
