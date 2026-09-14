@@ -35,10 +35,10 @@ fi
 # 设置 core.hooksPath(用相对路径, 指向仓库内 tools/hooks)
 git -C "$REPO_ROOT" config --local core.hooksPath "$HOOKS_REL"
 
-echo "✅ 已启用 pre-commit 相对链接校验钩子。"
+echo "✅ 已启用 pre-commit 校验钩子（链接 + 数据 schema + 元规则/规则结构&演进）。"
 echo "   仓库根 : $REPO_ROOT"
 echo "   hooks  : $HOOKS_REL  (core.hooksPath = $(git -C "$REPO_ROOT" config --get core.hooksPath))"
 echo ""
 echo "验证方法(可选)："
-echo "   cd 到仓库根后运行  bash tools/hooks/pre-commit   # 0=通过, 1=有失效链接"
+echo "   cd 到仓库根后运行  bash tools/hooks/pre-commit   # 0=全部通过, 非 0=有检查被拦截"
 echo "临时跳过某次提交：  git commit --no-verify"

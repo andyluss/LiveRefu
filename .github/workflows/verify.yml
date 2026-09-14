@@ -1,13 +1,14 @@
 name: Verify
 
-# 每次 push / PR 时，验证整个工作区（链接/数据契约/元规则结构/演进/STRUCTURE.md/可视面刷新/Godot 加载），全部用 TS 脚本
+# 每次 push / PR 时，验证整个工作区（链接/数据契约/元规则结构/演进/STRUCTURE.md/规则目录/可视面刷新/Godot 加载），全部用 TS 脚本
 # （node --experimental-strip-types 直接跑；脚本均为 node/deno/bun 兼容，见
 #   lab/formal-system/tech/rules/T01-default-ts-scripts.md）：
 #   1. Markdown 相对链接是否失效 (tools/check_links.ts)
 #   2. 数据表是否符合 schema 契约 (tools/check_data.ts)
 #   3. 元规则结构(M1+M2)/演进状态(M3)/STRUCTURE.md(M4) (lab/formal-system/concerns/meta-rules/*.ts)
-#   4. 刷新入口页（hub.ts --run 一键重新生成全部可视面）
-#   5. Godot 脚本静态检查 (godot --headless --import/--check-only --path game)
+#   4. 规则目录 rules/ 的结构(M1+M2) 与规则演进状态(M3, 覆盖元规则 M 与具体规则 R) (rules/meta/*.ts)
+#   5. 刷新入口页（hub.ts --run 一键重新生成全部可视面）
+#   6. Godot 脚本静态检查 (godot --headless --import/--check-only --path game)
 # 用于兜底：即使本地未启用 pre-commit 钩子，推上来也会被这里拦下。
 #
 # 注：本仓库当前无远端(remote)；配置托管平台后此文件即自动生效。
@@ -45,6 +46,12 @@ jobs:
 
       - name: Directory STRUCTURE.md check (M4, TS)
         run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/tools/structure_check.ts
+
+      - name: Rules directory structure check (M1+M2, rules/, TS)
+        run: node --experimental-strip-types rules/meta/tools/meta_rules_check.ts
+
+      - name: Rules + meta-rule evolution state check (M3, TS)
+        run: node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts
 
       - name: Refresh visual surfaces (hub.ts --run)
         run: node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/hub.ts --run

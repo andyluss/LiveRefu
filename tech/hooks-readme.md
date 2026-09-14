@@ -32,6 +32,19 @@ git config core.hooksPath tools/hooks
 - 校验逻辑复用 [`tools/check_links.ts`](../tools/check_links.ts)：跳过外链、纯锚点、无目标条目；只判定真正需要存在的内部相对链接。
 - 判断结果：目标文件/目录不存在 => 失效 => 拦截。
 
+### 钩子的全部校验项
+
+钩子按"**本次暂存涉及哪些路径**"触发对应检查（**只跑相关项**，避免拖慢无关提交）：
+
+| 暂存涉及 | 检查 | 脚本 |
+| --- | --- | --- |
+| `*.md` | 内部相对链接（[R03](../rules/R03-link-validation.md)） | [`tools/check_links.ts`](../tools/check_links.ts) |
+| `projects/tomorrows-channel/data/{tables,schema}/` | 数据表 schema 契约（[R04](../rules/R04-data-validation.md)） | [`tools/check_data.ts`](../tools/check_data.ts) |
+| `lab/formal-system/` | 元规则结构 M1+M2 / 演进 M3 / `STRUCTURE.md` M4 | `lab/formal-system/concerns/meta-rules/*.ts` |
+| `rules/` | 规则目录结构 M1+M2 + 规则演进 M3（**覆盖元规则 M 与具体规则 R**） | [`rules/meta/tools/meta_rules_check.ts`](../rules/meta/tools/meta_rules_check.ts)、[`rules/meta/evolution/rule_evolution_check.ts`](../rules/meta/evolution/rule_evolution_check.ts) |
+
+> `rules/` 两项为**目录级**检查（扫 `rules/` 全树），故以"暂存是否涉及 `rules/`"为触发条件。
+
 ### 常见处理
 
 | 情况 | 处理 |
@@ -46,18 +59,19 @@ git config core.hooksPath tools/hooks
 
 ```bash
 bash tools/hooks/pre-commit
-echo $?   # 0=通过, 1=有失效链接
+echo $?   # 0=全部通过, 非 0=有检查被拦截
 ```
 
 ---
 
-## 二、CI 链接检查（提交后兜底）
+## 二、CI 检查（提交后兜底）
 
 即使本地未启用钩子（例如贡献者在未运行 `install_hooks.sh` 的机器上提交），推送到托管平台后由 CI 兜底拦截。
 
 - **平台**：本仓库暂未配置远端。下面给 **GitHub Actions** 版（`.github/workflows/verify.yml`）；若你在 GitLab，用对应的 `.gitlab-ci.yml` 语法改写（触发器 + 一个跑 `node --experimental-strip-types tools/check_links.ts` 的 job），或在其它 CI 中复用一个执行同命令的步骤即可。
 - **逻辑**：检出代码 → 用 Node 直接运行 TS `tools/check_links.ts`（纯标准库，无需安装依赖）→ 若返回非零则失败。默认扫描全工作区（`--sub` 不传即全量）；可按需加 `--sub studio` 缩小范围。
 - **影响**：提交涉及失效相对链接时，CI 会标记检查失败，提示修复后再合入。
+- **CI 的完整校验集**：除链接外，[`.github/workflows/verify.yml`](../.github/workflows/verify.yml) 还跑数据 schema、lab 元规则（结构/演进/`STRUCTURE.md`），以及 **`rules/` 结构 M1+M2 与规则演进 M3（覆盖 M 与 R）**——与本地钩子互补、命令同源。
 
 ### 手动验证 CI 同款命令
 

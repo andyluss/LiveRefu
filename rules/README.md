@@ -28,7 +28,7 @@
 | M3 | [rule-evolution](meta/M3-rule-evolution.md) | 规则演进（多状态/子状态 + 允许迁移） | 已定 |
 
 - 索引、示样与用法：[`meta/README.md`](meta/README.md)。
-- 可运行检查（TS，跨 node/deno/bun）：[`meta/tools/meta_rules_check.ts`](meta/tools/meta_rules_check.ts)（M1+M2 结构）、[`meta/evolution/rule_evolution_check.ts`](meta/evolution/rule_evolution_check.ts)（M3 演进状态，**覆盖元规则 M 与具体规则 R**）。**当前作用范围仅 `rules/`，暂未接入 pre-commit/CI。**
+- 可运行检查（TS，跨 node/deno/bun）：[`meta/tools/meta_rules_check.ts`](meta/tools/meta_rules_check.ts)（M1+M2 结构）、[`meta/evolution/rule_evolution_check.ts`](meta/evolution/rule_evolution_check.ts)（M3 演进状态，**覆盖元规则 M 与具体规则 R**）。作用范围 `rules/`；**已接入 pre-commit**（暂存涉及 `rules/` 时）**与 CI**（[`.github/workflows/verify.yml`](../.github/workflows/verify.yml)）。
 
 ## 三、豁免范围
 

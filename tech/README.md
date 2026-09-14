@@ -23,7 +23,9 @@
 | [`tools/check_links.py`](../tools/check_links.py) | 校验工作区 md 内链（支持 `--sub`、`--files`） |
 | [`tools/check_data.py`](../tools/check_data.py) | 校验数据表是否符合 schema 契约（必填/type/enum/范围），纯标准库 |
 | [`tools/install_hooks.sh`](../tools/install_hooks.sh) | 一键启用 pre-commit 钩子 |
-| [`tools/hooks/pre-commit`](../tools/hooks/pre-commit) | 钩子本体（校验暂存 md 内链 + 数据 schema） |
+| [`tools/hooks/pre-commit`](../tools/hooks/pre-commit) | 钩子本体（按暂存路径触发：md 内链 + 数据 schema + 元规则/规则结构&演进） |
+| [`rules/meta/tools/meta_rules_check.ts`](../rules/meta/tools/meta_rules_check.ts) | 规则目录 `rules/` 的结构检查（元规则 M1+M2） |
+| [`rules/meta/evolution/rule_evolution_check.ts`](../rules/meta/evolution/rule_evolution_check.ts) | 规则演进状态检查（元规则 M3，覆盖 M 与 R）；已接入 pre-commit/CI |
 
 ## 约定
 

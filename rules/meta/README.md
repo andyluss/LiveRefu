@@ -52,7 +52,7 @@ node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts
 node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts --self-test
 ```
 
-退出码：0=合规；1=有违规。**当前作用范围仅 `rules/`**，暂未接入 pre-commit / CI（见配置 [`meta-rules-config.json`](meta-rules-config.json)）。
+退出码：0=合规；1=有违规。作用范围 `rules/`；**已接入 pre-commit**（暂存涉及 `rules/` 时）**与 CI**（见配置 [`meta-rules-config.json`](meta-rules-config.json) 与 [`.github/workflows/verify.yml`](../../.github/workflows/verify.yml)）。
 
 ## 与 lab 实验源的关系
 
