@@ -1,10 +1,10 @@
 {
-  "generated": "2026-09-09T14:10:56.825168+08:00",
+  "generated": "2026-09-14T21:59:54.336695+08:00",
   "concern": "lab/formal-system",
   "root": "/Users/lu/work/fab/LiveRefu/lab/formal-system",
   "compliant": true,
   "counts": {
-    "ok": 47,
+    "ok": 51,
     "violations": 0
   },
   "items": [
@@ -107,6 +107,22 @@
     {
       "status": "ok",
       "text": "concerns/visual-fallback/evolution-history/[M2] 根文档 ✔ evolution-visualization-exploration.md"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M2] 类型目录 ✔ tools (代码类(命名豁免))"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M2] 类型目录 ✔ viz (文档/类型)"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M2] 命名 ✔ viz/rule-evolution-timeline.html"
+    },
+    {
+      "status": "ok",
+      "text": "concerns/visual-fallback/evolution-history/[M2] 命名 ✔ viz/rule-evolution-timeline.json"
     },
     {
       "status": "ok",

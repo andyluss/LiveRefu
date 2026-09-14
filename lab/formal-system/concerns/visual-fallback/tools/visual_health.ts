@@ -76,7 +76,7 @@ const META_COMPLIANCE = path.join(ROOT, "lab", "formal-system", "concerns", "vis
 const META_CHECK_SCRIPT = path.join(ROOT, "lab", "formal-system", "concerns", "meta-rules", "tools", "meta_rules_check.py");
 
 // 扫描范围（相对工作区根），避免把 .git/target 等算进来。
-const SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"];
+const SCAN_DIRS = ["doc", "projects", "studio001", "tech", "lab", "tools"];
 const STALE_DAYS = 60;            // 超过即视为"陈旧"
 const HIGH_OPEN_TOP = 10;         // 高【待定】取前 N
 const ANOMALY_LIST_LEN = 10;
@@ -276,7 +276,7 @@ function themes_for(rel: string): string {
     }
     return "doc";
   }
-  if (top === "studio") {
+  if (top === "studio001") {
     return parts.length < 2 ? "工作室" : parts[1];
   }
   if (top === "projects" && parts.length >= 2) {

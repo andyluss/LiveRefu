@@ -20,7 +20,7 @@
 <footer>        ← 可选：BREAKING CHANGE / 关联引用
 ```
 
-> **语言约定（重要）**：`subject`、`body`、`footer` 的**描述一律用简体中文**；`type`、`scope` 及 `BREAKING CHANGE`、`!` 等**功能性标记保持英文**（标识符，不随语言翻译）。例如 `docs(studio): 新增数值策划A初始文档`（`docs(studio):` 为英文功能标记，`新增数值策划A初始文档` 为中文描述）。
+> **语言约定（重要）**：`subject`、`body`、`footer` 的**描述一律用简体中文**；`type`、`scope` 及 `BREAKING CHANGE`、`!` 等**功能性标记保持英文**（标识符，不随语言翻译）。例如 `docs(studio001): 新增数值策划A初始文档`（`docs(studio001):` 为英文功能标记，`新增数值策划A初始文档` 为中文描述）。
 
 ### type（必填，小写）
 
@@ -28,11 +28,11 @@
 
 ### scope（可选，括号内）
 
-本次改动涉及的范围，如 `docs(studio)`、`docs(retro-futurism)`。
+本次改动涉及的范围，如 `docs(studio001)`、`docs(retro-futurism)`。
 
 ### subject（必填）
 
-简短描述，用祈使句或简洁陈述；**本仓库提交信息描述一律使用简体中文**（`type`/`scope` 等功能性标记保持英文，见上「语言约定」），如 `docs(studio): 新增数值策划A初始文档`；不以句号结尾。
+简短描述，用祈使句或简洁陈述；**本仓库提交信息描述一律使用简体中文**（`type`/`scope` 等功能性标记保持英文，见上「语言约定」），如 `docs(studio001): 新增数值策划A初始文档`；不以句号结尾。
 
 ### body / footer
 

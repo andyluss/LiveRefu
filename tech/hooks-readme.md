@@ -2,7 +2,7 @@
 
 > 本文说明本仓库用**两级闸门**校验 Markdown 相对链接：本地 pre-commit 钩子（提交前）+ CI 链接检查（提交后兜底）。工具脚本见 [`../tools/check_links.ts`](../tools/check_links.ts)、[`../tools/install_hooks.sh`](../tools/install_hooks.sh)、[`../tools/hooks/pre-commit`](../tools/hooks/pre-commit)。
 > **规则权威**：[`rules/R03-link-validation.md`](../rules/R03-link-validation.md)（R03 相对链接校验）。本文为**技术详解 / 实施说明**。
-> 为什么需要：本工作区文档大量使用跨目录相对链接（如 `studio/主策划/` 指向 `doc/` 知识库），深度写错（`../doc` 应为 `../../doc`）会在本地 IDE / 预览器 / 网页版变成失效链接。
+> 为什么需要：本工作区文档大量使用跨目录相对链接（如 `studio001/主策划/` 指向 `doc/` 知识库），深度写错（`../doc` 应为 `../../doc`）会在本地 IDE / 预览器 / 网页版变成失效链接。
 
 ---
 
@@ -70,7 +70,7 @@ echo $?   # 0=全部通过, 非 0=有检查被拦截
 即使本地未启用钩子（例如贡献者在未运行 `install_hooks.sh` 的机器上提交），推送到托管平台后由 CI 兜底拦截。
 
 - **平台**：**GitHub Actions**（[`.github/workflows/verify.yml`](../.github/workflows/verify.yml)），远端 [`andyluss/LiveRefu`](https://github.com/andyluss/LiveRefu)；push / PR 到 `main` 时触发。若你在 GitLab，用对应的 `.gitlab-ci.yml` 语法改写（触发器 + 一个跑 `node --experimental-strip-types tools/check_links.ts` 的 job），或在其它 CI 中复用一个执行同命令的步骤即可。
-- **逻辑**：检出代码 → 用 Node 直接运行 TS `tools/check_links.ts`（纯标准库，无需安装依赖）→ 若返回非零则失败。默认扫描全工作区（`--sub` 不传即全量）；可按需加 `--sub studio` 缩小范围。
+- **逻辑**：检出代码 → 用 Node 直接运行 TS `tools/check_links.ts`（纯标准库，无需安装依赖）→ 若返回非零则失败。默认扫描全工作区（`--sub` 不传即全量）；可按需加 `--sub studio001` 缩小范围。
 - **影响**：提交涉及失效相对链接时，CI 会标记检查失败，提示修复后再合入。
 - **CI 的完整校验集**：除链接外，[`.github/workflows/verify.yml`](../.github/workflows/verify.yml) 还跑数据 schema、lab 元规则（结构/演进/`STRUCTURE.md`），以及 **`rules/` 结构 M1+M2 与规则演进 M3（覆盖 M 与 R）**——与本地钩子互补、命令同源。
 

@@ -1,13 +1,14 @@
-# LiveRefu — 复古未来（Retro-futurism）知识库与 AI 开发工作室
+# LiveRefu — 复古未来（Retro-futurism）知识库与项目开发区
 
 > 本工作区专注 **复古未来（Retro-futurism）相关项目的开发**：
-> 一侧是复古未来主义的系统知识库（[`doc/`](doc/)），另一侧是基于这套知识做项目开发的 AI 工作室（[`studio/`](studio/)）。
+> 一侧是复古未来主义的系统知识库（[`doc/`](doc/)），另一侧是**由项目方直接结合 AI 进行项目开发**的场所（规则 [`rules/`](rules/)、实验 [`lab/`](lab/)）。
+> 曾用于"模拟人类组织/角色"的 AI 工作室已**搁置**，更名为 [`studio001/`](studio001/) 保留作历史资料（见下）。
 
 ## 一、工作区是什么
 
 - **rules/**：规则目录。面向工作区整体的规则在此集中，分**具体规则**（R 系列，**已转正**，正文权威在此）与**元规则**（M 系列，整合自 lab，见 [`rules/meta/`](rules/meta/README.md)）。对应的 [`tech/`](tech/README.md) 文档为**技术详解 / 实施说明**（非规则权威）。
 - **doc/**：复古未来主义题材的研究知识库。以《复古未来主义论文集》为核心（21 篇总卷：理论地基、未来的考古、回收的未来、当代乡愁与多元、收束五段），并含蒸汽朋克、原子朋克、柴油朋克、赛博朋克、生物朋克等独立专题卷，以及合订本（PDF/HTML）与再生脚本。
-- **studio/**：AI 开发角色的模拟工作场所。把参与本工作区复古未来项目开发的 AI 角色（主策划、主程序、主美术、数值策划 A、图形程序员 A、UI 设计美术 A）按角色组织，各角色一个子目录存放**身份卡（README）**；角色项目文档迁至对应 `projects/<项目>/docs/<角色>/`（见下）。
+- ~~**studio/**：AI 开发角色的模拟工作场所~~ → **已搁置**：原"虚拟角色工作室"改为 [`studio001/`](studio001/README.md) **保留作历史资料**（角色身份卡与早期工作留痕），**不再使用/更新**。开发策略已转为**项目方直接结合 AI 开发**（不依赖虚拟角色分工）。
 - **projects/**：项目工作区。每个实际开发中的项目一个子目录（如 [`projects/tomorrows-channel/`](projects/tomorrows-channel/README.md)），内含项目 README、`CHANGELOG.md`（项目日志）与 `docs/`（按角色分目录的项目文档）。
 - **indie/**：独立项目区。存放与工作区主线无直接关联的**独立项目**，每个项目一个子目录、自成体系（见 [`indie/README.md`](indie/README.md)）。
 - **lab/**：实验项目区。小范围探索新协作路径、新形式化方法等**实验项目**（见 [`lab/README.md`](lab/README.md)，其下 [`lab/formal-system/`](lab/formal-system/README.md) 为形式化协作实验基地），成熟后回流主项目。
@@ -24,7 +25,7 @@
 | [`doc/refu-game-001/`](doc/refu-game-001/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图等 12 篇 | [`doc/refu-game-001/README.md`](doc/refu-game-001/README.md) |
 | [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：当前项目《明日频道》（含项目 README、CHANGELOG 日志、docs 按角色分目录） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
 | [`indie/`](indie/README.md) | 独立项目区：与主线无关的独立项目，一项目一子目录、自成体系（默认豁免根目录规则） | [`indie/README.md`](indie/README.md) |
-| [`studio/`](studio/README.md) | AI 开发工作室：六个角色身份卡（角色项目文档在 projects/ 对应项目下） | [`studio/README.md`](studio/README.md) |
+| [`studio001/`](studio001/README.md) | **（已搁置）** 原 AI 开发工作室：六个角色身份卡，保留作历史资料；不再使用/更新 | [`studio001/README.md`](studio001/README.md) |
 | [`tech/`](tech/README.md) | 仓库级技术文档：Git 与提交约定、文档约定、相对链接与数据 schema 校验（钩子+CI）、形式化验证 | [`tech/README.md`](tech/README.md) |
 | [`tools/`](tools/check_links.py) | 仓库工具：链接校验脚本与 pre-commit 钩子 | [`tools/check_links.py`](tools/check_links.py) |
 | [`lab/`](lab/README.md) | 实验项目区：形式化协作等实验基地（Rust/CUE/Alloy + 属性测试），成熟后回流主项目 | [`lab/README.md`](lab/README.md) |
@@ -33,8 +34,8 @@
 
 文档书写的**规则**见 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)（技术详解 [`tech/docs-convention.md`](tech/docs-convention.md)）。要点：
 
-- 简体中文，Markdown（UTF-8）；doc/ 编号体例、studio/ 角色体例见该文件；
-- **相对链接深度**：链接须以「目标文件相对当前文档的正确深度」书写（朝向工作区根每深一级多一个 `../`）；例如 `studio/主策划/` 指向 `doc/` 应写 `../../doc/...`；
+- 简体中文，Markdown（UTF-8）；doc/ 编号体例、studio001/ 角色体例见该文件；
+- **相对链接深度**：链接须以「目标文件相对当前文档的正确深度」书写（朝向工作区根每深一级多一个 `../`）；例如 `studio001/主策划/` 指向 `doc/` 应写 `../../doc/...`；
 - **校验**：`git commit` 前由 pre-commit 钩子自动拦截失效链接；提交后由 CI 兜底（见 [`tech/hooks-readme.md`](tech/hooks-readme.md)）。
 
 ## 四、Git 与提交信息约定
@@ -44,8 +45,9 @@
 ## 五、快速上手
 
 - 想读题材理论 → 从 [`doc/retro-futurism/00_总论_未来的考古学与全卷地图.md`](doc/retro-futurism/00_总论_未来的考古学与全卷地图.md) 开始。
-- 想以某角色身份协作开发 → 打开 [`studio/`](studio/)，按角色目录读取其 README。
-- 想看工作室整体结构与协作拓扑 → [`studio/README.md`](studio/README.md)。
+- 想开发项目 → 从 [`projects/`](projects/tomorrows-channel/README.md)（现行项目）或 [`indie/`](indie/README.md)（独立项目）入手；**直接用 AI 协作**，不必套用虚拟角色。
+- 想了解工作区规则 / 校验 → [`rules/`](rules/README.md)；想做形式化协作实验 → [`lab/formal-system/`](lab/formal-system/README.md)。
+- ~~想看工作室整体结构与协作拓扑~~ → 已搁置；仅作历史参考 [`studio001/README.md`](studio001/README.md)。
 
 ## 六、变更日志
 

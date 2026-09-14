@@ -73,7 +73,7 @@ META_COMPLIANCE = os.path.join(ROOT, "lab", "formal-system", "concerns", "visual
 META_CHECK_SCRIPT = os.path.join(ROOT, "lab", "formal-system", "concerns", "meta-rules", "tools", "meta_rules_check.py")
 
 # 扫描范围（相对工作区根），避免把 .git/target 等算进来。
-SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"]
+SCAN_DIRS = ["doc", "projects", "studio001", "tech", "lab", "tools"]
 STALE_DAYS = 60            # 超过即视为"陈旧"
 HIGH_OPEN_TOP = 10         # 高【待定】取前 N
 ANOMALY_LIST_LEN = 10
@@ -213,7 +213,7 @@ def themes_for(rel):
         if len(parts) >= 3 and parts[1] == "punks":
             return parts[2]  # atompunk/biopunk/...
         return "doc"
-    if top == "studio":
+    if top == "studio001":
         return "工作室" if len(parts) < 2 else parts[1]
     if top == "projects" and len(parts) >= 2:
         proj = parts[1]

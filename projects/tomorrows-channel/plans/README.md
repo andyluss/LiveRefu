@@ -40,7 +40,7 @@ plans/
 
 - **正式设计/角色文档** → [`docs/`](../docs/)（GDD、各角色草案/回执）。
 - **项目产出资产** → [`assets/`](../assets/)、[`art/`](../art/)、[`game/`](../game/)、[`data/`](../data/)。
-- **项目外/跨项目** → 工作区 [`studio/`](../../../studio/)、[`tech/`](../../../tech/)、根 [`README.md`](../../../README.md)。
+- **项目外/跨项目** → 工作区 [`studio001/`](../../../studio001/)、[`tech/`](../../../tech/)、根 [`README.md`](../../../README.md)。
 
 ## 五、空目录
 

@@ -30,7 +30,7 @@ const DEFAULT_OUT = path.join(
   "consistency-heatmap.html",
 );
 
-const SCAN_DIRS = ["doc", "projects", "studio", "tech", "lab", "tools"];
+const SCAN_DIRS = ["doc", "projects", "studio001", "tech", "lab", "tools"];
 const SKIP_DIRS = new Set([".git", "target", "node_modules"]);
 
 // 契约项: [显示名, 字段锚, 取值正则, 权威值]

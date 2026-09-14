@@ -1,18 +1,18 @@
 {
-  "generated": "2026-09-09T14:10:56+08:00",
+  "generated": "2026-09-14T21:59:54+08:00",
   "counts": {
-    "docs": 269,
-    "links": 322,
-    "open": 192,
+    "docs": 361,
+    "links": 904,
+    "open": 195,
     "closed": 20,
-    "orphans": 139,
+    "orphans": 141,
     "stale": 0
   },
   "review": {
-    "anomaly_total": 181,
+    "anomaly_total": 186,
     "approved": 0,
     "flagged": 1,
-    "unreviewed": 180
+    "unreviewed": 185
   },
   "themes": {
     "其他": {
@@ -68,6 +68,12 @@
       "open": 0,
       "closed": 0,
       "orphan": 1
+    },
+    "doc": {
+      "docs": 87,
+      "open": 2,
+      "closed": 0,
+      "orphan": 0
     },
     "总论": {
       "docs": 4,
@@ -334,16 +340,16 @@
       "orphan": 0
     },
     "技术规范": {
-      "docs": 5,
-      "open": 2,
+      "docs": 6,
+      "open": 3,
       "closed": 0,
       "orphan": 0
     },
     "实验区": {
-      "docs": 34,
+      "docs": 38,
       "open": 19,
       "closed": 9,
-      "orphan": 0
+      "orphan": 2
     }
   },
   "top_open": [

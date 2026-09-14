@@ -8,8 +8,8 @@
 
 用法：
     python3 tools/check_links.py              # 扫描全部 md
-    python3 tools/check_links.py --sub studio # 只扫描 studio/ 子目录
-    python3 tools/check_links.py --files README.md studio/README.md   # 只校验指定文件
+    python3 tools/check_links.py --sub studio001 # 只扫描 studio001/ 子目录
+    python3 tools/check_links.py --files README.md studio001/README.md   # 只校验指定文件
     python3 tools/check_links.py -v           # 连同"有效链接"一起打印(默认只列失效)
 
 说明：

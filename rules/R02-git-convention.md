@@ -10,7 +10,7 @@
 
 1. **自动提交**：本工作区文件改动由 AI 代理**自动提交到 Git**（无需人工提醒）；提交前确认工作树状态（`git status`）。
 2. **粒度**：一次逻辑改动一个提交。
-3. **格式**：`<type>(<scope>): <subject>`。`type` 必填、小写，取 `feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert`；`scope` 可选（如 `docs(studio)`）。
+3. **格式**：`<type>(<scope>): <subject>`。`type` 必填、小写，取 `feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert`；`scope` 可选（如 `docs(studio001)`）。
 4. **语言**：`subject`/`body`/`footer` 的**描述一律用简体中文**；`type`、`scope`、`BREAKING CHANGE`、`!` 等**功能性标记保持英文**（标识符，不随语言翻译）。
 5. **body / footer**：需说明"为什么这么改"时另起一行；破坏性变更用 `BREAKING CHANGE:` 作为 footer，或 `!` 标于 type/scope 后（如 `feat!: …`）。
 
