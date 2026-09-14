@@ -21,6 +21,7 @@
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
 | [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |
+| [`doc/refu-game-001/`](doc/refu-game-001/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图等 12 篇 | [`doc/refu-game-001/README.md`](doc/refu-game-001/README.md) |
 | [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：当前项目《明日频道》（含项目 README、CHANGELOG 日志、docs 按角色分目录） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
 | [`indie/`](indie/README.md) | 独立项目区：与主线无关的独立项目，一项目一子目录、自成体系（默认豁免根目录规则） | [`indie/README.md`](indie/README.md) |
 | [`studio/`](studio/README.md) | AI 开发工作室：六个角色身份卡（角色项目文档在 projects/ 对应项目下） | [`studio/README.md`](studio/README.md) |
