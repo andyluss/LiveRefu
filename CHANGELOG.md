@@ -8,6 +8,8 @@
 ## [未发布]
 
 ### 新增
+- 新增 `doc/refu-game-001/19_地图卡表.md` 的**铁砧适配双入口地图 MAP-ANV-02 双闸峡谷**：三族双入口覆盖补齐（虫群/星辉/铁砧/中立各 ≥1）；[`24_远征节点池表.md`](doc/refu-game-001/24_远征节点池表.md) 地图池扩为六图并重配权重（ANV-01 25% / ANV-02 12% / TID-01 20% / AST-01 18% / AST-02 10% / MULTI-01 15%）。
+- 新增 **CI 校验两步**：[`.github/workflows/verify.yml`](.github/workflows/verify.yml) 增加 "Refu Game 001 difficulty model self-test"（`--selftest`）与 "difficulty band check"（`--verify-bands --n 20000`），原步骤注释重编号。
 - 新增难度模拟工具 [`tools/sim_refu_game_001.ts`](tools/sim_refu_game_001.ts)（Node 22+ `--experimental-strip-types` 直跑，含 `--selftest`：种子可复现、单调性、模拟/解析一致性；已 PASS），并把实测结果回写 [`21_模拟验算表_章节胜率矩阵.md`](doc/refu-game-001/21_模拟验算表_章节胜率矩阵.md) 第六节；据此把挑战关 D 带由 1.3–1.8 校准为 **1.25–1.45**（[`数值/05`](doc/refu-game-001/数值/05_能量与关卡预算曲线.md)），并修正 [`22_样例_双入口关卡组装.md`](doc/refu-game-001/22_样例_双入口关卡组装.md)（双流单独使用：D=1.34/胜率 36.3%；"双流+加压"D=1.75/胜率 2.1% 被否决）。
 - 新增 [`doc/refu-game-001/24_远征节点池表.md`](doc/refu-game-001/24_远征节点池表.md)：节点类型/地图/波次/事件四类抽取池与权重、保底规则、与 RUL-ROGUE-CURVE 的预算表集成，以及种子与公平抽取规则。
 - 更新 [`doc/refu-game-001/19_地图卡表.md`](doc/refu-game-001/19_地图卡表.md)：新增星辉适配双入口地图 **MAP-AST-02 棱镜双子回廊**，白名单与复用矩阵同步，并列出"三族双入口覆盖"（铁砧 MAP-ANV-02 待补）。

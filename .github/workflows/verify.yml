@@ -5,10 +5,11 @@ name: Verify
 #   lab/formal-system/tech/rules/T01-default-ts-scripts.md）：
 #   1. Markdown 相对链接是否失效 (tools/check_links.ts)
 #   2. 数据表是否符合 schema 契约 (tools/check_data.ts)
-#   3. 元规则结构(M1+M2)/演进状态(M3)/STRUCTURE.md(M4) (lab/formal-system/concerns/meta-rules/*.ts)
-#   4. 规则目录 rules/ 的结构(M1+M2) 与规则演进状态(M3, 覆盖元规则 M 与具体规则 R) (rules/meta/*.ts)
-#   5. 刷新入口页（hub.ts --run 一键重新生成全部可视面）
-#   6. Godot 脚本静态检查 (godot --headless --import/--check-only --path game)
+#   3. Refu Game 001 难度模型自检与章节带位校验 (tools/sim_refu_game_001.ts --selftest / --verify-bands)
+#   4. 元规则结构(M1+M2)/演进状态(M3)/STRUCTURE.md(M4) (lab/formal-system/concerns/meta-rules/*.ts)
+#   5. 规则目录 rules/ 的结构(M1+M2) 与规则演进状态(M3, 覆盖元规则 M 与具体规则 R) (rules/meta/*.ts)
+#   6. 刷新入口页（hub.ts --run 一键重新生成全部可视面）
+#   7. Godot 脚本静态检查 (godot --headless --import/--check-only --path game)
 # 用于兜底：即使本地未启用 pre-commit 钩子，推上来也会被这里拦下。
 #
 # 远端：https://github.com/andyluss/LiveRefu —— push / PR 到 main 时本 workflow 自动生效。
@@ -41,6 +42,12 @@ jobs:
 
       - name: Data table schema check (TS)
         run: node --experimental-strip-types tools/check_data.ts -v
+
+      - name: Refu Game 001 difficulty model self-test (TS)
+        run: node --experimental-strip-types tools/sim_refu_game_001.ts --selftest
+
+      - name: Refu Game 001 difficulty band check (TS)
+        run: node --experimental-strip-types tools/sim_refu_game_001.ts --verify-bands --n 20000
 
       - name: Meta-rules structure check (M1+M2, TS)
         run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts

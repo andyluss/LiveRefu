@@ -20,7 +20,7 @@
 // 参数：--n（每关局数，默认 5000）--seed（默认 20260914）--b-ref（默认 158）
 //       --lambda0（默认 1.35）--gamma（默认 3）--cap（默认 3）--sim-ratio（双流同时段占比，默认 0.667）--md（输出文件）
 
-interface Chapter { name: string; P: number; waves: number; B: number[]; band: [number, number]; }
+interface Chapter { name: string; P: number; waves: number; alpha: number; B: number[]; band: [number, number]; }
 interface Stage { chIndex: number; chapter: string; index: number; B: number; P: number; waves: number; D: number; }
 interface Challenge { id: string; name: string; score: number; hpMul: number; playerMul: number; simultaneous: boolean; }
 
@@ -30,11 +30,11 @@ const GAMMA_DEFAULT = 3;
 const CAP_DEFAULT = 3;
 
 const CHAPTERS: Chapter[] = [
-  { name: "第 1 章", P: 0.6, waves: 6, B: [60, 70, 80, 85, 90], band: [0.8, 1.0] },
-  { name: "第 2 章", P: 0.8, waves: 6, B: [115, 120, 125, 130, 135, 140], band: [0.65, 0.8] },
-  { name: "第 3 章", P: 1.0, waves: 8, B: [158, 162, 166, 170, 174, 178, 184, 190], band: [0.55, 0.7] },
-  { name: "第 4 章", P: 1.2, waves: 10, B: [209, 213, 217, 221, 225, 229, 233, 237, 242, 247], band: [0.45, 0.6] },
-  { name: "第 5 章", P: 1.4, waves: 12, B: [265, 269, 273, 277, 281, 285, 289, 293, 297, 301, 306, 310], band: [0.4, 0.55] },
+  { name: "第 1 章", P: 0.6, waves: 6, alpha: 1.0, B: [60, 70, 80, 85, 90], band: [0.8, 1.0] },
+  { name: "第 2 章", P: 0.8, waves: 6, alpha: 1.06, B: [115, 120, 125, 130, 135, 140], band: [0.65, 0.8] },
+  { name: "第 3 章", P: 1.0, waves: 8, alpha: 1.06, B: [158, 162, 166, 170, 174, 178, 184, 190], band: [0.55, 0.7] },
+  { name: "第 4 章", P: 1.2, waves: 10, alpha: 1.0, B: [209, 213, 217, 221, 225, 229, 233, 237, 242, 247], band: [0.45, 0.6] },
+  { name: "第 5 章", P: 1.4, waves: 12, alpha: 1.0, B: [265, 269, 273, 277, 281, 285, 289, 293, 297, 301, 306, 310], band: [0.4, 0.55] },
 ];
 
 const CHALLENGES: Challenge[] = [
@@ -113,7 +113,7 @@ function stageList(names: string[]): Stage[] {
   CHAPTERS.forEach((ch, ci) => {
     ch.B.forEach((B, i) => {
       const eff = applyChallenges(B, ch.P, names);
-      out.push({ chIndex: ci, chapter: ch.name, index: i + 1, B, P: ch.P, waves: ch.waves, D: eff.D });
+      out.push({ chIndex: ci, chapter: ch.name, index: i + 1, B, P: ch.P, waves: ch.waves, D: eff.D * ch.alpha });
     });
   });
   return out;
@@ -142,14 +142,14 @@ function renderMarkdown(names: string[]): string {
     lines.push(`| ${s.chapter} | ${s.index} | ${s.B} | ${fmt(s.P)} | ${fmt(s.D)} | ${pct(analytics)} | ${pct(sim)} | ${pct(band[0])}–${pct(band[1])} | ${verdict(sim, band)} |`);
   }
   lines.push("");
-  lines.push("| 章节 | 平均 D | 解析均值 | 模拟均值 | 目标带 | 判定 |");
-  lines.push("| --- | --- | --- | --- | --- | --- |");
+  lines.push("| 章节 | α | 平均 D | 解析均值 | 模拟均值 | 目标带 | 判定 |");
+  lines.push("| --- | --- | --- | --- | --- | --- | --- |");
   CHAPTERS.forEach((ch, ci) => {
     const list = stages.filter((s) => s.chIndex === ci);
     const avgD = list.reduce((a, s) => a + s.D, 0) / list.length;
     const avgA = list.reduce((a, s) => a + poissonBelow(LAMBDA0 * Math.pow(s.D, GAMMA), CAP), 0) / list.length;
     const avgS = list.reduce((a, s) => a + simulate(LAMBDA0 * Math.pow(s.D, GAMMA), s.waves, RUNS, seedFor(ci, s.index)), 0) / list.length;
-    lines.push(`| ${ch.name} | ${fmt(avgD)} | ${pct(avgA)} | ${pct(avgS)} | ${pct(ch.band[0])}–${pct(ch.band[1])} | ${verdict(avgS, ch.band)} |`);
+    lines.push(`| ${ch.name} | ${fmt(ch.alpha)} | ${fmt(avgD)} | ${pct(avgA)} | ${pct(avgS)} | ${pct(ch.band[0])}–${pct(ch.band[1])} | ${verdict(avgS, ch.band)} |`);
   });
   return lines.join("\n");
 }
@@ -173,17 +173,34 @@ function selftest(): number {
   return failures.length ? 1 : 0;
 }
 
+function verifyBands(): number {
+  const stages = stageList([]);
+  let bad = 0;
+  console.log("band check（章节均值是否落在目标带）:");
+  CHAPTERS.forEach((ch, ci) => {
+    const list = stages.filter((s) => s.chIndex === ci);
+    const avgS = list.reduce((a, s) => a + simulate(LAMBDA0 * Math.pow(s.D, GAMMA), s.waves, RUNS, seedFor(ci, s.index)), 0) / list.length;
+    const ok = avgS >= ch.band[0] && avgS <= ch.band[1];
+    if (!ok) bad++;
+    console.log(`  ${ch.name}: ${pct(avgS)} (目标 ${pct(ch.band[0])}–${pct(ch.band[1])}) ${ok ? "PASS" : "FAIL"}`);
+  });
+  console.log("band check: " + (bad ? "FAIL" : "PASS"));
+  return bad ? 1 : 0;
+}
+
 async function main(): Promise<void> {
+  if (flag("verify-bands")) { process.exitCode = verifyBands(); return; }
   if (flag("selftest")) { process.exitCode = selftest(); return; }
   if (flag("stage")) {
     const B = num("stage", 158);
     const P = num("p", 1);
     const names = arg("challenge", "").split(",").map((s) => s.trim()).filter(Boolean);
     const eff = applyChallenges(B, P, names);
-    const lambda = LAMBDA0 * Math.pow(eff.D, GAMMA);
+    const alpha = num("alpha", 1);
+    const lambda = LAMBDA0 * Math.pow(eff.D * alpha, GAMMA);
     const analytics = poissonBelow(lambda, CAP);
     const sim = simulate(lambda, 6, RUNS, SEED);
-    console.log(`stage: B=${B} P=${P} 挑战=[${names.join("+") || "无"}] → B'=${fmt(eff.B)} P'=${fmt(eff.P)} D=${fmt(eff.D)} 难度分=${eff.score}`);
+    console.log(`stage: B=${B} P=${P} α=${alpha} 挑战=[${names.join("+") || "无"}] → B'=${fmt(eff.B)} P'=${fmt(eff.P)} D=${fmt(eff.D * alpha)} 难度分=${eff.score}`);
     console.log(`解析胜率=${pct(analytics)} 模拟胜率=${pct(sim)}（N=${RUNS}） 掉落系数=1+0.05×${eff.score}=${fmt(1 + 0.05 * eff.score)}`);
     return;
   }
