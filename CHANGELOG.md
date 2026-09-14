@@ -41,3 +41,4 @@
 - 修复 CI 中 Godot 步骤引用**不存在的 Action**（`addnab/action-run-docker`）、致整条 workflow 在 "Set up job" 即失败、所有检查步骤均不执行的问题：改为用 runner 自带 `docker run` 直接跑官方镜像（不依赖第三方 Action）。**并订正镜像**：原 `ghcr.io/godotengine/godot:4.7-mono` 在镜像仓库不存在（pull 失败，exit 125），改用实际存在的 `barichello/godot-ci:4.7.2`（项目为 GDScript、Godot 4.7，无需 mono）。
 - 修复 fresh clone 下的失效链接（本地因文件存在而漏检、CI 才暴露）：[`indie/README.md`](indie/README.md) 与 [`CHANGELOG.md`](CHANGELOG.md) 指向被 gitignore 的独立子仓库文件（`indie/dsh-pet-refu/`、`indie/live-rpg/`）的相对链接，改为**外部仓库地址 / 纯文本**（这些文件不随本仓库分发）。
 - 修复 CI 链接校验在「刷新可视面」之前运行、把生成物 `viz/index.html`（被 gitignore）判为失效的问题：将 `hub.ts --run` 步骤**前移**到链接校验之前。
+- CI 动作升级：`actions/checkout@v4`、`actions/setup-node@v4` → **`@v5`**，消除 Node 20 弃用警告。
