@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 挑战卡：族专属池</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1120px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+table{border-collapse:collapse;width:100%;font-size:12.5px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}td.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.hot td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.bar{height:10px;border-radius:5px;display:inline-block;vertical-align:middle}
+.band{background:color-mix(in srgb,var(--s1) 22%,transparent)}
+.v{background:var(--s1)}.p{background:var(--s3)}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card);margin-top:14px;font-size:12.5px}
+.panel h4{margin:0 0 6px;font-size:13.5px}.panel p{margin:2px 0;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:8px 0}
+.k{display:inline-flex;align-items:center;gap:5px}.sw{width:18px;height:10px;border-radius:3px;display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>挑战卡：族专属池</h1>
+<div class="sub">三族各 3 张族专属挑战卡，仅在该族卡组时可选；与通用池可叠，单局难度分仍封顶 15。两条判据：平均卡组跌幅落在分数带内，纯流派卡组跌幅 ≤35pp。数据来源：25_挑战卡_族专属池、数值/体检报告、tools/sim_refu_game_001.ts（--verify-faction 已 PASS）。</div>
+<div class="controls" id="ctrl" role="group" aria-label="按族筛选"></div>
+<div class="legend">
+<span class="k"><span class="sw band"></span>分数带（3 分卡 12–25pp / 2 分卡 5–12pp）</span>
+<span class="k"><span class="sw v"></span>平均卡组跌幅</span>
+<span class="k"><span class="sw p"></span>纯流派跌幅（上限 35pp）</span>
+</div>
+<table id="tbl"></table>
+<div class="panel" id="panel"></div>
+<div class="two">
+<div class="panel" style="margin-top:14px">
+<h4>推荐组合</h4>
+<table>
+<thead><tr><th>组合</th><th>分</th><th>意图</th></tr></thead>
+<tbody>
+<tr><td>铁砧：弹药禁令 + 工事超载</td><td>5</td><td>逼玩家改用贫铀弹芯等修饰卡转型</td></tr>
+<tr><td>虫群：腐蚀逆流 + 巢群饥荒</td><td>6</td><td>从"铺场"转向"精英化"</td></tr>
+<tr><td>星辉：共鸣干扰 + 护盾过载</td><td>5</td><td>从"共鸣叠 buff"转向精准单体</td></tr>
+<tr><td>断供（通用 4）+ 能量税（星辉 3）</td><td>7</td><td>极端资源压制，一次只让一件事出错</td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel" style="margin-top:14px">
+<h4>池子规则</h4>
+<p>族专属卡只在该族卡组可选；通用池（加压/断供/封锁/双流/疾行）不受族限制。每赛季轮换 1–2 张，保持新鲜感并让族池随时间成长；建议每族常驻 3 张 + 轮换 1 张。</p>
+<p>远征 v0.1 <b>禁用全部挑战卡</b>：远征难度由节点预算抬升（B 171→290），挑战卡只服务主线与挑战关。这也是长篇里"卡带不能变成刑具"那条规矩的规则依据。</p>
+</div>
+</div>
+</div>
+<script>
+(function(){
+var F={'铁砧':'var(--s1)','涌潮':'var(--s2)','星辉':'var(--s3)'};
+var C=[
+{id:'ANV-CHL-01',n:'弹药禁令',f:'铁砧',s:3,eff:'禁用「弹药」标签卡',avg:16.3,pure:31.8,pureName:'纯弹药',mul:0.92,mulPure:0.85,band:[12,25]},
+{id:'ANV-CHL-02',n:'工事超载',f:'铁砧',s:2,eff:'工事类卡费用 +30%',avg:7.8,pure:20.8,pureName:'纯工事',mul:0.96,mulPure:0.90,band:[5,12]},
+{id:'ANV-CHL-03',n:'补给短缺',f:'铁砧',s:3,eff:'波间能量奖励 −50%',avg:14.2,pure:25.2,pureName:'资源重',mul:0.93,mulPure:0.88,band:[12,25]},
+{id:'TID-CHL-01',n:'腐蚀逆流',f:'涌潮',s:3,eff:'敌人腐蚀抗性 +50%（每层收益减半）',avg:16.3,pure:31.8,pureName:'纯腐蚀',mul:0.92,mulPure:0.85,band:[12,25]},
+{id:'TID-CHL-02',n:'孵化抑制',f:'涌潮',s:2,eff:'召唤物存在时间 −30%',avg:7.8,pure:18.5,pureName:'纯孵化',mul:0.96,mulPure:0.91,band:[5,12]},
+{id:'TID-CHL-03',n:'巢群饥荒',f:'涌潮',s:3,eff:'单位卡生命 −20%',avg:14.2,pure:23.0,pureName:'纯召唤',mul:0.93,mulPure:0.89,band:[12,25]},
+{id:'AST-CHL-01',n:'共鸣干扰',f:'星辉',s:3,eff:'共鸣计数阈值 +1（2→3）',avg:14.2,pure:31.8,pureName:'纯共鸣',mul:0.93,mulPure:0.85,band:[12,25]},
+{id:'AST-CHL-02',n:'护盾过载',f:'星辉',s:2,eff:'护盾上限 −30%',avg:7.8,pure:16.3,pureName:'纯护盾',mul:0.96,mulPure:0.92,band:[5,12]},
+{id:'AST-CHL-03',n:'能量税',f:'星辉',s:3,eff:'技能卡费用 +20%',avg:14.2,pure:25.2,pureName:'技能重',mul:0.93,mulPure:0.88,band:[12,25]}];
+var st={f:null,sel:null},ctrl=document.getElementById('ctrl'),tbl=document.getElementById('tbl'),panel=document.getElementById('panel');
+function render(){ctrl.innerHTML='';['全部'].concat(Object.keys(F)).forEach(function(k){var b=document.createElement('button');b.type='button';b.textContent=k;
+var on=(k==='全部'&&!st.f)||st.f===k;b.setAttribute('aria-pressed',on?'true':'false');b.onclick=function(){st.f=(k==='全部')?null:k;st.sel=null;render()};ctrl.appendChild(b)});
+var rows=C.filter(function(c){return !st.f||c.f===st.f});
+tbl.innerHTML='<thead><tr><th>card_id</th><th>名称</th><th>族</th><th>分</th><th>效果</th><th>平均跌幅</th><th></th><th>纯流派跌幅</th><th>判定</th></tr></thead><tbody>'+
+rows.map(function(c){var i=C.indexOf(c);var ok=(c.avg>=c.band[0]&&c.avg<=c.band[1])&&c.pure<=35;
+return '<tr class="'+(st.sel===i?'hot':'')+'" data-i="'+i+'"><td>'+c.id+'</td><td>'+c.n+'</td><td style="color:'+F[c.f]+'">'+c.f+'</td><td class="num">'+c.s+'</td><td>'+c.eff+'</td>'+
+'<td class="num">'+c.avg.toFixed(1)+'pp</td><td><span class="bar band" style="width:'+(c.band[1]*2.4)+'px;position:relative"></span><span class="bar v" style="width:'+(c.avg*2.4)+'px;margin-left:-'+(c.band[1]*2.4)+'px"></span></td>'+
+'<td class="num">'+c.pure.toFixed(1)+'pp</td><td>'+(ok?'✅':'越界')+'</td></tr>'}).join('')+'</tbody>';
+tbl.querySelectorAll('tr[data-i]').forEach(function(tr){tr.onclick=function(){st.sel=(st.sel===+tr.dataset.i)?null:+tr.dataset.i;render()}});
+if(st.sel==null){panel.innerHTML='<h4>怎么读</h4><p>每张卡两个口径：<b>平均卡组</b>跌幅要落在分数带里（3 分卡 12–25pp、2 分卡 5–12pp），<b>纯流派</b>跌幅不得超过 35pp——后者是"一张卡不能直接杀死一套牌"的红线。9 张全部通过，最狠的是弹药禁令、腐蚀逆流、共鸣干扰（纯流派 31.8pp，贴着上限）。点任意一行看细节。</p>';return}
+var c=C[st.sel];
+panel.innerHTML='<h4>'+c.n+'　<span style="color:var(--muted);font-size:12px">'+c.id+' ｜ '+c.f+' ｜ '+c.s+' 分</span></h4>'+
+'<p>效果：'+c.eff+'</p><p>实测（基准关 B=205、P=1.08、基准胜率 58.5%）：平均卡组 '+c.avg.toFixed(1)+'pp（分数带 '+c.band[0]+'–'+c.band[1]+'pp）　｜　'+c.pureName+'卡组 '+c.pure.toFixed(1)+'pp（上限 35pp）</p>'+
+'<p>战力乘数：平均 '+c.mul.toFixed(2)+'　｜　纯流派 '+c.mulPure.toFixed(2)+'</p>'+
+'<p>设计读法：'+(c.pure>=31?'这张卡对纯流派几乎是"逼你转型"：要么改标签配比，要么接受 30pp 以上的损失。':'这张卡的惩罚落在打法节奏上，而不是直接砍死某套牌。')+'</p>'}
+render();})();
+</script>
+</body>
+</html>

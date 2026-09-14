@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 三族波次卡组（WAV-*）对比</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:900px){.cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.col{border:1px solid var(--border);border-radius:10px;padding:9px;background:var(--card)}
+.col h3{margin:0 0 6px;font-size:13px}
+.deck{display:block;width:100%;text-align:left;font:inherit;font-size:12.5px;padding:5px 8px;margin-bottom:4px;border:1px solid var(--border);border-radius:7px;background:transparent;color:var(--fg);cursor:pointer;transition:.15s}
+.deck:hover{border-color:var(--accent)}.deck.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.deck .id{font-weight:600}.deck .t{color:var(--muted);font-size:11.5px}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--card);margin-top:14px;font-size:12.5px}
+.panel h4{margin:0 0 6px;font-size:13.5px}.panel p{margin:2px 0;color:var(--muted)}
+svg{width:100%;height:auto;display:block;margin-top:8px}.ax{fill:var(--muted);font-size:11px}.grid{stroke:var(--border)}
+.wave{fill:var(--s1)}.wave.r{fill:var(--s3)}.wl{fill:var(--fg);font-size:10.5px;text-anchor:middle}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:10px}th,td{border:1px solid var(--border);padding:4px 7px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}
+.badge{display:inline-block;font-size:11px;padding:0 7px;border-radius:999px;border:1px solid var(--border);color:var(--muted);margin-left:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>三族波次卡组（WAV-*）对比</h1>
+<div class="sub">波次卡组按<b>地图</b>编号（-ANV / -TID / -AST / -MUL），不按族：三族共用同一批敌人侧资产，差异来自卡池与机制。每图三套（普通 A / 精英 B / 周常 C）+ 一套 BOSS。数据来源：19_地图卡表、22_样例_双入口关卡组装、18_样例_关卡组装示例、24_远征节点池表、20_关卡难度曲线设计。</div>
+<div class="cols" id="cols"></div>
+<div class="panel" id="panel"></div>
+<div class="panel">
+<h4>复用与抽取规则</h4>
+<table>
+<thead><tr><th>场合</th><th>使用哪套</th><th>权重</th></tr></thead>
+<tbody>
+<tr><td>远征 · 普通战</td><td>WAV-*-A / WAV-*-B</td><td>70% / 30%</td></tr>
+<tr><td>远征 · 精英战</td><td>WAV-*-B / WAV-*-C</td><td>60% / 40%</td></tr>
+<tr><td>远征 · BOSS（第 8 节点）</td><td>WAV-*-BOSS（每图 1 套）</td><td>固定</td></tr>
+<tr><td>主线章节</td><td>按 [19] 复用矩阵指派（每图 3 套轮用）</td><td>—</td></tr>
+</tbody>
+</table>
+<p>波数口径：碎片关 6–8 波（一次通勤打完 2–3 关）；周常长局 12–14 波。高强度波之后插<b>呼吸波</b>（低强度、两路同时），避免疲劳与一路空转。双入口图的两路并行波按 ×1.24 折算（系数 1.4 只作用于两路同时活跃的波次）。</p>
+</div>
+</div>
+<script>
+(function(){
+var MAPS=[
+{race:'铁砧联邦',color:'var(--s1)',map:'MAP-ANV-01 峡谷哨站',dual:false,A:'WAV-ANV-A',B:'WAV-ANV-B',C:'WAV-ANV-C',boss:'WAV-ANV-BOSS',detail:'WAV-ANV-A'},
+{race:'铁砧联邦',color:'var(--s1)',map:'MAP-ANV-02 双闸峡谷',dual:true,A:'WAV-ANV-D',B:'WAV-ANV-E',C:'WAV-ANV-F',boss:'WAV-ANV-BOSS'},
+{race:'涌潮虫群',color:'var(--s2)',map:'MAP-TID-01 腐殖洼地',dual:true,A:'WAV-TID-A',B:'WAV-TID-B',C:'WAV-TID-C',boss:'WAV-TID-BOSS'},
+{race:'星辉议会',color:'var(--s3)',map:'MAP-AST-01 棱镜回廊',dual:false,A:'WAV-AST-A',B:'WAV-AST-B',C:'WAV-AST-C',boss:'WAV-AST-BOSS'},
+{race:'星辉议会',color:'var(--s3)',map:'MAP-AST-02 棱镜双子回廊',dual:true,A:'WAV-AST-D',B:'WAV-AST-E',C:'WAV-AST-F',boss:'WAV-AST-BOSS'},
+{race:'中立',color:'var(--s4)',map:'MAP-MULTI-01 双岔要塞',dual:true,A:'WAV-MUL-A',B:'WAV-MUL-B',C:'WAV-MUL-C',boss:'WAV-MUL-BOSS',detail:'WAV-MUL-A'}];
+var DETAIL={
+'WAV-ANV-A':{title:'6 波 · 单入口 · 合计 B=158',note:'教学关波次：首波只有一种敌人一条路径；第 4 波首次出现空中，第 5 波首次出现精英，第 6 波 BOSS。',
+waves:[['小兵 ×8','16'],['快速 ×6 + 小兵 ×4','26'],['装甲 ×4 + 小兵 ×6','32'],['空中 ×5','20'],['精英 ×2 + 小兵 ×8','32'],['BOSS ×1 + 小兵 ×6','32']]},
+'WAV-MUL-A':{title:'6 波 · 双路并行 · 合计 B=218',note:'两路敌人类型互补（一路装甲、一路空中）逼卡组覆盖对空；呼吸波设在 W5（两路同时低强度）；BOSS 波只走 A 路、B 路保持压力。',
+waves:[['W1 小兵×6 ｜ 小兵×4','20'],['W2 快速×4+小兵×4 ｜ 装甲×2+小兵×4','38'],['W3 装甲×3+小兵×4 ｜ 空中×4','39'],['W4 精英×1+小兵×6 ｜ 快速×6+小兵×4','46'],['W5 呼吸波 小兵×8 ｜ 小兵×6','28'],['W6 BOSS×1+小兵×6 ｜ 装甲×3','47']]}};
+var st={sel:null},cols=document.getElementById('cols'),panel=document.getElementById('panel');
+function deckOf(m,key){return m[key]}
+function render(){cols.innerHTML='';MAPS.forEach(function(m,i){
+var d=document.createElement('div');d.className='col';
+d.innerHTML='<h3 style="color:'+m.color+'">'+m.map+'<span class="badge">'+(m.dual?'双入口':'单入口')+'</span></h3>'+
+['A','B','C','boss'].map(function(k){var id=m[k],lab={A:'普通',B:'精英',C:'周常',boss:'BOSS'}[k];
+var doc=!!(DETAIL[id]||(m.detail===id));var on=st.sel===id;
+return '<button class="deck'+(on?' on':'')+'" data-id="'+id+'"><span class="id">'+id+'</span><div class="t">'+lab+'　'+(doc?'已给出构成':'构成待数值初稿')+'</div></button>'}).join('');
+cols.appendChild(d)});
+cols.querySelectorAll('.deck').forEach(function(b){b.onclick=function(){st.sel=(st.sel===b.dataset.id)?null:b.dataset.id;render()}});
+if(!st.sel){panel.innerHTML='<h4>怎么读</h4><p>先分清两件事：<b>地图决定用哪套波次</b>（-ANV/-TID/-AST/-MUL），<b>卡池决定你怎么打</b>。所以"三族波次对比"其实是"三族地图池的敌情对比"——三族真正不同的是应对手段（铁砧换装、涌潮叠层、星辉共鸣），不是敌人本身。点任意一套看构成（目前 18 与 22 号文档给出了两套的完整表）。</p>';return}
+var d=DETAIL[st.sel];
+if(!d){panel.innerHTML='<h4>'+st.sel+'</h4><p>该套波次卡组的<b>卡片位已在 19 号复用矩阵中确定</b>，但具体波次构成仍待"数值初稿"回填（18 号文档注明其数值为占位示例）。</p><p>可先按同图同类推读：普通 A 与精英 B 的差别在敌人组合与威胁值抬升，周常 C 拉到 12–14 波并插入呼吸波。</p>';return}
+var maxB=Math.max.apply(null,d.waves.map(function(w){return +w[1]}));
+var svg='<svg viewBox="0 0 980 220" role="img" aria-label="每波预算">';
+for(var g=0;g<=50;g+=10){var y=190-g/50*150;svg+='<line class="grid" x1="60" y1="'+y+'" x2="960" y2="'+y+'"></line><text class="ax" x="52" y="'+(y+4)+'" text-anchor="end">'+g+'</text>'}
+d.waves.forEach(function(w,i){var x=84+i*150,v=+w[1],h=v/50*150;
+svg+='<rect class="wave'+(w[0].indexOf('呼吸')>=0?' r':'')+'" x="'+x+'" y="'+(190-h)+'" width="86" height="'+h+'" rx="4"></rect>';
+svg+='<text class="wl" x="'+(x+43)+'" y="'+(190-h-6)+'">'+v+'</text>';
+svg+='<text class="ax" x="'+(x+43)+'" y="206" text-anchor="middle">W'+(i+1)+'</text>';
+svg+='<text class="ax" x="'+(x+43)+'" y="'+(190+14)+'" text-anchor="middle" style="font-size:9.5px">'+(w[0].length>12?w[0].slice(0,12)+'…':w[0])+'</text>'});
+svg+='<text class="ax" x="60" y="16">每波威胁值合计（该波 B）</text></svg>';
+panel.innerHTML='<h4>'+st.sel+'　<span style="color:var(--muted);font-size:12px">'+d.title+'</span></h4><p>'+d.note+'</p>'+svg+
+'<table><thead><tr><th>波次</th><th>构成</th><th>该波 B</th></tr></thead><tbody>'+d.waves.map(function(w,i){return '<tr><td>W'+(i+1)+'</td><td>'+w[0]+'</td><td>'+w[1]+'</td></tr>'}).join('')+'</tbody></table>'}
+render();})();
+</script>
+</body>
+</html>
