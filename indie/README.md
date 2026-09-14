@@ -12,7 +12,9 @@
 
 ## 子目录
 
-| 目录 | 内容 | 入口 |
+> 下列均为**独立 Git 仓库**（各自有 `.git` 与远程），**不包含在本仓库中**（根 `.gitignore` 忽略），故此处**不提供指向其内部文件的相对链接**；有公开远程者给出仓库地址。
+
+| 目录 | 内容 | 远程仓库 |
 | --- | --- | --- |
-| [`dsh-pet-refu/`](dsh-pet-refu/README.md) | 复古未来风格电子宠物 DeepSeek Harness 插件（v1.0.0，**独立 Git 仓库**） | [`README.md`](dsh-pet-refu/README.md) |
-| [`live-rpg/`](live-rpg/README.md) | **LiveRPG 活世界工作台**：多世界观「世界包」编辑器 + 图文创作台 DeepSeek Harness 插件（v0.1.0，**独立 Git 仓库**） | [`README.md`](live-rpg/README.md) |
+| `dsh-pet-refu/` | 复古未来风格电子宠物 DeepSeek Harness 插件（v1.0.0，**独立 Git 仓库**） | [andyluss/dsh-pet-refu](https://github.com/andyluss/dsh-pet-refu) |
+| `live-rpg/` | **LiveRPG 活世界工作台**：多世界观「世界包」编辑器 + 图文创作台 DeepSeek Harness 插件（v0.1.0，**独立 Git 仓库**） | （本地独立仓库，暂无公开远程） |

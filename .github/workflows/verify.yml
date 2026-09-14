@@ -32,6 +32,10 @@ jobs:
         with:
           node-version: "22"
 
+      # 先刷新可视面：viz/*.html 为生成物且被 gitignore，链接校验需在生成后运行才能解析 viz/index.html。
+      - name: Refresh visual surfaces (hub.ts --run)
+        run: node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/hub.ts --run
+
       - name: Markdown link check (TS)
         run: node --experimental-strip-types tools/check_links.ts -v
 
@@ -52,9 +56,6 @@ jobs:
 
       - name: Rules + meta-rule evolution state check (M3, TS)
         run: node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts
-
-      - name: Refresh visual surfaces (hub.ts --run)
-        run: node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/hub.ts --run
 
       - name: Godot project load check
         run: |
