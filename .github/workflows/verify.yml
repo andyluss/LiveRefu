@@ -12,7 +12,7 @@ name: Verify
 # 用于兜底：即使本地未启用 pre-commit 钩子，推上来也会被这里拦下。
 #
 # 远端：https://github.com/andyluss/LiveRefu —— push / PR 到 main 时本 workflow 自动生效。
-# 若用 GitLab，请改写为 .gitlab-ci.yml 的对应 job。Godot 检查用 godotengine/godot 镜像。
+# 若用 GitLab，请改写为 .gitlab-ci.yml 的对应 job。Godot 检查用 barichello/godot-ci 镜像。
 
 on:
   push:
@@ -63,10 +63,10 @@ jobs:
           # 暴露脚本编译错误/资源加载错误。GDScript 弱类型, 无法整工程静态扫描,
           # 故用运行时加载 + 已内建的自检(closed_loop VERIFY)作为"编译期/回归"验证。
           # 沙箱下需 HOME 指向可写目录, 否则 user:// 创建失败。
-          # 直接用 runner 自带的 docker 跑官方镜像(不依赖第三方 Action)。
+          # 直接用 runner 自带的 docker 跑镜像(不依赖第三方 Action)；镜像含 Godot 4.7.2 于 /usr/local/bin/godot。
           docker run --rm \
             -v "${{ github.workspace }}:/app" \
             -w /app/projects/tomorrows-channel/game \
             -e HOME=/tmp/gdhome \
-            ghcr.io/godotengine/godot:4.7-mono \
+            barichello/godot-ci:4.7.2 \
             godot --headless --path . --quit-after 5
