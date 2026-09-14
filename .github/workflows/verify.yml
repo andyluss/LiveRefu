@@ -11,7 +11,7 @@ name: Verify
 #   6. Godot 脚本静态检查 (godot --headless --import/--check-only --path game)
 # 用于兜底：即使本地未启用 pre-commit 钩子，推上来也会被这里拦下。
 #
-# 注：本仓库当前无远端(remote)；配置托管平台后此文件即自动生效。
+# 远端：https://github.com/andyluss/LiveRefu —— push / PR 到 main 时本 workflow 自动生效。
 # 若用 GitLab，请改写为 .gitlab-ci.yml 的对应 job。Godot 检查用 godotengine/godot 镜像。
 
 on:

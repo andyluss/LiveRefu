@@ -31,7 +31,7 @@
 「相对链接写错」靠两道闸门拦截：
 
 1. **pre-commit 钩子（本地，clone 后启用一次）**：每次 `git commit` 校验本次暂存的 md 内部链接，失效即阻断并打印明细；跳过用 `git commit --no-verify`。启用见 [`install_hooks`](../tools/install_hooks.sh)，说明见 [`hooks-readme`](hooks-readme.md)。
-2. **CI 链接检查（提交后兜底）**：即使本地未启用钩子，推送到托管平台后由 CI 跑 `tools/check_links.py` 拦截。（仓库暂未配置远端时 CI 不触发；配置后自动生效。详见 [`hooks-readme`](hooks-readme.md) 的 CI 一节。）
+2. **CI 链接检查（提交后兜底）**：即使本地未启用钩子，推送到托管平台后由 CI 跑链接校验（`tools/check_links.ts`）拦截。本仓库远端为 [github.com/andyluss/LiveRefu](https://github.com/andyluss/LiveRefu)，push / PR 时 CI 自动触发。详见 [`hooks-readme`](hooks-readme.md) 的 CI 一节。
 
 需全量人工检查时，仍可手动运行：
 
