@@ -54,20 +54,30 @@ const ROGUE_NODES: RogueNode[] = Array.from({ length: 8 }, (_, k) => {
 });
 
 // 族专属挑战卡（25 号文档）：按"战力折损"折算，分数越高折损越大；band = 允许的胜率跌幅（百分点）
-interface FactionCard { id: string; name: string; faction: string; score: number; playerMul: number; band: [number, number]; }
+interface FactionCard { id: string; name: string; faction: string; score: number; playerMul: number; playerMulPure: number; pureDeck: string; band: [number, number]; }
 const FACTION_CHALLENGES: FactionCard[] = [
-  { id: "ANV-CHL-01", name: "弹药禁令", faction: "铁砧", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
-  { id: "ANV-CHL-02", name: "工事超载", faction: "铁砧", score: 2, playerMul: 0.96, band: [0.05, 0.12] },
-  { id: "ANV-CHL-03", name: "补给短缺", faction: "铁砧", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
-  { id: "TID-CHL-01", name: "腐蚀逆流", faction: "涌潮", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
-  { id: "TID-CHL-02", name: "孵化抑制", faction: "涌潮", score: 2, playerMul: 0.96, band: [0.05, 0.12] },
-  { id: "TID-CHL-03", name: "巢群饥荒", faction: "涌潮", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
-  { id: "AST-CHL-01", name: "共鸣干扰", faction: "星辉", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
-  { id: "AST-CHL-02", name: "护盾过载", faction: "星辉", score: 2, playerMul: 0.96, band: [0.05, 0.12] },
-  { id: "AST-CHL-03", name: "能量税", faction: "星辉", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
+  { id: "ANV-CHL-01", name: "弹药禁令", faction: "铁砧", score: 3, playerMul: 0.92, playerMulPure: 0.85, pureDeck: "纯弹药卡组", band: [0.12, 0.25] },
+  { id: "ANV-CHL-02", name: "工事超载", faction: "铁砧", score: 2, playerMul: 0.96, playerMulPure: 0.9, pureDeck: "纯工事卡组", band: [0.05, 0.12] },
+  { id: "ANV-CHL-03", name: "补给短缺", faction: "铁砧", score: 3, playerMul: 0.93, playerMulPure: 0.88, pureDeck: "资源重卡组", band: [0.12, 0.25] },
+  { id: "TID-CHL-01", name: "腐蚀逆流", faction: "涌潮", score: 3, playerMul: 0.92, playerMulPure: 0.85, pureDeck: "纯腐蚀卡组", band: [0.12, 0.25] },
+  { id: "TID-CHL-02", name: "孵化抑制", faction: "涌潮", score: 2, playerMul: 0.96, playerMulPure: 0.91, pureDeck: "纯孵化卡组", band: [0.05, 0.12] },
+  { id: "TID-CHL-03", name: "巢群饥荒", faction: "涌潮", score: 3, playerMul: 0.93, playerMulPure: 0.89, pureDeck: "纯召唤卡组", band: [0.12, 0.25] },
+  { id: "AST-CHL-01", name: "共鸣干扰", faction: "星辉", score: 3, playerMul: 0.93, playerMulPure: 0.85, pureDeck: "纯共鸣卡组", band: [0.12, 0.25] },
+  { id: "AST-CHL-02", name: "护盾过载", faction: "星辉", score: 2, playerMul: 0.96, playerMulPure: 0.92, pureDeck: "纯护盾卡组", band: [0.05, 0.12] },
+  { id: "AST-CHL-03", name: "能量税", faction: "星辉", score: 3, playerMul: 0.93, playerMulPure: 0.88, pureDeck: "技能重卡组", band: [0.12, 0.25] },
 ];
 const FACTION_BASE_B = 205;
 const FACTION_BASE_P = 1.08;
+const FACTION_PURE_CEILING = 0.35; // 纯流派卡组的最大跌幅（超过即视为"一张卡杀死一套牌"）
+
+// 对空 9 宫格：三档空袭预算 × 三族（AA 适配系数体现各族对空质量差异）
+const AIR_WAVE_B = [120, 180, 240];
+const FACTION_AA: { faction: string; factor: number }[] = [
+  { faction: "铁砧", factor: 1.0 },
+  { faction: "涌潮", factor: 0.97 },
+  { faction: "星辉", factor: 1.03 },
+];
+const AIR_FAIRNESS_PP = 0.15; // 同一空袭档位内，三族胜率极差上限
 
 // 对空覆盖：每族卡池中"可攻击空中单位"的卡（用于 verifyAntiAir）
 interface AirCard { id: string; name: string; faction: string; kind: "塔" | "单位" | "技能"; air: boolean; }
@@ -303,14 +313,40 @@ function verifyFaction(): number {
   let bad = 0;
   console.log(`faction card check（基准关 B=${FACTION_BASE_B} P=${FACTION_BASE_P} 基准胜率 ${pct(baseWin)}）:`);
   for (const c of FACTION_CHALLENGES) {
-    const D = (FACTION_BASE_B / B_REF) / (FACTION_BASE_P * c.playerMul);
-    const win = poissonBelow(LAMBDA0 * Math.pow(D, GAMMA), CAP);
-    const drop = baseWin - win;
-    const ok = drop >= c.band[0] && drop <= c.band[1];
-    if (!ok) bad++;
-    console.log(`  ${c.id} ${c.name}（${c.faction}/分${c.score}）: 胜率 ${pct(win)}，跌幅 ${(drop * 100).toFixed(1)}pp（允许 ${pct(c.band[0])}–${pct(c.band[1])}）${ok ? "PASS" : "FAIL"}`);
+    const win = (mul: number) => poissonBelow(LAMBDA0 * Math.pow((FACTION_BASE_B / B_REF) / (FACTION_BASE_P * mul), GAMMA), CAP);
+    const avgDrop = baseWin - win(c.playerMul);
+    const pureDrop = baseWin - win(c.playerMulPure);
+    const okAvg = avgDrop >= c.band[0] && avgDrop <= c.band[1];
+    const okPure = pureDrop <= FACTION_PURE_CEILING && pureDrop > avgDrop;
+    if (!okAvg || !okPure) bad++;
+    console.log(`  ${c.id} ${c.name}（${c.faction}/分${c.score}）: 平均跌幅 ${(avgDrop * 100).toFixed(1)}pp（允许 ${pct(c.band[0])}–${pct(c.band[1])}）${okAvg ? "PASS" : "FAIL"}；${c.pureDeck} 跌幅 ${(pureDrop * 100).toFixed(1)}pp（上限 ${pct(FACTION_PURE_CEILING)}）${okPure ? "PASS" : "FAIL"}`);
   }
   console.log("faction card check: " + (bad ? "FAIL" : "PASS"));
+  return bad ? 1 : 0;
+}
+function airMatrix(): { faction: string; B: number; D: number; win: number }[] {
+  const rows: { faction: string; B: number; D: number; win: number }[] = [];
+  for (const B of AIR_WAVE_B) for (const f of FACTION_AA) {
+    const D = (B / B_REF) / f.factor;
+    rows.push({ faction: f.faction, B, D, win: poissonBelow(LAMBDA0 * Math.pow(D, GAMMA), CAP) });
+  }
+  return rows;
+}
+function verifyAirMatrix(): number {
+  const rows = airMatrix();
+  let bad = 0;
+  console.log("air-wave × faction matrix（三档空袭预算 × 三族）:");
+  console.log("| 空袭 B | 铁砧 | 涌潮 | 星辉 | 极差 | 判定 |");
+  console.log("| --- | --- | --- | --- | --- | --- |");
+  for (const B of AIR_WAVE_B) {
+    const cells = rows.filter((r) => r.B === B);
+    const wins = cells.map((c) => c.win);
+    const spread = Math.max(...wins) - Math.min(...wins);
+    const ok = spread <= AIR_FAIRNESS_PP;
+    if (!ok) bad++;
+    console.log(`| ${B} | ${cells.map((c) => pct(c.win)).join(" | ")} | ${(spread * 100).toFixed(1)}pp | ${ok ? "PASS" : "FAIL"} |`);
+  }
+  console.log("air-wave matrix: " + (bad ? "FAIL" : "PASS"));
   return bad ? 1 : 0;
 }
 function verifySeed(): number {
@@ -365,6 +401,7 @@ async function main(): Promise<void> {
   if (flag("verify-faction")) { process.exitCode = verifyFaction(); return; }
   if (flag("verify-seed")) { process.exitCode = verifySeed(); return; }
   if (flag("verify-anti-air")) { process.exitCode = verifyAntiAir(); return; }
+  if (flag("verify-air-matrix")) { process.exitCode = verifyAirMatrix(); return; }
   if (flag("verify-rogue")) { process.exitCode = verifyRogue(); return; }
   if (flag("rogue")) { console.log("# Refu Game 001 · 远征节点难度（D11）\n"); console.log(renderRogue()); return; }
   if (flag("verify-bands")) { process.exitCode = verifyBands(); return; }

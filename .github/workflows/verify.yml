@@ -55,6 +55,7 @@ jobs:
           node --experimental-strip-types tools/sim_refu_game_001.ts --verify-faction
           node --experimental-strip-types tools/sim_refu_game_001.ts --verify-seed
           node --experimental-strip-types tools/sim_refu_game_001.ts --verify-anti-air
+          node --experimental-strip-types tools/sim_refu_game_001.ts --verify-air-matrix
 
       - name: Meta-rules structure check (M1+M2, TS)
         run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts

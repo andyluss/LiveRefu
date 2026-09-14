@@ -18,9 +18,28 @@
 - 每表固定字段：类型/费用/槽位、标签、核心数值、钩子、版本/状态；
 - 改一张卡只动本表，版本号 +0.0.1，并在根 `CHANGELOG` 记一行。
 
-## 三、冻结流程（v1.0 条件）
+## 三、数值改动后必跑清单
 
-1. 模拟验算：常规关 D∈[0.9, 1.1] 目标胜率 55–75%；挑战关 D≥1.3 目标胜率 40–60%；
+改动本目录任何首值后，**依次跑完七项校验（全部 PASS 才算完成）**：
+
+```bash
+S=tools/sim_refu_game_001.ts
+node --experimental-strip-types $S --selftest                     # 1 模型自检（种子/单调性/解析一致）
+node --experimental-strip-types $S --verify-bands --n 20000       # 2 主线五章带位
+node --experimental-strip-types $S --verify-rogue --n 20000      # 3 远征 8 节点带位
+node --experimental-strip-types $S --verify-faction               # 4 族专属挑战卡（平均+纯流派双口径）
+node --experimental-strip-types $S --verify-seed                  # 5 每日种子与排行榜用例
+node --experimental-strip-types $S --verify-anti-air              # 6 三族对空覆盖
+node --experimental-strip-types $S --verify-air-matrix            # 7 空袭 × 三族 9 宫格公平性
+```
+
+- 第 1/4/5/6/7 项已接入 **pre-commit**（暂存涉及本卷或模拟脚本时自动触发）与 **CI**；
+- 第 2/3 项在 CI 中跑全量（n=20000），本地钩子跑 n=5000 的快速版；
+- 任一项 FAIL：先查 [21](../21_模拟验算表_章节胜率矩阵.md) 的模型参数（λ0/γ/cap）与本节第 1 条的目标带，再改首值——**不要反向改断言**。
+
+## 四、冻结流程（v1.0 条件）
+
+1. 模拟验算：常规关 D∈[0.9, 1.1] 目标胜率 55–75%；挑战关 D∈[1.25, 1.45] 目标胜率 25–50%；
 2. 三族 36 卡互不依赖、逐张 remove-safe；
-3. 威胁值与能量曲线交叉验算通过 → 状态由 `v1.0-draft` 升为 `v1.0`（冻结）；
+3. **七项校验全 PASS**（见第三节）→ 状态由 `v1.0-draft` 升为 `v1.0`（冻结）；
 4. 冻结后数值变更须走版本号与 CHANGELOG，不再直接改本目录首值。
