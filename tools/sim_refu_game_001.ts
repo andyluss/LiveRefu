@@ -45,6 +45,14 @@ const CHALLENGES: Challenge[] = [
   { id: "CHL-05", name: "疾行", score: 2, hpMul: 1.15, playerMul: 1.05, simultaneous: false },
 ];
 
+// Roguelike 远征：8 节点（D11）。B_i 由 170.6×(0.9+0.10i) 取整；P 取 1.08（永久修饰的等效战力增长）
+const ROGUE_P = 1.08;
+interface RogueNode { i: number; B: number; band: [number, number]; }
+const ROGUE_NODES: RogueNode[] = Array.from({ length: 8 }, (_, k) => {
+  const i = k + 1;
+  return { i, B: Math.round(170.6 * (0.9 + 0.1 * i)), band: i <= 2 ? [0.7, 0.9] : i <= 4 ? [0.4, 0.65] : i <= 6 ? [0.12, 0.3] : [0.03, 0.12] };
+});
+
 function arg(name: string, fallback: string): string {
   const i = process.argv.indexOf("--" + name);
   return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : fallback;
@@ -173,8 +181,7 @@ function selftest(): number {
   return failures.length ? 1 : 0;
 }
 
-function verifyBands(): number {
-  const stages = stageList([]);
+function verifyBands(): number {  const stages = stageList([]);
   let bad = 0;
   console.log("band check（章节均值是否落在目标带）:");
   CHAPTERS.forEach((ch, ci) => {
@@ -188,7 +195,38 @@ function verifyBands(): number {
   return bad ? 1 : 0;
 }
 
+function rogueRows(): { i: number; B: number; D: number; analytic: number; sim: number; band: [number, number] }[] {
+  return ROGUE_NODES.map((n) => {
+    const D = (n.B / B_REF) / ROGUE_P;
+    const lambda = LAMBDA0 * Math.pow(D, GAMMA);
+    return { i: n.i, B: n.B, D, analytic: poissonBelow(lambda, CAP), sim: simulate(lambda, 8, RUNS, SEED + 900 + n.i), band: n.band };
+  });
+}
+function renderRogue(): string {
+  const rows = rogueRows();
+  const lines: string[] = [];
+  lines.push("### 远征 8 节点带位（脚本）", "");
+  lines.push("| 节点 | B | D | 解析胜率 | 模拟胜率 | 目标带 | 判定 |");
+  lines.push("| --- | --- | --- | --- | --- | --- | --- |");
+  for (const r of rows) lines.push(`| ${r.i}${r.i === 8 ? "（BOSS）" : ""} | ${r.B} | ${fmt(r.D)} | ${pct(r.analytic)} | ${pct(r.sim)} | ${pct(r.band[0])}–${pct(r.band[1])} | ${verdict(r.sim, r.band)} |`);
+  return lines.join("\n");
+}
+function verifyRogue(): number {
+  const rows = rogueRows();
+  let bad = 0;
+  console.log("rogue band check（8 节点，P=" + fmt(ROGUE_P) + "）:");
+  for (const r of rows) {
+    const ok = r.sim >= r.band[0] && r.sim <= r.band[1];
+    if (!ok) bad++;
+    console.log(`  节点 ${r.i}: D=${fmt(r.D)} 胜率=${pct(r.sim)} (目标 ${pct(r.band[0])}–${pct(r.band[1])}) ${ok ? "PASS" : "FAIL"}`);
+  }
+  console.log("rogue band check: " + (bad ? "FAIL" : "PASS"));
+  return bad ? 1 : 0;
+}
+
 async function main(): Promise<void> {
+  if (flag("verify-rogue")) { process.exitCode = verifyRogue(); return; }
+  if (flag("rogue")) { console.log("# Refu Game 001 · 远征节点难度（D11）\n"); console.log(renderRogue()); return; }
   if (flag("verify-bands")) { process.exitCode = verifyBands(); return; }
   if (flag("selftest")) { process.exitCode = selftest(); return; }
   if (flag("stage")) {

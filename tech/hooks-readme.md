@@ -42,6 +42,7 @@ git config core.hooksPath tools/hooks
 | `projects/tomorrows-channel/data/{tables,schema}/` | 数据表 schema 契约（[R04](../rules/R04-data-validation.md)） | [`tools/check_data.ts`](../tools/check_data.ts) |
 | `lab/formal-system/` | 元规则结构 M1+M2 / 演进 M3 / `STRUCTURE.md` M4 | `lab/formal-system/concerns/meta-rules/*.ts` |
 | `rules/` | 规则目录结构 M1+M2 + 规则演进 M3（**覆盖元规则 M 与具体规则 R**） | [`rules/meta/tools/meta_rules_check.ts`](../rules/meta/tools/meta_rules_check.ts)、[`rules/meta/evolution/rule_evolution_check.ts`](../rules/meta/evolution/rule_evolution_check.ts) |
+| `doc/refu-game-001/`、`tools/sim_refu_game_001.ts` | Refu Game 001 难度模型：自检 + 章节带位 + 远征节点带位 | [`tools/sim_refu_game_001.ts`](../tools/sim_refu_game_001.ts) |
 
 > `rules/` 两项为**目录级**检查（扫 `rules/` 全树），故以"暂存是否涉及 `rules/`"为触发条件。
 

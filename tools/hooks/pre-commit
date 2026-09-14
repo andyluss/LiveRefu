@@ -6,6 +6,8 @@
 #   2. 数据表不符合 schema(检查暂存涉及的 data/tables 变更, 交 tools/check_data.ts)。
 #   3. 元规则结构/演进状态/STRUCTURE.md（暂存涉及 lab/formal-system 时, 交 meta-rules/*.ts）。
 #   4. 规则目录 rules/ 的元规则结构 + 规则演进状态（暂存涉及 rules/ 时, 交 rules/meta/*.ts）。
+#   5. Refu Game 001 难度模型：自检 + 章节带位 + 远征节点带位（暂存涉及 refu-game-001 或模拟脚本时,
+#      交 tools/sim_refu_game_001.ts；数值一改就会触发）。
 #
 # 启用方式：git config core.hooksPath tools/hooks（仓库已配置）。
 # 临时跳过：git commit --no-verify。
@@ -123,6 +125,25 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^rules/'; then
     fi
   else
     echo "[pre-commit:rules-meta:evolution] 未找到 $RULES_EVOL_SCRIPT，跳过。" >&2
+  fi
+fi
+
+# ---- 5) Refu Game 001 难度模型校验（暂存涉及该卷或模拟脚本时）----
+SIM_SCRIPT="$GIT_ROOT/tools/sim_refu_game_001.ts"
+if git diff --cached --name-only --diff-filter=ACM | grep -qE '^(doc/refu-game-001/|tools/sim_refu_game_001\.ts)'; then
+  if [ ! -f "$SIM_SCRIPT" ]; then
+    echo "[pre-commit:refu-sim] 未找到 $SIM_SCRIPT，跳过难度模型校验。" >&2
+  else
+    echo "[pre-commit:refu-sim] 暂存涉及 refu-game-001，校验难度模型（自检/章节带位/远征节点）..." >&2
+    if run_ts "$SIM_SCRIPT" --selftest >&2 \
+      && run_ts "$SIM_SCRIPT" --verify-bands --n 5000 >&2 \
+      && run_ts "$SIM_SCRIPT" --verify-rogue --n 5000 >&2; then
+      echo "[pre-commit:refu-sim] 通过。" >&2
+    else
+      echo "[pre-commit:refu-sim] 难度模型自检或带位校验失败，已拦截提交。" >&2
+      echo "  复核: node --experimental-strip-types tools/sim_refu_game_001.ts --verify-bands --n 20000" >&2
+      exit 1
+    fi
   fi
 fi
 
