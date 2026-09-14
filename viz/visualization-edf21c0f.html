@@ -1,0 +1,310 @@
+<div id="novel-map-root">
+  <style>
+    #novel-map-root { display: flex; flex-direction: column; gap: 12px; }
+    #novel-map-root .nt-head { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: baseline; }
+    #novel-map-root .nt-title { font-size: 15px; font-weight: 600; }
+    #novel-map-root .nt-sub { font-size: 12px; color: var(--muted-foreground); }
+    #novel-map-root .nt-legend { display: flex; flex-wrap: wrap; gap: 10px 14px; font-size: 12px; color: var(--muted-foreground); }
+    #novel-map-root .nt-chip { display: inline-flex; align-items: center; gap: 5px; }
+    #novel-map-root .nt-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+    #novel-map-root svg { width: 100%; height: auto; display: block; overflow: visible; }
+    #novel-map-root .nt-node { cursor: pointer; }
+    #novel-map-root .nt-node circle { transition: opacity .2s ease, stroke-width .2s ease; }
+    #novel-map-root .nt-node text { fill: var(--foreground); font-size: 12px; text-anchor: middle; pointer-events: none; }
+    #novel-map-root .nt-node .nt-init { font-size: 13px; font-weight: 600; fill: var(--background); }
+    #novel-map-root .nt-cluster { fill: var(--muted-foreground); font-size: 11px; letter-spacing: .06em; }
+    #novel-map-root .nt-edge { transition: opacity .2s ease, stroke-width .2s ease; }
+    #novel-map-root .nt-elabel { font-size: 11px; fill: var(--foreground); text-anchor: middle; }
+    #novel-map-root .nt-elabel-bg { fill: var(--background); opacity: .92; }
+    #novel-map-root .nt-dim { opacity: .14; }
+    #novel-map-root .nt-in { animation: nt-in .35s ease-out both; transform-box: fill-box; transform-origin: center; }
+    @keyframes nt-in { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: scale(1); } }
+    @media (prefers-reduced-motion: reduce) { #novel-map-root .nt-in { animation: none; } }
+    #novel-map-root .nt-panel { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; min-height: 74px; }
+    #novel-map-root .nt-panel h4 { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+    #novel-map-root .nt-panel ul { margin: 6px 0 0; padding-left: 18px; font-size: 12.5px; line-height: 1.6; }
+    #novel-map-root .nt-panel p { margin: 0; font-size: 12.5px; color: var(--muted-foreground); line-height: 1.6; }
+    #novel-map-root .nt-meta { font-size: 12px; color: var(--muted-foreground); }
+  </style>
+
+  <div class="nt-head">
+    <span class="nt-title">《节点之海》人物关系图</span>
+    <span class="nt-sub">点人物看关系 · 用「推进到」按卷展开</span>
+  </div>
+
+  <div class="viz-controls" id="nt-vols" role="group" aria-label="推进到哪一卷"></div>
+
+  <svg id="nt-svg" viewBox="0 0 960 560" role="img" aria-label="人物关系图"></svg>
+
+  <div class="nt-legend" id="nt-legend"></div>
+  <div class="nt-panel" id="nt-panel"></div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('novel-map-root');
+  if (!root) return;
+
+  var FACTION = {
+    '铁砧联邦': 'var(--viz-series-1)',
+    '齿轮帮': 'var(--viz-series-4)',
+    '涌潮虫群': 'var(--viz-series-2)',
+    '星辉议会': 'var(--viz-series-3)',
+    '自由 / 远征': 'var(--viz-series-5)'
+  };
+
+  var NODES = [
+    { id: 'xielin', name: '谢临', faction: '铁砧联邦', vol: 1, x: 470, y: 275, r: 27,
+      role: '铁砧联邦调度官 → 混编协调调度官 → 自由调度官',
+      note: '全书唯一视角。第 1 章报到就把开局能量全砸在一座塔上；第 7 章漏满三只失守；第 40 章把名字写进「完成 8 节点」第一行。' },
+    { id: 'keling', name: '柯岭', faction: '铁砧联邦', vol: 1, x: 300, y: 180, r: 20,
+      role: '谢临的副官（人类）',
+      note: '报波次、按纸图；第 7 章以值班记录替她挡下军法问责；第 38 章第一次说「这次我觉得能过」。' },
+    { id: 'tangli', name: '唐砺', faction: '铁砧联邦', vol: 1, x: 200, y: 320, r: 20,
+      role: '铁砧教官（短篇《火线换装》主角）',
+      note: '一句「你漏了谁」贯穿卷一；第 8 章以自己当年的失守记录替她担保；第 32 章补全「只有你自己昨天的记录」。' },
+    { id: 'maoding', name: '铆钉', faction: '齿轮帮', vol: 1, x: 355, y: 425, r: 20,
+      role: '齿轮帮·维修工（铁砧从族）',
+      note: '抱油壶修塔，左眼焊疤；口头禅「修得再好，也带不到明天」在第 40 章被改写为「带不到明天，就修到别人手里」。' },
+    { id: 'cheng', name: '秤', faction: '齿轮帮', vol: 1, x: 505, y: 458, r: 20,
+      role: '齿轮帮·搬运工（铁砧从族）',
+      note: '三条腿、木托盘、护目镜；第 30 章 BOSS 阶段技中倒下，战报把它的类别从「消耗品」改成「人员」。' },
+    { id: 'ya', name: '芽', faction: '涌潮虫群', vol: 2, x: 640, y: 498, r: 20,
+      role: '孢子侍从（涌潮从族）',
+      note: '第 10 章把柯岭身上的腐蚀层数「搬进菌毯」；说话像发芽一样慢。' },
+    { id: 'tai', name: '苔', faction: '涌潮虫群', vol: 2, x: 745, y: 430, r: 20,
+      role: '涌潮侧调度官',
+      note: '沉默寡言，以窄纸条代口；只借谢临三张卡；卷三门口那句「他们会先看你的族徽，再看你的账」。' },
+    { id: 'wo', name: '涡', faction: '涌潮虫群', vol: 2, x: 848, y: 368, r: 20,
+      role: '涌潮侧调度官',
+      note: '第 11 章当面骂她「外族人」；第 15 章把三张族专属卡推给她选——她挑了最难用的那张。' },
+    { id: 'wenzhao', name: '闻昭', faction: '星辉议会', vol: 3, x: 772, y: 172, r: 20,
+      role: '星辉议会调度官（短篇《共鸣的间隙》主角）',
+      note: '一个信共鸣、一个信账本；第 20 章对练打平，约定「下次换你的卡组」；第 24 章「下一次我不站议会」。' },
+    { id: 'kaoguan', name: '星辉考官', faction: '星辉议会', vol: 3, x: 888, y: 268, r: 20,
+      role: '袖口三道棱的老调度官（不具名）',
+      note: '把谢临钉在三号位，也在第 19 章递出铅笔；第 27 章是唯一没在补洞方案上签字的人，第 31 章的坐标证据指向他。' },
+    { id: 'leng', name: '棱', faction: '星辉议会', vol: 4, x: 660, y: 300, r: 20,
+      role: '光尘侍从·记录员（星辉从族）',
+      note: '第 29 章首次登场，棱面映字、语气像档案；第 37 章说明记录片由远征台按编号自动刻录。' },
+    { id: 'ali', name: '阿砾', faction: '自由 / 远征', vol: 3, x: 560, y: 78, r: 20,
+      role: '自由调度官，走东线',
+      note: '只报数字；第 22 章留下「你的支援位放晚了半波」，第 37 章推出东线纸图与纸角那六个字，第 39 章被证明她已改掉。' },
+    { id: 'weiduo', name: '卫铎', faction: '自由 / 远征', vol: 3, x: 828, y: 88, r: 18,
+      role: '随队观测（尚未正面照面）',
+      note: '第 13 章出现在增援名单，第 14 章的铅笔圈、第 23 章的抄录段号都与他有关；线索止于第 31 章的证据链。' }
+  ];
+
+  var EDGES = [
+    { a: 'xielin', b: 'keling', kind: '僚属', vol: 1, label: '副官：报波次、第 7 章挡问责' },
+    { a: 'xielin', b: 'tangli', kind: '僚属', vol: 1, label: '师徒：第 8 章担保、第 32 章送行' },
+    { a: 'xielin', b: 'maoding', kind: '从族', vol: 1, label: '维修位：「带不到明天」暗线' },
+    { a: 'xielin', b: 'cheng', kind: '从族', vol: 1, label: '支援位：第 30 章倒下后改称「人员」' },
+    { a: 'maoding', b: 'cheng', kind: '同族', vol: 1, label: '齿轮帮同班组' },
+    { a: 'xielin', b: 'ya', kind: '从族', vol: 2, label: '第 10 章替柯岭搬走腐蚀层数' },
+    { a: 'ya', b: 'tai', kind: '同族', vol: 2, label: '孢子侍从随涌潮出战' },
+    { a: 'tai', b: 'wo', kind: '同族', vol: 2, label: '一个沉默、一个聒噪' },
+    { a: 'xielin', b: 'tai', kind: '借卡', vol: 2, label: '只借三张卡（第 11 章）' },
+    { a: 'xielin', b: 'wo', kind: '对手', vol: 2, label: '「外族人」→ 第 15 章推卡给她选' },
+    { a: 'xielin', b: 'wenzhao', kind: '盟友', vol: 3, label: '对练打平：「下次换你的卡组」' },
+    { a: 'xielin', b: 'kaoguan', kind: '对手', vol: 3, label: '三号位与递铅笔；第 27 章未签字' },
+    { a: 'xielin', b: 'ali', kind: '同行', vol: 3, label: '竞争对手：「支援位放晚了半波」' },
+    { a: 'xielin', b: 'leng', kind: '从族', vol: 4, label: '记录席：题栏与取用次数' },
+    { a: 'kaoguan', b: 'weiduo', kind: '暗线', vol: 3, label: '读取记录的抄件与铅笔圈' },
+    { a: 'leng', b: 'ali', kind: '暗线', vol: 5, label: '「今日已通关」的错位登记' }
+  ];
+
+  var KIND_STYLE = {
+    '僚属': { color: 'var(--viz-series-1)', dash: '' },
+    '从族': { color: 'var(--viz-series-4)', dash: '5 4' },
+    '同族': { color: 'var(--viz-series-4)', dash: '2 4' },
+    '借卡': { color: 'var(--viz-series-2)', dash: '5 4' },
+    '对手': { color: 'var(--viz-series-3)', dash: '' },
+    '盟友': { color: 'var(--viz-series-2)', dash: '' },
+    '同行': { color: 'var(--viz-series-5)', dash: '7 4' },
+    '暗线': { color: 'var(--viz-series-6)', dash: '2 3' }
+  };
+
+  var VOLS = [
+    { v: 0, label: '全部', span: '40 章' },
+    { v: 1, label: '推进到卷一', span: '1–8' },
+    { v: 2, label: '推进到卷二', span: '9–16' },
+    { v: 3, label: '推进到卷三', span: '17–24' },
+    { v: 4, label: '推进到卷四', span: '25–32' },
+    { v: 5, label: '推进到卷五', span: '33–40' }
+  ];
+
+  var state = { vol: 0, focus: null, animate: true };
+  var svg = document.getElementById('nt-svg');
+  var panel = document.getElementById('nt-panel');
+  var volsBox = document.getElementById('nt-vols');
+  var legendBox = document.getElementById('nt-legend');
+  var NS = 'http://www.w3.org/2000/svg';
+
+  function nodeById(id) {
+    for (var i = 0; i < NODES.length; i++) if (NODES[i].id === id) return NODES[i];
+    return null;
+  }
+  function visibleNodes() {
+    return NODES.filter(function (n) { return state.vol === 0 || n.vol <= state.vol; });
+  }
+  function visibleEdges() {
+    var ids = {};
+    visibleNodes().forEach(function (n) { ids[n.id] = 1; });
+    return EDGES.filter(function (e) {
+      return ids[e.a] && ids[e.b] && (state.vol === 0 || e.vol <= state.vol);
+    });
+  }
+  function incident(id) {
+    return visibleEdges().filter(function (e) { return e.a === id || e.b === id; });
+  }
+
+  function el(tag, attrs, text) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function buildLegend() {
+    legendBox.innerHTML = '';
+    Object.keys(FACTION).forEach(function (f) {
+      var s = document.createElement('span');
+      s.className = 'nt-chip';
+      s.innerHTML = '<span class="nt-dot" style="background:' + FACTION[f] + '"></span>' + f;
+      legendBox.appendChild(s);
+    });
+    var kinds = ['僚属', '从族', '盟友', '对手', '同行', '暗线'];
+    kinds.forEach(function (k) {
+      var s = document.createElement('span');
+      s.className = 'nt-chip';
+      s.innerHTML = '<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4" stroke="' +
+        KIND_STYLE[k].color + '" stroke-width="2"' + (KIND_STYLE[k].dash ? ' stroke-dasharray="' + KIND_STYLE[k].dash + '"' : '') +
+        '></line></svg>' + k;
+      legendBox.appendChild(s);
+    });
+  }
+
+  function buildControls() {
+    volsBox.innerHTML = '';
+    VOLS.forEach(function (v) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn' + (state.vol === v.v ? ' btn-primary' : ' btn-ghost');
+      b.textContent = v.label;
+      b.setAttribute('aria-pressed', state.vol === v.v ? 'true' : 'false');
+      b.title = '第 ' + v.span + ' 章';
+      b.addEventListener('click', function () {
+        if (state.vol === v.v) return;
+        state.vol = v.v;
+        state.animate = true;
+        state.focus = null;
+        render();
+      });
+      volsBox.appendChild(b);
+    });
+  }
+
+  function clusterCaptions() {
+    return [
+      { t: '铁砧联邦', x: 250, y: 118 },
+      { t: '齿轮帮（从族）', x: 300, y: 520 },
+      { t: '涌潮虫群', x: 800, y: 505 },
+      { t: '星辉议会', x: 812, y: 128 },
+      { t: '自由 / 远征', x: 690, y: 52 }
+    ];
+  }
+
+  function render() {
+    var vn = visibleNodes(), ve = visibleEdges();
+    var visible = {};
+    vn.forEach(function (n) { visible[n.id] = 1; });
+    var focusEdges = state.focus ? incident(state.focus) : [];
+    var focusSet = {};
+    focusEdges.forEach(function (e) { focusSet[e.a + '|' + e.b] = 1; });
+
+    svg.innerHTML = '';
+    clusterCaptions().forEach(function (c) {
+      svg.appendChild(el('text', { x: c.x, y: c.y, class: 'nt-cluster', 'text-anchor': 'middle' }, c.t));
+    });
+
+    ve.forEach(function (e) {
+      var a = nodeById(e.a), b = nodeById(e.b);
+      var st = KIND_STYLE[e.kind];
+      var isFocus = focusSet[e.a + '|' + e.b];
+      var dim = state.focus && !isFocus;
+      var g = el('g', { class: 'nt-edge-line' + (dim ? ' nt-dim' : '') });
+      var line = el('line', {
+        x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+        stroke: isFocus ? 'var(--primary)' : st.color,
+        'stroke-width': isFocus ? 3 : 1.6,
+        'stroke-dasharray': st.dash || 'none',
+        'stroke-linecap': 'round'
+      });
+      line.setAttribute('class', 'nt-edge');
+      g.appendChild(line);
+      svg.appendChild(g);
+
+      if (isFocus) {
+        var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+        var bg = el('rect', { x: mx - 82, y: my - 11, width: 164, height: 20, rx: 4, class: 'nt-elabel-bg' });
+        var tx = el('text', { x: mx, y: my + 3, class: 'nt-elabel' }, e.label);
+        svg.appendChild(bg);
+        svg.appendChild(tx);
+        try {
+          var bb = tx.getBBox();
+          bg.setAttribute('x', bb.x - 5);
+          bg.setAttribute('width', bb.width + 10);
+          bg.setAttribute('height', bb.height + 5);
+          bg.setAttribute('y', bb.y - 3);
+        } catch (err) { /* measurement unavailable */ }
+      }
+    });
+
+    vn.forEach(function (n) {
+      var g = el('g', { class: 'nt-node' + (state.animate ? ' nt-in' : ''), tabindex: '0', role: 'button' });
+      g.setAttribute('aria-label', n.name + '，' + n.role);
+      var isFocus = state.focus === n.id;
+      var dim = state.focus && !isFocus && !focusEdges.some(function (e) { return e.a === n.id || e.b === n.id; });
+      if (dim) g.setAttribute('class', 'nt-node nt-dim' + (state.animate ? ' nt-in' : ''));
+      var c = el('circle', {
+        cx: n.x, cy: n.y, r: n.r,
+        fill: FACTION[n.faction],
+        stroke: isFocus ? 'var(--primary)' : 'var(--border)',
+        'stroke-width': isFocus ? 4 : 1.5
+      });
+      g.appendChild(c);
+      g.appendChild(el('text', { x: n.x, y: n.y + 5, class: 'nt-init' }, n.name.slice(0, 1)));
+      g.appendChild(el('text', { x: n.x, y: n.y + n.r + 16 }, n.name));
+      function pick() { state.focus = (state.focus === n.id) ? null : n.id; state.animate = false; render(); }
+      g.addEventListener('click', pick);
+      g.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); pick(); }
+      });
+      svg.appendChild(g);
+    });
+
+    state.animate = false;
+    renderPanel();
+  }
+
+  function renderPanel() {
+    if (!state.focus) {
+      panel.innerHTML = '<h4>怎么读这张图</h4><p>圆的颜色是阵营，线的样式是关系类型（虚线为从族链路与暗线）。点任意人物：加亮的线与标签就是他的关系轴，面板里给身份、首次登场卷与一句话。</p>';
+      return;
+    }
+    var n = nodeById(state.focus);
+    var rel = incident(n.id).map(function (e) {
+      var other = e.a === n.id ? nodeById(e.b) : nodeById(e.a);
+      return '<li><strong>' + other.name + '</strong>　<span class="nt-meta">[' + e.kind + ' · 卷' + e.vol + ']</span>　' + e.label + '</li>';
+    }).join('');
+    panel.innerHTML = '<h4>' + n.name + '　<span class="nt-meta">' + n.faction + ' ｜ 首登：卷' + n.vol + '</span></h4>' +
+      '<p>' + n.role + '</p><p>' + n.note + '</p>' +
+      '<ul>' + (rel || '<li>当前卷内暂无已登场的关系。</li>') + '</ul>';
+  }
+
+  buildControls();
+  buildLegend();
+  render();
+})();
+</script>
