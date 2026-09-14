@@ -8,6 +8,8 @@
 ## [未发布]
 
 ### 新增
+- 新增 [`doc/refu-game-001/26_远征_种子与排行榜验收.md`](doc/refu-game-001/26_远征_种子与排行榜验收.md)：每日种子 8 条验收用例（TC-01…TC-08）、样例局与排行榜排序键；[`24`](doc/refu-game-001/24_远征节点池表.md) 补充"前 6 节点为加权排列、7–8 节点池耗尽后重启"的抽取规则。
+- **族专属挑战卡实测与对空覆盖检查**：`tools/sim_refu_game_001.ts` 新增 `--verify-faction`（9 张族专属卡按战力折损折算，3 分卡跌幅 16.3pp / 2 分卡 7.8pp，均在允许带内）与 `--verify-anti-air`（判据"每族 ≥2 张可对空且含塔卡"，三族均 PASS；据此把 TID-T03 酸液喷射者补为可对空，[`数值/02`](doc/refu-game-001/数值/02_涌潮虫群_12卡.md)、[`数值/04`](doc/refu-game-001/数值/04_敌人数值与波次威胁值.md) 同步、04 的待定项移除）；[`25`](doc/refu-game-001/25_挑战卡_族专属池.md) 增实测校准表；pre-commit 与 CI 的模型校验扩展为六项（自检/章节带位/远征节点/族卡/种子/对空）。
 - 新增 [`doc/refu-game-001/25_挑战卡_族专属池.md`](doc/refu-game-001/25_挑战卡_族专属池.md)：铁砧/涌潮/星辉各 3 张族专属挑战卡（仅该族可选）、推荐组合与待实测校准说明；[`13`](doc/refu-game-001/13_卡表_挑战卡样例.md) 与 README/术语表同步。
 - **难度模型扩展与本地钩子接入**：[`tools/sim_refu_game_001.ts`](tools/sim_refu_game_001.ts) 新增 `--rogue`/`--verify-rogue`（远征 8 节点带位，已 PASS），[`23`](doc/refu-game-001/23_规则卡组_Roguelike远征.md) 与 [`24`](doc/refu-game-001/24_远征节点池表.md) 更新为脚本校验后的 D/B/胜率表；[`tools/hooks/pre-commit`](tools/hooks/pre-commit) 新增第 5 项（暂存涉及 `doc/refu-game-001/` 或模拟脚本时跑自检/章节带位/远征带位），[`tech/hooks-readme.md`](tech/hooks-readme.md) 校验项表同步。
 - 新增 `doc/refu-game-001/19_地图卡表.md` 的**铁砧适配双入口地图 MAP-ANV-02 双闸峡谷**：三族双入口覆盖补齐（虫群/星辉/铁砧/中立各 ≥1）；[`24_远征节点池表.md`](doc/refu-game-001/24_远征节点池表.md) 地图池扩为六图并重配权重（ANV-01 25% / ANV-02 12% / TID-01 20% / AST-01 18% / AST-02 10% / MULTI-01 15%）。

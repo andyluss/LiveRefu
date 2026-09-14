@@ -53,6 +53,79 @@ const ROGUE_NODES: RogueNode[] = Array.from({ length: 8 }, (_, k) => {
   return { i, B: Math.round(170.6 * (0.9 + 0.1 * i)), band: i <= 2 ? [0.7, 0.9] : i <= 4 ? [0.4, 0.65] : i <= 6 ? [0.12, 0.3] : [0.03, 0.12] };
 });
 
+// 族专属挑战卡（25 号文档）：按"战力折损"折算，分数越高折损越大；band = 允许的胜率跌幅（百分点）
+interface FactionCard { id: string; name: string; faction: string; score: number; playerMul: number; band: [number, number]; }
+const FACTION_CHALLENGES: FactionCard[] = [
+  { id: "ANV-CHL-01", name: "弹药禁令", faction: "铁砧", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
+  { id: "ANV-CHL-02", name: "工事超载", faction: "铁砧", score: 2, playerMul: 0.96, band: [0.05, 0.12] },
+  { id: "ANV-CHL-03", name: "补给短缺", faction: "铁砧", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
+  { id: "TID-CHL-01", name: "腐蚀逆流", faction: "涌潮", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
+  { id: "TID-CHL-02", name: "孵化抑制", faction: "涌潮", score: 2, playerMul: 0.96, band: [0.05, 0.12] },
+  { id: "TID-CHL-03", name: "巢群饥荒", faction: "涌潮", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
+  { id: "AST-CHL-01", name: "共鸣干扰", faction: "星辉", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
+  { id: "AST-CHL-02", name: "护盾过载", faction: "星辉", score: 2, playerMul: 0.96, band: [0.05, 0.12] },
+  { id: "AST-CHL-03", name: "能量税", faction: "星辉", score: 3, playerMul: 0.92, band: [0.12, 0.25] },
+];
+const FACTION_BASE_B = 205;
+const FACTION_BASE_P = 1.08;
+
+// 对空覆盖：每族卡池中"可攻击空中单位"的卡（用于 verifyAntiAir）
+interface AirCard { id: string; name: string; faction: string; kind: "塔" | "单位" | "技能"; air: boolean; }
+const AIR_CARDS: AirCard[] = [
+  { id: "ANV-T01", name: "模块炮塔", faction: "铁砧", kind: "塔", air: true },
+  { id: "ANV-T02", name: "交叉火力网", faction: "铁砧", kind: "塔", air: true },
+  { id: "ANV-T03", name: "磁轨钉枪", faction: "铁砧", kind: "塔", air: false },
+  { id: "ANV-T04", name: "路障工事", faction: "铁砧", kind: "塔", air: false },
+  { id: "TID-T01", name: "孵化巢", faction: "涌潮", kind: "塔", air: true },
+  { id: "TID-T02", name: "腐蚀喷口", faction: "涌潮", kind: "塔", air: false },
+  { id: "TID-T03", name: "酸液喷射者", faction: "涌潮", kind: "塔", air: true },
+  { id: "TID-T04", name: "群落粘网", faction: "涌潮", kind: "塔", air: false },
+  { id: "AST-T01", name: "棱镜哨塔", faction: "星辉", kind: "塔", air: true },
+  { id: "AST-T02", name: "共鸣方尖碑", faction: "星辉", kind: "塔", air: false },
+  { id: "AST-T03", name: "相位炮台", faction: "星辉", kind: "塔", air: true },
+  { id: "AST-T04", name: "棱光屏障", faction: "星辉", kind: "塔", air: false },
+];
+
+// 远征抽取池（24 号文档）与排行榜比较器（26 号验收用例）
+const MAP_POOL: { id: string; weight: number; single: boolean }[] = [
+  { id: "MAP-ANV-01", weight: 25, single: true },
+  { id: "MAP-ANV-02", weight: 12, single: false },
+  { id: "MAP-TID-01", weight: 20, single: false },
+  { id: "MAP-AST-01", weight: 18, single: true },
+  { id: "MAP-AST-02", weight: 10, single: false },
+  { id: "MAP-MULTI-01", weight: 15, single: false },
+];
+function drawRun(seed: number): string[] {
+  const rng = mulberry32(seed);
+  const pool = MAP_POOL.slice();
+  const picked: string[] = [];
+  // 节点 1：只抽单入口图
+  const singles = pool.filter((m) => m.single);
+  const first = weightedPick(rng, singles);
+  picked.push(first);
+  pool.splice(pool.findIndex((m) => m.id === first), 1);
+  // 池耗尽前不重复；耗尽后按权重重启（第 7–8 节点可能与前面重复）
+  while (picked.length < 8) {
+    if (pool.length === 0) pool.push(...MAP_POOL.filter((m) => m.id !== picked[picked.length - 1]));
+    const next = weightedPick(rng, pool);
+    picked.push(next);
+    pool.splice(pool.findIndex((m) => m.id === next), 1);
+  }
+  return picked;
+}
+function weightedPick(rng: () => number, list: { id: string; weight: number }[]): string {
+  const total = list.reduce((a, m) => a + m.weight, 0);
+  let r = rng() * total;
+  for (const m of list) { r -= m.weight; if (r <= 0) return m.id; }
+  return list[list.length - 1].id;
+}
+function compareRank(a: [number, number, number], b: [number, number, number]): number {
+  // [完成节点数, 难度分, 用时(越小越好)]
+  if (a[0] !== b[0]) return b[0] - a[0];
+  if (a[1] !== b[1]) return b[1] - a[1];
+  return a[2] - b[2];
+}
+
 function arg(name: string, fallback: string): string {
   const i = process.argv.indexOf("--" + name);
   return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : fallback;
@@ -224,7 +297,74 @@ function verifyRogue(): number {
   return bad ? 1 : 0;
 }
 
+function verifyFaction(): number {
+  const baseD = (FACTION_BASE_B / B_REF) / FACTION_BASE_P;
+  const baseWin = poissonBelow(LAMBDA0 * Math.pow(baseD, GAMMA), CAP);
+  let bad = 0;
+  console.log(`faction card check（基准关 B=${FACTION_BASE_B} P=${FACTION_BASE_P} 基准胜率 ${pct(baseWin)}）:`);
+  for (const c of FACTION_CHALLENGES) {
+    const D = (FACTION_BASE_B / B_REF) / (FACTION_BASE_P * c.playerMul);
+    const win = poissonBelow(LAMBDA0 * Math.pow(D, GAMMA), CAP);
+    const drop = baseWin - win;
+    const ok = drop >= c.band[0] && drop <= c.band[1];
+    if (!ok) bad++;
+    console.log(`  ${c.id} ${c.name}（${c.faction}/分${c.score}）: 胜率 ${pct(win)}，跌幅 ${(drop * 100).toFixed(1)}pp（允许 ${pct(c.band[0])}–${pct(c.band[1])}）${ok ? "PASS" : "FAIL"}`);
+  }
+  console.log("faction card check: " + (bad ? "FAIL" : "PASS"));
+  return bad ? 1 : 0;
+}
+function verifySeed(): number {
+  const bad: string[] = [];
+  const s1 = drawRun(20260914);
+  const s2 = drawRun(20260914);
+  if (s1.join(",") !== s2.join(",")) bad.push("同种子不可复现");
+  if (drawRun(1).join(",") === drawRun(2).join(",")) bad.push("不同种子结果相同");
+  if (new Set(s1.slice(0, 6)).size !== 6) bad.push("池耗尽前（前 6 节点）出现重复地图");
+  if (!MAP_POOL.find((m) => m.id === s1[0])?.single) bad.push("节点 1 未限制为单入口图");
+  const counts = new Map<string, number>();
+  const N = 1000;
+  for (let s = 0; s < N; s++) {
+    const run = drawRun(1000 + s);
+    if (new Set(run.slice(0, 6)).size !== 6) bad.push(`seed=${1000 + s} 前 6 节点不是加权排列`);
+    for (const id of run) counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+  for (const m of MAP_POOL) if (!counts.has(m.id)) bad.push(`${m.id} 从未被抽中`);
+  const cases: [string, [number, number, number], [number, number, number], number][] = [
+    ["同深度同分比用时（用时少者优先）", [8, 12, 100], [8, 12, 90], 1],
+    ["深度优先于分数", [8, 15, 200], [7, 20, 10], -1],
+    ["完全相同时相等", [6, 15, 50], [6, 15, 50], 0],
+  ];
+  for (const [name, a, b, expect] of cases) {
+    const got = compareRank(a, b);
+    const ok = (expect < 0 && got < 0) || (expect > 0 && got > 0) || (expect === 0 && got === 0);
+    if (!ok) bad.push(`排行榜用例失败：${name}`);
+  }
+  console.log("seed/ranking check（同种子复现、分布、节点1限制、排行比较器）:");
+  console.log(`  样例局（seed=20260914）: ${s1.join(" → ")}`);
+  console.log("seed/ranking check: " + (bad.length ? "FAIL" : "PASS"));
+  for (const b of bad) console.log("  - " + b);
+  return bad.length ? 1 : 0;
+}
+function verifyAntiAir(): number {
+  const factions = ["铁砧", "涌潮", "星辉"];
+  let bad = 0;
+  console.log("anti-air coverage check（每族需 ≥2 张可对空卡，其中 ≥1 张塔卡）:");
+  for (const f of factions) {
+    const list = AIR_CARDS.filter((c) => c.faction === f);
+    const air = list.filter((c) => c.air);
+    const towers = air.filter((c) => c.kind === "塔");
+    const ok = air.length >= 2 && towers.length >= 1;
+    if (!ok) bad++;
+    console.log(`  ${f}: 可对空 ${air.length}/${list.length}（塔 ${towers.length}）→ ${air.map((c) => c.id).join(", ") || "无"} ${ok ? "PASS" : "FAIL"}`);
+  }
+  console.log("anti-air coverage check: " + (bad ? "FAIL" : "PASS"));
+  return bad ? 1 : 0;
+}
+
 async function main(): Promise<void> {
+  if (flag("verify-faction")) { process.exitCode = verifyFaction(); return; }
+  if (flag("verify-seed")) { process.exitCode = verifySeed(); return; }
+  if (flag("verify-anti-air")) { process.exitCode = verifyAntiAir(); return; }
   if (flag("verify-rogue")) { process.exitCode = verifyRogue(); return; }
   if (flag("rogue")) { console.log("# Refu Game 001 · 远征节点难度（D11）\n"); console.log(renderRogue()); return; }
   if (flag("verify-bands")) { process.exitCode = verifyBands(); return; }

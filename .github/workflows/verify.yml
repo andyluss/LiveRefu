@@ -49,6 +49,13 @@ jobs:
       - name: Refu Game 001 difficulty band check (TS)
         run: node --experimental-strip-types tools/sim_refu_game_001.ts --verify-bands --n 20000
 
+      - name: Refu Game 001 content checks (TS)
+        run: |
+          node --experimental-strip-types tools/sim_refu_game_001.ts --verify-rogue --n 20000
+          node --experimental-strip-types tools/sim_refu_game_001.ts --verify-faction
+          node --experimental-strip-types tools/sim_refu_game_001.ts --verify-seed
+          node --experimental-strip-types tools/sim_refu_game_001.ts --verify-anti-air
+
       - name: Meta-rules structure check (M1+M2, TS)
         run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts
 
