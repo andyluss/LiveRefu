@@ -57,14 +57,15 @@ jobs:
         run: node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/hub.ts --run
 
       - name: Godot project load check
-        uses: addnab/action-run-docker@v3
-        with:
-          image: ghcr.io/godotengine/godot:4.7-mono
-          options: -v ${{ github.workspace }}:/app
-          run: |
-            # 让 Godot 真正加载工程(主场景+autoload链编译+_verify_closed_loop自检)，
-            # 暴露脚本编译错误/资源加载错误。GDScript 弱类型, 无法整工程静态扫描,
-            # 故用运行时加载 + 已内建的自检(closed_loop VERIFY)作为"编译期/回归"验证。
-            # 沙箱下需 HOME 指向可写目录, 否则 user:// 创建失败。
-            cd /app/projects/tomorrows-channel/game
-            HOME=/tmp/gdhome godot --headless --path . --quit-after 5 || exit 1
+        run: |
+          # 让 Godot 真正加载工程(主场景+autoload链编译+_verify_closed_loop自检)，
+          # 暴露脚本编译错误/资源加载错误。GDScript 弱类型, 无法整工程静态扫描,
+          # 故用运行时加载 + 已内建的自检(closed_loop VERIFY)作为"编译期/回归"验证。
+          # 沙箱下需 HOME 指向可写目录, 否则 user:// 创建失败。
+          # 直接用 runner 自带的 docker 跑官方镜像(不依赖第三方 Action)。
+          docker run --rm \
+            -v "${{ github.workspace }}:/app" \
+            -w /app/projects/tomorrows-channel/game \
+            -e HOME=/tmp/gdhome \
+            ghcr.io/godotengine/godot:4.7-mono \
+            godot --headless --path . --quit-after 5
