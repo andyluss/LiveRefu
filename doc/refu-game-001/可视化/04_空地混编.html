@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 空地混编结论</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1000px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+svg{width:100%;height:auto;display:block}.ax{fill:var(--muted);font-size:11px}.grid{stroke:var(--border)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:6px 0}
+.k{display:inline-flex;align-items:center;gap:5px}.sw{width:20px;height:10px;border-radius:3px;display:inline-block}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+.c{border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--card);cursor:pointer;transition:.15s}
+.c:hover{border-color:var(--accent)}.c.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.c h4{margin:0 0 4px;font-size:13px}.c .v{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}.c .m{color:var(--muted);font-size:12px}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:14px;background:var(--card);min-height:74px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>空地混编结论</h1>
+<div class="sub">同一预算 B=180 下三种敌方形态 × 三族，柱子是模拟胜率，右侧是形态极差与上限判据。数据来源：数值/04 敌人数值与波次威胁值、数值/体检报告。</div>
+<div class="legend"><span class="k"><span class="sw" style="background:var(--s1)"></span>铁砧联邦</span><span class="k"><span class="sw" style="background:var(--s2)"></span>涌潮虫群</span><span class="k"><span class="sw" style="background:var(--s3)"></span>星辉议会</span></div>
+<svg id="chart" viewBox="0 0 980 380" role="img" aria-label="空地混编胜率对比"></svg>
+<div class="cards" id="cards"></div>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var DATA=[
+{form:'纯空军',vals:{'铁砧联邦':67.8,'涌潮虫群':62.6,'星辉议会':72.3},cap:15,note:'空中占比 100%：对空弱的族被直接惩罚，三族差距最大。'},
+{form:'混编',vals:{'铁砧联邦':67.8,'涌潮虫群':64.8,'星辉议会':70.6},cap:12,note:'空中占比约六成：地面卡仍有价值，差距被压到 5.8pp。'},
+{form:'纯地面',vals:{'铁砧联邦':67.8,'涌潮虫群':67.8,'星辉议会':67.8},cap:5,note:'空中占比 0：三族完全一致，这一档只验证地面基线。'}];
+var F=['铁砧联邦','涌潮虫群','星辉议会'],C={'铁砧联邦':'var(--s1)','涌潮虫群':'var(--s2)','星辉议会':'var(--s3)'};
+var W=980,H=380,L=60,R=180,T=28,Bm=58,MAX=100;
+var svg=document.getElementById('chart'),cards=document.getElementById('cards'),panel=document.getElementById('panel'),st={sel:null};
+function E(t,a,x){var NS='http://www.w3.org/2000/svg';var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;return n}
+function y(v){return T+(MAX-v)/MAX*(H-T-Bm)}
+function spread(d){var v=F.map(function(f){return d.vals[f]});return Math.max.apply(null,v)-Math.min.apply(null,v)}
+function draw(){svg.innerHTML='';
+for(var g=0;g<=100;g+=25){svg.appendChild(E('line',{x1:L,y1:y(g),x2:W-R,y2:y(g),class:'grid'}));svg.appendChild(E('text',{x:L-10,y:y(g)+4,class:'ax','text-anchor':'end'},g+'%'))}
+var slot=(W-L-R)/DATA.length;
+DATA.forEach(function(d,i){var cx=L+slot*i+slot/2,bw=Math.min(30,slot*0.2);
+F.forEach(function(f,j){var v=d.vals[f],x=cx+(j-1)*(bw+6)-bw/2,yv=y(v);
+var g=E('g',{class:'col'});g.appendChild(E('rect',{x:x,y:yv,width:bw,height:Math.max(1,y(0)-yv),rx:3,fill:C[f],opacity:st.sel==null||st.sel===i?0.92:0.3}));
+g.appendChild(E('text',{x:x+bw/2,y:yv-5,class:'ax','font-size':10.5},v.toFixed(1)));svg.appendChild(g)});
+svg.appendChild(E('text',{x:cx,y:H-Bm+18,class:'ax','font-size':12.5,'text-anchor':'middle'},d.form));
+var sp=spread(d);svg.appendChild(E('text',{x:W-R+14,y:y(70),class:'ax','font-size':12},'极差 '+sp.toFixed(1)+'pp'));
+svg.appendChild(E('text',{x:W-R+14,y:y(70)+16,class:'ax'},'上限 '+d.cap.toFixed(1)+'pp'+(sp<=d.cap?'　PASS':'　越界')));
+});
+cards.innerHTML='';DATA.forEach(function(d,i){var sp=spread(d);var el=document.createElement('div');el.className='c'+(st.sel===i?' on':'');
+el.innerHTML='<h4>'+d.form+'</h4><div class="v" style="font-variant-numeric:tabular-nums">'+sp.toFixed(1)+'pp</div><div class="m">极差（上限 '+d.cap.toFixed(1)+'pp，'+(sp<=d.cap?'PASS':'越界')+'）</div><div class="m">'+d.note+'</div>';
+el.onclick=function(){st.sel=(st.sel===i)?null:i;draw()};cards.appendChild(el)});
+panel.innerHTML=panelHtml()}
+function panelHtml(){if(st.sel==null)return '<h4>怎么读</h4><p>结论不是"三族都能过"，而是"空中占比越高，越惩罚对空弱的族"。纯空军极差 9.7pp、混编 5.8pp、纯地面 0.0pp——三条线里混编同时满足两个条件：差距可接受、地面卡不白带。所以<b>混编是默认形态</b>，这是数据逼出来的结论，不是会议定下来的。</p>';
+var d=DATA[st.sel],sp=spread(d);return '<h4>'+d.form+'</h4><p>'+d.note+'</p><p>三族胜率：铁砧 '+d.vals['铁砧联邦'].toFixed(1)+'%，涌潮 '+d.vals['涌潮虫群'].toFixed(1)+'%，星辉 '+d.vals['星辉议会'].toFixed(1)+'%；极差 '+sp.toFixed(1)+'pp，上限 '+d.cap.toFixed(1)+'pp。</p>'}
+draw();})();
+</script>
+</body>
+</html>

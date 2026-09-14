@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《节点之海》时间线：关系演化</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626;--s6:#0891b2}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171;--s6:#22d3ee}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1120px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{border:1px solid var(--border);padding:5px 7px;text-align:left;vertical-align:middle}
+th{color:var(--muted);font-weight:500;font-size:12px}
+td.track{cursor:pointer}.cell{display:block;width:100%;height:22px;border-radius:5px;background:transparent;border:1px solid transparent;font-size:11px;color:var(--fg);cursor:pointer;transition:.15s}
+.cell:hover{border-color:var(--accent)}
+.cell[data-m="出现"]{background:color-mix(in srgb,var(--s1) 16%,transparent);color:var(--s1)}
+.cell[data-m="加强"]{background:color-mix(in srgb,var(--s2) 18%,transparent);color:var(--s2)}
+.cell[data-m="转折"]{background:color-mix(in srgb,var(--s5) 16%,transparent);color:var(--s5)}
+.cell[data-m="暗线"]{background:color-mix(in srgb,var(--s6) 16%,transparent);color:var(--s6)}
+tr.hot td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.vols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:16px}
+@media (max-width:820px){.vols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.v{border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--card);cursor:pointer;transition:.15s}
+.v:hover{border-color:var(--accent)}.v.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.v h3{margin:0 0 2px;font-size:13px}.v .r{color:var(--muted);font-size:11.5px;margin-bottom:6px}
+.v ul{margin:0;padding-left:16px;font-size:12px;line-height:1.55}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:14px;background:var(--card);min-height:70px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12px;color:var(--muted);margin:8px 0 10px}
+.k{display:inline-flex;align-items:center;gap:5px}.sw{width:22px;height:12px;border-radius:4px;display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>《节点之海》时间线：关系演化</h1>
+<div class="sub">行＝人物关系，列＝五卷；格子里是关系当卷的状态。点格子看该卷的事件，点卷卡只看那一卷。</div>
+<div class="legend">
+<span class="k"><span class="sw" style="background:color-mix(in srgb,var(--s1) 20%,transparent);border:1px solid var(--s1)"></span>出现</span>
+<span class="k"><span class="sw" style="background:color-mix(in srgb,var(--s2) 22%,transparent);border:1px solid var(--s2)"></span>加强</span>
+<span class="k"><span class="sw" style="background:color-mix(in srgb,var(--s5) 20%,transparent);border:1px solid var(--s5)"></span>转折</span>
+<span class="k"><span class="sw" style="background:color-mix(in srgb,var(--s6) 20%,transparent);border:1px solid var(--s6)"></span>暗线</span>
+</div>
+<div id="grid"></div>
+<div class="vols" id="vols"></div>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var VOLS=[
+{v:1,name:'卷一《卡匣新兵》',range:'第 1–8 章',arc:'一个人算账 → 一个哨位有人；失守换来担保与调令',
+ events:['1-01 谢临报到，柯岭交接纸图，她当场核出补给差六支氧气瓶','1-04 铆钉与秤登场：支援卡第一次被当成"人"','1-07 漏满三只失守，柯岭以值班记录替她挡下军法问责','1-08 唐砺以自己当年的失守记录担保，她拿到调令与那半句"没有援军"']},
+{v:2,name:'卷二《腐蚀的雨季》',range:'第 9–16 章',arc:'借来的卡 → 借来的信任；跨族一等授权',
+ events:['2-01 苔与涡只以配给袋签名露面','2-02 芽把柯岭身上的腐蚀层数搬进菌毯','2-03 苔只借三张卡，涡骂她"外族人"','2-07 涡把三张族专属卡推给她选，她挑了最难用的那张']},
+{v:3,name:'卷三《共鸣的间隙》',range:'第 17–24 章',arc:'打一局 → 站一边；拒签换来自由身与第一名对手',
+ events:['3-01 她被钉在三号位，考官袖口三道棱','3-03 考官读完她的纸图递出铅笔','3-06 阿砾留下"你的支援位放晚了半波"','3-08 闻昭"下一次我不站议会"，她交出星辉卡匣成为自由调度官']},
+{v:4,name:'卷四《三族同台》',range:'第 25–32 章',arc:'三方同台 → 三方共管；她成了三族共用的那条线',
+ events:['4-01 三方会议把她推为混编协调调度官','4-03 补洞方案唯一没签字的人','4-05 棱登记混编支援位，四个从族第一次同台','4-06 五十血：秤倒下，战报把它从"消耗品"改成"人员"','4-07 坐标证据交给三方各一份，自己留一份']},
+{v:5,name:'卷五《节点之海》',range:'第 33–40 章',arc:'记录自己 → 取用别人',
+ events:['5-02 铆钉："这次别省支援卡"','5-03 她写下"西线 · 完成 7 · 维修位后一格"','5-05 棱解开记录片之谜，阿砾推来东线纸图','5-07 同图新种子通关，她已改掉"晚半波"','5-08 名字写进"完成 8 节点"第一行，并取用他人记录片']}];
+var RELS=[
+{name:'谢临 — 柯岭',kind:'僚属',cells:{1:['出现','转折'],5:['加强']},note:'副官：1-01 交接、1-07 挡住问责、5-06「这次我觉得能过」'},
+{name:'谢临 — 唐砺',kind:'僚属',cells:{1:['出现','转折'],4:['加强']},note:'师徒：1-01「你漏了谁」、1-08 担保、4-08 送行补全那半句'},
+{name:'谢临 — 铆钉',kind:'从族',cells:{1:['出现'],5:['加强','转折']},note:'维修位：1-04 登场、5-02 第七格前的提醒、5-08 口头禅被改写'},
+{name:'谢临 — 秤',kind:'从族',cells:{1:['出现'],4:['转折']},note:'支援位：1-04 登场、4-06 五十血里倒下并改称「人员」'},
+{name:'谢临 — 芽',kind:'从族',cells:{2:['出现'],4:['加强']},note:'2-02 清创、4-05 三链条里的第三格'},
+{name:'谢临 — 苔',kind:'借卡',cells:{2:['出现','加强','转折']},note:'2-01 签名、2-03 借三张卡、2-07 门口那句话'},
+{name:'谢临 — 涡',kind:'对手',cells:{2:['出现','转折']},note:'2-03「外族人」、2-07 推族专属卡给她选'},
+{name:'谢临 — 闻昭',kind:'盟友',cells:{3:['出现','转折']},note:'3-04 对练打平、3-08「下一次我不站议会」'},
+{name:'谢临 — 星辉考官',kind:'对手',cells:{3:['出现','加强'],4:['转折']},note:'3-01 三号位、3-03 递铅笔、4-03 唯一没签字'},
+{name:'谢临 — 阿砾',kind:'同行',cells:{3:['出现'],5:['加强','转折']},note:'3-06「晚半波」、5-05 东线纸图、5-07 被证明她已改掉'},
+{name:'谢临 — 棱',kind:'从族',cells:{4:['出现'],5:['加强']},note:'4-05 登记支援位、5-05 说明自动刻录'},
+{name:'考官 — 卫铎（暗线）',kind:'暗线',cells:{3:['暗线'],4:['转折']},note:'3-07 抄录段号、4-07 坐标证据链'},
+{name:'棱 — 阿砾（暗线）',kind:'暗线',cells:{5:['暗线']},note:'5-05 台按编号补小字，旧账挂在今天底下'}];
+var grid=document.getElementById('grid'),volsBox=document.getElementById('vols'),panel=document.getElementById('panel');
+var state={rel:null,vol:null};
+function render(){
+var h='<table><thead><tr><th style="width:190px">关系</th><th style="width:60px">类型</th>';
+for(var v=1;v<=5;v++)h+='<th style="text-align:center">卷'+v+'</th>';h+='</tr></thead><tbody>';
+RELS.forEach(function(r,i){
+h+='<tr data-i="'+i+'" class="'+(state.rel===i?'hot':'')+'"><td class="track">'+r.name+'</td><td style="color:var(--muted)">'+r.kind+'</td>';
+for(var v=1;v<=5;v++){var cs=r.cells[v];
+h+='<td style="text-align:center">'+(cs?cs.map(function(m){return '<button class="cell" data-i="'+i+'" data-v="'+v+'" data-m="'+m+'">'+m+'</button>'}).join(' '):'<span style="color:var(--border)">—</span>')+'</td>'}
+h+='</tr>'});
+h+='</tbody></table>';grid.innerHTML=h;
+grid.querySelectorAll('.cell').forEach(function(b){b.onclick=function(){state.rel=+b.dataset.i;state.vol=+b.dataset.v;render()}});
+grid.querySelectorAll('tr[data-i]').forEach(function(tr){tr.querySelector('td').onclick=function(){state.rel=+tr.dataset.i;state.vol=null;render()}});
+volsBox.innerHTML='';VOLS.forEach(function(V){
+var d=document.createElement('div');d.className='v'+(state.vol===V.v?' on':'');
+d.innerHTML='<h3>'+V.name+'</h3><div class="r">'+V.range+'</div><div class="r">'+V.arc+'</div><ul>'+V.events.map(function(e){return '<li>'+e+'</li>'}).join('')+'</ul>';
+d.onclick=function(){state.vol=(state.vol===V.v)?null:V.v;render()};volsBox.appendChild(d)});
+panel.innerHTML='<h4>怎么读</h4><p>粗看一行：一条关系在哪一卷出现、哪一卷被加强、哪一卷发生转折。点格子或行看注释，点下面的卷卡把整卷事件摊开。</p>';
+if(state.rel!=null){var r=RELS[state.rel],extra=state.vol?('　｜　卷'+state.vol):'';
+panel.innerHTML='<h4>'+r.name+'　<span style="color:var(--muted);font-size:12px">'+r.kind+extra+'</span></h4><p>'+r.note+'</p>'}
+}
+render();})();
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 难度与胜率曲线</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1060px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+svg{width:100%;height:auto;display:block}.grid{stroke:var(--border);stroke-width:1}.ax{fill:var(--muted);font-size:11px}
+.band{fill:var(--accent);opacity:.10}.bar{fill:var(--s1)}.dline{stroke:var(--s3);stroke-width:2;stroke-dasharray:5 4;fill:none}
+.pt{cursor:pointer}.pt:hover circle{stroke:var(--accent);stroke-width:2.5}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:12px;background:var(--card);min-height:74px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:6px 0 2px}
+.k{display:inline-flex;align-items:center;gap:5px}.sw{width:20px;height:10px;border-radius:3px;display:inline-block}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:10px}th,td{border:1px solid var(--border);padding:4px 7px;text-align:left}th{color:var(--muted);font-weight:500;font-size:12px}
+tr.on td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>难度与胜率曲线</h1>
+<div class="sub">柱＝模拟胜率，浅色带＝目标胜率带，虚线＝难度比 D（右轴，0–1.8）。数据来源：21_模拟验算表_章节胜率矩阵、23_规则卡组_Roguelike远征、数值/README。</div>
+<div class="controls" id="ctrls" role="group" aria-label="切换数据集"></div>
+<div class="legend"><span class="k"><span class="sw" style="background:var(--s1)"></span>模拟胜率</span><span class="k"><span class="sw" style="background:color-mix(in srgb,var(--accent) 25%,transparent)"></span>目标胜率带</span><span class="k"><svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="var(--s3)" stroke-width="2" stroke-dasharray="5 4"></line></svg>难度比 D</span></div>
+<svg id="chart" viewBox="0 0 1000 420" role="img" aria-label="难度与胜率曲线"></svg>
+<div class="panel" id="panel"></div>
+<div id="tbl"></div>
+</div>
+<script>
+(function(){
+var MAIN=[{l:'第 1 章',D:0.81,p:94.9,band:[80,100],alpha:1.00},{l:'第 2 章',D:1.07,p:76.0,band:[65,80],alpha:1.06},{l:'第 3 章',D:1.16,p:64.4,band:[55,70],alpha:1.06},{l:'第 4 章',D:1.20,p:58.8,band:[45,60],alpha:1.00},{l:'第 5 章',D:1.30,p:43.6,band:[40,55],alpha:1.00}];
+var EXP=[{l:'节点 1',B:171,D:1.00,p:84.4,band:[70,90]},{l:'节点 2',B:188,D:1.10,p:72.1,band:[70,90]},{l:'节点 3',B:205,D:1.20,p:59.2,band:[40,65]},{l:'节点 4',B:222,D:1.30,p:43.5,band:[40,65]},{l:'节点 5',B:239,D:1.40,p:28.0,band:[12,30]},{l:'节点 6',B:256,D:1.50,p:16.9,band:[12,30]},{l:'节点 7',B:273,D:1.60,p:8.6,band:[3,12]},{l:'节点 8',B:290,D:1.70,p:3.6,band:[3,12]}];
+var CTX=[{k:'main',label:'主线五章'},{k:'exp',label:'远征八节点'},{k:'both',label:'对照'}];
+var st={k:'main',i:null},svg=document.getElementById('chart'),panel=document.getElementById('panel'),tbl=document.getElementById('tbl'),ctrls=document.getElementById('ctrls');
+var W=1000,H=420,L=58,R=76,T=26,Bm=54;
+function E(t,a,x){var NS='http://www.w3.org/2000/svg';var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;return n}
+function yP(v){return T+(100-v)/100*(H-T-Bm)}
+function yD(v){return T+(1.8-v)/1.8*(H-T-Bm)}
+function draw(){
+ctrls.innerHTML='';CTX.forEach(function(c){var b=document.createElement('button');b.type='button';b.textContent=c.label;b.setAttribute('aria-pressed',st.k===c.k?'true':'false');b.onclick=function(){st.k=c.k;st.i=null;draw()};ctrls.appendChild(b)});
+svg.innerHTML='';
+for(var g=0;g<=100;g+=20){svg.appendChild(E('line',{x1:L,y1:yP(g),x2:W-R,y2:yP(g),class:'grid'}));svg.appendChild(E('text',{x:L-8,y:yP(g)+4,'text-anchor':'end',class:'ax'},g+'%'))}
+for(var d=0;d<=1.8;d+=0.3){svg.appendChild(E('text',{x:W-R+8,y:yD(d)+4,class:'ax'},d.toFixed(2)))}
+svg.appendChild(E('text',{x:L,y:H-28,class:'ax'},'左轴：模拟胜率　右轴：难度比 D＝(B ÷ 158) × (1 ÷ P)'));
+var groups=[];
+if(st.k==='main'||st.k==='both')groups.push({data:MAIN,color:'var(--s1)',off:0,n:MAIN.length,tag:'主线'});
+if(st.k==='exp'||st.k==='both')groups.push({data:EXP,color:'var(--s2)',off:st.k==='both'?MAIN.length+1:0,n:EXP.length,tag:'远征'});
+var total=groups.reduce(function(s,g){return s+g.n},0)+(groups.length>1?1:0);
+var slot=(W-L-R)/total;
+var x=0;
+groups.forEach(function(g){
+ g.data.forEach(function(d,i){
+  var cx=L+slot*(x+i)+slot/2, bw=Math.min(46,slot*0.56);
+  var y1=yP(d.band[1]),y2=yP(d.band[0]);
+  svg.appendChild(E('rect',{x:cx-bw*0.9,y:y1,width:bw*1.8,height:Math.max(2,y2-y1),class:'band'}));
+  var yv=yP(d.p);
+  var bar=E('rect',{x:cx-bw/2,y:yv,width:bw,height:Math.max(1,yP(0)-yv),rx:3,fill:g.color,opacity:st.i!=null&&!(st.i[0]===g.tag&&st.i[1]===i)?0.35:0.9});
+  var gg=E('g',{class:'pt'});
+  gg.appendChild(bar);gg.appendChild(E('circle',{cx:cx,cy:yP(d.D),r:4.5,fill:'var(--s3)',stroke:'var(--bg)','stroke-width':1.5}));
+  gg.appendChild(E('text',{x:cx,y:H-Bm+18,'text-anchor':'middle',class:'ax'},d.l));
+  gg.appendChild(E('text',{x:cx,y:yv-6,'text-anchor':'middle',class:'ax','font-size':11},d.p.toFixed(1)+'%'));
+  gg.onclick=function(){st.i=(st.i&&st.i[0]===g.tag&&st.i[1]===i)?null:[g.tag,i];draw()};
+  svg.appendChild(gg);
+ });
+ x+=g.n+(groups.length>1?1:0);
+});
+var pts=[];groups.forEach(function(g){g.data.forEach(function(d,i){var cx=null;pts.push({tag:g.tag,i:i,d:d})})});
+drawTable();drawPanel()}
+function selected(){if(!st.i)return null;var arr=st.i[0]==='主线'?MAIN:EXP;return {tag:st.i[0],d:arr[st.i[1]],idx:st.i[1]}}
+function drawTable(){
+var rows='';
+MAIN.forEach(function(d,i){var on=st.i&&st.i[0]==='主线'&&st.i[1]===i;rows+='<tr class="'+(on?'on':'')+'"><td>主线 · '+d.l+'</td><td>α '+d.alpha.toFixed(2)+'</td><td>D '+d.D.toFixed(2)+'</td><td>'+d.p.toFixed(1)+'%</td><td>'+d.band[0]+'–'+d.band[1]+'%</td><td>'+(d.p>=d.band[0]&&d.p<=d.band[1]?'PASS':'越界')+'</td></tr>'});
+EXP.forEach(function(d,i){var on=st.i&&st.i[0]==='远征'&&st.i[1]===i;rows+='<tr class="'+(on?'on':'')+'"><td>远征 · '+d.l+'</td><td>B '+d.B+'</td><td>D '+d.D.toFixed(2)+'</td><td>'+d.p.toFixed(1)+'%</td><td>'+d.band[0]+'–'+d.band[1]+'%</td><td>'+(d.p>=d.band[0]&&d.p<=d.band[1]?'PASS':'越界')+'</td></tr>'});
+tbl.innerHTML='<table><thead><tr><th>关卡</th><th>参数</th><th>难度比 D</th><th>模拟胜率</th><th>目标带</th><th>判定</th></tr></thead><tbody>'+rows+'</tbody></table>'}
+function drawPanel(){var s=selected();
+if(!s){panel.innerHTML='<h4>怎么读</h4><p>主线五章的胜率从 94.9% 一路降到 43.6%，远征第八节点只剩 3.6%——两头都是设计意图，不是失手。浅色带是目标区间，柱子落在带子里就算通过；虚线走右轴，坡度越陡说明难度抬得越快。点柱子看单个关卡的参数。</p>';return}
+var d=s.d;
+panel.innerHTML='<h4>'+s.tag+' · '+d.l+'</h4><p>难度比 D＝'+d.D.toFixed(2)+'　'+(d.B?('｜　波次预算 B＝'+d.B):'')+(d.alpha?('　｜　章节系数 α＝'+d.alpha.toFixed(2)):'')+'</p><p>模拟胜率 '+d.p.toFixed(1)+'%，目标带 '+d.band[0]+'–'+d.band[1]+'%　→　'+(d.p>=d.band[0]&&d.p<=d.band[1]?'落在带内':'超出目标带')+'</p><p>'+(d.p>75?'这是教学与节奏段：让人学会，不让人卡住。':d.p>40?'这是主力考验段：需要正确的卡组与换装节奏。':'这是挑战段：失败是常态，目标是让人看见自己的极限在哪。')+'</p>'}
+draw();})();
+</script>
+</body>
+</html>

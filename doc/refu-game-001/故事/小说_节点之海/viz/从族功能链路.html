@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《节点之海》从族功能链路</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626;--s6:#0891b2}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171;--s6:#22d3ee}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1120px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.units{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:860px){.units{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.unit{border:1px solid var(--border);border-radius:10px;padding:11px;background:var(--card);cursor:pointer;transition:.15s}
+.unit:hover{border-color:var(--accent)}.unit.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.unit h3{margin:0 0 2px;font-size:13.5px}.unit .race{font-size:11.5px;color:var(--muted);margin-bottom:6px}
+.card{border:1px solid var(--border);border-radius:7px;padding:6px 8px;margin-top:6px;font-size:12px;transition:.15s}
+.card b{font-size:12.5px}.card .id{color:var(--muted);font-size:11px}
+.card.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.card.tone{opacity:.35}
+.chains{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.chain{border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--card);transition:.15s}
+.chain.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.chain.tone{opacity:.35}
+.chain h4{margin:0 0 4px;font-size:13px}.chain .cond{color:var(--muted);font-size:11.5px}.chain .eff{font-size:12px;margin-top:4px}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:14px;background:var(--card);min-height:70px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+svg.linkline{width:100%;height:auto;display:block;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>《节点之海》从族功能链路</h1>
+<div class="sub">四个从族个体同台：铆钉（齿轮帮·维修工）、秤（齿轮帮·搬运工）、芽（孢子侍从）、棱（光尘侍从·记录员）。点个体看它的卡与所在的羁绊链。</div>
+<div class="controls" id="filters" role="group" aria-label="按从族筛选"></div>
+<div class="units" id="units"></div>
+<svg class="linkline" id="link" viewBox="0 0 1040 190" role="img" aria-label="四个从族的支援链路"></svg>
+<div class="chains" id="chains"></div>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var RACE={'齿轮帮':'var(--s4)','孢子侍从':'var(--s2)','光尘侍从':'var(--s3)'};
+var UNITS=[
+{id:'maoding',name:'铆钉',race:'齿轮帮',main:'铁砧联邦',vol:'1-04 登场',role:'维修工：把"修"变成可持续的账',note:'左眼焊疤，抱油壶。第 4 章他抱着漏油的油壶爬进路障底下继续修，谢临第一次不再只把支援卡看作数字。',
+ cards:[{id:'ANV-M01',name:'齿轮帮·维修工',cost:15,tag:'维修',text:'修复 8/s、持续 6s、人口 1；on_wave_end 修复量 +50%'},
+        {id:'ANV-M03',name:'齿轮帮·路障小队',cost:20,tag:'工事',text:'生命 200 / 阻挡 2 / 存在 15s；on_expire 减速残留 3s'}]},
+{id:'cheng',name:'秤',race:'齿轮帮',main:'铁砧联邦',vol:'1-04 登场',role:'搬运工：把能量与位置搬到该在的地方',note:'三条腿、木托盘、护目镜。第 30 章五十血变招里把最后一张卡匣推向槽位后倒下，战报把它的类别从"消耗品"改成"人员"。',
+ cards:[{id:'ANV-M02',name:'齿轮帮·搬运工',cost:12,tag:'弹药',text:'光环：同标签塔攻速 +10%；on_deploy 为相邻塔 +2 能量'}]},
+{id:'ya',name:'芽',race:'孢子侍从',main:'涌潮虫群',vol:'2-02 登场',role:'孢子侍从：把坏的转成能用的',note:'说话像发芽一样慢。第 10 章把柯岭身上的腐蚀层数搬进菌毯；第 29 章替三链条补上第三张"腐蚀"。',
+ cards:[{id:'TID-M01',name:'菌毯扩张',cost:14,tag:'孵化',text:'范围内敌人 −10% 移速、友方腐蚀伤害 +10%；on_wave_start 范围 +1 格'},
+        {id:'TID-M03',name:'腐蚀附着',cost:12,tag:'腐蚀',text:'为 1 张塔卡附加「腐蚀」标签（本局有效）；on_attach 目标腐蚀 +1 层'},
+        {id:'TID-M02',name:'孢子孵化',cost:18,tag:'孵化',text:'召唤 3 只幼虫，人口 1；on_expire 留下腐蚀地 5s（进化枝：触发 3 次 → TID-M02E 孢子母体）'}]},
+{id:'leng',name:'棱',race:'光尘侍从',main:'星辉议会',vol:'4-05 登场',role:'记录员：把打过的每一局变成可用的话',note:'棱面映字，语气像档案。第 29 章登记混编支援位，第 37 章说明记录片由远征台按调度官编号自动刻录。',
+ cards:[{id:'AST-M01',name:'光尘导引',cost:14,tag:'共鸣',text:'相邻塔射程 +15%；on_deploy 共鸣计数 +1'},
+        {id:'AST-M02',name:'护盾充能',cost:16,tag:'护盾',text:'全场塔护盾 +80、持续 10s；on_wave_start 护盾不满时额外 +20'},
+        {id:'AST-M03',name:'视野棱镜',cost:12,tag:'共鸣',text:'揭示隐身、本塔与相邻塔射程 +10%；on_deploy 标记 1 个优先目标（受击 +5%）'}]}];
+var CHAINS=[
+{id:'hq',name:'后勤链',race:'齿轮帮',cond:'2 张「维修」',eff:'每波开始自动修复全体 5%',by:['maoding']},
+{id:'js',name:'加固阵列',race:'齿轮帮',cond:'2 张「工事」',eff:'工事卡生命 +15%',by:['maoding']},
+{id:'hw',name:'火力网',race:'齿轮帮',cond:'3 张「弹药」',eff:'全场弹药塔攻速 +10%',by:['cheng']},
+{id:'ss',name:'酸蚀',race:'孢子侍从',cond:'3 张「腐蚀」',eff:'全场腐蚀伤害 +15%',by:['ya']},
+{id:'cq',name:'巢群',race:'孢子侍从',cond:'2 张「孵化」',eff:'每波开始自动产出 1 只幼虫',by:['ya']},
+{id:'xz',name:'谐振',race:'光尘侍从',cond:'2 张「共鸣」',eff:'共鸣范围 +1 格',by:['leng']},
+{id:'hd',name:'护盾链',race:'光尘侍从',cond:'3 张「护盾」',eff:'全队护盾上限 +15%',by:['leng']},
+{id:'jn',name:'节能',race:'光尘侍从',cond:'2 张「能量」',eff:'技能卡费用 −10%（向下取整）',by:['leng']}];
+var st={unit:null,race:null};
+var unitsBox=document.getElementById('units'),chainsBox=document.getElementById('chains'),panel=document.getElementById('panel'),fbox=document.getElementById('filters'),svg=document.getElementById('link');
+function renderFilters(){fbox.innerHTML='';['全部'].concat(Object.keys(RACE)).forEach(function(r){var b=document.createElement('button');b.type='button';b.textContent=r;var on=(r==='全部'&&!st.race)||st.race===r;b.setAttribute('aria-pressed',on?'true':'false');b.onclick=function(){st.race=(r==='全部')?null:r;st.unit=null;render()};fbox.appendChild(b)})}
+function renderUnits(){unitsBox.innerHTML='';UNITS.forEach(function(u){
+if(st.race&&u.race!==st.race)return;
+var d=document.createElement('div');d.className='unit'+(st.unit===u.id?' on':'');
+d.innerHTML='<h3 style="color:'+RACE[u.race]+'">'+u.name+'</h3><div class="race">'+u.race+'（'+u.main+' 从族）｜ '+u.vol+'</div><div style="font-size:12.5px">'+u.role+'</div>'+
+u.cards.map(function(c){return '<div class="card'+(st.unit===u.id?' on':'')+'"><b>'+c.name+'</b> <span class="id">'+c.id+' · '+c.cost+' 费 · '+c.tag+'</span><br>'+c.text+'</div>'}).join('');
+d.onclick=function(){st.unit=(st.unit===u.id)?null:u.id;render()};unitsBox.appendChild(d)})}
+function renderChains(){chainsBox.innerHTML='';CHAINS.forEach(function(c){
+var on=st.unit&&c.by.indexOf(st.unit)>=0,tone=st.unit&&!on;
+var d=document.createElement('div');d.className='chain'+(on?' on':'')+(tone?' tone':'');
+d.innerHTML='<h4 style="color:'+RACE[c.race]+'">'+c.name+'</h4><div class="cond">'+c.cond+'　·　'+c.race+'</div><div class="eff">'+c.eff+'</div>';
+chainsBox.appendChild(d)})}
+function renderLink(){
+var NS='http://www.w3.org/2000/svg';svg.innerHTML='';
+function E(t,a,x){var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;return n}
+var ys=44,yu=126,step=1040/(UNITS.length+1);
+UNITS.forEach(function(u,i){var x=step*(i+1);
+svg.appendChild(E('rect',{x:x-56,y:yu-24,width:112,height:56,rx:10,fill:'none',stroke:RACE[u.race],'stroke-width':(st.unit===u.id?3:1.5)}));
+svg.appendChild(E('text',{x:x,y:yu+6,'text-anchor':'middle',fill:'var(--fg)','font-size':13},u.name));
+svg.appendChild(E('text',{x:x,y:yu+24,'text-anchor':'middle',fill:'var(--muted)','font-size':11},u.race));
+var hot=!st.unit||st.unit===u.id;
+svg.appendChild(E('line',{x1:x,y1:ys+16,x2:x,y2:yu-26,stroke:hot?'var(--accent)':'var(--border)','stroke-width':hot?2:1,'stroke-dasharray':'4 4'}));
+svg.appendChild(E('rect',{x:x-62,y:ys-20,width:124,height:38,rx:9,fill:'none',stroke:hot?'var(--accent)':'var(--border)','stroke-width':hot?2:1}));
+svg.appendChild(E('text',{x:x,y:ys+3,'text-anchor':'middle',fill:'var(--fg)','font-size':12},u.main));
+});
+svg.appendChild(E('text',{x:520,y:14,'text-anchor':'middle',fill:'var(--muted)','font-size':11},'主族（战术卡匣归属）'));
+svg.appendChild(E('text',{x:520,y:186,'text-anchor':'middle',fill:'var(--muted)','font-size':11},'从族个体（以支援卡形态随主族出战）'));
+}
+function renderPanel(){if(!st.unit){panel.innerHTML='<h4>怎么读</h4><p>每个从族个体不是"属性包"，而是一条链的一环：铆钉与秤供给铁砧的修复与能量，芽把涌潮的腐蚀转成收益，棱把星辉的共鸣接成网。点个体，右边的链会告诉你它点亮什么。</p>';return}
+var u=null;UNITS.forEach(function(x){if(x.id===st.unit)u=x});
+panel.innerHTML='<h4>'+u.name+'　<span style="color:var(--muted);font-size:12px">'+u.race+' ｜ '+u.main+' 从族 ｜ '+u.vol+'</span></h4><p>'+u.note+'</p><p>点亮链路：'+CHAINS.filter(function(c){return c.by.indexOf(u.id)>=0}).map(function(c){return c.name+'（'+c.cond+'）'}).join('、')+'</p>'}
+function render(){renderFilters();renderUnits();renderChains();renderLink();renderPanel()}
+render();})();
+</script>
+</body>
+</html>

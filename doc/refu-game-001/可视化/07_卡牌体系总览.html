@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 卡牌体系总览</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1040px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.c{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--card)}
+.c h4{margin:0 0 4px;font-size:13px}.c p{margin:0;font-size:12.5px;color:var(--muted)}
+.badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--border);color:var(--muted);margin-left:6px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:10px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left}th{color:var(--muted);font-weight:500;font-size:12px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;font-size:12.5px}
+.step{border:1px solid var(--border);border-radius:8px;padding:6px 10px;background:var(--card)}
+.arrow{color:var(--muted)}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>卡牌体系总览</h1>
+<div class="sub">七类卡、槽位接口、组合四法则、内聚五律、三族机制与九条羁绊。数据来源：02_卡片规则系统、05_卡组与组合、14/15/16 三张卡表。</div>
+<div class="tabs" id="tabs" role="tablist"></div>
+<div id="body"></div>
+</div>
+<script>
+(function(){
+var TABS=['七类卡','槽位','组合四法则','内聚五律','三族机制','羁绊九条'];
+var DATA={
+'七类卡':{kind:'grid',items:[
+{t:'地图卡',d:'决定路径、塔位与地格效果；双入口地图是「双流」挑战卡的前置条件。'},
+{t:'波次卡',d:'定义每波的敌人组合与数量，是波次预算 B 的来源。'},
+{t:'事件卡',d:'随机或定时改变战场条件（孢子潮、废墟补给等），挂在地图预留的事件槽。'},
+{t:'塔卡',d:'主力输出与阻挡，放塔位槽；铁砧塔卡可挂修饰卡换职能。'},
+{t:'单位卡',d:'含召唤与支援：召唤产兵、支援提供修复／充能／光环，从族以支援卡形态随主族出战。'},
+{t:'技能卡',d:'一次性或短时全场效果，受「节能」「封锁」等条件影响。'},
+{t:'规则卡',d:'定义"这局按什么玩法进行"，是融合玩法的唯一接口（远征即一套规则卡组）。'}]},
+'槽位':{kind:'grid',items:[
+{t:'塔位槽',d:'放塔卡；数量与位置由地图卡给定（如峡谷哨站标准 8 位、双岔要塞 12 位）。'},
+{t:'支援槽',d:'放从族支援卡；铁砧 3–4 槽、涌潮 4 槽、星辉 3 槽。'},
+{t:'修饰槽',d:'挂修饰卡，改数值或改行为；模块化基座即在此追加标签。'},
+{t:'事件槽',d:'地图卡预留，放事件卡；远征事件节点由此驱动。'}],
+note:'规则：卡不能做它槽位没声明的事。想扩展就加槽位或加插槽型卡，而不是给旧卡打补丁。另：卡表中出现「路径槽」（齿轮帮·路障小队等临时工事），02 号文档的槽位清单尚未定义它，属待补项。'},
+'组合四法则':{kind:'grid',items:[
+{t:'叠加',d:'同槽位多张修饰卡按声明顺序结算（如加压涂层可叠 3 层）。'},
+{t:'替换',d:'同槽位新卡顶掉旧卡，回收部分费用（火线换装的基础）。'},
+{t:'连锁',d:'事件钩子按声明顺序触发（on_kill → on_wave_end 等）。'},
+{t:'羁绊',d:'同标签卡达到阈值触发套装效果，是全卡组的骨架。'}]},
+'内聚五律':{kind:'grid',items:[
+{t:'单一职责',d:'一张卡只做一件事。'},
+{t:'显式接口',d:'只通过槽位、标签、事件钩子交互。'},
+{t:'无隐式依赖',d:'删掉任意一张卡，其余卡仍能自洽运行（remove-safe）。'},
+{t:'独立可平衡',d:'数值块独立，改一张卡不影响他人。'},
+{t:'可无痛移除',d:'下线的内容不留下"孤儿机制"。'}]},
+'三族机制':{kind:'grid',items:[
+{t:'铁砧联邦 · 模块换装',d:'塔卡可在局内替换修饰卡，改变同一座塔的职能；代表卡：模块炮塔、磁轨钉枪、模块化基座。'},
+{t:'涌潮虫群 · 进化枝',d:'同一张单位卡满足条件后替换为高阶变体；代表：孵化巢 → 母巢（单局累计产出 20 只）。'},
+{t:'星辉议会 · 共鸣',d:'相邻塔位形成共鸣区并共享增益；相邻 1 格、计数 ≥2 全组攻速 +5%、≥4 +10% 攻速与 +5% 射程。'}]},
+'羁绊九条':{kind:'table',head:['羁绊','触发','效果','族属'],rows:[
+['火力网','3 张「弹药」','全场弹药塔攻速 +10%','铁砧'],
+['加固阵列','2 张「工事」','工事卡生命 +15%','铁砧'],
+['后勤链','2 张「维修」','每波开始自动修复全体 5%','铁砧／齿轮帮'],
+['酸蚀','3 张「腐蚀」','全场腐蚀伤害 +15%','涌潮／孢子侍从'],
+['巢群','2 张「孵化」','每波开始自动产出 1 只幼虫','涌潮'],
+['缠缚','2 张「拦截」','被减速敌人受到伤害 +8%','涌潮'],
+['谐振','2 张「共鸣」','共鸣范围 +1 格','星辉／光尘侍从'],
+['护盾链','3 张「护盾」','全队护盾上限 +15%','星辉'],
+['节能','2 张「能量」','技能卡费用 −10%（向下取整）','星辉']]}
+};
+var tabs=document.getElementById('tabs'),body=document.getElementById('body'),cur=TABS[0];
+function E(tag,cls,html){var n=document.createElement(tag);if(cls)n.className=cls;if(html!=null)n.innerHTML=html;return n}
+function render(){tabs.innerHTML='';TABS.forEach(function(t){var b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-pressed',t===cur?'true':'false');b.onclick=function(){cur=t;render()};tabs.appendChild(b)});
+var D=DATA[cur];body.innerHTML='';
+if(D.kind==='grid'){var g=E('div','grid');D.items.forEach(function(it){g.appendChild(E('div','c','<h4>'+it.t+'</h4><p>'+it.d+'</p>'))});body.appendChild(g);if(D.note)body.appendChild(E('p','note',D.note))}
+else{var t='<table><thead><tr>'+D.head.map(function(h){return '<th>'+h+'</th>'}).join('')+'</tr></thead><tbody>'+D.rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';body.appendChild(E('div',null,t))}
+if(cur==='七类卡'){var f=E('div','flow','<span class="step">地图卡＋波次卡</span><span class="arrow">→</span><span class="step">卡组（局前）</span><span class="arrow">→</span><span class="step">局内调度三选一</span><span class="arrow">→</span><span class="step">槽位落卡</span><span class="arrow">→</span><span class="step">羁绊成型</span><span class="arrow">→</span><span class="step">规则卡定义玩法</span>');body.appendChild(f)}
+}
+render();})();
+</script>
+</body>
+</html>

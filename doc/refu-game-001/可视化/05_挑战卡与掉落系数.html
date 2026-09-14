@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 挑战卡与掉落系数</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1000px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left}th{color:var(--muted);font-weight:500;font-size:12px}
+.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+@media (max-width:700px){.readout{grid-template-columns:1fr}}
+.stat{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--card)}
+.stat .l{color:var(--muted);font-size:12px}.stat .v{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.picks{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+input[type=range]{width:100%}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:12px;background:var(--card)}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+.hint{color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>挑战卡与掉落系数</h1>
+<div class="sub">挑战卡是局前自选的难度修饰；奖励走难度分口径：掉落系数＝1+0.05×难度分合计（上限 ×2.0），评级加成＝5%×难度分合计，单局合计上限 15。数据来源：数值/05 能量与关卡预算曲线、13_卡表_挑战卡样例。</div>
+<table id="tbl"></table>
+<div class="picks" id="picks"></div>
+<label class="hint" for="slider">难度分合计（拖动）</label>
+<input type="range" id="slider" min="0" max="15" step="1" value="7">
+<div class="readout">
+<div class="stat"><div class="l">难度分合计</div><div class="v" id="v1">7</div></div>
+<div class="stat"><div class="l">掉落系数</div><div class="v" id="v2">1.35</div></div>
+<div class="stat"><div class="l">评级加成</div><div class="v" id="v3">35%</div></div>
+</div>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var CARDS=[
+{k:'加压',lv:1,pt:3,drop:'+15%',eff:'敌人生命 +30%'},
+{k:'断供',lv:2,pt:4,drop:'+20%',eff:'能量自然增长 −20%'},
+{k:'封锁',lv:2,pt:3,drop:'+15%',eff:'禁用技能卡'},
+{k:'双流',lv:3,pt:5,drop:'+25%',eff:'出生点 +1，需双入口地图，只在同时开波时生效（整局折算约 ×1.24）'},
+{k:'疾行',lv:1,pt:2,drop:'+10%',eff:'敌人移速提升'}];
+var tbl=document.getElementById('tbl'),slider=document.getElementById('slider'),picks=document.getElementById('picks'),panel=document.getElementById('panel');
+tbl.innerHTML='<thead><tr><th>挑战卡</th><th>旧等级</th><th>难度分</th><th>掉落系数</th><th>效果</th></tr></thead><tbody>'+
+CARDS.map(function(c){return '<tr><td>'+c.k+'</td><td>'+c.lv+'</td><td>'+c.pt+'</td><td>'+c.drop+'</td><td>'+c.eff+'</td></tr>'}).join('')+'</tbody>';
+picks.innerHTML='';
+[{n:'加压',v:3},{n:'断供',v:4},{n:'封锁',v:3},{n:'双流',v:5},{n:'疾行',v:2},{n:'三张高难（上限）',v:15}].forEach(function(p){
+var b=document.createElement('button');b.type='button';b.textContent=p.n+'（'+p.v+'）';b.onclick=function(){slider.value=p.v;update()};picks.appendChild(b)});
+function update(){var x=+slider.value,coef=Math.min(2.0,1+0.05*x),rate=5*x;
+document.getElementById('v1').textContent=x;document.getElementById('v2').textContent=coef.toFixed(2);document.getElementById('v3').textContent=rate+'%';
+var capped=x*0.05+1>2.0;
+panel.innerHTML='<h4>难度分合计 '+x+'</h4><p>掉落系数＝1 + 0.05 × '+x+' ＝ '+coef.toFixed(2)+(capped?'（触上限 ×2.0）':'')+'　｜　评级加成＝5% × '+x+' ＝ '+rate+'%</p>'+
+'<p>挑战关设计带：难度比 D 落在 <b>1.25–1.45</b>，目标胜率 <b>25–50%</b>。合计 15 分上限约等于三张高难度挑战卡——封顶的意义是"再难也不多给奖励"。</p>'+
+'<p class="hint">远征 v0.1 不带挑战卡：远征难度由节点预算抬升（B 171→290 / D 1.00→1.70），挑战卡只服务主线与挑战关。</p>'}
+slider.oninput=update;update();})();
+</script>
+</body>
+</html>

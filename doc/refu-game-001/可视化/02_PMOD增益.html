@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 永久修饰（PMOD）增益</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1000px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+svg{width:100%;height:auto;display:block}.ax{fill:var(--muted);font-size:11px;text-anchor:middle}.grid{stroke:var(--border)}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:12px;background:var(--card);min-height:72px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:6px 0}
+.k{display:inline-flex;align-items:center;gap:5px}.sw{width:20px;height:10px;border-radius:3px;display:inline-block}
+.rule{cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>永久修饰（PMOD）增益实测</h1>
+<div class="sub">基准关 B=205、P=1.08、基准胜率 58.5%。浅色柱＝平均增益（允许 6.0–12.0pp），深色柱＝契合流派增益（上限 20.0pp）。数据来源：23_规则卡组_Roguelike远征、数值/体检报告。</div>
+<div class="legend"><span class="k"><span class="sw" style="background:var(--s1);opacity:.45"></span>平均增益</span><span class="k"><span class="sw" style="background:var(--s1)"></span>契合流派增益</span><span class="k">上下两条虚线＝平均增益允许区间 6–12pp</span></div>
+<svg id="chart" viewBox="0 0 980 430" role="img" aria-label="PMOD 增益条形图"></svg>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var DATA=[
+{id:'PMOD-01',name:'加压涂层',avg:10.1,fit:15.6,fitName:'纯弹药',eff:'全体塔伤害 +10%，可叠 3 层'},
+{id:'PMOD-02',name:'扩建基座',avg:8.5,fit:13.0,fitName:'多塔',eff:'本局塔位 +1'},
+{id:'PMOD-03',name:'备用电源',avg:7.0,fit:11.6,fitName:'能量重',eff:'起始能量 +5'},
+{id:'PMOD-04',name:'首放免费',avg:8.5,fit:14.3,fitName:'低费',eff:'每波第一张卡费用 −50%'},
+{id:'PMOD-05',name:'羁绊加速',avg:10.1,fit:16.9,fitName:'纯标签',eff:'羁绊触发阈值 −1（最低 2）'}];
+var W=980,H=430,L=64,R=30,T=30,Bm=64,MAX=20;
+var svg=document.getElementById('chart'),panel=document.getElementById('panel');
+function E(t,a,x){var NS='http://www.w3.org/2000/svg';var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;return n}
+function y(v){return T+(MAX-v)/MAX*(H-T-Bm)}
+svg.innerHTML='';
+for(var g=0;g<=MAX;g+=5){svg.appendChild(E('line',{x1:L,y1:y(g),x2:W-R,y2:y(g),class:'grid'}));svg.appendChild(E('text',{x:L-10,y:y(g)+4,class:'ax','text-anchor':'end'},g+'pp'))}
+[6,12].forEach(function(v){svg.appendChild(E('line',{x1:L,y1:y(v),x2:W-R,y2:y(v),stroke:'var(--s3)','stroke-width':1.2,'stroke-dasharray':'5 4'}))});
+svg.appendChild(E('text',{x:W-R,y:y(12)-6,'text-anchor':'end',class:'ax','fill':'var(--s3)'},'平均增益允许上限 12pp'));
+svg.appendChild(E('text',{x:W-R,y:y(6)+14,'text-anchor':'end',class:'ax','fill':'var(--s3)'},'平均增益允许下限 6pp'));
+var slot=(W-L-R)/DATA.length;
+DATA.forEach(function(d,i){
+ var cx=L+slot*i+slot/2, bw=Math.min(34,slot*0.22);
+ var g=E('g',{class:'rule'});
+ var y1=y(d.avg);
+ g.appendChild(E('rect',{x:cx-bw-4,y:y1,width:bw,height:Math.max(1,y(0)-y1),rx:3,fill:'var(--s1)',opacity:.45}));
+ var y2=y(d.fit);
+ g.appendChild(E('rect',{x:cx+4,y:y2,width:bw,height:Math.max(1,y(0)-y2),rx:3,fill:'var(--s1)'}));
+ g.appendChild(E('text',{x:cx-bw/2-4,y:y1-6,class:'ax','font-size':11},d.avg.toFixed(1)));
+ g.appendChild(E('text',{x:cx+bw/2+4,y:y2-6,class:'ax','font-size':11},d.fit.toFixed(1)));
+ g.appendChild(E('text',{x:cx,y:H-Bm+18,class:'ax','font-size':12},d.name));
+ g.appendChild(E('text',{x:cx,y:H-Bm+34,class:'ax'},d.id));
+ g.appendChild(E('text',{x:cx,y:H-Bm+48,class:'ax'},'契合：'+d.fitName));
+ g.onclick=function(){panel.innerHTML='<h4>'+d.name+'　<span style="color:var(--muted);font-size:12px">'+d.id+'</span></h4><p>平均增益 '+d.avg.toFixed(1)+'pp（允许 6.0–12.0pp，'+(d.avg>=6&&d.avg<=12?'PASS':'越界')+'）　｜　'+d.fitName+'卡组增益 '+d.fit.toFixed(1)+'pp（上限 20.0pp，'+(d.fit<=20?'PASS':'越界')+'）</p><p>效果：'+d.eff+'</p><p>读法：平均增益决定"拿了不亏"，契合增益决定"拿了值得为它改卡组"。两者差距越大，这张修饰越像一道选择题而不是一道加法题。</p>'};
+ svg.appendChild(g);
+});
+panel.innerHTML='<h4>怎么读</h4><p>五张永久修饰的平均增益都在 7.0–10.1pp 之间（允许带 6–12pp），没有任何一张是"必选"。真正的差别在深色柱：契合流派能拿到 11.6–16.9pp，最高的两张是<b>加压涂层</b>（纯弹药 15.6pp）与<b>羁绊加速</b>（纯标签 16.9pp）——它们奖励的是想清楚的人，不是运气好的人。点柱子看单张数据。</p>';
+})();
+</script>
+</body>
+</html>

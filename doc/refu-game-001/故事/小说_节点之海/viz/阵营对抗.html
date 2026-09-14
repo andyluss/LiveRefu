@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《节点之海》三族与节点的阵营对抗</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626;--s6:#0891b2}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171;--s6:#22d3ee}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1120px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+svg{width:100%;height:auto;display:block}.f{cursor:pointer}.f rect{transition:.2s}.f text{pointer-events:none}
+.tone{opacity:.28}.lab{fill:var(--fg);font-size:12.5px}.lab-m{fill:var(--muted);font-size:11px}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:14px;background:var(--card);min-height:76px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+.panel table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:6px}
+.panel th,.panel td{border:1px solid var(--border);padding:4px 7px;text-align:left}.panel th{color:var(--muted);font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>三族与节点的阵营对抗</h1>
+<div class="sub">三族克制靠机制而非数值；节点是争夺对象，也是所有麻烦的接口。点任一阵营看它的机制、对空覆盖与在长篇里的角色。</div>
+<div class="controls" id="ctrls" role="group" aria-label="选择阵营"></div>
+<svg id="map" viewBox="0 0 1040 520" role="img" aria-label="三族与节点对抗图"></svg>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var F={
+ anv:{name:'铁砧联邦',color:'var(--s1)',cx:170,cy:200,mech:'模块换装：塔卡可在局内替换修饰卡，改变同一座塔的职能',
+  aa:'模块炮塔、交叉火力网（2 张塔卡可对空）',aaRate:'67.8%',cards:'模块炮塔 · 交叉火力网 · 磁轨钉枪 · 路障工事 · 齿轮帮·维修工/搬运工/路障小队',
+  story:'谢临的出身族。卷一的全部战斗、长直道与工事链都在这里学会；第 30 章用双标签塔扛住五十血。'},
+ tid:{name:'涌潮虫群',color:'var(--s2)',cx:870,cy:200,mech:'进化枝：同一张单位卡满足条件后替换为高阶变体',
+  aa:'孵化巢、酸液喷射者（1 张塔卡 + 1 张溅射）',aaRate:'62.6%',cards:'孵化巢 · 腐蚀喷口 · 酸液喷射者 · 群落粘网 · 菌毯扩张 · 腐蚀附着 · 群体育种',
+  story:'卷二的主场。谢临在这里学会"叠层节奏"，也第一次知道数量本身会疲惫；母巢由她亲手点上。'},
+ ast:{name:'星辉议会',color:'var(--s3)',cx:520,cy:92,mech:'共鸣：相邻塔位形成共鸣区并共享部分增益',
+  aa:'棱镜哨塔、相位炮台（2 张塔卡可对空）',aaRate:'72.3%',cards:'棱镜哨塔 · 共鸣方尖碑 · 相位炮台 · 棱光屏障 · 光尘导引 · 护盾充能 · 视野棱镜',
+  story:'卷三的主场。相邻既是力量也是脆弱：破盾反弹会沿共鸣链反噬；她在这里拒签，成为自由调度官。'},
+ node:{name:'节点',color:'var(--s6)',cx:520,cy:330,mech:'旧时代网络的接口：补给站只是它让你读的那一面',
+  aa:'—',aaRate:'—',cards:'共鸣石 ×3 · 虚空 ×1 · 事件槽 · 双入口（MAP-MULTI-01）',
+  story:'坐标外泄与增殖体的来源都指向它；三族最终以"共管、互不追责"收场，读取权三方共享。'}};
+var EDGES=[
+{a:'anv',b:'tid',type:'克制',label:'铁砧压涌潮',note:'工事与长直道把虫群的数量摊薄'},
+{a:'tid',b:'ast',type:'克制',label:'涌潮淹星辉',note:'腐蚀叠层无视"少而强"的护盾厚度'},
+{a:'ast',b:'anv',type:'克制',label:'星辉穿铁砧',note:'能量伤害无视 50% 护甲'},
+{a:'anv',b:'node',type:'争夺',label:'争夺 / 防守',note:'铁砧以工事与后勤守节点'},
+{a:'tid',b:'node',type:'争夺',label:'增殖 / 喂养',note:'增殖体沿旧枕木被"喂"到坐标上'},
+{a:'ast',b:'node',type:'争夺',label:'读取 / 独占',note:'抄录席读一段、抄一段、封存一段'}];
+var st={sel:null},svg=document.getElementById('map'),panel=document.getElementById('panel'),ctrls=document.getElementById('ctrls');
+function renderCtrls(){ctrls.innerHTML='';['全部','铁砧联邦','涌潮虫群','星辉议会','节点'].forEach(function(n){
+var b=document.createElement('button');b.type='button';b.textContent=n;var on=(n==='全部'&&!st.sel);b.setAttribute('aria-pressed',on?'true':'false');
+b.onclick=function(){st.sel=(n==='全部')?null:({ '铁砧联邦':'anv','涌潮虫群':'tid','星辉议会':'ast','节点':'node'}[n]);render()};ctrls.appendChild(b)})}
+function E(t,a,x){var NS='http://www.w3.org/2000/svg';var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;return n}
+function render(){renderCtrls();svg.innerHTML='';
+var ids=Object.keys(F);
+function hot(id){return !st.sel||st.sel===id}
+ids.forEach(function(id){var f=F[id],g=E('g',{class:'f'+(hot(id)?'':' tone')});
+g.appendChild(E('rect',{x:f.cx-118,y:f.cy-52,width:236,height:104,rx:14,fill:'none',stroke:f.color,'stroke-width':st.sel===id?3:1.5}));
+g.appendChild(E('text',{x:f.cx,y:f.cy-26,'text-anchor':'middle',class:'lab','font-size':14},f.name));
+var words=f.mech.split('：');g.appendChild(E('text',{x:f.cx,y:f.cy-4,'text-anchor':'middle',class:'lab-m'},words[0]));
+var mid=f.mech.slice(0,Math.min(f.mech.length,26));g.appendChild(E('text',{x:f.cx,y:f.cy+16,'text-anchor':'middle',class:'lab-m'},mid+(f.mech.length>26?'…':'')));
+g.appendChild(E('text',{x:f.cx,y:f.cy+36,'text-anchor':'middle',class:'lab-m'},'对空 B=180 档：'+f.aaRate));
+g.addEventListener('click',function(){st.sel=(st.sel===id)?null:id;render()});svg.appendChild(g)});
+function pt(id,other){var f=F[id],g=F[other];var dx=g.cx-f.cx,dy=g.cy-f.cy,len=Math.sqrt(dx*dx+dy*dy);var ux=dx/len,uy=dy/len;
+var x1=f.cx+ux*(id==='anv'||id==='tid'||id==='ast'?120:70),y1=f.cy+uy*56;
+var x2=g.cx-ux*(other==='anv'||other==='tid'||other==='ast'?120:70),y2=g.cy-uy*56;return {x1:x1,y1:y1,x2:x2,y2:y2}}
+EDGES.forEach(function(e){var p=pt(e.a,e.b),on=hot(e.a)&&hot(e.b)&&(!st.sel||st.sel===e.a||st.sel===e.b);
+var dash=(e.type==='克制')?'':'6 4';
+svg.appendChild(E('line',{x1:p.x1,y1:p.y1,x2:p.x2,y2:p.y2,stroke:on?'var(--accent)':'var(--border)','stroke-width':on?2.2:1.2,'stroke-dasharray':dash,'marker-end':'url(#ar)'}));
+if(on){var mx=(p.x1+p.x2)/2,my=(p.y1+p.y2)/2;svg.appendChild(E('text',{x:mx,y:my-5,'text-anchor':'middle',class:'lab','font-size':11.5},e.label))}});
+svg.appendChild(E('defs',{})).appendChild(E('marker',{id:'ar',viewBox:'0 0 10 10',refX:'8',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'})).appendChild(E('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'var(--muted)'}));
+renderPanel()}
+function renderPanel(){if(!st.sel){panel.innerHTML='<h4>怎么读</h4><p>三族的克制环是机制关系：铁砧压涌潮、涌潮淹星辉、星辉穿铁砧。虚线是三族与节点之间的争夺方式——守、喂、抄。点阵营看细节，注意"对空 B=180 档"那一行：合格不等于公平。</p>';return}
+var f=F[st.sel];
+var rel=EDGES.filter(function(e){return e.a===st.sel||e.b===st.sel}).map(function(e){var o=e.a===st.sel?F[e.b]:F[e.a];return '<tr><td>'+o.name+'</td><td>'+e.type+'</td><td>'+e.label+'</td><td>'+e.note+'</td></tr>'}).join('');
+panel.innerHTML='<h4 style="color:'+f.color+'">'+f.name+'</h4><p><strong>机制</strong>：'+f.mech+'</p><p><strong>对空</strong>：'+f.aa+'　（B=180 档胜率 '+f.aaRate+'）</p><p><strong>代表卡</strong>：'+f.cards+'</p><p><strong>在长篇里</strong>：'+f.story+'</p>'+
+'<table><thead><tr><th>对手/对象</th><th>类型</th><th>关系</th><th>说明</th></tr></thead><tbody>'+rel+'</tbody></table>'}
+render();})();
+</script>
+</body>
+</html>

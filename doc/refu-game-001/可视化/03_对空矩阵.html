@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refu Game 001 · 对空 9 宫格矩阵</title>
+<style>
+:root{--bg:#fff;--fg:#111827;--muted:#6b7280;--border:#e5e7eb;--card:#fff;--accent:#2563eb;--s1:#2563eb;--s2:#0d9488;--s3:#d97706;--s4:#7c3aed;--s5:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--fg:#e6edf7;--muted:#94a3b8;--border:#1f2a3a;--card:#0f172a;--accent:#60a5fa;--s1:#60a5fa;--s2:#2dd4bf;--s3:#fbbf24;--s4:#a78bfa;--s5:#f87171}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto}h1{font-size:19px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--border);padding:6px 8px;text-align:center}
+th{color:var(--muted);font-weight:500;font-size:12px}
+td.cell{cursor:pointer;font-variant-numeric:tabular-nums;transition:.15s}
+td.cell:hover{outline:2px solid var(--accent);outline-offset:-2px}
+.panel{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:14px;background:var(--card);min-height:76px}
+.panel h4{margin:0 0 4px;font-size:13.5px}.panel p{margin:2px 0;font-size:12.5px;color:var(--muted)}
+.scale{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:10px 0}
+.barscale{flex:1;height:10px;border-radius:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--s5) 70%,transparent),color-mix(in srgb,var(--s3) 70%,transparent),color-mix(in srgb,var(--s2) 70%,transparent))}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>对空 9 宫格矩阵</h1>
+<div class="sub">三档空袭预算 × 三族，格子里是模拟胜率；「极差」是行内最强与最弱之差，判据 ≤15pp。数据来源：数值/04 敌人数值与波次威胁值、数值/体检报告。</div>
+<table id="m"></table>
+<div class="scale"><span>低胜率</span><span class="barscale"></span><span>高胜率</span></div>
+<div class="panel" id="panel"></div>
+</div>
+<script>
+(function(){
+var ROWS=[{B:120,f:{'铁砧联邦':97.8,'涌潮虫群':97.2,'星辉议会':98.2}},{B:180,f:{'铁砧联邦':67.8,'涌潮虫群':62.6,'星辉议会':72.3}},{B:240,f:{'铁砧联邦':14.9,'涌潮虫群':11.0,'星辉议会':19.4}}];
+var F=['铁砧联邦','涌潮虫群','星辉议会'];
+var m=document.getElementById('m'),panel=document.getElementById('panel');
+function spread(r){var v=F.map(function(f){return r.f[f]});return Math.max.apply(null,v)-Math.min.apply(null,v)}
+function color(p){if(p>=80)return 'color-mix(in srgb,var(--s2) 42%,transparent)';if(p>=50)return 'color-mix(in srgb,var(--s2) 24%,transparent)';if(p>=25)return 'color-mix(in srgb,var(--s3) 26%,transparent)';if(p>=10)return 'color-mix(in srgb,var(--s5) 20%,transparent)';return 'color-mix(in srgb,var(--s5) 36%,transparent)'}
+var h='<thead><tr><th>空袭预算 B</th>'+F.map(function(f){return '<th>'+f+'</th>'}).join('')+'<th>极差</th><th>判定</th></tr></thead><tbody>';
+ROWS.forEach(function(r,ri){var sp=spread(r);
+h+='<tr><th>B='+r.B+'</th>'+F.map(function(f,i){return '<td class="cell" data-r="'+ri+'" data-f="'+i+'" style="background:'+color(r.f[f])+'">'+r.f[f].toFixed(1)+'%</td>'}).join('')+'<td style="font-variant-numeric:tabular-nums">'+sp.toFixed(1)+'pp</td><td>'+(sp<=15?'PASS':'越界')+'</td></tr>'});
+h+='</tbody>';m.innerHTML=h;
+m.querySelectorAll('.cell').forEach(function(td){td.onclick=function(){var r=ROWS[+td.dataset.r],f=F[+td.dataset.f];var sp=spread(r);
+panel.innerHTML='<h4>B='+r.B+' × '+f+'</h4><p>模拟胜率 '+r.f[f].toFixed(1)+'%，行内极差 '+sp.toFixed(1)+'pp（判据 ≤15pp，'+(sp<=15?'PASS':'越界')+'）。</p><p>'+(r.B===120?'轻空袭：三族都过 97%，这一档只用来教"要对空"，不用来筛人。':r.B===180?'中空袭：铁砧 67.8%、涌潮 62.6%、星辉 72.3%，极差 9.7pp——这是三族差距第一次被看见的地方。':'重空袭：全族跌破 20%，极差仍有 8.4pp；对空最弱的涌潮在这一档最难，混编因此成为默认形态。')+'</p>'}});
+panel.innerHTML='<h4>怎么读</h4><p>判据不是"三族都赢"，而是"三族之间的差不超过 15pp"。B=180 与 B=240 两档的极差分别是 9.7pp 与 8.4pp，都合格——但合格不等于公平：B=240 档三个数字都很难看，差距被压在低胜率里。点格子看单格解读。</p>';
+})();
+</script>
+</body>
+</html>
