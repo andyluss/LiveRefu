@@ -79,6 +79,27 @@ const FACTION_AA: { faction: string; factor: number }[] = [
 ];
 const AIR_FAIRNESS_PP = 0.15; // 同一空袭档位内，三族胜率极差上限
 
+// 空地混编三形态（airShare = 空中单位占比）与验收阈值
+const AIR_MIX = [
+  { name: "纯空军", share: 1.0, spreadMax: 0.15 },
+  { name: "混编", share: 0.6, spreadMax: 0.12 },
+  { name: "纯地面", share: 0.0, spreadMax: 0.05 },
+];
+const AIR_MIX_B = 180;
+
+// 远征永久修饰卡（PMOD，23 号文档）：正收益双口径（平均卡组 / 契合流派）
+interface Pmod { id: string; name: string; playerMul: number; playerMulPure: number; pureDeck: string; band: [number, number]; }
+const PMODS: Pmod[] = [
+  { id: "PMOD-01", name: "加压涂层", playerMul: 1.06, playerMulPure: 1.1, pureDeck: "纯弹药卡组", band: [0.06, 0.12] },
+  { id: "PMOD-02", name: "扩建基座", playerMul: 1.05, playerMulPure: 1.08, pureDeck: "多塔卡组", band: [0.06, 0.12] },
+  { id: "PMOD-03", name: "备用电源", playerMul: 1.04, playerMulPure: 1.07, pureDeck: "能量重卡组", band: [0.06, 0.12] },
+  { id: "PMOD-04", name: "首放免费", playerMul: 1.05, playerMulPure: 1.09, pureDeck: "低费卡组", band: [0.06, 0.12] },
+  { id: "PMOD-05", name: "羁绊加速", playerMul: 1.06, playerMulPure: 1.11, pureDeck: "纯标签卡组", band: [0.06, 0.12] },
+];
+const PMOD_BASE_B = 205;
+const PMOD_BASE_P = 1.08;
+const PMOD_PURE_CEILING = 0.2;
+
 // 对空覆盖：每族卡池中"可攻击空中单位"的卡（用于 verifyAntiAir）
 interface AirCard { id: string; name: string; faction: string; kind: "塔" | "单位" | "技能"; air: boolean; }
 const AIR_CARDS: AirCard[] = [
@@ -245,7 +266,7 @@ function renderMarkdown(names: string[]): string {
   return lines.join("\n");
 }
 
-function selftest(): number {
+function selftestFailures(): string[] {
   const failures: string[] = [];
   const a = simulate(1.35, 6, 2000, 42);
   const b = simulate(1.35, 6, 2000, 42);
@@ -259,6 +280,10 @@ function selftest(): number {
   const big = simulate(LAMBDA0 * Math.pow(1.1, GAMMA), 8, 20000, 7);
   const ana = poissonBelow(LAMBDA0 * Math.pow(1.1, GAMMA), CAP);
   if (Math.abs(big - ana) > 0.015) failures.push(`模拟/解析偏差过大：${pct(big)} vs ${pct(ana)}`);
+  return failures;
+}
+function selftest(): number {
+  const failures = selftestFailures();
   console.log("selftest: " + (failures.length ? "FAIL" : "PASS"));
   for (const f of failures) console.log("  - " + f);
   return failures.length ? 1 : 0;
@@ -349,7 +374,7 @@ function verifyAirMatrix(): number {
   console.log("air-wave matrix: " + (bad ? "FAIL" : "PASS"));
   return bad ? 1 : 0;
 }
-function verifySeed(): number {
+function seedChecks(): { bad: string[]; sample: string[] } {
   const bad: string[] = [];
   const s1 = drawRun(20260914);
   const s2 = drawRun(20260914);
@@ -375,11 +400,57 @@ function verifySeed(): number {
     const ok = (expect < 0 && got < 0) || (expect > 0 && got > 0) || (expect === 0 && got === 0);
     if (!ok) bad.push(`排行榜用例失败：${name}`);
   }
+  return { bad, sample: s1 };
+}
+function verifySeed(): number {
+  const { bad, sample } = seedChecks();
   console.log("seed/ranking check（同种子复现、分布、节点1限制、排行比较器）:");
-  console.log(`  样例局（seed=20260914）: ${s1.join(" → ")}`);
+  console.log(`  样例局（seed=20260914）: ${sample.join(" → ")}`);
   console.log("seed/ranking check: " + (bad.length ? "FAIL" : "PASS"));
   for (const b of bad) console.log("  - " + b);
   return bad.length ? 1 : 0;
+}
+function airMixRows(): { formation: string; rows: { faction: string; win: number }[]; spread: number }[] {
+  return AIR_MIX.map((mix) => {
+    const rows = FACTION_AA.map((f) => {
+      const factorEff = 1 + (f.factor - 1) * mix.share;
+      const D = (AIR_MIX_B / B_REF) / factorEff;
+      return { faction: f.faction, win: poissonBelow(LAMBDA0 * Math.pow(D, GAMMA), CAP) };
+    });
+    const wins = rows.map((r) => r.win);
+    return { formation: mix.name, rows, spread: Math.max(...wins) - Math.min(...wins) };
+  });
+}
+function verifyAirMix(): number {
+  const rows = airMixRows();
+  let bad = 0;
+  console.log(`air/ground mix check（B=${AIR_MIX_B}，三形态 × 三族）:`);
+  console.log("| 形态 | 铁砧 | 涌潮 | 星辉 | 极差 | 上限 | 判定 |");
+  console.log("| --- | --- | --- | --- | --- | --- | --- |");
+  AIR_MIX.forEach((mix, i) => {
+    const r = rows[i];
+    const ok = r.spread <= mix.spreadMax;
+    if (!ok) bad++;
+    console.log(`| ${r.formation} | ${r.rows.map((x) => pct(x.win)).join(" | ")} | ${(r.spread * 100).toFixed(1)}pp | ${pct(mix.spreadMax)} | ${ok ? "PASS" : "FAIL"} |`);
+  });
+  console.log("air/ground mix check: " + (bad ? "FAIL" : "PASS"));
+  return bad ? 1 : 0;
+}
+function verifyPmod(): number {
+  const baseWin = poissonBelow(LAMBDA0 * Math.pow((PMOD_BASE_B / B_REF) / PMOD_BASE_P, GAMMA), CAP);
+  const gainOf = (mul: number) => poissonBelow(LAMBDA0 * Math.pow((PMOD_BASE_B / B_REF) / (PMOD_BASE_P * mul), GAMMA), CAP) - baseWin;
+  let bad = 0;
+  console.log(`pmod check（基准关 B=${PMOD_BASE_B} P=${PMOD_BASE_P} 基准胜率 ${pct(baseWin)}）:`);
+  for (const p of PMODS) {
+    const avg = gainOf(p.playerMul);
+    const pure = gainOf(p.playerMulPure);
+    const okAvg = avg >= p.band[0] && avg <= p.band[1];
+    const okPure = pure >= avg && pure <= PMOD_PURE_CEILING;
+    if (!okAvg || !okPure) bad++;
+    console.log(`  ${p.id} ${p.name}: 平均增益 ${(avg * 100).toFixed(1)}pp（允许 ${pct(p.band[0])}–${pct(p.band[1])}）${okAvg ? "PASS" : "FAIL"}；${p.pureDeck} 增益 ${(pure * 100).toFixed(1)}pp（≥平均且 ≤${pct(PMOD_PURE_CEILING)}）${okPure ? "PASS" : "FAIL"}`);
+  }
+  console.log("pmod check: " + (bad ? "FAIL" : "PASS"));
+  return bad ? 1 : 0;
 }
 function verifyAntiAir(): number {
   const factions = ["铁砧", "涌潮", "星辉"];
@@ -397,7 +468,90 @@ function verifyAntiAir(): number {
   return bad ? 1 : 0;
 }
 
+function buildReport(): string {
+  const date = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Shanghai" }).format(new Date());
+  const L: string[] = [];
+  L.push("# Refu Game 001 · 数值体检报告（自动生成）", "");
+  L.push(`> 生成日期（东八区）：${date} ｜ 参数：n=${RUNS} seed=${SEED} λ0=${LAMBDA0} γ=${GAMMA} cap=${CAP} B_ref=${B_REF}`);
+  L.push("> 本报告由 `tools/sim_refu_game_001.ts --report` 生成；改动数值后重跑并刷新本文件。", "");
+  L.push("## 一、模型自检", "");
+  const st = selftestFailures();
+  L.push(st.length ? `- ❌ FAIL：${st.join("；")}` : "- ✅ PASS（种子可复现、单调性、模拟/解析一致）", "");
+  L.push("## 二、主线章节带位", "");
+  L.push("| 章节 | α | 平均 D | 模拟胜率 | 目标带 | 判定 |");
+  L.push("| --- | --- | --- | --- | --- | --- |");
+  const stages = stageList([]);
+  CHAPTERS.forEach((ch, ci) => {
+    const list = stages.filter((s) => s.chIndex === ci);
+    const avgD = list.reduce((a, s) => a + s.D, 0) / list.length;
+    const avgS = list.reduce((a, s) => a + simulate(LAMBDA0 * Math.pow(s.D, GAMMA), s.waves, 2000, seedFor(ci, s.index)), 0) / list.length;
+    L.push(`| ${ch.name} | ${fmt(ch.alpha)} | ${fmt(avgD)} | ${pct(avgS)} | ${pct(ch.band[0])}–${pct(ch.band[1])} | ${verdict(avgS, ch.band)} |`);
+  });
+  L.push("", "## 三、远征 8 节点带位", "");
+  L.push("| 节点 | B | D | 模拟胜率 | 目标带 | 判定 |");
+  L.push("| --- | --- | --- | --- | --- | --- |");
+  for (const r of rogueRows()) L.push(`| ${r.i}${r.i === 8 ? "（BOSS）" : ""} | ${r.B} | ${fmt(r.D)} | ${pct(r.sim)} | ${pct(r.band[0])}–${pct(r.band[1])} | ${verdict(r.sim, r.band)} |`);
+  L.push("", "## 四、族专属挑战卡（双口径）", "");
+  const baseF = poissonBelow(LAMBDA0 * Math.pow((FACTION_BASE_B / B_REF) / FACTION_BASE_P, GAMMA), CAP);
+  const fWin = (mul: number) => poissonBelow(LAMBDA0 * Math.pow((FACTION_BASE_B / B_REF) / (FACTION_BASE_P * mul), GAMMA), CAP);
+  L.push("| 卡 | 分 | 平均跌幅 | 纯流派跌幅 | 判定 |");
+  L.push("| --- | --- | --- | --- | --- |");
+  for (const c of FACTION_CHALLENGES) {
+    const avg = (baseF - fWin(c.playerMul)) * 100;
+    const pure = (baseF - fWin(c.playerMulPure)) * 100;
+    const ok = avg >= c.band[0] * 100 && avg <= c.band[1] * 100 && pure <= FACTION_PURE_CEILING * 100;
+    L.push(`| ${c.name} | ${c.score} | ${avg.toFixed(1)}pp | ${pure.toFixed(1)}pp | ${ok ? "✅" : "❌"} |`);
+  }
+  L.push("", "## 五、永久修饰卡 PMOD（双口径）", "");
+  const baseP = poissonBelow(LAMBDA0 * Math.pow((PMOD_BASE_B / B_REF) / PMOD_BASE_P, GAMMA), CAP);
+  const pGain = (mul: number) => (poissonBelow(LAMBDA0 * Math.pow((PMOD_BASE_B / B_REF) / (PMOD_BASE_P * mul), GAMMA), CAP) - baseP) * 100;
+  L.push("| 卡 | 平均增益 | 契合流派增益 | 判定 |");
+  L.push("| --- | --- | --- | --- |");
+  for (const p of PMODS) {
+    const a = pGain(p.playerMul);
+    const u = pGain(p.playerMulPure);
+    const ok = a >= p.band[0] * 100 && a <= p.band[1] * 100 && u >= a && u <= PMOD_PURE_CEILING * 100;
+    L.push(`| ${p.name} | ${a.toFixed(1)}pp | ${u.toFixed(1)}pp | ${ok ? "✅" : "❌"} |`);
+  }
+  L.push("", "## 六、对空覆盖与空袭公平性", "");
+  for (const f of ["铁砧", "涌潮", "星辉"]) {
+    const air = AIR_CARDS.filter((c) => c.faction === f && c.air);
+    L.push(`- ${f}：可对空 ${air.length} 张（${air.map((c) => c.id).join(", ")}）`);
+  }
+  L.push("");
+  L.push("| 空袭 B | 铁砧 | 涌潮 | 星辉 | 极差 | 判定 |");
+  L.push("| --- | --- | --- | --- | --- | --- |");
+  for (const B of AIR_WAVE_B) {
+    const cells = airMatrix().filter((r) => r.B === B);
+    const spread = Math.max(...cells.map((c) => c.win)) - Math.min(...cells.map((c) => c.win));
+    L.push(`| ${B} | ${cells.map((c) => pct(c.win)).join(" | ")} | ${(spread * 100).toFixed(1)}pp | ${spread <= AIR_FAIRNESS_PP ? "✅" : "❌"} |`);
+  }
+  L.push("", "| 形态 | 铁砧 | 涌潮 | 星辉 | 极差 | 判定 |");
+  L.push("| --- | --- | --- | --- | --- | --- |");
+  for (const r of airMixRows()) {
+    const mix = AIR_MIX.find((m) => m.name === r.formation)!;
+    L.push(`| ${r.formation} | ${r.rows.map((x) => pct(x.win)).join(" | ")} | ${(r.spread * 100).toFixed(1)}pp | ${r.spread <= mix.spreadMax ? "✅" : "❌"} |`);
+  }
+  L.push("", "## 七、种子与排行榜", "");
+  const seed = seedChecks();
+  L.push(`- 样例局（seed=20260914）：${seed.sample.join(" → ")}`);
+  L.push(seed.bad.length ? `- ❌ ${seed.bad.join("；")}` : "- ✅ TC-01…TC-08 全部通过");
+  return L.join("\n");
+}
+
 async function main(): Promise<void> {
+  if (flag("verify-air-mix")) { process.exitCode = verifyAirMix(); return; }
+  if (flag("verify-pmod")) { process.exitCode = verifyPmod(); return; }
+  if (flag("report")) {
+    const md = buildReport();
+    const out = arg("out", "");
+    if (out) {
+      const fs = await import("node:fs");
+      fs.writeFileSync(out, md + "\n", "utf8");
+      console.log("[report written] " + out);
+    } else console.log(md);
+    return;
+  }
   if (flag("verify-faction")) { process.exitCode = verifyFaction(); return; }
   if (flag("verify-seed")) { process.exitCode = verifySeed(); return; }
   if (flag("verify-anti-air")) { process.exitCode = verifyAntiAir(); return; }

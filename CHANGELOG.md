@@ -8,6 +8,7 @@
 ## [未发布]
 
 ### 新增
+- **空地混编矩阵、PMOD 双口径与体检报告**：`tools/sim_refu_game_001.ts` 新增 `--verify-air-mix`（纯空军/混编/纯地面 × 三族，极差 9.7/5.8/0.0pp → PASS）、`--verify-pmod`（PMOD-01…05 平均增益 7.0–10.1pp、契合流派 11.6–16.9pp → PASS）与 `--report`（生成 [`数值/体检报告.md`](doc/refu-game-001/数值/体检报告.md)，九项汇总、东八区日期）；[`数值/04`](doc/refu-game-001/数值/04_敌人数值与波次威胁值.md) 增混编矩阵并给出"混编为默认形态"的结论，[`23`](doc/refu-game-001/23_规则卡组_Roguelike远征.md) 增 PMOD 实测表，[`数值/README`](doc/refu-game-001/数值/README.md) 必跑清单扩为九项 + 报告刷新；pre-commit 与 CI 同步扩至九项。
 - **对空 9 宫格与逐卡精调**：`tools/sim_refu_game_001.ts` 新增 `--verify-air-matrix`（三档空袭 × 三族，极差 ≤15pp，实测 1.0/9.7/8.4pp → PASS）并升级 `--verify-faction` 为"平均卡组跌幅落带 + 纯流派跌幅 ≤35pp"双口径，九张族专属卡逐张精调（如"共鸣干扰"对纯共鸣卡组 31.8pp）；[`数值/04`](doc/refu-game-001/数值/04_敌人数值与波次威胁值.md) 增 9 宫格矩阵、[`25`](doc/refu-game-001/25_挑战卡_族专属池.md) 换为逐卡实测表。
 - **数值改动必跑清单**：[`数值/README.md`](doc/refu-game-001/数值/README.md) 新增第三节（七项 `--verify-*` 命令、阈值与失败处理），冻结流程同步为"七项全 PASS"；pre-commit 与 CI 的 Refu 校验扩展至七项。
 - 新增 [`doc/refu-game-001/26_远征_种子与排行榜验收.md`](doc/refu-game-001/26_远征_种子与排行榜验收.md)：每日种子 8 条验收用例（TC-01…TC-08）、样例局与排行榜排序键；[`24`](doc/refu-game-001/24_远征节点池表.md) 补充"前 6 节点为加权排列、7–8 节点池耗尽后重启"的抽取规则。

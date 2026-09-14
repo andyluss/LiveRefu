@@ -141,7 +141,9 @@ if git diff --cached --name-only --diff-filter=ACM | grep -qE '^(doc/refu-game-0
       && run_ts "$SIM_SCRIPT" --verify-faction >&2 \
       && run_ts "$SIM_SCRIPT" --verify-seed >&2 \
       && run_ts "$SIM_SCRIPT" --verify-anti-air >&2 \
-      && run_ts "$SIM_SCRIPT" --verify-air-matrix >&2; then
+      && run_ts "$SIM_SCRIPT" --verify-air-matrix >&2 \
+      && run_ts "$SIM_SCRIPT" --verify-air-mix >&2 \
+      && run_ts "$SIM_SCRIPT" --verify-pmod >&2; then
       echo "[pre-commit:refu-sim] 通过。" >&2
     else
       echo "[pre-commit:refu-sim] 难度模型自检或带位校验失败，已拦截提交。" >&2
