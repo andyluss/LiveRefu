@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 918" width="1180" height="918">
+<rect width="1180" height="918" fill="#0b1220"/>
+<text x="24" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">美术设定001 · 样例 SVG 汇总（6 张）</text>
+<text x="24" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#8fa3bd">复古未来：单位 / 卡面 / 地图 / 色板</text>
+<g transform="translate(20,80) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__0" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__0" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__0" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__0" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__0" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="brass__0" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel__0" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg__0" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg__0" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss__0" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg__0" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft__0"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan__0" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch__0" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#1b222b"/>
+
+<g transform="translate(0,10)">
+  <rect width="512" height="512" fill="url(#sandg__0)" opacity=".28"/>
+  <polygon points="96,404 416,404 392,438 120,438" fill="#1f2830" opacity=".85"/>
+  <polygon points="120,438 392,438 392,452 120,452" fill="#2c3843"/>
+  <rect x="150" y="300" width="212" height="106" rx="8" fill="url(#steel__0)"/>
+  <rect x="164" y="276" width="184" height="34" rx="6" fill="url(#brass__0)"/>
+  <rect x="196" y="196" width="120" height="84" rx="6" fill="url(#steel__0)"/>
+  <rect x="228" y="120" width="56" height="82" rx="4" fill="url(#brass__0)"/>
+  <rect x="246" y="60" width="20" height="66" rx="3" fill="#3d4a57"/>
+  <rect x="240" y="48" width="32" height="16" rx="4" fill="#8fa3b5"/>
+  <polygon points="256,470 292,470 300,486 248,486" fill="#77592c"/>
+  <g fill="#0d1a12" opacity=".95"><rect x="176" y="322" width="86" height="52" rx="4"/></g>
+  <rect x="176" y="322" width="86" height="52" rx="4" fill="url(#crtg__0)" opacity=".35"/>
+  <text x="182" y="345" font-family="monospace" font-size="15" fill="#7ce38b">DMG 12</text>
+  <text x="182" y="364" font-family="monospace" font-size="13" fill="#7ce38b">RATE 1.0</text>
+  <g fill="#e2c07a"><circle cx="160" cy="310" r="5"/><circle cx="352" cy="310" r="5"/><circle cx="160" cy="396" r="5"/><circle cx="352" cy="396" r="5"/><circle cx="212" cy="286" r="4"/><circle cx="300" cy="286" r="4"/></g>
+  <g stroke="#77592c" stroke-width="7" stroke-linecap="round">
+    <line x1="286" y1="330" x2="360" y2="352"/><line x1="286" y1="366" x2="360" y2="388"/></g>
+  <g stroke="#2c3843" stroke-width="2" opacity=".8"><line x1="164" y1="330" x2="276" y2="330"/><line x1="164" y1="378" x2="276" y2="378"/></g>
+  <g opacity=".85"><rect x="300" y="404" width="96" height="16" fill="#d8452b"/>
+    <g fill="#f3ead6"><polygon points="300,420 312,404 324,420 336,404 348,420 360,404 372,420 384,404 396,420 396,420 300,420"/></g></g>
+  <rect width="512" height="512" fill="url(#scan__0)" opacity=".5"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">铁砧联邦 · 模块炮塔</text>
+<g><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#dust__0)"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#scan__0)" opacity=".45"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#inner__0)"/><g filter="url(#bloom__0)" opacity=".5"><circle cx="154" cy="161" r="26" fill="#7CE38B" opacity=".35"/></g><rect x="64" y="64" width="20" height="354" rx="10" fill="url(#spec__0)" opacity=".4"/><rect x="60" y="60" width="392" height="362" rx="12" fill="none" stroke="#000000" stroke-width="1" opacity=".25"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="20" y="80" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(400,80) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__1" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__1" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__1" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__1" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__1" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="brass__1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel__1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg__1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg__1" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss__1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg__1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft__1"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan__1" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch__1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#1b222b"/>
+
+<g>
+  <rect width="512" height="512" fill="#20281f"/>
+  <ellipse cx="256" cy="400" rx="210" ry="70" fill="#2b3327"/>
+  <path d="M150 380 C120 250 200 130 256 130 C312 130 392 250 362 380 Z" fill="url(#moss__1)" opacity=".92"/>
+  <path d="M170 372 C150 258 214 158 256 158 C298 158 362 258 342 372 Z" fill="#cfe0b8" opacity=".18"/>
+  <g fill="#e9f2d8" opacity=".55">
+    <ellipse cx="212" cy="248" rx="16" ry="9"/><ellipse cx="286" cy="222" rx="12" ry="7"/><ellipse cx="300" cy="300" rx="14" ry="8"/></g>
+  <g fill="#3f6b34" stroke="#8fbf6a" stroke-width="2">
+    <ellipse cx="222" cy="300" rx="26" ry="17"/><ellipse cx="272" cy="318" rx="22" ry="14"/><ellipse cx="248" cy="352" rx="24" ry="15"/></g>
+  <g fill="#0f1a0e"><circle cx="212" cy="297" r="3"/><circle cx="262" cy="316" r="2.6"/><circle cx="238" cy="350" r="2.6"/></g>
+  <g stroke="#8fbf6a" stroke-width="3" fill="none" opacity=".85">
+    <path d="M256 130 C250 96 268 84 258 58"/><path d="M256 130 C276 104 258 92 272 70"/></g>
+  <g fill="#d6ff6b" opacity=".9"><circle cx="258" cy="54" r="5"/><circle cx="274" cy="66" r="4"/><circle cx="244" cy="88" r="3.5"/><circle cx="286" cy="96" r="3"/><circle cx="230" cy="112" r="3"/></g>
+  <g fill="#6b9b2e" opacity=".55"><ellipse cx="180" cy="412" rx="42" ry="12"/><ellipse cx="336" cy="418" rx="36" ry="10"/></g>
+  <g stroke="#cfe0b8" stroke-width="2" opacity=".5"><path d="M170 372 q86 26 172 0" fill="none"/></g>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">涌潮虫群 · 孵化巢与幼虫</text>
+<g><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#dust__1)"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#scan__1)" opacity=".45"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#inner__1)"/><g filter="url(#bloom__1)" opacity=".5"><circle cx="154" cy="161" r="26" fill="#7CE38B" opacity=".35"/></g><rect x="64" y="64" width="20" height="354" rx="10" fill="url(#spec__1)" opacity=".4"/><rect x="60" y="60" width="392" height="362" rx="12" fill="none" stroke="#000000" stroke-width="1" opacity=".25"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="400" y="80" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(780,80) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__2" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__2" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__2" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__2" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__2" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="brass__2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel__2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg__2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg__2" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss__2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg__2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft__2"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan__2" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch__2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#1b222b"/>
+
+<g>
+  <rect width="512" height="512" fill="#141c26"/>
+  <g opacity=".5" stroke="#7ce38b" stroke-width="1">
+    <line x1="40" y1="430" x2="472" y2="430"/><line x1="40" y1="452" x2="472" y2="452"/></g>
+  <polygon points="256,58 330,150 256,196 182,150" fill="url(#prismg__2)" opacity=".9"/>
+  <polygon points="256,58 292,150 256,196" fill="#ffffff" opacity=".55"/>
+  <polygon points="256,196 316,236 316,412 256,438" fill="url(#prismg__2)" opacity=".78"/>
+  <polygon points="256,196 196,236 196,412 256,438" fill="#28structure" opacity="0"/>
+  <polygon points="256,196 196,236 196,412 256,438" fill="#cddcec" opacity=".5"/>
+  <g stroke="#ffffff" stroke-width="2" opacity=".9"><line x1="256" y1="196" x2="256" y2="438"/></g>
+  <g stroke="#6bd5ff" stroke-width="1.6" opacity=".9"><line x1="196" y1="236" x2="316" y2="236"/><line x1="196" y1="312" x2="316" y2="312"/></g>
+  <ellipse cx="256" cy="430" rx="120" ry="22" fill="#7ce38b" opacity=".18"/>
+  <rect x="206" y="316" width="100" height="58" rx="5" fill="#11161d"/>
+  <rect x="206" y="316" width="100" height="58" rx="5" fill="url(#crtg__2)" opacity=".3"/>
+  <text x="214" y="340" font-family="monospace" font-size="14" fill="#7ce38b">DMG 16</text>
+  <text x="214" y="358" font-family="monospace" font-size="12" fill="#7ce38b">SHIELD 120</text>
+  <g fill="#b08d4f"><circle cx="200" cy="240" r="5"/><circle cx="312" cy="240" r="5"/><circle cx="200" cy="404" r="5"/><circle cx="312" cy="404" r="5"/></g>
+  <g filter="url(#soft__2)" opacity=".85"><circle cx="256" cy="122" r="26" fill="#ffffff" opacity=".35"/></g>
+  <rect width="512" height="512" fill="url(#scan__2)" opacity=".35"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">星辉议会 · 棱镜哨塔</text>
+<g><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#dust__2)"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#scan__2)" opacity=".45"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#inner__2)"/><g filter="url(#bloom__2)" opacity=".5"><circle cx="154" cy="161" r="26" fill="#7CE38B" opacity=".35"/></g><rect x="64" y="64" width="20" height="354" rx="10" fill="url(#spec__2)" opacity=".4"/><rect x="60" y="60" width="392" height="362" rx="12" fill="none" stroke="#000000" stroke-width="1" opacity=".25"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="780" y="80" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(20,494) scale(0.7109)">
+<defs>
+  <linearGradient id="foil__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__3" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__3" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__3" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__3" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__3" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="brass__3" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel__3" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg__3" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg__3" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss__3" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg__3" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft__3"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan__3" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch__3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#0f141a"/>
+
+<g transform="translate(56,14)">
+  <rect x="0" y="0" width="400" height="452" rx="18" fill="url(#steel__3)" stroke="#d9b26a" stroke-width="3"/>
+  <rect x="10" y="10" width="380" height="432" rx="12" fill="#1a222b"/>
+  <defs><clipPath id="artclip__3"><rect x="210" y="112" width="180" height="180" rx="10"/></clipPath></defs>
+  <!-- 标题区 -->
+  <text x="26" y="72" font-family="PingFang SC, sans-serif" font-size="24" font-weight="700" fill="#f3ead6">模块炮塔</text>
+  <text x="26" y="94" font-family="monospace" font-size="13" fill="#94a3b8">ANV-T01</text>
+  <rect x="322" y="30" width="56" height="56" rx="12" fill="url(#crtg__3)" opacity=".25"/>
+  <text x="350" y="68" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="26" font-weight="700" fill="#7ce38b">20</text>
+  <!-- 画框：模块炮塔（裁切在框内） -->
+  <rect x="210" y="112" width="180" height="180" rx="10" fill="#202b35" stroke="#3d4a57" stroke-width="1.4"/>
+  <g clip-path="url(#artclip__3)">
+    <rect x="210" y="112" width="180" height="180" fill="url(#sandg__3)" opacity=".18"/>
+    <g transform="translate(197.6,92.8) scale(0.4)">
+      <polygon points="96,404 416,404 392,438 120,438" fill="#2c3843"/>
+      <rect x="150" y="300" width="212" height="106" rx="8" fill="url(#steel__3)"/>
+      <rect x="164" y="276" width="184" height="34" rx="6" fill="url(#brass__3)"/>
+      <rect x="196" y="196" width="120" height="84" rx="6" fill="url(#steel__3)"/>
+      <rect x="228" y="120" width="56" height="82" rx="4" fill="url(#brass__3)"/>
+      <rect x="246" y="60" width="20" height="66" rx="3" fill="#3d4a57"/>
+      <rect x="240" y="48" width="32" height="16" rx="4" fill="#8fa3b5"/>
+      <g fill="#e2c07a"><circle cx="160" cy="310" r="6"/><circle cx="352" cy="310" r="6"/><circle cx="212" cy="286" r="5"/><circle cx="300" cy="286" r="5"/></g>
+      <g stroke="#77592c" stroke-width="8" stroke-linecap="round"><line x1="286" y1="330" x2="360" y2="352"/><line x1="286" y1="366" x2="360" y2="388"/></g>
+    </g>
+  </g>
+  <!-- 左侧三数字 -->
+  <g font-family="PingFang SC, sans-serif">
+    <rect x="26" y="116" width="172" height="52" rx="8" fill="#111a22" stroke="#3d4a57"/>
+    <text x="44" y="150" font-size="22" font-weight="700" fill="#e8eefb">12</text><text x="96" y="149" font-size="13" fill="#94a3b8">伤害</text>
+    <rect x="26" y="176" width="172" height="52" rx="8" fill="#111a22" stroke="#3d4a57"/>
+    <text x="44" y="210" font-size="22" font-weight="700" fill="#e8eefb">1.0</text><text x="104" y="209" font-size="13" fill="#94a3b8">攻速 /s</text>
+    <rect x="26" y="236" width="172" height="52" rx="8" fill="#111a22" stroke="#3d4a57"/>
+    <text x="44" y="270" font-size="22" font-weight="700" fill="#e8eefb">3</text><text x="70" y="269" font-size="13" fill="#94a3b8">射程 /格</text>
+  </g>
+  <rect x="210" y="252" width="180" height="40" rx="8" fill="#111a22" stroke="#3d4a57"/>
+  <text x="300" y="277" text-anchor="middle" font-family="monospace" font-size="12.5" fill="#7ce38b">on_kill：能量 +1</text>
+  <rect x="26" y="300" width="150" height="34" rx="17" fill="#3f5f7a"/>
+  <text x="101" y="323" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="14" fill="#eaf1fa">关键词：弹药</text>
+  <g transform="translate(352,314)"><circle r="24" fill="none" stroke="#d9b26a" stroke-width="2"/>
+    <text y="-1" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#d9b26a">标准</text>
+    <text y="14" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10" fill="#94a3b8">塔位</text></g>
+  <rect x="26" y="348" width="348" height="12" rx="6" fill="#2F4A63"/>
+  <text x="26" y="386" font-family="PingFang SC, sans-serif" font-size="13" fill="#94a3b8">羁绊：火力网（3 张「弹药」→ 全场弹药塔攻速 +10%）</text>
+  <text x="26" y="410" font-family="PingFang SC, sans-serif" font-size="13" fill="#94a3b8">数值来源：14_卡表_铁砧联邦核心12卡</text>
+  <text x="26" y="436" font-family="PingFang SC, sans-serif" font-size="11.5" fill="#6b7c8f">三层信息：卡面 3 数字 + 1 关键词 → 长按详情 → 二级说明</text>
+  <rect x="8" y="0" width="14" height="452" rx="7" fill="#d9b26a" opacity=".45"/>
+  <rect x="0" y="0" width="400" height="452" rx="18" fill="none" stroke="#d9b26a" stroke-width="3"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">卡面版式样板 · 塔卡（三层信息：3 数字 + 1 关键词）</text>
+<g><rect x="56" y="14" width="400" height="452" rx="12" fill="url(#dust__3)"/><rect x="56" y="14" width="400" height="452" rx="12" fill="url(#scan__3)" opacity=".45"/><rect x="56" y="14" width="400" height="452" rx="12" fill="url(#inner__3)"/><g filter="url(#bloom__3)" opacity=".5"><circle cx="152" cy="141" r="26" fill="#7CE38B" opacity=".35"/></g><rect x="60" y="18" width="20" height="444" rx="10" fill="url(#spec__3)" opacity=".4"/><rect x="56" y="14" width="400" height="452" rx="12" fill="none" stroke="#000000" stroke-width="1" opacity=".25"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="20" y="494" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(400,494) scale(0.7109)">
+<defs>
+  <linearGradient id="foil__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__4" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__4" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__4" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__4" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__4" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="brass__4" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel__4" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg__4" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg__4" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss__4" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg__4" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft__4"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan__4" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch__4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#20262c"/>
+
+<g>
+  <rect x="20" y="46" width="472" height="430" rx="8" fill="url(#paper__4)"/>
+  <g stroke="#b9a888" stroke-width="1" opacity=".7">
+    <line x1="20" y1="120" x2="492" y2="120"/><line x1="20" y1="200" x2="492" y2="200"/>
+    <line x1="20" y1="280" x2="492" y2="280"/><line x1="20" y1="360" x2="492" y2="360"/>
+    <line x1="140" y1="46" x2="140" y2="476"/><line x1="260" y1="46" x2="260" y2="476"/><line x1="380" y1="46" x2="380" y2="476"/></g>
+  <text x="36" y="72" font-family="PingFang SC, sans-serif" font-size="14" fill="#5b4526">MAP-ANV-01 峡谷哨站</text>
+  <text x="36" y="92" font-family="PingFang SC, sans-serif" font-size="12" fill="#7a6444">单入口 · 标准 8 / 支援 3 / 修饰 1 · 约 40s 通行 · 事件槽 1</text>
+  <path d="M40 360 L150 360 L210 250 L320 250 L380 150 L470 150" fill="none" stroke="#8a6b3f" stroke-width="16" stroke-linejoin="round" opacity=".85"/>
+  <path d="M40 360 L150 360 L210 250 L320 250 L380 150 L470 150" fill="none" stroke="#c9a877" stroke-width="10" stroke-linejoin="round" stroke-dasharray="18 14"/>
+  <polygon points="40,346 40,374 62,360" fill="#5b4526"/>
+  <rect x="452" y="128" width="34" height="44" rx="4" fill="#1f2830"/>
+  <g fill="none" stroke="#8a6b3f" stroke-width="2">
+    <rect x="96" y="300" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="96" y="386" width="34" height="30" rx="3" fill="#e8dcc0"/>
+    <rect x="186" y="196" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="186" y="286" width="34" height="30" rx="3" fill="#e8dcc0"/>
+    <rect x="286" y="196" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="286" y="286" width="34" height="30" rx="3" fill="#e8dcc0"/>
+    <rect x="386" y="96" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="386" y="246" width="34" height="30" rx="3" fill="#e8dcc0"/></g>
+  <g font-family="monospace" font-size="13" fill="#5b4526">
+    <text x="104" y="322">1</text><text x="104" y="408">2</text><text x="194" y="218">3</text><text x="194" y="308">4</text>
+    <text x="294" y="218">5</text><text x="294" y="308">6</text><text x="394" y="118">7</text><text x="394" y="268">8</text></g>
+  <g><rect x="112" y="150" width="80" height="46" fill="url(#hatch__4)" opacity=".8" stroke="#8a7a58"/><text x="152" y="178" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="13" fill="#5b4526">高台 +15%</text></g>
+  <g><rect x="330" y="368" width="96" height="52" rx="16" fill="#9fc4c0" opacity=".75" stroke="#5f8f8a"/>
+     <text x="378" y="399" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="13" fill="#2f4f4b">沼泽 −20%</text></g>
+  <defs><marker id="ar2__4" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker></defs>
+  <g stroke="#c0392b" stroke-width="2.4" fill="none">
+    <ellipse cx="300" cy="238" rx="46" ry="24" stroke-dasharray="7 5" transform="rotate(-16 300 238)"/>
+    <path d="M340 222 L372 190" marker-end="url(#ar2__4)"/></g>
+  <text x="252" y="196" font-family="PingFang SC, sans-serif" font-size="14" fill="#c0392b">W4 空中 ×5</text>
+  <path d="M120 430 q60 -26 150 -20" stroke="#c0392b" stroke-width="2.2" stroke-dasharray="6 4" fill="none"/>
+  <text x="126" y="456" font-family="PingFang SC, sans-serif" font-size="14" fill="#c0392b">她把支援位空着等下一波</text>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">关卡地图俯视 · 峡谷哨站（纸图口径，红笔为调度官标注）</text>
+<g><rect x="20" y="46" width="472" height="430" rx="12" fill="url(#dust__4)"/><rect x="20" y="46" width="472" height="430" rx="12" fill="url(#scan__4)" opacity=".45"/><rect x="20" y="46" width="472" height="430" rx="12" fill="url(#inner__4)"/><g filter="url(#bloom__4)" opacity=".5"><circle cx="133" cy="166" r="26" fill="#7CE38B" opacity=".35"/></g><rect x="24" y="50" width="24" height="422" rx="10" fill="url(#spec__4)" opacity=".4"/><rect x="20" y="46" width="472" height="430" rx="12" fill="none" stroke="#000000" stroke-width="1" opacity=".25"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="400" y="494" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(780,494) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__5" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__5" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__5" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__5" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__5" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="brass__5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel__5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg__5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg__5" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss__5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg__5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft__5"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan__5" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch__5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#111820"/>
+<g><text x="32" y="72" font-family="PingFang SC, sans-serif" font-size="16" fill="#e8eefb">全局色板（001）</text><text x="32" y="96" font-family="PingFang SC, sans-serif" font-size="12" fill="#94a3b8">主色四族 + 黄铜 + CRT 绿；数量限制与用法见 00 号总纲</text><g><rect x="32" y="120" width="60" height="120" rx="8" fill="#2F4A63" stroke="#0f141a" stroke-width="2"/><text x="62" y="258" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#e8eefb">铁砧冷钢蓝</text><text x="62" y="276" text-anchor="middle" font-family="monospace" font-size="11" fill="#94a3b8">#2F4A63</text></g><g><rect x="108" y="120" width="60" height="120" rx="8" fill="#45663A" stroke="#0f141a" stroke-width="2"/><text x="138" y="258" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#e8eefb">涌潮腐殖绿</text><text x="138" y="276" text-anchor="middle" font-family="monospace" font-size="11" fill="#94a3b8">#45663A</text></g><g><rect x="184" y="120" width="60" height="120" rx="8" fill="#EAF1FA" stroke="#0f141a" stroke-width="2"/><text x="214" y="258" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#e8eefb">星辉棱镜白</text><text x="214" y="276" text-anchor="middle" font-family="monospace" font-size="11" fill="#94a3b8">#EAF1FA</text></g><g><rect x="260" y="120" width="60" height="120" rx="8" fill="#D8452B" stroke="#0f141a" stroke-width="2"/><text x="290" y="258" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#e8eefb">敌方警示橙红</text><text x="290" y="276" text-anchor="middle" font-family="monospace" font-size="11" fill="#94a3b8">#D8452B</text></g><g><rect x="336" y="120" width="60" height="120" rx="8" fill="#B08D4F" stroke="#0f141a" stroke-width="2"/><text x="366" y="258" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#e8eefb">黄铜</text><text x="366" y="276" text-anchor="middle" font-family="monospace" font-size="11" fill="#94a3b8">#B08D4F</text></g><g><rect x="412" y="120" width="60" height="120" rx="8" fill="#7CE38B" stroke="#0f141a" stroke-width="2"/><text x="442" y="258" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#e8eefb">CRT 绿字</text><text x="442" y="276" text-anchor="middle" font-family="monospace" font-size="11" fill="#94a3b8">#7CE38B</text></g><text x="32" y="306" font-family="PingFang SC, sans-serif" font-size="16" fill="#e8eefb">五类材质语言</text><g><rect x="32" y="330" width="74" height="60" rx="6" fill="url(#brass__5)" stroke="#3d4a57" stroke-width="2"/><text x="69" y="410" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#c9d4e6">黄铜 brass</text></g><g><rect x="124" y="330" width="74" height="60" rx="6" fill="url(#steel__5)" stroke="#3d4a57" stroke-width="2"/><text x="161" y="410" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#c9d4e6">冷钢 steel</text></g><g><rect x="216" y="330" width="74" height="60" rx="6" fill="url(#paper__5)" stroke="#3d4a57" stroke-width="2"/><text x="253" y="410" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#c9d4e6">纸张 paper</text></g><g><rect x="308" y="330" width="74" height="60" rx="6" fill="url(#sandg__5)" stroke="#3d4a57" stroke-width="2"/><text x="345" y="410" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#c9d4e6">沙尘 sand</text></g><g><rect x="400" y="330" width="74" height="60" rx="6" fill="#0d1a12" stroke="#3d4a57" stroke-width="2"/><text x="437" y="410" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#c9d4e6">CRT 屏</text></g><rect width="512" height="512" fill="url(#scan__5)" opacity=".35"/></g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">001 · 色板与材质条</text>
+<g><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#dust__5)"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#scan__5)" opacity=".45"/><rect x="60" y="60" width="392" height="362" rx="12" fill="url(#inner__5)"/><g filter="url(#bloom__5)" opacity=".5"><circle cx="154" cy="161" r="26" fill="#7CE38B" opacity=".35"/></g><rect x="64" y="64" width="20" height="354" rx="10" fill="url(#spec__5)" opacity=".4"/><rect x="60" y="60" width="392" height="362" rx="12" fill="none" stroke="#000000" stroke-width="1" opacity=".25"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="780" y="494" width="364" height="364" fill="none" stroke="#22314a"/>
+</svg>

@@ -4,6 +4,33 @@
 <defs>
   <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
     <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
   </linearGradient>
   <linearGradient id="candy" x1="0" y1="0" x2="0" y2="1">
@@ -65,5 +92,6 @@
   <g fill="#EAF1FA" opacity=".8"><polygon points="96,238 112,252 100,272 84,258"/><polygon points="420,300 436,312 424,332 408,318"/></g>
 </g>
 <text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">星辉议会 · 晶体棱镜塔（n ≈ 1.55 / 色散只在棱线 / 边缘光 2–3px）</text>
+<g opacity=".95"><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#sheen)"/><g opacity=".42"><path d="M68 80 Q 256 67 444 85" fill="none" stroke="url(#iri)" stroke-width="6"/><path d="M68 118 Q 256 105 444 123" fill="none" stroke="url(#iri)" stroke-width="4.5"/><path d="M68 393 Q 256 380 444 398" fill="none" stroke="url(#iri)" stroke-width="4"/></g><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#inner)" opacity=".8"/><g opacity=".5" filter="url(#refract)"><rect x="62" y="62" width="388" height="358" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="66" y="66" width="24" height="350" rx="12" fill="url(#spec)" opacity=".45"/><rect x="60" y="60" width="392" height="362" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".3"/></g>
 <text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
 </svg>

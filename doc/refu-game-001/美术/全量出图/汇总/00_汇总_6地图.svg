@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1452" width="1280" height="1452">
+<rect width="1280" height="1452" fill="#0b1220"/>
+<text x="24" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">六张地图 · 全量出图汇总</text>
+<text x="24" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#8fa3bd">19_地图卡表字段重绘：塔位 / 地形 / 入口 / 波次卡组</text>
+<g transform="translate(20,80) scale(0.6121)">
+<defs>
+  <linearGradient id="foil__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__0" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__0" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__0" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__0" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__0" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="980" height="660" fill="#111820"/>
+<rect x="22" y="26" width="936" height="572" rx="10" fill="#f3ead6"/>
+<g opacity=".55" stroke="#c9b48f" stroke-width="1">
+<line x1="22" y1="26" x2="22" y2="636"/><line x1="112" y1="26" x2="112" y2="636"/><line x1="202" y1="26" x2="202" y2="636"/><line x1="292" y1="26" x2="292" y2="636"/><line x1="382" y1="26" x2="382" y2="636"/><line x1="472" y1="26" x2="472" y2="636"/><line x1="562" y1="26" x2="562" y2="636"/><line x1="652" y1="26" x2="652" y2="636"/><line x1="742" y1="26" x2="742" y2="636"/><line x1="832" y1="26" x2="832" y2="636"/><line x1="922" y1="26" x2="922" y2="636"/><line x1="22" y1="26" x2="958" y2="26"/><line x1="22" y1="98" x2="958" y2="98"/><line x1="22" y1="170" x2="958" y2="170"/><line x1="22" y1="242" x2="958" y2="242"/><line x1="22" y1="314" x2="958" y2="314"/><line x1="22" y1="386" x2="958" y2="386"/><line x1="22" y1="458" x2="958" y2="458"/><line x1="22" y1="530" x2="958" y2="530"/><line x1="22" y1="602" x2="958" y2="602"/>
+</g>
+<path d="M 96 319 L 244 319 L 326 227 L 473 227 L 576 227 L 657 344 L 805 421" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 96 319 L 244 319 L 326 227 L 473 227 L 576 227 L 657 344 L 805 421" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><rect x="179" y="259" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 188 268)"/><rect x="179" y="361" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 188 370)"/><rect x="286" y="167" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 295 176)"/><rect x="368" y="269" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 377 278)"/><rect x="459" y="167" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 468 176)"/><rect x="531" y="269" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 540 278)"/><rect x="663" y="290" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 672 299)"/><rect x="725" y="366" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 734 375)"/><rect x="368" y="351" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 377 360)"/><rect x="577" y="290" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 586 299)"/><rect x="755" y="458" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 764 467)"/><circle cx="428" cy="146" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="295" cy="135" r="15" fill="#5FE3D6" opacity=".22"/><text x="295" y="139" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">高台</text><circle cx="540" cy="146" r="15" fill="#5FE3D6" opacity=".22"/><text x="540" y="150" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">高台</text><circle cx="448" cy="360" r="15" fill="#5FE3D6" opacity=".22"/><text x="448" y="364" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">沼泽</text><polygon points="67,309 95,319 67,329" fill="#E4533C"/><rect x="796" y="407" width="28" height="28" rx="5" fill="#1f2830" stroke="#F2F7FA" stroke-width="2"/>
+<text x="40" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">MAP-ANV-01　峡谷哨站　<span font-size="13" fill="#94a3b8">铁砧联邦</span></text>
+<text x="40" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">塔位 标准 8 / 支援 3 / 修饰 1　｜　路径 约 40s 通行　｜　事件槽 1　｜　推荐章节 第 1–2 章　｜　单入口</text>
+<text x="40" y="622" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">波次卡组：WAV-ANV-A 普通 ｜ WAV-ANV-B 精英 ｜ WAV-ANV-C 周常</text>
+<text x="40" y="642" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">教学图：单入口、两个高台加射程、一片沼泽给减速示范。第 1 章 94.9% 胜率就是在这里打出来的。</text>
+<g transform="translate(650,568)">
+  <rect x="0" y="0" width="300" height="70" rx="8" fill="#0f141a" opacity=".86"/>
+  <rect x="14" y="16" width="16" height="16" rx="3" fill="#2F4A63" stroke="#0f141a"/><text x="38" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">标准塔位</text>
+  <rect x="112" y="16" width="16" height="16" rx="3" fill="#7C3AED" stroke="#0f141a" transform="rotate(45 120 24)"/><text x="136" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">支援位</text>
+  <circle cx="214" cy="24" r="8" fill="#D97706"/><text x="230" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">修饰位</text>
+  <polygon points="18,52 32,58 18,64" fill="#E4533C"/><text x="38" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">入口</text>
+  <circle cx="120" cy="58" r="8" fill="#5FE3D6" opacity=".45"/><text x="136" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">地形</text>
+  <rect x="206" y="50" width="14" height="14" rx="3" fill="#1f2830" stroke="#F2F7FA"/><text x="230" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">基地</text>
+</g>
+</g>
+<rect x="20" y="80" width="600" height="404" fill="none" stroke="#22314a"/>
+<g transform="translate(640,80) scale(0.6121)">
+<defs>
+  <linearGradient id="foil__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__1" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__1" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__1" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__1" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__1" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="980" height="660" fill="#111820"/>
+<rect x="22" y="26" width="936" height="572" rx="10" fill="#f3ead6"/>
+<g opacity=".55" stroke="#c9b48f" stroke-width="1">
+<line x1="22" y1="26" x2="22" y2="636"/><line x1="112" y1="26" x2="112" y2="636"/><line x1="202" y1="26" x2="202" y2="636"/><line x1="292" y1="26" x2="292" y2="636"/><line x1="382" y1="26" x2="382" y2="636"/><line x1="472" y1="26" x2="472" y2="636"/><line x1="562" y1="26" x2="562" y2="636"/><line x1="652" y1="26" x2="652" y2="636"/><line x1="742" y1="26" x2="742" y2="636"/><line x1="832" y1="26" x2="832" y2="636"/><line x1="922" y1="26" x2="922" y2="636"/><line x1="22" y1="26" x2="958" y2="26"/><line x1="22" y1="98" x2="958" y2="98"/><line x1="22" y1="170" x2="958" y2="170"/><line x1="22" y1="242" x2="958" y2="242"/><line x1="22" y1="314" x2="958" y2="314"/><line x1="22" y1="386" x2="958" y2="386"/><line x1="22" y1="458" x2="958" y2="458"/><line x1="22" y1="530" x2="958" y2="530"/><line x1="22" y1="602" x2="958" y2="602"/>
+</g>
+<path d="M 91 166 L 244 202 L 341 283 L 422 319 L 601 319 L 800 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 166 L 244 202 L 341 283 L 422 319 L 601 319 L 800 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><path d="M 91 472 L 244 436 L 341 355 L 422 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 472 L 244 436 L 341 355 L 422 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><rect x="174" y="126" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 183 135)"/><rect x="266" y="162" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 275 171)"/><rect x="362" y="213" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 372 222)"/><rect x="510" y="239" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 519 248)"/><rect x="638" y="228" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 647 237)"/><rect x="755" y="259" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 764 268)"/><rect x="174" y="494" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 183 503)"/><rect x="266" y="458" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 275 467)"/><rect x="362" y="407" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 372 416)"/><rect x="510" y="381" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 519 390)"/><rect x="638" y="392" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 647 401)"/><rect x="317" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 326 319)"/><rect x="454" y="177" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 463 186)"/><rect x="454" y="443" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 463 452)"/><rect x="699" y="341" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 708 350)"/><circle cx="565" cy="166" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="565" cy="472" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="259" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="259" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">工事平</text><circle cx="422" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="422" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">铁闸</text><circle cx="346" cy="140" r="15" fill="#5FE3D6" opacity=".22"/><text x="346" y="144" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">高台</text><circle cx="672" cy="176" r="15" fill="#5FE3D6" opacity=".22"/><text x="672" y="180" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">高台</text><polygon points="67,156 95,166 67,176" fill="#E4533C"/><polygon points="67,462 95,472 67,482" fill="#E4533C"/><rect x="791" y="305" width="28" height="28" rx="5" fill="#1f2830" stroke="#F2F7FA" stroke-width="2"/>
+<text x="40" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">MAP-ANV-02　双闸峡谷　<span font-size="13" fill="#94a3b8">铁砧联邦</span></text>
+<text x="40" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">塔位 标准 11 / 支援 4 / 修饰 2　｜　路径 约 33s × 2（中段铁闸合流）　｜　事件槽 2　｜　推荐章节 第 3–4 章　｜　双入口（双流可用）</text>
+<text x="40" y="622" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">波次卡组：WAV-ANV-D 普通 ｜ WAV-ANV-E 精英 ｜ WAV-ANV-F 周常</text>
+<text x="40" y="642" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">铁砧的双入口图：工事平台让工事卡生命 +20%，可破坏铁闸是第一个会变的地图元素。可挂「双流」。</text>
+<g transform="translate(650,568)">
+  <rect x="0" y="0" width="300" height="70" rx="8" fill="#0f141a" opacity=".86"/>
+  <rect x="14" y="16" width="16" height="16" rx="3" fill="#2F4A63" stroke="#0f141a"/><text x="38" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">标准塔位</text>
+  <rect x="112" y="16" width="16" height="16" rx="3" fill="#7C3AED" stroke="#0f141a" transform="rotate(45 120 24)"/><text x="136" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">支援位</text>
+  <circle cx="214" cy="24" r="8" fill="#D97706"/><text x="230" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">修饰位</text>
+  <polygon points="18,52 32,58 18,64" fill="#E4533C"/><text x="38" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">入口</text>
+  <circle cx="120" cy="58" r="8" fill="#5FE3D6" opacity=".45"/><text x="136" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">地形</text>
+  <rect x="206" y="50" width="14" height="14" rx="3" fill="#1f2830" stroke="#F2F7FA"/><text x="230" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">基地</text>
+</g>
+</g>
+<rect x="640" y="80" width="600" height="404" fill="none" stroke="#22314a"/>
+<g transform="translate(20,534) scale(0.6121)">
+<defs>
+  <linearGradient id="foil__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__2" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__2" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__2" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__2" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__2" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="980" height="660" fill="#111820"/>
+<rect x="22" y="26" width="936" height="572" rx="10" fill="#f3ead6"/>
+<g opacity=".55" stroke="#c9b48f" stroke-width="1">
+<line x1="22" y1="26" x2="22" y2="636"/><line x1="112" y1="26" x2="112" y2="636"/><line x1="202" y1="26" x2="202" y2="636"/><line x1="292" y1="26" x2="292" y2="636"/><line x1="382" y1="26" x2="382" y2="636"/><line x1="472" y1="26" x2="472" y2="636"/><line x1="562" y1="26" x2="562" y2="636"/><line x1="652" y1="26" x2="652" y2="636"/><line x1="742" y1="26" x2="742" y2="636"/><line x1="832" y1="26" x2="832" y2="636"/><line x1="922" y1="26" x2="922" y2="636"/><line x1="22" y1="26" x2="958" y2="26"/><line x1="22" y1="98" x2="958" y2="98"/><line x1="22" y1="170" x2="958" y2="170"/><line x1="22" y1="242" x2="958" y2="242"/><line x1="22" y1="314" x2="958" y2="314"/><line x1="22" y1="386" x2="958" y2="386"/><line x1="22" y1="458" x2="958" y2="458"/><line x1="22" y1="530" x2="958" y2="530"/><line x1="22" y1="602" x2="958" y2="602"/>
+</g>
+<ellipse cx="448" cy="319" rx="146" ry="93" fill="none" stroke="#8a7a58" stroke-width="16" opacity=".55"/><rect x="189" y="137" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 198 146)"/><rect x="337" y="106" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 346 115)"/><rect x="531" y="126" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 540 135)"/><rect x="689" y="208" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 698 217)"/><rect x="699" y="412" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 708 421)"/><rect x="541" y="494" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 550 503)"/><rect x="337" y="514" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 346 523)"/><rect x="189" y="483" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 198 492)"/><rect x="362" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 372 319)"/><rect x="521" y="218" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 530 227)"/><rect x="521" y="402" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 530 411)"/><circle cx="448" cy="319" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="652" cy="319" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="315" cy="176" r="15" fill="#5FE3D6" opacity=".22"/><text x="315" y="180" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">共鸣石</text><circle cx="621" cy="176" r="15" fill="#5FE3D6" opacity=".22"/><text x="621" y="180" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">共鸣石</text><circle cx="621" cy="462" r="15" fill="#5FE3D6" opacity=".22"/><text x="621" y="466" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">共鸣石</text><polygon points="184,309 212,319 184,329" fill="#E4533C"/><rect x="184" y="305" width="28" height="28" rx="5" fill="#1f2830" stroke="#F2F7FA" stroke-width="2"/>
+<text x="40" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">MAP-AST-01　棱镜回廊　<span font-size="13" fill="#94a3b8">星辉议会</span></text>
+<text x="40" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">塔位 标准 10 / 支援 3 / 修饰 2　｜　路径 约 45s 一圈（环形）　｜　事件槽 1　｜　推荐章节 第 4 章　｜　单入口</text>
+<text x="40" y="622" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">波次卡组：WAV-AST-A 普通 ｜ WAV-AST-B 精英 ｜ WAV-AST-C 周常</text>
+<text x="40" y="642" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">环形路径 + 三块共鸣石 + 一块虚空（不可放置）。这是"相邻既是力量也是脆弱"这张图的来源。</text>
+<g transform="translate(650,568)">
+  <rect x="0" y="0" width="300" height="70" rx="8" fill="#0f141a" opacity=".86"/>
+  <rect x="14" y="16" width="16" height="16" rx="3" fill="#2F4A63" stroke="#0f141a"/><text x="38" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">标准塔位</text>
+  <rect x="112" y="16" width="16" height="16" rx="3" fill="#7C3AED" stroke="#0f141a" transform="rotate(45 120 24)"/><text x="136" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">支援位</text>
+  <circle cx="214" cy="24" r="8" fill="#D97706"/><text x="230" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">修饰位</text>
+  <polygon points="18,52 32,58 18,64" fill="#E4533C"/><text x="38" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">入口</text>
+  <circle cx="120" cy="58" r="8" fill="#5FE3D6" opacity=".45"/><text x="136" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">地形</text>
+  <rect x="206" y="50" width="14" height="14" rx="3" fill="#1f2830" stroke="#F2F7FA"/><text x="230" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">基地</text>
+</g>
+</g>
+<rect x="20" y="534" width="600" height="404" fill="none" stroke="#22314a"/>
+<g transform="translate(640,534) scale(0.6121)">
+<defs>
+  <linearGradient id="foil__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__3" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__3" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__3" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__3" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__3" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="980" height="660" fill="#111820"/>
+<rect x="22" y="26" width="936" height="572" rx="10" fill="#f3ead6"/>
+<g opacity=".55" stroke="#c9b48f" stroke-width="1">
+<line x1="22" y1="26" x2="22" y2="636"/><line x1="112" y1="26" x2="112" y2="636"/><line x1="202" y1="26" x2="202" y2="636"/><line x1="292" y1="26" x2="292" y2="636"/><line x1="382" y1="26" x2="382" y2="636"/><line x1="472" y1="26" x2="472" y2="636"/><line x1="562" y1="26" x2="562" y2="636"/><line x1="652" y1="26" x2="652" y2="636"/><line x1="742" y1="26" x2="742" y2="636"/><line x1="832" y1="26" x2="832" y2="636"/><line x1="922" y1="26" x2="922" y2="636"/><line x1="22" y1="26" x2="958" y2="26"/><line x1="22" y1="98" x2="958" y2="98"/><line x1="22" y1="170" x2="958" y2="170"/><line x1="22" y1="242" x2="958" y2="242"/><line x1="22" y1="314" x2="958" y2="314"/><line x1="22" y1="386" x2="958" y2="386"/><line x1="22" y1="458" x2="958" y2="458"/><line x1="22" y1="530" x2="958" y2="530"/><line x1="22" y1="602" x2="958" y2="602"/>
+</g>
+<path d="M 91 166 L 234 197 L 346 273 L 473 319 L 652 319 L 800 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 166 L 234 197 L 346 273 L 473 319 L 652 319 L 800 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><path d="M 91 472 L 234 441 L 346 365 L 473 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 472 L 234 441 L 346 365 L 473 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><rect x="169" y="121" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 178 130)"/><rect x="260" y="157" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 270 166)"/><rect x="357" y="208" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 366 217)"/><rect x="505" y="239" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 514 248)"/><rect x="633" y="228" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 642 237)"/><rect x="750" y="259" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 759 268)"/><rect x="169" y="499" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 178 508)"/><rect x="260" y="463" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 270 472)"/><rect x="357" y="412" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 366 421)"/><rect x="505" y="381" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 514 390)"/><rect x="312" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 320 319)"/><rect x="541" y="177" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 550 186)"/><rect x="541" y="443" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 550 452)"/><rect x="699" y="341" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 708 350)"/><circle cx="586" cy="156" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="586" cy="482" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="417" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="417" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">共鸣石</text><circle cx="657" cy="176" r="15" fill="#5FE3D6" opacity=".22"/><text x="657" y="180" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">共鸣石</text><circle cx="657" cy="462" r="15" fill="#5FE3D6" opacity=".22"/><text x="657" y="466" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">虚空</text><circle cx="473" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="473" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">棱镜厅</text><polygon points="67,156 95,166 67,176" fill="#E4533C"/><polygon points="67,462 95,472 67,482" fill="#E4533C"/><rect x="791" y="305" width="28" height="28" rx="5" fill="#1f2830" stroke="#F2F7FA" stroke-width="2"/>
+<text x="40" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">MAP-AST-02　棱镜双子回廊　<span font-size="13" fill="#94a3b8">星辉议会</span></text>
+<text x="40" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">塔位 标准 10 / 支援 4 / 修饰 2　｜　路径 约 32s × 2（中段棱镜厅合流）　｜　事件槽 2　｜　推荐章节 第 4–5 章　｜　双入口（双流可用）</text>
+<text x="40" y="622" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">波次卡组：WAV-AST-D 普通 ｜ WAV-AST-E 精英 ｜ WAV-AST-F 周常</text>
+<text x="40" y="642" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">合流点额外给共鸣范围 +1，双子回廊是星辉版的双入口图：合流之后共鸣链最好看，也最怕破盾反噬。</text>
+<g transform="translate(650,568)">
+  <rect x="0" y="0" width="300" height="70" rx="8" fill="#0f141a" opacity=".86"/>
+  <rect x="14" y="16" width="16" height="16" rx="3" fill="#2F4A63" stroke="#0f141a"/><text x="38" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">标准塔位</text>
+  <rect x="112" y="16" width="16" height="16" rx="3" fill="#7C3AED" stroke="#0f141a" transform="rotate(45 120 24)"/><text x="136" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">支援位</text>
+  <circle cx="214" cy="24" r="8" fill="#D97706"/><text x="230" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">修饰位</text>
+  <polygon points="18,52 32,58 18,64" fill="#E4533C"/><text x="38" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">入口</text>
+  <circle cx="120" cy="58" r="8" fill="#5FE3D6" opacity=".45"/><text x="136" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">地形</text>
+  <rect x="206" y="50" width="14" height="14" rx="3" fill="#1f2830" stroke="#F2F7FA"/><text x="230" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">基地</text>
+</g>
+</g>
+<rect x="640" y="534" width="600" height="404" fill="none" stroke="#22314a"/>
+<g transform="translate(20,988) scale(0.6121)">
+<defs>
+  <linearGradient id="foil__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__4" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__4" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__4" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__4" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__4" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="980" height="660" fill="#111820"/>
+<rect x="22" y="26" width="936" height="572" rx="10" fill="#f3ead6"/>
+<g opacity=".55" stroke="#c9b48f" stroke-width="1">
+<line x1="22" y1="26" x2="22" y2="636"/><line x1="112" y1="26" x2="112" y2="636"/><line x1="202" y1="26" x2="202" y2="636"/><line x1="292" y1="26" x2="292" y2="636"/><line x1="382" y1="26" x2="382" y2="636"/><line x1="472" y1="26" x2="472" y2="636"/><line x1="562" y1="26" x2="562" y2="636"/><line x1="652" y1="26" x2="652" y2="636"/><line x1="742" y1="26" x2="742" y2="636"/><line x1="832" y1="26" x2="832" y2="636"/><line x1="922" y1="26" x2="922" y2="636"/><line x1="22" y1="26" x2="958" y2="26"/><line x1="22" y1="98" x2="958" y2="98"/><line x1="22" y1="170" x2="958" y2="170"/><line x1="22" y1="242" x2="958" y2="242"/><line x1="22" y1="314" x2="958" y2="314"/><line x1="22" y1="386" x2="958" y2="386"/><line x1="22" y1="458" x2="958" y2="458"/><line x1="22" y1="530" x2="958" y2="530"/><line x1="22" y1="602" x2="958" y2="602"/>
+</g>
+<path d="M 91 166 L 239 197 L 356 278 L 473 319 L 657 319 L 800 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 166 L 239 197 L 356 278 L 473 319 L 657 319 L 800 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><path d="M 91 472 L 239 441 L 356 360 L 473 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 472 L 239 441 L 356 360 L 473 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><rect x="174" y="126" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 183 135)"/><rect x="266" y="162" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 275 171)"/><rect x="368" y="213" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 377 222)"/><rect x="516" y="234" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 524 242)"/><rect x="643" y="223" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 652 232)"/><rect x="760" y="259" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 769 268)"/><rect x="174" y="494" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 183 503)"/><rect x="266" y="458" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 275 467)"/><rect x="368" y="407" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 377 416)"/><rect x="516" y="386" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 524 396)"/><rect x="643" y="397" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 652 406)"/><rect x="760" y="361" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 769 370)"/><rect x="317" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 326 319)"/><rect x="551" y="167" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 560 176)"/><rect x="551" y="453" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 560 462)"/><rect x="709" y="330" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 718 339)"/><circle cx="591" cy="146" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="591" cy="492" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="473" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="473" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">合流点</text><circle cx="305" cy="232" r="15" fill="#5FE3D6" opacity=".22"/><text x="305" y="236" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">可破坏</text><polygon points="67,156 95,166 67,176" fill="#E4533C"/><polygon points="67,462 95,472 67,482" fill="#E4533C"/><rect x="791" y="305" width="28" height="28" rx="5" fill="#1f2830" stroke="#F2F7FA" stroke-width="2"/>
+<text x="40" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">MAP-MULTI-01　双岔要塞　<span font-size="13" fill="#94a3b8">中立</span></text>
+<text x="40" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">塔位 标准 12 / 支援 4 / 修饰 2　｜　路径 约 30s × 2（共享基地）　｜　事件槽 2　｜　推荐章节 第 5 章　｜　双入口（双流可用）</text>
+<text x="40" y="622" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">波次卡组：WAV-MUL-A 普通 ｜ WAV-MUL-B 精英 ｜ WAV-MUL-C 周常（BOSS 波）</text>
+<text x="40" y="642" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">塔位最多、入口最短、共享基地：合流点让敌人 +10% 受伤，是全书与长篇第八节点的同一张图。</text>
+<g transform="translate(650,568)">
+  <rect x="0" y="0" width="300" height="70" rx="8" fill="#0f141a" opacity=".86"/>
+  <rect x="14" y="16" width="16" height="16" rx="3" fill="#2F4A63" stroke="#0f141a"/><text x="38" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">标准塔位</text>
+  <rect x="112" y="16" width="16" height="16" rx="3" fill="#7C3AED" stroke="#0f141a" transform="rotate(45 120 24)"/><text x="136" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">支援位</text>
+  <circle cx="214" cy="24" r="8" fill="#D97706"/><text x="230" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">修饰位</text>
+  <polygon points="18,52 32,58 18,64" fill="#E4533C"/><text x="38" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">入口</text>
+  <circle cx="120" cy="58" r="8" fill="#5FE3D6" opacity=".45"/><text x="136" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">地形</text>
+  <rect x="206" y="50" width="14" height="14" rx="3" fill="#1f2830" stroke="#F2F7FA"/><text x="230" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">基地</text>
+</g>
+</g>
+<rect x="20" y="988" width="600" height="404" fill="none" stroke="#22314a"/>
+<g transform="translate(640,988) scale(0.6121)">
+<defs>
+  <linearGradient id="foil__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__5" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__5" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__5" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__5" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__5" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="980" height="660" fill="#111820"/>
+<rect x="22" y="26" width="936" height="572" rx="10" fill="#f3ead6"/>
+<g opacity=".55" stroke="#c9b48f" stroke-width="1">
+<line x1="22" y1="26" x2="22" y2="636"/><line x1="112" y1="26" x2="112" y2="636"/><line x1="202" y1="26" x2="202" y2="636"/><line x1="292" y1="26" x2="292" y2="636"/><line x1="382" y1="26" x2="382" y2="636"/><line x1="472" y1="26" x2="472" y2="636"/><line x1="562" y1="26" x2="562" y2="636"/><line x1="652" y1="26" x2="652" y2="636"/><line x1="742" y1="26" x2="742" y2="636"/><line x1="832" y1="26" x2="832" y2="636"/><line x1="922" y1="26" x2="922" y2="636"/><line x1="22" y1="26" x2="958" y2="26"/><line x1="22" y1="98" x2="958" y2="98"/><line x1="22" y1="170" x2="958" y2="170"/><line x1="22" y1="242" x2="958" y2="242"/><line x1="22" y1="314" x2="958" y2="314"/><line x1="22" y1="386" x2="958" y2="386"/><line x1="22" y1="458" x2="958" y2="458"/><line x1="22" y1="530" x2="958" y2="530"/><line x1="22" y1="602" x2="958" y2="602"/>
+</g>
+<path d="M 96 192 L 320 192 L 524 227 L 723 319 L 795 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 96 192 L 320 192 L 524 227 L 723 319 L 795 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><path d="M 96 446 L 320 446 L 524 411 L 723 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 96 446 L 320 446 L 524 411 L 723 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><rect x="179" y="142" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 188 151)"/><rect x="179" y="478" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 188 487)"/><rect x="317" y="142" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 326 151)"/><rect x="317" y="478" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 326 487)"/><rect x="439" y="177" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 448 186)"/><rect x="439" y="443" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 448 452)"/><rect x="572" y="254" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 581 263)"/><rect x="572" y="366" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 581 375)"/><rect x="663" y="213" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 672 222)"/><rect x="250" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 259 319)"/><rect x="378" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 387 319)"/><rect x="531" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 540 319)"/><rect x="674" y="397" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 683 406)"/><circle cx="606" cy="171" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="218" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="218" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">腐蚀地</text><circle cx="422" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="422" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">腐蚀地</text><circle cx="662" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="662" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">腐蚀地</text><polygon points="67,182 95,192 67,202" fill="#E4533C"/><polygon points="67,436 95,446 67,456" fill="#E4533C"/><rect x="791" y="305" width="28" height="28" rx="5" fill="#1f2830" stroke="#F2F7FA" stroke-width="2"/>
+<text x="40" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">MAP-TID-01　腐殖洼地　<span font-size="13" fill="#94a3b8">涌潮虫群</span></text>
+<text x="40" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">塔位 标准 9 / 支援 4 / 修饰 1　｜　路径 约 35s × 2（并行）　｜　事件槽 2　｜　推荐章节 第 3 章　｜　双入口（双流可用）</text>
+<text x="40" y="622" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">波次卡组：WAV-TID-A 普通 ｜ WAV-TID-B 精英 ｜ WAV-TID-C 周常</text>
+<text x="40" y="642" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">两条并行路 + 三块腐蚀地：敌人越待越弱，虫群卡在这里反而 +10% 腐蚀伤害。涌潮的主场图。</text>
+<g transform="translate(650,568)">
+  <rect x="0" y="0" width="300" height="70" rx="8" fill="#0f141a" opacity=".86"/>
+  <rect x="14" y="16" width="16" height="16" rx="3" fill="#2F4A63" stroke="#0f141a"/><text x="38" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">标准塔位</text>
+  <rect x="112" y="16" width="16" height="16" rx="3" fill="#7C3AED" stroke="#0f141a" transform="rotate(45 120 24)"/><text x="136" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">支援位</text>
+  <circle cx="214" cy="24" r="8" fill="#D97706"/><text x="230" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">修饰位</text>
+  <polygon points="18,52 32,58 18,64" fill="#E4533C"/><text x="38" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">入口</text>
+  <circle cx="120" cy="58" r="8" fill="#5FE3D6" opacity=".45"/><text x="136" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">地形</text>
+  <rect x="206" y="50" width="14" height="14" rx="3" fill="#1f2830" stroke="#F2F7FA"/><text x="230" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">基地</text>
+</g>
+</g>
+<rect x="640" y="988" width="600" height="404" fill="none" stroke="#22314a"/>
+</svg>

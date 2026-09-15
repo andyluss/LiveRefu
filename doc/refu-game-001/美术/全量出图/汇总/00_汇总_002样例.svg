@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 1332" width="1180" height="1332">
+<rect width="1180" height="1332" fill="#0b1220"/>
+<text x="24" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">美术设定002 · 样例 SVG 汇总（7 张）</text>
+<text x="24" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#8fa3bd">千禧透明：六族 / 卡面 / 色板与 bling</text>
+<g transform="translate(20,80) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__0" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__0" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__0" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__0" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__0" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy__0" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal__0" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic__0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA__0" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT__0" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF__0" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec__0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom__0"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark__0"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#0b1220"/>
+
+<g>
+  <rect width="512" height="512" fill="#0e1526"/>
+  <ellipse cx="256" cy="446" rx="210" ry="34" fill="#4FA8D8" opacity=".12"/>
+  <line x1="20" y1="446" x2="492" y2="446" stroke="#2A3B4D" stroke-width="1" opacity=".6"/>
+  <rect x="120" y="150" width="272" height="266" rx="14" fill="url(#acrylic__0)" stroke="#AFD3E8" stroke-width="2.5"/>
+  <rect x="120" y="150" width="272" height="266" rx="14" fill="none" stroke="#F2F7FA" stroke-width="1" opacity=".55"/>
+  <g stroke="#9FE0FF" stroke-width="7" stroke-linecap="round" opacity=".85">
+    <line x1="164" y1="392" x2="164" y2="228"/><line x1="212" y1="392" x2="212" y2="256"/></g>
+  <g fill="none" stroke="#7FC7EA" stroke-width="3" opacity=".9">
+    <circle cx="316" cy="252" r="30"/><circle cx="316" cy="252" r="12"/></g>
+  <g fill="none" stroke="#7FC7EA" stroke-width="2.4" opacity=".8"><circle cx="272" cy="330" r="20"/></g>
+  <g stroke="#4FA8D8" stroke-width="2" opacity=".75" fill="none">
+    <path d="M150 200 H360"/><path d="M150 214 H300"/><path d="M150 360 H250 V316"/></g>
+  <circle cx="256" cy="272" r="52" fill="url(#coreA__0)" filter="url(#bloom__0)"/>
+  <circle cx="256" cy="272" r="20" fill="#F2F7FA" opacity=".9"/>
+  <rect x="176" y="176" width="160" height="72" rx="8" fill="#F2F7FA" opacity=".14" stroke="#F2F7FA" stroke-width="1.4"/>
+  <rect x="176" y="176" width="160" height="72" rx="8" fill="url(#spec__0)" opacity=".35"/>
+  <text x="256" y="218" text-anchor="middle" font-family="monospace" font-size="15" fill="#9FE0FF">MODULE SLOT 02</text>
+  <g fill="#C9D4E6"><circle cx="136" cy="166" r="6"/><circle cx="376" cy="166" r="6"/><circle cx="136" cy="400" r="6"/><circle cx="376" cy="400" r="6"/></g>
+  <rect x="222" y="416" width="68" height="18" rx="5" fill="#2A3B4D" stroke="#9FE0FF" stroke-width="1.4"/>
+  <path d="M120 200 V400" stroke="#F2F7FA" stroke-width="3" opacity=".8"/>
+  <path d="M392 190 V386" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">铁砧联邦 · 亚克力工事（n 1.49–1.52 / 观察窗雾度 6–12%）</text>
+<g opacity=".9"><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#sheen__0)"/><g opacity=".75"><path d="M68 212.04 Q 256.0 168.6 444 219.28" fill="none" stroke="url(#iri__0)" stroke-width="7"/><path d="M68 284.44 Q 256.0 248.24 444 291.68" fill="none" stroke="url(#iri__0)" stroke-width="5"/><path d="M68 342.36 Q 256.0 313.4 444 349.6" fill="none" stroke="url(#iri__0)" stroke-width="4"/></g><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#inner__0)"/><g opacity=".55" filter="url(#refract__0)"><rect x="62" y="62" width="388" height="358" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="66" y="66" width="24" height="350" rx="12" fill="url(#spec__0)" opacity=".5"/><rect x="60" y="60" width="392" height="362" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".35"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="20" y="80" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(400,80) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__1" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__1" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__1" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__1" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__1" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy__1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal__1" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic__1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA__1" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT__1" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF__1" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec__1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom__1"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark__1"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#08150f"/>
+
+<g>
+  <rect width="512" height="512" fill="#0b1a12"/>
+  <ellipse cx="256" cy="430" rx="200" ry="30" fill="#5BF0C0" opacity=".12"/>
+  <ellipse cx="256" cy="266" rx="140" ry="164" fill="url(#jelly__1)" stroke="#BCE8C4" stroke-width="2.5"/>
+  <ellipse cx="256" cy="266" rx="118" ry="142" fill="none" stroke="#D6FF6B" stroke-width="1.2" opacity=".6"/>
+  <g fill="#3F6B34" stroke="#8FBF6A" stroke-width="2">
+    <ellipse cx="216" cy="300" rx="26" ry="17"/><ellipse cx="286" cy="330" rx="22" ry="14"/><ellipse cx="262" cy="220" rx="24" ry="15"/></g>
+  <g fill="#0E1F16"><circle cx="206" cy="297" r="3"/><circle cx="276" cy="328" r="2.6"/><circle cx="252" cy="218" r="2.6"/></g>
+  <circle cx="256" cy="272" r="60" fill="url(#coreT__1)" filter="url(#bloom__1)"/>
+  <g fill="#EAF6EF"><circle cx="256" cy="130" r="4"/><circle cx="256" cy="186" r="4"/><circle cx="256" cy="266" r="4"/><circle cx="256" cy="346" r="4"/><circle cx="256" cy="402" r="4"/></g>
+  <g font-family="monospace" font-size="11" fill="#BCE8C4"><text x="272" y="134">1</text><text x="272" y="190">2</text><text x="272" y="270">3</text><text x="272" y="350">4</text><text x="272" y="406">5</text></g>
+  <path d="M150 300 q60 40 212 -4" fill="none" stroke="#B6E8FF" stroke-width="5" opacity=".55"/>
+  <path d="M138 250 q70 34 236 -18" fill="none" stroke="#FFD3EE" stroke-width="4" opacity=".45"/>
+  <path d="M150 350 q64 30 208 -10" fill="none" stroke="#DDF7A8" stroke-width="4" opacity=".45"/>
+  <path d="M126 330 A140 164 0 0 1 200 120" fill="none" stroke="#EAF6EF" stroke-width="3.4" opacity=".9"/>
+  <path d="M386 214 A140 164 0 0 1 358 372" fill="none" stroke="#D6FF6B" stroke-width="2.4" opacity=".7"/>
+  <g fill="#EAF6EF" opacity=".5"><circle cx="180" cy="180" r="8"/><circle cx="330" cy="200" r="6"/><circle cx="348" cy="300" r="9"/><circle cx="196" cy="392" r="5"/></g>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">涌潮虫群 · 凝胶卵膜（n 1.33–1.42 / 雾度 8–18% / 膜厚 0.6–2.4mm）</text>
+<g opacity=".9"><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#sheen__1)"/><g opacity=".75"><path d="M68 212.04 Q 256.0 168.6 444 219.28" fill="none" stroke="url(#iri__1)" stroke-width="7"/><path d="M68 284.44 Q 256.0 248.24 444 291.68" fill="none" stroke="url(#iri__1)" stroke-width="5"/><path d="M68 342.36 Q 256.0 313.4 444 349.6" fill="none" stroke="url(#iri__1)" stroke-width="4"/></g><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#inner__1)"/><g opacity=".55" filter="url(#refract__1)"><rect x="62" y="62" width="388" height="358" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="66" y="66" width="24" height="350" rx="12" fill="url(#spec__1)" opacity=".5"/><rect x="60" y="60" width="392" height="362" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".35"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="400" y="80" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(780,80) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__2" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__2" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__2" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__2" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__2" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy__2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal__2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic__2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA__2" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT__2" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF__2" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec__2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom__2"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark__2"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#0a0f1c"/>
+
+<g>
+  <rect width="512" height="512" fill="#0d1220"/>
+  <ellipse cx="256" cy="440" rx="180" ry="26" fill="#5FE3D6" opacity=".14"/>
+  <polygon points="256,64 322,150 256,196 190,150" fill="url(#crystal__2)" stroke="#F2F6FF" stroke-width="2"/>
+  <polygon points="256,64 294,150 256,196" fill="#FFFFFF" opacity=".55"/>
+  <polygon points="256,196 320,240 320,412 256,444" fill="url(#crystal__2)" opacity=".85" stroke="#EAF1FA" stroke-width="1.6"/>
+  <polygon points="256,196 192,240 192,412 256,444" fill="#5FE3D6" opacity=".35" stroke="#EAF1FA" stroke-width="1.4"/>
+  <line x1="256" y1="196" x2="256" y2="444" stroke="#FFFFFF" stroke-width="1.6" opacity=".85"/>
+  <g opacity=".85">
+    <path d="M322 150 L432 118" stroke="#6BD5FF" stroke-width="3"/>
+    <path d="M322 158 L438 158" stroke="#A98BFF" stroke-width="3"/>
+    <path d="M322 166 L430 198" stroke="#FF6B9D" stroke-width="3"/></g>
+  <g opacity=".45">
+    <path d="M190 152 L74 128" stroke="#6BD5FF" stroke-width="2"/>
+    <path d="M190 160 L70 166" stroke="#A98BFF" stroke-width="2"/></g>
+  <circle cx="256" cy="330" r="120" fill="none" stroke="#5FE3D6" stroke-width="1.6" opacity=".55" stroke-dasharray="10 8"/>
+  <circle cx="256" cy="330" r="140" fill="none" stroke="#7CF9FF" stroke-width="1" opacity=".3"/>
+  <circle cx="256" cy="330" r="46" fill="url(#coreF__2)" filter="url(#bloom__2)"/>
+  <rect x="216" y="356" width="80" height="26" rx="4" fill="#2A3142" stroke="#9FE8FF" stroke-width="1.2"/>
+  <text x="256" y="374" text-anchor="middle" font-family="monospace" font-size="13" fill="#F2F6FF">AST-T01</text>
+  <path d="M192 250 V406" stroke="#F2F6FF" stroke-width="2.4" opacity=".9"/>
+  <path d="M320 244 V400" stroke="#5FE3D6" stroke-width="2" opacity=".8"/>
+  <g fill="#EAF1FA" opacity=".8"><polygon points="96,238 112,252 100,272 84,258"/><polygon points="420,300 436,312 424,332 408,318"/></g>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">星辉议会 · 晶体棱镜塔（n ≈ 1.55 / 色散只在棱线 / 边缘光 2–3px）</text>
+<g opacity=".9"><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#sheen__2)"/><g opacity=".75"><path d="M68 212.04 Q 256.0 168.6 444 219.28" fill="none" stroke="url(#iri__2)" stroke-width="7"/><path d="M68 284.44 Q 256.0 248.24 444 291.68" fill="none" stroke="url(#iri__2)" stroke-width="5"/><path d="M68 342.36 Q 256.0 313.4 444 349.6" fill="none" stroke="url(#iri__2)" stroke-width="4"/></g><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#inner__2)"/><g opacity=".55" filter="url(#refract__2)"><rect x="62" y="62" width="388" height="358" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="66" y="66" width="24" height="350" rx="12" fill="url(#spec__2)" opacity=".5"/><rect x="60" y="60" width="392" height="362" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".35"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="780" y="80" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(20,494) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__3" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__3" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__3" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__3" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__3" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy__3" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal__3" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic__3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA__3" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT__3" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF__3" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec__3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom__3"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark__3"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#120e1c"/>
+
+<g>
+  <rect width="512" height="512" fill="#141020"/>
+  <ellipse cx="256" cy="440" rx="170" ry="26" fill="#FFD23F" opacity=".14"/>
+  <rect x="176" y="392" width="160" height="26" rx="6" fill="#C89B6A" stroke="#8d6a42" stroke-width="2"/>
+  <g stroke="#FFC13A" stroke-width="9" stroke-linecap="round" opacity=".95">
+    <line x1="206" y1="392" x2="192" y2="430"/><line x1="256" y1="392" x2="256" y2="432"/><line x1="306" y1="392" x2="320" y2="430"/></g>
+  <rect x="158" y="176" width="196" height="216" rx="46" fill="url(#candy__3)" stroke="#FFD23F" stroke-width="3"/>
+  <rect x="176" y="194" width="160" height="180" rx="36" fill="#FFF3C4" opacity=".18"/>
+  <g fill="none" stroke="#9FE8FF" stroke-width="3" opacity=".95">
+    <circle cx="216" cy="330" r="26"/><circle cx="216" cy="330" r="9"/>
+    <circle cx="272" cy="352" r="20"/><circle cx="272" cy="352" r="7"/>
+    <circle cx="304" cy="300" r="16"/></g>
+  <g stroke="#9FE8FF" stroke-width="2" opacity=".7"><path d="M190 246 H330"/><path d="M190 258 H300"/></g>
+  <circle cx="256" cy="256" r="46" fill="#4C8DFF" opacity=".55" filter="url(#bloom__3)"/>
+  <circle cx="256" cy="256" r="18" fill="#9FE8FF" opacity=".95"/>
+  <circle cx="238" cy="228" r="16" fill="#3A3F4A" stroke="#9FE8FF" stroke-width="2"/>
+  <circle cx="238" cy="228" r="6" fill="#FFF3C4"/>
+  <path d="M258 214 q10 8 16 2" stroke="#3A3F4A" stroke-width="2.4" fill="none"/>
+  <rect x="288" y="196" width="52" height="34" rx="6" fill="#FF74B8" opacity=".95"/>
+  <text x="314" y="218" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#3A3F4A">贴纸</text>
+  <rect x="196" y="352" width="64" height="26" rx="5" fill="#3A3F4A" stroke="#4C8DFF" stroke-width="1.6"/>
+  <rect x="182" y="200" width="26" height="150" rx="13" fill="url(#spec__3)" opacity=".75"/>
+  <path d="M158 210 V358" stroke="#FFF3C4" stroke-width="3" opacity=".85"/>
+  <path d="M354 206 V352" stroke="#FF9A3C" stroke-width="2.4" opacity=".7"/>
+  <use href="#spark__3" transform="translate(120,150) scale(.8)"/><use href="#spark__3" transform="translate(392,196) scale(.6)"/>
+  <use href="#spark__3" transform="translate(150,368) scale(.5)"/><use href="#spark__3" transform="translate(372,352) scale(.7)"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">齿轮帮 · 透明玩具壳小工（雾度 12–18% / 内件不透明 / 贴纸永远清晰）</text>
+<g opacity=".9"><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#sheen__3)"/><g opacity=".75"><path d="M68 212.04 Q 256.0 168.6 444 219.28" fill="none" stroke="url(#iri__3)" stroke-width="7"/><path d="M68 284.44 Q 256.0 248.24 444 291.68" fill="none" stroke="url(#iri__3)" stroke-width="5"/><path d="M68 342.36 Q 256.0 313.4 444 349.6" fill="none" stroke="url(#iri__3)" stroke-width="4"/></g><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#inner__3)"/><g opacity=".55" filter="url(#refract__3)"><rect x="62" y="62" width="388" height="358" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="66" y="66" width="24" height="350" rx="12" fill="url(#spec__3)" opacity=".5"/><rect x="60" y="60" width="392" height="362" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".35"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="20" y="494" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(400,494) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__4" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__4" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__4" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__4" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__4" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy__4" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal__4" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic__4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA__4" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT__4" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF__4" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec__4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom__4"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark__4"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#0b1120"/>
+
+<g>
+  <rect width="512" height="512" fill="#0d1420"/>
+  <path d="M256 60 q-70 40 -18 96" fill="none" stroke="#F4F6F3" stroke-width="3" opacity=".85"/>
+  <circle cx="256" cy="52" r="12" fill="none" stroke="#F4F6F3" stroke-width="3"/>
+  <g transform="rotate(-12 256 270)">
+    <rect x="150" y="150" width="212" height="240" rx="14" fill="url(#foil__4)" opacity=".9" stroke="#F4F6F3" stroke-width="2"/>
+    <rect x="150" y="150" width="212" height="240" rx="14" fill="url(#spec__4)" opacity=".3"/>
+    <g stroke="#FFFFFF" stroke-width="1.2" opacity=".5">
+      <line x1="150" y1="200" x2="362" y2="182"/><line x1="150" y1="240" x2="362" y2="222"/>
+      <line x1="150" y1="280" x2="362" y2="262"/><line x1="150" y1="320" x2="362" y2="302"/></g>
+    <rect x="182" y="286" width="148" height="66" rx="6" fill="#F4F6F3" stroke="#C9D4E6" stroke-width="1.4"/>
+    <text x="256" y="312" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="15" fill="#2A3142">西线 · 完成 7</text>
+    <text x="256" y="336" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="13" fill="#2A3142">维修位后一格</text>
+    <path d="M362 150 L362 196 L316 150 Z" fill="#FFFFFF" opacity=".75"/>
+  </g>
+  <g stroke="#7CF9FF" stroke-width="2.6" opacity=".9" fill="none">
+    <path d="M96 300 q34 -26 0 -52"/><path d="M76 322 q56 -46 0 -94"/>
+    <path d="M416 300 q-34 -26 0 -52"/><path d="M436 322 q-56 -46 0 -94"/></g>
+  <circle cx="256" cy="408" r="26" fill="#7CF9FF" opacity=".5" filter="url(#bloom__4)"/>
+  <path d="M150 168 V370" stroke="#F4F6F3" stroke-width="2.4" opacity=".9"/>
+  <path d="M362 160 V364" stroke="#5FF3E0" stroke-width="2" opacity=".8"/>
+  <use href="#spark__4" transform="translate(140,150) scale(.9)"/><use href="#spark__4" transform="translate(392,236) scale(.7)"/>
+  <use href="#spark__4" transform="translate(120,392) scale(.6)"/><use href="#spark__4" transform="translate(400,392) scale(.8)"/>
+  <use href="#spark__4" transform="translate(180,428) scale(.5)"/><use href="#spark__4" transform="translate(340,120) scale(.6)"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">光尘侍从 · 镭射箔挂件（箔透明、字不透明 / 角度色青→紫 / 闪粉 120 上限）</text>
+<g opacity=".9"><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#sheen__4)"/><g opacity=".75"><path d="M68 212.04 Q 256.0 168.6 444 219.28" fill="none" stroke="url(#iri__4)" stroke-width="7"/><path d="M68 284.44 Q 256.0 248.24 444 291.68" fill="none" stroke="url(#iri__4)" stroke-width="5"/><path d="M68 342.36 Q 256.0 313.4 444 349.6" fill="none" stroke="url(#iri__4)" stroke-width="4"/></g><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#inner__4)"/><g opacity=".55" filter="url(#refract__4)"><rect x="62" y="62" width="388" height="358" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="66" y="66" width="24" height="350" rx="12" fill="url(#spec__4)" opacity=".5"/><rect x="60" y="60" width="392" height="362" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".35"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="400" y="494" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(780,494) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__5" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__5" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__5" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__5" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__5" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy__5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal__5" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic__5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA__5" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT__5" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF__5" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec__5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom__5"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark__5"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#0a1017"/>
+
+<g transform="translate(56,20)">
+  <rect x="0" y="0" width="400" height="472" rx="20" fill="url(#acrylic__5)" stroke="#AFD3E8" stroke-width="2.5"/>
+  <rect x="10" y="10" width="380" height="452" rx="14" fill="#0f1a26" opacity=".55"/>
+  <rect x="10" y="10" width="380" height="96" rx="14" fill="url(#foil__5)" opacity=".55"/>
+  <rect x="10" y="10" width="380" height="96" rx="14" fill="url(#spec__5)" opacity=".35"/>
+  <g opacity=".8" stroke="#7FC7EA" stroke-width="2" fill="none">
+    <path d="M60 150 H340"/><path d="M60 166 H280"/><path d="M60 300 H200 V250"/></g>
+  <g opacity=".9" fill="none" stroke="#9FE0FF" stroke-width="3"><circle cx="300" cy="180" r="20"/><circle cx="300" cy="180" r="8"/></g>
+  <rect x="24" y="176" width="352" height="78" rx="10" fill="#101a24" stroke="#7FC7EA" stroke-width="1.4"/>
+  <g font-family="PingFang SC, sans-serif">
+    <text x="96" y="212" text-anchor="middle" font-size="26" font-weight="700" fill="#F2F7FA">12</text>
+    <text x="96" y="236" text-anchor="middle" font-size="12" fill="#9FB3C4">伤害</text>
+    <text x="200" y="212" text-anchor="middle" font-size="26" font-weight="700" fill="#F2F7FA">1.0</text>
+    <text x="200" y="236" text-anchor="middle" font-size="12" fill="#9FB3C4">攻速 /s</text>
+    <text x="304" y="212" text-anchor="middle" font-size="26" font-weight="700" fill="#F2F7FA">3</text>
+    <text x="304" y="236" text-anchor="middle" font-size="12" fill="#9FB3C4">射程 /格</text></g>
+  <rect x="326" y="18" width="50" height="50" rx="12" fill="#F2F7FA" opacity=".9"/>
+  <text x="351" y="52" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="22" font-weight="700" fill="#1B2733">20</text>
+  <text x="26" y="284" font-family="PingFang SC, sans-serif" font-size="22" font-weight="700" fill="#F2F7FA">模块炮塔</text>
+  <rect x="26" y="300" width="150" height="34" rx="17" fill="#3F5F7A" opacity=".9"/>
+  <text x="101" y="323" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="14" fill="#F2F7FA">关键词：弹药</text>
+  <g transform="translate(330,268)">
+    <circle r="34" fill="url(#foil__5)" opacity=".95" stroke="#F4F6F3" stroke-width="1.6"/>
+    <circle r="24" fill="none" stroke="#F4F6F3" stroke-width="1.2" opacity=".8"/>
+    <text y="-2" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="15" fill="#1B2733">加压</text>
+    <text y="16" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2733">Lv1 · 3 分</text></g>
+  <rect x="26" y="356" width="348" height="12" rx="6" fill="#2F4A63"/>
+  <text x="26" y="392" font-family="PingFang SC, sans-serif" font-size="13" fill="#B7C7D8">槽位：标准塔位（钢蓝）　｜　来源：ANV-T01</text>
+  <text x="26" y="416" font-family="PingFang SC, sans-serif" font-size="13" fill="#B7C7D8">羁绊：火力网（3 张「弹药」→ +10% 攻速）</text>
+  <text x="26" y="444" font-family="PingFang SC, sans-serif" font-size="12" fill="#7f93a8">卡面材质：2mm 亚克力 + 镭射箔 + 不透明底片</text>
+  <path d="M0 60 V420" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M400 70 V410" stroke="#5FF3E0" stroke-width="2.4" opacity=".75"/>
+  <use href="#spark__5" transform="translate(380,150) scale(.7)"/><use href="#spark__5" transform="translate(30,140) scale(.6)"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">卡面样板 · 透明亚克力卡（数字压不透明底片 / 难度章＝镭射贴纸）</text>
+<g opacity=".9"><rect x="56" y="14" width="400" height="452" rx="16" fill="url(#sheen__5)"/><g opacity=".75"><path d="M64 203.84 Q 256.0 149.6 448 212.88" fill="none" stroke="url(#iri__5)" stroke-width="7"/><path d="M64 294.24 Q 256.0 249.04000000000002 448 303.28000000000003" fill="none" stroke="url(#iri__5)" stroke-width="5"/><path d="M64 366.56 Q 256.0 330.4 448 375.6" fill="none" stroke="url(#iri__5)" stroke-width="4"/></g><rect x="56" y="14" width="400" height="452" rx="16" fill="url(#inner__5)"/><g opacity=".55" filter="url(#refract__5)"><rect x="58" y="16" width="396" height="448" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="62" y="20" width="24" height="440" rx="12" fill="url(#spec__5)" opacity=".5"/><rect x="56" y="14" width="400" height="452" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".35"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="780" y="494" width="364" height="364" fill="none" stroke="#22314a"/>
+<g transform="translate(20,908) scale(0.7109)">
+
+<defs>
+  <linearGradient id="foil__6" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec__6" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen__6" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri__6" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner__6" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust__6" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan__6" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom__6" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract__6" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs>
+  <linearGradient id="foil__6" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy__6" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly__6" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal__6" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic__6" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA__6" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT__6" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF__6" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec__6" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom__6"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark__6"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#0b1220"/>
+<g><g><rect x="30" y="104" width="64" height="74" rx="10" fill="#3E5A73" stroke="#22314a" stroke-width="1.4"/><text x="62" y="192" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">铁砧 冷钢蓝</text><text x="62" y="206" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#3E5A73</text></g><g><rect x="110" y="104" width="64" height="74" rx="10" fill="#4FA8D8" stroke="#22314a" stroke-width="1.4"/><text x="142" y="192" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">铁砧 内芯青</text><text x="142" y="206" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#4FA8D8</text></g><g><rect x="190" y="104" width="64" height="74" rx="10" fill="#7FD08A" stroke="#22314a" stroke-width="1.4"/><text x="222" y="192" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">涌潮 膜绿</text><text x="222" y="206" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#7FD08A</text></g><g><rect x="270" y="104" width="64" height="74" rx="10" fill="#5BF0C0" stroke="#22314a" stroke-width="1.4"/><text x="302" y="192" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">涌潮 荧光</text><text x="302" y="206" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#5BF0C0</text></g><g><rect x="350" y="104" width="64" height="74" rx="10" fill="#F2F6FF" stroke="#22314a" stroke-width="1.4"/><text x="382" y="192" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">星辉 棱镜白</text><text x="382" y="206" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#F2F6FF</text></g><g><rect x="430" y="104" width="64" height="74" rx="10" fill="#5FE3D6" stroke="#22314a" stroke-width="1.4"/><text x="462" y="192" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">星辉 护盾青</text><text x="462" y="206" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#5FE3D6</text></g><g><rect x="30" y="220" width="64" height="74" rx="10" fill="#FFD23F" stroke="#22314a" stroke-width="1.4"/><text x="62" y="308" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">齿轮帮 糖果黄</text><text x="62" y="322" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#FFD23F</text></g><g><rect x="110" y="220" width="64" height="74" rx="10" fill="#4C8DFF" stroke="#22314a" stroke-width="1.4"/><text x="142" y="308" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">齿轮帮 电池蓝</text><text x="142" y="322" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#4C8DFF</text></g><g><rect x="190" y="220" width="64" height="74" rx="10" fill="#EAF6EF" stroke="#22314a" stroke-width="1.4"/><text x="222" y="308" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">孢子 膜乳白</text><text x="222" y="322" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#EAF6EF</text></g><g><rect x="270" y="220" width="64" height="74" rx="10" fill="#5FF3E0" stroke="#22314a" stroke-width="1.4"/><text x="302" y="308" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">光尘 角度青</text><text x="302" y="322" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#5FF3E0</text></g><g><rect x="350" y="220" width="64" height="74" rx="10" fill="#B26BFF" stroke="#22314a" stroke-width="1.4"/><text x="382" y="308" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">光尘 角度紫</text><text x="382" y="322" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#B26BFF</text></g><g><rect x="430" y="220" width="64" height="74" rx="10" fill="#F4F6F3" stroke="#22314a" stroke-width="1.4"/><text x="462" y="308" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10.5" fill="#c9d4e6">记录纸白</text><text x="462" y="322" text-anchor="middle" font-family="monospace" font-size="10" fill="#8fa3bd">#F4F6F3</text></g><text x="30" y="368" font-family="PingFang SC, sans-serif" font-size="15" fill="#e8eefb">bling 分级示例</text><rect x="30" y="382" width="150" height="44" rx="8" fill="url(#foil__6)"/><text x="105" y="442" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="11" fill="#8fa3bd">级1 静态箔</text><rect x="196" y="382" width="150" height="44" rx="8" fill="#0f1a26" stroke="#5FE3D6"/><rect x="196" y="382" width="150" height="44" rx="8" fill="url(#spec__6)" opacity=".4"/><text x="271" y="442" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="11" fill="#8fa3bd">级2 扫光</text><circle cx="416" cy="404" r="22" fill="#7CF9FF" opacity=".45" filter="url(#bloom__6)"/><text x="416" y="442" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="11" fill="#8fa3bd">级3 辉光</text><use href="#spark__6" transform="translate(472,388) scale(.7)"/><text x="472" y="424" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="11" fill="#8fa3bd">闪粉</text><text x="30" y="482" font-family="PingFang SC, sans-serif" font-size="13" fill="#c9d4e6">键色占比</text><rect x="120" y="470" width="206" height="16" rx="8" fill="#3E5A73"/><rect x="326" y="470" width="86" height="16" rx="8" fill="#4FA8D8"/><rect x="412" y="470" width="34" height="16" rx="8" fill="#F2F7FA"/><rect x="446" y="470" width="18" height="16" rx="8" fill="#FFD23F"/><text x="470" y="483" font-family="PingFang SC, sans-serif" font-size="11" fill="#8fa3bd">60/25/10/5</text></g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">002 键色表与 bling 分级（键色占比 60/25/10/5）</text>
+<g opacity=".9"><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#sheen__6)"/><g opacity=".75"><path d="M68 212.04 Q 256.0 168.6 444 219.28" fill="none" stroke="url(#iri__6)" stroke-width="7"/><path d="M68 284.44 Q 256.0 248.24 444 291.68" fill="none" stroke="url(#iri__6)" stroke-width="5"/><path d="M68 342.36 Q 256.0 313.4 444 349.6" fill="none" stroke="url(#iri__6)" stroke-width="4"/></g><rect x="60" y="60" width="392" height="362" rx="16" fill="url(#inner__6)"/><g opacity=".55" filter="url(#refract__6)"><rect x="62" y="62" width="388" height="358" rx="15" fill="none" stroke="#FFFFFF" stroke-width="1.6"/></g><rect x="66" y="66" width="24" height="350" rx="12" fill="url(#spec__6)" opacity=".5"/><rect x="60" y="60" width="392" height="362" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".35"/></g>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</g>
+<rect x="20" y="908" width="364" height="364" fill="none" stroke="#22314a"/>
+</svg>

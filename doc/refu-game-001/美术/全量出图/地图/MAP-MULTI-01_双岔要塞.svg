@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" width="980" height="660" role="img" aria-label="双岔要塞">
+<defs>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<rect width="980" height="660" fill="#111820"/>
+<rect x="22" y="26" width="936" height="572" rx="10" fill="#f3ead6"/>
+<g opacity=".55" stroke="#c9b48f" stroke-width="1">
+<line x1="22" y1="26" x2="22" y2="636"/><line x1="112" y1="26" x2="112" y2="636"/><line x1="202" y1="26" x2="202" y2="636"/><line x1="292" y1="26" x2="292" y2="636"/><line x1="382" y1="26" x2="382" y2="636"/><line x1="472" y1="26" x2="472" y2="636"/><line x1="562" y1="26" x2="562" y2="636"/><line x1="652" y1="26" x2="652" y2="636"/><line x1="742" y1="26" x2="742" y2="636"/><line x1="832" y1="26" x2="832" y2="636"/><line x1="922" y1="26" x2="922" y2="636"/><line x1="22" y1="26" x2="958" y2="26"/><line x1="22" y1="98" x2="958" y2="98"/><line x1="22" y1="170" x2="958" y2="170"/><line x1="22" y1="242" x2="958" y2="242"/><line x1="22" y1="314" x2="958" y2="314"/><line x1="22" y1="386" x2="958" y2="386"/><line x1="22" y1="458" x2="958" y2="458"/><line x1="22" y1="530" x2="958" y2="530"/><line x1="22" y1="602" x2="958" y2="602"/>
+</g>
+<path d="M 91 166 L 239 197 L 356 278 L 473 319 L 657 319 L 800 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 166 L 239 197 L 356 278 L 473 319 L 657 319 L 800 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><path d="M 91 472 L 239 441 L 356 360 L 473 319" fill="none" stroke="#8a7a58" stroke-width="18" stroke-linejoin="round" opacity=".5"/><path d="M 91 472 L 239 441 L 356 360 L 473 319" fill="none" stroke="#c9a877" stroke-width="9" stroke-dasharray="16 12" stroke-linejoin="round"/><rect x="174" y="126" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 183 135)"/><rect x="266" y="162" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 275 171)"/><rect x="368" y="213" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 377 222)"/><rect x="516" y="234" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 524 242)"/><rect x="643" y="223" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 652 232)"/><rect x="760" y="259" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 769 268)"/><rect x="174" y="494" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 183 503)"/><rect x="266" y="458" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 275 467)"/><rect x="368" y="407" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 377 416)"/><rect x="516" y="386" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 524 396)"/><rect x="643" y="397" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 652 406)"/><rect x="760" y="361" width="18" height="18" rx="4" fill="#2F4A63" stroke="#0f141a" stroke-width="1.5" transform="rotate(0 769 370)"/><rect x="317" y="310" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 326 319)"/><rect x="551" y="167" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 560 176)"/><rect x="551" y="453" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 560 462)"/><rect x="709" y="330" width="18" height="18" rx="4" fill="#7C3AED" stroke="#0f141a" stroke-width="1.5" transform="rotate(45 718 339)"/><circle cx="591" cy="146" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="591" cy="492" r="7" fill="#D97706" stroke="#0f141a" stroke-width="1.5"/><circle cx="473" cy="319" r="15" fill="#5FE3D6" opacity=".22"/><text x="473" y="323" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">合流点</text><circle cx="305" cy="232" r="15" fill="#5FE3D6" opacity=".22"/><text x="305" y="236" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="10.5" fill="#0f141a">可破坏</text><polygon points="67,156 95,166 67,176" fill="#E4533C"/><polygon points="67,462 95,472 67,482" fill="#E4533C"/><rect x="791" y="305" width="28" height="28" rx="5" fill="#1f2830" stroke="#F2F7FA" stroke-width="2"/>
+<text x="40" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="19" fill="#e8eefb">MAP-MULTI-01　双岔要塞　<span font-size="13" fill="#94a3b8">中立</span></text>
+<text x="40" y="54" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">塔位 标准 12 / 支援 4 / 修饰 2　｜　路径 约 30s × 2（共享基地）　｜　事件槽 2　｜　推荐章节 第 5 章　｜　双入口（双流可用）</text>
+<text x="40" y="622" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">波次卡组：WAV-MUL-A 普通 ｜ WAV-MUL-B 精英 ｜ WAV-MUL-C 周常（BOSS 波）</text>
+<text x="40" y="642" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">塔位最多、入口最短、共享基地：合流点让敌人 +10% 受伤，是全书与长篇第八节点的同一张图。</text>
+<g transform="translate(650,568)">
+  <rect x="0" y="0" width="300" height="70" rx="8" fill="#0f141a" opacity=".86"/>
+  <rect x="14" y="16" width="16" height="16" rx="3" fill="#2F4A63" stroke="#0f141a"/><text x="38" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">标准塔位</text>
+  <rect x="112" y="16" width="16" height="16" rx="3" fill="#7C3AED" stroke="#0f141a" transform="rotate(45 120 24)"/><text x="136" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">支援位</text>
+  <circle cx="214" cy="24" r="8" fill="#D97706"/><text x="230" y="29" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">修饰位</text>
+  <polygon points="18,52 32,58 18,64" fill="#E4533C"/><text x="38" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">入口</text>
+  <circle cx="120" cy="58" r="8" fill="#5FE3D6" opacity=".45"/><text x="136" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">地形</text>
+  <rect x="206" y="50" width="14" height="14" rx="3" fill="#1f2830" stroke="#F2F7FA"/><text x="230" y="62" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#DCE6F2">基地</text>
+</g>
+</svg>
