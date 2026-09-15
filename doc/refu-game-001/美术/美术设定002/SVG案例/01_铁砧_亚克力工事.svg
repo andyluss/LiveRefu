@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="铁砧联邦 · 亚克力工事（n 1.49–1.52 / 观察窗雾度 6–12%）">
+
+<defs>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#0b1220"/>
+
+<g>
+  <rect width="512" height="512" fill="#0e1526"/>
+  <ellipse cx="256" cy="446" rx="210" ry="34" fill="#4FA8D8" opacity=".12"/>
+  <line x1="20" y1="446" x2="492" y2="446" stroke="#2A3B4D" stroke-width="1" opacity=".6"/>
+  <rect x="120" y="150" width="272" height="266" rx="14" fill="url(#acrylic)" stroke="#AFD3E8" stroke-width="2.5"/>
+  <rect x="120" y="150" width="272" height="266" rx="14" fill="none" stroke="#F2F7FA" stroke-width="1" opacity=".55"/>
+  <g stroke="#9FE0FF" stroke-width="7" stroke-linecap="round" opacity=".85">
+    <line x1="164" y1="392" x2="164" y2="228"/><line x1="212" y1="392" x2="212" y2="256"/></g>
+  <g fill="none" stroke="#7FC7EA" stroke-width="3" opacity=".9">
+    <circle cx="316" cy="252" r="30"/><circle cx="316" cy="252" r="12"/></g>
+  <g fill="none" stroke="#7FC7EA" stroke-width="2.4" opacity=".8"><circle cx="272" cy="330" r="20"/></g>
+  <g stroke="#4FA8D8" stroke-width="2" opacity=".75" fill="none">
+    <path d="M150 200 H360"/><path d="M150 214 H300"/><path d="M150 360 H250 V316"/></g>
+  <circle cx="256" cy="272" r="52" fill="url(#coreA)" filter="url(#bloom)"/>
+  <circle cx="256" cy="272" r="20" fill="#F2F7FA" opacity=".9"/>
+  <rect x="176" y="176" width="160" height="72" rx="8" fill="#F2F7FA" opacity=".14" stroke="#F2F7FA" stroke-width="1.4"/>
+  <rect x="176" y="176" width="160" height="72" rx="8" fill="url(#spec)" opacity=".35"/>
+  <text x="256" y="218" text-anchor="middle" font-family="monospace" font-size="15" fill="#9FE0FF">MODULE SLOT 02</text>
+  <g fill="#C9D4E6"><circle cx="136" cy="166" r="6"/><circle cx="376" cy="166" r="6"/><circle cx="136" cy="400" r="6"/><circle cx="376" cy="400" r="6"/></g>
+  <rect x="222" y="416" width="68" height="18" rx="5" fill="#2A3B4D" stroke="#9FE0FF" stroke-width="1.4"/>
+  <path d="M120 200 V400" stroke="#F2F7FA" stroke-width="3" opacity=".8"/>
+  <path d="M392 190 V386" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">铁砧联邦 · 亚克力工事（n 1.49–1.52 / 观察窗雾度 6–12%）</text>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</svg>

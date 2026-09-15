@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="涌潮虫群 · 凝胶卵膜（n 1.33–1.42 / 雾度 8–18% / 膜厚 0.6–2.4mm）">
+
+<defs>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#08150f"/>
+
+<g>
+  <rect width="512" height="512" fill="#0b1a12"/>
+  <ellipse cx="256" cy="430" rx="200" ry="30" fill="#5BF0C0" opacity=".12"/>
+  <ellipse cx="256" cy="266" rx="140" ry="164" fill="url(#jelly)" stroke="#BCE8C4" stroke-width="2.5"/>
+  <ellipse cx="256" cy="266" rx="118" ry="142" fill="none" stroke="#D6FF6B" stroke-width="1.2" opacity=".6"/>
+  <g fill="#3F6B34" stroke="#8FBF6A" stroke-width="2">
+    <ellipse cx="216" cy="300" rx="26" ry="17"/><ellipse cx="286" cy="330" rx="22" ry="14"/><ellipse cx="262" cy="220" rx="24" ry="15"/></g>
+  <g fill="#0E1F16"><circle cx="206" cy="297" r="3"/><circle cx="276" cy="328" r="2.6"/><circle cx="252" cy="218" r="2.6"/></g>
+  <circle cx="256" cy="272" r="60" fill="url(#coreT)" filter="url(#bloom)"/>
+  <g fill="#EAF6EF"><circle cx="256" cy="130" r="4"/><circle cx="256" cy="186" r="4"/><circle cx="256" cy="266" r="4"/><circle cx="256" cy="346" r="4"/><circle cx="256" cy="402" r="4"/></g>
+  <g font-family="monospace" font-size="11" fill="#BCE8C4"><text x="272" y="134">1</text><text x="272" y="190">2</text><text x="272" y="270">3</text><text x="272" y="350">4</text><text x="272" y="406">5</text></g>
+  <path d="M150 300 q60 40 212 -4" fill="none" stroke="#B6E8FF" stroke-width="5" opacity=".55"/>
+  <path d="M138 250 q70 34 236 -18" fill="none" stroke="#FFD3EE" stroke-width="4" opacity=".45"/>
+  <path d="M150 350 q64 30 208 -10" fill="none" stroke="#DDF7A8" stroke-width="4" opacity=".45"/>
+  <path d="M126 330 A140 164 0 0 1 200 120" fill="none" stroke="#EAF6EF" stroke-width="3.4" opacity=".9"/>
+  <path d="M386 214 A140 164 0 0 1 358 372" fill="none" stroke="#D6FF6B" stroke-width="2.4" opacity=".7"/>
+  <g fill="#EAF6EF" opacity=".5"><circle cx="180" cy="180" r="8"/><circle cx="330" cy="200" r="6"/><circle cx="348" cy="300" r="9"/><circle cx="196" cy="392" r="5"/></g>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">涌潮虫群 · 凝胶卵膜（n 1.33–1.42 / 雾度 8–18% / 膜厚 0.6–2.4mm）</text>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</svg>

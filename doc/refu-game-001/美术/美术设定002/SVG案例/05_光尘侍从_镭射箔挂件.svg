@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="光尘侍从 · 镭射箔挂件（箔透明、字不透明 / 角度色青→紫 / 闪粉 120 上限）">
+
+<defs>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/>
+  </linearGradient>
+  <linearGradient id="candy" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFF3C4" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD23F" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FF9A3C" stop-opacity=".75"/>
+  </linearGradient>
+  <linearGradient id="jelly" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#BCE8C4" stop-opacity=".85"/><stop offset=".4" stop-color="#7FD08A" stop-opacity=".7"/>
+    <stop offset=".75" stop-color="#5BF0C0" stop-opacity=".6"/><stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="crystal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#EAF1FA" stop-opacity=".7"/>
+    <stop offset="1" stop-color="#5FE3D6" stop-opacity=".55"/>
+  </linearGradient>
+  <linearGradient id="acrylic" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#AFD3E8" stop-opacity=".3"/>
+    <stop offset="1" stop-color="#3E5A73" stop-opacity=".45"/>
+  </linearGradient>
+  <radialGradient id="coreA" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9FE0FF" stop-opacity=".95"/><stop offset="1" stop-color="#4FA8D8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreT" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#D6FF6B" stop-opacity=".9"/><stop offset="1" stop-color="#5BF0C0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="coreF" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset="1" stop-color="#5FE3D6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="bloom"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <g id="spark"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="512" height="512" fill="#0b1120"/>
+
+<g>
+  <rect width="512" height="512" fill="#0d1420"/>
+  <path d="M256 60 q-70 40 -18 96" fill="none" stroke="#F4F6F3" stroke-width="3" opacity=".85"/>
+  <circle cx="256" cy="52" r="12" fill="none" stroke="#F4F6F3" stroke-width="3"/>
+  <g transform="rotate(-12 256 270)">
+    <rect x="150" y="150" width="212" height="240" rx="14" fill="url(#foil)" opacity=".9" stroke="#F4F6F3" stroke-width="2"/>
+    <rect x="150" y="150" width="212" height="240" rx="14" fill="url(#spec)" opacity=".3"/>
+    <g stroke="#FFFFFF" stroke-width="1.2" opacity=".5">
+      <line x1="150" y1="200" x2="362" y2="182"/><line x1="150" y1="240" x2="362" y2="222"/>
+      <line x1="150" y1="280" x2="362" y2="262"/><line x1="150" y1="320" x2="362" y2="302"/></g>
+    <rect x="182" y="286" width="148" height="66" rx="6" fill="#F4F6F3" stroke="#C9D4E6" stroke-width="1.4"/>
+    <text x="256" y="312" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="15" fill="#2A3142">西线 · 完成 7</text>
+    <text x="256" y="336" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="13" fill="#2A3142">维修位后一格</text>
+    <path d="M362 150 L362 196 L316 150 Z" fill="#FFFFFF" opacity=".75"/>
+  </g>
+  <g stroke="#7CF9FF" stroke-width="2.6" opacity=".9" fill="none">
+    <path d="M96 300 q34 -26 0 -52"/><path d="M76 322 q56 -46 0 -94"/>
+    <path d="M416 300 q-34 -26 0 -52"/><path d="M436 322 q-56 -46 0 -94"/></g>
+  <circle cx="256" cy="408" r="26" fill="#7CF9FF" opacity=".5" filter="url(#bloom)"/>
+  <path d="M150 168 V370" stroke="#F4F6F3" stroke-width="2.4" opacity=".9"/>
+  <path d="M362 160 V364" stroke="#5FF3E0" stroke-width="2" opacity=".8"/>
+  <use href="#spark" transform="translate(140,150) scale(.9)"/><use href="#spark" transform="translate(392,236) scale(.7)"/>
+  <use href="#spark" transform="translate(120,392) scale(.6)"/><use href="#spark" transform="translate(400,392) scale(.8)"/>
+  <use href="#spark" transform="translate(180,428) scale(.5)"/><use href="#spark" transform="translate(340,120) scale(.6)"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".95">光尘侍从 · 镭射箔挂件（箔透明、字不透明 / 角度色青→紫 / 闪粉 120 上限）</text>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#8fa3bd">美术设定002 · 千禧透明 · 样例 SVG（非最终稿）</text>
+</svg>

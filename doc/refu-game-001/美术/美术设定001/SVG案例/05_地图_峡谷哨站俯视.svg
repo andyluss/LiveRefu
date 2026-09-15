@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="关卡地图俯视 · 峡谷哨站（纸图口径，红笔为调度官标注）">
+<defs>
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#20262c"/>
+
+<g>
+  <rect x="20" y="46" width="472" height="430" rx="8" fill="url(#paper)"/>
+  <g stroke="#b9a888" stroke-width="1" opacity=".7">
+    <line x1="20" y1="120" x2="492" y2="120"/><line x1="20" y1="200" x2="492" y2="200"/>
+    <line x1="20" y1="280" x2="492" y2="280"/><line x1="20" y1="360" x2="492" y2="360"/>
+    <line x1="140" y1="46" x2="140" y2="476"/><line x1="260" y1="46" x2="260" y2="476"/><line x1="380" y1="46" x2="380" y2="476"/></g>
+  <text x="36" y="72" font-family="PingFang SC, sans-serif" font-size="14" fill="#5b4526">MAP-ANV-01 峡谷哨站</text>
+  <text x="36" y="92" font-family="PingFang SC, sans-serif" font-size="12" fill="#7a6444">单入口 · 标准 8 / 支援 3 / 修饰 1 · 约 40s 通行 · 事件槽 1</text>
+  <path d="M40 360 L150 360 L210 250 L320 250 L380 150 L470 150" fill="none" stroke="#8a6b3f" stroke-width="16" stroke-linejoin="round" opacity=".85"/>
+  <path d="M40 360 L150 360 L210 250 L320 250 L380 150 L470 150" fill="none" stroke="#c9a877" stroke-width="10" stroke-linejoin="round" stroke-dasharray="18 14"/>
+  <polygon points="40,346 40,374 62,360" fill="#5b4526"/>
+  <rect x="452" y="128" width="34" height="44" rx="4" fill="#1f2830"/>
+  <g fill="none" stroke="#8a6b3f" stroke-width="2">
+    <rect x="96" y="300" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="96" y="386" width="34" height="30" rx="3" fill="#e8dcc0"/>
+    <rect x="186" y="196" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="186" y="286" width="34" height="30" rx="3" fill="#e8dcc0"/>
+    <rect x="286" y="196" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="286" y="286" width="34" height="30" rx="3" fill="#e8dcc0"/>
+    <rect x="386" y="96" width="34" height="30" rx="3" fill="#e8dcc0"/><rect x="386" y="246" width="34" height="30" rx="3" fill="#e8dcc0"/></g>
+  <g font-family="monospace" font-size="13" fill="#5b4526">
+    <text x="104" y="322">1</text><text x="104" y="408">2</text><text x="194" y="218">3</text><text x="194" y="308">4</text>
+    <text x="294" y="218">5</text><text x="294" y="308">6</text><text x="394" y="118">7</text><text x="394" y="268">8</text></g>
+  <g><rect x="112" y="150" width="80" height="46" fill="url(#hatch)" opacity=".8" stroke="#8a7a58"/><text x="152" y="178" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="13" fill="#5b4526">高台 +15%</text></g>
+  <g><rect x="330" y="368" width="96" height="52" rx="16" fill="#9fc4c0" opacity=".75" stroke="#5f8f8a"/>
+     <text x="378" y="399" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="13" fill="#2f4f4b">沼泽 −20%</text></g>
+  <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker></defs>
+  <g stroke="#c0392b" stroke-width="2.4" fill="none">
+    <ellipse cx="300" cy="238" rx="46" ry="24" stroke-dasharray="7 5" transform="rotate(-16 300 238)"/>
+    <path d="M340 222 L372 190" marker-end="url(#ar2)"/></g>
+  <text x="252" y="196" font-family="PingFang SC, sans-serif" font-size="14" fill="#c0392b">W4 空中 ×5</text>
+  <path d="M120 430 q60 -26 150 -20" stroke="#c0392b" stroke-width="2.2" stroke-dasharray="6 4" fill="none"/>
+  <text x="126" y="456" font-family="PingFang SC, sans-serif" font-size="14" fill="#c0392b">她把支援位空着等下一波</text>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">关卡地图俯视 · 峡谷哨站（纸图口径，红笔为调度官标注）</text>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</svg>

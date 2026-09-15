@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="铁砧联邦 · 模块炮塔">
+
+<defs>
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#1b222b"/>
+
+<g transform="translate(0,10)">
+  <rect width="512" height="512" fill="url(#sandg)" opacity=".28"/>
+  <polygon points="96,404 416,404 392,438 120,438" fill="#1f2830" opacity=".85"/>
+  <polygon points="120,438 392,438 392,452 120,452" fill="#2c3843"/>
+  <rect x="150" y="300" width="212" height="106" rx="8" fill="url(#steel)"/>
+  <rect x="164" y="276" width="184" height="34" rx="6" fill="url(#brass)"/>
+  <rect x="196" y="196" width="120" height="84" rx="6" fill="url(#steel)"/>
+  <rect x="228" y="120" width="56" height="82" rx="4" fill="url(#brass)"/>
+  <rect x="246" y="60" width="20" height="66" rx="3" fill="#3d4a57"/>
+  <rect x="240" y="48" width="32" height="16" rx="4" fill="#8fa3b5"/>
+  <polygon points="256,470 292,470 300,486 248,486" fill="#77592c"/>
+  <g fill="#0d1a12" opacity=".95"><rect x="176" y="322" width="86" height="52" rx="4"/></g>
+  <rect x="176" y="322" width="86" height="52" rx="4" fill="url(#crtg)" opacity=".35"/>
+  <text x="182" y="345" font-family="monospace" font-size="15" fill="#7ce38b">DMG 12</text>
+  <text x="182" y="364" font-family="monospace" font-size="13" fill="#7ce38b">RATE 1.0</text>
+  <g fill="#e2c07a"><circle cx="160" cy="310" r="5"/><circle cx="352" cy="310" r="5"/><circle cx="160" cy="396" r="5"/><circle cx="352" cy="396" r="5"/><circle cx="212" cy="286" r="4"/><circle cx="300" cy="286" r="4"/></g>
+  <g stroke="#77592c" stroke-width="7" stroke-linecap="round">
+    <line x1="286" y1="330" x2="360" y2="352"/><line x1="286" y1="366" x2="360" y2="388"/></g>
+  <g stroke="#2c3843" stroke-width="2" opacity=".8"><line x1="164" y1="330" x2="276" y2="330"/><line x1="164" y1="378" x2="276" y2="378"/></g>
+  <g opacity=".85"><rect x="300" y="404" width="96" height="16" fill="#d8452b"/>
+    <g fill="#f3ead6"><polygon points="300,420 312,404 324,420 336,404 348,420 360,404 372,420 384,404 396,420 396,420 300,420"/></g></g>
+  <rect width="512" height="512" fill="url(#scan)" opacity=".5"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">铁砧联邦 · 模块炮塔</text>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</svg>

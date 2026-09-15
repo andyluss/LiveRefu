@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="卡面版式样板 · 塔卡（三层信息：3 数字 + 1 关键词）">
+<defs>
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e2c07a"/><stop offset=".45" stop-color="#b08d4f"/><stop offset="1" stop-color="#77592c"/>
+  </linearGradient>
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9fb3c4"/><stop offset=".5" stop-color="#54687a"/><stop offset="1" stop-color="#2c3843"/>
+  </linearGradient>
+  <linearGradient id="sandg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e6d3ab"/><stop offset="1" stop-color="#a98f66"/>
+  </linearGradient>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3ead6"/><stop offset="1" stop-color="#ddd0b4"/>
+  </linearGradient>
+  <radialGradient id="crtg" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#9dffb8" stop-opacity=".95"/><stop offset="1" stop-color="#7ce38b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="moss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7fa05a"/><stop offset="1" stop-color="#3d5a34"/>
+  </linearGradient>
+  <linearGradient id="prismg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#dfeaf6"/><stop offset="1" stop-color="#9fb4cc"/>
+  </linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" y="0" fill="#000000" opacity=".10"/>
+  </pattern>
+  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <line x1="0" y1="0" x2="0" y2="8" stroke="#8a7a58" stroke-width="2" opacity=".55"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" fill="#0f141a"/>
+
+<g transform="translate(56,14)">
+  <rect x="0" y="0" width="400" height="452" rx="18" fill="url(#steel)" stroke="#d9b26a" stroke-width="3"/>
+  <rect x="10" y="10" width="380" height="432" rx="12" fill="#1a222b"/>
+  <defs><clipPath id="artclip"><rect x="210" y="112" width="180" height="180" rx="10"/></clipPath></defs>
+  <!-- 标题区 -->
+  <text x="26" y="72" font-family="PingFang SC, sans-serif" font-size="24" font-weight="700" fill="#f3ead6">模块炮塔</text>
+  <text x="26" y="94" font-family="monospace" font-size="13" fill="#94a3b8">ANV-T01</text>
+  <rect x="322" y="30" width="56" height="56" rx="12" fill="url(#crtg)" opacity=".25"/>
+  <text x="350" y="68" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="26" font-weight="700" fill="#7ce38b">20</text>
+  <!-- 画框：模块炮塔（裁切在框内） -->
+  <rect x="210" y="112" width="180" height="180" rx="10" fill="#202b35" stroke="#3d4a57" stroke-width="1.4"/>
+  <g clip-path="url(#artclip)">
+    <rect x="210" y="112" width="180" height="180" fill="url(#sandg)" opacity=".18"/>
+    <g transform="translate(197.6,92.8) scale(0.4)">
+      <polygon points="96,404 416,404 392,438 120,438" fill="#2c3843"/>
+      <rect x="150" y="300" width="212" height="106" rx="8" fill="url(#steel)"/>
+      <rect x="164" y="276" width="184" height="34" rx="6" fill="url(#brass)"/>
+      <rect x="196" y="196" width="120" height="84" rx="6" fill="url(#steel)"/>
+      <rect x="228" y="120" width="56" height="82" rx="4" fill="url(#brass)"/>
+      <rect x="246" y="60" width="20" height="66" rx="3" fill="#3d4a57"/>
+      <rect x="240" y="48" width="32" height="16" rx="4" fill="#8fa3b5"/>
+      <g fill="#e2c07a"><circle cx="160" cy="310" r="6"/><circle cx="352" cy="310" r="6"/><circle cx="212" cy="286" r="5"/><circle cx="300" cy="286" r="5"/></g>
+      <g stroke="#77592c" stroke-width="8" stroke-linecap="round"><line x1="286" y1="330" x2="360" y2="352"/><line x1="286" y1="366" x2="360" y2="388"/></g>
+    </g>
+  </g>
+  <!-- 左侧三数字 -->
+  <g font-family="PingFang SC, sans-serif">
+    <rect x="26" y="116" width="172" height="52" rx="8" fill="#111a22" stroke="#3d4a57"/>
+    <text x="44" y="150" font-size="22" font-weight="700" fill="#e8eefb">12</text><text x="96" y="149" font-size="13" fill="#94a3b8">伤害</text>
+    <rect x="26" y="176" width="172" height="52" rx="8" fill="#111a22" stroke="#3d4a57"/>
+    <text x="44" y="210" font-size="22" font-weight="700" fill="#e8eefb">1.0</text><text x="104" y="209" font-size="13" fill="#94a3b8">攻速 /s</text>
+    <rect x="26" y="236" width="172" height="52" rx="8" fill="#111a22" stroke="#3d4a57"/>
+    <text x="44" y="270" font-size="22" font-weight="700" fill="#e8eefb">3</text><text x="70" y="269" font-size="13" fill="#94a3b8">射程 /格</text>
+  </g>
+  <rect x="210" y="252" width="180" height="40" rx="8" fill="#111a22" stroke="#3d4a57"/>
+  <text x="300" y="277" text-anchor="middle" font-family="monospace" font-size="12.5" fill="#7ce38b">on_kill：能量 +1</text>
+  <rect x="26" y="300" width="150" height="34" rx="17" fill="#3f5f7a"/>
+  <text x="101" y="323" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="14" fill="#eaf1fa">关键词：弹药</text>
+  <g transform="translate(352,314)"><circle r="24" fill="none" stroke="#d9b26a" stroke-width="2"/>
+    <text y="-1" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" fill="#d9b26a">标准</text>
+    <text y="14" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="10" fill="#94a3b8">塔位</text></g>
+  <rect x="26" y="348" width="348" height="12" rx="6" fill="#2F4A63"/>
+  <text x="26" y="386" font-family="PingFang SC, sans-serif" font-size="13" fill="#94a3b8">羁绊：火力网（3 张「弹药」→ 全场弹药塔攻速 +10%）</text>
+  <text x="26" y="410" font-family="PingFang SC, sans-serif" font-size="13" fill="#94a3b8">数值来源：14_卡表_铁砧联邦核心12卡</text>
+  <text x="26" y="436" font-family="PingFang SC, sans-serif" font-size="11.5" fill="#6b7c8f">三层信息：卡面 3 数字 + 1 关键词 → 长按详情 → 二级说明</text>
+  <rect x="8" y="0" width="14" height="452" rx="7" fill="#d9b26a" opacity=".45"/>
+  <rect x="0" y="0" width="400" height="452" rx="18" fill="none" stroke="#d9b26a" stroke-width="3"/>
+</g>
+<text x="16" y="496" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="15" fill="#e8eefb" opacity=".92">卡面版式样板 · 塔卡（三层信息：3 数字 + 1 关键词）</text>
+<text x="16" y="478" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="12" fill="#94a3b8">美术设定001 · 复古未来 · 样例 SVG（非最终稿）</text>
+</svg>
