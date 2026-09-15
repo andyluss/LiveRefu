@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 620" width="460" height="620" role="img" aria-label="光尘侍从·记录员">
+<defs>
+  <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".8"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".22"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity=".03"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".14"/></linearGradient>
+  <radialGradient id="inner" cx="50%" cy="45%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".35"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="60%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".8"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <filter id="bloom" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <marker id="mArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0 L10 5 L0 10 z" fill="#E4533C"/></marker>
+  <g id="spark"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+</defs>
+<rect width="460" height="620" fill="#0b1120"/>
+<rect x="20" y="20" width="420" height="560" rx="20" fill="#16202c" stroke="#B26BFF" stroke-width="2.4" opacity=".95"/>
+<rect x="28" y="28" width="404" height="544" rx="16" fill="#0f1a26" opacity=".5"/>
+<ellipse cx="230" cy="424" rx="52" ry="10" fill="#000" opacity=".25"/><path d="M230 216 q-34 20 -9 48" fill="none" stroke="#F4F6F3" stroke-width="3" opacity=".9"/><circle cx="230" cy="212" r="10" fill="none" stroke="#F4F6F3" stroke-width="2.6"/><g transform="rotate(-10 230 330)"><rect x="156" y="252" width="148" height="164" rx="12" fill="url(#sheen)" stroke="#B26BFF" stroke-width="2.4" opacity=".95"/><rect x="156" y="252" width="148" height="164" rx="12" fill="#7CF9FF" opacity=".28"/><rect x="186" y="342" width="88" height="46" rx="6" fill="#F4F6F3"/><text x="230" y="372" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#2A3142">题栏</text></g><circle cx="230" cy="442" r="18" fill="#7CF9FF" opacity=".5" filter="url(#bloom)"/><use href="#spark" transform="translate(140,300) scale(.7)"/><use href="#spark" transform="translate(322,282) scale(.6)"/>
+<text x="30" y="66" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#F7FBFF">光尘侍从·记录员</text>
+<text x="30" y="90" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#9FB3C4">星辉议会 从族　｜　卡号 AST-M01 / M02 / M03</text>
+<rect x="336" y="44" width="96" height="30" rx="15" fill="#FFB347" opacity=".9"/>
+<text x="384" y="64" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#1B2733">从族　AST-M01 / M02 / M03</text>
+<g><rect x="30" y="430" width="86" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.1" opacity=".92"/><text x="73" y="462" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="17" font-weight="700" fill="#F2F7FA">14</text><text x="73" y="482" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11" fill="#9FB3C4">光尘导引</text></g><g><rect x="124" y="430" width="86" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.1" opacity=".92"/><text x="167" y="462" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="17" font-weight="700" fill="#F2F7FA">16</text><text x="167" y="482" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11" fill="#9FB3C4">护盾充能</text></g><g><rect x="218" y="430" width="86" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.1" opacity=".92"/><text x="261" y="462" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="17" font-weight="700" fill="#F2F7FA">12</text><text x="261" y="482" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11" fill="#9FB3C4">视野棱镜</text></g><g><rect x="312" y="430" width="86" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.1" opacity=".92"/><text x="355" y="462" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="17" font-weight="700" fill="#F2F7FA">1</text><text x="355" y="482" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11" fill="#9FB3C4">人口</text></g>
+<text x="30" y="522" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#DCE6F2">棱面映字：记录片题栏与取用次数</text>
+<text x="30" y="544" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">镭射箔挂件：箔透明、字不透明；角度就是内容</text>
+<text x="30" y="566" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#7f93a8">美术设定002 · 千禧透明 · 单位设定（样例）</text>
+<path d="M20 120 V580" stroke="#B26BFF" stroke-width="3" opacity=".7"/>
+<path d="M440 140 V560" stroke="#7CF9FF" stroke-width="2.4" opacity=".6"/>
+<rect x="30" y="130" width="400" height="280" rx="14" fill="url(#inner)"/>
+</svg>

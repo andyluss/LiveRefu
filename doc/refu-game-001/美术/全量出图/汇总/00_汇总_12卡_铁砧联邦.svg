@@ -1,0 +1,858 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1686" width="1480" height="1686">
+<rect width="1480" height="1686" fill="#0b1220"/>
+<text x="24" y="34" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="20" fill="#e8eefb">铁砧联邦 · 12 张核心卡（按 塔 4 / 支援 3 / 技能 2 / 修饰 3 排序）</text>
+<text x="24" y="56" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#8fa3bd">材质：层压亚克力　｜　数值引自 14/15/16 号卡表，未经改动</text>
+<g transform="translate(20,80) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV0" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV0" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV0" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV0" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV0" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV0" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV0" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV0"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV0" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV0" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV0" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV0" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV0)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV0)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV0)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">齿轮帮·维修工</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-M01　·　铁砧联邦　·　支援区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">15</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="184" y="126" width="92" height="89" rx="25" fill="#4FA8D8" opacity=".35" stroke="#F2F7FA" stroke-width="2"/><circle cx="230" cy="170" r="22" fill="#4FA8D8" opacity=".75"/><circle cx="217" cy="161" r="7" fill="#1B2733"/><g stroke="#F2F7FA" stroke-width="3" stroke-linecap="round"><line x1="200" y1="214" x2="193" y2="237"/><line x1="260" y1="214" x2="267" y2="237"/></g></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">8</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">修复</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">6</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">持续 s</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">1</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">人口</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#7C3AED"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：维修</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：支援</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">修复 8/s、持续 6s、人口 1</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_wave_end：修复量 +50%</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#7C3AED"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV0)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV0)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV0)" opacity=".5"/>
+  <use href="#spark_ANV0" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV0" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV0" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV0" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV0" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-M01 齿轮帮·维修工 · 费用 15 · 支援 · 维修</text>
+</g>
+<g transform="translate(380,80) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV1" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV1" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV1" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV1" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV1" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV1" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV1"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV1" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV1" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV1" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV1" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV1)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV1)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV1)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">齿轮帮·搬运工</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-M02　·　铁砧联邦　·　支援区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">12</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="184" y="126" width="92" height="89" rx="25" fill="#4FA8D8" opacity=".35" stroke="#F2F7FA" stroke-width="2"/><circle cx="230" cy="170" r="22" fill="#4FA8D8" opacity=".75"/><circle cx="217" cy="161" r="7" fill="#1B2733"/><g stroke="#F2F7FA" stroke-width="3" stroke-linecap="round"><line x1="200" y1="214" x2="193" y2="237"/><line x1="260" y1="214" x2="267" y2="237"/></g></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">+10%</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">光环：同标签塔攻</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">槽位</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#7C3AED"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：弹药</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：支援</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">光环：同标签塔攻速 +10%</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_deploy：为相邻塔 +2 能量</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#7C3AED"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV1)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV1)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV1)" opacity=".5"/>
+  <use href="#spark_ANV1" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV1" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV1" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV1" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV1" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-M02 齿轮帮·搬运工 · 费用 12 · 支援 · 弹药</text>
+</g>
+<g transform="translate(740,80) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV2" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV2" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV2" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV2" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV2" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV2" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV2"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV2" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV2" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV2" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV2" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV2)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV2)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV2)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">齿轮帮·路障小队</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-M03　·　铁砧联邦　·　支援区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">20</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="184" y="126" width="92" height="89" rx="25" fill="#4FA8D8" opacity=".35" stroke="#F2F7FA" stroke-width="2"/><circle cx="230" cy="170" r="22" fill="#4FA8D8" opacity=".75"/><circle cx="217" cy="161" r="7" fill="#1B2733"/><g stroke="#F2F7FA" stroke-width="3" stroke-linecap="round"><line x1="200" y1="214" x2="193" y2="237"/><line x1="260" y1="214" x2="267" y2="237"/></g></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">200</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">生命</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">2</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">阻挡</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">15</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">存在 s</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#7C3AED"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：工事</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：路径</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">生命 200 / 阻挡 2 / 存在 15s</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_expire：减速残留 3s</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#7C3AED"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV2)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV2)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV2)" opacity=".5"/>
+  <use href="#spark_ANV2" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV2" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV2" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV2" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV2" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-M03 齿轮帮·路障小队 · 费用 20 · 路径 · 工事</text>
+</g>
+<g transform="translate(1100,80) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV3" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV3" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV3" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV3" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV3" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV3" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV3"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV3" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV3" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV3" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV3" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV3)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV3)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV3)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">过载射击</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-S01　·　铁砧联邦　·　技能区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">15</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><polygon points="300,170 259,187 265,231 230,203 195,231 201,187 160,170 201,153 195,109 230,137 265,109 259,153" fill="#4FA8D8" opacity=".45" filter="url(#bloom_ANV3)"/><circle cx="230" cy="170" r="25" fill="#F2F7FA" opacity=".85"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">+40%</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">全场攻速</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">6</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">持续 s</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#D97706"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：弹药</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：技能</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">全场攻速 +40%、持续 6s</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_cast：同标签塔额外 +10%</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#D97706"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV3)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV3)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV3)" opacity=".5"/>
+  <use href="#spark_ANV3" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV3" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV3" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV3" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV3" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-S01 过载射击 · 费用 15 · 技能 · 弹药</text>
+</g>
+<g transform="translate(20,610) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV4" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV4" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV4" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV4" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV4" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV4" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV4"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV4" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV4" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV4" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV4" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV4)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV4)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV4)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">应急修复</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-S02　·　铁砧联邦　·　技能区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">12</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><polygon points="300,170 259,187 265,231 230,203 195,231 201,187 160,170 201,153 195,109 230,137 265,109 259,153" fill="#4FA8D8" opacity=".45" filter="url(#bloom_ANV4)"/><circle cx="230" cy="170" r="25" fill="#F2F7FA" opacity=".85"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">200</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">单体塔修复</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">80</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">护盾</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#D97706"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：维修</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：技能</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">单体塔修复 200 / 护盾 80</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_shield_break：返还 5 能量</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#D97706"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV4)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV4)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV4)" opacity=".5"/>
+  <use href="#spark_ANV4" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV4" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV4" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV4" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV4" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-S02 应急修复 · 费用 12 · 技能 · 维修</text>
+</g>
+<g transform="translate(380,610) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV5" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV5" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV5" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV5" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV5" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV5" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV5"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV5" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV5" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV5" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV5" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV5)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV5)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV5)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">模块炮塔</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-T01　·　铁砧联邦　·　塔区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">20</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="171" y="133" width="118" height="81" rx="8" fill="#3E5A73" opacity=".5" stroke="#F2F7FA" stroke-width="2"/><rect x="209" y="89" width="41" height="52" rx="4" fill="#B08D4F" opacity=".8"/><circle cx="230" cy="170" r="31" fill="url(#inner_ANV5)"/><circle cx="230" cy="170" r="15" fill="#4FA8D8" opacity=".9"/><line x1="171" y1="214" x2="289" y2="214" stroke="#F2F7FA" stroke-width="3" opacity=".7"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">12</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">伤害</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">1.0</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">攻速</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#2F4A63"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：弹药</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：标准</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">伤害 12 / 攻速 1.0/s / 射程中</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_kill：能量 +1</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#2F4A63"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV5)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV5)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV5)" opacity=".5"/>
+  <use href="#spark_ANV5" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV5" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV5" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV5" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV5" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-T01 模块炮塔 · 费用 20 · 标准 · 弹药</text>
+</g>
+<g transform="translate(740,610) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV6" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV6" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV6" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV6" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV6" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV6" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV6" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV6" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV6" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV6"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV6" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV6" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV6" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV6" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV6)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV6)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV6)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">交叉火力网</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-T02　·　铁砧联邦　·　塔区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">28</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="171" y="133" width="118" height="81" rx="8" fill="#3E5A73" opacity=".5" stroke="#F2F7FA" stroke-width="2"/><rect x="209" y="89" width="41" height="52" rx="4" fill="#B08D4F" opacity=".8"/><circle cx="230" cy="170" r="31" fill="url(#inner_ANV6)"/><circle cx="230" cy="170" r="15" fill="#4FA8D8" opacity=".9"/><line x1="171" y1="214" x2="289" y2="214" stroke="#F2F7FA" stroke-width="3" opacity=".7"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">8</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">伤害</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">1.2</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">攻速</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#2F4A63"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：弹药</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：标准</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">伤害 8 / 攻速 1.2/s / 小范围溅射</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_hit：同标签塔攻速 +2%（可叠）</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#2F4A63"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV6)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV6)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV6)" opacity=".5"/>
+  <use href="#spark_ANV6" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV6" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV6" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV6" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV6" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-T02 交叉火力网 · 费用 28 · 标准 · 弹药</text>
+</g>
+<g transform="translate(1100,610) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV7" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV7" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV7" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV7" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV7" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV7" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV7" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV7" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV7" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV7"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV7" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV7" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV7" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV7" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV7)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV7)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV7)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">磁轨钉枪</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-T03　·　铁砧联邦　·　塔区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">32</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="171" y="133" width="118" height="81" rx="8" fill="#3E5A73" opacity=".5" stroke="#F2F7FA" stroke-width="2"/><rect x="209" y="89" width="41" height="52" rx="4" fill="#B08D4F" opacity=".8"/><circle cx="230" cy="170" r="31" fill="url(#inner_ANV7)"/><circle cx="230" cy="170" r="15" fill="#4FA8D8" opacity=".9"/><line x1="171" y1="214" x2="289" y2="214" stroke="#F2F7FA" stroke-width="3" opacity=".7"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">26</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">伤害</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">0.6</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">攻速</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">3</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">直线穿透</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#2F4A63"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：穿甲</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：标准</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">伤害 26 / 攻速 0.6/s / 直线穿透 3</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_kill：穿透 +1（上限 5）</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#2F4A63"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV7)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV7)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV7)" opacity=".5"/>
+  <use href="#spark_ANV7" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV7" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV7" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV7" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV7" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-T03 磁轨钉枪 · 费用 32 · 标准 · 穿甲</text>
+</g>
+<g transform="translate(20,1140) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV8" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV8" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV8" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV8" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV8" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV8" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV8" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV8" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV8" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV8"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV8" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV8" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV8" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV8" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV8)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV8)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV8)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">路障工事</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-T04　·　铁砧联邦　·　塔区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">18</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="171" y="133" width="118" height="81" rx="8" fill="#3E5A73" opacity=".5" stroke="#F2F7FA" stroke-width="2"/><rect x="209" y="89" width="41" height="52" rx="4" fill="#B08D4F" opacity=".8"/><circle cx="230" cy="170" r="31" fill="url(#inner_ANV8)"/><circle cx="230" cy="170" r="15" fill="#4FA8D8" opacity=".9"/><line x1="171" y1="214" x2="289" y2="214" stroke="#F2F7FA" stroke-width="3" opacity=".7"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">400</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">生命</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">30%</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">减速</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#2F4A63"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：工事</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：标准</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">生命 400 / 减速 30% / 不攻击</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">on_destroy：返还 6 能量</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#2F4A63"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV8)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV8)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV8)" opacity=".5"/>
+  <use href="#spark_ANV8" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV8" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV8" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV8" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV8" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-T04 路障工事 · 费用 18 · 标准 · 工事</text>
+</g>
+<g transform="translate(380,1140) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV9" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV9" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV9" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV9" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV9" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV9" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV9" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV9" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV9" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV9"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV9" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV9" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV9" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV9" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV9)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV9)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV9)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">交叉火力</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-X01　·　铁砧联邦　·　修饰区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">5</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="177" y="139" width="107" height="62" rx="6" fill="#B08D4F" opacity=".6" stroke="#F2F7FA" stroke-width="1.6"/><g stroke="#F2F7FA" stroke-width="2.4" stroke-linecap="round"><line x1="200" y1="127" x2="200" y2="139"/><line x1="215" y1="127" x2="215" y2="139"/><line x1="230" y1="127" x2="230" y2="139"/><line x1="245" y1="127" x2="245" y2="139"/><line x1="260" y1="127" x2="260" y2="139"/><line x1="200" y1="201" x2="200" y2="213"/><line x1="215" y1="201" x2="215" y2="213"/><line x1="230" y1="201" x2="230" y2="213"/><line x1="245" y1="201" x2="245" y2="213"/><line x1="260" y1="201" x2="260" y2="213"/></g><rect x="205" y="155" width="50" height="30" rx="4" fill="#4FA8D8" opacity=".7"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">+15%</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">同标签塔  攻速</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">2</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">最多叠  层</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#0D9488"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：弹药</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：修饰</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">同标签塔 +15% 攻速，最多叠 2 层</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">—</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#0D9488"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV9)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV9)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV9)" opacity=".5"/>
+  <use href="#spark_ANV9" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV9" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV9" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV9" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV9" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-X01 交叉火力 · 费用 5 · 修饰 · 弹药</text>
+</g>
+<g transform="translate(740,1140) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV10" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV10" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV10" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV10" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV10" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV10" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV10" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV10" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV10" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV10"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV10" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV10" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV10" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV10" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV10)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV10)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV10)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">贫铀弹芯</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-X02　·　铁砧联邦　·　修饰区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">8</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="177" y="139" width="107" height="62" rx="6" fill="#B08D4F" opacity=".6" stroke="#F2F7FA" stroke-width="1.6"/><g stroke="#F2F7FA" stroke-width="2.4" stroke-linecap="round"><line x1="200" y1="127" x2="200" y2="139"/><line x1="215" y1="127" x2="215" y2="139"/><line x1="230" y1="127" x2="230" y2="139"/><line x1="245" y1="127" x2="245" y2="139"/><line x1="260" y1="127" x2="260" y2="139"/><line x1="200" y1="201" x2="200" y2="213"/><line x1="215" y1="201" x2="215" y2="213"/><line x1="230" y1="201" x2="230" y2="213"/><line x1="245" y1="201" x2="245" y2="213"/><line x1="260" y1="201" x2="260" y2="213"/></g><rect x="205" y="155" width="50" height="30" rx="4" fill="#4FA8D8" opacity=".7"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">+25%</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">伤害</text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">−10%</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">攻速</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#0D9488"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：弹药/穿甲</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：修饰</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">+25% 伤害，−10% 攻速</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">—</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#0D9488"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV10)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV10)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV10)" opacity=".5"/>
+  <use href="#spark_ANV10" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV10" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV10" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV10" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV10" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-X02 贫铀弹芯 · 费用 8 · 修饰 · 弹药/穿甲</text>
+</g>
+<g transform="translate(1100,1140) scale(0.7522)">
+<defs>
+  <linearGradient id="foil_ANV11" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5FF3E0"/><stop offset=".35" stop-color="#4FD8FF"/>
+    <stop offset=".65" stop-color="#B26BFF"/><stop offset="1" stop-color="#FFD86B"/></linearGradient>
+  <linearGradient id="spec_ANV11" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".85"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sheen_ANV11" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".28"/><stop offset=".45" stop-color="#FFFFFF" stop-opacity=".04"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity=".16"/></linearGradient>
+  <linearGradient id="iri_ANV11" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#B6E8FF" stop-opacity=".55"/><stop offset=".33" stop-color="#FFD3EE" stop-opacity=".5"/>
+    <stop offset=".66" stop-color="#DDF7A8" stop-opacity=".45"/><stop offset="1" stop-color="#DCC9FF" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="inner_ANV11" cx="50%" cy="46%" r="62%">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".38"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".07"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+  <pattern id="dust_ANV11" width="6" height="6" patternUnits="userSpaceOnUse">
+    <rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".6" fill="#FFFFFF" opacity=".16"/>
+    <circle cx="4.5" cy="4.5" r=".5" fill="#FFFFFF" opacity=".1"/></pattern>
+  <pattern id="scan_ANV11" width="4" height="4" patternUnits="userSpaceOnUse">
+    <rect width="4" height="1" fill="#000000" opacity=".12"/></pattern>
+  <filter id="bloom_ANV11" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="refract_ANV11" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs>
+<defs><g id="spark_ANV11"><path d="M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z" fill="#FFFFFF" opacity=".9"/></g>
+<linearGradient id="candy_ANV11" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".9"/><stop offset=".55" stop-color="#4FA8D8" stop-opacity=".55"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".65"/></linearGradient>
+<linearGradient id="crystal_ANV11" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#F2F7FA" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#4FA8D8" stop-opacity=".6"/></linearGradient>
+<linearGradient id="jelly_ANV11" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".85"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".65"/>
+  <stop offset="1" stop-color="#6BE8FF" stop-opacity=".55"/></linearGradient>
+<linearGradient id="acrylic_ANV11" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#F2F7FA" stop-opacity=".55"/><stop offset=".45" stop-color="#4FA8D8" stop-opacity=".3"/>
+  <stop offset="1" stop-color="#3E5A73" stop-opacity=".5"/></linearGradient></defs>
+<rect width="460" height="640" fill="#0b1220"/>
+<g>
+  <rect x="30" y="20" width="400" height="560" rx="20" fill="url(#acrylic_ANV11)" stroke="#F2F7FA" stroke-width="2.5"/>
+  <rect x="40" y="30" width="380" height="540" rx="14" fill="#0f1a26" opacity=".58"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#foil_ANV11)" opacity=".45"/>
+  <rect x="40" y="30" width="380" height="96" rx="14" fill="url(#spec_ANV11)" opacity=".30"/>
+  <text x="56" y="82" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#F7FBFF">模块化基座</text>
+  <text x="56" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#C9D4E6">ANV-X03　·　铁砧联邦　·　修饰区</text>
+  <rect x="354" y="46" width="56" height="56" rx="12" fill="#F2F7FA" opacity=".92"/>
+  <text x="382" y="84" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#1B2733">6</text>
+  <rect x="54" y="138" width="352" height="176" rx="12" fill="#101a24" opacity=".55" stroke="#F2F7FA" stroke-width="1.2"/>
+  <g><rect x="177" y="139" width="107" height="62" rx="6" fill="#B08D4F" opacity=".6" stroke="#F2F7FA" stroke-width="1.6"/><g stroke="#F2F7FA" stroke-width="2.4" stroke-linecap="round"><line x1="200" y1="127" x2="200" y2="139"/><line x1="215" y1="127" x2="215" y2="139"/><line x1="230" y1="127" x2="230" y2="139"/><line x1="245" y1="127" x2="245" y2="139"/><line x1="260" y1="127" x2="260" y2="139"/><line x1="200" y1="201" x2="200" y2="213"/><line x1="215" y1="201" x2="215" y2="213"/><line x1="230" y1="201" x2="230" y2="213"/><line x1="245" y1="201" x2="245" y2="213"/><line x1="260" y1="201" x2="260" y2="213"/></g><rect x="205" y="155" width="50" height="30" rx="4" fill="#4FA8D8" opacity=".7"/></g>
+  <g><rect x="34" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="86" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">1</text><text x="86" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">为本塔额外附加 </text></g><g><rect x="150" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="202" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="202" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">槽位</text></g><g><rect x="266" y="270" width="104" height="62" rx="9" fill="#101a24" stroke="#7FC7EA" stroke-width="1.2" opacity=".92"/><text x="318" y="304" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#F2F7FA">—</text><text x="318" y="324" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="11.5" fill="#9FB3C4">标签</text></g>
+  <rect x="54" y="346" width="150" height="34" rx="17" fill="#0D9488"/>
+  <text x="129" y="369" text-anchor="middle" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="14" fill="#F7FBFF">关键词：工事</text>
+  <text x="220" y="369" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12.5" fill="#9FB3C4">槽位：修饰</text>
+  <text x="54" y="412" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#DCE6F2">为本塔额外附加 1 个标签（弹药或工事）</text>
+  <text x="54" y="440" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="13" fill="#9FB3C4">支撑"模块换装"</text>
+  <rect x="54" y="456" width="352" height="12" rx="6" fill="#0D9488"/>
+  <text x="54" y="498" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">美术设定002 · 千禧透明 · 全量卡面（样例）</text>
+  <text x="54" y="518" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#7f93a8">数值引自 14 / 15 / 16 号卡表，未经改动</text>
+  <rect x="34" y="24" width="22" height="552" rx="11" fill="url(#spec_ANV11)" opacity=".45"/>
+  <path d="M30 80 V520" stroke="#F2F7FA" stroke-width="3" opacity=".85"/>
+  <path d="M430 90 V510" stroke="#4FA8D8" stroke-width="2.4" opacity=".7"/>
+  <rect x="38" y="28" width="384" height="544" rx="15" fill="url(#inner_ANV11)"/>
+  <rect x="36" y="26" width="388" height="548" rx="16" fill="url(#sheen_ANV11)" opacity=".5"/>
+  <use href="#spark_ANV11" transform="translate(70,60) scale(0.7)"/><use href="#spark_ANV11" transform="translate(392,96) scale(0.55)"/><use href="#spark_ANV11" transform="translate(64,372) scale(0.5)"/><use href="#spark_ANV11" transform="translate(398,330) scale(0.65)"/><use href="#spark_ANV11" transform="translate(112,470) scale(0.45)"/>
+</g>
+<text x="16" y="626" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, sans-serif" font-size="12" fill="#8fa3bd">ANV-X03 模块化基座 · 费用 6 · 修饰 · 工事</text>
+</g>
+</svg>
