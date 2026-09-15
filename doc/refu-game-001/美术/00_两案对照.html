@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>美术方案对照 · 001 复古未来 vs 002 千禧透明</title>
+<style>
+:root{--bg:#0b1220;--fg:#e8eefb;--muted:#94a3b8;--border:#22314a;--card:rgba(255,255,255,.04);--accent:#60a5fa;--a1:#7c8aa0;--a2:#5FE3D6;--warn:#FFB020}
+@media (prefers-color-scheme:light){:root{--bg:#f6f8fc;--fg:#111827;--muted:#5b6472;--border:#dbe3ef;--card:#fff;--accent:#2563eb;--a1:#8a94a3;--a2:#0d9488;--warn:#b45309}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1160px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.heads{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.head{border:1px solid var(--border);border-radius:14px;padding:12px;background:var(--card)}
+.head h2{margin:0 0 4px;font-size:15px}
+.head .t{color:var(--muted);font-size:12.5px;margin-bottom:10px}
+.preview{height:104px;border-radius:10px;position:relative;overflow:hidden;border:1px solid var(--border)}
+.p001{background:linear-gradient(180deg,#3b2f24,#6b5540 55%,#2a2119);box-shadow:inset 0 0 46px rgba(0,0,0,.55)}
+.p001:after{content:"";position:absolute;inset:0;background:
+ radial-gradient(28% 40% at 22% 68%, #d8452b55, transparent 70%),
+ radial-gradient(24% 36% at 74% 30%, #58e0b855, transparent 70%),
+ repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 3px)}
+.p002{background:linear-gradient(160deg,#0d1420,#123043 45%,#0a1a24);box-shadow:inset 0 0 46px rgba(0,0,0,.35)}
+.p002:after{content:"";position:absolute;inset:0;background:
+ radial-gradient(30% 46% at 26% 64%, #5FF3E066, transparent 72%),
+ radial-gradient(26% 40% at 72% 34%, #B26BFF66, transparent 72%),
+ radial-gradient(40% 30% at 50% 96%, #FFD23F33, transparent 74%)}
+.sw{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.chip{width:20px;height:20px;border-radius:6px;border:1px solid rgba(255,255,255,.18)}
+.rows{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:150px 1fr 1fr 96px;gap:0;border-top:1px solid var(--border);cursor:pointer}
+.row:first-child{border-top:none}
+.row>div{padding:8px 10px;font-size:12.5px;border-left:1px solid var(--border)}
+.row>div:first-child{border-left:none;color:var(--muted)}
+.row.hot{background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.row .head-row{font-weight:600}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+.tag.A{color:var(--warn);border-color:var(--warn)}
+.tag.B{color:var(--accent);border-color:var(--accent)}
+.tag.C{color:var(--a2);border-color:var(--a2)}
+.detail{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card);margin-top:14px;font-size:12.5px}
+.detail h3{margin:0 0 6px;font-size:13.5px}.detail p{margin:2px 0;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media (max-width:900px){.heads,.two{grid-template-columns:1fr}.row{grid-template-columns:110px 1fr 1fr 84px}}
+table{border-collapse:collapse;width:100%;font-size:12.5px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}
+.foot{margin-top:16px;border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card);font-size:12.5px}
+.foot h3{margin:0 0 6px;font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>美术方案对照 · 001 复古未来 / 002 千禧透明</h1>
+<div class="sub">两案共用同一份策划案（数值、机制、卡名、地图编号、界面骨架一致），只在材质、光照、色彩、动效与信息载体上分道。点击任意一行看差异说明。</div>
+
+<div class="controls" role="group" aria-label="显示模式">
+<button type="button" data-mode="all" aria-pressed="true">全部维度</button>
+<button type="button" data-mode="A" aria-pressed="false">只看有意冲突（A）</button>
+<button type="button" data-mode="B" aria-pressed="false">只看新增设定（B）</button>
+<button type="button" data-mode="C" aria-pressed="false">只看两案共享（C）</button>
+</div>
+
+<div class="heads">
+<div class="head">
+<h2>001 · 复古未来</h2>
+<div class="t">按 <a href="../00_决策记录.md">D7</a> 基调：高技术塞在旧机器里。沙尘、磁带、纸图、黄铜。</div>
+<div class="preview p001"></div>
+<div class="sw">
+<span class="chip" style="background:#2F4A63" title="铁砧冷钢蓝"></span>
+<span class="chip" style="background:#45663A" title="涌潮腐殖绿"></span>
+<span class="chip" style="background:#EAF1FA" title="星辉棱镜白"></span>
+<span class="chip" style="background:#D8452B" title="敌方警示橙红"></span>
+<span class="chip" style="background:#B08D4F" title="黄铜"></span>
+</div>
+<div class="t" style="margin-top:8px">目录：<a href="美术设定001/README.md">美术设定001/</a>（11 篇）</div>
+</div>
+<div class="head">
+<h2>002 · 千禧透明美学</h2>
+<div class="t">另类提案：未来刚拆封的那一天。六族全部透明或半透明，光与水是材料。</div>
+<div class="preview p002"></div>
+<div class="sw">
+<span class="chip" style="background:#3E5A73" title="铁砧冷钢蓝"></span>
+<span class="chip" style="background:#5BF0C0" title="涌潮生物荧光"></span>
+<span class="chip" style="background:#F2F6FF" title="星辉棱镜白"></span>
+<span class="chip" style="background:#FFD23F" title="齿轮帮糖果黄"></span>
+<span class="chip" style="background:#B26BFF" title="光尘角度紫"></span>
+</div>
+<div class="t" style="margin-top:8px">目录：<a href="美术设定002/README.md">美术设定002/</a>（13 篇）· 风格图：<a href="风格图/README.md">风格图/</a>（6 张）</div>
+</div>
+</div>
+
+<div class="rows" id="rows"></div>
+<div class="detail" id="detail"></div>
+
+<div class="two">
+<div class="foot">
+<h3>成本与复用</h3>
+<table>
+<thead><tr><th>资源</th><th>能否共用</th></tr></thead>
+<tbody>
+<tr><td>模型拓扑与动画骨架</td><td>可以（同一套骨骼，两套材质）</td></tr>
+<tr><td>卡面版式（九字段布局）</td><td>可以（改材质不改版式）</td></tr>
+<tr><td>材质库与光照贴图</td><td>不可以（锈蚀金属 vs 透明折射）</td></tr>
+<tr><td>特效库与粒子</td><td>不可以（沙尘火星 vs 水光闪粉）</td></tr>
+<tr><td>UI 图标形状语言</td><td>部分（语义共用，描边与高光重做）</td></tr>
+</tbody>
+</table>
+<p style="margin-top:8px">结论：002 若采纳应为"换材质与光的整体重制"，不是叠滤镜。若只做一族试点，建议 <b>齿轮帮</b>——最贴千禧主题、面积最小、最易验证。</p>
+</div>
+<div class="foot">
+<h3>选型建议</h3>
+<p><b>选 001</b>：需要与工作区既有 <a href="../../retro-futurism/README.md">复古未来知识体系</a> 联动、与长篇《节点之海》的叙事质感一致（沙尘、纸图、黄铜）。</p>
+<p><b>选 002</b>：需要年轻向、屏幕感强、社交平台传播友好的辨识度；透明体质天然适配"模块换装看得见、进化枝看得见、共鸣看得见"这套机制表达。</p>
+<p><b>混合</b>：以 001 为产品基底，把 002 收窄为"特定赛季／事件／活动皮肤"（例如限时透明主题），用同一套骨骼切两套材质，成本可控且能验证市场反应。</p>
+</div>
+</div>
+
+<div class="foot">
+<h3>不可碰的红线（两案共同）</h3>
+<p>全部数值（B 预算、难度比 D、能量曲线、卡费、护盾 120、腐蚀每层 +3%、BOSS 2200/护甲 15/50% 阶段技、漏怪上限 3）、全部机制（模块换装／进化枝／共鸣／羁绊九条／挑战卡难度分／永久修饰五项／远征八节点）、全部名称（族名、36 张卡名与 card_id、六张地图编号）、界面骨架（竖屏 60/40、三层信息、手势表、≥9mm 触控）。</p>
+<p>差异登记处：<a href="美术设定002/10_与策划案的冲突清单.md">002 冲突清单</a>　｜　叫法对照：<a href="美术设定002/11_术语与命名对照.md">002 术语与命名对照</a>　｜　键色与光照：<a href="美术设定002/12_键色与光照配方.md">12 号配方</a></p>
+</div>
+</div>
+
+<script>
+(function(){
+var D=[
+{k:'美术基调（D7）',g:'A',a:'复古未来：CRT 绿字、磁带与纸图、黄铜触点、霓虹与沙尘同框',b:'千禧透明：亚克力、凝胶、水晶、透明 PVC、镭射箔与水光',d:'这是唯一需要重开决策才能落地的冲突：001 直接实现 D7，002 换掉基调本身。'},
+{k:'主材质',g:'A',a:'黄铜、纸、磁带、混凝土、锈蚀金属',b:'亚克力、凝胶、水晶、透明塑料、镭射箔',d:'两案材质库不可复用；模型拓扑与动画可复用。'},
+{k:'环境气质',g:'A',a:'干旱废土、轨道带残骸、修补痕迹',b:'湿润洁净、浅水与抛光地面、恒温感',d:'六张地图的地形材质与天气全部替换，但塔位、路径、地形加成数值不变。'},
+{k:'光照',g:'A',a:'霓虹与沙尘散射，多光源拼贴，噪点 6%／色偏 2px／暗角 12%',b:'单主光 + 水面反射 + 内发光，Bloom 阈值 ≥1.10，禁第二组投影',d:'002 对光照一致性极敏感：透明材质会立刻暴露多光源。'},
+{k:'信息载体',g:'A',a:'纸图、CRT 绿字、合金卡匣与黄铜触点',b:'背光屏、透明胶片、镀铬触点、可擦写光笔',d:'载体换了，但界面骨架（60/40、三层信息、手势）不动。'},
+{k:'卡面材质',g:'A',a:'合金板卡：蚀刻字 + 印刷标签，边缘黄铜触点',b:'2 mm 亚克力卡：透明区 + 镭射箔 + 不透明底片（数字压底片）',d:'七类卡按光透过、箔纹、箔面占比、底片面积四项区分；规则卡最"实"。'},
+{k:'挑战卡难度标记',g:'A',a:'纸质难度章，砂尘橙红，等级 1–3',b:'镭射贴纸：分越高箔面越花，可叠贴',d:'难度分口径（3/4/3/5/2、合计 ≤15、掉落 1+0.05×分）两案完全一致。'},
+{k:'记录与档案',g:'A',a:'金属片／纸卡，刻字归档',b:'镭射箔挂件，角度变色，可撕下贴纸',d:'002 把"档案"做成可收集物；远征点与排行榜规则不变。'},
+{k:'粒子与天气',g:'A',a:'沙尘、火星、碎屑；沙暴事件',b:'水痕、气泡、闪粉、全息尘；粒子总量 ≤200',d:'002 有明确的粒子预算与低端机降级（只留级 1）。'},
+{k:'敌我区分语言',g:'B',a:'按族徽、色温与体型区分',b:'我方"秩序透明"（有清晰内部结构）／敌方"浑浊雾透"（悬浮杂质、无清晰内部）',d:'002 新增的第二套区分语言，因为全屏都是透明材质。'},
+{k:'不透明芯规则',g:'B',a:'无需（材质本身不透明）',b:'每个单位至少一个不透明部件（关节／电池仓／内骨骼／晶体核）',d:'002 新增的可读性保险，同时充当朝向锚点。'},
+{k:'数值与机制',g:'C',a:'策划案原值',b:'策划案原值（一字不改）',d:'B 预算、D 公式、能量曲线、护盾 120、腐蚀 +3%/5 层、BOSS 50% 阶段技、漏怪 CAP=3 全部共享。'},
+{k:'界面骨架与手势',g:'C',a:'竖屏 60/40、卡面三层信息、拖拽/长按/双击/上滑、≥9mm',b:'同上（只换材质与高光）',d:'版式属于不可碰项，002 只改材质不改布局。'},
+{k:'叙事与世界观联动',g:'C',a:'与长篇《节点之海》质感一致（沙尘、纸图、黄铜、记录片）',b:'可与叙事共存，但需为"透明体质"补一段世界观解释',d:'002 的透明在叙事上尚无出处；若要落地，建议在设定里补一条"卡匣材质史"。'}
+];
+var mode='all',sel=null;
+var rows=document.getElementById('rows'),detail=document.getElementById('detail');
+function render(){
+rows.innerHTML='<div class="row"><div class="head-row">维度</div><div class="head-row">001 复古未来</div><div class="head-row">002 千禧透明</div><div class="head-row">级别</div></div>';
+D.forEach(function(d,i){ if(mode!=='all'&&d.g!==mode) return;
+var el=document.createElement('div');el.className='row'+(sel===i?' hot':'');
+el.innerHTML='<div>'+d.k+'</div><div>'+d.a+'</div><div>'+d.b+'</div><div><span class="tag '+d.g+'">'+d.g+'</span></div>';
+el.onclick=function(){sel=(sel===i)?null:i;render()};rows.appendChild(el)});
+if(sel==null){detail.innerHTML='<h3>怎么读</h3><p><span class="tag A">A</span> 有意冲突：与策划案基调不一致但不改玩法，落地需先改决策（主要是 D7）。<span class="tag B">B</span> 新增设定：策划案没写、002 需要补的东西。<span class="tag C">C</span> 两案共享：数值、机制、名称、界面骨架，一律不动。</p>';return}
+var d=D[sel];detail.innerHTML='<h3>'+d.k+'　<span class="tag '+d.g+'">'+d.g+'</span></h3><p>001：'+d.a+'</p><p>002：'+d.b+'</p><p>'+d.d+'</p>'}
+document.querySelectorAll('button[data-mode]').forEach(function(b){b.addEventListener('click',function(){
+document.querySelectorAll('button[data-mode]').forEach(function(x){x.setAttribute('aria-pressed','false')});
+b.setAttribute('aria-pressed','true');mode=b.dataset.mode;sel=null;render()})});
+render();})();
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>风格图 · 光尘侍从 · 镭射箔全息</title><style>
+:root{--bg:#0b1220;--fg:#e8eefb;--muted:#94a3b8;--border:#22314a;--card:rgba(255,255,255,.04);--accent:#60a5fa}
+@media (prefers-color-scheme:light){:root{--bg:#f6f8fc;--fg:#111827;--muted:#5b6472;--border:#dbe3ef;--card:rgba(255,255,255,.75);--accent:#2563eb}}
+*{box-sizing:border-box}body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.65 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1080px;margin:0 auto}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+h1{font-size:19px;margin:0 0 2px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+@media (max-width:880px){.grid{grid-template-columns:1fr}}
+.panel{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card)}
+.panel h3{margin:0 0 8px;font-size:13.5px}
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.ball{border-radius:14px;padding:10px;border:1px solid var(--border);position:relative;overflow:hidden;height:132px;display:flex;align-items:flex-end}
+.ball .lab{font-size:11.5px;line-height:1.35;text-shadow:0 1px 3px rgba(0,0,0,.55);color:#fff}
+.ball .hex{font-variant-numeric:tabular-nums;font-size:11px;opacity:.9}
+.keys{display:flex;flex-wrap:wrap;gap:8px}
+.key{display:flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:999px;padding:3px 9px 3px 4px;font-size:11.5px}
+.chip{width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+table{border-collapse:collapse;width:100%;font-size:12.5px}th,td{border:1px solid var(--border);padding:4px 7px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+svg{width:100%;height:auto;display:block}
+.stage{border-radius:12px;border:1px solid var(--border);padding:10px;background:var(--bg2,#0e1526);transition:background .2s}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 12px}
+button{font:inherit;font-size:12.5px;padding:4px 10px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--accent)}button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.note{color:var(--muted);font-size:12px;margin-top:8px}
+</style></head><body><div class="wrap">
+<h1>风格图 · 光尘侍从 · 镭射箔全息</h1>
+<div class="sub">镭射箔、全息贴纸、亚克力挂件：角度就是内容。　｜　配方：[12_键色与光照配方](../美术设定002/12_键色与光照配方.md)　｜　细案：[07_光尘侍从_镭射箔全息.md](../美术设定002/07_光尘侍从_镭射箔全息.md)</div>
+<div class="controls" role="group" aria-label="背景">
+<button type="button" data-bg="#0d1420" aria-pressed="true">深底（主用）</button>
+<button type="button" data-bg="#1b2433" aria-pressed="false">中灰底</button>
+<button type="button" data-bg="#dfe7f2" aria-pressed="false">浅底（可读性压力测试）</button>
+</div>
+<div class="grid">
+<div class="panel">
+<h3>材质球：外壳 / 内芯 / 边缘光</h3>
+<div class="swatches"><div class='ball' style='background:radial-gradient(120% 120% at 32% 26%, #ffffffcc 0%, #ffffff22 26%, transparent 52%),radial-gradient(80% 80% at 70% 78%, #5FF3E0cc 0%, #5FF3E044 40%, transparent 70%),linear-gradient(160deg,#B26BFFee,#B26BFF88 60%,#7CF9FFcc);box-shadow:inset 0 0 22px #5FF3E066, inset 0 -14px 22px rgba(0,0,0,.35);backdrop-filter:blur(2px)'><span class='lab'>外壳 · 镭射箔<br><span class='hex'>#5FF3E0 · #B26BFF · #7CF9FF</span></span></div><div class='ball' style='background:radial-gradient(120% 120% at 32% 26%, #ffffffcc 0%, #ffffff22 26%, transparent 52%),radial-gradient(80% 80% at 70% 78%, #0e1526cc 0%, #0e152644 40%, transparent 70%),linear-gradient(160deg,#7CF9FFee,#7CF9FF88 60%,#B26BFFcc);box-shadow:inset 0 0 22px #0e152666, inset 0 -14px 22px rgba(0,0,0,.35);backdrop-filter:blur(2px)'><span class='lab'>内芯 · 白线<br><span class='hex'>#0e1526 · #7CF9FF · #B26BFF</span></span></div><div class='ball' style='background:radial-gradient(120% 120% at 32% 26%, #ffffffcc 0%, #ffffff22 26%, transparent 52%),radial-gradient(80% 80% at 70% 78%, #F4F6F3cc 0%, #F4F6F344 40%, transparent 70%),linear-gradient(160deg,#5FF3E0ee,#5FF3E088 60%,#7A4DFFcc);box-shadow:inset 0 0 22px #F4F6F366, inset 0 -14px 22px rgba(0,0,0,.35);backdrop-filter:blur(2px)'><span class='lab'>边缘 · 银色切边<br><span class='hex'>#F4F6F3 · #5FF3E0 · #7A4DFF</span></span></div></div>
+<h3>单位剪影（透明三层叠合）</h3>
+<div class='stage' style='background:#0d1420'><svg viewBox='0 0 260 240' role='img'><defs><radialGradient id='core' cx='50%' cy='55%' r='55%'><stop offset='0%' stop-color='#5FF3E0' stop-opacity='.95'/><stop offset='70%' stop-color='#5FF3E0' stop-opacity='.25'/><stop offset='100%' stop-color='#5FF3E0' stop-opacity='0'/></radialGradient><filter id='soft' x='-40%' y='-40%' width='180%' height='180%'><feGaussianBlur stdDeviation='7' result='b'/><feMerge><feMergeNode in='b'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><g transform='rotate(-12 130 124)'><rect x='86' y='66' width='88' height='116' rx='8' fill='#5FF3E0' fill-opacity='.14' stroke='#B26BFF' stroke-width='2'/><rect x='86' y='66' width='88' height='116' rx='8' fill='url(#core)' fill-opacity='.5'/></g><rect x='112' y='150' width='40' height='16' rx='3' fill='#F4F6F3'/><line x1='130' y1='66' x2='130' y2='38' stroke='#F4F6F3' stroke-width='2'/><circle cx='130' cy='34' r='5' fill='none' stroke='#F4F6F3' stroke-width='2'/><g fill='#7CF9FF'><circle cx='196' cy='84' r='3'/><circle cx='206' cy='120' r='2'/><circle cx='62' cy='150' r='2.5'/><circle cx='74' cy='96' r='2'/></g></svg></div>
+<div class="note">剪影只用于验证"黑白之下还能读出族别与不透明芯"，非最终设定稿。</div>
+</div>
+<div class="panel">
+<h3>光位图（俯视）</h3>
+<svg viewBox='0 0 260 200' role='img'><circle cx='130' cy='104' r='40' fill='none' stroke='#7c8aa0' stroke-width='1' stroke-dasharray='3 3'/><circle cx='130' cy='104' r='26' fill='#5FF3E055' stroke='#5FF3E0' stroke-width='2'/><text x='130' y='108' text-anchor='middle' font-size='11' fill='#e8eefb'>主体</text><line x1='34' y1='20' x2='106' y2='84' stroke='#FFD166' stroke-width='2.5' marker-end='url(#a1)'/><text x='16' y='16' font-size='11' fill='#FFD166'>主光 45°/45° · 1.00</text><line x1='22' y1='170' x2='104' y2='122' stroke='#9FE8FF' stroke-width='2' marker-end='url(#a2)'/><text x='8' y='188' font-size='11' fill='#9FE8FF'>补光 −30°/20° · 0.30</text><line x1='238' y1='44' x2='158' y2='92' stroke='#5FF3E0' stroke-width='2' marker-end='url(#a3)'/><text x='150' y='26' font-size='11' fill='#5FF3E0'>边缘光 160°/30° · 0.60</text><line x1='206' y1='182' x2='140' y2='128' stroke='#fff' stroke-width='1.6' stroke-dasharray='4 3' marker-end='url(#a4)'/><text x='150' y='196' font-size='11' fill='#c9d4e6'>背光/透射 180° · 0.20–0.40</text><defs><marker id='a1' markerWidth='8' markerHeight='8' refX='6' refY='3' orient='auto'><path d='M0,0 L6,3 L0,6 z' fill='#FFD166'/></marker><marker id='a2' markerWidth='8' markerHeight='8' refX='6' refY='3' orient='auto'><path d='M0,0 L6,3 L0,6 z' fill='#9FE8FF'/></marker><marker id='a3' markerWidth='8' markerHeight='8' refX='6' refY='3' orient='auto'><path d='M0,0 L6,3 L0,6 z' fill='#5FF3E0'/></marker><marker id='a4' markerWidth='8' markerHeight='8' refX='6' refY='3' orient='auto'><path d='M0,0 L6,3 L0,6 z' fill='#fff'/></marker></defs></svg>
+<h3>键色</h3>
+<div class="keys"><span class='key'><span class='chip' style='background:#5FF3E0'></span>#5FF3E0 <span style='color:var(--muted)'>角度青 主体</span></span><span class='key'><span class='chip' style='background:#7CF9FF'></span>#7CF9FF <span style='color:var(--muted)'>广播高亮</span></span><span class='key'><span class='chip' style='background:#F4F6F3'></span>#F4F6F3 <span style='color:var(--muted)'>记录纸白</span></span><span class='key'><span class='chip' style='background:#B26BFF'></span>#B26BFF <span style='color:var(--muted)'>角度紫</span></span><span class='key'><span class='chip' style='background:#FFB347'></span>#FFB347 <span style='color:var(--muted)'>取用琥珀</span></span></div>
+<h3 style="margin-top:12px">配方</h3>
+<table><tr><th>L1 体表膜</th><td>镭射箔：雾度≈0、全透强偏光；角度色青→紫 #5FF3E0→#B26BFF</td></tr><tr><th>L2 内芯光</th><td>白线与小灯泡 #7CF9FF，广播时脉冲亮起</td></tr><tr><th>L3 界面层</th><td>刻字面 #F4F6F3：箔透明、字不透明（第一原则）</td></tr><tr><th>L4 边缘光</th><td>银色切边 1–2 px，偏青</td></tr><tr><th>主光性格</th><td>扫：主光 + 15° 掠射灯扫箔面，靠角度变化出内容</td></tr><tr><th>专属补光</th><td>背光 0.20；环境反射压到 0.10</td></tr><tr><th>粒子</th><td>闪粉 120（全案最高，仅交互与广播瞬间）</td></tr></table>
+</div>
+</div>
+</div>
+<script>
+(function(){var btns=document.querySelectorAll('button[data-bg]');var st=document.querySelector('.stage');
+btns.forEach(function(b){b.addEventListener('click',function(){btns.forEach(function(x){x.setAttribute('aria-pressed','false')});
+b.setAttribute('aria-pressed','true');st.style.background=b.dataset.bg;});});})();
+</script></body></html>
