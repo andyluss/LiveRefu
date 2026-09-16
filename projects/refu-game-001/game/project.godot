@@ -38,3 +38,10 @@ textures/canvas_textures/default_texture_filter=1
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[editor]
+
+; 录像（Movie Maker）：帧率与 JPEG 质量；录像时不锁垂直同步以保证"能渲多快渲多快"
+movie_writer/fps=30
+movie_writer/mjpeg_quality=0.9
+movie_writer/disable_vsync=true

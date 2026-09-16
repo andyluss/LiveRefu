@@ -6,6 +6,12 @@
 
 ## [Unreleased]
 
+### 新增
+- **完整流程演示录像** [`docs/video/demo_gameplay.mp4`](docs/video/demo_gameplay.mp4)（92.5 秒 / 720×1280 / 30fps / 7.3 MB，H.264）：主菜单 → 卡牌图鉴 → 关卡与挑战卡（加压+疾行，难度分 5）→ 卡组编辑 → 峡谷哨站 6 波交战 → 结算（评级 A、掉落 ×1.25），底部带分镜字幕，战斗段 4× 速。
+- **录像管线（无 ffmpeg、无录屏权限依赖）**：`game/scripts/tools/demo_director.gd`（录像导演：按时间轴实例化各界面 + 自动玩家操盘 + 字幕，战斗字幕跟"当前波次"走）+ `game/scenes/tools/demo.tscn` + `game/run.sh demo` + `tools/record_demo.sh`（一键录制）+ [`tools/make_video.swift`](tools/make_video.swift)（AVFoundation 编码器：PNG 帧序列 → H.264 MP4，另含 `--probe` 探规格与 `--frames` 抽帧核对）。
+- `docs/video/README.md`：片子内容表、重录方法与两个环境坑说明（Godot PNG 序列写入器不自建输出目录；Movie Maker 录制尺寸 = 窗口尺寸而非 viewport 尺寸）。
+- 项目 README / docs README / 02 工程结构 / 05 验收 / 00 里程碑同步加入录像入口与"录像验收"小节。
+
 ## [0.1.0] · 2026-09-16 · M1 垂直切片可玩
 
 范围（用户决策）：**Godot 4.7 + 铁砧联邦 12 卡 + 峡谷哨站 6 波 + 全卡系统闭环 + 严格照文档数值 + 复用现有美术出图**。

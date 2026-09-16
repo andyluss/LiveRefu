@@ -1,4 +1,8 @@
 # Godot 工程缓存（工程内另有 game/.gitignore）
 game/.godot/
-# 本地截图输出（正式截图在 docs/shots/）
+# 录屏中间产物与本地截图输出（正式产物在 docs/video/ 与 docs/shots/）
+.rec/
+.build/
 .shots/
+# Swift 编码器编译产物（由 tools/record_demo.sh 自动编译）
+tools/make_video

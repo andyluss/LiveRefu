@@ -7,6 +7,7 @@
 | --- | --- |
 | 立刻玩一局 | [`game/`](game/) 用 Godot 4.7 打开，或跑 `game/run.sh run` |
 | 看它算得对不对 | `game/run.sh check`（无头验收 19 项，见 [验收文档](docs/05_验收与测试.md)） |
+| **看完整流程** | [`docs/video/demo_gameplay.mp4`](docs/video/demo_gameplay.mp4)（92 秒一镜到底，含分镜字幕） |
 | 看界面长什么样 | [docs/shots/](docs/shots/)（6 张真实运行截图） |
 | 改数值 / 加卡 | [数据表与校验](docs/03_数据表与校验.md)（改 `game/data/*.json`，有脚本对账策划文档） |
 | 知道哪些地方是我拍的板 | [实现裁决记录](docs/01_实现裁决记录.md)（15 条） |
@@ -43,7 +44,8 @@ projects/refu-game-001/
 │   ├── 03_数据表与校验.md      # ★ 数据怎么从策划文档进到引擎
 │   ├── 04_调参与实测发现.md    # ★ 实测踩到的坑与给策划的建议
 │   ├── 05_验收与测试.md
-│   └── shots/           # 真实运行截图（6 张）
+│   ├── shots/           # 真实运行截图（6 张）
+│   └── video/           # ★ 完整流程演示录像（92 秒，含录制脚本说明）
 ├── game/                # ★ Godot 4.7 工程
 │   ├── project.godot
 │   ├── run.sh           # 统一入口：run / editor / check / import / shot
@@ -54,12 +56,14 @@ projects/refu-game-001/
 │   │   ├── core/        # ★ 纯逻辑：battle / enemy_unit / tower_unit / blocker_unit / projectile / path_geom / deck
 │   │   ├── view/        # 表现层：battle_view / card_view / ui_kit
 │   │   ├── app/         # 场景控制：main_boot / main_menu / level_select / deck_builder / codex / battle_screen
-│   │   └── tools/       # headless_sim（验收）/ auto_player（自动玩家）/ screenshot（截图）
+│   │   └── tools/       # headless_sim（验收）/ auto_player（自动玩家）/ screenshot（截图）/ demo_director（录像导演）
 │   └── scenes/
 └── tools/               # 数据管线（Python）
     ├── sync_assets.py       # 美术出图 → game/assets
     ├── extract_map_data.py  # 地图卡出图 → maps.json（几何抽取）
-    └── verify_data.py       # ★ 游戏数据表 ↔ 策划文档 逐字段交叉校验
+    ├── verify_data.py       # ★ 游戏数据表 ↔ 策划文档 逐字段交叉校验
+    ├── record_demo.sh       # 录制完整流程演示视频（Godot 帧序列 → H.264 MP4）
+    └── make_video.swift     # 帧序列 → MP4 编码器（AVFoundation，无 ffmpeg 依赖）
 ```
 
 ## 四、运行方式
@@ -71,6 +75,14 @@ cd projects/refu-game-001/game
 ./run.sh editor    # 用 Godot 编辑器打开工程
 ./run.sh check     # 无头验收：19 项用例，PASS/FAIL 看退出码
 ./run.sh shot --scene=res://scenes/battle/battle.tscn --out=/tmp/x.png --autoplay=120 --speed=8
+./run.sh demo       # 跑一遍"完整流程演示"（配 tools/record_demo.sh 录制）
+```
+
+录制演示视频（不需要屏幕录制权限、不需要联网）：
+
+```bash
+cd projects/refu-game-001
+tools/record_demo.sh                 # 默认 720×1280 @30fps → docs/video/demo_gameplay.mp4
 ```
 
 > `run.sh` 会把 `HOME` 指到工作区内的 `.godot-home/`：Godot 默认往 `~/Library/Application Support` 写日志与存档，

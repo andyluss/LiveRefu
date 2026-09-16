@@ -17,5 +17,6 @@ case "${1:-run}" in
     shift; exec "$GODOT" --headless --path "$HERE" res://scenes/tools/headless_sim.tscn "$@" ;;
   import)   exec "$GODOT" --headless --path "$HERE" --import ;;
   shot)     shift; exec "$GODOT" --path "$HERE" res://scenes/tools/screenshot.tscn -- "$@" ;;
+  demo)     shift; exec "$GODOT" --path "$HERE" res://scenes/tools/demo.tscn -- "$@" ;;
   *)        echo "用法: $0 {run|editor|check|import}" >&2; exit 2 ;;
 esac
