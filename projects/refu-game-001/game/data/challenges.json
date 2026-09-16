@@ -1,0 +1,64 @@
+{
+  "_note": "挑战卡数值引自 doc/refu-game-001/13_卡表_挑战卡样例.md（第二节）与 数值/05_能量与关卡预算曲线.md（第四节：难度分与奖励口径）。难度分/掉落/评级一律用 05 号文档的**取代**口径。",
+  "rules": {
+    "max_cards": 3,
+    "score_cap": 15,
+    "drop_formula": "1 + 0.05 × 难度分合计（上限 ×2.0）",
+    "rating_formula": "5% × 难度分合计",
+    "note": "13 号文档的「等级合计 ≤6」已被 05 号文档的「难度分合计 ≤15」取代（13 号是 v0.1 占位口径）。"
+  },
+  "challenges": [
+    {
+      "id": "CHL-01",
+      "name": "加压",
+      "level": 1,
+      "score": 3,
+      "modifier": {"enemy_hp_mul": 1.30},
+      "reward": {"drop": 0.15, "rating": 0.15},
+      "tags": ["压制"],
+      "desc": "敌人生命 +30%"
+    },
+    {
+      "id": "CHL-02",
+      "name": "断供",
+      "level": 2,
+      "score": 4,
+      "modifier": {"energy_rate_mul": 0.80},
+      "reward": {"drop": 0.20, "rating": 0.20},
+      "tags": ["断供"],
+      "desc": "能量自然增长 −20%"
+    },
+    {
+      "id": "CHL-03",
+      "name": "封锁",
+      "level": 2,
+      "score": 3,
+      "modifier": {"ban_card_type": "skill"},
+      "reward": {"drop": 0.15, "rating": 0.15},
+      "tags": ["封锁"],
+      "desc": "禁用「技能卡」"
+    },
+    {
+      "id": "CHL-04",
+      "name": "双流",
+      "level": 3,
+      "score": 5,
+      "modifier": {"extra_spawn": 1, "simultaneous": true},
+      "reward": {"drop": 0.25, "rating": 0.25},
+      "tags": ["双流"],
+      "requires": {"map_dual_entry": true},
+      "desc": "出生点 +1（双路同时开波）",
+      "blocked_hint": "本图单入口，不满足白名单条件（19 号地图卡表第三节：仅 MAP-ANV-02 / TID-01 / AST-02 / MULTI-01 可挂）"
+    },
+    {
+      "id": "CHL-05",
+      "name": "疾行",
+      "level": 1,
+      "score": 2,
+      "modifier": {"enemy_speed_mul": 1.25, "kill_energy_mul": 1.50},
+      "reward": {"drop": 0.10, "rating": 0.10},
+      "tags": ["疾行"],
+      "desc": "敌人移速 +25%，击杀能量返还 +50%"
+    }
+  ]
+}

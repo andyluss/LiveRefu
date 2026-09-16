@@ -1,0 +1,800 @@
+{
+  "_note": "卡表数据。规则层字段严格引自 doc/refu-game-001/14_卡表_铁砧联邦核心12卡.md 与 数值/01_铁砧联邦_12卡.md，未经改动；由 tools/verify_data.py 交叉校验。",
+  "_schema": {
+    "卡面层": [
+      "name",
+      "icon",
+      "cost",
+      "keyword",
+      "effect_line",
+      "face_stats"
+    ],
+    "规则层": [
+      "type",
+      "slot",
+      "stats",
+      "hooks"
+    ],
+    "叙事层": [
+      "faction",
+      "sub_faction",
+      "flavor",
+      "visual_tags"
+    ],
+    "type": "tower（塔卡）/ unit（单位卡）/ skill（技能卡）/ modifier（修饰卡）",
+    "slot": "standard（标准槽）/ support（支援槽）/ path（路径）/ modifier（修饰槽）/ none（技能卡不需槽位）",
+    "stats_ext": {
+      "lifetime": "单位卡在场秒数；0 或缺失＝常驻（duration 在支援卡上表示修理/光环窗口）",
+      "population": "占用人口（规则卡给定上限）",
+      "block": "路径阻挡单位可同时拦住的敌人数"
+    }
+  },
+  "_hook_ops": {
+    "energy": "立刻获得能量 {value}",
+    "stat_buff": "给 {scope} 的 {stat} 加 {value}（乘算前加算），cap 为上限，duration=0 表示本局永久",
+    "pierce_bonus": "本塔穿透数 +{value}，上限 {cap}",
+    "heal": "修复 {value}（per_sec=true 时为每秒修复量），target：self/all_towers/lowest_tower",
+    "shield": "给予 {value} 护盾，持续 {duration}s",
+    "aura": "常驻光环：{scope} 的 {stat} +{value}，半径 {radius} 格",
+    "slow_field": "常驻减速场：半径内敌方移速 {value}（负数为减速）",
+    "block_unit": "在路径上放置阻挡单位：生命 {hp}、阻挡 {block}、存在 {duration}s",
+    "add_tag": "为目标额外附加标签 {tag}",
+    "global_buff": "全场 {stat} +{value}，持续 {duration}s",
+    "damage_field": "常驻伤害场：半径内每秒 {dps} 伤害，corrosion 为附着的腐蚀层数/s",
+    "summon": "召唤 {count} 只 {unit}",
+    "corrosion": "对目标叠加 {value} 层腐蚀",
+    "resonance": "共鸣计数 +{value}"
+  },
+  "cards": [
+    {
+      "id": "ANV-T01",
+      "name": "模块炮塔",
+      "icon": "res://assets/cards/ANV-T01_模块炮塔.png",
+      "cost": 20,
+      "keyword": "弹药",
+      "effect_line": "伤害 12 / 攻速 1.0/s / 射程中",
+      "type": "tower",
+      "slot": "standard",
+      "tags": [
+        "弹药"
+      ],
+      "stats": {
+        "damage": 12,
+        "attack_speed": 1.0,
+        "range": 3.0,
+        "splash": 0.0,
+        "pierce": 0,
+        "targets_air": true,
+        "energy_damage": false,
+        "max_hp": 0,
+        "projectile_speed": 900.0
+      },
+      "hooks": {
+        "on_kill": [
+          {
+            "op": "energy",
+            "value": 1
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "联邦的万能承力单元：插上什么，就是什么。",
+      "visual_tags": [
+        "亚克力",
+        "工事",
+        "冷钢蓝"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "伤害",
+          "12"
+        ],
+        [
+          "攻速",
+          "1.0"
+        ],
+        [
+          "射程",
+          "中"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-T02",
+      "name": "交叉火力网",
+      "icon": "res://assets/cards/ANV-T02_交叉火力网.png",
+      "cost": 28,
+      "keyword": "弹药",
+      "effect_line": "伤害 8（溅射 1 格）/ 攻速 1.2/s / 射程 2.5",
+      "type": "tower",
+      "slot": "standard",
+      "tags": [
+        "弹药"
+      ],
+      "stats": {
+        "damage": 8,
+        "attack_speed": 1.2,
+        "range": 2.5,
+        "splash": 1.0,
+        "pierce": 0,
+        "targets_air": true,
+        "energy_damage": false,
+        "max_hp": 0,
+        "projectile_speed": 800.0
+      },
+      "hooks": {
+        "on_hit": [
+          {
+            "op": "stat_buff",
+            "stat": "attack_speed",
+            "value": 0.02,
+            "scope": "tag_self",
+            "cap": 0.1,
+            "duration": 0.0,
+            "stacking": "additive_capped"
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "两条弹道交叉的地方，没有人能站住。",
+      "visual_tags": [
+        "亚克力",
+        "火力网",
+        "冷钢蓝"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "伤害",
+          "8"
+        ],
+        [
+          "攻速",
+          "1.2"
+        ],
+        [
+          "溅射",
+          "1 格"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-T03",
+      "name": "磁轨钉枪",
+      "icon": "res://assets/cards/ANV-T03_磁轨钉枪.png",
+      "cost": 32,
+      "keyword": "穿甲",
+      "effect_line": "伤害 26（直线穿透 3）/ 攻速 0.6/s / 射程 5",
+      "type": "tower",
+      "slot": "standard",
+      "tags": [
+        "穿甲"
+      ],
+      "stats": {
+        "damage": 26,
+        "attack_speed": 0.6,
+        "range": 5.0,
+        "splash": 0.0,
+        "pierce": 3,
+        "targets_air": false,
+        "energy_damage": false,
+        "max_hp": 0,
+        "projectile_speed": 1600.0
+      },
+      "hooks": {
+        "on_kill": [
+          {
+            "op": "pierce_bonus",
+            "value": 1,
+            "cap": 5
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "一根钉子穿过三个人，这不是比喻。",
+      "visual_tags": [
+        "亚克力",
+        "磁轨",
+        "冷钢蓝"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "伤害",
+          "26"
+        ],
+        [
+          "攻速",
+          "0.6"
+        ],
+        [
+          "穿透",
+          "3"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-T04",
+      "name": "路障工事",
+      "icon": "res://assets/cards/ANV-T04_路障工事.png",
+      "cost": 18,
+      "keyword": "工事",
+      "effect_line": "生命 400 / 减速 30% / 不攻击",
+      "type": "tower",
+      "slot": "standard",
+      "tags": [
+        "工事"
+      ],
+      "stats": {
+        "damage": 0,
+        "attack_speed": 0.0,
+        "range": 1.5,
+        "splash": 0.0,
+        "pierce": 0,
+        "targets_air": false,
+        "energy_damage": false,
+        "max_hp": 400,
+        "projectile_speed": 0.0
+      },
+      "hooks": {
+        "on_destroy": [
+          {
+            "op": "energy",
+            "value": 6
+          }
+        ],
+        "passive": [
+          {
+            "op": "slow_field",
+            "value": -0.3,
+            "radius": 1.5
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "不能开火的工事，负责让能开火的工事打得更久。",
+      "visual_tags": [
+        "亚克力",
+        "工事",
+        "黄铜"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "生命",
+          "400"
+        ],
+        [
+          "减速",
+          "30%"
+        ],
+        [
+          "标签",
+          "—"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-M01",
+      "name": "齿轮帮·维修工",
+      "icon": "res://assets/cards/ANV-M01_齿轮帮·维修工.png",
+      "cost": 15,
+      "keyword": "维修",
+      "effect_line": "修复 8/s、持续 6s、人口 1",
+      "type": "unit",
+      "slot": "support",
+      "tags": [
+        "维修"
+      ],
+      "stats": {
+        "population": 1,
+        "range": 2.0,
+        "duration": 6.0,
+        "heal_per_sec": 8.0,
+        "lifetime": 0.0
+      },
+      "hooks": {
+        "on_deploy": [
+          {
+            "op": "heal",
+            "value": 8.0,
+            "per_sec": true,
+            "duration": 6.0,
+            "target": "towers_in_range",
+            "radius": 2.0
+          }
+        ],
+        "on_wave_end": [
+          {
+            "op": "heal",
+            "value": 8.0,
+            "per_sec": true,
+            "duration": 6.0,
+            "target": "towers_in_range",
+            "radius": 2.0,
+            "multiplier": 1.5,
+            "note": "on_wave_end：修复量 +50%"
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": "COG",
+      "flavor": "铆钉拎着工具箱跑起来的样子，比任何说明书都让人安心。",
+      "visual_tags": [
+        "糖果黄",
+        "齿轮帮",
+        "半透"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "修复",
+          "8/s"
+        ],
+        [
+          "持续",
+          "6s"
+        ],
+        [
+          "人口",
+          "1"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-M02",
+      "name": "齿轮帮·搬运工",
+      "icon": "res://assets/cards/ANV-M02_齿轮帮·搬运工.png",
+      "cost": 12,
+      "keyword": "弹药",
+      "effect_line": "光环：同标签塔攻速 +10%",
+      "type": "unit",
+      "slot": "support",
+      "tags": [
+        "弹药"
+      ],
+      "stats": {
+        "population": 1,
+        "range": 2.0,
+        "duration": 0.0,
+        "lifetime": 0.0
+      },
+      "hooks": {
+        "on_deploy": [
+          {
+            "op": "energy",
+            "value": 2,
+            "target": "adjacent_towers",
+            "note": "为相邻塔 +2 能量"
+          }
+        ],
+        "passive": [
+          {
+            "op": "aura",
+            "stat": "attack_speed",
+            "value": 0.1,
+            "scope": "tag_self",
+            "radius": 2.0
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": "COG",
+      "flavor": "它不搬运弹药，它搬运的是「弹药打得快一点」这件事。",
+      "visual_tags": [
+        "糖果黄",
+        "齿轮帮",
+        "半透"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "光环",
+          "+10%"
+        ],
+        [
+          "范围",
+          "2 格"
+        ],
+        [
+          "人口",
+          "1"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-M03",
+      "name": "齿轮帮·路障小队",
+      "icon": "res://assets/cards/ANV-M03_齿轮帮·路障小队.png",
+      "cost": 20,
+      "keyword": "工事",
+      "effect_line": "生命 200 / 阻挡 2 / 存在 15s",
+      "type": "unit",
+      "slot": "path",
+      "tags": [
+        "工事"
+      ],
+      "stats": {
+        "population": 0,
+        "max_hp": 200,
+        "block": 2,
+        "duration": 15.0,
+        "lifetime": 15.0
+      },
+      "hooks": {
+        "on_expire": [
+          {
+            "op": "slow_field",
+            "value": -0.2,
+            "radius": 1.5,
+            "duration": 3.0,
+            "note": "on_expire：残留减速 3s（−20%）"
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": "COG",
+      "flavor": "三个齿轮帮，两块铁板，一条不许过的线。",
+      "visual_tags": [
+        "糖果黄",
+        "齿轮帮",
+        "路障"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "生命",
+          "200"
+        ],
+        [
+          "阻挡",
+          "2"
+        ],
+        [
+          "存在",
+          "15s"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-S01",
+      "name": "过载射击",
+      "icon": "res://assets/cards/ANV-S01_过载射击.png",
+      "cost": 15,
+      "keyword": "弹药",
+      "effect_line": "全场攻速 +40%、持续 6s",
+      "type": "skill",
+      "slot": "none",
+      "tags": [
+        "弹药"
+      ],
+      "stats": {
+        "duration": 6.0
+      },
+      "hooks": {
+        "on_cast": [
+          {
+            "op": "global_buff",
+            "stat": "attack_speed",
+            "value": 0.4,
+            "duration": 6.0
+          },
+          {
+            "op": "stat_buff",
+            "stat": "attack_speed",
+            "value": 0.1,
+            "scope": "tag_self",
+            "duration": 6.0,
+            "note": "on_cast：同标签塔额外 +10%"
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "把安全阀拆掉，火力就上来了。",
+      "visual_tags": [
+        "亚克力",
+        "过载",
+        "警示琥珀"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "攻速",
+          "+40%"
+        ],
+        [
+          "持续",
+          "6s"
+        ],
+        [
+          "范围",
+          "全场"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-S02",
+      "name": "应急修复",
+      "icon": "res://assets/cards/ANV-S02_应急修复.png",
+      "cost": 12,
+      "keyword": "维修",
+      "effect_line": "单体塔修复 200 / 护盾 80",
+      "type": "skill",
+      "slot": "none",
+      "tags": [
+        "维修"
+      ],
+      "stats": {
+        "duration": 10.0
+      },
+      "hooks": {
+        "on_cast": [
+          {
+            "op": "heal",
+            "value": 200.0,
+            "target": "selected_tower"
+          },
+          {
+            "op": "shield",
+            "value": 80.0,
+            "duration": 10.0,
+            "target": "selected_tower"
+          }
+        ],
+        "on_shield_break": [
+          {
+            "op": "energy",
+            "value": 5
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "先补上洞，再谈纪律。",
+      "visual_tags": [
+        "亚克力",
+        "维修",
+        "观察窗白"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "修复",
+          "200"
+        ],
+        [
+          "护盾",
+          "80"
+        ],
+        [
+          "持续",
+          "10s"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-X01",
+      "name": "交叉火力",
+      "icon": "res://assets/cards/ANV-X01_交叉火力.png",
+      "cost": 5,
+      "keyword": "弹药",
+      "effect_line": "同标签塔 +15% 攻速，最多叠 2 层",
+      "type": "modifier",
+      "slot": "modifier",
+      "tags": [
+        "弹药"
+      ],
+      "stats": {
+        "max_stacks": 2
+      },
+      "hooks": {
+        "passive": [
+          {
+            "op": "stat_buff",
+            "stat": "attack_speed",
+            "value": 0.15,
+            "scope": "host_tower",
+            "max_stacks": 2,
+            "note": "同标签塔 +15% 攻速，最多叠 2 层"
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "一条弹道不可怕，两条弹道才叫网。",
+      "visual_tags": [
+        "修饰卡",
+        "弹药"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "攻速",
+          "+15%"
+        ],
+        [
+          "叠层",
+          "×2"
+        ],
+        [
+          "对象",
+          "同标签"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-X02",
+      "name": "贫铀弹芯",
+      "icon": "res://assets/cards/ANV-X02_贫铀弹芯.png",
+      "cost": 8,
+      "keyword": "弹药 / 穿甲",
+      "effect_line": "+25% 伤害，−10% 攻速",
+      "type": "modifier",
+      "slot": "modifier",
+      "tags": [
+        "弹药",
+        "穿甲"
+      ],
+      "stats": {},
+      "hooks": {
+        "passive": [
+          {
+            "op": "stat_buff",
+            "stat": "damage",
+            "value": 0.25,
+            "scope": "host_tower"
+          },
+          {
+            "op": "stat_buff",
+            "stat": "attack_speed",
+            "value": -0.1,
+            "scope": "host_tower"
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "更重、更慢、更不讲道理。",
+      "visual_tags": [
+        "修饰卡",
+        "穿甲",
+        "黄铜"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "伤害",
+          "+25%"
+        ],
+        [
+          "攻速",
+          "−10%"
+        ],
+        [
+          "对象",
+          "本塔"
+        ]
+      ]
+    },
+    {
+      "id": "ANV-X03",
+      "name": "模块化基座",
+      "icon": "res://assets/cards/ANV-X03_模块化基座.png",
+      "cost": 6,
+      "keyword": "工事",
+      "effect_line": "为本塔额外附加 1 个标签（弹药或工事）",
+      "type": "modifier",
+      "slot": "modifier",
+      "tags": [
+        "工事"
+      ],
+      "stats": {
+        "tag_choice": [
+          "弹药",
+          "工事"
+        ]
+      },
+      "hooks": {
+        "on_attach": [
+          {
+            "op": "add_tag",
+            "tag": "弹药",
+            "target": "host_tower",
+            "choose_from": [
+              "弹药",
+              "工事"
+            ]
+          },
+          {
+            "op": "trigger",
+            "event": "on_deploy",
+            "target": "host_tower",
+            "note": "on_attach：触发一次 on_deploy"
+          }
+        ]
+      },
+      "faction": "ANV",
+      "sub_faction": null,
+      "flavor": "联邦的塔不是造好的，是拼好的。",
+      "visual_tags": [
+        "修饰卡",
+        "模块换装"
+      ],
+      "source": "14 号卡表 / 数值 01",
+      "face_stats": [
+        [
+          "标签",
+          "+1"
+        ],
+        [
+          "对象",
+          "本塔"
+        ],
+        [
+          "触发",
+          "on_deploy"
+        ]
+      ]
+    }
+  ],
+  "bonds": [
+    {
+      "id": "BOND-ANV-01",
+      "name": "火力网",
+      "condition": {
+        "tag": "弹药",
+        "count": 3
+      },
+      "effect": [
+        {
+          "op": "stat_buff",
+          "stat": "attack_speed",
+          "value": 0.1,
+          "scope": "towers_with_tag:弹药"
+        }
+      ],
+      "source": "14 号卡表 第五节"
+    },
+    {
+      "id": "BOND-ANV-02",
+      "name": "加固阵列",
+      "condition": {
+        "tag": "工事",
+        "count": 2
+      },
+      "effect": [
+        {
+          "op": "stat_buff",
+          "stat": "max_hp",
+          "value": 0.15,
+          "scope": "towers_with_tag:工事"
+        }
+      ],
+      "source": "14 号卡表 第五节"
+    },
+    {
+      "id": "BOND-ANV-03",
+      "name": "后勤链",
+      "condition": {
+        "tag": "维修",
+        "count": 2
+      },
+      "effect": [
+        {
+          "op": "heal",
+          "value": 0.05,
+          "percent_of_max_hp": true,
+          "target": "all_towers",
+          "trigger": "on_wave_start"
+        }
+      ],
+      "source": "14 号卡表 第五节"
+    }
+  ]
+}

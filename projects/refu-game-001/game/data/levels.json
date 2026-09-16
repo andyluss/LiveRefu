@@ -1,0 +1,46 @@
+{
+  "_note": "关卡 = 四件套（地图卡 + 波次卡组 + 事件卡组 + 规则卡）的组装（doc/refu-game-001/06_关卡与地图卡.md 第一节）。M1 只落地第 1 章教学关 L1-1。",
+  "levels": [
+    {
+      "id": "L1-1",
+      "name": "峡谷哨站",
+      "chapter": 1,
+      "index": 1,
+      "map": "MAP-ANV-01",
+      "wave_set": "WAV-ANV-A",
+      "event_set": "EVT-NONE",
+      "rule": "RUL-BASE",
+      "faction": "ANV",
+      "target_win_rate": "80%+",
+      "target_d": [0.7, 0.9],
+      "challenges_allowed": false,
+      "teaching": true,
+      "desc": "教学图：单入口、两个高台加射程、一片沼泽给减速示范。不开放挑战卡（06 号文档第四节：可读性是第一难度参数）。",
+      "source": "18 号样例 / 19 号地图卡表 / 20 号难度曲线"
+    },
+    {
+      "id": "L1-2",
+      "name": "峡谷哨站 · 加压",
+      "chapter": 1,
+      "index": 2,
+      "map": "MAP-ANV-01",
+      "wave_set": "WAV-ANV-A",
+      "event_set": "EVT-NONE",
+      "rule": "RUL-BASE",
+      "faction": "ANV",
+      "challenges_allowed": true,
+      "teaching": false,
+      "unlock_after": "L1-1",
+      "desc": "同一张地图卡 + 同一套波次卡组，挂上挑战卡即产生新挑战（06 号文档第三节的复用价值示范）。",
+      "source": "06 号文档第三节"
+    }
+  ],
+  "event_sets": [
+    {
+      "id": "EVT-NONE",
+      "name": "无事件",
+      "events": [],
+      "source": "M1 未实现事件卡；remove-safe 验证点（18 号样例第四节第 4 条）"
+    }
+  ]
+}

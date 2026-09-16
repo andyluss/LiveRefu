@@ -22,8 +22,10 @@
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
 | [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |
-| [`doc/refu-game-001/`](doc/refu-game-001/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图等 12 篇 | [`doc/refu-game-001/README.md`](doc/refu-game-001/README.md) |
-| [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：当前项目《明日频道》（含项目 README、CHANGELOG 日志、docs 按角色分目录） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
+| [`doc/refu-game-001/`](doc/refu-game-001/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图 + 卡表与数值 + 故事 + 可视化 + 美术设定；其**可运行实现**见 [`projects/refu-game-001/`](projects/refu-game-001/README.md) | [`doc/refu-game-001/README.md`](doc/refu-game-001/README.md) |
+| [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：每个实际开发中的项目一个子目录（含项目 README、`CHANGELOG.md`、`docs/`） | —— |
+| [`projects/tomorrows-channel/`](projects/tomorrows-channel/README.md) | 项目《明日频道》：复古未来氛围陪伴应用（Godot 工程 + 按角色的项目文档） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
+| [`projects/refu-game-001/`](projects/refu-game-001/README.md) | 项目《Refu Game 001 · 节点防线》：卡片式塔防的**可运行实现**（Godot 4.7 竖屏；数据表与策划卷逐字段对账；无头验收 19 项） | [`projects/refu-game-001/README.md`](projects/refu-game-001/README.md) |
 | [`indie/`](indie/README.md) | 独立项目区：与主线无关的独立项目，一项目一子目录、自成体系（默认豁免根目录规则） | [`indie/README.md`](indie/README.md) |
 | [`studio001/`](studio001/README.md) | **（已搁置）** 原 AI 开发工作室：六个角色身份卡，保留作历史资料；不再使用/更新 | [`studio001/README.md`](studio001/README.md) |
 | [`tech/`](tech/README.md) | 仓库级技术文档：Git 与提交约定、文档约定、相对链接与数据 schema 校验（钩子+CI）、形式化验证 | [`tech/README.md`](tech/README.md) |

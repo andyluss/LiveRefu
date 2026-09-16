@@ -1,0 +1,46 @@
+{
+  "_note": "全局平衡参数（派生值与文档未定项集中在此，便于调参；卡表/敌人数值本体不在此文件，见 cards.json / enemies.json）。",
+  "board": {
+    "cell": 90.0,
+    "range_unit": 90.0,
+    "comment": "1 格 = 90px（地图卡网格列宽）；射程/半径一律以格为单位，乘本值换算成像素"
+  },
+  "movement": {
+    "px_per_speed_unit": 20.75,
+    "comment": "敌方移速 1.0 = 20.75 px/s；来源：MAP-ANV-01 路径全长 830px ÷ 19 号卡表「约 40s 通行」= 20.75"
+  },
+  "energy": {
+    "wave_clear_bonus": 5,
+    "comment": "波间奖励 +5（数值 05 第一节）；起始能量/自然增长/上限在 rules.json（规则卡可改）"
+  },
+  "combat": {
+    "armor_flat_reduction_formula": "damage - armor（下限 1）",
+    "energy_damage_armor_ignore": 0.5,
+    "slow_floor": -0.80,
+    "corrosion_per_stack": 0.03,
+    "corrosion_max_stacks": 5,
+    "default_field_radius": 1.5,
+    "enemy_attack_range": 0.6,
+    "block_reach": 0.5,
+    "comment": "护甲为平砍减免；能量伤害无视 50% 护甲（数值 04 第一节口径）"
+  },
+  "base": {
+    "leak_damage": 1,
+    "comment": "漏 1 只扣 1 点基地生命（04 号文档：抵达基地即扣基地生命）"
+  },
+  "rating": {
+    "comment": "评级三维：基地剩余生命 / 能量使用效率 / 组合触发次数（04 号文档第五节）",
+    "weights": {"base_hp": 0.40, "energy_efficiency": 0.30, "combo": 0.30},
+    "grades": [
+      {"min": 0.85, "grade": "S"},
+      {"min": 0.70, "grade": "A"},
+      {"min": 0.55, "grade": "B"},
+      {"min": 0.0, "grade": "C"}
+    ]
+  },
+  "sim": {
+    "tick_hz": 30,
+    "max_seconds": 900.0,
+    "comment": "固定步长逻辑帧；headless 验收脚本用它保证可复现"
+  }
+}

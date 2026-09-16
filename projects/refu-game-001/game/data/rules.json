@@ -1,0 +1,27 @@
+{
+  "_note": "规则卡（RUL-BASE 标准塔防）：基地生命与起始能量引自 doc/refu-game-001/18_样例_关卡组装示例.md 第一节。起手张数、人口上限、布防期等文档未定项列为 M1 实现裁决，见 docs/01_实现裁决记录.md；起手张数经无头实测标定为 6（6→漏怪 1、评级 S；5→漏怪 9、评级 B）。",
+  "rules": [
+    {
+      "id": "RUL-BASE",
+      "name": "标准塔防",
+      "source": "18 号样例第一节",
+      "base_hp": 20,
+      "start_energy": 10,
+      "energy_rate": 1.0,
+      "energy_cap": 99,
+      "population_cap": 5,
+      "build_phase_sec": 15.0,
+      "wave_gap_sec": 5.0,
+      "hand_size": 6,
+      "draw_options": 3,
+      "victory": {
+        "type": "survive_all_waves"
+      },
+      "deck": {
+        "size": 20,
+        "max_copies": 2,
+        "min_tags": 2
+      }
+    }
+  ]
+}

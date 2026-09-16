@@ -1,0 +1,4 @@
+# Godot 工程缓存（工程内另有 game/.gitignore）
+game/.godot/
+# 本地截图输出（正式截图在 docs/shots/）
+.shots/
