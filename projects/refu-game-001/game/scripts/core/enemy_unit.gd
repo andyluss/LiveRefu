@@ -1,59 +1,8 @@
-extends RefCounted
+extends EnemyState
 class_name EnemyUnit
-## EnemyUnit —— 一个敌方单位的运行时状态（纯逻辑，不含任何渲染）。
-##
-## 数值来自 game/data/enemies.json（引自策划 数值/04 号文档），此处只做状态与结算。
+## EnemyUnit —— 敌方单位的行为：移速（含减速与冲刺）、受伤倍率、伤害结算。
+## 数值来自 data/enemies.json（引自策划 数值/04），此处只做状态结算。
 
-var uid: int = 0
-var id: String = ""
-var name: String = ""
-var art: String = ""
-
-# --- 位置 ---
-var path_index: int = 0
-var distance: float = 0.0          # 沿路径的里程（像素）
-var base_speed: float = 0.0        # 移速换算后的 px/s（已含挑战卡倍率）
-
-# --- 生存 ---
-var hp: float = 0.0
-var max_hp: float = 0.0
-var shield: float = 0.0
-var armor: float = 0.0
-var alive: bool = true
-var reached_end: bool = false
-var spawn_time: float = 0.0
-
-# --- 特性 ---
-var flying: bool = false
-var slow_resist: float = 0.0
-var flat_reduction: float = 0.0
-var dash_duration: float = 0.0
-var dash_multiplier: float = 1.0
-var phase_threshold: float = 0.0
-var phase_triggered: bool = false
-
-# --- 攻击 ---
-var attack: float = 0.0
-var attack_speed: float = 0.0
-var attack_cd: float = 0.0
-var attacking_uid: int = 0         # 正在攻击的阻挡单位/工事塔 uid（0 = 未交战）
-
-# --- 状态 ---
-var slows: Array = []              # [{value: -0.3, until: t, source: "..."}]
-var corrosion_stacks: int = 0
-var corrosion_until: float = -1.0
-var damage_taken_bonus: float = 0.0   # 合流点等地形的易伤
-var field_damage_accum: float = 0.0
-
-# --- 统计 ---
-var kill_energy: int = 1
-var threat: int = 0
-var damage_dealt_total: float = 0.0
-var hit_flash_until: float = -1.0
-
-
-## 当前实际移速（px/s）：基础 ×（1 + 减速合计），并按特性削减减速效果。
-## extra_slow 来自本 tick 叠加的"场"减速（地形沼泽、粘网、残留减速）。
 func current_speed(now: float, slow_floor: float, dash_active: bool = false, extra_slow: float = 0.0) -> float:
 	var slow_sum := extra_slow
 	for s in slows:

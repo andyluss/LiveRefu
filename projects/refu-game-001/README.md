@@ -10,6 +10,8 @@
 | **看完整流程** | [`docs/video/demo_gameplay.mp4`](docs/video/demo_gameplay.mp4)（92 秒一镜到底，含分镜字幕） |
 | 看界面长什么样 | [docs/shots/](docs/shots/)（6 张真实运行截图） |
 | 改数值 / 加卡 | [数据表与校验](docs/03_数据表与校验.md)（改 `game/data/*.json`，有脚本对账策划文档） |
+| 想知道"改某件事去哪" | [代码地图](docs/07_代码地图.md)（24 条改动 → 文件对照表） |
+| 要动代码结构 | [文件预算与拆分约定](docs/06_文件预算与拆分约定.md)（核心 ≤50 代码行、界面 ≤100，脚本强制） |
 | 知道哪些地方是我拍的板 | [实现裁决记录](docs/01_实现裁决记录.md)（15 条） |
 | 知道实测踩了什么坑 | [调参与实测发现](docs/04_调参与实测发现.md)（7 条，含 2 条文档冲突） |
 
@@ -52,11 +54,12 @@ projects/refu-game-001/
 │   ├── assets/          # 从 doc/ 美术出图同步来的 PNG（cards/maps/units）
 │   ├── data/            # ★ 数据表（JSON）：cards/enemies/maps/waves/challenges/rules/balance
 │   ├── scripts/
-│   │   ├── autoload/    # GameData（数据装载）/ AppState（选择与进度）/ UiFont（中文字体）
-│   │   ├── core/        # ★ 纯逻辑：battle / enemy_unit / tower_unit / blocker_unit / projectile / path_geom / deck
-│   │   ├── view/        # 表现层：battle_view / card_view / ui_kit
-│   │   ├── app/         # 场景控制：main_boot / main_menu / level_select / deck_builder / codex / battle_screen
-│   │   └── tools/       # headless_sim（验收）/ auto_player（自动玩家）/ screenshot（截图）/ demo_director（录像导演）
+│   │   ├── core/        # ★ 纯逻辑：battle.gd（域对象）+ battle/（41 个子系统）+ 单位/路径/卡组
+│   │   ├── data/        # 数据层静态类：装载/校验/查询/卡组配方/挑战卡规则/存档
+│   │   ├── autoload/    # 门面：GameData（数据）/ AppState（选择与进度）/ UiFont（中文字体）
+│   │   ├── view/        # 表现层：battle/（六个 painter）+ 卡牌控件 + 色板/控件工厂
+│   │   ├── app/         # 界面控制：菜单/关卡/卡组/图鉴 + battle/（各面板与弹窗）
+│   │   └── tools/       # 验收（sim/）/ 自动玩家（auto_*）/ 录像（demo/）/ 截图（shot/）
 │   └── scenes/
 └── tools/               # 数据管线（Python）
     ├── sync_assets.py       # 美术出图 → game/assets
@@ -73,7 +76,8 @@ cd projects/refu-game-001/game
 
 ./run.sh run       # 开一局（Godot 窗口，竖屏 540×960）
 ./run.sh editor    # 用 Godot 编辑器打开工程
-./run.sh check     # 无头验收：19 项用例，PASS/FAIL 看退出码
+./run.sh check     # 无头验收：文件预算 + 19 项用例，PASS/FAIL 看退出码
+./run.sh lint      # 只查文件预算（每个 .gd 的代码行）
 ./run.sh shot --scene=res://scenes/battle/battle.tscn --out=/tmp/x.png --autoplay=120 --speed=8
 ./run.sh demo       # 跑一遍"完整流程演示"（配 tools/record_demo.sh 录制）
 ```

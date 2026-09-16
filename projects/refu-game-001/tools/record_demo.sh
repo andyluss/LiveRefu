@@ -23,7 +23,8 @@ OUT="$OUT_DIR/demo_gameplay.mp4"
 ENCODER="$HERE/tools/make_video"
 
 mkdir -p "$FRAME_DIR" "$OUT_DIR" "$HERE/.build/cache" "$HERE/.build/tmp"
-rm -f "$FRAME_DIR"/*.png "$REC_DIR"/*.mp4
+find "$FRAME_DIR" -name "*.png" -delete 2>/dev/null || true
+rm -f "$REC_DIR"/*.mp4
 
 # 1) 编译编码器（首次或源码更新时）
 if [ ! -x "$ENCODER" ] || [ "$HERE/tools/make_video.swift" -nt "$ENCODER" ]; then
@@ -55,8 +56,9 @@ s = re.sub(r"window/size/window_width_override=\d+", "window/size/window_width_o
 s = re.sub(r"window/size/window_height_override=\d+", "window/size/window_height_override=" + h, s)
 path.write_text(s, encoding="utf-8")
 PYEOF
+# --quit-after：演示场景若加载失败，Godot 会回退到主菜单且永不退出；用帧数上限兜底（6000 帧 = 200s）。
 "${GODOT:-godot}" --path "$HERE/game" \
-  --write-movie "$FRAME_DIR/frame.png" --fixed-fps "$FPS" \
+  --write-movie "$FRAME_DIR/frame.png" --fixed-fps "$FPS" --quit-after 6000 \
   res://scenes/tools/demo.tscn 2>&1 | grep -E "Demo|ERROR|frames at" || true
 restore_project
 trap - EXIT
@@ -64,6 +66,11 @@ trap - EXIT
 FRAMES=$(ls "$FRAME_DIR"/*.png 2>/dev/null | wc -l | tr -d ' ')
 if [ "$FRAMES" = "0" ]; then
   echo "[record] 没有录到任何帧，检查上面的 ERROR" >&2
+  exit 1
+fi
+# 正常约 2700 帧（92 秒）；超过 4000 说明演示场景没加载、录到了回退的主菜单。
+if [ "$FRAMES" -gt 4000 ]; then
+  echo "[record] 帧数异常（$FRAMES > 4000）：演示场景很可能加载失败，请检查上面的 SCRIPT ERROR" >&2
   exit 1
 fi
 

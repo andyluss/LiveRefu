@@ -6,6 +6,52 @@
 
 ## [Unreleased]
 
+### 变更（结构重构：23 → 128 个 .gd，核心 ≤50 / 界面 ≤100 代码行）
+
+**目标**：让"一个文件只做一件事"变成可执行的约定——核心逻辑 ≤50 代码行、界面 ≤100 代码行（注释与空行不计，
+物理行兜底），由 `tools/check_file_size.py` 强制，超预算 `./run.sh check` 直接 FAIL。
+
+- **执行器**：新增 [`tools/check_file_size.py`](../refu-game-001/tools/check_file_size.py)（`./run.sh lint`），
+  已接入 `./run.sh check` 的第一道闸门；定义"代码行"口径（去空行/`#` 注释/三引号块）。
+- **新增冒烟测试**（`./run.sh smoke`，也挂在 `check` 里）：无头把演示场景跑 4 秒，任何 `SCRIPT ERROR` 即 FAIL。
+  加它的直接原因：拆分 `demo_director` 时漏声明了一个成员变量，19 条验收用例全过、但录像整段失败
+  （Godot 回退录了 4 分半主菜单）——**用例只驱动 core/，接线错误得靠冒烟测试拦**。
+  同时给 `tools/record_demo.sh` 加了帧数上限与异常帧数告警，避免再产出这种无用视频。
+- **`core/battle.gd`：1462 行（1187 代码行）→ 拆成 `core/battle.gd` + `core/battle/` 下 41 个文件**：
+  - 三层门面：`battle_state.gd`（状态字段）→ `battle_api.gd`（只读查询转发）→ `battle.gd`（生命周期 + 命令）；
+  - 逻辑用**组合**（静态系统类）：`BattleStats`（属性管线，来源采集再分两层）、`BattleEffects`（钩子解释器，
+    按 op 分三个文件）、`BattleEnemies`/`BattleBlocking`/`BattleFortAttack`、`BattleWaves`/`BattleWaveEnd`/`BattleSpawn`、
+    `BattlePlacement`/`BattlePlaceTower`/`BattlePlaceUnit`/`BattlePlaceModifier`、`BattleDamage`/`BattleDestroy`、
+    `BattleFields`、`BattleBonds`、`BattleRating`、`BattleQueries`/`BattleUiQueries`/`BattleFeedback` 等；
+  - 字段直达（`battle.energy`、`tw.hp`）零改动：状态搬到基类，200+ 调用点无需修改。
+- **单位类**：`TowerUnit`/`EnemyUnit`/`BlockerUnit` 各拆为 `*_state.gd`（字段）+ `*_unit.gd`（行为），同上保留字段直达。
+- **路径与卡组**：`path_geom.gd` → `+ path_geom_math.gd`/`path_geom_distance.gd`（对外方法签名不变，改为转发）；
+  `deck.gd` → `+ deck_draw.gd`。
+- **数据与全局状态**：`game_data.gd` → `GameData` 门面 + `data/`（`data_loader` / `data_validator` / `data_queries`）；
+  `app_state.gd` → `AppState` 门面 + `data/`（`deck_recipes` / `deck_rules` / `challenge_rules` / `progress` / `save_io`）。
+- **表现层**（`view/`）：`battle_view.gd` 283 → 66，绘制拆成 `view/battle/` 六个 painter + 只读上下文
+  `battle_paint_ctx.gd`；`ui_kit.gd` 变为**纯转发门面**（颜色/字号搬到 `palette.gd`、控件工厂搬到 `widgets.gd`），
+  `UiKit.*` 的名字一个不少；`card_view.gd` 只留状态与交互，画法搬 `card_painter.gd`；形状工具 `draw_shapes.gd`。
+- **界面层**（`app/`）：`battle_screen.gd` 744 → 装配与驱动，面板拆到 `app/battle/`（HUD / 手牌 / 波次条 / 底栏 /
+  输入路由 / 五个弹窗 / 布局与时钟）；`level_select` / `deck_builder` / `codex` 同样按"列表 / 详情 / 弹窗"拆开。
+- **工具层**（`tools/`）：无头验收拆 `sim/`（用例 `sim_suites*.gd` + 驱动 `sim_driver.gd` + 报告 `sim_report.gd` +
+  对空用例 + 轨迹）；自动玩家拆 `auto_deploy`/`auto_support`/`auto_skills`/`auto_slots` + 门面；
+  录像拆 `demo/`（时间轴 `demo_steps_ui`/`demo_steps_play` + 场景装载 + 战斗段驱动 + 字幕条）；
+  截图拆 `shot/`（自动打 + 存盘）。
+- **新增文档**：[06_文件预算与拆分约定](docs/06_文件预算与拆分约定.md)（预算口径、四种拆分手法、代价与维持方式）、
+  [07_代码地图](docs/07_代码地图.md)（24 条"想改 X → 去哪个文件"对照表 + 四层目录与调用方向）；
+  README / docs README / 02 工程结构 / 05 验收 / 00 里程碑同步更新。
+
+### 验证
+
+- 数据表↔策划文档（7 项）、地图↔出图（6 张）、资源↔美术（28 个）三道闸门照旧 PASS；
+- 无头验收 19/19 PASS，且**数值与重构前逐字一致**（漏怪 1、基地 19/20、用时 215s、评级 S 0.87）；
+- 文件预算 PASS：128 个 .gd，超预算 0；
+- 中间发现并回退一处**行为漂移**：自动玩家的"阻挡单位放置时机"被拆分改动（从无条件变成 attackers≥2 才放），
+  导致验收用时 204s ≠ 215s，已还原调用顺序；
+- 表现层做了逐字节像素对照：`level_select` / 战斗布防期 / 战斗 50s 实战三组截图 SHA256 与重构前完全相同。
+
+
 ### 新增
 - **完整流程演示录像** [`docs/video/demo_gameplay.mp4`](docs/video/demo_gameplay.mp4)（92.5 秒 / 720×1280 / 30fps / 7.3 MB，H.264）：主菜单 → 卡牌图鉴 → 关卡与挑战卡（加压+疾行，难度分 5）→ 卡组编辑 → 峡谷哨站 6 波交战 → 结算（评级 A、掉落 ×1.25），底部带分镜字幕，战斗段 4× 速。
 - **录像管线（无 ffmpeg、无录屏权限依赖）**：`game/scripts/tools/demo_director.gd`（录像导演：按时间轴实例化各界面 + 自动玩家操盘 + 字幕，战斗字幕跟"当前波次"走）+ `game/scenes/tools/demo.tscn` + `game/run.sh demo` + `tools/record_demo.sh`（一键录制）+ [`tools/make_video.swift`](tools/make_video.swift)（AVFoundation 编码器：PNG 帧序列 → H.264 MP4，另含 `--probe` 探规格与 `--frames` 抽帧核对）。

@@ -21,16 +21,13 @@ func setup(card_ids: Array, seed_value: int, hand_size: int, options: int) -> vo
 	draw_options = options
 	rng.seed = seed_value
 	draw_pile = cards.duplicate()
-	_shuffle(draw_pile)
+	DeckDraw.shuffle(draw_pile, rng)
 	hand = []
 
 
-func _shuffle(arr: Array) -> void:
-	for i in range(arr.size() - 1, 0, -1):
-		var j := rng.randi_range(0, i)
-		var tmp = arr[i]
-		arr[i] = arr[j]
-		arr[j] = tmp
+## 波间调度：从剩余牌堆给出 draw_options 个不同选项（实现见 DeckDraw.offer）。
+func offer_draw() -> Array[String]:
+	return DeckDraw.offer(self)
 
 
 ## 开局起手：抽 initial_hand 张。
@@ -42,21 +39,6 @@ func deal_opening_hand() -> Array[String]:
 		dealt.append(c)
 	return dealt
 
-
-## 波间调度：从剩余牌堆里给出 draw_options 个不同选项。
-## 牌堆不足时重洗（doc 05「可开启公平模式（关闭随机调度，改为固定轮转）」暗示卡组是循环的）。
-func offer_draw() -> Array[String]:
-	if draw_pile.size() < draw_options:
-		_reshuffle()
-	var options: Array[String] = []
-	var seen := {}
-	for c in draw_pile:
-		if not seen.has(c):
-			seen[c] = true
-			options.append(c)
-		if options.size() >= draw_options:
-			break
-	return options
 
 
 ## 选出调度牌；返回是否成功。
@@ -76,14 +58,6 @@ func consume(card_id: String) -> bool:
 		return false
 	hand.remove_at(idx)
 	return true
-
-
-## 重洗：把整副卡组重新铺回牌堆（手牌不动）。
-func _reshuffle() -> void:
-	if cards.is_empty():
-		return
-	draw_pile = cards.duplicate()
-	_shuffle(draw_pile)
 
 
 func uses_left() -> int:

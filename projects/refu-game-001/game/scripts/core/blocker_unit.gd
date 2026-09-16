@@ -1,34 +1,6 @@
-extends RefCounted
+extends BlockerState
 class_name BlockerUnit
-## BlockerUnit —— 放在**路径上**的阻挡单位（如 ANV-M03「齿轮帮·路障小队」）。
-##
-## 阻挡规则（M1 实现裁决 A5，见 docs/01_实现裁决记录.md）：
-## 敌人行进到阻挡单位身边时停下交战，直到阻挡单位被摧毁或到期；
-## `block` 表示同时能拦住的敌人数（超出的敌人绕过）。
-
-var uid: int = 0
-var card_id: String = ""
-var name: String = ""
-var card: Dictionary = {}
-var path_index: int = 0
-var along: float = 0.0               # 沿路径里程（决定站位）
-var pos: Vector2 = Vector2.ZERO
-var hp: float = 0.0
-var max_hp: float = 0.0
-var block: int = 1
-var block_reach: float = 45.0        # 拦截判定半径（像素）
-var expires_at: float = -1.0         # <0 表示常驻
-var alive: bool = true
-var hit_flash_until: float = -1.0
-var damage_taken: float = 0.0
-# 本 tick 被它拦住的敌人 uid（每 tick 清空重算）
-var blocked_uids: Array[int] = []
-# 到期后留下的减速场
-var residual_slow: float = 0.0
-var residual_until: float = -1.0
-var residual_radius: float = 0.0
-var has_residual: bool = false
-
+## BlockerUnit —— 路径阻挡单位的行为：落位、血量比例、受伤。
 
 func setup(uid_value: int, card_def: Dictionary, path_index_value: int, along_value: float, position: Vector2) -> void:
 	uid = uid_value

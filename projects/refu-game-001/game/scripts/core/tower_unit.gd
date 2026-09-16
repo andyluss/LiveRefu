@@ -1,58 +1,7 @@
-extends RefCounted
+extends TowerState
 class_name TowerUnit
-## TowerUnit —— 一座已放置的塔 / 支援单位 / 召唤物的运行时状态（纯逻辑）。
-##
-## 属性用"基础值 → 修正累加 → 最终值"的管线：每 tick 由 Battle 重算一次
-## （塔数 ≤ 20，30Hz 下开销可忽略），这样增益的来源（修饰卡 / 羁绊 / 光环 /
-## 技能 / 地形 / 挑战卡）彼此正交，删掉任一来源都不会让别的来源算错。
-
-var uid: int = 0
-var card_id: String = ""
-var name: String = ""
-var card: Dictionary = {}
-var slot_type: String = "standard"   # standard / support / modifier(不会成为塔) / path
-var pos: Vector2 = Vector2.ZERO
-var faction: String = "ANV"
-var sub_faction: String = ""
-
-# 标签可变：ANV-X03「模块化基座」会给本塔附加标签，从而改变羁绊/光环判定
-var tags: Array[String] = []
-
-# 挂在塔上的修饰卡（组合法则一：同槽位多张修饰卡叠加，按声明顺序结算）
-var modifiers: Array = []            # [{card_id, def, choice}]
-
-# --- 属性 ---
-var base: Dictionary = {}            # 卡的 stats 原值（未修正）
-var stats: Dictionary = {}           # 本 tick 的最终值
-var buffs: Array = []                # [{stat, value, until, source, id}] 限时增益
-
-# --- 生存 ---
-var hp: float = 0.0
-var max_hp: float = 0.0
-var shield: float = 0.0
-var shield_until: float = -1.0
-var alive: bool = true
-var is_field: bool = false           # 工事/不攻击塔（有生命、可被攻击）
-var build_time: float = 0.0
-var expires_at: float = -1.0         # <0 表示常驻
-
-# --- 战斗 ---
-var cd: float = 0.0
-var target_uid: int = 0
-var kills: int = 0
-var damage_dealt: float = 0.0
-var hit_flash_until: float = -1.0
-
-# --- 钩子计数（用于羁绊/评级与"组合触发次数"统计）---
-var hook_stacks: Dictionary = {}     # key -> 累计层数（如 on_hit 攻速叠层）
-var energy_returned: float = 0.0
-
-# --- 光环/场（由 Battle 每 tick 重算）---
-var aura_sources: Array = []         # 本 tick 生效的光环来源 id
-var slow_field_sources: Array = []
-var heal_field_sources: Array = []
-var resonance_count: int = 0
-
+## TowerUnit —— 塔的行为：落位初始化、标签、攻击间隔、受伤与修复。
+## 属性口径：base 是卡的原始数值，stats 是每 tick 由 BattleStats 重算出的最终值。
 
 func setup(uid_value: int, card_def: Dictionary, slot: String, position: Vector2) -> void:
 	uid = uid_value
@@ -71,7 +20,6 @@ func setup(uid_value: int, card_def: Dictionary, slot: String, position: Vector2
 		tags.append(String(t))
 	max_hp = float(base.get("max_hp", 0.0))
 	hp = max_hp
-	is_field = max_hp > 0.0
 
 
 func has_tag(tag: String) -> bool:
