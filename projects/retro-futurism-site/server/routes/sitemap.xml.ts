@@ -9,9 +9,11 @@ import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { queryCollection } from '@nuxt/content/server'
 
-const SITE = 'https://retro-futurism.example' // M3 部署时替换为真实域名
 
 export default defineEventHandler(async (event) => {
+  // 站点根从配置/请求头解析（不再硬编码域名——见 server/utils/site-url.ts 的说明）
+  const SITE = resolveSiteUrl(event)
+
   const [wiki, posts] = await Promise.all([
     queryCollection(event, 'wiki').order('volume', 'ASC').order('order', 'ASC').all(),
     queryCollection(event, 'blog').where('draft', '=', false).all(),

@@ -32,6 +32,13 @@ const PORT_MAIN = Number(arg('port') ?? 3210)
 const PORT_GISCUS = PORT_MAIN + 1
 const BASE = `http://localhost:${PORT_MAIN}`
 const BASE_GISCUS = `http://localhost:${PORT_GISCUS}`
+/**
+ * 喂给实例的「站点根」。刻意用一个**明显非默认**域名：
+ * 这样一旦代码里还有硬编码域名（历史上 rss/sitemap/OG 都硬编码过
+ * `retro-futurism.example`），verify-urls 套件会立刻失败。
+ */
+const SITE_URL = `https://site-root.example`
+
 const CDP = `http://127.0.0.1:${arg('cdp-port') ?? 9333}`
 const CDP_PORT = Number(arg('cdp-port') ?? 9333)
 
@@ -53,6 +60,7 @@ const SUITES: Suite[] = [
   { name: 'backup-drill', what: '备份→篡改→拒绝→恢复 闭环演练', needs: 'none', cmd: ['bun', 'run', 'tools/verify-backup.ts'] },
   { name: 'site', what: '全部篇目 200 + 站内链接可达', needs: 'server', cmd: ['bun', 'run', 'tools/verify-site.ts', `--base=${BASE}`] },
   { name: 'og', what: 'OG 图端点 + 版式像素断言', needs: 'server', cmd: ['bun', 'run', 'tools/verify-og.ts', `--base=${BASE}`] },
+  { name: 'urls', what: 'RSS/sitemap/OG 的绝对地址来源', needs: 'server', cmd: ['bun', 'run', 'tools/verify-urls.ts', `--base=${BASE}`, `--expect=${SITE_URL}`] },
   { name: 'storage', what: '存储健康检查 7 项', needs: 'server', cmd: ['bun', 'run', 'tools/verify-storage.ts', `--base=${BASE}`] },
   { name: 'search', what: '全文检索（真浏览器 CDP）', needs: 'browser', cmd: ['bun', 'run', 'tools/verify-search.ts', `--base=${BASE}`, `--cdp=${CDP}`] },
   { name: 'perf-a11y', what: '限速 LCP/CLS + 无障碍 10 项', needs: 'browser', cmd: ['bun', 'run', 'tools/verify-perf.ts', `--base=${BASE}`, `--cdp=${CDP}`, '--selftest'] },
@@ -125,7 +133,7 @@ async function startServer(name: string, port: number, extraEnv: Record<string, 
       HOST: '127.0.0.1',
       // 关键：**用临时数据库**，不碰真实 data/app.db
       DATABASE_PATH: TMP_DB,
-      NUXT_PUBLIC_SITE_URL: `http://localhost:${port}`,
+      NUXT_PUBLIC_SITE_URL: SITE_URL,
       NUXT_PUBLIC_GISCUS_REPO: '',
       NUXT_PUBLIC_GISCUS_REPO_ID: '',
       NUXT_PUBLIC_GISCUS_CATEGORY: '',

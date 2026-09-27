@@ -5,6 +5,37 @@
 
 ## [Unreleased]
 
+### 修复（同类缺陷的第二处：RSS 与 sitemap 里硬编码的域名）
+
+上一轮修掉了 OG/结构化数据里硬编码的域名，**这一轮发现同一类缺陷还有两处**：
+`rss.xml.ts` 与 `sitemap.xml.ts` 各自把域名硬编码成 `https://retro-futurism.example`。
+
+**这个缺陷的性质值得说清楚**：页面全都正常、构建不报错、类型检查通过，
+**只有别人订阅 RSS 或搜索引擎抓取 sitemap 时才会发现拿到的域名是错的**——
+日常点检基本不可能发现。
+
+- 新增 [`server/utils/site-url.ts`](server/utils/site-url.ts)：`resolveSiteUrl(event)` 统一解析站点根
+  （优先 `NUXT_PUBLIC_SITE_URL`，其次反代头，最后请求 `host`），
+  `rss.xml.ts` / `sitemap.xml.ts` 改为调用它；客户端侧的 `useSiteUrl()` 同源同策略。
+- 新增 [`tools/verify-urls.ts`](tools/verify-urls.ts)：断言 RSS / sitemap / og:image / canonical
+  四处都是**绝对地址**、**站点根一致**、且**不含任何硬编码域名**。
+- 编排器（[`tools/verify-all.ts`](tools/verify-all.ts)）改用
+  `NUXT_PUBLIC_SITE_URL=https://site-root.example` 这种**明显非默认**的值启动实例，
+  使"残留硬编码"必然暴露；并新增 `urls` 套件（现共 **13 个套件**）。
+
+**已做反向验证**：临时把 `https://retro-futurism.example` 塞回 `rss.xml.ts`，
+该检查确实失败并准确指出问题与不一致的源头：
+
+```
+✗ 不含硬编码 retro-futurism.example        仍出现于：rss
+✗ rss 站点根等于配置                       https://retro-futurism.example ≠ https://site-root.example
+✗ 四处站点根一致                           https://retro-futurism.example / https://site-root.example
+```
+
+- 部署文档新增 §3.4「配置站点根地址（**必做**）」，说明留空会退化为从请求头推导、
+  以及反代漏传 `X-Forwarded-*` 时会拼错域名；[`.env.example`](.env.example) 与
+  [`deploy/retro-futurism.service`](deploy/retro-futurism.service) 同步补上该项。
+
 ### 新增（M3 全量验收编排器：把"验收通过"变成一条命令）
 
 到这个阶段项目已有 12 个验收工具、20+ 个 npm 脚本，但**没有单一入口**——"全部验收通过"这件事离不开人记住一串命令与前置条件（起几个实例、端口多少、要不要 Chrome、Giscus 要不要配）。**交接给别人或换环境重现时，这份知识就丢了。**

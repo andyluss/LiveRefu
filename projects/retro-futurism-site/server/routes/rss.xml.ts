@@ -10,7 +10,6 @@
 
 import { queryCollection } from '@nuxt/content/server'
 
-const SITE = 'https://retro-futurism.example' // M3 部署时替换为真实域名
 const TITLE = '明日档案 · 复古未来主义'
 const DESC = '复古未来主义知识库与社区：Wiki 论文全集、朋克谱系专卷、多媒体画廊与博客。'
 
@@ -23,6 +22,9 @@ function esc(s: string): string {
 }
 
 export default defineEventHandler(async (event) => {
+  // 站点根从配置/请求头解析（不再硬编码域名——见 server/utils/site-url.ts 的说明）
+  const SITE = resolveSiteUrl(event)
+
   const [posts, wiki] = await Promise.all([
     queryCollection(event, 'blog').where('draft', '=', false).order('date', 'DESC').limit(30).all(),
     queryCollection(event, 'wiki').order('order', 'DESC').limit(30).all(),

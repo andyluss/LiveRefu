@@ -28,6 +28,9 @@ Environment=NODE_ENV=production
 Environment=PORT=3000
 Environment=HOST=127.0.0.1
 Environment=DATABASE_PATH=/var/lib/retro/app.db
+# 站点根地址（RSS / sitemap / og:image / canonical 依赖它；**生产必配**）
+# 见 docs/08 §3.4——留空会退化为从请求头推导，反代漏传 X-Forwarded-* 时会拼错
+Environment=NUXT_PUBLIC_SITE_URL=https://retro-futurism.example
 # Giscus（D4 第一阶段）——用真实值替换，或改用 EnvironmentFile
 #Environment=NUXT_PUBLIC_GISCUS_REPO=owner/repo
 #Environment=NUXT_PUBLIC_GISCUS_REPO_ID=R_kgDOxxxx

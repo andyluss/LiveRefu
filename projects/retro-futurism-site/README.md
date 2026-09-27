@@ -33,7 +33,7 @@
 
 ## 二、验收结果（实测）
 
-**一条命令跑完全部验收**（12 个套件，自带前置编排：起临时实例 + 临时数据库 + Chrome，跑完自动清理）：
+**一条命令跑完全部验收**（13 个套件，自带前置编排：起临时实例 + 临时数据库 + Chrome，跑完自动清理）：
 
 ```bash
 bun run build && bun run verify        # 全套
@@ -42,7 +42,7 @@ bun run verify --skip=browser          # CI 无头环境：跳过需要浏览器
 ```
 
 ```
-通过 12 · 失败 0 · 跳过 0 · 合计 29.3s
+通过 13 · 失败 0 · 跳过 0 · 合计 29.7s
 ```
 
 <details>
@@ -57,6 +57,7 @@ bun run verify --skip=browser          # CI 无头环境：跳过需要浏览器
 ✓ backup-drill     备份→篡改→拒绝→恢复 闭环演练（9/9）
 ✓ site             129/129 篇目 · 25/25 索引页 · 149/149 站内链接
 ✓ og               OG 图端点 + 版式像素断言（8/8）
+✓ urls             RSS/sitemap/OG/canonical 的绝对地址来源与一致性
 ✓ storage          存储健康 7 项（含外键真的拦截非法引用）
 ✓ search           全文检索 6/6（真浏览器 CDP）
 ✓ perf-a11y        限速 LCP 280–324ms · 无障碍 10 项 × 4 页（含负向自检）
@@ -136,6 +137,7 @@ projects/retro-futurism-site/
 │   ├── verify-contrast.ts    # ★ 验收：WCAG 对比度 + 视觉层级守卫（纯计算）
 │   ├── verify-og.ts          # ★ 验收：OG 分享图（像素级断言版式约束）
 │   ├── verify-giscus.ts      # ★ 验收：讨论区降级与注入（真浏览器）
+│   ├── verify-urls.ts        # ★ 验收：绝对地址来源（防硬编码域名）
 │   ├── verify-backup.ts      # ★ 验收：备份→篡改→拒绝→恢复 闭环演练
 │   ├── verify-storage.ts     # ★ 验收：存储健康 7 项（独立断言，防假绿灯）
 │   ├── verify-deploy.ts      # ★ 验收：部署配置静态校验
