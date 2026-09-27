@@ -7,6 +7,8 @@
 
 ### 新增（方案文档 —— 立项阶段，尚无实现代码）
 
+> 注：本条目记录**立项轮**的产出；该轮的"无实现代码"状态已由下方 M0 条目取代。
+
 **背景**：工作区已有 **265 个 Markdown、约 170 万字符**的复古未来主义内容存量（论文集 91 篇 / 约 14.1 万汉字、
 朋克五卷 53 篇、99 PNG / 80 SVG / 47 PDF 视觉素材），但**缺少一个面向读者的门面**。立项新增本项目，
 把存量内容做成**可读、可逛、可讨论**的站点：Wiki 承载知识体系、博客承载编辑部写作、画廊承载视觉素材、论坛承载读者讨论。
@@ -43,8 +45,56 @@
   7 条风险登记册（R1 Bun×Nuxt 兼容为首位）、M1 的 DoD 勾选表；
   **M0 出口判据定为"91 篇论文能自动变成站点页面且交叉链接可点"，做不到就不进 M1**。
 
+### 变更（决策裁决 + M0 交付：内容适配层打通，129 篇上线）
+
+**决策**：用户答复「按推荐项来」，[D1–D10](docs/00_决策记录.md) **全部裁决**，决策记录由"待裁决"转为 v1.0「已裁决」。
+其中 **D5 定为 Bundle A（全自托管 SQLite）**、D4 为「先 Giscus 后自建」两段式、D6 单机自托管、D8 可关闭的 CRT。
+
+**M0 交付（骨架 + 内容适配层打通）**，M0 出口判据「91 篇论文能自动变成站点页面且交叉链接可点」**超额达成**：
+
+- **工程骨架**：Bun 1.4.0 + Nuxt 4.5.2 + Vue 3.5.43 + `@nuxt/content` 3.16.1 + `@nuxt/image` 2.1.0，
+  版本精确锁定（非 `^`）；`content.config.ts` 声明 `wiki` 集合 schema；采用 Nuxt 4 的 `app/` 目录结构。
+- **内容适配层 [`tools/sync-content.ts`](tools/sync-content.ts)**（M0 核心）：把 `doc/` **单向、幂等**转换为
+  `content/wiki/`，**不改源文件一个字节**。解决源文档三个"不能直接贴上网"的特征：
+  ① **无 YAML frontmatter**（篇首是 `> 关键词：` / `> 摘要：` 引用块）→ 解析为规范 frontmatter；
+  ② **交叉引用是纯文本**（`（见 16 末日篇）` 点不动）→ 改写为 Markdown 链接；
+  ③ 卷属/篇序/slug 只在路径里 → 由路径与文件名推导，朋克卷转 ASCII slug。
+  **实测：129 篇（主卷 21 + 朋克五卷 45 + 附录七卷 63）、改写 331 处交叉引用、命中率 97.1%。**
+  改写覆盖 6 类写法（含 `（见主卷 08、16）`、`（见本卷 03）`、`（见 00 总论 2.2 的四元素）`、裸写 `之定义见 00 总论`）；
+  **刻意保留两类**：文内小节号 `（见 1.1）`（强行解析会错链到第 1 篇）与篇内指代 `（见第三节）`。
+  同步生成**反链索引**（26 篇被引用）与**导航树**（主卷四段分组 + 朋克五卷 + 附录七卷）为 JSON 资产。
+- **站点页面**：首页、`/wiki` 总目录、`/wiki/main` 主卷（四段结构）、`/wiki/punks`、`/wiki/appendix`、
+  各分卷索引页（`/wiki/punks/atompunk` 等 12 个）、129 篇文章页；文章页含侧栏导航树、面包屑、标签、
+  本篇目录（TOC）、上下篇、**「被引用于（N）」反向链接区块**；`/blog`、`/gallery`、`/forum` 为 M1/M2 占位页。
+- **主题 [`app/assets/theme.css`](app/assets/theme.css)**（D8 落地）：原子时代配色（深空蓝/青绿/奶油黄/镀铬银）+
+  **可关闭的 CRT 质感**（纯 CSS 扫描线与暗角，无 WebGL）；开关状态入 `localStorage`；
+  全站尊重 `prefers-reduced-motion`；正文对比度按 WCAG AA 取色。
+- **产物校验 [`tools/check-build.ts`](tools/check-build.ts)**：构建后置步骤，已接入 `bun run build`。
+- **验收 [`tools/verify-site.ts`](tools/verify-site.ts)**：全量遍历并校验。
+  **结果：篇目 129/129 OK、索引页 17/17 OK、站内链接 148/148 OK、未改写的篇号引用 0 处。**
+- **证据**：[`docs/shots/`](docs/shots/) 两张真实渲染截图（首页、Wiki 文章页）。
+
+### 修复（M0 实测发现并解决的三个 Bun × Nuxt 约束）
+
+三条**同根**（`bun install` 扁平布局 + 包的条件导出 + Nitro 文件追踪），均已落进代码并写入
+[02 技术栈与选型 §3.2](docs/02_技术栈与选型.md) 与项目 README §五：
+
+1. **产物必须用 Bun 运行**：Bun 下构建时 Nuxt 选 Bun 运行时预设，产物含 `import { Database } from 'bun:sqlite'`
+   （`@nuxt/content` 依据 `process.versions.bun` 选 SQLite 连接器）。用 Node 跑会报
+   `ERR_UNSUPPORTED_ESM_URL_SCHEME: Received protocol 'bun:'`。→ 新增 `bun start`，构建与运行统一用 Bun。
+2. **`srvx` 条件导出被 Nitro 追踪漏掉**：其 `exports` 按运行时暴露多个适配器，@vercel/nft 只复制了
+   `node.mjs`；而 `ipx`（`@nuxt/image` 默认 IPX）运行时要 `import('srvx')`，Bun 命中 `bun` 条件去要
+   `dist/adapters/bun.mjs` → 启动即 `Cannot find package 'srvx'`。
+   → `check-build.ts` 按 `exports` 清单校验并补齐（**当前补 14 个文件**）。
+3. **连接器由构建运行时决定**：Node 下重建仍含 `bun:sqlite`，证明不能靠"混用运行时"绕过，必须统一。
+
+> 顺带确认：**无需 `better-sqlite3`** —— Bun 内置 `bun:sqlite` 直接支撑 Nuxt Content，
+> 这消除了 M0 原计划的 V2/V3 风险点。`sharp` 亦通过（产物含 darwin-arm64 二进制）。
+
 ### 备注
 
-- 本阶段**未创建任何实现代码**（无 `package.json` / 无 Nuxt 工程），符合"先写方案文档让我决策"的要求；
-- 待 [D5](docs/00_决策记录.md)（数据存储与同步）等决策项拍板后，据裁决结果更新文档并进入 M0；
-- 本机环境备忘：**Bun 1.4.0 位于 `/opt/homebrew/bin/bun`**（不在默认 PATH 中，需显式加入）。
+- 本轮已创建实现代码，项目状态由"方案阶段"转为 **M0 已交付**，下一步进 M1（博客 / 画廊 / 搜索）；
+- 实现期实测对 D3/D5/D6 的细化反馈已记入 [00 决策记录](docs/00_决策记录.md)「M0 实测对决策的反馈」；
+- 本机环境备忘：**Bun 1.4.0 位于 `/opt/homebrew/bin/bun`**（不在默认 PATH 中，需显式加入）；
+  **产物必须用 `bun .output/server/index.mjs` 运行**，不可用 `node`。
+

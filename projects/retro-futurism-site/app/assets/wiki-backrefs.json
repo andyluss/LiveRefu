@@ -1,0 +1,1006 @@
+{
+  "/wiki/main/16-apocalypse": [
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "01 理论篇",
+      "route": "/wiki/main/01-theory-nostalgia"
+    },
+    {
+      "text": "02 远古篇",
+      "route": "/wiki/main/02-ancient-myths"
+    },
+    {
+      "text": "04 近代篇",
+      "route": "/wiki/main/04-early-modern-progress"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "06 机器篇",
+      "route": "/wiki/main/06-machine-age"
+    },
+    {
+      "text": "09 太空篇",
+      "route": "/wiki/main/09-space-age"
+    },
+    {
+      "text": "10 红旗篇",
+      "route": "/wiki/main/10-red-future"
+    },
+    {
+      "text": "11 中国篇",
+      "route": "/wiki/main/11-china-future"
+    },
+    {
+      "text": "14 磁带篇",
+      "route": "/wiki/main/14-tape-futurism"
+    },
+    {
+      "text": "15 赛博篇",
+      "route": "/wiki/main/15-cyberpunk"
+    },
+    {
+      "text": "17 蒸汽波篇",
+      "route": "/wiki/main/17-vaporwave"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/atompunk/00-duiduipian"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/atompunk/02-chronology"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/atompunk/03-aesthetics-visual"
+    }
+  ],
+  "/wiki/main/06-machine-age": [
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "太阳朋克 04",
+      "route": "/wiki/appendix/solarpunk/04-politics-philosophy"
+    },
+    {
+      "text": "千禧美学 04",
+      "route": "/wiki/appendix/y2k-aesthetics/04-mechanics-theory"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "02 远古篇",
+      "route": "/wiki/main/02-ancient-myths"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "08 原子篇",
+      "route": "/wiki/main/08-atompunk"
+    },
+    {
+      "text": "10 红旗篇",
+      "route": "/wiki/main/10-red-future"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    }
+  ],
+  "/wiki/main/05-verne-wells": [
+    {
+      "text": "原子朋克（附录） 07",
+      "route": "/wiki/appendix/atompunk-appendix/07-chinese-context"
+    },
+    {
+      "text": "生物朋克（附录） 01",
+      "route": "/wiki/appendix/biopunk-appendix/01-definition-genealogy"
+    },
+    {
+      "text": "千禧美学 03",
+      "route": "/wiki/appendix/y2k-aesthetics/03-aesthetic-families"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "03 古典篇",
+      "route": "/wiki/main/03-classical-utopia"
+    },
+    {
+      "text": "11 中国篇",
+      "route": "/wiki/main/11-china-future"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "18 千禧篇",
+      "route": "/wiki/main/18-y2k-frutiger-aero"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    },
+    {
+      "text": "04 思想政治与批评",
+      "route": "/wiki/punks/biopunk/04-politics-philosophy"
+    },
+    {
+      "text": "06 中文语境",
+      "route": "/wiki/punks/biopunk/06-chinese-context"
+    },
+    {
+      "text": "07 批评与争议",
+      "route": "/wiki/punks/biopunk/07-criticism"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/steampunk/00-duiduipian"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/steampunk/03-aesthetics-visual"
+    }
+  ],
+  "/wiki/main/20-conclusion-appendix": [
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "17 蒸汽波篇",
+      "route": "/wiki/main/17-vaporwave"
+    },
+    {
+      "text": "18 千禧篇",
+      "route": "/wiki/main/18-y2k-frutiger-aero"
+    },
+    {
+      "text": "19 多元篇",
+      "route": "/wiki/main/19-multicultural-futures"
+    }
+  ],
+  "/wiki/main/15-cyberpunk": [
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "02 远古篇",
+      "route": "/wiki/main/02-ancient-myths"
+    },
+    {
+      "text": "04 近代篇",
+      "route": "/wiki/main/04-early-modern-progress"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "14 磁带篇",
+      "route": "/wiki/main/14-tape-futurism"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "17 蒸汽波篇",
+      "route": "/wiki/main/17-vaporwave"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    },
+    {
+      "text": "04 思想政治与批评",
+      "route": "/wiki/punks/biopunk/04-politics-philosophy"
+    }
+  ],
+  "/wiki/main/02-ancient-myths": [
+    {
+      "text": "生物朋克（附录） 01",
+      "route": "/wiki/appendix/biopunk-appendix/01-definition-genealogy"
+    },
+    {
+      "text": "生物朋克（附录） 04",
+      "route": "/wiki/appendix/biopunk-appendix/04-politics-philosophy"
+    },
+    {
+      "text": "太阳朋克 04",
+      "route": "/wiki/appendix/solarpunk/04-politics-philosophy"
+    },
+    {
+      "text": "太阳朋克 06",
+      "route": "/wiki/appendix/solarpunk/06-criticism"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "03 古典篇",
+      "route": "/wiki/main/03-classical-utopia"
+    },
+    {
+      "text": "04 近代篇",
+      "route": "/wiki/main/04-early-modern-progress"
+    },
+    {
+      "text": "06 机器篇",
+      "route": "/wiki/main/06-machine-age"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/biopunk/00-duiduipian"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/biopunk/01-definition-genealogy"
+    }
+  ],
+  "/wiki/main/18-y2k-frutiger-aero": [
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "01 理论篇",
+      "route": "/wiki/main/01-theory-nostalgia"
+    },
+    {
+      "text": "11 中国篇",
+      "route": "/wiki/main/11-china-future"
+    },
+    {
+      "text": "17 蒸汽波篇",
+      "route": "/wiki/main/17-vaporwave"
+    }
+  ],
+  "/wiki/main/13-steampunk": [
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "01 理论篇",
+      "route": "/wiki/main/01-theory-nostalgia"
+    },
+    {
+      "text": "04 近代篇",
+      "route": "/wiki/main/04-early-modern-progress"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "14 磁带篇",
+      "route": "/wiki/main/14-tape-futurism"
+    },
+    {
+      "text": "15 赛博篇",
+      "route": "/wiki/main/15-cyberpunk"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "19 多元篇",
+      "route": "/wiki/main/19-multicultural-futures"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/steampunk/00-duiduipian"
+    }
+  ],
+  "/wiki/main/01-theory-nostalgia": [
+    {
+      "text": "生物朋克（附录） 02",
+      "route": "/wiki/appendix/biopunk-appendix/02-chronology"
+    },
+    {
+      "text": "生物朋克（附录） 05",
+      "route": "/wiki/appendix/biopunk-appendix/05-works-media"
+    },
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "太阳朋克 03",
+      "route": "/wiki/appendix/solarpunk/03-aesthetics-visual"
+    },
+    {
+      "text": "太阳朋克 04",
+      "route": "/wiki/appendix/solarpunk/04-politics-philosophy"
+    },
+    {
+      "text": "千禧美学 00",
+      "route": "/wiki/appendix/y2k-aesthetics/00-duiduipian"
+    },
+    {
+      "text": "千禧美学 03",
+      "route": "/wiki/appendix/y2k-aesthetics/03-aesthetic-families"
+    },
+    {
+      "text": "千禧美学 06",
+      "route": "/wiki/appendix/y2k-aesthetics/06-criticism"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "15 赛博篇",
+      "route": "/wiki/main/15-cyberpunk"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "17 蒸汽波篇",
+      "route": "/wiki/main/17-vaporwave"
+    },
+    {
+      "text": "18 千禧篇",
+      "route": "/wiki/main/18-y2k-frutiger-aero"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/biopunk/02-chronology"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/dieselpunk/02-chronology"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/steampunk/03-aesthetics-visual"
+    }
+  ],
+  "/wiki/main/12-punk-genealogy": [
+    {
+      "text": "赛博朋克（附录） 00",
+      "route": "/wiki/appendix/cyberpunk-appendix/00-duiduipian"
+    },
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "00 总论",
+      "route": "/wiki/main/00-general-introduction"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "07 战间篇",
+      "route": "/wiki/main/07-interwar-dieselpunk"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "14 磁带篇",
+      "route": "/wiki/main/14-tape-futurism"
+    },
+    {
+      "text": "15 赛博篇",
+      "route": "/wiki/main/15-cyberpunk"
+    },
+    {
+      "text": "19 多元篇",
+      "route": "/wiki/main/19-multicultural-futures"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/atompunk/00-duiduipian"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/atompunk/01-definition-genealogy"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/atompunk/02-chronology"
+    },
+    {
+      "text": "04 思想政治与批评",
+      "route": "/wiki/punks/biopunk/04-politics-philosophy"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/dieselpunk/01-definition-genealogy"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/steampunk/00-duiduipian"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/steampunk/01-definition-genealogy"
+    }
+  ],
+  "/wiki/main/14-tape-futurism": [
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "01 理论篇",
+      "route": "/wiki/main/01-theory-nostalgia"
+    },
+    {
+      "text": "09 太空篇",
+      "route": "/wiki/main/09-space-age"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "15 赛博篇",
+      "route": "/wiki/main/15-cyberpunk"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "19 多元篇",
+      "route": "/wiki/main/19-multicultural-futures"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/atompunk/00-duiduipian"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/atompunk/01-definition-genealogy"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/steampunk/03-aesthetics-visual"
+    }
+  ],
+  "/wiki/main/17-vaporwave": [
+    {
+      "text": "01 理论篇",
+      "route": "/wiki/main/01-theory-nostalgia"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "14 磁带篇",
+      "route": "/wiki/main/14-tape-futurism"
+    },
+    {
+      "text": "15 赛博篇",
+      "route": "/wiki/main/15-cyberpunk"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "18 千禧篇",
+      "route": "/wiki/main/18-y2k-frutiger-aero"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    }
+  ],
+  "/wiki/main/04-early-modern-progress": [
+    {
+      "text": "原子朋克（附录） 05",
+      "route": "/wiki/appendix/atompunk-appendix/05-works-media"
+    },
+    {
+      "text": "原子朋克（附录） 07",
+      "route": "/wiki/appendix/atompunk-appendix/07-chinese-context"
+    },
+    {
+      "text": "柴油朋克（附录） 06",
+      "route": "/wiki/appendix/dieselpunk-appendix/06-criticism"
+    },
+    {
+      "text": "蒸汽朋克（附录） 06",
+      "route": "/wiki/appendix/steampunk-appendix/06-criticism"
+    },
+    {
+      "text": "千禧美学 05",
+      "route": "/wiki/appendix/y2k-aesthetics/05-media-archaeology"
+    },
+    {
+      "text": "千禧美学 06",
+      "route": "/wiki/appendix/y2k-aesthetics/06-criticism"
+    },
+    {
+      "text": "02 远古篇",
+      "route": "/wiki/main/02-ancient-myths"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "06 机器篇",
+      "route": "/wiki/main/06-machine-age"
+    },
+    {
+      "text": "07 战间篇",
+      "route": "/wiki/main/07-interwar-dieselpunk"
+    },
+    {
+      "text": "09 太空篇",
+      "route": "/wiki/main/09-space-age"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    },
+    {
+      "text": "07 批评与争议",
+      "route": "/wiki/punks/atompunk/07-criticism"
+    },
+    {
+      "text": "05 作品与媒介",
+      "route": "/wiki/punks/biopunk/05-works-media"
+    },
+    {
+      "text": "06 中文语境",
+      "route": "/wiki/punks/biopunk/06-chinese-context"
+    }
+  ],
+  "/wiki/main/00-general-introduction": [
+    {
+      "text": "原子朋克（附录） 02",
+      "route": "/wiki/appendix/atompunk-appendix/02-chronology"
+    },
+    {
+      "text": "生物朋克（附录） 02",
+      "route": "/wiki/appendix/biopunk-appendix/02-chronology"
+    },
+    {
+      "text": "生物朋克（附录） 03",
+      "route": "/wiki/appendix/biopunk-appendix/03-aesthetics-visual"
+    },
+    {
+      "text": "生物朋克（附录） 04",
+      "route": "/wiki/appendix/biopunk-appendix/04-politics-philosophy"
+    },
+    {
+      "text": "赛博朋克（附录） 02",
+      "route": "/wiki/appendix/cyberpunk-appendix/02-chronology"
+    },
+    {
+      "text": "赛博朋克（附录） 03",
+      "route": "/wiki/appendix/cyberpunk-appendix/03-aesthetics-visual"
+    },
+    {
+      "text": "赛博朋克（附录） 05",
+      "route": "/wiki/appendix/cyberpunk-appendix/05-works-media"
+    },
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    },
+    {
+      "text": "蒸汽朋克（附录） 01",
+      "route": "/wiki/appendix/steampunk-appendix/01-definition-genealogy"
+    },
+    {
+      "text": "02 远古篇",
+      "route": "/wiki/main/02-ancient-myths"
+    },
+    {
+      "text": "03 古典篇",
+      "route": "/wiki/main/03-classical-utopia"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "06 机器篇",
+      "route": "/wiki/main/06-machine-age"
+    },
+    {
+      "text": "08 原子篇",
+      "route": "/wiki/main/08-atompunk"
+    },
+    {
+      "text": "09 太空篇",
+      "route": "/wiki/main/09-space-age"
+    },
+    {
+      "text": "10 红旗篇",
+      "route": "/wiki/main/10-red-future"
+    },
+    {
+      "text": "11 中国篇",
+      "route": "/wiki/main/11-china-future"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "15 赛博篇",
+      "route": "/wiki/main/15-cyberpunk"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "17 蒸汽波篇",
+      "route": "/wiki/main/17-vaporwave"
+    },
+    {
+      "text": "18 千禧篇",
+      "route": "/wiki/main/18-y2k-frutiger-aero"
+    },
+    {
+      "text": "19 多元篇",
+      "route": "/wiki/main/19-multicultural-futures"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/atompunk/00-duiduipian"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/atompunk/02-chronology"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/biopunk/02-chronology"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/biopunk/03-aesthetics-visual"
+    },
+    {
+      "text": "07 批评与争议",
+      "route": "/wiki/punks/biopunk/07-criticism"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/dieselpunk/00-duiduipian"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/steampunk/00-duiduipian"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/steampunk/01-definition-genealogy"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/steampunk/02-chronology"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/steampunk/03-aesthetics-visual"
+    }
+  ],
+  "/wiki/main/03-classical-utopia": [
+    {
+      "text": "02 远古篇",
+      "route": "/wiki/main/02-ancient-myths"
+    },
+    {
+      "text": "04 近代篇",
+      "route": "/wiki/main/04-early-modern-progress"
+    },
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "11 中国篇",
+      "route": "/wiki/main/11-china-future"
+    },
+    {
+      "text": "20 结语与附录",
+      "route": "/wiki/main/20-conclusion-appendix"
+    }
+  ],
+  "/wiki/main/09-space-age": [
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "07 战间篇",
+      "route": "/wiki/main/07-interwar-dieselpunk"
+    },
+    {
+      "text": "08 原子篇",
+      "route": "/wiki/main/08-atompunk"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "00 对读篇",
+      "route": "/wiki/punks/atompunk/00-duiduipian"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/atompunk/01-definition-genealogy"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/atompunk/02-chronology"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/atompunk/03-aesthetics-visual"
+    }
+  ],
+  "/wiki/main/07-interwar-dieselpunk": [
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "06 机器篇",
+      "route": "/wiki/main/06-machine-age"
+    },
+    {
+      "text": "09 太空篇",
+      "route": "/wiki/main/09-space-age"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "04 思想政治与批评",
+      "route": "/wiki/punks/biopunk/04-politics-philosophy"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/dieselpunk/01-definition-genealogy"
+    }
+  ],
+  "/wiki/main/11-china-future": [
+    {
+      "text": "05 奠基篇",
+      "route": "/wiki/main/05-verne-wells"
+    },
+    {
+      "text": "13 蒸汽篇",
+      "route": "/wiki/main/13-steampunk"
+    },
+    {
+      "text": "19 多元篇",
+      "route": "/wiki/main/19-multicultural-futures"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/steampunk/02-chronology"
+    }
+  ],
+  "/wiki/main/08-atompunk": [
+    {
+      "text": "09 太空篇",
+      "route": "/wiki/main/09-space-age"
+    },
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    },
+    {
+      "text": "14 磁带篇",
+      "route": "/wiki/main/14-tape-futurism"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/atompunk/01-definition-genealogy"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/atompunk/02-chronology"
+    },
+    {
+      "text": "03 美学与视觉",
+      "route": "/wiki/punks/atompunk/03-aesthetics-visual"
+    },
+    {
+      "text": "06 中文语境",
+      "route": "/wiki/punks/atompunk/06-chinese-context"
+    },
+    {
+      "text": "04 思想政治与批评",
+      "route": "/wiki/punks/biopunk/04-politics-philosophy"
+    },
+    {
+      "text": "06 中文语境",
+      "route": "/wiki/punks/biopunk/06-chinese-context"
+    },
+    {
+      "text": "07 批评与争议",
+      "route": "/wiki/punks/biopunk/07-criticism"
+    },
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/dieselpunk/01-definition-genealogy"
+    }
+  ],
+  "/wiki/main/10-red-future": [
+    {
+      "text": "09 太空篇",
+      "route": "/wiki/main/09-space-age"
+    },
+    {
+      "text": "16 末日篇",
+      "route": "/wiki/main/16-apocalypse"
+    },
+    {
+      "text": "19 多元篇",
+      "route": "/wiki/main/19-multicultural-futures"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/atompunk/02-chronology"
+    }
+  ],
+  "/wiki/main/19-multicultural-futures": [
+    {
+      "text": "12 谱系篇",
+      "route": "/wiki/main/12-punk-genealogy"
+    }
+  ],
+  "/wiki/punks/atompunk/00-duiduipian": [
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/atompunk/01-definition-genealogy"
+    }
+  ],
+  "/wiki/punks/atompunk/03-aesthetics-visual": [
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/atompunk/01-definition-genealogy"
+    }
+  ],
+  "/wiki/punks/cyberpunk/00-duiduipian": [
+    {
+      "text": "01 定义与谱系",
+      "route": "/wiki/punks/cyberpunk/01-definition-genealogy"
+    },
+    {
+      "text": "02 历史年表",
+      "route": "/wiki/punks/cyberpunk/02-chronology"
+    }
+  ],
+  "/wiki/appendix/solarpunk/04-politics-philosophy": [
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    }
+  ],
+  "/wiki/appendix/solarpunk/03-aesthetics-visual": [
+    {
+      "text": "太阳朋克 00",
+      "route": "/wiki/appendix/solarpunk/00-duiduipian"
+    }
+  ]
+}

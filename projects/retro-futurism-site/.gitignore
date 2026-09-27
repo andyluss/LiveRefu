@@ -1,0 +1,28 @@
+# 依赖
+node_modules
+.npmrc
+
+# Nuxt 构建产物
+.nuxt
+.nitro
+.cache
+.output
+.data
+dist
+
+# 日志与环境
+*.log*
+.env
+.env.*
+!.env.example
+
+# 说明：以下为**生成物但故意入库**，因此不在此忽略——
+#   content/wiki/            由 tools/sync-content.ts 从 doc/ 生成；入库便于审阅"生成差异"
+#   app/assets/wiki-*.json   同上的导航树与反链索引
+# 改动 tools/ 的生成逻辑后，请重跑 `bun run sync:content` 并提交产物。
+
+# 数据库（论坛数据，Bundle A 自托管 SQLite）
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+data/*.db

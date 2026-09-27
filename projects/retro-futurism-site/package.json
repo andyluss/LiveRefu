@@ -1,0 +1,29 @@
+{
+  "name": "retro-futurism-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build && bun run tools/check-build.ts",
+    "start": "bun .output/server/index.mjs",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "sync:content": "bun run tools/sync-content.ts",
+    "check:content": "bun run tools/sync-content.ts --check",
+    "check": "bun run tools/sync-content.ts --check && bun run tools/check-build.ts",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxt/content": "3.16.1",
+    "@nuxt/image": "2.1.0",
+    "@nuxtjs/mdc": "0.23.1",
+    "drizzle-orm": "0.45.3",
+    "nuxt": "4.5.2",
+    "vue": "3.5.43",
+    "vue-router": "4.6.4"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

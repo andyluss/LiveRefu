@@ -58,6 +58,9 @@ function walkMd(start: string): string[] {
     names.sort();
     for (const name of names) {
       if (name === ".git") continue;
+      // 跳过依赖目录：其中的 README 属第三方产物，链接按其自身发布环境书写，
+      // 在本仓库里校验只会产生大量与工作区无关的"失效"
+      if (name === "node_modules") continue;
       const full = path.join(dir, name);
       let isDir = false;
       try {
@@ -74,6 +77,51 @@ function walkMd(start: string): string[] {
   };
   walk(start);
   return out;
+}
+
+/**
+ * 收集"站内路由"式链接（以 / 开头的站内绝对链接）所对应的路由集合。
+ *
+ * 为什么需要：projects/retro-futurism-site/ 的 `content/wiki/**` 是从 `doc/` 单向生成的
+ * **站点内容**，其中由交叉引用改写而来的链接形如 `(/wiki/main/16-apocalypse)`——
+ * 那是**站点路由**（由 Nuxt Content 渲染），**不是文件系统路径**，不应在本仓库的
+ * 文件存在性校验里被判为失效。这里从站点自己生成的导航/反链索引里读出真实路由，
+ * 只对"确实是本站路由"的绝对链接放行，避免放行任意裸路径。
+ */
+function collectSiteRoutes(): Set<string> {
+  const routes = new Set<string>(["", "wiki", "wiki/main", "wiki/punks", "wiki/appendix", "blog", "gallery", "forum"]);
+  const assets = path.join(ROOT, "projects/retro-futurism-site/app/assets");
+  for (const file of ["wiki-nav.json", "wiki-backrefs.json"]) {
+    const p = path.join(assets, file);
+    if (!fs.existsSync(p)) continue;
+    let data: unknown;
+    try {
+      data = JSON.parse(fs.readFileSync(p, "utf-8"));
+    } catch {
+      continue;
+    }
+    const visit = (node: unknown): void => {
+      if (Array.isArray(node)) {
+        for (const v of node) visit(v);
+        return;
+      }
+      if (node && typeof node === "object") {
+        for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+          if (k === "route" && typeof v === "string") routes.add(v.replace(/^\//, "").replace(/\/$/, ""));
+          else visit(v);
+        }
+      }
+    };
+    visit(data);
+  }
+  return routes;
+}
+
+const SITE_ROUTES = collectSiteRoutes();
+/** 该绝对链接是否是一条站内路由（而非文件路径） */
+function isSiteRoute(target: string): boolean {
+  const key = target.replace(/^\//, "").replace(/\/$/, "");
+  return SITE_ROUTES.has(key);
 }
 
 // 返回 [链接URL, 绝对目标路径] 列表 (外链/纯锚点/仅锚点 已跳过)
@@ -201,6 +249,11 @@ function main(): number {
   for (const p of files) {
     for (const [url, absTarget] of collectLinks(p)) {
       total++;
+      // 站内路由式链接（如生成的 Wiki 内容里的 /wiki/main/16-apocalypse）不是文件路径，跳过
+      if (url.startsWith("/") && isSiteRoute(url.split("#")[0]!.split("?")[0]!)) {
+        if (verbose) console.log(`  [route] ${path.relative(ROOT, p)} :: ${url}`);
+        continue;
+      }
       if (!fs.existsSync(absTarget)) {
         broken.push([p, url, absTarget]);
       } else if (verbose) {

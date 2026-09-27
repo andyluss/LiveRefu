@@ -1,0 +1,633 @@
+{
+  "main": [
+    {
+      "title": "理论地基",
+      "items": [
+        {
+          "text": "00 总论",
+          "route": "/wiki/main/00-general-introduction"
+        },
+        {
+          "text": "01 理论篇",
+          "route": "/wiki/main/01-theory-nostalgia"
+        }
+      ]
+    },
+    {
+      "title": "未来的考古",
+      "items": [
+        {
+          "text": "02 远古篇",
+          "route": "/wiki/main/02-ancient-myths"
+        },
+        {
+          "text": "03 古典篇",
+          "route": "/wiki/main/03-classical-utopia"
+        },
+        {
+          "text": "04 近代篇",
+          "route": "/wiki/main/04-early-modern-progress"
+        },
+        {
+          "text": "05 奠基篇",
+          "route": "/wiki/main/05-verne-wells"
+        },
+        {
+          "text": "06 机器篇",
+          "route": "/wiki/main/06-machine-age"
+        },
+        {
+          "text": "07 战间篇",
+          "route": "/wiki/main/07-interwar-dieselpunk"
+        },
+        {
+          "text": "08 原子篇",
+          "route": "/wiki/main/08-atompunk"
+        },
+        {
+          "text": "09 太空篇",
+          "route": "/wiki/main/09-space-age"
+        },
+        {
+          "text": "10 红旗篇",
+          "route": "/wiki/main/10-red-future"
+        },
+        {
+          "text": "11 中国篇",
+          "route": "/wiki/main/11-china-future"
+        }
+      ]
+    },
+    {
+      "title": "回收的未来",
+      "items": [
+        {
+          "text": "12 谱系篇",
+          "route": "/wiki/main/12-punk-genealogy"
+        },
+        {
+          "text": "13 蒸汽篇",
+          "route": "/wiki/main/13-steampunk"
+        },
+        {
+          "text": "14 磁带篇",
+          "route": "/wiki/main/14-tape-futurism"
+        },
+        {
+          "text": "15 赛博篇",
+          "route": "/wiki/main/15-cyberpunk"
+        },
+        {
+          "text": "16 末日篇",
+          "route": "/wiki/main/16-apocalypse"
+        }
+      ]
+    },
+    {
+      "title": "当代乡愁与多元",
+      "items": [
+        {
+          "text": "17 蒸汽波篇",
+          "route": "/wiki/main/17-vaporwave"
+        },
+        {
+          "text": "18 千禧篇",
+          "route": "/wiki/main/18-y2k-frutiger-aero"
+        },
+        {
+          "text": "19 多元篇",
+          "route": "/wiki/main/19-multicultural-futures"
+        }
+      ]
+    },
+    {
+      "title": "收束",
+      "items": [
+        {
+          "text": "20 结语与附录",
+          "route": "/wiki/main/20-conclusion-appendix"
+        }
+      ]
+    }
+  ],
+  "punks": [
+    {
+      "title": "原子朋克",
+      "slug": "atompunk",
+      "route": "/wiki/punks/atompunk",
+      "items": [
+        {
+          "text": "00 对读篇",
+          "route": "/wiki/punks/atompunk/00-duiduipian"
+        },
+        {
+          "text": "01 定义与谱系",
+          "route": "/wiki/punks/atompunk/01-definition-genealogy"
+        },
+        {
+          "text": "02 历史年表",
+          "route": "/wiki/punks/atompunk/02-chronology"
+        },
+        {
+          "text": "03 美学与视觉",
+          "route": "/wiki/punks/atompunk/03-aesthetics-visual"
+        },
+        {
+          "text": "04 思想政治与批评",
+          "route": "/wiki/punks/atompunk/04-politics-philosophy"
+        },
+        {
+          "text": "05 作品与媒介",
+          "route": "/wiki/punks/atompunk/05-works-media"
+        },
+        {
+          "text": "06 中文语境",
+          "route": "/wiki/punks/atompunk/06-chinese-context"
+        },
+        {
+          "text": "07 批评与争议",
+          "route": "/wiki/punks/atompunk/07-criticism"
+        },
+        {
+          "text": "08 资料库",
+          "route": "/wiki/punks/atompunk/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "生物朋克",
+      "slug": "biopunk",
+      "route": "/wiki/punks/biopunk",
+      "items": [
+        {
+          "text": "00 对读篇",
+          "route": "/wiki/punks/biopunk/00-duiduipian"
+        },
+        {
+          "text": "01 定义与谱系",
+          "route": "/wiki/punks/biopunk/01-definition-genealogy"
+        },
+        {
+          "text": "02 历史年表",
+          "route": "/wiki/punks/biopunk/02-chronology"
+        },
+        {
+          "text": "03 美学与视觉",
+          "route": "/wiki/punks/biopunk/03-aesthetics-visual"
+        },
+        {
+          "text": "04 思想政治与批评",
+          "route": "/wiki/punks/biopunk/04-politics-philosophy"
+        },
+        {
+          "text": "05 作品与媒介",
+          "route": "/wiki/punks/biopunk/05-works-media"
+        },
+        {
+          "text": "06 中文语境",
+          "route": "/wiki/punks/biopunk/06-chinese-context"
+        },
+        {
+          "text": "07 批评与争议",
+          "route": "/wiki/punks/biopunk/07-criticism"
+        },
+        {
+          "text": "08 资料库",
+          "route": "/wiki/punks/biopunk/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "赛博朋克",
+      "slug": "cyberpunk",
+      "route": "/wiki/punks/cyberpunk",
+      "items": [
+        {
+          "text": "00 对读篇",
+          "route": "/wiki/punks/cyberpunk/00-duiduipian"
+        },
+        {
+          "text": "01 定义与谱系",
+          "route": "/wiki/punks/cyberpunk/01-definition-genealogy"
+        },
+        {
+          "text": "02 历史年表",
+          "route": "/wiki/punks/cyberpunk/02-chronology"
+        },
+        {
+          "text": "03 美学与视觉",
+          "route": "/wiki/punks/cyberpunk/03-aesthetics-visual"
+        },
+        {
+          "text": "04 思想政治与批评",
+          "route": "/wiki/punks/cyberpunk/04-politics-philosophy"
+        },
+        {
+          "text": "05 作品与媒介",
+          "route": "/wiki/punks/cyberpunk/05-works-media"
+        },
+        {
+          "text": "06 中文语境",
+          "route": "/wiki/punks/cyberpunk/06-chinese-context"
+        },
+        {
+          "text": "07 批评与争议",
+          "route": "/wiki/punks/cyberpunk/07-criticism"
+        },
+        {
+          "text": "08 资料库",
+          "route": "/wiki/punks/cyberpunk/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "柴油朋克",
+      "slug": "dieselpunk",
+      "route": "/wiki/punks/dieselpunk",
+      "items": [
+        {
+          "text": "00 对读篇",
+          "route": "/wiki/punks/dieselpunk/00-duiduipian"
+        },
+        {
+          "text": "01 定义与谱系",
+          "route": "/wiki/punks/dieselpunk/01-definition-genealogy"
+        },
+        {
+          "text": "02 历史年表",
+          "route": "/wiki/punks/dieselpunk/02-chronology"
+        },
+        {
+          "text": "03 美学与视觉",
+          "route": "/wiki/punks/dieselpunk/03-aesthetics-visual"
+        },
+        {
+          "text": "04 思想政治与批评",
+          "route": "/wiki/punks/dieselpunk/04-politics-philosophy"
+        },
+        {
+          "text": "05 作品与媒介",
+          "route": "/wiki/punks/dieselpunk/05-works-media"
+        },
+        {
+          "text": "06 中文语境",
+          "route": "/wiki/punks/dieselpunk/06-chinese-context"
+        },
+        {
+          "text": "07 批评与争议",
+          "route": "/wiki/punks/dieselpunk/07-criticism"
+        },
+        {
+          "text": "08 资料库",
+          "route": "/wiki/punks/dieselpunk/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "蒸汽朋克",
+      "slug": "steampunk",
+      "route": "/wiki/punks/steampunk",
+      "items": [
+        {
+          "text": "00 对读篇",
+          "route": "/wiki/punks/steampunk/00-duiduipian"
+        },
+        {
+          "text": "01 定义与谱系",
+          "route": "/wiki/punks/steampunk/01-definition-genealogy"
+        },
+        {
+          "text": "02 历史年表",
+          "route": "/wiki/punks/steampunk/02-chronology"
+        },
+        {
+          "text": "03 美学与视觉",
+          "route": "/wiki/punks/steampunk/03-aesthetics-visual"
+        },
+        {
+          "text": "04 思想政治与批评",
+          "route": "/wiki/punks/steampunk/04-politics-philosophy"
+        },
+        {
+          "text": "05 作品与媒介",
+          "route": "/wiki/punks/steampunk/05-works-media"
+        },
+        {
+          "text": "06 中文语境",
+          "route": "/wiki/punks/steampunk/06-chinese-context"
+        },
+        {
+          "text": "07 批评与争议",
+          "route": "/wiki/punks/steampunk/07-criticism"
+        },
+        {
+          "text": "08 资料库",
+          "route": "/wiki/punks/steampunk/08-resources"
+        }
+      ]
+    }
+  ],
+  "appendix": [
+    {
+      "title": "千禧美学",
+      "slug": "y2k-aesthetics",
+      "route": "/wiki/appendix/y2k-aesthetics",
+      "items": [
+        {
+          "text": "千禧美学 00",
+          "route": "/wiki/appendix/y2k-aesthetics/00-duiduipian"
+        },
+        {
+          "text": "千禧美学 01",
+          "route": "/wiki/appendix/y2k-aesthetics/01-overview-definition"
+        },
+        {
+          "text": "千禧美学 02",
+          "route": "/wiki/appendix/y2k-aesthetics/02-chronology"
+        },
+        {
+          "text": "千禧美学 03",
+          "route": "/wiki/appendix/y2k-aesthetics/03-aesthetic-families"
+        },
+        {
+          "text": "千禧美学 04",
+          "route": "/wiki/appendix/y2k-aesthetics/04-mechanics-theory"
+        },
+        {
+          "text": "千禧美学 05",
+          "route": "/wiki/appendix/y2k-aesthetics/05-media-archaeology"
+        },
+        {
+          "text": "千禧美学 06",
+          "route": "/wiki/appendix/y2k-aesthetics/06-criticism"
+        },
+        {
+          "text": "千禧美学 07",
+          "route": "/wiki/appendix/y2k-aesthetics/07-chinese-context"
+        },
+        {
+          "text": "千禧美学 08",
+          "route": "/wiki/appendix/y2k-aesthetics/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "原子朋克（附录）",
+      "slug": "atompunk-appendix",
+      "route": "/wiki/appendix/atompunk-appendix",
+      "items": [
+        {
+          "text": "原子朋克（附录） 00",
+          "route": "/wiki/appendix/atompunk-appendix/00-duiduipian"
+        },
+        {
+          "text": "原子朋克（附录） 01",
+          "route": "/wiki/appendix/atompunk-appendix/01-definition-genealogy"
+        },
+        {
+          "text": "原子朋克（附录） 02",
+          "route": "/wiki/appendix/atompunk-appendix/02-chronology"
+        },
+        {
+          "text": "原子朋克（附录） 03",
+          "route": "/wiki/appendix/atompunk-appendix/03-aesthetics-visual"
+        },
+        {
+          "text": "原子朋克（附录） 04",
+          "route": "/wiki/appendix/atompunk-appendix/04-politics-philosophy"
+        },
+        {
+          "text": "原子朋克（附录） 05",
+          "route": "/wiki/appendix/atompunk-appendix/05-works-media"
+        },
+        {
+          "text": "原子朋克（附录） 06",
+          "route": "/wiki/appendix/atompunk-appendix/06-criticism"
+        },
+        {
+          "text": "原子朋克（附录） 07",
+          "route": "/wiki/appendix/atompunk-appendix/07-chinese-context"
+        },
+        {
+          "text": "原子朋克（附录） 08",
+          "route": "/wiki/appendix/atompunk-appendix/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "太阳朋克",
+      "slug": "solarpunk",
+      "route": "/wiki/appendix/solarpunk",
+      "items": [
+        {
+          "text": "太阳朋克 00",
+          "route": "/wiki/appendix/solarpunk/00-duiduipian"
+        },
+        {
+          "text": "太阳朋克 01",
+          "route": "/wiki/appendix/solarpunk/01-definition-genealogy"
+        },
+        {
+          "text": "太阳朋克 02",
+          "route": "/wiki/appendix/solarpunk/02-chronology"
+        },
+        {
+          "text": "太阳朋克 03",
+          "route": "/wiki/appendix/solarpunk/03-aesthetics-visual"
+        },
+        {
+          "text": "太阳朋克 04",
+          "route": "/wiki/appendix/solarpunk/04-politics-philosophy"
+        },
+        {
+          "text": "太阳朋克 05",
+          "route": "/wiki/appendix/solarpunk/05-works-media"
+        },
+        {
+          "text": "太阳朋克 06",
+          "route": "/wiki/appendix/solarpunk/06-criticism"
+        },
+        {
+          "text": "太阳朋克 07",
+          "route": "/wiki/appendix/solarpunk/07-chinese-context"
+        },
+        {
+          "text": "太阳朋克 08",
+          "route": "/wiki/appendix/solarpunk/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "柴油朋克（附录）",
+      "slug": "dieselpunk-appendix",
+      "route": "/wiki/appendix/dieselpunk-appendix",
+      "items": [
+        {
+          "text": "柴油朋克（附录） 00",
+          "route": "/wiki/appendix/dieselpunk-appendix/00-duiduipian"
+        },
+        {
+          "text": "柴油朋克（附录） 01",
+          "route": "/wiki/appendix/dieselpunk-appendix/01-definition-genealogy"
+        },
+        {
+          "text": "柴油朋克（附录） 02",
+          "route": "/wiki/appendix/dieselpunk-appendix/02-chronology"
+        },
+        {
+          "text": "柴油朋克（附录） 03",
+          "route": "/wiki/appendix/dieselpunk-appendix/03-aesthetics-visual"
+        },
+        {
+          "text": "柴油朋克（附录） 04",
+          "route": "/wiki/appendix/dieselpunk-appendix/04-politics-philosophy"
+        },
+        {
+          "text": "柴油朋克（附录） 05",
+          "route": "/wiki/appendix/dieselpunk-appendix/05-works-media"
+        },
+        {
+          "text": "柴油朋克（附录） 06",
+          "route": "/wiki/appendix/dieselpunk-appendix/06-criticism"
+        },
+        {
+          "text": "柴油朋克（附录） 07",
+          "route": "/wiki/appendix/dieselpunk-appendix/07-chinese-context"
+        },
+        {
+          "text": "柴油朋克（附录） 08",
+          "route": "/wiki/appendix/dieselpunk-appendix/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "生物朋克（附录）",
+      "slug": "biopunk-appendix",
+      "route": "/wiki/appendix/biopunk-appendix",
+      "items": [
+        {
+          "text": "生物朋克（附录） 00",
+          "route": "/wiki/appendix/biopunk-appendix/00-duiduipian"
+        },
+        {
+          "text": "生物朋克（附录） 01",
+          "route": "/wiki/appendix/biopunk-appendix/01-definition-genealogy"
+        },
+        {
+          "text": "生物朋克（附录） 02",
+          "route": "/wiki/appendix/biopunk-appendix/02-chronology"
+        },
+        {
+          "text": "生物朋克（附录） 03",
+          "route": "/wiki/appendix/biopunk-appendix/03-aesthetics-visual"
+        },
+        {
+          "text": "生物朋克（附录） 04",
+          "route": "/wiki/appendix/biopunk-appendix/04-politics-philosophy"
+        },
+        {
+          "text": "生物朋克（附录） 05",
+          "route": "/wiki/appendix/biopunk-appendix/05-works-media"
+        },
+        {
+          "text": "生物朋克（附录） 06",
+          "route": "/wiki/appendix/biopunk-appendix/06-criticism"
+        },
+        {
+          "text": "生物朋克（附录） 07",
+          "route": "/wiki/appendix/biopunk-appendix/07-chinese-context"
+        },
+        {
+          "text": "生物朋克（附录） 08",
+          "route": "/wiki/appendix/biopunk-appendix/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "蒸汽朋克（附录）",
+      "slug": "steampunk-appendix",
+      "route": "/wiki/appendix/steampunk-appendix",
+      "items": [
+        {
+          "text": "蒸汽朋克（附录） 00",
+          "route": "/wiki/appendix/steampunk-appendix/00-duiduipian"
+        },
+        {
+          "text": "蒸汽朋克（附录） 01",
+          "route": "/wiki/appendix/steampunk-appendix/01-definition-genealogy"
+        },
+        {
+          "text": "蒸汽朋克（附录） 02",
+          "route": "/wiki/appendix/steampunk-appendix/02-chronology"
+        },
+        {
+          "text": "蒸汽朋克（附录） 03",
+          "route": "/wiki/appendix/steampunk-appendix/03-aesthetics-visual"
+        },
+        {
+          "text": "蒸汽朋克（附录） 04",
+          "route": "/wiki/appendix/steampunk-appendix/04-politics-philosophy"
+        },
+        {
+          "text": "蒸汽朋克（附录） 05",
+          "route": "/wiki/appendix/steampunk-appendix/05-works-media"
+        },
+        {
+          "text": "蒸汽朋克（附录） 06",
+          "route": "/wiki/appendix/steampunk-appendix/06-criticism"
+        },
+        {
+          "text": "蒸汽朋克（附录） 07",
+          "route": "/wiki/appendix/steampunk-appendix/07-chinese-context"
+        },
+        {
+          "text": "蒸汽朋克（附录） 08",
+          "route": "/wiki/appendix/steampunk-appendix/08-resources"
+        }
+      ]
+    },
+    {
+      "title": "赛博朋克（附录）",
+      "slug": "cyberpunk-appendix",
+      "route": "/wiki/appendix/cyberpunk-appendix",
+      "items": [
+        {
+          "text": "赛博朋克（附录） 00",
+          "route": "/wiki/appendix/cyberpunk-appendix/00-duiduipian"
+        },
+        {
+          "text": "赛博朋克（附录） 01",
+          "route": "/wiki/appendix/cyberpunk-appendix/01-definition-genealogy"
+        },
+        {
+          "text": "赛博朋克（附录） 02",
+          "route": "/wiki/appendix/cyberpunk-appendix/02-chronology"
+        },
+        {
+          "text": "赛博朋克（附录） 03",
+          "route": "/wiki/appendix/cyberpunk-appendix/03-aesthetics-visual"
+        },
+        {
+          "text": "赛博朋克（附录） 04",
+          "route": "/wiki/appendix/cyberpunk-appendix/04-politics-philosophy"
+        },
+        {
+          "text": "赛博朋克（附录） 05",
+          "route": "/wiki/appendix/cyberpunk-appendix/05-works-media"
+        },
+        {
+          "text": "赛博朋克（附录） 06",
+          "route": "/wiki/appendix/cyberpunk-appendix/06-criticism"
+        },
+        {
+          "text": "赛博朋克（附录） 07",
+          "route": "/wiki/appendix/cyberpunk-appendix/07-chinese-context"
+        },
+        {
+          "text": "赛博朋克（附录） 08",
+          "route": "/wiki/appendix/cyberpunk-appendix/08-resources"
+        }
+      ]
+    }
+  ]
+}
