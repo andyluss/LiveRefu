@@ -1,0 +1,54 @@
+# 明日档案 · Caddy 反向代理
+#
+# 为什么是 Caddy 而不是 Nginx：TLS 自动申请与续期是**默认行为**，不需要 certbot
+# 与定时任务；配置量约为 Nginx 的三分之一。对单人维护的小站，少一个会坏的东西。
+#
+# 用法：把本文件放到 /etc/caddy/Caddyfile（或 import 进去），改掉域名，
+#       sudo systemctl reload caddy
+
+{
+	# 生产环境建议开；首次调试可注释掉以保留访问日志
+	# log {
+	# 	output file /var/log/caddy/access.log
+	# }
+}
+
+retro-futurism.example {
+	encode zstd gzip
+
+	# 安全响应头（CSP 暂不加：Nuxt 内联样式较多，加错会直接白屏，
+	# 需要一次专门的调试，见 docs/08 §六「未做」）
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		-Server
+	}
+
+	# ---- 媒体素材：直接由 Caddy 送，不经过应用 ----
+	# 画廊素材在 doc/ 下，Nitro 有一个只读的 /media/** 路由，
+	# 但生产上让反代直接静态服务更快、更省应用内存。
+	# 注意 root 指向的目录必须与应用解析出的 doc/ 一致。
+	handle_path /media/* {
+		root * /srv/retro-futurism/LiveRefu/doc
+		file_server
+		header Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+	}
+
+	# ---- Nuxt 构建产物中的静态资源（带 hash，可长缓存）----
+	handle /_nuxt/* {
+		root * /srv/retro-futurism/current/.output/public
+		file_server
+		header Cache-Control "public, max-age=31536000, immutable"
+	}
+
+	# ---- 其余请求交给应用 ----
+	handle {
+		reverse_proxy 127.0.0.1:3000 {
+			# 让应用知道真实协议与主机（生成 sitemap/rss 的绝对地址时要用）
+			header_up X-Forwarded-Proto {scheme}
+			header_up X-Forwarded-Host {host}
+		}
+	}
+}

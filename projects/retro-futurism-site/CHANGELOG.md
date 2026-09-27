@@ -5,6 +5,63 @@
 
 ## [Unreleased]
 
+### 新增（M3 部署与备份：数据层落地 + 可验证的备份 + 部署配置）
+
+按 [D5](docs/00_决策记录.md) 的 **Bundle A（全自托管 SQLite）** 把数据层真正落地，并把部署与备份做成**可验证**的，详见 [08 部署与备份](docs/08_部署与备份.md)。
+
+- **数据层（论坛表结构 + 薄数据访问层）**：新增 [`server/db/schema.ts`](server/db/schema.ts)
+  （`users` / `sessions` / `boards` / `threads` / `posts`，含索引与外键）、
+  [`server/db/index.ts`](server/db/index.ts)（**唯一的连接点**——Drizzle 抽象方言，
+  日后换 Postgres 或接 PocketBase 只改这里）、[`server/db/migrate.ts`](server/db/migrate.ts)
+  （迁移执行器，**幂等**，只需 Bun，不需要在生产装 drizzle-kit）、
+  [`server/db/migrations/`](server/db/migrations/)（迁移 SQL，**schema 的唯一真相，入库**）。
+  连接开启 **WAL**（与 Litestream 配合的前提）与 **`foreign_keys = ON`**
+  （SQLite 默认关闭，不开则 schema 里的 `references` 形同虚设）。
+- **存储健康检查** [`server/routes/api/health/storage.get.ts`](server/routes/api/health/storage.get.ts)：
+  **不是返回 `{ok:true}` 的假健康检查**——它真做一轮读写（写入→读回→删除）、
+  检查 WAL 与外键是否真的生效、并**验证外键真的会拦截非法引用**。实测 **7/7 通过**。
+  用途：部署 smoke test（[08 §五](docs/08_部署与备份.md)）与恢复演练中验证"恢复出来的库确实可用"。
+- **备份脚本** [`tools/backup-db.ts`](tools/backup-db.ts)：用 SQLite 官方推荐的
+  **`VACUUM INTO`**（WAL 模式下直接 `cp` 可能漏掉 WAL 里已提交的事务），
+  且**每次都验证自己刚产出的备份**——打开产物、跑 `integrity_check`、对比关键表行数；
+  验证不通过则改名 `.bad` 并以非零码退出。立场：**未经验证的备份等于没有备份。**
+- **备份/恢复演练** [`tools/verify-backup.ts`](tools/verify-backup.ts)：一条完整闭环
+  （造数据 → 备份 → 校验行数 → **篡改备份并确认会被拒绝** → 恢复 → 确认恢复库可查询），
+  全程在临时目录，不碰真实数据。实测 **9/9 通过**，含反向证明。
+- **部署产物** [`deploy/`](deploy/)：[`Caddyfile`](deploy/Caddyfile)（自动 TLS + 反代 +
+  媒体静态直送 + 安全响应头）、[`retro-futurism.service`](deploy/retro-futurism.service)
+  （systemd，**用 bun 而非 node 启动**，`ReadWritePaths` 只放开数据库目录）、
+  [`litestream.yml`](deploy/litestream.yml)（持续复制到 S3 兼容存储，带保留策略与快照间隔）。
+- **部署配置静态校验** [`tools/verify-deploy.ts`](tools/verify-deploy.ts)：18 项
+  （括号配对、root 为绝对路径、systemd 用 bun、数据库目录在 `ReadWritePaths` 内、
+  Litestream YAML 可解析等），实测 **18/18**。
+- **`docs/08_部署与备份.md`**：形态图、部署步骤、两条腿备份（Litestream 持续复制 +
+  校验快照）、**目标机 smoke test 清单（10 条命令）**、季度恢复演练记录表、**未做清单**。
+  文档开头明确划出"**已在本机验证**"与"**未验证（需目标机）**"的边界。
+
+### 修复（M3 实测发现）
+
+- **`new Database(file, { readonly: true })` 在 WAL 库上会失败**：SQLite 只读打开 WAL 数据库
+  仍需创建 `-shm` 共享内存文件，目录不可写时 Bun 直接抛
+  `SQLITE_CANTOPEN: unable to open database file`——**看起来像"备份损坏"，实际是目录权限**，
+  极易误判。已改为"可读写打开 + `PRAGMA query_only = ON`"，效果等价且不依赖目录权限。
+- **`VACUUM INTO` 不会创建父目录**，且失败时只报一句 `unable to open database file`，
+  容易被误读成"源库打不开"。脚本现已显式建目录，并在失败时打印源库/目标/目录存在性与可写性。
+- **`VACUUM INTO` 需要可写连接**：在 `query_only=ON` 的连接上会报
+  `attempt to write a readonly database`。现明确区分：备份用可写连接，校验用只读语义连接。
+- `tools/verify-deploy.ts` 的 `root` 指令匹配**误把中文注释里的"root"一词当指令**
+  （本项目注释里恰好写了「root 指向的目录…」）。已改为跳过注释行。
+- `.gitignore` 收紧：`*.db` / `*.db-shm` / `*.db-wal` / `data/` / `backups/`
+  （迁移 SQL 仍入库）。
+- `package.json` 增补 `db:generate` / `db:migrate` / `db:backup` / `db:verify-backup` / `verify:deploy`。
+
+### 变更（文档）
+
+- 新增 [`docs/08_部署与备份.md`](docs/08_部署与备份.md)（含**目标机 smoke test 清单**与
+  **"本机已验证 / 未验证"的边界声明**）。
+- 项目 README：交付功能表补"部署"入口；验收数据补存储 7/7、备份演练 9/9、部署静态校验 18/18；
+  目录结构补 `server/db`、`deploy/` 与三个新工具。
+
 ### 新增（M2 第一阶段：Giscus 讨论区就绪 + M1 性能/无障碍实测补齐）
 
 **M2 第一阶段（D4「先 Giscus 后自建」的 Giscus 段）已交付，代码就绪、待填 4 个环境变量即可上线**，详见 [07 M2 实现记录](docs/07_实现记录_M2.md)：

@@ -6,6 +6,7 @@
 | 我要…… | 去哪 |
 | --- | --- |
 | **跑起来看看** | `bun install && bun run dev`（或 `bun run build && bun start`） |
+| **部署到服务器** | [08 部署与备份](docs/08_部署与备份.md)（含目标机 smoke test 清单） |
 | 看它长什么样 | [docs/shots/](docs/shots/)（5 张真实渲染截图） |
 | 知道 M1 做了什么、怎么验的 | [06 M1 实现记录与验收](docs/06_实现记录_M1.md) |
 | **接入讨论区（论坛）** | [07 M2 实现记录](docs/07_实现记录_M2.md)（含 GitHub 侧四步） |
@@ -38,6 +39,9 @@
 无障碍：9 项自动检查 × 4 页通过，且检查器经负向自检（5/5 违规可捕获）
 SEO ：rss 32 条 item · sitemap 148 条 url · JSON-LD 已注入
 Giscus：未配置降级 ✓ / 配置后注入参数正确 ✓ / 博客讨论区 ✓
+存储：健康检查 7/7（迁移 · WAL · 外键开启 · 读写往返 · 外键拦截非法引用 · 表齐全 · 规模）
+备份：备份/恢复演练 9/9（含"损坏备份会被拒绝"的反向证明）
+部署：配置静态校验 18/18（⚠️ 目标机 smoke test 未做，见 08 §五）
 ```
 
 > 三类验收都必须用真浏览器（CDP），curl 证明不了：
@@ -80,18 +84,32 @@ projects/retro-futurism-site/
 │   ├── wiki/                 # ★ 生成物：129 篇（main / punks / appendix）
 │   ├── gallery/              # ★ 生成物：99 条画廊条目（8 个专辑）
 │   └── blog/                 # 手写博客文章
-├── server/routes/
-│   ├── media/[...].get.ts    # ★ /media/** → 只读暴露 doc/ 下素材（含穿越防护）
-│   ├── rss.xml.ts            # RSS 2.0
-│   └── sitemap.xml.ts        # sitemap
-└── tools/
-    ├── sync-content.ts       # ★ 内容适配层（doc/ → content/wiki/）
-    ├── sync-gallery.ts       # ★ 画廊条目生成（doc/美术 → content/gallery/）
-    ├── check-build.ts        # ★ 构建后置：产物完整性（srvx 条件导出补齐）
-    ├── verify-site.ts        # ★ 验收：全篇目 + 索引页 + 站内链接可达性
-    ├── verify-search.ts      # ★ 验收：真浏览器（CDP）测全文检索
-    ├── verify-perf.ts        # ★ 验收：限速下的 LCP/CLS + 无障碍（含负向自检）
-    └── verify-giscus.ts      # ★ 验收：讨论区降级与注入（真浏览器）
+├── server/
+│   ├── db/
+│   │   ├── schema.ts         # ★ Drizzle schema（users/sessions/boards/threads/posts）
+│   │   ├── index.ts          # ★ 薄数据访问层（唯一的连接点，便于日后换库）
+│   │   ├── migrate.ts        # ★ 迁移执行器（幂等，只需 Bun）
+│   │   └── migrations/       # ★ 迁移 SQL（schema 的唯一真相，必须入库）
+│   └── routes/
+│       ├── media/[...].get.ts        # ★ /media/** → 只读暴露 doc/ 下素材（含穿越防护）
+│       ├── api/health/storage.get.ts # ★ 存储健康检查（真做读写 + 外键验证）
+│       ├── rss.xml.ts                # RSS 2.0
+│       └── sitemap.xml.ts            # sitemap
+├── deploy/                   # ★ 部署产物（见 docs/08）
+│   ├── Caddyfile             # 反代 + 自动 TLS + 静态媒体
+│   ├── retro-futurism.service# systemd 单元（必须用 bun 启动）
+│   └── litestream.yml        # 持续备份到对象存储
+├── tools/
+│   ├── sync-content.ts       # ★ 内容适配层（doc/ → content/wiki/）
+│   ├── sync-gallery.ts       # ★ 画廊条目生成（doc/美术 → content/gallery/）
+│   ├── check-build.ts        # ★ 构建后置：产物完整性（srvx 条件导出补齐）
+│   ├── backup-db.ts          # ★ 备份 + **自校验**（未验证的备份等于没有备份）
+│   ├── verify-site.ts        # ★ 验收：全篇目 + 索引页 + 站内链接可达性
+│   ├── verify-search.ts      # ★ 验收：真浏览器（CDP）测全文检索
+│   ├── verify-perf.ts        # ★ 验收：限速下的 LCP/CLS + 无障碍（含负向自检）
+│   ├── verify-giscus.ts      # ★ 验收：讨论区降级与注入（真浏览器）
+│   ├── verify-backup.ts      # ★ 验收：备份→篡改→拒绝→恢复 闭环演练
+│   └── verify-deploy.ts      # ★ 验收：部署配置静态校验
 ```
 
 ## 四、运行方式
@@ -137,15 +155,19 @@ bun run tools/verify-giscus.ts --base=http://localhost:3100 --base-configured=ht
    上两条是同一个根因的两面：`bun install` 的扁平布局 + 运行时条件导出 + Nitro 的文件追踪
    三者叠加。**结论：统一用 Bun，并在构建后校验产物**。
 
-## 六、下一步（M3）
+## 六、下一步（M3 剩余）
 
-**M2 第一阶段（Giscus）已交付**，代码就绪、待填 4 个环境变量即可上线（[07 M2 记录](docs/07_实现记录_M2.md)）。
-M2 第二阶段的**切换触发条件**已写明：月新增主题 > 50 / 需要分区与版主管理 / Giscus 成为明确障碍（含境内可达性）。
+已完成：**部署配置与备份机制**（[08 部署与备份](docs/08_部署与备份.md)）。
 
-**M3 · 打磨**：视觉主题深化、OG 图自动生成、完整 WCAG 审计（对比度、屏幕阅读器实读）、
-部署（单机 + Caddy）与备份（Litestream + 季度恢复演练）。
+剩余 M3 项：
 
-各里程碑未完成项见 [06 §五](docs/06_实现记录_M1.md) 与 [07 §七](docs/07_实现记录_M2.md)。
+- **目标机 smoke test** —— 手上没有服务器；[08 §五](docs/08_部署与备份.md) 的清单已备好待跑；
+- **OG 图自动生成** —— 会引入 `nuxt-og-image` 依赖，需决策；
+- **完整 WCAG 审计** —— 对比度、屏幕阅读器实读（现有 9 项自动检查不够）；
+- **视觉深化** —— CRT 主题与首页的进一步打磨；
+- **监控告警与日志轮转** —— 建议接 Uptime Kuma 轮询 `/api/health/storage`。
+
+各里程碑未完成项见 [06 §五](docs/06_实现记录_M1.md)、[07 §七](docs/07_实现记录_M2.md)、[08 §八](docs/08_部署与备份.md)。
 
 ## 七、五个关键设计判断
 

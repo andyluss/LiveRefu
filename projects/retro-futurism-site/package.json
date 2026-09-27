@@ -18,6 +18,11 @@
     "verify:search": "bun run tools/verify-search.ts",
     "verify:perf": "bun run tools/verify-perf.ts --selftest",
     "verify:giscus": "bun run tools/verify-giscus.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "bun run server/db/migrate.ts",
+    "db:backup": "bun run tools/backup-db.ts",
+    "db:verify-backup": "bun run tools/verify-backup.ts",
+    "verify:deploy": "bun run tools/verify-deploy.ts",
     "check": "bun run tools/sync-content.ts --check && bun run tools/sync-gallery.ts --check && bun run tools/check-build.ts",
     "typecheck": "nuxt typecheck"
   },
@@ -31,6 +36,7 @@
     "vue-router": "4.6.4"
   },
   "devDependencies": {
+    "drizzle-kit": "0.31.11",
     "typescript": "5.9.3"
   }
 }

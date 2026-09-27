@@ -1,0 +1,28 @@
+# 明日档案 · Litestream 持续备份
+#
+# 设计依据：docs/04_数据存储与同步方案.md §4.2（备份口径）。
+# Litestream 持续把 SQLite 的 WAL 复制到对象存储，RPO 约为秒级。
+#
+# 与本项目自带脚本的分工：
+#   - **Litestream**：日常持续复制，应对"机器突然没了"
+#   - **tools/backup-db.ts**：产出**经过校验**的时点快照，用于季度恢复演练
+#   两者互补：Litestream 保证能恢复到很近的时间点，自带脚本保证"备份真的能用"。
+#
+# 用法：sudo cp deploy/litestream.yml /etc/litestream.yml
+#       sudo systemctl enable --now litestream
+
+dbs:
+  - path: /var/lib/retro/app.db
+    replicas:
+      # Cloudflare R2（出网免费，见 04 §二）
+      # endpoint 形如 https://<account_id>.r2.cloudflarestorage.com
+      - type: s3
+        endpoint: ${R2_ENDPOINT}
+        bucket: retro-backups
+        path: app.db
+        access-key-id: ${R2_ACCESS_KEY_ID}
+        secret-access-key: ${R2_SECRET_ACCESS_KEY}
+        # 保留策略：不要无限增长
+        retention: 168h          # 保留 7 天
+        snapshot-interval: 24h   # 每 24h 打一个完整快照
+        sync-interval: 10s       # 增量同步间隔

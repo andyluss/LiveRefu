@@ -1,0 +1,50 @@
+# 明日档案 · systemd 服务单元
+#
+# ⚠️ 关键约束（来自 docs/02 §3.2 的 M0 实测）：**必须用 Bun 执行，不能用 node。**
+#     Bun 下构建时 Nuxt 选用 Bun 运行时预设，产物里含 `import { Database } from 'bun:sqlite'`；
+#     用 node 跑会以 ERR_UNSUPPORTED_ESM_URL_SCHEME: 'bun:' 启动失败。
+#
+# 用法：
+#   sudo cp deploy/retro-futurism.service /etc/systemd/system/
+#   按注释改路径与用户 → sudo systemctl daemon-reload → enable --now
+
+[Unit]
+Description=明日档案 · 复古未来主义网站 (Nuxt on Bun)
+Documentation=file:///srv/retro-futurism/current/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=retro
+Group=retro
+WorkingDirectory=/srv/retro-futurism/current
+
+# Bun 不在默认 PATH 里时，用绝对路径（`which bun` 查）
+ExecStart=/usr/local/bin/bun .output/server/index.mjs
+
+# 数据库落在持久目录，与代码发布目录分离——这样重新部署不会碰数据
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOST=127.0.0.1
+Environment=DATABASE_PATH=/var/lib/retro/app.db
+# Giscus（D4 第一阶段）——用真实值替换，或改用 EnvironmentFile
+#Environment=NUXT_PUBLIC_GISCUS_REPO=owner/repo
+#Environment=NUXT_PUBLIC_GISCUS_REPO_ID=R_kgDOxxxx
+#Environment=NUXT_PUBLIC_GISCUS_CATEGORY=Announcements
+#Environment=NUXT_PUBLIC_GISCUS_CATEGORY_ID=DIC_kwDOxxxx
+
+# 只在监听本地，由 Caddy 对外（见 deploy/Caddyfile）
+Restart=on-failure
+RestartSec=3
+
+# 加固：应用只需要写数据库目录，其余只读
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/retro
+# 注意：/media 由 Caddy 静态服务，应用侧仍会读 doc/，故 doc 需可读（ProtectSystem=strict 下读是允许的）
+
+[Install]
+WantedBy=multi-user.target

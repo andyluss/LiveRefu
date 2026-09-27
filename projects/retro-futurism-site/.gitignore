@@ -22,7 +22,12 @@ dist
 # 改动 tools/ 的生成逻辑后，请重跑 `bun run sync:content` 并提交产物。
 
 # 数据库（论坛数据，Bundle A 自托管 SQLite）
+# 注意：迁移 SQL 在 server/db/migrations/ 下，**必须入库**（它是 schema 的唯一真相）
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
-data/*.db
+*.db
+*.db-shm
+*.db-wal
+data/
+backups/
