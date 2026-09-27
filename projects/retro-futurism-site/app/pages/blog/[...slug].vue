@@ -61,6 +61,8 @@ const fmtDate = (d: string) => d?.slice(0, 10) ?? ''
           <span class="pager__title">全部文章</span>
         </NuxtLink>
       </nav>
+
+      <GiscusComments :term="`blog:${path}`" />
     </article>
   </div>
 </template>

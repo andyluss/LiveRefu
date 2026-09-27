@@ -5,6 +5,52 @@
 
 ## [Unreleased]
 
+### 新增（M2 第一阶段：Giscus 讨论区就绪 + M1 性能/无障碍实测补齐）
+
+**M2 第一阶段（D4「先 Giscus 后自建」的 Giscus 段）已交付，代码就绪、待填 4 个环境变量即可上线**，详见 [07 M2 实现记录](docs/07_实现记录_M2.md)：
+
+- [`app/components/GiscusComments.vue`](app/components/GiscusComments.vue)：Giscus 客户端注入，
+  `dark_dimmed` 主题对齐站点暗色基调，`data-lang="zh-CN"`，`data-mapping="specific"` 按 `term` 分串；
+  **未配置时降级为可执行的配置说明**而非空白/报错——站点在未接入讨论区时依然完整可用。
+- [`app/pages/forum/index.vue`](app/pages/forum/index.vue)：两段式路线说明 + **切换触发条件**
+  + 综合讨论区（`term=forum:general`）；并如实标注"Giscus 依赖 GitHub、**境内可达性存疑**"这一风险。
+- 博客每篇文章挂独立讨论串（`term=blog:<路径>`），互不串台。
+- [`nuxt.config.ts`](nuxt.config.ts) 增 `runtimeConfig.public.giscus`（读 `NUXT_PUBLIC_GISCUS_*`）；
+  新增 [`.env.example`](.env.example) 说明四个变量与申请步骤。
+- 新增 [`tools/verify-giscus.ts`](tools/verify-giscus.ts)：真浏览器验三种情形——
+  **未配置降级 ✓ / 配置后注入且参数正确 ✓ / 博客讨论区 ✓**。
+  **并明确写出该脚本"不能证明"的部分**：用占位 `repoId` 走通注入路径，
+  **未**验证真实 GitHub 仓库与 Discussions 的端到端可用性。
+
+**M1 遗留的性能与无障碍实测已补齐**（此前如实标为"待做、不声称通过"）：
+
+- 新增 [`tools/verify-perf.ts`](tools/verify-perf.ts)，用 CDP 而非 Lighthouse
+  （验收口径只要 LCP/CLS 两个浏览器原生指标，引入 Lighthouse 及其依赖不划算）。
+  **关键：测量必须限速**——本机 localhost 下 LCP 只有 60–100ms，那个数字**不能用来判断 < 2.5s 目标**（等于没测）；
+  脚本模拟 **4× CPU 降速 + 1.6 Mbps / 150ms RTT**，实测 **LCP 280–324ms、CLS ≤ 0.0003**（阈值 2500ms / 0.1）。
+- **无障碍**：9 项"页面上下文可判定"的检查 × 4 页全部通过（alt、恰好一个 h1、标题不跳级、
+  按钮/链接可访问名称、`<html lang>`、`<main>` 地标、id 不重复、无正数 tabindex）。
+- **无障碍检查器带负向自检**（`--selftest`）：注入故意违规的 DOM 确认会报错（**5/5 违规可捕获**）。
+  理由：**一个永远返回"通过"的检查器比没有检查器更糟**——它给人虚假的安全感。
+- [05 路线图](docs/05_实施路线图与验收.md) 验收清单第 5、6 项由"⏳ 待 M3"改为"✅ 实测通过"，
+  并注明"不构成完整 WCAG 审计"。
+
+### 修复（M2 实测发现）
+
+- **Giscus 挂载点 id 用 `Math.random()` 导致脚本静默不注入**：SSR 渲染出的 id 与客户端 hydration
+  时算出的 id 不同，`onMounted` 里 `getElementById` 返回 `null`，注入被静默跳过。
+  **症状极具迷惑性**——构建与类型检查全过、页面看着正常、讨论区永远空白、无任何报错。
+  已改用 Nuxt 的 `useId()`（SSR/CSR 一致的稳定 id）。
+  教训：**任何同时用于 SSR 输出与客户端查询的标识符都不能是随机的**；
+  这类 bug 只有真正在浏览器里查 DOM 才能发现（curl 只能看到挂载点存在）。
+- `package.json` 增补 `verify:perf` / `verify:giscus` 脚本。
+
+### 变更（文档）
+
+- 新增 [`docs/07_实现记录_M2.md`](docs/07_实现记录_M2.md)：两段式落点、GitHub 侧四步、切换条件、
+  实测验收（含"能证明/不能证明"的边界）、境内可达性风险、随机 id 之坑、未完成项。
+- 项目 README 增补验收数据（性能/无障碍/Giscus 三项）与"三类验收都必须用真浏览器"的说明。
+
 ### 新增（M1 主体交付：搜索 / 博客 / 画廊 / 七纪时间轴 / SEO）
 
 对照 [05 路线图](docs/05_实施路线图与验收.md) 的 M1 范围，本轮交付六项；详见 [06 M1 实现记录与验收](docs/06_实现记录_M1.md)。

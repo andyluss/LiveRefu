@@ -16,6 +16,8 @@
     "check:build": "bun run tools/check-build.ts",
     "verify:site": "bun run tools/verify-site.ts",
     "verify:search": "bun run tools/verify-search.ts",
+    "verify:perf": "bun run tools/verify-perf.ts --selftest",
+    "verify:giscus": "bun run tools/verify-giscus.ts",
     "check": "bun run tools/sync-content.ts --check && bun run tools/sync-gallery.ts --check && bun run tools/check-build.ts",
     "typecheck": "nuxt typecheck"
   },

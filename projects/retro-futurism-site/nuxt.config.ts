@@ -5,6 +5,26 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/content', '@nuxt/image'],
 
+  /**
+   * 运行时配置。
+   *
+   * Giscus（D4 论坛「两段式」的第一段）需要你在 GitHub 上先准备好仓库与 Discussions，
+   * 然后把四个值填进环境变量（或在部署平台配置）。**留空时组件会显示配置说明而非报错**，
+   * 这样站点在未配置状态下依然完整可用。
+   *
+   * 详见 docs/07_实现记录_M2.md §一。
+   */
+  runtimeConfig: {
+    public: {
+      giscus: {
+        repo: process.env.NUXT_PUBLIC_GISCUS_REPO || '',
+        repoId: process.env.NUXT_PUBLIC_GISCUS_REPO_ID || '',
+        category: process.env.NUXT_PUBLIC_GISCUS_CATEGORY || '',
+        categoryId: process.env.NUXT_PUBLIC_GISCUS_CATEGORY_ID || '',
+      },
+    },
+  },
+
   css: ['~/assets/theme.css'],
 
   app: {
