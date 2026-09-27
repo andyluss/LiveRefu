@@ -25,6 +25,8 @@ const indexRoutes: string[] = [
   '/', '/wiki', '/wiki/main', '/wiki/punks', '/wiki/appendix',
   ...nav.punks.map((p: { route: string }) => p.route),
   ...nav.appendix.map((a: { route: string }) => a.route),
+  '/blog', '/gallery', '/forum', '/search', '/about',
+  '/rss.xml', '/sitemap.xml', '/robots.txt',
 ]
 
 console.log(`待校验篇目：${all.length} 篇，索引页 ${indexRoutes.length} 个（base=${BASE}）\n`)

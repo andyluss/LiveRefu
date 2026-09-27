@@ -36,6 +36,17 @@ useHead(() => ({
   meta: doc.value?.description ? [{ name: 'description', content: doc.value.description }] : [],
 }))
 
+if (doc.value) {
+  useStructuredData({
+    kind: 'article',
+    title: doc.value.title,
+    description: doc.value.description,
+    path: path.value,
+    section: doc.value.volume === 'main' ? '主卷' : doc.value.volume === 'punks' ? '朋克卷' : '附录卷',
+    keywords: doc.value.tags,
+  })
+}
+
 /** 本篇的反向链接（谁引用了我） */
 const myRefs = computed(() => (backrefs as Record<string, Array<{ text: string; route: string }>>)[path.value] ?? [])
 

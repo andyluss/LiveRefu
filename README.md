@@ -26,7 +26,7 @@
 | [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：每个实际开发中的项目一个子目录（含项目 README、`CHANGELOG.md`、`docs/`） | —— |
 | [`projects/tomorrows-channel/`](projects/tomorrows-channel/README.md) | 项目《明日频道》：复古未来氛围陪伴应用（Godot 工程 + 按角色的项目文档） | [`projects/tomorrows-channel/README.md`](projects/tomorrows-channel/README.md) |
 | [`projects/refu-game-001/`](projects/refu-game-001/README.md) | 项目《Refu Game 001 · 节点防线》：卡片式塔防的**可运行实现**（Godot 4.7 竖屏；数据表与策划卷逐字段对账；无头验收 19 项） | [`projects/refu-game-001/README.md`](projects/refu-game-001/README.md) |
-| [`projects/retro-futurism-site/`](projects/retro-futurism-site/README.md) | 项目《明日档案》：复古未来主义**网站**（Bun 1.4 + Nuxt 4 + Vue 3；Wiki / 博客 / 多媒体画廊 / 论坛）。**M0 已交付**：内容适配层把 `doc/` 129 篇自动转成站点页面，交叉引用 331 处改为可点击链接（命中率 97.1%） | [`projects/retro-futurism-site/README.md`](projects/retro-futurism-site/README.md) |
+| [`projects/retro-futurism-site/`](projects/retro-futurism-site/README.md) | 项目《明日档案》：复古未来主义**网站**（Bun 1.4 + Nuxt 4 + Vue 3）。**M0+M1 主体已交付**：内容适配层把 `doc/` 129 篇自动转成站点页面（交叉引用 331 处改为可点击链接，命中率 97.1%）+ 全文检索（⌘K）+ 博客 + 多媒体画廊（99 件）+ 七纪时间轴 + SEO | [`projects/retro-futurism-site/README.md`](projects/retro-futurism-site/README.md) |
 | [`indie/`](indie/README.md) | 独立项目区：与主线无关的独立项目，一项目一子目录、自成体系（默认豁免根目录规则） | [`indie/README.md`](indie/README.md) |
 | [`studio001/`](studio001/README.md) | **（已搁置）** 原 AI 开发工作室：六个角色身份卡，保留作历史资料；不再使用/更新 | [`studio001/README.md`](studio001/README.md) |
 | [`tech/`](tech/README.md) | 仓库级技术文档：Git 与提交约定、文档约定、相对链接与数据 schema 校验（钩子+CI）、形式化验证 | [`tech/README.md`](tech/README.md) |

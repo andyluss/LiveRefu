@@ -6,6 +6,7 @@ const navLinks = [
   { to: '/blog', label: '博客' },
   { to: '/gallery', label: '画廊' },
   { to: '/forum', label: '论坛' },
+  { to: '/search', label: '搜索' },
 ]
 </script>
 
@@ -22,15 +23,18 @@ const navLinks = [
           <NuxtLink v-for="l in navLinks" :key="l.to" :to="l.to">{{ l.label }}</NuxtLink>
         </nav>
 
-        <button
-          class="deco-btn"
-          type="button"
-          :aria-pressed="enabled"
-          title="CRT 扫描线质感（可关闭）"
-          @click="toggle"
-        >
-          CRT {{ enabled ? 'ON' : 'OFF' }}
-        </button>
+        <div class="header-actions">
+          <SearchDialog />
+          <button
+            class="deco-btn"
+            type="button"
+            :aria-pressed="enabled"
+            title="CRT 扫描线质感（可关闭）"
+            @click="toggle"
+          >
+            CRT {{ enabled ? 'ON' : 'OFF' }}
+          </button>
+        </div>
       </div>
     </header>
 
@@ -51,4 +55,5 @@ const navLinks = [
 <style scoped>
 .site { display: flex; flex-direction: column; min-height: 100vh; }
 main { flex: 1; }
+.header-actions { display: flex; gap: 0.5rem; align-items: center; }
 </style>

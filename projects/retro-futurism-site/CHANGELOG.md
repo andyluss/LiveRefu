@@ -5,6 +5,57 @@
 
 ## [Unreleased]
 
+### 新增（M1 主体交付：搜索 / 博客 / 画廊 / 七纪时间轴 / SEO）
+
+对照 [05 路线图](docs/05_实施路线图与验收.md) 的 M1 范围，本轮交付六项；详见 [06 M1 实现记录与验收](docs/06_实现记录_M1.md)。
+
+- **全文检索**（落实 D9）：[`app/components/SearchDialog.vue`](app/components/SearchDialog.vue) +
+  [`app/composables/useSiteSearch.ts`](app/composables/useSiteSearch.ts) + `/search` 页。
+  `useSearchCollection` 在**浏览器本地**建 FTS 索引，**零外部搜索服务**；首次真正检索才 `init()`，
+  输入 250ms 去抖。⌘K / Ctrl+K 唤起，非输入态按 `/` 亦可。弹层含焦点陷阱、↑↓ 选择、Enter 跳转、
+  命中高亮。**验收：真浏览器（CDP）实测 6/6 关键词有结果**（含大小写不敏感 `Anemoia`）。
+  → 新增 [`tools/verify-search.ts`](tools/verify-search.ts)：服务端 curl 只能证明页面 200，
+  **证明不了检索能出结果**，必须真在页面里输入并读取结果。
+- **博客**：`content.config.ts` 新增 `blog` 集合（title/description/date/tags/cover/author/draft）；
+  `/blog` 列表（按日期倒序 + 标签客户端筛选）、`/blog/**` 详情（正文渲染 + JSON-LD `BlogPosting`）；
+  两篇种子文章（《为什么把 14 万字论文做成网站》《七纪分期：为什么我们把「纪元」同时用作导航和分类》）。
+- **多媒体画廊**：`gallery` 集合（credit **必填**）+ [`tools/sync-gallery.ts`](tools/sync-gallery.ts)
+  生成 **99 条**条目、8 个专辑；`/gallery` 专辑总览 + `/gallery/[album]` 瀑布流（CSS `columns`）
+  + 自研灯箱 [`GalleryGrid.vue`](app/components/GalleryGrid.vue)（键盘 ←→/ESC、焦点陷阱、滚动锁、
+  来源与版权展示、打开原图）。
+  **素材不复制进站点**：新增 [`server/routes/media/[...].get.ts`](server/routes/media/[...].get.ts)，
+  把 `/media/**` 只读映射到 `doc/`，带 MIME 推断与 7 天缓存，并做目录穿越防护
+  （实测 `/media/../../etc/passwd` → 404；`/media/%2e%2e%2f…` → **403**）。
+- **七纪时间轴**（D8 的记忆点）：[`app/components/EraTimeline.vue`](app/components/EraTimeline.vue) +
+  [`app/assets/eras.ts`](app/assets/eras.ts)，数据取自论文集总论 §2.1 原表（含「对应篇目」列）。
+  **不是装饰而是入口**：每个纪链到该纪代表篇目的正文。附原作者限定：「分期的是想象的技术，不是真实历史」。
+- **SEO**：`/rss.xml`（32 条 item）、`/sitemap.xml`（148 条 url）、`public/robots.txt`；
+  [`app/composables/useStructuredData.ts`](app/composables/useStructuredData.ts) 注入 JSON-LD
+  （Wiki 篇 `ScholarlyArticle`、博客 `BlogPosting`，含 `isPartOf`/`publisher`）。
+- **`/about`** 页：内容来源、编辑部与引用规范、素材版权、技术说明。
+- **首页**升级：加入七纪时间轴、最新博客、画廊件数与搜索入口（各栏目卡片不再是"建设中"占位）。
+
+### 修复（M1 实测发现）
+
+- **服务端查询必须用 `@nuxt/content/server` 的 `queryCollection(event, name)`**：
+  `/rss.xml` 与 `/sitemap.xml` 初次实现用客户端版 `queryCollection('blog')`，**两个端点均 500**
+  （`TypeError: undefined is not an object (evaluating 'event.node.req')`）。根因是客户端版**不接收 event**，
+  在 Nitro 路由里内容层取不到请求上下文。**同名函数、同样链式 API，只在是否传 event 上有区别，
+  构建期不一定报错、是运行时 500**——易反复踩，已记入 [06 §4.1](docs/06_实现记录_M1.md)。
+- **画廊标题重复**：地图动态文件名 `MAP-ANV-02_双路并行_动画.png` 去前缀后四张图**标题完全相同**，
+  画廊里无法区分。已从「地图」专辑建立 `地图 ID → 中文名` 映射作限定词，
+  现标题为「双闸峡谷 · 双路并行 · 动画」等，**全站 0 重复标题**。
+  这类问题不会让构建失败，只会让页面"对但没用"——**必须实际看渲染结果**。
+- [`tools/sync-gallery.ts`](tools/sync-gallery.ts) 的 `displayName` 增加地图名限定逻辑；
+  `package.json` 增补 `sync:gallery` / `sync:all` / `check:build` / `verify:site` / `verify:search` 脚本。
+
+### 变更（文档）
+
+- 新增 [`docs/06_实现记录_M1.md`](docs/06_实现记录_M1.md)：M1 交付清单、实测验收、四个技术决定、两个坑、**未完成项诚实清单**。
+- [05 路线图](docs/05_实施路线图与验收.md)：§3.1 加实施结果指针；§3.2 验收清单补「实测」列，
+  **性能与无障碍审计如实标为待 M3，不声称通过**。
+- 项目 README 重写（已交付功能表、验收数据、目录结构、运行方式、M2/M3 去向、坑与备忘）。
+
 ### 新增（方案文档 —— 立项阶段，尚无实现代码）
 
 > 注：本条目记录**立项轮**的产出；该轮的"无实现代码"状态已由下方 M0 条目取代。

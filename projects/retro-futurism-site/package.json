@@ -10,8 +10,13 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "sync:content": "bun run tools/sync-content.ts",
-    "check:content": "bun run tools/sync-content.ts --check",
-    "check": "bun run tools/sync-content.ts --check && bun run tools/check-build.ts",
+    "sync:gallery": "bun run tools/sync-gallery.ts",
+    "sync:all": "bun run tools/sync-content.ts && bun run tools/sync-gallery.ts",
+    "check:content": "bun run tools/sync-content.ts --check && bun run tools/sync-gallery.ts --check",
+    "check:build": "bun run tools/check-build.ts",
+    "verify:site": "bun run tools/verify-site.ts",
+    "verify:search": "bun run tools/verify-search.ts",
+    "check": "bun run tools/sync-content.ts --check && bun run tools/sync-gallery.ts --check && bun run tools/check-build.ts",
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
