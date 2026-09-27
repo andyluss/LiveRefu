@@ -74,7 +74,7 @@ const targetFor = (orders: number[]) => {
   height: 100%;
   padding: 0.9rem 1rem;
   background: var(--bg-elev);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-top: 2px solid var(--teal);
   border-radius: var(--radius);
 }

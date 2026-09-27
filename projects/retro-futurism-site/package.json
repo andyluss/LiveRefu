@@ -17,6 +17,7 @@
     "verify:site": "bun run tools/verify-site.ts",
     "verify:search": "bun run tools/verify-search.ts",
     "verify:perf": "bun run tools/verify-perf.ts --selftest",
+    "verify:contrast": "bun run tools/verify-contrast.ts",
     "verify:giscus": "bun run tools/verify-giscus.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run server/db/migrate.ts",

@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
   width: 100%;
   margin: 0 0 0.75rem;
   padding: 0;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   background: var(--bg-elev);
   cursor: zoom-in;
@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
   top: 50%;
   transform: translateY(-50%);
   background: rgba(18, 26, 38, 0.85);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   color: var(--cream);
   font-size: 1.6rem;
   line-height: 1;

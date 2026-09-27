@@ -205,7 +205,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
 .search-input {
   flex: 1;
   background: var(--bg);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   color: var(--text);
   font-family: var(--font-ui);

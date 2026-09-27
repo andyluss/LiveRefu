@@ -188,6 +188,50 @@ const A11Y_CHECKS: Array<{ id: string; desc: string; expr: string }> = [
     desc: '不使用正数 tabindex（破坏自然焦点顺序）',
     expr: `[...document.querySelectorAll('[tabindex]')].filter(e => +e.getAttribute('tabindex') > 0).map(e => e.tagName + '[tabindex=' + e.getAttribute('tabindex') + ']')`,
   },
+  {
+    id: 'focus-indicator',
+    desc: '存在 :focus-visible 高对比焦点轮廓，且尺寸/颜色解析为真实值',
+    // ⚠️ 这个检查连踩两个坑，记录在此以免重犯：
+    //   坑 1：用 el.focus() 再读 outline —— 大面积误报。原因是正确做法用 :focus-visible，
+    //         而 :focus-visible **不会**因程序化 focus() 匹配。
+    //   坑 2：改成"读所有元素的 outlineWidth>0" —— 仍然误报。因为**未聚焦时**
+    //         outline-style 计算值就是 `none`，此时 outline-width/color 本就没有意义。
+    // 正确的不变量（这两条真的能抓问题，且不依赖焦点状态）：
+    //   ① 样式表里存在 :focus / :focus-visible 的描边规则；
+    //   ② 该颜色解析成了**具体数值**（如 rgb(87,216,200)）而非空值——
+    //      这能抓住"CSS 变量未定义 / 被作用域规则覆盖导致焦点轮廓消失"这类真实故障。
+    expr: `(() => {
+      const problems = [];
+      let focusRule = null;
+      for (const sheet of document.styleSheets) {
+        let rules; try { rules = sheet.cssRules } catch { continue }
+        for (const r of rules) {
+          if (!r.selectorText) continue;
+          if (/:focus(-visible)?/.test(r.selectorText) && /outline|box-shadow/.test(r.cssText)) {
+            focusRule = r; break;
+          }
+        }
+        if (focusRule) break;
+      }
+      if (!focusRule) {
+        problems.push('样式表里没有 :focus / :focus-visible 的描边规则');
+        return problems;
+      }
+      // 用一个临时元素检查颜色是否能解析成真实值
+      const probe = document.createElement('a');
+      probe.href = '#';
+      probe.style.position = 'absolute';
+      probe.style.opacity = '0';
+      document.body.appendChild(probe);
+      const cs = getComputedStyle(probe);
+      const color = cs.outlineColor;
+      probe.remove();
+      if (!color || color === 'rgba(0, 0, 0, 0)' || color === 'transparent') {
+        problems.push('焦点轮廓颜色未解析为具体值：' + color);
+      }
+      return problems;
+    })()`,
+  },
 ]
 
 const perfRows: Array<{ name: string; lcp: number; cls: number; lcpEl: string }> = []
@@ -216,8 +260,9 @@ if (process.argv.includes('--selftest')) {
     cdp.close()
     await closeTarget(target.id)
   }
-  console.log(`\n负向自检：${caught}/${5} 项违规被捕获`)
-  if (caught !== 5) {
+  const mustCatchCount = 5
+  console.log(`\n负向自检：${caught}/${mustCatchCount} 项违规被捕获`)
+  if (caught !== mustCatchCount) {
     console.error('✗ 检查器存在漏检，其"通过"结论不可信')
     process.exit(1)
   }
