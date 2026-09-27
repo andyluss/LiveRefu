@@ -38,7 +38,8 @@
 性能：4× CPU 降速 + 1.6Mbps 限速下 LCP 280–324ms、CLS ≤ 0.0003（阈值 2500ms / 0.1）
 无障碍：10 项自动检查 × 4 页通过，且检查器经负向自检（5/5 违规可捕获）
 对比度：27 个前景/背景组合全部达 WCAG AA（最低 3.27:1），含视觉层级断言
-SEO ：rss 32 条 item · sitemap 148 条 url · JSON-LD 已注入
+SEO ：rss 32 条 item · sitemap 148 条 url · JSON-LD 已注入 · canonical/RSS 自动发现
+OG 图：8/8（1200×630 动态生成，像素级断言"不溢出/不重叠"，未引入新依赖）
 Giscus：未配置降级 ✓ / 配置后注入参数正确 ✓ / 博客讨论区 ✓
 存储：健康检查 7/7（迁移 · WAL · 外键开启 · 读写往返 · 外键拦截非法引用 · 表齐全 · 规模）
 备份：备份/恢复演练 9/9（含"损坏备份会被拒绝"的反向证明）
@@ -94,8 +95,10 @@ projects/retro-futurism-site/
 │   └── routes/
 │       ├── media/[...].get.ts        # ★ /media/** → 只读暴露 doc/ 下素材（含穿越防护）
 │       ├── api/health/storage.get.ts # ★ 存储健康检查（真做读写 + 外键验证）
+│       ├── og.png.get.ts             # ★ OG 分享图（1200×630，带强缓存）
 │       ├── rss.xml.ts                # RSS 2.0
 │       └── sitemap.xml.ts            # sitemap
+├── server/utils/og-render.ts # ★ OG 图渲染器（SVG→PNG，复用产物里的 sharp）
 ├── deploy/                   # ★ 部署产物（见 docs/08）
 │   ├── Caddyfile             # 反代 + 自动 TLS + 静态媒体
 │   ├── retro-futurism.service# systemd 单元（必须用 bun 启动）
@@ -109,6 +112,7 @@ projects/retro-futurism-site/
 │   ├── verify-search.ts      # ★ 验收：真浏览器（CDP）测全文检索
 │   ├── verify-perf.ts        # ★ 验收：限速下的 LCP/CLS + 无障碍（含负向自检）
 │   ├── verify-contrast.ts    # ★ 验收：WCAG 对比度 + 视觉层级守卫（纯计算）
+│   ├── verify-og.ts          # ★ 验收：OG 分享图（像素级断言版式约束）
 │   ├── verify-giscus.ts      # ★ 验收：讨论区降级与注入（真浏览器）
 │   ├── verify-backup.ts      # ★ 验收：备份→篡改→拒绝→恢复 闭环演练
 │   └── verify-deploy.ts      # ★ 验收：部署配置静态校验

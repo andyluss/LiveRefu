@@ -12,13 +12,8 @@ if (!post.value) {
   throw createError({ statusCode: 404, statusMessage: '未找到这篇文章', fatal: true })
 }
 
-useHead(() => ({
-  title: `${post.value?.title ?? '博客'} · 明日档案`,
-  meta: post.value?.description ? [{ name: 'description', content: post.value.description }] : [],
-}))
-
 if (post.value) {
-  useStructuredData({
+  useShareMeta({
     kind: 'blog',
     title: post.value.title,
     description: post.value.description,
@@ -27,7 +22,11 @@ if (post.value) {
     dateModified: post.value.date,
     author: post.value.author,
     keywords: post.value.tags,
+    eyebrow: '博客',
+    badge: post.value.date?.slice(5, 10),
   })
+} else {
+  useSeoMeta({ title: '博客 · 明日档案' })
 }
 
 const fmtDate = (d: string) => d?.slice(0, 10) ?? ''

@@ -18,6 +18,7 @@
     "verify:search": "bun run tools/verify-search.ts",
     "verify:perf": "bun run tools/verify-perf.ts --selftest",
     "verify:contrast": "bun run tools/verify-contrast.ts",
+    "verify:og": "bun run tools/verify-og.ts",
     "verify:giscus": "bun run tools/verify-giscus.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run server/db/migrate.ts",

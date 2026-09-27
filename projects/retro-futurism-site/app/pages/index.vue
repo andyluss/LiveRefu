@@ -23,6 +23,15 @@ const sections = [
   { to: '/forum', title: '论坛', desc: '读者讨论区。（M2 建设中）' },
   { to: '/search', title: '站内搜索', desc: '跨 Wiki 全文检索，⌘K 唤起。浏览器本地完成，无需外部服务。' },
 ]
+
+useShareMeta({
+  kind: 'page',
+  title: '明日档案 · 复古未来主义',
+  description: `把「过去想象的未来」归档、擦亮、再读一遍：${total} 篇 Wiki、${galleryCount ?? 0} 件视觉素材、博客与讨论区。`,
+  path: '/',
+  eyebrow: 'RETRO-FUTURISM ARCHIVE',
+  badge: `${total} 篇`,
+})
 </script>
 
 <template>

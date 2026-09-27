@@ -31,20 +31,25 @@ if (!volumeIndex.value && !doc.value) {
   throw createError({ statusCode: 404, statusMessage: '未找到该篇目', fatal: true })
 }
 
-useHead(() => ({
-  title: `${doc.value?.title ?? 'Wiki'} · 明日档案`,
-  meta: doc.value?.description ? [{ name: 'description', content: doc.value.description }] : [],
-}))
-
+// 分享卡片元信息 + canonical + JSON-LD（见 app/composables/useStructuredData.ts）
 if (doc.value) {
-  useStructuredData({
+  const d = doc.value
+  const volumeLabel = d.volume === 'main' ? '主卷' : d.volume === 'punks' ? '朋克卷' : '附录卷'
+  // 眉标形如「主卷 · 14 磁带篇」；linkText 已在导航树里备好，避免在这里重算篇号
+  const navLeaf = nav.main.flatMap(g => g.items).find(i => i.route === d.route)
+    ?? [...nav.punks, ...nav.appendix].flatMap(p => p.items).find(i => i.route === d.route)
+  useShareMeta({
     kind: 'article',
-    title: doc.value.title,
-    description: doc.value.description,
-    path: path.value,
-    section: doc.value.volume === 'main' ? '主卷' : doc.value.volume === 'punks' ? '朋克卷' : '附录卷',
-    keywords: doc.value.tags,
+    title: d.title,
+    description: d.description,
+    path: d.route,
+    section: volumeLabel,
+    keywords: d.tags,
+    eyebrow: navLeaf ? `${volumeLabel} · ${navLeaf.text}` : volumeLabel,
+    badge: String(d.order).padStart(2, '0'),
   })
+} else {
+  useSeoMeta({ title: 'Wiki · 明日档案' })
 }
 
 /** 本篇的反向链接（谁引用了我） */

@@ -16,6 +16,12 @@ export default defineNuxtConfig({
    */
   runtimeConfig: {
     public: {
+      /**
+       * 站点根地址。**og:image 必须是绝对地址**（社交平台不解析相对路径），
+       * 所以这里可显式指定；留空则从请求头推导（本地与预览环境自然就对）。
+       * 生产建议显式设置，避免反代漏传 X-Forwarded-* 时拼出错误域名。
+       */
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
       giscus: {
         repo: process.env.NUXT_PUBLIC_GISCUS_REPO || '',
         repoId: process.env.NUXT_PUBLIC_GISCUS_REPO_ID || '',

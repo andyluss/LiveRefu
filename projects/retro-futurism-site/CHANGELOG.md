@@ -5,6 +5,46 @@
 
 ## [Unreleased]
 
+### 新增（M3 补齐 M1 未完成项：OG 分享图，且**未引入新依赖**）
+
+M1 的未完成项里挂着"OG 图自动生成"，当时的顾虑是"要引入 `@nuxtjs/seo`/`nuxt-og-image`"。**最后没有引入任何依赖**——`sharp` 本来就是 `@nuxt/image` 的传递依赖且已在构建产物里，用它把一段 SVG 渲成 PNG 只要几十行。
+
+- **渲染器** [`server/utils/og-render.ts`](server/utils/og-render.ts)：1200×630，站点主题配色 + 扫描线质感；
+  放 `server/utils/` 由 Nitro **自动导入**（避免在 `server/routes/**` 里手算 `../` 层数）。
+- **端点** [`server/routes/og.png.get.ts`](server/routes/og.png.get.ts)：`/og.png?title=…&eyebrow=…&badge=…`。
+  这是个**无鉴权的动态图片端点**，因此做了三层成本控制：参数截断（title ≤120、其余 ≤40）、
+  `max-age=86400` 强缓存、只渲染固定尺寸不做任意缩放（不变成图片处理代理）。
+- **元信息统一**： [`app/composables/useStructuredData.ts`](app/composables/useStructuredData.ts)
+  重写为 `useShareMeta()`，一次挂上 OG/Twitter 卡片、canonical、RSS 自动发现与 JSON-LD；
+  已接入首页、Wiki 篇目、博客文章、画廊专辑。
+  **顺手修掉一处早先的错误**：原来把域名硬编码为 `https://retro-futurism.example`，
+  换域名或本地预览时 canonical/og:url 就是错的；现从 `NUXT_PUBLIC_SITE_URL` 或请求头推导
+  （`og:image` 仍保证绝对地址，因为社交平台不解析相对路径）。
+- **验收** [`tools/verify-og.ts`](tools/verify-og.ts)：**8/8**。
+
+### 修复（OG 图三个"看才看得出来"的排版 bug）
+
+它们正是促成像素级断言的原因：
+
+1. **标题从右边溢出**：折行把每行"单位数"**写死**、**没按字号算**——66px 下一行宽约 1122px，
+   超过可用宽度 1040px。正确算法是 `可用宽度 ÷ 字号` 反推每行能放多少字。
+2. **眉标与标题叠在一起**：眉标基线 208 / 标题首行 250，间距不足（改为 188 / 274）。
+3. **断言带本身误报两次**：先是"读所有元素 `outlineWidth>0`"式的近似思路，
+   用"固定 y 带里有没有像素"判断重叠，被字形下沉部（「卷」「带」的撇）与字号变化骗过。
+   最终判据改为**量两块文字的墨迹真实边界、断言净空 ≥12px**（实测 35px），
+   而不是猜一个 y 区间。
+
+> **上线前提（部署必查）**：`/og.png` 靠系统字体渲染中文，**精简 Linux 容器常常没有 CJK 字体**，
+> 中文会渲染成空白或方块。验收里「标题区有文字像素」一项就是为这个风险设的——
+> **字体缺失会失败，而不是悄悄发出一张空白图**。目标机检查见 [08 §八·补](docs/08_部署与备份.md)。
+
+### 变更（文档）
+
+- [06 §2.6](docs/06_实现记录_M1.md) 新增「OG 分享图」，从未完成项移出；
+- [08 §八·补](docs/08_部署与备份.md) 新增「OG 图的 CJK 字体前提（上线必查）」；
+- 项目 README：验收数据补 OG 一行；目录结构补 `og.png.get.ts` / `server/utils/og-render.ts` / `verify-og.ts`；
+- `package.json` 增补 `verify:og`。
+
 ### 新增（M3 颜色对比度审计：查出并修掉两处真实无障碍缺陷）
 
 对比度是**唯一可以纯计算判定**的无障碍维度（WCAG 公式确定），应当由机器守住。新增

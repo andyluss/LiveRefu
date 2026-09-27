@@ -14,7 +14,14 @@ const { data: items } = await useAsyncData(
 
 const albumTitle = computed(() => meta.value?.title ?? items.value?.[0]?.albumTitle ?? albumKey.value)
 
-useHead(() => ({ title: `${albumTitle.value} · 画廊 · 明日档案` }))
+useShareMeta({
+  kind: 'page',
+  title: `${albumTitle.value} · 画廊`,
+  description: meta.value?.note ?? `${items.value?.length ?? 0} 件视觉素材`,
+  path: `/gallery/${albumKey.value}`,
+  eyebrow: '多媒体画廊',
+  badge: `${items.value?.length ?? 0} 件`,
+})
 </script>
 
 <template>
