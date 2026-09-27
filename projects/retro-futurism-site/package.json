@@ -25,8 +25,11 @@
     "db:backup": "bun run tools/backup-db.ts",
     "db:verify-backup": "bun run tools/verify-backup.ts",
     "verify:deploy": "bun run tools/verify-deploy.ts",
+    "verify:storage": "bun run tools/verify-storage.ts",
     "check": "bun run tools/sync-content.ts --check && bun run tools/sync-gallery.ts --check && bun run tools/check-build.ts",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "verify": "bun run tools/verify-all.ts",
+    "verify:list": "bun run tools/verify-all.ts --list"
   },
   "dependencies": {
     "@nuxt/content": "3.16.1",

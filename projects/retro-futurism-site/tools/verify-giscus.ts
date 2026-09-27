@@ -68,33 +68,60 @@ async function inspect(base: string, path: string) {
     await cdp.send('Runtime.enable')
     await cdp.send('Page.enable')
     await cdp.send('Page.navigate', { url: `${base}${path}` })
-    await new Promise(r => setTimeout(r, 4000))
-    const r = await cdp.send('Runtime.evaluate', {
-      awaitPromise: true,
-      returnByValue: true,
-      expression: `(() => {
-        const mount = document.querySelector('.comments__mount');
-        const setup = document.querySelector('.comments__setup');
-        const s = mount ? mount.querySelector('script[src*="giscus"]') : null;
-        return {
-          hasMount: !!mount,
-          hasSetup: !!setup,
-          injected: !!s,
-          script: s ? {
-            repo: s.getAttribute('data-repo'),
-            repoId: s.getAttribute('data-repo-id'),
-            category: s.getAttribute('data-category'),
-            categoryId: s.getAttribute('data-category-id'),
-            mapping: s.getAttribute('data-mapping'),
-            term: s.getAttribute('data-term'),
-            lang: s.getAttribute('data-lang'),
-          } : null,
-          // 挂载点 id 在 SSR 与客户端必须一致，否则脚本静默不注入
-          mountId: mount ? mount.id : null,
-        };
-      })()`,
-    })
-    return r.result.value as any
+
+    /**
+     * 轮询式等待，而不是 `await sleep(4000)`。
+     *
+     * ⚠️ 踩过的坑：固定等待在**首次请求**时会不够——进程刚起来时，
+     * Nuxt Content 的内容库还没初始化，第一次 SSR 较慢，hydrate + onMounted
+     * 也就跟着慢；结果查到"挂载点还没有（或还没有脚本）"就判失败。
+     * 这个 bug 只在"服务刚起就立刻测"时出现（编排器正是这种时序），
+     * 手工先 curl 预热过再测就不会复现——**极易误判成产品有问题**。
+     * 改为轮询：先等挂载点出现，再等脚本注入，共最多 25s。
+     */
+    const deadline = Date.now() + 25000
+    let snapshot: any = null
+    let lastDiag = ''
+    while (Date.now() < deadline) {
+      snapshot = (await cdp.send('Runtime.evaluate', {
+        returnByValue: true,
+        expression: `(() => {
+          const mount = document.querySelector('.comments__mount');
+          const setup = document.querySelector('.comments__setup');
+          const s = mount ? mount.querySelector('script[src*="giscus"]') : null;
+          return {
+            hasMount: !!mount,
+            hasSetup: !!setup,
+            injected: !!s,
+            script: s ? {
+              repo: s.getAttribute('data-repo'),
+              repoId: s.getAttribute('data-repo-id'),
+              category: s.getAttribute('data-category'),
+              categoryId: s.getAttribute('data-category-id'),
+              mapping: s.getAttribute('data-mapping'),
+              term: s.getAttribute('data-term'),
+              lang: s.getAttribute('data-lang'),
+            } : null,
+            mountId: mount ? mount.id : null,
+            // 诊断信息：出问题时能直接看出"页面根本没渲染"还是"渲染了但分支不对"
+            diag: {
+              title: document.title,
+              bodyLen: document.body ? document.body.innerHTML.length : 0,
+              hasApp: !!document.querySelector('#__nuxt'),
+              text: (document.body ? document.body.innerText : '').slice(0, 120).replace(/\\s+/g, ' '),
+            },
+          };
+        })()`,
+      })).result.value
+      // 两个分支都算"渲染完成"：未配置→出现 setup；已配置→挂载点+脚本
+      if (snapshot.hasSetup || snapshot.injected) break
+      lastDiag = JSON.stringify(snapshot.diag ?? {})
+      await new Promise(r => setTimeout(r, 300))
+    }
+    if (!snapshot.hasSetup && !snapshot.injected) {
+      console.log(`      [诊断 ${base}${path}] ${lastDiag}`)
+    }
+    return snapshot
   } finally {
     cdp.close()
     await closeTarget(target.id)
