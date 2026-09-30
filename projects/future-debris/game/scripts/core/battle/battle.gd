@@ -14,6 +14,7 @@ var resources: Dictionary = {}
 var residue: Dictionary = {}
 var wave: Dictionary = {}
 var hand: Array[CardData] = []
+var rules: Array[RuleData] = []
 var turn: int = 0
 var max_turns: int = 0
 var cards_played: int = 0

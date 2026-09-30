@@ -6,8 +6,9 @@ class_name WaveSystem
 
 const WAVES := 8              # 与 levels.json 的原子纪元波次量级一致
 const TURNS_PER_WAVE := 4
-const BASE_QUOTA := 30
-const QUOTA_STEP := 25        # S3 由关卡表覆盖，这里先给可推导的默认曲线
+const BASE_QUOTA := 40
+const QUOTA_STEP := 15        # 依据：自动玩家能力 ≈ 40 输出/回合（6 塔位 × 后期战力 9 − 残渣惩罚），
+                              # 故末波需 36.2/回合——有压力但不绝望。标定过程见 docs/07 §七。S3 起由关卡表覆盖。
 
 static func init_wave() -> Dictionary:
 	return {"index": 0, "quota": _quota_for(0), "dealt": 0, "turns_left": TURNS_PER_WAVE, "leaks": 0}

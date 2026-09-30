@@ -18,9 +18,12 @@ static func prepare(battle, deck_ids: PackedStringArray, base_hp: int, turn_limi
 	battle.resources = ResourceSystem.init_resources(base_hp)
 	battle.residue = ResidueSystem.init_residue()
 	battle.wave = WaveSystem.init_wave()
+	battle.rules = battle.catalog.rules.duplicate()
 	battle.turn = 0
 	battle.max_turns = turn_limit
 	battle.cards_played = 0
 	battle.drawn = 0
 	battle.events.clear()
+	# run_start：例如"开局携带未来残片"这类规则在这里生效
+	RuleEngine.fire(battle, "run_start")
 	return true

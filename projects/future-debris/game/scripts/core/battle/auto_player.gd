@@ -9,9 +9,14 @@ class_name AutoPlayer
 const MAX_DRAW_PER_TURN := 2   # 每回合最多补抽几张，防止无限抽牌
 
 var conservative := true
+## 每回合**主动补抽**的张数（0 = 只在没牌可出时才抽）。
+## 为什么做成参数：这是"电力之外的出牌机会"这一设计缺口的实验变量——
+## 需要能量化"每回合多 1 张 / 2 张牌"分别把结果推到哪，而不是凭感觉加机制。
+var extra_draws := 0
 
-func _init(use_conservative: bool = true) -> void:
+func _init(use_conservative: bool = true, draws: int = 0) -> void:
 	conservative = use_conservative
+	extra_draws = maxi(0, draws)
 
 ## 执行一个回合的决策；返回本回合的动作日志（供断言与复盘）。
 func play_turn(battle) -> Array[String]:
@@ -41,6 +46,9 @@ func _draw_until_playable(battle, log: Array[String]) -> void:
 	while battle.playable_count() == 0 and draws < MAX_DRAW_PER_TURN and battle.draw_card():
 		draws += 1
 		log.append("draw")
+	for _i in extra_draws:
+		if battle.draw_card():
+			log.append("draw+")
 
 ## 先清理、再放置：**顺序很重要**——若先放置再清理，危险格会被新卡继续加剧。
 func _clean_dangerous(battle, log: Array[String]) -> void:

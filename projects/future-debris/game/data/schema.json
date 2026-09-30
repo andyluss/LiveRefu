@@ -6,32 +6,102 @@
       "title": "卡表（时代提案卡）",
       "era": "atomic",
       "entryFields": {
-        "id": { "type": "string", "pattern": "^RC-[A-Z]{2,8}-[0-9]{3}$" },
-        "name": { "type": "string", "minLength": 1 },
-        "faction": { "type": "string", "minLength": 1 },
-        "kind": { "type": "string", "enum": ["unit", "tower", "support", "skill", "modifier", "relic"] },
-        "rarity": { "type": "string", "enum": ["common", "rare", "epic"] },
-        "cost": { "type": "int", "min": 0, "max": 9 },
-        "power": { "type": "int", "min": 0 },
-        "compute": { "type": "int", "min": 0, "max": 9 },
-        "residue": { "type": "int", "min": 0 },
-        "keywords": { "type": "array", "items": "string" },
-        "text": { "type": "string", "minLength": 1 }
+        "id": {
+          "type": "string",
+          "pattern": "^RC-[A-Z]{2,8}-[0-9]{3}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "faction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "unit",
+            "tower",
+            "support",
+            "skill",
+            "modifier",
+            "relic"
+          ]
+        },
+        "rarity": {
+          "type": "string",
+          "enum": [
+            "common",
+            "rare",
+            "epic"
+          ]
+        },
+        "cost": {
+          "type": "int",
+          "min": 0,
+          "max": 9
+        },
+        "power": {
+          "type": "int",
+          "min": 0
+        },
+        "compute": {
+          "type": "int",
+          "min": 0,
+          "max": 9
+        },
+        "residue": {
+          "type": "int",
+          "min": 0
+        },
+        "keywords": {
+          "type": "array",
+          "items": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "minEntries": 12,
       "references": [
-        { "field": "faction", "table": "factions.json", "label": "卡牌阵营必须存在于势力表" }
+        {
+          "field": "faction",
+          "table": "factions.json",
+          "label": "卡牌阵营必须存在于势力表"
+        }
       ]
     },
     "factions.json": {
       "title": "势力表",
       "era": "atomic",
       "entryFields": {
-        "id": { "type": "string", "pattern": "^FAC-[A-Z]{2,8}-[A-Z]{3}$" },
-        "name": { "type": "string", "minLength": 1 },
-        "doctrine": { "type": "string", "minLength": 1 },
-        "mechanic": { "type": "string", "minLength": 1 },
-        "residuePosture": { "type": "string", "enum": ["avoids", "cleans", "moves", "feeds"] }
+        "id": {
+          "type": "string",
+          "pattern": "^FAC-[A-Z]{2,8}-[A-Z]{3}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "doctrine": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mechanic": {
+          "type": "string",
+          "minLength": 1
+        },
+        "residuePosture": {
+          "type": "string",
+          "enum": [
+            "avoids",
+            "cleans",
+            "moves",
+            "feeds"
+          ]
+        }
       },
       "minEntries": 4
     },
@@ -39,12 +109,31 @@
       "title": "关卡表（防线单元）",
       "era": "atomic",
       "entryFields": {
-        "id": { "type": "string", "pattern": "^LV-ATOMIC-[0-9]{2}$" },
-        "name": { "type": "string", "minLength": 1 },
-        "chapter": { "type": "int", "min": 1, "max": 12 },
-        "board": { "type": "string", "minLength": 1 },
-        "waves": { "type": "int", "min": 1 },
-        "budget": { "type": "int", "min": 1 }
+        "id": {
+          "type": "string",
+          "pattern": "^LV-ATOMIC-[0-9]{2}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chapter": {
+          "type": "int",
+          "min": 1,
+          "max": 12
+        },
+        "board": {
+          "type": "string",
+          "minLength": 1
+        },
+        "waves": {
+          "type": "int",
+          "min": 1
+        },
+        "budget": {
+          "type": "int",
+          "min": 1
+        }
       },
       "minEntries": 8
     },
@@ -52,10 +141,27 @@
       "title": "模式表（≥3 个模式是纪元契约的一部分）",
       "era": "atomic",
       "entryFields": {
-        "id": { "type": "string", "pattern": "^MODE-ATOMIC-[A-Z]{3,6}$" },
-        "name": { "type": "string", "minLength": 1 },
-        "kind": { "type": "string", "enum": ["campaign", "endless", "daily", "challenge"] },
-        "unlock": { "type": "string", "minLength": 1 }
+        "id": {
+          "type": "string",
+          "pattern": "^MODE-ATOMIC-[A-Z]{3,6}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "campaign",
+            "endless",
+            "daily",
+            "challenge"
+          ]
+        },
+        "unlock": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "minEntries": 3
     },
@@ -63,13 +169,80 @@
       "title": "未来残片表（跨纪元连接物）",
       "era": "atomic",
       "entryFields": {
-        "id": { "type": "string", "pattern": "^FR-[A-Z]{2,8}-[0-9]{3}$" },
-        "name": { "type": "string", "minLength": 1 },
-        "origin": { "type": "string", "minLength": 1 },
-        "effect": { "type": "string", "minLength": 1 },
-        "carryResidue": { "type": "int", "min": 0 }
+        "id": {
+          "type": "string",
+          "pattern": "^FR-[A-Z]{2,8}-[0-9]{3}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "origin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "effect": {
+          "type": "string",
+          "minLength": 1
+        },
+        "carryResidue": {
+          "type": "int",
+          "min": 0
+        }
       },
       "minEntries": 3
+    },
+    "rules.json": {
+      "title": "规则卡表（纪元差异的载体）",
+      "era": "atomic",
+      "entryFields": {
+        "id": {
+          "type": "string",
+          "pattern": "^RULE-[A-Z]{2,8}-[0-9]{3}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trigger": {
+          "type": "string",
+          "enum": [
+            "run_start",
+            "turn_start",
+            "before_placement",
+            "before_combat",
+            "wave_cleared"
+          ]
+        },
+        "condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "condition_value": {
+          "type": "int",
+          "min": 0
+        },
+        "effect": {
+          "type": "string",
+          "enum": [
+            "gain_power",
+            "reduce_residue",
+            "reduce_cost",
+            "add_damage",
+            "sub_damage",
+            "clean_on_turn"
+          ]
+        },
+        "amount": {
+          "type": "int",
+          "min": 0
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "minEntries": 4
     }
   }
 }

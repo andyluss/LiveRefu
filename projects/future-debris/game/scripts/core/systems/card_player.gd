@@ -12,11 +12,16 @@ static func play(battle, hand_index: int, slot: int) -> Dictionary:
 	if not BoardSystem.is_free(battle.board, slot):
 		return _fail("塔位 %d 已被占用或越界" % slot)
 	var card: CardData = battle.hand[hand_index]
-	if not ResourceSystem.spend(battle.resources, card.cost):
-		return _fail("电力不足（需 %d，有 %d）" % [card.cost, ResourceSystem.power(battle.resources)])
+	var cost := CardCost.of(battle, card, slot)
+	if not ResourceSystem.spend(battle.resources, cost):
+		return _fail("电力不足（需 %d，有 %d）" % [cost, ResourceSystem.power(battle.resources)])
 	var instance := CardInstance.new(card, slot, battle.turn)
 	BoardSystem.place(battle.board, instance)
-	ResidueSystem.add(battle.residue, slot, card.residue)
+	if battle.rules.is_empty():
+		ResidueSystem.add(battle.residue, slot, card.residue)
+	else:
+		RuleEngine.fire(battle, "before_placement")
+		ResidueSystem.add(battle.residue, slot, RuleEngine.placement_residue(battle, card, slot))
 	battle.hand.remove_at(hand_index)
 	battle.cards_played += 1
 	return {"ok": true, "reason": ""}

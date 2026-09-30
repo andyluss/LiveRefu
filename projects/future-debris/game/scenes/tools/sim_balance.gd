@@ -9,6 +9,8 @@ extends Node
 
 var _decks_per_faction := 4
 var _seeds := 5
+var _extra_draws := 0
+var _use_rules := true
 
 func _ready() -> void:
 	_parse_args()
@@ -19,13 +21,14 @@ func _ready() -> void:
 		printerr("数据表装载失败：%s" % str(catalog.errors))
 		get_tree().quit(1)
 		return
-	print("卡池 %d 张 / 势力 %d 个 / 每势力 %d 套 × %d 种子 × 2 档 = %d 局" % [
-		catalog.cards.size(), catalog.factions.size(), _decks_per_faction, _seeds,
-		catalog.factions.size() * _decks_per_faction * _seeds * 2,
+	print("卡池 %d 张 / 规则 %d 条 / 势力 %d 个 / 每势力 %d 套 × %d 种子 × 2 档 = %d 局" % [
+		catalog.cards.size(), (catalog.rules.size() if _use_rules else 0), catalog.factions.size(),
+		_decks_per_faction, _seeds, catalog.factions.size() * _decks_per_faction * _seeds * 2,
 	])
+	print("实验开关：每回合主动补抽 %d 张 ｜ 规则卡 %s" % [_extra_draws, "启用" if _use_rules else "关闭"])
 	for faction_id in catalog.factions:
 		for conservative in [true, false]:
-			SimReport.run_matrix(catalog, faction_id, conservative, _decks_per_faction, _seeds)
+			SimReport.run_matrix(catalog, faction_id, conservative, _decks_per_faction, _seeds, _extra_draws, _use_rules)
 	print("模拟完成（数字为实测，不构成平衡结论）")
 	get_tree().quit(0)
 
@@ -36,3 +39,7 @@ func _parse_args() -> void:
 			_decks_per_faction = maxi(1, int(argv[index + 1]))
 		elif argv[index] == "--seeds" and index + 1 < argv.size():
 			_seeds = maxi(1, int(argv[index + 1]))
+		elif argv[index] == "--draws" and index + 1 < argv.size():
+			_extra_draws = maxi(0, int(argv[index + 1]))
+		elif argv[index] == "--no-rules":
+			_use_rules = false

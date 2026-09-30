@@ -8,11 +8,19 @@ class_name TurnLoop
 
 static func run(battle) -> Dictionary:
 	battle.turn += 1
+	# 钩子顺序即规则顺序（写在一处，避免散落后被重构悄悄改掉）：
+	# turn_start → 供电 → 出牌 → 场地维护 → 交战 → 波次结算 → wave_cleared
+	RuleEngine.fire(battle, "turn_start")
 	var gained := ResourceSystem.gain_power(battle.resources, battle.board, Battle.BASE_GAIN)
 	var actor: AutoPlayer = battle.player if battle.player != null else AutoPlayer.new()
 	var actions: Array[String] = actor.play_turn(battle)
+	# 交战用的是**场地维护之前**的残渣（规则卡的阈值也因此按这个口径判定）：
+	# 否则"本回合新增的排污"会立刻参与减益，等于双重惩罚，且与玩家看到的界面不一致。
+	var residue_before_upkeep := ResidueSystem.total(battle.residue)
 	var residue_added := BoardUpkeep.accrue(battle.board, battle.residue)
-	var damage := StatQuery.turn_damage(battle.board, battle.residue)
+	RuleEngine.fire(battle, "before_combat")
+	var base_damage := StatQuery.turn_damage(battle.board, battle.residue)
+	var damage := maxi(0, base_damage + RuleEngine.damage_delta(battle, residue_before_upkeep))
 	var dealt := WaveSystem.apply_damage(battle.wave, damage)
 	WaveSystem.tick_turn(battle.wave)
 	var outcome := WaveResolver.resolve(battle.wave, battle.resources)
@@ -21,6 +29,8 @@ static func run(battle) -> Dictionary:
 		battle.events.append("T%d 第%d波 %s（输出 %d / 配额 %d）" % [
 			battle.turn, WaveSystem.index(battle.wave) + 1, label, dealt, WaveSystem.quota(battle.wave),
 		])
+	if outcome["cleared"]:
+		RuleEngine.fire(battle, "wave_cleared")
 	return {
 		"turn": battle.turn,
 		"power_in": gained,

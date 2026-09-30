@@ -1,0 +1,28 @@
+extends RefCounted
+class_name CaseList
+## 用例清单（**数据**，与 runner 分开：清单会随规则增长，runner 不该跟着膨胀）。
+
+const ALL := [
+	["A 数据表装载与跨表引用", "res://scenes/tools/cases/data_cases.gd", "catalog_ok"],
+	["B 供电增长与支付边界", "res://scenes/tools/cases/resource_cases.gd", "power_growth"],
+	["B2 支付边界（刚好/不足/负数）", "res://scenes/tools/cases/resource_cases.gd", "spend_bounds"],
+	["C 出牌原子性（费用/塔位/残渣）", "res://scenes/tools/cases/card_cases.gd", "play_atomic"],
+	["C2 出牌失败必须完全回退", "res://scenes/tools/cases/card_cases.gd", "play_rollback"],
+	["D 卖塔不洗白污染", "res://scenes/tools/cases/card_cases.gd", "sell_keeps_residue"],
+	["E 残渣 → 降级区推导", "res://scenes/tools/cases/residue_cases.gd", "zone_derivation"],
+	["E2 场地维护：供电即排污", "res://scenes/tools/cases/residue_cases.gd", "upkeep_emits"],
+	["E3 花电力清理残渣（解除手段）", "res://scenes/tools/cases/clean_cases.gd", "clean_removes"],
+	["F 同格残渣削弱战力", "res://scenes/tools/cases/residue_cases.gd", "residue_penalty"],
+	["G 波次结算：清空 vs 漏怪", "res://scenes/tools/cases/wave_cases.gd", "wave_outcomes"],
+	["G2 超额输出不结转", "res://scenes/tools/cases/wave_cases.gd", "overflow_not_banked"],
+	["H 完整一局可复跑且确定性", "res://scenes/tools/cases/run_cases.gd", "determinism"],
+	["H2 一局必须终止且不超回合上限", "res://scenes/tools/cases/run_cases.gd", "run_terminates"],
+	["J 规则表装载与字段合法性", "res://scenes/tools/cases/rule_cases.gd", "rules_load"],
+	["J2 链式反应（残渣换伤害）", "res://scenes/tools/cases/rule_cases.gd", "chain_reaction"],
+	["J3 公开听证（高残渣惩罚）", "res://scenes/tools/cases/rule_cases.gd", "public_hearing"],
+	["J4 一次冷却（回合清残渣）", "res://scenes/tools/cases/rule_cases.gd", "coolant_once"],
+	["J5 郊区样板（洁净奖励）", "res://scenes/tools/cases/rule_cases.gd", "suburb_model"],
+	["J6 费用修正三处一致", "res://scenes/tools/cases/cost_cases.gd", "cost_modifier_consistent"],
+	["I 评级只由事实推导", "res://scenes/tools/cases/rating_cases.gd", "rating_facts_only"],
+	["I2 评级单调性（残渣多不得更高）", "res://scenes/tools/cases/rating_cases.gd", "rating_monotonic"],
+]

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "name": "atomic__rules",
+  "note": "原子纪元规则卡（T1 四张）。规则卡是**纪元差异的载体**：同一条引擎，不同纪元换这套表即可改变玩法，因此必须在旗舰纪元就把触发点与效果种类定对。字段含义见 docs/08_规则卡系统.md。",
+  "entries": [
+    {
+      "id": "RULE-ATOMIC-001",
+      "name": "链式反应",
+      "trigger": "before_combat",
+      "condition": "residue_total_at_least",
+      "condition_value": 12,
+      "effect": "add_damage",
+      "amount": 6,
+      "text": "本关残渣总量 ≥ 12 时，交战输出 +6。污染也能当燃料——但要付得起。"
+    },
+    {
+      "id": "RULE-ATOMIC-002",
+      "name": "公开听证",
+      "trigger": "before_combat",
+      "condition": "residue_total_at_least",
+      "condition_value": 30,
+      "effect": "sub_damage",
+      "amount": 4,
+      "text": "本关残渣总量 ≥ 30 时，交战输出 -4。残渣一旦成为公共议题，产能就要让位于解释。"
+    },
+    {
+      "id": "RULE-ATOMIC-003",
+      "name": "一次冷却",
+      "trigger": "turn_start",
+      "condition": "always",
+      "condition_value": 0,
+      "effect": "clean_on_turn",
+      "amount": 1,
+      "text": "每回合开始自动清理最脏塔位的 1 点残渣。议定流程的定期维护。"
+    },
+    {
+      "id": "RULE-ATOMIC-004",
+      "name": "郊区样板",
+      "trigger": "wave_cleared",
+      "condition": "residue_total_at_most",
+      "condition_value": 6,
+      "effect": "gain_power",
+      "amount": 5,
+      "text": "清空一波时若残渣总量 ≤ 6，额外获得 5 点电力。干净的样板值得被奖励。"
+    }
+  ]
+}

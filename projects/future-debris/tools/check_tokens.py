@@ -63,6 +63,14 @@ def parse_doc(doc: Path, report: Report) -> tuple[dict[str, str], dict[str, int]
         report.error(f"从 {doc.name} 里解析不到任何颜色 token——文档结构变了？")
     if not sizes:
         report.error(f"从 {doc.name} 里解析不到字号阶梯——文档结构变了？")
+    # 加固（实测教训）：解析器原来对"读漏了几行"是静默的——
+    # 我在文档里给字号加了 `**` 加粗，正则匹配不到，结果只读到 3 级却仍然 PASS。
+    # 检查器太宽松比没有检查器更糟，因此这里要求**恰好 5 级**。
+    if set(sizes) != set(EXPECTED_TYPE_LEVELS):
+        report.error(
+            f"从 {doc.name} 只解析到字号 {sorted(sizes)}，应为 {EXPECTED_TYPE_LEVELS}"
+            "（表格格式变了？字号必须写成 `NNpx` 且不要加粗）"
+        )
     return colors, sizes
 
 

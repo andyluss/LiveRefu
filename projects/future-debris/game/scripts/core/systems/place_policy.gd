@@ -40,7 +40,7 @@ static func best_playable(battle, conservative: bool) -> int:
 	var best_might := -1
 	for index in battle.hand.size():
 		var card: CardData = battle.hand[index]
-		if card.cost > ResourceSystem.power(battle.resources):
+		if CardCost.of(battle, card, slot) > ResourceSystem.power(battle.resources):
 			continue
 		if conservative and not accept(battle, card, slot):
 			continue

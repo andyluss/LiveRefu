@@ -8,6 +8,16 @@ class_name CaseBase
 
 const DECK := "RC-ATOMIC-001,RC-ATOMIC-002,RC-ATOMIC-005,RC-ATOMIC-011,RC-ATOMIC-012,RC-ATOMIC-008,RC-ATOMIC-004,RC-ATOMIC-006"
 
+## 只用**指定规则**的一局：用于隔离测试某一条规则（否则多条规则会互相影响）。
+static func new_battle_with(rule_ids: PackedStringArray) -> Battle:
+	var battle := new_battle()
+	var kept: Array[RuleData] = []
+	for rule in battle.rules:
+		if rule_ids.has(rule.id):
+			kept.append(rule)
+	battle.rules = kept
+	return battle
+
 ## 标准一局：20 基地生命 / 40 回合上限（与模拟口径一致）。
 static func new_battle() -> Battle:
 	var battle := Battle.new()
