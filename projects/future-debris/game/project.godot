@@ -1,0 +1,33 @@
+; Engine configuration file.
+; Future Debris（未来残片）· 主线项目 —— S1 工程地基
+; 形态：PC 买断 + 免费 Demo（Q5 裁决前的默认推荐）；GL Compatibility 与工作区既有 Godot 工程一致。
+; 决议依据：projects/mainline/docs/10_推进计划与并入清单.md（Q7 = Godot 4.x + 表驱动管线）。
+
+config_version=5
+
+[application]
+
+config/name="Future Debris"
+config/description="复古未来主义 · 时代提案卡组 + 自走式防线。S1 工程地基（尚无玩法）。"
+config/version="0.0.1"
+run/main_scene="res://scenes/app/main.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[autoload]
+
+AppInfo="*res://scripts/autoload/app_info.gd"
+
+[display]
+
+; 分辨率与横竖屏在 Q5（平台）裁决后定稿；此处取 PC 横屏 1280×720 设计分辨率。
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

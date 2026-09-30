@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "name": "atomic__modes",
+  "note": "模式表。≥3 个模式是纪元契约 v2 的一部分：模式是相对便宜的体量放大器（M3 调研 §4.3 的结论）。终局模式倾向「种子挑战」（mainline 10 §5 A6，待裁决）。",
+  "entries": [
+    { "id": "MODE-ATOMIC-CAMP", "name": "战役：清洁的明天", "kind": "campaign", "unlock": "默认开放" },
+    { "id": "MODE-ATOMIC-ENDL", "name": "无尽炉心", "kind": "endless", "unlock": "通关第 2 章" },
+    { "id": "MODE-ATOMIC-DAILY", "name": "每日种子提案", "kind": "daily", "unlock": "通关第 1 章" }
+  ]
+}

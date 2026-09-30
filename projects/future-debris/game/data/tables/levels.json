@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "atomic__levels",
+  "note": "原子纪元关卡单元。S1 只放 8 条占位，波数与预算在 S3 用模拟校验（[tools/sim_refu_game_001.ts](../../../../tools/sim_refu_game_001.ts) 的思路）。纪元契约 v2 要求 8–12 关含 3 个 Boss。",
+  "entries": [
+    { "id": "LV-ATOMIC-01", "name": "样板街通电仪式", "chapter": 1, "board": "BOARD-SUBURB-A", "waves": 6, "budget": 120 },
+    { "id": "LV-ATOMIC-02", "name": "冷却塔下的抗议", "chapter": 1, "board": "BOARD-SUBURB-B", "waves": 7, "budget": 140 },
+    { "id": "LV-ATOMIC-03", "name": "听证会前夜", "chapter": 2, "board": "BOARD-TOWN-HALL", "waves": 7, "budget": 150 },
+    { "id": "LV-ATOMIC-04", "name": "一号机组（Boss）", "chapter": 2, "board": "BOARD-REACTOR", "waves": 9, "budget": 200 },
+    { "id": "LV-ATOMIC-05", "name": "清运路线", "chapter": 3, "board": "BOARD-HAUL-ROAD", "waves": 8, "budget": 170 },
+    { "id": "LV-ATOMIC-06", "name": "下沉的操场", "chapter": 3, "board": "BOARD-SUNKEN-PARK", "waves": 8, "budget": 180 },
+    { "id": "LV-ATOMIC-07", "name": "隔离带（Boss）", "chapter": 4, "board": "BOARD-EXCLUSION", "waves": 10, "budget": 220 },
+    { "id": "LV-ATOMIC-08", "name": "向清洁的明天提案", "chapter": 4, "board": "BOARD-EXPO-HALL", "waves": 11, "budget": 260 }
+  ]
+}

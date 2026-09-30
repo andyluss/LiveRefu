@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "name": "atomic__relics",
+  "note": "未来残片（跨纪元连接物）。S1 只放 3 条占位；它的作用是让「世界在长大」可以被玩到，而不只是被读到（mainline 03 纪元契约 v2）。",
+  "entries": [
+    { "id": "FR-ATOMIC-001", "name": "听证会速记本", "origin": "atomic", "effect": "每关首次放置单位时费用 -1。", "carryResidue": 0 },
+    { "id": "FR-ATOMIC-002", "name": "冷却管碎片", "origin": "atomic", "effect": "本关降级区扩张速度减半，结算时保留 2 点残渣。", "carryResidue": 2 },
+    { "id": "FR-ATOMIC-003", "name": "样板街门牌", "origin": "atomic", "effect": "郊区秩序单位的清洁增益额外 +1 层。", "carryResidue": 0 }
+  ]
+}
