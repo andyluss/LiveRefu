@@ -23,6 +23,14 @@ func _ready() -> void:
 		printerr("视图验收失败：%s" % str(report["errors"]))
 		get_tree().quit(EXIT_FAIL)
 		return
+	# 动效与音效验收（在视图断言之后、实例化之前）
+	var fx := FxVerify.run(tokens)
+	for line in fx["checks"]:
+		print("  [%s]" % line)
+	if not bool(fx["ok"]):
+		printerr("动效/音效验收失败：%s" % str(fx["errors"]))
+		get_tree().quit(EXIT_FAIL)
+		return
 	var scene := load("res://scenes/app/battle.tscn") as PackedScene
 	if scene == null:
 		printerr("加载不到战斗场景")
@@ -42,6 +50,7 @@ func _ready() -> void:
 		get_tree().quit(EXIT_FAIL)
 		return
 	print("  [OK   ] 战斗界面装配出 HUD / 战场 / 手牌三块视图")
+	print("  [OK   ] 开局淡入已按 token 时长装配（%.3f 秒）" % Motion.seconds(tokens, "dur-slow"))
 	print("场景验收：PASS")
 	print("BOOT OK")
 	get_tree().quit(EXIT_OK)

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "rate": 22050,
+  "note": "音效由 tools/gen_sfx.py 程序生成（无外部素材）。改听感请改生成器参数后重跑。",
+  "sounds": {
+    "place.wav": {
+      "purpose": "放置卡牌：一声短促上行，表示「装上了」",
+      "ms": 90,
+      "bytes": 3968,
+      "sha256": "43b813ef9d4abaa6017e5ab887d91527dc350db0b0d3f4a2038b3376c52b5040"
+    },
+    "deny.wav": {
+      "purpose": "操作被拒（电力不足或塔位已占）：低而短的下行",
+      "ms": 110,
+      "bytes": 4850,
+      "sha256": "dc027e8f5f4d6250790ac13ee90d1f02d1acb059468c080185b63f1611f0d52e"
+    },
+    "clean.wav": {
+      "purpose": "花电力清理残渣：清亮的双音（清理的爽感）",
+      "ms": 70,
+      "bytes": 3086,
+      "sha256": "a1bedf79ed066350c3970b3d3688738c8961e481554dc89cb5c6b61d63a07e9b"
+    },
+    "residue.wav": {
+      "purpose": "残渣增加：一声闷响 + 低频噪（不和谐，提示代价）",
+      "ms": 140,
+      "bytes": 6174,
+      "sha256": "314392fd2ec82ee9cb56241cca76ae0919ba26f06c67e6a11cd662c3f16d3972"
+    },
+    "zone.wav": {
+      "purpose": "降级区扩张：低沉扫频（威胁升级）",
+      "ms": 520,
+      "bytes": 22932,
+      "sha256": "443bb7e93970e271ffb3f1f8271cfc2f41259343ec4b9c38d79841ac55aea4ff"
+    },
+    "wave_clear.wav": {
+      "purpose": "清空一波：三音上行（成就感的短句）",
+      "ms": 220,
+      "bytes": 9702,
+      "sha256": "be9e476a31a3aea0c38474506d5f8bca3bba6d386224061574e859a3e5ba2668"
+    },
+    "leak.wav": {
+      "purpose": "漏怪：下行警示（损失）",
+      "ms": 380,
+      "bytes": 16758,
+      "sha256": "3bdec8ce456961796e00bbe3987b951a8a26862abf471d183f62ff10fb2c511a"
+    },
+    "grade.wav": {
+      "purpose": "结算评级揭示：明亮的四音（收束）",
+      "ms": 320,
+      "bytes": 14112,
+      "sha256": "bf28a12e3cab4a8aa38ae92e4f34faeb4b2d5c8a2c894b71ff13790af015f537"
+    }
+  }
+}

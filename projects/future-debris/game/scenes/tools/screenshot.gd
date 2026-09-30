@@ -35,6 +35,11 @@ func _ready() -> void:
 	# 等两帧：第一帧完成布局，第二帧才有最终渲染结果（少等一帧会截到未布局的画面）
 	await get_tree().process_frame
 	await get_tree().process_frame
+	# **再等开局淡入结束**：否则截到的是半透明画面与背后默认灰的混色，
+	# 看起来像"主题没生效"（实测：底色读成 #202429 而契约是 #10161c）。
+	if Shell.last_tween != null and Shell.last_tween.is_valid():
+		await Shell.last_tween.finished
+		await get_tree().process_frame
 	var image := get_viewport().get_texture().get_image()
 	var want := tokens.color("--bg-base")
 	var got := image.get_pixelv(BG_POINT)

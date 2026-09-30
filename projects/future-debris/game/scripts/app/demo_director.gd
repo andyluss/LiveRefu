@@ -55,7 +55,8 @@ func _start() -> void:
 		_stage.caption.text = "初始化失败：%s" % str(_battle.events)
 		return
 	_driver = BattleDriver.new()
-	_driver.bind(_battle, _stage.board, _stage.hud, _stage.hand, _stage.overlay)
+	_driver.bind(_battle, _stage.board, _stage.hud, _stage.hand, _stage.overlay, _stage.popups)
+	_stage.popups.setup(tokens, _stage.caption.get_theme_font("font"))
 	_stage.board.setup(_battle, tokens, _stage.caption.get_theme_font("font"))
 	_stage.hud.setup(_battle, tokens, _stage.caption.get_theme_font("font"))
 	_stage.hand.setup(_battle, tokens, _stage.caption.get_theme_font("font"))

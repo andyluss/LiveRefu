@@ -13,24 +13,38 @@ var _board: BattleBoardView
 var _hud: BattleHud
 var _hand: BattleHandView
 var _overlay: ZoneOverlay
+var _popups: Popups
+var _board_origin := Vector2.ZERO   # 战场在屏幕上的左上角（浮字要画在"发生的地方"）
+var _feedback := BattleFeedback.new()
 
 func bind(battle: Battle, board: BattleBoardView, hud: BattleHud, hand: BattleHandView,
-		overlay: ZoneOverlay = null) -> void:
+		overlay: ZoneOverlay = null, popups: Popups = null) -> void:
 	self.battle = battle
 	_board = board
 	_hud = hud
 	_hand = hand
 	_overlay = overlay
+	_popups = popups
+	_feedback.bind(battle, _board, _popups)
 
-## 推进一个回合并刷新全部视图。
+## 推进一个回合并刷新全部视图，**同时把这一回合发生的事翻译成声音与浮字**。
+## 为什么要在这里做（而不是让各视图自己监听）：视图只知道自己要画什么，
+## 而"发生了什么"只有推进逻辑知道——放在这里才能保证"屏幕上的反馈"与"实际结算"一一对应。
 func advance() -> void:
 	if battle == null:
 		return
-	battle.tick()
+	var before := BattleFeedback.snapshot(battle)
+	var turn_info := battle.tick()
+	_feedback.react(before, turn_info)
 	refresh()
 	turn_done.emit()
 
-## 刷新视图（出牌/清理后也要调用，否则界面显示的仍是上一回合的数）。
+## 绑定事件行（装配顺序决定：场景先建 ticker，再告知驱动器）。
+func bind_feedback(ticker: EventTicker) -> void:
+	_feedback.attach_ticker(ticker)
+
+## 刷新全部视图（出牌 / 清理 / 推进回合后都要调，否则界面显示的是上一回合的数）。
+## 注：本方法曾在一次"按区间搬代码"的重构中被误删——**搬代码请整段剪切并立即编译**（裁决 D26）。
 func refresh() -> void:
 	if _board != null:
 		_board.queue_redraw()
@@ -41,18 +55,17 @@ func refresh() -> void:
 	if _overlay != null:
 		_overlay.refresh()
 
-## 在某个塔位出当前选中的手牌；返回结果字典（失败原因直接可显示）。
-func play_selected(slot: int) -> Dictionary:
-	if battle == null or _hand == null:
-		return {"ok": false, "reason": "战斗或手牌未就绪"}
-	var index := _hand.selected_index()
-	if index < 0:
-		return {"ok": false, "reason": "先选一张牌"}
-	var result := CardPlayer.play(battle, index, slot)
-	if bool(result["ok"]):
-		_hand.select(-1)
-		refresh()
-	return result
+## 塔位中心在屏幕坐标（浮字与涟漪都画在这里）。几何的唯一实现在 [Geom]。
+func slot_center(slot: int) -> Vector2:
+	return _board_origin + Geom.slot_center(slot, BattleBoardView.CELL, BattleBoardView.GAP)
+
+func spawn_text(position: Vector2, text: String, color_token: String, level: String = "caption") -> void:
+	if _popups != null:
+		_popups.spawn_text(position, text, color_token, level)
+
+func spawn_ripple(position: Vector2, color_token: String, radius: float, life: float) -> void:
+	if _popups != null:
+		_popups.spawn_ripple(position, color_token, radius, life)
 
 ## 自动跑到结束（用于出演示素材与自动化验收）。
 func run_to_end() -> Dictionary:

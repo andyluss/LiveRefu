@@ -13,6 +13,8 @@ var _hud: BattleHud
 var _hand: BattleHandView
 var _status: Label
 var _overlay: ZoneOverlay
+var _popups: Popups
+var ticker: EventTicker
 
 func _ready() -> void:
 	var loaded := ThemeIo.load_or_build(false)
@@ -33,6 +35,11 @@ func _compose(theme: Theme, tokens: TokenSet, font: Font) -> Control:
 	_hud.theme = theme
 	root.add_child(_hud)
 	# 战场用"棋盘 + 覆盖层"叠放：覆盖层画降级区扩张，棋盘画格子与卡（互不干涉）
+	# 事件行：HUD 与棋盘之间的固定三条行位（新事件从下往上顶，不会互相压字）
+	ticker = EventTicker.new()
+	ticker.theme = theme
+	ticker.custom_minimum_size = Vector2(0, EventTicker.LINE_HEIGHT * EventTicker.MAX_LINES)
+	root.add_child(ticker)
 	var stack := Control.new()
 	stack.custom_minimum_size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
 	_overlay = ZoneOverlay.new()
@@ -50,6 +57,13 @@ func _compose(theme: Theme, tokens: TokenSet, font: Font) -> Control:
 	_board.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_board.gui_input.connect(_on_board_input)
 	stack.add_child(_board)
+	# 浮字层放在最上面：它要压在棋盘与覆盖层之上（否则会被格子挡住）
+	_popups = Popups.new()
+	_popups.theme = theme
+	_popups.position = Vector2.ZERO
+	_popups.size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
+	_popups.clip_contents = false   # 浮字会画到棋盘上方的留白里（负 y），不能被裁掉
+	stack.add_child(_popups)
 	root.add_child(stack)
 	_hand = BattleHandView.new()
 	_hand.theme = theme
@@ -68,7 +82,10 @@ func _start(tokens: TokenSet) -> void:
 	if not battle.setup(DECK.split(","), 20, 40):
 		_status.text = "初始化失败：%s" % str(battle.events)
 		return
-	driver.bind(battle, _board, _hud, _hand, _overlay)
+	driver.bind(battle, _board, _hud, _hand, _overlay, _popups)
+	_popups.setup(tokens, _status.get_theme_font("font"))
+	ticker.setup(tokens, _status.get_theme_font("font"))
+	driver.bind_feedback(ticker)
 	_board.setup(battle, tokens, _status.get_theme_font("font"))
 	_hud.setup(battle, tokens, _status.get_theme_font("font"))
 	_hand.setup(battle, tokens, _status.get_theme_font("font"))
@@ -91,7 +108,7 @@ func _on_board_input(event: InputEvent) -> void:
 	var slot := _board.slot_at_local(event.position)
 	if slot < 0:
 		return
-	var result := driver.play_selected(slot)
+	var result: Dictionary = driver.play_selected(slot)
 	_update_status("放置到塔位 %d" % (slot + 1) if bool(result["ok"]) else str(result["reason"]))
 
 func _update_status(text: String) -> void:

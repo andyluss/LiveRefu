@@ -21,6 +21,10 @@ static func slot_rect(slot: int, cell: Vector2, gap: int) -> Rect2:
 static func board_size(cell: Vector2, gap: int) -> Vector2:
 	return Vector2(COLS * cell.x + (COLS - 1) * gap, ROWS * cell.y + (ROWS - 1) * gap)
 
+## 塔位中心（相对战场左上角）。浮字与涟漪都画在这里，因此必须有唯一实现。
+static func slot_center(slot: int, cell: Vector2, gap: int) -> Vector2:
+	return slot_rect(slot, cell, gap).get_center()
+
 ## 点击点落在哪个塔位；不在任何塔位内时返回 -1。
 static func slot_at(point: Vector2, cell: Vector2, gap: int) -> int:
 	for slot in SLOT_COUNT:

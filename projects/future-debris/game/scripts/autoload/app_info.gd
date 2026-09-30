@@ -12,6 +12,8 @@ const DATA_SCHEMA_VERSION := 1
 const ERAS_DIR := "res://data/tables"
 
 func _ready() -> void:
+	# 音频的用户意图从命令行读一次（录像/CI 需要不改代码就能静音）
+	AudioSettings.apply_cli()
 	# 无头/有头都能跑：只打印一行自述，便于在 CI 日志里确认工程装载成功。
 	print("[future-debris] %s | phase=%s | schema=v%d" % [PROJECT_CODENAME, PROJECT_PHASE, DATA_SCHEMA_VERSION])
 

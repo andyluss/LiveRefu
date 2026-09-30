@@ -5,6 +5,9 @@ class_name Shell
 ## 为什么做成共用件：主界面与截图必须走**完全相同的装配路径**，
 ## 否则"截图里看到的"与"实际跑的"会是两个东西（这正是刚才背景色不一致的教训之一）。
 
+## 最近一次淡入（供截图/录像工具等待"最终画面"）。
+static var last_tween: Tween
+
 static func build(theme: Theme, tokens: TokenSet, content: Control = null) -> Control:
 	var root := PanelContainer.new()
 	root.theme = theme
@@ -17,4 +20,15 @@ static func build(theme: Theme, tokens: TokenSet, content: Control = null) -> Co
 	for side in ["left", "right", "top", "bottom"]:
 		root.add_theme_constant_override("margin_%s" % side, int(tokens.spacing[3]))
 	root.add_child(content if content != null else TokenPreview.build(theme, tokens))
+	# 开局淡入：时长取自 token（dur-slow），避免"啪地出现"——这是玩家对界面的第一印象。
+	# 用 modulate 而不是 position：淡入不会引起布局重排，也不会让截图工具截到半透明的成品。
+	root.modulate.a = 0.0
+	var tween := root.create_tween()
+	tween.tween_property(root, "modulate:a", 1.0, Motion.seconds(tokens, "dur-slow")) \
+		.set_trans(Motion.transition(tokens, "ease-standard")) \
+		.set_ease(Motion.ease_type(tokens, "ease-standard"))
+	# 把 tween 记下来：**截图与录像需要"最终画面"**，不能截在半透明状态。
+	# （实测：差点因此把"底色不符"当成主题 bug；真因是截图时 alpha 只有 0.3，
+	#   像素与背后默认灰混色成了 #202429。）
+	last_tween = tween
 	return root

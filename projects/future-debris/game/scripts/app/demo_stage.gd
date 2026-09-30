@@ -9,6 +9,8 @@ var hud: BattleHud
 var board: BattleBoardView
 var overlay: ZoneOverlay
 var hand: BattleHandView
+var popups: Popups
+var ticker: EventTicker
 var caption: Label
 
 func build(theme: Theme, tokens: TokenSet) -> Control:
@@ -18,6 +20,11 @@ func build(theme: Theme, tokens: TokenSet) -> Control:
 	hud = BattleHud.new()
 	hud.theme = theme
 	root.add_child(hud)
+	# 事件行：HUD 与棋盘之间的固定三条行位（新事件从下往上顶，不会互相压字）
+	ticker = EventTicker.new()
+	ticker.theme = theme
+	ticker.custom_minimum_size = Vector2(0, EventTicker.LINE_HEIGHT * EventTicker.MAX_LINES)
+	root.add_child(ticker)
 	var stack := Control.new()
 	stack.custom_minimum_size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
 	overlay = ZoneOverlay.new()
@@ -32,6 +39,12 @@ func build(theme: Theme, tokens: TokenSet) -> Control:
 	board.theme = theme
 	board.set_anchors_preset(Control.PRESET_FULL_RECT)
 	stack.add_child(board)
+	popups = Popups.new()
+	popups.theme = theme
+	popups.position = Vector2.ZERO
+	popups.size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
+	popups.clip_contents = false   # 浮字会画到棋盘上方的留白里（负 y），不能被裁掉
+	stack.add_child(popups)
 	root.add_child(stack)
 	hand = BattleHandView.new()
 	hand.theme = theme
