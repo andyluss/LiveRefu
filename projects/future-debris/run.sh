@@ -83,6 +83,39 @@ case "${1:-run}" in
     exec "$GODOT" --path "$GAME" res://scenes/tools/screenshot.tscn -- "$@"
     ;;
 
+  demo)
+    # 演示片段（30 秒 @30fps = 900 帧）：Godot Movie Maker 录帧序列 → 自写编码器出 MP4。
+    # 为什么先导入：新增的 class_name 未注册会让场景加载失败，而 Movie Maker 会**继续录**
+    # 一个不存在的演示（本项目已踩过两次），所以这一步固化进命令。
+    shift
+    need_godot
+    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+    FRAMES="${1:-$HERE/.build/demo_frames}"
+    OUT="$HERE/docs/video/demo_30s.mp4"
+    FPS=30
+    WANT=$((30 * FPS))
+    mkdir -p "$FRAMES" "$HERE/docs/video"
+    find "$FRAMES" -name '*.png' -delete 2>/dev/null || true
+    "$GODOT" --path "$GAME" --write-movie "$FRAMES/frame.png" --fixed-fps "$FPS" \
+      --quit-after $((WANT + 120)) res://scenes/app/demo.tscn 2>&1 \
+      | grep -E 'DEMO|SCRIPT ERROR|frames at' || true
+    RECORDED="$(find "$FRAMES" -name '*.png' | wc -l | tr -d ' ')"
+    echo "[demo] 录制 $RECORDED 帧，目标 $WANT 帧"
+    if [ "$RECORDED" -lt "$WANT" ]; then
+      echo "[demo] 帧数不足（演示场景可能加载失败，检查上面的 SCRIPT ERROR）" >&2
+      exit 1
+    fi
+    # 裁到恰好 30 秒：多出来的帧（结果卡之后的余量）不进入成片
+    find "$FRAMES" -name '*.png' | sort | tail -n +$((WANT + 1)) | while read -r f; do rm -f "$f"; done
+    if [ ! -x "$HERE/tools/make_video" ] || [ "$HERE/tools/make_video.swift" -nt "$HERE/tools/make_video" ]; then
+      mkdir -p "$HERE/.build/swift-cache"
+      swiftc -O -module-cache-path "$HERE/.build/swift-cache" -Xcc -fmodules-cache-path="$HERE/.build/swift-cache" \
+        "$HERE/tools/make_video.swift" -o "$HERE/tools/make_video" 2>&1 | grep -v deprecated | grep -v '^ *|' || true
+    fi
+    "$HERE/tools/make_video" "$FRAMES" "$OUT" "$FPS" 1280 720
+    "$HERE/tools/make_video" --probe "$OUT"
+    ;;
+
   scene)
     # 场景与视图验收：界面能装载 + 几何/点击/取色的不变量。
     shift

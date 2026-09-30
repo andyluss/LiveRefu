@@ -12,12 +12,15 @@ var battle: Battle
 var _board: BattleBoardView
 var _hud: BattleHud
 var _hand: BattleHandView
+var _overlay: ZoneOverlay
 
-func bind(battle: Battle, board: BattleBoardView, hud: BattleHud, hand: BattleHandView) -> void:
+func bind(battle: Battle, board: BattleBoardView, hud: BattleHud, hand: BattleHandView,
+		overlay: ZoneOverlay = null) -> void:
 	self.battle = battle
 	_board = board
 	_hud = hud
 	_hand = hand
+	_overlay = overlay
 
 ## 推进一个回合并刷新全部视图。
 func advance() -> void:
@@ -35,6 +38,8 @@ func refresh() -> void:
 		_hud.refresh()
 	if _hand != null:
 		_hand.refresh()
+	if _overlay != null:
+		_overlay.refresh()
 
 ## 在某个塔位出当前选中的手牌；返回结果字典（失败原因直接可显示）。
 func play_selected(slot: int) -> Dictionary:

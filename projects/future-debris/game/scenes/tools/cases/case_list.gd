@@ -12,6 +12,7 @@ const ALL := [
 	["E 残渣 → 降级区推导", "res://scenes/tools/cases/residue_cases.gd", "zone_derivation"],
 	["E2 场地维护：供电即排污", "res://scenes/tools/cases/residue_cases.gd", "upkeep_emits"],
 	["E3 花电力清理残渣（解除手段）", "res://scenes/tools/cases/clean_cases.gd", "clean_removes"],
+	["E4 降级区持续伤害基地", "res://scenes/tools/cases/zone_cases.gd", "zone_damages_base"],
 	["F 同格残渣削弱战力", "res://scenes/tools/cases/residue_cases.gd", "residue_penalty"],
 	["G 波次结算：清空 vs 漏怪", "res://scenes/tools/cases/wave_cases.gd", "wave_outcomes"],
 	["G3 最后一波不得凭空多出一波", "res://scenes/tools/cases/wave_cases.gd", "no_extra_wave"],

@@ -26,5 +26,5 @@ static func residue_heat(tokens: TokenSet, amount: int, danger_at: int) -> Color
 ## 降级区覆盖色：透明叠加，不遮住塔与数字。
 static func zone_overlay(tokens: TokenSet) -> Color:
 	var color := tokens.color("--residue")
-	color.a = 0.16
+	color.a = 0.24   # 覆盖层被棋盘压在上面，太淡就完全看不见；0.24 时能看清"溢出到间隙"的污染
 	return color

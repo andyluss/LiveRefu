@@ -12,6 +12,7 @@ var _board: BattleBoardView
 var _hud: BattleHud
 var _hand: BattleHandView
 var _status: Label
+var _overlay: ZoneOverlay
 
 func _ready() -> void:
 	var loaded := ThemeIo.load_or_build(false)
@@ -31,10 +32,25 @@ func _compose(theme: Theme, tokens: TokenSet, font: Font) -> Control:
 	_hud = BattleHud.new()
 	_hud.theme = theme
 	root.add_child(_hud)
+	# 战场用"棋盘 + 覆盖层"叠放：覆盖层画降级区扩张，棋盘画格子与卡（互不干涉）
+	var stack := Control.new()
+	stack.custom_minimum_size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
+	_overlay = ZoneOverlay.new()
+	# 覆盖层必须**铺满父容器且不裁剪**：否则尺寸为 0 的 Control 会把越界绘制裁掉——
+	# 表现是"代码在画、屏幕上什么都没有"（实测：污染色像素数在所有帧里完全不变，
+	# 说明只有 HUD 在画污染色）。这类 bug 不会报错，只能靠像素统计发现。
+	# 显式给尺寸与位置：父节点是普通 Control（不是容器），**锚点预设对它无效**。
+	# 实测教训：尺寸为 0 的 Control 会把越界绘制裁掉——表现为"代码在画、屏幕上一片没有"，
+	# 不报错、只能靠像素统计发现。
+	_overlay.position = Vector2.ZERO
+	_overlay.size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
+	stack.add_child(_overlay)
 	_board = BattleBoardView.new()
 	_board.theme = theme
+	_board.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_board.gui_input.connect(_on_board_input)
-	root.add_child(_board)
+	stack.add_child(_board)
+	root.add_child(stack)
 	_hand = BattleHandView.new()
 	_hand.theme = theme
 	_hand.card_clicked.connect(_on_card_clicked)
@@ -52,10 +68,11 @@ func _start(tokens: TokenSet) -> void:
 	if not battle.setup(DECK.split(","), 20, 40):
 		_status.text = "初始化失败：%s" % str(battle.events)
 		return
-	driver.bind(battle, _board, _hud, _hand)
+	driver.bind(battle, _board, _hud, _hand, _overlay)
 	_board.setup(battle, tokens, _status.get_theme_font("font"))
 	_hud.setup(battle, tokens, _status.get_theme_font("font"))
 	_hand.setup(battle, tokens, _status.get_theme_font("font"))
+	_overlay.setup(battle, tokens, BattleBoardView.CELL, BattleBoardView.GAP)
 	_status.text = "点手牌选中 → 点塔位放置；空格推进一回合"
 	driver.refresh()
 

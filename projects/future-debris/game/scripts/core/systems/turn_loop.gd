@@ -37,11 +37,15 @@ static func run(battle) -> Dictionary:
 		])
 	if outcome["cleared"]:
 		RuleEngine.fire(battle, "wave_cleared")
+	# 环境结算：降级区按规模持续伤害基地（**这是残渣的第二个后果**，
+	# 也是本作真正的"倒计时"——只有削塔惩罚时，玩家永远可以拖）
+	var zone_damage := ZoneSystem.apply(battle)
 	return {
 		"turn": battle.turn,
 		"power_in": gained,
 		"residue_added": residue_added,
 		"dealt": dealt,
 		"actions": actions,
+		"zone_damage": zone_damage,
 		"wave": outcome,
 	}
