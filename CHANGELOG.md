@@ -8,6 +8,16 @@
 ## [未发布]
 
 ### 新增
+- **主线项目 S3 第一步：视觉 token 落成 Godot 主题资源**（`./run.sh check` **七道闸门全绿**，主题 **15 项断言**通过）：
+  - **单一来源 + 机器对账**：权威仍是 [`docs/04 视觉语言与设计token`](projects/future-debris/docs/04_视觉语言与设计token.md)（给人读），引擎侧新增机器可读投影 [`game/data/tokens.json`](projects/future-debris/game/data/tokens.json)；新增 [`tools/check_tokens.py`](projects/future-debris/tools/check_tokens.py) **强制两者逐项一致**（颜色名与值双向、字号必须恰好 5 级且值相同），含 5 个负向自检用例（**断言具体错误类型**，不是"有没有错"）。理由：色值与字号一旦有两份定义就会分叉，而分叉的表现是"文档说达标、界面颜色不同"——在代码里看不出来，只看文档也看不出来。
+  - **token → Godot Theme**：[`ThemeIo`](projects/future-debris/game/scripts/view/theme/theme_io.gd) 编译并落盘 [`assets/theme/future_debris.tres`](projects/future-debris/game/assets/theme/future_debris.tres)（**资源只是缓存，随时可删掉重建，不允许手工编辑**），并设为工程默认主题。字体走 Godot `SystemFont` 按名查找（**仓库不放字体二进制**，沿用既有项目做法）。5 级字号做成 **Label type variation**，代码里只写 `theme_type_variation = &"Caption"`——于是"某处偷偷写个 14px"在评审时看得见。
+  - **验证断言 15 项**：字体可用（中文与数字都有宽度）、5 级字号逐一比对、文字色、按钮常态/悬停/禁用三态**可区分**、边框必须是 `--line-strong`（不得用 `--line`）、焦点环 `--focus`、窗口根背景 `--bg-base`。
+  - **`./run.sh shot`：PNG 也是闸门**——写文件前断言**渲染出的像素**等于契约色（`--bg-base`）。新增主界面即 **token 预览**（5 级文字各自不同示例 + 全部语义色 + 控件三态），作为人工验收的固定靶子；[截图](projects/future-debris/docs/shots/theme_preview.png) 已产出。
+  - **截图验收抓出四个问题，其中三个是"断言全绿但界面不对"**（已全部修复并记账）：① **窗口背景没生效**——契约里**根本没定义"窗口底色用哪个 token"**（Godot 无全局背景色设置）→ 新增 `RootBackground`（`--bg-base`）约定；② **常态与悬停拿到同一底色**——`StyleBoxes.panel()` 里三元判断用了参数、取值却用了默认值（参数被写丢），且常态未显式给底色落到了与悬停相同的兜底色；③ **按钮"浮不起来"**——常态 `--bg-elev-1` 对 `--bg-base` 亮度比只有 **1.90**，改用 `--bg-elev-2`（**3.35**）并把依据写进契约；④ **`theme_type_variation` 渲染不生效**——主题里取值正确（断言通过）但节点仍走默认样式，**静默回落且无报错**，改用**显式样式覆盖**。
+  - 新增实现裁决 **D15（单一来源与对账）/ D16（背景用显式覆盖，不用变体）/ D17（主界面即 token 预览）**；[07 发现记录](projects/future-debris/docs/07_S2发现记录.md) 增补第六节记录这四个问题。契约 §三 另补一条**待复核项**：`body` = 15px 对中文偏小（中文常见正文下限约 16px），保留理由与推翻方式均已写明。
+  - 过程教训：**`./run.sh shot` 必须先重建主题资源再截图**，否则截到的是上一次的主题（`.tres` 只是缓存，不会自动跟随 token 变化）。
+
+### 新增
 - **主线项目 S2 完成：核心循环可无头跑完整局 + 卡表量产管线 + 平衡模拟**（`./run.sh check` **六道闸门全绿，16 项玩法行为断言**）：
   - **纯逻辑核心循环**（`game/scripts/core/`，**不引用任何场景或 Node**）：资源（电力 / 基地生命）→ 卡牌（费用/战力/残渣）→ **8 固定塔位** → 自走交战 → 波次结算 → 三维评级。回合结算顺序单独成文件 [`TurnLoop`](projects/future-debris/game/scripts/core/systems/turn_loop.gd)，理由写在文件里：**结算顺序就是玩法规则**，散在战斗类里时重构会悄悄改掉它（既有项目发生过同类行为漂移）。
   - **卡表量产管线** [`tools/gen_cards.py`](projects/future-debris/tools/gen_cards.py) + [`cardgen.seed.json`](projects/future-debris/game/data/cardgen.seed.json)：**表 → 生成 → 校验**。自有 LCG 保证跨版本幂等；两条硬约束——**不得覆盖手写卡**（id ≤ 12，手工设计的标志性卡是产品识别度）、生成物必须过数据闸门；生成器自检断言"幂等 / 不覆盖手写卡 / id 无重复"。卡池现为 **18 张**（手写 12 + 生成 6），一条命令可扩到 T2（`--target 60`）。

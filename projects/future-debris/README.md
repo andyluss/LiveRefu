@@ -17,9 +17,10 @@
 | --- | --- |
 | 引擎 | **Godot 4.7 stable**（GL Compatibility），本机已实测 |
 | 目录结构 | 四层分离已建立（`core/` `view/` `app/` + `data/`），见 [02 工程结构与运行](docs/02_工程结构与运行.md) |
-| 验收闸门 | **6 道全部通过**：文件预算 → 数据契约 → 视觉 token → 工程导入 → 无头自检 → **玩法行为验收** |
+| 验收闸门 | **7 道全部通过**：文件预算 → 数据契约 → 视觉 token（含文档↔引擎对账）→ 工程导入 → **主题落地** → 无头自检 → **玩法行为验收** |
 | 数据契约 | 5 张表（卡 12 / 势力 4 / 关卡 8 / 模式 3 / 残片 3），机器可校验，见 [03 数据契约](docs/03_数据契约.md) |
 | 视觉契约 | **语法层 19 个 token + 5 级字号 + 卡面版式**，对比度 30/30 达标，见 [04 视觉语言与设计token](docs/04_视觉语言与设计token.md) |
+| 主题落地 | ✅ **token 已编译为 Godot 主题资源**（[`assets/theme/future_debris.tres`](game/assets/theme/future_debris.tres)），**15 项断言**通过；token 副本 [`data/tokens.json`](game/data/tokens.json) 与契约文档由 **对账闸门**强制一致；主界面可看：[截图](docs/shots/theme_preview.png) |
 | 美术产能 | 四条路线已比较、分阶段清单已出，见 [05 美术产能与预算](docs/05_美术产能与预算.md)；**卡量阶梯与产能算术见 [06](docs/06_产能预算与卡量阶梯.md)** |
 | 玩法 | **S2 核心循环可无头跑完整局**：资源（电力/基地生命）→ 卡牌 → 8 固定塔位 → 自走交战 → 波次结算 → 评级；16 项行为断言 |
 | 量产管线 | **已就绪**：[`tools/gen_cards.py`](tools/gen_cards.py) + [`cardgen.seed.json`](game/data/cardgen.seed.json)（幂等、不覆盖手写卡）；卡池 18 张（手写 12 + 生成 6） |
@@ -31,7 +32,9 @@
 
 ```bash
 cd projects/future-debris
-./run.sh check       # 6 道闸门（含 16 项玩法行为断言）
+./run.sh check       # 7 道闸门（含 16 项玩法行为断言 + 15 项主题断言）
+./run.sh theme       # 从 token 编译 Godot 主题并断言生效（15 项）
+./run.sh shot        # 渲染主界面到 docs/shots/theme_preview.png（并断言渲染底色）
 ./run.sh s2          # 只跑玩法行为验收
 ./run.sh sim         # 平衡模拟（--decks 3 --seeds 3）
 ./run.sh data        # 数据契约校验（--self-test）

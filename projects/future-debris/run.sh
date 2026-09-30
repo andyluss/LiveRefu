@@ -73,6 +73,25 @@ case "${1:-run}" in
     echo "无头自检：PASS"
     ;;
 
+  shot)
+    # 渲染主界面到 PNG（人工验收用）。参数：文件名（默认 theme_preview.png）。
+    shift
+    need_godot
+    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+    # 先重建主题资源再截图：否则截到的是**上一次**的主题（.tres 只是缓存，不会自动跟随 token 变化）
+    "$GODOT" --headless --path "$GAME" res://scenes/tools/theme_check.tscn >/dev/null 2>&1 || true
+    exec "$GODOT" --path "$GAME" res://scenes/tools/screenshot.tscn -- "$@"
+    ;;
+
+  theme)
+    # 从 token 契约编译 Godot 主题资源，并断言 token 真的生效（11 项）。
+    shift
+    need_godot
+    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+    headless_assert "res://scenes/tools/theme_check.tscn" "$@"
+    echo "主题落地：PASS"
+    ;;
+
   s2)
     # 只跑 S2 玩法验收（资源循环 / 出牌原子性 / 残渣 / 波次 / 确定性 / 评级）。
     shift
@@ -93,20 +112,23 @@ case "${1:-run}" in
   check)
     # 六道闸门（S2）：文件预算 → 数据契约 → 视觉 token → 工程装载 → 无头自检 → 玩法行为验收。
     # 顺序有讲究：静态错误最便宜，先跑；需要引擎的后跑；最贵的玩法验收放最后。
-    echo "══ Future Debris · 验收闸门（S2）══"
-    echo "── 1/6 文件预算 ──"
+    echo "══ Future Debris · 验收闸门（S3）══"
+    echo "── 1/7 文件预算 ──"
     python3 "$HERE/tools/check_file_size.py" --self-test
-    echo "── 2/6 数据契约 ──"
+    echo "── 2/7 数据契约 ──"
     python3 "$HERE/tools/check_data.py" --self-test
-    echo "── 3/6 视觉 token（对比度 + 层级亮度顺序 + 样张色彩越界） ──"
+    echo "── 3/7 视觉 token 契约（对比度 + 层级 + 样张色彩 + 文档↔引擎对账） ──"
     python3 "$HERE/tools/check_contrast.py" --self-test
-    echo "── 4/6 工程导入（Godot 装载） ──"
+    python3 "$HERE/tools/check_tokens.py" --self-test
+    echo "── 4/7 工程导入（Godot 装载） ──"
     need_godot
     "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
     echo "导入完成"
-    echo "── 5/6 无头自检（工程装载） ──"
+    echo "── 5/7 主题落地（token → Godot Theme） ──"
+    headless_assert "res://scenes/tools/theme_check.tscn" "$@"
+    echo "── 6/7 无头自检（工程装载） ──"
     headless_assert "res://scenes/tools/boot_probe.tscn" "$@"
-    echo "── 6/6 玩法行为验收（S2 核心循环） ──"
+    echo "── 7/7 玩法行为验收（S2 核心循环） ──"
     headless_assert "res://scenes/tools/headless_test.tscn" "$@"
     echo "══ 全部闸门通过 ══"
     ;;
@@ -117,7 +139,7 @@ case "${1:-run}" in
     ;;
 
   *)
-    echo "用法: $0 {run|editor|check|boot|s2|lint|data|contrast}" >&2
+    echo "用法: $0 {run|editor|check|boot|s2|sim|theme|lint|data|contrast}" >&2
     exit 2
     ;;
 esac
