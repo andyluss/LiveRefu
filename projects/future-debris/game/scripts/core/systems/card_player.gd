@@ -17,11 +17,13 @@ static func play(battle, hand_index: int, slot: int) -> Dictionary:
 		return _fail("电力不足（需 %d，有 %d）" % [cost, ResourceSystem.power(battle.resources)])
 	var instance := CardInstance.new(card, slot, battle.turn)
 	BoardSystem.place(battle.board, instance)
-	if battle.rules.is_empty():
-		ResidueSystem.add(battle.residue, slot, card.residue)
-	else:
+	# 入场残渣 = 卡面 → 规则卡修正 → 势力修正 → （move 姿态）改记到最脏格
+	var entry := card.residue
+	if not battle.rules.is_empty():
 		RuleEngine.fire(battle, "before_placement")
-		ResidueSystem.add(battle.residue, slot, RuleEngine.placement_residue(battle, card, slot))
+		entry = RuleEngine.placement_residue(battle, card, slot)
+	entry = FactionMods.placement_residue(battle, entry, slot)
+	ResidueSystem.placement(battle.residue, slot, entry, MoveRouting.target(battle, slot))
 	battle.hand.remove_at(hand_index)
 	battle.cards_played += 1
 	return {"ok": true, "reason": ""}
@@ -32,7 +34,7 @@ static func sell(battle, slot: int) -> Dictionary:
 	var instance: CardInstance = BoardSystem.remove(battle.board, slot)
 	if instance == null:
 		return _fail("塔位 %d 没有单位" % slot)
-	var refund := int(instance.data.cost / 2)
+	var refund := FactionMods.sell_refund(battle, instance.data.cost)
 	battle.resources["power"] = int(battle.resources["power"]) + refund
 	return {"ok": true, "reason": "", "refund": refund}
 

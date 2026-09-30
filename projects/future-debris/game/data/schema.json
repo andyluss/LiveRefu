@@ -255,9 +255,18 @@
         "text": {
           "type": "string",
           "minLength": 1
+        },
+        "acquisition": {
+          "type": "string",
+          "enum": [
+            "era_default",
+            "level_grant",
+            "unlock"
+          ]
         }
       },
-      "minEntries": 4
+      "minEntries": 4,
+      "note": "规则卡表。acquisition 决定**怎么拿到它**：era_default＝本纪元默认启用；level_grant＝关卡表授予（写在该关 rule_set 里）；unlock＝需在局内解锁（由关卡/事件解锁后累加生效，不删除）。"
     }
   }
 }

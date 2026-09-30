@@ -25,7 +25,11 @@ static func wants_clean(battle, slot: int) -> bool:
 static func accept(battle, card: CardData, slot: int) -> bool:
 	if BoardSystem.size(battle.board) >= SLOT_CAP:
 		return false
-	if ResidueSystem.at(battle.residue, slot) > CLEAN_TARGET:
+	# 只有**已有塔**的格子才因残渣被拒绝。
+	# 实测教训：`moves` 姿态把残渣搬到空位，若把空位也当"脏位"拒放，
+	# 该势力会几乎无法扩阵（实测只铺 5 张、输出 8/回合，而 feeds 铺 6 张、输出 29）——
+	# 空位上的残渣**没有塔可被削弱**，拒放它没有任何玩法理由。
+	if battle.board.has(slot) and ResidueSystem.at(battle.residue, slot) > CLEAN_TARGET:
 		return false
 	var inflow := card.residue
 	for occupied in BoardSystem.occupied_slots(battle.board):

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "atomic__rules",
-  "note": "原子纪元规则卡（T1 四张）。规则卡是**纪元差异的载体**：同一条引擎，不同纪元换这套表即可改变玩法，因此必须在旗舰纪元就把触发点与效果种类定对。字段含义见 docs/08_规则卡系统.md。",
+  "note": "原子纪元规则卡（T1 四张）。规则卡是**纪元差异的载体**：同一条引擎，不同纪元换这套表即可改变玩法，因此必须在旗舰纪元就把触发点与效果种类定对。acquisition：era_default＝本纪元默认启用（不依赖关卡）；level_grant＝由关卡表授予；unlock＝需在局内解锁（累加生效，不删除）。字段含义见 docs/10_规则获取与势力机制.md。",
   "entries": [
     {
       "id": "RULE-ATOMIC-001",
@@ -11,7 +11,8 @@
       "condition_value": 12,
       "effect": "add_damage",
       "amount": 6,
-      "text": "本关残渣总量 ≥ 12 时，交战输出 +6。污染也能当燃料——但要付得起。"
+      "text": "本关残渣总量 ≥ 12 时，交战输出 +6。污染也能当燃料——但要付得起。",
+      "acquisition": "level_grant"
     },
     {
       "id": "RULE-ATOMIC-002",
@@ -21,7 +22,8 @@
       "condition_value": 30,
       "effect": "sub_damage",
       "amount": 4,
-      "text": "本关残渣总量 ≥ 30 时，交战输出 -4。残渣一旦成为公共议题，产能就要让位于解释。"
+      "text": "本关残渣总量 ≥ 30 时，交战输出 -4。残渣一旦成为公共议题，产能就要让位于解释。",
+      "acquisition": "unlock"
     },
     {
       "id": "RULE-ATOMIC-003",
@@ -31,7 +33,8 @@
       "condition_value": 0,
       "effect": "clean_on_turn",
       "amount": 1,
-      "text": "每回合开始自动清理最脏塔位的 1 点残渣。议定流程的定期维护。"
+      "text": "每回合开始自动清理最脏塔位的 1 点残渣。议定流程的定期维护。",
+      "acquisition": "era_default"
     },
     {
       "id": "RULE-ATOMIC-004",
@@ -41,7 +44,8 @@
       "condition_value": 6,
       "effect": "gain_power",
       "amount": 5,
-      "text": "清空一波时若残渣总量 ≤ 6，额外获得 5 点电力。干净的样板值得被奖励。"
+      "text": "清空一波时若残渣总量 ≤ 6，额外获得 5 点电力。干净的样板值得被奖励。",
+      "acquisition": "level_grant"
     }
   ]
 }

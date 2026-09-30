@@ -37,6 +37,17 @@ static func clean(state: Dictionary, slot: int, amount: int) -> int:
 	state["zone"] = int(state["total"]) / ZONE_PER_RESIDUE
 	return removed
 
+## 放置一张牌：把 `amount` 点入场残渣记到 `slot`；
+## `reroute_to` 给出另一个目标格时（如 `moves` 姿态搬运）改记到那里。
+##
+## 为什么收成一个函数：**一次放置只能产生一份残渣**。
+## 踩过的坑：搬运逻辑写在调用方时，本格先被计一次、目标格又被计一次——
+## 总量凭空翻倍，且"每回合残渣增量"虚高，导致自动玩家判定"太脏"而**拒绝放置**
+## （实测 `moves` 势力稳定只有 5 张牌、输出 8/回合，而同等条件下 `feeds` 有 6 张、输出 29）。
+static func placement(state: Dictionary, slot: int, amount: int, reroute_to: int = -1) -> int:
+	var target := reroute_to if reroute_to >= 0 else slot
+	return add(state, target, amount)
+
 ## 某格的残渣量（未记录则为 0）。
 static func at(state: Dictionary, slot: int) -> int:
 	return int((state["by_slot"] as Dictionary).get(slot, 0))

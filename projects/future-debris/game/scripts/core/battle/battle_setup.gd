@@ -3,15 +3,12 @@ class_name BattleSetup
 ## 组局：装载数据表 → 组卡组 → 初始化各系统。**把"准备一局"与"打完一局"分开**，
 ## 这样测试可以只准备、不下场（断言初始化本身），也可以准备多次而不互相污染。
 
-## 按关卡的 rule_set 选规则；关卡为空时用**全部**规则（便于整体模拟）。
+## 生效规则 = era_default + 关卡授予 + 局内解锁（三者累加，见 RuleLoadout）。
+## `all_rules` 为测试/模拟开关：为真时忽略获取途径，直接给全部规则。
 static func _select_rules(battle) -> Array[RuleData]:
-	var out: Array[RuleData] = []
-	if battle.level == null:
+	if battle.all_rules:
 		return battle.catalog.rules.duplicate()
-	for rule in battle.catalog.rules:
-		if battle.level.rule_set.has(rule.id):
-			out.append(rule)
-	return out
+	return RuleLoadout.resolve(battle.catalog, battle.level, battle.unlocked_rules)
 
 ## 准备一局；返回是否就绪（失败原因写进 battle.events，不静默使用默认值）。
 static func prepare(battle, deck_ids: PackedStringArray, base_hp: int, turn_limit: int) -> bool:

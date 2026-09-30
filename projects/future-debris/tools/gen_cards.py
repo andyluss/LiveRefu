@@ -88,9 +88,15 @@ def generate(seed: dict, want_total: int) -> list:
     rng = Deterministic(seed["seed"])
     produced: list[dict] = []
     index = MANUAL_PREFIX_LIMIT + 1
+    # **按势力轮转**分配，而不是纯随机抽势力。
+    # 为什么（实测教训）：纯随机会让某些势力只分到 4 张卡，且都很弱——
+    # 于是"逐关扫描按势力跑"时，那个势力的失败其实是**卡池不均**造成的，
+    # 而不是它的机制弱。测量工具本身不能引入这种偏差。
+    wheel = 0
     while MANUAL_PREFIX_LIMIT + len(produced) < want_total:
         archetype = rng.pick(arch)
-        faction = rng.pick(factions)
+        faction = factions[wheel % len(factions)]
+        wheel += 1
         kind = rng.pick(KIND_BY_INDEX)
         cost = rng.between(archetype["cost"][0], archetype["cost"][1])
         # 张力：输出的每一分都要以残渣偿付——高战力必高残渣，低残渣必低战力
@@ -185,6 +191,12 @@ def main() -> int:
 
     generated = generate(seed, args.target)
     print(f"[卡表量产] 手写 {len(manual)} 张 + 生成 {len(generated)} 张 = 总计 {len(manual) + len(generated)} 张")
+    # 报告各势力卡数：分布不均会让"按势力扫描"的结论失真（见上面的轮转说明）
+    total_pool: dict[str, int] = {}
+    for entry in manual + generated:
+        total_pool[entry["faction"]] = total_pool.get(entry["faction"], 0) + 1
+    for faction_id, count in sorted(total_pool.items()):
+        print(f"  - 卡池 {faction_id}: {count} 张（含手写）")
     by_faction: dict[str, int] = {}
     for entry in generated:
         by_faction[entry["faction"]] = by_faction.get(entry["faction"], 0) + 1

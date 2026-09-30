@@ -11,7 +11,7 @@ const DECK := "RC-ATOMIC-001,RC-ATOMIC-002,RC-ATOMIC-005,RC-ATOMIC-011,RC-ATOMIC
 ## 有**全部规则**的一局（关卡默认只带一部分规则，隔离测试需要先拿到全集）。
 static func new_battle_all_rules() -> Battle:
 	var battle := new_battle()
-	battle.rules = battle.catalog.rules.duplicate()
+	battle.rules = battle.catalog.rules.duplicate()   # 忽略获取途径，给全部（隔离测试用）
 	return battle
 
 ## 只用**指定规则**的一局：用于隔离测试某一条规则（否则多条规则会互相影响）。

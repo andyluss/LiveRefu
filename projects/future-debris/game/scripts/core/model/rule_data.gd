@@ -13,6 +13,7 @@ var condition_value: int
 var effect: String        # gain_power / reduce_residue / reduce_cost / add_damage / sub_damage / clean_on_turn
 var amount: int
 var text: String
+var acquisition: String   # era_default / level_grant / unlock（怎么拿到它，见 RuleLoadout）
 
 static func from_row(row: Dictionary) -> RuleData:
 	var rule := RuleData.new()
@@ -24,4 +25,5 @@ static func from_row(row: Dictionary) -> RuleData:
 	rule.effect = str(row.get("effect", ""))
 	rule.amount = int(row.get("amount", 0))
 	rule.text = str(row.get("text", ""))
+	rule.acquisition = str(row.get("acquisition", "era_default"))
 	return rule

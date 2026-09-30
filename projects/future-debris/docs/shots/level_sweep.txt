@@ -1,11 +1,39 @@
-# 8 关难度实测（参考卡组 = 基准卡组 8 张，节制档自动玩家）
+# 8 关难度实测（按势力分别跑，各用自己阵营的卡组）
 # 生成命令：./run.sh s2   （同一份数据也在 ./run.sh check 的 K 组闸门打印）
-# 采集：2026-09-30
-LV-ATOMIC-01 通关 剩血20 回合8 S
+# 采集：2026-09-30 ｜ 卡池：T1（18 张：手写 12 + 生成 6）
+— FAC-ATOMIC-AEC（cleans）
+LV-ATOMIC-01 通关 剩血20 回合9 S
 LV-ATOMIC-02 通关 剩血20 回合12 S
+LV-ATOMIC-03 通关 剩血20 回合13 S
+LV-ATOMIC-04 通关 剩血20 回合19 S
+LV-ATOMIC-05 通关 剩血20 回合19 S
+LV-ATOMIC-06 通关 剩血20 回合19 S
+LV-ATOMIC-07 通关 剩血20 回合30 S
+LV-ATOMIC-08 通关 剩血11 回合38 B
+— FAC-ATOMIC-SUB（avoids）
+LV-ATOMIC-01 通关 剩血20 回合8 S
+LV-ATOMIC-02 通关 剩血20 回合11 S
 LV-ATOMIC-03 通关 剩血20 回合12 S
 LV-ATOMIC-04 通关 剩血20 回合16 S
-LV-ATOMIC-05 通关 剩血20 回合17 S
-LV-ATOMIC-06 通关 剩血20 回合18 S
-LV-ATOMIC-07 通关 剩血20 回合28 S
-LV-ATOMIC-08 通关 剩血17 回合35 A
+LV-ATOMIC-05 通关 剩血20 回合16 S
+LV-ATOMIC-06 通关 剩血20 回合17 S
+LV-ATOMIC-07 通关 剩血20 回合27 S
+LV-ATOMIC-08 通关 剩血17 回合34 A
+— FAC-ATOMIC-HAU（moves）
+LV-ATOMIC-01 通关 剩血19 回合21 S
+LV-ATOMIC-02 通关 剩血18 回合25 A
+LV-ATOMIC-03 通关 剩血15 回合28 A
+LV-ATOMIC-04 通关 剩血8 回合37 B
+LV-ATOMIC-05 通关 剩血1 回合35 C
+LV-ATOMIC-06 打爆 剩血0 回合33 C
+LV-ATOMIC-07 打爆 剩血0 回合31 C
+LV-ATOMIC-08 打爆 剩血0 回合27 C
+— FAC-ATOMIC-ROA（feeds）
+LV-ATOMIC-01 通关 剩血20 回合6 S
+LV-ATOMIC-02 通关 剩血20 回合8 S
+LV-ATOMIC-03 通关 剩血20 回合9 S
+LV-ATOMIC-04 通关 剩血20 回合14 S
+LV-ATOMIC-05 通关 剩血20 回合13 S
+LV-ATOMIC-06 通关 剩血20 回合14 S
+LV-ATOMIC-07 通关 剩血20 回合22 S
+LV-ATOMIC-08 通关 剩血20 回合27 S

@@ -44,11 +44,11 @@ static func occupied_slots(board: Dictionary) -> PackedInt32Array:
 	return out
 
 ## 场上单位战力之和（含该格残渣造成的降级惩罚，见 `StatQuery`）。
-static func total_might(board: Dictionary, residue: Dictionary) -> int:
+static func total_might(board: Dictionary, residue: Dictionary, battle = null) -> int:
 	var total := 0
 	for slot in board:
 		var instance: CardInstance = board[slot]
-		total += StatQuery.effective_might(instance, residue)
+		total += StatQuery.effective_might(instance, residue, battle)
 	return total
 
 static func total_residue_output(board: Dictionary) -> int:

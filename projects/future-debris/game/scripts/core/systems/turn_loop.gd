@@ -11,6 +11,7 @@ static func run(battle) -> Dictionary:
 	# 钩子顺序即规则顺序（写在一处，避免散落后被重构悄悄改掉）：
 	# turn_start → 供电 → 出牌 → 场地维护 → 交战 → 波次结算 → wave_cleared
 	RuleEngine.fire(battle, "turn_start")
+	FactionMods.turn_start_clean(battle)   # clean 姿态：每回合自动清理最脏格
 	var gained := ResourceSystem.gain_power(battle.resources, battle.board, Battle.BASE_GAIN)
 	var actor: AutoPlayer = battle.player if battle.player != null else AutoPlayer.new()
 	var actions: Array[String] = actor.play_turn(battle)
@@ -19,7 +20,7 @@ static func run(battle) -> Dictionary:
 	var residue_before_upkeep := ResidueSystem.total(battle.residue)
 	var residue_added := BoardUpkeep.accrue(battle.board, battle.residue)
 	RuleEngine.fire(battle, "before_combat")
-	var base_damage := StatQuery.turn_damage(battle.board, battle.residue)
+	var base_damage := StatQuery.turn_damage(battle.board, battle.residue, battle)
 	var damage := maxi(0, base_damage + RuleEngine.damage_delta(battle, residue_before_upkeep))
 	var dealt := WaveSystem.apply_damage(battle.wave, damage)
 	WaveSystem.tick_turn(battle.wave)

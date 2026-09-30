@@ -190,99 +190,99 @@
     },
     {
       "id": "RC-ATOMIC-013",
-      "name": "炉心供电组",
+      "name": "冷却供电组",
       "faction": "FAC-ATOMIC-AEC",
-      "kind": "relic",
+      "kind": "tower",
       "rarity": "common",
       "cost": 1,
       "power": 1,
       "compute": 1,
       "residue": 0,
       "keywords": [
-        "封存",
-        "残片"
+        "清洁",
+        "封存"
       ],
       "text": "为相邻塔位供电，几乎不产生残渣。（费用 1，战力 1，残渣 0）"
     },
     {
       "id": "RC-ATOMIC-014",
-      "name": "备用稽查队",
-      "faction": "FAC-ATOMIC-ROA",
+      "name": "冷却供电组",
+      "faction": "FAC-ATOMIC-SUB",
       "kind": "skill",
-      "rarity": "rare",
-      "cost": 3,
-      "power": 1,
-      "compute": 0,
-      "residue": 1,
-      "keywords": [
-        "供电",
-        "降级"
-      ],
-      "text": "压制周边违规操作，减少本区域残渣累积速度。（费用 3，战力 5，残渣 1）"
-    },
-    {
-      "id": "RC-ATOMIC-015",
-      "name": "浅滩稽查队",
-      "faction": "FAC-ATOMIC-ROA",
-      "kind": "unit",
-      "rarity": "epic",
-      "cost": 5,
-      "power": 2,
-      "compute": 1,
-      "residue": 1,
-      "keywords": [
-        "基座",
-        "残片"
-      ],
-      "text": "压制周边违规操作，减少本区域残渣累积速度。（费用 5，战力 9，残渣 1）"
-    },
-    {
-      "id": "RC-ATOMIC-016",
-      "name": "样板供电组",
-      "faction": "FAC-ATOMIC-AEC",
-      "kind": "unit",
       "rarity": "common",
-      "cost": 1,
-      "power": 1,
-      "compute": 1,
-      "residue": 0,
-      "keywords": [
-        "降级",
-        "防护"
-      ],
-      "text": "为相邻塔位供电，几乎不产生残渣。（费用 1，战力 1，残渣 0）"
-    },
-    {
-      "id": "RC-ATOMIC-017",
-      "name": "胶囊供电组",
-      "faction": "FAC-ATOMIC-ROA",
-      "kind": "unit",
-      "rarity": "epic",
       "cost": 3,
       "power": 4,
-      "compute": 0,
+      "compute": 1,
       "residue": 0,
       "keywords": [
-        "残片",
-        "搬运"
+        "基座",
+        "阻挡"
       ],
       "text": "为相邻塔位供电，几乎不产生残渣。（费用 3，战力 3，残渣 0）"
     },
     {
-      "id": "RC-ATOMIC-018",
-      "name": "炉心回收机",
+      "id": "RC-ATOMIC-015",
+      "name": "铅衬火力台",
       "faction": "FAC-ATOMIC-HAU",
       "kind": "tower",
-      "rarity": "epic",
+      "rarity": "common",
+      "cost": 4,
+      "power": 1,
+      "compute": 1,
+      "residue": 4,
+      "keywords": [
+        "基座",
+        "防护"
+      ],
+      "text": "部署后自动交战；输出高，但每回合持续留下残渣。（费用 4，战力 10，残渣 4）"
+    },
+    {
+      "id": "RC-ATOMIC-016",
+      "name": "听证供电组",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "skill",
+      "rarity": "common",
+      "cost": 3,
+      "power": 4,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "防护",
+        "规制"
+      ],
+      "text": "为相邻塔位供电，几乎不产生残渣。（费用 3，战力 3，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-017",
+      "name": "郊区回收机",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "rare",
       "cost": 1,
       "power": 0,
       "compute": 1,
       "residue": 2,
       "keywords": [
-        "穿透",
-        "监测"
+        "残片",
+        "防护"
       ],
       "text": "从降级区里获利，代价是自身所在格迅速恶化。（费用 1，战力 2，残渣 2）"
+    },
+    {
+      "id": "RC-ATOMIC-018",
+      "name": "胶囊供电组",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "relic",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 4,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "封存",
+        "适应"
+      ],
+      "text": "为相邻塔位供电，几乎不产生残渣。（费用 3，战力 3，残渣 0）"
     }
   ]
 }
