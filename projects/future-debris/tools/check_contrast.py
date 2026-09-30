@@ -26,17 +26,19 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parent
 TOKEN_DOC = PROJECT / "docs" / "04_视觉语言与设计token.md"
+STYLE_SAMPLES = PROJECT / "docs" / "style-samples"
 
 BG_TOKENS = ["--bg-base", "--bg-elev-1", "--bg-elev-2"]
 # 必须达到 4.5:1 的文字 token（--text-faint 是文字可访问性下限，刻意保留较弱但仍达标的取值）
 TEXT_TOKENS = ["--text", "--text-dim", "--text-faint"]
 # 必须达到 3:1 的非文字元素（WCAG 1.4.11：交互控件边界与图形对象）
-UI_TOKENS = ["--line-strong", "--power", "--residue", "--accent", "--warn", "--ok"]
+UI_TOKENS = ["--line-strong", "--power", "--residue", "--accent", "--focus", "--warn", "--ok"]
 
 TEXT_MIN = 4.5
 UI_MIN = 3.0
@@ -115,6 +117,69 @@ SELF_TEST_CASES = [
 ]
 
 
+# --------------------------------------------------------------------------- #
+# 样张色彩越界检查：样张里出现的每个十六进制色值都必须能追溯到契约 token
+#
+# 为什么需要：视觉实现者的如实反馈是——"提示词说四级字号、契约说五级"，执行者只能自编。
+# 同类问题在颜色上更隐蔽：自调一个"看起来差不多"的灰，肉眼几乎发现不了，
+# 但十张样张之后就会出现十种灰。这条检查把"只能用契约颜色"变成机器判定。
+# --------------------------------------------------------------------------- #
+
+HEX_RE = re.compile(r"#[0-9A-Fa-f]{6}")
+
+
+def check_sample_colors(tokens: dict[str, str], report: Report) -> int:
+    allowed = {value.upper() for value in tokens.values()}
+    checked_files = 0
+    for path in sorted(STYLE_SAMPLES.glob("*.svg")):
+        checked_files += 1
+        text = path.read_text(encoding="utf-8", errors="replace")
+        stray = sorted({m.group(0).upper() for m in HEX_RE.finditer(text)} - allowed)
+        if stray:
+            report.errors.append(
+                f"style-samples/{path.name}: 出现契约外的色值 {', '.join(stray)}"
+                "（自调色会让多个样张逐渐漂移；请改用契约 token 或先把它写进 docs/04）"
+            )
+    return checked_files
+
+
+def run_sample_color_self_test(tokens: dict[str, str]) -> int:
+    """用临时 SVG 断言"越界色值会被抓到、合规色值不误报"。"""
+    print("[self-test] 断言样张色彩越界检查能抓越界、不误报合规")
+    cases = [
+        ("全部使用契约色值", "#10161C,#F3EDE1,#4FD1C5", False),
+        ("含一个自调灰", "#10161C,#3C3C3C", True),
+    ]
+    failures = 0
+    for label, colors, expect_stray in cases:
+        with tempfile.TemporaryDirectory() as tmp:
+            sample = Path(tmp) / "sample.svg"
+            sample.write_text(
+                '<svg xmlns="http://www.w3.org/2000/svg">'
+                + "".join(f'<rect fill="{c}"/>' for c in colors.split(","))
+                + "</svg>",
+                encoding="utf-8",
+            )
+            global STYLE_SAMPLES
+            original = STYLE_SAMPLES
+            STYLE_SAMPLES = Path(tmp)
+            report = Report()
+            try:
+                check_sample_colors(tokens, report)
+            finally:
+                STYLE_SAMPLES = original
+        has_stray = bool(report.errors)
+        ok = has_stray == expect_stray
+        failures += 0 if ok else 1
+        detail = report.errors[0] if report.errors else "无报错"
+        print(f"  [{'OK  ' if ok else 'MISS'}] {label} → 期望越界={expect_stray}；实际：{detail}")
+    if failures:
+        print(f"[self-test] FAIL：{failures}/{len(cases)} 个用例不符预期")
+        return 1
+    print(f"[self-test] PASS：{len(cases)}/{len(cases)} 个用例符合预期")
+    return 0
+
+
 def run_self_test(tokens: dict[str, str]) -> int:
     print("[self-test] 用故意不合格的 token 与合规 token 断言检查器行为")
     failures = 0
@@ -164,6 +229,9 @@ def main() -> int:
         code = run_self_test(tokens)
         if code != 0:
             return code
+        code = run_sample_color_self_test(tokens)
+        if code != 0:
+            return code
 
     report = Report()
     run_checks(tokens, report)
@@ -172,12 +240,17 @@ def main() -> int:
         mark = "ok " if ratio >= minimum else "BAD"
         print(f"  [{mark}] {fg:14s} on {bg:11s} {ratio:6.2f}:1  (需 ≥ {minimum}:1)")
     print(f"  装饰性分隔线不受 3:1 约束（刻意）：{', '.join(sorted(DECORATIVE))}")
+
+    sample_files = check_sample_colors(tokens, report)
+    print(f"[样张色彩] 检查 {sample_files} 个 SVG：出现的每个色值都必须能追溯到契约 token")
+
     if report.errors:
+        # 对比度类错误先打印（更常被关心），样张越界类错误同样列出
         for error in report.errors:
             print(f"  [ERR ] {error}")
-        print(f"对比度闸门：FAIL（{len(report.errors)} 项）")
+        print(f"视觉 token 闸门：FAIL（{len(report.errors)} 项）")
         return 1
-    print(f"对比度闸门：PASS（{len(report.rows)} 个组合全部达标，层级顺序正确）")
+    print(f"视觉 token 闸门：PASS（{len(report.rows)} 个对比度组合全部达标，层级顺序正确，{sample_files} 个样张无越界色值）")
     return 0
 
 

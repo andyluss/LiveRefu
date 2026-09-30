@@ -16,21 +16,21 @@
     </pattern>
     <!-- 镀铬（横向长反射带）：近白 → 中灰 → 冷蓝灰 -->
     <linearGradient id="chromeH" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#66727F"/>
+      <stop offset="0" stop-color="#6F7B89"/>
       <stop offset="0.10" stop-color="#F3EDE1"/>
       <stop offset="0.26" stop-color="#A9A395"/>
-      <stop offset="0.42" stop-color="#66727F"/>
+      <stop offset="0.42" stop-color="#6F7B89"/>
       <stop offset="0.52" stop-color="#F3EDE1"/>
       <stop offset="0.68" stop-color="#A9A395"/>
-      <stop offset="0.84" stop-color="#66727F"/>
+      <stop offset="0.84" stop-color="#6F7B89"/>
       <stop offset="1" stop-color="#2A3742"/>
     </linearGradient>
     <!-- 镀铬（圆柱体）：左暗 → 近白高光 → 中灰 → 冷蓝灰 -->
     <linearGradient id="chromeCyl" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#66727F"/>
+      <stop offset="0" stop-color="#6F7B89"/>
       <stop offset="0.16" stop-color="#F3EDE1"/>
       <stop offset="0.40" stop-color="#A9A395"/>
-      <stop offset="0.68" stop-color="#66727F"/>
+      <stop offset="0.68" stop-color="#6F7B89"/>
       <stop offset="1" stop-color="#2A3742"/>
     </linearGradient>
     <!-- 放射太阳：核心黄 → 边缘橙 -->
@@ -56,9 +56,9 @@
   <rect x="0" y="0" width="1000" height="76" fill="#18212B"/>
   <line x1="0" y1="76.5" x2="1000" y2="76.5" stroke="#2A3742" stroke-width="1"/>
   <text x="48" y="40" font-family="ui-monospace, Menlo, monospace" font-size="18" letter-spacing="1" fill="#F3EDE1">风格卡 · 原子纪元</text>
-  <text x="48" y="61" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="#A9A395">ATOMIC ERA / 1955–1965 · 镀铬 + 搪瓷 + 塑料 · 来自上方的洁净白光 · 圆润家居感</text>
-  <text x="952" y="40" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="1" fill="#8B8578">STYLE SAMPLE 02</text>
-  <text x="952" y="61" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="#8B8578">纪元专属层 · 可整体替换</text>
+  <text x="48" y="61" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="#A9A395">ATOMIC ERA / 1955–1965 · 镀铬 + 搪瓷 + 塑料 · 洁净白光 · 圆润家居感 · rev2：色值与字号对齐契约 docs/04</text>
+  <text x="952" y="40" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="1" fill="#9E9889">STYLE SAMPLE 02 · rev2</text>
+  <text x="952" y="61" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="#9E9889">纪元专属层 · 可整体替换</text>
 
   <!-- ============ HERO 主视觉 ============ -->
   <rect x="40" y="96" width="470" height="326" rx="8" fill="#18212B"/>
@@ -87,24 +87,24 @@
     <circle cx="275" cy="336" r="56" fill="url(#sunDisc)"/>
     <!-- 地面（把太阳下半压到地平线后） -->
     <rect x="40" y="386" width="470" height="36" fill="#10161C" opacity="0.72"/>
-    <line x1="40" y1="386" x2="510" y2="386" stroke="#66727F" stroke-opacity="0.55" stroke-width="1"/>
+    <line x1="40" y1="386" x2="510" y2="386" stroke="#6F7B89" stroke-opacity="0.55" stroke-width="1"/>
     <!-- 原子轨道（后层） -->
     <ellipse cx="275" cy="250" rx="158" ry="46" fill="none" stroke="#4FD1C5" stroke-opacity="0.7" stroke-width="1.5" transform="rotate(-18 275 250)"/>
     <ellipse cx="275" cy="250" rx="118" ry="34" fill="none" stroke="#F3EDE1" stroke-opacity="0.30" stroke-width="1" transform="rotate(28 275 250)"/>
     <circle cx="125" cy="299" r="5" fill="#E4572E"/>
     <circle cx="425" cy="201" r="5" fill="#E4572E"/>
     <!-- 镀铬尾鳍火箭（几何化，无写实细节） -->
-    <path d="M245,312 L207,380 L245,358 Z" fill="url(#chromeCyl)" stroke="#66727F" stroke-width="1.5"/>
-    <path d="M305,312 L343,380 L305,358 Z" fill="url(#chromeCyl)" stroke="#66727F" stroke-width="1.5"/>
-    <path d="M258,342 L292,342 L301,362 L249,362 Z" fill="#2A3742" stroke="#66727F" stroke-width="1"/>
+    <path d="M245,312 L207,380 L245,358 Z" fill="url(#chromeCyl)" stroke="#6F7B89" stroke-width="1.5"/>
+    <path d="M305,312 L343,380 L305,358 Z" fill="url(#chromeCyl)" stroke="#6F7B89" stroke-width="1.5"/>
+    <path d="M258,342 L292,342 L301,362 L249,362 Z" fill="#2A3742" stroke="#6F7B89" stroke-width="1"/>
     <ellipse cx="275" cy="366" rx="24" ry="9" fill="#FFC857" opacity="0.20"/>
-    <path d="M275,162 C293,180 305,198 305,224 L305,342 L245,342 L245,224 C245,198 257,180 275,162 Z" fill="url(#chromeCyl)" stroke="#66727F" stroke-width="1.5"/>
+    <path d="M275,162 C293,180 305,198 305,224 L305,342 L245,342 L245,224 C245,198 257,180 275,162 Z" fill="url(#chromeCyl)" stroke="#6F7B89" stroke-width="1.5"/>
     <!-- 搪瓷色带 + 上缘高光 -->
     <rect x="245" y="300" width="60" height="13" fill="#E4572E"/>
     <rect x="245" y="300" width="60" height="5" fill="#F3EDE1" opacity="0.18"/>
     <!-- 舷窗（半透明塑料 + 薄荷内光） -->
     <circle cx="275" cy="240" r="15" fill="#4FD1C5" opacity="0.9"/>
-    <circle cx="275" cy="240" r="15" fill="none" stroke="#66727F" stroke-width="1.5"/>
+    <circle cx="275" cy="240" r="15" fill="none" stroke="#6F7B89" stroke-width="1.5"/>
     <circle cx="275" cy="240" r="10" fill="#10161C" opacity="0.35"/>
     <circle cx="270" cy="234" r="4" fill="#F3EDE1" opacity="0.7"/>
     <!-- 原子轨道（前层）+ 电子 -->
@@ -115,22 +115,22 @@
     <rect x="40" y="96" width="470" height="326" fill="url(#scan)"/>
     <rect x="40" y="96" width="470" height="326" fill="url(#noise)"/>
   </g>
-  <rect x="40" y="96" width="470" height="326" rx="8" fill="none" stroke="#66727F" stroke-width="1.5"/>
+  <rect x="40" y="96" width="470" height="326" rx="8" fill="none" stroke="#6F7B89" stroke-width="1.5"/>
   <text x="52" y="116" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="1" fill="#A9A395">HERO · 镀铬尾鳍火箭 / 原子轨道 / 放射太阳</text>
-  <text x="52" y="132" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">几何化表达：不用写实透视，只用圆角形 + 长反射带 + 单点搪瓷红</text>
+  <text x="52" y="132" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">几何化表达：不用写实透视，只用圆角形 + 长反射带 + 单点搪瓷红</text>
 
   <!-- ============ 色板 ============ -->
   <rect x="530" y="96" width="430" height="150" rx="8" fill="#18212B" stroke="#2A3742" stroke-width="1"/>
   <text x="542" y="116" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="1" fill="#A9A395">PALETTE · 纪元色板（全部取自语法层 token）</text>
   <g>
-    <rect x="542" y="130" width="46" height="46" rx="4" fill="#F3EDE1" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
-    <rect x="594" y="130" width="46" height="46" rx="4" fill="#A9A395" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
-    <rect x="646" y="130" width="46" height="46" rx="4" fill="#66727F" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
-    <rect x="698" y="130" width="46" height="46" rx="4" fill="#4FD1C5" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
-    <rect x="750" y="130" width="46" height="46" rx="4" fill="#FFC857" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
-    <rect x="802" y="130" width="46" height="46" rx="4" fill="#FF6B35" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
-    <rect x="854" y="130" width="46" height="46" rx="4" fill="#E4572E" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
-    <rect x="906" y="130" width="46" height="46" rx="4" fill="#10161C" stroke="#66727F" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="542" y="130" width="46" height="46" rx="4" fill="#F3EDE1" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="594" y="130" width="46" height="46" rx="4" fill="#A9A395" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="646" y="130" width="46" height="46" rx="4" fill="#6F7B89" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="698" y="130" width="46" height="46" rx="4" fill="#4FD1C5" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="750" y="130" width="46" height="46" rx="4" fill="#FFC857" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="802" y="130" width="46" height="46" rx="4" fill="#FF6B35" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="854" y="130" width="46" height="46" rx="4" fill="#E4572E" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
+    <rect x="906" y="130" width="46" height="46" rx="4" fill="#10161C" stroke="#6F7B89" stroke-opacity="0.35" stroke-width="1"/>
   </g>
   <g font-family="ui-monospace, Menlo, monospace" font-size="9" fill="#A9A395" text-anchor="middle">
     <text x="565" y="190">铬白</text>
@@ -143,17 +143,17 @@
     <text x="929" y="190">底</text>
   </g>
   <line x1="542" y1="200" x2="948" y2="200" stroke="#2A3742" stroke-width="1"/>
-  <text x="542" y="216" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">纪元用法：高光走暖白／中灰／冷蓝灰，搪瓷红只做单点焦点</text>
-  <text x="542" y="231" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">与其它纪元的差别在「材质与母题」，不在色相——色相由语法层锁死</text>
+  <text x="542" y="216" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">纪元用法：高光走暖白／中灰／冷蓝灰，搪瓷红只做单点焦点</text>
+  <text x="542" y="231" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">与其它纪元的差别在「材质与母题」，不在色相——色相由语法层锁死</text>
 
   <!-- ============ 材质条 ============ -->
   <rect x="530" y="258" width="430" height="164" rx="8" fill="#18212B" stroke="#2A3742" stroke-width="1"/>
   <text x="542" y="278" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="1" fill="#A9A395">MATERIAL · 材质条</text>
 
-  <rect x="542" y="290" width="406" height="34" rx="4" fill="url(#chromeH)" stroke="#66727F" stroke-width="1.5"/>
+  <rect x="542" y="290" width="406" height="34" rx="4" fill="url(#chromeH)" stroke="#6F7B89" stroke-width="1.5"/>
   <text x="542" y="340" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#A9A395">镀铬 CHROME · 长而柔的反射带（近白 → 中灰 → 冷蓝灰），边缘 1.5px 冷蓝灰</text>
 
-  <rect x="542" y="352" width="196" height="34" rx="4" fill="#E4572E" stroke="#66727F" stroke-width="1.5"/>
+  <rect x="542" y="352" width="196" height="34" rx="4" fill="#E4572E" stroke="#6F7B89" stroke-width="1.5"/>
   <rect x="542" y="352" width="196" height="11" rx="4" fill="#F3EDE1" opacity="0.16"/>
   <rect x="542" y="380" width="196" height="6" rx="3" fill="#10161C" opacity="0.18"/>
 
@@ -209,22 +209,21 @@
   </g>
   <text x="280" y="564" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="#A9A395">放射线</text>
 
-  <text x="52" y="586" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">全部母题为几何对称，透明度 ≤ 0.85，压在信息层之下</text>
+  <text x="52" y="586" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">全部母题为几何对称，透明度 ≤ 0.85，压在信息层之下</text>
 
   <!-- ============ 字体与标题样例 ============ -->
   <rect x="366" y="436" width="300" height="164" rx="8" fill="#18212B" stroke="#2A3742" stroke-width="1"/>
-  <text x="378" y="456" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="1" fill="#A9A395">TYPE · 字体与标题样例</text>
-  <text x="378" y="488" font-family="ui-monospace, Menlo, monospace" font-size="18" letter-spacing="1" fill="#F3EDE1">模块化基座</text>
-  <text x="654" y="488" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">18px / 字距 +1</text>
-  <text x="378" y="508" font-family="ui-monospace, Menlo, monospace" font-size="9" letter-spacing="3" fill="#A9A395">MODULAR PLINTH</text>
-  <text x="654" y="508" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">9px / 字距 +3</text>
-  <line x1="378" y1="518" x2="654" y2="518" stroke="#2A3742" stroke-width="1"/>
-  <text x="378" y="538" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="#A9A395">部署后为相邻塔位提供 1 点电力。</text>
-  <text x="654" y="538" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">10px 正文</text>
-  <text x="378" y="558" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">RC-ATOMIC-001 · 原子能委员会</text>
-  <text x="654" y="558" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">8.5px 脚注</text>
-  <line x1="378" y1="570" x2="654" y2="570" stroke="#2A3742" stroke-width="1"/>
-  <text x="378" y="586" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">纪元只换装饰与母题，不换字族：全部等宽字，技术档案感</text>
+  <text x="378" y="456" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="1" fill="#A9A395">TYPE · 标题样例（1:1 契约字号）</text>
+  <text x="378" y="490" font-family="ui-monospace, Menlo, monospace" font-size="28" font-weight="700" fill="#F3EDE1">原子纪元</text>
+  <text x="654" y="490" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">title-1 · 28px / 700</text>
+  <text x="378" y="517" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="600" fill="#F3EDE1">模块化基座</text>
+  <text x="654" y="517" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">title-2 · 20px / 600</text>
+  <text x="378" y="537" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="500" fill="#A9A395">RC-ATOMIC-001</text>
+  <text x="654" y="537" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">caption · 13px / 500</text>
+  <line x1="378" y1="546" x2="654" y2="546" stroke="#2A3742" stroke-width="1"/>
+  <text x="378" y="586" font-family="ui-monospace, Menlo, monospace" font-size="32" font-weight="700" fill="#F3EDE1">128</text>
+  <text x="654" y="586" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">number-lg · 32px / 700</text>
+  <text x="378" y="597" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="#9E9889">body 15px 等完整五级见 01 号样张 B 区</text>
 
   <!-- ============ 扫描线 ============ -->
   <rect x="682" y="436" width="278" height="164" rx="8" fill="#18212B" stroke="#2A3742" stroke-width="1"/>
@@ -234,11 +233,11 @@
   <rect x="694" y="468" width="254" height="74" rx="4" fill="url(#noise)"/>
   <text x="706" y="492" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="#A9A395">周期 4px · 暗线 α≈0.04 · 加极轻噪点</text>
   <text x="706" y="510" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="#A9A395">1:1 观感（放大示意见 01 号样张）</text>
-  <text x="706" y="530" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">先铺材质，再铺纹理，最后压文字</text>
+  <text x="706" y="530" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">先铺材质，再铺纹理，最后压文字</text>
   <line x1="694" y1="556" x2="948" y2="556" stroke="#2A3742" stroke-width="1"/>
-  <text x="694" y="574" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">用 pattern 平铺；禁用大 filter（渲染成本）</text>
-  <text x="694" y="590" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">扫描线是纪元专属处理，语法层不强制</text>
+  <text x="694" y="574" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">用 pattern 平铺；禁用大 filter（渲染成本）</text>
+  <text x="694" y="590" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">扫描线是纪元专属处理，语法层不强制</text>
 
   <!-- ============ 页脚 ============ -->
-  <text x="40" y="614" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#8B8578">纪元专属层 · 与语法层（01）组合成完整视觉；换纪元时整份替换 02 / 03</text>
+  <text x="40" y="614" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="#9E9889">纪元专属层 · 与语法层（01）组合成完整视觉；换纪元时整份替换 02 / 03</text>
 </svg>

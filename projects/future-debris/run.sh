@@ -81,7 +81,7 @@ case "${1:-run}" in
     python3 "$HERE/tools/check_file_size.py" --self-test
     echo "── 2/5 数据契约 ──"
     python3 "$HERE/tools/check_data.py" --self-test
-    echo "── 3/5 视觉 token（对比度 + 层级亮度顺序） ──"
+    echo "── 3/5 视觉 token（对比度 + 层级亮度顺序 + 样张色彩越界） ──"
     python3 "$HERE/tools/check_contrast.py" --self-test
     echo "── 4/5 工程导入（Godot 装载） ──"
     need_godot
