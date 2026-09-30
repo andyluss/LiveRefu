@@ -15,9 +15,12 @@ var residue: Dictionary = {}
 var wave: Dictionary = {}
 var hand: Array[CardData] = []
 var rules: Array[RuleData] = []
+var level: LevelData = null
+var level_id: String = ""
 var turn: int = 0
 var max_turns: int = 0
 var cards_played: int = 0
+var finished: bool = false   # 通关（清完最后一波）标志；与"基地被打爆"共同构成两种终局
 var drawn: int = 0
 var seed: int = 0
 var player: AutoPlayer = null
@@ -49,4 +52,4 @@ func draw_card() -> bool:
 ## ---------- 终局 ----------
 
 func is_active() -> bool:
-	return ResourceSystem.alive(resources) and WaveSystem.index(wave) < WaveSystem.WAVES
+	return not finished and ResourceSystem.alive(resources) and WaveSystem.index(wave) < WaveSystem.wave_count(wave)

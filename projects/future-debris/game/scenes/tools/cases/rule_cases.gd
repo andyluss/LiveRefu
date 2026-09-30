@@ -6,7 +6,7 @@ class_name RuleCases
 ## 失败时无法判断是哪一条错了。
 
 static func rules_load() -> Dictionary:
-	var battle := CaseBase.new_battle()
+	var battle := CaseBase.new_battle_all_rules()
 	if battle.rules.size() != 4:
 		return CaseBase.bad("规则表应有 4 条（T1），实际 %d" % battle.rules.size())
 	for rule in battle.rules:

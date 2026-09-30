@@ -133,9 +133,24 @@
         "budget": {
           "type": "int",
           "min": 1
+        },
+        "quotas": {
+          "type": "array",
+          "items": "int"
+        },
+        "rule_set": {
+          "type": "array",
+          "items": "string"
         }
       },
-      "minEntries": 8
+      "minEntries": 8,
+      "references": [
+        {
+          "field": "rule_set",
+          "table": "rules.json",
+          "label": "关卡引用的规则卡必须存在（数组字段）"
+        }
+      ]
     },
     "modes.json": {
       "title": "模式表（≥3 个模式是纪元契约的一部分）",

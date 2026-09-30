@@ -6,7 +6,10 @@ class_name PlacePolicy
 ## 就应该只换这一个文件的行为，而不是把策略散在自动玩家与战斗里。
 
 const RESIDUE_PER_TURN_OK := 5   # 全阵每回合残渣增量上限（超过就不再往上放）
-const SLOT_CAP := 6              # 最多占用几个塔位，留出转向余地
+## 塔位上限。**S3 实测改判**：原先设 6 是"留转向余地"的自我约束，
+## 但它把自动玩家能力压在 27–28 输出/回合（电力其实充裕），导致后期波次结构上不可赢。
+## 放开到物理塔位数（[BoardSystem.MAX_SLOTS] = 8）后能力与配额才可比。
+const SLOT_CAP := BoardSystem.MAX_SLOTS
 const SLOT_DANGER := 3           # 残渣达到 每点战力损失 × 此值 后视为危险格
 const CLEAN_TARGET := 2          # 把危险格清到该值以下（2 点残渣 = 1 点战力损失，可接受）
 

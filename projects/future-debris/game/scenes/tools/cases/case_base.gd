@@ -8,9 +8,15 @@ class_name CaseBase
 
 const DECK := "RC-ATOMIC-001,RC-ATOMIC-002,RC-ATOMIC-005,RC-ATOMIC-011,RC-ATOMIC-012,RC-ATOMIC-008,RC-ATOMIC-004,RC-ATOMIC-006"
 
+## 有**全部规则**的一局（关卡默认只带一部分规则，隔离测试需要先拿到全集）。
+static func new_battle_all_rules() -> Battle:
+	var battle := new_battle()
+	battle.rules = battle.catalog.rules.duplicate()
+	return battle
+
 ## 只用**指定规则**的一局：用于隔离测试某一条规则（否则多条规则会互相影响）。
 static func new_battle_with(rule_ids: PackedStringArray) -> Battle:
-	var battle := new_battle()
+	var battle := new_battle_all_rules()
 	var kept: Array[RuleData] = []
 	for rule in battle.rules:
 		if rule_ids.has(rule.id):
@@ -24,6 +30,7 @@ static func new_battle() -> Battle:
 	# 基准局使用**节制档**自动玩家：与 `./run.sh sim` 的口径一致，
 	# 否则"验收里的游戏"和"模拟里的游戏"会是两个难度（这种不一致会让结论无法互证）。
 	battle.player = AutoPlayer.new(true)
+	battle.level_id = "LV-ATOMIC-03"   # 基准局固定用中段关卡，便于跨版本对照
 	if not battle.setup(DECK.split(","), 20, 40):
 		printerr("局初始化失败：%s" % str(battle.events))
 	return battle

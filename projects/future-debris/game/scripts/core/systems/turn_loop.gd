@@ -23,7 +23,12 @@ static func run(battle) -> Dictionary:
 	var damage := maxi(0, base_damage + RuleEngine.damage_delta(battle, residue_before_upkeep))
 	var dealt := WaveSystem.apply_damage(battle.wave, damage)
 	WaveSystem.tick_turn(battle.wave)
+	# 清完最后一波即通关。**必须显式收尾**：否则战斗不会结束，会一直空转到回合上限
+	# （实测：LV-ATOMIC-03 第 12 回合就清完了 7 波，却继续跑到第 40 回合，评分因此被算成 A 而非 S）。
+	var was_last := WaveSystem.is_last_wave(battle.wave)
 	var outcome := WaveResolver.resolve(battle.wave, battle.resources)
+	if bool(outcome["cleared"]) and was_last:
+		battle.finished = true
 	if outcome["cleared"] or outcome["leaked"]:
 		var label := "清空" if outcome["cleared"] else "漏怪 -%d" % outcome["damage"]
 		battle.events.append("T%d 第%d波 %s（输出 %d / 配额 %d）" % [

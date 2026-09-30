@@ -6,7 +6,7 @@ const DECK_SIZE := 8   # 与基准局的卡组长度一致，保证各阵营被�
 
 ## 跑一个势力 × 一档策略的矩阵，并打印一行结论。
 static func run_matrix(catalog: CardCatalog, faction_id: String, conservative: bool, decks: int, seeds: int,
-		extra_draws: int = 0, use_rules: bool = true) -> void:
+		extra_draws: int = 0, use_rules: bool = true, level_id: String = "LV-ATOMIC-03") -> void:
 	var label := "%s [%s]" % [faction_id, "节制" if conservative else "贪心"]
 	var pool := catalog.cards_of_faction(faction_id)
 	if pool.is_empty():
@@ -17,6 +17,7 @@ static func run_matrix(catalog: CardCatalog, faction_id: String, conservative: b
 		var deck := deck_from_pool(pool, deck_index)
 		for seed_index in seeds:
 			var battle := Battle.new()
+			battle.level_id = level_id
 			if not battle.setup(deck, 20, 40):
 				continue
 			battle.seed = seed_index

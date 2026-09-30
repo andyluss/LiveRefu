@@ -3,6 +3,16 @@ class_name BattleSetup
 ## 组局：装载数据表 → 组卡组 → 初始化各系统。**把"准备一局"与"打完一局"分开**，
 ## 这样测试可以只准备、不下场（断言初始化本身），也可以准备多次而不互相污染。
 
+## 按关卡的 rule_set 选规则；关卡为空时用**全部**规则（便于整体模拟）。
+static func _select_rules(battle) -> Array[RuleData]:
+	var out: Array[RuleData] = []
+	if battle.level == null:
+		return battle.catalog.rules.duplicate()
+	for rule in battle.catalog.rules:
+		if battle.level.rule_set.has(rule.id):
+			out.append(rule)
+	return out
+
 ## 准备一局；返回是否就绪（失败原因写进 battle.events，不静默使用默认值）。
 static func prepare(battle, deck_ids: PackedStringArray, base_hp: int, turn_limit: int) -> bool:
 	var loaded := CardCatalog.load_all()
@@ -17,8 +27,13 @@ static func prepare(battle, deck_ids: PackedStringArray, base_hp: int, turn_limi
 	battle.board = BoardSystem.init_board()
 	battle.resources = ResourceSystem.init_resources(base_hp)
 	battle.residue = ResidueSystem.init_residue()
-	battle.wave = WaveSystem.init_wave()
-	battle.rules = battle.catalog.rules.duplicate()
+	# 关卡决定"打多少波、每波多难、生效哪些规则"——纪元差异的第二个配置点
+	battle.level = battle.catalog.levels.get(battle.level_id)
+	var quotas: PackedInt32Array = PackedInt32Array()
+	if battle.level != null:
+		quotas = battle.level.quotas   # 三元表达式在 GDScript 里推不出类型，必须显式写（踩过两次）
+	battle.wave = WaveSystem.init_wave(quotas)
+	battle.rules = _select_rules(battle)
 	battle.turn = 0
 	battle.max_turns = turn_limit
 	battle.cards_played = 0

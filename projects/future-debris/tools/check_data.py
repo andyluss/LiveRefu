@@ -132,10 +132,22 @@ def validate_references(
         for index, entry in enumerate(entries):
             if not isinstance(entry, dict) or entry.get(field) is None:
                 continue
-            if str(entry[field]) not in target_ids:
+            value = entry[field]
+            # 支持**数组字段**（如关卡的 rule_set）：逐元素校验。
+            # 曾经只处理标量，于是"数组里塞一个不存在的 id"不会被发现——
+            # 是关卡表引入 rule_set 时暴露的（单元素数组恰好通过，多元素才报错）。
+            if isinstance(value, list):
+                for element in value:
+                    if isinstance(element, str) and element not in target_ids:
+                        report.error(
+                            f"tables/{rel_name}[{index}]",
+                            f"字段 {field} 的元素 {element!r} 在 {target_table} 中不存在（{label}）",
+                        )
+                continue
+            if str(value) not in target_ids:
                 report.error(
                     f"tables/{rel_name}[{index}]",
-                    f"字段 {field}={entry[field]!r} 在 {target_table} 中不存在（{label}）",
+                    f"字段 {field}={value!r} 在 {target_table} 中不存在（{label}）",
                 )
 
 
@@ -291,7 +303,27 @@ def run_reference_self_test() -> int:
         ("悬空引用", [{"id": "RC-X-001", "faction": "FAC-ATOMIC-GHOST"}], good_factions, True),
         ("引用目标为空表", [{"id": "RC-X-001", "faction": "FAC-ATOMIC-AEC"}], [], True),
     ]
+    array_spec = {
+        "minEntries": 1,
+        "entryFields": {"id": {"type": "string"}, "rule_set": {"type": "array", "items": "string"}},
+        "references": [{"field": "rule_set", "table": "rules.json", "label": "关卡引用的规则卡必须存在"}],
+    }
+    array_cases = [
+        ("数组引用全部合法", [{"id": "LV-1", "rule_set": ["R-1", "R-2"]}], False),
+        ("数组引用部分悬空", [{"id": "LV-1", "rule_set": ["R-1", "R-9"]}], True),
+    ]
     failures = 0
+    for label, entries, expect_error in array_cases:
+        report = Report()
+        validate_references(
+            "levels.json", array_spec, entries,
+            {"rules.json": [{"id": "R-1"}, {"id": "R-2"}]}, report,
+        )
+        hit = bool(report.errors)
+        ok = hit == expect_error
+        failures += 0 if ok else 1
+        detail = report.errors[0] if report.errors else "无报错"
+        print(f"  [{'OK  ' if ok else 'MISS'}] {label} → 期望报错={expect_error}；实际：{detail}")
     for label, entries, factions, expect_error in cases:
         report = Report()
         validate_references("cards.json", spec, entries, {"factions.json": factions}, report)

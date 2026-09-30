@@ -36,3 +36,20 @@ static func run_terminates() -> Dictionary:
 		summary["waves_cleared"], summary["residue_total"],
 	])
 	return CaseBase.ok()
+
+## **清完最后一波必须立即结束**，不得空转到回合上限。
+## 实测 bug：这一条没守时，一局在第 12 回合就清完 7 波却跑到第 40 回合，
+## 评分被系统性低估（S → A），而且**没有任何报错**。
+static func finishes_on_clear() -> Dictionary:
+	var battle := CaseBase.new_battle()
+	while battle.is_active() and battle.turn < battle.max_turns:
+		battle.tick()
+	if int(battle.resources["base_hp"]) <= 0:
+		return CaseBase.ok()   # 打爆的局不适用（另一种终局）
+	if not battle.finished:
+		return CaseBase.bad("清完最后一波后应标记 finished，实际未标记（跑了 %d 回合）" % battle.turn)
+	if WaveSystem.index(battle.wave) != WaveSystem.wave_count(battle.wave) - 1:
+		return CaseBase.bad("结束时应在最后一波，实际 index=%d" % WaveSystem.index(battle.wave))
+	if battle.turn >= battle.max_turns:
+		return CaseBase.bad("通关不应耗满回合上限（%d）" % battle.max_turns)
+	return CaseBase.ok()

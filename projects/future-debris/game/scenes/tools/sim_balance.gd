@@ -11,6 +11,7 @@ var _decks_per_faction := 4
 var _seeds := 5
 var _extra_draws := 0
 var _use_rules := true
+var _level_id := "LV-ATOMIC-03"
 
 func _ready() -> void:
 	_parse_args()
@@ -25,10 +26,13 @@ func _ready() -> void:
 		catalog.cards.size(), (catalog.rules.size() if _use_rules else 0), catalog.factions.size(),
 		_decks_per_faction, _seeds, catalog.factions.size() * _decks_per_faction * _seeds * 2,
 	])
-	print("实验开关：每回合主动补抽 %d 张 ｜ 规则卡 %s" % [_extra_draws, "启用" if _use_rules else "关闭"])
+	print("实验开关：每回合主动补抽 %d 张 ｜ 规则卡 %s ｜ 关卡 %s" % [
+		_extra_draws, "启用" if _use_rules else "关闭", _level_id,
+	])
 	for faction_id in catalog.factions:
 		for conservative in [true, false]:
-			SimReport.run_matrix(catalog, faction_id, conservative, _decks_per_faction, _seeds, _extra_draws, _use_rules)
+			SimReport.run_matrix(catalog, faction_id, conservative, _decks_per_faction, _seeds,
+				_extra_draws, _use_rules, _level_id)
 	print("模拟完成（数字为实测，不构成平衡结论）")
 	get_tree().quit(0)
 
@@ -43,3 +47,5 @@ func _parse_args() -> void:
 			_extra_draws = maxi(0, int(argv[index + 1]))
 		elif argv[index] == "--no-rules":
 			_use_rules = false
+		elif argv[index] == "--level" and index + 1 < argv.size():
+			_level_id = argv[index + 1]

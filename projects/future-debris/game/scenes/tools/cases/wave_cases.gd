@@ -33,3 +33,25 @@ static func overflow_not_banked() -> Dictionary:
 	if not WaveSystem.cleared(wave) or WaveSystem.remaining(wave) != 0:
 		return CaseBase.bad("打满后剩余应归零")
 	return CaseBase.ok()
+
+## **最后一波结束后不得凭空多出一波**（实测 bug：会进入不存在的第 N+1 波，
+## 且它的配额取自兜底公式，看起来像"关卡数据没生效"）。
+static func no_extra_wave() -> Dictionary:
+	var quotas := PackedInt32Array([10, 12, 14])
+	var wave := WaveSystem.init_wave(quotas)
+	if WaveSystem.wave_count(wave) != 3:
+		return CaseBase.bad("波数应为 3，实际 %d" % WaveSystem.wave_count(wave))
+	for _i in quotas.size():
+		WaveSystem.apply_damage(wave, WaveSystem.quota(wave))
+		var was_last := WaveSystem.is_last_wave(wave)   # 必须在 advance 之前判断
+		var has_next := WaveSystem.advance(wave)
+		if was_last and has_next:
+			return CaseBase.bad("已是最后一波却报告还有下一波")
+		if was_last:
+			break
+	if WaveSystem.index(wave) != quotas.size() - 1:
+		return CaseBase.bad("不应越过最后一波：index=%d" % WaveSystem.index(wave))
+	# 最后一波清空后再次 advance 必须无效
+	if WaveSystem.advance(wave) or WaveSystem.index(wave) != quotas.size() - 1:
+		return CaseBase.bad("最后一波清空后不得再进入下一波")
+	return CaseBase.ok()
