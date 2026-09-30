@@ -83,6 +83,15 @@ case "${1:-run}" in
     exec "$GODOT" --path "$GAME" res://scenes/tools/screenshot.tscn -- "$@"
     ;;
 
+  scene)
+    # 场景与视图验收：界面能装载 + 几何/点击/取色的不变量。
+    shift
+    need_godot
+    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+    headless_assert "res://scenes/tools/scene_check.tscn" "$@"
+    echo "场景验收：PASS"
+    ;;
+
   theme)
     # 从 token 契约编译 Godot 主题资源，并断言 token 真的生效（11 项）。
     shift
@@ -112,24 +121,26 @@ case "${1:-run}" in
   check)
     # 六道闸门（S2）：文件预算 → 数据契约 → 视觉 token → 工程装载 → 无头自检 → 玩法行为验收。
     # 顺序有讲究：静态错误最便宜，先跑；需要引擎的后跑；最贵的玩法验收放最后。
-    echo "══ Future Debris · 验收闸门（S3）══"
-    echo "── 1/7 文件预算 ──"
+    echo "══ Future Debris · 验收闸门（S4）══"
+    echo "── 1/8 文件预算 ──"
     python3 "$HERE/tools/check_file_size.py" --self-test
-    echo "── 2/7 数据契约 ──"
+    echo "── 2/8 数据契约 ──"
     python3 "$HERE/tools/check_data.py" --self-test
-    echo "── 3/7 视觉 token 契约（对比度 + 层级 + 样张色彩 + 文档↔引擎对账） ──"
+    echo "── 3/8 视觉 token 契约（对比度 + 层级 + 样张色彩 + 文档↔引擎对账） ──"
     python3 "$HERE/tools/check_contrast.py" --self-test
     python3 "$HERE/tools/check_tokens.py" --self-test
-    echo "── 4/7 工程导入（Godot 装载） ──"
+    echo "── 4/8 工程导入（Godot 装载） ──"
     need_godot
     "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
     echo "导入完成"
-    echo "── 5/7 主题落地（token → Godot Theme） ──"
+    echo "── 5/8 主题落地（token → Godot Theme） ──"
     headless_assert "res://scenes/tools/theme_check.tscn" "$@"
-    echo "── 6/7 无头自检（工程装载） ──"
+    echo "── 6/8 无头自检（工程装载） ──"
     headless_assert "res://scenes/tools/boot_probe.tscn" "$@"
-    echo "── 7/7 玩法行为验收（S2 核心循环） ──"
+    echo "── 7/8 玩法行为验收（核心循环） ──"
     headless_assert "res://scenes/tools/headless_test.tscn" "$@"
+    echo "── 8/8 场景与视图验收（界面装载 / 几何 / 命中判定 / 取色） ──"
+    headless_assert "res://scenes/tools/scene_check.tscn" "$@"
     echo "══ 全部闸门通过 ══"
     ;;
 

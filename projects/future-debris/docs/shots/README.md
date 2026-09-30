@@ -4,6 +4,7 @@
 
 | 文件 | 是什么 | 怎么重新生成 |
 | --- | --- | --- |
+| [`battle_preview.png`](battle_preview.png) | **战斗界面**（S4）：HUD（电力/残渣/波次/基地条/生效规则）+ 8 个塔位 + 手牌（费用/战力/供电/残渣），全部取色自主题 | `./run.sh shot battle_preview.png`（会先重建主题资源） |
 | [`theme_preview.png`](theme_preview.png) | 语法层预览（5 级文字 + 全部语义色 + 控件三态），窗口底色 = `--bg-base`（**写文件前断言过**） | `./run.sh shot`（会先重建主题资源） |
 | [`level_sweep.txt`](level_sweep.txt) | **8 关难度实测表**：参考卡组逐关的通关情况、剩血、回合、评级 | `./run.sh s2`（同一份数据也在每次 `./run.sh check` 的 K 组闸门里打印） |
 

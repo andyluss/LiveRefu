@@ -23,7 +23,15 @@ func _ready() -> void:
 		printerr("主题不可用：%s" % str(tokens.errors))
 		get_tree().quit(1)
 		return
-	add_child(Shell.build(theme, tokens))
+	# 拍**战斗界面**（S4 的证据）：界面自己会套 Shell
+	var scene_path := "res://scenes/app/battle.tscn"
+	for arg in argv:
+		if arg.begins_with("--scene="):
+			scene_path = arg.substr(8)
+	if scene_path.ends_with("battle.tscn"):
+		add_child((load(scene_path) as PackedScene).instantiate())
+	else:
+		add_child(Shell.build(theme, tokens))
 	# 等两帧：第一帧完成布局，第二帧才有最终渲染结果（少等一帧会截到未布局的画面）
 	await get_tree().process_frame
 	await get_tree().process_frame
