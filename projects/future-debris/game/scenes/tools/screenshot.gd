@@ -28,7 +28,7 @@ func _ready() -> void:
 	for arg in argv:
 		if arg.begins_with("--scene="):
 			scene_path = arg.substr(8)
-	if scene_path.ends_with("battle.tscn"):
+	if scene_path.ends_with("battle.tscn") or scene_path.ends_with("card_gallery.tscn"):
 		add_child((load(scene_path) as PackedScene).instantiate())
 	else:
 		add_child(Shell.build(theme, tokens))
@@ -42,7 +42,9 @@ func _ready() -> void:
 		await get_tree().process_frame
 	var image := get_viewport().get_texture().get_image()
 	var want := tokens.color("--bg-base")
-	var got := image.get_pixelv(BG_POINT)
+	# 采样**四角**取多数：内容可能铺满某一个角（卡牌库就是一屏卡面），
+	# 只采样一个点会把"内容"误判成"底色不符"（实测踩过）。
+	var got := PixelProbe.dominant_corner(image)
 	if got.to_html(false) != want.to_html(false):
 		printerr("渲染底色与契约不符：实测 #%s，契约 --bg-base #%s" % [got.to_html(false), want.to_html(false)])
 		get_tree().quit(1)

@@ -36,6 +36,15 @@ static func run(tokens: TokenSet) -> Dictionary:
 		if not (pair[1] as Color).is_equal_approx(tokens.colors[pair[0]]):
 			colors_ok = false
 	_check(errors, checks, colors_ok, "战场取色来自 token（非字面量）")
+	# 卡面版式契约：六段之和 + 余量必须等于卡高（**位置就是可读性**，
+	# 任何一段被改动都必须同时改余量，否则卡面会溢出或留白错位）
+	var sections := CardView.TOP + CardView.ART + CardView.KEYS + CardView.STATS + CardView.TEXT + CardView.BOTTOM
+	_check(errors, checks, is_equal_approx(sections, 666.0),
+		"卡面六段之和 = 666（实际 %.0f）" % sections)
+	_check(errors, checks, is_equal_approx(sections + 54.0, CardView.H),
+		"六段 + 余量 54 = 卡高 %.0f（实际 %.0f）" % [CardView.H, sections + 54.0])
+	_check(errors, checks, CardView.COMPACT_SCALE > 0.0 and CardView.COMPACT_SCALE < 1.0,
+		"紧凑模式比例在 0..1 之间（手牌用）")
 	# 残渣热力：0 点必须是背景色（否则"干净格"看起来像"有污染"）
 	_check(errors, checks, BattlePalette.residue_heat(tokens, 0, 8) == tokens.color("--bg-base"),
 		"残渣为 0 时热力色 = --bg-base")

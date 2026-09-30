@@ -80,6 +80,7 @@ case "${1:-run}" in
     "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
     # 先重建主题资源再截图：否则截到的是**上一次**的主题（.tres 只是缓存，不会自动跟随 token 变化）
     "$GODOT" --headless --path "$GAME" res://scenes/tools/theme_check.tscn >/dev/null 2>&1 || true
+    # 参数透传：文件名 + 可选 --scene=res://...（默认拍战斗界面）
     exec "$GODOT" --path "$GAME" res://scenes/tools/screenshot.tscn -- "$@"
     ;;
 
