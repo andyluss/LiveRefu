@@ -1,0 +1,11 @@
+# 8 关难度实测（参考卡组 = 基准卡组 8 张，节制档自动玩家）
+# 生成命令：./run.sh s2   （同一份数据也在 ./run.sh check 的 K 组闸门打印）
+# 采集：2026-09-30
+LV-ATOMIC-01 通关 剩血20 回合8 S
+LV-ATOMIC-02 通关 剩血20 回合12 S
+LV-ATOMIC-03 通关 剩血20 回合12 S
+LV-ATOMIC-04 通关 剩血20 回合16 S
+LV-ATOMIC-05 通关 剩血20 回合17 S
+LV-ATOMIC-06 通关 剩血20 回合18 S
+LV-ATOMIC-07 通关 剩血20 回合28 S
+LV-ATOMIC-08 通关 剩血17 回合35 A
