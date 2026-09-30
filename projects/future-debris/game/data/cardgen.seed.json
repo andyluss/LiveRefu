@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "note": "卡表量产种子表：生成器的**唯一输入**。改数值请改这里然后重跑 tools/gen_cards.py。生成必须幂等（同种子同结果），且不得覆盖手写卡（id 数字 ≤ 12）。",
+  "seed": 20260930,
+  "factions": [
+    { "id": "FAC-ATOMIC-AEC" },
+    { "id": "FAC-ATOMIC-SUB" },
+    { "id": "FAC-ATOMIC-HAU" },
+    { "id": "FAC-ATOMIC-ROA" }
+  ],
+  "archetypes": [
+    {
+      "name": "重装防线型",
+      "suffix": "火力台",
+      "cost": [2, 4],
+      "might_per_cost": 2.5,
+      "power_per_cost": 0.2,
+      "residue_ratio": 0.45,
+      "text": "部署后自动交战；输出高，但每回合持续留下残渣。"
+    },
+    {
+      "name": "洁净供给型",
+      "suffix": "供电组",
+      "cost": [1, 3],
+      "might_per_cost": 1.0,
+      "power_per_cost": 1.4,
+      "residue_ratio": 0.05,
+      "text": "为相邻塔位供电，几乎不产生残渣。"
+    },
+    {
+      "name": "污染套利型",
+      "suffix": "回收机",
+      "cost": [1, 3],
+      "might_per_cost": 1.6,
+      "power_per_cost": 0.3,
+      "residue_ratio": 0.9,
+      "text": "从降级区里获利，代价是自身所在格迅速恶化。"
+    },
+    {
+      "name": "规制支援型",
+      "suffix": "稽查队",
+      "cost": [2, 5],
+      "might_per_cost": 1.8,
+      "power_per_cost": 0.4,
+      "residue_ratio": 0.15,
+      "text": "压制周边违规操作，减少本区域残渣累积速度。"
+    }
+  ],
+  "name_pool": [
+    "铆钉", "搪瓷", "轨道", "冷却", "样板", "听证", "隔离", "尾鳍",
+    "薄荷", "镀铬", "示波", "铅衬", "炉心", "清运", "星爆", "郊区",
+    "按钮", "胶囊", "静电", "浅滩", "指示灯", "复合", "装配", "备用"
+  ],
+  "keywords": [
+    "穿透", "修复", "阻挡", "清洁", "规制", "搬运", "封存", "防护",
+    "适应", "残片", "爆发", "基座", "供电", "耗材", "降级", "监测"
+  ]
+}

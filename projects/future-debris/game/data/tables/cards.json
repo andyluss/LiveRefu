@@ -1,19 +1,288 @@
 {
   "schemaVersion": 1,
   "name": "atomic__cards",
-  "note": "原子纪元卡表示例。S1 只放 12 条**占位**，用于让校验闸门与批量管线先跑通；真实卡表在 S2 由「表→生成→模拟→校验」管线量产（纪元契约 v2 要求 200–300 张）。",
+  "note": "原子纪元卡表：手写 12 张（产品识别度，不可被生成物覆盖） + 生成 6 张（由 tools/gen_cards.py 依 cardgen.seed.json 幂等产出）。生成物必须过 ./run.sh check 的数据闸门；改数值请改种子表后重跑。",
   "entries": [
-    { "id": "RC-ATOMIC-001", "name": "模块化基座", "faction": "FAC-ATOMIC-AEC", "kind": "tower", "rarity": "common", "cost": 2, "power": 6, "compute": 0, "residue": 1, "keywords": ["基座", "供电"], "text": "部署后为相邻塔位提供 1 点电力。每回合累积 1 点残渣。" },
-    { "id": "RC-ATOMIC-002", "name": "磁轨钉枪", "faction": "FAC-ATOMIC-AEC", "kind": "tower", "rarity": "common", "cost": 3, "power": 9, "compute": 0, "residue": 2, "keywords": ["穿透", "耗材"], "text": "对直线上的敌人造成穿透伤害。使用后本关残渣 +2。" },
-    { "id": "RC-ATOMIC-003", "name": "巡回检修车", "faction": "FAC-ATOMIC-AEC", "kind": "unit", "rarity": "common", "cost": 1, "power": 3, "compute": 0, "residue": 0, "keywords": ["修复"], "text": "每波结束时修复相邻单位，自身不造成残渣。" },
-    { "id": "RC-ATOMIC-004", "name": "过载射击", "faction": "FAC-ATOMIC-AEC", "kind": "skill", "rarity": "rare", "cost": 1, "power": 4, "compute": 1, "residue": 3, "keywords": ["爆发", "污染"], "text": "本回合所有塔攻击力 +50%，残渣 +3。" },
-    { "id": "RC-ATOMIC-005", "name": "搪瓷围墙", "faction": "FAC-ATOMIC-SUB", "kind": "tower", "rarity": "common", "cost": 2, "power": 2, "compute": 0, "residue": 0, "keywords": ["阻挡", "洁净"], "text": "阻挡敌人前进；相邻格残渣累积速度减半。" },
-    { "id": "RC-ATOMIC-006", "name": "草坪洒水器", "faction": "FAC-ATOMIC-SUB", "kind": "support", "rarity": "common", "cost": 1, "power": 1, "compute": 0, "residue": 0, "keywords": ["清洁"], "text": "每波清除本格 1 点残渣。" },
-    { "id": "RC-ATOMIC-007", "name": "样板街巡警", "faction": "FAC-ATOMIC-SUB", "kind": "unit", "rarity": "rare", "cost": 3, "power": 7, "compute": 1, "residue": 0, "keywords": ["规制"], "text": "所在区域每有 3 点残渣，本卡攻击力下降 1。" },
-    { "id": "RC-ATOMIC-008", "name": "清运卡车", "faction": "FAC-ATOMIC-HAU", "kind": "unit", "rarity": "common", "cost": 2, "power": 5, "compute": 0, "residue": 1, "keywords": ["搬运"], "text": "把一格残渣搬到另一格；自身留下 1 点残渣。" },
-    { "id": "RC-ATOMIC-009", "name": "深埋处置场", "faction": "FAC-ATOMIC-HAU", "kind": "tower", "rarity": "epic", "cost": 5, "power": 4, "compute": 0, "residue": 4, "keywords": ["封存", "代价"], "text": "吸收附近残渣，但本关结束时结算双倍降级区。" },
-    { "id": "RC-ATOMIC-010", "name": "铅衬外套", "faction": "FAC-ATOMIC-HAU", "kind": "modifier", "rarity": "rare", "cost": 2, "power": 0, "compute": 0, "residue": 0, "keywords": ["防护"], "text": "装备单位免疫降级区伤害，但移动速度下降。" },
-    { "id": "RC-ATOMIC-011", "name": "辐射漫游者", "faction": "FAC-ATOMIC-ROA", "kind": "unit", "rarity": "rare", "cost": 3, "power": 8, "compute": 1, "residue": 0, "keywords": ["适应"], "text": "站在降级区上时攻击力 +3，离开后每波损失 1 点生命。" },
-    { "id": "RC-ATOMIC-012", "name": "渣土图腾", "faction": "FAC-ATOMIC-ROA", "kind": "relic", "rarity": "epic", "cost": 4, "power": 3, "compute": 0, "residue": 2, "keywords": ["残片"], "text": "本关每有 5 点残渣，全队攻击力 +1；结算时保留 2 点残渣进入下一关。" }
+    {
+      "id": "RC-ATOMIC-001",
+      "name": "模块化基座",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 2,
+      "power": 6,
+      "compute": 0,
+      "residue": 1,
+      "keywords": [
+        "基座",
+        "供电"
+      ],
+      "text": "部署后为相邻塔位提供 1 点电力。每回合累积 1 点残渣。"
+    },
+    {
+      "id": "RC-ATOMIC-002",
+      "name": "磁轨钉枪",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 3,
+      "power": 9,
+      "compute": 0,
+      "residue": 2,
+      "keywords": [
+        "穿透",
+        "耗材"
+      ],
+      "text": "对直线上的敌人造成穿透伤害。使用后本关残渣 +2。"
+    },
+    {
+      "id": "RC-ATOMIC-003",
+      "name": "巡回检修车",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 1,
+      "power": 3,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "修复"
+      ],
+      "text": "每波结束时修复相邻单位，自身不造成残渣。"
+    },
+    {
+      "id": "RC-ATOMIC-004",
+      "name": "过载射击",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "skill",
+      "rarity": "rare",
+      "cost": 1,
+      "power": 4,
+      "compute": 1,
+      "residue": 3,
+      "keywords": [
+        "爆发",
+        "污染"
+      ],
+      "text": "本回合所有塔攻击力 +50%，残渣 +3。"
+    },
+    {
+      "id": "RC-ATOMIC-005",
+      "name": "搪瓷围墙",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 2,
+      "power": 2,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "阻挡",
+        "洁净"
+      ],
+      "text": "阻挡敌人前进；相邻格残渣累积速度减半。"
+    },
+    {
+      "id": "RC-ATOMIC-006",
+      "name": "草坪洒水器",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "support",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "清洁"
+      ],
+      "text": "每波清除本格 1 点残渣。"
+    },
+    {
+      "id": "RC-ATOMIC-007",
+      "name": "样板街巡警",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "unit",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 7,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "规制"
+      ],
+      "text": "所在区域每有 3 点残渣，本卡攻击力下降 1。"
+    },
+    {
+      "id": "RC-ATOMIC-008",
+      "name": "清运卡车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 2,
+      "power": 5,
+      "compute": 0,
+      "residue": 1,
+      "keywords": [
+        "搬运"
+      ],
+      "text": "把一格残渣搬到另一格；自身留下 1 点残渣。"
+    },
+    {
+      "id": "RC-ATOMIC-009",
+      "name": "深埋处置场",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "epic",
+      "cost": 5,
+      "power": 4,
+      "compute": 0,
+      "residue": 4,
+      "keywords": [
+        "封存",
+        "代价"
+      ],
+      "text": "吸收附近残渣，但本关结束时结算双倍降级区。"
+    },
+    {
+      "id": "RC-ATOMIC-010",
+      "name": "铅衬外套",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "modifier",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 0,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "防护"
+      ],
+      "text": "装备单位免疫降级区伤害，但移动速度下降。"
+    },
+    {
+      "id": "RC-ATOMIC-011",
+      "name": "辐射漫游者",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "unit",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 8,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "适应"
+      ],
+      "text": "站在降级区上时攻击力 +3，离开后每波损失 1 点生命。"
+    },
+    {
+      "id": "RC-ATOMIC-012",
+      "name": "渣土图腾",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "relic",
+      "rarity": "epic",
+      "cost": 4,
+      "power": 3,
+      "compute": 0,
+      "residue": 2,
+      "keywords": [
+        "残片"
+      ],
+      "text": "本关每有 5 点残渣，全队攻击力 +1；结算时保留 2 点残渣进入下一关。"
+    },
+    {
+      "id": "RC-ATOMIC-013",
+      "name": "炉心供电组",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "relic",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "封存",
+        "残片"
+      ],
+      "text": "为相邻塔位供电，几乎不产生残渣。（费用 1，战力 1，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-014",
+      "name": "备用稽查队",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "skill",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 1,
+      "compute": 0,
+      "residue": 1,
+      "keywords": [
+        "供电",
+        "降级"
+      ],
+      "text": "压制周边违规操作，减少本区域残渣累积速度。（费用 3，战力 5，残渣 1）"
+    },
+    {
+      "id": "RC-ATOMIC-015",
+      "name": "浅滩稽查队",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "unit",
+      "rarity": "epic",
+      "cost": 5,
+      "power": 2,
+      "compute": 1,
+      "residue": 1,
+      "keywords": [
+        "基座",
+        "残片"
+      ],
+      "text": "压制周边违规操作，减少本区域残渣累积速度。（费用 5，战力 9，残渣 1）"
+    },
+    {
+      "id": "RC-ATOMIC-016",
+      "name": "样板供电组",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 1,
+      "power": 1,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "降级",
+        "防护"
+      ],
+      "text": "为相邻塔位供电，几乎不产生残渣。（费用 1，战力 1，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-017",
+      "name": "胶囊供电组",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "unit",
+      "rarity": "epic",
+      "cost": 3,
+      "power": 4,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "残片",
+        "搬运"
+      ],
+      "text": "为相邻塔位供电，几乎不产生残渣。（费用 3，战力 3，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-018",
+      "name": "炉心回收机",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "epic",
+      "cost": 1,
+      "power": 0,
+      "compute": 1,
+      "residue": 2,
+      "keywords": [
+        "穿透",
+        "监测"
+      ],
+      "text": "从降级区里获利，代价是自身所在格迅速恶化。（费用 1，战力 2，残渣 2）"
+    }
   ]
 }

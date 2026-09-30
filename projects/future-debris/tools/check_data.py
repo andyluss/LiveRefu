@@ -98,7 +98,50 @@ def validate_field(where: str, field: str, spec: dict, value: object, report: Re
                     report.error(where, f"字段 {field}[{index}] 元素类型应为 {item_kind}")
 
 
-def validate_table(rel_name: str, spec: dict, report: Report) -> int:
+def load_all_entries(report: Report) -> dict[str, list]:
+    """读出所有表的 entries，供跨表引用校验使用。"""
+    out: dict[str, list] = {}
+    for path in sorted(TABLES.glob("*.json")):
+        table = load_json(path, report)
+        if table is None:
+            continue
+        entries = table.get("entries")
+        out[path.name] = entries if isinstance(entries, list) else []
+    return out
+
+
+def validate_references(
+    rel_name: str, spec: dict, entries: list, all_entries: dict[str, list], report: Report
+) -> None:
+    """跨表引用完整性：卡表里引用的阵营必须真实存在。
+
+    为什么必须机器守：这类错误**不会让任何一张表自身违规**——
+    卡表字段齐全、势力表格式正确，但两者之间断了一根线。它只在运行期表现为
+    "某个阵营的卡永远不出现"或读表报错，是最容易漏到最后才炸的一类缺陷。
+    """
+    for ref in spec.get("references", []):
+        field = ref.get("field")
+        target_table = ref.get("table")
+        label = ref.get("label", f"{field} → {target_table}")
+        target_ids = {
+            str(row.get("id")) for row in all_entries.get(target_table, []) if isinstance(row, dict)
+        }
+        if not target_ids:
+            report.error(f"tables/{rel_name}", f"引用目标 {target_table} 为空或不存在，无法校验（{label}）")
+            continue
+        for index, entry in enumerate(entries):
+            if not isinstance(entry, dict) or entry.get(field) is None:
+                continue
+            if str(entry[field]) not in target_ids:
+                report.error(
+                    f"tables/{rel_name}[{index}]",
+                    f"字段 {field}={entry[field]!r} 在 {target_table} 中不存在（{label}）",
+                )
+
+
+def validate_table(
+    rel_name: str, spec: dict, report: Report, all_entries: dict[str, list] | None = None
+) -> int:
     path = TABLES / rel_name
     table = load_json(path, report)
     if table is None:
@@ -140,6 +183,9 @@ def validate_table(rel_name: str, spec: dict, report: Report) -> int:
                 report.error(where, f"id 重复：{entry_id}（首次出现在 [{seen_ids[entry_id]}]）")
             else:
                 seen_ids[entry_id] = index
+
+    if all_entries is not None and spec.get("references"):
+        validate_references(rel_name, spec, entries, all_entries, report)
     return len(entries)
 
 
@@ -155,10 +201,11 @@ def validate_all(report: Report, only: str | None = None) -> dict[str, int]:
         return {}
 
     counts: dict[str, int] = {}
+    all_entries = load_all_entries(report)
     for rel_name, spec in sorted(tables.items()):
         if only and rel_name != only:
             continue
-        counts[rel_name] = validate_table(rel_name, spec, report)
+        counts[rel_name] = validate_table(rel_name, spec, report, all_entries)
 
     # 契约里声明的表必须在磁盘上存在，反之磁盘上的表也必须在契约里——双向检查，
     # 否则"新加了一张表但忘了写契约"会静默通过。
@@ -226,6 +273,40 @@ BAD_CASES: list[tuple[str, dict, dict, str]] = [
 ]
 
 
+def run_reference_self_test() -> int:
+    """断言跨表引用校验：悬空引用会被抓到，合法引用不误报。
+
+    这个用例必须**独立于单表用例**：悬空引用不会让任何一张表自身违规，
+    所以它只能被专门构造的跨表场景抓住。
+    """
+    print("[self-test] 断言跨表引用校验（悬空引用必须被抓到）")
+    spec = {
+        "minEntries": 1,
+        "entryFields": {"id": {"type": "string", "pattern": "^RC-X-[0-9]{3}$"}, "faction": {"type": "string"}},
+        "references": [{"field": "faction", "table": "factions.json", "label": "卡牌阵营必须存在于势力表"}],
+    }
+    good_factions = [{"id": "FAC-ATOMIC-AEC"}]
+    cases = [
+        ("合法引用", [{"id": "RC-X-001", "faction": "FAC-ATOMIC-AEC"}], good_factions, False),
+        ("悬空引用", [{"id": "RC-X-001", "faction": "FAC-ATOMIC-GHOST"}], good_factions, True),
+        ("引用目标为空表", [{"id": "RC-X-001", "faction": "FAC-ATOMIC-AEC"}], [], True),
+    ]
+    failures = 0
+    for label, entries, factions, expect_error in cases:
+        report = Report()
+        validate_references("cards.json", spec, entries, {"factions.json": factions}, report)
+        hit = bool(report.errors)
+        ok = hit == expect_error
+        failures += 0 if ok else 1
+        detail = report.errors[0] if report.errors else "无报错"
+        print(f"  [{'OK  ' if ok else 'MISS'}] {label} → 期望报错={expect_error}；实际：{detail}")
+    if failures:
+        print(f"[self-test] FAIL：{failures}/{len(cases)} 个用例不符预期")
+        return 1
+    print(f"[self-test] PASS：{len(cases)}/{len(cases)} 个用例符合预期")
+    return 0
+
+
 def run_self_test() -> int:
     print("[self-test] 用故意坏掉的数据断言校验器会报错（负向用例）")
     failures = 0
@@ -282,6 +363,9 @@ def main() -> int:
 
     if args.self_test:
         code = run_self_test()
+        if code != 0:
+            return code
+        code = run_reference_self_test()
         if code != 0:
             return code
 

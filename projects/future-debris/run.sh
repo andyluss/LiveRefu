@@ -65,7 +65,7 @@ case "${1:-run}" in
     ;;
 
   boot)
-    # 只跑无头自检（不跑其它闸门），用于快速确认工程还能装载。
+    # 只跑无头自检（工程装载），用于快速确认工程还能装载。
     shift
     need_godot
     "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
@@ -73,22 +73,41 @@ case "${1:-run}" in
     echo "无头自检：PASS"
     ;;
 
+  s2)
+    # 只跑 S2 玩法验收（资源循环 / 出牌原子性 / 残渣 / 波次 / 确定性 / 评级）。
+    shift
+    need_godot
+    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+    headless_assert "res://scenes/tools/headless_test.tscn" "$@"
+    echo "S2 玩法验收：PASS"
+    ;;
+
+  sim)
+    # 平衡模拟：按阵营自动组牌并跑矩阵（不需要人写卡组）。参数形如 --decks 4 --seeds 5。
+    shift
+    need_godot
+    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+    exec "$GODOT" --headless --path "$GAME" res://scenes/tools/sim_balance.tscn -- "$@"
+    ;;
+
   check)
-    # 五道闸门（S1.1）：文件预算 → 数据契约 → 视觉 token → 工程装载 → 无头自检。
-    # 顺序有讲究：静态错误最便宜，先跑；需要引擎的最后跑。
-    echo "══ Future Debris · 验收闸门（S1.1）══"
-    echo "── 1/5 文件预算 ──"
+    # 六道闸门（S2）：文件预算 → 数据契约 → 视觉 token → 工程装载 → 无头自检 → 玩法行为验收。
+    # 顺序有讲究：静态错误最便宜，先跑；需要引擎的后跑；最贵的玩法验收放最后。
+    echo "══ Future Debris · 验收闸门（S2）══"
+    echo "── 1/6 文件预算 ──"
     python3 "$HERE/tools/check_file_size.py" --self-test
-    echo "── 2/5 数据契约 ──"
+    echo "── 2/6 数据契约 ──"
     python3 "$HERE/tools/check_data.py" --self-test
-    echo "── 3/5 视觉 token（对比度 + 层级亮度顺序 + 样张色彩越界） ──"
+    echo "── 3/6 视觉 token（对比度 + 层级亮度顺序 + 样张色彩越界） ──"
     python3 "$HERE/tools/check_contrast.py" --self-test
-    echo "── 4/5 工程导入（Godot 装载） ──"
+    echo "── 4/6 工程导入（Godot 装载） ──"
     need_godot
     "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
     echo "导入完成"
-    echo "── 5/5 无头自检 ──"
+    echo "── 5/6 无头自检（工程装载） ──"
     headless_assert "res://scenes/tools/boot_probe.tscn" "$@"
+    echo "── 6/6 玩法行为验收（S2 核心循环） ──"
+    headless_assert "res://scenes/tools/headless_test.tscn" "$@"
     echo "══ 全部闸门通过 ══"
     ;;
 
@@ -98,7 +117,7 @@ case "${1:-run}" in
     ;;
 
   *)
-    echo "用法: $0 {run|editor|check|boot|lint|data|contrast}" >&2
+    echo "用法: $0 {run|editor|check|boot|s2|lint|data|contrast}" >&2
     exit 2
     ;;
 esac

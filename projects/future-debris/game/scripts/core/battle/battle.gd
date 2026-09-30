@@ -1,0 +1,51 @@
+extends RefCounted
+class_name Battle
+## 一局战斗的**域对象**：生命周期 + 命令，状态在各 system 里。
+##
+## 铁律（[01 实现裁决记录 D2](../docs/01_实现裁决记录.md)）：**本文件不得引用任何场景、贴图或 Node**，
+## 这样 `scenes/tools/` 才能在无渲染环境下驱动完整一局并逐项断言。
+
+const BASE_GAIN := 6          # 每回合基础供电（S3 由关卡表覆盖）
+const AUTO_SELL_LIMIT := 2    # 自动玩家最多回收几次，避免"卖出买入"抖动
+
+var catalog: CardCatalog
+var board: Dictionary = {}          # slot:int -> CardInstance
+var resources: Dictionary = {}
+var residue: Dictionary = {}
+var wave: Dictionary = {}
+var hand: Array[CardData] = []
+var turn: int = 0
+var max_turns: int = 0
+var cards_played: int = 0
+var drawn: int = 0
+var seed: int = 0
+var player: AutoPlayer = null
+var events: Array[String] = []
+
+## 准备一局：装载数据表、组卡组、初始化各系统。返回是否就绪。
+func setup(deck_ids: PackedStringArray, base_hp: int, turn_limit: int) -> bool:
+	return BattleSetup.prepare(self, deck_ids, base_hp, turn_limit)
+
+## 一个回合：供电 → （自动玩家）出牌 → 场地维护 → 交战 → 波次结算。
+## 顺序的权威在 [TurnLoop]（见那里的说明：**结算顺序就是玩法规则**）。
+func tick() -> Dictionary:
+	return TurnLoop.run(self)
+
+## 跑到结束或到达回合上限；返回终局摘要（含评级）。
+func run_to_end() -> Dictionary:
+	while is_active() and turn < max_turns:
+		tick()
+	return CardFlow.summarize(self)
+
+## ---------- 薄转发（让调用方少认一个类；逻辑仍在 CardFlow） ----------
+
+func playable_count() -> int:
+	return CardFlow.playable_count(self)
+
+func draw_card() -> bool:
+	return CardFlow.draw(self)
+
+## ---------- 终局 ----------
+
+func is_active() -> bool:
+	return ResourceSystem.alive(resources) and WaveSystem.index(wave) < WaveSystem.WAVES

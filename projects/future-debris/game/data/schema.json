@@ -18,7 +18,10 @@
         "keywords": { "type": "array", "items": "string" },
         "text": { "type": "string", "minLength": 1 }
       },
-      "minEntries": 12
+      "minEntries": 12,
+      "references": [
+        { "field": "faction", "table": "factions.json", "label": "卡牌阵营必须存在于势力表" }
+      ]
     },
     "factions.json": {
       "title": "势力表",
