@@ -21,17 +21,16 @@ const FEED_RESIDUE_PER_MIGHT := 4
 ## 补偿取"清运的本行"：回收更划算，形成"搬运 + 快速换阵"的打法。
 const MOVE_SELL_REFUND_NUMERATOR := 3   # 返还 = 费用 × 3/4（其它姿态为 1/2）
 const MOVE_SELL_REFUND_DENOMINATOR := 4
-
+## 姿态取值以**数据表为准**（`moves` / `feeds` / `avoids` / `cleans`，复数）。
+## 踩过的坑：我在代码与测试里写成单数 `move`/`feed`，于是所有势力机制静默失效——
+## 断言全绿、玩法没变，**看起来像"机制没做"**。因此这里做一次归一化收口，
+## 并且 `posture()` 对未知取值返回空串（不猜）。
 ## 回收返还（按姿态）。向上取整，避免低价卡返还 0。
 static func sell_refund(battle, cost: int) -> int:
 	if posture(battle) == "moves":
 		return int(ceil(float(cost * MOVE_SELL_REFUND_NUMERATOR) / float(MOVE_SELL_REFUND_DENOMINATOR)))
 	return int(cost / 2)
 
-## 姿态取值以**数据表为准**（`moves` / `feeds` / `avoids` / `cleans`，复数）。
-## 踩过的坑：我在代码与测试里写成单数 `move`/`feed`，于是所有势力机制静默失效——
-## 断言全绿、玩法没变，**看起来像"机制没做"**。因此这里做一次归一化收口，
-## 并且 `posture()` 对未知取值返回空串（不猜）。
 const POSTURES := {
 	"avoids": "avoids", "avoid": "avoids",
 	"cleans": "cleans", "clean": "cleans",

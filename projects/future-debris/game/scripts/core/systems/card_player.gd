@@ -55,4 +55,10 @@ static func clean(battle, slot: int, amount: int) -> Dictionary:
 			actual, cost, ResourceSystem.power(battle.resources),
 		])
 	var removed := ResidueSystem.clean(battle.residue, slot, actual)
-	return {"ok": true, "reason": "", "removed": removed, "cost": cost}
+	# 势力机制的**正面收益**：`cleans` 返还一部分清理花费。
+	# 为什么要在扣费之后立刻返还（而不是回合末结算）：玩家按下的是一件事，
+	# 收益就必须与支出在同一处发生——否则"清理到底值不值"变得难以感知。
+	var rebate := FactionPayoff.clean_rebate(battle, cost)
+	if rebate > 0:
+		ResourceSystem.gain(battle.resources, rebate)
+	return {"ok": true, "reason": "", "removed": removed, "cost": cost, "rebate": rebate}

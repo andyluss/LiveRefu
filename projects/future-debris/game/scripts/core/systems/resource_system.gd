@@ -18,6 +18,16 @@ static func gain_power(state: Dictionary, board: Dictionary, base_gain: int) -> 
 static func power(state: Dictionary) -> int:
 	return int(state["power"])
 
+## 直接增加电力（势力机制的返还/利息用）。
+## **唯一的加电入口是 [gain_power]，这个函数是它的补充而不是替代**：
+## 它用于"因某个动作而发生"的电力（清理返还、回合利息），
+## 与"回合开始的产出"是两件事，分开才能各自被断言。
+static func gain(state: Dictionary, amount: int) -> int:
+	if amount <= 0:
+		return 0
+	state["power"] = int(state["power"]) + amount
+	return amount
+
 ## 支付费用；不足则返回 false 且**不改变**状态（避免"部分扣费"这种隐性 bug）。
 static func spend(state: Dictionary, amount: int) -> bool:
 	if amount < 0:

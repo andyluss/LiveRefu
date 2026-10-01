@@ -17,6 +17,12 @@ static func run(battle) -> Dictionary:
 	var actions: Array[String] = actor.play_turn(battle)
 	# 交战用的是**场地维护之前**的残渣（规则卡的阈值也因此按这个口径判定）：
 	# 否则"本回合新增的排污"会立刻参与减益，等于双重惩罚，且与玩家看到的界面不一致。
+	# 势力机制的正面收益：`avoids` 按"未污染的在用塔位"给电力利息。
+	# 放在交战之前（与产出同一时机），这样它本回合就能被花掉——
+	# 玩家才能感到"保持干净 → 这回合能多做一件事"。
+	var interest := FactionPayoff.turn_interest(battle)
+	if interest > 0:
+		ResourceSystem.gain(battle.resources, interest)
 	var residue_before_upkeep := ResidueSystem.total(battle.residue)
 	var residue_added := BoardUpkeep.accrue(battle.board, battle.residue)
 	RuleEngine.fire(battle, "before_combat")
@@ -51,5 +57,6 @@ static func run(battle) -> Dictionary:
 		"output": damage,
 		"actions": actions,
 		"zone_damage": zone_damage,
+		"interest": interest,
 		"wave": outcome,
 	}

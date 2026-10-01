@@ -22,11 +22,20 @@ const SLOT_DANGER := 3           # 残渣达到 每点战力损失 × 此值 后
 const CLEAN_TARGET := 2          # 把危险格清到该值以下（2 点残渣 = 1 点战力损失，可接受）
 
 ## 该不该清理某一格？只清"已经在吃掉战力"的格，避免把电力浪费在无痛的地方。
+##
+## **实测教训（这条判据曾让收益机制完全测不到）**：原来只清"残渣 > 2"的格，
+## 于是自动玩家几乎从不清理——我为 `cleans`/`avoids` 加的"清理返还"与"未污染利息"
+## 在逐关扫描里**一点效果都没有**（数字完全没变）。
+## 收益机制必须有人去用才测得到；而"电力有富余时顺手清理"本来就是玩家会做的事。
 static func wants_clean(battle, slot: int) -> bool:
 	var present := ResidueSystem.at(battle.residue, slot)
-	if present <= CLEAN_TARGET:
+	if present <= 0:
 		return false
-	var cost := (present - CLEAN_TARGET) * ResidueSystem.CLEAN_COST
+	var cost := maxi(0, present - CLEAN_TARGET) * ResidueSystem.CLEAN_COST
+	if cost == 0:
+		# 已经不算脏：只在**电力明显富余**时顺手清干净（阈值取"当前电力的 1/3"，
+		# 保证不会挤占出牌的钱——出牌才是主要输出手段）
+		return present > 0 and ResourceSystem.power(battle.resources) >= 3 * present
 	return cost <= ResourceSystem.power(battle.resources)
 
 ## 该不该把 card 放到 slot 上？保守策略会拒绝"会把这一格压垮"的放置。
