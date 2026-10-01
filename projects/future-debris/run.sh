@@ -127,9 +127,11 @@ case "${1:-run}" in
     WANT=$((30 * FPS))
     mkdir -p "$FRAMES" "$HERE/docs/video"
     find "$FRAMES" -name '*.png' -delete 2>/dev/null || true
-    # 分辨率可覆盖（Steam 预告片要 1080p；工程窗口是 1280x720）
+    # 分辨率与**视口**一起改（Steam 预告片要 1080p）：
+    # 只改窗口时 stretch 会把 1280 宽的视口放大，界面内容只占左上角（与截图同一个坑）。
     RES="${DEMO_RES:-1920x1080}"
-    "$GODOT" --path "$GAME" --resolution "$RES" --write-movie "$FRAMES/frame.png" --fixed-fps "$FPS" \
+    viewport_override "$RES"
+    "$GODOT" --path "$GAME" --write-movie "$FRAMES/frame.png" --fixed-fps "$FPS" \
       --quit-after $((WANT + 120)) res://scenes/app/demo.tscn 2>&1 \
       | grep -E 'DEMO|SCRIPT ERROR|frames at' || true
     RECORDED="$(find "$FRAMES" -name '*.png' | wc -l | tr -d ' ')"

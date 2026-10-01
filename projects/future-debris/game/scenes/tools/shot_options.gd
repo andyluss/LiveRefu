@@ -8,10 +8,14 @@ class_name ShotOptions
 ##   `--scene=<路径>`  要拍的场景（默认战斗界面）
 ##   `--theme`         拍主题预览（等价于不给场景）
 ##   `--with-summary`  填充一份演示结算摘要（否则结算界面只有空状态）
+##   `--turns=N`       先把战斗推进 N 个回合再截图
+##                     （**自动玩家**驱动：否则拍到的永远是"空塔位"的初始画面，
+##                      商店页需要的是"塔已铺开、降级区已扩张"的中期画面）
 
 var name := "theme_preview.png"
 var scene_path := "res://scenes/app/battle.tscn"
 var with_summary := false
+var turns := 0
 
 static func parse() -> ShotOptions:
 	var opts := ShotOptions.new()
@@ -22,6 +26,8 @@ static func parse() -> ShotOptions:
 			opts.scene_path = ""
 		elif arg == "--with-summary":
 			opts.with_summary = true
+		elif arg.begins_with("--turns="):
+			opts.turns = maxi(0, int(arg.substr(8)))
 		elif not arg.begins_with("--"):
 			opts.name = arg
 	return opts

@@ -33,6 +33,8 @@ func _ready() -> void:
 		add_child((load(opts.scene_path) as PackedScene).instantiate())
 	else:
 		add_child(Shell.build(theme, tokens))
+	# 拍中期战斗：先用自动玩家推进若干回合，否则画面永远是"空塔位"的初始状态
+	CaptureSync.advance_turns(self, opts.turns)
 	# 等两帧：第一帧完成布局，第二帧才有最终渲染结果（少等一帧会截到未布局的画面）
 	await get_tree().process_frame
 	await get_tree().process_frame

@@ -9,7 +9,11 @@ class_name HandLayout
 ##
 ## 口径：卡面最多放大到设计紧凑尺寸（[MAX_SCALE]），需要时**缩小**以放完全部手牌。
 
-const MAX_SCALE := CardView.COMPACT_SCALE
+## 手牌**最大**缩放：比契约的紧凑比例更大，好让手牌在宽视口下也长得起来。
+## 为什么不用契约值作上限（实测教训）：`COMPACT_SCALE = 0.32` 是**在 1280 视口里
+## 放 8 张牌**的尺寸；把它当上限就等于**禁止手牌放大**，于是 1920 下 8 张牌
+## 只占一半宽度、右侧一大片空白。手牌尺寸本来就该由可用宽度决定。
+const MAX_SCALE := 0.52
 const MIN_SCALE := 0.18
 const GAP := 10.0
 

@@ -1,4 +1,5 @@
 extends Control
+class_name BattleScreen
 ## 战斗界面（S4 主场景）：装配 HUD / 战场 / 手牌，并把输入接到 [BattleDriver]。
 ##
 ## 分层：本文件只做**装配与输入**；逻辑在 core，绘制在 view。
