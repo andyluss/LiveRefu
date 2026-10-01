@@ -22,7 +22,7 @@ func setup(battle: Battle, tokens: TokenSet, font: Font) -> void:
 	_tokens = tokens
 	_font = font
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	custom_minimum_size = Vector2(0, CardView.H * CARD_SCALE + 8)
+	custom_minimum_size = Vector2(0, card_height() + 8)
 	rebuild()
 
 ## 重建手牌（手牌数量变化时调用；视图自己不做增删逻辑）。
@@ -34,7 +34,7 @@ func rebuild() -> void:
 		return
 	for index in _battle.hand.size():
 		var view := CardView.new()
-		view.position = Vector2(index * (CardView.W * CARD_SCALE + GAP), 0)
+		view.position = Vector2(index * (card_width() + UiScale.of(GAP)), 0)
 		view.mouse_filter = Control.MOUSE_FILTER_IGNORE   # 点击由本控件统一判定
 		add_child(view)
 		_views.append(view)
@@ -63,6 +63,14 @@ func select(index: int) -> void:
 func selected_index() -> int:
 	return _selected
 
+## 手牌里一张牌的显示尺寸（设计尺寸 × [UiScale]）。**命中判定与摆放必须用同一个值**，
+## 否则放大出素材时会出现"点得到但看不见"这类错位。
+static func card_width() -> float:
+	return UiScale.of(CardView.W * CARD_SCALE)
+
+static func card_height() -> float:
+	return UiScale.of(CardView.H * CARD_SCALE)
+
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var index := _card_at(event.position)
@@ -74,7 +82,7 @@ func _card_at(point: Vector2) -> int:
 		return -1
 	var width: float = CardView.W * CARD_SCALE
 	for i in _battle.hand.size():
-		if Rect2(Vector2(i * (width + GAP), 0), Vector2(width, CardView.H * CARD_SCALE)).has_point(point):
+		if Rect2(Vector2(i * (width + UiScale.of(GAP)), 0), Vector2(width, card_height())).has_point(point):
 			return i
 	return -1
 

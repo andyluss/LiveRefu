@@ -60,7 +60,7 @@ func _start() -> void:
 	_stage.board.setup(_battle, tokens, _stage.caption.get_theme_font("font"))
 	_stage.hud.setup(_battle, tokens, _stage.caption.get_theme_font("font"))
 	_stage.hand.setup(_battle, tokens, _stage.caption.get_theme_font("font"))
-	_stage.overlay.setup(_battle, tokens, BattleBoardView.CELL, BattleBoardView.GAP)
+	_stage.overlay.setup(_battle, tokens, BattleBoardView.cell(), BattleBoardView.gap())
 	_driver.refresh()
 
 ## 时间轴驱动：每帧按 delta 累加。**先推回合，再按整秒切字幕**。

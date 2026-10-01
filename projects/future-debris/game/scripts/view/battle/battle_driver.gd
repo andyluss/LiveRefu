@@ -57,7 +57,7 @@ func refresh() -> void:
 
 ## 塔位中心在屏幕坐标（浮字与涟漪都画在这里）。几何的唯一实现在 [Geom]。
 func slot_center(slot: int) -> Vector2:
-	return _board_origin + Geom.slot_center(slot, BattleBoardView.CELL, BattleBoardView.GAP)
+	return _board_origin + Geom.slot_center(slot, BattleBoardView.cell(), BattleBoardView.gap())
 
 func spawn_text(position: Vector2, text: String, color_token: String, level: String = "caption") -> void:
 	if _popups != null:

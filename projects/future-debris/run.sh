@@ -80,7 +80,16 @@ case "${1:-run}" in
     "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
     # 先重建主题资源再截图：否则截到的是**上一次**的主题（.tres 只是缓存，不会自动跟随 token 变化）
     "$GODOT" --headless --path "$GAME" res://scenes/tools/theme_check.tscn >/dev/null 2>&1 || true
-    # 参数透传：文件名 + 可选 --scene=res://...（默认拍战斗界面）
+    # 分辨率：Steam 要求截图 >= 1920x1080，而工程的窗口是 1280x720。
+    # 用 --resolution 覆盖窗口大小即可（viewport 不变，界面按 stretch 放大），
+    # 因此**不需要为了出素材改工程配置**。默认 1920x1080。
+    # **出 1920x1080 素材尚未打通**（诚实标注）：
+    # 只加 `--resolution` 不够（stretch 会把 1280x720 的视口放大，内容仍只占左上角）；
+    # 而"临时改 project.godot 的视口"这条路有个**设计缺陷**：本命令用 `exec` 启动引擎，
+    # `exec` 会替换进程、**EXIT trap 不会执行**，于是覆盖被永久留在工程文件里
+    # （实测踩到：默认路径因此渲染异常）。正确做法是让界面**真正响应式**（按视口重排），
+    # 那是独立任务，已记入 [12 商店页与美术执行计划] 的待办。
+    # 参数透传：文件名 + 可选 --scene=res://... / --theme / --with-summary
     exec "$GODOT" --path "$GAME" res://scenes/tools/screenshot.tscn -- "$@"
     ;;
 
@@ -92,12 +101,14 @@ case "${1:-run}" in
     need_godot
     "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
     FRAMES="${1:-$HERE/.build/demo_frames}"
-    OUT="$HERE/docs/video/demo_30s.mp4"
+    OUT="${DEMO_OUT:-$HERE/docs/video/demo_30s.mp4}"
     FPS=30
     WANT=$((30 * FPS))
     mkdir -p "$FRAMES" "$HERE/docs/video"
     find "$FRAMES" -name '*.png' -delete 2>/dev/null || true
-    "$GODOT" --path "$GAME" --write-movie "$FRAMES/frame.png" --fixed-fps "$FPS" \
+    # 分辨率可覆盖（Steam 预告片要 1080p；工程窗口是 1280x720）
+    RES="${DEMO_RES:-1920x1080}"
+    "$GODOT" --path "$GAME" --resolution "$RES" --write-movie "$FRAMES/frame.png" --fixed-fps "$FPS" \
       --quit-after $((WANT + 120)) res://scenes/app/demo.tscn 2>&1 \
       | grep -E 'DEMO|SCRIPT ERROR|frames at' || true
     RECORDED="$(find "$FRAMES" -name '*.png' | wc -l | tr -d ' ')"
@@ -113,7 +124,7 @@ case "${1:-run}" in
       swiftc -O -module-cache-path "$HERE/.build/swift-cache" -Xcc -fmodules-cache-path="$HERE/.build/swift-cache" \
         "$HERE/tools/make_video.swift" -o "$HERE/tools/make_video" 2>&1 | grep -v deprecated | grep -v '^ *|' || true
     fi
-    "$HERE/tools/make_video" "$FRAMES" "$OUT" "$FPS" 1280 720
+    "$HERE/tools/make_video" "$FRAMES" "$OUT" "$FPS" "${RES%x*}" "${RES#*x}"
     "$HERE/tools/make_video" --probe "$OUT"
     ;;
 

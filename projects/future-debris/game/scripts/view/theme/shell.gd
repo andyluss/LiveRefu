@@ -8,6 +8,13 @@ class_name Shell
 ## 最近一次淡入（供截图/录像工具等待"最终画面"）。
 static var last_tween: Tween
 
+## **跳过淡入**：截图与录像工具会打开它。
+## 为什么需要（实测绕了很久）：淡入从 `modulate.a = 0` 开始，
+## 而"等 tween 完成"在渲染/回读时序上并不可靠——截到的是**半透明或全透明**的画面
+## （表现为整幅都是清屏色 #4c4c4c，看起来像"主题坏了"）。
+## 素材要的是**最终画面**，过程动画对截图毫无价值，因此直接关掉最稳。
+static var skip_fade := false
+
 static func build(theme: Theme, tokens: TokenSet, content: Control = null) -> Control:
 	var root := PanelContainer.new()
 	root.theme = theme
@@ -22,6 +29,8 @@ static func build(theme: Theme, tokens: TokenSet, content: Control = null) -> Co
 	root.add_child(content if content != null else TokenPreview.build(theme, tokens))
 	# 开局淡入：时长取自 token（dur-slow），避免"啪地出现"——这是玩家对界面的第一印象。
 	# 用 modulate 而不是 position：淡入不会引起布局重排，也不会让截图工具截到半透明的成品。
+	if skip_fade:
+		return root
 	root.modulate.a = 0.0
 	var tween := root.create_tween()
 	tween.tween_property(root, "modulate:a", 1.0, Motion.seconds(tokens, "dur-slow")) \

@@ -3,8 +3,16 @@ class_name BattleBoardView
 ## 战场视图：画 8 个固定塔位、已放置的卡、以及每格的残渣热力。
 ## **只读 battle 状态，绝不修改**（分层铁律，见 02 工程结构与运行）。
 
+## 设计尺寸（1280×720 视口下）。实际使用值见 [cell] / [gap]——
+## 出素材时通过 [UiScale] 放大，**不改这里的契约数字**。
 const CELL := Vector2(132, 104)
 const GAP := 12
+
+static func cell() -> Vector2:
+	return CELL * UiScale.factor()
+
+static func gap() -> int:
+	return UiScale.int_of(GAP)
 const DANGER_AT := 8          # 该格残渣达到此值算"危险"（与 PlacePolicy.CLEAN_TARGET 同量级）
 
 var _battle: Battle
@@ -16,18 +24,18 @@ func setup(battle: Battle, tokens: TokenSet, font: Font) -> void:
 	_battle = battle
 	_tokens = tokens
 	_font = font
-	custom_minimum_size = Geom.board_size(CELL, GAP)
+	custom_minimum_size = Geom.board_size(cell(), gap())
 	queue_redraw()
 
 ## 供交互层使用：把控件内坐标转成塔位下标。
 func slot_at_local(point: Vector2) -> int:
-	return Geom.slot_at(point, CELL, GAP)
+	return Geom.slot_at(point, cell(), gap())
 
 func _draw() -> void:
 	if _battle == null or _tokens == null:
 		return
 	for slot in Geom.SLOT_COUNT:
-		var rect := Geom.slot_rect(slot, CELL, GAP)
+		var rect := Geom.slot_rect(slot, cell(), gap())
 		var occupied := _battle.board.has(slot)
 		draw_rect(rect, BattlePalette.slot_background(_tokens, occupied), true)
 		_draw_residue(rect, slot)

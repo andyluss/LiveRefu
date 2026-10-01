@@ -41,7 +41,7 @@ func _compose(theme: Theme, tokens: TokenSet, font: Font) -> Control:
 	ticker.custom_minimum_size = Vector2(0, EventTicker.LINE_HEIGHT * EventTicker.MAX_LINES)
 	root.add_child(ticker)
 	var stack := Control.new()
-	stack.custom_minimum_size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
+	stack.custom_minimum_size = Geom.board_size(BattleBoardView.cell(), BattleBoardView.gap())
 	_overlay = ZoneOverlay.new()
 	# 覆盖层必须**铺满父容器且不裁剪**：否则尺寸为 0 的 Control 会把越界绘制裁掉——
 	# 表现是"代码在画、屏幕上什么都没有"（实测：污染色像素数在所有帧里完全不变，
@@ -50,7 +50,7 @@ func _compose(theme: Theme, tokens: TokenSet, font: Font) -> Control:
 	# 实测教训：尺寸为 0 的 Control 会把越界绘制裁掉——表现为"代码在画、屏幕上一片没有"，
 	# 不报错、只能靠像素统计发现。
 	_overlay.position = Vector2.ZERO
-	_overlay.size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
+	_overlay.size = Geom.board_size(BattleBoardView.cell(), BattleBoardView.gap())
 	stack.add_child(_overlay)
 	_board = BattleBoardView.new()
 	_board.theme = theme
@@ -61,7 +61,7 @@ func _compose(theme: Theme, tokens: TokenSet, font: Font) -> Control:
 	_popups = Popups.new()
 	_popups.theme = theme
 	_popups.position = Vector2.ZERO
-	_popups.size = Geom.board_size(BattleBoardView.CELL, BattleBoardView.GAP)
+	_popups.size = Geom.board_size(BattleBoardView.cell(), BattleBoardView.gap())
 	_popups.clip_contents = false   # 浮字会画到棋盘上方的留白里（负 y），不能被裁掉
 	stack.add_child(_popups)
 	root.add_child(stack)
@@ -89,7 +89,7 @@ func _start(tokens: TokenSet) -> void:
 	_board.setup(battle, tokens, _status.get_theme_font("font"))
 	_hud.setup(battle, tokens, _status.get_theme_font("font"))
 	_hand.setup(battle, tokens, _status.get_theme_font("font"))
-	_overlay.setup(battle, tokens, BattleBoardView.CELL, BattleBoardView.GAP)
+	_overlay.setup(battle, tokens, BattleBoardView.cell(), BattleBoardView.gap())
 	_status.text = "点手牌选中 → 点塔位放置；空格推进一回合"
 	driver.refresh()
 

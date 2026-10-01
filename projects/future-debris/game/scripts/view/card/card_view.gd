@@ -49,8 +49,10 @@ func _apply(card: CardData, tokens: TokenSet, font: Font, cost: int, might: int,
 	custom_minimum_size = Vector2(W, H) * _scale()
 	queue_redraw()
 
+## 绘制缩放 = **设计缩放**（紧凑/完整）× **显示缩放**（[UiScale]，出素材时放大）。
+## 两者必须分开：`COMPACT_SCALE` 是契约值（有闸门断言守着），而显示缩放是运行期的事。
 func _scale() -> float:
-	return COMPACT_SCALE if _compact else 1.0
+	return (COMPACT_SCALE if _compact else 1.0) * UiScale.factor()
 
 func _draw() -> void:
 	if _card == null or _tokens == null or _font == null:

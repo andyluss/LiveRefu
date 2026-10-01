@@ -13,8 +13,7 @@ class_name BattleFeedback
 ## 曾把 [BattleDriver] 传进来调用它的浮字方法，形成 BattleDriver → BattleFeedback → BattleDriver
 ## 的循环，编译失败且报错指向第三处，很难定位。
 
-const CELL := Vector2(132, 104)
-const GAP := 12
+## 设计尺寸；实际使用 [BattleBoardView.cell] / [gap]（随 [UiScale] 缩放）
 
 var _battle: Battle
 var _board: BattleBoardView
@@ -51,7 +50,7 @@ func react(before: Dictionary, turn_info: Dictionary) -> void:
 ## 放置成功：塔位处涟漪 + 战力浮字 + 上行音。
 func on_placed(slot: int, card: CardData) -> void:
 	SfxHost.play("place")
-	var center := Geom.slot_center(slot, CELL, GAP)
+	var center := Geom.slot_center(slot, BattleBoardView.cell(), BattleBoardView.gap())
 	_ripple(center, "--power", 70.0, 0.22)
 	if card != null:
 		_text(center + Vector2(-26, -14), "战力 %d" % card.might, "--power")
