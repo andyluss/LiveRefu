@@ -31,6 +31,8 @@ const ALL := [
 	["L2 势力：四种姿态的入场残渣差异", "res://scenes/tools/cases/faction_cases.gd", "entry_residue_by_posture"],
 	["L3 势力：feed 把残渣从惩罚翻转为燃料", "res://scenes/tools/cases/faction_feed_cases.gd", "feed_posture_flips_residue"],
 	["L4 势力：move 把残渣搬到最脏格", "res://scenes/tools/cases/faction_move_cases.gd", "move_posture_relocates"],
+	["L7 avoids 干净格加战力（输出路径）", "res://scenes/tools/cases/faction_payoff_cases.gd", "clean_slot_adds_might"],
+	["L7 cleans 净化爆发是限时的", "res://scenes/tools/cases/faction_payoff_cases.gd", "purge_burst_is_temporary"],
 	["L6 清理有返还（cleans 不吃亏）", "res://scenes/tools/cases/faction_payoff_cases.gd", "clean_has_rebate"],
 	["L6 返还只对 cleans 生效", "res://scenes/tools/cases/faction_payoff_cases.gd", "rebate_is_faction_specific"],
 	["L6 avoids 利息随干净格数", "res://scenes/tools/cases/faction_payoff_cases.gd", "avoid_interest_scales"],

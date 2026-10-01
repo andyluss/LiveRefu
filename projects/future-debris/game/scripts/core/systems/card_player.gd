@@ -61,4 +61,7 @@ static func clean(battle, slot: int, amount: int) -> Dictionary:
 	var rebate := FactionPayoff.clean_rebate(battle, cost)
 	if rebate > 0:
 		ResourceSystem.gain(battle.resources, rebate)
+	# `cleans` 的输出路径：本回合清理出来的空间当火力用一次（回合末由交战时消费）
+	battle.purge_might = mini(FactionPayoff.PURGE_MIGHT_CAP,
+		battle.purge_might + FactionPayoff.purge_might(battle, removed))
 	return {"ok": true, "reason": "", "removed": removed, "cost": cost, "rebate": rebate}

@@ -23,6 +23,10 @@ var all_rules: bool = false                       # 测试/模拟开关：忽略
 var turn: int = 0
 var max_turns: int = 0
 var cards_played: int = 0
+## **本回合的净化爆发**（战力加成）。由 `cleans` 势力的清理动作累积、由回合循环在交战时消费。
+## 为什么放在 battle 上而不是全局：它是**一回合内的状态**，
+## 与"本回合清理了多少"一一对应；放全局会出现两局互相污染。
+var purge_might: int = 0
 var finished: bool = false   # 通关（清完最后一波）标志；与"基地被打爆"共同构成两种终局
 var drawn: int = 0
 var seed: int = 0

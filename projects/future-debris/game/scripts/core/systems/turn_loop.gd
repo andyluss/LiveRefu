@@ -20,6 +20,7 @@ static func run(battle) -> Dictionary:
 	# 势力机制的正面收益：`avoids` 按"未污染的在用塔位"给电力利息。
 	# 放在交战之前（与产出同一时机），这样它本回合就能被花掉——
 	# 玩家才能感到"保持干净 → 这回合能多做一件事"。
+	FactionPayoff.begin_turn(battle)
 	var interest := FactionPayoff.turn_interest(battle)
 	if interest > 0:
 		ResourceSystem.gain(battle.resources, interest)

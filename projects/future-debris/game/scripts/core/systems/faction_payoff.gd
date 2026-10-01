@@ -21,6 +21,48 @@ const AVOID_INTEREST_PER_CLEAN_SLOT := 1
 ## 判定"未污染"的阈值：残渣为 0 才算干净（与机制语义一致，不用模糊阈值）。
 const AVOID_CLEAN_THRESHOLD := 0
 
+## `avoids` 的**输出路径**：干净的塔位获得战力加成。
+##
+## 为什么必须给输出（而不只是电力利息）：电力只在"能铺更多塔"时才有用，
+## 而塔位只有 8 个——铺满之后，多出来的电力**花不出去**。
+## 实测证据：`avoids` 的电力并不少，但**输出**始终低于 `moves`/`feeds`。
+## 因此把"保持干净"直接换成战力：这才是它的输出路径。
+const CLEAN_SLOT_MIGHT := 1
+
+## 某格的洁净战力加成（按姿态）：`avoids` 且该格无残渣时给加成。
+static func clean_slot_might(battle, slot: int, residue_at_slot: int) -> int:
+	if FactionMods.posture(battle) != "avoids":
+		return 0
+	return CLEAN_SLOT_MIGHT if residue_at_slot <= AVOID_CLEAN_THRESHOLD else 0
+
+## `cleans` 的**输出路径**：本回合每清理掉 1 点残渣，全场战力 +`PURGE_MIGHT_PER_RESIDUE`（有上限）。
+##
+## 为什么是"限时爆发"而不是永久加成：清理本身不改变塔的数量，
+## 若给永久加成，`cleans` 会变成"越清越强"的正反馈；限时爆发让它更像
+## "把清出来的空间当火力用一次"，也给玩家一个**该在什么时候清**的决策点。
+const PURGE_MIGHT_PER_RESIDUE := 1
+const PURGE_MIGHT_CAP := 6
+
+## 本回合清理量对应的战力加成（只对 `cleans` 生效）。
+static func purge_might(_battle, removed: int) -> int:
+	if removed <= 0:
+		return 0
+	return mini(PURGE_MIGHT_CAP, removed * PURGE_MIGHT_PER_RESIDUE)
+
+## **交战时读取的战力加成总量**（基础机制 + 本回合爆发）。
+## 由 [StatQuery] 调用；`battle` 为空时返回 0（纯数值查询场景）。
+static func might_bonus(battle) -> int:
+	if battle == null:
+		return 0
+	return int(battle.purge_might)
+
+## 回合开始：把上一回合留下的爆发额度清零。
+## **必须清零**：否则清理一次会永久变强，`cleans` 会变成正反馈滚雪球。
+static func begin_turn(battle) -> void:
+	if battle == null:
+		return
+	battle.purge_might = 0
+
 ## 清理返还（按姿态）：`cleans` 拿回一部分清理花费，其它姿态为 0。
 static func clean_rebate(battle, cost: int) -> int:
 	if FactionMods.posture(battle) != "cleans" or cost <= 0:
