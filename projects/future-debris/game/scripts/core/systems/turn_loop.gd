@@ -31,12 +31,7 @@ static func run(battle) -> Dictionary:
 	var damage := maxi(0, base_damage + RuleEngine.damage_delta(battle, residue_before_upkeep))
 	var dealt := WaveSystem.apply_damage(battle.wave, damage)
 	WaveSystem.tick_turn(battle.wave)
-	# 清完最后一波即通关。**必须显式收尾**：否则战斗不会结束，会一直空转到回合上限
-	# （实测：LV-ATOMIC-03 第 12 回合就清完了 7 波，却继续跑到第 40 回合，评分因此被算成 A 而非 S）。
-	var was_last := WaveSystem.is_last_wave(battle.wave)
 	var outcome := WaveResolver.resolve(battle.wave, battle.resources)
-	if bool(outcome["cleared"]) and was_last:
-		battle.finished = true
 	if outcome["cleared"] or outcome["leaked"]:
 		var label := "清空" if outcome["cleared"] else "漏怪 -%d" % outcome["damage"]
 		battle.events.append("T%d 第%d波 %s（输出 %d / 配额 %d）" % [
@@ -47,6 +42,10 @@ static func run(battle) -> Dictionary:
 	# 环境结算：降级区按规模持续伤害基地（**这是残渣的第二个后果**，
 	# 也是本作真正的"倒计时"——只有削塔惩罚时，玩家永远可以拖）
 	var zone_damage := ZoneSystem.apply(battle)
+	# **胜负必须在所有伤害结算之后判定**（实测抓到的顺序错误）：
+	# 原来它在降级区伤害之前，于是"基地先被判为守住、随后被降级区打爆"，
+	# 结算里出现"判为通关但基地 0 血"——**把失守记成了成功**。
+	WinCondition.evaluate(battle, outcome)
 	return {
 		"turn": battle.turn,
 		"power_in": gained,

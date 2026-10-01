@@ -29,6 +29,8 @@ func _draw() -> void:
 	y = _row(y, "电力 %d" % ResourceSystem.power(_battle.resources), "--power")
 	y = _row(y, "残渣 %d（降级区 %d）" % [
 		ResidueSystem.total(_battle.residue), ResidueSystem.zone(_battle.residue)], "--residue")
+	y = _row(y, "目标 %s　势力 %s" % [
+		WinCondition.label(_battle.win_condition), _battle.faction_id.replace("FAC-ATOMIC-", "")], "--accent")
 	y = _row(y, "第 %d 波 / 共 %d 波　剩余 %d / %d" % [
 		WaveSystem.index(_battle.wave) + 1, WaveSystem.wave_count(_battle.wave),
 		WaveSystem.remaining(_battle.wave), WaveSystem.quota(_battle.wave)], "--text")

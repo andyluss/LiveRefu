@@ -31,6 +31,10 @@ static func prepare(battle, deck_ids: PackedStringArray, base_hp: int, turn_limi
 		# 优先该势力的专属曲线（按势力配平难度）；没有则用通用曲线
 		quotas = battle.level.quotas_for(battle.faction_id)
 	battle.wave = WaveSystem.init_wave(quotas)
+	# 本局的**胜利条件**来自势力表：`survive`（守住所有波次）或 `clear`（清完所有波次）。
+	# 引擎保持通用——它不认识"哪个势力"，只认识这个字段。
+	var faction: Dictionary = battle.catalog.factions.get(battle.faction_id, {})
+	battle.win_condition = WinCondition.normalize(str(faction.get("winCondition", "")))
 	battle.rules = _select_rules(battle)
 	battle.turn = 0
 	battle.max_turns = turn_limit

@@ -101,6 +101,14 @@
             "moves",
             "feeds"
           ]
+        },
+        "winCondition": {
+          "type": "string",
+          "enum": [
+            "clear",
+            "survive"
+          ],
+          "note": "胜利条件：clear=清完所有波次；survive=守住所有波次（不必清空配额）。把机制差异变成玩法差异，而不是同一把尺子下的强弱排序。"
         }
       },
       "minEntries": 4

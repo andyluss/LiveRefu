@@ -40,7 +40,7 @@ func _ready() -> void:
 	print(_quotas_json(catalog, weakest))
 	# 按势力的配额：通用曲线 = 最弱势力能力 × 关卡比例，
 	# 因此势力 f 的曲线 = 通用曲线 × (f 能力 ÷ 最弱能力)。**形状不变，只按各自能力放大。**
-	print("FACTION_QUOTAS_JSON=%s" % JSON.stringify(QuotaModel.faction_ratios(caps, weakest)))
+	print("FACTION_QUOTAS_JSON=%s" % JSON.stringify(QuotaModel.factors(catalog, caps, weakest)))
 
 ## 逐关导出配额：保持既有配额形状，把总量缩放到 `比例 × 最弱势力能力`。
 func _quotas_json(catalog: CardCatalog, capacity: int) -> String:

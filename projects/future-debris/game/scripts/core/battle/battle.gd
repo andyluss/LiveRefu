@@ -27,6 +27,9 @@ var cards_played: int = 0
 ## 为什么放在 battle 上而不是全局：它是**一回合内的状态**，
 ## 与"本回合清理了多少"一一对应；放全局会出现两局互相污染。
 var purge_might: int = 0
+## 本局的**胜利条件**（`clear` / `survive`）。由势力表的 `winCondition` 决定，
+## 引擎只认这个字段、不认势力名——机制差异因此变成**玩法差异**而不是强弱排序。
+var win_condition: String = "clear"
 var finished: bool = false   # 通关（清完最后一波）标志；与"基地被打爆"共同构成两种终局
 var drawn: int = 0
 var seed: int = 0

@@ -21,6 +21,27 @@ class_name QuotaModel
 const RATIO_BY_LEVEL := [0.18, 0.23, 0.28, 0.34, 0.41, 0.49, 0.60, 0.72]
 ## 一波打几回合（用于把"每回合输出"折算成"一关的输出能力"）
 const TURNS_PER_WAVE := 3
+## **守成型势力的配额放宽系数**（[WinCondition.SURVIVE]）。
+##
+## 为什么需要它（实测结论）：守成比清剿**更难**——清剿只要清完最后一波就结束，
+## 而守成要求**每一波都达标**（漏一波就掉血，掉光就失守）。同样的配额下，
+## 守成势力天然吃亏：实测 AEC/SUB 在按能力放大的专属曲线下仍然只到 LV-06。
+## 0.78 是实测出来的：调到它之后守成势力能到 LV-07（与清剿势力形成"守成 vs 清剿"的区分）。
+const SURVIVE_RELIEF := 0.78
+
+## 某势力的配额倍率：能力比 × （守成则放宽）。
+static func factor_for(ratio: float, is_survive: bool) -> float:
+	return ratio * (SURVIVE_RELIEF if is_survive else 1.0)
+
+## **全部势力的最终倍率表**（能力比 × 守成放宽）。校准命令直接打印它。
+static func factors(catalog: CardCatalog, caps: Dictionary, weakest: int) -> Dictionary:
+	var ratios := faction_ratios(caps, weakest)
+	var out := {}
+	for faction_id in ratios:
+		var row: Dictionary = catalog.factions.get(faction_id, {})
+		var survive := WinCondition.is_survive(str(row.get("winCondition", "")))
+		out[faction_id] = round(factor_for(float(ratios[faction_id]), survive) * 1000.0) / 1000.0
+	return out
 
 ## 一关的实测输出能力（总输出）。`per_turn` 是该势力在超高配额关卡里的每回合输出。
 static func level_capacity(per_turn: Array) -> int:

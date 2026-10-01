@@ -3,9 +3,37 @@
   "name": "atomic__factions",
   "note": "原子纪元四势力（[mainline 10 §3](../../../mainline/docs/10_推进计划与并入清单.md) 的骨架落地）。S1 仅为占位，机制细节在 S3 由原型验证。",
   "entries": [
-    { "id": "FAC-ATOMIC-AEC", "name": "原子能委员会", "doctrine": "一切为了供电与秩序", "mechanic": "高输出、强规制：违规操作触发审查惩罚", "residuePosture": "cleans" },
-    { "id": "FAC-ATOMIC-SUB", "name": "郊区秩序", "doctrine": "洁净即美德", "mechanic": "增益依赖清洁度；污染直接削弱自身", "residuePosture": "avoids" },
-    { "id": "FAC-ATOMIC-HAU", "name": "清运承包方", "doctrine": "把问题搬走就算解决", "mechanic": "能高效清除残渣，但清除的残渣会出现在别处", "residuePosture": "moves" },
-    { "id": "FAC-ATOMIC-ROA", "name": "辐射漫游者", "doctrine": "在残渣里也能活", "mechanic": "从污染中获益，代价是单位本身不稳定", "residuePosture": "feeds" }
+    {
+      "id": "FAC-ATOMIC-AEC",
+      "name": "原子能委员会",
+      "doctrine": "一切为了供电与秩序",
+      "mechanic": "高输出、强规制：违规操作触发审查惩罚",
+      "residuePosture": "cleans",
+      "winCondition": "survive"
+    },
+    {
+      "id": "FAC-ATOMIC-SUB",
+      "name": "郊区秩序",
+      "doctrine": "洁净即美德",
+      "mechanic": "增益依赖清洁度；污染直接削弱自身",
+      "residuePosture": "avoids",
+      "winCondition": "survive"
+    },
+    {
+      "id": "FAC-ATOMIC-HAU",
+      "name": "清运承包方",
+      "doctrine": "把问题搬走就算解决",
+      "mechanic": "能高效清除残渣，但清除的残渣会出现在别处",
+      "residuePosture": "moves",
+      "winCondition": "clear"
+    },
+    {
+      "id": "FAC-ATOMIC-ROA",
+      "name": "辐射漫游者",
+      "doctrine": "在残渣里也能活",
+      "mechanic": "从污染中获益，代价是单位本身不稳定",
+      "residuePosture": "feeds",
+      "winCondition": "clear"
+    }
   ]
 }

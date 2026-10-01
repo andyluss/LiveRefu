@@ -50,9 +50,14 @@ static func _sweep_one(probe: Battle, level_id: String, faction_id: String) -> D
 		if not cleared and not wiped:
 			return CaseBase.bad("关卡 %s 既未通关也未打爆（跑了 %d 回合）——终局条件有漏" % [
 				level_id, int(summary["turns"])])
-		if cleared and WaveSystem.index(battle.wave) != expected_waves - 1:
-			return CaseBase.bad("关卡 %s 通关却不在最后一波（index=%d）" % [level_id, WaveSystem.index(battle.wave)])
-		return {"ok": true, "reason": "", "line": "%s %s 剩血%d 回合%d %s" % [
-			level_id, "通关" if cleared else "打爆", int(summary["base_hp"]),
-			int(summary["turns"]), str(summary["grade"]),
-		]}
+		# **通关意味着防线还在**：这条比"停在最后一波"更重要——
+		# 实测抓到过"守到 0 血也算通关"（把失守记成胜利）。
+		if cleared and int(summary["base_hp"]) <= 0:
+			return CaseBase.bad("关卡 %s 判为通关，但基地已是 0 血——胜利条件把失守算成了成功" % level_id)
+		# 清剿型必须在最后一波完成（此时波次索引也应在末位）；
+		# **守成型不受此约束**：它只要"波次走完"即可，末波清算后索引可能已推进。
+		if cleared and not WinCondition.is_survive(battle.win_condition) \
+				and WaveSystem.index(battle.wave) != expected_waves - 1:
+			return CaseBase.bad("关卡 %s 清剿通关却不在最后一波（index=%d）" % [
+				level_id, WaveSystem.index(battle.wave)])
+		return {"ok": true, "reason": "", "line": SweepReport.line(level_id, cleared, battle, summary)}
