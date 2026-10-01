@@ -164,6 +164,22 @@ def validate_references(
                 )
 
 
+def check_entry_fields(where: str, entry: dict, fields: dict, report: Report) -> None:
+    """一条记录的字段校验（抽出来是为了**能被自测直接调用**）。
+
+    **可选字段**（`optional: true`）：缺失不算错。
+    为什么需要它：有些字段在引擎里有明确的回落语义（例：关卡表的 `quotas_by_faction`
+    缺省时走通用配额曲线）。把它一律当必填，会逼着每关写冗余数据；
+    而把它当"未登记字段"放过，又会丢掉类型校验。两者都不是我们想要的。
+    """
+    for field, field_spec in fields.items():
+        if field not in entry:
+            if not field_spec.get("optional", False):
+                report.error(where, f"缺少字段 {field}")
+            continue
+        validate_field(where, field, field_spec, entry[field], report)
+
+
 def validate_table(
     rel_name: str, spec: dict, report: Report, all_entries: dict[str, list] | None = None
 ) -> int:
@@ -194,11 +210,7 @@ def validate_table(
         if not isinstance(entry, dict):
             report.error(where, "条目必须是对象")
             continue
-        for field, field_spec in fields.items():
-            if field not in entry:
-                report.error(where, f"缺少字段 {field}")
-                continue
-            validate_field(where, field, field_spec, entry[field], report)
+        check_entry_fields(where, entry, fields, report)
         for field in entry:
             if field not in fields:
                 report.warn(where, f"出现契约外的字段 {field}（未拒绝，但请确认是否需要写进 schema.json）")
@@ -245,6 +257,15 @@ def validate_all(report: Report, only: str | None = None) -> dict[str, int]:
 # --------------------------------------------------------------------------- #
 # 自检：用"故意坏掉"的数据断言校验器真的会报错
 # --------------------------------------------------------------------------- #
+
+OPTIONAL_CASES: list[tuple[str, dict, dict, bool]] = [
+    ("可选字段缺失", {"id": "RC-X-001", "name": "n"},
+     {"id": {"type": "string", "pattern": "^RC-X-[0-9]{3}$"}, "name": {"type": "string"},
+      "extra": {"type": "array", "items": "int", "optional": True}}, False),
+    ("可选字段类型错", {"id": "RC-X-001", "name": "n", "extra": "不是数组"},
+     {"id": {"type": "string", "pattern": "^RC-X-[0-9]{3}$"}, "name": {"type": "string"},
+      "extra": {"type": "array", "items": "int", "optional": True}}, True),
+]
 
 BAD_CASES: list[tuple[str, dict, dict, str]] = [
     (
@@ -373,6 +394,25 @@ def run_reference_self_test() -> int:
     return 0
 
 
+def run_optional_self_test() -> int:
+    """断言"可选字段"的两条性质：缺失不报错、存在时仍做类型校验。"""
+    print("[self-test] 断言可选字段：缺失不报错，但存在时必须合法")
+    failures = 0
+    for label, entry, spec, expect_error in OPTIONAL_CASES:
+        report = Report()
+        check_entry_fields("<self-test:%s>" % label, entry, spec, report)
+        hit = bool(report.errors)
+        ok = hit == expect_error
+        failures += 0 if ok else 1
+        detail = report.errors[0] if report.errors else "无报错"
+        print(f"  [{'OK  ' if ok else 'MISS'}] {label} → 期望报错={expect_error}；实际：{detail}")
+    if failures:
+        print(f"[self-test] FAIL：{failures}/{len(OPTIONAL_CASES)} 个用例不符预期")
+        return 1
+    print(f"[self-test] PASS：{len(OPTIONAL_CASES)}/{len(OPTIONAL_CASES)} 个用例符合预期")
+    return 0
+
+
 def run_self_test() -> int:
     print("[self-test] 用故意坏掉的数据断言校验器会报错（负向用例）")
     failures = 0
@@ -404,11 +444,7 @@ def validate_table_in_memory(label: str, table: dict, spec: dict, report: Report
     seen_ids: dict[str, int] = {}
     for index, entry in enumerate(entries):
         where = f"{where_file}[{index}]"
-        for field, field_spec in fields.items():
-            if field not in entry:
-                report.error(where, f"缺少字段 {field}")
-                continue
-            validate_field(where, field, field_spec, entry[field], report)
+        check_entry_fields(where, entry, fields, report)
         entry_id = entry.get("id")
         if isinstance(entry_id, str):
             if entry_id in seen_ids:
@@ -429,6 +465,9 @@ def main() -> int:
 
     if args.self_test:
         code = run_self_test()
+        if code != 0:
+            return code
+        code = run_optional_self_test()
         if code != 0:
             return code
         code = run_reference_self_test()

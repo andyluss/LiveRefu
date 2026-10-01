@@ -19,6 +19,19 @@ class_name QuotaModel
 ## 因为**战斗中的输出低于自由输出**（有波次压力、基地会被打、要花钱清理）。
 ## 下调到 0.18…0.72 后，最弱势力能打到中段、最强势力能通关末关。
 const RATIO_BY_LEVEL := [0.18, 0.23, 0.28, 0.34, 0.41, 0.49, 0.60, 0.72]
+## **每章在上一章基础上再乘的难度系数**。
+##
+## 为什么需要它（写第二章时发现）：只按"关卡在列表里的位置"取比例时，
+## 第 9–16 关会落在与第 1–8 关相同的比例上——**第二章就会变成第一章的复制品**。
+## 章节是内容量的自然单位，难度也应当按章递增：章 1 基线 1.0，之后每章 ×1.28。
+const CHAPTER_SCALE := 1.28
+## 系数上限：避免第十章之后把配额推到"不可能"。
+const CHAPTER_SCALE_CAP := 2.2
+
+## 某章的难度系数（章 1 = 1.0）。
+static func chapter_scale(chapter: int) -> float:
+	var steps := maxi(0, chapter - 1)
+	return minf(CHAPTER_SCALE_CAP, pow(CHAPTER_SCALE, float(steps)))
 ## 一波打几回合（用于把"每回合输出"折算成"一关的输出能力"）
 const TURNS_PER_WAVE := 3
 ## **守成型势力的配额放宽系数**（[WinCondition.SURVIVE]）。

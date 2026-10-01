@@ -1,40 +1,72 @@
-# 8 关难度实测（各势力使用自己的专属配额与胜利条件）
-# 生成：./run.sh s2 ｜ 卡池 T2（60 张）
-# 配额倍率（能力比 × 守成放宽 0.78）：AEC 0.794 / SUB 0.953 / HAU 1.0 / ROA 1.445
-# 守成 = 守住所有波次（每波都要达标）；清剿 = 清空所有波次
+# 16 关难度实测（T3 卡池 120 张，各势力使用专属配额与自己的胜利条件）
+# 生成：./run.sh s2 ｜ 配额：./run.sh calibrate 导出（章内曲线 × 章节系数 × 势力倍率）
+# 势力倍率：AEC 0.796 / SUB 0.98 / HAU 1.0 / ROA 1.794
+# 守成 = 守住所有波次；清剿 = 清空所有波次
 — FAC-ATOMIC-AEC（cleans）
-LV-ATOMIC-01 通关 剩血15 回合5 B ［守成］
-LV-ATOMIC-02 通关 剩血14 回合6 B ［守成］
-LV-ATOMIC-03 通关 剩血14 回合6 B ［守成］
-LV-ATOMIC-04 通关 剩血10 回合8 C ［守成］
-LV-ATOMIC-05 通关 剩血12 回合7 B ［守成］
-LV-ATOMIC-06 通关 剩血8 回合9 C ［守成］
-LV-ATOMIC-07 通关 剩血4 回合11 C ［守成］
-LV-ATOMIC-08 打爆 剩血0 回合13 C ［守成］
+LV-ATOMIC-01 通关 剩血14 回合6 A ［守成］
+LV-ATOMIC-02 通关 剩血13 回合7 A ［守成］
+LV-ATOMIC-03 通关 剩血10 回合10 B ［守成］
+LV-ATOMIC-04 通关 剩血10 回合10 B ［守成］
+LV-ATOMIC-05 通关 剩血6 回合14 C ［守成］
+LV-ATOMIC-06 通关 剩血5 回合15 C ［守成］
+LV-ATOMIC-07 打爆 剩血0 回合18 C ［守成］
+LV-ATOMIC-08 打爆 剩血0 回合18 C ［守成］
+LV-ATOMIC-09 通关 剩血9 回合11 B ［守成］
+LV-ATOMIC-10 通关 剩血7 回合13 C ［守成］
+LV-ATOMIC-11 通关 剩血5 回合15 C ［守成］
+LV-ATOMIC-12 打爆 剩血0 回合18 C ［守成］
+LV-ATOMIC-13 打爆 剩血0 回合18 C ［守成］
+LV-ATOMIC-14 打爆 剩血0 回合18 C ［守成］
+LV-ATOMIC-15 打爆 剩血0 回合18 C ［守成］
+LV-ATOMIC-16 打爆 剩血0 回合18 C ［守成］
 — FAC-ATOMIC-SUB（avoids）
-LV-ATOMIC-01 通关 剩血15 回合5 B ［守成］
-LV-ATOMIC-02 通关 剩血14 回合6 B ［守成］
-LV-ATOMIC-03 通关 剩血14 回合6 B ［守成］
-LV-ATOMIC-04 通关 剩血10 回合8 C ［守成］
-LV-ATOMIC-05 通关 剩血12 回合7 B ［守成］
-LV-ATOMIC-06 通关 剩血8 回合9 C ［守成］
-LV-ATOMIC-07 通关 剩血4 回合11 C ［守成］
-LV-ATOMIC-08 打爆 剩血0 回合13 C ［守成］
+LV-ATOMIC-01 通关 剩血12 回合5 B ［守成］
+LV-ATOMIC-02 通关 剩血10 回合6 C ［守成］
+LV-ATOMIC-03 通关 剩血8 回合7 C ［守成］
+LV-ATOMIC-04 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-05 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-06 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-07 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-08 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-09 通关 剩血8 回合7 C ［守成］
+LV-ATOMIC-10 通关 剩血3 回合9 C ［守成］
+LV-ATOMIC-11 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-12 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-13 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-14 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-15 打爆 剩血0 回合10 C ［守成］
+LV-ATOMIC-16 打爆 剩血0 回合10 C ［守成］
 — FAC-ATOMIC-HAU（moves）
 LV-ATOMIC-01 通关 剩血15 回合5 B ［清剿］
 LV-ATOMIC-02 通关 剩血14 回合6 B ［清剿］
-LV-ATOMIC-03 通关 剩血13 回合7 B ［清剿］
-LV-ATOMIC-04 通关 剩血11 回合9 B ［清剿］
-LV-ATOMIC-05 通关 剩血9 回合11 B ［清剿］
-LV-ATOMIC-06 通关 剩血7 回合13 B ［清剿］
-LV-ATOMIC-07 通关 剩血5 回合15 C ［清剿］
-LV-ATOMIC-08 通关 剩血3 回合17 C ［清剿］
+LV-ATOMIC-03 通关 剩血11 回合9 B ［清剿］
+LV-ATOMIC-04 通关 剩血10 回合10 B ［清剿］
+LV-ATOMIC-05 通关 剩血3 回合15 C ［清剿］
+LV-ATOMIC-06 通关 剩血1 回合16 C ［清剿］
+LV-ATOMIC-07 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-08 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-09 通关 剩血9 回合11 C ［清剿］
+LV-ATOMIC-10 通关 剩血7 回合13 C ［清剿］
+LV-ATOMIC-11 通关 剩血3 回合15 C ［清剿］
+LV-ATOMIC-12 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-13 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-14 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-15 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-16 打爆 剩血0 回合17 C ［清剿］
 — FAC-ATOMIC-ROA（feeds）
-LV-ATOMIC-01 通关 剩血18 回合7 A ［清剿］
-LV-ATOMIC-02 通关 剩血17 回合8 A ［清剿］
-LV-ATOMIC-03 通关 剩血16 回合9 A ［清剿］
-LV-ATOMIC-04 通关 剩血15 回合10 A ［清剿］
-LV-ATOMIC-05 通关 剩血12 回合13 B ［清剿］
-LV-ATOMIC-06 通关 剩血10 回合15 B ［清剿］
-LV-ATOMIC-07 通关 剩血8 回合17 B ［清剿］
-LV-ATOMIC-08 通关 剩血6 回合19 C ［清剿］
+LV-ATOMIC-01 通关 剩血13 回合9 B ［清剿］
+LV-ATOMIC-02 通关 剩血11 回合11 B ［清剿］
+LV-ATOMIC-03 通关 剩血8 回合13 C ［清剿］
+LV-ATOMIC-04 通关 剩血2 回合16 C ［清剿］
+LV-ATOMIC-05 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-06 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-07 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-08 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-09 通关 剩血6 回合14 C ［清剿］
+LV-ATOMIC-10 通关 剩血2 回合16 C ［清剿］
+LV-ATOMIC-11 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-12 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-13 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-14 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-15 打爆 剩血0 回合17 C ［清剿］
+LV-ATOMIC-16 打爆 剩血0 回合17 C ［清剿］

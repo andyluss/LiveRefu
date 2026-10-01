@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "atomic__cards",
-  "note": "原子纪元卡表：手写 12 张（产品识别度，不可被生成物覆盖） + 生成 48 张（由 tools/gen_cards.py 依 cardgen.seed.json 幂等产出）。生成物必须过 ./run.sh check 的数据闸门；改数值请改种子表后重跑。",
+  "note": "原子纪元卡表：手写 12 张（产品识别度，不可被生成物覆盖） + 生成 108 张（由 tools/gen_cards.py 依 cardgen.seed.json 幂等产出）。生成物必须过 ./run.sh check 的数据闸门；改数值请改种子表后重跑。",
   "entries": [
     {
       "id": "RC-ATOMIC-001",
@@ -955,6 +955,966 @@
         "残片"
       ],
       "text": "在荒原上巡游；机动性好，走一路留一路残渣。（费用 3，战力 5，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-061",
+      "name": "搪瓷供电组",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "modifier",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 6,
+      "compute": 1,
+      "residue": 2,
+      "keywords": [
+        "监测",
+        "防护"
+      ],
+      "text": "为相邻塔位供电，供电效率极高但几乎不能打。（费用 3，战力 3，残渣 2）"
+    },
+    {
+      "id": "RC-ATOMIC-062",
+      "name": "隔离供电组",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "relic",
+      "rarity": "common",
+      "cost": 2,
+      "power": 4,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "监测",
+        "降级"
+      ],
+      "text": "为相邻塔位供电；运行时不产生残渣（城郊的标准做法）。（费用 2，战力 2，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-063",
+      "name": "听证清运卡车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 2,
+      "power": 4,
+      "compute": 0,
+      "residue": 6,
+      "keywords": [
+        "搬运",
+        "规制"
+      ],
+      "text": "把城区废弃物运走；供电与战力都不错的万金油。（费用 2，战力 4，残渣 6）"
+    },
+    {
+      "id": "RC-ATOMIC-064",
+      "name": "按钮回收机",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 2,
+      "power": 3,
+      "compute": 1,
+      "residue": 6,
+      "keywords": [
+        "监测",
+        "阻挡"
+      ],
+      "text": "从降级区里获利；自身所在格迅速恶化——但漫游者不在乎。（费用 2，战力 3，残渣 6）"
+    },
+    {
+      "id": "RC-ATOMIC-065",
+      "name": "冷却火力台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 3,
+      "power": 6,
+      "compute": 0,
+      "residue": 9,
+      "keywords": [
+        "搬运",
+        "规制"
+      ],
+      "text": "部署后自动交战；输出高，但每回合持续留下残渣。（费用 3，战力 8，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-066",
+      "name": "郊区巡检车",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 3,
+      "power": 7,
+      "compute": 0,
+      "residue": 3,
+      "keywords": [
+        "搬运",
+        "供电"
+      ],
+      "text": "每回合修复相邻塔位；维护得当，几乎不留残渣。（费用 3，战力 5，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-067",
+      "name": "郊区拖车队",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "relic",
+      "rarity": "common",
+      "cost": 2,
+      "power": 5,
+      "compute": 0,
+      "residue": 3,
+      "keywords": [
+        "封存",
+        "修复"
+      ],
+      "text": "部署极快（费用低），适合反复换阵。（费用 2，战力 3，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-068",
+      "name": "示波增殖堆",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "tower",
+      "rarity": "epic",
+      "cost": 5,
+      "power": 8,
+      "compute": 1,
+      "residue": 15,
+      "keywords": [
+        "修复",
+        "修复"
+      ],
+      "text": "以辐射换取极高输出；残渣沉重，正是它的燃料。（费用 5，战力 14，残渣 15）"
+    },
+    {
+      "id": "RC-ATOMIC-069",
+      "name": "炉心调度台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "tower",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 7,
+      "compute": 1,
+      "residue": 5,
+      "keywords": [
+        "残片",
+        "阻挡"
+      ],
+      "text": "按规程调度本区域，各项指标均衡。（费用 3，战力 4，残渣 5）"
+    },
+    {
+      "id": "RC-ATOMIC-070",
+      "name": "清运绿篱",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 2,
+      "power": 4,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "搬运",
+        "修复"
+      ],
+      "text": "以植被挡住粉尘；战力不高，但完全不产生残渣。（费用 2，战力 2，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-071",
+      "name": "镀铬渣土车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "unit",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 6,
+      "compute": 0,
+      "residue": 9,
+      "keywords": [
+        "穿透",
+        "搬运"
+      ],
+      "text": "一次清走大量废弃物；战力极高，但留下大片残渣。（费用 3，战力 8，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-072",
+      "name": "按钮巡游车",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "relic",
+      "rarity": "common",
+      "cost": 3,
+      "power": 10,
+      "compute": 1,
+      "residue": 9,
+      "keywords": [
+        "阻挡",
+        "基座"
+      ],
+      "text": "在荒原上巡游；机动性好，走一路留一路残渣。（费用 3，战力 5，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-073",
+      "name": "搪瓷供电组",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 3,
+      "power": 6,
+      "compute": 0,
+      "residue": 2,
+      "keywords": [
+        "供电",
+        "降级"
+      ],
+      "text": "为相邻塔位供电，供电效率极高但几乎不能打。（费用 3，战力 3，残渣 2）"
+    },
+    {
+      "id": "RC-ATOMIC-074",
+      "name": "镀铬供电组",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 1,
+      "power": 2,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "供电",
+        "基座"
+      ],
+      "text": "为相邻塔位供电；运行时不产生残渣（城郊的标准做法）。（费用 1，战力 1，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-075",
+      "name": "复合清运卡车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "skill",
+      "rarity": "rare",
+      "cost": 1,
+      "power": 2,
+      "compute": 1,
+      "residue": 3,
+      "keywords": [
+        "供电",
+        "适应"
+      ],
+      "text": "把城区废弃物运走；供电与战力都不错的万金油。（费用 1，战力 2，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-076",
+      "name": "隔离回收机",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "relic",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 3,
+      "compute": 1,
+      "residue": 6,
+      "keywords": [
+        "耗材",
+        "修复"
+      ],
+      "text": "从降级区里获利；自身所在格迅速恶化——但漫游者不在乎。（费用 2，战力 3，残渣 6）"
+    },
+    {
+      "id": "RC-ATOMIC-077",
+      "name": "浅滩火力台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "skill",
+      "rarity": "epic",
+      "cost": 3,
+      "power": 6,
+      "compute": 0,
+      "residue": 9,
+      "keywords": [
+        "封存",
+        "耗材"
+      ],
+      "text": "部署后自动交战；输出高，但每回合持续留下残渣。（费用 3，战力 8，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-078",
+      "name": "指示灯巡检车",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "support",
+      "rarity": "common",
+      "cost": 3,
+      "power": 7,
+      "compute": 1,
+      "residue": 3,
+      "keywords": [
+        "适应",
+        "基座"
+      ],
+      "text": "每回合修复相邻塔位；维护得当，几乎不留残渣。（费用 3，战力 5，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-079",
+      "name": "隔离拖车队",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "relic",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 4,
+      "compute": 1,
+      "residue": 3,
+      "keywords": [
+        "穿透",
+        "封存"
+      ],
+      "text": "部署极快（费用低），适合反复换阵。（费用 2，战力 3，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-080",
+      "name": "隔离增殖堆",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "unit",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 5,
+      "compute": 0,
+      "residue": 9,
+      "keywords": [
+        "阻挡",
+        "爆发"
+      ],
+      "text": "以辐射换取极高输出；残渣沉重，正是它的燃料。（费用 3，战力 8，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-081",
+      "name": "镀铬调度台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 3,
+      "power": 7,
+      "compute": 1,
+      "residue": 5,
+      "keywords": [
+        "耗材",
+        "清洁"
+      ],
+      "text": "按规程调度本区域，各项指标均衡。（费用 3，战力 4，残渣 5）"
+    },
+    {
+      "id": "RC-ATOMIC-082",
+      "name": "静电绿篱",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 3,
+      "power": 6,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "规制",
+        "基座"
+      ],
+      "text": "以植被挡住粉尘；战力不高，但完全不产生残渣。（费用 3，战力 4，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-083",
+      "name": "装配渣土车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 4,
+      "power": 9,
+      "compute": 0,
+      "residue": 12,
+      "keywords": [
+        "封存",
+        "爆发"
+      ],
+      "text": "一次清走大量废弃物；战力极高，但留下大片残渣。（费用 4，战力 10，残渣 12）"
+    },
+    {
+      "id": "RC-ATOMIC-084",
+      "name": "装配巡游车",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 2,
+      "power": 6,
+      "compute": 1,
+      "residue": 6,
+      "keywords": [
+        "爆发",
+        "爆发"
+      ],
+      "text": "在荒原上巡游；机动性好，走一路留一路残渣。（费用 2，战力 4，残渣 6）"
+    },
+    {
+      "id": "RC-ATOMIC-085",
+      "name": "备用供电组",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 3,
+      "power": 6,
+      "compute": 1,
+      "residue": 2,
+      "keywords": [
+        "耗材",
+        "封存"
+      ],
+      "text": "为相邻塔位供电，供电效率极高但几乎不能打。（费用 3，战力 3，残渣 2）"
+    },
+    {
+      "id": "RC-ATOMIC-086",
+      "name": "清运供电组",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 2,
+      "power": 4,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "降级",
+        "降级"
+      ],
+      "text": "为相邻塔位供电；运行时不产生残渣（城郊的标准做法）。（费用 2，战力 2，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-087",
+      "name": "铆钉清运卡车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "relic",
+      "rarity": "epic",
+      "cost": 1,
+      "power": 2,
+      "compute": 1,
+      "residue": 3,
+      "keywords": [
+        "封存",
+        "穿透"
+      ],
+      "text": "把城区废弃物运走；供电与战力都不错的万金油。（费用 1，战力 2，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-088",
+      "name": "指示灯回收机",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "modifier",
+      "rarity": "rare",
+      "cost": 1,
+      "power": 2,
+      "compute": 1,
+      "residue": 3,
+      "keywords": [
+        "规制",
+        "防护"
+      ],
+      "text": "从降级区里获利；自身所在格迅速恶化——但漫游者不在乎。（费用 1，战力 2，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-089",
+      "name": "清运火力台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 4,
+      "power": 8,
+      "compute": 0,
+      "residue": 12,
+      "keywords": [
+        "清洁",
+        "爆发"
+      ],
+      "text": "部署后自动交战；输出高，但每回合持续留下残渣。（费用 4，战力 10，残渣 12）"
+    },
+    {
+      "id": "RC-ATOMIC-090",
+      "name": "镀铬巡检车",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 2,
+      "power": 4,
+      "compute": 1,
+      "residue": 2,
+      "keywords": [
+        "修复",
+        "降级"
+      ],
+      "text": "每回合修复相邻塔位；维护得当，几乎不留残渣。（费用 2，战力 4，残渣 2）"
+    },
+    {
+      "id": "RC-ATOMIC-091",
+      "name": "指示灯拖车队",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 4,
+      "compute": 0,
+      "residue": 3,
+      "keywords": [
+        "搬运",
+        "封存"
+      ],
+      "text": "部署极快（费用低），适合反复换阵。（费用 2，战力 3，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-092",
+      "name": "装配增殖堆",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "tower",
+      "rarity": "rare",
+      "cost": 5,
+      "power": 8,
+      "compute": 0,
+      "residue": 15,
+      "keywords": [
+        "基座",
+        "供电"
+      ],
+      "text": "以辐射换取极高输出；残渣沉重，正是它的燃料。（费用 5，战力 14，残渣 15）"
+    },
+    {
+      "id": "RC-ATOMIC-093",
+      "name": "浅滩调度台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "skill",
+      "rarity": "common",
+      "cost": 4,
+      "power": 9,
+      "compute": 0,
+      "residue": 7,
+      "keywords": [
+        "供电",
+        "搬运"
+      ],
+      "text": "按规程调度本区域，各项指标均衡。（费用 4，战力 6，残渣 7）"
+    },
+    {
+      "id": "RC-ATOMIC-094",
+      "name": "隔离绿篱",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 2,
+      "power": 4,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "阻挡",
+        "规制"
+      ],
+      "text": "以植被挡住粉尘；战力不高，但完全不产生残渣。（费用 2，战力 2，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-095",
+      "name": "复合渣土车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 4,
+      "power": 9,
+      "compute": 1,
+      "residue": 12,
+      "keywords": [
+        "残片",
+        "清洁"
+      ],
+      "text": "一次清走大量废弃物；战力极高，但留下大片残渣。（费用 4，战力 10，残渣 12）"
+    },
+    {
+      "id": "RC-ATOMIC-096",
+      "name": "指示灯巡游车",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 2,
+      "power": 7,
+      "compute": 1,
+      "residue": 6,
+      "keywords": [
+        "封存",
+        "适应"
+      ],
+      "text": "在荒原上巡游；机动性好，走一路留一路残渣。（费用 2，战力 4，残渣 6）"
+    },
+    {
+      "id": "RC-ATOMIC-097",
+      "name": "胶囊供电组",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "modifier",
+      "rarity": "common",
+      "cost": 2,
+      "power": 4,
+      "compute": 0,
+      "residue": 1,
+      "keywords": [
+        "封存",
+        "防护"
+      ],
+      "text": "为相邻塔位供电，供电效率极高但几乎不能打。（费用 2，战力 2，残渣 1）"
+    },
+    {
+      "id": "RC-ATOMIC-098",
+      "name": "清运供电组",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "support",
+      "rarity": "common",
+      "cost": 1,
+      "power": 2,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "清洁",
+        "修复"
+      ],
+      "text": "为相邻塔位供电；运行时不产生残渣（城郊的标准做法）。（费用 1，战力 1，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-099",
+      "name": "郊区清运卡车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "rare",
+      "cost": 1,
+      "power": 1,
+      "compute": 0,
+      "residue": 3,
+      "keywords": [
+        "供电",
+        "基座"
+      ],
+      "text": "把城区废弃物运走；供电与战力都不错的万金油。（费用 1，战力 2，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-100",
+      "name": "听证回收机",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "modifier",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 4,
+      "compute": 1,
+      "residue": 6,
+      "keywords": [
+        "爆发",
+        "基座"
+      ],
+      "text": "从降级区里获利；自身所在格迅速恶化——但漫游者不在乎。（费用 2，战力 3，残渣 6）"
+    },
+    {
+      "id": "RC-ATOMIC-101",
+      "name": "装配火力台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "support",
+      "rarity": "common",
+      "cost": 3,
+      "power": 6,
+      "compute": 1,
+      "residue": 9,
+      "keywords": [
+        "修复",
+        "清洁"
+      ],
+      "text": "部署后自动交战；输出高，但每回合持续留下残渣。（费用 3，战力 8，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-102",
+      "name": "轨道巡检车",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "support",
+      "rarity": "common",
+      "cost": 4,
+      "power": 9,
+      "compute": 1,
+      "residue": 4,
+      "keywords": [
+        "清洁",
+        "适应"
+      ],
+      "text": "每回合修复相邻塔位；维护得当，几乎不留残渣。（费用 4，战力 7，残渣 4）"
+    },
+    {
+      "id": "RC-ATOMIC-103",
+      "name": "搪瓷拖车队",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "skill",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 5,
+      "compute": 0,
+      "residue": 3,
+      "keywords": [
+        "供电",
+        "防护"
+      ],
+      "text": "部署极快（费用低），适合反复换阵。（费用 2，战力 3，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-104",
+      "name": "备用增殖堆",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 3,
+      "power": 4,
+      "compute": 0,
+      "residue": 9,
+      "keywords": [
+        "穿透",
+        "搬运"
+      ],
+      "text": "以辐射换取极高输出；残渣沉重，正是它的燃料。（费用 3，战力 8，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-105",
+      "name": "备用调度台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 4,
+      "power": 9,
+      "compute": 1,
+      "residue": 7,
+      "keywords": [
+        "阻挡",
+        "监测"
+      ],
+      "text": "按规程调度本区域，各项指标均衡。（费用 4，战力 6，残渣 7）"
+    },
+    {
+      "id": "RC-ATOMIC-106",
+      "name": "薄荷绿篱",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "modifier",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 6,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "防护",
+        "规制"
+      ],
+      "text": "以植被挡住粉尘；战力不高，但完全不产生残渣。（费用 3，战力 4，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-107",
+      "name": "示波渣土车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "epic",
+      "cost": 3,
+      "power": 6,
+      "compute": 1,
+      "residue": 9,
+      "keywords": [
+        "搬运",
+        "监测"
+      ],
+      "text": "一次清走大量废弃物；战力极高，但留下大片残渣。（费用 3，战力 8，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-108",
+      "name": "样板巡游车",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "support",
+      "rarity": "common",
+      "cost": 3,
+      "power": 10,
+      "compute": 0,
+      "residue": 9,
+      "keywords": [
+        "适应",
+        "防护"
+      ],
+      "text": "在荒原上巡游；机动性好，走一路留一路残渣。（费用 3，战力 5，残渣 9）"
+    },
+    {
+      "id": "RC-ATOMIC-109",
+      "name": "示波供电组",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 4,
+      "compute": 0,
+      "residue": 1,
+      "keywords": [
+        "穿透",
+        "基座"
+      ],
+      "text": "为相邻塔位供电，供电效率极高但几乎不能打。（费用 2，战力 2，残渣 1）"
+    },
+    {
+      "id": "RC-ATOMIC-110",
+      "name": "隔离供电组",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "unit",
+      "rarity": "epic",
+      "cost": 3,
+      "power": 7,
+      "compute": 1,
+      "residue": 0,
+      "keywords": [
+        "爆发",
+        "穿透"
+      ],
+      "text": "为相邻塔位供电；运行时不产生残渣（城郊的标准做法）。（费用 3，战力 3，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-111",
+      "name": "铅衬清运卡车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "common",
+      "cost": 3,
+      "power": 6,
+      "compute": 0,
+      "residue": 7,
+      "keywords": [
+        "穿透",
+        "封存"
+      ],
+      "text": "把城区废弃物运走；供电与战力都不错的万金油。（费用 3，战力 5，残渣 7）"
+    },
+    {
+      "id": "RC-ATOMIC-112",
+      "name": "镀铬回收机",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "tower",
+      "rarity": "epic",
+      "cost": 2,
+      "power": 3,
+      "compute": 1,
+      "residue": 6,
+      "keywords": [
+        "监测",
+        "修复"
+      ],
+      "text": "从降级区里获利；自身所在格迅速恶化——但漫游者不在乎。（费用 2，战力 3，残渣 6）"
+    },
+    {
+      "id": "RC-ATOMIC-113",
+      "name": "装配火力台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 4,
+      "power": 8,
+      "compute": 0,
+      "residue": 12,
+      "keywords": [
+        "耗材",
+        "基座"
+      ],
+      "text": "部署后自动交战；输出高，但每回合持续留下残渣。（费用 4，战力 10，残渣 12）"
+    },
+    {
+      "id": "RC-ATOMIC-114",
+      "name": "星爆巡检车",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "unit",
+      "rarity": "rare",
+      "cost": 3,
+      "power": 6,
+      "compute": 1,
+      "residue": 3,
+      "keywords": [
+        "监测",
+        "爆发"
+      ],
+      "text": "每回合修复相邻塔位；维护得当，几乎不留残渣。（费用 3，战力 5，残渣 3）"
+    },
+    {
+      "id": "RC-ATOMIC-115",
+      "name": "胶囊拖车队",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "skill",
+      "rarity": "common",
+      "cost": 1,
+      "power": 3,
+      "compute": 1,
+      "residue": 2,
+      "keywords": [
+        "清洁",
+        "供电"
+      ],
+      "text": "部署极快（费用低），适合反复换阵。（费用 1，战力 2，残渣 2）"
+    },
+    {
+      "id": "RC-ATOMIC-116",
+      "name": "隔离增殖堆",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "modifier",
+      "rarity": "epic",
+      "cost": 5,
+      "power": 8,
+      "compute": 1,
+      "residue": 15,
+      "keywords": [
+        "阻挡",
+        "耗材"
+      ],
+      "text": "以辐射换取极高输出；残渣沉重，正是它的燃料。（费用 5，战力 14，残渣 15）"
+    },
+    {
+      "id": "RC-ATOMIC-117",
+      "name": "浅滩调度台",
+      "faction": "FAC-ATOMIC-AEC",
+      "kind": "unit",
+      "rarity": "rare",
+      "cost": 2,
+      "power": 5,
+      "compute": 0,
+      "residue": 4,
+      "keywords": [
+        "供电",
+        "耗材"
+      ],
+      "text": "按规程调度本区域，各项指标均衡。（费用 2，战力 3，残渣 4）"
+    },
+    {
+      "id": "RC-ATOMIC-118",
+      "name": "镀铬绿篱",
+      "faction": "FAC-ATOMIC-SUB",
+      "kind": "unit",
+      "rarity": "common",
+      "cost": 3,
+      "power": 6,
+      "compute": 0,
+      "residue": 0,
+      "keywords": [
+        "搬运",
+        "供电"
+      ],
+      "text": "以植被挡住粉尘；战力不高，但完全不产生残渣。（费用 3，战力 4，残渣 0）"
+    },
+    {
+      "id": "RC-ATOMIC-119",
+      "name": "示波渣土车",
+      "faction": "FAC-ATOMIC-HAU",
+      "kind": "tower",
+      "rarity": "epic",
+      "cost": 4,
+      "power": 8,
+      "compute": 1,
+      "residue": 12,
+      "keywords": [
+        "供电",
+        "搬运"
+      ],
+      "text": "一次清走大量废弃物；战力极高，但留下大片残渣。（费用 4，战力 10，残渣 12）"
+    },
+    {
+      "id": "RC-ATOMIC-120",
+      "name": "样板巡游车",
+      "faction": "FAC-ATOMIC-ROA",
+      "kind": "relic",
+      "rarity": "common",
+      "cost": 2,
+      "power": 7,
+      "compute": 0,
+      "residue": 6,
+      "keywords": [
+        "基座",
+        "爆发"
+      ],
+      "text": "在荒原上巡游；机动性好，走一路留一路残渣。（费用 2，战力 4，残渣 6）"
     }
   ]
 }

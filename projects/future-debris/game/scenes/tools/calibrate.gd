@@ -47,10 +47,13 @@ func _quotas_json(catalog: CardCatalog, capacity: int) -> String:
 	var level_ids: Array = catalog.levels.keys()
 	level_ids.sort()
 	var proposals := {}
+	# 章内位置：每章 8 关（章 1 → 关卡 1–8，章 2 → 9–16 …）。
+	# 难度 = 章内曲线 × 章节系数——**第二章不该是第一章的复制品**。
 	for index in level_ids.size():
 		var level_id: String = level_ids[index]
 		var level: LevelData = catalog.levels[level_id]
-		var ratio := float(QuotaModel.RATIO_BY_LEVEL[mini(index, QuotaModel.RATIO_BY_LEVEL.size() - 1)])
+		var in_chapter := (index % QuotaModel.RATIO_BY_LEVEL.size())
+		var ratio := float(QuotaModel.RATIO_BY_LEVEL[in_chapter]) * QuotaModel.chapter_scale(level.chapter)
 		proposals[level_id] = QuotaModel.scale(level.quotas, capacity, ratio)
 	return "QUOTAS_JSON=%s" % JSON.stringify(proposals)
 

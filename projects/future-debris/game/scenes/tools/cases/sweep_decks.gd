@@ -14,26 +14,50 @@ const DECK_SIZE := 8
 const RAMP_SLOTS := 4      # 铺场位：每费用供电最高的几张
 
 ## 该势力的卡组：按"铺场 + 输出"两个角色各取若干张，保证各势力都用**自己的**卡。
+##
+## **实测教训（卡池扩到 120 张时暴露）**：原来完全按"每费用供电"排序取前 4 张，
+## 池子一大就会选出一堆"低费 + 低绝对供电"的牌——总供电看着不差，但**绝对供电太低**，
+## 爬升极慢。后果是测量出来的能力大幅下降（`HAU` 从 627 掉到 373），
+## 而我一度以为是卡池问题。**取数方式必须与"怎么爬得起来"对齐。**
+##
+## 现在的规则：先用"前期能拿到多少绝对供电"挑铺场位（只在前 `CANDIDATES` 张里挑，
+## 避免选到极低的），再用绝对战力最高的牌填输出位——**总供电不低于参考卡组**。
 static func for_faction(catalog: CardCatalog, faction_id: String) -> PackedStringArray:
 	var pool := catalog.cards_of_faction(faction_id)
 	if pool.is_empty():
 		return CaseBase.DECK.split(",")
-	var ramp := _sorted_by(catalog, pool, true)
-	var damage := _sorted_by(catalog, pool, false)
 	var out := PackedStringArray()
-	for i in mini(RAMP_SLOTS, ramp.size()):
-		out.append(ramp[i])
-	# 输出位：从战力最高的往下取，跳过已入选的卡
-	for id in damage:
+	# 铺场位：按"绝对供电"降序，再按每费用供电排序取前几张（兼顾"量大"与"划算"）
+	var ramp := _sorted_by(catalog, pool, true)
+	for id in _top_ramp(catalog, ramp, RAMP_SLOTS):
+		out.append(id)
+	# 输出位：绝对战力最高的牌
+	for id in _sorted_by(catalog, pool, false):
 		if out.size() >= DECK_SIZE:
 			break
 		if not out.has(id):
 			out.append(id)
-	# 仍不足时绕回重复（小卡池的势力）
 	var i := 0
 	while out.size() < DECK_SIZE and out.size() > 0:
 		out.append(out[i % out.size()])
 		i += 1
+	return out
+
+const CANDIDATES := 10
+
+## 从"每费用供电"排序里取铺场位，但**只在前 [CANDIDATES] 张里挑绝对供电最高的**，
+## 避免选出"便宜但供电极低"的牌。
+static func _top_ramp(catalog: CardCatalog, ramp: PackedStringArray, count: int) -> PackedStringArray:
+	var window: Array = []
+	for i in mini(CANDIDATES, ramp.size()):
+		window.append(ramp[i])
+	window.sort_custom(func(a, b):
+		var pa: int = (catalog.cards[str(a)] as CardData).power
+		var pb: int = (catalog.cards[str(b)] as CardData).power
+		return pa > pb if pa != pb else String(a) < String(b))
+	var out := PackedStringArray()
+	for i in mini(count, window.size()):
+		out.append(str(window[i]))
 	return out
 
 ## 排序：`by_ramp` 为真时按"每费用供电"降序，否则按"战力"降序。
