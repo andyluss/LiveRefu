@@ -1,23 +1,23 @@
-# 8 关难度实测（按势力分别跑，各用自己阵营的卡组）
+# 8 关难度实测（按势力分别跑；各势力已使用**自己的专属配额**）
 # 生成命令：./run.sh s2   （同一份数据也在 ./run.sh check 的 K 组闸门打印）
-# 卡池：T2（60 张：手写 12 + 生成 48，按势力均衡）
-# 配额：由 ./run.sh calibrate 从实测能力导出（形状=设计意图，尺度=测量）
+# 卡池：T2（60 张）；配额：./run.sh calibrate 从实测能力导出，并按势力倍率放大
+# 势力倍率（相对最弱 HAU=1.0）：AEC 1.051 / SUB 1.193 / ROA 1.606
 — FAC-ATOMIC-AEC（cleans）
 LV-ATOMIC-01 通关 剩血12 回合6 B
 LV-ATOMIC-02 通关 剩血8 回合8 C
-LV-ATOMIC-03 通关 剩血10 回合7 C
+LV-ATOMIC-03 通关 剩血6 回合9 C
 LV-ATOMIC-04 通关 剩血4 回合10 C
-LV-ATOMIC-05 通关 剩血0 回合12 C
+LV-ATOMIC-05 打爆 剩血0 回合12 C
 LV-ATOMIC-06 打爆 剩血0 回合12 C
 LV-ATOMIC-07 打爆 剩血0 回合12 C
 LV-ATOMIC-08 打爆 剩血0 回合12 C
 — FAC-ATOMIC-SUB（avoids）
 LV-ATOMIC-01 通关 剩血14 回合6 B
 LV-ATOMIC-02 通关 剩血12 回合7 B
-LV-ATOMIC-03 通关 剩血12 回合7 B
-LV-ATOMIC-04 通关 剩血8 回合9 C
-LV-ATOMIC-05 通关 剩血4 回合11 C
-LV-ATOMIC-06 通关 剩血2 回合12 C
+LV-ATOMIC-03 通关 剩血8 回合9 C
+LV-ATOMIC-04 通关 剩血4 回合11 C
+LV-ATOMIC-05 通关 剩血2 回合12 C
+LV-ATOMIC-06 通关 剩血0 回合13 C
 LV-ATOMIC-07 打爆 剩血0 回合13 C
 LV-ATOMIC-08 打爆 剩血0 回合13 C
 — FAC-ATOMIC-HAU（moves）
@@ -30,11 +30,11 @@ LV-ATOMIC-06 通关 剩血6 回合14 C
 LV-ATOMIC-07 通关 剩血3 回合17 C
 LV-ATOMIC-08 打爆 剩血0 回合19 C
 — FAC-ATOMIC-ROA（feeds）
-LV-ATOMIC-01 通关 剩血18 回合7 A
-LV-ATOMIC-02 通关 剩血17 回合8 A
-LV-ATOMIC-03 通关 剩血16 回合9 A
-LV-ATOMIC-04 通关 剩血15 回合10 A
-LV-ATOMIC-05 通关 剩血15 回合10 A
-LV-ATOMIC-06 通关 剩血12 回合13 B
-LV-ATOMIC-07 通关 剩血10 回合15 B
-LV-ATOMIC-08 通关 剩血8 回合17 B
+LV-ATOMIC-01 通关 剩血17 回合8 A
+LV-ATOMIC-02 通关 剩血16 回合9 A
+LV-ATOMIC-03 通关 剩血13 回合12 B
+LV-ATOMIC-04 通关 剩血12 回合13 B
+LV-ATOMIC-05 通关 剩血9 回合16 B
+LV-ATOMIC-06 通关 剩血8 回合17 B
+LV-ATOMIC-07 通关 剩血5 回合20 C
+LV-ATOMIC-08 通关 剩血3 回合22 C

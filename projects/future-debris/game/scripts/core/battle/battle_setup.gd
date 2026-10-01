@@ -28,7 +28,8 @@ static func prepare(battle, deck_ids: PackedStringArray, base_hp: int, turn_limi
 	battle.level = battle.catalog.levels.get(battle.level_id)
 	var quotas: PackedInt32Array = PackedInt32Array()
 	if battle.level != null:
-		quotas = battle.level.quotas   # 三元表达式在 GDScript 里推不出类型，必须显式写（踩过两次）
+		# 优先该势力的专属曲线（按势力配平难度）；没有则用通用曲线
+		quotas = battle.level.quotas_for(battle.faction_id)
 	battle.wave = WaveSystem.init_wave(quotas)
 	battle.rules = _select_rules(battle)
 	battle.turn = 0

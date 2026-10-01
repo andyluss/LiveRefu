@@ -129,10 +129,23 @@ def validate_references(
         if not target_ids:
             report.error(f"tables/{rel_name}", f"引用目标 {target_table} 为空或不存在，无法校验（{label}）")
             continue
+        key_of = bool(ref.get("keyOf"))
         for index, entry in enumerate(entries):
             if not isinstance(entry, dict) or entry.get(field) is None:
                 continue
             value = entry[field]
+            # 支持**对象字段的键**（如 quotas_by_faction 的势力 id）：
+            # 这类字段的值是"字典"，真正需要校验的是它的**键**是不是有效引用。
+            # 曾经只处理标量与数组，于是"对象里写了一个不存在的势力"完全不会被发现——
+            # 后果是该势力静默用不到专属曲线（难度看起来"没生效"，却不报错）。
+            if key_of and isinstance(value, dict):
+                for key in value:
+                    if str(key) not in target_ids:
+                        report.error(
+                            f"tables/{rel_name}[{index}]",
+                            f"字段 {field} 的键 {key!r} 在 {target_table} 中不存在（{label}）",
+                        )
+                continue
             # 支持**数组字段**（如关卡的 rule_set）：逐元素校验。
             # 曾经只处理标量，于是"数组里塞一个不存在的 id"不会被发现——
             # 是关卡表引入 rule_set 时暴露的（单元素数组恰好通过，多元素才报错）。
@@ -324,6 +337,23 @@ def run_reference_self_test() -> int:
         failures += 0 if ok else 1
         detail = report.errors[0] if report.errors else "无报错"
         print(f"  [{'OK  ' if ok else 'MISS'}] {label} → 期望报错={expect_error}；实际：{detail}")
+    # 对象键引用（quotas_by_faction）的负例：键写错必须被抓到
+    key_cases = [
+        ("对象键引用有效", [{"id": "L-1", "quotas_by_faction": {"F-1": [1, 2]}}], [{"id": "F-1"}], False),
+        ("对象键引用不存在", [{"id": "L-1", "quotas_by_faction": {"F-9": [1, 2]}}], [{"id": "F-1"}], True),
+    ]
+    for label, entries, factions, expect_error in key_cases:
+        report = Report()
+        validate_references(
+            "levels.json", {"references": [{"field": "quotas_by_faction", "table": "factions.json",
+                                            "label": "按势力配额的键必须是存在的势力", "keyOf": True}]},
+            entries, {"factions.json": factions}, report,
+        )
+        hit = bool(report.errors)
+        ok = hit == expect_error
+        failures += 0 if ok else 1
+        detail = report.errors[0] if report.errors else "无报错"
+        print(f"  [{'OK  ' if ok else 'MISS'}] {label} → 期望报错={expect_error}；实际：{detail}")
     for label, entries, factions, expect_error in cases:
         report = Report()
         validate_references("cards.json", spec, entries, {"factions.json": factions}, report)
@@ -332,10 +362,14 @@ def run_reference_self_test() -> int:
         failures += 0 if ok else 1
         detail = report.errors[0] if report.errors else "无报错"
         print(f"  [{'OK  ' if ok else 'MISS'}] {label} → 期望报错={expect_error}；实际：{detail}")
+    # 分母必须**数实际跑过的用例**，不能只数 `cases`：
+    # 我在同一段里又加了两条"对象键引用"用例，于是报告写成 5 个用例里的 3 个
+    # （失败时更糟：会打印"4/3 个用例不符预期"）。计数是验收报告的可信度本身。
+    total = len(key_cases) + len(cases)
     if failures:
-        print(f"[self-test] FAIL：{failures}/{len(cases)} 个用例不符预期")
+        print(f"[self-test] FAIL：{failures}/{total} 个用例不符预期")
         return 1
-    print(f"[self-test] PASS：{len(cases)}/{len(cases)} 个用例符合预期")
+    print(f"[self-test] PASS：{total}/{total} 个用例符合预期")
     return 0
 
 

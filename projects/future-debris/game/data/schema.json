@@ -141,6 +141,11 @@
         "rule_set": {
           "type": "array",
           "items": "string"
+        },
+        "quotas_by_faction": {
+          "type": "object",
+          "note": "按势力的逐波配额：{势力 id: [配额...]}。给了就必须给满 waves 条，否则该势力会静默用到通用曲线（那种不一致不会报错）。",
+          "items": "int"
         }
       },
       "minEntries": 8,
@@ -149,6 +154,12 @@
           "field": "rule_set",
           "table": "rules.json",
           "label": "关卡引用的规则卡必须存在（数组字段）"
+        },
+        {
+          "field": "quotas_by_faction",
+          "table": "factions.json",
+          "label": "按势力配额的键必须是存在的势力（对象字段的键）",
+          "keyOf": true
         }
       ]
     },

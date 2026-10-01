@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "atomic__levels",
-  "note": "关卡表：逐波配额与关卡级规则集。**配额由 ./run.sh calibrate 从实测能力导出**（形状是设计意图、尺度来自测量），不要手改数字——要改难度请改 QuotaModel.RATIO_BY_LEVEL。",
+  "note": "关卡表：逐波配额与关卡级规则集。**配额由 ./run.sh calibrate 从实测能力导出**（形状是设计意图、尺度来自测量）；`quotas_by_faction` 是按势力放大的专属曲线（倍率 = 该势力能力 ÷ 最弱势力能力）。**不要手改数字**——要改难度请改 QuotaModel.RATIO_BY_LEVEL。",
   "entries": [
     {
       "id": "LV-ATOMIC-01",
@@ -21,7 +21,41 @@
       "rule_set": [
         "RULE-ATOMIC-003",
         "RULE-ATOMIC-004"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          11,
+          14,
+          17,
+          19,
+          22,
+          25
+        ],
+        "FAC-ATOMIC-HAU": [
+          10,
+          13,
+          16,
+          18,
+          21,
+          24
+        ],
+        "FAC-ATOMIC-ROA": [
+          16,
+          21,
+          26,
+          29,
+          34,
+          39
+        ],
+        "FAC-ATOMIC-SUB": [
+          12,
+          16,
+          19,
+          21,
+          25,
+          29
+        ]
+      }
     },
     {
       "id": "LV-ATOMIC-02",
@@ -42,7 +76,45 @@
       "rule_set": [
         "RULE-ATOMIC-003",
         "RULE-ATOMIC-004"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          12,
+          14,
+          17,
+          20,
+          22,
+          25,
+          27
+        ],
+        "FAC-ATOMIC-HAU": [
+          11,
+          13,
+          16,
+          19,
+          21,
+          24,
+          26
+        ],
+        "FAC-ATOMIC-ROA": [
+          18,
+          21,
+          26,
+          31,
+          34,
+          39,
+          42
+        ],
+        "FAC-ATOMIC-SUB": [
+          13,
+          16,
+          19,
+          23,
+          25,
+          29,
+          31
+        ]
+      }
     },
     {
       "id": "LV-ATOMIC-03",
@@ -63,7 +135,45 @@
       "rule_set": [
         "RULE-ATOMIC-001",
         "RULE-ATOMIC-003"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          14,
+          18,
+          21,
+          23,
+          27,
+          30,
+          33
+        ],
+        "FAC-ATOMIC-HAU": [
+          13,
+          17,
+          20,
+          22,
+          26,
+          29,
+          31
+        ],
+        "FAC-ATOMIC-ROA": [
+          21,
+          27,
+          32,
+          35,
+          42,
+          47,
+          50
+        ],
+        "FAC-ATOMIC-SUB": [
+          16,
+          20,
+          24,
+          26,
+          31,
+          35,
+          37
+        ]
+      }
     },
     {
       "id": "LV-ATOMIC-04",
@@ -86,7 +196,53 @@
       "rule_set": [
         "RULE-ATOMIC-001",
         "RULE-ATOMIC-003"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          13,
+          15,
+          17,
+          20,
+          22,
+          25,
+          27,
+          29,
+          34
+        ],
+        "FAC-ATOMIC-HAU": [
+          12,
+          14,
+          16,
+          19,
+          21,
+          24,
+          26,
+          28,
+          32
+        ],
+        "FAC-ATOMIC-ROA": [
+          19,
+          22,
+          26,
+          31,
+          34,
+          39,
+          42,
+          45,
+          51
+        ],
+        "FAC-ATOMIC-SUB": [
+          14,
+          17,
+          19,
+          23,
+          25,
+          29,
+          31,
+          33,
+          38
+        ]
+      }
     },
     {
       "id": "LV-ATOMIC-05",
@@ -108,7 +264,49 @@
       "rule_set": [
         "RULE-ATOMIC-001",
         "RULE-ATOMIC-004"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          15,
+          19,
+          24,
+          28,
+          34,
+          38,
+          41,
+          45
+        ],
+        "FAC-ATOMIC-HAU": [
+          14,
+          18,
+          23,
+          27,
+          32,
+          36,
+          39,
+          43
+        ],
+        "FAC-ATOMIC-ROA": [
+          22,
+          29,
+          37,
+          43,
+          51,
+          58,
+          63,
+          69
+        ],
+        "FAC-ATOMIC-SUB": [
+          17,
+          21,
+          27,
+          32,
+          38,
+          43,
+          47,
+          51
+        ]
+      }
     },
     {
       "id": "LV-ATOMIC-06",
@@ -130,7 +328,49 @@
       "rule_set": [
         "RULE-ATOMIC-001",
         "RULE-ATOMIC-002"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          19,
+          24,
+          29,
+          34,
+          40,
+          44,
+          49,
+          53
+        ],
+        "FAC-ATOMIC-HAU": [
+          18,
+          23,
+          28,
+          32,
+          38,
+          42,
+          47,
+          50
+        ],
+        "FAC-ATOMIC-ROA": [
+          29,
+          37,
+          45,
+          51,
+          61,
+          67,
+          75,
+          80
+        ],
+        "FAC-ATOMIC-SUB": [
+          21,
+          27,
+          33,
+          38,
+          45,
+          50,
+          56,
+          60
+        ]
+      }
     },
     {
       "id": "LV-ATOMIC-07",
@@ -155,7 +395,57 @@
         "RULE-ATOMIC-001",
         "RULE-ATOMIC-002",
         "RULE-ATOMIC-003"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          14,
+          19,
+          24,
+          28,
+          33,
+          38,
+          42,
+          47,
+          53,
+          57
+        ],
+        "FAC-ATOMIC-HAU": [
+          13,
+          18,
+          23,
+          27,
+          31,
+          36,
+          40,
+          45,
+          50,
+          54
+        ],
+        "FAC-ATOMIC-ROA": [
+          21,
+          29,
+          37,
+          43,
+          50,
+          58,
+          64,
+          72,
+          80,
+          87
+        ],
+        "FAC-ATOMIC-SUB": [
+          16,
+          21,
+          27,
+          32,
+          37,
+          43,
+          48,
+          54,
+          60,
+          64
+        ]
+      }
     },
     {
       "id": "LV-ATOMIC-08",
@@ -182,7 +472,61 @@
         "RULE-ATOMIC-002",
         "RULE-ATOMIC-003",
         "RULE-ATOMIC-004"
-      ]
+      ],
+      "quotas_by_faction": {
+        "FAC-ATOMIC-AEC": [
+          13,
+          18,
+          23,
+          28,
+          34,
+          39,
+          44,
+          49,
+          55,
+          60,
+          65
+        ],
+        "FAC-ATOMIC-HAU": [
+          12,
+          17,
+          22,
+          27,
+          32,
+          37,
+          42,
+          47,
+          52,
+          57,
+          62
+        ],
+        "FAC-ATOMIC-ROA": [
+          19,
+          27,
+          35,
+          43,
+          51,
+          59,
+          67,
+          75,
+          84,
+          92,
+          100
+        ],
+        "FAC-ATOMIC-SUB": [
+          14,
+          20,
+          26,
+          32,
+          38,
+          44,
+          50,
+          56,
+          62,
+          68,
+          74
+        ]
+      }
     }
   ]
 }

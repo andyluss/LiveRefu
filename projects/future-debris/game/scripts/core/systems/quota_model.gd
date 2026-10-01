@@ -36,6 +36,17 @@ static func shape_total(existing: Array) -> int:
 		total += int(value)
 	return total
 
+## 各势力相对最弱势力的能力倍率。用途：通用配额是以**最弱势力**为基准生成的，
+## 因此势力 f 的专属配额 = 通用配额 × 本倍率（**形状不变，只按各自能力放大**）。
+## 未知或非正的最弱能力时返回空（不猜）。
+static func faction_ratios(caps: Dictionary, weakest: int) -> Dictionary:
+	var out := {}
+	if weakest <= 0:
+		return out
+	for faction_id in caps:
+		out[faction_id] = round(float(caps[faction_id]) / float(weakest) * 1000.0) / 1000.0
+	return out
+
 ## 生成新配额：保持 `existing` 的形状，把总量缩放到 `ratio × capacity`。
 static func scale(existing: Array, capacity: int, ratio: float) -> Array[int]:
 	var shape := shape_total(existing)

@@ -23,6 +23,28 @@ static func first_of(root: Node, kind: String) -> Node:
 			return hit
 	return null
 
+## 实例化战斗界面并断言它装配出了 `required` 里的每一块视图。
+## 返回**失败说明**（空串表示通过）。
+##
+## 为什么"不只数子节点"：一个空 Shell 也会有子节点，而那正是白屏的形态。
+static func check_battle_screen(parent: Node, required: Array) -> String:
+	var scene := load("res://scenes/app/battle.tscn") as PackedScene
+	if scene == null:
+		return "加载不到战斗场景"
+	var screen := scene.instantiate()
+	if screen == null:
+		return "战斗场景实例化失败"
+	parent.add_child(screen)
+	await parent.get_tree().process_frame
+	var found := names(screen)
+	var missing := PackedStringArray()
+	for kind in required:
+		if not found.has(str(kind)):
+			missing.append(str(kind))
+	if not missing.is_empty():
+		return "战斗界面缺少视图：%s" % ", ".join(missing)
+	return ""
+
 static func _collect(node: Node, out: PackedStringArray) -> void:
 	var name: String = _class_of(node)
 	if name != "":
