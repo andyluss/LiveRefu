@@ -28,7 +28,16 @@ func _ready() -> void:
 	for arg in argv:
 		if arg.begins_with("--scene="):
 			scene_path = arg.substr(8)
-	if scene_path.ends_with("battle.tscn") or scene_path.ends_with("card_gallery.tscn"):
+		elif arg == "--theme":
+			scene_path = ""   # 显式拍主题预览（默认拍战斗界面）
+		elif arg == "--with-summary":
+			# 填充一份**演示用**结算摘要：结算界面的真实版式只有打完一局才出现，
+			# 若不填充就只能拍到"没有可展示的结算"（那是空状态，验不了版式）。
+			CampaignSelection.last_summary = DemoSample.summary()
+			CampaignSelection.level_id = "LV-ATOMIC-01"
+	# **不再用白名单**：任何场景都应当能截图（曾用硬编码白名单，
+	# 于是 `--scene=level_select.tscn` 被静默忽略、拍出主题预览——不容易发现）。
+	if scene_path != "":
 		add_child((load(scene_path) as PackedScene).instantiate())
 	else:
 		add_child(Shell.build(theme, tokens))

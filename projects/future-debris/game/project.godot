@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 AppInfo="*res://scripts/autoload/app_info.gd"
 AudioSettings="*res://scripts/autoload/audio_settings.gd"
 SfxHost="*res://scripts/autoload/sfx_host.gd"
+CampaignSelection="*res://scripts/autoload/campaign_selection.gd"
 
 [gui]
 

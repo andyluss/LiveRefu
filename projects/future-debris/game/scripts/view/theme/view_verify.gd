@@ -45,6 +45,8 @@ static func run(tokens: TokenSet) -> Dictionary:
 		"六段 + 余量 54 = 卡高 %.0f（实际 %.0f）" % [CardView.H, sections + 54.0])
 	_check(errors, checks, CardView.COMPACT_SCALE > 0.0 and CardView.COMPACT_SCALE < 1.0,
 		"紧凑模式比例在 0..1 之间（手牌用）")
+	# 战役进度：解锁规则与"评级只升不降"是**长期经营**的根基，必须被守
+	_check_campaign(errors, checks)
 	# 残渣热力：0 点必须是背景色（否则"干净格"看起来像"有污染"）
 	_check(errors, checks, BattlePalette.residue_heat(tokens, 0, 8) == tokens.color("--bg-base"),
 		"残渣为 0 时热力色 = --bg-base")
@@ -53,6 +55,29 @@ static func run(tokens: TokenSet) -> Dictionary:
 	var high := BattlePalette.residue_heat(tokens, 8, 8)
 	_check(errors, checks, low != high, "残渣热力随数量变化")
 	return {"ok": errors.is_empty(), "checks": checks, "errors": errors}
+
+## 战役进度的不变量。**不写存档文件**（避免测试污染玩家数据）。
+static func _check_campaign(errors: Array[String], checks: Array[String]) -> void:
+	var progress := CampaignProgress.new()
+	var ordered: Array = ["LV-ATOMIC-01", "LV-ATOMIC-02", "LV-ATOMIC-03"]
+	_check(errors, checks, CampaignProgress.is_unlocked(progress, ordered, 0),
+		"第一关永远可挑战")
+	_check(errors, checks, not CampaignProgress.is_unlocked(progress, ordered, 1),
+		"未通关前一关时，后一关未解锁")
+	progress.cleared.append("LV-ATOMIC-01")
+	_check(errors, checks, CampaignProgress.is_unlocked(progress, ordered, 1),
+		"通关前一关后，后一关解锁")
+	# 评级只升不降（字母序越小越好：S < A < B < C）
+	progress.best_grade["LV-ATOMIC-01"] = "B"
+	progress.merge_result("LV-ATOMIC-01", "S", true)
+	_check(errors, checks, str(progress.best_grade["LV-ATOMIC-01"]) == "S", "更好的评级会覆盖旧的")
+	progress.merge_result("LV-ATOMIC-01", "C", true)
+	_check(errors, checks, str(progress.best_grade["LV-ATOMIC-01"]) == "S", "更差的评级不会覆盖旧的")
+	# 未通关不该被记成通关
+	var fresh := CampaignProgress.new()
+	fresh.merge_result("LV-ATOMIC-02", "B", false)
+	_check(errors, checks, not fresh.is_cleared("LV-ATOMIC-02"),
+		"未通关的一局不会写进进度")
 
 static func _check(errors: Array[String], checks: Array[String], passed: bool, label: String) -> void:
 	checks.append(("OK   " if passed else "FAIL ") + label)

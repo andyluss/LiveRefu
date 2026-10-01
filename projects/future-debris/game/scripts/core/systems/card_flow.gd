@@ -39,7 +39,12 @@ static func summarize(battle) -> Dictionary:
 		"residue_total": ResidueSystem.total(battle.residue),
 		"zone": ResidueSystem.zone(battle.residue),
 		"cards_played": battle.cards_played,
-		"waves_cleared": WaveSystem.index(battle.wave),
+		# **通关要显式读 `finished`**，不能靠"剩余波数"推断：
+		# 清完最后一波后 [TurnLoop] 会置 `finished`，但波次索引可能已经推到末位之后，
+		# 两种终局（通关 / 被打爆）必须能被结算界面与存档一致地区分。
+		"cleared": battle.finished,
+		"waves_cleared": WaveSystem.index(battle.wave) + (1 if battle.finished else 0),
+		"waves_total": WaveSystem.wave_count(battle.wave),
 		"wave": WaveSystem.index(battle.wave),
 		"max_turns": battle.max_turns,
 		"score": score["score"],

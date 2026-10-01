@@ -77,7 +77,7 @@ func _compose(theme: Theme, tokens: TokenSet, font: Font) -> Control:
 
 func _start(tokens: TokenSet) -> void:
 	battle = Battle.new()
-	battle.level_id = "LV-ATOMIC-03"
+	battle.level_id = CampaignSelection.level_id
 	battle.faction_id = "FAC-ATOMIC-AEC"
 	if not battle.setup(DECK.split(","), 20, 40):
 		_status.text = "初始化失败：%s" % str(battle.events)
@@ -97,6 +97,17 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
 		driver.advance()
 		_update_status("第 %d 回合" % battle.turn)
+		_maybe_settle()
+
+## 终局即进入结算。**这是"一局闭环"的最后一环**：
+## 在此之前打完一局只会停在原地，胜负不产生任何后果。
+## 判定条件用 `is_active()`（同时覆盖"通关"与"被打爆"两种终局）。
+func _maybe_settle() -> void:
+	if battle.is_active():
+		return
+	CampaignSelection.level_id = battle.level_id
+	CampaignSelection.last_summary = CardFlow.summarize(battle)
+	get_tree().change_scene_to_file("res://scenes/app/settlement.tscn")
 
 func _on_card_clicked(index: int) -> void:
 	_hand.select(index)
