@@ -25,6 +25,7 @@ func setup(battle: Battle, tokens: TokenSet, font: Font) -> void:
 	_tokens = tokens
 	_font = font
 	custom_minimum_size = Geom.board_size(cell(), gap())
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	queue_redraw()
 
 ## 供交互层使用：把控件内坐标转成塔位下标。

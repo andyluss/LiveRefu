@@ -21,6 +21,7 @@ func setup(tokens: TokenSet, font: Font) -> void:
 	_tokens = tokens
 	_font = font
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 ## 推入一条事件；超出上限时挤掉最旧的一条。
 func push(text: String, color_token: String, level: String = "body") -> void:

@@ -45,6 +45,11 @@ static func run(tokens: TokenSet) -> Dictionary:
 		"六段 + 余量 54 = 卡高 %.0f（实际 %.0f）" % [CardView.H, sections + 54.0])
 	_check(errors, checks, CardView.COMPACT_SCALE > 0.0 and CardView.COMPACT_SCALE < 1.0,
 		"紧凑模式比例在 0..1 之间（手牌用）")
+	# 响应式：手牌在任何常见视口宽度下都必须放得完（1080p 素材的硬条件）
+	for width in [1280.0, 1440.0, 1920.0, 2560.0]:
+		_check(errors, checks, HandLayout.fits(8, width),
+			"8 张手牌在 %.0f 宽视口内放得完" % width)
+	_check(errors, checks, HandLayout.fits(0, 1280.0), "空手牌视为放得下（边界）")
 	# 战役进度：解锁规则与"评级只升不降"是**长期经营**的根基，必须被守
 	_check_campaign(errors, checks)
 	# 残渣热力：0 点必须是背景色（否则"干净格"看起来像"有污染"）

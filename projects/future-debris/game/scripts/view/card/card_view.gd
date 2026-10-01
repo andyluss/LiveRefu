@@ -27,15 +27,21 @@ var _cost := 0
 var _might := 0
 var _affordable := true
 var _compact := false
+## 紧凑模式的实际缩放（由调用方按可用宽度算；默认取契约值）
+var _card_scale := COMPACT_SCALE
 
 ## 完整卡面（卡牌库/详情用）。
 func setup_full(card: CardData, tokens: TokenSet, font: Font) -> void:
 	_apply(card, tokens, font, card.cost, card.might, true, false)
 
 ## 紧凑卡面（手牌用）：整体按比例缩小，但**六段顺序与相对位置不变**。
+## `scale` 由手牌按可用宽度算出来（[HandLayout]）；不给则用契约里的紧凑比例。
 func setup_compact(card: CardData, tokens: TokenSet, font: Font, cost: int, might: int,
-		affordable: bool) -> void:
+		affordable: bool, scale: float = COMPACT_SCALE) -> void:
 	_apply(card, tokens, font, cost, might, affordable, true)
+	_card_scale = scale
+	custom_minimum_size = Vector2(W, H) * _scale()
+	queue_redraw()
 
 func _apply(card: CardData, tokens: TokenSet, font: Font, cost: int, might: int,
 		affordable: bool, compact: bool) -> void:
@@ -52,7 +58,9 @@ func _apply(card: CardData, tokens: TokenSet, font: Font, cost: int, might: int,
 ## 绘制缩放 = **设计缩放**（紧凑/完整）× **显示缩放**（[UiScale]，出素材时放大）。
 ## 两者必须分开：`COMPACT_SCALE` 是契约值（有闸门断言守着），而显示缩放是运行期的事。
 func _scale() -> float:
-	return (COMPACT_SCALE if _compact else 1.0) * UiScale.factor()
+	if _compact:
+		return _card_scale
+	return UiScale.factor()
 
 func _draw() -> void:
 	if _card == null or _tokens == null or _font == null:

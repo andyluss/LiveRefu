@@ -17,6 +17,29 @@ export HOME="$WS_ROOT/.godot-home"
 mkdir -p "$HOME"
 GODOT="${GODOT:-godot}"
 
+# 临时把**窗口与视口一起**改成 WxH（空值 = 不改），退出时还原。
+# 教训：第一版用 `exec` 启动引擎，而 **`exec` 会替换进程、EXIT trap 不执行**，
+# 于是覆盖被永久留在 project.godot 里（默认路径也跟着坏）。现在不用 exec，trap 正常生效。
+viewport_override() {
+  local size="${1:-}"
+  [ -z "$size" ] && return 0
+  local w="${size%x*}" h="${size#*x}"
+  local file="$GAME/project.godot" backup="$HERE/.build/project.godot.vp"
+  mkdir -p "$HERE/.build"
+  cp "$file" "$backup"
+  python3 - "$file" "$w" "$h" <<'PYEOF'
+import pathlib, re, sys
+path, w, h = pathlib.Path(sys.argv[1]), sys.argv[2], sys.argv[3]
+s = path.read_text(encoding="utf-8")
+for key, value in (("viewport_width", w), ("viewport_height", h),
+                   ("window_width_override", w), ("window_height_override", h)):
+    s = re.sub(r"window/size/" + key + r"=\d+", "window/size/" + key + "=" + value, s)
+path.write_text(s, encoding="utf-8")
+PYEOF
+  trap "cp '$backup' '$file'" EXIT
+  echo "[viewport] 临时 ${w}x${h}（退出时还原）"
+}
+
 need_godot() {
   if ! command -v "$GODOT" >/dev/null 2>&1; then
     echo "找不到 Godot（$GODOT）。请安装 Godot 4.7 或设置 GODOT=/path/to/godot" >&2
@@ -83,14 +106,12 @@ case "${1:-run}" in
     # 分辨率：Steam 要求截图 >= 1920x1080，而工程的窗口是 1280x720。
     # 用 --resolution 覆盖窗口大小即可（viewport 不变，界面按 stretch 放大），
     # 因此**不需要为了出素材改工程配置**。默认 1920x1080。
-    # **出 1920x1080 素材尚未打通**（诚实标注）：
-    # 只加 `--resolution` 不够（stretch 会把 1280x720 的视口放大，内容仍只占左上角）；
-    # 而"临时改 project.godot 的视口"这条路有个**设计缺陷**：本命令用 `exec` 启动引擎，
-    # `exec` 会替换进程、**EXIT trap 不会执行**，于是覆盖被永久留在工程文件里
-    # （实测踩到：默认路径因此渲染异常）。正确做法是让界面**真正响应式**（按视口重排），
-    # 那是独立任务，已记入 [12 商店页与美术执行计划] 的待办。
-    # 参数透传：文件名 + 可选 --scene=res://... / --theme / --with-summary
-    exec "$GODOT" --path "$GAME" res://scenes/tools/screenshot.tscn -- "$@"
+    # 出素材：`SHOT_VIEWPORT=1920x1080` 时把窗口与视口一起改（界面按视口重排 → 真正填满）。
+    # 1080p 素材：SHOT_VIEWPORT=1920x1080 ./run.sh shot xxx.png
+    # **不要用 exec**：它会替换进程、EXIT trap 不执行，覆盖会被永久留在 project.godot 里。
+    viewport_override "${SHOT_VIEWPORT:-}"
+    "$GODOT" --path "$GAME" res://scenes/tools/screenshot.tscn -- "$@"
+    exit $?
     ;;
 
   demo)

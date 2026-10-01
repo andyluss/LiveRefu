@@ -33,6 +33,8 @@ var _last_turn := 0
 var _finished := false
 
 func _ready() -> void:
+	UiScale.parse_cli()
+	Shell.skip_fade = true      # 录像同样要"最终画面"（淡入会污染前几秒）
 	_stage = DemoStage.new()
 	var loaded := ThemeIo.load_or_build(false)
 	var tokens: TokenSet = loaded[1]

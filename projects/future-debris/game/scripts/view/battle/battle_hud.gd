@@ -17,6 +17,7 @@ func setup(battle: Battle, tokens: TokenSet, font: Font) -> void:
 	_tokens = tokens
 	_font = font
 	custom_minimum_size = Vector2(0, 132)
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	queue_redraw()
 
 func refresh() -> void:

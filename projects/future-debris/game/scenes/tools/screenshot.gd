@@ -13,6 +13,7 @@ func _ready() -> void:
 	# 截图要"最终画面"：关淡入（见 [Shell.skip_fade] 的说明——留着它曾让我
 	# 截到全透明的画面并误判成"主题坏了"）。
 	Shell.skip_fade = true
+	UiScale.parse_cli()
 	var opts := ShotOptions.parse()
 	var result := ThemeIo.load_or_build(false)
 	var tokens: TokenSet = result[1]

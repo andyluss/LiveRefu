@@ -21,6 +21,17 @@ static func slot_rect(slot: int, cell: Vector2, gap: int) -> Rect2:
 static func board_size(cell: Vector2, gap: int) -> Vector2:
 	return Vector2(COLS * cell.x + (COLS - 1) * gap, ROWS * cell.y + (ROWS - 1) * gap)
 
+## **按可用宽度算格子尺寸**：让战场真正铺开，而不是固定像素堆在左上角。
+##
+## 为什么需要（实测教训）：塔位原来是写死的 132×104，于是把视口调到 1920×1080 时，
+## 界面仍然只占左上角一块、下半屏空着——而 Steam 要求截图 ≥1920×1080。
+## 这里按"4 列 + 间隙"反推每格宽度，并**保持设计宽高比**（不然塔位会被拉扁）。
+static func cell_for_width(width: float, gap: int, aspect: Vector2) -> Vector2:
+	var usable := maxf(64.0, width - float(gap * (COLS - 1)))
+	var cell_width := usable / float(COLS)
+	var cell_height := cell_width * (aspect.y / aspect.x)
+	return Vector2(floorf(cell_width), floorf(cell_height))
+
 ## 塔位中心（相对战场左上角）。浮字与涟漪都画在这里，因此必须有唯一实现。
 static func slot_center(slot: int, cell: Vector2, gap: int) -> Vector2:
 	return slot_rect(slot, cell, gap).get_center()
