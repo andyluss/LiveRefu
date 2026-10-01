@@ -1,18 +1,29 @@
 {
   "schemaVersion": 1,
-  "note": "卡表量产种子表：生成器的**唯一输入**。改数值请改这里然后重跑 tools/gen_cards.py。生成必须幂等（同种子同结果），且不得覆盖手写卡（id 数字 ≤ 12）。",
+  "note": "卡表量产种子表：生成器的**唯一输入**。改数值请改这里然后重跑 tools/gen_cards.py。三个硬约束：① 幂等（同种子同结果）；② 不覆盖手写卡（id 数字 ≤ 12）；③ **每个势力有自己的 archetype 池**（faction_archetypes），且各池的`ramp_per_cost` 必须落在 `balance` 给出的容差内——否则\"按势力扫描难度\"测到的是卡池铺场能力不均，而不是机制强弱（实测教训）。",
   "seed": 20260930,
   "factions": [
-    { "id": "FAC-ATOMIC-AEC" },
-    { "id": "FAC-ATOMIC-SUB" },
-    { "id": "FAC-ATOMIC-HAU" },
-    { "id": "FAC-ATOMIC-ROA" }
+    {
+      "id": "FAC-ATOMIC-AEC"
+    },
+    {
+      "id": "FAC-ATOMIC-SUB"
+    },
+    {
+      "id": "FAC-ATOMIC-HAU"
+    },
+    {
+      "id": "FAC-ATOMIC-ROA"
+    }
   ],
   "archetypes": [
     {
       "name": "重装防线型",
       "suffix": "火力台",
-      "cost": [2, 4],
+      "cost": [
+        2,
+        4
+      ],
       "might_per_cost": 2.5,
       "power_per_cost": 0.2,
       "residue_ratio": 0.45,
@@ -21,7 +32,10 @@
     {
       "name": "洁净供给型",
       "suffix": "供电组",
-      "cost": [1, 3],
+      "cost": [
+        1,
+        3
+      ],
       "might_per_cost": 1.0,
       "power_per_cost": 1.4,
       "residue_ratio": 0.05,
@@ -30,7 +44,10 @@
     {
       "name": "污染套利型",
       "suffix": "回收机",
-      "cost": [1, 3],
+      "cost": [
+        1,
+        3
+      ],
       "might_per_cost": 1.6,
       "power_per_cost": 0.3,
       "residue_ratio": 0.9,
@@ -39,7 +56,10 @@
     {
       "name": "规制支援型",
       "suffix": "稽查队",
-      "cost": [2, 5],
+      "cost": [
+        2,
+        5
+      ],
       "might_per_cost": 1.8,
       "power_per_cost": 0.4,
       "residue_ratio": 0.15,
@@ -47,12 +67,208 @@
     }
   ],
   "name_pool": [
-    "铆钉", "搪瓷", "轨道", "冷却", "样板", "听证", "隔离", "尾鳍",
-    "薄荷", "镀铬", "示波", "铅衬", "炉心", "清运", "星爆", "郊区",
-    "按钮", "胶囊", "静电", "浅滩", "指示灯", "复合", "装配", "备用"
+    "铆钉",
+    "搪瓷",
+    "轨道",
+    "冷却",
+    "样板",
+    "听证",
+    "隔离",
+    "尾鳍",
+    "薄荷",
+    "镀铬",
+    "示波",
+    "铅衬",
+    "炉心",
+    "清运",
+    "星爆",
+    "郊区",
+    "按钮",
+    "胶囊",
+    "静电",
+    "浅滩",
+    "指示灯",
+    "复合",
+    "装配",
+    "备用"
   ],
   "keywords": [
-    "穿透", "修复", "阻挡", "清洁", "规制", "搬运", "封存", "防护",
-    "适应", "残片", "爆发", "基座", "供电", "耗材", "降级", "监测"
-  ]
+    "穿透",
+    "修复",
+    "阻挡",
+    "清洁",
+    "规制",
+    "搬运",
+    "封存",
+    "防护",
+    "适应",
+    "残片",
+    "爆发",
+    "基座",
+    "供电",
+    "耗材",
+    "降级",
+    "监测"
+  ],
+  "faction_archetypes": {
+    "FAC-ATOMIC-AEC": [
+      {
+        "name": "洁净供给型",
+        "suffix": "供电组",
+        "cost": [
+          1,
+          3
+        ],
+        "ramp_per_cost": 2.2,
+        "might_per_cost": 1.1,
+        "residue_ratio": 0.6,
+        "text": "为相邻塔位供电，供电效率极高但几乎不能打。"
+      },
+      {
+        "name": "重装防线型",
+        "suffix": "火力台",
+        "cost": [
+          2,
+          4
+        ],
+        "ramp_per_cost": 1.9,
+        "might_per_cost": 2.6,
+        "residue_ratio": 3.6,
+        "text": "部署后自动交战；输出高，但每回合持续留下残渣。"
+      },
+      {
+        "name": "规程指挥型",
+        "suffix": "调度台",
+        "cost": [
+          2,
+          4
+        ],
+        "ramp_per_cost": 2.2,
+        "might_per_cost": 1.5,
+        "residue_ratio": 1.2,
+        "text": "按规程调度本区域，各项指标均衡。"
+      }
+    ],
+    "FAC-ATOMIC-SUB": [
+      {
+        "name": "洁净供给型",
+        "suffix": "供电组",
+        "cost": [
+          1,
+          3
+        ],
+        "ramp_per_cost": 2.1,
+        "might_per_cost": 1.0,
+        "residue_ratio": 0.0,
+        "text": "为相邻塔位供电；运行时不产生残渣（城郊的标准做法）。"
+      },
+      {
+        "name": "巡查修复型",
+        "suffix": "巡检车",
+        "cost": [
+          2,
+          4
+        ],
+        "ramp_per_cost": 2.2,
+        "might_per_cost": 1.8,
+        "residue_ratio": 0.6,
+        "text": "每回合修复相邻塔位；维护得当，几乎不留残渣。"
+      },
+      {
+        "name": "园艺屏障型",
+        "suffix": "绿篱",
+        "cost": [
+          1,
+          3
+        ],
+        "ramp_per_cost": 2.1,
+        "might_per_cost": 1.2,
+        "residue_ratio": 0.0,
+        "text": "以植被挡住粉尘；战力不高，但完全不产生残渣。"
+      }
+    ],
+    "FAC-ATOMIC-HAU": [
+      {
+        "name": "清运主力型",
+        "suffix": "清运卡车",
+        "cost": [
+          1,
+          3
+        ],
+        "ramp_per_cost": 1.9,
+        "might_per_cost": 1.8,
+        "residue_ratio": 1.4,
+        "text": "把城区废弃物运走；供电与战力都不错的万金油。"
+      },
+      {
+        "name": "快速转场型",
+        "suffix": "拖车队",
+        "cost": [
+          1,
+          2
+        ],
+        "ramp_per_cost": 2.2,
+        "might_per_cost": 1.6,
+        "residue_ratio": 1.0,
+        "text": "部署极快（费用低），适合反复换阵。"
+      },
+      {
+        "name": "重载清运型",
+        "suffix": "渣土车",
+        "cost": [
+          3,
+          4
+        ],
+        "ramp_per_cost": 2.2,
+        "might_per_cost": 2.6,
+        "residue_ratio": 3.2,
+        "text": "一次清走大量废弃物；战力极高，但留下大片残渣。"
+      }
+    ],
+    "FAC-ATOMIC-ROA": [
+      {
+        "name": "污染套利型",
+        "suffix": "回收机",
+        "cost": [
+          1,
+          3
+        ],
+        "ramp_per_cost": 2.2,
+        "might_per_cost": 1.6,
+        "residue_ratio": 4.0,
+        "text": "从降级区里获利；自身所在格迅速恶化——但漫游者不在乎。"
+      },
+      {
+        "name": "辐照增殖型",
+        "suffix": "增殖堆",
+        "cost": [
+          3,
+          5
+        ],
+        "ramp_per_cost": 1.6,
+        "might_per_cost": 2.8,
+        "residue_ratio": 5.0,
+        "text": "以辐射换取极高输出；残渣沉重，正是它的燃料。"
+      },
+      {
+        "name": "荒原巡游型",
+        "suffix": "巡游车",
+        "cost": [
+          2,
+          3
+        ],
+        "ramp_per_cost": 2.5,
+        "might_per_cost": 1.8,
+        "residue_ratio": 3.0,
+        "text": "在荒原上巡游；机动性好，走一路留一路残渣。"
+      }
+    ]
+  },
+  "balance": {
+    "note": "按势力均衡的验收口径（tools/gen_cards.py 与 ./run.sh calibrate 用）。ramp_per_cost_* 约束\"铺场效率\"（静态口径）；capacity_spread_max 约束\"实测总输出\"的最强/最弱比（动态口径，由校准命令人工核对）。",
+    "ramp_per_cost_target": 2.11,
+    "ramp_per_cost_tolerance": 0.15,
+    "cards_per_faction_min": 3,
+    "capacity_spread_max": 1.7
+  }
 }

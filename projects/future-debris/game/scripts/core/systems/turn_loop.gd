@@ -45,6 +45,10 @@ static func run(battle) -> Dictionary:
 		"power_in": gained,
 		"residue_added": residue_added,
 		"dealt": dealt,
+		# **原始输出**（未被配额截断）。能力测量必须用它：
+		# `dealt` 是 maxi(0, 配额 − 已打) 的结果，清完一波还会清零，
+		# 因此"dealt 的累计"恒等于配额之和——用它测能力会得到"四个势力一模一样"的假结果（实测踩过）。
+		"output": damage,
 		"actions": actions,
 		"zone_damage": zone_damage,
 		"wave": outcome,

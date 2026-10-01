@@ -117,6 +117,14 @@ case "${1:-run}" in
     "$HERE/tools/make_video" --probe "$OUT"
     ;;
 
+  calibrate)
+    # 配额校准：测各势力能力 → 按设计比例生成配额（只打印，不改数据）
+    need_godot
+    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+    "$GODOT" --headless --path "$GAME" --quit-after 600 res://scenes/tools/calibrate.tscn 2>&1 \
+      | grep -E '能力测量|  FAC-|QUOTAS_JSON|SCRIPT ERROR|BOOT OK'
+    ;;
+
   scene)
     # 场景与视图验收：界面能装载 + 几何/点击/取色的不变量。
     shift

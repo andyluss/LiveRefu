@@ -5,7 +5,15 @@ class_name PlacePolicy
 ## 为什么独立成文件：策略是**可替换的实验变量**。模拟要比较"节制 vs 贪心"两档，
 ## 就应该只换这一个文件的行为，而不是把策略散在自动玩家与战斗里。
 
-const RESIDUE_PER_TURN_OK := 5   # 全阵每回合残渣增量上限（超过就不再往上放）
+## 单格残渣的"可接受上限"：机制只惩罚**单格**残渣（[StatQuery.effective_might] 按格扣战力），
+## 因此判据也必须是**单格**的。
+##
+## **踩过的大坑（后果极其严重）**：这里原来是"全阵每回合残渣增量 ≤ 5"，而且把**已放塔的残渣
+## 也重复计入**。于是盘面残渣一旦超过 5，之后**任何牌都放不下**——自动玩家把自己锁死在 4 张牌上，
+## 电力却一路涨到 235（空转）。实测表现是"四个势力能力差 3 倍"，
+## 我一度以为是卡池问题、去改了生成器的数值体系（其实根因在这里）。
+## 教训：**判据必须与它要防的那个机制同口径**。
+const SLOT_RESIDUE_OK := 4
 ## 塔位上限。**S3 实测改判**：原先设 6 是"留转向余地"的自我约束，
 ## 但它把自动玩家能力压在 27–28 输出/回合（电力其实充裕），导致后期波次结构上不可赢。
 ## 放开到物理塔位数（[BoardSystem.MAX_SLOTS] = 8）后能力与配额才可比。
@@ -31,10 +39,23 @@ static func accept(battle, card: CardData, slot: int) -> bool:
 	# 空位上的残渣**没有塔可被削弱**，拒放它没有任何玩法理由。
 	if battle.board.has(slot) and ResidueSystem.at(battle.residue, slot) > CLEAN_TARGET:
 		return false
-	var inflow := card.residue
-	for occupied in BoardSystem.occupied_slots(battle.board):
-		inflow += (battle.board[occupied] as CardInstance).data.residue
-	return inflow <= RESIDUE_PER_TURN_OK
+	# 只看**这张牌会对它落地的格子**造成什么：该格当前残渣 + 这张牌的入场残渣。
+	# 若这一格会因此进入"战力被吃掉"的状态，就换一格或换一张牌。
+	return ResidueSystem.at(battle.residue, slot) + card.residue <= SLOT_RESIDUE_OK
+
+## 某张牌此刻能否真的出出去（付得起 + 放得下）。
+## **判据只有这一处**：`CardFlow.playable_count` 与 [best_playable] 都调它。
+## 踩过的坑：`playable_count` 原来只判断"付得起"，于是自动玩家手里握着
+## "付得起但放不下"的牌时，既不出牌也不补抽——**空转到电力 74**（实测）。
+static func can_play(battle, card: CardData, conservative: bool) -> bool:
+	var slot := BoardSystem.next_free_slot(battle.board)
+	if slot < 0:
+		return false
+	if CardCost.of(battle, card, slot) > ResourceSystem.power(battle.resources):
+		return false
+	if conservative and not accept(battle, card, slot):
+		return false
+	return true
 
 ## 选出**既付得起、又放得下**的最高战力手牌；并列取更靠前者（决策必须确定，否则无法复跑）。
 ##

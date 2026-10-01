@@ -1,39 +1,40 @@
 # 8 关难度实测（按势力分别跑，各用自己阵营的卡组）
 # 生成命令：./run.sh s2   （同一份数据也在 ./run.sh check 的 K 组闸门打印）
-# 采集：2026-09-30 ｜ 卡池：T1（18 张：手写 12 + 生成 6）
+# 卡池：T2（60 张：手写 12 + 生成 48，按势力均衡）
+# 配额：由 ./run.sh calibrate 从实测能力导出（形状=设计意图，尺度=测量）
 — FAC-ATOMIC-AEC（cleans）
-LV-ATOMIC-01 通关 剩血20 回合9 S
-LV-ATOMIC-02 通关 剩血20 回合12 S
-LV-ATOMIC-03 通关 剩血20 回合13 S
-LV-ATOMIC-04 通关 剩血20 回合19 S
-LV-ATOMIC-05 通关 剩血20 回合19 S
-LV-ATOMIC-06 通关 剩血20 回合19 S
-LV-ATOMIC-07 通关 剩血20 回合30 S
-LV-ATOMIC-08 通关 剩血11 回合38 B
+LV-ATOMIC-01 通关 剩血12 回合6 B
+LV-ATOMIC-02 通关 剩血8 回合8 C
+LV-ATOMIC-03 通关 剩血10 回合7 C
+LV-ATOMIC-04 通关 剩血4 回合10 C
+LV-ATOMIC-05 通关 剩血0 回合12 C
+LV-ATOMIC-06 打爆 剩血0 回合12 C
+LV-ATOMIC-07 打爆 剩血0 回合12 C
+LV-ATOMIC-08 打爆 剩血0 回合12 C
 — FAC-ATOMIC-SUB（avoids）
-LV-ATOMIC-01 通关 剩血20 回合8 S
-LV-ATOMIC-02 通关 剩血20 回合11 S
-LV-ATOMIC-03 通关 剩血20 回合12 S
-LV-ATOMIC-04 通关 剩血20 回合16 S
-LV-ATOMIC-05 通关 剩血20 回合16 S
-LV-ATOMIC-06 通关 剩血20 回合17 S
-LV-ATOMIC-07 通关 剩血20 回合27 S
-LV-ATOMIC-08 通关 剩血17 回合34 A
+LV-ATOMIC-01 通关 剩血14 回合6 B
+LV-ATOMIC-02 通关 剩血12 回合7 B
+LV-ATOMIC-03 通关 剩血12 回合7 B
+LV-ATOMIC-04 通关 剩血8 回合9 C
+LV-ATOMIC-05 通关 剩血4 回合11 C
+LV-ATOMIC-06 通关 剩血2 回合12 C
+LV-ATOMIC-07 打爆 剩血0 回合13 C
+LV-ATOMIC-08 打爆 剩血0 回合13 C
 — FAC-ATOMIC-HAU（moves）
-LV-ATOMIC-01 通关 剩血19 回合21 S
-LV-ATOMIC-02 通关 剩血18 回合25 A
-LV-ATOMIC-03 通关 剩血15 回合28 A
-LV-ATOMIC-04 通关 剩血8 回合37 B
-LV-ATOMIC-05 通关 剩血1 回合35 C
-LV-ATOMIC-06 打爆 剩血0 回合33 C
-LV-ATOMIC-07 打爆 剩血0 回合31 C
-LV-ATOMIC-08 打爆 剩血0 回合27 C
+LV-ATOMIC-01 通关 剩血14 回合6 B
+LV-ATOMIC-02 通关 剩血13 回合7 B
+LV-ATOMIC-03 通关 剩血12 回合8 B
+LV-ATOMIC-04 通关 剩血10 回合10 B
+LV-ATOMIC-05 通关 剩血7 回合13 C
+LV-ATOMIC-06 通关 剩血6 回合14 C
+LV-ATOMIC-07 通关 剩血3 回合17 C
+LV-ATOMIC-08 打爆 剩血0 回合19 C
 — FAC-ATOMIC-ROA（feeds）
-LV-ATOMIC-01 通关 剩血20 回合6 S
-LV-ATOMIC-02 通关 剩血20 回合8 S
-LV-ATOMIC-03 通关 剩血20 回合9 S
-LV-ATOMIC-04 通关 剩血20 回合14 S
-LV-ATOMIC-05 通关 剩血20 回合13 S
-LV-ATOMIC-06 通关 剩血20 回合14 S
-LV-ATOMIC-07 通关 剩血20 回合22 S
-LV-ATOMIC-08 通关 剩血20 回合27 S
+LV-ATOMIC-01 通关 剩血18 回合7 A
+LV-ATOMIC-02 通关 剩血17 回合8 A
+LV-ATOMIC-03 通关 剩血16 回合9 A
+LV-ATOMIC-04 通关 剩血15 回合10 A
+LV-ATOMIC-05 通关 剩血15 回合10 A
+LV-ATOMIC-06 通关 剩血12 回合13 B
+LV-ATOMIC-07 通关 剩血10 回合15 B
+LV-ATOMIC-08 通关 剩血8 回合17 B

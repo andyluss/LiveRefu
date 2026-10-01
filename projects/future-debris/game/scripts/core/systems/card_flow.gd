@@ -16,10 +16,13 @@ static func draw(battle) -> bool:
 	return true
 
 ## 手牌里可支付的数量（自动玩家据此决定要不要补抽）。
+## 手牌里**真正出得出去**的张数（付得起 + 放得下）。
+## 口径必须与出牌决策一致，否则自动玩家会"以为有牌可出"而拒绝补抽（实测空转）。
 static func playable_count(battle) -> int:
 	var count := 0
+	var conservative: bool = battle.player == null or battle.player.conservative
 	for card in battle.hand:
-		if card.cost <= ResourceSystem.power(battle.resources):
+		if PlacePolicy.can_play(battle, card, conservative):
 			count += 1
 	return count
 
