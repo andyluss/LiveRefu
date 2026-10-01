@@ -5,17 +5,6 @@ class_name RuleCases
 ## 每条用例只隔离一条规则（见 CaseBase.new_battle_with），否则多条规则互相影响，
 ## 失败时无法判断是哪一条错了。
 
-static func rules_load() -> Dictionary:
-	var battle := CaseBase.new_battle_all_rules()
-	if battle.rules.size() != 4:
-		return CaseBase.bad("规则表应有 4 条（T1），实际 %d" % battle.rules.size())
-	for rule in battle.rules:
-		if not RuleEngine.TRIGGERS.has(rule.trigger):
-			return CaseBase.bad("规则 %s 的触发点 %s 不在已知集合内（引擎会忽略它）" % [rule.id, rule.trigger])
-		if not RuleConditions.KINDS.has(rule.condition):
-			return CaseBase.bad("规则 %s 的条件 %s 不在已知集合内" % [rule.id, rule.condition])
-	return CaseBase.ok()
-
 static func chain_reaction() -> Dictionary:
 	var battle := CaseBase.new_battle_with(PackedStringArray(["RULE-ATOMIC-001"]))
 	if RuleEngine.damage_delta(battle) != 0:

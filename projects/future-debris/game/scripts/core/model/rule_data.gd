@@ -13,7 +13,11 @@ var condition_value: int
 var effect: String        # gain_power / reduce_residue / reduce_cost / add_damage / sub_damage / clean_on_turn
 var amount: int
 var text: String
-var acquisition: String   # era_default / level_grant / unlock（怎么拿到它，见 RuleLoadout）
+var acquisition: String   # 见 ACQUISITIONS（怎么拿到它，见 RuleLoadout）
+
+## **引擎认识的获取途径**。它是权威清单：数据里出现别的取值时，
+## 规则会**静默不生效**（[RuleLoadout] 的立场），因此必须可被断言。
+const ACQUISITIONS := ["era_default", "level_grant", "unlock"]
 
 static func from_row(row: Dictionary) -> RuleData:
 	var rule := RuleData.new()

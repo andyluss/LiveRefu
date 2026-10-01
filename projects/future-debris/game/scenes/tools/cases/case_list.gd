@@ -20,7 +20,7 @@ const ALL := [
 	["H 完整一局可复跑且确定性", "res://scenes/tools/cases/run_cases.gd", "determinism"],
 	["H3 清完最后一波必须立即结束", "res://scenes/tools/cases/run_cases.gd", "finishes_on_clear"],
 	["H2 一局必须终止且不超回合上限", "res://scenes/tools/cases/run_cases.gd", "run_terminates"],
-	["J 规则表装载与字段合法性", "res://scenes/tools/cases/rule_cases.gd", "rules_load"],
+	["J 规则表装载与字段合法性", "res://scenes/tools/cases/rule_table_cases.gd", "rules_load"],
 	["J1b 关卡决定规则集与波次配额", "res://scenes/tools/cases/level_config_cases.gd", "level_selects_rules"],
 	["J2 链式反应（残渣换伤害）", "res://scenes/tools/cases/rule_cases.gd", "chain_reaction"],
 	["J3 公开听证（高残渣惩罚）", "res://scenes/tools/cases/rule_cases.gd", "public_hearing"],

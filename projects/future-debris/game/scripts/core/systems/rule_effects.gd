@@ -6,6 +6,13 @@ class_name RuleEffects
 ## 设计约束：**效果必须只有少数几种、且都能被日志记录**。
 ## 规则卡一旦能执行任意逻辑，纪元差异就会变成一堆互不兼容的特例（拼贴，而不是风格卡）。
 
+## **引擎认识的效果种类**（权威清单）。
+## 前三种由本文件执行；后三种是"查询修正值"，由 [RuleEngine] 在读伤害/费用时取用——
+## 它们在这里列全，是为了让"规则表里有没有打错效果名"可以被断言
+## （打错的效果名会让规则静默不生效）。
+const KINDS := ["gain_power", "reduce_residue", "clean_on_turn",
+	"add_damage", "sub_damage", "reduce_cost"]
+
 ## 执行一条规则的效果；返回可记录的日志数组。
 static func apply(rule: RuleData, battle, slot: int = -1) -> Array[String]:
 	match rule.effect:

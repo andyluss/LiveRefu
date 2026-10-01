@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "atomic__levels",
-  "note": "关卡表：逐波配额与关卡级规则集。**配额由 ./run.sh calibrate 从实测能力导出**（章内曲线 × 章节系数）；`quotas_by_faction` 是按势力放大的专属曲线。**不要手改数字**——要改难度请改 QuotaModel 的两个数组/系数。",
+  "note": "关卡表：逐波配额与**关卡级规则集**。配额由 ./run.sh calibrate 从实测能力导出（章内曲线 × 章节系数）；`quotas_by_faction` 是按势力放大的专属曲线（可选，缺省走通用）。**不要手改配额数字**——要改难度请改 QuotaModel；规则集是关卡\"玩法差异\"的主要载体。",
   "entries": [
     {
       "id": "LV-ATOMIC-01",
@@ -75,7 +75,7 @@
       ],
       "rule_set": [
         "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-006"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -195,7 +195,7 @@
       ],
       "rule_set": [
         "RULE-ATOMIC-001",
-        "RULE-ATOMIC-003"
+        "RULE-ATOMIC-002"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -262,8 +262,8 @@
         67
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-003",
+        "RULE-ATOMIC-010"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -326,8 +326,8 @@
         78
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002"
+        "RULE-ATOMIC-008",
+        "RULE-ATOMIC-010"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -392,9 +392,8 @@
         109
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
         "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003"
+        "RULE-ATOMIC-005"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -469,9 +468,8 @@
       ],
       "rule_set": [
         "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-006",
+        "RULE-ATOMIC-009"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -546,10 +544,8 @@
         43
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002",
         "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-007"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -613,10 +609,8 @@
         49
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-008",
+        "RULE-ATOMIC-009"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -685,10 +679,8 @@
         55
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-007",
+        "RULE-ATOMIC-010"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -761,10 +753,8 @@
         67
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-005",
+        "RULE-ATOMIC-009"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -838,10 +828,8 @@
         74
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
         "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-011"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -920,9 +908,8 @@
       ],
       "rule_set": [
         "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-007",
+        "RULE-ATOMIC-011"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -1001,10 +988,9 @@
         94
       ],
       "rule_set": [
-        "RULE-ATOMIC-001",
         "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-005",
+        "RULE-ATOMIC-009"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
@@ -1088,9 +1074,9 @@
       ],
       "rule_set": [
         "RULE-ATOMIC-001",
-        "RULE-ATOMIC-002",
-        "RULE-ATOMIC-003",
-        "RULE-ATOMIC-004"
+        "RULE-ATOMIC-008",
+        "RULE-ATOMIC-010",
+        "RULE-ATOMIC-011"
       ],
       "quotas_by_faction": {
         "FAC-ATOMIC-AEC": [
