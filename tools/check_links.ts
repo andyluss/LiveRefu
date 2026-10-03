@@ -82,7 +82,7 @@ function walkMd(start: string): string[] {
 /**
  * 收集"站内路由"式链接（以 / 开头的站内绝对链接）所对应的路由集合。
  *
- * 为什么需要：projects/retro-futurism-site/ 的 `content/wiki/**` 是从 `doc/` 单向生成的
+ * 为什么需要：projects/website/ 的 `content/wiki/**` 是从 `doc/` 单向生成的
  * **站点内容**，其中由交叉引用改写而来的链接形如 `(/wiki/main/16-apocalypse)`——
  * 那是**站点路由**（由 Nuxt Content 渲染），**不是文件系统路径**，不应在本仓库的
  * 文件存在性校验里被判为失效。这里从站点自己生成的导航/反链索引里读出真实路由，
@@ -90,7 +90,7 @@ function walkMd(start: string): string[] {
  */
 function collectSiteRoutes(): Set<string> {
   const routes = new Set<string>(["", "wiki", "wiki/main", "wiki/punks", "wiki/appendix", "blog", "gallery", "forum"]);
-  const assets = path.join(ROOT, "projects/retro-futurism-site/app/assets");
+  const assets = path.join(ROOT, "projects/website/app/assets");
   for (const file of ["wiki-nav.json", "wiki-backrefs.json"]) {
     const p = path.join(assets, file);
     if (!fs.existsSync(p)) continue;

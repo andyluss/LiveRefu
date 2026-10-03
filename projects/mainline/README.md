@@ -42,7 +42,7 @@
   - **Q3 → A**：时代提案卡组 + 自走式防线；
   - **Q4 → C**：多纪元但先做透一个旗舰纪元；**旗舰纪元＝原子朋克 / 太空时代**；
   - **Q7 → A**：**Godot 4.x + 表驱动管线**（S1 已解锁）；
-  - **A2–A5**：旧三族与旧关卡归档为素材库 / [《明日频道》](../tomorrows-channel/README.md) 并入为「纪元电台」/ [《明日档案》](../retro-futurism-site/README.md) P2 重启为官网 / 允许 S3 后先发 15 秒机制动图；
+  - **A2–A5**：旧三族与旧关卡归档为素材库 / [《明日频道》](../tomorrows-channel/README.md) 并入为「纪元电台」/ [《未来档案》](../website/README.md) P2 重启为官网 / 允许 S3 后先发 15 秒机制动图；
   - **Q13 → 做厚卖 $19.99**（200–300 卡 + 6–10 势力）；
   - **Q14 → 接受"第一版必须自洽完整"**（不靠纪元 DLC 补）。
 - **待裁决**：Q5、Q6、Q8–Q12（见 [决策总表](docs/00_决策总表.md)）、[A6–A8](docs/10_推进计划与并入清单.md)，以及 M3 调研带来的 **Q13（体量—价格组合）/ Q14（第一版必须自洽完整）**。
@@ -57,7 +57,7 @@
 
 - 本目录受工作区根规则约束：[`rules/R01`](../../rules/R01-docs-convention.md)（文档体例与相对链接）、[`rules/R02`](../../rules/R02-git-convention.md)（提交信息）、[`rules/R03`](../../rules/R03-link-validation.md)（链接校验）、[`rules/R05`](../../rules/R05-changelog.md)（变更日志）。
 - **题材权威**在 [`doc/retro-futurism/`](../../doc/retro-futurism/README.md) 与 [`doc/punks/`](../../doc/punks/README.md)：本目录引用它，**不复制、不改写**它的结论。
-- **既有项目可复用、可并入，但不默认继承**：[`../refu-game-001/`](../refu-game-001/README.md)（卡片塔防垂直切片，含 36 张卡面与四道验收闸门）、[`../tomorrows-channel/`](../tomorrows-channel/README.md)（氛围陪伴应用）、[`../retro-futurism-site/`](../retro-futurism-site/README.md)（《明日档案》网站，已暂停）、[`../../indie/live-rpg/`](../../indie/README.md)（活世界工作台，独立仓库）。是否并入由 Q2/Q4 决定。
+- **既有项目可复用、可并入，但不默认继承**：[`../refu-game-001/`](../refu-game-001/README.md)（卡片塔防垂直切片，含 36 张卡面与四道验收闸门）、[`../tomorrows-channel/`](../tomorrows-channel/README.md)（氛围陪伴应用）、[`../website/`](../website/README.md)（《未来档案》网站，已暂停）、[`../../indie/live-rpg/`](../../indie/README.md)（活世界工作台，独立仓库）。是否并入由 Q2/Q4 决定。
 - **立项后**：实现代码落到 `../<项目代号>/`，本目录保留为**决策与讨论历史**，不再承担执行文档职责（执行文档随项目走）。
 
 ## 五、讨论记录模板（新建文件时复制）
