@@ -5,6 +5,17 @@
 
 ## [Unreleased]
 
+### 变更（改名《未来档案》+ 目录改 website；Giscus 端到端验证通过；项目暂停）
+
+- **改名**（用户指示）：显示名《明日档案》→**《未来档案》**，目录 `projects/retro-futurism-site/` → **`projects/website/`**（`git mv` 保留历史）。同步更新根 README、mainline 的 6 处引用、`tools/check_links.ts` 路径常量与本项目 6 篇文档。
+  按工作区约定（"裁决后不回删原文"）**保留历史 CHANGELOG 的历史称呼**，但**修正其中 52 处旧路径**——措辞是历史，**路径是功能**，后者失效即 bug。
+- **Giscus 端到端验证通过**（用户已配置真实凭证 `andyluss/LiveRefuGiscus` / `Announcements`）：补上了 [07 文档](docs/07_实现记录_M2.md)里**明确声明"本脚本不能证明"**的那一半。三层验证：服务端渲染分支 → 脚本参数 → **远端小部件真实加载**（CDP 定位独立 iframe target 并**读其内部文本**，确认 giscus.app 渲染出中文界面）。
+  **第三层是关键**：前两层只能证明"我们把正确参数交给了浏览器"；giscus 是跨进程 iframe、独立 CDP target，普通 DOM 查询读不到它。
+  **仍未验证**：真人用 GitHub 登录并发帖的完整流程（需真人账号）。
+- **唯一遗留**：`.env` 的 `NUXT_PUBLIC_SITE_URL` 仍为空——线上反代漏传 `X-Forwarded-*` 时，RSS/sitemap/og:image 的绝对地址会拼错。见 [08 §3.4](docs/08_部署与备份.md)。
+- **项目暂停**（用户要求）：[09 交接文档](docs/09_当前状态与交接.md) 已同步至 v0.2（§三 由"待申请配置"改为"Giscus 已完成"）。
+
+
 ### 变更（项目暂停 · 交接收尾）
 
 用户指示「**先停**」。本轮只做交接整理，不新增功能。新增
