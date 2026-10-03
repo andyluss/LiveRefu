@@ -18,4 +18,4 @@
 | --- | --- | --- |
 | `dsh-pet-refu/` | 复古未来风格电子宠物 DeepSeek Harness 插件（v1.0.0，**独立 Git 仓库**） | [andyluss/dsh-pet-refu](https://github.com/andyluss/dsh-pet-refu) |
 | `live-rpg/` | **LiveRPG 活世界工作台**：多世界观「世界包」编辑器 + 图文创作台 DeepSeek Harness 插件（v0.1.0，**独立 Git 仓库**） | （本地独立仓库，暂无公开远程） |
-| `live-calculator/` | **复古计算器 Retro Calculator**：13 套皮肤、纯键盘可用、完全离线的多主题计算器；`ref/` 为重构前原件，`app/` 为工程化重构版（v0.1.0，**独立 Git 仓库**） | （本地独立仓库，暂无公开远程） |
+| `live-calculator/` | **复古计算器 Retro Calculator**：13 套皮肤、纸带（计算历史）、纯键盘可用、可安装 PWA、完全离线的多主题计算器；`ref/` 为重构前原件，`app/` 为工程化重构版（v0.3.2，**独立 Git 仓库**） | [andyluss/LiveCalculator](https://github.com/andyluss/LiveCalculator) |
