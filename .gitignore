@@ -16,3 +16,4 @@ __pycache__/
 # 忽略而非提交，避免父仓库把它误存成 gitlink（嵌入式仓库）
 indie/dsh-pet-refu/
 indie/live-rpg/
+indie/live-calculator/
