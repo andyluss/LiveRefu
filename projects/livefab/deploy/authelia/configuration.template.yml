@@ -78,8 +78,24 @@ storage:
 # ── 通知：M1 接真实 SMTP 前先落文件，避免启动检查失败 ────────────────
 notifier:
   disable_startup_check: true
-  filesystem:
-    filename: /data/notification.txt
+  # ★ 必须配**能真正发信**的 notifier，否则会连带挡住双因素。
+  #   实测：原本用的是 filesystem 通知（写 /data/notification.txt），
+  #   而容器里没有 /data —— 于是 Authelia 报
+  #     Error creating user session elevation One-Time Code challenge:
+  #       failed to open file: open /data/notification.txt: no such file or directory
+  #   后果不只是"发不出信"：**注册 TOTP 设备需要"提权"，而提权要发一次性验证码**，
+  #   发不出信 → 提权失败 → /admin/ 要求的 two_factor 永远配不上。
+  #   现在接 Mailpit（本地邮件捕获器），既不真发信、又能取到验证码。
+  smtp:
+    address: 'smtp://mailpit:1025'
+    sender: 'LiveFab <noreply@livefab.test>'
+    identifier: livefab.localhost
+    subject: '[LiveFab] {title}'
+    # ⚠️ Authelia 默认要求 STARTTLS，而 Mailpit 的 1025 是**明文 SMTP**，
+    #    报：STARTTLS mode set to: "TLSMandatory", but target host does not support STARTTLS
+    #    本地捕获器不需要加密，关掉这两项即可（生产上接真实 SMTP 时应打开）。
+    disable_require_tls: true
+    disable_starttls: true
 
 # ── 用户数据库 ───────────────────────────────────────────────────────
 authentication_backend:

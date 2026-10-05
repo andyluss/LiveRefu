@@ -127,6 +127,50 @@ Authelia 把整串当**明文**比对，报 "provided client secret did not matc
 存进库的端点变成 `undefined/api/oidc/...`。
 又一次"匹配到了错误的位置"——与上一轮钩子那次同源。
 
+### 修复（★ 双因素注册的前置缺口：通知器坏了，导致 2FA 从来就注册不了）
+
+目标项 ③ 的起因是「`/admin/` 要 `two_factor`，但从来没有账号注册过 TOTP 设备」。
+我原以为那是"没人去做"。**实际不是——当时根本做不到。**
+
+**根因是一条静默的死链**：注册 TOTP 设备需要**提权会话**（Authelia 改安全设置前要重新确认身份），
+而提权要**发一次性验证码**；我们的通知器是 `filesystem` 指向 `/data/notification.txt`，
+**容器里没有 `/data`**：
+
+```
+Error creating user session elevation One-Time Code challenge for user 'admin':
+  error="failed to open file: open /data/notification.txt: no such file or directory"
+```
+
+于是：`/admin/` 要 two_factor → 要注册设备 → 要提权 → 要发码 → 通知器写不出去
+→ 提权 403 → **设备永远注册不了** → two_factor 谁也满足不了。
+
+**关键点是它完全静默**：Authelia 正常启动、健康检查通过、网关鉴权分层实测也全过，
+只有你**真的去注册设备**时才会看到那行 error。README 里那句"目前没有任何账号注册过 TOTP 设备"，
+应该改写成"**当时做不到**"。
+
+**修复**：通知器从"写文件"改成 **SMTP → Mailpit**（本地捕获器，本项目已有）。
+又踩一个小坑：Authelia 默认强制 STARTTLS，而 Mailpit 的 1025 是明文 SMTP，报
+`STARTTLS mode set to: "TLSMandatory", but target host does not support STARTTLS`
+→ 加 `disable_require_tls` / `disable_starttls`（**本地专用放宽，生产接真实 SMTP 时须打开**）。
+
+**实测进度**：`POST /api/user/session/elevation` 现在返回 **200**
+（`{"status":"OK","data":{"delete_id":"…"}}`），Mailpit 真的收到
+`[LiveFab] Confirm your identity`。顺带确认验证码是 **8 位字母数字**（如 `UWHVMJXZ`），
+**不是 6 位数字**——我一开始按 6 位数字找，白找了一会儿。
+
+**卡点（我的操作问题，不是功能问题）**：提交验证码这一步被限流挡住。
+Authelia 的防爆破对提权端点按桶限流（日志 `Rate Limit Exceeded bucket=2 delay=514s`），
+我探接口时反复发请求、**每发一次就把等待重置**。
+`banned_user`/`banned_ip` 表为空，说明是内存桶、不是持久封禁。
+正确做法是静默等满窗口后**只跑一次**。
+
+**还没弄清的一处**：`POST /api/user/session/elevation` 每次调用都会**新建挑战**（返回新 `delete_id`），
+即使带 `{"code":…}` 也一样，所以提交码应是另一个端点（我试的几个候选都 405/404）。
+下一步应当用 CDP 抓 UI 提交验证码时的真实请求——这个办法本项目已经用过一次
+（`elevation` 端点本身就是这么查到的），比继续猜路径可靠。
+
+详见 [08](docs/08_双因素注册的前置缺口.md)。
+
 ## [0.3.0] - 2026-10-05 21:29
 
 ### 新增（M1：统一备份 + 真正的恢复演练）
