@@ -1,6 +1,6 @@
 # 07 · 统一身份（OIDC）：进度、踩过的坑与剩余阻塞
 
-> 状态：**Authelia 侧已完成并实测通过；NodeBB 侧阻塞于一个已定位的镜像行为** ｜ 2026-10-05
+> 状态：**✅ 全部打通并端到端实测**（Authelia OIDC Provider + NodeBB 统一登录）｜ 2026-10-05
 
 ## 一、为什么要做这件事
 
@@ -101,7 +101,7 @@ Go 模板不认 YAML 的 `#` 注释。我在注释里写了 `{{ secret "path" }}
 **教训**：密钥必须与数据库**一起**备份（[`tools/backup.ts`](../tools/backup.ts) 已覆盖该卷并注明）。
 本次靠重建 authelia 库解决（开发环境无损失；生产上这会是事故）。
 
-## 四、NodeBB 侧：❌ 阻塞（已精确定位）
+## 四、NodeBB 侧：✅ 已打通（附四个真陷阱）
 
 ### 4.1 已做成的部分
 
@@ -112,43 +112,82 @@ Go 模板不认 YAML 的 `#` 注释。我在注释里写了 `{{ secret "path" }}
 | 镜像 | [`deploy/nodebb/Dockerfile`](../deploy/nodebb/Dockerfile) 预装插件及依赖，构建成功 |
 | 激活与配置 | `nodebb-setup` 直接写库（`plugins:active` zset + `settings:<id>` hash），实测输出 `OIDC 插件已激活并配置` |
 
-### 4.2 阻塞点
+### 4.2 ★ 四个真陷阱（每一个都真的拦住过，逐个定位才通过）
 
-NodeBB 日志：
+**① 官方镜像的匿名卷遮住 COPY 的文件**
 
-```
-[plugins] "nodebb-plugin-fusionauth-oidc" is active but not installed.
-GET /auth/fusionauth-oidc → 404
-```
+官方 NodeBB 镜像用 `VOLUME` 声明了 `/usr/src/app/node_modules` 为**匿名卷**。
+它**遮住**我在派生镜像里 COPY 进去的插件 —— 镜像里 579 个包、匿名卷里 576 个，
+差的正是我新加的 3 个。**"我在 Dockerfile 里 COPY 了"不等于"运行时文件在那里"。**
 
-**根因（已实测确认，三层）：**
+**② entrypoint 每次启动都跑 `npm install`**
 
-1. 官方镜像用 `VOLUME` 声明了 `/usr/src/app/node_modules` 为**匿名卷**
-   —— 它**遮住了我在派生镜像里 `COPY` 进去的文件**。
-   （镜像里 579 个包、匿名卷里 576 个，差的正是我加的 3 个。）
-2. 换新匿名卷后仍然没有 —— 因为镜像的 entrypoint **每次启动都跑 `npm install`**
-   （`main()` 里无条件调用 `install_dependencies`，无开关），
-   它把 `/opt/config/package.json` 软链进来，按依赖清单**裁剪**多余的包。
-3. 而容器**只有 `internal` 网络、没有外网**，
-   所以"把插件写进 `package.json` 让 npm 装"这条路也走不通（拉不到包）。
+镜像的 `main()` **无条件**调用 `install_dependencies`（无开关），
+它把 `/opt/config/package.json` 软链进来、按依赖清单**裁剪**多余包。
+所以"直接塞 node_modules"必然被清掉 —— 必须让插件成为**被声明的依赖**。
 
-### 4.3 下一步的三个候选解法（留给下一轮裁决）
+**③ 容器无外网 → 声明的依赖也装不上**
 
-| 方案 | 做法 | 代价 |
+nodebb 只有 `internal` 网络（`internal: true`），拉不到 npm。
+
+> ①②③ 的合解：把插件打成**自带依赖的 tarball**（npm 的 `bundledDependencies` 机制），
+> 放进镜像，再由 `nodebb-setup` 声明为 `/opt/config/package.json` 的 **`file:` 依赖**。
+> 这样那次 `npm install` 可以**完全离线**装好它——依赖已在 tarball 内。
+> 实测：插件目录出现、`is active but not installed` 归零。
+
+**④ 插件的设置命名空间**不是插件 id
+
+插件源码里是 `new Settings("fusionauth-oidc", ...)`，所以要写
+**`settings:fusionauth-oidc`**，而不是 `settings:nodebb-plugin-fusionauth-oidc`。
+写错键的表现是插件只打 `OpenID Connect will not be available until it is configured!`、
+登录路由 404 —— 而**键看起来完全合理**，很容易误判成"配置没生效"。
+
+### 4.3 ★ 还差半步就成功的一处：服务端换 token 的两个前提
+
+OIDC 的 token 换取是**服务端到服务端**调用：NodeBB 要 POST 到
+`https://auth.<域>/api/oidc/token`。容器里有两个坑：
+
+| 问题 | 现象 | 解法 |
 | --- | --- | --- |
-| **甲** | 把插件也写进 `/opt/config/package.json`，并在宿主机生成匹配的 `package-lock.json`；再把插件及其依赖的 tarball 预置到容器内 npm 的离线缓存 | 要同时解决"锁文件一致"与"离线缓存"，最贴近官方机制 |
-| **乙** | 覆盖 entrypoint：先执行原 entrypoint 的 `npm install`，**之后再**把 vendor 的包拷回 `node_modules`，然后启动 NodeBB | 需要改 entrypoint（此前已因覆盖 entrypoint 踩过 `CONFIG_DIR` 的坑，要小心保留其副作用） |
-| **丙** | 把 `NODEBB_ADDITIONAL_PLUGINS` 指向**镜像内的本地 tarball**，并确保其依赖已预先满足 | 依赖 `install_additional_plugins` 在 `npm install` **之后**执行这一点成立，且依赖不需联网 |
+| 解析不了 `*.localhost` | `EAI_AGAIN` | 给 **Caddy 加公开域名的网络别名**（`networks.internal.aliases`），容器内即解析到 Caddy |
+| 不信任 Caddy 的内网 CA | `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` | 挂载 `caddy/ca/root.crt` 并设 `NODE_EXTRA_CA_CERTS` |
 
-**我倾向甲或丙**：它们顺着官方机制走，不覆盖 entrypoint（乙的风险已被验证过——覆盖 entrypoint 会让 `CONFIG_DIR` 丢失）。
+**最后一个坑（最隐蔽）**：`client_secret` 的 **plaintext 前缀**。
+我先把占位符换成了哈希，却**忘了删模板里原有的前缀**，于是渲染出：
 
-> 也可以退一步问：**论坛的 SSO 是否值得现在就做？**
-> M1 的验收写的是"用同一个账号发一条帖"，所以本轮把它当作缺口对待；
-> 但若你接受"论坛先用独立账号、M2 再接统一身份"，那就把这条明确标注为**已知偏离**，
-> 而不是留一个说不清的"未完成"。
+```yaml
+client_secret: '$plaintext$$pbkdf2-sha512$310000$JuP...'
+```
+
+Authelia 把这整串当**明文**比对，换 token 报
+`The provided client secret did not match the registered client secret.`
+——报错只说"不匹配"，**不会告诉你是因为多了个前缀**。
+
+### 4.4 ✅ 端到端实测结果
+
+完整授权码流程实测通过：
+
+```
+① GET /auth/fusionauth-oidc            → 302 跳 Authelia 授权端点
+② 未登录访问授权端点                     → 303 跳登录页（flow=openid_connect）
+③ POST /api/firstfactor（admin）        → 200
+④ 再访问授权端点                         → 302 带 code 跳回论坛回调
+⑤ 论坛回调换 token                      → 307 → https://forum.livefab.localhost/
+```
+
+**身份确实统一**（这是 M1 验收「用**同一个账号**」的实证）：
+
+```
+NodeBB 库里：fusionauth-oidcId:uid = {"38e20de0-8b94-4da0-baa3-82598f8f1593": 1}
+→ Authelia 的 admin（OIDC sub 38e20de0-…）登录论坛后就是 uid 1 = admin
+```
+
+首次 OIDC 登录时 NodeBB 会要求补全资料（`/register/complete`），
+这是它自己的正常流程，不影响身份统一。
 
 ## 五、修订记录
 
 | 版本 | 日期 | 变更 | 依据 |
 | --- | --- | --- | --- |
 | v0.1 | 2026-10-05 | 立文档：Authelia OIDC 完成并实测；记录 7 个真实坑（含**推翻先前对 `{{ secret }}` 的误判**）；NodeBB 侧阻塞于"匿名卷遮蔽 + entrypoint 每次 npm install + 容器无外网"三层原因，给出三个候选解法 | 用户要求接管 M0/M1 遗留项 ④ |
+| v0.2 | 2026-10-05 | **NodeBB 侧从"阻塞"改为"已打通"**：记录四个真陷阱（匿名卷遮蔽 / entrypoint 每次 npm install / 容器无外网 / 设置命名空间不是插件 id）、服务端换 token 的两个前提（域名别名 + 信任内网 CA）与最隐蔽的 plaintext 前缀坑；补端到端实测结果与身份关联证据 | 本轮实测通过 |

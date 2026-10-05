@@ -37,8 +37,21 @@ services:
       # 导致开关写进 .env 却传不到容器里，Caddy 仍去走 ACME 并失败。
       LIVEFAB_LOCAL_CERTS: ${LIVEFAB_LOCAL_CERTS:-}
     networks:
-      - edge
-      - internal
+      edge:
+      internal:
+        # ★ 给 Caddy 在 internal 网络上加**公开域名的别名**。
+        #   为什么需要：OIDC 的 token 换取是**服务端到服务端**的调用 ——
+        #   NodeBB 要 POST 到 https://auth.<域>/api/oidc/token。
+        #   但容器内的 DNS 解析不了 *.localhost（实测 EAI_AGAIN，
+        #   因为 internal 网络是 internal: true，且 .localhost 不在 Docker DNS 里），
+        #   于是换 token 必然失败。
+        #   加别名后容器内解析这些域名 → Caddy，再由 Caddy 反代到 authelia，
+        #   整条链路都在内部网络、走 Caddy 的证书，不用改端口也不用额外 DNS。
+        aliases:
+          - ${LIVEFAB_AUTH_DOMAIN:?}
+          - ${LIVEFAB_PORTAL_DOMAIN:?}
+          - ${LIVEFAB_DOMAIN:?}
+          - ${LIVEFAB_FORUM_DOMAIN:?}
     depends_on:
       authelia:
         condition: service_started
@@ -231,9 +244,6 @@ services:
       POSTGRES_PASSWORD: ${AUTHELIA_DB_PASSWORD:?需在 .env 设置}
       # 供初始化脚本创建 NodeBB 的库/用户
       NODEBB_DB_PASSWORD: ${NODEBB_DB_PASSWORD:?需在 .env 设置}
-      # OIDC 配置所需（客户端密钥从密钥卷读，不写进 .env）
-      OIDC_CLIENT_ID: nodebb
-      OIDC_AUTH_BASE: https://${LIVEFAB_AUTH_DOMAIN:?}
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d:ro
@@ -393,6 +403,25 @@ services:
         #     · 配置 = settings:<plugin-id> 这个 hash（data 是 JSONB）
         #   而 `./nodebb` CLI 在这种一次性容器里会挂住（实测 --help 都不返回），
         #   所以用 NodeBB 自带的 pg 模块直接写。幂等。
+        # ★ 把插件声明为 **file: 依赖**，让 entrypoint 那次 npm install 能离线装好它。
+        #   为什么必须这样做：官方镜像用 VOLUME 把 node_modules 声明成匿名卷
+        #   （遮住镜像里 COPY 的文件），且 entrypoint 每次启动都跑 npm install
+        #   按 package.json 裁剪多余包 —— 所以"直接塞 node_modules"必然被清掉。
+        #   声明成 file: 依赖 + 用**自带依赖的 tarball**，才既不被裁掉、又不需要联网。
+        node -e '
+          const fs = require("fs");
+          const f = "/opt/config/package.json";
+          const pkg = JSON.parse(fs.readFileSync(f, "utf8"));
+          pkg.dependencies = pkg.dependencies || {};
+          const want = "file:/opt/plugin/nodebb-plugin-fusionauth-oidc.tgz";
+          if (pkg.dependencies["nodebb-plugin-fusionauth-oidc"] !== want) {
+            pkg.dependencies["nodebb-plugin-fusionauth-oidc"] = want;
+            fs.writeFileSync(f, JSON.stringify(pkg, null, 2));
+            console.log("已把 OIDC 插件声明为 file: 依赖");
+          } else {
+            console.log("OIDC 插件依赖声明已存在");
+          }
+        '
         # 客户端密钥从密钥卷读（它是密钥，不写进 .env）
         export OIDC_CLIENT_SECRET="$(cat /secret/oidc_client_secret)"
         node -e '
@@ -415,12 +444,20 @@ services:
               database: process.env.NODEBB_DB_NAME,
             });
             await c.connect();
+            // 清掉早期写错命名空间留下的键（避免留垃圾）
+            await c.query("DELETE FROM legacy_hash WHERE _key=$1", ["settings:" + id]);
+            await c.query("DELETE FROM legacy_object WHERE _key=$1", ["settings:" + id]);
             // ① 激活：plugins:active 的 zset；legacy_object 是主索引表，两处都要有
             const { rows: mx } = await c.query("SELECT COALESCE(MAX(score),-1)+1 AS s FROM legacy_zset WHERE _key=$1", ["plugins:active"]);
             await c.query("INSERT INTO legacy_object(_key,type) VALUES($1,$2) ON CONFLICT (_key) DO NOTHING", ["plugins:active","zset"]);
             await c.query("INSERT INTO legacy_zset(_key,value,score,type) VALUES($1,$2,$3,$4) ON CONFLICT (_key,value) DO NOTHING", ["plugins:active", id, mx[0].s, "zset"]);
-            // ② 配置：settings:<id> 的 hash
-            const key = "settings:" + id;
+            // ② 配置：settings:<namespace> 的 hash
+            //    ⚠️ 命名空间**不是插件 id**！插件源码里是
+            //      new Settings("fusionauth-oidc", ...)
+            //    所以要写 settings:fusionauth-oidc。写成插件 id 会另建一个键，
+            //    插件读不到自己的设置、只打 "OpenID Connect will not be available
+            //    until it is configured!"，登录路由 404 —— 我踩过这个坑。
+            const key = "settings:fusionauth-oidc";
             await c.query("INSERT INTO legacy_object(_key,type) VALUES($1,$2) ON CONFLICT (_key) DO NOTHING", [key,"hash"]);
             await c.query("INSERT INTO legacy_hash(_key,data,type) VALUES($1,$2::jsonb,$3) ON CONFLICT (_key) DO UPDATE SET data=EXCLUDED.data", [key, JSON.stringify(settings), "hash"]);
             const { rows: chk } = await c.query("SELECT value FROM legacy_zset WHERE _key=$1 AND value=$2", ["plugins:active", id]);
@@ -445,11 +482,23 @@ services:
       NODEBB_ADMIN_PASSWORD: ${NODEBB_ADMIN_PASSWORD:?需在 .env 设置}
       NODEBB_ADMIN_EMAIL: ${NODEBB_ADMIN_EMAIL:-admin@livefab.test}
       NODEBB_SECRET: ${NODEBB_SECRET:?需在 .env 设置}
+      # OIDC 插件配置所需（客户端密钥另从密钥卷读，不写进 .env）
+      # ⚠️ 必须放在 **&nodebb_env 锚点**里：nodebb 与 nodebb-setup 共用这段，
+      #    而写设置的脚本跑在 nodebb-setup 里 —— 放错服务会导致
+      #    process.env 取不到值，存进库里的端点变成 "undefined/api/oidc/..."。
+      OIDC_CLIENT_ID: nodebb
+      OIDC_AUTH_BASE: https://${LIVEFAB_AUTH_DOMAIN:?}
+      # ★ 信任 Caddy 的内网 CA —— 否则服务端换 token 会报
+      #   UNABLE_TO_GET_ISSUER_CERT_LOCALLY（实测踩到）。
+      #   NODE_EXTRA_CA_CERTS 会加进 Node 的信任库，对 fetch/https 都生效。
+      NODE_EXTRA_CA_CERTS: /opt/caddy-ca/root.crt
     volumes:
       - nodebb_data:/var/lib/nodebb
       - nodebb_config:/opt/config
       # 读 OIDC 客户端密钥（与 Authelia 侧同源，保证两边一致）
       - authelia_secretview:/secret:ro
+      # 信任 Caddy 的内网 CA（服务端换 token 用）
+      - ./caddy/ca/root.crt:/opt/caddy-ca/root.crt:ro
     networks:
       - internal
     depends_on:
@@ -468,6 +517,8 @@ services:
     volumes:
       - nodebb_data:/var/lib/nodebb
       - nodebb_config:/opt/config
+      # 信任 Caddy 的内网 CA（与 nodebb 一致）
+      - ./caddy/ca/root.crt:/opt/caddy-ca/root.crt:ro
     networks:
       - internal
     depends_on:

@@ -78,6 +78,55 @@
   新增 TOTP 与 NodeBB 统一账号两条遗留。
 - **ACME 证书如实标注为本地不可验证**（内网 CA 与真实 ACME 是两条路径，必须真机验）。
 
+### 修复（统一身份打通：NodeBB 用 Authelia 账号登录，M1 验收达成）
+
+上一轮把 Authelia 开成了 OIDC Provider（已完成），但 NodeBB 侧卡住。
+本轮**打通并端到端实测**，M1 验收「用**同一个账号**发帖」在认证层面达成。
+
+**端到端实测**（完整授权码流程）：
+
+| 步骤 | 结果 |
+| --- | --- |
+| ① `GET /auth/fusionauth-oidc` | 302 跳 Authelia 授权端点 |
+| ② 未登录访问授权端点 | 303 跳登录页 |
+| ③ `POST /api/firstfactor`（admin） | 200 |
+| ④ 再访问授权端点 | 302 带 code 跳回论坛回调 |
+| ⑤ 论坛回调换 token | **307 → 论坛首页** |
+
+**身份关联的实证**：`fusionauth-oidcId:uid = {"38e20de0-…": 1}` ——
+Authelia 的 `admin`（OIDC sub `38e20de0-…`）登录论坛后就是 **uid 1 = `admin`**。
+
+**四个真陷阱（逐个定位才通过）**：
+
+1. **官方镜像的匿名卷遮住 COPY 的文件**：镜像用 `VOLUME` 声明
+   `/usr/src/app/node_modules`，派生镜像里 COPY 的插件被它遮住
+   （镜像 579 包 vs 匿名卷 576，差的正是新加的 3 个）。
+   **"Dockerfile 里 COPY 了" ≠ "运行时文件在那里"**
+2. **entrypoint 每次启动都跑 `npm install`**（`main()` 无条件调用、无开关），
+   按 `/opt/config/package.json` 裁剪多余包 → "直接塞 node_modules"必然被清掉
+3. **容器无外网**，声明的依赖也装不上
+   → ①②③ 的合解：把插件打成**自带依赖的 tarball**（npm `bundledDependencies`），
+   放进镜像并由 `nodebb-setup` 声明为 `file:` 依赖，让那次 npm install **完全离线**装好它
+4. **插件的设置命名空间不是插件 id**：源码里是 `new Settings("fusionauth-oidc", …)`，
+   所以要写 `settings:fusionauth-oidc`。写错键只表现为
+   "OpenID Connect will not be available until it is configured!" —— 键看起来很合理，极易误判
+
+**服务端换 token 的两个前提**（token 换取是服务端到服务端调用）：
+
+- 容器解析不了 `*.localhost`（`EAI_AGAIN`）→ 给 **Caddy 加公开域名的网络别名**
+- 容器不信任 Caddy 的内网 CA（`UNABLE_TO_GET_ISSUER_CERT_LOCALLY`）
+  → 挂载 `caddy/ca/root.crt` 并设 `NODE_EXTRA_CA_CERTS`
+
+**最隐蔽的一个**：`client_secret` 的 **plaintext 前缀**。我先把占位符换成哈希，
+却忘了删模板里原有的前缀，渲染成 `'$plaintext$$pbkdf2-sha512$…'`，
+Authelia 把整串当**明文**比对，报 "provided client secret did not match" ——
+**报错只说"不匹配"，不会告诉你多了个前缀**。
+
+**另外修了一处自己的低级错误**：OIDC 的两个环境变量被我用 `replace(..., 1)`
+加到了 **db 服务**里（匹配到了第一处同名变量），导致 `process.env` 取不到值、
+存进库的端点变成 `undefined/api/oidc/...`。
+又一次"匹配到了错误的位置"——与上一轮钩子那次同源。
+
 ## [0.3.0] - 2026-10-05 21:29
 
 ### 新增（M1：统一备份 + 真正的恢复演练）

@@ -117,9 +117,13 @@ identity_providers:
     hmac_secret: '{{ secret "/secret/oidc_hmac" }}'
     clients:
       - client_id: nodebb
-        # ⚠️ 用 $plaintext$ 前缀可免去预先哈希（Authelia 支持这种写法）。
+        # ⚠️ 这里填的是**哈希值**（pbkdf2-sha512 开头），**不能加 plaintext 前缀**！
+        #    我踩过这个坑：先把占位符换成了哈希，却忘了删模板里原有的那个前缀，
+        #    于是渲染成 "client_secret: 前缀+哈希" —— Authelia 把这整串当**明文**比对，
+        #    换 token 时报：The provided client secret did not match the registered client secret.
+        #    哈希由 authelia-secrets 用 authelia crypto hash generate pbkdf2 生成。
         #    这样 NodeBB 侧与 Authelia 侧共用同一个明文值，少一处对不上的可能。
-        client_secret: '$plaintext$__OIDC_CLIENT_SECRET__'
+        client_secret: '__OIDC_CLIENT_SECRET__'
         # NodeBB 的 fusionauth-oidc 插件的回调地址
         redirect_uris:
           - 'https://__FORUM_DOMAIN__/auth/fusionauth-oidc/callback'
