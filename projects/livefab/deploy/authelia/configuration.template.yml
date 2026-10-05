@@ -101,14 +101,21 @@ access_control:
         - '^/account(/.*)?$'
       policy: one_factor
 
-    # ④ 内部区：必须是协作者或核心成员
-    #    ★ "分级"真正落地处——不在组里的人连门都进不去
+    # ④ 内部区：**只允许核心成员**（two_factor 且必须在 livefab-core 组）
+    #
+    #    ⚠️ 这里曾经同时放行 livefab-collaborator —— 那是个**真实的权限漏洞**：
+    #    门户按 L4 把"内部区"标成 core 级（协作者看不到入口），
+    #    但网关却放协作者进来 → 正是 docs/04 §4.4 说的"**看不见却进得去**"。
+    #    现在两边一致：**协作者会落到 default_policy: deny → 403**。
+    #
+    #    协作者该有的内部权限是"**被指派项目的议题与文档**"（L4 原文），
+    #    那属于**按项目收窄**的路径，M2 接入看板/文档时再单独开（届时按项目授权，
+    #    而不是像之前那样给一个"全部内部件"的通用门）。
     - domain: '__PORTAL_DOMAIN__'
       resources:
         - '^/admin(/.*)?$'
       subject:
         - 'group:livefab-core'
-        - 'group:livefab-collaborator'
       policy: two_factor
 
 # ── 双因素：M0 只开 TOTP（不依赖邮件/SMS，先能跑）────────────────────

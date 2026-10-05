@@ -178,6 +178,88 @@ if (adminCookie) {
     '内部区（需 core）对协作者不可见')
 }
 
+// ── ③·补·二 角色映射：协作者能进 A，不能进 C ─────────────────────────
+// 这是 [docs/03 M1](../docs/03_分阶段落地路线.md) 的验收原文：
+//   "用一个**协作者**账号验证：能进 A 不能进 C"
+//
+// 判据的关键在**区分三种结果**（不能只看"被拦住了"）：
+//   403 Forbidden  → 组不匹配，**权限拒绝**（这才是"不能进 C"）
+//   302 → 鉴权页  → 组通过了，但还差第二因素（说明**组门是开着的**）
+//   200            → 完全放行
+// 若只看"不是 200 就算被拒"，会把"只是还没输 2FA"误判成"权限不足"——
+// 那样这个验收就证明不了任何关于**分组**的事。
+
+/**
+ * 只取"**你可以进入的件**"那一节的 HTML。
+ *
+ * ⚠️ 为什么需要它：协作者的页面上**也**会出现"内部区"这三个字——
+ *    但它出现在"需要更高权限"那一节里（解释为什么看不到）。
+ *    直接对整页 `includes('内部区')` 会把"被扣留"误判成"可用"，
+ *    早先的交叉校验就因此误报不一致。**判断可见性必须限定在可用那一节内。**
+ */
+function availableSection(html: string): string {
+  const start = html.indexOf('你可以进入的件')
+  if (start < 0) return ''
+  const end = html.indexOf('需要更高权限', start)
+  return end < 0 ? html.slice(start) : html.slice(start, end)
+}
+
+async function gate(path: string, cookie: string) {
+  const dir = (await Bun.$`mktemp -d`.text()).trim()
+  try {
+    const p = Bun.spawn([
+      'curl', '-sk', '--max-time', '20', '--resolve', `${PORTAL}:443:127.0.0.1`,
+      '-H', `Cookie: ${cookie}`, '-o', `${dir}/b`, '-D', `${dir}/h`,
+      '-w', '%{http_code}', `https://${PORTAL}${path}`,
+    ], { stdout: 'pipe', stderr: 'ignore' })
+    const status = Number((await new Response(p.stdout).text()).trim()) || 0
+    await p.exited
+    return { status, body: await Bun.file(`${dir}/b`).text().catch(() => '') }
+  } finally {
+    await Bun.$`rm -rf ${dir}`.quiet().nothrow()
+  }
+}
+
+if (adminCookie) {
+  const collabCookie2 = await login('collaborator', 'devcollab')
+  const adminA = await gate('/account/', adminCookie)
+  const collabA = await gate('/account/', collabCookie2)
+  const adminC = await gate('/admin/', adminCookie)
+  const collabC = await gate('/admin/', collabCookie2)
+
+  // A 区（个人中心）：两者都应可进
+  check('A 区：协作者可进', collabA.status === 200, `HTTP ${collabA.status}`)
+  check('A 区：核心成员可进', adminA.status === 200, `HTTP ${adminA.status}`)
+
+  // C 区（内部区）：协作者**必须被拒**
+  check('C 区：协作者被拒（403，非仅仅缺 2FA）', collabC.status === 403,
+    collabC.status === 403 ? '403 Forbidden = 组不匹配的权限拒绝'
+      : collabC.status === 302 ? `★ 302 —— 组门是开的！协作者只是缺 2FA，改完 2FA 就能进：权限漏洞`
+      : `HTTP ${collabC.status}`)
+
+  // C 区：核心成员应**过组检查**（302 进 2FA，而不是 403）
+  check('C 区：核心成员过组检查（302 进 2FA，非 403）', adminC.status === 302,
+    adminC.status === 302 ? '组门为其打开，只差第二因素' : `HTTP ${adminC.status}（403 说明连核心成员都被挡）`)
+
+  // ★ 交叉校验：门户说"你看不到"，网关就必须"你也进不去"（反之亦然）
+  //   这一条本可以自动发现"门户按 core 过滤、网关却放行 collaborator"那个漏洞。
+  const collabHidesInternal = !availableSection(collabA.body).includes('内部区')
+  const collabDeniedInternal = collabC.status === 403
+  check('门户与网关一致：协作者两边都拿不到内部区',
+    collabHidesInternal === collabDeniedInternal,
+    collabHidesInternal && collabDeniedInternal
+      ? '门户不显示 + 网关拒绝，一致'
+      : `门户${collabHidesInternal ? '不显示' : '显示'}、网关${collabDeniedInternal ? '拒绝' : '放行'} → ★ 不一致`)
+
+  const adminSeesInternal = availableSection(adminA.body).includes('内部区')
+  const adminPassesGate = adminC.status !== 403
+  check('门户与网关一致：核心成员两边都通过组门',
+    adminPassesGate && adminSeesInternal,
+    adminPassesGate && adminSeesInternal
+      ? `门户可用区显示内部区 + 网关 HTTP ${adminC.status}（未拒），一致`
+      : `门户可用区${adminSeesInternal ? '显示' : '未显示'}、网关${adminPassesGate ? '未拒' : '403'} → ★ 不一致`)
+}
+
 // ── ④ 负向自检 ──────────────────────────────────────────────────────
 // ⚠️ 这里**直接测断言逻辑**，而不是去请求真实站点。
 //    早先版本写的是"用真实请求模拟破坏"，但那两个探针并没有真的破坏任何东西
@@ -212,6 +294,16 @@ if (SELFTEST) {
       '门户显示已登录身份',
       r => r.body.includes('我的身份') && r.body.includes('livefab-admin'),
       { status: 200, location: '', body: '<h2>未能识别身份</h2>' },      // 身份头没注入
+    ],
+    [
+      'C 区：协作者被拒（403，非仅仅缺 2FA）',
+      r => r.status === 403,
+      { status: 302, body: '' },   // 组门开着的样子——必须判为失败
+    ],
+    [
+      'C 区：核心成员过组检查（302 进 2FA，非 403）',
+      r => r.status === 302,
+      { status: 403, body: '' },   // 连核心成员都被挡
     ],
     [
       '分级生效：协作者可见件少于管理员',

@@ -78,6 +78,9 @@ if (SELFTEST) {
     ['公开区不应被 forward_auth 挡', '给公开区 handle 加 forward_auth', 'caddy',
       s => s.replace(/\n\thandle \{\n\t\treverse_proxy portal:/,
         '\n\thandle {\n\t\tforward_auth authelia:9091 {\n\t\t\turi /api/verify\n\t\t}\n\t\treverse_proxy portal:')],
+    ['/admin 不放行 collaborator（防"看不见却进得去"）', '把 collaborator 加回内部区规则', 'authelia',
+      s => s.replace("      subject:\n        - 'group:livefab-core'\n      policy: two_factor",
+                     "      subject:\n        - 'group:livefab-core'\n        - 'group:livefab-collaborator'\n      policy: two_factor")],
     ['Authelia 公开路径应 bypass', '把 bypass 改成 two_factor', 'authelia', s => s.replace(
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: bypass",
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: two_factor")],
@@ -272,8 +275,16 @@ function runAutheliaChecks(text: string) {
   // 4) 内部区必须限定组 + two_factor
   const adminRule = text.match(/\^\/admin\(\/\.\*\)\?\$'[\s\S]{0,400}?policy: two_factor/)?.[0] ?? ''
   check('/admin 要求 two_factor', adminRule !== '')
-  check('/admin 限定 livefab 组', /group:livefab-core/.test(adminRule) && /group:livefab-collaborator/.test(adminRule),
-    '不在组里连门都进不去')
+  // ★ 内部区**只允许 core**。曾经同时放行 collaborator，那是个真实漏洞：
+  //   门户按 L4 把内部区标成 core 级（协作者看不到），网关却放行 → "看不见却进得去"。
+  //   所以这里不仅要求有 core，还**明确要求不许出现 collaborator**。
+  check('/admin 限定 livefab-core 组', /group:livefab-core/.test(adminRule),
+    '不在 core 组里连门都进不去')
+  check('/admin 不放行 collaborator（防"看不见却进得去"）',
+    !/group:livefab-collaborator/.test(adminRule),
+    /group:livefab-collaborator/.test(adminRule)
+      ? '★ 放行了 collaborator，但门户对协作者隐藏内部区 → 门户与网关不一致'
+      : '与门户的 core 级门槛一致')
 
   // 5) 不得把密钥硬编码在版本库里
   const hardcoded = /secret:\s*['"]?[A-Za-z0-9+/=]{16,}/.test(text)
