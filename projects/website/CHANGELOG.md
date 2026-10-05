@@ -559,4 +559,3 @@ M1 的未完成项里挂着"OG 图自动生成"，当时的顾虑是"要引入 `
 - 新增 [`rules/meta/`](../../rules/meta/README.md)：把 lab 的**元规则体系**（**M0** 规则组织 / **M1** 文件组织 / **M2** 命名词表 / **M3** 规则演进；**M4 除外**）复制整合进规则目录——含索引 `README.md`、判定配置 `meta-rules-config.json`、可运行检查 `tools/meta_rules_check.ts`（M1+M2 结构）与 `evolution/rule_evolution_check.ts`（M3 演进状态，TS 实现）；lab 原件原样保留为实验源。
 - 新增 `indie/dsh-pet-refu/`：**独立 Git 仓库**项目 —— 复古未来风格电子宠物 DeepSeek Harness 插件（当前为规划阶段）；自带协作规范（`CONTRIBUTING.md`）与 Git 钩子，已推送到 [andyluss/dsh-pet-refu](https://github.com/andyluss/dsh-pet-refu)。（独立仓库，不在本仓库内。）
 - 新增 `indie/live-rpg/`：**独立 Git 仓库**项目 —— **LiveRPG 活世界工作台**（DeepSeek Harness 插件，v0.1.0）：多世界观「世界包」编辑器 + 图文创作台；含三份原创内置世界观、种子确定性生成的地貌与徽记、命令行工具与 158 个测试用例。自带协作规范与 Git 钩子。（独立仓库，不在本仓库内。）
-
