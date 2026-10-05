@@ -211,11 +211,20 @@ STAGED_LOGS="$(printf '%s\n' "$STAGED_ALL" | grep -E '(^|/)CHANGELOG\.md$' || tr
 if printf '%s\n' "$STAGED_LOGS" | grep -q '^CHANGELOG\.md$'; then
   check_changelog CHANGELOG.md workspace-v "工作区根日志" --assert-workspace-level
 fi
-# ② 其余：只做格式校验（目前只有根与 LiveFab 打了 tag）
+# ② 其余：按文件给 tag 前缀，从而启用**版本-标签一致性**校验
+#    （那条是最值钱的一条：它把日志与 git 钉在一起，谁事后改时间都会被发现）
 for lg in $STAGED_LOGS; do
   [ "$lg" = "CHANGELOG.md" ] && continue
-  prefix=""
-  [ "$lg" = "projects/livefab/CHANGELOG.md" ] && prefix="livefab-v"
+  case "$lg" in
+    projects/livefab/CHANGELOG.md)          prefix="livefab-v" ;;
+    projects/website/CHANGELOG.md)          prefix="website-v" ;;
+    lab/formal-system/CHANGELOG.md)         prefix="formal-system-v" ;;
+    projects/future-debris/CHANGELOG.md)    prefix="future-debris-v" ;;
+    projects/mainline/CHANGELOG.md)         prefix="mainline-v" ;;
+    projects/refu-game-001/CHANGELOG.md)    prefix="refu-game-001-v" ;;
+    projects/tomorrows-channel/CHANGELOG.md) prefix="tomorrows-channel-v" ;;
+    *) prefix="" ;;
+  esac
   check_changelog "$lg" "$prefix" "$lg"
 done
 
