@@ -31,6 +31,7 @@ services:
       LIVEFAB_DOMAIN: ${LIVEFAB_DOMAIN:?需在 .env 设置}
       LIVEFAB_PORTAL_DOMAIN: ${LIVEFAB_PORTAL_DOMAIN:?需在 .env 设置}
       LIVEFAB_FORUM_DOMAIN: ${LIVEFAB_FORUM_DOMAIN:?需在 .env 设置}
+      LIVEFAB_AUTH_DOMAIN: ${LIVEFAB_AUTH_DOMAIN:?需在 .env 设置}
       LIVEFAB_ACME_EMAIL: ${LIVEFAB_ACME_EMAIL:?需在 .env 设置}
       # 本地/内网验证时设 local_certs（生产留空）；早先漏了这一行，
       # 导致开关写进 .env 却传不到容器里，Caddy 仍去走 ACME 并失败。
@@ -90,14 +91,19 @@ services:
         set -e
         mkdir -p /rendered
         sed -e "s|__PORTAL_DOMAIN__|$$LIVEFAB_PORTAL_DOMAIN|g" \
-            -e "s|__AUTH_DOMAIN__|auth.$$LIVEFAB_PORTAL_DOMAIN|g" \
+            -e "s|__AUTH_DOMAIN__|$$LIVEFAB_AUTH_DOMAIN|g" \
+            -e "s|__GHOST_DOMAIN__|$$LIVEFAB_DOMAIN|g" \
+            -e "s|__COOKIE_DOMAIN__|$$LIVEFAB_COOKIE_DOMAIN|g" \
             /template/configuration.template.yml > /rendered/configuration.yml
-        if grep -q '__PORTAL_DOMAIN__\|__AUTH_DOMAIN__' /rendered/configuration.yml; then
+        if grep -q '__PORTAL_DOMAIN__\|__AUTH_DOMAIN__\|__GHOST_DOMAIN__\|__COOKIE_DOMAIN__' /rendered/configuration.yml; then
           echo "✗ 渲染后有残留占位符，模板与变量对不上"; exit 1
         fi
         echo "✓ 配置已渲染（域名已写死）"
     environment:
       LIVEFAB_PORTAL_DOMAIN: ${LIVEFAB_PORTAL_DOMAIN:?需在 .env 设置}
+      LIVEFAB_DOMAIN: ${LIVEFAB_DOMAIN:?需在 .env 设置}
+      LIVEFAB_AUTH_DOMAIN: ${LIVEFAB_AUTH_DOMAIN:?需在 .env 设置}
+      LIVEFAB_COOKIE_DOMAIN: ${LIVEFAB_COOKIE_DOMAIN:?需在 .env 设置}
     volumes:
       - ./authelia/configuration.template.yml:/template/configuration.template.yml:ro
       - authelia_rendered:/rendered
@@ -177,7 +183,7 @@ services:
     environment:
       # 各件主机名由 env 注入，代码不硬编码 → 本地 *.localhost 与生产真实域名只差一份 env
       PORTAL_HOST: ${LIVEFAB_PORTAL_DOMAIN:?}
-      AUTH_HOST: auth.${LIVEFAB_PORTAL_DOMAIN:?}
+      AUTH_HOST: ${LIVEFAB_AUTH_DOMAIN:?}
       GHOST_HOST: ${LIVEFAB_DOMAIN:?}
       FORUM_HOST: ${LIVEFAB_FORUM_DOMAIN:?}
     networks:
@@ -201,6 +207,13 @@ services:
       database__connection__password: ${GHOST_DB_PASSWORD:?需在 .env 设置}
       database__connection__database: ghost
       NODE_ENV: production
+      # ★ Ghost 的登录通知/邀请/密码重置都要发邮件；**没配邮件时登录会失败**
+      #   （真启动才暴露：session 接口报 "Failed to send email"）。
+      #   M0/M1 阶段接 Mailpit（本地邮件捕获器），M2 的"邮件送达"再换真实 SMTP。
+      mail__transport: SMTP
+      mail__options__host: mailpit
+      mail__options__port: "1025"
+      mail__from: '"LiveFab" <noreply@livefab.test>'
     volumes:
       - ghost_content:/var/lib/ghost/content
     networks:
@@ -208,6 +221,20 @@ services:
     depends_on:
       ghost-db:
         condition: service_healthy
+
+  # ── 邮件捕获器（本地开发用）──────────────────────────────────────
+  # 为什么需要：Ghost 的登录通知/邀请/密码重置都依赖发信，
+  # **没配邮件时 Ghost 的登录会直接失败**（真启动才暴露）。
+  # Mailpit 捕获所有外发邮件并在网页里展示，不会真的发出去——本地开发正合适。
+  # M2 的"邮件送达"会换成 listmonk/真实 SMTP，那时它可退为调试工具。
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    networks:
+      - internal
 
   ghost-db:
     image: mysql:8.4
@@ -272,8 +299,16 @@ services:
         node -e '
           const fs=require("fs"), f="/opt/config/config.json";
           const c=JSON.parse(fs.readFileSync(f,"utf8"));
-          if (c.trust_proxy !== true) { c.trust_proxy = true; fs.writeFileSync(f, JSON.stringify(c,null,4)); console.log("已设置 trust_proxy=true"); }
-          else { console.log("trust_proxy 已为 true"); }
+          let changed=[];
+          // trust_proxy 必须开（反代后面的客户端 IP 才正确）
+          if (c.trust_proxy !== true) { c.trust_proxy = true; changed.push("trust_proxy"); }
+          // ★ url 必须**跟随域名变化**同步：config.json 里的 url 是安装时写死的，
+          //   改了域名（本地 *.localhost ↔ 生产真实域名）不同步的话，
+          //   NodeBB 会生成指向旧域名的链接（邮件、分享、跳转全错）。
+          const want = process.env.NODEBB_URL;
+          if (want && c.url !== want) { c.url = want; changed.push("url: " + want); }
+          if (changed.length) { fs.writeFileSync(f, JSON.stringify(c,null,4)); console.log("已同步: " + changed.join(", ")); }
+          else { console.log("config.json 无需改动"); }
         '
     environment: &nodebb_env
       # ★ 必须显式设 CONFIG_DIR：**覆盖 entrypoint 会跳过它原本设置 CONFIG_DIR 的那段**，

@@ -17,7 +17,11 @@
  */
 
 const arg = (n: string, d = '') => process.argv.find(a => a.startsWith(`--${n}=`))?.slice(n.length + 3) ?? d
+import { join, resolve } from 'node:path'
+
 const SELFTEST = process.argv.includes('--selftest')
+/** 项目根（tools/ 的上一级） */
+const ROOT = resolve(import.meta.dir, '..')
 
 // 从 .env 读域名（不引入 dotenv，保持零依赖）
 async function envFromFile(key: string, fallback: string): Promise<string> {
@@ -33,7 +37,9 @@ async function envFromFile(key: string, fallback: string): Promise<string> {
 const PORTAL = arg('portal') || (await envFromFile('LIVEFAB_PORTAL_DOMAIN', 'app.m0.livefab.test'))
 const FORUM = arg('forum') || (await envFromFile('LIVEFAB_FORUM_DOMAIN', 'forum.m0.livefab.test'))
 const GHOST = arg('ghost') || (await envFromFile('LIVEFAB_DOMAIN', 'm0.livefab.test'))
-const AUTH = `auth.${PORTAL}`
+// ⚠️ 共享父域重构后，鉴权门户是**独立**的域（不再由 portal 域派生）：
+//    Authelia 要求 authelia_url 与 cookie 域共享作用域，故各件同父域、auth 单独一个子域。
+const AUTH = arg('auth') || (await envFromFile('LIVEFAB_AUTH_DOMAIN', 'auth.livefab.localhost'))
 
 interface Check { name: string; ok: boolean; detail: string }
 const results: Check[] = []
@@ -70,7 +76,7 @@ async function probe(host: string, path = '/'): Promise<{ status: number; locati
   }
 }
 
-console.log(`M0 运行时验收（门户=${PORTAL} 论坛=${FORUM} 前台=${GHOST}）\n`)
+console.log(`M0 运行时验收（门户=${PORTAL} 鉴权=${AUTH} 论坛=${FORUM} 前台=${GHOST}）\n`)
 
 // ── ① 核心：鉴权分层 ────────────────────────────────────────────────
 // 这是 M0 最该守住的设计（docs/01 §5.3）：公开区不得被登录墙挡住。
@@ -204,13 +210,13 @@ function availableSection(html: string): string {
   return end < 0 ? html.slice(start) : html.slice(start, end)
 }
 
-async function gate(path: string, cookie: string) {
+async function gate(path: string, cookie: string, host: string = PORTAL) {
   const dir = (await Bun.$`mktemp -d`.text()).trim()
   try {
     const p = Bun.spawn([
-      'curl', '-sk', '--max-time', '20', '--resolve', `${PORTAL}:443:127.0.0.1`,
+      'curl', '-sk', '--max-time', '20', '--resolve', `${host}:443:127.0.0.1`,
       '-H', `Cookie: ${cookie}`, '-o', `${dir}/b`, '-D', `${dir}/h`,
-      '-w', '%{http_code}', `https://${PORTAL}${path}`,
+      '-w', '%{http_code}', `https://${host}${path}`,
     ], { stdout: 'pipe', stderr: 'ignore' })
     const status = Number((await new Response(p.stdout).text()).trim()) || 0
     await p.exited
@@ -258,6 +264,61 @@ if (adminCookie) {
     adminPassesGate && adminSeesInternal
       ? `门户可用区显示内部区 + 网关 HTTP ${adminC.status}（未拒），一致`
       : `门户可用区${adminSeesInternal ? '显示' : '未显示'}、网关${adminPassesGate ? '未拒' : '403'} → ★ 不一致`)
+}
+
+// ── ③·补·三 Ghost 后台收口（M1 第 ④ 项）──────────────────────────────
+// 验收要求：后台受保护，**但公开站不能被一起挡住**（docs/01 §5.3）。
+// 另有一条容易漏的：Ghost 的 **Content API 必须保持公开**——
+// 它是 L5c 选的 Astro 前端在构建期取内容的接口，一刀切挡 /ghost/* 会打断 L5c。
+
+const ghostNoAuth = await probe(GHOST, '/ghost/')
+check('Ghost 后台被网关挡住（无会话 302）', ghostNoAuth.status === 302 && ghostNoAuth.location.includes(AUTH),
+  `${ghostNoAuth.status}${ghostNoAuth.location ? ` → ${AUTH}` : ''}`)
+
+const ghostPublic = await probe(GHOST, '/')
+check('Ghost 公开站未被登录墙挡住', ghostPublic.status === 200,
+  `GET / → ${ghostPublic.status}${ghostPublic.status === 302 ? '（★ 公开站被挡了，违反 §5.3）' : ''}`)
+
+// ★ Content API 必须能穿过网关。判据是"**不是 302**"：
+//   302 说明被 Caddy 拦去鉴权；401/200 说明请求已经到了 Ghost 自己那里。
+const contentApi = await probe(GHOST, '/ghost/api/content/settings/?key=invalid')
+check('Ghost Content API 未被挡（L5c 依赖它）', contentApi.status !== 302,
+  contentApi.status === 302 ? '★ 被网关挡了 —— Astro 前端将无法取内容' : `${contentApi.status}（已到 Ghost 自身，非网关拦截）`)
+
+// 组控制：注册用户被拒、协作者放行（门槛与门户对"官网后台"的标注一致）
+if (adminCookie) {
+  const vCookie = await login('viewer', 'viewpass')
+  const viewerGhost = vCookie ? await gate('/ghost/', vCookie, GHOST) : { status: 0, body: '' }
+  check('Ghost 后台：无分组注册用户被拒（403）', viewerGhost.status === 403,
+    `viewer → ${viewerGhost.status}`)
+
+  const collabGhost = await gate('/ghost/', await login('collaborator', 'devcollab'), GHOST)
+  check('Ghost 后台：协作者放行（与门户标注一致）', collabGhost.status === 200,
+    `collaborator → ${collabGhost.status}`)
+
+  // ★ 两层认证是否打架（M1 明确要求实测的一条）
+  //   过了网关之后，**Ghost 自己的登录必须仍然可用**，且网关那层不是装饰。
+  const ghostApp = await gate('/ghost/', adminCookie, GHOST)
+  check('过网关后 Ghost 后台应用可加载', ghostApp.status === 200 && /ghost-admin|Ghost/.test(ghostApp.body),
+    `HTTP ${ghostApp.status}`)
+
+  // ★ 两层是否打架：测**网关的透明性**，而不是去复现浏览器会话。
+  //
+  //   为什么这样测：M1 的疑点是"前置保护会不会与 Ghost 自身会话冲突"。
+  //   这个疑点的可验证形式是——**网关会不会拦截/改写 Ghost 自己的东西**。
+  //   判据：带着网关会话请求 Ghost 的 Admin API 时，
+  //   返回的必须是 **Ghost 自己的 JSON 错误**（说明请求到了 Ghost），
+  //   而**不能是 302 跳鉴权**（那说明被网关截住了）。
+  //   至于 Ghost 内部会话最终能不能认出来，是 Ghost 自己的事，
+  //   用 curl 复现浏览器的会话链并不可靠（见 CHANGELOG 的记录）。
+  const adminApi = await gate('/ghost/api/admin/users/me/', adminCookie, GHOST)
+  check('网关对 Ghost 自身 API 透明（非 302 拦截）', adminApi.status !== 302,
+    adminApi.status === 302
+      ? '★ 被网关截去鉴权 —— 两层在打架'
+      : `${adminApi.status} 且返回 Ghost 的 JSON（说明请求已到 Ghost）`)
+  check('Ghost 自己的错误响应能穿过网关', /NoPermissionError|errors/.test(adminApi.body),
+    adminApi.body.includes('NoPermissionError') ? 'Ghost 的 JSON 错误原样返回' : '未见到 Ghost 的 JSON 结构')
+
 }
 
 // ── ④ 负向自检 ──────────────────────────────────────────────────────

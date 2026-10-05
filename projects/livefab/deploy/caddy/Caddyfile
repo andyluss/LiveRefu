@@ -26,7 +26,7 @@
 {$LIVEFAB_PORTAL_DOMAIN} {
 	handle /admin/* {
 		forward_auth authelia:9091 {
-			uri /api/verify?rd=https://auth.{$LIVEFAB_PORTAL_DOMAIN}
+			uri /api/verify?rd=https://{$LIVEFAB_AUTH_DOMAIN}
 			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
 		}
 		# 反代到真门户；forward_auth 已把身份注入为请求头
@@ -36,7 +36,7 @@
 	# 个人区：挡登录
 	handle /account/* {
 		forward_auth authelia:9091 {
-			uri /api/verify?rd=https://auth.{$LIVEFAB_PORTAL_DOMAIN}
+			uri /api/verify?rd=https://{$LIVEFAB_AUTH_DOMAIN}
 			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
 		}
 		reverse_proxy portal:4321
@@ -49,16 +49,42 @@
 }
 
 # ══ 鉴权门户：Authelia 自己的界面 ═══════════════════════════════════
-auth.{$LIVEFAB_PORTAL_DOMAIN} {
+{$LIVEFAB_AUTH_DOMAIN} {
 	reverse_proxy authelia:9091
 }
 
 # ══ 前台件：Ghost ═══════════════════════════════════════════════════
-# 注意：M0 让 Ghost 直接对外（这样能立刻看到内容/后台），
-# 因为 **Ghost 不支持 OIDC，套 Authelia 会与它自己的会话冲突**（见 docs/research §九）。
-# 后台 /ghost/ 在 M1 要换成"仅内网可见"或前置 Basic Auth —— 见 docs/04 §1.4。
+# ★ 只挡 /ghost/（后台），**不挡公开站**——整站挡会违反 docs/01 §5.3
+#   （公开内容不得被登录墙挡住），而 Ghost 的公开站就在同一个域上。
+#
+# ⚠️ 这是**额外一道门**：Ghost 不支持 OIDC（research §九），
+#   过了网关仍要输 Ghost 自己的账号密码。两层是否冲突见 M1 实测。
 {$LIVEFAB_DOMAIN} {
-	reverse_proxy ghost:2368
+	# ★ 例外：Ghost 的 **Content API 必须公开**，不能一起挡。
+	#
+	#   为什么：Content API（`/ghost/api/content/`）是 Ghost 作为**无头 CMS** 的
+	#   对外读接口——[L5c](docs/00_决策总表.md) 选的 Astro 前端就靠它**在构建期取内容**。
+	#   一刀切挡 `/ghost/*` 会把这个接口一起挡掉，等于**打断 L5c 的整合**。
+	#   它是只读的、只暴露已发布内容，本就设计为公开。
+	#
+	#   ⚠️ Caddy 的 handle 是**互斥且按顺序匹配**的，所以这条必须放在前面。
+	handle /ghost/api/content/* {
+		reverse_proxy ghost:2368
+	}
+
+	# 后台（含 Admin API）：网关保护 + 限定组
+	handle /ghost/* {
+		forward_auth authelia:9091 {
+			uri /api/verify?rd=https://{$LIVEFAB_AUTH_DOMAIN}
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		reverse_proxy ghost:2368
+	}
+
+	# 公开站：不经过 forward_auth
+	handle {
+		reverse_proxy ghost:2368
+	}
 }
 
 # ══ 论坛：NodeBB（L6 已定，2026-10-03）══════════════════════════════

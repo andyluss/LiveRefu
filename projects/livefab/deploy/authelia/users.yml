@@ -34,3 +34,11 @@ users:
     email: collaborator@livefab.test
     groups:
       - livefab-collaborator
+
+  # 仅注册、**不属于任何 livefab 分组**的账号。
+  # 用途：验证分级真的在拦人——他应能进个人区，但进不了内部区与官网后台。
+  viewer:
+    displayname: '示例注册用户'
+    password: '$argon2id$v=19$m=65536,t=3,p=4$wYCiQHzVC/ReRn6Vn+Rnkg$3fZfdlFMyCHKTe6D+LbZ39fs9U8SYMgUipBUlg3SWjg'
+    email: viewer@livefab.test
+    groups: []

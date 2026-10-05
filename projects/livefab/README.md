@@ -406,6 +406,91 @@ livefab-collaborator  collaborator    公开 + 个人 + 前台后台（**看不�
 **这条检查本可以自动发现那个漏洞**——它比"人工看一眼两处配置"可靠得多，
 因为两处配置会各自演进，而一致性必须由机器守。
 
+## 五·补·五、收口 Ghost 后台（M1 第 ④ 项）
+
+M0 阶段 Ghost 后台（`/ghost/`）直接对外。本轮把它收进网关。
+
+### 为什么不能"整站挡"，也不能"一刀切挡 /ghost/*"
+
+两条都是踩过的坑：
+
+| 做法 | 后果 |
+| --- | --- |
+| **整站 `forward_auth`** | Ghost 的**公开站在同一个域**上 → 官网也变成"要登录才能看"，**违反 docs/01 §5.3** |
+| **一刀切挡 `/ghost/*`** | 把 Ghost 的 **Content API**（`/ghost/api/content/`）一起挡了 → **[L5c](docs/00_决策总表.md) 的 Astro 前端取不到内容**，headless 整合直接断掉 |
+
+正确做法是**只挡后台、给 Content API 开例外**：
+
+```
+handle /ghost/api/content/*  → 公开（只读、只暴露已发布内容）
+handle /ghost/*              → forward_auth + 限定组
+handle                       → 公开站
+```
+
+> ⚠️ Caddy 的 `handle` 是**互斥且按顺序匹配**的，所以 Content API 那条**必须排在前面**。
+> 这条顺序已写成断言。
+
+### 一个真实约束：Authelia 的 cookie 必须挂在共享父域
+
+最初想给 Ghost 域单独配一个会话 cookie，**真实 Authelia 直接报错**：
+
+```
+session: domain config #2 (domain 'm0.localhost'):
+  option 'authelia_url' does not share a cookie scope with domain 'm0.localhost'
+```
+
+Authelia 要求 `authelia_url` 与 cookie 的 domain **共享 cookie 作用域**。而当时
+Ghost 在 `m0.localhost`、鉴权门户在 `auth.app.localhost`——不同源。
+
+**解法：把各件放到同一个父域的子域下，cookie 挂父域。**
+
+| | 本地 | 生产（示例） |
+| --- | --- | --- |
+| 共享父域（cookie） | `livefab.localhost` | `livefab.com` |
+| 门户 | `app.livefab.localhost` | `app.livefab.com` |
+| 鉴权 | `auth.livefab.localhost` | `auth.livefab.com` |
+| 前台 | `m0.livefab.localhost` | `m0.livefab.com` |
+| 论坛 | `forum.livefab.localhost` | `forum.livefab.com` |
+
+这样**一个 cookie 覆盖所有件，也只需要一个鉴权门户**——这正是"统一身份"该有的样子。
+
+### 实测（`bun run verify`，共 30/30）
+
+| 场景 | 结果 |
+| --- | --- |
+| `/ghost/` 无会话 | **302** → 鉴权门户 |
+| Ghost **公开站** `/` | **200**（没被登录墙挡住） |
+| **Content API** | **401**（到了 Ghost 自身，非网关 302） |
+| `/ghost/` 无分组注册用户 | **403** 被拒 |
+| `/ghost/` 协作者 | **200**（与门户对"官网后台"的标注一致） |
+| 过网关后 Ghost 后台应用 | **200**，`ghost-admin` 正常加载 |
+
+### 顺带补上的：邮件
+
+收口过程中发现 **Ghost 的登录会失败**——它要发登录通知邮件，而邮件没配：
+
+```
+Failed to send email. Please check your site configuration and try again.
+```
+
+加了 **Mailpit**（本地邮件捕获器，极小）并把 Ghost 指向它。
+之后 Ghost 启用了**登录验证码**（6 位邮件验证），Mailpit 能捕获到，
+于是完整登录链（网关会话 + Ghost 会话 + 邮件验证）可以走通。
+
+> 这也让 M2 的"邮件送达"提前有了可用的本地环境。
+
+### 一处诚实的局限
+
+自动验收里我**没有**断言"用 curl 走完 Ghost 自己的会话后能读 `/users/me/`"——
+尝试过，卡在 Ghost 自己的会话识别上（verify 返回 200 OK，但后续 Admin API 仍 403）。
+**这属于用 curl 复现浏览器会话链的局限，不是网关冲突**——判据是：
+
+> 带着网关会话请求 Ghost 的 Admin API 时，**返回的是 Ghost 自己的 JSON 错误**，
+> 而**不是 302 跳鉴权**。后者才说明两层在打架。前者说明请求已经穿过网关到了 Ghost。
+
+所以自动验收测的是**网关的透明性**（这个可靠且对应验收目标），
+而完整的 Ghost 会话链由人工确认过关键节点。
+
 ## 六、与工作区其它部分的关系
 
 - **是底座，不是产品**：主线游戏（[`../mainline/`](../mainline/README.md)、[`../future-debris/`](../future-debris/README.md)）

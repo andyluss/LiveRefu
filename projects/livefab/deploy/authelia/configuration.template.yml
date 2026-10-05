@@ -33,9 +33,25 @@ theme: auto
 # ── 会话 ─────────────────────────────────────────────────────────────
 session:
   # ★ cookies 段是必填的（真实 Authelia 校验报错才发现——自写断言没覆盖到）
+  #
+  # ⚠️ 需要**两个** cookie，因为 Authelia 的会话 cookie 是**按域**的，
+  #    而我们要保护的两个域不同：门户在 app.*、Ghost 在 m0.*。
+  #    只配一个的话，另一个域上的保护永远拿不到会话（会陷入"登录了还是被挡"的循环）。
   cookies:
+    # ★ 一个 cookie 挂在**共享父域**上，覆盖所有子域（门户、Ghost、论坛…）。
+    #
+    #   为什么必须这样：Authelia 要求 `authelia_url` 与 cookie 的 domain
+    #   **共享 cookie 作用域**。早先给 Ghost 域单独配 cookie 时，
+    #   真实 Authelia 直接报错：
+    #     session: domain config #2 (domain 'm0.localhost'):
+    #       option 'authelia_url' does not share a cookie scope with domain 'm0.localhost'
+    #   因为 auth 在 auth.app.localhost，与 m0.localhost 不同源。
+    #
+    #   解法：把各件放到**同一个父域的子域**下，cookie 挂父域 →
+    #   一个 cookie 覆盖全部，也只需要一个鉴权门户。生产上就是
+    #   livefab.com + app./auth./m0./forum. 这种结构。
     - name: livefab_session
-      domain: '__PORTAL_DOMAIN__'
+      domain: '__COOKIE_DOMAIN__'
       authelia_url: 'https://__AUTH_DOMAIN__'
       default_redirection_url: 'https://__PORTAL_DOMAIN__'
   expiration: 1h
@@ -99,6 +115,25 @@ access_control:
     - domain: '__PORTAL_DOMAIN__'
       resources:
         - '^/account(/.*)?$'
+      policy: one_factor
+
+    # ③·补 官网后台（Ghost 的 /ghost/）——受保护，但**不挡公开站**
+    #
+    #    ★ 为什么不能整站挡：Ghost 的公开站在同一个域上，
+    #      整站 forward_auth 会把官网也变成"要登录才能看"——违反 docs/01 §5.3。
+    #      所以只挡 /ghost/ 这一个前缀。
+    #
+    #    ⚠️ Ghost **不支持 OIDC**（见 research §九），所以这里是**额外一道门**，
+    #      进门之后**仍要输 Ghost 自己的账号密码**。两层并存是否冲突，见 M1 实测。
+    #    ⚠️ 门槛与门户一致：门户给"官网后台"标的是 collaborator 级
+    #      （见 portal/src/data/services.ts），所以这里放行 core 与 collaborator，
+    #      而**无分组的注册用户会被拒**（403）。
+    - domain: '__GHOST_DOMAIN__'
+      resources:
+        - '^/ghost(/.*)?$'
+      subject:
+        - 'group:livefab-core'
+        - 'group:livefab-collaborator'
       policy: one_factor
 
     # ④ 内部区：**只允许核心成员**（two_factor 且必须在 livefab-core 组）

@@ -81,6 +81,11 @@ if (SELFTEST) {
     ['/admin 不放行 collaborator（防"看不见却进得去"）', '把 collaborator 加回内部区规则', 'authelia',
       s => s.replace("      subject:\n        - 'group:livefab-core'\n      policy: two_factor",
                      "      subject:\n        - 'group:livefab-core'\n        - 'group:livefab-collaborator'\n      policy: two_factor")],
+    ['Ghost Content API 开了例外（L5c 依赖）', '把 Content API 也套上鉴权', 'caddy',
+      s => s.replace('\thandle /ghost/api/content/* {\n\t\treverse_proxy ghost:2368\n\t}',
+                     '\thandle /ghost/api/content/* {\n\t\tforward_auth authelia:9091 {\n\t\t\turi /api/verify\n\t\t}\n\t\treverse_proxy ghost:2368\n\t}')],
+    ['会话 cookie 挂在共享父域', '改为逐域各配一个 cookie', 'authelia',
+      s => s.replace("      domain: '__COOKIE_DOMAIN__'", "      domain: '__GHOST_DOMAIN__'")],
     ['Authelia 公开路径应 bypass', '把 bypass 改成 two_factor', 'authelia', s => s.replace(
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: bypass",
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: two_factor")],
@@ -231,6 +236,23 @@ function runCaddyChecks(text: string) {
   for (const [svc, target] of [['portal', 'portal:4321'], ['authelia', 'authelia:9091'], ['ghost', 'ghost:2368'], ['nodebb', 'nodebb:4567']] as const) {
     check(`反代指向 ${target}`, text.includes(`reverse_proxy ${target}`), `对应服务 ${svc}`)
   }
+
+  // 5) ★ Ghost 后台必须受保护，**但不能把公开站一起挡住**（docs/01 §5.3）
+  const ghostHandle = text.match(/handle \/ghost\/\* \{([\s\S]*?)\n\t\}/)?.[1] ?? ''
+  check('/ghost/* 有 forward_auth', /forward_auth\s+authelia:9091/.test(ghostHandle),
+    'Ghost 后台必须经网关鉴权')
+
+  // 6) ★ Content API 必须**开例外**：它是 L5c 的 Astro 前端在构建期取内容的接口，
+  //    一刀切挡 /ghost/* 会把 headless 整合直接打断。
+  const contentHandle = text.match(/handle \/ghost\/api\/content\/\* \{([\s\S]*?)\n\t\}/)?.[1] ?? ''
+  check('Ghost Content API 开了例外（L5c 依赖）', contentHandle !== '' && !/forward_auth/.test(contentHandle),
+    contentHandle ? '公开可读（只暴露已发布内容）' : '★ 未开例外：Astro 前端将取不到内容')
+
+  // 7) Content API 的 handle 必须**排在 /ghost/* 之前**（Caddy 的 handle 互斥且按顺序匹配）
+  const contentIdx = text.indexOf('handle /ghost/api/content/*')
+  const ghostIdx = text.indexOf('handle /ghost/*')
+  check('Content API 例外排在 /ghost/* 之前', contentIdx > 0 && ghostIdx > 0 && contentIdx < ghostIdx,
+    contentIdx < ghostIdx ? '顺序正确' : '★ 顺序错了：会被 /ghost/* 先匹配掉')
 }
 runCaddyChecks(caddyText)
 
@@ -285,6 +307,23 @@ function runAutheliaChecks(text: string) {
     /group:livefab-collaborator/.test(adminRule)
       ? '★ 放行了 collaborator，但门户对协作者隐藏内部区 → 门户与网关不一致'
       : '与门户的 core 级门槛一致')
+
+  // 4b) ★ Ghost 域的 /ghost/ 规则：放行 core 与 collaborator（与门户对"官网后台"的标注一致）
+  const ghostRule = text.match(/domain: '__GHOST_DOMAIN__'[\s\S]{0,300}?policy: (\w+)/)?.[0] ?? ''
+  check('Authelia 有 /ghost/ 保护规则', ghostRule !== '', ghostRule ? '限定了组与策略' : '★ 缺规则')
+  check('/ghost/ 放行 core 与 collaborator（与门户一致）',
+    /group:livefab-core/.test(ghostRule) && /group:livefab-collaborator/.test(ghostRule),
+    '门户给"官网后台"标的是 collaborator 级')
+
+  // 4c) ★ cookie 必须挂在**共享父域**上。
+  //     真实 Authelia 会拒绝"authelia_url 与 cookie 域不共享作用域"的配置：
+  //       session: domain config #2: option 'authelia_url' does not share a cookie scope ...
+  //     所以用 __COOKIE_DOMAIN__（父域）而不是逐个域各配一个 cookie。
+  check('会话 cookie 挂在共享父域', /domain: '__COOKIE_DOMAIN__'/.test(text),
+    '一个 cookie 覆盖所有子域，也只需一个鉴权门户')
+  const cookieCount = (text.match(/^\s+- name: livefab_/gm) ?? []).length
+  check('只配一个会话 cookie（共享父域方案）', cookieCount === 1,
+    cookieCount === 1 ? '' : `配了 ${cookieCount} 个——多域方案已被 Authelia 的作用域校验否决`)
 
   // 5) 不得把密钥硬编码在版本库里
   const hardcoded = /secret:\s*['"]?[A-Za-z0-9+/=]{16,}/.test(text)
