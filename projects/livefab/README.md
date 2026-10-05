@@ -24,6 +24,8 @@
 | 起 M0 骨架 | `cp .env.example .env` → `docker compose -f deploy/compose.yml up -d` |
 | 校验 M0 骨架结构 | `bun run tools/validate-compose.ts`（41 项，含 `--selftest`） |
 | 校验 M0 运行时行为 | `bun run tools/verify-stack.ts`（7 项，**需 stack 已启动**，含 `--selftest`） |
+| **备份** | `bun run backup`（3 个库 + 5 个卷 + 校验和清单） |
+| **恢复演练** | `bun run verify:backup`（**真的导进临时库逐表比对**，含 `--selftest`） |
 
 ## 一、为什么需要它
 
@@ -89,9 +91,12 @@ projects/livefab/
 │   ├── caddy/Caddyfile        # 唯一对外入口；**鉴权分层**写在这里
 │   ├── authelia/              # 网关鉴权；规则按 公开/个人/内部 三档
 │   └── portal/                # M0 占位页（M1 换 Astro）
+├── backups/             # 备份产物（**不入库**，见 .gitignore）
 └── tools/
-    ├── validate-compose.ts    # ★ 静态结构校验（41 项 + 负向自检）
-    └── verify-stack.ts        # ★ 运行时行为校验（7 项 + 负向自检）
+    ├── validate-compose.ts    # ★ 静态结构校验（47 项 + 负向自检）
+    ├── verify-stack.ts        # ★ 运行时行为校验（7 项 + 负向自检）
+    ├── backup.ts              # ★ 统一备份（3 库 + 5 卷 + manifest）
+    └── verify-backup.ts       # ★ 恢复演练（临时环境 + 逐表比对 + 负向自检）
 ```
 
 > **落点说明**：现放 `projects/`（受工作区根规则约束）。
@@ -222,6 +227,73 @@ sudo security add-trusted-cert -d -r trustRoot \
 
 改完域名后需 `docker compose ... up -d --force-recreate`（域名在启动时渲染进 Authelia 配置，
 不会自动热更新——见 [§5.3](#53--真启动才发现的-8-个问题全部已修) 第 3 条）。
+
+## 五·补·二、备份与恢复演练（M1）
+
+### 为什么"配了 cron"不算数
+
+[docs/03](docs/03_分阶段落地路线.md) 对 M1 的验收原文是：
+**"真的恢复出一个件的数据（不是只配 cron）"**。
+
+理由与本项目一贯的纪律一致：**未经验证的备份等于没有备份**。
+一个每天生成、看起来正常的备份文件，完全可能是**空的、损坏的、或少了一整个库的**——
+而这些只有**真的导进一个干净环境并比对数据**才能发现。
+
+### LiveFab 的数据散在 8 个地方，漏一个就出事
+
+| 来源 | 内容 | 忘了它会怎样 |
+| --- | --- | --- |
+| PostgreSQL `authelia` | 会话 / 双因素状态 | 全员被登出、2FA 要重配 |
+| PostgreSQL `nodebb` | 论坛帖子 | 论坛内容丢失 |
+| MySQL `ghost` | 站点内容与会员 | 内容全丢 |
+| 卷 `authelia_secretview` | **密钥** | ⚠️ 恢复后**加密字段解不开**（最隐蔽、最致命） |
+| 卷 `caddy_data` | TLS 证书 + 本地 CA（含私钥） | 证书要重签 |
+| 卷 `ghost_content` | 上传的图片 / 主题 | 图片全丢 |
+| 卷 `nodebb_data` / `nodebb_config` | 上传附件 / 论坛配置 | 附件与配置丢失 |
+
+`bun run backup` 把它们收进一个**自描述**的备份集：每件一个文件 + `manifest.json`
+（大小、sha256、每张表的行数）。
+
+### 恢复演练：真的导进去逐表比对
+
+`bun run verify:backup` → **36/36 通过**，做的是：
+
+1. 跑一次全新备份；
+2. 校验 manifest 里 8 个产物的 sha256（先确认**没被改动**）；
+3. 起**临时**的 PostgreSQL / MySQL 容器（与线上完全隔离，绝不碰线上数据）；
+4. 把 dump 导进去，逐表用**精确 `COUNT(*)`**（不用估算值）与线上比对；
+5. 把卷的 `tar.gz` **真的解出来**，比对文件清单与关键内容；
+6. 篡改一份备份，确认完整性校验会拦。
+
+实测比对结果：
+
+```
+authelia  25 张表 / 34 行     全部一致
+nodebb    10 张表 / 1179 行   全部一致
+ghost     75 张表 / 1056 行   全部一致
+```
+
+### ⚠️ 这个演练第一次跑就抓到两个真问题（其中一个是我自己的假通过）
+
+| # | 问题 | 后果 |
+| --- | --- | --- |
+| 1 | **`mysqldump` 少了 `--databases`**，dump 里没有 `CREATE DATABASE`/`USE` | 导进干净实例报 `No database selected`，**MySQL 根本恢复不了** |
+| 2 | **我的检查器在有 0 张表时"通过"了** | `0 === 0` 被判为"表数量一致" → **假通过** |
+
+第 2 条尤其值得记：根因是 MySQL 的逐表 `COUNT` **漏了 `-D <db>` 参数**，
+75 张表全部查询失败返回 0 张，而"线上 0 张 == 恢复后 0 张"让断言通过了。
+**这正是"一个总是通过的检查器比没有检查器更糟"的实例。**
+
+修法：① `mysqldump` 加 `--databases`；② `COUNT` 带 `-D`；
+③ **加"表数非 0"哨兵断言**——0 张表意味着"查询坏了"或"库是空的"，**绝不能与"一致"混为一谈**。
+
+**并做了负向验证**：把 `-D` 参数去掉、重新引入那个 bug，演练**立刻失败**：
+
+```
+✗ ghost：线上表数非 0（哨兵）  ★ 0 张表：查询失败或库为空，不能据此判定一致
+```
+
+**演练会失败，所以它可信。**
 
 ## 六、与工作区其它部分的关系
 

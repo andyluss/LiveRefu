@@ -14,3 +14,4 @@ dist/
 
 # Caddy 本地根证书（机器特定；卷重建后会变，故不入库）
 deploy/caddy/ca/
+backups/
