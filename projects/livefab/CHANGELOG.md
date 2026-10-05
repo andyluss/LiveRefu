@@ -171,6 +171,50 @@ Authelia 的防爆破对提权端点按桶限流（日志 `Rate Limit Exceeded b
 
 详见 [08](docs/08_双因素注册的前置缺口.md)。
 
+### 修复（TOTP 双因素端到端打通 —— 目标项 ③ 达标）
+
+接上一条（通知器坏了导致 2FA 从来注册不了）。本轮把整条链走完并实测通过。
+
+**卡点其实是我自己的两个问题**：
+
+1. **限流是我触发的**：Authelia 的防爆破对提权端点按桶限流，我探接口时反复发请求、
+   **每发一次就把等待重置**，所以等 7 分钟也没用。`banned_user`/`banned_ip` 表为空
+   → 是**内存限流器**，不是持久封禁。**`docker compose restart authelia` 立刻清掉。**
+2. **提交验证码是另一个端点，我一直在猜错的路径**：正解是 **`PUT`**（不是 POST）、
+   字段名是 **`otc`**（不是 code/token）：
+   `PUT /api/user/session/elevation {"otc":"…"} → 200 {"status":"OK"}`
+
+   ★ 这是**抓浏览器真实请求**抓到的。本轮这个办法用了两次（elevation 端点本身、
+   注册向导的密钥接口），**比猜路径可靠得多** —— 值得记成方法：先抓请求，再写脚本。
+
+**查明的端点清单**（可直接脚本化）：
+- `POST /api/user/session/elevation` `{"password":…}` → 发起提权（发验证码邮件）
+- `PUT  /api/user/session/elevation` `{"otc":"…"}` → **完成提权**（`elevated:true`）
+- `GET  /api/user/session/elevation` → 查提权状态
+- `GET  /api/secondfactor/totp/register` → 取可选算法/位数/周期
+- `POST /api/secondfactor/totp/register` → **开始注册，返回 `base32_secret` 与 `otpauth_url`**
+- `POST /api/secondfactor/totp` `{"token":"123456"}` → **完成第二因素登录**（升到 level 2）
+- `DELETE /api/secondfactor/totp` → 删除设备
+- `GET  /api/user/info` → 查 `has_totp` / `method`
+
+（注册设备的**完成**一步没能只靠 API 复现，走浏览器向导最省事；其余均已用 curl 跑通。）
+
+**✅ 端到端实测（这是目标项 ③ 的达标证据）**：
+
+| 步骤 | 结果 |
+| --- | --- |
+| ① `POST /api/firstfactor`（admin/devpassword） | 200，`authentication_level = 1` |
+| ② 未过第二因素访问 `/admin/` | **302 跳鉴权**（确实被挡住） |
+| ③ `POST /api/secondfactor/totp {"token":"701999"}` | 200，`authentication_level = 2` |
+| ④ 过了第二因素访问 `/admin/` | **HTTP 200**，页面「内部区」「当前级别：admin」 |
+
+③ 的验证码是用**注册时拿到的真实密钥**按 RFC 6238 本地算的。
+
+**这条链证明 `two_factor` 策略是真的在起作用**：不是"配了但没人能满足"，
+而是**没第二因素就进不去、有第二因素就进得去**。
+
+端点数与实测过程详见 [08](docs/08_双因素注册的前置缺口.md)。
+
 ## [0.3.0] - 2026-10-05 21:29
 
 ### 新增（M1：统一备份 + 真正的恢复演练）
