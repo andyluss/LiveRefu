@@ -218,6 +218,54 @@ L3 的 Authelia 选型无需调整。**至此 L1–L11 全部已裁决**（[00 �
 [research §十](docs/research/01_开源件事实核查.md) 记录了 NodeBB 的两个分发陷阱：
 Docker Hub 镜像废弃（正确在 ghcr.io）、npm 包停在 2016——**渠道与直觉不一致**。
 
+### 修复（本地访问：`.test` 域名在浏览器打不开）
+
+用户反馈"访问不了 https://app.m0.livefab.test/"。**根因找到了，而且不是我原先以为的"没配 /etc/hosts"**：
+
+> 本机开了**网络代理**，代理把这个域名解析成 **fake-IP（`198.18.0.x` 段）**，
+> 而不是 `127.0.0.1` → 请求被送去代理，永远到不了本地 Caddy。
+> （`curl` 之所以能通，是因为我用 `--resolve` 强制指到了 127.0.0.1 —— **那只是绕过问题，不是解决它**。）
+
+**修法**：本地默认域名改用 **`*.localhost`**。它由操作系统/浏览器直接解析到 `127.0.0.1`（RFC 6761），
+**不经过 DNS，因此不受代理影响**。实测对照：
+
+```
+getent hosts app.m0.livefab.test  →  198.18.0.32     ← 代理 fake-IP
+curl http://app.m0.livefab.test/  →  000（连不上）
+curl http://app.localhost/        →  308（连上了 Caddy）
+```
+
+改后实测：`app.localhost` / `auth.app.localhost` / `m0.localhost` / `forum.localhost`
+**四个地址全部 200**，运行时验收 **7/7** 仍通过。
+
+同时：导出了 Caddy 本地根证书到 `deploy/caddy/ca/root.crt`，并在 README 给出装进系统信任的命令
+（不想装就点"继续访问"，本地开发够用）。README 新增 **§五·补 本地怎么访问**，
+`.env.example` 补上说明与 localhost 默认值。
+
+### 新增（数据库统一方案：含实测内存与三个件的硬约束）
+
+用户提问"数据库是如何搞的，能否统一，给我建议让我选"。新增
+[`docs/05_数据存储统一方案.md`](docs/05_数据存储统一方案.md) 与决策点 **L12**。
+
+**现状**：三个数据库容器、两个引擎 —— `authelia-db`(PG 16, 26 MiB)、
+`nodebb-db`(PG 16, 27 MiB)、`ghost-db`(MySQL 8.4, **469 MiB**)。全套空载约 971 MiB，
+**MySQL 一家占 48%**。（数字来自 `docker stats` 实测，非官方估算。）
+
+**关键结论：无法全部统一到一个引擎**，因为三个件的数据库支持是硬约束且**互斥**：
+
+| 件 | 支持 | 依据（已核实） |
+| --- | --- | --- |
+| **Ghost** | MySQL 8 / SQLite，**不支持 PostgreSQL** | 官方变更记录 *"Dropping Support for PostgreSQL"*；镜像内只有 `mysql2`+`sqlite3` |
+| **NodeBB** | MongoDB / PostgreSQL / Redis，**不支持 MySQL** | 镜像内 `src/database/` 只有 mongo/postgres/redis |
+| **Authelia** | PG / MySQL / MariaDB / SQLite 都可 | 用真实 v4.39.28 校验 `storage.mysql` 配置通过 |
+
+→ **Ghost 与 NodeBB 的数据库集合没有交集**，只有 Authelia 能两边走。
+
+**给出五个方案与收益**（A 合并两个 PG，省约 26 MiB；B Ghost 改 SQLite，**省约 469 MiB** 但有取舍；
+C 保持现状；D 全放 MySQL **不可行**；E 调小 MySQL 内存，需实测）。
+**我的建议是 A + E**：A 稳、E 可逆，而 B 会改变 Ghost 存储形态并牵动备份策略，
+应等确需省那 469 MiB 时再决定。**等用户裁决**。
+
 ### 备注
 
 - 本阶段**未创建任何实现代码**（无 compose、无配置），符合"先写方案让我决策"的要求；

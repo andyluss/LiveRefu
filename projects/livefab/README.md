@@ -156,6 +156,73 @@ NodeBB 在反代后必须开 `trust_proxy`，否则**用户 IP 记成反代容�
 | 生产域名下的 ACME 证书 | 本地用了内网 CA；真实域名未测 |
 | 备份/恢复 | M1 范围 |
 
+## 五·补、本地怎么访问（**踩过的坑**）
+
+### 5.5.1 为什么 `.test` 域名在浏览器里打不开
+
+M0 最初用的域名是 `app.m0.livefab.test`。**curl 能通、浏览器打不开**——原因是：
+
+> 本机开了**网络代理**，代理把这些域名解析成了 **fake-IP（`198.18.0.x` 段）**，
+> 而不是 `127.0.0.1`。于是请求被送去代理，永远到不了本地 Caddy。
+> （`curl` 之所以能通，是因为我用 `--resolve` 强制指到了 127.0.0.1——**这只是绕过了问题，没解决它**。）
+
+实测对照：
+
+```
+getent hosts app.m0.livefab.test  →  198.18.0.32      ← 代理 fake-IP，连不上
+curl http://app.m0.livefab.test/  →  000（连不上）
+curl http://app.localhost/        →  308（连上了 Caddy）← *.localhost 不经过 DNS
+```
+
+### 5.5.2 解法：用 `*.localhost` 域名
+
+**`*.localhost` 由操作系统/浏览器直接解析到 `127.0.0.1`**（RFC 6761），
+**不经过 DNS，所以不受代理影响**。已把本地默认域名改为：
+
+| 用途 | 地址 |
+| --- | --- |
+| 门户 | **https://app.localhost** |
+| 鉴权门户 | **https://auth.app.localhost** |
+| 前台（Ghost） | **https://m0.localhost** |
+| 论坛（NodeBB） | **https://forum.localhost** |
+
+生产环境把 `.env` 里的三个 `*_DOMAIN` 换成真实域名即可（并把 `LIVEFAB_LOCAL_CERTS` 留空）。
+
+### 5.5.3 证书警告怎么办
+
+本地证书由 **Caddy 的本地 CA** 签发，浏览器默认不信任，会显示"不安全"。
+两个选择：
+
+**① 直接点"继续访问"**（最省事；本地开发够用）。
+
+**② 把 Caddy 根证书装进系统信任**（一次操作，之后不再警告）：
+
+```bash
+# ① 先从 Caddy 容器里导出根证书（该文件不入库——它机器特定、卷重建后会变）
+mkdir -p deploy/caddy/ca
+docker cp livefab-caddy-1:/data/caddy/pki/authorities/local/root.crt deploy/caddy/ca/root.crt
+
+# ② 装进系统信任
+sudo security add-trusted-cert -d -r trustRoot \
+  -k /Library/Keychains/System.keychain \
+  deploy/caddy/ca/root.crt
+```
+
+> 该证书是 **Caddy Local Authority**，**只对你的本机有效**（私钥在 Caddy 数据卷里）。
+> 若换机器或清空 `caddy_data` 卷，需要重新导出并信任。
+
+### 5.5.4 `.env` 里的域名是可换的
+
+| 变量 | 本地开发 | 生产 |
+| --- | --- | --- |
+| `LIVEFAB_PORTAL_DOMAIN` | `app.localhost` | 真实域名 |
+| `LIVEFAB_DOMAIN` | `m0.localhost` | 真实域名 |
+| `LIVEFAB_FORUM_DOMAIN` | `forum.localhost` | 真实域名 |
+| `LIVEFAB_LOCAL_CERTS` | `local_certs` | **留空**（走 ACME） |
+
+改完域名后需 `docker compose ... up -d --force-recreate`（域名在启动时渲染进 Authelia 配置，
+不会自动热更新——见 [§5.3](#53--真启动才发现的-8-个问题全部已修) 第 3 条）。
+
 ## 六、与工作区其它部分的关系
 
 - **是底座，不是产品**：主线游戏（[`../mainline/`](../mainline/README.md)、[`../future-debris/`](../future-debris/README.md)）
