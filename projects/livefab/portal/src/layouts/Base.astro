@@ -1,0 +1,104 @@
+---
+// LiveFab 门户 · 公共外壳
+//
+// 设计语言刻意复用《未来档案》的原子时代配色与对比度纪律（L9：复用纪律不复用内容）。
+// 颜色取自已验证过 WCAG AA 的那套 token，避免在这里重新发明一套。
+interface Props {
+  title: string
+  /** 已登录身份；未登录为 null */
+  identity?: { user: string; name: string; email: string; groups: string[] } | null
+  level: string
+}
+const { title, identity, level } = Astro.props
+const LEVEL_LABEL: Record<string, string> = {
+  public: '公开访客',
+  registered: '注册用户',
+  collaborator: '协作者',
+  core: '核心成员',
+  admin: '管理员',
+}
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title} · LiveFab</title>
+  <style is:global>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f14;
+      --bg-elev: #111823;
+      --bg-elev-2: #161d26;
+      --line: #24303f;
+      --line-strong: #66727f;
+      --text: #dbe4ee;
+      --text-dim: #a9b6c6;
+      --text-faint: #808d9f;
+      --teal: #4fb3a6;
+      --teal-bright: #57d8c8;
+      --amber: #d9a441;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font: 16px/1.7 ui-sans-serif, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    a { color: var(--teal-bright); }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--teal-bright); outline-offset: 2px; border-radius: 3px;
+    }
+    .wrap { max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    header.top {
+      border-bottom: 1px solid var(--line); padding-bottom: 1.1rem; margin-bottom: 2rem;
+      display: flex; flex-wrap: wrap; gap: .8rem; align-items: baseline; justify-content: space-between;
+    }
+    .brand { font-size: 1.3rem; font-weight: 600; color: var(--text); margin: 0; letter-spacing: .01em; }
+    .brand span { color: var(--teal); }
+    .who { font-size: .86rem; color: var(--text-dim); }
+    .badge {
+      display: inline-block; border: 1px solid var(--line-strong); border-radius: 999px;
+      padding: .05rem .55rem; font-size: .74rem; color: var(--text-dim); margin-left: .4rem;
+    }
+    .badge--admin { border-color: var(--amber); color: var(--amber); }
+    .badge--core { border-color: var(--teal); color: var(--teal-bright); }
+    h2 { font-size: 1.02rem; margin: 2.2rem 0 .8rem; color: var(--text); }
+    ul.svc { list-style: none; padding: 0; margin: 0; display: grid; gap: .7rem; }
+    ul.svc li {
+      border: 1px solid var(--line); border-radius: 8px; background: var(--bg-elev);
+      padding: .85rem 1.05rem;
+    }
+    ul.svc li.is-planned { opacity: .72; }
+    .svc-name { font-weight: 600; color: var(--text); }
+    .svc-what { color: var(--text-dim); font-size: .9rem; margin: .15rem 0 .3rem; }
+    .svc-guard { color: var(--text-faint); font-size: .82rem; }
+    .svc-guard b { color: var(--amber); font-weight: 600; }
+    .note {
+      border-left: 2px solid var(--line); padding-left: .9rem; color: var(--text-faint);
+      font-size: .85rem; margin-top: 2rem;
+    }
+    .cta { display: inline-block; border: 1px solid var(--teal); color: var(--teal-bright);
+           border-radius: 6px; padding: .4rem .9rem; text-decoration: none; font-size: .9rem; }
+    .kv { color: var(--text-dim); font-size: .9rem; }
+    .kv code { background: var(--bg-elev-2); padding: .08rem .4rem; border-radius: 4px; color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <h1 class="brand">Live<span>Fab</span></h1>
+      {identity ? (
+        <div class="who">
+          已登录：<strong>{identity.name || identity.user}</strong>
+          <span class={`badge ${level === 'admin' ? 'badge--admin' : level === 'core' ? 'badge--core' : ''}`}>
+            {LEVEL_LABEL[level] ?? level}
+          </span>
+        </div>
+      ) : (
+        <div class="who">未登录 <span class="badge">公开访客</span></div>
+      )}
+    </header>
+    <slot />
+  </div>
+</body>
+</html>

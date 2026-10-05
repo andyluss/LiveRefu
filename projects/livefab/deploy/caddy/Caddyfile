@@ -29,7 +29,8 @@
 			uri /api/verify?rd=https://auth.{$LIVEFAB_PORTAL_DOMAIN}
 			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
 		}
-		respond "LiveFab 内部区（M1 起接入看板/文档/密钥）" 200
+		# 反代到真门户；forward_auth 已把身份注入为请求头
+		reverse_proxy portal:4321
 	}
 
 	# 个人区：挡登录
@@ -38,12 +39,12 @@
 			uri /api/verify?rd=https://auth.{$LIVEFAB_PORTAL_DOMAIN}
 			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
 		}
-		respond "LiveFab 个人区（M1 起展示我的工单/议题）" 200
+		reverse_proxy portal:4321
 	}
 
 	# ★ 公开区：**不经过 forward_auth**——这是分层的关键
 	handle {
-		reverse_proxy portal:80
+		reverse_proxy portal:4321
 	}
 }
 

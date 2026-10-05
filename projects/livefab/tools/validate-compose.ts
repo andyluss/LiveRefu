@@ -38,7 +38,12 @@ const COMPOSE = 'deploy/compose.yml'
 const CADDY = 'deploy/caddy/Caddyfile'
 const AUTHELIA = 'deploy/authelia/configuration.template.yml'
 
-for (const f of [COMPOSE, CADDY, AUTHELIA, 'deploy/authelia/users.yml', 'deploy/portal/index.html', '.env.example']) {
+for (const f of [
+  COMPOSE, CADDY, AUTHELIA, 'deploy/authelia/users.yml', '.env.example',
+  // 门户是**唯一自研件**（L11）：真 Astro SSR 应用，不再是静态占位页
+  'portal/Dockerfile', 'portal/package.json', 'portal/astro.config.mjs',
+  'portal/src/pages/index.astro', 'portal/src/pages/account/index.astro', 'portal/src/pages/admin/index.astro',
+]) {
   check(`文件存在：${f}`, existsSync(join(ROOT, f)))
 }
 if (results.some(r => !r.ok)) {
@@ -62,15 +67,17 @@ if (SELFTEST) {
     ['内部件不应发布端口', '给 ghost 加 ports', 'compose', s => s.replace(
       '  ghost:\n    image: ghost:5-alpine\n    restart: unless-stopped',
       '  ghost:\n    image: ghost:5-alpine\n    restart: unless-stopped\n    ports:\n      - "2368:2368"')],
-    ['公开区不应被 forward_auth 挡', '给公开区 handle 加 forward_auth', 'caddy', s => s.replace(
-      '\t# ★ 公开区：**不经过 forward_auth**——这是分层的关键\n\thandle {\n\t\treverse_proxy portal:80\n\t}',
-      '\thandle {\n\t\tforward_auth authelia:9091 {\n\t\t\turi /api/verify\n\t\t}\n\t\treverse_proxy portal:80\n\t}')],
     ['只应有一个 PostgreSQL 实例', '再加一个 postgres 实例', 'compose', s => s.replace(
       '  db:\n    image: postgres:16-alpine',
       '  db2:\n    image: postgres:16-alpine\n    environment:\n      POSTGRES_DB: x\n      POSTGRES_USER: x\n      POSTGRES_PASSWORD: x\n    networks:\n      - internal\n\n  db:\n    image: postgres:16-alpine')],
     ['未压小 innodb_buffer_pool_size', '错误地压小 buffer pool', 'compose', s => s.replace(
       '      - --performance-schema=OFF',
       '      - --performance-schema=OFF\n      - --innodb-buffer-pool-size=32M')],
+    // ⚠️ 用正则匹配**稳定特征**（缩进的 `handle {` + 紧跟 `reverse_proxy portal:`），
+    //    不要写死端口/整段文本——已因此失效三次（portal:80 → portal:4321 就断了一次）。
+    ['公开区不应被 forward_auth 挡', '给公开区 handle 加 forward_auth', 'caddy',
+      s => s.replace(/\n\thandle \{\n\t\treverse_proxy portal:/,
+        '\n\thandle {\n\t\tforward_auth authelia:9091 {\n\t\t\turi /api/verify\n\t\t}\n\t\treverse_proxy portal:')],
     ['Authelia 公开路径应 bypass', '把 bypass 改成 two_factor', 'authelia', s => s.replace(
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: bypass",
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: two_factor")],
@@ -183,6 +190,20 @@ function runComposeChecks(text: string) {
   check('未压小 innodb_buffer_pool_size', !/--innodb-buffer-pool-size/.test(text),
     '它是真实性能关键，不属于"白省的内存"')
 
+  // ── 门户（唯一自研件，L11）不变量 ───────────────────────────────
+
+  // 13) 门户必须是**构建**出来的（真 Astro 应用），不是一个静态镜像
+  check('门户经构建产出（非静态镜像）', /portal:[\s\S]{0,400}?build:/.test(text),
+    'Astro SSR 应用需要构建步骤')
+
+  // 14) ★ 门户必须**服务端渲染**才能读身份头——所以不能是纯静态托管
+  check('门户不发布端口（只在网关后）', !/portal:[\s\S]{0,600}?\n    ports:/.test(text),
+    '公开身份头由 Caddy 注入，门户若直接暴露则可被伪造')
+
+  // 15) 构建上下文必须相对 compose 文件目录（deploy/）——写成 ./portal 会变成 deploy/portal
+  check('门户构建上下文路径正确', /context:\s*\.\.\/portal/.test(text),
+    'compose 的相对路径以 compose 文件所在目录为基准')
+
   return services
 }
 runComposeChecks(composeText)
@@ -204,7 +225,7 @@ function runCaddyChecks(text: string) {
     publicBlock ? '公开区直接反代门户（分层正确）' : '未找到公开区兜底 handle')
 
   // 4) 反代目标必须指向 compose 里的服务名
-  for (const [svc, target] of [['portal', 'portal:80'], ['authelia', 'authelia:9091'], ['ghost', 'ghost:2368'], ['nodebb', 'nodebb:4567']] as const) {
+  for (const [svc, target] of [['portal', 'portal:4321'], ['authelia', 'authelia:9091'], ['ghost', 'ghost:2368'], ['nodebb', 'nodebb:4567']] as const) {
     check(`反代指向 ${target}`, text.includes(`reverse_proxy ${target}`), `对应服务 ${svc}`)
   }
 }

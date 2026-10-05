@@ -1,0 +1,50 @@
+---
+// LiveFab 门户 · 内部区（受保护：Authelia two_factor + livefab 组）
+//
+// 与个人中心的差别：这里**要求双因素且限定组**（见 Caddyfile 与 Authelia 规则）。
+// 能到这页说明用户既登录了、又完成了 2FA、还在允许的组里。
+import Base from '../../layouts/Base.astro'
+import { SERVICES, levelOf, atLeast } from '../../data/services'
+import { readIdentity } from '../../lib/identity'
+import { readHosts } from '../../lib/hosts'
+
+const identity = readIdentity(Astro.request.headers)
+const level = levelOf(identity?.groups ?? [], Boolean(identity))
+const hosts = readHosts()
+const internal = SERVICES.filter(s => atLeast(level, s.minLevel) && s.minLevel !== 'public')
+---
+<Base title="内部区" identity={identity} level={level}>
+  {identity ? (
+    <>
+      <h2>内部区</h2>
+      <p class="kv">
+        你已通过<b>双因素</b>认证，且属于允许进入内部的组。
+        当前级别：<b>{level}</b>。
+      </p>
+      <ul class="svc">
+        {internal.map(s => (
+          <li class={s.status === 'planned' ? 'is-planned' : ''}>
+            <div class="svc-name">
+              <a href={s.url(hosts)}>{s.name}</a>
+              {s.status === 'planned' && <span class="badge">规划中</span>}
+            </div>
+            <div class="svc-what">{s.what}</div>
+            <div class="svc-guard">防护：{s.guard}</div>
+          </li>
+        ))}
+      </ul>
+      <p class="note">
+        M2 起在这里接入看板、文档、密钥等内部件。
+        分级信息管理（L4 的"信息层"）届时也落在这里：<b>光有分组不够，内容自身还要标密级</b>。
+      </p>
+    </>
+  ) : (
+    <>
+      <h2>未能识别身份</h2>
+      <p class="kv">
+        内部区应当只在通过双因素鉴权后才可达，但请求里没有身份头——
+        <b>这是配置故障</b>，不是"未登录"。
+      </p>
+    </>
+  )}
+</Base>

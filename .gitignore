@@ -17,3 +17,6 @@ __pycache__/
 indie/dsh-pet-refu/
 indie/live-rpg/
 indie/live-calculator/
+
+# 包管理器临时目录（沙箱下 bun 会用到）
+.tmp/

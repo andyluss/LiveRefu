@@ -165,20 +165,29 @@ services:
     networks:
       - internal
 
-  # ── 门户占位：M0 只需要它"能起来、能被反代、能显示登录状态"──
-  # 真正的门户用 Astro 写（L5c），M1 再做。
+  # ── 门户：唯一自研件（L11）──────────────────────────────────────
+  # 真 Astro SSR 应用：**必须服务端渲染**，因为要读 Caddy 注入的身份头。
+  # 镜像内构建（本机沙箱禁止包管理器写临时目录，且镜像内构建才可复现）。
   portal:
-    image: nginx:1.27-alpine
+    build:
+      # ★ 相对路径以**本 compose 文件所在目录**（deploy/）为基准，不是执行目录。
+      #   写成 ./portal 会变成 deploy/portal（不存在）——这个坑在 M0 已经踩过一次。
+      context: ../portal
     restart: unless-stopped
-    volumes:
-      - ./portal:/usr/share/nginx/html:ro
+    environment:
+      # 各件主机名由 env 注入，代码不硬编码 → 本地 *.localhost 与生产真实域名只差一份 env
+      PORTAL_HOST: ${LIVEFAB_PORTAL_DOMAIN:?}
+      AUTH_HOST: auth.${LIVEFAB_PORTAL_DOMAIN:?}
+      GHOST_HOST: ${LIVEFAB_DOMAIN:?}
+      FORUM_HOST: ${LIVEFAB_FORUM_DOMAIN:?}
     networks:
       - internal
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost/ >/dev/null || exit 1"]
+      # Astro 的 standalone 服务在 / 上返回 200
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4321/ >/dev/null || exit 1"]
       interval: 15s
       timeout: 5s
-      retries: 3
+      retries: 5
 
   # ── 前台件：Ghost（L5 已定）─────────────────────────────────────
   ghost:

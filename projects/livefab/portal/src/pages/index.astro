@@ -1,0 +1,50 @@
+---
+// LiveFab 门户 · 公开首页
+//
+// ★ 这一页**不经过 forward_auth**（见 deploy/caddy/Caddyfile）——
+//   这是 docs/01 §5.3 的硬要求：公开区不得被登录墙挡住。
+//   所以这里读不到身份头是正常的；能读到才说明路径配错了。
+import Base from '../layouts/Base.astro'
+import { SERVICES, levelOf, atLeast } from '../data/services'
+import { readIdentity } from '../lib/identity'
+import { readHosts } from '../lib/hosts'
+
+const identity = readIdentity(Astro.request.headers)
+const level = levelOf(identity?.groups ?? [], Boolean(identity))
+const hosts = readHosts()
+
+// 公开首页只列"公开可见"的件。其余要靠登录后在 /account/ 里看。
+const visible = SERVICES.filter(s => s.minLevel === 'public')
+const hiddenCount = SERVICES.length - visible.length
+---
+<Base title="工作室底座" identity={identity} level={level}>
+  <p class="kv">
+    LiveFab 是工作室的运转底座：对外是门面与柜台，对内是车间与档案室。
+    所有件共用一套账号（Authelia 统一身份）。
+  </p>
+
+  <h2>公开可访问</h2>
+  <ul class="svc">
+    {visible.map(s => (
+      <li>
+        <div class="svc-name"><a href={s.url(hosts)}>{s.name}</a></div>
+        <div class="svc-what">{s.what}</div>
+        <div class="svc-guard">防护：{s.guard}</div>
+      </li>
+    ))}
+  </ul>
+
+  {identity ? (
+    <p style="margin-top:1.6rem"><a class="cta" href={`https://${hosts.portal}/account/`}>进入个人中心</a></p>
+  ) : (
+    <p style="margin-top:1.6rem">
+      <a class="cta" href={`https://${hosts.auth}/?rd=https://${hosts.portal}/account/`}>登录</a>
+      <span class="kv" style="margin-left:.8rem">还有 {hiddenCount} 个件登录后可见</span>
+    </p>
+  )}
+
+  <p class="note">
+    ⚠️ 本页是<b>公开区</b>，刻意不经过登录墙——任何人都能看。<br />
+    登录后才可见的件列在个人中心，按你的分组显示。
+  </p>
+</Base>

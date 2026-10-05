@@ -1,0 +1,85 @@
+---
+// LiveFab 门户 · 个人中心（受保护：Authelia one_factor）
+//
+// 这一页**只会在经过 forward_auth 之后被访问**（见 Caddyfile），
+// 所以正常情况下一定能读到身份头。读不到就是配置出了问题——**要显式报错，不能静默降级**。
+import Base from '../../layouts/Base.astro'
+import { SERVICES, levelOf, atLeast } from '../../data/services'
+import { readIdentity } from '../../lib/identity'
+import { readHosts } from '../../lib/hosts'
+
+const identity = readIdentity(Astro.request.headers)
+const level = levelOf(identity?.groups ?? [], Boolean(identity))
+const hosts = readHosts()
+
+// 按级别过滤：这是 L4 在门户层的落地
+const visible = SERVICES.filter(s => atLeast(level, s.minLevel))
+const withheld = SERVICES.filter(s => !atLeast(level, s.minLevel))
+---
+<Base title="个人中心" identity={identity} level={level}>
+  {identity ? (
+    <>
+      <h2>我的身份</h2>
+      <ul class="svc">
+        <li>
+          <div class="svc-name">{identity.name || identity.user}</div>
+          <div class="kv">账号：<code>{identity.user}</code></div>
+          {identity.email && <div class="kv">邮箱：<code>{identity.email}</code></div>}
+          <div class="kv">
+            分组：{identity.groups.length
+              ? identity.groups.join('、')
+              : '（未加入任何分组 → 仅为注册用户）'}
+          </div>
+        </li>
+      </ul>
+
+      <h2>你可以进入的件（{visible.length}）</h2>
+      <ul class="svc">
+        {visible.map(s => (
+          <li class={s.status === 'planned' ? 'is-planned' : ''}>
+            <div class="svc-name">
+              <a href={s.url(hosts)}>{s.name}</a>
+              {s.status === 'planned' && <span class="badge">规划中</span>}
+            </div>
+            <div class="svc-what">{s.what}</div>
+            <div class="svc-guard">防护：{s.guard}</div>
+          </li>
+        ))}
+      </ul>
+
+      {withheld.length > 0 && (
+        <>
+          <h2>需要更高权限（{withheld.length}）</h2>
+          <ul class="svc">
+            {withheld.map(s => (
+              <li class="is-planned">
+                <div class="svc-name">{s.name}</div>
+                <div class="svc-what">{s.what}</div>
+                <div class="svc-guard">
+                  需要 <b>{s.minLevel}</b> 级；你当前是 <b>{level}</b> 级
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      <p class="note">
+        列的"级别"只决定<b>门户里显不显示入口</b>；真正拦不拦得住由网关的 Authelia 规则决定。
+        两者必须一致——否则就是"看得见但进不去"或"看不见却进得去"。
+      </p>
+    </>
+  ) : (
+    <>
+      <h2>未能识别身份</h2>
+      <p class="kv">
+        这一页应当<b>只在通过网关鉴权后</b>才被访问，但请求里没有身份头。
+        这说明 Caddy 的 <code>forward_auth</code> 或 <code>copy_headers</code> 配置有问题，
+        <b>属于配置故障，不是"未登录"</b>。
+      </p>
+      <p class="note">
+        刻意不做静默降级：若这里假装成"请先登录"，就会把一个配置错误伪装成正常流程。
+      </p>
+    </>
+  )}
+</Base>

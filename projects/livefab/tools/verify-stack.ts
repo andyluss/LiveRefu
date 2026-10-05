@@ -109,6 +109,75 @@ const stillInstaller = /web\s*installer/i.test(forum.body)
 check('NodeBB 已过安装器', forum.status === 200 && !stillInstaller,
   stillInstaller ? '仍是 web 安装器（config.json 未生效）' : `→ ${forum.status}，${forum.body.length} 字节`)
 
+// ── ③·补 门户与分级权限（M1 验收：显示已登录身份 + 可进入的件列表）──────
+// 这一节要证明的不只是"门户能打开"，而是**身份真的被识别、级别真的在过滤**。
+// 所以它真的走一遍登录（Authelia 的 firstfactor API）拿会话，再带 cookie 请求。
+
+/** 走一遍 Authelia 登录，返回会话 cookie（`one_factor` 只需密码） */
+async function login(user: string, password: string): Promise<string> {
+  const p = Bun.spawn([
+    'curl', '-sk', '-D', '-', '--max-time', '20',
+    '-X', 'POST', `https://${AUTH}/api/firstfactor`,
+    '-H', 'Content-Type: application/json',
+    '-d', JSON.stringify({ username: user, password, targetURL: `https://${PORTAL}/account/` }),
+    '-o', '/dev/null',
+  ], { stdout: 'pipe', stderr: 'ignore' })
+  const head = await new Response(p.stdout).text()
+  await p.exited
+  return head.match(/^set-cookie:\s*([^;]+)/im)?.[1]?.trim() ?? ''
+}
+
+/** 带会话请求。⚠️ 用临时文件收 body，不用 `-o /dev/stdout`——后者在 Bun.spawn 下不可靠
+ *  （早先 probe() 就因此让所有状态码变成 0；这里同一个坑又踩了一次）。 */
+async function probeWithCookie(host: string, path: string, cookie: string) {
+  const dir = (await Bun.$`mktemp -d`.text()).trim()
+  try {
+    const p = Bun.spawn([
+      'curl', '-sk', '--max-time', '20',
+      '--resolve', `${host}:443:127.0.0.1`,
+      '-H', `Cookie: ${cookie}`,
+      '-o', `${dir}/b`, '-w', '%{http_code}',
+      `https://${host}${path}`,
+    ], { stdout: 'pipe', stderr: 'ignore' })
+    const status = Number((await new Response(p.stdout).text()).trim()) || 0
+    await p.exited
+    const body = await Bun.file(`${dir}/b`).text().catch(() => '')
+    return { status, body }
+  } finally {
+    await Bun.$`rm -rf ${dir}`.quiet().nothrow()
+  }
+}
+
+// 门户是 Astro SSR（不是 M0 的静态占位页）——用"有没有真渲染身份区块"来区分
+const pub2 = await probe(PORTAL, '/')
+check('门户是 Astro SSR（非静态占位）', pub2.body.includes('公开可访问') && pub2.body.includes('LiveFab'),
+  `${pub2.body.length} 字节`)
+check('公开区不含身份信息', !pub2.body.includes('已登录：'), '未登录访问不应出现身份')
+
+const adminCookie = await login('admin', 'devpassword')
+check('管理员登录成功', Boolean(adminCookie), adminCookie ? '已取得会话 cookie' : '未取到 cookie')
+
+if (adminCookie) {
+  const acct = await probeWithCookie(PORTAL, '/account/', adminCookie)
+  check('个人区带会话可访问', acct.status === 200, `HTTP ${acct.status}`)
+  check('门户显示已登录身份', acct.body.includes('我的身份') && acct.body.includes('livefab-admin'),
+    '渲染出身份与分组')
+  const adminCount = Number(acct.body.match(/你可以进入的件（(\d+)）/)?.[1] ?? -1)
+  check('管理员可见件数 > 0', adminCount > 0, `${adminCount} 个`)
+
+  const collabCookie = await login('collaborator', 'devcollab')
+  const cAcct = collabCookie ? await probeWithCookie(PORTAL, '/account/', collabCookie) : { status: 0, body: '' }
+  const collabCount = Number(cAcct.body.match(/你可以进入的件（(\d+)）/)?.[1] ?? -1)
+  check('协作者登录并可访问个人区', cAcct.status === 200 && collabCount > 0,
+    `HTTP ${cAcct.status}，可见 ${collabCount} 个`)
+
+  // ★ 核心：级别真的在过滤（不是所有人看到同一份列表）
+  check('分级生效：协作者可见件少于管理员', collabCount > 0 && adminCount > collabCount,
+    `管理员 ${adminCount} vs 协作者 ${collabCount}`)
+  check('分级生效：协作者被扣留内部区', cAcct.body.includes('需要更高权限') && cAcct.body.includes('内部区'),
+    '内部区（需 core）对协作者不可见')
+}
+
 // ── ④ 负向自检 ──────────────────────────────────────────────────────
 // ⚠️ 这里**直接测断言逻辑**，而不是去请求真实站点。
 //    早先版本写的是"用真实请求模拟破坏"，但那两个探针并没有真的破坏任何东西
@@ -138,6 +207,16 @@ if (SELFTEST) {
       '鉴权门户自身可达',
       r => r.status === 200,
       { status: 0, location: '', body: '' },                            // 端口不通
+    ],
+    [
+      '门户显示已登录身份',
+      r => r.body.includes('我的身份') && r.body.includes('livefab-admin'),
+      { status: 200, location: '', body: '<h2>未能识别身份</h2>' },      // 身份头没注入
+    ],
+    [
+      '分级生效：协作者可见件少于管理员',
+      r => (Number(r.body.match(/你可以进入的件（(\d+)）/)?.[1] ?? -1)) > 0,
+      { status: 200, location: '', body: '你可以进入的件（0）' },         // 过滤把所有人都挡了
     ],
   ]
 
