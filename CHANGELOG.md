@@ -7,6 +7,10 @@
 
 ## [未发布]
 
+### 新增
+- **pre-commit 钩子新增第 6 步：LiveFab 变更日志格式与版本-标签一致性校验**。暂存涉及 `projects/livefab/CHANGELOG.md` 时触发，交 `projects/livefab/tools/check-changelog.ts`（该脚本刻意只用 node 内置模块，以便被钩子用 `node --experimental-strip-types` 直接跑——Bun 专有的 `import.meta.dir` / `Bun.spawnSync` 已替换为 `import.meta.dirname` / `execFileSync`）。校验 9 项，其中最值钱的一条是**版本号与 git tag 对得上**：若存在 `livefab-v<版本>` 标签，版本头时间必须等于该标签指向提交的时间——**其余几条只保证"格式自洽"，这条保证"内容不假"**。已做负向验证：把 `0.3.0` 的时间谎报 30 分钟，校验精确报出 `livefab-v0.3.0: 文档 2026-10-05 21:59 ≠ git 2026-10-05 21:29`。
+
+
 ### 修复
 - **主线项目：给缓解类机制补上"能转化为输出"的路径（八道闸门全绿，40 项断言）**：
   - **原判断只对了一半**：此前记为"`cleans`/`avoids` 的机制是缓解污染、天然更弱"。真正的原因是**它们的收益无法转化为输出**——电力给得再多，塔位只有 8 个，**铺满之后花不出去**。实测证据：`avoids` 的电力并不少，输出却始终垫底。

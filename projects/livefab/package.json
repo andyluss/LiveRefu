@@ -1,5 +1,6 @@
 {
   "name": "livefab",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "LiveFab · 前店后厂的在线工作室底座（M0 骨架）",
@@ -11,6 +12,8 @@
     "backup": "bun run tools/backup.ts",
     "verify:backup": "bun run tools/verify-backup.ts",
     "verify:backup:selftest": "bun run tools/verify-backup.ts --selftest",
+    "check:changelog": "bun run tools/check-changelog.ts",
+    "check:changelog:selftest": "bun run tools/check-changelog.ts --selftest",
     "up": "docker compose -f deploy/compose.yml --env-file .env up -d",
     "down": "docker compose -f deploy/compose.yml --env-file .env down",
     "logs": "docker compose -f deploy/compose.yml --env-file .env logs -f --tail=50",
