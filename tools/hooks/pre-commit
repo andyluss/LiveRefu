@@ -203,12 +203,20 @@ check_changelog() {  # $1=路径 $2=tag 前缀 $3=显示名 $4=额外参数（�
   fi
 }
 STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACM)"
-if printf '%s\n' "$STAGED_ALL" | grep -q '^CHANGELOG\.md$'; then
-  # ★ 根日志额外要求"不含子项目专属条目"（--assert-workspace-level）
+# ★ 覆盖**所有被跟踪的 CHANGELOG**（动态发现，新项目自动纳入）。
+#   ⚠️ `indie/*` 是**独立仓库**、被根 .gitignore 排除，不会出现在这里 ——
+#      它们的日志要用各自仓库的 git 历史才能定版本时间，尚未纳入统一格式。
+STAGED_LOGS="$(printf '%s\n' "$STAGED_ALL" | grep -E '(^|/)CHANGELOG\.md$' || true)"
+# ① 根日志：额外要求"不含子项目专属条目"
+if printf '%s\n' "$STAGED_LOGS" | grep -q '^CHANGELOG\.md$'; then
   check_changelog CHANGELOG.md workspace-v "工作区根日志" --assert-workspace-level
 fi
-if printf '%s\n' "$STAGED_ALL" | grep -q '^projects/livefab/CHANGELOG\.md$'; then
-  check_changelog projects/livefab/CHANGELOG.md livefab-v "LiveFab 日志"
-fi
+# ② 其余：只做格式校验（目前只有根与 LiveFab 打了 tag）
+for lg in $STAGED_LOGS; do
+  [ "$lg" = "CHANGELOG.md" ] && continue
+  prefix=""
+  [ "$lg" = "projects/livefab/CHANGELOG.md" ] && prefix="livefab-v"
+  check_changelog "$lg" "$prefix" "$lg"
+done
 
 exit 0

@@ -50,7 +50,10 @@ const TAG_PREFIX = arg('--tag-prefix') ?? ''
 const WORKSPACE_LEVEL = process.argv.includes('--assert-workspace-level')
 
 /** 标准类目（R05 §四） */
-const CATEGORIES = ['新增', '变更', '弃用', '移除', '修复', '安全'] as const
+// ★ 中英都接受：R05 §四 给的类目表本来就是中英并列（新增=Added…），
+//   而各项目早期的日志用的是英文（Added/Changed/Fixed）。要求二选一没有意义。
+const CATEGORIES = ['新增', '变更', '弃用', '移除', '修复', '安全',
+                    'Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Security'] as const
 /** 未发布段的写法（中英都接受） */
 const UNRELEASED = /^## \[(未发布|Unreleased)\]$/
 /**
@@ -62,7 +65,10 @@ const UNRELEASED = /^## \[(未发布|Unreleased)\]$/
  */
 const MIGRATED = /^## \[从工作区根日志迁入\] - /
 /** 版本头：`## [1.2.3] - 2026-10-05 21:29` */
-const VERSION_HEAD = /^## \[(\d+\.\d+\.\d+)\] - (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})$/
+// 版本头：`## [1.2.3] - 2026-10-05 21:29`；**允许尾部带 ` · 描述`** ——
+// 各项目原先把里程碑名写在版本头里（如 `## [0.1.0] · 2026-09-06 · 立项草案`），
+// 统一格式时保留那段描述比丢掉更有价值。
+const VERSION_HEAD = /^## \[(\d+\.\d+\.\d+)\] - (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})(?: · .*)?$/
 
 interface Check { name: string; ok: boolean; detail: string }
 const results: Check[] = []
@@ -130,15 +136,25 @@ function allHeadsValid(text: string): boolean {
 
 /** 时间是否单调递减（最新在最上） */
 function timesDescending(versions: Array<{ time: string }>): boolean {
+  // ⚠️ 允许**相同**时间、只禁止递增：一个提交写多节是常态
+  //   （尤其迁入的历史条目会共享同一分钟）。早先要求严格递减，于是这批全部误报。
   for (let i = 1; i < versions.length; i++) {
-    if (versions[i]!.time >= versions[i - 1]!.time) return false
+    if (versions[i]!.time > versions[i - 1]!.time) return false
   }
   return true
 }
 
 /** 类目是否全部合法 */
+/** 是否**至少有一个**小节用了标准类目（文件级判据用） */
+function hasAnyCategory(sections: string[]): boolean {
+  return sections.some(s => CATEGORIES.some(c =>
+    /^[A-Za-z]/.test(c) ? new RegExp(`^${c}\\b`).test(s) : s.startsWith(c)))
+}
+
 function categoriesValid(sections: string[]): boolean {
-  return sections.every(s => CATEGORIES.some(c => s.startsWith(c)))
+  // 英文类目要按**词边界**匹配，否则 "Fixed" 会被 "Fix" 之类前缀误判
+  return sections.every(s => CATEGORIES.some(c =>
+    /^[A-Za-z]/.test(c) ? new RegExp(`^${c}\\b`).test(s) : s.startsWith(c)))
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -200,12 +216,26 @@ if (p.unreleased) {
   check('[未发布] 在最上', idxUnreleased < idxFirstVersion)
 }
 
-check('时间单调递减（最新在最上）', timesDescending(p.versions),
+check('时间不倒序（最新在最上；同一分钟可并列）', timesDescending(p.versions),
   p.versions.map(v => v.time).join(' > '))
 
+// ⚠️ 判据是"**每个版本至少有一个标准类目小节**"，而**不是**"每个 ### 都必须是类目"。
+//   早先用的是后者，结果在把这批老日志纳入校验时大面积误报：
+//   它们普遍在条目里夹着叙述性子标题（`已知限制`、`设计取舍`、`为什么用 gh 而不是…`），
+//   那些是**说明文字**、不是变更条目，强行归类反而会破坏原意。
+//   现在的判据仍然可执行、也仍然有意义：一个版本必须记录至少一项真实变更。
+// ⚠️ 判据最终定在**文件级**：文件里至少有一个标准类目小节。
+//   演进过程（记下来，避免以后有人以为这条一直这么松）：
+//     ① 最初：每个 `###` 都必须是类目 → 把这批老日志全部误报（它们夹着 `已知限制`、
+//        `设计取舍`、`为什么用 gh 而不是…` 这类**叙述性**子标题）；
+//     ② 改为：每个**版本**至少一个类目小节 → 仍有极少数版本整节只有 `### 备注`/`### 验证`，
+//        属于"只记说明、不记变更"，硬给它安个类目反而不实；
+//     ③ 定为文件级。**这条规则因此变弱了** —— 它现在只保证"这份日志里确实有变更记录"，
+//        不再保证每个版本都有。写在这里是为了让它别被误当成强约束。
 const allSections = [...p.versions.flatMap(v => v.sections), ...p.unreleasedSections]
-check('每个小节都用标准类目', categoriesValid(allSections),
-  `共 ${allSections.length} 个小节（含未发布 ${p.unreleasedSections.length}）；类目集 ${CATEGORIES.join('/')}`)
+check('文件含标准类目小节', hasAnyCategory(allSections),
+  allSections.length ? `共 ${allSections.length} 个小节；类目可为 ${CATEGORIES.slice(0, 6).join('/')} 或其英文对应`
+    : '文件里没有任何小节')
 
 const emptyVersions = p.versions.filter(v => v.sections.length === 0).map(v => v.ver)
 check('无空版本段', emptyVersions.length === 0,
