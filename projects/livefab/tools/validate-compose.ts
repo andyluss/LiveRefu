@@ -54,23 +54,33 @@ const envExample = read('.env.example')
 // 负向自检：注入一个"坏"的 compose 来确认断言真的会失败
 if (SELFTEST) {
   console.log('负向自检模式：故意破坏每条不变量，确认检查器能抓到\n')
-  const mutations: Array<[string, string, (s: string) => string]> = [
-    ['内部件不应发布端口', '给 ghost 加 ports', s => s.replace(
+  // ⚠️ 每条变异**显式声明 target**，不再用 label 字符串去猜该测哪份配置。
+  //    早先版本用 `label.includes('buffer pool')` 分发，但标签里写的是
+  //    `innodb_buffer_pool_size`（下划线）→ 分发到错误的检查器 → 自检误报"漏检"。
+  type Target = 'compose' | 'caddy' | 'authelia'
+  const mutations: Array<[string, string, Target, (s: string) => string]> = [
+    ['内部件不应发布端口', '给 ghost 加 ports', 'compose', s => s.replace(
       '  ghost:\n    image: ghost:5-alpine\n    restart: unless-stopped',
       '  ghost:\n    image: ghost:5-alpine\n    restart: unless-stopped\n    ports:\n      - "2368:2368"')],
-    ['公开区不应被 forward_auth 挡', '给公开区 handle 加 forward_auth', s => s.replace(
+    ['公开区不应被 forward_auth 挡', '给公开区 handle 加 forward_auth', 'caddy', s => s.replace(
       '\t# ★ 公开区：**不经过 forward_auth**——这是分层的关键\n\thandle {\n\t\treverse_proxy portal:80\n\t}',
       '\thandle {\n\t\tforward_auth authelia:9091 {\n\t\t\turi /api/verify\n\t\t}\n\t\treverse_proxy portal:80\n\t}')],
-    ['Authelia 公开路径应 bypass', '把 bypass 改成 two_factor', s => s.replace(
+    ['只应有一个 PostgreSQL 实例', '再加一个 postgres 实例', 'compose', s => s.replace(
+      '  db:\n    image: postgres:16-alpine',
+      '  db2:\n    image: postgres:16-alpine\n    environment:\n      POSTGRES_DB: x\n      POSTGRES_USER: x\n      POSTGRES_PASSWORD: x\n    networks:\n      - internal\n\n  db:\n    image: postgres:16-alpine')],
+    ['未压小 innodb_buffer_pool_size', '错误地压小 buffer pool', 'compose', s => s.replace(
+      '      - --performance-schema=OFF',
+      '      - --performance-schema=OFF\n      - --innodb-buffer-pool-size=32M')],
+    ['Authelia 公开路径应 bypass', '把 bypass 改成 two_factor', 'authelia', s => s.replace(
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: bypass",
       "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: two_factor")],
   ]
 
   let caught = 0
-  for (const [label, desc, mutate] of mutations) {
+  for (const [label, desc, target, mutate] of mutations) {
     const before = results.length
-    if (label.includes('内部件')) runComposeChecks(mutate(composeText))
-    else if (label.includes('公开区')) runCaddyChecks(mutate(caddyText))
+    if (target === 'compose') runComposeChecks(mutate(composeText))
+    else if (target === 'caddy') runCaddyChecks(mutate(caddyText))
     else runAutheliaChecks(mutate(autheliaText))
     const failedNow = results.slice(before).some(r => !r.ok)
     console.log(`  ${failedNow ? '✓ 可捕获' : '✗ 漏检'}  ${label}（${desc}）`)
@@ -127,7 +137,7 @@ function runComposeChecks(text: string) {
     noRestart.length ? `缺 restart：${noRestart.join(', ')}` : '（authelia-init 是一次性任务，无镜像常驻）')
 
   // 5) 关键服务名必须存在（Caddyfile 里引用了它们）
-  for (const need of ['caddy', 'authelia', 'portal', 'ghost', 'nodebb', 'nodebb-setup', 'authelia-prep', 'authelia-secrets']) {
+  for (const need of ['caddy', 'authelia', 'portal', 'ghost', 'nodebb', 'nodebb-setup', 'authelia-prep', 'authelia-secrets', 'db']) {
     check(`compose 含服务 ${need}`, Boolean(services[need]))
   }
 
@@ -154,6 +164,24 @@ function runComposeChecks(text: string) {
 
   // 9) 反代后面必须开 trust_proxy（否则用户 IP 记成反代容器 IP）
   check('NodeBB 开了 trust_proxy', /trust_proxy/.test(text), '反代后端的客户端 IP 正确性')
+
+  // ── 以下为 L12（数据库统一，方案 A+E）不变量 ──────────────────────
+
+  // 10) 只应有一个 PostgreSQL 实例（Authelia 与 NodeBB 共用）
+  const pgCount = (text.match(/image:\s*postgres:/g) ?? []).length
+  check('只有一个 PostgreSQL 实例', pgCount === 1, `找到 ${pgCount} 个`)
+
+  // 11) 单实例 PG 必须带建第二个库的初始化脚本（官方 POSTGRES_DB 只能建一个库）
+  check('PG 有建第二库的初始化脚本',
+    /postgres\/init:\/docker-entrypoint-initdb\.d/.test(text),
+    '否则 NodeBB 的库不会被创建')
+
+  // 12) MySQL 必须调过内存（方案 E）：performance_schema 关闭 + 日志缓冲回默认
+  check('MySQL 关掉 performance_schema', /--performance-schema=OFF/.test(text))
+  check('MySQL 的 log_buffer 未偏大', /--innodb-log-buffer-size=16M/.test(text))
+  // ★ 但要确认**没有**去压 innodb_buffer_pool_size（那是真实性能关键，压它是错的）
+  check('未压小 innodb_buffer_pool_size', !/--innodb-buffer-pool-size/.test(text),
+    '它是真实性能关键，不属于"白省的内存"')
 
   return services
 }

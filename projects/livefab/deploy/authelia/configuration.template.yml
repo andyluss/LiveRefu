@@ -54,7 +54,7 @@ identity_validation:
 # 密钥由 AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE 提供
 storage:
   postgres:
-    address: 'tcp://authelia-db:5432'
+    address: 'tcp://db:5432'
     database: authelia
     username: authelia
     # 密码由 AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE 提供

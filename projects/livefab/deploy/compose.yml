@@ -138,19 +138,25 @@ services:
         condition: service_completed_successfully
       authelia-prep:
         condition: service_completed_successfully
-      authelia-db:
+      db:
         condition: service_healthy
 
-  # Authelia 的存储（会话、二次认证状态）
-  authelia-db:
+  # ── 统一数据库：一个 PostgreSQL 实例，两个独立库（L12 方案 A）────────
+  # Authelia 与 NodeBB 共用；Ghost 仍用 MySQL（它不支持 PG，见 docs/05）。
+  # 第二个库由 deploy/postgres/init/01-create-nodebb.sh 在**首次初始化**时创建
+  # （官方镜像的 POSTGRES_DB 只能建一个库）。
+  db:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: authelia
       POSTGRES_USER: authelia
       POSTGRES_PASSWORD: ${AUTHELIA_DB_PASSWORD:?需在 .env 设置}
+      # 供初始化脚本创建 NodeBB 的库/用户
+      NODEBB_DB_PASSWORD: ${NODEBB_DB_PASSWORD:?需在 .env 设置}
     volumes:
-      - authelia_db:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U authelia -d authelia"]
       interval: 10s
@@ -204,7 +210,22 @@ services:
       MYSQL_PASSWORD: ${GHOST_DB_PASSWORD:?需在 .env 设置}
     volumes:
       - ghost_db:/var/lib/mysql
-    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    # ── L12 方案 E：把 MySQL 的内存压下来（它一度占全套 48%）────────────
+    # 依据是**实测基线**：空载 478 MiB，其中 innodb_log_buffer_size 竟高达 64 MiB
+    # （MySQL 默认是 16 MiB），且 performance_schema 开着。
+    # 注意：**不动 innodb_buffer_pool_size（保持默认 128 MiB）**——它是真实性能关键，
+    #      压它会让查询变慢，不属于"白省的内存"。
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      # 自托管小站用不到 performance_schema 的性能诊断（它自己要占几十 MB）
+      - --performance-schema=OFF
+      # 64M → 16M（回到官方默认值，本就是异常偏大）
+      - --innodb-log-buffer-size=16M
+      # 151 → 50 个连接足够（每连接都有独占缓冲）
+      - --max-connections=50
+      # 4000 个打开表缓存在这个体量下毫无必要
+      - --table-open-cache=400
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
       interval: 10s
@@ -253,7 +274,7 @@ services:
       CONFIG: /opt/config/config.json
       NODEBB_URL: https://${LIVEFAB_FORUM_DOMAIN:?}
       NODEBB_DB: postgres
-      NODEBB_DB_HOST: nodebb-db
+      NODEBB_DB_HOST: db
       NODEBB_DB_PORT: "5432"
       NODEBB_DB_NAME: nodebb
       NODEBB_DB_USER: nodebb
@@ -268,9 +289,10 @@ services:
     networks:
       - internal
     depends_on:
-      nodebb-db:
+      db:
         condition: service_healthy
 
+  # 论坛运行时：读 nodebb-setup 写好的 config.json 直接启动
   nodebb:
     image: ghcr.io/nodebb/nodebb:4.16
     restart: unless-stopped
@@ -278,33 +300,14 @@ services:
       <<: *nodebb_env
     volumes:
       - nodebb_data:/var/lib/nodebb
-      # config.json 由 nodebb-setup 写在共享卷里，启动时直接读它（跳过 web 安装器）
       - nodebb_config:/opt/config
     networks:
       - internal
     depends_on:
-      nodebb-db:
+      db:
         condition: service_healthy
       nodebb-setup:
         condition: service_completed_successfully
-
-
-  nodebb-db:
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: nodebb
-      POSTGRES_USER: nodebb
-      POSTGRES_PASSWORD: ${NODEBB_DB_PASSWORD:?需在 .env 设置}
-    volumes:
-      - nodebb_db:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nodebb -d nodebb"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - internal
 
 networks:
   # edge：唯一连外网的一层（只有 caddy）
@@ -318,11 +321,10 @@ networks:
 volumes:
   caddy_data:
   caddy_config:
+  db_data:
   authelia_rendered:
   authelia_secretview:
-  authelia_db:
   ghost_content:
   ghost_db:
   nodebb_data:
   nodebb_config:
-  nodebb_db:
