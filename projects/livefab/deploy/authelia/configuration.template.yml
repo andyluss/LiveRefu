@@ -4,31 +4,31 @@
 #    真实域名后写到数据卷，Authelia 读的是渲染结果。
 #
 # ★ 为什么要多这一步（这是用真实 Authelia 试出来的，读文档看不出来）：
-#   Authelia 的 `{{ env "X" }}` 模板函数**不能用在 domain / URL 字段**——
+#   Authelia 的 `env` 模板函数**不能用在 domain / URL 字段**——
 #   校验会报 `'...' could not decode ... to a *url.URL: invalid character "{" in host name`，
 #   以及 `access_control: rule #N: option 'policy' must be present`
 #   （因为整个 domain 值没被解析成域名，规则就整体失效）。
 #   所以：**域名用我们自己的渲染步骤**。
 #
-# ⚠️ 另一个更隐蔽的坑（真启动才暴露）：Authelia 的 `{{ secret "path" }}` 模板
-#   **在文件不存在时会静默返回空值**——`config validate` 依然报
-#   "parsed and loaded successfully"（已实测确认这个假阳性）。
-#   于是数据库密码变成空字符串，运行时才报
-#   `password authentication failed for user "authelia"`。
-#   → 因此**密钥一律改用官方明确支持的 `AUTHELIA_*_FILE` 环境变量**，
-#     不再用 `{{ secret }}`。
+# ⚠️ 关于 `secret` 模板函数（**先前的诊断是错的，这里更正**）
 #
-# ⚠️ 另一个坑：**渲染时不要把密钥一起 sed**——密钥可能含 `/` 或 `&`，
-#   会破坏 sed 表达式。所以密钥**单独 bind mount** 到 /secret/，不进渲染流程。
-
-server:
-  # v4.38+ 用 server.address 取代 host/port
-  address: 'tcp://0.0.0.0:9091'
-
-log:
-  level: info
-
-theme: auto
+#   早先我们以为「secret 模板在文件缺失时静默返回空值」——**那是误判**。
+#   真正的原因是：**Authelia 的配置模板是实验性过滤器，默认不启用**，
+#   于是 `secret "/secret/xxx"` 这种写法作为**字面量**原样传下去，
+#   数据库密码就成了那串字面量 → 运行时 "password authentication failed"。
+#
+#   证据（用真实 Authelia 实测）：
+#     log.level: 'secret "/s/lvl"'   ← 写成模板语法
+#     未开过滤器 → "option 'level' must be one of ... but it's configured as
+#                   'secret "/s/lvl"'"           ← 字面量透传（未被求值）
+#     开启过滤器 → 模板真的执行（会去 open 那个文件）
+#
+#   启用方式：给 authelia 加 `--config.experimental.filters template`
+#   （见 deploy/compose.yml 的 authelia.command）。
+#
+#   所以现在**两套机制并存，各有用途**：
+#     · 密钥文件用 `AUTHELIA_*_FILE` 环境变量 —— 不依赖模板，最稳；
+#     · 需要嵌进 YAML 结构的值（如 OIDC 的 JWKS 密钥）用 `secret` 模板 —— 依赖上面的过滤器。
 
 # ── 会话 ─────────────────────────────────────────────────────────────
 session:
@@ -90,6 +90,48 @@ authentication_backend:
       iterations: 3
       memory: 65536
       parallelism: 4
+
+# ── OIDC Provider（LiveFab 作为统一身份源）──────────────────────────
+# ★ 为什么要有这一节：L3 选了"先立 IdP"，但如果 Authelia 只做**网关鉴权**，
+#   那些**不能改登录方式**的件（Ghost 不支持 OIDC）就永远接不进来，
+#   NodeBB 则要靠插件。开 OIDC Provider 后，Authelia 才真正成为"统一身份源"：
+#   支持 OIDC 的件直接用它登录，**一个账号走遍全场**。
+#
+# 这是 M1 验收「用**同一个账号**发一条帖」的前提。
+identity_providers:
+  oidc:
+    # 签名密钥（JWKS）——用 authelia crypto pair rsa generate 生成
+    # ⚠️ key 必须是 **YAML 块标量**（`|`）里内联的原始 PEM，且由 prep **缩进注入**。
+    #
+    #    踩过的坑（都会让 PEM 畸形）：
+    #      · 写成单引号标量 '...' → YAML 把多行**折成一行**（换行变空格）→
+    #        报 "either no PEM block was supplied or it was malformed"
+    #      · 给 base64 → 报 "symmetric keys are not permitted for signing"
+    #        （Authelia 会把 base64 解出来当对称密钥用）
+    #      · 给文件路径 → 报 "illegal base64 data at input byte 0"（它先当 base64 试）
+    #    正解：占位符单独占一行，由 authelia-prep 用 awk 替换成缩进后的 PEM 各行。
+    jwks:
+      - key: |
+          __OIDC_JWKS_PEM__
+    # 对 id_token / 授权码等做 HMAC 签名的密钥
+    hmac_secret: '{{ secret "/secret/oidc_hmac" }}'
+    clients:
+      - client_id: nodebb
+        # ⚠️ 用 $plaintext$ 前缀可免去预先哈希（Authelia 支持这种写法）。
+        #    这样 NodeBB 侧与 Authelia 侧共用同一个明文值，少一处对不上的可能。
+        client_secret: '$plaintext$__OIDC_CLIENT_SECRET__'
+        # NodeBB 的 fusionauth-oidc 插件的回调地址
+        redirect_uris:
+          - 'https://__FORUM_DOMAIN__/auth/fusionauth-oidc/callback'
+        scopes:
+          - openid
+          - profile
+          - email
+          - groups
+        # 只允许本组织的成员登录论坛（与门户/内部区的分级一致）
+        authorization_policy: one_factor
+        consent_mode: implicit
+        token_endpoint_auth_method: client_secret_post
 
 # ── 访问控制 ★ 核心（分级就落在这里）────────────────────────────────
 access_control:

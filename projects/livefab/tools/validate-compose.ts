@@ -158,10 +158,21 @@ function runComposeChecks(text: string) {
 
   // ★ 以下三条都是"真启动才学到"的教训，写成断言防止回退：
 
-  // 6) NodeBB 镜像必须来自 ghcr：Docker Hub 的 nodebb/docker 停在 2023-07 的 v1.19
+  // 6) NodeBB 镜像
+  //    Docker Hub 的 nodebb/docker 停在 2023-07 的 v1.19，所以基础镜像必须用 ghcr。
+  //    ★ 现在 nodebb 用的是**自建镜像**（预装 OIDC 插件）——因为运行时容器只有
+  //      internal 网络、没有外网，插件装不进去。基础镜像仍是 ghcr 的固定版本，
+  //      这一点由 Dockerfile 的 FROM 保证（下面一并断言）。
   const nodebbImg = services['nodebb']?.match(/image:\s*(\S+)/)?.[1] ?? ''
-  check('NodeBB 用 ghcr 镜像', nodebbImg.includes('ghcr.io/nodebb/'),
+  check('NodeBB 用自建 OIDC 镜像', nodebbImg === 'livefab-nodebb-oidc:4.16',
     nodebbImg || '(未找到 nodebb 镜像)')
+  const setupImg = services['nodebb-setup']?.match(/image:\s*(\S+)/)?.[1] ?? ''
+  check('nodebb-setup 与 nodebb 同镜像（否则插件装不上）', setupImg === nodebbImg,
+    setupImg || '(未找到)')
+  let dockerfile = ''
+  try { dockerfile = readFileSync(`${ROOT}/deploy/nodebb/Dockerfile`, 'utf8') } catch { /* 未找到 */ }
+  check('自建镜像基于 ghcr 的固定版本', /FROM\s+ghcr\.io\/nodebb\/nodebb:4\.16/.test(dockerfile),
+    dockerfile ? '' : '(未找到 Dockerfile)')
 
   // 7) NodeBB 必须用 NODEBB_* 前缀的安装变量（POSTGRES_* 不被识别）
   const usesNodebbPrefix = /NODEBB_DB_HOST:/.test(text) && /NODEBB_ADMIN_USERNAME:/.test(text)

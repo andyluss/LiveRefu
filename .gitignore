@@ -20,3 +20,6 @@ indie/live-calculator/
 
 # 包管理器临时目录（沙箱下 bun 会用到）
 .tmp/
+
+# NodeBB OIDC 插件的 vendor 目录（由 fetch-plugin.sh 生成，不入库）
+projects/livefab/deploy/nodebb/vendor/

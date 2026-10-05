@@ -38,6 +38,46 @@
 > 最后那条是本轮最值钱的：其余几条只保证「格式自洽」，**这条保证「内容不假」** ——
 > 它把变更日志与 git 钉在一起，谁事后改了时间都会被发现。
 
+### 新增（统一身份：Authelia 开 OIDC Provider，TOTP 等遗留项清理）
+
+接管 M0/M1 遗留清理项。本轮完成内存实测、过期清单更新、ACME 如实标注，
+并**把 Authelia 从"网关鉴权"升级为"统一身份源"**（开 `identity_providers.oidc`），
+为 M1 验收「用**同一个账号**发帖」铺路。详见 [07](docs/07_统一身份OIDC进度与阻塞.md)。
+
+**Authelia 侧已完成并实测**：discovery 返回 200、JWKS 返回 RS256 公钥、
+配置经真实 Authelia `config validate` 通过。
+
+**★ 顺带更正了一处我先前的错误诊断**：我曾把 `{{ secret }}` 的问题写成
+「文件缺失时静默返回空值」——**那是误判**。真因是
+**Authelia 的配置模板是实验性过滤器、默认不启用**，于是字面量被当成了值，
+数据库密码因此成了那串字面量。启用方式：`--config.experimental.filters template`。
+
+**发现的真实坑（每条都是真启动才暴露）**：
+- 注释里的 `{{ }}` 也会被 Go 模板**执行**（我写在注释里的示例把配置搞坏了）
+- `--config=...` 等号形式会让容器**起不来**（entrypoint 的 `$1 != "--config"` 判断 → 把参数当命令）
+- JWKS 密钥**必须内联为 YAML 块标量**：单引号标量会把 PEM 折成一行、base64 会被当对称密钥、
+  文件路径会被当 base64；正解是 `key: |` + `awk` 逐行缩进注入
+- `authelia crypto pair rsa generate --directory` **不自动建目录**，不 mkdir 就静默失败
+- Bash 里变量后紧跟中文全角字符会被并进变量名（`$VER（` → unbound variable），必须写 `${VER}`
+- **删密钥卷 = 数据库作废**：storage 加密密钥一变，Authelia 报
+  "encryption key does not appear to be valid for this database" 起不来。
+  教训：密钥必须与数据库一起备份（backup.ts 已覆盖该卷）
+
+**NodeBB 侧：阻塞（已精确定位，非猜测）**。插件镜像构建成功、激活与配置写入成功，
+但 NodeBB 报 `is active but not installed`、OIDC 路由 404。三层原因：
+① 官方镜像用 `VOLUME` 声明 `node_modules` 为**匿名卷**，遮住派生镜像里 COPY 的文件
+（镜像里 579 包 vs 卷里 576，差的正是新加的 3 个）；② entrypoint **每次启动都跑 `npm install`**，
+按 `package.json` 裁剪多余包；③ 容器只有 internal 网络、**无外网**拉不到包。
+三个候选解法已写入 [07 §4.3](docs/07_统一身份OIDC进度与阻塞.md)。
+
+### 变更（内存实测 + 过期清单更新）
+
+- **逐容器实测内存**（连采 3 次取稳定值）：合计约 **764 MiB**，最大项 NodeBB 274 MiB、
+  ghost-db 184 MiB（L12 调优后，原 478 MiB）。写入 [README §5.4](README.md)。
+- **重写 README 的"未验证"清单**：原 5 项里 2 项已完成、1 项如实标注为本地不可验证；
+  新增 TOTP 与 NodeBB 统一账号两条遗留。
+- **ACME 证书如实标注为本地不可验证**（内网 CA 与真实 ACME 是两条路径，必须真机验）。
+
 ## [0.3.0] - 2026-10-05 21:29
 
 ### 新增（M1：统一备份 + 真正的恢复演练）

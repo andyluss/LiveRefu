@@ -69,6 +69,45 @@ services:
           printf '%s' "$$AUTHELIA_DB_PASSWORD" > /secret/authelia_db_password
           echo "已写入数据库密码文件"
         fi
+        # ③ OIDC Provider 的三样东西（M1 统一身份：让 NodeBB 能用同一个账号登录）
+        #    · hmac_secret：对 id_token / 授权码签名
+        #    · JWKS 私钥：⚠️ 必须是 **base64 编码的 PEM**，不是原始 PEM ——
+        #      真实 Authelia 报错原文：
+        #        'identity_providers.oidc.jwks[0].key' could not decode to a schema.CryptographicKey:
+        #        illegal base64 data at input byte 0
+        #    · 客户端密钥：Authelia 侧用**哈希值**，NodeBB 侧用同一个明文值
+        if [ ! -s /secret/oidc_hmac ]; then
+          head -c 64 /dev/urandom | base64 | tr -d '\n' > /secret/oidc_hmac
+          echo "已生成 OIDC hmac_secret"
+        fi
+        if [ ! -s /secret/oidc_client_secret ]; then
+          head -c 32 /dev/urandom | base64 | tr -d '\n' > /secret/oidc_client_secret
+          echo "已生成 OIDC 客户端密钥（明文，供 NodeBB 用）"
+        fi
+        # ★ Authelia 侧要用**哈希**，明文会有弃用警告：
+        #   "option 'client_secret' is plaintext but ... it should be a hashed value"
+        #   两边的值必须匹配，所以明文给 NodeBB、哈希给 Authelia。
+        if [ ! -s /secret/oidc_client_secret_hash ]; then
+          authelia crypto hash generate pbkdf2 --password "$$(cat /secret/oidc_client_secret)" \
+            | sed -n 's/^Digest: //p' > /secret/oidc_client_secret_hash
+          if [ ! -s /secret/oidc_client_secret_hash ]; then
+            echo "客户端密钥哈希生成失败" >&2; exit 1
+          fi
+          echo "已生成 OIDC 客户端密钥哈希（供 Authelia 用）"
+        fi
+        if [ ! -s /secret/oidc_jwks.pem ]; then
+          # 用 Authelia 自己的命令生成 RSA 密钥对
+          # ⚠️ 目录必须**预先存在**：--directory 不会自己创建它。
+          #    不 mkdir 的话命令静默失败，表现是密钥卷里少一个文件（真启动才发现）。
+          mkdir -p /tmp/jwks
+          authelia crypto pair rsa generate --directory /tmp/jwks >/dev/null 2>&1
+          if [ ! -s /tmp/jwks/private.pem ]; then
+            echo "JWKS 私钥生成失败" >&2; exit 1
+          fi
+          cp /tmp/jwks/private.pem /secret/oidc_jwks.pem
+          rm -rf /tmp/jwks
+          echo "已生成 OIDC JWKS 私钥"
+        fi
         chmod 0444 /secret/*
         chown -R 1000:1000 /secret
     environment:
@@ -90,23 +129,41 @@ services:
       - |
         set -e
         mkdir -p /rendered
+        # OIDC 客户端密钥：Authelia 侧要**哈希值**（明文会触发弃用警告）
+        CLIENT_SECRET="$$(cat /secret/oidc_client_secret_hash)"
         sed -e "s|__PORTAL_DOMAIN__|$$LIVEFAB_PORTAL_DOMAIN|g" \
             -e "s|__AUTH_DOMAIN__|$$LIVEFAB_AUTH_DOMAIN|g" \
             -e "s|__GHOST_DOMAIN__|$$LIVEFAB_DOMAIN|g" \
             -e "s|__COOKIE_DOMAIN__|$$LIVEFAB_COOKIE_DOMAIN|g" \
+            -e "s|__FORUM_DOMAIN__|$$LIVEFAB_FORUM_DOMAIN|g" \
+            -e "s|__OIDC_CLIENT_SECRET__|$$CLIENT_SECRET|g" \
             /template/configuration.template.yml > /rendered/configuration.yml
-        if grep -q '__PORTAL_DOMAIN__\|__AUTH_DOMAIN__\|__GHOST_DOMAIN__\|__COOKIE_DOMAIN__' /rendered/configuration.yml; then
-          echo "✗ 渲染后有残留占位符，模板与变量对不上"; exit 1
+        if grep -qE '__PORTAL_DOMAIN__|__AUTH_DOMAIN__|__GHOST_DOMAIN__|__COOKIE_DOMAIN__|__FORUM_DOMAIN__|__OIDC_CLIENT_SECRET__' /rendered/configuration.yml; then
+          echo "渲染后有残留占位符，模板与变量对不上"; exit 1
         fi
-        echo "✓ 配置已渲染（域名已写死）"
+        # ★ JWKS 私钥要作为 **YAML 块标量** 注入（每行缩进一致），
+        #   不能走 sed —— 多行替换用 sed 很别扭，且缩进必须对齐。
+        awk '/__OIDC_JWKS_PEM__/ {
+               while ((getline line < "/secret/oidc_jwks.pem") > 0) print "          " line
+               close("/secret/oidc_jwks.pem"); next
+             }
+             { print }' /rendered/configuration.yml > /rendered/.cfg.new
+        mv /rendered/.cfg.new /rendered/configuration.yml
+        if grep -q '__OIDC_JWKS_PEM__' /rendered/configuration.yml; then
+          echo "JWKS 私钥注入失败"; exit 1
+        fi
+        echo "配置已渲染（域名写死 + JWKS 私钥内联）"
     environment:
       LIVEFAB_PORTAL_DOMAIN: ${LIVEFAB_PORTAL_DOMAIN:?需在 .env 设置}
       LIVEFAB_DOMAIN: ${LIVEFAB_DOMAIN:?需在 .env 设置}
       LIVEFAB_AUTH_DOMAIN: ${LIVEFAB_AUTH_DOMAIN:?需在 .env 设置}
       LIVEFAB_COOKIE_DOMAIN: ${LIVEFAB_COOKIE_DOMAIN:?需在 .env 设置}
+      LIVEFAB_FORUM_DOMAIN: ${LIVEFAB_FORUM_DOMAIN:?需在 .env 设置}
     volumes:
       - ./authelia/configuration.template.yml:/template/configuration.template.yml:ro
       - authelia_rendered:/rendered
+      # 渲染时要读 OIDC 客户端密钥（它是密钥，故只在密钥卷里）
+      - authelia_secretview:/secret:ro
     networks:
       - internal
 
@@ -115,6 +172,20 @@ services:
   authelia:
     image: ghcr.io/authelia/authelia:4.39
     restart: unless-stopped
+    # ★ 必须显式开启模板过滤器，否则配置里的 `{{ secret "..." }}` 会**作为字面量**透传
+    #   （真实 Authelia 实测：不开启时 log.level 会报 "configured as '{{ secret ... }}'"）。
+    #   OIDC 的 JWKS 密钥与 hmac 需要它（它们的值必须嵌进 YAML 结构，无法走 *_FILE）。
+    #   entrypoint 见到 $1 是 --config 会走 `authelia "$@"` 分支，故这样传参是安全的。
+    # ⚠️ 必须用**空格分隔**的形式，不能写 `--config=...`！
+    #    镜像的 entrypoint.sh 第 10 行是：
+    #      if [ -n "$1" ] && [ "$1" != "--config" ]; then exec "$@"; else exec authelia "$@"; fi
+    #    写成等号形式时 $1 是 "--config=..." ≠ "--config"，于是走了 exec "$@" 分支，
+    #    把参数当成**命令**执行 → 反复报 "entrypoint.sh: exec: line 10: illegal option --" 并重启。
+    command:
+      - --config
+      - /config/configuration.yml
+      - --config.experimental.filters
+      - template
     volumes:
       # 渲染结果挂到 /config；users.yml 挂到 /users（**不能挂进上面那个只读挂载点内部**——
       # Docker 无法在 :ro 挂载里创建 mountpoint，会报 "read-only file system"）
@@ -160,6 +231,9 @@ services:
       POSTGRES_PASSWORD: ${AUTHELIA_DB_PASSWORD:?需在 .env 设置}
       # 供初始化脚本创建 NodeBB 的库/用户
       NODEBB_DB_PASSWORD: ${NODEBB_DB_PASSWORD:?需在 .env 设置}
+      # OIDC 配置所需（客户端密钥从密钥卷读，不写进 .env）
+      OIDC_CLIENT_ID: nodebb
+      OIDC_AUTH_BASE: https://${LIVEFAB_AUTH_DOMAIN:?}
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d:ro
@@ -279,8 +353,11 @@ services:
   #   ② **环境变量名不是 POSTGRES_***：NodeBB 的自动化安装认 `NODEBB_*` 前缀
   #      （见镜像内 src/install.js 的 envConfMap）。用错名字会一直停在 web 安装器。
   nodebb-setup:
-    # 一次性：初始化数据库 schema 与管理员账号，写出 /opt/config/config.json（幂等）
-    image: ghcr.io/nodebb/nodebb:4.16
+    # 一次性：初始化数据库 schema 与管理员账号、写出 config.json、**激活并配置 OIDC 插件**（幂等）
+    # 用自建镜像（预装了 nodebb-plugin-fusionauth-oidc）——运行时容器无外网，装不了插件。
+    # 构建：docker build -t livefab-nodebb-oidc:4.16 deploy/nodebb
+    # （取包与布局见 deploy/nodebb/Dockerfile 与 fetch-plugin.sh 的说明）
+    image: livefab-nodebb-oidc:4.16
     entrypoint: ["sh", "-c"]
     command:
       - |
@@ -310,6 +387,47 @@ services:
           if (changed.length) { fs.writeFileSync(f, JSON.stringify(c,null,4)); console.log("已同步: " + changed.join(", ")); }
           else { console.log("config.json 无需改动"); }
         '
+        # ★ 激活并配置 OIDC 插件（M1「用**同一个账号**发帖」的落地）
+        #   为什么直接写库：NodeBB 的插件激活与设置在它自己的库里
+        #     · 激活 = plugins:active 这个 zset 里加一项
+        #     · 配置 = settings:<plugin-id> 这个 hash（data 是 JSONB）
+        #   而 `./nodebb` CLI 在这种一次性容器里会挂住（实测 --help 都不返回），
+        #   所以用 NodeBB 自带的 pg 模块直接写。幂等。
+        # 客户端密钥从密钥卷读（它是密钥，不写进 .env）
+        export OIDC_CLIENT_SECRET="$(cat /secret/oidc_client_secret)"
+        node -e '
+          const { Client } = require("pg");
+          const id = "nodebb-plugin-fusionauth-oidc";
+          const auth = process.env.OIDC_AUTH_BASE;
+          const settings = {
+            clientId: process.env.OIDC_CLIENT_ID,
+            clientSecret: process.env.OIDC_CLIENT_SECRET,
+            authorizationEndpoint: auth + "/api/oidc/authorization",
+            tokenEndpoint: auth + "/api/oidc/token",
+            userInfoEndpoint: auth + "/api/oidc/userinfo",
+            emailClaim: "email",
+            rolesClaim: "groups",
+          };
+          (async () => {
+            const c = new Client({
+              host: process.env.NODEBB_DB_HOST, port: +process.env.NODEBB_DB_PORT,
+              user: process.env.NODEBB_DB_USER, password: process.env.NODEBB_DB_PASSWORD,
+              database: process.env.NODEBB_DB_NAME,
+            });
+            await c.connect();
+            // ① 激活：plugins:active 的 zset；legacy_object 是主索引表，两处都要有
+            const { rows: mx } = await c.query("SELECT COALESCE(MAX(score),-1)+1 AS s FROM legacy_zset WHERE _key=$1", ["plugins:active"]);
+            await c.query("INSERT INTO legacy_object(_key,type) VALUES($1,$2) ON CONFLICT (_key) DO NOTHING", ["plugins:active","zset"]);
+            await c.query("INSERT INTO legacy_zset(_key,value,score,type) VALUES($1,$2,$3,$4) ON CONFLICT (_key,value) DO NOTHING", ["plugins:active", id, mx[0].s, "zset"]);
+            // ② 配置：settings:<id> 的 hash
+            const key = "settings:" + id;
+            await c.query("INSERT INTO legacy_object(_key,type) VALUES($1,$2) ON CONFLICT (_key) DO NOTHING", [key,"hash"]);
+            await c.query("INSERT INTO legacy_hash(_key,data,type) VALUES($1,$2::jsonb,$3) ON CONFLICT (_key) DO UPDATE SET data=EXCLUDED.data", [key, JSON.stringify(settings), "hash"]);
+            const { rows: chk } = await c.query("SELECT value FROM legacy_zset WHERE _key=$1 AND value=$2", ["plugins:active", id]);
+            console.log(chk.length ? "OIDC 插件已激活并配置" : "OIDC 插件激活失败");
+            await c.end();
+          })().catch(e => { console.error("插件配置失败:", e.message); process.exit(1); });
+        '
     environment: &nodebb_env
       # ★ 必须显式设 CONFIG_DIR：**覆盖 entrypoint 会跳过它原本设置 CONFIG_DIR 的那段**，
       #   于是 `nodebb setup` 把 config.json 写到应用目录（容器内、不持久），
@@ -330,15 +448,20 @@ services:
     volumes:
       - nodebb_data:/var/lib/nodebb
       - nodebb_config:/opt/config
+      # 读 OIDC 客户端密钥（与 Authelia 侧同源，保证两边一致）
+      - authelia_secretview:/secret:ro
     networks:
       - internal
     depends_on:
       db:
         condition: service_healthy
+      authelia-secrets:
+        condition: service_completed_successfully
 
   # 论坛运行时：读 nodebb-setup 写好的 config.json 直接启动
   nodebb:
-    image: ghcr.io/nodebb/nodebb:4.16
+    # 同上：必须用带 OIDC 插件的镜像，否则插件不会被加载
+    image: livefab-nodebb-oidc:4.16
     restart: unless-stopped
     environment:
       <<: *nodebb_env
