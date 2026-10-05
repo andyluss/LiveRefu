@@ -1,0 +1,212 @@
+#!/usr/bin/env bun
+/**
+ * M0 骨架校验（不需要 Docker）。
+ *
+ * 为什么必须有这个脚本：**M0 的产物是"配置"，而配置错了通常不报错**——
+ * 它只是安静地不生效。典型后果：
+ *   · 某个内部件忘了从 internal 网络挪走 → 直接暴露在公网；
+ *   · 公开区被整站 forward_auth 挡住 → 公开内容要登录才能看（正是 docs/01 §5.3 禁止的）；
+ *   · 内部区漏了 forward_auth → 内部件变成公开的。
+ * 这三种都不会在 `docker compose up` 时报错。
+ *
+ * 本脚本把这些**架构约束变成可断言的不变量**，让它们能被机器守住，
+ * 而不是靠"下次记得"。约定与《未来档案》的验收脚本一致：
+ * **一个总是通过的检查器比没有检查器更糟** —— 所以每条断言都先确认它能失败（见 --selftest）。
+ *
+ * 用法：
+ *   bun run tools/validate-compose.ts
+ *   bun run tools/validate-compose.ts --selftest   # 负向自检：故意破坏，确认能被抓到
+ */
+
+import { readFileSync, existsSync } from 'node:fs'
+import { join, resolve } from 'node:path'
+
+const ROOT = resolve(import.meta.dir, '..')
+const SELFTEST = process.argv.includes('--selftest')
+
+interface Check { name: string; ok: boolean; detail: string }
+const results: Check[] = []
+const check = (name: string, ok: boolean, detail = '') => {
+  results.push({ name, ok, detail })
+  if (!SELFTEST) console.log(`  ${ok ? '✓' : '✗'} ${name.padEnd(34)} ${detail}`)
+}
+
+const read = (p: string) => readFileSync(join(ROOT, p), 'utf8')
+
+// ─── 读取 ────────────────────────────────────────────────────────────
+const COMPOSE = 'deploy/compose.yml'
+const CADDY = 'deploy/caddy/Caddyfile'
+const AUTHELIA = 'deploy/authelia/configuration.yml'
+
+for (const f of [COMPOSE, CADDY, AUTHELIA, 'deploy/authelia/users.yml', 'deploy/portal/index.html', '.env.example']) {
+  check(`文件存在：${f}`, existsSync(join(ROOT, f)))
+}
+if (results.some(r => !r.ok)) {
+  console.error('\n✗ 缺少必要文件，后续断言无法进行')
+  process.exit(1)
+}
+
+let composeText = read(COMPOSE)
+const caddyText = read(CADDY)
+const autheliaText = read(AUTHELIA)
+const envExample = read('.env.example')
+
+// 负向自检：注入一个"坏"的 compose 来确认断言真的会失败
+if (SELFTEST) {
+  console.log('负向自检模式：故意破坏每条不变量，确认检查器能抓到\n')
+  const mutations: Array<[string, string, (s: string) => string]> = [
+    ['内部件不应发布端口', '给 ghost 加 ports', s => s.replace(
+      '  ghost:\n    image: ghost:5-alpine\n    restart: unless-stopped',
+      '  ghost:\n    image: ghost:5-alpine\n    restart: unless-stopped\n    ports:\n      - "2368:2368"')],
+    ['公开区不应被 forward_auth 挡', '给公开区 handle 加 forward_auth', s => s.replace(
+      '\t# ★ 公开区：**不经过 forward_auth**——这是分层的关键\n\thandle {\n\t\treverse_proxy portal:80\n\t}',
+      '\thandle {\n\t\tforward_auth authelia:9091 {\n\t\t\turi /api/verify\n\t\t}\n\t\treverse_proxy portal:80\n\t}')],
+    ['Authelia 公开路径应 bypass', '把 bypass 改成 two_factor', s => s.replace(
+      "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: bypass",
+      "- '^/blog(/.*)?$'\n        - '^/roadmap$'\n        - '^/assets/.*$'\n        - '^/favicon\\.ico$'\n      policy: two_factor")],
+  ]
+
+  let caught = 0
+  for (const [label, desc, mutate] of mutations) {
+    const before = results.length
+    if (label.includes('内部件')) runComposeChecks(mutate(composeText))
+    else if (label.includes('公开区')) runCaddyChecks(mutate(caddyText))
+    else runAutheliaChecks(mutate(autheliaText))
+    const failedNow = results.slice(before).some(r => !r.ok)
+    console.log(`  ${failedNow ? '✓ 可捕获' : '✗ 漏检'}  ${label}（${desc}）`)
+    if (failedNow) caught++
+    results.length = before
+  }
+  console.log(`\n负向自检：${caught}/${mutations.length} 条不变量可被捕获`)
+  if (caught !== mutations.length) {
+    console.error('✗ 有断言抓不到违规——检查器本身不可信')
+    process.exit(1)
+  }
+  console.log('✓ 检查器可信（每条不变量都能失败）')
+  process.exit(0)
+}
+
+// ─── Compose 断言 ────────────────────────────────────────────────────
+function runComposeChecks(text: string) {
+  // 只取 services: 段，到下一个顶层键（networks:/volumes:）为止。
+  // ⚠️ 早先版本直接按缩进切，结果把顶层 networks:/volumes: 也当成了服务——
+  //    于是"内部件都挂 internal"这条误报。**校验器自己的 bug 也要靠自检暴露**。
+  const servicesSection = text.split(/^services:\s*$/m)[1]?.split(/^\w+:/m)[0] ?? ''
+  const services: Record<string, string> = {}
+  for (const b of servicesSection.split(/\n  (?=\w[\w-]*:\n)/).slice(1)) {
+    const name = b.split(':')[0]!.trim()
+    if (name && !name.startsWith('#')) services[name] = b
+  }
+
+  // 1) 只有 caddy 能发布端口
+  const withPorts = Object.entries(services).filter(([, b]) => /\n    ports:/.test(b)).map(([n]) => n)
+  check('只有 caddy 发布端口', withPorts.length === 1 && withPorts[0] === 'caddy',
+    withPorts.length ? `发布了端口：${withPorts.join(', ')}` : '没有任何服务发布端口（异常）')
+
+  // 2) 除 caddy 外，所有服务都必须在 internal 网络上
+  const notInternal = Object.entries(services)
+    .filter(([n]) => n !== 'caddy')
+    .filter(([, b]) => !/\n      - internal/.test(b))
+    .map(([n]) => n)
+  check('内部件都挂在 internal 网络', notInternal.length === 0,
+    notInternal.length ? `未挂 internal：${notInternal.join(', ')}` : `${Object.keys(services).length - 1} 个服务已挂`)
+
+  // 3) internal 网络必须标 internal: true（否则内部件能直接出网）
+  check('internal 网络标了 internal: true', /\n  internal:\n    driver: bridge\n    internal: true/.test(text),
+    '防止内部件直接出网')
+
+  // 4) 每个 image 都要有 restart 策略（M0 的"能自己起来"）
+  // 一次性任务不需要 restart 策略（它跑完即退）
+  const ONE_SHOT = new Set(['authelia-init'])
+  const noRestart = Object.entries(services)
+    .filter(([, b]) => /image:/.test(b))
+    .filter(([n]) => !ONE_SHOT.has(n))
+    .filter(([, b]) => !/restart:/.test(b))
+    .map(([n]) => n)
+  check('有镜像的服务都设了 restart', noRestart.length === 0,
+    noRestart.length ? `缺 restart：${noRestart.join(', ')}` : '（authelia-init 是一次性任务，无镜像常驻）')
+
+  // 5) 关键服务名必须存在（Caddyfile 里引用了它们）
+  for (const need of ['caddy', 'authelia', 'portal', 'ghost']) {
+    check(`compose 含服务 ${need}`, Boolean(services[need]))
+  }
+
+  return services
+}
+runComposeChecks(composeText)
+
+// ─── Caddyfile 断言 ──────────────────────────────────────────────────
+function runCaddyChecks(text: string) {
+  // 1) 内部区必须有 forward_auth
+  const adminBlock = text.match(/handle \/admin\/\* \{([\s\S]*?)\n\t\}/)?.[1] ?? ''
+  check('/admin/* 有 forward_auth', /forward_auth\s+authelia:9091/.test(adminBlock),
+    adminBlock ? '内部区在网关就被拦住' : '未找到 /admin/* 块')
+
+  // 2) 个人区必须有 forward_auth
+  const accountBlock = text.match(/handle \/account\/\* \{([\s\S]*?)\n\t\}/)?.[1] ?? ''
+  check('/account/* 有 forward_auth', /forward_auth\s+authelia:9091/.test(accountBlock))
+
+  // 3) ★ 公开区（兜底 handle）**不得**有 forward_auth
+  const publicBlock = text.match(/\n\thandle \{\n([\s\S]*?)\n\t\}/)?.[1] ?? ''
+  check('公开区未被登录墙挡住', publicBlock !== '' && !/forward_auth/.test(publicBlock),
+    publicBlock ? '公开区直接反代门户（分层正确）' : '未找到公开区兜底 handle')
+
+  // 4) 反代目标必须指向 compose 里的服务名
+  for (const [svc, target] of [['portal', 'portal:80'], ['authelia', 'authelia:9091'], ['ghost', 'ghost:2368']] as const) {
+    check(`反代指向 ${target}`, text.includes(`reverse_proxy ${target}`), `对应服务 ${svc}`)
+  }
+}
+runCaddyChecks(caddyText)
+
+// ─── Authelia 断言 ───────────────────────────────────────────────────
+function runAutheliaChecks(text: string) {
+  // 1) 默认拒绝（安全默认值）
+  check('默认策略是 deny', /default_policy:\s*deny/.test(text))
+
+  // 2) ★ 公开路径必须 bypass（否则公开区会被挡——docs/01 §5.3）
+  const bypassRule = text.match(/resources:\n((?:\s+- .*\n)+)\s+policy: bypass/)?.[1] ?? ''
+  const publicPaths = ['^/$', '^/blog(/.*)?$', '^/roadmap$']
+  for (const p of publicPaths) {
+    const esc = p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    check(`公开路径 bypass：${p}`, bypassRule.includes(p) || new RegExp(esc).test(bypassRule))
+  }
+
+  // 3) 鉴权门户自身必须 bypass（否则登录页也进不去，死锁）
+  const authBypass = /domain: 'auth\.\{\{ env "LIVEFAB_PORTAL_DOMAIN" \}\}'[\s\S]{0,120}?policy: bypass/.test(text)
+  check('鉴权门户自身 bypass', authBypass, '防止"要登录才能登录"的死锁')
+
+  // 4) 内部区必须限定组 + two_factor
+  const adminRule = text.match(/\^\/admin\(\/\.\*\)\?\$'[\s\S]{0,400}?policy: two_factor/)?.[0] ?? ''
+  check('/admin 要求 two_factor', adminRule !== '')
+  check('/admin 限定 livefab 组', /group:livefab-core/.test(adminRule) && /group:livefab-collaborator/.test(adminRule),
+    '不在组里连门都进不去')
+
+  // 5) 不得把密钥硬编码在版本库里
+  const hardcoded = /secret:\s*['"]?[A-Za-z0-9+/=]{16,}/.test(text)
+  check('会话密钥未硬编码', !hardcoded, hardcoded ? '发现疑似硬编码密钥' : '密钥经 *_FILE / {{ secret }} 注入')
+}
+runAutheliaChecks(autheliaText)
+
+// ─── 环境变量一致性 ──────────────────────────────────────────────────
+const referenced = new Set<string>()
+for (const m of composeText.matchAll(/\$\{(\w+)[:?}]/g)) referenced.add(m[1]!)
+for (const m of caddyText.matchAll(/\{\$(\w+)\}/g)) referenced.add(m[1]!)
+for (const m of autheliaText.matchAll(/env "(\w+)"/g)) referenced.add(m[1]!)
+
+const documented = new Set<string>()
+for (const m of envExample.matchAll(/^(\w+)=/gm)) documented.add(m[1]!)
+for (const m of envExample.matchAll(/^#.*?(\w+)=/gm)) documented.add(m[1]!)
+
+const undocumented = [...referenced].filter(v => !documented.has(v) && !v.startsWith('AUTHELIA_'))
+check('引用的环境变量都有文档', undocumented.length === 0,
+  undocumented.length ? `.env.example 缺：${undocumented.join(', ')}` : `${referenced.size} 个变量已覆盖`)
+
+// ─── 汇总 ────────────────────────────────────────────────────────────
+const failed = results.filter(r => !r.ok)
+console.log(`\n${results.length - failed.length}/${results.length} 项通过`)
+if (failed.length) {
+  console.error('✗ M0 骨架校验未通过：')
+  for (const f of failed) console.error(`  · ${f.name} ${f.detail}`)
+  process.exit(1)
+}
+console.log('✓ M0 骨架校验通过（结构层面；未实际启动容器）')

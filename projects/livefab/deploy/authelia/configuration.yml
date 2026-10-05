@@ -1,0 +1,106 @@
+# LiveFab · Authelia 配置（M0）
+#
+# Authelia 在本方案里的角色是**网关鉴权**（配合 Caddy 的 forward_auth），
+# 不是"应用内登录"。各应用仍各自持有账号体系——这是 [L11] 的现实：
+# 我们不自研业务功能，就不能强行统一每个件的登录方式。
+#
+# ★ 与分级权限（L4）的对应关系（**Authelia 只管其中一层**）：
+#   身份层 = 本文件的 groups（livefab-admin / livefab-core / livefab-collaborator）← Authelia 管这层
+#   应用层 = 各件内部的角色                                        ← 管不到
+#   信息层 = 文档/内容的密级标记                                    ← 管不到
+#   别指望它管后两层，那是 docs/04 §4.4 说的"三层缺一会出漏洞"。
+#
+# ★ 规则分层是 docs/01 §5.3 的硬要求：**公开区不得被登录墙挡住**。
+
+host: 0.0.0.0
+port: 9091
+
+log:
+  level: info
+
+theme: auto
+
+# ── 会话 ─────────────────────────────────────────────────────────────
+# ⚠️ 不要把 session.secret 写在这里：compose 通过 AUTHELIA_SESSION_SECRET_FILE
+#    注入（密钥文件在 /data/secrets/，不进版本库）。写死在这里等于泄露。
+session:
+  name: livefab_session
+  expiration: 1h
+  inactivity: 5m
+
+# ── 存储 ─────────────────────────────────────────────────────────────
+# 会话与二次认证状态存 PostgreSQL（compose 里的 authelia-db）。
+# （早先版本这里误写成 local/sqlite，与 compose 的 PG 不一致——已改。）
+storage:
+  encryption_key: '{{ secret "/data/secrets/storage" }}'
+  postgres:
+    address: 'tcp://authelia-db:5432'
+    database: authelia
+    username: authelia
+    password: '{{ secret "/data/secrets/authelia_db_password" }}'
+
+# ── 通知：M1 接真实 SMTP 前先落文件，避免启动检查失败 ────────────────
+notifier:
+  disable_startup_check: true
+  filesystem:
+    filename: /data/notification.txt
+
+# ── 用户数据库 ───────────────────────────────────────────────────────
+# M0 用文件后端。users.yml 里是**占位哈希**，必须自己生成：
+#   docker run --rm authelia/authelia:4.39 authelia hash-password '你的密码'
+authentication_backend:
+  file:
+    path: /config/users.yml
+    password:
+      algorithm: argon2id
+      iterations: 3
+      memory: 65536
+      parallelism: 4
+
+# ── 访问控制 ★ 核心 ──────────────────────────────────────────────────
+access_control:
+  default_policy: deny
+
+  rules:
+    # ① 鉴权门户自身必须匿名可达（否则登录页也进不去，会死锁）
+    - domain: 'auth.{{ env "LIVEFAB_PORTAL_DOMAIN" }}'
+      policy: bypass
+
+    # ② 公开区：任何人（含未登录）可看
+    #    ★ 这是 docs/01 §5.3 明确要求的：公开内容不得被登录墙挡住
+    - domain: '{{ env "LIVEFAB_PORTAL_DOMAIN" }}'
+      resources:
+        - '^/$'
+        - '^/blog(/.*)?$'
+        - '^/roadmap$'
+        - '^/assets/.*$'
+        - '^/favicon\.ico$'
+      policy: bypass
+
+    # ③ 个人区：任何已登录用户（注册用户级）
+    - domain: '{{ env "LIVEFAB_PORTAL_DOMAIN" }}'
+      resources:
+        - '^/account(/.*)?$'
+      policy: one_factor
+
+    # ④ 内部区：必须是协作者或核心成员
+    #    ★ "分级"真正落地处——**不在组里的人连门都进不去**
+    - domain: '{{ env "LIVEFAB_PORTAL_DOMAIN" }}'
+      resources:
+        - '^/admin(/.*)?$'
+      subject:
+        - 'group:livefab-core'
+        - 'group:livefab-collaborator'
+      policy: two_factor
+
+# ── 双因素：M0 只开 TOTP（不依赖邮件/SMS，先能跑）────────────────────
+totp:
+  issuer: LiveFab
+  period: 30
+  digits: 6
+
+# ── 防爆破 ───────────────────────────────────────────────────────────
+regulation:
+  max_retries: 5
+  find_time: 2m
+  ban_time: 5m

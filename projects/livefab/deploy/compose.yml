@@ -1,0 +1,183 @@
+# LiveFab · M0 骨架
+#
+# 这是 M0 的"能跑的空壳"：反代 + 前置鉴权 + 门户占位 + 前台件（Ghost）。
+# 目的不是功能，而是**把整合这件事先跑通**——见 docs/03_分阶段落地路线.md §一。
+#
+# ⚠️ 两条已写进决策的架构约束（不要在后来的改动里丢掉）：
+#   1. 内部件**不发布端口**，只在 internal 网络上；对外只有反代一个入口。
+#   2. 前置鉴权**必须分层**——公开区不得被登录墙挡住（docs/01 §5.3）。
+#      Authelia 的规则按 host/路径分域，见 deploy/authelia/configuration.yml。
+#
+# 用法：
+#   cp .env.example .env && 编辑 .env（至少改域名与两个密钥）
+#   docker compose up -d
+#   bun run tools/validate-compose.ts     # 结构校验（不需要 docker）
+
+name: livefab
+
+services:
+  # ── 反代：唯一对外入口（也是 TLS 终止点）──────────────────────────
+  caddy:
+    image: caddy:2.11-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      LIVEFAB_DOMAIN: ${LIVEFAB_DOMAIN:?需在 .env 设置}
+      LIVEFAB_PORTAL_DOMAIN: ${LIVEFAB_PORTAL_DOMAIN:?需在 .env 设置}
+      LIVEFAB_FORUM_DOMAIN: ${LIVEFAB_FORUM_DOMAIN:?需在 .env 设置}
+    networks:
+      - edge
+      - internal
+    depends_on:
+      authelia:
+        condition: service_started
+      portal:
+        condition: service_started
+
+  # ── 前置鉴权：网关层的"挡未登录者"────────────────────────────────
+  # 注意：Authelia 本体不做反代，它只提供 /api/verify 给 Caddy 的 forward_auth 调用。
+  authelia:
+    image: authelia/authelia:4.39
+    restart: unless-stopped
+    volumes:
+      - ./deploy/authelia/configuration.yml:/config/configuration.yml:ro
+      - ./deploy/authelia/users.yml:/config/users.yml:ro
+      - authelia_data:/data
+    environment:
+      AUTHELIA_JWT_SECRET_FILE: /data/secrets/jwt
+      AUTHELIA_SESSION_SECRET_FILE: /data/secrets/session
+      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /data/secrets/storage
+      AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: /data/secrets/reset
+      AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE: /data/secrets/smtp
+    # 不发布端口：只在 internal 网络上，由 caddy 反代
+    networks:
+      - internal
+    depends_on:
+      authelia-init:
+        condition: service_completed_successfully
+      authelia-db:
+        condition: service_healthy
+
+  # 一次性任务：生成 Authelia 需要的几个密钥文件（幂等，已存在则跳过）
+  authelia-init:
+    image: authelia/authelia:4.39
+    volumes:
+      - authelia_data:/data
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        mkdir -p /data/secrets
+        for f in jwt session storage reset smtp; do
+          if [ ! -s "/data/secrets/$$f" ]; then
+            head -c 64 /dev/urandom | base64 | tr -d '\n' > "/data/secrets/$$f"
+            echo "已生成密钥: $$f"
+          fi
+        done
+        # Authelia 的 PG 密码：以文件形式提供给 configuration.yml 的 {{ secret }}
+        if [ ! -s /data/secrets/authelia_db_password ]; then
+          printf '%s' "$$AUTHELIA_DB_PASSWORD" > /data/secrets/authelia_db_password
+          echo "已写入数据库密码文件"
+        fi
+        chown -R 1000:1000 /data || true
+    environment:
+      AUTHELIA_DB_PASSWORD: ${AUTHELIA_DB_PASSWORD:?需在 .env 设置}
+    networks:
+      - internal
+
+  # Authelia 的存储（会话、二次认证状态）
+  authelia-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: authelia
+      POSTGRES_USER: authelia
+      POSTGRES_PASSWORD: ${AUTHELIA_DB_PASSWORD:?需在 .env 设置}
+    volumes:
+      - authelia_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U authelia -d authelia"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  # ── 门户占位：M0 只需要它"能起来、能被反代、能显示登录状态"──
+  # 真正的门户用 Astro 写（L5c），M1 再做。
+  portal:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    volumes:
+      - ./deploy/portal:/usr/share/nginx/html:ro
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost/ >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # ── 前台件：Ghost（L5 已定）─────────────────────────────────────
+  # 分成 ghost 与 ghost-db 两个服务；Ghost 需要 MySQL 8（官方要求）。
+  ghost:
+    image: ghost:5-alpine
+    restart: unless-stopped
+    environment:
+      url: https://${LIVEFAB_DOMAIN:?}
+      database__client: mysql
+      database__connection__host: ghost-db
+      database__connection__user: ghost
+      database__connection__password: ${GHOST_DB_PASSWORD:?需在 .env 设置}
+      database__connection__database: ghost
+      # M0 先禁用 Ghost 自带前端主题的对外暴露由 Caddy 决定（见 Caddyfile）
+      NODE_ENV: production
+    volumes:
+      - ghost_content:/var/lib/ghost/content
+    networks:
+      - internal
+    depends_on:
+      ghost-db:
+        condition: service_healthy
+
+  ghost-db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${GHOST_DB_ROOT_PASSWORD:?需在 .env 设置}
+      MYSQL_DATABASE: ghost
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: ${GHOST_DB_PASSWORD:?需在 .env 设置}
+    volumes:
+      - ghost_db:/var/lib/mysql
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - internal
+
+networks:
+  # edge：唯一连外网的一层（只有 caddy）
+  edge:
+    driver: bridge
+  # internal：所有内部件在此；标 internal 防止它们直接出网
+  internal:
+    driver: bridge
+    internal: true
+
+volumes:
+  caddy_data:
+  caddy_config:
+  authelia_data:
+  authelia_db:
+  ghost_content:
+  ghost_db:

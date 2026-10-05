@@ -74,6 +74,78 @@
 **同时明确列出**：M1 候选清单（Caddy + Authelia / Payload / Discourse 或 HumHub / Restic / Uptime Kuma）、
 各推迟项及其**触发条件**、以及**三类数据缺失**（反馈投票 / 状态页 / 邮件送达）不得据此决策。
 
+### 新增（M0 骨架：反代 + 前置鉴权 + 门户占位 + Ghost）
+
+用户要求"可以起草 M0 的 compose 骨架"。交付 [`deploy/`](deploy/)：
+
+- [`compose.yml`](deploy/compose.yml)：caddy（唯一对外入口）+ authelia（网关鉴权）+ authelia-db（PG）
+  + authelia-init（一次性任务，**自动生成密钥到数据卷**，避免把密钥写进 `.env` 再提交）
+  + portal（nginx 占位）+ ghost + ghost-db（MySQL 8）。
+  **双网络设计**：`edge`（只有 caddy 连外网）与 `internal`（**标 `internal: true` 防内部件出网**）。
+- [`caddy/Caddyfile`](deploy/caddy/Caddyfile)：**鉴权分层就写在这里**——
+  公开区**不经过 forward_auth**，`/account/*` 与 `/admin/*` 在网关就被拦住。
+- [`authelia/configuration.yml`](deploy/authelia/configuration.yml)：默认 `deny`，
+  规则按 公开（bypass）/ 个人（one_factor）/ 内部（two_factor + 限定组）三档。
+- [`authelia/users.yml`](deploy/authelia/users.yml)：占位用户，**组名直接对应 L4 的分级**
+  （`livefab-admin` / `livefab-core` / `livefab-collaborator`）。
+- `.env.example`、`.gitignore`、`deploy/portal/index.html`。
+
+### 新增（M0 骨架的结构校验器，带负向自检）
+
+[`tools/validate-compose.ts`](tools/validate-compose.ts)：把三条**错了也不报错**的架构约束
+变成可断言的不变量——**M0 的产物是配置，而配置错了通常不报错，只是安静地不生效**：
+
+1. 只有 caddy 发布端口，其余件只在 `internal` 网络且该网络标了 `internal: true`；
+2. **鉴权分层**：公开区不得经 `forward_auth`，`/account/*` 与 `/admin/*` 必须被网关拦住，
+   且 `/admin/*` 限定 livefab 组 + 要求双因素；
+3. 默认 `deny` + 鉴权门户自身 `bypass`（防"要登录才能登录"的死锁）。
+
+**实测 29/29 通过**；并带 `--selftest` **负向自检（3/3 可捕获）**——
+故意给 ghost 加 ports、给公开区加 forward_auth、把公开路径的 bypass 改成 two_factor，
+检查器都抓到了。理由同《未来档案》：**一个总是通过的检查器比没有检查器更糟**。
+
+> **顺带修掉校验器自己的两个 bug**（都靠真跑一遍才暴露）：
+> ① 解析 compose 时按缩进切块，把顶层 `networks:`/`volumes:` 也当成了服务 →
+> "内部件都挂 internal"误报；② `authelia-init` 是一次性任务，被误判为"缺 restart 策略"。
+
+### 变更（决策与调研）
+
+**用户决策（2026-10-03）**：
+- **L5 → Ghost**（理由：功能全，日后再看情况换 Payload）；
+- **L5c（新增）→ 整合 Astro**；
+- **L6 → 论坛优先 NodeBB**，要求 **JS/TS 技术栈**，待评估后拍板；
+- **L7 → 先用 GitHub**（C 段自托管整体推迟）；
+- **L4 / L8 / L9 / L10 / L11 → 按推荐**。
+除 L6 外全部已回写 [00 决策总表](docs/00_决策总表.md)（v0.4）。
+
+**L5c 的整合模式**（[04 §1.2·补](docs/04_开源件调研与选型.md)）：
+**Ghost headless + Astro 构建期经 Content API 取数**（Astro 官方有
+[Ghost 集成指南](https://docs.astro.build/en/guides/cms/ghost/)）。
+这样既用 Ghost 的后台与会员能力，又保住 [L2](docs/00_决策总表.md) 的"薄门户 + 自有前端"。
+
+**NodeBB 专项核查**（[research §八](docs/research/01_开源件事实核查.md)）：
+- 在"要 JS/TS"约束下，**NodeBB 是本批唯一符合的论坛**（Flarum/Discourse/HumHub/phpBB 都是 PHP/Ruby）；
+- v4.16.1（**2026-10-02，核查当日发版**，本批最活跃）；GPL-3.0；Node.js + **MongoDB 默认，也支持 PG/Redis**；
+  官方**有 Caddy 反代文档**；v4 起内置 **ActivityPub 联邦**；
+- ★ **修正前轮结论**：NodeBB **有厂商维护的通用 OIDC 插件**
+  （`nodebb-plugin-fusionauth-oidc` 2.0.0、BSD-2、仓库 2026-07 仍更新）——
+  先前"无可靠 SSO 路径"的说法不准确；
+- ⚠️ 一个坑：npm 上的 `nodebb` 包是 **2016 年的 1.4.0**，看它会得出"已停更"的**错误结论**。
+
+**⚠️ 一个必须说清的约束（L5 选 Ghost 后暴露）**：
+**Ghost 不原生支持 OIDC**（后台邮箱密码、会员走 magic link），详见
+[research §九](docs/research/01_开源件事实核查.md)。据此把"支持 OIDC"
+**从"所有件都要满足"降级为"内部件尽量满足 + 为不满足者准备网关方案"**——
+因为面向外部的产品，登录**是产品功能的一部分**，不是可替换的基础设施。
+M0 先让 Ghost 直连（含 `/ghost/`）以跑通整合，**M1 必须收口**（见 [04 §1.4](docs/04_开源件调研与选型.md)）。
+
+### ⚠️ M0 的验证边界（诚实清单）
+
+**已做**：结构校验 29/29 + 负向自检 3/3。
+**未做**：**容器从未真正启动过**——本机无可用 Docker 环境（registry 不可达、容器内无外网）。
+因此 Authelia 的 PG 连接与密钥生成、Caddyfile 语法、**Ghost 前置保护是否与其会话冲突**、
+各件真实内存占用，**全部未验证**。第一次 `docker compose up` 很可能还要修几处。
+
 ### 备注
 
 - 本阶段**未创建任何实现代码**（无 compose、无配置），符合"先写方案让我决策"的要求；

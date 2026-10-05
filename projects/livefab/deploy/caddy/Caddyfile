@@ -1,0 +1,61 @@
+# LiveFab · Caddy 反代配置（M0）
+#
+# 这是唯一的对外入口。三条设计约束：
+#   1. **只有 caddy 发布端口**；其余服务只在 internal 网络上（见 compose.yml）。
+#   2. **前置鉴权分层**（docs/01 §5.3）：
+#        · 公开区（门户首页、博客、公开路线图）→ **不挡**，任何人可看；
+#        · 个人区（/account/**）→ 挡，进入后是"我自己的东西"；
+#        · 内部区（/admin/**、未来的看板/文档/密钥）→ 必须在**网关**就拦住。
+#   3. Authelia 的 forward_auth **只对需要保护的路径生效**，不要整站一条规则——
+#      整站挡登录会把公开内容也挡掉，那正是 §5.3 明确不允许的。
+
+{
+	# M0 阶段用邮箱接收 ACME 通知；上线前改成真实地址
+	email {$LIVEFAB_ACME_EMAIL}
+	# 本地调试时若没有公网域名，可临时加 local_certs 并把域名指向 localhost
+}
+
+# ══ 内部区：必须登录，且在网关就被拦住 ══════════════════════════════
+# M0 还没有内部件，但先把"内部区必须在网关拦"这条**结构化地留在这里**，
+# 避免 M1 加看板/文档时忘了它。
+{$LIVEFAB_PORTAL_DOMAIN} {
+	handle /admin/* {
+		forward_auth authelia:9091 {
+			uri /api/verify?rd=https://auth.{$LIVEFAB_PORTAL_DOMAIN}
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		respond "LiveFab 内部区（M1 起接入看板/文档/密钥）" 200
+	}
+
+	# 个人区：挡登录
+	handle /account/* {
+		forward_auth authelia:9091 {
+			uri /api/verify?rd=https://auth.{$LIVEFAB_PORTAL_DOMAIN}
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		respond "LiveFab 个人区（M1 起展示我的工单/议题）" 200
+	}
+
+	# ★ 公开区：**不经过 forward_auth**——这是分层的关键
+	handle {
+		reverse_proxy portal:80
+	}
+}
+
+# ══ 鉴权门户：Authelia 自己的界面 ═══════════════════════════════════
+auth.{$LIVEFAB_PORTAL_DOMAIN} {
+	reverse_proxy authelia:9091
+}
+
+# ══ 前台件：Ghost ═══════════════════════════════════════════════════
+# 注意：M0 让 Ghost 直接对外（这样能立刻看到内容/后台），
+# 因为 **Ghost 不支持 OIDC，套 Authelia 会与它自己的会话冲突**（见 docs/research §九）。
+# 后台 /ghost/ 在 M1 要换成"仅内网可见"或前置 Basic Auth —— 见 docs/04 §1.4。
+{$LIVEFAB_DOMAIN} {
+	reverse_proxy ghost:2368
+}
+
+# ══ 论坛：NodeBB（L6 待定，M0 先留位）═══════════════════════════════
+# {$LIVEFAB_FORUM_DOMAIN} {
+# 	reverse_proxy nodebb:4567
+# }

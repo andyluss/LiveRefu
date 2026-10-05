@@ -1,0 +1,35 @@
+# LiveFab · Authelia 用户文件（M0 占位）
+#
+# ⚠️ 下面两个账号的密码哈希是**占位值**，不是可用密码。
+#    必须用官方工具生成，否则登录会失败：
+#
+#      docker run --rm authelia/authelia:4.39 authelia hash-password '你的密码'
+#
+#    把输出（形如 $argon2id$v=19$m=65536,t=3,p=4$...）替换下面的 password 值。
+#
+# ★ 组名与分级权限（L4）的对应：
+#   livefab-admin        → 管理员（你）
+#   livefab-core         → 核心成员：可进内部区 /admin/**
+#   livefab-collaborator → 外部协作者：可进内部区，但**权限由各应用再收窄**
+#   （公开/注册用户不需要在这里有账号——公开区 bypass，注册用户在各应用内）
+#
+# displayname/email 用于界面显示与通知；必须是唯一的。
+
+users:
+  # 管理员
+  admin:
+    displayname: 'LiveFab 管理员'
+    # ⚠️ 占位哈希，务必替换（见文件头说明）
+    password: '$argon2id$v=19$m=65536,t=3,p=4$REPLACE_ME_ADMIN$REPLACE_ME_ADMIN'
+    email: admin@example.com
+    groups:
+      - livefab-admin
+      - livefab-core
+
+  # 外部协作者（示例——用来验证"协作者能进 A 但不能进全部"这条分级）
+  collaborator:
+    displayname: '示例协作者'
+    password: '$argon2id$v=19$m=65536,t=3,p=4$REPLACE_ME_COLLAB$REPLACE_ME_COLLAB'
+    email: collaborator@example.com
+    groups:
+      - livefab-collaborator
