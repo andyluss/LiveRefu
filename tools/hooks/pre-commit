@@ -8,10 +8,10 @@
 #   4. 规则目录 rules/ 的元规则结构 + 规则演进状态（暂存涉及 rules/ 时, 交 rules/meta/*.ts）。
 #   5. Refu Game 001 难度模型：自检 + 章节带位 + 远征节点带位（暂存涉及 refu-game-001 或模拟脚本时,
 #      交 tools/sim_refu_game_001.ts；数值一改就会触发）。
-#   6. LiveFab 变更日志格式：版本头/时间单调/标准类目，以及**版本号与 git tag 是否对得上**
-#      （暂存涉及 projects/livefab/CHANGELOG.md 时，交 projects/livefab/tools/check-changelog.ts）。
-#   6. LiveFab 变更日志格式：版本头/时间单调/标准类目，以及**版本号与 git tag 是否对得上**
-#      （暂存涉及 projects/livefab/CHANGELOG.md 时，交 projects/livefab/tools/check-changelog.ts）。
+#   6. 变更日志格式：版本头/时间单调/标准类目，以及**版本号与 git tag 是否对得上**
+#      （暂存涉及根 CHANGELOG.md 或 projects/livefab/CHANGELOG.md 时，交 tools/check_changelog.ts）。
+#   6. 变更日志格式：版本头/时间单调/标准类目，以及**版本号与 git tag 是否对得上**
+#      （暂存涉及根 CHANGELOG.md 或 projects/livefab/CHANGELOG.md 时，交 tools/check_changelog.ts）。
 #
 # 启用方式：git config core.hooksPath tools/hooks（仓库已配置）。
 # 临时跳过：git commit --no-verify。
@@ -27,7 +27,7 @@ run_ts() { node --experimental-strip-types "$1" "${@:2}"; }
 # ---- 1) 暂存的 Markdown 相对链接校验 ----
 LINK_SCRIPT="$GIT_ROOT/tools/check_links.ts"
 if [ ! -f "$LINK_SCRIPT" ]; then
-  echo "[pre-commit:check-links] 未找到 $LINK_SCRIPT，跳过链接校验。" >&2
+  echo "[pre-commit:check-links] 未找到 ${LINK_SCRIPT}，跳过链接校验。" >&2
 else
   STAGED=()
   while IFS= read -r -d '' f; do STAGED+=("$f"); done \
@@ -46,22 +46,31 @@ fi
 # ---- 2) 数据表 schema 校验 ----
 DATA_SCRIPT="$GIT_ROOT/tools/check_data.ts"
 if [ ! -f "$DATA_SCRIPT" ]; then
-  echo "[pre-commit:check-data] 未找到 $DATA_SCRIPT，跳过数据校验。" >&2
-  # ---- 6) LiveFab 变更日志格式与版本-标签一致性 ----
-CHANGELOG_SCRIPT="$GIT_ROOT/projects/livefab/tools/check-changelog.ts"
-if git diff --cached --name-only --diff-filter=ACM | grep -q '^projects/livefab/CHANGELOG\.md$'; then
+  echo "[pre-commit:check-data] 未找到 ${DATA_SCRIPT}，跳过数据校验。" >&2
+  # ---- 6) 变更日志格式与版本-标签一致性（通用：根 + 各项目）----
+# 规格见 tech/changelog-convention.md 与 projects/livefab/docs/06_变更日志方案选择.md（方案甲）。
+# ★ 由 LiveFab 专用提升为**通用**：本工作区有多个 CHANGELOG，规格相同、
+#   只是路径与 tag 前缀不同（根用 workspace-v，LiveFab 用 livefab-v）。
+CHANGELOG_SCRIPT="$GIT_ROOT/tools/check_changelog.ts"
+check_changelog() {  # $1=相对仓库根的路径  $2=tag 前缀  $3=显示名
   if [ ! -f "$CHANGELOG_SCRIPT" ]; then
-    echo "[pre-commit:livefab-changelog] 未找到 $CHANGELOG_SCRIPT，跳过。" >&2
-  else
-    echo "[pre-commit:livefab-changelog] 暂存涉及 LiveFab 变更日志，校验格式与版本-标签一致性..." >&2
-    if run_ts "$CHANGELOG_SCRIPT" >&2; then
-      echo "[pre-commit:livefab-changelog] 通过。" >&2
-    else
-      echo "[pre-commit:livefab-changelog] 变更日志格式不合规，或版本头时间与 git tag 对不上，已拦截提交。" >&2
-      echo "  规格见 projects/livefab/docs/06_变更日志方案选择.md（方案甲）。" >&2
-      exit 1
-    fi
+    echo "[pre-commit:changelog] 未找到 ${CHANGELOG_SCRIPT}，跳过 $3。" >&2
+    return 0
   fi
+  echo "[pre-commit:changelog] 校验 $3 的格式与版本-标签一致性..." >&2
+  if run_ts "$CHANGELOG_SCRIPT" --file "$1" --tag-prefix "$2" >&2; then
+    echo "[pre-commit:changelog] $3 通过。" >&2
+  else
+    echo "[pre-commit:changelog] $3 不合规（格式，或版本头时间与 git tag 对不上），已拦截提交。" >&2
+    exit 1
+  fi
+}
+STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACM)"
+if printf '%s\n' "$STAGED_ALL" | grep -q '^CHANGELOG\.md$'; then
+  check_changelog CHANGELOG.md workspace-v "工作区根日志"
+fi
+if printf '%s\n' "$STAGED_ALL" | grep -q '^projects/livefab/CHANGELOG\.md$'; then
+  check_changelog projects/livefab/CHANGELOG.md livefab-v "LiveFab 日志"
 fi
 
 exit 0
@@ -82,7 +91,7 @@ fi
 META_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts"
 if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system/'; then
   if [ ! -f "$META_SCRIPT" ]; then
-    echo "[pre-commit:meta-rules] 未找到 $META_SCRIPT，跳过元规则校验。" >&2
+    echo "[pre-commit:meta-rules] 未找到 ${META_SCRIPT}，跳过元规则校验。" >&2
   else
     echo "[pre-commit:meta-rules] 暂存涉及 lab/formal-system，校验元规则 M1+M2 结构..." >&2
     if run_ts "$META_SCRIPT" >&2; then
@@ -133,7 +142,7 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^rules/'; then
       exit 1
     fi
   else
-    echo "[pre-commit:rules-meta] 未找到 $RULES_META_SCRIPT，跳过。" >&2
+    echo "[pre-commit:rules-meta] 未找到 ${RULES_META_SCRIPT}，跳过。" >&2
   fi
   if [ -f "$RULES_EVOL_SCRIPT" ]; then
     echo "[pre-commit:rules-meta:evolution] 校验规则演进状态(M3，覆盖元规则 M 与具体规则 R)..." >&2
@@ -145,7 +154,7 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^rules/'; then
       exit 1
     fi
   else
-    echo "[pre-commit:rules-meta:evolution] 未找到 $RULES_EVOL_SCRIPT，跳过。" >&2
+    echo "[pre-commit:rules-meta:evolution] 未找到 ${RULES_EVOL_SCRIPT}，跳过。" >&2
   fi
 fi
 
@@ -153,7 +162,7 @@ fi
 SIM_SCRIPT="$GIT_ROOT/tools/sim_refu_game_001.ts"
 if git diff --cached --name-only --diff-filter=ACM | grep -qE '^(doc/refu-game-001/|tools/sim_refu_game_001\.ts)'; then
   if [ ! -f "$SIM_SCRIPT" ]; then
-    echo "[pre-commit:refu-sim] 未找到 $SIM_SCRIPT，跳过难度模型校验。" >&2
+    echo "[pre-commit:refu-sim] 未找到 ${SIM_SCRIPT}，跳过难度模型校验。" >&2
   else
     echo "[pre-commit:refu-sim] 暂存涉及 refu-game-001，校验难度模型（自检/章节带位/远征节点）..." >&2
     if run_ts "$SIM_SCRIPT" --selftest >&2 \
@@ -174,21 +183,30 @@ if git diff --cached --name-only --diff-filter=ACM | grep -qE '^(doc/refu-game-0
   fi
 fi
 
-# ---- 6) LiveFab 变更日志格式与版本-标签一致性 ----
-CHANGELOG_SCRIPT="$GIT_ROOT/projects/livefab/tools/check-changelog.ts"
-if git diff --cached --name-only --diff-filter=ACM | grep -q '^projects/livefab/CHANGELOG\.md$'; then
+# ---- 6) 变更日志格式与版本-标签一致性（通用：根 + 各项目）----
+# 规格见 tech/changelog-convention.md 与 projects/livefab/docs/06_变更日志方案选择.md（方案甲）。
+# ★ 由 LiveFab 专用提升为**通用**：本工作区有多个 CHANGELOG，规格相同、
+#   只是路径与 tag 前缀不同（根用 workspace-v，LiveFab 用 livefab-v）。
+CHANGELOG_SCRIPT="$GIT_ROOT/tools/check_changelog.ts"
+check_changelog() {  # $1=相对仓库根的路径  $2=tag 前缀  $3=显示名
   if [ ! -f "$CHANGELOG_SCRIPT" ]; then
-    echo "[pre-commit:livefab-changelog] 未找到 $CHANGELOG_SCRIPT，跳过。" >&2
-  else
-    echo "[pre-commit:livefab-changelog] 暂存涉及 LiveFab 变更日志，校验格式与版本-标签一致性..." >&2
-    if run_ts "$CHANGELOG_SCRIPT" >&2; then
-      echo "[pre-commit:livefab-changelog] 通过。" >&2
-    else
-      echo "[pre-commit:livefab-changelog] 变更日志格式不合规，或版本头时间与 git tag 对不上，已拦截提交。" >&2
-      echo "  规格见 projects/livefab/docs/06_变更日志方案选择.md（方案甲）。" >&2
-      exit 1
-    fi
+    echo "[pre-commit:changelog] 未找到 ${CHANGELOG_SCRIPT}，跳过 ${3}。" >&2
+    return 0
   fi
+  echo "[pre-commit:changelog] 校验 ${3} 的格式与版本-标签一致性..." >&2
+  if run_ts "$CHANGELOG_SCRIPT" --file "$1" --tag-prefix "$2" >&2; then
+    echo "[pre-commit:changelog] ${3} 通过。" >&2
+  else
+    echo "[pre-commit:changelog] ${3} 不合规（格式，或版本头时间与 git tag 对不上），已拦截提交。" >&2
+    exit 1
+  fi
+}
+STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACM)"
+if printf '%s\n' "$STAGED_ALL" | grep -q '^CHANGELOG\.md$'; then
+  check_changelog CHANGELOG.md workspace-v "工作区根日志"
+fi
+if printf '%s\n' "$STAGED_ALL" | grep -q '^projects/livefab/CHANGELOG\.md$'; then
+  check_changelog projects/livefab/CHANGELOG.md livefab-v "LiveFab 日志"
 fi
 
 exit 0

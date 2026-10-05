@@ -17,9 +17,13 @@
  *      版本头的时间必须等于该标签指向提交的时间——这条把 CHANGELOG 与 git 钉在一起，
  *      是最有价值的一条（前面几条只保证"格式自洽"，这条保证"内容不假"）
  *
- * 用法：
- *   bun run tools/check-changelog.ts
- *   bun run tools/check-changelog.ts --selftest   # 负向自检
+ * 用法（工作区级工具，可校验任意 CHANGELOG）：
+ *   node --experimental-strip-types tools/check_changelog.ts --file CHANGELOG.md --tag-prefix workspace-v
+ *   node --experimental-strip-types tools/check_changelog.ts --file projects/livefab/CHANGELOG.md --tag-prefix livefab-v
+ *   node --experimental-strip-types tools/check_changelog.ts --selftest
+ *
+ * ★ 由 projects/livefab/tools/check-changelog.ts 提升而来（原本写死了路径与 tag 前缀）。
+ *   提为工作区级是因为：本工作区有多个 CHANGELOG，规格相同、只是路径与 tag 前缀不同。
  */
 
 import { readFileSync } from 'node:fs'
@@ -28,8 +32,20 @@ import { execFileSync } from 'node:child_process'
 
 // ⚠️ 用 import.meta.dirname 而不是 Bun 专有的 import.meta.dir —— 本脚本要能在 node 下跑
 const ROOT = resolve(import.meta.dirname, '..')
-const FILE = join(ROOT, 'CHANGELOG.md')
 const SELFTEST = process.argv.includes('--selftest')
+
+/** 取 `--flag value` 形式的参数 */
+function arg(flag: string): string | undefined {
+  const i = process.argv.indexOf(flag)
+  return i >= 0 ? process.argv[i + 1] : undefined
+}
+
+// ★ 提为工作区级工具后要能校验**任意** CHANGELOG：
+//   本工作区有多个（根 `CHANGELOG.md` 与各项目的），
+//   而版本 tag 的前缀也不同（根用 `workspace-v`、LiveFab 用 `livefab-v`）。
+const REL_FILE = arg('--file') ?? 'CHANGELOG.md'
+const FILE = resolve(ROOT, REL_FILE)
+const TAG_PREFIX = arg('--tag-prefix') ?? ''
 
 /** 标准类目（R05 §四） */
 const CATEGORIES = ['新增', '变更', '弃用', '移除', '修复', '安全'] as const
@@ -138,7 +154,7 @@ if (SELFTEST) {
 // ══════════════════════════════════════════════════════════════════════
 // 正式校验
 // ══════════════════════════════════════════════════════════════════════
-console.log('变更日志校验\n')
+console.log(`变更日志校验（${REL_FILE}${TAG_PREFIX ? `, tag 前缀 ${TAG_PREFIX}` : ''}）\n`)
 const text = readFileSync(FILE, 'utf8')
 const p = parse(text)
 
@@ -174,18 +190,22 @@ check('版本时间不在未来', future.length === 0,
 
 // ★ 版本号 ↔ git tag：把 CHANGELOG 与 git 钉在一起
 //   其余几条只保证"格式自洽"，这条保证"内容不假"。
-const tagChecks = p.versions.map(v => {
-  const tag = `livefab-v${v.ver}`
-  const r = sh(['git', 'log', '-1', '--date=format-local:%Y-%m-%d %H:%M', '--format=%ad', tag])
-  return { ver: v.ver, tag, exists: r.code === 0 && r.out !== '', gitTime: r.out, docTime: v.time }
-})
-const missing = tagChecks.filter(t => !t.exists)
-const mismatched = tagChecks.filter(t => t.exists && t.gitTime !== t.docTime)
-check('版本号与 git tag 对得上',
-  missing.length === 0 && mismatched.length === 0,
-  missing.length ? `缺 tag：${missing.map(t => t.tag).join(', ')}（打 tag 后此项会通过）`
-    : mismatched.length ? mismatched.map(t => `${t.tag}: 文档 ${t.docTime} ≠ git ${t.gitTime}`).join('; ')
-    : tagChecks.map(t => `${t.ver} ✓`).join(' '))
+//   ⚠️ 未传 `--tag-prefix` 时**整条跳过**（不计入 via），而不是"空数组 → 假通过"——
+//      后者会打印一条空 detail 的 ✓，让人以为验过了。
+if (TAG_PREFIX) {
+  const tagChecks = p.versions.map(v => {
+    const tag = `${TAG_PREFIX}${v.ver}`
+    const r = sh(['git', 'log', '-1', '--date=format-local:%Y-%m-%d %H:%M', '--format=%ad', tag])
+    return { ver: v.ver, tag, exists: r.code === 0 && r.out !== '', gitTime: r.out, docTime: v.time }
+  })
+  const missing = tagChecks.filter(t => !t.exists)
+  const mismatched = tagChecks.filter(t => t.exists && t.gitTime !== t.docTime)
+  check('版本号与 git tag 对得上',
+    missing.length === 0 && mismatched.length === 0,
+    missing.length ? `缺 tag：${missing.map(t => t.tag).join(', ')}（打 tag 后此项会通过）`
+      : mismatched.length ? mismatched.map(t => `${t.tag}: 文档 ${t.docTime} ≠ git ${t.gitTime}`).join('; ')
+      : tagChecks.map(t => `${t.ver} ✓`).join(' '))
+}
 
 // ══════════════════════════════════════════════════════════════════════
 const failed = results.filter(r => !r.ok)

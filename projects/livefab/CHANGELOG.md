@@ -7,11 +7,26 @@
 >
 > **版本时间取自 git 提交时间**（不是事后脑补）——每个版本的时间是该版本最后一个提交的时间。
 > 版本与提交的对应见本文件各版本头；对应的 git tag 为 `livefab-v<版本>`。
-> 格式由 [`tools/check-changelog.ts`](tools/check-changelog.ts) 校验并接入 pre-commit。
+> 格式由工作区级 [`tools/check_changelog.ts`](../../tools/check_changelog.ts) 校验并接入 pre-commit。
 
 ## [未发布]
 
 > 下一轮的改动写在这里；发布时并入新版本号并补上时间。
+
+### 变更（变更日志校验器提升为工作区级）
+
+本项目的变更日志校验器原本在 `tools/check-changelog.ts`，写死了路径与 `livefab-v` 前缀。
+本轮把它**提升为工作区级** [`tools/check_changelog.ts`](../../tools/check_changelog.ts)，
+加 `--file` 与 `--tag-prefix` 两个参数 —— 于是**同一份实现**能校验根日志与各项目日志，
+不必为每个 CHANGELOG 复制一份。本项目的 `check:changelog` 脚本已改为调用它。
+
+pre-commit 第 6 步也随之从"LiveFab 专用"改为**通用**：暂存涉及根或本项目的 CHANGELOG
+时分别校验（根用 `workspace-v` 前缀，本项目用 `livefab-v`）。
+
+> 背景：用户要求"变更日志方案一并收口"，于是把它推广到工作区根
+> （根日志此前同样只有一个 `[未发布]` 且小节顺序是乱的，已按真实提交时间重排并分版）。
+> 详见根 [`CHANGELOG.md`](../../CHANGELOG.md) 的 `[未发布]`。
+
 
 ### 变更（变更日志格式：加版本号与精确到分的时间）
 
@@ -30,7 +45,8 @@
   `一处诚实的局限` 等）到标准类目，描述保留；原 `### 备注` 改为 0.1.0 的尾注（它不是变更条目）；
 - `package.json` 补 `version: 0.3.0`；打 tag `livefab-v0.1.0` / `v0.2.0` / `v0.3.0`。
 
-新增 [`tools/check-changelog.ts`](tools/check-changelog.ts) 护栏（并接入 pre-commit），校验 9 项：
+新增 `tools/check-changelog.ts` 护栏（并接入 pre-commit），校验 9 项
+（该文件后来**提升为工作区级** `tools/check_changelog.ts`，以覆盖多个 CHANGELOG）：
 版本头格式、`[未发布]` 位置、**时间单调递减**、**每个小节用标准类目**、无空版本段、
 时间不在未来，以及最关键的一条 —— **版本号与 git tag 对得上**
 （若存在 `livefab-v<版本>`，其时间必须等于该 tag 指向提交的时间）。
