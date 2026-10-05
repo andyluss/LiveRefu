@@ -36,7 +36,7 @@ const read = (p: string) => readFileSync(join(ROOT, p), 'utf8')
 // ─── 读取 ────────────────────────────────────────────────────────────
 const COMPOSE = 'deploy/compose.yml'
 const CADDY = 'deploy/caddy/Caddyfile'
-const AUTHELIA = 'deploy/authelia/configuration.yml'
+const AUTHELIA = 'deploy/authelia/configuration.template.yml'
 
 for (const f of [COMPOSE, CADDY, AUTHELIA, 'deploy/authelia/users.yml', 'deploy/portal/index.html', '.env.example']) {
   check(`文件存在：${f}`, existsSync(join(ROOT, f)))
@@ -117,7 +117,7 @@ function runComposeChecks(text: string) {
 
   // 4) 每个 image 都要有 restart 策略（M0 的"能自己起来"）
   // 一次性任务不需要 restart 策略（它跑完即退）
-  const ONE_SHOT = new Set(['authelia-init'])
+  const ONE_SHOT = new Set(['authelia-secrets', 'authelia-prep', 'nodebb-setup'])
   const noRestart = Object.entries(services)
     .filter(([, b]) => /image:/.test(b))
     .filter(([n]) => !ONE_SHOT.has(n))
@@ -127,9 +127,33 @@ function runComposeChecks(text: string) {
     noRestart.length ? `缺 restart：${noRestart.join(', ')}` : '（authelia-init 是一次性任务，无镜像常驻）')
 
   // 5) 关键服务名必须存在（Caddyfile 里引用了它们）
-  for (const need of ['caddy', 'authelia', 'portal', 'ghost']) {
+  for (const need of ['caddy', 'authelia', 'portal', 'ghost', 'nodebb', 'nodebb-setup', 'authelia-prep', 'authelia-secrets']) {
     check(`compose 含服务 ${need}`, Boolean(services[need]))
   }
+
+  // ★ 以下三条都是"真启动才学到"的教训，写成断言防止回退：
+
+  // 6) NodeBB 镜像必须来自 ghcr：Docker Hub 的 nodebb/docker 停在 2023-07 的 v1.19
+  const nodebbImg = services['nodebb']?.match(/image:\s*(\S+)/)?.[1] ?? ''
+  check('NodeBB 用 ghcr 镜像', nodebbImg.includes('ghcr.io/nodebb/'),
+    nodebbImg || '(未找到 nodebb 镜像)')
+
+  // 7) NodeBB 必须用 NODEBB_* 前缀的安装变量（POSTGRES_* 不被识别）
+  const usesNodebbPrefix = /NODEBB_DB_HOST:/.test(text) && /NODEBB_ADMIN_USERNAME:/.test(text)
+  const usesWrongPrefix = /POSTGRES_HOST:\s*nodebb-db/.test(text)
+  check('NodeBB 用 NODEBB_* 安装变量', usesNodebbPrefix && !usesWrongPrefix,
+    usesWrongPrefix ? '仍在用 POSTGRES_* 前缀（NodeBB 不识别）' : '与镜像内 envConfMap 一致')
+
+  // 8) 覆盖 entrypoint 的服务必须显式设 CONFIG_DIR
+  //    （否则 nodebb setup 把 config.json 写到容器内、不持久，主容器又回安装器）
+  const setupBlock = services['nodebb-setup'] ?? ''
+  const overridesEntrypoint = /entrypoint:/.test(setupBlock)
+  const setsConfigDir = /CONFIG_DIR:\s*\/opt\/config/.test(text)
+  check('一次性安装设了 CONFIG_DIR', !overridesEntrypoint || setsConfigDir,
+    overridesEntrypoint && !setsConfigDir ? '覆盖了 entrypoint 却没设 CONFIG_DIR' : 'OK')
+
+  // 9) 反代后面必须开 trust_proxy（否则用户 IP 记成反代容器 IP）
+  check('NodeBB 开了 trust_proxy', /trust_proxy/.test(text), '反代后端的客户端 IP 正确性')
 
   return services
 }
@@ -152,7 +176,7 @@ function runCaddyChecks(text: string) {
     publicBlock ? '公开区直接反代门户（分层正确）' : '未找到公开区兜底 handle')
 
   // 4) 反代目标必须指向 compose 里的服务名
-  for (const [svc, target] of [['portal', 'portal:80'], ['authelia', 'authelia:9091'], ['ghost', 'ghost:2368']] as const) {
+  for (const [svc, target] of [['portal', 'portal:80'], ['authelia', 'authelia:9091'], ['ghost', 'ghost:2368'], ['nodebb', 'nodebb:4567']] as const) {
     check(`反代指向 ${target}`, text.includes(`reverse_proxy ${target}`), `对应服务 ${svc}`)
   }
 }
@@ -172,8 +196,29 @@ function runAutheliaChecks(text: string) {
   }
 
   // 3) 鉴权门户自身必须 bypass（否则登录页也进不去，死锁）
-  const authBypass = /domain: 'auth\.\{\{ env "LIVEFAB_PORTAL_DOMAIN" \}\}'[\s\S]{0,120}?policy: bypass/.test(text)
+  const authBypass = /domain: '__AUTH_DOMAIN__'[\s\S]{0,120}?policy: bypass/.test(text)
   check('鉴权门户自身 bypass', authBypass, '防止"要登录才能登录"的死锁')
+
+  // 3b) ★ 域名必须用占位符而非 env 模板——env 模板在 domain 字段**会失效**
+  //     （真实 Authelia 报错：could not decode ... to a *url.URL）
+  const envInDomain = /domain:\s*'\{\{/.test(text)
+  check('domain 未用 {{ env }} 模板', !envInDomain,
+    envInDomain ? 'domain 用了 {{ env }}，Authelia 会解析失败' : '用 __PLACEHOLDER__ + 渲染步骤')
+
+  // 3c) reset_password 必须有 jwt_secret 来源。
+  //     注意：不能用 disable/enabled（都不是合法键）。
+  //     密钥经 AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE 提供，
+  //     故这里断言"配置里有 reset_password 段"且"compose 设了对应 *_FILE"。
+  const hasResetSection = /identity_validation:\s*\n\s+reset_password:/.test(
+    text.replace(/^\s*#.*$/gm, ''))
+  check('reset_password 段存在', hasResetSection,
+    '（disable/enabled 都不是合法键，必须提供 jwt_secret 来源）')
+
+  // 3d) session.cookies 段必填
+  // 去掉注释行再匹配——模板里在 session 与 cookies 之间有说明性注释
+  const noComments = text.replace(/^\s*#.*$/gm, '')
+  check('session 含必需的 cookies 段', /session:\s*\n\s+cookies:/.test(noComments),
+    '真实 Authelia 校验要求此项')
 
   // 4) 内部区必须限定组 + two_factor
   const adminRule = text.match(/\^\/admin\(\/\.\*\)\?\$'[\s\S]{0,400}?policy: two_factor/)?.[0] ?? ''
@@ -191,7 +236,9 @@ runAutheliaChecks(autheliaText)
 const referenced = new Set<string>()
 for (const m of composeText.matchAll(/\$\{(\w+)[:?}]/g)) referenced.add(m[1]!)
 for (const m of caddyText.matchAll(/\{\$(\w+)\}/g)) referenced.add(m[1]!)
-for (const m of autheliaText.matchAll(/env "(\w+)"/g)) referenced.add(m[1]!)
+// ⚠️ 先剥注释：模板的说明文字里含 `{{ env "X" }}` 这种示例，
+//    不剥会把它当成真实引用（早先就误报出一个不存在的变量 X）。
+for (const m of autheliaText.replace(/^\s*#.*$/gm, '').matchAll(/env "(\w+)"/g)) referenced.add(m[1]!)
 
 const documented = new Set<string>()
 for (const m of envExample.matchAll(/^(\w+)=/gm)) documented.add(m[1]!)

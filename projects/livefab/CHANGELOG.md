@@ -84,7 +84,7 @@
   **双网络设计**：`edge`（只有 caddy 连外网）与 `internal`（**标 `internal: true` 防内部件出网**）。
 - [`caddy/Caddyfile`](deploy/caddy/Caddyfile)：**鉴权分层就写在这里**——
   公开区**不经过 forward_auth**，`/account/*` 与 `/admin/*` 在网关就被拦住。
-- [`authelia/configuration.yml`](deploy/authelia/configuration.yml)：默认 `deny`，
+- [`authelia/configuration.yml`](deploy/authelia/configuration.template.yml)：默认 `deny`，
   规则按 公开（bypass）/ 个人（one_factor）/ 内部（two_factor + 限定组）三档。
 - [`authelia/users.yml`](deploy/authelia/users.yml)：占位用户，**组名直接对应 L4 的分级**
   （`livefab-admin` / `livefab-core` / `livefab-collaborator`）。
@@ -172,6 +172,51 @@ M0 先让 Ghost 直连（含 `/ghost/`）以跑通整合，**M1 必须收口**�
 真实内存占用，**全部未验证**。另试过 npm 分发的 `caddy`/`authelia` 包，
 **沙箱禁止写临时目录（EPERM）**。
 → 结论：**目前 Caddyfile 只有结构断言、没有语法验证**，这是 M0 最明确的残留风险。
+
+### 验证（**M0 真正跑通**：8 个容器启动，鉴权分层实测生效）
+
+上一轮 M0 只有静态断言 + "容器从未启动过"。本轮网络代理可用后**真的把整套跑起来了**，
+结果**真启动立刻抓出 8 个静态检查完全发现不了的问题**（全部已修）：
+
+| # | 问题 | 后果 |
+| --- | --- | --- |
+| 1 | **compose 相对路径基准搞错**：`./deploy/authelia/…` 相对的是 **compose 文件所在目录**，变成 `deploy/deploy/…` | 容器起不来 |
+| 2 | 文件**不能挂进 `:ro` 卷挂载点内部** | `read-only file system` |
+| 3 | **Authelia 的 `{{ env }}` 不能用于 domain/URL 字段** | 整个 access_control 规则失效 |
+| 4 | **`{{ secret }}` 在文件缺失时静默返回空值**，`config validate` 仍报成功 | 运行时才 `password authentication failed` |
+| 5 | 同一密钥不能有两处来源（配置 `{{ secret }}` + `*_FILE`） | fatal: `already defined in other configuration sources` |
+| 6 | `AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE` 会让它以为配了 SMTP | 与 filesystem notifier 冲突 |
+| 7 | **NodeBB 镜像不在 Docker Hub**（`nodebb/docker` 废弃在 2023-07 的 v1.19） | 拉到三年前的版本 |
+| 8 | **NodeBB 只认 `NODEBB_*` 前缀**；覆盖 entrypoint 必须自设 `CONFIG_DIR` | 一直停在 web 安装器，不报错 |
+
+另两项：Caddy 用假域名时 ACME 必然失败 → 加 `LIVEFAB_LOCAL_CERTS` 开关（内网 CA）；
+NodeBB 在反代后必须开 `trust_proxy`，否则**用户 IP 记成反代容器 IP**（NodeBB 自己在日志里警告）。
+
+**运行时验收**（新增 [`tools/verify-stack.ts`](tools/verify-stack.ts)，真发 HTTPS 请求）→ **7/7 通过**：
+公开区 `GET /` → **200（未被登录墙挡住）**；`/account/` 与 `/admin/` → **302 跳转鉴权门户**；
+鉴权门户自身 200（无"要登录才能登录"死锁）；Ghost 200；**NodeBB 200、47271 字节真实论坛页**。
+
+**静态校验**：`validate-compose.ts` **41/41**（新增 4 条"真启动才学到"的断言）；
+并用**真实工具**验证：`docker compose config`(exit 0)、`caddy validate`(**Valid configuration**)、
+`authelia config validate`(**successfully without errors**)。
+
+### 修复（**我自己的检查器**的一个 bug——被它的负向自检抓出来）
+
+`verify-stack.ts` 的负向自检最初写成"用真实请求模拟破坏"，但那两个探针
+**并没有真的破坏任何东西**（`/account/` 本来就是受保护路径，断言自然通过）→
+自检误报 **1/2 漏检**。已改为**给断言喂已知坏输入**、直接验证断言逻辑 → 现 **4/4 可捕获**。
+
+> 这条本身值得记：**负向自检如果设计错了，会给出虚假的信心**。
+> 原来那个写法看起来在自检，实际什么也没测。
+
+### 变更（决策）
+
+**L6 裁决：选 NodeBB**（用户："先选 NodeBB，以后看情况可换"）。
+另澄清 **JS/TS 只是偏好、不绝对** → 基础设施（Caddy/Authelia）用 Go 不构成问题，
+L3 的 Authelia 选型无需调整。**至此 L1–L11 全部已裁决**（[00 决策总表](docs/00_决策总表.md) v0.5）。
+
+[research §十](docs/research/01_开源件事实核查.md) 记录了 NodeBB 的两个分发陷阱：
+Docker Hub 镜像废弃（正确在 ghcr.io）、npm 包停在 2016——**渠道与直觉不一致**。
 
 ### 备注
 

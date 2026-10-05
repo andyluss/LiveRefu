@@ -1,0 +1,124 @@
+# LiveFab · Authelia 配置模板（M0）
+#
+# ⚠️ 这是**模板**，不是最终配置。由 `authelia-prep` 容器把 __PLACEHOLDER__ 替换成
+#    真实域名后写到数据卷，Authelia 读的是渲染结果。
+#
+# ★ 为什么要多这一步（这是用真实 Authelia 试出来的，读文档看不出来）：
+#   Authelia 的 `{{ env "X" }}` 模板函数**不能用在 domain / URL 字段**——
+#   校验会报 `'...' could not decode ... to a *url.URL: invalid character "{" in host name`，
+#   以及 `access_control: rule #N: option 'policy' must be present`
+#   （因为整个 domain 值没被解析成域名，规则就整体失效）。
+#   所以：**域名用我们自己的渲染步骤**。
+#
+# ⚠️ 另一个更隐蔽的坑（真启动才暴露）：Authelia 的 `{{ secret "path" }}` 模板
+#   **在文件不存在时会静默返回空值**——`config validate` 依然报
+#   "parsed and loaded successfully"（已实测确认这个假阳性）。
+#   于是数据库密码变成空字符串，运行时才报
+#   `password authentication failed for user "authelia"`。
+#   → 因此**密钥一律改用官方明确支持的 `AUTHELIA_*_FILE` 环境变量**，
+#     不再用 `{{ secret }}`。
+#
+# ⚠️ 另一个坑：**渲染时不要把密钥一起 sed**——密钥可能含 `/` 或 `&`，
+#   会破坏 sed 表达式。所以密钥**单独 bind mount** 到 /secret/，不进渲染流程。
+
+server:
+  # v4.38+ 用 server.address 取代 host/port
+  address: 'tcp://0.0.0.0:9091'
+
+log:
+  level: info
+
+theme: auto
+
+# ── 会话 ─────────────────────────────────────────────────────────────
+session:
+  # ★ cookies 段是必填的（真实 Authelia 校验报错才发现——自写断言没覆盖到）
+  cookies:
+    - name: livefab_session
+      domain: '__PORTAL_DOMAIN__'
+      authelia_url: 'https://__AUTH_DOMAIN__'
+      default_redirection_url: 'https://__PORTAL_DOMAIN__'
+  expiration: 1h
+  inactivity: 5m
+
+# ── 身份校验 ─────────────────────────────────────────────────────────
+# ★ 求解过程（真实 Authelia 逐项试出来的）：
+#   `disable: true` / `enabled: false` **都不是合法键**（报"configuration key not expected"）；
+#   唯一可行的是**提供 jwt_secret**（报错原文：
+#   "option 'jwt_secret' is required when the reset password functionality isn't disabled"）。
+# 密钥由 AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE 提供
+identity_validation:
+  reset_password: {}
+
+# ── 存储 ─────────────────────────────────────────────────────────────
+# 密钥由 AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE 提供
+storage:
+  postgres:
+    address: 'tcp://authelia-db:5432'
+    database: authelia
+    username: authelia
+    # 密码由 AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE 提供
+
+# ── 通知：M1 接真实 SMTP 前先落文件，避免启动检查失败 ────────────────
+notifier:
+  disable_startup_check: true
+  filesystem:
+    filename: /data/notification.txt
+
+# ── 用户数据库 ───────────────────────────────────────────────────────
+authentication_backend:
+  file:
+    path: /users/users.yml
+    password:
+      algorithm: argon2id
+      iterations: 3
+      memory: 65536
+      parallelism: 4
+
+# ── 访问控制 ★ 核心（分级就落在这里）────────────────────────────────
+access_control:
+  default_policy: deny
+
+  rules:
+    # ① 鉴权门户自身必须匿名可达（否则登录页也进不去，会死锁）
+    - domain: '__AUTH_DOMAIN__'
+      policy: bypass
+
+    # ② 公开区：任何人（含未登录）可看
+    #    ★ docs/01 §5.3 的硬要求：公开内容不得被登录墙挡住
+    - domain: '__PORTAL_DOMAIN__'
+      resources:
+        - '^/$'
+        - '^/blog(/.*)?$'
+        - '^/roadmap$'
+        - '^/assets/.*$'
+        - '^/favicon\.ico$'
+      policy: bypass
+
+    # ③ 个人区：任何已登录用户（注册用户级）
+    - domain: '__PORTAL_DOMAIN__'
+      resources:
+        - '^/account(/.*)?$'
+      policy: one_factor
+
+    # ④ 内部区：必须是协作者或核心成员
+    #    ★ "分级"真正落地处——不在组里的人连门都进不去
+    - domain: '__PORTAL_DOMAIN__'
+      resources:
+        - '^/admin(/.*)?$'
+      subject:
+        - 'group:livefab-core'
+        - 'group:livefab-collaborator'
+      policy: two_factor
+
+# ── 双因素：M0 只开 TOTP（不依赖邮件/SMS，先能跑）────────────────────
+totp:
+  issuer: LiveFab
+  period: 30
+  digits: 6
+
+# ── 防爆破 ───────────────────────────────────────────────────────────
+regulation:
+  max_retries: 5
+  find_time: 2m
+  ban_time: 5m

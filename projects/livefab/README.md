@@ -1,6 +1,6 @@
 # LiveFab · 前店后厂的在线工作室底座
 
-> 卡面：用途＝项目入口 ｜ 依赖：无（它是工作区的公共底座） ｜ 状态：**M0 骨架已起草（除 L6 论坛外决策已定）** · 2026-10-03
+> 卡面：用途＝项目入口 ｜ 依赖：无（它是工作区的公共底座） ｜ 状态：**M0 已真正跑通（全套 8 个容器启动，鉴权分层实测生效）** · 2026-10-03
 > 一句话：把工作室**对外的一面**（运营展示、用户沟通）与**对内的一面**（研发管理、分级信息）
 > 用一套账号、一个入口串起来，做成"前店后厂"的运转底座。
 
@@ -9,9 +9,9 @@
 > 与 [04 选型文档](docs/04_开源件调研与选型.md)（**逐件事实数据仍待补**——见该文档开头的数据状态说明）。
 > 本目录当前**不受后续会话改动影响**，可安全作为基线。
 
-> **当前状态：除 L6（论坛）外决策已定**。已交付 [M0 骨架](deploy/compose.yml)（反代 + 前置鉴权 + 门户占位 + Ghost），
-> 并带一个**可失败的结构校验器**：`bun run tools/validate-compose.ts`。
-> **注意：M0 骨架尚未在真实 Docker 上启动过**（本机无 Docker 环境）——见 [§五](#五m0-骨架的验证边界)。
+> **当前状态：L1–L11 决策全部已定；M0 已真正跑通**（反代 + 前置鉴权 + 门户占位 + Ghost + NodeBB，共 8 个容器）。
+> 两个验收命令：`bun run tools/validate-compose.ts`（静态结构，41 项）与
+> `bun run tools/verify-stack.ts`（**运行时行为**，7 项，**须先 `docker compose up`**）。
 
 | 我要…… | 去哪 |
 | --- | --- |
@@ -22,7 +22,8 @@
 | 看每段具体选哪些开源件 | [04 开源件调研与选型](docs/04_开源件调研与选型.md) |
 | 查某个件的版本/许可证/资源占用 | [事实核查](docs/research/01_开源件事实核查.md)（18 类别 + NodeBB/Ghost 专项，含**未核实清单**） |
 | 起 M0 骨架 | `cp .env.example .env` → `docker compose -f deploy/compose.yml up -d` |
-| 校验 M0 骨架结构 | `bun run tools/validate-compose.ts`（含 `--selftest` 负向自检） |
+| 校验 M0 骨架结构 | `bun run tools/validate-compose.ts`（41 项，含 `--selftest`） |
+| 校验 M0 运行时行为 | `bun run tools/verify-stack.ts`（7 项，**需 stack 已启动**，含 `--selftest`） |
 
 ## 一、为什么需要它
 
@@ -89,49 +90,71 @@ projects/livefab/
 │   ├── authelia/              # 网关鉴权；规则按 公开/个人/内部 三档
 │   └── portal/                # M0 占位页（M1 换 Astro）
 └── tools/
-    └── validate-compose.ts    # ★ 骨架结构校验（含负向自检）
+    ├── validate-compose.ts    # ★ 静态结构校验（41 项 + 负向自检）
+    └── verify-stack.ts        # ★ 运行时行为校验（7 项 + 负向自检）
 ```
 
 > **落点说明**：现放 `projects/`（受工作区根规则约束）。
 > 若你要的是"完全独立、不受工作区规则约束"，应改放 [`../../indie/`](../../indie/README.md)——
 > 见 [01 §三](docs/01_定位与角色.md) 的 L1。
 
-## 五、M0 骨架的验证边界
+## 五、M0 的验证结果（**已真正跑通**）
 
-### 5.1 ✅ 已真实验证（不是"应该能跑"）
+### 5.1 ✅ 运行时实测：鉴权分层生效
 
-| 验证项 | 用什么验的 | 结果 |
-| --- | --- | --- |
-| **compose 语法与变量解析** | **`docker compose config`（真实 Compose v5.1.2 解析器）** | ✅ **exit 0**，全部变量正确解析 |
-| **`authelia-init` 密钥生成脚本** | 在**真实 Linux 容器**里跑（离线，`--network=none`） | ✅ 生成 6 个密钥文件，内容格式正确 |
-| **密钥格式** | 逐文件检查 | ✅ 88 字节 = 64 随机字节的 base64；**无换行**（`tr -d '\n'` 生效）；可解回 64 字节 |
-| **脚本幂等性** | **连跑两次** | ✅ 第二次无 `RE-GENERATED` 输出，密钥未被覆盖 |
-| **`chown -R 1000:1000` 的返回码** | **去掉 `|| true` 单独验**（因为 `|| true` 会掩盖失败） | ✅ `EXIT=0`，且容器内为 `uid=0(root)` |
-| 结构校验器 | `bun run tools/validate-compose.ts` | ✅ 29/29 |
-| 校验器负向自检 | `--selftest` | ✅ 3/3 可捕获 |
+`bun run tools/verify-stack.ts` → **7/7 通过**（真发 HTTPS 请求）：
 
-> **其中最有价值的一条是"Idempotency 验证"**：密钥生成脚本若每次启动都重新生成，
-> 会导致**每次重启都把用户登出**（session 密钥变了）——这是个很隐蔽的故障，
-> 而它只能靠"真的跑两次"发现，读代码看不出来。
-
-### 5.2 ❌ 仍未验证（本机环境不允许）
-
-| 未验证项 | 被什么卡住 |
+| 验证项 | 结果 |
 | --- | --- |
-| **容器实际能否启动 / 各服务能否互联** | **Docker registry 不可达**（`registry-1.docker.io` 连接超时），**拉不到任何镜像**。本地仅 3 个缓存镜像（均非本项目所需） |
-| Authelia 能否加载本配置（`authelia validate-config`） | 同上——拿不到 `authelia/authelia` 镜像。另试过 npm 分发的 `caddy`/`authelia` 包，**沙箱禁止写临时目录（EPERM）** |
-| **Caddyfile 语法**是否被 Caddy 接受 | 同上——无 Caddy 二进制。**目前只有结构断言，没有语法验证** |
-| Authelia 的 PG 连接是否真的通 | 需 postgres 镜像 |
-| **Ghost 前置保护是否与其会话冲突** | 需 ghost 镜像；这是 M1 的验收项 |
-| 各件**真实内存占用** | 官方多无权威数值；需真机实测 |
+| **公开区不被登录墙挡住** | ✅ `GET /` → 200 |
+| `/account/` 被网关拦住 | ✅ 302 → `auth.app…`（带 `rd=` 参数） |
+| `/admin/` 被网关拦住 | ✅ 302 → `auth.app…` |
+| 鉴权门户自身可达 | ✅ 200（无"要登录才能登录"死锁） |
+| Ghost 前台可达 | ✅ 200 |
+| **NodeBB 已过安装器** | ✅ 200，47271 字节真实论坛页 |
 
-> **诚实说明**：M0 交付的骨架，其**结构正确性已被机器验证**（包含 Compose 官方解析器），
-> `authelia-init` 的脚本**已在真实容器里跑通并验证幂等**；
-> 但**整套服务从未一起启动过**，因为本机拉不到镜像。
-> 第一次 `docker compose up` 仍很可能要修几处（镜像 tag、端口、密钥挂载）。
->
-> **这与《未来档案》"部署未在真机验证"是同一个限制**，不是新的偷懒。
-> 而且这轮验证也证明了：**凡是本机能验的，我都验了**——registry 与沙箱这两条是真的过不去。
+**容器状态**：8 个服务全部 Up（authelia / authelia-db / caddy / ghost / ghost-db / nodebb / nodebb-db / portal）。
+
+### 5.2 ✅ 静态校验
+
+`bun run tools/validate-compose.ts` → **41/41**；`--selftest` **3/3 可捕获**。
+`bun run tools/verify-stack.ts --selftest` → **4/4 可捕获**。
+
+另外用**真实工具**验证过：`docker compose config`（exit 0）、
+`caddy validate`（**Valid configuration**）、`authelia config validate`（**successfully without errors**）。
+
+### 5.3 ⚠️ 真启动才发现的 8 个问题（全部已修）
+
+这一节是 M0 最有价值的部分——**这 8 个问题没有一个能被静态检查发现**：
+
+| # | 问题 | 后果 | 修法 |
+| --- | --- | --- | --- |
+| 1 | **compose 相对路径基准搞错**：写成 `./deploy/authelia/…`，但相对路径以 **compose 文件所在目录**为基准 → 变成 `deploy/deploy/…` | 容器起不来 | 改为 `./authelia/…` |
+| 2 | **不能把文件挂进 `:ro` 卷挂载点内部** | `read-only file system` | users.yml 改挂 `/users/` |
+| 3 | **Authelia 的 `{{ env }}` 不能用于 domain/URL 字段** | 整个 access_control 规则失效 | 加 `authelia-prep` 渲染步骤（sed 占位符） |
+| 4 | **`{{ secret }}` 在文件缺失时静默返回空值**，`config validate` 仍报成功 | 数据库密码变空 → 运行时才 `password authentication failed` | 改用官方 `AUTHELIA_*_FILE` 环境变量 |
+| 5 | **同一密钥不能有两处来源**（配置 `{{ secret }}` + `*_FILE`） | fatal: `already defined in other configuration sources` | 密钥**唯一来源**＝环境变量 |
+| 6 | **`AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE` 会让它以为配了 SMTP** | 与 filesystem notifier 冲突 | 不设该变量 |
+| 7 | **NodeBB 镜像不在 Docker Hub**：`nodebb/docker` 废弃在 2023-07 的 v1.19 | 拉到三年前的版本 | 用 `ghcr.io/nodebb/nodebb:4.16` |
+| 8 | **NodeBB 只认 `NODEBB_*` 前缀**；且**覆盖 entrypoint 必须自设 `CONFIG_DIR`** | 一直停在 web 安装器（不报错） | 改用 `NODEBB_*` + 显式 `CONFIG_DIR` |
+
+另外两个小项：Caddy 用假域名时 ACME 必然失败 → 加 `LIVEFAB_LOCAL_CERTS` 开关；
+NodeBB 在反代后必须开 `trust_proxy`，否则**用户 IP 记成反代容器 IP**（NodeBB 自己在日志里警告了）。
+
+> **还有一个是"我的检查器自己的 bug"**：`verify-stack.ts` 的负向自检最初写的是
+> "用真实请求模拟破坏"，但那两个探针**并没有真的破坏任何东西**
+> （`/account/` 本来就是受保护路径，断言自然通过）→ 自检误报 1/2 漏检。
+> 已改为**给断言喂已知坏输入**，直接验证断言逻辑（现 4/4 可捕获）。
+
+### 5.4 ❌ 仍未验证
+
+| 未验证项 | 为什么 |
+| --- | --- |
+| **真实登录流程**（含 TOTP 双因素、组权限区分） | 需人工在浏览器操作；自动化只能证明"被正确拦住" |
+| 各件**真实内存占用** | 尚未逐容器测量（下一步该做） |
+| **Ghost 前置保护是否与其会话冲突** | M1 的验收项（见 [04 §1.4](docs/04_开源件调研与选型.md)） |
+| 生产域名下的 ACME 证书 | 本地用了内网 CA；真实域名未测 |
+| 备份/恢复 | M1 范围 |
 
 ## 六、与工作区其它部分的关系
 

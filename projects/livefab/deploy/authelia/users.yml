@@ -1,11 +1,12 @@
-# LiveFab · Authelia 用户文件（M0 占位）
+# LiveFab · Authelia 用户文件
 #
-# ⚠️ 下面两个账号的密码哈希是**占位值**，不是可用密码。
-#    必须用官方工具生成，否则登录会失败：
+# ★ 生成密码哈希（v4.39 的正确命令）：
 #
-#      docker run --rm authelia/authelia:4.39 authelia hash-password '你的密码'
+#     docker run --rm ghcr.io/authelia/authelia:4.39 \
+#       authelia crypto hash generate argon2 --password '你的密码'
 #
-#    把输出（形如 $argon2id$v=19$m=65536,t=3,p=4$...）替换下面的 password 值。
+# ⚠️ 注意：网上很多资料（含我们早期版本）写的是 `authelia hash-password` ——
+#    **该命令在 v4.39 已被弃用**（只剩一个帮助Topic），必须用上面的 `crypto hash generate`。
 #
 # ★ 组名与分级权限（L4）的对应：
 #   livefab-admin        → 管理员（你）
@@ -13,15 +14,15 @@
 #   livefab-collaborator → 外部协作者：可进内部区，但**权限由各应用再收窄**
 #   （公开/注册用户不需要在这里有账号——公开区 bypass，注册用户在各应用内）
 #
-# displayname/email 用于界面显示与通知；必须是唯一的。
+# ⚠️ 下面两个账号的密码是**开发用弱口令**（devpassword / devcollab），
+#    仅供本地起骨架验证。**上线前必须换成强口令并重新生成哈希。**
 
 users:
   # 管理员
   admin:
     displayname: 'LiveFab 管理员'
-    # ⚠️ 占位哈希，务必替换（见文件头说明）
-    password: '$argon2id$v=19$m=65536,t=3,p=4$REPLACE_ME_ADMIN$REPLACE_ME_ADMIN'
-    email: admin@example.com
+    password: '$argon2id$v=19$m=65536,t=3,p=4$wwrBru9Iz7bQTv0Wuok+AA$6Vp15S/K4jeSHNcz8BMzRoYAwrRWU4kVqGwOqglsPvI'
+    email: admin@livefab.test
     groups:
       - livefab-admin
       - livefab-core
@@ -29,7 +30,7 @@ users:
   # 外部协作者（示例——用来验证"协作者能进 A 但不能进全部"这条分级）
   collaborator:
     displayname: '示例协作者'
-    password: '$argon2id$v=19$m=65536,t=3,p=4$REPLACE_ME_COLLAB$REPLACE_ME_COLLAB'
-    email: collaborator@example.com
+    password: '$argon2id$v=19$m=65536,t=3,p=4$FwdmmmwZXiyRZiDmmkDhdw$kyhPXdjUUGboJkWuuFfHtEroszzLasnLHRNnlpwBFY4'
+    email: collaborator@livefab.test
     groups:
       - livefab-collaborator

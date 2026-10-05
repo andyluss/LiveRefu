@@ -10,9 +10,14 @@
 #      整站挡登录会把公开内容也挡掉，那正是 §5.3 明确不允许的。
 
 {
-	# M0 阶段用邮箱接收 ACME 通知；上线前改成真实地址
+	# ACME 通知邮箱
 	email {$LIVEFAB_ACME_EMAIL}
-	# 本地调试时若没有公网域名，可临时加 local_certs 并把域名指向 localhost
+	# ★ 本地/内网验证时设 LIVEFAB_LOCAL_CERTS=local_certs，改用 Caddy 内网 CA 签发证书。
+	#   为什么需要：真启动才发现，用 .test 之类的假域名时 ACME 会失败
+	#   （Let's Encrypt 报 "contact email has invalid domain"），
+	#   于是一个证书都签不出来，HTTPS 全不通。
+	#   生产环境把该项留空即走正常 ACME。
+	{$LIVEFAB_LOCAL_CERTS}
 }
 
 # ══ 内部区：必须登录，且在网关就被拦住 ══════════════════════════════
@@ -55,7 +60,10 @@ auth.{$LIVEFAB_PORTAL_DOMAIN} {
 	reverse_proxy ghost:2368
 }
 
-# ══ 论坛：NodeBB（L6 待定，M0 先留位）═══════════════════════════════
-# {$LIVEFAB_FORUM_DOMAIN} {
-# 	reverse_proxy nodebb:4567
-# }
+# ══ 论坛：NodeBB（L6 已定，2026-10-03）══════════════════════════════
+# NodeBB 默认端口 4567。WebSocket 由 Caddy 自动处理（reverse_proxy 默认支持 Upgrade）。
+# ⚠️ NodeBB 的 OIDC 靠第三方插件（nodebb-plugin-fusionauth-oidc），
+#    M0 先用它自己的账号；接入 Authelia 的可行性**待 M1 实测**（见 docs/research §8.3）。
+{$LIVEFAB_FORUM_DOMAIN} {
+	reverse_proxy nodebb:4567
+}

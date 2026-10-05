@@ -1,0 +1,16 @@
+{
+  "name": "livefab",
+  "private": true,
+  "type": "module",
+  "description": "LiveFab · 前店后厂的在线工作室底座（M0 骨架）",
+  "scripts": {
+    "validate": "bun run tools/validate-compose.ts",
+    "validate:selftest": "bun run tools/validate-compose.ts --selftest",
+    "verify": "bun run tools/verify-stack.ts",
+    "verify:selftest": "bun run tools/verify-stack.ts --selftest",
+    "up": "docker compose -f deploy/compose.yml --env-file .env up -d",
+    "down": "docker compose -f deploy/compose.yml --env-file .env down",
+    "logs": "docker compose -f deploy/compose.yml --env-file .env logs -f --tail=50",
+    "ps": "docker compose -f deploy/compose.yml --env-file .env ps"
+  }
+}

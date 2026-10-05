@@ -1,16 +1,16 @@
 # LiveFab · M0 骨架
 #
-# 这是 M0 的"能跑的空壳"：反代 + 前置鉴权 + 门户占位 + 前台件（Ghost）。
+# 这是 M0 的"能跑的空壳"：反代 + 前置鉴权 + 门户占位 + 前台件（Ghost）+ 论坛（NodeBB）。
 # 目的不是功能，而是**把整合这件事先跑通**——见 docs/03_分阶段落地路线.md §一。
 #
-# ⚠️ 两条已写进决策的架构约束（不要在后来的改动里丢掉）：
+# ⚠️ 三条已写进决策、**不要在后来的改动里丢掉**的架构约束：
 #   1. 内部件**不发布端口**，只在 internal 网络上；对外只有反代一个入口。
 #   2. 前置鉴权**必须分层**——公开区不得被登录墙挡住（docs/01 §5.3）。
-#      Authelia 的规则按 host/路径分域，见 deploy/authelia/configuration.yml。
+#   3. Authelia 的**域名无法用环境变量模板**，故有 authelia-prep 渲染步骤（见下）。
 #
 # 用法：
-#   cp .env.example .env && 编辑 .env（至少改域名与两个密钥）
-#   docker compose up -d
+#   cp .env.example .env && 编辑 .env（至少改域名与四个密码）
+#   docker compose -f deploy/compose.yml up -d
 #   bun run tools/validate-compose.ts     # 结构校验（不需要 docker）
 
 name: livefab
@@ -24,13 +24,17 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
     environment:
       LIVEFAB_DOMAIN: ${LIVEFAB_DOMAIN:?需在 .env 设置}
       LIVEFAB_PORTAL_DOMAIN: ${LIVEFAB_PORTAL_DOMAIN:?需在 .env 设置}
       LIVEFAB_FORUM_DOMAIN: ${LIVEFAB_FORUM_DOMAIN:?需在 .env 设置}
+      LIVEFAB_ACME_EMAIL: ${LIVEFAB_ACME_EMAIL:?需在 .env 设置}
+      # 本地/内网验证时设 local_certs（生产留空）；早先漏了这一行，
+      # 导致开关写进 .env 却传不到容器里，Caddy 仍去走 ACME 并失败。
+      LIVEFAB_LOCAL_CERTS: ${LIVEFAB_LOCAL_CERTS:-}
     networks:
       - edge
       - internal
@@ -40,56 +44,102 @@ services:
       portal:
         condition: service_started
 
-  # ── 前置鉴权：网关层的"挡未登录者"────────────────────────────────
-  # 注意：Authelia 本体不做反代，它只提供 /api/verify 给 Caddy 的 forward_auth 调用。
-  authelia:
-    image: authelia/authelia:4.39
-    restart: unless-stopped
-    volumes:
-      - ./deploy/authelia/configuration.yml:/config/configuration.yml:ro
-      - ./deploy/authelia/users.yml:/config/users.yml:ro
-      - authelia_data:/data
-    environment:
-      AUTHELIA_JWT_SECRET_FILE: /data/secrets/jwt
-      AUTHELIA_SESSION_SECRET_FILE: /data/secrets/session
-      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /data/secrets/storage
-      AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: /data/secrets/reset
-      AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE: /data/secrets/smtp
-    # 不发布端口：只在 internal 网络上，由 caddy 反代
-    networks:
-      - internal
-    depends_on:
-      authelia-init:
-        condition: service_completed_successfully
-      authelia-db:
-        condition: service_healthy
-
-  # 一次性任务：生成 Authelia 需要的几个密钥文件（幂等，已存在则跳过）
-  authelia-init:
-    image: authelia/authelia:4.39
-    volumes:
-      - authelia_data:/data
+  # ── 一次性：生成密钥，并直接写到"只读视图"卷 ──────────────────────
+  # 密钥放在 authelia_secretview 卷（authelia 以只读挂载它到 /secret/）。
+  # 这样 authelia 容器本身不需要写权限拿密钥。
+  #
+  # ⚠️ 密钥**不进渲染流程**：它们可能含 `/` 或 `&`，会破坏 sed 表达式。
+  authelia-secrets:
+    image: ghcr.io/authelia/authelia:4.39
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
         set -e
-        mkdir -p /data/secrets
+        mkdir -p /secret
+        # ① 随机密钥（幂等：已存在且非空则跳过）
         for f in jwt session storage reset smtp; do
-          if [ ! -s "/data/secrets/$$f" ]; then
-            head -c 64 /dev/urandom | base64 | tr -d '\n' > "/data/secrets/$$f"
+          if [ ! -s "/secret/$$f" ]; then
+            head -c 64 /dev/urandom | base64 | tr -d '\n' > "/secret/$$f"
             echo "已生成密钥: $$f"
           fi
         done
-        # Authelia 的 PG 密码：以文件形式提供给 configuration.yml 的 {{ secret }}
-        if [ ! -s /data/secrets/authelia_db_password ]; then
-          printf '%s' "$$AUTHELIA_DB_PASSWORD" > /data/secrets/authelia_db_password
+        # ② 数据库密码来自 .env（写成文件，Authelia 以 {{ secret }} 读取）
+        if [ ! -s /secret/authelia_db_password ]; then
+          printf '%s' "$$AUTHELIA_DB_PASSWORD" > /secret/authelia_db_password
           echo "已写入数据库密码文件"
         fi
-        chown -R 1000:1000 /data || true
+        chmod 0444 /secret/*
+        chown -R 1000:1000 /secret
     environment:
       AUTHELIA_DB_PASSWORD: ${AUTHELIA_DB_PASSWORD:?需在 .env 设置}
+    volumes:
+      - authelia_secretview:/secret
     networks:
       - internal
+
+  # ── 一次性：把域名渲染进配置模板 ──────────────────────────────────
+  # ★ 为什么需要它：Authelia 的 `{{ env }}` 模板**不能用于 domain / URL 字段**
+  #   （真实校验报错：could not decode ... to a *url.URL: invalid character "{" in host name，
+  #    并连带导致 access_control 规则整体失效）。
+  #   所以域名必须**在启动前写死进配置**。渲染结果写到卷，authelia 读它。
+  authelia-prep:
+    image: alpine:3.20
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        mkdir -p /rendered
+        sed -e "s|__PORTAL_DOMAIN__|$$LIVEFAB_PORTAL_DOMAIN|g" \
+            -e "s|__AUTH_DOMAIN__|auth.$$LIVEFAB_PORTAL_DOMAIN|g" \
+            /template/configuration.template.yml > /rendered/configuration.yml
+        if grep -q '__PORTAL_DOMAIN__\|__AUTH_DOMAIN__' /rendered/configuration.yml; then
+          echo "✗ 渲染后有残留占位符，模板与变量对不上"; exit 1
+        fi
+        echo "✓ 配置已渲染（域名已写死）"
+    environment:
+      LIVEFAB_PORTAL_DOMAIN: ${LIVEFAB_PORTAL_DOMAIN:?需在 .env 设置}
+    volumes:
+      - ./authelia/configuration.template.yml:/template/configuration.template.yml:ro
+      - authelia_rendered:/rendered
+    networks:
+      - internal
+
+  # ── 前置鉴权：网关层的"挡未登录者"────────────────────────────────
+  # Authelia 本体不做反代，它只提供 /api/verify 给 Caddy 的 forward_auth 调用。
+  authelia:
+    image: ghcr.io/authelia/authelia:4.39
+    restart: unless-stopped
+    volumes:
+      # 渲染结果挂到 /config；users.yml 挂到 /users（**不能挂进上面那个只读挂载点内部**——
+      # Docker 无法在 :ro 挂载里创建 mountpoint，会报 "read-only file system"）
+      - authelia_rendered:/config:ro
+      - ./authelia/users.yml:/users/users.yml:ro
+      - authelia_secretview:/secret:ro
+    # ★ 密钥经 Authelia 官方支持的 *_FILE 环境变量提供（**唯一来源**）。
+    #   踩过的两个坑：
+    #   ① 若配置文件里同时用 `{{ secret }}` 读同一密钥，会 fatal：
+    #      "it's already defined in other configuration sources" → 只能有一处。
+    #   ② `{{ secret }}` 在文件缺失时**静默返回空值**，config validate 仍报成功，
+    #      到运行时才以 "password authentication failed" 暴露 → 所以不用它。
+    #   另：**故意不设 AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE** —— 它会让 Authelia
+    #   以为配了 SMTP，与配置文件里的 filesystem notifier 冲突：
+    #      "please ensure only one of the 'smtp' or 'filesystem' notifier is configured"
+    environment:
+      AUTHELIA_JWT_SECRET_FILE: /secret/jwt
+      AUTHELIA_SESSION_SECRET_FILE: /secret/session
+      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /secret/storage
+      AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: /secret/reset
+      AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE: /secret/authelia_db_password
+    # 不发布端口：只在 internal 网络上，由 caddy 反代
+    networks:
+      - internal
+    depends_on:
+      authelia-secrets:
+        condition: service_completed_successfully
+      authelia-prep:
+        condition: service_completed_successfully
+      authelia-db:
+        condition: service_healthy
 
   # Authelia 的存储（会话、二次认证状态）
   authelia-db:
@@ -115,7 +165,7 @@ services:
     image: nginx:1.27-alpine
     restart: unless-stopped
     volumes:
-      - ./deploy/portal:/usr/share/nginx/html:ro
+      - ./portal:/usr/share/nginx/html:ro
     networks:
       - internal
     healthcheck:
@@ -125,7 +175,6 @@ services:
       retries: 3
 
   # ── 前台件：Ghost（L5 已定）─────────────────────────────────────
-  # 分成 ghost 与 ghost-db 两个服务；Ghost 需要 MySQL 8（官方要求）。
   ghost:
     image: ghost:5-alpine
     restart: unless-stopped
@@ -136,7 +185,6 @@ services:
       database__connection__user: ghost
       database__connection__password: ${GHOST_DB_PASSWORD:?需在 .env 设置}
       database__connection__database: ghost
-      # M0 先禁用 Ghost 自带前端主题的对外暴露由 Caddy 决定（见 Caddyfile）
       NODE_ENV: production
     volumes:
       - ghost_content:/var/lib/ghost/content
@@ -165,6 +213,99 @@ services:
     networks:
       - internal
 
+  # ── 论坛：NodeBB（L6 已定，2026-10-03）──────────────────────────
+  # ★ 用 PostgreSQL 而非默认的 MongoDB：复用同一套 PG 引擎（见 research §8.4）。
+  #
+  # ⚠️ 踩过的两个坑（都靠真启动才暴露）：
+  #   ① **镜像不在 Docker Hub**：`nodebb/docker` 停在 2023-07 的 v1.19（已废弃），
+  #      官方现发布在 ghcr.io → 必须用 ghcr.io/nodebb/nodebb。
+  #   ② **环境变量名不是 POSTGRES_***：NodeBB 的自动化安装认 `NODEBB_*` 前缀
+  #      （见镜像内 src/install.js 的 envConfMap）。用错名字会一直停在 web 安装器。
+  nodebb-setup:
+    # 一次性：初始化数据库 schema 与管理员账号，写出 /opt/config/config.json（幂等）
+    image: ghcr.io/nodebb/nodebb:4.16
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        set -e
+        cd /usr/src/app
+        mkdir -p /opt/config
+        if [ -f /opt/config/config.json ]; then
+          echo "已有 config.json，跳过安装（幂等）"
+        else
+          ./nodebb setup
+          echo "NodeBB 安装完成"
+        fi
+        # ★ 我们在 Caddy 反代后面，必须开 trust_proxy，否则 NodeBB 会把
+        #   反代容器 IP 当成用户 IP（日志、限流、封禁全部失准）。
+        #   真启动时 NodeBB 自己在日志里警告了这一点。
+        node -e '
+          const fs=require("fs"), f="/opt/config/config.json";
+          const c=JSON.parse(fs.readFileSync(f,"utf8"));
+          if (c.trust_proxy !== true) { c.trust_proxy = true; fs.writeFileSync(f, JSON.stringify(c,null,4)); console.log("已设置 trust_proxy=true"); }
+          else { console.log("trust_proxy 已为 true"); }
+        '
+    environment: &nodebb_env
+      # ★ 必须显式设 CONFIG_DIR：**覆盖 entrypoint 会跳过它原本设置 CONFIG_DIR 的那段**，
+      #   于是 `nodebb setup` 把 config.json 写到应用目录（容器内、不持久），
+      #   主容器启动时找不到配置、又回到 web 安装器。
+      CONFIG_DIR: /opt/config
+      CONFIG: /opt/config/config.json
+      NODEBB_URL: https://${LIVEFAB_FORUM_DOMAIN:?}
+      NODEBB_DB: postgres
+      NODEBB_DB_HOST: nodebb-db
+      NODEBB_DB_PORT: "5432"
+      NODEBB_DB_NAME: nodebb
+      NODEBB_DB_USER: nodebb
+      NODEBB_DB_PASSWORD: ${NODEBB_DB_PASSWORD:?需在 .env 设置}
+      NODEBB_ADMIN_USERNAME: ${NODEBB_ADMIN_USERNAME:-admin}
+      NODEBB_ADMIN_PASSWORD: ${NODEBB_ADMIN_PASSWORD:?需在 .env 设置}
+      NODEBB_ADMIN_EMAIL: ${NODEBB_ADMIN_EMAIL:-admin@livefab.test}
+      NODEBB_SECRET: ${NODEBB_SECRET:?需在 .env 设置}
+    volumes:
+      - nodebb_data:/var/lib/nodebb
+      - nodebb_config:/opt/config
+    networks:
+      - internal
+    depends_on:
+      nodebb-db:
+        condition: service_healthy
+
+  nodebb:
+    image: ghcr.io/nodebb/nodebb:4.16
+    restart: unless-stopped
+    environment:
+      <<: *nodebb_env
+    volumes:
+      - nodebb_data:/var/lib/nodebb
+      # config.json 由 nodebb-setup 写在共享卷里，启动时直接读它（跳过 web 安装器）
+      - nodebb_config:/opt/config
+    networks:
+      - internal
+    depends_on:
+      nodebb-db:
+        condition: service_healthy
+      nodebb-setup:
+        condition: service_completed_successfully
+
+
+  nodebb-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nodebb
+      POSTGRES_USER: nodebb
+      POSTGRES_PASSWORD: ${NODEBB_DB_PASSWORD:?需在 .env 设置}
+    volumes:
+      - nodebb_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nodebb -d nodebb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
 networks:
   # edge：唯一连外网的一层（只有 caddy）
   edge:
@@ -177,7 +318,11 @@ networks:
 volumes:
   caddy_data:
   caddy_config:
-  authelia_data:
+  authelia_rendered:
+  authelia_secretview:
   authelia_db:
   ghost_content:
   ghost_db:
+  nodebb_data:
+  nodebb_config:
+  nodebb_db:
