@@ -52,13 +52,13 @@ if [ ! -f "$DATA_SCRIPT" ]; then
 # ★ 由 LiveFab 专用提升为**通用**：本工作区有多个 CHANGELOG，规格相同、
 #   只是路径与 tag 前缀不同（根用 workspace-v，LiveFab 用 livefab-v）。
 CHANGELOG_SCRIPT="$GIT_ROOT/tools/check_changelog.ts"
-check_changelog() {  # $1=相对仓库根的路径  $2=tag 前缀  $3=显示名
+check_changelog() {  # $1=路径 $2=tag 前缀 $3=显示名 $4=额外参数（可选，如 --assert-workspace-level）  $4=额外参数（可选）
   if [ ! -f "$CHANGELOG_SCRIPT" ]; then
     echo "[pre-commit:changelog] 未找到 ${CHANGELOG_SCRIPT}，跳过 $3。" >&2
     return 0
   fi
   echo "[pre-commit:changelog] 校验 $3 的格式与版本-标签一致性..." >&2
-  if run_ts "$CHANGELOG_SCRIPT" --file "$1" --tag-prefix "$2" >&2; then
+  if run_ts "$CHANGELOG_SCRIPT" --file "$1" --tag-prefix "$2" ${4:-} >&2; then
     echo "[pre-commit:changelog] $3 通过。" >&2
   else
     echo "[pre-commit:changelog] $3 不合规（格式，或版本头时间与 git tag 对不上），已拦截提交。" >&2
@@ -67,7 +67,8 @@ check_changelog() {  # $1=相对仓库根的路径  $2=tag 前缀  $3=显示名
 }
 STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACM)"
 if printf '%s\n' "$STAGED_ALL" | grep -q '^CHANGELOG\.md$'; then
-  check_changelog CHANGELOG.md workspace-v "工作区根日志"
+  # ★ 根日志额外要求"不含子项目专属条目"（--assert-workspace-level）
+  check_changelog CHANGELOG.md workspace-v "工作区根日志" --assert-workspace-level
 fi
 if printf '%s\n' "$STAGED_ALL" | grep -q '^projects/livefab/CHANGELOG\.md$'; then
   check_changelog projects/livefab/CHANGELOG.md livefab-v "LiveFab 日志"
@@ -188,13 +189,13 @@ fi
 # ★ 由 LiveFab 专用提升为**通用**：本工作区有多个 CHANGELOG，规格相同、
 #   只是路径与 tag 前缀不同（根用 workspace-v，LiveFab 用 livefab-v）。
 CHANGELOG_SCRIPT="$GIT_ROOT/tools/check_changelog.ts"
-check_changelog() {  # $1=相对仓库根的路径  $2=tag 前缀  $3=显示名
+check_changelog() {  # $1=路径 $2=tag 前缀 $3=显示名 $4=额外参数（可选，如 --assert-workspace-level）
   if [ ! -f "$CHANGELOG_SCRIPT" ]; then
     echo "[pre-commit:changelog] 未找到 ${CHANGELOG_SCRIPT}，跳过 ${3}。" >&2
     return 0
   fi
   echo "[pre-commit:changelog] 校验 ${3} 的格式与版本-标签一致性..." >&2
-  if run_ts "$CHANGELOG_SCRIPT" --file "$1" --tag-prefix "$2" >&2; then
+  if run_ts "$CHANGELOG_SCRIPT" --file "$1" --tag-prefix "$2" ${4:-} >&2; then
     echo "[pre-commit:changelog] ${3} 通过。" >&2
   else
     echo "[pre-commit:changelog] ${3} 不合规（格式，或版本头时间与 git tag 对不上），已拦截提交。" >&2
@@ -203,7 +204,8 @@ check_changelog() {  # $1=相对仓库根的路径  $2=tag 前缀  $3=显示名
 }
 STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACM)"
 if printf '%s\n' "$STAGED_ALL" | grep -q '^CHANGELOG\.md$'; then
-  check_changelog CHANGELOG.md workspace-v "工作区根日志"
+  # ★ 根日志额外要求"不含子项目专属条目"（--assert-workspace-level）
+  check_changelog CHANGELOG.md workspace-v "工作区根日志" --assert-workspace-level
 fi
 if printf '%s\n' "$STAGED_ALL" | grep -q '^projects/livefab/CHANGELOG\.md$'; then
   check_changelog projects/livefab/CHANGELOG.md livefab-v "LiveFab 日志"

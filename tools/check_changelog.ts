@@ -46,11 +46,21 @@ function arg(flag: string): string | undefined {
 const REL_FILE = arg('--file') ?? 'CHANGELOG.md'
 const FILE = resolve(ROOT, REL_FILE)
 const TAG_PREFIX = arg('--tag-prefix') ?? ''
+// 工作区根日志专用的把关：不得夹带**子项目专属**条目（见下）。
+const WORKSPACE_LEVEL = process.argv.includes('--assert-workspace-level')
 
 /** 标准类目（R05 §四） */
 const CATEGORIES = ['新增', '变更', '弃用', '移除', '修复', '安全'] as const
 /** 未发布段的写法（中英都接受） */
 const UNRELEASED = /^## \[(未发布|Unreleased)\]$/
+/**
+ * "从工作区根日志迁入"容器。
+ *
+ * 2026-10-05 把根日志里属于子项目的条目迁入各项目日志时引入。它是**历史归档**，
+ * 不是一次发布，所以按 SemVer 编号反而是编造。这里作为**有意的例外**承认它，
+ * 但它下面每个 `###` 仍要过类目检查。
+ */
+const MIGRATED = /^## \[从工作区根日志迁入\] - /
 /** 版本头：`## [1.2.3] - 2026-10-05 21:29` */
 const VERSION_HEAD = /^## \[(\d+\.\d+\.\d+)\] - (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})$/
 
@@ -76,6 +86,18 @@ const sh = (cmd: string[]) => {
 // ══════════════════════════════════════════════════════════════════════
 // 纯逻辑校验（可被自检复用的部分）
 // ══════════════════════════════════════════════════════════════════════
+/** 取每个 `###` 小节的标题与正文（供"根日志把关"用） */
+function sectionsOf(text: string): Array<{ head: string; body: string }> {
+  const out: Array<{ head: string; body: string }> = []
+  let cur: { head: string; body: string[] } | null = null
+  for (const l of text.split('\n')) {
+    if (l.startsWith('### ')) { if (cur) out.push({ head: cur.head, body: cur.body.join('\n') }); cur = { head: l, body: [] } }
+    else if (cur) cur.body.push(l)
+  }
+  if (cur) out.push({ head: cur.head, body: cur.body.join('\n') })
+  return out
+}
+
 interface Parsed { unreleased: boolean; unreleasedSections: string[]; versions: Array<{ ver: string; time: string; sections: string[] }>; bareSections: string[] }
 
 function parse(text: string): Parsed {
@@ -87,6 +109,7 @@ function parse(text: string): Parsed {
   let inUnreleased = false
   for (const l of lines) {
     if (UNRELEASED.test(l)) { out.unreleased = true; inUnreleased = true; cur = null; continue }
+    if (MIGRATED.test(l)) { inUnreleased = true; cur = null; continue }   // 视作容器，不参与版本时间序列
     const m = l.match(VERSION_HEAD)
     if (m) { cur = { ver: m[1]!, time: `${m[2]} ${m[3]}`, sections: [] }; out.versions.push(cur); continue }
     if (l.startsWith('## [')) { cur = null; inUnreleased = false; continue }  // 格式不对的版本头
@@ -102,7 +125,7 @@ function parse(text: string): Parsed {
 /** 版本头是否合法（用于自检喂坏数据） */
 function allHeadsValid(text: string): boolean {
   const heads = text.split('\n').filter(l => l.startsWith('## ['))
-  return heads.every(l => UNRELEASED.test(l) || VERSION_HEAD.test(l))
+  return heads.every(l => UNRELEASED.test(l) || MIGRATED.test(l) || VERSION_HEAD.test(l))
 }
 
 /** 时间是否单调递减（最新在最上） */
@@ -131,6 +154,13 @@ if (SELFTEST) {
     ['时间单调递减（乱的）', () => timesDescending([{ time: '2026-10-03 19:43' }, { time: '2026-10-05 21:29' }]), '顺序颠倒必须被拒'],
     ['标准类目', () => categoriesValid(['新增（x）', '修复（y）']), '（应通过）'],
     ['标准类目（非标准）', () => categoriesValid(['发现（x）']), '发现不在七类目里，必须被拒'],
+    // ★ 根日志把关规则：喂"只写某子项目"的条目，必须被判为违规
+    ['根日志把关（子项目专属）', () => projectOnlySections(
+      '## [0.1.0] - 2026-01-01 00:00\n### 新增\n- 给 projects/foo 加了 A、B、C，还有 projects/foo/x.ts\n') .length === 0,
+      '只提一个子项目 → 必须被拒'],
+    ['根日志把关（工作区级）', () => projectOnlySections(
+      '## [0.1.0] - 2026-01-01 00:00\n### 新增\n- 改了 tools/check_links.ts 与 rules/R01\n') .length > 0,
+      '（对照）工作区级条目不该被拒'],
   ]
   let caught = 0
   let expectedPass = 0
@@ -187,6 +217,49 @@ const nowLocal = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, 
 const future = p.versions.filter(v => v.time > nowLocal)
 check('版本时间不在未来', future.length === 0,
   future.length ? `未来时间：${future.map(v => `${v.ver} ${v.time}`).join(', ')}` : `当前 ${nowLocal}`)
+
+// ── ★ 根日志把关：不得夹带"子项目专属"条目 ──────────────────────────
+// 为什么需要：本工作区早期的做法是把各项目的进展都记进根日志，于是根日志里
+// 混着大量 `projects/future-debris` 之类的内容，而根日志本该只记**工作区级**变更。
+// 已于 2026-10-05 迁出（见各子项目的 `## [从工作区根日志迁入]`），这条规则防它回潮。
+//
+// ⚠️ 这条规则的**能力边界**（必须说清，否则会被当成"已经万无一失"）：
+//   它只看**路径引用**，是启发式，**不能证明**一条目真的属于工作区级。
+//   所以判定收得很窄（宁可漏报、不要误报）：
+//     仅当一条目**只**引用某一个子项目下的路径，且**完全不**引用工作区级路径
+//     （tools/ rules/ tech/ doc/）与第二个子项目时，才判为违规。
+//   像"pre-commit 钩子改了什么（顺带提到 livefab）"这类**不会**被误报。
+//   而"某项目做了什么"这种一眼可见的，它抓得住。
+function projectOnlySections(text: string): string[] {
+  const WORKSPACE = /^(tools|rules|tech|doc)\//
+  const bad: string[] = []
+  for (const sec of sectionsOf(text)) {
+    const paths = sec.body.match(/(?:projects|lab|indie|studio\d*)\/[A-Za-z0-9._-]+/g) ?? []
+    const norm = paths.map(p => {
+      const m = p.match(/^((?:projects|lab|indie)\/[A-Za-z0-9._-]+|studio\d*)/)
+      return m ? m[1]! : p
+    })
+    const targets = new Set(norm)
+    // ⚠️ 用**宽松**匹配：`tools/` 可能出现在子路径里（如 `projects/livefab/tools/…`），
+    //    早先要求"前面不是路径字符"，于是把那种情况漏判、误报了钩子那条。
+    const hasWorkspace = /(?:^|[^A-Za-z0-9._-])(?:tools|rules|tech|doc)\//.test(sec.body)
+    const count = norm.filter(x => targets.size === 1 && x === [...targets][0]).length
+    // 两条判据，取"或"：
+    //   ① 只引用一个子项目、且完全不提工作区级路径   → 最明确的情况
+    //   ② 只引用一个子项目、但对它的引用 **≥3 次**     → 即使顺带提到 tools/，仍属该项目为主
+    // ② 是补上来的：早先只有 ①，结果**迁移前那批条目大多抓不到**（它们常顺带写 `./run.sh`、
+    // `tools/` 之类）。实测 ①+② 能在新根上零误报、在旧根上抓到绝大多数。
+    if (targets.size === 1 && (!hasWorkspace || count >= 3)) {
+      bad.push(`${sec.head.slice(4, 24)} → ${[...targets][0]}（引用 ${count} 次）`)
+    }
+  }
+  return bad
+}
+if (WORKSPACE_LEVEL) {
+  const bad = projectOnlySections(text)
+  check('根日志不含子项目专属条目', bad.length === 0,
+    bad.length ? `${bad.length} 条疑似子项目专属：${bad.slice(0, 3).join('; ')}` : '只含工作区级变更')
+}
 
 // ★ 版本号 ↔ git tag：把 CHANGELOG 与 git 钉在一起
 //   其余几条只保证"格式自洽"，这条保证"内容不假"。
