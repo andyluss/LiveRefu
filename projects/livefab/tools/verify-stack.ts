@@ -18,6 +18,7 @@
 
 const arg = (n: string, d = '') => process.argv.find(a => a.startsWith(`--${n}=`))?.slice(n.length + 3) ?? d
 import { join, resolve } from 'node:path'
+import { createHmac } from 'node:crypto'
 
 const SELFTEST = process.argv.includes('--selftest')
 /** 项目根（tools/ 的上一级） */
@@ -322,6 +323,134 @@ if (adminCookie) {
 }
 
 // ── ④ 负向自检 ──────────────────────────────────────────────────────
+
+// ── ③④ 统一身份（OIDC）与双因素（TOTP）────────────────────────────
+// ★ 这两条链路原本是**手工实测**通过的。手工结论会腐化 —— 谁改一下配置、
+//   插件掉一次、密钥轮换一次，就悄悄断了而没人发现。所以补进自动验收。
+//   这与本项目一贯的做法一致（"不能自动化的结论会腐化"）。
+
+/** RFC 6238 TOTP（SHA1 / 6 位 / 30 秒）——与 Authelia 的默认参数一致 */
+function totpCode(base32: string, at = Date.now()): string {
+  const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
+  const s = base32.trim().toUpperCase().replace(/=+$/, '')
+  let bits = 0, val = 0
+  const bytes: number[] = []
+  for (const ch of s) {
+    const i = A.indexOf(ch)
+    if (i < 0) continue
+    val = (val << 5) | i
+    bits += 5
+    if (bits >= 8) { bytes.push((val >>> (bits - 8)) & 0xff); bits -= 8 }
+  }
+  const counter = Math.floor(at / 1000 / 30)
+  const buf = Buffer.alloc(8)
+  buf.writeBigUInt64BE(BigInt(counter))
+  const h = createHmac('sha1', Buffer.from(bytes)).update(buf).digest()
+  const off = h[h.length - 1]! & 0x0f
+  const n = ((h[off]! & 0x7f) << 24 | h[off + 1]! << 16 | h[off + 2]! << 8 | h[off + 3]!) % 1_000_000
+  return String(n).padStart(6, '0')
+}
+
+/**
+ * 读 TOTP 测试密钥。
+ *
+ * 为什么放在 Authelia 的**密钥卷**里：它与 `storage` 加密密钥必须配套 ——
+ * 注册出来的设备是用那个密钥加密存在库里的。放在一起，恢复备份后两者仍然对得上；
+ * 分开存就会"恢复了库、却算不出码"。
+ *
+ * 密钥的来源是**一次性的人工注册**（浏览器向导扫码那步），见 docs/08。
+ */
+async function readTotpSecret(): Promise<string> {
+  const p = Bun.spawn(
+    ['docker', 'run', '--rm', '-v', 'livefab_authelia_secretview:/s:ro', 'alpine:3.20', 'cat', '/s/totp_test_secret'],
+    { stdout: 'pipe', stderr: 'ignore' },
+  )
+  const t = (await new Response(p.stdout).text()).trim()
+  await p.exited
+  return t
+}
+
+/**
+ * 走完第一因素 + 第二因素（TOTP），返回带 2FA 的会话 cookie。
+ *
+ * ⚠️ Authelia 有 **TOTP 重放保护**：同一个 30 秒窗口内，一个码只能用一次，
+ *    第二次会报 "the user has already used this code recently and will not be permitted
+ *    to reuse it"（这是实测踩到的，不是猜的）。
+ *    所以：本脚本在**同一窗口内被跑第二次**（或刚有人手工登录过）时会撞上它。
+ *    对策是**等下一个窗口重算再试一次** —— 这不是"容忍失败"，
+ *    而是避开一个已知的环境碰撞；真的配错了照样失败。
+ */
+async function loginWithSecondFactor(user: string, password: string, secret: string): Promise<string> {
+  const c1 = await login(user, password)
+  if (!c1) return ''
+  const attempt = async (waitForNewWindow: boolean): Promise<string> => {
+    if (waitForNewWindow) {
+      // 等到下一个 30 秒窗口再算码，避开重放保护
+      const ms = 30_000 - (Date.now() % 30_000) + 1_500
+      await new Promise(r => setTimeout(r, ms))
+    }
+    const dir = (await Bun.$`mktemp -d`.text()).trim()
+    try {
+      const p = Bun.spawn([
+        'curl', '-sk', '--max-time', '20', '-D', `${dir}/h`,
+        '-X', 'POST', `https://${AUTH}/api/secondfactor/totp`,
+        '-H', `Cookie: ${c1}`, '-H', `Origin: https://${AUTH}`,
+        '-H', 'Content-Type: application/json',
+        '-d', JSON.stringify({ token: totpCode(secret) }),
+        '-o', `${dir}/b`,
+      ], { stdout: 'ignore', stderr: 'ignore' })
+      await p.exited
+      const head = await Bun.file(`${dir}/h`).text().catch(() => '')
+      const body = await Bun.file(`${dir}/b`).text().catch(() => '')
+      const fresh = head.match(/^set-cookie:\s*([^;]+)/im)?.[1]?.trim()
+      const replayed = /already used this code|reuse/i.test(body)
+      return replayed ? '' : (fresh || c1)
+    } finally {
+      await Bun.$`rm -rf ${dir}`.quiet().nothrow()
+    }
+  }
+  // 最多换 3 个时间窗口再试：Authelia 的 `totp_history` 会**跨窗口**记住用过的码，
+  // 所以"等下一个窗口"也可能撞上（例如刚有人手工登录过）。
+  let cookie = await attempt(false)
+  for (let i = 0; i < 3 && !cookie; i++) cookie = await attempt(true)
+  return cookie
+}
+
+// ④ OIDC：论坛的登录入口必须把用户交给 Authelia（而不是用 NodeBB 自己的账号）
+const oidcLogin = await probe(FORUM, '/auth/fusionauth-oidc')
+check('OIDC 登录入口跳 Authelia 授权端点',
+  oidcLogin.status === 302 && oidcLogin.location.includes('/api/oidc/authorization') && oidcLogin.location.includes('client_id=nodebb'),
+  oidcLogin.status === 302 ? oidcLogin.location.replace(/^https:\/\/[^/]+/, '').slice(0, 60) : `HTTP ${oidcLogin.status}（插件没生效？）`)
+
+// ④ 身份关联：Authelia 的 OIDC sub 必须已经绑到 NodeBB 的某个 uid
+const linkOut = await (async () => {
+  const p = Bun.spawn(['docker', 'exec', 'livefab-db-1', 'psql', '-U', 'nodebb', '-d', 'nodebb', '-tAc',
+    "SELECT data FROM legacy_hash WHERE _key='fusionauth-oidcId:uid'"], { stdout: 'pipe', stderr: 'ignore' })
+  const t = (await new Response(p.stdout).text()).trim()
+  await p.exited
+  return t
+})()
+check('OIDC 身份已关联到 NodeBB 账号',
+  /"[0-9a-f-]{8,}"\s*:\s*\d+/.test(linkOut),
+  linkOut ? '存在 sub → uid 绑定' : '无绑定记录（没人用统一身份登录过？）')
+
+// ③ 双因素：**没第二因素就该进不去**（这一侧不需要密钥，永远可测）
+const c1fa = await login('admin', 'devpassword')
+const adminNo2fa = c1fa ? await gate('/admin/', c1fa, PORTAL) : { status: 0, body: '', location: '' }
+check('双因素在挡：未过 2FA 进不去 /admin/',
+  adminNo2fa.status === 302,
+  adminNo2fa.status === 302 ? '302 跳鉴权（策略生效）' : `HTTP ${adminNo2fa.status}（★ 未过 2FA 却进去了）`)
+
+// ③ 双因素：**有第二因素就该进得去**（需要测试密钥）
+const totpSecret = await readTotpSecret()
+const c2fa = totpSecret ? await loginWithSecondFactor('admin', 'devpassword', totpSecret) : ''
+const admin2fa = c2fa ? await gate('/admin/', c2fa, PORTAL) : { status: 0, body: '', location: '' }
+check('过了第二因素可进 /admin/',
+  admin2fa.status === 200,
+  totpSecret
+    ? (admin2fa.status === 200 ? '200（TOTP 码被接受，会话升到 level 2）' : `HTTP ${admin2fa.status}`)
+    : '⚠️ 缺 TOTP 测试密钥（见 docs/08 的注册流程）')
+
 // ⚠️ 这里**直接测断言逻辑**，而不是去请求真实站点。
 //    早先版本写的是"用真实请求模拟破坏"，但那两个探针并没有真的破坏任何东西
 //    （`/account/` 本来就是受保护路径，断言自然通过）→ 自检自己误报了 1/2 漏检。
@@ -365,6 +494,26 @@ if (SELFTEST) {
       'C 区：核心成员过组检查（302 进 2FA，非 403）',
       r => r.status === 302,
       { status: 403, body: '' },   // 连核心成员都被挡
+    ],
+    [
+      'OIDC 登录入口跳 Authelia 授权端点',
+      r => r.status === 302 && r.location.includes('/api/oidc/authorization') && r.location.includes('client_id=nodebb'),
+      { status: 200, location: '', body: '' },   // 插件没生效：还停在 NodeBB 自己的登录
+    ],
+    [
+      'OIDC 身份已关联到 NodeBB 账号',
+      r => /"[0-9a-f-]{8,}"\s*:\s*\d+/.test(r.body),
+      { status: 200, location: '', body: '' },   // 无绑定记录：没人用统一身份登录过
+    ],
+    [
+      '双因素在挡：未过 2FA 进不去 /admin/',
+      r => r.status === 302,
+      { status: 200, location: '', body: '内部区' },   // ★ 未过 2FA 却进去了
+    ],
+    [
+      '过了第二因素可进 /admin/',
+      r => r.status === 200,
+      { status: 302, location: 'https://auth/?rd=...', body: '' },  // 2FA 没生效 / 码被拒
     ],
     [
       '分级生效：协作者可见件少于管理员',

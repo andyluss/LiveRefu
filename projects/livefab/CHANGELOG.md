@@ -215,6 +215,45 @@ Authelia 的防爆破对提权端点按桶限流（日志 `Rate Limit Exceeded b
 
 端点数与实测过程详见 [08](docs/08_双因素注册的前置缺口.md)。
 
+### 新增（把 ③④ 两条手工链路自动化进验收：verify 30 → 34 项，自检 8 → 12）
+
+③（TOTP 双因素）与 ④（OIDC 统一登录）此前都是**手工实测**通过的。
+手工结论会腐化 —— 谁改一下配置、插件掉一次、密钥轮换一次就悄悄断了。
+本轮把它们补进 `verify-stack.ts`，与项目一贯的"不能自动化的结论会腐化"对齐。
+
+**新增 5 条断言**：
+
+| 断言 | 判据 |
+| --- | --- |
+| OIDC 登录入口跳 Authelia 授权端点 | `/auth/fusionauth-oidc` → 302 且 location 含 `/api/oidc/authorization` 与 `client_id=nodebb` |
+| OIDC 身份已关联到 NodeBB 账号 | NodeBB 库里存在 `fusionauth-oidcId:uid` 且形如 `{"<sub>": <uid>}` |
+| 双因素在挡：未过 2FA 进不去 `/admin/` | 仅第一因素的会话访问 → 302 |
+| 过了第二因素可进 `/admin/` | 第一 + 第二因素 → 200 |
+| （内建）TOTP 算码 | 本地按 RFC 6238 实现，与 Authelia 参数一致 |
+
+**为此新增的两个辅助**：`readTotpSecret()` 与 `loginWithSecondFactor()`。
+
+**TOTP 测试密钥放在 Authelia 的密钥卷里**（`totp_test_secret`）——
+它与 `storage` 加密密钥**必须配套**：注册出来的设备是用那个密钥加密存在库里的。
+放一起，恢复备份后两者仍对得上；分开存就会"恢复了库却算不出码"。
+
+**★ 又抓到一个真实行为：Authelia 有 TOTP 重放保护。**
+
+```
+Error validating TOTP authentication for user 'admin':
+  error="the user has already used this code recently and will not be permitted to reuse it"
+```
+
+它用 `totp_history` 表记住用过的码，**且跨时间窗口**（不只是同一 30 秒内）。
+我第一次跑 verify 就是撞上它 —— 因为**我刚手工登录过同一个窗口**的码。
+对策是**换窗口重试**（最多 3 个窗口）。这不是"容忍失败"：真的配错了照样失败，
+它只是避开一个已知的环境碰撞。这条写进了断言的注释。
+
+**负向自检 8 → 12 条**：四条新断言各配了变异（喂入"插件没生效""无绑定记录"
+"未过 2FA 却进去了""码被拒"这些坏输入），全部可被捕获。
+
+**验证**：`verify` **34/34**、`--selftest` **12/12**。
+
 ## [0.3.0] - 2026-10-05 21:29
 
 ### 新增（M1：统一备份 + 真正的恢复演练）
