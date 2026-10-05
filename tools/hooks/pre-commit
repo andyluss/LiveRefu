@@ -47,33 +47,6 @@ fi
 DATA_SCRIPT="$GIT_ROOT/tools/check_data.ts"
 if [ ! -f "$DATA_SCRIPT" ]; then
   echo "[pre-commit:check-data] 未找到 ${DATA_SCRIPT}，跳过数据校验。" >&2
-  # ---- 6) 变更日志格式与版本-标签一致性（通用：根 + 各项目）----
-# 规格见 tech/changelog-convention.md 与 projects/livefab/docs/06_变更日志方案选择.md（方案甲）。
-# ★ 由 LiveFab 专用提升为**通用**：本工作区有多个 CHANGELOG，规格相同、
-#   只是路径与 tag 前缀不同（根用 workspace-v，LiveFab 用 livefab-v）。
-CHANGELOG_SCRIPT="$GIT_ROOT/tools/check_changelog.ts"
-check_changelog() {  # $1=路径 $2=tag 前缀 $3=显示名 $4=额外参数（可选，如 --assert-workspace-level）  $4=额外参数（可选）
-  if [ ! -f "$CHANGELOG_SCRIPT" ]; then
-    echo "[pre-commit:changelog] 未找到 ${CHANGELOG_SCRIPT}，跳过 $3。" >&2
-    return 0
-  fi
-  echo "[pre-commit:changelog] 校验 $3 的格式与版本-标签一致性..." >&2
-  if run_ts "$CHANGELOG_SCRIPT" --file "$1" --tag-prefix "$2" ${4:-} >&2; then
-    echo "[pre-commit:changelog] $3 通过。" >&2
-  else
-    echo "[pre-commit:changelog] $3 不合规（格式，或版本头时间与 git tag 对不上），已拦截提交。" >&2
-    exit 1
-  fi
-}
-STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACM)"
-if printf '%s\n' "$STAGED_ALL" | grep -q '^CHANGELOG\.md$'; then
-  # ★ 根日志额外要求"不含子项目专属条目"（--assert-workspace-level）
-  check_changelog CHANGELOG.md workspace-v "工作区根日志" --assert-workspace-level
-fi
-if printf '%s\n' "$STAGED_ALL" | grep -q '^projects/livefab/CHANGELOG\.md$'; then
-  check_changelog projects/livefab/CHANGELOG.md livefab-v "LiveFab 日志"
-fi
-
 exit 0
 fi
 # 只要本次暂存涉及 data/ 下任何表(json/schema), 就跑全量数据校验(数据表彼此多依赖)
