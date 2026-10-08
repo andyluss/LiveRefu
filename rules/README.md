@@ -36,6 +36,21 @@
 - [`indie/`](../indie/README.md)（独立项目区）与 [`lab/`](../lab/README.md)（实验项目区）下的子目录**默认豁免上述根规则**（R01–R06 具体规则与 M0–M3 元规则），除非**特别约定**。
 - 各子项目/实验可自定义约定；若需引用某条根规则，在该子项目 README 中写明即可。
 
+### 3.1 机器校验的实际覆盖（**已知缺口，写在明处**）
+
+"豁免"说的是**规则适用性**；下面说的是**机器校验是否真的在跑**——两者不是一回事，此前混为一谈，导致"项目里另立一套命名不会被发现"（2026-10-08 讨论记录命名与 [M2](meta/M2-naming-vocabulary.md) 冲突，就是这么漏过去的）。
+
+覆盖清单在 [`meta/tools/workspace-scope.json`](meta/tools/workspace-scope.json)，由 [`meta/tools/meta_rules_scope.ts`](meta/tools/meta_rules_scope.ts) 执行（pre-commit 跑 `--block-only`、CI 跑全量）：
+
+| 状态 | 含义 | 当前 |
+| --- | --- | --- |
+| **block** | 纳入闸门，必须 0 违规 | `rules/`、`projects/mainline/` |
+| **report** | 只报告不拦截，欠账可见 | `tech/`、`tools/`、`doc/`、`studio001/`、`projects/livefab`、`projects/tomorrows-channel`、`projects/refu-game-001`、`projects/website` |
+| **exempt** | 按本节豁免 | `indie/`、`lab/` |
+
+- **为什么不全开**：实测用通用配置跑 `projects/` 会产出上百条**因配置不全而来的假阳性**；闸门一旦变成噪声，人就开始绕过它，比不查更糟。
+- **怎么推进**：某个关注点先写自己的判定配置 → 跑到 0 违规 → 把它的 `mode` 从 `report` 改成 `block`。**一次只开一个，且开之前先确认是干净的。**
+
 ## 四、规则来源与演进
 
 - **具体规则（R01–R06）**：已由占位**转正**为权威条款；`tech/` 对应文档为技术详解（非规则权威）。

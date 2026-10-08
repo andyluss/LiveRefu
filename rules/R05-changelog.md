@@ -9,7 +9,7 @@
 ## 二、规则条款（主选）
 
 1. **必写**：每次**非琐碎**变更写入变更日志——工作区根 [`CHANGELOG.md`](../CHANGELOG.md)；项目/实验写入各自根 `CHANGELOG.md`。
-2. **格式**：遵循 **Keep a Changelog** 类目（`Added/Changed/Deprecated/Removed/Fixed/Security`）+ **SemVer** 版本 + **东八区日期**（完整规格见技术详解）。
+2. **格式**：遵循 **Keep a Changelog** 类目（`Added/Changed/Deprecated/Removed/Fixed/Security`）+ **SemVer** 版本 + **东八区、精确到分的时间**（版本头 `## [x.y.z] - YYYY-MM-DD HH:MM`）。**时间的精度、来源与格式一律见 [R06](R06-time.md)**，本规则不另行表述；完整书写规格见[技术详解](../tech/changelog-convention.md)。
 3. **粒度**：一条对应一个**逻辑变更**，与 git 提交粒度对齐；**面向人**（写清"改了什么、为什么、影响谁"）。
 4. **不替代提交记录**：变更日志是审阅版摘要，`git log` 是机器历史，两者互补。
 5. **改规则时**：既写变更日志条目（本规则），又在**被改规则文件的「演进历史」**追加一行（见 [M3](meta/M3-rule-evolution.md)）——两者分工：前者记"工作区发生了什么"，后者记"这条规则自身如何演变"。
@@ -43,3 +43,4 @@
 | --- | --- | --- | --- | --- |
 | v1 | 2026-09-09 | `proposed` | 立名目（占位）：登记 R05，正文暂以 `tech/changelog-convention.md` 为准 | 建立根 `rules/` 目录 |
 | v2 | 2026-09-14 | `accepted.active` | **转正**：规则条款迁入本文件为权威；补「改规则时同时记变更日志与演进历史」的分工说明 | 用户要求 R 系列转正 |
+| v3 | 2026-10-08 | `accepted.active` | 条款 2 的时间表述由"**东八区日期**"改为"**东八区、精确到分**"并指向 [R06](R06-time.md)：原先只说日期，与检查器（要求 `HH:MM`，缺时分直接拒绝）及 [技术详解](../tech/changelog-convention.md) 实际用法**都不一致** | 审计发现"文档描述的格式正是闸门会拒的格式"；用户裁决"全按推荐" |

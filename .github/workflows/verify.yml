@@ -65,6 +65,9 @@ jobs:
       - name: Meta-rules structure check (M1+M2, TS)
         run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts
 
+      - name: Meta-rules workspace coverage (M1+M2, TS)
+        run: node --experimental-strip-types rules/meta/tools/meta_rules_scope.ts --self-test && node --experimental-strip-types rules/meta/tools/meta_rules_scope.ts
+
       - name: Meta-rule evolution state check (M3, TS)
         run: node --experimental-strip-types lab/formal-system/concerns/meta-rules/evolution/rule_evolution_check.ts
 

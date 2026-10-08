@@ -1,0 +1,25 @@
+{
+  "_comment": "M1+M2 的**工作区覆盖清单**（不是判定配置本身）。每条 = 一个顶层关注点及其覆盖状态。由 tools/meta_rules_scope.ts 读取执行。",
+  "_modes": {
+    "block": "纳入闸门：必须 0 违规，否则 pre-commit/CI 拦截（需配 config）",
+    "report": "只报告不拦截：用通用配置估一个欠账规模，列进待办（需配 config）",
+    "pending": "尚未配置：只登记在案，不跑检查（**已知缺口，写在明处**）",
+    "exempt": "按 rules/README.md §三 豁免"
+  },
+  "concerns": [
+    { "path": "rules", "mode": "block", "config": "rules/meta/meta-rules-config.json", "why": "规则目录自身（元规则之家）" },
+    { "path": "projects/mainline", "mode": "block", "config": "rules/meta/tools/config-projects-mainline.json", "why": "已按 M1/M2 建成，2026-10-08 实测 0 违规，具备纳入闸门的条件" },
+
+    { "path": "tech", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "工作区技术详解目录（M1 §四：跨关注点的全局约定）" },
+    { "path": "tools", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "跨关注点通用工具目录（M1 §四）" },
+    { "path": "doc", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "题材知识库（526 个文件，需专门配置才能真正判定）" },
+    { "path": "studio001", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "已搁置的历史资料（保留原样，优先级最低）" },
+    { "path": "projects/livefab", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "提案阶段项目" },
+    { "path": "projects/tomorrows-channel", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "在研项目（plans/ 已按 M2 命名）" },
+    { "path": "projects/refu-game-001", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "在研项目" },
+    { "path": "projects/website", "mode": "report", "config": "rules/meta/tools/config-generic.json", "why": "在研项目（含大量生成物目录，需专门 skip 规则）" },
+
+    { "path": "indie", "mode": "exempt", "why": "rules/README.md §三：独立项目区（各自有 .git 与远程）" },
+    { "path": "lab", "mode": "exempt", "why": "rules/README.md §三：实验项目区" }
+  ]
+}

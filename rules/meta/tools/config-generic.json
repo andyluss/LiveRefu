@@ -1,0 +1,15 @@
+{
+  "_comment": "M1+M2 的**通用粗略配置**：只用于给尚未专门配置的关注点**估一个欠账规模**（report 模式），不作为判定依据——实测用通用配置跑 projects/ 会产出大量因配置不全而来的假阳性。",
+  "concern": "generic (粗略估算用)",
+  "root": ".",
+  "root_docs": ["README.md", "CHANGELOG.md", "run.sh", "STRUCTURE.md"],
+  "type_vocab": ["docs","data","game","src","code","test","tests","plans","art","assets","references","tools","scripts","deploy","public","scenes","notes","specs","methods"],
+  "code_types": ["game","src","code","tools","scripts","deploy","public","scenes"],
+  "empty_ok_types": [],
+  "doc_naming": { "default": ["^\\d+_", "^\\d+-", "^[a-zA-Z0-9_.-]+$"] },
+  "skip_dirs": ["__pycache__","target",".git","node_modules",".godot",".build",".shots",".next",".nuxt","dist","vendor"],
+  "skip_prefixes": [".","_"],
+  "sub_concerns": [],
+  "sub_concerns_dir": null,
+  "sub_configs": {}
+}

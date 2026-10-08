@@ -1,0 +1,27 @@
+{
+  "_comment": "M1+M2 判定配置 · projects/mainline（主线纲领 + 其下的具体项目）。实测 0 违规，故纳入 block。",
+  "concern": "projects/mainline",
+  "root": ".",
+  "root_docs": ["README.md", "CHANGELOG.md"],
+  "type_vocab": ["docs"],
+  "code_types": [],
+  "empty_ok_types": [],
+  "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
+  "skip_dirs": ["__pycache__", ".git", "node_modules", ".godot", ".build", ".shots"],
+  "skip_prefixes": [".", "_"],
+  "sub_concerns": ["future-debris"],
+  "sub_concerns_dir": null,
+  "sub_configs": {
+    "future-debris": {
+      "root_docs": ["README.md", "CHANGELOG.md", "run.sh"],
+      "type_vocab": ["docs", "game", "tools"],
+      "code_types": ["game", "tools"],
+      "empty_ok_types": [],
+      "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
+      "skip_dirs": [".godot", ".build", ".shots", "__pycache__", "node_modules"],
+      "skip_prefixes": [".", "_"],
+      "sub_concerns": [],
+      "sub_configs": {}
+    }
+  }
+}
