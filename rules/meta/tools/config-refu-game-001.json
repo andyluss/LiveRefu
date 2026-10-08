@@ -1,0 +1,15 @@
+{
+  "_comment": "M1+M2 判定配置 · projects/refu-game-001（《节点防线》卡片塔防垂直切片）。",
+  "concern": "projects/refu-game-001",
+  "root": ".",
+  "root_docs": ["README.md", "CHANGELOG.md"],
+  "type_vocab": ["docs", "game", "tools"],
+  "code_types": ["game", "tools"],
+  "empty_ok_types": [],
+  "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
+  "skip_dirs": ["__pycache__", "node_modules", ".godot", ".build", "target"],
+  "skip_prefixes": [".", "_"],
+  "sub_concerns": [],
+  "sub_concerns_dir": null,
+  "sub_configs": {}
+}

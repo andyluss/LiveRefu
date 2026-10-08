@@ -1,0 +1,34 @@
+{
+  "_comment": "M1+M2 判定配置 · tech/（工作区技术详解目录）。文件名约定为 kebab-case（见 tech/README.md §约定，刻意区别于 doc/ 的编号体例）。",
+  "concern": "tech",
+  "root": ".",
+  "root_docs": [
+    "README.md"
+  ],
+  "type_vocab": [
+    "references"
+  ],
+  "code_types": [],
+  "empty_ok_types": [],
+  "doc_naming": {
+    "default": [
+      "^[a-z0-9]+(-[a-z0-9]+)*\\.md$",
+      "^README$"
+    ],
+    "references": [
+      "^[a-z0-9][a-z0-9_.-]*\\.(jsonl|json|html|csv|txt|md)$"
+    ]
+  },
+  "skip_dirs": [
+    ".git",
+    "node_modules",
+    "__pycache__"
+  ],
+  "skip_prefixes": [
+    ".",
+    "_"
+  ],
+  "sub_concerns": [],
+  "sub_concerns_dir": null,
+  "sub_configs": {}
+}

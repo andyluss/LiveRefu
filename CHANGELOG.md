@@ -13,6 +13,15 @@
 
 ## [未发布]
 
+### 变更
+- **元规则覆盖首批转正：`block` 由 2 个关注点扩到 5 个**（[`workspace-scope.json`](rules/meta/tools/workspace-scope.json)）：新增 `tech/`（10 合规）、`projects/tomorrows-channel`（29）、`projects/refu-game-001`（18）——各写了**专门判定配置**，实测 **0 违规**。这三个此前只有通用配置，写了忠实配置后一次达标（**"实测 0 违规"是转正的前置条件**，不是转正后的期望）。
+  - 写配置时发现检查器的一个**易错点并记录**：类型目录**不是完全不透明的叶子**——它会被**再查一层文件命名**。因此 `tech/references/`（放数据与资产，非文档）必须给它**单独的命名规则**（`doc_naming.references`），否则 `gh_meta.jsonl`、`visualization-edf21c0f.html` 这类文件会被误判为"命名不合规"。
+  - 另记一条：命名正则匹配的是**含扩展名的完整文件名**，写 `^[a-z0-9-]+$` 会漏掉 `.md`（本次即因此先报 5 条假阳性，已改为 `\.md$`）。
+  - `report` 剩余 5 个：`tools/`（2）、`doc/`（粗估 332）、`studio001/`（2）、`projects/livefab`（2）、`projects/website`（6）——**欠账数字保持可见**。
+
+### 变更
+- **修正 `tech/changelog-convention.md` 的模板与示例**（用户直接修改）：结构模板与完整示例里的版本头 `## [1.2.0] - 2026-09-09` / `## [2.0.0] - 2026-09-09` 补上时分（`2026-09-09 10:11`），与 §五 的格式规定一致——**示例若不合规，抄示例的人必然写出不合规的日志**。已核实：纳入范围内的版本头现已**全部**精确到分（残留的只到日期者仅在被豁免的 `indie/dsh-pet-refu/` 与第三方 `node_modules/`）。
+
 ### 修复
 - **"变更日志规则"自身的时间表述与实现矛盾**（审计发现，属"照文档写会被自己的闸门拒"那一类）：
   - [`tech/changelog-convention.md`](tech/changelog-convention.md) 的版本条目头写的是 `## [<版本>] - <YYYY-MM-DD>`（**只到日期**），而 [`tools/check_changelog.ts`](tools/check_changelog.ts) 的自测用例名字就叫"缺时分…**旧格式必须被拒**"，8 份实际日志**全都**带 `HH:MM`——**文档描述的正是闸门会拒绝的格式**。已改为 `YYYY-MM-DD HH:MM`（4 处）。

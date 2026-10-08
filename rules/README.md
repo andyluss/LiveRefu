@@ -44,12 +44,13 @@
 
 | 状态 | 含义 | 当前 |
 | --- | --- | --- |
-| **block** | 纳入闸门，必须 0 违规 | `rules/`、`projects/mainline/` |
-| **report** | 只报告不拦截，欠账可见 | `tech/`、`tools/`、`doc/`、`studio001/`、`projects/livefab`、`projects/tomorrows-channel`、`projects/refu-game-001`、`projects/website` |
+| **block** | 纳入闸门，必须 0 违规 | `rules/`、`projects/mainline/`、`tech/`、`projects/tomorrows-channel/`、`projects/refu-game-001/` |
+| **report** | 只报告不拦截，欠账可见 | `tools/`、`doc/`（粗估 332 条）、`studio001/`、`projects/livefab`、`projects/website` |
 | **exempt** | 按本节豁免 | `indie/`、`lab/` |
 
 - **为什么不全开**：实测用通用配置跑 `projects/` 会产出上百条**因配置不全而来的假阳性**；闸门一旦变成噪声，人就开始绕过它，比不查更糟。
 - **怎么推进**：某个关注点先写自己的判定配置 → 跑到 0 违规 → 把它的 `mode` 从 `report` 改成 `block`。**一次只开一个，且开之前先确认是干净的。**
+  2026-10-08 首批转正三个：`tech/`（10 合规）、`projects/tomorrows-channel`（29）、`projects/refu-game-001`（18）——它们本来就只有通用配置，写了专门配置后一次达标。
 
 ## 四、规则来源与演进
 
