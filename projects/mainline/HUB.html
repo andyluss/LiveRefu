@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>未来残片 · 主线项目 HUB</title>
+<!--
+  这是**给人看的**汇总页（AI 不需要读它）。
+  目的：隔了很久回来时，用最少的滚动量重新接上——"当初为什么这么定、现在到哪了、下一步干什么"。
+  规则：
+    · 只汇总与指路，**不复制**权威内容（细节一律回文档，避免两处表述分叉）。
+    · 数字用 data-fact 标记，由 tools/check_hub.py 与数据表对账；不一致会报错，防止页面悄悄过期。
+    · 调色板直接复用游戏的 design token（已被游戏自己的对比度闸门验证过），页面与游戏同一视觉语言。
+    · 打印时所有 Tab 全部展开（见 @media print）——桌面省滚动与打印看全，两个目标不冲突。
+-->
+<style>
+  /* ── 调色板：直接取自 game/data/tokens.json（游戏第三道闸门已验证对比度） ── */
+  :root{
+    --bg:#10161C; --e1:#18212B; --e2:#212E3A; --sunken:#0B1116;
+    --text:#F3EDE1; --dim:#A9A395; --faint:#9E9889;
+    --line:#2A3742; --line-strong:#6F7B89;
+    --power:#4FD1C5; --residue:#FF6B35; --accent:#E4572E;
+    --focus:#8AB4F8; --warn:#FFC857; --ok:#7BD389;
+    --r:10px; --gap:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+    font:15px/1.65 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+  a{color:var(--focus);text-decoration:none;border-bottom:1px solid rgba(138,180,248,.35)}
+  a:hover{border-bottom-color:var(--focus)}
+  code{background:var(--sunken);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:.88em}
+
+  /* ── 顶栏与 Tab ── */
+  .topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#0d1219 0%,#10161C 100%);
+    border-bottom:1px solid var(--line);padding:12px 22px 0}
+  .topline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .brand{font-size:19px;font-weight:700;letter-spacing:.5px}
+  .brand .zh{color:var(--text)} .brand .en{color:var(--faint);font-weight:400;font-size:13px;margin-left:8px}
+  .stamp{margin-left:auto;color:var(--faint);font-size:12.5px}
+  .hint{color:var(--dim);font-size:12.5px;margin-top:3px}
+  nav.tabs{display:flex;gap:4px;margin-top:12px;flex-wrap:wrap}
+  nav.tabs button{appearance:none;background:transparent;color:var(--dim);border:1px solid transparent;
+    border-bottom:none;border-radius:8px 8px 0 0;padding:9px 15px;font:inherit;font-size:14px;cursor:pointer}
+  nav.tabs button:hover{color:var(--text);background:rgba(255,255,255,.03)}
+  nav.tabs button[aria-selected="true"]{background:var(--e1);color:var(--text);border-color:var(--line);
+    box-shadow:inset 0 2px 0 var(--power)}
+  nav.tabs button .n{color:var(--faint);font-size:12px;margin-right:6px}
+
+  main{max-width:1180px;margin:0 auto;padding:22px}
+  .panel{display:block}
+  body.js .panel{display:none}
+  body.js .panel.active{display:block;animation:fade .18s ease-out}
+  @keyframes fade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+  h2{font-size:20px;margin:2px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h3{font-size:15px;margin:20px 0 8px;color:var(--power);letter-spacing:.3px}
+  h3:first-child{margin-top:6px}
+  .lede{color:var(--dim);margin:8px 0 16px}
+
+  /* ── 卡片与网格 ── */
+  .grid{display:grid;gap:var(--gap)}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--e1);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px}
+  .card h4{margin:0 0 7px;font-size:14.5px;color:var(--text)}
+  .card p{margin:6px 0;color:var(--dim);font-size:13.5px}
+  .card .k{color:var(--text)}
+  .chip{display:inline-block;background:var(--sunken);border:1px solid var(--line);border-radius:999px;
+    padding:3px 10px;font-size:12.5px;color:var(--dim);margin:0 6px 6px 0}
+  .chip.ok{color:var(--ok);border-color:rgba(123,211,137,.4)}
+  .chip.warn{color:var(--warn);border-color:rgba(255,200,87,.4)}
+  .chip.todo{color:var(--residue);border-color:rgba(255,107,53,.4)}
+  .chip.acc{color:var(--power);border-color:rgba(79,209,197,.4)}
+
+  /* ── 数字 ── */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 4px}
+  .stat{background:var(--sunken);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px}
+  .stat .v{font-size:26px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
+  .stat .l{color:var(--dim);font-size:12.5px;margin-top:3px}
+  .stat.p .v{color:var(--power)} .stat.r .v{color:var(--residue)} .stat.o .v{color:var(--ok)}
+
+  /* ── 表格 ── */
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--faint);font-weight:600;font-size:12.5px;letter-spacing:.3px}
+  tr:last-child td{border-bottom:none}
+  td .q{color:var(--faint);font-variant-numeric:tabular-nums}
+  .pick{color:var(--ok)} .pend{color:var(--warn)}
+
+  /* ── 截图 ── */
+  .shots{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  figure{margin:0;background:var(--sunken);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  figure img{display:block;width:100%;height:auto;background:#000}
+  figcaption{padding:8px 11px;color:var(--dim);font-size:12.5px}
+  figcaption b{color:var(--text)}
+  video{width:100%;border-radius:var(--r);border:1px solid var(--line);background:#000}
+
+  /* ── 时间线 ── */
+  ol.tl{list-style:none;margin:6px 0;padding:0}
+  ol.tl li{position:relative;padding:0 0 14px 22px;border-left:1px solid var(--line)}
+  ol.tl li:last-child{border-left-color:transparent;padding-bottom:0}
+  ol.tl li::before{content:"";position:absolute;left:-5px;top:6px;width:9px;height:9px;border-radius:50%;
+    background:var(--line-strong)}
+  ol.tl li.done::before{background:var(--ok)} ol.tl li.now::before{background:var(--power);
+    box-shadow:0 0 0 4px rgba(79,209,197,.16)}
+  ol.tl b{color:var(--text)} ol.tl span{color:var(--dim);font-size:13px}
+
+  /* ── 提示块 ── */
+  .note{border-left:3px solid var(--line-strong);background:var(--sunken);border-radius:0 var(--r) var(--r) 0;
+    padding:11px 14px;margin:12px 0;color:var(--dim);font-size:13.5px}
+  .note.warn{border-left-color:var(--warn)} .note.bad{border-left-color:var(--residue)}
+  .note.ok{border-left-color:var(--ok)} .note b{color:var(--text)}
+  .foot{max-width:1180px;margin:0 auto;padding:8px 22px 34px;color:var(--faint);font-size:12.5px;
+    border-top:1px solid var(--line);margin-top:26px}
+
+  @media (max-width:900px){
+    .g3,.g4,.stats,.shots{grid-template-columns:repeat(2,1fr)}
+    .g2{grid-template-columns:1fr}
+  }
+  @media (max-width:620px){ .g3,.g4,.stats,.shots{grid-template-columns:1fr} }
+
+  /* ══ 打印：一页纸版 —— 所有 Tab 展开、去掉导航、深色文字压到白底上 ══
+     要点：深色主题的 --dim/--faint 在白底上偏淡，必须**逐类覆盖成深灰**，
+     否则打出来是一份看不清的文档。别指望继承。 */
+  @media print{
+    :root{--gap:9px}
+    html,body{background:#fff;color:#000;font-size:10.5px;line-height:1.45}
+    a{color:#000;border-bottom:none}
+    .topbar{position:static;background:#fff;border-bottom:1.5px solid #000;padding:0 0 5px}
+    nav.tabs,.hint,.noprint,.print-only-screen{display:none !important}
+    .brand .zh{color:#000} .brand .en{color:#444} .stamp{color:#000}
+    main{max-width:none;padding:0}
+
+    /* ⚠️ 必须 `animation:none !important`：`.panel.active` 上带着 animation:fade（**从 opacity:0 开始**），
+       而 .active 的优先级高于这里；不加 !important 时动画会在打印捕获的瞬间仍是 opacity:0，
+       结果**首页整页空白**（这个坑只有真的渲染一次才会发现）。
+       同时 beforeprint 会给所有面板加 .active（让所有 Tab 都在纸面上出现），正是它触发了动画。 */
+    body.js .panel, body.js .panel.active{display:block !important;animation:none !important}
+    /* 注意：**不要**给 .panel 加 page-break-inside:avoid——
+       每个面板都比一页高，整体不可分割会把它推到下一页，首页因此留白。
+       avoid 只用于**能装进一页**的原子件。 */
+    .panel{margin-bottom:8px;padding-top:4px;border-top:1px solid #bbb}
+    .panel:first-of-type{border-top:none}
+    table,figure,.card,ol.tl li,.stat,.note{page-break-inside:avoid}
+
+    /* ── 文字：一律压到能看清的深灰/黑 ── */
+    h2{font-size:12.5px;border-bottom:1px solid #666;color:#000;page-break-after:avoid}
+    h3{font-size:11px;color:#0a4a44;margin:6px 0 3px;page-break-after:avoid}
+    h4{font-size:10.5px;color:#000}
+    .lede,.card p,.note,figcaption,ol.tl span,td,th,.stat .l,.chip,code{
+      color:#1a1a1a !important}
+    th{color:#000 !important;font-weight:700}
+    .q{color:#555 !important}
+    .pick{color:#0a5c34 !important;font-weight:600}
+    .pend{color:#8a4b00 !important;font-weight:600}
+    .card .k,b,strong{color:#000 !important}
+    .lede b,.card b{color:#000 !important}
+
+    /* ── 底色与描边：白底 + 灰线 ── */
+    .card,.stat,figure,ol.tl li,.note,code{background:#fff}
+    .card,.stat,figure{border:1px solid #999}
+    .card{padding:5px 7px} .stat{padding:4px 6px} .stat .v{font-size:14px;color:#000 !important}
+    .card p,.note,figcaption{font-size:9px;margin:2px 0}
+    .lede{font-size:9.5px;margin:2px 0 5px}
+    .card h4{font-size:9.5px;margin:0 0 2px}
+    .chip{border:1px solid #999;padding:0 4px;font-size:8.5px;margin:0 2px 2px 0;color:#1a1a1a !important}
+    .note{border-left:3px solid #666;background:#f4f4f4;padding:4px 7px;margin:5px 0}
+    .note.warn{border-left-color:#8a4b00} .note.bad{border-left-color:#8a1c00} .note.ok{border-left-color:#0a5c34}
+
+    /* ── 媒体与表格 ── */
+    video{display:none !important}
+    .print-only{display:block !important;color:#333;font-size:9px;margin:2px 0 5px}
+    .shots{grid-template-columns:repeat(3,1fr);gap:5px}
+    figure img{border:1px solid #999}
+    .stats{grid-template-columns:repeat(6,1fr);gap:5px}
+    .grid.g3{grid-template-columns:repeat(3,1fr)} .grid.g2{grid-template-columns:repeat(2,1fr)}
+    table{font-size:9.5px} th,td{padding:2px 4px;border-color:#ccc}
+    ol.tl li{padding:0 0 3px 11px;border-left-color:#ccc}
+    ol.tl li::before{background:#888} ol.tl li.done::before{background:#0a5c34}
+    ol.tl li.now::before{background:#0a4a44;box-shadow:none}
+    code{background:#f2f2f2;border:1px solid #ccc}
+    @page{margin:11mm 10mm}
+  }
+  .print-title{display:none}
+  .print-only{display:none}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topline">
+    <div>
+      <div class="brand"><span class="zh">未来残片</span><span class="en">future-debris</span></div>
+      <div class="hint">主线纲领下的当前具体项目 · 本页只汇总与指路，细节回文档</div>
+    </div>
+    <div class="stamp">截至 <b>2026-10-08</b> · 阶段 <b>S4 完成</b> · 八道闸门全绿</div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>概览</button>
+    <button role="tab" data-tab="decisions"><span class="n">02</span>已决定的事</button>
+    <button role="tab" data-tab="look"><span class="n">03</span>它长什么样</button>
+    <button role="tab" data-tab="content"><span class="n">04</span>内容现状</button>
+    <button role="tab" data-tab="business"><span class="n">05</span>怎么卖</button>
+    <button role="tab" data-tab="lessons"><span class="n">06</span>踩过的坑</button>
+    <button role="tab" data-tab="next"><span class="n">07</span>下一步</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════ 01 概览 ══════════ -->
+<section class="panel active" id="panel-overview" data-title="概览">
+  <h2>01 · 概览</h2>
+  <p class="lede">
+    <b style="color:var(--text);font-size:16px">向一个相信清洁能源的明天提交提案——代价是残渣。</b><br>
+    <i style="color:var(--faint)">Submit your proposals to a future that believed in clean energy. The cost is residue.</i>
+  </p>
+
+  <div class="stats">
+    <div class="stat p"><div class="v" data-fact="cards">120</div><div class="l">卡牌（T3 下沿）</div></div>
+    <div class="stat p"><div class="v" data-fact="levels">16</div><div class="l">关卡 / <span data-fact="chapters">8</span> 章</div></div>
+    <div class="stat r"><div class="v" data-fact="rules">11</div><div class="l">规则卡</div></div>
+    <div class="stat o"><div class="v" data-fact="cases">43</div><div class="l">玩法验收用例</div></div>
+  </div>
+
+  <h3>它是什么</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4>形态</h4>
+      <p>复古未来主义 · <span class="k">时代提案卡组 + 自走式防线</span>；以「纪元」为单位滚动成长。</p>
+      <p>PC 买断 <span class="k">$19.99</span> + 免费 Demo；不卖数值、不抽卡。</p>
+    </div>
+    <div class="card">
+      <h4>一句话玩法</h4>
+      <p>你向一个相信清洁能源的明天提交改造提案：<span class="k">每一次供电都更快，也把一点代价留在了地图上</span>。</p>
+    </div>
+    <div class="card">
+      <h4>差异化在哪</h4>
+      <p>复古未来题材本身<b>热门到无法靠题材被记住</b>，所以差异来自机制：<span class="k">「代价」不是失败惩罚，而是第二种资源</span>。</p>
+    </div>
+  </div>
+
+  <h3>核心循环（三句话）</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4>① 双资源：电力 ↔ 残渣</h4>
+      <p><span class="k" style="color:var(--power)">电力</span>是供给，<span class="k" style="color:var(--residue)">残渣</span>是代价——每次供能都会留下它。</p>
+    </div>
+    <div class="card">
+      <h4>② 残渣堆积成「降级区」</h4>
+      <p>残渣在地图上形成降级区，<span class="k">持续腐蚀你的基地</span>；清不掉就会输在自己造的东西上。</p>
+    </div>
+    <div class="card">
+      <h4>③ 规则卡改变这一关的物理法则</h4>
+      <p>同一张牌在不同规则下结果不同（例：污染从「惩罚」变「燃料」）。<span class="k">这是纪元差异的载体</span>。</p>
+    </div>
+  </div>
+
+  <h3>四个势力：同一套数字，四种活法</h3>
+  <table>
+    <tr><th>势力</th><th>对残渣的姿态</th><th>玩法差异</th><th>胜利条件</th></tr>
+    <tr><td>原子能委员会 <span class="q">AEC</span></td><td class="pick">cleans 清理</td><td>把残渣清掉，甚至能换来一次性爆发</td><td>守成（活到最后）</td></tr>
+    <tr><td>郊区秩序 <span class="q">SUB</span></td><td class="pick">avoids 回避</td><td>保持干净格，越干净战力越高</td><td>守成（活到最后）</td></tr>
+    <tr><td>清运承包方 <span class="q">HAU</span></td><td class="pick">moves 搬运</td><td>把残渣搬到最脏的格子上，回收更划算</td><td>清剿（清完波次）</td></tr>
+    <tr><td>辐射漫游者 <span class="q">ROA</span></td><td class="pick">feeds 喂养</td><td><b>把残渣从惩罚翻转为燃料</b></td><td>清剿（清完波次）</td></tr>
+  </table>
+  <p class="lede" style="margin-top:6px">同一套数值，因为「姿态 + 胜利条件」不同而产生四种体验——这是 4 势力共 <span data-fact="factions">4</span> 个却不像换皮的原因。</p>
+
+  <h3>走到哪了</h3>
+  <ol class="tl">
+    <li class="done"><b>S1 工程地基</b> · <span>Godot 4.7 四层结构（core / view / app / data）、表驱动、文件预算闸门</span></li>
+    <li class="done"><b>S2 核心循环</b> · <span>双资源、降级区、波次结算、难度模型可模拟</span></li>
+    <li class="done"><b>S3 规则卡与关卡</b> · <span>规则卡系统（含获取方式）、16 关配置化、势力机制差异、按实测重定难度曲线</span></li>
+    <li class="done"><b>S4 表现层</b> · <span>一局闭环（选关 → 战斗 → 结算 + 存档）、HUD / 8 塔位 / 手牌 / 降级区 / 事件行、程序生成音效、响应式布局、商店页素材</span></li>
+    <li class="now"><b>S5 第一章垂直切片</b> · <span>下一步：人类试玩验证「好不好玩、看不看得懂」</span></li>
+    <li><b>S6 验证与 Go/No-Go</b> · <span>按试玩结果决定继续投入还是改方向</span></li>
+  </ol>
+
+  <div class="note ok">
+    <b>当前最该做的一件事</b>：跑一轮<b>人类试玩</b>（5 人，材料已就绪）。
+    至今所有结论都是自证——闸门证明不变量成立、自动玩家证明能通关，但<b>没有任何一条证据回答「好不好玩、看不看得懂」</b>。
+  </div>
+</section>
+
+<!-- ══════════ 02 已决定的事 ══════════ -->
+<section class="panel" id="panel-decisions" data-title="已决定的事">
+  <h2>02 · 已经决定的事（别再重新讨论）</h2>
+  <p class="lede">这一节是本页最值钱的部分：<b>防止你重新推一遍已经推过的事</b>。每条只给「选了什么 + 一句话为什么」，完整论证在对应文档。</p>
+
+  <table>
+    <tr><th>#</th><th>决策</th><th>选了什么</th><th>一句话为什么</th></tr>
+    <tr><td class="q">Q1</td><td>主线承担什么角色</td><td class="pick">游戏为主入口 + 工作区为内容工厂</td><td>决定一切后续取舍</td></tr>
+    <tr><td class="q">Q2</td><td>与既有项目的关系</td><td class="pick">可并入但按需延迟并入</td><td>不重做轮子，也不被旧设定绑架</td></tr>
+    <tr><td class="q">Q3</td><td>首发核心玩法</td><td class="pick">时代提案卡组 + 自走式防线</td><td>产能可控、且能承载「代价」这个立意</td></tr>
+    <tr><td class="q">Q4</td><td>纪元策略</td><td class="pick">多纪元，先做透一个旗舰纪元</td><td>旗舰 = <b>原子朋克 / 太空时代</b>；综合性靠后续纪元累积</td></tr>
+    <tr><td class="q">Q5</td><td>平台与发行节奏</td><td class="pick">方案 A：Steam 商店页 + Playtest 先行，Demo 后发</td><td>把「公开露面」与「发 Demo」分开；Next Fest 只覆盖一次</td></tr>
+    <tr><td class="q">Q6</td><td>美术统一化</td><td class="pick">纪元风格卡 + 共享语法层</td><td>辨识度与产能可持续性兼得</td></tr>
+    <tr><td class="q">Q7</td><td>技术栈与管线</td><td class="pick">Godot 4.x，表驱动 + AI 辅助</td><td>复用既有验证过的管线，而不是重选引擎</td></tr>
+    <tr><td class="q">Q13</td><td>体量—价格组合</td><td class="pick">做厚卖 $19.99（200–300 卡 + 6–10 势力）</td><td>对标 46 作的实测结论；<b>这是最贵的一个决定</b></td></tr>
+    <tr><td class="q">Q14</td><td>第一版是否必须自洽完整</td><td class="pick">接受——不靠纪元 DLC 补</td><td>差评发生在首周；纪元是叙事单元，不是内容量的许可证</td></tr>
+    <tr><td class="q">Q15</td><td>纲领与具体项目的目录结构</td><td class="pick">「纲领 + 具体项目」两层</td><td><b>具体产品可能更换，但决策历史必须长期留存</b></td></tr>
+  </table>
+
+  <h3>仍待裁决（4 项 + 若干细节）</h3>
+  <table>
+    <tr><th>#</th><th>决策</th><th>当前推荐</th><th>卡在哪</th></tr>
+    <tr><td class="q">Q8</td><td>发布节奏</td><td>双周内部可玩 → 季度公开里程碑</td><td class="pend">待裁决</td></tr>
+    <tr><td class="q">Q9</td><td>玩家互动形态</td><td>先愿望单+社区，后异步对抗，最后 UGC</td><td class="pend">待裁决</td></tr>
+    <tr><td class="q">Q10</td><td>收入结构与红线</td><td>买断 + 纪元 DLC + 纯外观；不卖数值不抽卡</td><td class="pend">待裁决</td></tr>
+    <tr><td class="q">Q11</td><td>长期目标的度量</td><td>愿望单 / 试玩转化 / 复访，三指标分层</td><td class="pend">阈值未定（建议试玩后用实测标定）</td></tr>
+  </table>
+
+  <div class="note">
+    <b>纪律</b>：裁决后<b>不回删原文</b>，在原文追加「裁决」小节（日期 / 选择 / 理由 / 代价 / <b>推翻条件</b>）。被推翻的裁决标为「已推翻，指向新决定」——<b>保留当时的判断是有价值的资产</b>，能看出哪里曾经想错。
+  </div>
+</section>
+
+<!-- ══════════ 03 它长什么样 ══════════ -->
+<section class="panel" id="panel-look" data-title="它长什么样">
+  <h2>03 · 它长什么样</h2>
+  <p class="lede">全部为原生 <b>1920×1080</b>（Steam 要求的截图规格），从真实运行画面截取——不是概念图。</p>
+
+  <h3>30 秒预告片（1920×1080）</h3>
+  <video controls preload="metadata" poster="future-debris/docs/shots/battle_mid_1080p.png">
+    <source src="future-debris/docs/video/demo_30s.mp4" type="video/mp4">
+    你的浏览器不支持内嵌视频；文件在 <code>future-debris/docs/video/demo_30s.mp4</code>。
+  </video>
+  <p class="print-only">预告片文件：<code>future-debris/docs/video/demo_30s.mp4</code>（打印版不含视频；下面即其截帧）</p>
+
+  <h3>五张截图</h3>
+  <div class="shots">
+    <figure><img src="future-debris/docs/shots/battle_preview_1080p.png" alt="战斗初始">
+      <figcaption><b>战斗 · 开局</b>——提案落位，降级区还没长出来</figcaption></figure>
+    <figure><img src="future-debris/docs/shots/battle_mid_1080p.png" alt="战斗中期">
+      <figcaption><b>战斗 · 中期</b>——塔已铺开，<b>降级区（橙）在扩张</b>，这就是「代价」看得见的样子</figcaption></figure>
+    <figure><img src="future-debris/docs/shots/card_gallery_1080p.png" alt="卡牌库">
+      <figcaption><b>卡牌库</b>——T3 卡池，按势力与费用浏览</figcaption></figure>
+    <figure><img src="future-debris/docs/shots/level_select_1080p.png" alt="关卡选择">
+      <figcaption><b>关卡选择</b>——16 关 / 8 章；每关不同的规则集与配额</figcaption></figure>
+    <figure><img src="future-debris/docs/shots/settlement_1080p.png" alt="结算">
+      <figcaption><b>结算</b>——评级只由事实推导（不注水）；同屏给下一步</figcaption></figure>
+  </div>
+
+  <div class="note">
+    <b>截图怎么来的</b>：<code>SHOT_VIEWPORT=1920x1080 ./run.sh shot &lt;文件名&gt;</code>；
+    中期画面要先用自动玩家推进若干回合（<code>--turns=N</code>），否则拍到的永远是「8 个空塔位」。
+    全部可从真实工程一键重出，不需要人工摆拍。
+  </div>
+</section>
+
+<!-- ══════════ 04 内容现状 ══════════ -->
+<section class="panel" id="panel-content" data-title="内容现状">
+  <h2>04 · 内容现状（数字）</h2>
+  <p class="lede">下面带标记的数字由 <code>tools/check_hub.py</code> 与数据表<b>逐项对账</b>——不一致会报错，页面不会悄悄过期。</p>
+
+  <div class="stats">
+    <div class="stat p"><div class="v" data-fact="cards">120</div><div class="l">卡牌（手写 12 + 生成 108）</div></div>
+    <div class="stat p"><div class="v" data-fact="levels">16</div><div class="l">关卡</div></div>
+    <div class="stat p"><div class="v" data-fact="chapters">8</div><div class="l">章节（含 Boss 关）</div></div>
+    <div class="stat r"><div class="v" data-fact="rules">11</div><div class="l">规则卡（16 关组合各异）</div></div>
+    <div class="stat"><div class="v" data-fact="factions">4</div><div class="l">势力（× 2 套胜利条件）</div></div>
+    <div class="stat"><div class="v" data-fact="relics">3</div><div class="l">未来残片</div></div>
+    <div class="stat"><div class="v" data-fact="modes">3</div><div class="l">模式</div></div>
+    <div class="stat o"><div class="v" data-fact="gates">8</div><div class="l">验收闸门</div></div>
+  </div>
+
+  <h3>卡量阶梯（目标 vs 现状）</h3>
+  <table>
+    <tr><th>阶梯</th><th>卡量</th><th>状态</th><th>说明</th></tr>
+    <tr><td class="q">T1</td><td>12</td><td class="pick">✅ 已完成</td><td>手写卡，产品识别度，不可被生成物覆盖</td></tr>
+    <tr><td class="q">T2</td><td>40–60</td><td class="pick">✅ 已完成</td><td>Playtest 阶段够用</td></tr>
+    <tr><td class="q">T3</td><td>120–150</td><td class="pick">✅ 下沿达成（<span data-fact="cards">120</span>）</td><td><b>正式发行下限</b>；上沿 150 仍可推进</td></tr>
+    <tr><td class="q">T4</td><td>200–300</td><td class="pend">待做</td><td>Q13 裁决的目标体量（$19.99 档成功样本为 200–440 张）</td></tr>
+  </table>
+
+  <h3>八道验收闸门</h3>
+  <table>
+    <tr><th>#</th><th>闸门</th><th>守什么</th></tr>
+    <tr><td class="q">1</td><td>文件预算</td><td>每个文件的行数上限（core ≤50 / app·view ≤100 / autoload ≤60）——防「一个文件长成千行」</td></tr>
+    <tr><td class="q">2</td><td>数据契约</td><td>6 张数据表按 schema 校验（必填 / type / enum / 范围 / 跨表引用）</td></tr>
+    <tr><td class="q">3</td><td>视觉 token</td><td>对比度 30 组 + 层级顺序 + 样张越界色 + <b>文档 ↔ 引擎取值对账</b></td></tr>
+    <tr><td class="q">4</td><td>工程导入</td><td>Godot 能否真正装载工程</td></tr>
+    <tr><td class="q">5</td><td>主题落地</td><td>token 编译成 Godot Theme 资源后仍一致</td></tr>
+    <tr><td class="q">6</td><td>无头自检</td><td>工程装载 + 装配链</td></tr>
+    <tr><td class="q">7</td><td>玩法行为验收</td><td><b><span data-fact="cases">43</span> 个用例</b>：一局闭环、势力差异、规则效果、评级单调…</td></tr>
+    <tr><td class="q">8</td><td>场景与视图</td><td>界面装载 / 几何 / 命中判定 / 取色 / 响应式（1280–2560 不切牌）</td></tr>
+  </table>
+  <div class="note">
+    <b>一个术语修正</b>：此前文档里把 <span data-fact="cases">43</span> 说成「43 项断言」，其实是 <b><span data-fact="cases">43</span> 个用例</b>（每个用例内部可能有多条断言）——已按工程实际改口。
+  </div>
+
+  <h3>数据驱动程度</h3>
+  <div class="grid g3">
+    <div class="card"><h4>卡表</h4><p><code>cards.json</code> + 生成器 <code>gen_cards.py</code>；改数值改<b>种子表</b>后幂等重跑，手写卡永不被覆盖。</p></div>
+    <div class="card"><h4>关卡</h4><p><code>levels.json</code> 决定逐波配额与生效规则集；难度按<b>实测能力</b>反推，不手编数字。</p></div>
+    <div class="card"><h4>视觉</h4><p>token 文档是权威、<code>tokens.json</code> 是机器可读投影，两者由闸门对账。</p></div>
+  </div>
+</section>
+
+<!-- ══════════ 05 怎么卖 ══════════ -->
+<section class="panel" id="panel-business" data-title="怎么卖">
+  <h2>05 · 怎么卖</h2>
+
+  <div class="grid g3">
+    <div class="card"><h4>价格</h4><p><b style="font-size:19px;color:var(--power)">$19.99</b> 买断 + <b>免费 Demo</b>。</p><p>$24.99 仅在体量达上限且差异足够强时才考虑。</p></div>
+    <div class="card"><h4>红线</h4><p><b>不卖数值、不抽卡、不卖统计数据。</b></p><p>可卖：纪元 DLC（叙事单元）+ 纯外观。</p></div>
+    <div class="card"><h4>为什么这定价</h4><p>M3 对标 46 作（Steam 官方接口）：$19.99–24.99 档成功样本为 <b>200–440 张卡</b>。</p><p>结论：<b>内容量决定差评下限，而非销量上限。</b></p></div>
+  </div>
+
+  <h3>发行节奏（Q5 方案 A）</h3>
+  <table>
+    <tr><th>做什么</th><th>什么时候</th><th>要点</th></tr>
+    <tr><td>Steam 商店页（Coming Soon）</td><td><b>S5 之前</b></td><td>需要胶囊图 + 预告片 + 截图；可先攒愿望单而不暴露完成度</td></tr>
+    <tr><td>Steam Playtest</td><td><b>S5</b></td><td>用 T2 版本开；收反馈 + 换小 KOL 评测</td></tr>
+    <tr><td>Demo 上架</td><td>Playtest 跑通核心循环后</td><td>内容 30 分钟–1 小时，<b>卡在最精彩处</b></td></tr>
+    <tr><td>Next Fest</td><td>Demo 上架后</td><td><b>只有一次机会</b>，必须留给 Demo 之后</td></tr>
+    <tr><td>itch.io</td><td>同步</td><td>放免费旧版本，作社区 / 开发日志落地页（不是收入来源）</td></tr>
+  </table>
+
+  <h3>三个默认值（AI 设定 · 均可推翻）</h3>
+  <table>
+    <tr><th>项</th><th>默认</th><th>推翻成本</th></tr>
+    <tr><td>Steam 上架主体</td><td><b>个人开发者账号</b></td><td>低——后续要合作或做税务安排时再改</td></tr>
+    <tr><td>主胶囊图 + 库徽标</td><td><b>外包</b>，不 AI 量产</td><td>中——需提前排期与预算</td></tr>
+    <tr><td>预算</td><td><b>≤ 万元级 RMB</b></td><td>中——超预算则重新评估是否自画</td></tr>
+  </table>
+
+  <h3>商店页素材现状</h3>
+  <div class="grid g2">
+    <div class="card"><h4>已有</h4>
+      <p><span class="chip ok">✓ 5 张 1080p 截图</span><span class="chip ok">✓ 30 秒 1080p 预告片</span><span class="chip ok">✓ 中英双语文案与标签</span><span class="chip ok">✓ 需求书</span></p></div>
+    <div class="card"><h4>还缺</h4>
+      <p><span class="chip todo">主胶囊图（外包）</span><span class="chip todo">库徽标 600×900</span><span class="chip todo">英文母语润色</span><span class="chip todo">120×45 缩略图可读性验证</span></p></div>
+  </div>
+  <div class="note warn">
+    <b>胶囊图的一条硬约束</b>：画面里<b>只能有</b>游戏画面 + 游戏名 + 副标题；评分、奖项、促销语、营销标语<b>一律会被拒</b>。
+    并且要<b>先按 120×45 的缩略图设计</b>——那才是玩家真正看到的大小。
+  </div>
+</section>
+
+<!-- ══════════ 06 踩过的坑 ══════════ -->
+<section class="panel" id="panel-lessons" data-title="踩过的坑">
+  <h2>06 · 已经纠正过的判断与踩过的坑</h2>
+  <p class="lede">这一节的价值是<b>别再踩一遍</b>。每条都附「当时怎么想错 → 证据是什么 → 改成了什么」。</p>
+
+  <h3>① 直觉给内容量定标，被证据证伪</h3>
+  <div class="note bad">
+    我按直觉把旗舰纪元写成「可构筑 <b>40–60 张卡</b>」。M3 调查 46 部作品（Steam 官方接口）后发现，这个价位的成功样本是 <b>200–440 张</b>——<b>差了约 4–5 倍</b>。
+    <br>→ 契约上调为 v2（200–300 卡 + 6–10 势力）。<b>教训：内容量不能凭直觉定，要么有对标，要么承认不知道。</b>
+  </div>
+
+  <h3>② 四次「看着像数值问题，其实是工具问题」</h3>
+  <table>
+    <tr><th>症状</th><th>真实原因</th></tr>
+    <tr><td>自动玩家卡在 4 张牌、战力却一直涨</td><td>放置判定用了<b>全盘残渣聚合</b>，且把已放置的塔重复计入 → 改成<b>逐格判定</b></td></tr>
+    <tr><td>自动玩家既不落子也不抽牌</td><td><code>playable_count()</code> 只算「付得起」，<b>没算「放得下」</b> → 两件事统一成一个谓词</td></tr>
+    <tr><td>卡池变大后某势力突然崩掉（627 → 373）</td><td>构筑器取「池子前 8 张」/「性价比前 4」——<b>小池子碰巧对，大池子必错</b> → 改为按 ramp 选</td></tr>
+    <tr><td>标定时四势力输出全都显示 144</td><td>读的是被配额<b>截断</b>后的 <code>dealt</code>，不是原始 <code>output</code> → 改成读原始值</td></tr>
+  </table>
+  <div class="note bad"><b>教训（最值钱的一条）：</b>怀疑数值之前，<b>先怀疑测量</b>。四次里有四次都不是数值错，是尺子错。</div>
+
+  <h3>③ 三次「静默失效」——没报错，但结果是假的</h3>
+  <table>
+    <tr><th>发生了什么</th><th>为什么会静默</th></tr>
+    <tr><td>验收断言写进了<b>真实存档</b></td><td>「记录」和「计算」是同一个函数 → 拆成纯函数 + 落盘两步</td></tr>
+    <tr><td>哈希校验「通过」了，其实只比了长度</td><td>比对逻辑写漏 → 补上真实比较</td></tr>
+    <tr><td>未知取值退化成<b>静默默认</b></td><td>查不到就悄悄用默认值 → 改为<b>未知即不生效</b></td></tr>
+  </table>
+  <div class="note bad"><b>教训：</b>「未知」必须是<b>不生效</b>，不能是「悄悄用默认」。<b>没报错」不等于「对」。</b></div>
+
+  <h3>④ 结算顺序就是规则</h3>
+  <div class="note bad">
+    出现过两次语义错误：一次是「守住」没要求基地还活着（于是 0 血也能算通关）；一次是胜负判定跑在伤害结算<b>之前</b>，且清剿分支没检查基地存活。
+    <br>→ <b>胜负必须在所有伤害之后判定；基地死亡覆盖任何胜利条件。</b>并补了一条常驻断言：「判通关 ⇒ 防线还在」。
+  </div>
+
+  <h3>⑤ 「规则适用」不等于「有人检查」</h3>
+  <div class="note warn">
+    有一段时间我以为「定了规则 = 有人守」。实际上机器校验<b>只覆盖了 <code>rules/</code> 与 <code>lab/</code></b>，其它关注点只是「适用规则但没人查」。
+    <br>后果很具体：讨论记录的命名与元规则冲突<b>没有任何检查会发现</b>。
+    <br>→ 建了覆盖清单，并明确区分四种状态：<b>纳入闸门 / 只报告 / 尚未配置 / 明确豁免</b>——<b>把缺口写在明处，比让它隐形好</b>。
+  </div>
+
+  <h3>⑥ 「文档说的」必须等于「闸门做的」</h3>
+  <div class="note warn">
+    变更日志的技术详解曾把版本头规定为<b>只到日期</b>，而检查器<b>明确拒绝</b>缺时分的格式——<b>照文档写会被自己的闸门拦下</b>；示例也不合规，而示例是被人抄的。
+    <br>→ 把「文档 ↔ 实现」的一致性也纳入检查。
+  </div>
+</section>
+
+<!-- ══════════ 07 下一步 ══════════ -->
+<section class="panel" id="panel-next" data-title="下一步">
+  <h2>07 · 下一步</h2>
+
+  <h3>最该做的三件（按价值排序）</h3>
+  <table>
+    <tr><th>#</th><th>做什么</th><th>为什么是现在</th><th>状态</th></tr>
+    <tr><td class="q">1</td><td><b>人类试玩</b>（5 人，≥2 人没玩过塔防/DBG）</td>
+        <td>至今全部结论都是<b>自证</b>；只有人能回答「好不好玩、看不看得懂」</td>
+        <td class="pick">材料已就绪（执行包 + 观察表 + 判定阈值）</td></tr>
+    <tr><td class="q">2</td><td><b>外包主胶囊图 + 库徽标</b></td>
+        <td>决定点击率，且是最容易做砸的一环；需求书已写好可直接发画师</td>
+        <td class="pick">需求书就绪，待发包</td></tr>
+    <tr><td class="q">3</td><td><b>英文母语润色</b></td>
+        <td>商店页文案已双语，但非母语；上线前必须过一遍</td>
+        <td class="pend">待安排</td></tr>
+  </table>
+
+  <h3>试玩的判据（先定好，免得看完不知道算不算通过）</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Q-A · 10 秒看懂</h4><p>门槛 <b>≥ 4/5</b>。开场<b>不得剧透</b>游戏是什么，否则这一项无效。</p></div>
+    <div class="card"><h4>Q-B · 30 秒会玩</h4><p>门槛 <b>≥ 4/5</b>。看人能不能自己完成第一次落子。</p></div>
+    <div class="card"><h4>Q-C · 核心张力</h4><p>门槛 <b>≥ 3/5</b>。玩家有没有自己说出「代价」这件事。</p></div>
+  </div>
+
+  <h3>内容侧可继续推进的</h3>
+  <table>
+    <tr><th>项</th><th>现状</th><th>说明</th></tr>
+    <tr><td>卡池推到 T3 上沿（150）</td><td class="pick">120 → 150</td><td>发行下限已达成，上沿是加法</td></tr>
+    <tr><td>第四章</td><td class="pend">未做</td><td>现有 8 章（16 关）已构成两个完整「收紧 → 撞墙」弧</td></tr>
+    <tr><td>规则卡 UI</td><td class="pend">未实现</td><td>条件进度提示、获取提示——规则卡已在跑，但玩家看不见它什么时候起效</td></tr>
+  </table>
+
+  <h3>需要先核实再写进正式计划的（会随 Valve 政策变动）</h3>
+  <div class="note warn">
+    ① Steam 商店页审核的<b>当前时长</b>与「发行前最少多少天」；② Steam Direct 费用的<b>准确回收门槛与口径</b>；③ Playtest 的<b>当前限制</b>（同时可参与人数等）。
+    <br>这三条我<b>没能从官方页取到正文</b>，属于「记忆中的事实」——写入正式计划前须再确认一次。
+  </div>
+
+  <h3>要深入时去哪（按问题找，不按目录找）</h3>
+  <table>
+    <tr><th>我想知道</th><th>去哪</th></tr>
+    <tr><td>所有决策的完整论证与推翻条件</td><td><code>docs/00_决策总表.md</code></td></tr>
+    <tr><td>为什么是这个玩法、纪元契约怎么算的</td><td><code>docs/03_玩法与经济循环.md</code></td></tr>
+    <tr><td>46 作对标数据与结论</td><td><code>docs/research/02_玩法与内容量对标.md</code></td></tr>
+    <tr><td>怎么卖、什么时候露脸</td><td><code>docs/11_Q5平台与发行节奏.md</code>、<code>docs/13_商店页文案与标签.md</code></td></tr>
+    <tr><td>美术预算与产能</td><td><code>docs/12_商店页与美术执行计划.md</code>、<code>future-debris/docs/05_美术产能与预算.md</code></td></tr>
+    <tr><td>试玩怎么跑</td><td><code>docs/14_人类试玩执行包.md</code></td></tr>
+    <tr><td>工程怎么跑、怎么验收</td><td><code>future-debris/README.md</code>、<code>future-debris/docs/02_工程结构与运行.md</code></td></tr>
+    <tr><td>数值怎么标定的</td><td><code>future-debris/docs/11_卡池均衡与难度标定.md</code></td></tr>
+    <tr><td>规则卡系统</td><td><code>future-debris/docs/08_规则卡系统.md</code></td></tr>
+    <tr><td>当初是怎么一步步谈过来的（9 轮）</td><td><code>docs/discussions/</code></td></tr>
+  </table>
+
+  <div class="note ok">
+    <b>一句话记住现在的位置</b>：游戏<b>已经能玩完一局</b>（选关 → 战斗 → 结算 → 存档），八道闸门全绿；
+    缺的不是功能，而是<b>一个外人说「我懂了 / 我想再来一局」</b>。所以下一步是<b>给人试玩</b>，不是继续加内容。
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <b>维护约定</b>：本页<b>只汇总与指路</b>，不复制权威内容——细节一律回文档，避免两处表述分叉。
+  带标记的数字由 <code>future-debris/tools/check_hub.py</code> 与数据表对账，过期会报错。
+  调色板取自游戏的 design token（已被游戏自己的对比度闸门验证）。
+  <span class="noprint"><br>提示：<b>⌘P / Ctrl+P</b> 可直接打印或存 PDF——打印时全部 Tab 会展开成一页纸版。</span>
+</footer>
+
+<script>
+// 渐进增强：无 JS 时所有面板都显示（等于一个长页面，也是打印形态）；有 JS 时才启用 Tab。
+document.body.classList.add('js');
+const tabs = [...document.querySelectorAll('nav.tabs button')];
+const panels = [...document.querySelectorAll('.panel')];
+
+function select(id, push){
+  const pid = 'panel-' + id;
+  if (!panels.some(p => p.id === pid)) { id = panels[0].id.replace('panel-', ''); }
+  const target = 'panel-' + id;
+  panels.forEach(p => p.classList.toggle('active', p.id === target));
+  tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === id)));
+  if (push && location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'instant'});
+}
+tabs.forEach(b => b.addEventListener('click', () => select(b.dataset.tab, true)));
+// 打印前把所有面板展开（恢复由 beforeprint/afterprint 控制）
+let prev = null;
+addEventListener('beforeprint', () => {
+  prev = panels.filter(p => p.classList.contains('active')).map(p => p.id);
+  panels.forEach(p => p.classList.add('active'));
+});
+addEventListener('afterprint', () => {
+  if (prev) panels.forEach(p => p.classList.toggle('active', prev.includes(p.id)));
+});
+addEventListener('hashchange', () => select(location.hash.slice(1), false));
+select(location.hash.slice(1) || 'overview', false);
+</script>
+</body>
+</html>

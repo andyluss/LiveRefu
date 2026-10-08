@@ -205,6 +205,25 @@ if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(rules/|project
   fi
 fi
 
+# ---- 5.9) HUB 页面与工程对账（防"给人看的页面"悄悄过期）----
+# HUB.html 里的数字（120 卡 / 16 关 / 43 用例…）一定会过期，而"页面写 120、实际已 150"
+# 这种偏差没有任何东西会发现。只要改动 HUB 或它的数据来源，就重新对账。
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^projects/mainline/(HUB\.html|future-debris/(game/data/tables/|run\.sh|game/scenes/tools/cases/))'; then
+  HUB_CHECK="projects/mainline/future-debris/tools/check_hub.py"
+  if [ -f "$HUB_CHECK" ]; then
+    echo "[pre-commit:hub] HUB 页面与工程对账..." >&2
+    if python3 "$HUB_CHECK" >&2; then
+      echo "[pre-commit:hub] 通过。" >&2
+    else
+      echo "[pre-commit:hub] HUB 页面数字与工程不一致，已拦截提交。" >&2
+      echo "  改 HUB.html 里的数字或改数据表——不要让两者并存。" >&2
+      exit 1
+    fi
+  else
+    echo "[pre-commit:hub] 未找到 ${HUB_CHECK}，跳过。" >&2
+  fi
+fi
+
 # ---- 6) 变更日志格式与版本-标签一致性（通用：根 + 各项目）----
 # 规格见 tech/changelog-convention.md 与 projects/livefab/docs/06_变更日志方案选择.md（方案甲）。
 # ★ 由 LiveFab 专用提升为**通用**：本工作区有多个 CHANGELOG，规格相同、
