@@ -10,7 +10,7 @@
 
 | 你是 | 只需看这些 | **可以忽略**（技术面，由维护者/工具管） |
 | --- | --- | --- |
-| **产品 / 策划 / 非技术维护者** | [`doc/`](doc/)（题材知识库）、[`projects/mainline/README.md`](projects/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`.godot-home/` |
+| **产品 / 策划 / 非技术维护者** | [`doc/`](doc/README.md)（**题材知识库索引**，从这进去）、[`projects/mainline/README.md`](projects/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`.godot-home/` |
 | **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`projects/mainline/future-debris/`](projects/mainline/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
 | **开发 / 维护者 / 与 AI 协作** | [`rules/`](rules/README.md)（**规则的权威**）、[`tech/`](tech/README.md)（技术详解）、[`tools/`](tools/)（检查器）、[`.github/workflows/`](.github/workflows/verify.yml)（CI） | —— |
 
@@ -34,6 +34,7 @@
 | 路径 | 内容 | 入口 |
 | --- | --- | --- |
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
+| [`doc/`](doc/README.md) | **复古未来主义知识库（索引）**：三卷的知识库入口——主卷论文集 + 朋克专题五卷 + Refu Game 001 策划卷。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`doc/README.md`](doc/README.md) |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
 | [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |
 | [`doc/refu-game-001/`](doc/refu-game-001/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图 + 卡表与数值 + 故事 + 可视化 + 美术设定；其**可运行实现**见 [`projects/refu-game-001/`](projects/refu-game-001/README.md) | [`doc/refu-game-001/README.md`](doc/refu-game-001/README.md) |
