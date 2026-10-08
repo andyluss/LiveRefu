@@ -1,0 +1,15 @@
+{
+  "_comment": "M1+M2 判定配置 · projects/livefab（LiveFab 前店后厂底座）。backups/ 是本机生成的备份输出（已 gitignore），列入 skip_dirs。",
+  "concern": "projects/livefab",
+  "root": ".",
+  "root_docs": ["README.md", "CHANGELOG.md"],
+  "type_vocab": ["deploy", "docs", "portal", "tools"],
+  "code_types": ["deploy", "portal", "tools"],
+  "empty_ok_types": [],
+  "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
+  "skip_dirs": ["backups", "node_modules", "__pycache__", ".git", "vendor"],
+  "skip_prefixes": [".", "_"],
+  "sub_concerns": [],
+  "sub_concerns_dir": null,
+  "sub_configs": {}
+}

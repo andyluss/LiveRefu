@@ -1,0 +1,15 @@
+{
+  "_comment": "M1+M2 判定配置 · projects/website（《未来档案》Nuxt 站点）。.data/.nuxt/.output/backups/data 均为生成物或本机数据（已 gitignore），列入 skip_dirs——注意 skip_prefixes 只过滤**文件**，不过滤目录，点目录必须显式列出。",
+  "concern": "projects/website",
+  "root": ".",
+  "root_docs": ["README.md", "CHANGELOG.md"],
+  "type_vocab": ["app", "content", "deploy", "docs", "public", "server", "tools"],
+  "code_types": ["app", "deploy", "public", "server", "tools"],
+  "empty_ok_types": [],
+  "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
+  "skip_dirs": [".data", ".nuxt", ".output", "backups", "data", "node_modules", "dist", ".git"],
+  "skip_prefixes": [".", "_"],
+  "sub_concerns": [],
+  "sub_concerns_dir": null,
+  "sub_configs": {}
+}

@@ -14,6 +14,14 @@
 ## [未发布]
 
 ### 变更
+- **元规则覆盖收口：`report` 与 `pending` 双双归零——工作区不再有"没被检查、也没被说明"的关注点**。`block` 由 3 个扩到 **8 个**，另加 **4 个写在明处的豁免**：
+  - 新转正四个：`tools/`（11 合规）、`projects/livefab`（21）、`projects/website`（34）；`doc/` 与 `studio001/` 按用户裁决**明确定为豁免**（理由与推翻条件见 [`rules/README.md`](rules/README.md) §三）。
+  - **实测结论：这些"欠账"全部是配置精度的产物，不是真结构债**。最典型的是 `projects/website` 的 6 条里有 3 条是**被 gitignore 的生成物目录**（`.data`/`.output`/`backups`）。
+  - 写配置时踩到并记录一个易错点：**`skip_prefixes`（点开头）只过滤文件、不过滤目录**——所以 `.output` 这类**点目录必须显式写进 `skip_dirs`**，否则会被判"未知类型目录"。
+  - **`tools/` 有一条真缺口并已修**：它按 M1 应有出入口 `README.md` 而没有。新增 [`tools/README.md`](tools/README.md)（工具清单 + 跑法 + "检查器必须自检"的硬要求），并把 [`tech/README.md`](tech/README.md) 里那份重复的工具表**改为指向它**——两处列表必然分叉。
+  - **顺带发现（待办）**：`doc/` 缺少顶层 `README.md`（出入口）。按 M1 本应有一个，这是它被豁免后**已知且接受**的缺口；但根 [`README.md`](README.md) 的"你是哪种读者"正把非技术读者指向 `doc/`，**那里没有索引页会让人迷路**——建议后续补一个纯索引的 `doc/README.md`（不改任何卷的内容）。
+
+### 变更
 - **元规则覆盖首批转正：`block` 由 2 个关注点扩到 5 个**（[`workspace-scope.json`](rules/meta/tools/workspace-scope.json)）：新增 `tech/`（10 合规）、`projects/tomorrows-channel`（29）、`projects/refu-game-001`（18）——各写了**专门判定配置**，实测 **0 违规**。这三个此前只有通用配置，写了忠实配置后一次达标（**"实测 0 违规"是转正的前置条件**，不是转正后的期望）。
   - 写配置时发现检查器的一个**易错点并记录**：类型目录**不是完全不透明的叶子**——它会被**再查一层文件命名**。因此 `tech/references/`（放数据与资产，非文档）必须给它**单独的命名规则**（`doc_naming.references`），否则 `gh_meta.jsonl`、`visualization-edf21c0f.html` 这类文件会被误判为"命名不合规"。
   - 另记一条：命名正则匹配的是**含扩展名的完整文件名**，写 `^[a-z0-9-]+$` 会漏掉 `.md`（本次即因此先报 5 条假阳性，已改为 `\.md$`）。

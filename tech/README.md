@@ -22,17 +22,9 @@
 | --- | --- |
 | [`references/`](references/README.md) | **参考资料与归档快照**（外部抓取的数据、旧管线的生成物快照）。与上面的"规范/详解"不同：这些是**素材**，不承载约定 |
 
-## 相关工具（脚本，仍在 `tools/`）
+## 相关工具
 
-| 工具 | 作用 |
-| --- | --- |
-| [`tools/check_links.py`](../tools/check_links.py) | 校验工作区 md 内链（支持 `--sub`、`--files`） |
-| [`tools/check_data.py`](../tools/check_data.py) | 校验数据表是否符合 schema 契约（必填/type/enum/范围），纯标准库 |
-| [`tools/install_hooks.sh`](../tools/install_hooks.sh) | 一键启用 pre-commit 钩子 |
-| [`tools/hooks/pre-commit`](../tools/hooks/pre-commit) | 钩子本体（按暂存路径触发：md 内链 + 数据 schema + 时间戳命名 + 元规则/规则结构&演进 + 变更日志版本-标签） |
-| [`tools/check_time_naming.ts`](../tools/check_time_naming.ts) | 时间戳文件名检查（[R06](../rules/R06-time.md)）：格式 `YYYYMMDD-HHMM-关键词` + 文件名时间不得晚于首次提交时间；已接入 pre-commit/CI |
-| [`rules/meta/tools/meta_rules_check.ts`](../rules/meta/tools/meta_rules_check.ts) | 规则目录 `rules/` 的结构检查（元规则 M1+M2） |
-| [`rules/meta/evolution/rule_evolution_check.ts`](../rules/meta/evolution/rule_evolution_check.ts) | 规则演进状态检查（元规则 M3，覆盖 M 与 R）；已接入 pre-commit/CI |
+**工具清单与跑法统一在 [`tools/README.md`](../tools/README.md)**（单一来源）——本文件不再重复列表，避免两处各自维护而分叉。
 
 ## 约定
 

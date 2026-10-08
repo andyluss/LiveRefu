@@ -1,0 +1,15 @@
+{
+  "_comment": "M1+M2 判定配置 · tools/（跨关注点通用工具目录，M1 §四）。本目录是**代码类**：文件名按代码习惯（.ts/.py/.sh），不套技术文档的 kebab-case。",
+  "concern": "tools",
+  "root": ".",
+  "root_docs": ["README.md"],
+  "type_vocab": [],
+  "code_types": ["hooks"],
+  "empty_ok_types": [],
+  "doc_naming": { "default": ["^[a-z0-9]+([._-][a-z0-9]+)*\\.(ts|py|sh|json)$", "^README$"] },
+  "skip_dirs": [".git", "node_modules", "__pycache__"],
+  "skip_prefixes": [".", "_"],
+  "sub_concerns": [],
+  "sub_concerns_dir": null,
+  "sub_configs": {}
+}
