@@ -30,8 +30,12 @@ if [ ! -f "$LINK_SCRIPT" ]; then
   echo "[pre-commit:check-links] 未找到 ${LINK_SCRIPT}，跳过链接校验。" >&2
 else
   STAGED=()
+  # ★ `ACMR` 的 R 是必需的：**重命名也是内容变更**（对链接而言尤其如此——搬家会改变相对深度）。
+  #   原先只取 ACM 时，一次 327 个文件的搬家只有 17 个 Markdown 进入校验，
+  #   且**确实漏掉过一条错链**（被全量校验抓到）。`--name-only` 对重命名给出的是**新路径**，
+  #   那正是要校验的对象。
   while IFS= read -r -d '' f; do STAGED+=("$f"); done \
-    < <(git diff --cached --name-only -z --diff-filter=ACM -- '*.md')
+    < <(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md')
   if [ "${#STAGED[@]}" -gt 0 ]; then
     echo "[pre-commit:check-links] 校验 ${#STAGED[@]} 个暂存 Markdown 的相对链接..." >&2
     if run_ts "$LINK_SCRIPT" --files "${STAGED[@]}" >&2; then
@@ -50,7 +54,7 @@ if [ ! -f "$DATA_SCRIPT" ]; then
 exit 0
 fi
 # 只要本次暂存涉及 data/ 下任何表(json/schema), 就跑全量数据校验(数据表彼此多依赖)
-if git diff --cached --name-only --diff-filter=ACM | grep -qE '^projects/tomorrows-channel/data/(tables|schema)/'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^projects/tomorrows-channel/data/(tables|schema)/'; then
   echo "[pre-commit:check-data] 暂存涉及数据表变更，校验 schema 契约..." >&2
   if run_ts "$DATA_SCRIPT" >&2; then
     echo "[pre-commit:check-data] 通过。" >&2
@@ -63,7 +67,7 @@ fi
 
 # ---- 3) 元规则 M1+M2 结构校验(仅当暂存涉及 lab/formal-system) ----
 META_SCRIPT="$GIT_ROOT/lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts"
-if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system/'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -q '^lab/formal-system/'; then
   if [ ! -f "$META_SCRIPT" ]; then
     echo "[pre-commit:meta-rules] 未找到 ${META_SCRIPT}，跳过元规则校验。" >&2
   else
@@ -103,7 +107,7 @@ if git diff --cached --name-only --diff-filter=ACM | grep -q '^lab/formal-system
 fi
 
 # ---- 4) 规则目录 rules/ 的元规则结构(M1+M2) + 规则演进状态(M3, 覆盖 M 与 R) ----
-if git diff --cached --name-only --diff-filter=ACM | grep -q '^rules/'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -q '^rules/'; then
   RULES_META_SCRIPT="$GIT_ROOT/rules/meta/tools/meta_rules_check.ts"
   RULES_EVOL_SCRIPT="$GIT_ROOT/rules/meta/evolution/rule_evolution_check.ts"
   if [ -f "$RULES_META_SCRIPT" ]; then
@@ -134,7 +138,7 @@ fi
 
 # ---- 5) Refu Game 001 难度模型校验（暂存涉及该卷或模拟脚本时）----
 SIM_SCRIPT="$GIT_ROOT/tools/sim_refu_game_001.ts"
-if git diff --cached --name-only --diff-filter=ACM | grep -qE '^(doc/refu-game-001/|tools/sim_refu_game_001\.ts)'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(doc/refu-game-001/|tools/sim_refu_game_001\.ts)'; then
   if [ ! -f "$SIM_SCRIPT" ]; then
     echo "[pre-commit:refu-sim] 未找到 ${SIM_SCRIPT}，跳过难度模型校验。" >&2
   else
@@ -175,7 +179,7 @@ check_changelog() {  # $1=路径 $2=tag 前缀 $3=显示名 $4=额外参数（�
     exit 1
   fi
 }
-STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACM)"
+STAGED_ALL="$(git diff --cached --name-only --diff-filter=ACMR)"
 # ★ 覆盖**所有被跟踪的 CHANGELOG**（动态发现，新项目自动纳入）。
 #   ⚠️ `indie/*` 是**独立仓库**、被根 .gitignore 排除，不会出现在这里 ——
 #      它们的日志要用各自仓库的 git 历史才能定版本时间，尚未纳入统一格式。

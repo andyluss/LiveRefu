@@ -195,29 +195,47 @@ case "${1:-run}" in
     ;;
 
   check)
-    # 六道闸门（S2）：文件预算 → 数据契约 → 视觉 token → 工程装载 → 无头自检 → 玩法行为验收。
+    # 八道闸门：文件预算 → 数据契约 → 视觉 token → 工程装载 → 主题落地 → 无头自检 → 玩法行为 → 场景视图。
     # 顺序有讲究：静态错误最便宜，先跑；需要引擎的后跑；最贵的玩法验收放最后。
+    #
+    # `--python-only` / `--godot-only` 是给 CI 用的**分流**：前 3 道只需 python3，后 5 道只需 godot。
+    # 于是 CI 可以"python 门在 runner 上跑、godot 门在 Godot 容器里跑"，
+    # 而**容器里不需要 python3**（godot-ci 镜像没有）。
     echo "══ Future Debris · 验收闸门（S4）══"
-    echo "── 1/8 文件预算 ──"
-    python3 "$HERE/tools/check_file_size.py" --self-test
-    echo "── 2/8 数据契约 ──"
-    python3 "$HERE/tools/check_data.py" --self-test
-    echo "── 3/8 视觉 token 契约（对比度 + 层级 + 样张色彩 + 文档↔引擎对账） ──"
-    python3 "$HERE/tools/check_contrast.py" --self-test
-    python3 "$HERE/tools/check_tokens.py" --self-test
-    echo "── 4/8 工程导入（Godot 装载） ──"
-    need_godot
-    "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
-    echo "导入完成"
-    echo "── 5/8 主题落地（token → Godot Theme） ──"
-    headless_assert "res://scenes/tools/theme_check.tscn" "$@"
-    echo "── 6/8 无头自检（工程装载） ──"
-    headless_assert "res://scenes/tools/boot_probe.tscn" "$@"
-    echo "── 7/8 玩法行为验收（核心循环） ──"
-    headless_assert "res://scenes/tools/headless_test.tscn" "$@"
-    echo "── 8/8 场景与视图验收（界面装载 / 几何 / 命中判定 / 取色） ──"
-    headless_assert "res://scenes/tools/scene_check.tscn" "$@"
-    echo "══ 全部闸门通过 ══"
+    MODE="all"
+    KEEP=()
+    for arg in "$@"; do
+      case "$arg" in
+        --python-only) MODE="python" ;;
+        --godot-only)  MODE="godot" ;;
+        *)             KEEP+=("$arg") ;;
+      esac
+    done
+    set -- ${KEEP[@]+"${KEEP[@]}"}   # 本命令自己的开关不外传给 headless_assert
+    if [ "$MODE" != "godot" ]; then
+      echo "── 1/8 文件预算 ──"
+      python3 "$HERE/tools/check_file_size.py" --self-test
+      echo "── 2/8 数据契约 ──"
+      python3 "$HERE/tools/check_data.py" --self-test
+      echo "── 3/8 视觉 token 契约（对比度 + 层级 + 样张色彩 + 文档↔引擎对账） ──"
+      python3 "$HERE/tools/check_contrast.py" --self-test
+      python3 "$HERE/tools/check_tokens.py" --self-test
+    fi
+    if [ "$MODE" != "python" ]; then
+      echo "── 4/8 工程导入（Godot 装载） ──"
+      need_godot
+      "$GODOT" --headless --path "$GAME" --import >/dev/null 2>&1 || true
+      echo "导入完成"
+      echo "── 5/8 主题落地（token → Godot Theme） ──"
+      headless_assert "res://scenes/tools/theme_check.tscn" "$@"
+      echo "── 6/8 无头自检（工程装载） ──"
+      headless_assert "res://scenes/tools/boot_probe.tscn" "$@"
+      echo "── 7/8 玩法行为验收（核心循环） ──"
+      headless_assert "res://scenes/tools/headless_test.tscn" "$@"
+      echo "── 8/8 场景与视图验收（界面装载 / 几何 / 命中判定 / 取色） ──"
+      headless_assert "res://scenes/tools/scene_check.tscn" "$@"
+    fi
+    echo "══ 全部闸门通过（模式：$MODE）══"
     ;;
 
   contrast)

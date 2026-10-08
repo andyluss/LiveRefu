@@ -157,6 +157,31 @@ function categoriesValid(sections: string[]): boolean {
     /^[A-Za-z]/.test(c) ? new RegExp(`^${c}\\b`).test(s) : s.startsWith(c)))
 }
 
+// ★ tag 允许规则：**最新版本可以还没有 tag**。
+//
+//   为什么（实测）：tag 必须指向一个**已存在**的提交，而版本头是"本次提交要引入的版本"——
+//   提交前它必然还没有 tag。原先"缺 tag 一律判失败"使得**每一次版本提交都会被 pre-commit 拦下**，
+//   而 tech/changelog-convention.md 里并没有写这套流程（无章可循）。
+//   规则改为：最新版本允许缺 tag（提交后立刻打即可）；**更早的版本必须都有 tag 且时间一致**——
+//   后者才是这条校验真正要守的东西（防止版本头与历史脱钩）。
+function tagAllowance(
+  checks: Array<{ ver: string; exists: boolean; gitTime: string; docTime: string }>,
+  newestVer: string,
+): { ok: boolean; blocked: string[]; allowed: string[]; mismatched: string[] } {
+  const blocked: string[] = []
+  const allowed: string[] = []
+  const mismatched: string[] = []
+  for (const t of checks) {
+    if (!t.exists) {
+      if (t.ver === newestVer) allowed.push(t.ver)
+      else blocked.push(t.ver)
+    } else if (t.gitTime !== t.docTime) {
+      mismatched.push(`${t.ver}: 文档 ${t.docTime} ≠ git ${t.gitTime}`)
+    }
+  }
+  return { ok: blocked.length === 0 && mismatched.length === 0, blocked, allowed, mismatched }
+}
+
 // ══════════════════════════════════════════════════════════════════════
 // 自检：给校验逻辑喂**已知坏数据**，确认它会失败
 // ══════════════════════════════════════════════════════════════════════
@@ -177,6 +202,17 @@ if (SELFTEST) {
     ['根日志把关（工作区级）', () => projectOnlySections(
       '## [0.1.0] - 2026-01-01 00:00\n### 新增\n- 改了 tools/check_links.ts 与 rules/R01\n') .length > 0,
       '（对照）工作区级条目不该被拒'],
+    // ★ tag 允许规则
+    ['tag 允许最新版本缺失', () => tagAllowance(
+      [{ ver: '0.2.0', exists: false, gitTime: '', docTime: '2026-01-01 00:00' }], '0.2.0').ok,
+      '（应通过）最新版本提交前必然没有 tag'],
+    ['tag 更早版本缺失必须被拒', () => tagAllowance(
+      [{ ver: '0.2.0', exists: true, gitTime: '2026-01-02 00:00', docTime: '2026-01-02 00:00' },
+       { ver: '0.1.0', exists: false, gitTime: '', docTime: '2026-01-01 00:00' }], '0.2.0').ok,
+      '更早版本缺 tag → 必须被拒'],
+    ['tag 时间不符必须被拒', () => tagAllowance(
+      [{ ver: '0.2.0', exists: true, gitTime: '2026-01-01 00:00', docTime: '2026-01-02 00:00' }], '0.2.0').ok,
+      '标签时间与版本头不符 → 必须被拒'],
   ]
   let caught = 0
   let expectedPass = 0
@@ -301,13 +337,15 @@ if (TAG_PREFIX) {
     const r = sh(['git', 'log', '-1', '--date=format-local:%Y-%m-%d %H:%M', '--format=%ad', tag])
     return { ver: v.ver, tag, exists: r.code === 0 && r.out !== '', gitTime: r.out, docTime: v.time }
   })
-  const missing = tagChecks.filter(t => !t.exists)
-  const mismatched = tagChecks.filter(t => t.exists && t.gitTime !== t.docTime)
-  check('版本号与 git tag 对得上',
-    missing.length === 0 && mismatched.length === 0,
-    missing.length ? `缺 tag：${missing.map(t => t.tag).join(', ')}（打 tag 后此项会通过）`
-      : mismatched.length ? mismatched.map(t => `${t.tag}: 文档 ${t.docTime} ≠ git ${t.gitTime}`).join('; ')
-      : tagChecks.map(t => `${t.ver} ✓`).join(' '))
+  const newestVer = p.versions.length ? p.versions[0]!.ver : ''
+  const t = tagAllowance(tagChecks, newestVer)
+  const detail = t.blocked.length
+    ? `缺 tag（非最新版本，必须补）：${t.blocked.map(v => TAG_PREFIX + v).join(', ')}`
+    : t.mismatched.length
+      ? t.mismatched.join('; ')
+      : `${tagChecks.length - t.allowed.length} 个版本已对齐`
+        + (t.allowed.length ? `；最新版本 ${t.allowed.join(', ')} 尚无 tag（本次提交后立刻打即可）` : '')
+  check('版本号与 git tag 对得上', t.ok, detail)
 }
 
 // ══════════════════════════════════════════════════════════════════════

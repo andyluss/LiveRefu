@@ -13,7 +13,17 @@
 
 ## [未发布]
 
+### 修复
+- **补上两个"闸门其实没在守"的漏洞（都来自上一轮搬家的实测）**：
+  - **① pre-commit 的链接闸门不覆盖重命名**。它用 `--diff-filter=ACM` 选暂存文件，`R`（重命名）被排除——于是上一轮搬动 327 个文件时，**只有 17 个 Markdown 进入校验**，而且**确实漏掉过一条错链**（`future-debris/CHANGELOG.md` 里的 `../../docs/…`，被我手动跑全量校验时抓到）。改为 `--diff-filter=ACMR`（`--name-only` 对重命名给出的是**新路径**，那正是要校验的对象）。**已用可逆探针实测**：同一处重命名，`ACMR` 收录、`ACM` 为空。
+  - **② "版本号与 git tag 对得上"对新版本提交天然不可满足**。tag 必须指向一个**已存在**的提交，而版本头是"本次提交要引入的版本"——提交前必无 tag，于是**每次版本提交都被 pre-commit 拦下**；而 `tech/changelog-convention.md` 里**从未写过这套流程**（无章可循）。抽出纯函数 `tagAllowance`：**最新版本允许暂缺 tag**（提交后立刻打即可），**更早的版本必须都有 tag 且时间一致**——后者才是这条校验真正要守的（防止版本头与历史脱钩）。新增 3 条负向自测（最新缺失应通过 / 更早缺失必拒 / 时间不符必拒），自检 12/12。
+
 ### 变更
+- **主线项目 future-debris 的八道闸门接入 CI**（此前**完全没进 CI**——`verify.yml` 只对《明日频道》做 Godot 加载检查）：
+  - 给 `run.sh check` 加 `--python-only` / `--godot-only` **分流**：闸门 1–3 只需 python3，闸门 4–8 只需 godot。于是 CI 可以**python 门在 runner 上跑、godot 门在 Godot 容器里跑**，而容器（`barichello/godot-ci`）**不需要装 python3**。
+  - 两条 CI 命令**都走项目自己的 `run.sh`**，不在 workflow 里复制任何检查逻辑——否则 CI 与本地会慢慢分叉。
+  - `run.sh` 靠**上溯查找 `.git`** 定位工作区根（不数 `..` 层数），因此挂载到 `/app` 后自动把 `HOME` 指到可写目录。
+  - **诚实标注**：容器那一步**未在本地验证**（本地 docker 守护进程未运行、无法拉镜像试跑），已在 workflow 注释里写明"首次失败优先查哪两点"。
 - **主线项目目录归位：`projects/future-debris/` → `projects/mainline/future-debris/`（工作区结构级）**。原先"主线项目"横跨两个目录——`projects/mainline/`（策划与决策空间）与 `projects/future-debris/`（可运行实现），本文件此前也记过这处别扭。本次按用户裁决定为**"纲领 + 具体项目"两层**：
   - **`projects/mainline/` 是纲领**（不是某一款具体游戏）：**决策历史长期留存、可容纳多个具体项目**；**具体项目是它的子目录、按代号命名**——因此 `future-debris/` 作为项目目录仍符合 [`rules/R01`](rules/R01-docs-convention.md)/[08 §三](projects/mainline/docs/08_共同语言与命名.md) 的"项目目录 = `projects/<代号>/`"，而 `mainline/` 本身不是项目故不受此约束。
   - **用户给出的理由（决定性）**：*未来有一定可能会换一个其它具体项目作为新主线项目的具体项目，但主线项目的决策历史之类的文档还需要保留*。

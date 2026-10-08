@@ -87,3 +87,28 @@ jobs:
             -e HOME=/tmp/gdhome \
             barichello/godot-ci:4.7.2 \
             godot --headless --path . --quit-after 5
+
+      # ── 主线项目 future-debris 的八道闸门 ──────────────────────────────
+      # 为什么要拆成两步：闸门 1–3 只需 python3，闸门 4–8 只需 godot，
+      # 而 Godot 容器里**没有 python3**（godot-ci 镜像）。因此按运行环境分流：
+      # python 门在 runner 上跑（ubuntu-latest 自带 python3），godot 门在容器里跑。
+      # 两条命令都走项目自己的 `run.sh`——**不在 CI 里复制任何检查逻辑**，
+      # 否则 CI 与本地会慢慢分叉（这正是"文档/配置与代码对账"要避免的事）。
+      - name: Future Debris gates 1–3 (python: file budget / data contract / visual tokens)
+        run: ./projects/mainline/future-debris/run.sh check --python-only
+
+      - name: Future Debris gates 4–8 (godot: import / theme / boot / gameplay / scene)
+        run: |
+          # `run.sh` 靠**上溯查找 .git** 定位工作区根（不是数 `..` 层数），
+          # 因此挂载到 /app 后它会自动把 HOME 指到 /app/.godot-home（可写）。
+          # `--godot-only` 不触碰 python，故容器无需安装 python3。
+          # 显式 `--entrypoint bash`：不依赖镜像默认 entrypoint 的语义
+          # （同一 workflow 里另一处直接用 `godot …` 作命令，两种写法混用容易踩坑）。
+          # ⚠️ 本步**未在本地验证过**（本地 docker 守护进程未运行，无法拉镜像试跑）；
+          #    若首次在 CI 失败，优先看这两点：镜像内 `godot` 是否在 PATH、`bash` 是否存在。
+          docker run --rm \
+            -v "${{ github.workspace }}:/app" \
+            -w /app/projects/mainline/future-debris \
+            --entrypoint bash \
+            barichello/godot-ci:4.7.2 \
+            -c './run.sh check --godot-only'
