@@ -5,7 +5,7 @@ extends Node
 ## 这个文件刻意保持极小（≤50 代码行），因为它是 S1 的地基探针，不是玩法代码。
 
 const PROJECT_CODENAME := "future-debris"
-const PROJECT_PHASE := "S4 表现层进行中"
+const PROJECT_PHASE := "S4 完成 · 商店页素材已出 · 待人类试玩"
 const DATA_SCHEMA_VERSION := 1
 
 ## 纪元表由数据文件声明；此处只做"骨架是否接上"的探针，不硬编码任何纪元内容。
