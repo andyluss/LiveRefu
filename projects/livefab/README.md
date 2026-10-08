@@ -520,7 +520,7 @@ Failed to send email. Please check your site configuration and try again.
 
 ## 六、与工作区其它部分的关系
 
-- **是底座，不是产品**：主线游戏（[`../mainline/`](../mainline/README.md)、[`../future-debris/`](../future-debris/README.md)）
+- **是底座，不是产品**：主线游戏（[`../mainline/`](../mainline/README.md)、[`../future-debris/`](../mainline/future-debris/README.md)）
   与官网（[`../website/`](../website/README.md)）都是它**服务**的对象；
 - **复用纪律、不复用内容**：复用《未来档案》的对比度闸门、验收编排器思路、设计 token；
   **不复用**它的内容管线（[03 §四](docs/03_分阶段落地路线.md)）；

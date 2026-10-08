@@ -1,6 +1,6 @@
 extends RefCounted
 class_name BoardSystem
-## 防线棋盘：固定塔位（[mainline 03 D2](../../../../mainline/docs/03_玩法与经济循环.md)：固定路径 + 固定塔位）。
+## 防线棋盘：固定塔位（[mainline 03 D2](../../../../../docs/03_玩法与经济循环.md)：固定路径 + 固定塔位）。
 ## 为什么固定：棋盘可控、可读性高，且让"降级区扩张"这种空间机制能被玩家预测。
 
 const MAX_SLOTS := 8

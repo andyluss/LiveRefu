@@ -192,7 +192,7 @@ for lg in $STAGED_LOGS; do
     projects/livefab/CHANGELOG.md)          prefix="livefab-v" ;;
     projects/website/CHANGELOG.md)          prefix="website-v" ;;
     lab/formal-system/CHANGELOG.md)         prefix="formal-system-v" ;;
-    projects/future-debris/CHANGELOG.md)    prefix="future-debris-v" ;;
+    projects/mainline/future-debris/CHANGELOG.md) prefix="future-debris-v" ;;
     projects/mainline/CHANGELOG.md)         prefix="mainline-v" ;;
     projects/refu-game-001/CHANGELOG.md)    prefix="refu-game-001-v" ;;
     projects/tomorrows-channel/CHANGELOG.md) prefix="tomorrows-channel-v" ;;

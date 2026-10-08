@@ -1,7 +1,7 @@
 # 04 · 视觉语言：语法层 token 契约
 
-> **这份文件是契约，不是灵感板。** 里面的每个值都会被 `tools/check_contrast.py` 校验（对比度 + 层级亮度顺序），改动必须过闸门并在根 [`CHANGELOG.md`](../../../CHANGELOG.md) 记账。
-> 建立于 S1 · 2026-09-30 ｜ 上游决策：[`mainline 05 §二`](../../mainline/docs/05_美术与技术方向.md)（Q6 = 纪元风格卡 + 共享语法层）｜ 题材出处：[`doc/punks/atompunk/03_美学与视觉.md`](../../../doc/punks/atompunk/03_美学与视觉.md)
+> **这份文件是契约，不是灵感板。** 里面的每个值都会被 `tools/check_contrast.py` 校验（对比度 + 层级亮度顺序），改动必须过闸门并在根 [`CHANGELOG.md`](../../../../CHANGELOG.md) 记账。
+> 建立于 S1 · 2026-09-30 ｜ 上游决策：[`mainline 05 §二`](../../docs/05_美术与技术方向.md)（Q6 = 纪元风格卡 + 共享语法层）｜ 题材出处：[`doc/punks/atompunk/03_美学与视觉.md`](../../../../doc/punks/atompunk/03_美学与视觉.md)
 > 样张：[`style-samples/`](style-samples/)（`01_语法层_设计token.svg`）
 
 ## 一、两层结构（整个美术体系只有这两层）
@@ -199,5 +199,5 @@
 
 - 样张与评审材料：[`style-samples/`](style-samples/)（01 语法层 / 02 风格卡 / 03 卡面）
 - 实现侧：`--line` 与 `--line-strong` 的分工见 [02 工程结构与运行](02_工程结构与运行.md)；token 落地到 Godot 主题资源的动作在 S3。
-- 上游决策：[`mainline 05 美术与技术方向 §二`](../../mainline/docs/05_美术与技术方向.md)（Q6 候选与代价比较）
-- 题材依据：[`doc/punks/atompunk/03_美学与视觉.md`](../../../doc/punks/atompunk/03_美学与视觉.md)（镀铬/塑料/搪瓷、奶油白+薄荷绿+放射红橙、按钮生活）
+- 上游决策：[`mainline 05 美术与技术方向 §二`](../../docs/05_美术与技术方向.md)（Q6 候选与代价比较）
+- 题材依据：[`doc/punks/atompunk/03_美学与视觉.md`](../../../../doc/punks/atompunk/03_美学与视觉.md)（镀铬/塑料/搪瓷、奶油白+薄荷绿+放射红橙、按钮生活）
