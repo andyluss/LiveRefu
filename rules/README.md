@@ -15,6 +15,7 @@
 | R03 | [相对链接校验](R03-link-validation.md) | pre-commit 钩子 + CI 两道闸门校验内部相对链接 | 已定·已落地 | [`tech/hooks-readme.md`](../tech/hooks-readme.md) |
 | R04 | [数据 schema 校验](R04-data-validation.md) | 数据表按 schema 契约校验（必填/type/enum/范围） | 已定·已落地 | [`tech/formalization.md`](../tech/formalization.md)（数据契约部分） |
 | R05 | [变更日志记录约定](R05-changelog.md) | 每次（非琐碎）变更写变更日志；琐碎改动豁免 | 已定·现行 | [`tech/changelog-convention.md`](../tech/changelog-convention.md) |
+| R06 | [时间与时间戳约定](R06-time.md) | 时间一律东八区、**精确到分**、不得脑内手写（已提交取 git 提交时间 / 新建取系统时钟）；**时间类新约定一律追加进本文** | 已定·现行 | [M2](meta/M2-naming-vocabulary.md)（命名词表）、[`tech/docs-convention.md`](../tech/docs-convention.md)（日期部分） |
 
 ## 二、元规则（M 系列，[`meta/`](meta/README.md)）
 
@@ -32,11 +33,11 @@
 
 ## 三、豁免范围
 
-- [`indie/`](../indie/README.md)（独立项目区）与 [`lab/`](../lab/README.md)（实验项目区）下的子目录**默认豁免上述根规则**（R01–R05 具体规则与 M0–M3 元规则），除非**特别约定**。
+- [`indie/`](../indie/README.md)（独立项目区）与 [`lab/`](../lab/README.md)（实验项目区）下的子目录**默认豁免上述根规则**（R01–R06 具体规则与 M0–M3 元规则），除非**特别约定**。
 - 各子项目/实验可自定义约定；若需引用某条根规则，在该子项目 README 中写明即可。
 
 ## 四、规则来源与演进
 
-- **具体规则（R01–R05）**：已由占位**转正**为权威条款；`tech/` 对应文档为技术详解（非规则权威）。
+- **具体规则（R01–R06）**：已由占位**转正**为权威条款；`tech/` 对应文档为技术详解（非规则权威）。
 - **元规则（M0–M3）**：整合自 [`lab/formal-system`](../lab/formal-system/README.md) 实验（**M4 未迁入**，按要求排除）。
 - 每条规则的状态与演进历史见其文件末尾，由 [`meta/evolution/rule_evolution_check.ts`](meta/evolution/rule_evolution_check.ts) 校验。

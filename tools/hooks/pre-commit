@@ -161,6 +161,27 @@ if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(doc/refu-game-
   fi
 fi
 
+# ---- 5.5) 时间戳文件名（R06 时间与时间戳约定）----
+# 只在暂存涉及**时事件目录**时跑（`discussions/`、`plans/`）——它们混着非时间戳文件，
+# 闸门只守"看起来像时间戳的文件必须格式正确"，并核对"文件名时间不得晚于首次提交时间"。
+# 这条闸门的存在理由很具体：曾经把讨论记录写成 `2026-09-30_主题.md`（旧形态，无时分），
+# 而当时**没有任何检查会发现它**。
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '(^|/)(discussions|plans)/'; then
+  TIME_SCRIPT="$GIT_ROOT/tools/check_time_naming.ts"
+  if [ -f "$TIME_SCRIPT" ]; then
+    echo "[pre-commit:time-naming] 校验时间戳文件名（R06）..." >&2
+    if run_ts "$TIME_SCRIPT" >&2; then
+      echo "[pre-commit:time-naming] 通过。" >&2
+    else
+      echo "[pre-commit:time-naming] 时间戳文件名不合规，已拦截提交。" >&2
+      echo "  参考: rules/R06-time.md（格式 YYYYMMDD-HHMM-关键词；时间取自首次提交时间）" >&2
+      exit 1
+    fi
+  else
+    echo "[pre-commit:time-naming] 未找到 ${TIME_SCRIPT}，跳过。" >&2
+  fi
+fi
+
 # ---- 6) 变更日志格式与版本-标签一致性（通用：根 + 各项目）----
 # 规格见 tech/changelog-convention.md 与 projects/livefab/docs/06_变更日志方案选择.md（方案甲）。
 # ★ 由 LiveFab 专用提升为**通用**：本工作区有多个 CHANGELOG，规格相同、

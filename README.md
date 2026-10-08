@@ -4,6 +4,20 @@
 > 一侧是复古未来主义的系统知识库（[`doc/`](doc/)），另一侧是**由项目方直接结合 AI 进行项目开发**的场所（规则 [`rules/`](rules/)、实验 [`lab/`](lab/)）。
 > 曾用于"模拟人类组织/角色"的 AI 工作室已**搁置**，更名为 [`studio001/`](studio001/) 保留作历史资料（见下）。
 
+## 〇、先看这里：你是哪种读者
+
+根目录里既有**产品与题材**的内容，也有**工程与治理**的内容。不必都读——按你的角色挑：
+
+| 你是 | 只需看这些 | **可以忽略**（技术面，由维护者/工具管） |
+| --- | --- | --- |
+| **产品 / 策划 / 非技术维护者** | [`doc/`](doc/)（题材知识库）、[`projects/mainline/README.md`](projects/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`.godot-home/` |
+| **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`projects/mainline/future-debris/`](projects/mainline/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
+| **开发 / 维护者 / 与 AI 协作** | [`rules/`](rules/README.md)（**规则的权威**）、[`tech/`](tech/README.md)（技术详解）、[`tools/`](tools/)（检查器）、[`.github/workflows/`](.github/workflows/verify.yml)（CI） | —— |
+
+> **为什么这样分**：根目录**不追求"条目最少"**，而是**"每类人都能一眼找到自己的入口、并知道哪些与自己无关"**。
+> 把技术目录藏起来反而会让人找不到规则；所以做法是**导览**而不是隐藏。
+> 新增根级目录前请先读 [M1 文件组织方式](rules/meta/M1-file-organization.md)（关注点优先、类型其次）。
+
 ## 一、工作区是什么
 
 - **rules/**：规则目录。面向工作区整体的规则在此集中，分**具体规则**（R 系列，**已转正**，正文权威在此）与**元规则**（M 系列，整合自 lab，见 [`rules/meta/`](rules/meta/README.md)）。对应的 [`tech/`](tech/README.md) 文档为**技术详解 / 实施说明**（非规则权威）。

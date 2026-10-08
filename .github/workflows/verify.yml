@@ -40,6 +40,9 @@ jobs:
       - name: Markdown link check (TS)
         run: node --experimental-strip-types tools/check_links.ts -v
 
+      - name: Timestamp filename check (R06, TS)
+        run: node --experimental-strip-types tools/check_time_naming.ts --self-test && node --experimental-strip-types tools/check_time_naming.ts
+
       - name: Data table schema check (TS)
         run: node --experimental-strip-types tools/check_data.ts -v
 
