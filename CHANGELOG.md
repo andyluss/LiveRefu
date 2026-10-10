@@ -19,6 +19,10 @@
   - 实现要点：核对来源**从工程现读**（数据表 `entries`、`run.sh` 的闸门步数、`case_list.gd` 的用例数），**推导不出即判失败**（不静默跳过），同一数字在页面出现多次则**逐个核对**。
 
 ### 新增
+- 塔防研究卷扩为三卷，并按新开的网络代理**补做联网事实核查**：
+  ① **论文修订**（15,548 汉字）：补入经核查的硬事实（Missile Command 1980-06／Rampart 1990-10 的机制与"prototypical tower defense"出处、Turret Defense 2000-05 与 Sunken Defense 2001-11 的可考最早命名、COM2uS 2007/2008 "Tower Defense" 商标与 2010 发函、Flash Element TD 2007-01-12、Desktop Tower Defense 2007-03-03 的"无预设路径"与 mazing 动机及 1,570 万次游玩、PvZ 主创受魔兽 III mod 启发的反向提问、Kingdom Rush 2011-07-28 Flash 首发与销量口径冲突、Bloons TD 2009 因商标改名、Sanctum/Orcs Must Die! 与 Iron Grip: Warlord 2008、Anomaly 2011-04-08、保卫萝卜 2.5 亿下载、明日方舟收入数据标注二手转述），新增 4.9 词源与命名史、mazing/juggling/hybrid/tower wars 术语、AI 与优化文献表（TowerMind AAAI-26、IEEE CoG 2024、LiverDefense、ITOR 背包建模），并加入一条**引文警告**：FUN 2018 的 Restricted Power 研究的是 Greedy Spiders 而非塔防；
+  ② 新增 [`tower-defense/案例卷/`](doc/tower-defense/案例卷/README.md)（4 篇约 9,847 汉字）：Rampart 与 Desktop Tower Defense、PvZ 与 Kingdom Rush、Bloons TD 与 Sanctum/Orcs Must Die!、Anomaly 与明日方舟/保卫萝卜，统一六段模板（档案／七要件拆解／它证明了什么／可迁移做法／来源／互链）；
+  ③ 新增 [`tower-defense/数值卷/`](doc/tower-defense/数值卷/README.md)（7 篇约 9,254 汉字）：模型定义与推导（含模型 vs 实测 8 行对照）、八步参数标定、横向对照方法（置信度 A/B/C 与不等价性）、敏感性分析（实跑：γ=2/4 与 cap=2/4 均 FAIL，只有 γ=3 五章全 PASS）、验收与 CI、远征与挑战卡数学校验、建模常见错误；`tower-defense/README`、`doc/README` 卷行与卷首同步。
 - 新增研究卷 [`doc/tower-defense/`](doc/tower-defense/README.md)：**《塔防游戏研究：内涵与外延》**（约 1.4 万汉字，单篇论文）——内涵（七个构成要件 + 判据测试表）、外延（家族相似与「要素 × 类型」判定矩阵）、历史谱系（Missile Command / Rampart / 魔兽 III 自定义图 / Desktop Tower Defense / PvZ / Kingdom Rush / Anomaly / 保卫萝卜 / 明日方舟）、形式分析（`B`、`D=(B/B_ref)×(P_ref/P)`、泊松漏怪与胜率函数，附本作五章 94.9%→43.6% 与远征 84.4%→3.6% 实测表）、设计空间与五种亚型、心理（Flow/MDA/损失厌恶/结构随机）、经济与关卡成本、美学与在地化、坏塔防六症状、融合接口与 AI 方向，附录含术语表、文献与资料（含 [Desktop tower defense is NP-hard](https://doi.org/10.1007/978-3-319-60675-0_2) 及理论著作）与 20 条设计检查清单；`doc/README.md` 由三卷更新为四卷并增入口。
 - **补上知识库出入口 [`doc/README.md`](doc/README.md)**（此前 `doc/` 没有顶层 README，是上一轮记下的待办）：
   - **为什么需要**：`doc/` 是知识库，读者一进去会看到一堆卷而不知从哪开始；而根 [`README.md`](README.md) 的"你是哪种读者"**正把非技术维护者指向这里**——没有索引页，友好度就在最后一跳断掉。
