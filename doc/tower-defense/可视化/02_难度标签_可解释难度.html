@@ -1,0 +1,126 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>塔防难度标签 · 可解释难度（可交互）</title><style>*{box-sizing:border-box}
+:root{--bg:#0b1220;--fg:#e8eefb;--muted:#8fa3bd;--border:#22314a;--card:#111a26;--accent:#60a5fa;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--path:#C7A46B;--ink:#0E1526}
+@media (prefers-color-scheme:light){:root{--bg:#f5f7fb;--fg:#111827;--muted:#5b6472;--border:#d9e1ee;--card:#fff;--accent:#2563eb;--ok:#059669;--warn:#b45309;--bad:#dc2626}}
+body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.6 system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif}
+.wrap{max-width:1120px;margin:0 auto}h1{font-size:20px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+h2{font-size:15px;margin:20px 0 8px}
+.panel{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card);margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+label.chk{display:flex;gap:7px;align-items:center;font-size:12.5px;margin:3px 0;cursor:pointer}
+button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer;margin:0 6px 8px 0}
+button:hover{border-color:var(--accent)}button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:8px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;border:1px solid var(--border)}
+.tag.ok{color:var(--ok);border-color:var(--ok)}.tag.bad{color:var(--bad);border-color:var(--bad)}.tag.warn{color:var(--warn);border-color:var(--warn)}
+.mono{font-family:ui-monospace,Menlo,monospace}input[type=range]{width:100%}
+.stat{display:inline-block;border:1px solid var(--border);border-radius:10px;padding:6px 10px;margin:0 8px 8px 0;min-width:118px}
+.stat .l{color:var(--muted);font-size:11.5px}.stat .v{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
+svg{width:100%;height:auto;display:block}</style></head><body><div class="wrap">
+<h1>塔防难度标签 · 可解释难度</h1>
+<div class="sub">来自 <a href="../AI卷/04_可解释难度作为评测维度.md">AI 卷 04</a> 与 <a href="../数值卷/01_模型定义与推导.md">数值卷 01</a>：拖动 B / P，实时得到 D、漏怪期望 λ 与解析通关率；标签区间按 AI 卷 04 的协议。</div>
+
+<div class="grid2">
+<div>
+  <div class="panel">
+    <h2 style="margin-top:0">参数</h2>
+    <label class="chk">波次预算 B　<span class="mono" id="bv">205</span><input type="range" id="B" min="100" max="330" step="1" value="205"></label>
+    <label class="chk">我方战力 P　<span class="mono" id="pv">1.08</span><input type="range" id="P" min="0.8" max="1.7" step="0.01" value="1.08"></label>
+    <div>
+      <button type="button" data-pre="205,1.08">PMOD 基准关</button>
+      <button type="button" data-pre="265,1.4">第 5 章首关（P=1.4）</button>
+      <button type="button" data-pre="158,1.0">基准关 B_ref</button>
+      <button type="button" data-pre="290,1.7">远征节点 8</button>
+    </div>
+    <div style="margin-top:4px">
+      <button type="button" data-d="0.81">第 1 章</button><button type="button" data-d="1.07">第 2 章</button>
+      <button type="button" data-d="1.16">第 3 章</button><button type="button" data-d="1.20">第 4 章</button>
+      <button type="button" data-d="1.30">第 5 章</button><button type="button" data-d="1.70">节点 8</button>
+    </div>
+    <div id="stats"></div>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">解析胜率曲线 P(X &lt; cap)</h2><svg id="curve" viewBox="0 0 660 300" role="img" aria-label="胜率曲线"></svg>
+  <div class="sub">γ = 3、λ0 = 1.35、cap = 3；曲线由 <span class="mono">P(胜)=Σ_{k=0}^{2} e^{−λ}λ^k/k!</span> 计算，λ = 1.35·D³。</div></div>
+</div>
+<div>
+  <div class="panel"><h2 style="margin-top:0">难度标签协议（AI 卷 04）</h2><div id="band"></div></div>
+  <div class="panel"><h2 style="margin-top:0">同一个 D，不同的挑战</h2>
+    <table><thead><tr><th>配置</th><th>B</th><th>P</th><th>D</th><th>考什么</th></tr></thead><tbody>
+    <tr><td>PMOD／族专属卡校验基准关</td><td class="num">205</td><td class="num">1.08</td><td class="num">≈1.20</td><td>卡池与塔位更宽，考"选哪几张、怎么搭"</td></tr>
+    <tr><td>第 5 章首关（按 P=1.4 验收）</td><td class="num">265</td><td class="num">1.4</td><td class="num">≈1.20</td><td>长局与更长的能量流，考"何时升级、何时爆发"</td></tr>
+    </tbody></table>
+    <div class="sub" style="margin-top:6px">只报 <span class="mono">D</span> 会把两种失败混成一个数——这正是"可解释难度"要拆开的东西。</div>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">评测指标矩阵</h2>
+    <table><thead><tr><th>指标</th><th>教学</th><th>常规</th><th>挑战</th><th>极限</th></tr></thead><tbody>
+    <tr><td>通关率</td><td>≥84%</td><td>59–84%</td><td>22–59%</td><td>&lt;22%</td></tr>
+    <tr><td>平均漏怪（对 cap=3 的余量）</td><td class="num">≈0.4</td><td class="num">0.5–1.0</td><td class="num">1.0–2.2</td><td class="num">&gt;2.2</td></tr>
+    <tr><td>首次通关所需尝试</td><td>1–2</td><td>2–4</td><td>4–10</td><td>10+</td></tr>
+    <tr><td>策略多样性关注点</td><td>低</td><td>中</td><td>高（多解是否都存在）</td><td>高（是否存在解）</td></tr>
+    <tr><td>失败归因主项</td><td>操作</td><td>卡组搭配</td><td>布局与时机</td><td>机制理解（阶段技/免疫）</td></tr>
+    </tbody></table>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">远征八节点：设计表 vs 脚本实测</h2>
+    <table><thead><tr><th>节点</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead><tbody>
+    <tr><td>D</td><td class="num">1.00</td><td class="num">1.10</td><td class="num">1.20</td><td class="num">1.30</td><td class="num">1.40</td><td class="num">1.50</td><td class="num">1.60</td><td class="num">1.70</td></tr>
+    <tr><td>设计表（23 号）</td><td class="num">84.4%</td><td class="num">72.1%</td><td class="num">59.2%</td><td class="num">43.5%</td><td class="num">28.0%</td><td class="num">16.9%</td><td class="num">8.6%</td><td class="num">3.6%</td></tr>
+    <tr><td>脚本 --verify-rogue --n 20000</td><td class="num">84.5%</td><td class="num">72.7%</td><td class="num">58.6%</td><td class="num">42.8%</td><td class="num">28.0%</td><td class="num">17.2%</td><td class="num">8.8%</td><td class="num">3.8%</td></tr>
+    </tbody></table>
+    <div class="sub" style="margin-top:6px">两行均 PASS 目标带，逐点差 ≤0.6pp（随机种子与样本量）。标签跟着 D 走，不跟着章节序号走。</div>
+  </div>
+</div>
+</div>
+</div>
+<script>
+(function(){
+var L0=1.35,G=3,CAP=3,BREF=158;
+var BANDS=[[0.8,1.0,'教学','#34d399'],[1.0,1.2,'常规','#60a5fa'],[1.2,1.45,'挑战','#fbbf24'],[1.45,1.95,'极限','#f87171']];
+var MARK=[['第1章',0.81],['第2章',1.07],['第3章',1.16],['第4章',1.20],['第5章',1.30],['节点6',1.50],['节点8',1.70]];
+var el=function(id){return document.getElementById(id)};
+function pois(lambda){var s=0,p=Math.exp(-lambda);for(var k=0;k<CAP;k++){if(k>0)p=p*lambda/k;s+=p}return Math.max(0,Math.min(1,s))}
+function D(){return (+el('B').value/BREF)/(+el('P').value)}
+function label(d){for(var i=BANDS.length-1;i>=0;i--){if(d>=BANDS[i][0])return BANDS[i]}return BANDS[0]}
+function stats(){var d=D(),lam=L0*Math.pow(d,G),w=pois(lam),b=label(d);
+var h='<div><span class="stat"><div class="l">难度比 D</div><div class="v mono">'+d.toFixed(2)+'</div></span>'+
+'<span class="stat"><div class="l">漏怪期望 λ = 1.35·D³</div><div class="v mono">'+lam.toFixed(2)+'</div></span>'+
+'<span class="stat"><div class="l">解析通关率</div><div class="v mono">'+(w*100).toFixed(1)+'%</div></span>'+
+'<span class="stat"><div class="l">标签</div><div class="v" style="color:'+b[3]+'">'+b[2]+'</div></span></div>';
+h+='<div class="sub">区间 '+b[0]+'–'+(b[1]>1.9?'∞':b[1])+'　｜　D 分解：'+(d>1?'偏"高压力"':'偏"低压力"')+'（B '+el('B').value+' / P '+el('P').value+'）</div>';
+el('stats').innerHTML=h}
+function curve(){var w=660,h=300,PL=48,PB=38,PT=16,PR=16;
+var s='<rect width="660" height="300" fill="none"/>';
+BANDS.forEach(function(b){var x0=PL+(b[0]-0.5)/(2.0-0.5)*(w-PL-PR),x1=PL+(Math.min(b[1],2.0)-0.5)/(2.0-0.5)*(w-PL-PR);
+s+='<rect x="'+x0.toFixed(1)+'" y="'+PT+'" width="'+Math.max(0,x1-x0).toFixed(1)+'" height="'+(h-PT-PB)+'" fill="'+b[3]+'" opacity=".10"/>';
+s+='<text x="'+((x0+x1)/2).toFixed(1)+'" y="'+(PT+12)+'" text-anchor="middle" font-size="11" fill="'+b[3]+'">'+b[2]+'</text>'});
+for(var g=0;g<=100;g+=25){var y=PT+(100-g)/100*(h-PT-PB);s+='<line x1="'+PL+'" y1="'+y+'" x2="'+(w-PR)+'" y2="'+y+'" stroke="#22314a"/>'+
+'<text x="'+(PL-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="#8fa3bd">'+g+'%</text>'}
+var pts=[];
+for(var i=0;i<=140;i++){var d=0.5+1.5*i/140,lam=L0*Math.pow(d,G),pw=pois(lam);
+var x=PL+(d-0.5)/1.5*(w-PL-PR),y=PT+(100-pw*100)/100*(h-PT-PB);pts.push([x,y])}
+s+='<path d="M '+pts.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' L ')+'" fill="none" stroke="var(--accent)" stroke-width="2.5"/>';
+MARK.forEach(function(m){var lam=L0*Math.pow(m[1],G),pw=pois(lam),x=PL+(m[1]-0.5)/1.5*(w-PL-PR),y=PT+(100-pw*100)/100*(h-PT-PB);
+s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3.2" fill="#9FE8FF"/>'+
+'<text x="'+x.toFixed(1)+'" y="'+(y-7)+'" text-anchor="middle" font-size="9.5" fill="#9FB3C4">'+m[0]+'</text>'});
+var cd=D();if(cd>=0.5&&cd<=2.0){var lam=L0*Math.pow(cd,G),pw=pois(lam),x=PL+(cd-0.5)/1.5*(w-PL-PR),y=PT+(100-pw*100)/100*(h-PT-PB);
+s+='<line x1="'+x.toFixed(1)+'" y1="'+PT+'" x2="'+x.toFixed(1)+'" y2="'+(h-PB)+'" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="4 4"/>'+
+'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="5.5" fill="var(--warn)"/>'}
+s+='<text x="'+(w/2)+'" y="'+(h-8)+'" text-anchor="middle" font-size="11" fill="#8fa3bd">难度比 D（0.5 → 2.0）</text>';
+el('curve').innerHTML=s}
+function bands(){var d=D(),b=label(d);
+var h='<table><thead><tr><th>标签</th><th>D 区间</th><th>解析通关率</th><th>本作锚点</th></tr></thead><tbody>';
+var rows=[['教学','0.8–1.0','96.7% → 84.5%','第 1 章 D=0.81／94.9%'],['常规','1.0–1.2','84.5% → 58.7%','第 2 章 1.07／76.0%；第 3 章 1.16／64.4%'],
+['挑战','1.2–1.45','58.7% → 约 22%','第 4 章 1.20／58.8%；第 5 章 1.30／43.6%；挑战关 1.25–1.45'],['极限','> 1.45','低于约 22%','节点 6–8：1.50／16.9%、1.60／8.6%、1.70／3.6%']];
+rows.forEach(function(r){var on=(r[0]===b[2]);h+='<tr'+(on?' style="background:color-mix(in srgb,var(--accent) 12%,transparent)"':'')+'><td>'+r[0]+'</td><td class="mono">'+r[1]+'</td><td class="mono">'+r[2]+'</td><td class="sub">'+r[3]+'</td></tr>'});
+h+='</tbody></table><div class="sub" style="margin-top:6px">三条纪律：用区间不用点；标签跟着 D 走不跟章节序号走；标签是对照单位（跨作品只比曲线形状）。</div>';
+el('band').innerHTML=h}
+function update(){el('bv').textContent=el('B').value;el('pv').textContent=(+el('P').value).toFixed(2);stats();curve();bands()}
+el('B').addEventListener('input',update);el('P').addEventListener('input',update);
+document.querySelectorAll('button[data-pre]').forEach(function(btn){btn.addEventListener('click',function(){
+var v=btn.dataset.pre.split(',');el('B').value=v[0];el('P').value=v[1];update()})});
+document.querySelectorAll('button[data-d]').forEach(function(btn){btn.addEventListener('click',function(){
+var d=+btn.dataset.d;el('P').value='1.00';el('B').value=String(Math.round(d*BREF));update()})});
+update();
+})();
+</script></body></html>

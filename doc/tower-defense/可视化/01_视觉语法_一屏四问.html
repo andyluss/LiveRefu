@@ -1,0 +1,142 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>塔防视觉语法 · 一屏四问（可交互）</title><style>*{box-sizing:border-box}
+:root{--bg:#0b1220;--fg:#e8eefb;--muted:#8fa3bd;--border:#22314a;--card:#111a26;--accent:#60a5fa;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--path:#C7A46B;--ink:#0E1526}
+@media (prefers-color-scheme:light){:root{--bg:#f5f7fb;--fg:#111827;--muted:#5b6472;--border:#d9e1ee;--card:#fff;--accent:#2563eb;--ok:#059669;--warn:#b45309;--bad:#dc2626}}
+body{margin:0;padding:22px;background:var(--bg);color:var(--fg);font:14px/1.6 system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif}
+.wrap{max-width:1120px;margin:0 auto}h1{font-size:20px;margin:0 0 4px}.sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+h2{font-size:15px;margin:20px 0 8px}
+.panel{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--card);margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+label.chk{display:flex;gap:7px;align-items:center;font-size:12.5px;margin:3px 0;cursor:pointer}
+button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--fg);cursor:pointer;margin:0 6px 8px 0}
+button:hover{border-color:var(--accent)}button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:8px}th,td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}td.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;border:1px solid var(--border)}
+.tag.ok{color:var(--ok);border-color:var(--ok)}.tag.bad{color:var(--bad);border-color:var(--bad)}.tag.warn{color:var(--warn);border-color:var(--warn)}
+.mono{font-family:ui-monospace,Menlo,monospace}input[type=range]{width:100%}
+.stat{display:inline-block;border:1px solid var(--border);border-radius:10px;padding:6px 10px;margin:0 8px 8px 0;min-width:118px}
+.stat .l{color:var(--muted);font-size:11.5px}.stat .v{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
+svg{width:100%;height:auto;display:block}</style></head><body><div class="wrap">
+<h1>塔防视觉语法 · 一屏四问</h1>
+<div class="sub">来自 <a href="../美学卷/01_塔防的视觉语法.md">美学卷 01</a> 与 <a href="../美学卷/04_读图效率与信息层级.md">04</a>：拨动左侧图层开关，右侧会实时判定"四项关键信息是否还读得出来"。</div>
+
+<div class="grid2">
+<div>
+  <div class="panel">
+    <h2 style="margin-top:0">图层开关</h2>
+    <label class="chk"><input type="checkbox" id="c-band" checked>明度分带（我方 ≥50% / 敌方 ≤45%）</label>
+    <label class="chk"><input type="checkbox" id="c-outline" checked>路径描边（战场唯一恒定高对比线）</label>
+    <label class="chk"><input type="checkbox" id="c-mat" checked>路径材质（砂岩车辙 / 湿泥菌膜 / 抛光石材）</label>
+    <label class="chk"><input type="checkbox" id="c-sem" checked>语义色（路径槽 <span class="mono">#C7A46B</span>）</label>
+    <label class="chk"><input type="checkbox" id="c-terr" checked>地形高亮（高台护栏＋射程环、合流点泛红）</label>
+    <label class="chk"><input type="checkbox" id="c-plate" checked>数值底片（不透明，不参与折射）</label>
+    <label class="chk"><input type="checkbox" id="c-fx4" checked>优先级 4 · 结构信号特效（羁绊/进化/破盾/漏怪）</label>
+    <label class="chk"><input type="checkbox" id="c-fx5" checked>优先级 5 · 机制反馈特效</label>
+    <label class="chk"><input type="checkbox" id="c-fx6" checked>优先级 6 · 环境粒子与天气</label>
+    <div style="margin-top:8px">粒子档位：
+      <button type="button" data-q="high" aria-pressed="true">高端 800/12</button>
+      <button type="button" data-q="mid" aria-pressed="false">中端 450/8</button>
+      <button type="button" data-q="low" aria-pressed="false">低端 200/4</button>
+    </div>
+    <div><button type="button" id="t1s">开始 1 秒读图测试</button><button type="button" id="reset">全开（满配）</button></div>
+    <div class="sub" id="testmsg" style="margin:6px 0 0"></div>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">战场模拟</h2><svg id="field" viewBox="0 0 660 380" role="img" aria-label="塔防战场图层模拟"></svg>
+    <div class="sub" style="margin-top:6px">HUD 高 28 dp：左能量 · 中基地生命 · 右漏怪。卡面常驻只给 3 个数字加 1 个关键词（<a href="../../refu-game-001/美术/美术设定001/05_UI与移动端视觉.md">001·05</a>）。</div>
+  </div>
+</div>
+
+<div>
+  <div class="panel"><h2 style="margin-top:0">实时判定</h2><div id="verdict"></div></div>
+  <div class="panel"><h2 style="margin-top:0">一屏四问（通过判据）</h2>
+    <table><thead><tr><th>问</th><th>通过判据</th></tr></thead><tbody>
+    <tr><td>敌人往哪走</td><td>3 秒内指出敌人来向与去向</td></tr>
+    <tr><td>我能放哪</td><td>合法与非法位一眼可分，无需试探</td></tr>
+    <tr><td>我放了什么</td><td>不看卡面也能认出族属与标签</td></tr>
+    <tr><td>现在几比几</td><td>1 秒内读出四个数且不互相遮挡</td></tr>
+    </tbody></table>
+  </div>
+  <div class="panel"><h2 style="margin-top:0">八条画面检查表</h2><div id="checklist"></div></div>
+</div>
+</div>
+</div>
+<script>
+(function(){
+var S={band:true,outline:true,mat:true,sem:true,terr:true,plate:true,fx4:true,fx5:true,fx6:true,q:'high'};
+var QT={high:{p:800,fx:12},mid:{p:450,fx:8},low:{p:200,fx:4}};
+var el=function(id){return document.getElementById(id)};
+function sync(){S.band=el('c-band').checked;S.outline=el('c-outline').checked;S.mat=el('c-mat').checked;S.sem=el('c-sem').checked;
+S.terr=el('c-terr').checked;S.plate=el('c-plate').checked;S.fx4=el('c-fx4').checked;S.fx5=el('c-fx5').checked;S.fx6=el('c-fx6').checked;}
+function field(){
+var p='#8a94a3', out=S.outline?'#f3ead6':'#8a94a3', pathFill=S.sem?'#C7A46B':'#6b7280';
+var q=QT[S.q];
+var fx6=S.fx6&&q.p>=200, fx5=S.fx5&&q.p>=200, fx4=S.fx4;
+var s='<rect width="660" height="380" fill="var(--ink)"/>';
+s+='<rect x="10" y="8" width="640" height="30" rx="6" fill="#0b1220" stroke="'+ (S.plate?'#2a3b52':'#000') +'" opacity=".95"/>';
+s+='<text x="24" y="29" font-family="monospace" font-size="14" fill="'+ (S.plate?'#7ce38b':'#4b5563') +'">能量 42</text>';
+s+='<text x="300" y="29" font-family="monospace" font-size="14" fill="'+ (S.plate?'#e8eefb':'#4b5563') +'">基地 18 / 20</text>';
+s+='<text x="540" y="29" font-family="monospace" font-size="14" fill="'+ (S.plate?'#fbbf24':'#4b5563') +'">漏怪 1 / 3</text>';
+if(S.mat){s+='<rect x="20" y="60" width="620" height="250" rx="10" fill="#1b2430"/>'+
+ '<g opacity=".5"><circle cx="120" cy="120" r="3" fill="#c9a877"/><circle cx="220" cy="200" r="3" fill="#c9a877"/><circle cx="360" cy="150" r="3" fill="#c9a877"/><circle cx="480" cy="240" r="3" fill="#c9a877"/></g>'}
+else{s+='<rect x="20" y="60" width="620" height="250" rx="10" fill="#141b24"/>'}
+var d='M 30 250 L 170 250 L 250 160 L 420 160 L 500 240 L 630 240';
+s+='<path d="'+d+'" fill="none" stroke="'+p+'" stroke-width="26" stroke-linejoin="round" opacity=".55"/>';
+s+='<path d="'+d+'" fill="none" stroke="'+out+'" stroke-width="'+(S.outline?7:2)+'" stroke-dasharray="'+(S.outline?'0':'10 10')+'" opacity="'+(S.outline?'.95':'.35')+'"/>';
+if(S.sem){s+='<path d="'+d+'" fill="none" stroke="'+pathFill+'" stroke-width="3" opacity=".9"/>'}
+if(S.terr){s+='<rect x="240" y="120" width="86" height="44" rx="6" fill="none" stroke="#B08D4F" stroke-width="2.5"/><circle cx="283" cy="142" r="46" fill="none" stroke="#B08D4F" stroke-width="1.2" opacity=".7"/>'+
+ '<circle cx="470" cy="205" r="16" fill="#E4533C" opacity=".35"/><text x="470" y="230" text-anchor="middle" font-size="10" fill="#E4533C">合流点</text>'}
+var slots=[[110,300],[200,300],[300,210],[400,120],[470,300],[560,300],[560,140],[90,140]];
+slots.forEach(function(t,i){var lit=S.outline||S.terr;
+s+='<rect x="'+(t[0]-11)+'" y="'+(t[1]-11)+'" width="22" height="22" rx="4" fill="'+(i%3===0?'#4FA8D8':'#2F4A63')+'" stroke="'+(lit?'#f2f7fa':'#41506b')+'" stroke-width="'+(lit?1.6:1)+'"/>'});
+var en=[[70,250],[150,250],[230,181],[250,160]];
+en.forEach(function(t){s+='<circle cx="'+t[0]+'" cy="'+t[1]+'" r="9" fill="'+ (S.band?'#39424e':'#8a94a3') +'" stroke="'+ (S.band?'#20262e':'#c9d4e6') +'" stroke-width="1.5"/>'});
+var to=[[400,120],[110,300],[300,210]];
+to.forEach(function(t){s+='<rect x="'+(t[0]-9)+'" y="'+(t[1]-9)+'" width="18" height="18" rx="3" fill="'+ (S.band?'#9FE0FF':'#8a94a3') +'"/>'});
+if(fx4){s+='<circle cx="400" cy="120" r="26" fill="none" stroke="#7ce38b" stroke-width="3" opacity=".85"/>'}
+if(fx5){s+='<circle cx="470" cy="240" r="18" fill="#fbbf24" opacity=".35"/>'}
+if(fx6){s+='<g opacity=".8"><circle cx="120" cy="90" r="2.4" fill="#9FE8FF"/><circle cx="360" cy="90" r="2" fill="#9FE8FF"/><circle cx="520" cy="110" r="2.6" fill="#9FE8FF"/><circle cx="600" cy="300" r="2" fill="#9FE8FF"/></g>'}
+s+='<text x="30" y="345" font-size="11" fill="#8fa3bd">粒子档位：'+(S.q==='high'?'高端':S.q==='mid'?'中端':'低端')+' · 同屏 ≤ '+q.p+' 粒子 / ≤ '+q.fx+' 特效　｜　'+ (fx6?'环境粒子：开':'环境粒子：关') +'</text>';
+el('field').innerHTML=s;
+}
+function verdict(){
+var q=QT[S.q], items=[];
+items.push(['明度分带', S.band, '灰度化后我方亮、敌方暗（我方 ≥50% / 敌方 ≤45%）']);
+items.push(['路径可读', S.outline, '路径是唯一恒定高对比线；关闭后与地面同级']);
+items.push(['数值底片', S.plate, '底片对比度 ≥4.5∶1，户外 ≥7∶1']);
+items.push(['地形加成可读', S.terr, '加成效应用形状（护栏＋射程环），不只靠深浅']);
+var fxOver=true;
+items.push(['特效不越层', S.plate, '关 UI 后数值区无亮斑、无扫描线']);
+var pass=items.filter(function(i){return i[1]}).length;
+var h='<div>';
+items.forEach(function(i){h+='<div style="margin:4px 0"><span class="tag '+(i[1]?'ok':'bad')+'">'+(i[1]?'通过':'未通过')+'</span> '+i[0]+'　<span class="sub">'+i[2]+'</span></div>'});
+h+='</div><div class="sub" style="margin-top:8px">合计 '+pass+' / '+items.length+' 条通过。';
+if(!S.band||!S.outline||!S.plate) h+=' <b>四项关键信息已不可靠</b>——按 04 号文件的裁决顺序，先恢复数值与路径，再谈风格。';
+else h+=' 当前配置满足"数值 > 状态 > 特效 > 装饰"的裁决顺序。';
+h+='</div>';
+if(q.p<200){h+='<div class="sub" style="color:var(--warn)">粒子档位低于低端下限（200/4），按 001·06 属于越界配置。</div>'}
+el('verdict').innerHTML=h;
+}
+var CHK=[['一屏四问','未接触者 3 秒内都能指出'],['路径可读','路径是唯一恒定高对比线，粒子不压它'],['塔位可辨','合法与非法位灰度化后仍可分'],
+['明度分带','灰度化后我方亮、敌方暗'],['数值有底片','底片对比度 ≥4.5∶1'],['双编码','关掉颜色后标签与状态可点名'],
+['特效不越层','关 UI 后数值区无亮斑、无扫描线'],['降级不砍可读','低端档只砍氛围，字号与命中盒不降']];
+el('checklist').innerHTML='<table><thead><tr><th>#</th><th>检查项</th><th>通过判据</th></tr></thead><tbody>'+
+CHK.map(function(c,i){return '<tr><td>'+(i+1)+'</td><td>'+c[0]+'</td><td class="sub">'+c[1]+'</td></tr>'}).join('')+'</tbody></table>';
+['c-band','c-outline','c-mat','c-sem','c-terr','c-plate','c-fx4','c-fx5','c-fx6'].forEach(function(id){
+el(id).addEventListener('change',function(){sync();field();verdict()})});
+document.querySelectorAll('button[data-q]').forEach(function(b){b.addEventListener('click',function(){
+document.querySelectorAll('button[data-q]').forEach(function(x){x.setAttribute('aria-pressed','false')});
+b.setAttribute('aria-pressed','true');S.q=b.dataset.q;field();verdict()})});
+el('reset').addEventListener('click',function(){['c-band','c-outline','c-mat','c-sem','c-terr','c-plate','c-fx4','c-fx5','c-fx6'].forEach(function(id){el(id).checked=true});
+document.querySelector('button[data-q="high"]').click();sync();field();verdict()});
+var t=el('t1s');
+t.addEventListener('click',function(){
+el('testmsg').textContent='盯住战场，1 秒后消失……';
+var svg=el('field');svg.style.transition='opacity .2s';
+setTimeout(function(){svg.style.opacity='0';el('testmsg').innerHTML='停！请回答四个问题：<br>1 敌人往哪走？　2 能放哪？　3 放了什么？　4 能量/生命/漏怪各是多少？'},1000);
+setTimeout(function(){svg.style.opacity='1';el('testmsg').innerHTML+='<br><span class="sub">对照右栏"实时判定"检查你的答案；任一问答不出，就去关掉对应的风格图层。</span>'},2600);
+});
+sync();field();verdict();
+})();
+</script></body></html>
