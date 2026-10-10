@@ -19,6 +19,10 @@
   - 实现要点：核对来源**从工程现读**（数据表 `entries`、`run.sh` 的闸门步数、`case_list.gd` 的用例数），**推导不出即判失败**（不静默跳过），同一数字在页面出现多次则**逐个核对**。
 
 ### 新增
+- 塔防研究卷再增两卷并统一数值口径：
+  ① 新增 [`tower-defense/美学卷/`](doc/tower-defense/美学卷/README.md)（5 篇约 10,273 汉字）：视觉语法（一屏四问、俯视与等距取舍、路径四层编码、明度分带与色加形、特效优先级与粒子预算、8 条画面检查表）、复古未来（雷达屏/沙盘/剖面/指挥台四母题、CRT 后处理上限、三件载体分工、单主光与反例）、千禧透明（四层结构×三档透明度、四个系统可视化收益、可读性四保险与 bling 三级、键色 60/25/10/5）、读图效率（1 秒四问测试、字号与对比度口径、裁决顺序、信息密度预算、发布前 10 条验收表）、代表作视觉谱系（五种取向对照）；
+  ② 新增 [`tower-defense/AI卷/`](doc/tower-defense/AI卷/README.md)（5 篇约 9,974 汉字）：AI 基准适配性（六个友好属性与四条限制、三类任务、最小可行协议）、复杂度与最优解边界（Suttichaya NP-hard 的准确表述 + Greedy Spiders 对照 + 近似算法）、LLM/RL 进展（TowerMind AAAI-26、IEEE CoG 2024、LiverDefense）、可解释难度（`B/P/D` 三元组、标签协议、五项指标矩阵）、实验协议与 12 条复现清单；
+  ③ **数值口径统一**：远征八节点改为"设计表 84.4%→3.6%（23 号文档）／脚本 `--verify-rogue --n 20000` 实测 84.5%→3.8%"并列呈现，论文、数值卷 01/05/06 同步，并注明差异来源（随机种子与样本量，逐点 ≤0.6pp）；论文第九、十一节与附录 B 补入两卷互链，`tower-defense/README` 分卷表与 `doc/README` 卷行同步。 ④ **论文按 AI 文献核对补正**（现 16,170 汉字）：细化 CoG 2024 一行（实验对象为《植物大战僵尸》、PPO 选策略 + 脚本 AI 执行、用于关卡自动化测试、报告成功率），补 TowerMind 的观测形态/战争迷雾/合法动作率/人类基线，补 LiverDefense 与 ITOR 两篇的作者与卷期，新增 5.1 节的三条经典出处（Karp 1972 集合覆盖、Nemhauser-Wolsey-Fisher 1978 贪心近似、Itai 等 1982 网格哈密顿路径），并在 11.3 增列"AI 做关卡测试"这一落地用途。
 - 塔防研究卷扩为三卷，并按新开的网络代理**补做联网事实核查**：
   ① **论文修订**（15,548 汉字）：补入经核查的硬事实（Missile Command 1980-06／Rampart 1990-10 的机制与"prototypical tower defense"出处、Turret Defense 2000-05 与 Sunken Defense 2001-11 的可考最早命名、COM2uS 2007/2008 "Tower Defense" 商标与 2010 发函、Flash Element TD 2007-01-12、Desktop Tower Defense 2007-03-03 的"无预设路径"与 mazing 动机及 1,570 万次游玩、PvZ 主创受魔兽 III mod 启发的反向提问、Kingdom Rush 2011-07-28 Flash 首发与销量口径冲突、Bloons TD 2009 因商标改名、Sanctum/Orcs Must Die! 与 Iron Grip: Warlord 2008、Anomaly 2011-04-08、保卫萝卜 2.5 亿下载、明日方舟收入数据标注二手转述），新增 4.9 词源与命名史、mazing/juggling/hybrid/tower wars 术语、AI 与优化文献表（TowerMind AAAI-26、IEEE CoG 2024、LiverDefense、ITOR 背包建模），并加入一条**引文警告**：FUN 2018 的 Restricted Power 研究的是 Greedy Spiders 而非塔防；
   ② 新增 [`tower-defense/案例卷/`](doc/tower-defense/案例卷/README.md)（4 篇约 9,847 汉字）：Rampart 与 Desktop Tower Defense、PvZ 与 Kingdom Rush、Bloons TD 与 Sanctum/Orcs Must Die!、Anomaly 与明日方舟/保卫萝卜，统一六段模板（档案／七要件拆解／它证明了什么／可迁移做法／来源／互链）；
