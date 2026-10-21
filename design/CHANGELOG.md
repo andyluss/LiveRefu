@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **新增 [`TODO.md`](TODO.md)：设计系统专属待办**——App kit / 组件 / Archive 亮色 / 打印实体 / HUB / 无障碍 / 发布的 13 项清单，含等待拍板与最近完成；根 [`TODO.md`](../TODO.md) 保留跨项目摘要。
 - **新增 [`HUB.html`](HUB.html)：设计系统一页式可视化总览**，由 [`tools/build_hub.ts`](tools/build_hub.ts) 从 token / 组件 / 文档 / 产品源码生成；含总览、Token 色板与字阶、风格卡、组件采用矩阵、产品截图、验收闸门、决策与文档索引。生成器自检 4/4，`build_hub --check` 已接入 `check.sh`。
 - **App kit 起步（v0.3）**：新增平台无关 [`tokens/dist/app/tokens.json`](tokens/dist/app/tokens.json)（20 个语义色、UI 5 级字阶、控件/触控/图标尺寸、间距/圆角/描边/动效、无障碍阈值）；生成物 7 → **8 个**。
 - 新增 [`kits/app/README.md`](kits/app/README.md)（iOS/Android 消费方式 + 12 项验收清单）与 [`docs/11_App_kit_v0.2.md`](docs/11_App_kit_v0.2.md)。
@@ -31,7 +32,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 33 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 34 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。

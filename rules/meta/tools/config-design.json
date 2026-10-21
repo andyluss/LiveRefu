@@ -2,7 +2,7 @@
   "_comment": "M1+M2 判定配置 · design/（LRDS 设计系统）。tokens/ 与 kits/ 是子关注点；tokens 下的 core/products/schema/dist 是数据类，命名豁免；tools/ 是代码类，命名豁免。2026-10-21 实测 0 违规后转 block。",
   "concern": "design",
   "root": ".",
-  "root_docs": ["README.md", "CHANGELOG.md", "HUB.html"],
+  "root_docs": ["README.md", "CHANGELOG.md", "HUB.html", "TODO.md"],
   "type_vocab": ["docs", "tokens", "kits", "components", "tools"],
   "code_types": ["tools"],
   "empty_ok_types": [],
