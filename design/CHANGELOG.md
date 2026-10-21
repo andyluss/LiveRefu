@@ -8,10 +8,15 @@
 
 ## [未发布]
 
-> **v0.1 已通过用户验收；v0.2 第一阶段已实现。** 发布时把本段按版本拆分（v0.1.0 / v0.2.0）并打 `design-v*`。
+> **v0.1 已通过用户验收；v0.2 第一、二阶段已实现。** 发布时把本段按版本拆分（v0.1.0 / v0.2.0）并打 `design-v*`。
 
 ### 新增
 
+- **v0.2 第二阶段（2026-10-21）：明日频道风格卡登记 + `design/` M1/M2 转 `block`。**
+  - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
+  - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
+  - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 22 合规 / 0 违规。
 - **v0.2 第一阶段（2026-10-21）：网站全量颜色 token 化 + LiveFab 接入。**
   - 新增 [`tokens/products/livefab.tokens.json`](tokens/products/livefab.tokens.json)（12 个颜色）；`product.*` 总数 53。
   - Web 生成拆为每产品一份：[`dist/web/future-archive.css`](tokens/dist/web/future-archive.css)、[`dist/web/livefab.css`](tokens/dist/web/livefab.css)；不再有共享的 `tokens.css`。
@@ -27,6 +32,8 @@
 
 ### 变更
 
+- **`design/` 的 M1/M2 从 `pending` 转 `block`**：工作区纳入闸门的关注点 8 → 9；缺口不再以 `pending` 挂在明处。
+- **风格卡对账纳入 `check.sh`**：除四道通用闸门外，新增明日频道 `.tres` 对账。
 - **v0.2：裸色值闸门扩大到整个网站 app**（`.vue` / `.ts` / `.css`，26 个文件），不再只查 `theme.css`；`--all` 仍对游戏脚本只报告。
 - **v0.2：LiveFab 不再复制 token**：`product.livefab` 成为独立风格卡，门户消费 `livefab.css`；两个 Web 产品的旧变量别名各自独立，避免 `--bg` 互相覆盖。
 - **四道闸门接入根 pre-commit 与 CI**：暂存涉及 `design/`、网站 `theme.css` / `tokens.generated.css` 或游戏 `game/data/tokens.json` 时自动跑 `bash design/tools/check.sh`；CI 另加网站 `verify-contrast.ts`。
@@ -41,7 +48,7 @@
 
 ### 备注
 
-- **未做**：明日频道风格卡、全组件库、Figma 库、打印/实体、母品牌命名、`design/` M1/M2 转 `block`。债务与收口计划见 [06 §五](docs/06_实现记录_v0.2.md)。
+- **未做**：全组件库、Figma 库、打印/实体、母品牌命名。债务与收口计划见 [06 §六](docs/06_实现记录_v0.2.md)。
 
 ## [0.0.1] - 2026-10-21 12:25 · 立项决策包
 

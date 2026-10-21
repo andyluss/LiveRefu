@@ -1,7 +1,7 @@
 # LiveRefu Design System（LRDS）· 项目设计系统
 
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
-> **状态**：**v0.2 第一阶段已落地**——v0.1 地基 + 网站全量颜色 token 化 + LiveFab 门户接入；外观基本不变。
+> **状态**：**v0.2 第二阶段已落地**——v0.1 地基 + 网站/LiveFab token 化 + 明日频道风格卡登记 + `design/` M1/M2 转 `block`。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
 
 ## 一、这是什么（以及不是什么）
@@ -21,7 +21,7 @@
 | --- | --- | --- |
 | **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D10 已裁决） | [05 v0.1 记录](docs/05_实现记录_v0.1.md) / [06 v0.2 记录](docs/06_实现记录_v0.2.md)（做了什么、证据在哪） |
 | **执行者 / 设计主控** | [02 系统架构](docs/02_系统架构.md)（五层模型、三层 token、单一事实来源） | [03 治理与运营](docs/03_治理与运营.md)（权限、版本、闸门） |
-| **产品负责人** | [04 落地路线](docs/04_落地路线.md)（试点、阶段、Definition of Done） | 对应的介质包：[Web](kits/web/README.md) / [Godot](kits/godot/README.md) |
+| **产品负责人** | [04 落地路线](docs/04_落地路线.md)（试点、阶段、Definition of Done） | 对应的介质包：[Web](kits/web/README.md) / [Godot](kits/godot/README.md) ｜ [07 风格卡登记](docs/07_风格卡登记.md) |
 | **AI 代理** | [03 §七 AI 协作约定](docs/03_治理与运营.md) | 改任何视觉相关文件前，先跑 [`tools/check.sh`](tools/check.sh) |
 
 ## 三、决策状态（2026-10-21 已全部裁决）
@@ -104,6 +104,12 @@ design/
 - **多产品 Web 生成**：`dist/web/future-archive.css` 与 `dist/web/livefab.css` 各自独立，旧变量别名不再互相覆盖。
 - **证据**：[06 实现记录](docs/06_实现记录_v0.2.md)。
 
+### v0.2 第二阶段（治理收口）
+
+- **明日频道风格卡登记**：`SC-TOMORROWS-CHANNEL-TAPE-v1` 落库（9 色 + 色温/光比/装饰参数），新增 [`check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts) 与 `.tres` 对账（7/7 自检）；登记表见 [07](docs/07_风格卡登记.md)。
+- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（22 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **证据**：[06 实现记录 §五](docs/06_实现记录_v0.2.md)。
+
 ### 常用命令
 
 ```bash
@@ -112,15 +118,14 @@ node --experimental-strip-types design/tools/build_tokens.ts # 改完 token 后�
 node --experimental-strip-types design/tools/check_no_raw_values.ts --all  # 未迁移裸值报告
 cd projects/mainline/future-debris && ./run.sh contrast && ./run.sh theme
 cd projects/website && bun run tools/verify-contrast.ts && bun run build
+node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts
 ```
 
 ### 下一步（v0.2 剩余）
 
-1. 明日频道暖色风格卡登记；
-2. `design/` M1/M2 配置转 `block`；
-3. 3–5 个组件契约（按钮、表单、面板、导航、反馈）；
-4. App kit 起步；
-5. 网站 6px 圆角（EX-20261021-02）做一次视觉评审。
+1. 3 个高频组件契约（按钮、表单、面板）——先从两个真实消费者里抽，不做全家桶；
+2. App kit 起步；
+3. 网站 6px 圆角（EX-20261021-02）做一次视觉评审。
 
 ### `v0.1` 明确不做
 
@@ -131,4 +136,4 @@ cd projects/website && bun run tools/verify-contrast.ts && bun run build
 - 工作区规则：[`rules/`](../rules/README.md) ｜ 变更日志：[`CHANGELOG.md`](../CHANGELOG.md) ｜ 技术详解：[`tech/`](../tech/README.md)
 - 视觉方向的上游决策：[`projects/mainline/docs/05_美术与技术方向.md`](../projects/mainline/docs/05_美术与技术方向.md)（Q6 已裁决：语法层 + 风格卡）
 - 决策体例参考：[`projects/mainline/docs/00_决策总表.md`](../projects/mainline/docs/00_决策总表.md)（推荐 / 代价 / 推翻条件 / 不回删原文）
-- 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)
+- 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md) ｜ 风格卡：[`docs/07_风格卡登记.md`](docs/07_风格卡登记.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)

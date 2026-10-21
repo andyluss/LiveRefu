@@ -71,7 +71,7 @@ const ALLOWED_TYPES: TokenType[] = [
 const UI_LEVELS = ['title-1', 'title-2', 'body', 'caption', 'number-lg']
 const EDITORIAL_LEVELS = ['display', 'h1', 'h2', 'h3', 'body', 'caption', 'footnote']
 const SPACING_SCALE = [4, 8, 12, 16, 24, 32]
-const PRODUCTS = ['future-archive', 'future-debris', 'livefab']
+const PRODUCTS = ['future-archive', 'future-debris', 'livefab', 'tomorrows-channel']
 const WEB_PRODUCTS = ['future-archive', 'livefab']
 
 const REQUIRED_SYS = [

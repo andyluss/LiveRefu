@@ -38,14 +38,25 @@ game/data/tokens.json  →  TokenSet  →  ThemeBuilder  →  future_debris.tres
 
 > `power` / `residue` 是**玩法语义**，只存在于产品层；核心层不认识“电力/残渣”。
 
-## 四、规则
+## 四、明日频道（风格卡，不是 tokens.json）
+
+《明日频道》的 `ChannelSkin` 不是 UI Theme：它同时承载**色板、材质、光照、装饰层**，字段包含 `Vector2` / 色温 / 布尔 / 字符串，硬塞进 `tokens.json` 会失真。因此：
+
+- 源：`design/tokens/products/tomorrows-channel.tape.tokens.json`（`SC-TOMORROWS-CHANNEL-TAPE-v1`）；
+- 引擎投影：`game/scenes/channel/skins/tape_channel_skin.tres`（仍是手写资源，暂不生成）；
+- 对账：`design/tools/check_tomorrows_channel_skin.ts` 逐项比较 9 个颜色 + 6 个光照/装饰字段；
+- 登记与可变/不变边界见 [`docs/07_风格卡登记.md`](../../docs/07_风格卡登记.md)。
+
+> 下一步若要生成 `.tres`，应先做 `ChannelSkin` 专用适配器；不要把它塞进 `buildGodotJson` 的 `tokens.json` 路径。
+
+## 五、规则
 
 - **不要手改 `game/data/tokens.json`**：它是生成物。改 `design/tokens/products/future-debris.atomic.tokens.json`。
 - 场景/脚本里**不允许出现字面量颜色或字号**；一律通过 Theme 取值。
 - 新增纪元 = 新增一张产品风格卡 + 在 `build_tokens.ts` 里选择导出；语法层不动。
 - 焦点环用 `--focus`（2px + 1px offset），不得复用 `--accent` / `--power`。
 
-## 五、验收
+## 六、验收
 
 ```bash
 node --experimental-strip-types design/tools/build_tokens.ts --check

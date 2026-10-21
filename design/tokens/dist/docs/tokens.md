@@ -118,6 +118,20 @@
 | `color.textDim` | `#A9B6C6` | `{ref.color.neutral.900}` |
 | `color.textFaint` | `#808D9F` | `{ref.color.neutral.800}` |
 
+## product.tomorrows-channel.color
+
+| token | 值 | 来源 |
+| --- | --- | --- |
+| `color.baseDark` | `#221610` | — |
+| `color.dialAmber` | `#FFB04A` | — |
+| `color.emphasis` | `#E39A4C` | — |
+| `color.housingBeige` | `#C7B491` | — |
+| `color.housingDark` | `#2C2113` | — |
+| `color.litWarm` | `#F5E9CE` | — |
+| `color.midBeige` | `#C7B394` | — |
+| `color.phosphorAmber` | `#FFB000` | — |
+| `color.phosphorGreen` | `#7FC98A` | — |
+
 ## 尺度
 
 | 类别 | 值 | 单位 |

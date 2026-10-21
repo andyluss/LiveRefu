@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LRDS 一键验收：四道闸门 + 各自自检 + 生成物对账。
+# LRDS 一键验收：四道通用闸门 + 风格卡对账 + 各自自检 + 生成物对账。
 # 用法：bash design/tools/check.sh
 set -euo pipefail
 
@@ -20,6 +20,8 @@ run design/tools/check_no_raw_values.ts --self-test
 run design/tools/check_no_raw_values.ts
 run design/tools/build_tokens.ts --self-test
 run design/tools/build_tokens.ts --check
+run design/tools/check_tomorrows_channel_skin.ts --self-test
+run design/tools/check_tomorrows_channel_skin.ts
 
 echo ""
-echo "✓ LRDS 设计系统四道闸门全部通过"
+echo "✓ LRDS 设计系统闸门全部通过（含风格卡对账）"

@@ -15,7 +15,11 @@
 - 产品语义（power / residue / phosphor）只存在于 `product.*`；三个以上产品都需要时，才提案上移到 `sys.*`。
 - 颜色名只允许出现在 `ref.*`；`sys.*` 用角色名。
 
-## 二、文件
+## 二、风格卡
+
+每个产品/纪元一张风格卡；登记表、可变/不变边界与对账方式见 [`../docs/07_风格卡登记.md`](../docs/07_风格卡登记.md)。当前四张：`SC-FUTURE-ARCHIVE-CONSOLE-v1`、`SC-FUTURE-DEBRIS-ATOMIC-v1`、`SC-LIVEFAB-CONSOLE-v1`、`SC-TOMORROWS-CHANNEL-TAPE-v1`。
+
+## 三、文件
 
 ```
 tokens/
@@ -25,7 +29,8 @@ tokens/
 ├── products/
 │   ├── future-archive.tokens.json
 │   ├── future-debris.atomic.tokens.json
-│   └── livefab.tokens.json
+│   ├── livefab.tokens.json
+│   └── tomorrows-channel.tape.tokens.json
 ├── schema/
 │   └── tokens.schema.json    # 编辑器补全/早期报错
 └── dist/                     # 生成物（勿手改）
@@ -35,7 +40,7 @@ tokens/
     └── docs/tokens.md
 ```
 
-## 三、改一个值
+## 四、改一个值
 
 ```bash
 # 1. 改 core/ 或 products/ 下的 JSON
@@ -47,7 +52,7 @@ bash design/tools/check.sh
 
 **不要手改** `dist/` 或产品副本（`projects/website/app/assets/tokens.generated.css`、`projects/mainline/future-debris/game/data/tokens.json`）。`build_tokens.ts --check` 会在 CI/pre-commit 里发现漂移。
 
-## 四、当前尺度
+## 五、当前尺度
 
 - 颜色：见自动生成的 [`dist/docs/tokens.md`](dist/docs/tokens.md)；支持 `#RRGGBB` 与 `#RRGGBBAA`（alpha 只用于遮罩/阴影等装饰，不用于文字对比度）；
 - UI 字阶：5 级（28/20/16/14/32）；

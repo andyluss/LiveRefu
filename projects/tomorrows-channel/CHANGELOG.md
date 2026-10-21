@@ -5,6 +5,20 @@
 
 ## 说明
 
+## [0.2.5] - 2026-10-21 13:08
+
+### 变更（磁带皮肤登记到设计系统）
+
+- **磁带皮肤登记为风格卡** `SC-TOMORROWS-CHANNEL-TAPE-v1`：9 个颜色 + 设备色温 2400K / 台灯 2800K / 光比 6:4 / 装饰开关 / 扫描线 0.08 / 装饰字体，源文件 [`design/tokens/products/tomorrows-channel.tape.tokens.json`](../../design/tokens/products/tomorrows-channel.tape.tokens.json)。
+- **新增对账闸门** [`design/tools/check_tomorrows_channel_skin.ts`](../../design/tools/check_tomorrows_channel_skin.ts)：把 [`tape_channel_skin.tres`](game/scenes/channel/skins/tape_channel_skin.tres) 的 `Color(r,g,b,a)` 与 token 逐项比较，并校验 6 个光照/装饰字段；自检 7/7。
+- **引擎资源未改**：`.tres` 仍是 `ChannelSkin` 的手写投影；本轮只登记 + 对账，不改视觉、不改运行时。
+- 风格卡登记表：[`design/docs/07_风格卡登记.md`](../../design/docs/07_风格卡登记.md)。
+
+### 验收
+
+- `node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts`：**9 色 + 6 光照/装饰全部一致**。
+- 自检 7/7。
+
 ## [0.2.4] - 2026-09-08 13:58
 
 ### 变更（程序工程）
