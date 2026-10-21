@@ -3,6 +3,21 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循 Keep a Changelog 风格：`新增` / `变更` / `修复` / `移除`。
 > 项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/)。内容源（唯一权威）在 [`doc/retro-futurism/`](../../doc/retro-futurism/README.md) 与 [`doc/punks/`](../../doc/punks/README.md)。
 
+## [0.29.0] - 2026-10-21 12:41
+
+### 变更（颜色改为消费设计系统 token；焦点色修复）
+
+- **主题颜色上移到设计系统**：新增 [`app/assets/tokens.generated.css`](app/assets/tokens.generated.css)（由 [`design/tokens/`](../../design/tokens/) 生成，勿手改）；[`app/assets/theme.css`](app/assets/theme.css) 删除 16 个裸色值定义，旧变量名（`--bg` / `--teal` / …）由生成物作为兼容别名提供，其余 CSS 一行未改。
+- [`nuxt.config.ts`](nuxt.config.ts) 在主题之前加载 `tokens.generated.css`；[`tools/verify-contrast.ts`](tools/verify-contrast.ts) 改为从生成物读取 token，并解析 `var(--x)` 别名。
+- **唯一有意的视觉变化**：`--focus` 从 `#57D8C8`（= `--teal-bright`）改为独立蓝 `#8AB4F8`，修掉“焦点指示复用强调色”的可用性缺陷。只在键盘焦点时可见。
+
+### 验收
+
+- `bun run tools/verify-contrast.ts`：27/27 组合达 WCAG AA，层级与 focus 分离通过。
+- `bun run build`：通过；产物 CSS 中确认包含生成 token 与 `--bg` 别名。
+
+> 说明：`GalleryGrid.vue` / `SearchDialog.vue` / `gallery/index.vue` 的遮罩、阴影、高亮色仍是裸值，已登记为设计债 [EX-20261021-01](../../design/docs/exceptions.md)，v0.2 收口。
+
 ## [0.28.0] - 2026-10-03 17:48
 
 ### 变更（改名《未来档案》+ 目录改 website；Giscus 端到端验证通过；项目暂停）

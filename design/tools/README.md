@@ -1,0 +1,37 @@
+# Tools · 生成器与闸门
+
+> 零第三方依赖；Node / Deno / Bun 兼容；用 `node --experimental-strip-types` 直接跑。
+> **每个检查器都必须带 `--self-test`，且负向用例断言错误类型**——只断言“有错”会让用例因无关错误而假通过。
+
+## 一、工具
+
+| 工具 | 作用 | 自检 |
+| --- | --- | --- |
+| [`token_lib.ts`](token_lib.ts) | 加载、别名解析、校验、CSS/Godot/Markdown 生成 | — |
+| [`build_tokens.ts`](build_tokens.ts) | 生成 5 个产物；`--check` 校验生成物无 diff | 8/8 |
+| [`check_tokens.ts`](check_tokens.ts) | 结构 / 类型 / 别名 / 字阶 / 间距 / 产品层 | 7/7 |
+| [`check_contrast.ts`](check_contrast.ts) | 68 组对比度 + 7 组层级 + 3 组 focus 分离 | 7/7 |
+| [`check_no_raw_values.ts`](check_no_raw_values.ts) | 已迁移表面裸色值；`--all` 报告未迁移面 | 5/5 |
+| [`check.sh`](check.sh) | 一键跑全部自检 + 闸门 | — |
+
+## 二、常用命令
+
+```bash
+bash design/tools/check.sh                  # 全部
+node --experimental-strip-types design/tools/build_tokens.ts
+node --experimental-strip-types design/tools/build_tokens.ts --check
+node --experimental-strip-types design/tools/check_no_raw_values.ts --all
+```
+
+## 三、加一个新闸门
+
+1. 在 `token_lib.ts` 里放**纯函数**（便于自检），CLI 只做 I/O；
+2. 写 `--self-test`：至少一个“好数据不误报”、一个“坏数据必须报错”，并断言**错误类型**；
+3. 接入 `check.sh`；
+4. 更新 [`../docs/02_系统架构.md`](../docs/02_系统架构.md) 的闸门表与 [`../CHANGELOG.md`](../CHANGELOG.md)。
+
+## 四、边界
+
+- 不在检查器里硬编码设计值：从 token 读。
+- 不为了通过审计而弱化阈值：对比度不达标时改设计或改 token。
+- 不静默跳过：读不到、解析不出、没有生成物，一律判失败而不是“通过”。

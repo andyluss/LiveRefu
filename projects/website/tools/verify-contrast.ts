@@ -23,7 +23,7 @@ import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
 const PROJECT_ROOT = resolve(import.meta.dir, '..')
-const THEME = join(PROJECT_ROOT, 'app/assets/theme.css')
+const TOKENS = join(PROJECT_ROOT, 'app/assets/tokens.generated.css')
 const VERBOSE = process.argv.includes('--verbose')
 
 // ---------------------------------------------------------------------------
@@ -63,22 +63,43 @@ function ratio(fg: string, bg: string): number {
 }
 
 // ---------------------------------------------------------------------------
-// 从 theme.css 读出 token（单一真相：不在这里重复硬编码颜色）
+// 从 tokens.generated.css 读出 token（单一真相：不在这里重复硬编码颜色）
 // ---------------------------------------------------------------------------
 
-const css = readFileSync(THEME, 'utf-8')
+const css = readFileSync(TOKENS, 'utf-8')
 const vars = new Map<string, string>()
-for (const m of css.matchAll(/--([\w-]+):\s*(#[0-9a-fA-F]{3,8})\s*;/g)) {
-  vars.set(m[1]!, m[2]!)
+for (const m of css.matchAll(/--([\w-]+):\s*([^;]+);/g)) {
+  vars.set(m[1]!, m[2]!.trim())
+}
+
+/** 解析 `var(--x)` 别名；这不是通用 CSS 解析器，只处理 v0.1 生成物的单层别名。 */
+function resolveVar(name: string, seen = new Set<string>()): string | undefined {
+  if (seen.has(name)) return undefined
+  seen.add(name)
+  const raw = vars.get(name.replace(/^--/, ''))
+  if (!raw) return undefined
+  const m = /^var\((--[\w-]+)\)$/.exec(raw)
+  if (m) return resolveVar(m[1]!, seen)
+  return raw
 }
 
 const need = ['bg', 'bg-elev', 'bg-elev-2', 'line', 'line-strong', 'text', 'text-dim', 'text-faint', 'teal', 'teal-bright', 'cream', 'amber', 'rust', 'focus']
-const missing = need.filter(n => !vars.has(n))
+const missing = need.filter(n => !resolveVar(n))
 if (missing.length) {
-  console.error(`✗ theme.css 缺少颜色 token：${missing.join(', ')}`)
+  console.error(`✗ tokens.generated.css 缺少颜色 token（或别名无法解析）：${missing.join(', ')}`)
   process.exit(1)
 }
-const C = (n: string) => vars.get(n)!
+const C = (n: string) => {
+  const v = resolveVar(n)
+  if (!v) throw new Error(`无法解析 token：${n}`)
+  return v
+}
+
+// 焦点不得复用强调色：这是 v0.1 迁移里唯一有意改变的视觉值。
+if (C('focus').toLowerCase() === C('teal-bright').toLowerCase()) {
+  console.error('✗ --focus 与 --teal-bright 同色：焦点指示不得复用强调色')
+  process.exit(1)
+}
 
 // ---------------------------------------------------------------------------
 // 审计表：每一行是"页面上真实存在的一个文字/背景组合"

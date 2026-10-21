@@ -43,6 +43,12 @@ jobs:
       - name: Timestamp filename check (R06, TS)
         run: node --experimental-strip-types tools/check_time_naming.ts --self-test && node --experimental-strip-types tools/check_time_naming.ts
 
+      - name: Design system gates (tokens / contrast / raw values / generated)
+        run: bash design/tools/check.sh
+
+      - name: Website design-token contrast (TS)
+        run: node --experimental-strip-types projects/website/tools/verify-contrast.ts
+
       - name: Data table schema check (TS)
         run: node --experimental-strip-types tools/check_data.ts -v
 

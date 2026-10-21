@@ -3,6 +3,20 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../../rules/R05-changelog.md)
 > 与 [tech/changelog-convention.md](../../../tech/changelog-convention.md)。
 
+## [0.22.0] - 2026-10-21 12:41
+
+### 变更（token 源上移到设计系统；game/data/tokens.json 改为生成物）
+
+- **[`game/data/tokens.json`](game/data/tokens.json) 改为生成物**：由 [`design/tokens/products/future-debris.atomic.tokens.json`](../../../design/tokens/products/future-debris.atomic.tokens.json) 经 [`design/tools/build_tokens.ts`](../../../design/tools/build_tokens.ts) 生成，schema、18 个颜色、5 级字号、间距/圆角/描边/动效/图标全部等值。
+- **游戏代码零改动**：`TokenSet` / `ThemeBuilder` / `theme_check.gd` 继续读同一个路径、同一个 schema；`future_debris.tres` 重新生成后无 diff。
+- **单一事实来源上移**：设计源在 `design/tokens/`；人读契约仍是 [`docs/04_视觉语言与设计token.md`](docs/04_视觉语言与设计token.md)。两者由 `python3 tools/check_tokens.py`（文档 ↔ 引擎）与 `design/tools/build_tokens.ts --check`（设计源 ↔ 引擎）双重对账。
+
+### 验收
+
+- `python3 tools/check_tokens.py`：PASS（18 颜色 / 5 级字号，文档与引擎完全一致）。
+- `./run.sh contrast`：PASS（30 个对比度组合 + 层级 + 3 个样张无越界色值）。
+- `./run.sh theme`：PASS（15 项主题断言全部通过；主题资源重新生成后无 diff）。
+
 ## [0.21.0] - 2026-10-08 15:19
 
 ### 新增

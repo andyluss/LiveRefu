@@ -7,33 +7,15 @@
    ========================================================================== */
 
 :root {
-  /* 原子时代配色 */
-  --bg: #0b1017;
-  --bg-elev: #121a26;
-  --bg-elev-2: #18222f;
-  /* --line 只用于**装饰性**分隔线与描边（WCAG 的 1.4.11 不要求装饰达到 3:1） */
-  --line: #24303f;
-  /* --line-strong 用于**交互控件**的边界——这类必须 ≥3:1 才能被看清 */
-  --line-strong: #66727f;
-  --text: #e8e4d9;
-  --text-dim: #9aa7b8;
-  /* 三级文字：M3 对比度审计发现原值 #6b7889 在 bg-elev-2 上仅 3.57:1（低于 AA 的 4.5），
-     提亮至 #808d9f 后最低 4.76:1；仍明显淡于 --text-dim，层级不被压平。 */
-  --text-faint: #808d9f;
+  /* 颜色 token 来自设计系统：app/assets/tokens.generated.css（由 design/tokens 生成，勿手改）。
+     旧变量名（--bg / --teal / ...）由生成物作为兼容别名提供；新代码请直接用 --lr-*。
+     v0.1 只做等值迁移：除 --focus 改为独立蓝（修“焦点=强调色”）外，视觉不变。 */
 
-  --teal: #3fb8ab;
-  --teal-bright: #57d8c8;
-  --cream: #e8d9a0;
-  --amber: #e0a94a;
-  --rust: #c8703c;
-  --chrome: #c9d3dd;
+  --focus-width: var(--lr-border-focus);
 
-  /* 焦点指示器：用高对比的 teal-bright，确保键盘用户能看见焦点在哪 */
-  --focus: #57d8c8;
-  --focus-width: 2px;
-
+  /* v0.1 保留网站现有 6px；v0.2 再收敛到设计系统的 4/8 圆角阶梯。 */
   --radius: 6px;
-  --maxw: 1240px;
+  --maxw: var(--lr-grid-web-max-width);
 
   --font-ui: ui-sans-serif, system-ui, -apple-system, 'SF Pro SC', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;

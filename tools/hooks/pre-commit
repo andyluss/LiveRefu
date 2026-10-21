@@ -47,6 +47,24 @@ else
   fi
 fi
 
+# ---- 1.5) 设计系统四道闸门（token / 对比度 / 裸色值 / 生成物）----
+# 只在暂存涉及设计系统或其两个试点消费面时跑，避免无关提交被拖慢。
+DESIGN_CHECK="$GIT_ROOT/design/tools/check.sh"
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(design/|projects/website/app/assets/(theme\.css|tokens\.generated\.css)|projects/mainline/future-debris/game/data/tokens\.json)'; then
+  if [ -f "$DESIGN_CHECK" ]; then
+    echo "[pre-commit:design] 暂存涉及设计系统，跑四道闸门（含自检）..." >&2
+    if bash "$DESIGN_CHECK" >&2; then
+      echo "[pre-commit:design] 通过。" >&2
+    else
+      echo "[pre-commit:design] 设计系统闸门失败，已拦截提交。" >&2
+      echo "  复跑: bash design/tools/check.sh" >&2
+      exit 1
+    fi
+  else
+    echo "[pre-commit:design] 未找到 ${DESIGN_CHECK}，跳过。" >&2
+  fi
+fi
+
 # ---- 2) 数据表 schema 校验 ----
 DATA_SCRIPT="$GIT_ROOT/tools/check_data.ts"
 if [ ! -f "$DATA_SCRIPT" ]; then

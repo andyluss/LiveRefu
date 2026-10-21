@@ -8,7 +8,30 @@
 
 ## [未发布]
 
-（暂无；下一版发布前在此登记。）
+> v0.1 地基已实现；验收通过后把本段提升为 `0.1.0` 并打 `design-v0.1.0`。
+
+### 新增
+
+- **三层 token 源**（186 个）：[`tokens/core/ref.tokens.json`](tokens/core/ref.tokens.json)（61）、[`tokens/core/sys.tokens.json`](tokens/core/sys.tokens.json)（92）、[`tokens/products/future-archive.tokens.json`](tokens/products/future-archive.tokens.json)（15）、[`tokens/products/future-debris.atomic.tokens.json`](tokens/products/future-debris.atomic.tokens.json)（18）；[`tokens/schema/tokens.schema.json`](tokens/schema/tokens.schema.json)。
+- **生成器与闸门**：[`tools/token_lib.ts`](tools/token_lib.ts)、[`tools/build_tokens.ts`](tools/build_tokens.ts)（8/8 自检）、[`tools/check_tokens.ts`](tools/check_tokens.ts)（7/7）、[`tools/check_contrast.ts`](tools/check_contrast.ts)（7/7，68 组对比度 + 7 组层级 + 3 组 focus 分离）、[`tools/check_no_raw_values.ts`](tools/check_no_raw_values.ts)（5/5）、[`tools/check.sh`](tools/check.sh)。
+- **生成物**：`tokens/dist/web/tokens.css`、`tokens/dist/godot/tokens.json`、`tokens/dist/docs/tokens.md`；产品副本 `projects/website/app/assets/tokens.generated.css`、`projects/mainline/future-debris/game/data/tokens.json`。
+- **介质包说明**：[`kits/web/README.md`](kits/web/README.md)、[`kits/godot/README.md`](kits/godot/README.md)。
+- **实现记录与例外**：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/exceptions.md`](docs/exceptions.md)（EX-20261021-01 网站组件裸色值、EX-20261021-02 网站 6px 圆角）。
+
+### 变更
+
+- **四道闸门接入根 pre-commit 与 CI**：暂存涉及 `design/`、网站 `theme.css` / `tokens.generated.css` 或游戏 `game/data/tokens.json` 时自动跑 `bash design/tools/check.sh`；CI 另加网站 `verify-contrast.ts`。
+- **D1–D10 全部裁决**（用户：按推荐执行，D2/D5 确认；暂不用设计工具；实体后定；v0.1 外观不变）；[`docs/00_决策总表.md`](docs/00_决策总表.md) 转为 v1.0 并新增裁决记录。
+- **网站试点**：`projects/website/app/assets/theme.css` 删除裸色值，旧变量名由生成物别名提供；`nuxt.config.ts` 在主题前加载 `tokens.generated.css`；`tools/verify-contrast.ts` 改为从生成物解析 token。
+- **游戏试点**：`projects/mainline/future-debris/game/data/tokens.json` 改为生成物，schema 与取值不变；`check_tokens.py`、`run.sh contrast`、`run.sh theme` 全部通过。
+
+### 修复
+
+- **网站 `--focus` 不再复用强调色**：由 `#57D8C8`（= `--teal-bright`）改为独立蓝 `#8AB4F8`。这是 v0.1 唯一有意的视觉变化，只在键盘焦点时可见。
+
+### 备注
+
+- **未做**：全组件库、Figma 库、LiveFab/明日频道迁移、打印/实体、母品牌命名、`design/` M1/M2 转 `block`。债务与收口计划见 [05 §四](docs/05_实现记录_v0.1.md)。
 
 ## [0.0.1] - 2026-10-21 12:25 · 立项决策包
 
