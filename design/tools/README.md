@@ -16,6 +16,7 @@
 | [`check_component_contracts.ts`](check_component_contracts.ts) | 组件契约五节齐全、token 存在、无裸值；共享组件 CSS | 8/8 |
 | [`build_web_kit.ts`](build_web_kit.ts) | 把 `kits/web/components.css` 复制到设计产物与两个产品；`--check` 比对 | 3/3 |
 | [`check_component_usage.ts`](check_component_usage.ts) | 审计 button/panel/field 的真实消费者数与引用数 | 4/4 |
+| [`build_hub.ts`](build_hub.ts) | 生成 `design/HUB.html`（一页式可视化）；`--check` 防过期 | 4/4 |
 | [`capture_products.ts`](capture_products.ts) | **手动**：真实页面截图 + Tab 焦点审计（需本地服务与 Chrome CDP） | 2/2 |
 | [`check.sh`](check.sh) | 一键跑全部自检 + 闸门 | — |
 

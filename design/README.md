@@ -3,6 +3,7 @@
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
 > **状态**：**v0.2 已发布；v0.3 App kit 起步**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
+> **先看这里**：[`HUB.html`](HUB.html) —— 一页看完 Token / 风格卡 / 组件 / 产品 / 验收 / 决策；由 `tools/build_hub.ts` 生成。
 
 ## 一、这是什么（以及不是什么）
 
@@ -19,6 +20,7 @@
 
 | 你是 | 从这里开始 | 然后 |
 | --- | --- | --- |
+| **只想快速浏览** | [`HUB.html`](HUB.html)（可视化总览） | [00 决策总表](docs/00_决策总表.md) / [11 App kit](docs/11_App_kit_v0.2.md) |
 | **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D10 已裁决） | [05 v0.1](docs/05_实现记录_v0.1.md) / [06 v0.2](docs/06_实现记录_v0.2.md) / [08 组件落地](docs/08_组件落地_v0.2.md) / [09 产品走查](docs/09_产品走查_v0.2.md) / [10 皮肤收口](docs/10_皮肤收口_v0.2.md) / [11 App kit](docs/11_App_kit_v0.2.md) |
 | **执行者 / 设计主控** | [02 系统架构](docs/02_系统架构.md)（五层模型、三层 token、单一事实来源） | [03 治理与运营](docs/03_治理与运营.md)（权限、版本、闸门） |
 | **产品负责人** | [04 落地路线](docs/04_落地路线.md)（试点、阶段、Definition of Done） | 对应的介质包：[Web](kits/web/README.md) / [Godot](kits/godot/README.md) ｜ [07 风格卡登记](docs/07_风格卡登记.md) |
@@ -59,6 +61,7 @@
 ```
 design/
 ├── README.md                 # 本文件：出入口
+├── HUB.html                  # 一页式可视化总览（生成物）
 ├── CHANGELOG.md              # 设计系统版本日志
 ├── docs/                     # 决策 / 盘点 / 架构 / 治理 / 路线 / 实现记录 / 例外
 ├── tokens/
@@ -76,7 +79,7 @@ design/
 └── references/               # 参考、法务登记、moodboard
 ```
 
-> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 32 合规 / 0 违规）。
+> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 33 合规 / 0 违规）。
 
 ## 六、与既有资产的关系
 
@@ -108,7 +111,7 @@ design/
 ### v0.2 第二阶段（治理收口）
 
 - **明日频道风格卡登记**：`SC-TOMORROWS-CHANNEL-TAPE-v1` 落库（9 色 + 色温/光比/装饰参数），新增 [`check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts) 与 `.tres` 对账（7/7 自检）；登记表见 [07](docs/07_风格卡登记.md)。
-- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（32 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（33 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
 - **3 个组件契约（draft）**：[button](components/button.md) / [form-field](components/form-field.md) / [panel](components/panel.md)；契约闸门 **8/8**（五节、token、裸值、组件 CSS）。
 - **共享 Web 组件层渐进接入**：[components.css](kits/web/components.css) + 生成副本；网站/LiveFab 已叠加 `lr-button` / `lr-panel`，搜索框接入 `lr-field`；使用审计 **4/4**（button/panel 各 2 产品，field 1 产品）。预览图：[preview.png](kits/web/preview.png)。
 - **产品走查**：4 个页面、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [09 产品走查](docs/09_产品走查_v0.2.md)。

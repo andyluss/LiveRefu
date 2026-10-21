@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LRDS · 设计系统 HUB</title>
+<!-- 由 design/tools/build_hub.ts 生成；不要手改。 -->
+<style>
+  :root{
+    --bg:#0B0F14; --surface:#111823; --raised:#161D26;
+    --text:#F3EDE1; --dim:#9AA7B8; --muted:#808D9F;
+    --line:#24303F; --line-strong:#66727F;
+    --teal:#4FD1C5; --teal-hi:#57D8C8; --amber:#FFC857; --rust:#FF6B35; --ok:#7BD389; --focus:#8AB4F8;
+    --radius:8px; --gap:16px;
+    --sans:ui-sans-serif, system-ui, -apple-system, SF Pro SC, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+    --mono:ui-monospace, SF Mono, JetBrains Mono, Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--sans)}
+  a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 40%,transparent)}
+  a:hover{border-bottom-color:var(--focus)}
+  code{font-family:var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:.88em}
+  .topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg) 0%,var(--bg) 70%,color-mix(in srgb,var(--bg) 92%,transparent) 100%);border-bottom:1px solid var(--line);padding:12px 22px 0}
+  .topline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .brand{font-size:19px;font-weight:700;letter-spacing:.03em}
+  .brand .en{color:var(--muted);font-weight:400;font-size:12.5px;margin-left:8px}
+  .stamp{margin-left:auto;color:var(--muted);font-size:12.5px;font-family:var(--mono)}
+  .hint{color:var(--dim);font-size:12.5px;margin:3px 0 10px}
+  nav.tabs{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+  nav.tabs button{appearance:none;background:transparent;color:var(--dim);border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:9px 14px;font:inherit;font-size:14px;cursor:pointer}
+  nav.tabs button:hover{color:var(--text);background:color-mix(in srgb,var(--text) 3%,transparent)}
+  nav.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);border-color:var(--line);box-shadow:inset 0 2px 0 var(--teal)}
+  nav.tabs button .n{color:var(--muted);font-size:12px;margin-right:6px}
+  main{max-width:1200px;margin:0 auto;padding:22px}
+  .panel{display:block}
+  body.js .panel{display:none}
+  body.js .panel.active{display:block;animation:fade .18s ease-out}
+  @keyframes fade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+  h2{font-size:20px;margin:2px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h3{font-size:15px;margin:18px 0 8px;color:var(--teal)}
+  h3:first-child{margin-top:4px}
+  h4.group-title{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px;font-family:var(--mono)}
+  .lede{color:var(--dim);margin:8px 0 16px;max-width:80ch}
+  .grid{display:grid;gap:var(--gap)}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px}
+  .card h3{margin:0 0 6px;color:var(--text)}
+  .card p{margin:6px 0;color:var(--dim);font-size:13.5px}
+  .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:10px 0 18px}
+  .stat{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px}
+  .stat .v{font-size:25px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums;font-family:var(--mono)}
+  .stat .l{color:var(--dim);font-size:12.5px;margin-top:3px}
+  .stat.a .v{color:var(--teal)} .stat.b .v{color:var(--amber)} .stat.c .v{color:var(--ok)}
+  .bar{display:flex;height:16px;border-radius:999px;overflow:hidden;border:1px solid var(--line);margin:10px 0 6px}
+  .bar span{display:block;height:100%}
+  .bar .r{background:var(--teal)} .bar .s{background:var(--amber)} .bar .p{background:var(--rust)}
+  .bar-label{display:flex;gap:18px;flex-wrap:wrap;color:var(--dim);font-size:12.5px}
+  .bar-label b{color:var(--text);font-family:var(--mono)}
+  .swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+  .swatch{display:flex;gap:10px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:8px;color:var(--text);font:inherit;cursor:pointer}
+  .swatch:hover,.swatch:focus-visible{border-color:var(--focus);outline:2px solid var(--focus);outline-offset:1px}
+  .swatch-chip{width:38px;height:38px;border-radius:4px;background:var(--c);border:1px solid var(--line-strong);flex:none;
+    background-image:linear-gradient(45deg,color-mix(in srgb,var(--text) 8%,transparent) 25%,transparent 25%,transparent 75%,color-mix(in srgb,var(--text) 8%,transparent) 75%),linear-gradient(45deg,color-mix(in srgb,var(--text) 8%,transparent) 25%,transparent 25%,transparent 75%,color-mix(in srgb,var(--text) 8%,transparent) 75%);background-size:10px 10px;background-position:0 0,5px 5px}
+  .swatch-meta{display:grid;gap:1px;min-width:0}
+  .swatch-meta b{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .swatch-meta code{font-size:11px;padding:0 4px;width:max-content}
+  .swatch-meta small{color:var(--muted);font-size:11px}
+  .type-list{display:grid;gap:10px}
+  .type-row{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;border-bottom:1px dashed var(--line);padding-bottom:10px}
+  .type-meta{display:grid;gap:2px;color:var(--dim);font-size:12.5px}
+  .type-meta small{color:var(--muted);font-family:var(--mono)}
+  .type-sample{white-space:normal;overflow-wrap:anywhere}
+  .scale-row{display:flex;align-items:center;gap:14px;margin:7px 0;color:var(--dim);font-size:12.5px}
+  .scale-row .lab{width:120px;font-family:var(--mono);color:var(--text)}
+  .scale-bar{height:12px;background:linear-gradient(90deg,var(--teal),var(--teal-hi));border-radius:3px;min-width:2px}
+  .scale-box{background:var(--raised);border:1.5px solid var(--line-strong)}
+  .card-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .card-head code{font-size:10.5px;color:var(--dim)}
+  .muted{color:var(--muted)}
+  .mini-swatches{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}
+  .mini{width:22px;height:22px;border-radius:3px;background:var(--c);border:1px solid var(--line-strong)}
+  .lighting{display:flex;flex-wrap:wrap;gap:6px;color:var(--dim);font-size:12px}
+  .lighting span{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+  .lighting b{color:var(--text);font-family:var(--mono);font-weight:500}
+  .links{margin:10px 0 0!important;font-size:12.5px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+  tr:hover td{background:color-mix(in srgb,var(--text) 2%,transparent)}
+  .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--dim);white-space:nowrap}
+  .chip.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+  .chip.acc{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 40%,transparent)}
+  .chip.warn{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 40%,transparent)}
+  .chip.todo{color:var(--rust);border-color:color-mix(in srgb,var(--rust) 40%,transparent)}
+  .gate{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .gate .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;margin-top:7px}
+  .gate .name{flex:1}
+  .gate code{font-size:11.5px}
+  .gate .st{color:var(--ok);font-family:var(--mono);font-size:12px}
+  .shots{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
+  .shot{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;border-bottom:1px solid var(--line)}
+  .shot:hover{border-color:var(--line-strong)}
+  .shot img{display:block;width:100%;height:auto;max-height:420px;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+  .shot p{margin:10px 12px;color:var(--dim);font-size:12.5px}
+  .doc-card{display:block;border-bottom:1px solid var(--line)}
+  .doc-card h3{font-size:13.5px;margin:4px 0 0}
+  .doc-card code{font-size:11px;color:var(--muted)}
+  .callout{background:var(--surface);border-left:3px solid var(--teal);padding:12px 14px;border-radius:0 var(--radius) var(--radius) 0;color:var(--dim);margin:12px 0}
+  .callout b{color:var(--text)}
+  .toast{position:fixed;right:18px;bottom:18px;background:var(--raised);border:1px solid var(--line-strong);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12.5px;opacity:0;transform:translateY(4px);transition:.18s;pointer-events:none;z-index:50}
+  .toast.on{opacity:1;transform:none}
+  input[type=search]{width:100%;max-width:420px;background:var(--bg);border:1.5px solid var(--line-strong);border-radius:4px;color:var(--text);padding:8px 10px;font:inherit;font-size:13px;margin:8px 0 12px}
+  input[type=search]:focus{outline:2px solid var(--focus);outline-offset:1px}
+  @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots{grid-template-columns:1fr}.type-row{grid-template-columns:1fr}.topbar{padding:10px 14px 0}main{padding:16px}}
+  @media print{
+    body{background:#fff;color:#111}
+    .topbar,nav.tabs,.toast,input[type=search]{display:none!important}
+    main{max-width:none;padding:0}
+    body.js .panel{display:block!important;break-inside:auto}
+    .card,.stat,.shot,.gate{break-inside:avoid}
+    a{color:#111;border-bottom:none}
+    .swatch,.card,.stat{background:#fff;border-color:#bbb}
+    .hint,.lede,.muted,.swatch-meta small{color:#444}
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topline">
+    <div class="brand">LRDS · 设计系统 HUB<span class="en">LiveRefu Design System</span></div>
+    <div class="stamp">v0.2.0 已发布 ｜ App kit 起步（未发布）</div>
+  </div>
+  <div class="hint">一页看完：Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值。打印时自动展开全部 Tab。</div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>总览</button>
+    <button role="tab" data-tab="tokens"><span class="n">02</span>Token</button>
+    <button role="tab" data-tab="cards"><span class="n">03</span>风格卡</button>
+    <button role="tab" data-tab="components"><span class="n">04</span>组件</button>
+    <button role="tab" data-tab="products"><span class="n">05</span>产品</button>
+    <button role="tab" data-tab="checks"><span class="n">06</span>验收</button>
+    <button role="tab" data-tab="decisions"><span class="n">07</span>决策与文档</button>
+  </nav>
+</header>
+<main>
+  <section class="panel active" id="panel-overview">
+    <h2>总览</h2>
+    <p class="lede">一套语法，多种介质。设计系统不是配色表：它把品牌、语义 token、组件契约、介质适配、资产与评审收在一套可机器校验的结构里。</p>
+    <div class="stats">
+      <div class="stat a"><div class="v">229</div><div class="l">Token 总数</div></div>
+      <div class="stat"><div class="v">4</div><div class="l">风格卡</div></div>
+      <div class="stat"><div class="v">3</div><div class="l">组件契约</div></div>
+      <div class="stat b"><div class="v">4</div><div class="l">已接入产品</div></div>
+      <div class="stat c"><div class="v">8</div><div class="l">生成物</div></div>
+      <div class="stat"><div class="v">0</div><div class="l">Active 例外</div></div>
+    </div>
+    <h3>Token 构成</h3>
+    <div class="bar"><span class="r" style="width:29.7%"></span><span class="s" style="width:43.2%"></span><span class="p" style="width:27.1%"></span></div>
+    <div class="bar-label"><span><b>ref 68</b> 原始值</span><span><b>sys 99</b> 通用语义</span><span><b>product 62</b> 产品/纪元</span></div>
+    <h3>八条原则</h3>
+    <div class="grid g4">
+      <div class="card"><h3>先语义，后色值</h3><p>业务代码只引用 <code>sys.*</code> 或 <code>product.*</code>。</p></div>
+      <div class="card"><h3>一套语法，多种介质</h3><p>Web / Godot / App / 印刷共用层级与无障碍下限。</p></div>
+      <div class="card"><h3>产品可变，理解方式不变</h3><p>换风格卡，不换信息位置与交互语法。</p></div>
+      <div class="card"><h3>可访问性是闸门</h3><p>对比度、焦点、减少动态、缩放由机器守。</p></div>
+      <div class="card"><h3>单一事实来源</h3><p>JSON 只写一次；CSS / Godot / App 由脚本生成。</p></div>
+      <div class="card"><h3>设计是闸门</h3><p>实现前有规格，发布前有验收；设计债按 P1 处理。</p></div>
+      <div class="card"><h3>先收编，再统一</h3><p>不推翻既有合理差异；先对齐语义，再替换取值。</p></div>
+      <div class="card"><h3>两个试点</h3><p>没有真实消费者，不算交付。</p></div>
+    </div>
+    <h3>产品覆盖</h3>
+    <table>
+      <thead><tr><th>产品</th><th>介质</th><th>状态</th><th>消费什么</th></tr></thead>
+      <tbody>
+        <tr><td><a href="../projects/website/README.md">未来档案</a></td><td>Web</td><td><span class="chip ok">已发布 0.29.0</span></td><td>Web token + 组件层（button/panel/field）</td></tr>
+        <tr><td><a href="../projects/livefab/README.md">LiveFab</a></td><td>Web</td><td><span class="chip ok">已发布 0.4.0</span></td><td>Web token + 组件层（button/panel）</td></tr>
+        <tr><td><a href="../projects/mainline/future-debris/README.md">未来残片</a></td><td>Godot</td><td><span class="chip ok">已发布 0.22.0</span></td><td>Godot token → Theme</td></tr>
+        <tr><td><a href="../projects/tomorrows-channel/README.md">明日频道</a></td><td>Godot</td><td><span class="chip acc">风格卡已登记 0.2.5</span></td><td>ChannelSkin .tres ↔ token 对账</td></tr>
+        <tr><td>App kit</td><td>iOS / Android</td><td><span class="chip warn">起步，无消费者</span></td><td>平台无关 app/tokens.json</td></tr>
+        <tr><td>Refu Game 001</td><td>Godot</td><td><span class="chip">冻结</span></td><td>不迁移；若复活按新产品接入</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><b>当前边界</b>：设计系统 v0.2 已发布；App kit 是“可接入”而不是“已接入”。Form Field 只有网站搜索框一个真实消费者。</div>
+  </section>
+
+  <section class="panel" id="panel-tokens">
+    <h2>Token</h2>
+    <p class="lede">颜色按语义角色分组；数值是当前 <code>sys.*</code> 取值。对比度是相对 <code>bg.base</code> 的 WCAG 比值（alpha 色不参与文字对比度）。</p>
+    <input type="search" id="token-filter" placeholder="过滤 token 或色值，例如 focus / #8AB4F8">
+    <div id="token-groups"><h4 class="group-title">背景 / 表面</h4>
+      <div class="swatches"><button class="swatch" type="button" data-search="sys.color.bg.base #0B0F14" data-hex="#0B0F14" title="点击复制 #0B0F14">
+    <span class="swatch-chip" style="--c:#0B0F14"></span>
+    <span class="swatch-meta"><b>bg.base</b><code>#0B0F14</code><small>1.00:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.bg.raised #161D26" data-hex="#161D26" title="点击复制 #161D26">
+    <span class="swatch-chip" style="--c:#161D26"></span>
+    <span class="swatch-meta"><b>bg.raised</b><code>#161D26</code><small>1.13:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.bg.sunken #0B1116" data-hex="#0B1116" title="点击复制 #0B1116">
+    <span class="swatch-chip" style="--c:#0B1116"></span>
+    <span class="swatch-meta"><b>bg.sunken</b><code>#0B1116</code><small>1.01:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.bg.surface #111823" data-hex="#111823" title="点击复制 #111823">
+    <span class="swatch-chip" style="--c:#111823"></span>
+    <span class="swatch-meta"><b>bg.surface</b><code>#111823</code><small>1.08:1</small></span>
+  </button></div><h4 class="group-title">文字</h4>
+      <div class="swatches"><button class="swatch" type="button" data-search="sys.color.text.inverse #0B0F14" data-hex="#0B0F14" title="点击复制 #0B0F14">
+    <span class="swatch-chip" style="--c:#0B0F14"></span>
+    <span class="swatch-meta"><b>text.inverse</b><code>#0B0F14</code><small>1.00:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.text.muted #808D9F" data-hex="#808D9F" title="点击复制 #808D9F">
+    <span class="swatch-chip" style="--c:#808D9F"></span>
+    <span class="swatch-meta"><b>text.muted</b><code>#808D9F</code><small>5.70:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.text.primary #F3EDE1" data-hex="#F3EDE1" title="点击复制 #F3EDE1">
+    <span class="swatch-chip" style="--c:#F3EDE1"></span>
+    <span class="swatch-meta"><b>text.primary</b><code>#F3EDE1</code><small>16.48:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.text.secondary #9AA7B8" data-hex="#9AA7B8" title="点击复制 #9AA7B8">
+    <span class="swatch-chip" style="--c:#9AA7B8"></span>
+    <span class="swatch-meta"><b>text.secondary</b><code>#9AA7B8</code><small>7.86:1</small></span>
+  </button></div><h4 class="group-title">线</h4>
+      <div class="swatches"><button class="swatch" type="button" data-search="sys.color.line.strong #66727F" data-hex="#66727F" title="点击复制 #66727F">
+    <span class="swatch-chip" style="--c:#66727F"></span>
+    <span class="swatch-meta"><b>line.strong</b><code>#66727F</code><small>3.92:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.line.subtle #24303F" data-hex="#24303F" title="点击复制 #24303F">
+    <span class="swatch-chip" style="--c:#24303F"></span>
+    <span class="swatch-meta"><b>line.subtle</b><code>#24303F</code><small>1.44:1</small></span>
+  </button></div><h4 class="group-title">行动</h4>
+      <div class="swatches"><button class="swatch" type="button" data-search="sys.color.action.onPrimary #0B0F14" data-hex="#0B0F14" title="点击复制 #0B0F14">
+    <span class="swatch-chip" style="--c:#0B0F14"></span>
+    <span class="swatch-meta"><b>action.onPrimary</b><code>#0B0F14</code><small>1.00:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.action.primary #4FD1C5" data-hex="#4FD1C5" title="点击复制 #4FD1C5">
+    <span class="swatch-chip" style="--c:#4FD1C5"></span>
+    <span class="swatch-meta"><b>action.primary</b><code>#4FD1C5</code><small>10.30:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.action.primaryHover #57D8C8" data-hex="#57D8C8" title="点击复制 #57D8C8">
+    <span class="swatch-chip" style="--c:#57D8C8"></span>
+    <span class="swatch-meta"><b>action.primaryHover</b><code>#57D8C8</code><small>11.04:1</small></span>
+  </button></div><h4 class="group-title">状态</h4>
+      <div class="swatches"><button class="swatch" type="button" data-search="sys.color.feedback.danger #FF6B35" data-hex="#FF6B35" title="点击复制 #FF6B35">
+    <span class="swatch-chip" style="--c:#FF6B35"></span>
+    <span class="swatch-meta"><b>feedback.danger</b><code>#FF6B35</code><small>6.78:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.feedback.success #7BD389" data-hex="#7BD389" title="点击复制 #7BD389">
+    <span class="swatch-chip" style="--c:#7BD389"></span>
+    <span class="swatch-meta"><b>feedback.success</b><code>#7BD389</code><small>10.54:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.feedback.warning #FFC857" data-hex="#FFC857" title="点击复制 #FFC857">
+    <span class="swatch-chip" style="--c:#FFC857"></span>
+    <span class="swatch-meta"><b>feedback.warning</b><code>#FFC857</code><small>12.49:1</small></span>
+  </button></div><h4 class="group-title">焦点</h4>
+      <div class="swatches"><button class="swatch" type="button" data-search="sys.color.focus.ring #8AB4F8" data-hex="#8AB4F8" title="点击复制 #8AB4F8">
+    <span class="swatch-chip" style="--c:#8AB4F8"></span>
+    <span class="swatch-meta"><b>focus.ring</b><code>#8AB4F8</code><small>9.12:1</small></span>
+  </button></div><h4 class="group-title">材质</h4>
+      <div class="swatches"><button class="swatch" type="button" data-search="sys.color.material.highlight #F3EDE1" data-hex="#F3EDE1" title="点击复制 #F3EDE1">
+    <span class="swatch-chip" style="--c:#F3EDE1"></span>
+    <span class="swatch-meta"><b>material.highlight</b><code>#F3EDE1</code><small>16.48:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.material.mid #39485A" data-hex="#39485A" title="点击复制 #39485A">
+    <span class="swatch-chip" style="--c:#39485A"></span>
+    <span class="swatch-meta"><b>material.mid</b><code>#39485A</code><small>2.06:1</small></span>
+  </button><button class="swatch" type="button" data-search="sys.color.material.shadow #10161C" data-hex="#10161C" title="点击复制 #10161C">
+    <span class="swatch-chip" style="--c:#10161C"></span>
+    <span class="swatch-meta"><b>material.shadow</b><code>#10161C</code><small>1.06:1</small></span>
+  </button></div></div>
+
+    <h3>UI 字阶（5 级）</h3>
+    <div class="type-list"><div class="type-row">
+    <div class="type-meta"><code>ui.title-1</code><small>28px / 1.25 / 700</small></div>
+    <div class="type-sample" style="font-size:28px;line-height:1.25;font-weight:700">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>ui.title-2</code><small>20px / 1.3 / 600</small></div>
+    <div class="type-sample" style="font-size:20px;line-height:1.3;font-weight:600">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>ui.body</code><small>16px / 1.6 / 400</small></div>
+    <div class="type-sample" style="font-size:16px;line-height:1.6;font-weight:400">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>ui.caption</code><small>14px / 1.5 / 500</small></div>
+    <div class="type-sample" style="font-size:14px;line-height:1.5;font-weight:500">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>ui.number-lg</code><small>32px / 1 / 700</small></div>
+    <div class="type-sample" style="font-size:32px;line-height:1;font-weight:700">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div></div>
+    <h3>Editorial 字阶（7 级）</h3>
+    <div class="type-list"><div class="type-row">
+    <div class="type-meta"><code>editorial.display</code><small>48px / 1.1 / 700</small></div>
+    <div class="type-sample" style="font-size:48px;line-height:1.1;font-weight:700">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>editorial.h1</code><small>36px / 1.2 / 700</small></div>
+    <div class="type-sample" style="font-size:36px;line-height:1.2;font-weight:700">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>editorial.h2</code><small>28px / 1.25 / 700</small></div>
+    <div class="type-sample" style="font-size:28px;line-height:1.25;font-weight:700">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>editorial.h3</code><small>22px / 1.3 / 600</small></div>
+    <div class="type-sample" style="font-size:22px;line-height:1.3;font-weight:600">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>editorial.body</code><small>16px / 1.75 / 400</small></div>
+    <div class="type-sample" style="font-size:16px;line-height:1.75;font-weight:400">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>editorial.caption</code><small>14px / 1.5 / 500</small></div>
+    <div class="type-sample" style="font-size:14px;line-height:1.5;font-weight:500">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div><div class="type-row">
+    <div class="type-meta"><code>editorial.footnote</code><small>12px / 1.5 / 400</small></div>
+    <div class="type-sample" style="font-size:12px;line-height:1.5;font-weight:400">把过去想象的未来，归档、擦亮、再读一遍</div>
+  </div></div>
+
+    <h3>尺寸 / 间距 / 圆角 / 描边 / 动效</h3>
+    <div class="grid g2">
+      <div class="card">
+        <h3>间距（4 基数）</h3>
+        <div class="scale-row"><span class="lab">4px</span><span class="scale-bar" style="width:16px"></span></div><div class="scale-row"><span class="lab">8px</span><span class="scale-bar" style="width:32px"></span></div><div class="scale-row"><span class="lab">12px</span><span class="scale-bar" style="width:48px"></span></div><div class="scale-row"><span class="lab">16px</span><span class="scale-bar" style="width:64px"></span></div><div class="scale-row"><span class="lab">24px</span><span class="scale-bar" style="width:96px"></span></div><div class="scale-row"><span class="lab">32px</span><span class="scale-bar" style="width:128px"></span></div>
+      </div>
+      <div class="card">
+        <h3>控件 / 触控 / 图标</h3>
+        <div class="scale-row"><span class="lab">control.sm</span><span class="scale-bar" style="width:128px"></span><span>32px</span></div><div class="scale-row"><span class="lab">control.md</span><span class="scale-bar" style="width:160px"></span><span>40px</span></div><div class="scale-row"><span class="lab">control.lg</span><span class="scale-bar" style="width:192px"></span><span>48px</span></div>
+        <div class="scale-row"><span class="lab">touch.min</span><span class="scale-bar" style="width:176px"></span><span>44px</span></div>
+        <div class="scale-row"><span class="lab">icon.sm</span><span class="scale-bar" style="width:96px"></span><span>16px</span></div><div class="scale-row"><span class="lab">icon.md</span><span class="scale-bar" style="width:144px"></span><span>24px</span></div><div class="scale-row"><span class="lab">icon.lg</span><span class="scale-bar" style="width:192px"></span><span>32px</span></div>
+      </div>
+      <div class="card">
+        <h3>圆角 / 描边</h3>
+        <div class="grid g2">
+          <div class="scale-box" style="border-radius:4px;padding:14px;text-align:center">4px control</div>
+          <div class="scale-box" style="border-radius:8px;padding:14px;text-align:center">8px panel</div>
+        </div>
+        <p class="muted">交互描边 1.5px；焦点环 2px + offset 1px。</p>
+      </div>
+      <div class="card">
+        <h3>动效</h3>
+        <div class="scale-row"><span class="lab">fast</span><span class="scale-bar" style="width:120px"></span><span>120ms</span></div><div class="scale-row"><span class="lab">base</span><span class="scale-bar" style="width:220px"></span><span>220ms</span></div><div class="scale-row"><span class="lab">slow</span><span class="scale-bar" style="width:420px"></span><span>420ms</span></div>
+        <p class="muted">standard / emphasis 两条曲线；减少动态时归零。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cards">
+    <h2>风格卡</h2>
+    <p class="lede">风格卡不是主题：它换的是色板、材质、光源、装饰母题与图像处理；语法层（字阶、间距、焦点、信息位置）不变。</p>
+    <div class="grid g2"><article class="card style-card">
+    <div class="card-head"><h3>Future Archive · Console</h3><code>SC-FUTURE-ARCHIVE-CONSOLE-v1</code></div>
+    <p class="muted">23 个颜色 ｜ mode=console</p>
+    <div class="mini-swatches"><span class="mini" style="--c:#E0A94A" title="amber #E0A94A"></span><span class="mini" style="--c:#0B1017" title="bg #0B1017"></span><span class="mini" style="--c:#121A26" title="bgElev #121A26"></span><span class="mini" style="--c:#18222F" title="bgElev2 #18222F"></span><span class="mini" style="--c:#C9D3DD" title="chrome #C9D3DD"></span><span class="mini" style="--c:#E8D9A0" title="cream #E8D9A0"></span><span class="mini" style="--c:#8AB4F8" title="focus #8AB4F8"></span><span class="mini" style="--c:#24303F" title="line #24303F"></span><span class="mini" style="--c:#66727F" title="lineStrong #66727F"></span><span class="mini" style="--c:#1A1206" title="onWarning #1A1206"></span><span class="mini" style="--c:#121A26D9" title="overlayPanel #121A26D9"></span><span class="mini" style="--c:#04080DB8" title="overlaySearch #04080DB8"></span><span class="mini" style="--c:#03060AED" title="overlayStrong #03060AED"></span><span class="mini" style="--c:#C8703C" title="rust #C8703C"></span><span class="mini" style="--c:#00000024" title="scanline #00000024"></span><span class="mini" style="--c:#0000008C" title="shadow #0000008C"></span><span class="mini" style="--c:#06090D" title="surfaceDeep #06090D"></span><span class="mini" style="--c:#3FB8AB" title="teal #3FB8AB"></span><span class="mini" style="--c:#57D8C8" title="tealBright #57D8C8"></span><span class="mini" style="--c:#E8E4D9" title="text #E8E4D9"></span><span class="mini" style="--c:#9AA7B8" title="textDim #9AA7B8"></span><span class="mini" style="--c:#808D9F" title="textFaint #808D9F"></span><span class="mini" style="--c:#0000006B" title="vignette #0000006B"></span></div>
+    
+    <p class="links"><a href="tokens/products/future-archive.tokens.json">源 JSON</a> · <a href="../projects/website/app/assets/tokens.generated.css">投影</a></p>
+  </article><article class="card style-card">
+    <div class="card-head"><h3>Future Debris · Atomic Era</h3><code>SC-FUTURE-DEBRIS-ATOMIC-v1</code></div>
+    <p class="muted">18 个颜色 ｜ mode=console</p>
+    <div class="mini-swatches"><span class="mini" style="--c:#E4572E" title="accent #E4572E"></span><span class="mini" style="--c:#10161C" title="bgBase #10161C"></span><span class="mini" style="--c:#18212B" title="bgElev1 #18212B"></span><span class="mini" style="--c:#212E3A" title="bgElev2 #212E3A"></span><span class="mini" style="--c:#8AB4F8" title="focus #8AB4F8"></span><span class="mini" style="--c:#2A3742" title="line #2A3742"></span><span class="mini" style="--c:#6F7B89" title="lineStrong #6F7B89"></span><span class="mini" style="--c:#F3EDE1" title="materialHi #F3EDE1"></span><span class="mini" style="--c:#39485A" title="materialMid #39485A"></span><span class="mini" style="--c:#10161C" title="materialShadow #10161C"></span><span class="mini" style="--c:#7BD389" title="ok #7BD389"></span><span class="mini" style="--c:#4FD1C5" title="power #4FD1C5"></span><span class="mini" style="--c:#FF6B35" title="residue #FF6B35"></span><span class="mini" style="--c:#0B1116" title="surfaceSunken #0B1116"></span><span class="mini" style="--c:#F3EDE1" title="text #F3EDE1"></span><span class="mini" style="--c:#A9A395" title="textDim #A9A395"></span><span class="mini" style="--c:#9E9889" title="textFaint #9E9889"></span><span class="mini" style="--c:#FFC857" title="warn #FFC857"></span></div>
+    
+    <p class="links"><a href="tokens/products/future-debris.atomic.tokens.json">源 JSON</a> · <a href="../projects/mainline/future-debris/game/data/tokens.json">投影</a></p>
+  </article><article class="card style-card">
+    <div class="card-head"><h3>LiveFab · Portal</h3><code>SC-LIVEFAB-CONSOLE-v1</code></div>
+    <p class="muted">12 个颜色 ｜ mode=console</p>
+    <div class="mini-swatches"><span class="mini" style="--c:#D9A441" title="amber #D9A441"></span><span class="mini" style="--c:#0B0F14" title="bg #0B0F14"></span><span class="mini" style="--c:#111823" title="bgElev #111823"></span><span class="mini" style="--c:#161D26" title="bgElev2 #161D26"></span><span class="mini" style="--c:#8AB4F8" title="focus #8AB4F8"></span><span class="mini" style="--c:#24303F" title="line #24303F"></span><span class="mini" style="--c:#66727F" title="lineStrong #66727F"></span><span class="mini" style="--c:#4FB3A6" title="teal #4FB3A6"></span><span class="mini" style="--c:#57D8C8" title="tealBright #57D8C8"></span><span class="mini" style="--c:#DBE4EE" title="text #DBE4EE"></span><span class="mini" style="--c:#A9B6C6" title="textDim #A9B6C6"></span><span class="mini" style="--c:#808D9F" title="textFaint #808D9F"></span></div>
+    
+    <p class="links"><a href="tokens/products/livefab.tokens.json">源 JSON</a> · <a href="../projects/livefab/portal/src/assets/tokens.generated.css">投影</a></p>
+  </article><article class="card style-card">
+    <div class="card-head"><h3>Tomorrow's Channel · Tape</h3><code>SC-TOMORROWS-CHANNEL-TAPE-v1</code></div>
+    <p class="muted">9 个颜色 ｜ mode=tape</p>
+    <div class="mini-swatches"><span class="mini" style="--c:#221610" title="baseDark #221610"></span><span class="mini" style="--c:#FFB04A" title="dialAmber #FFB04A"></span><span class="mini" style="--c:#E39A4C" title="emphasis #E39A4C"></span><span class="mini" style="--c:#C7B491" title="housingBeige #C7B491"></span><span class="mini" style="--c:#2C2113" title="housingDark #2C2113"></span><span class="mini" style="--c:#F5E9CE" title="litWarm #F5E9CE"></span><span class="mini" style="--c:#C7B394" title="midBeige #C7B394"></span><span class="mini" style="--c:#FFB000" title="phosphorAmber #FFB000"></span><span class="mini" style="--c:#7FC98A" title="phosphorGreen #7FC98A"></span></div>
+    <div class="lighting"><span><b>deviceWarmK</b> 2400</span><span><b>lampWarmK</b> 2800</span><span><b>glowRatio</b> 0.6 : 0.4</span><span><b>decorEnabled</b> true</span><span><b>scanlineOpacity</b> 0.08</span><span><b>decorFontName</b> </span></div>
+    <p class="links"><a href="tokens/products/tomorrows-channel.tape.tokens.json">源 JSON</a> · <a href="../projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres">投影</a></p>
+  </article></div>
+    <h3>登记表</h3>
+    <table>
+      <thead><tr><th>ID</th><th>产品</th><th>颜色</th><th>源</th><th>投影</th></tr></thead>
+      <tbody><tr><td><code>SC-FUTURE-ARCHIVE-CONSOLE-v1</code></td><td>Future Archive · Console</td><td>23</td><td><a href="tokens/products/future-archive.tokens.json">JSON</a></td><td><a href="../projects/website/app/assets/tokens.generated.css">打开</a></td></tr><tr><td><code>SC-FUTURE-DEBRIS-ATOMIC-v1</code></td><td>Future Debris · Atomic Era</td><td>18</td><td><a href="tokens/products/future-debris.atomic.tokens.json">JSON</a></td><td><a href="../projects/mainline/future-debris/game/data/tokens.json">打开</a></td></tr><tr><td><code>SC-LIVEFAB-CONSOLE-v1</code></td><td>LiveFab · Portal</td><td>12</td><td><a href="tokens/products/livefab.tokens.json">JSON</a></td><td><a href="../projects/livefab/portal/src/assets/tokens.generated.css">打开</a></td></tr><tr><td><code>SC-TOMORROWS-CHANNEL-TAPE-v1</code></td><td>Tomorrow's Channel · Tape</td><td>9</td><td><a href="tokens/products/tomorrows-channel.tape.tokens.json">JSON</a></td><td><a href="../projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres">打开</a></td></tr></tbody>
+    </table>
+    <p class="lede">完整可变/不变边界、对账方式见 <a href="docs/07_风格卡登记.md">07 风格卡登记</a>。</p>
+  </section>
+
+  <section class="panel" id="panel-components">
+    <h2>组件</h2>
+    <p class="lede">契约先于实现：只规定解剖、状态、键盘/无障碍、Do/Don't、跨端与 token。当前 3 个组件都已在真实产品接入；Form Field 只有网站搜索框一个消费者。</p>
+    <table>
+      <thead><tr><th>组件</th><th>Token 引用</th><th>网站</th><th>LiveFab</th><th>总引用</th><th>状态</th></tr></thead>
+      <tbody><tr><td><a href="components/button.md">Button · 按钮契约</a></td>
+      <td>31</td><td>8</td><td>4</td>
+      <td>12</td><td><span class="chip ok">已接入</span></td></tr><tr><td><a href="components/form-field.md">Form Field · 表单字段契约</a></td>
+      <td>21</td><td>1</td><td>—</td>
+      <td>1</td><td><span class="chip ok">已接入</span></td></tr><tr><td><a href="components/panel.md">Panel · 面板 / 卡片契约</a></td>
+      <td>21</td><td>21</td><td>1</td>
+      <td>22</td><td><span class="chip ok">已接入</span></td></tr></tbody>
+    </table>
+    <div class="grid g3">
+      <a class="card doc-card" href="components/button.md"><code>button.md</code><h3>Button · 按钮契约</h3><p>31 个 token 引用</p></a><a class="card doc-card" href="components/form-field.md"><code>form-field.md</code><h3>Form Field · 表单字段契约</h3><p>21 个 token 引用</p></a><a class="card doc-card" href="components/panel.md"><code>panel.md</code><h3>Panel · 面板 / 卡片契约</h3><p>21 个 token 引用</p></a>
+    </div>
+    <h3>组件层预览</h3>
+    <a class="shot" href="kits/web/preview.html"><img src="kits/web/preview.png" alt="LRDS Web Components 预览"><p>button / panel / field 的状态总览；真实渲染，不是手绘。点击看全图。</p></a>
+    <div class="callout"><b>皮肤收口</b>：卡片 8px 圆角、技术/描边按钮变体已进入组件层；产品侧重复的 <code>.deco-btn</code> / <code>.card</code> / <code>.cta</code> / <code>ul.svc li</code> 基础皮肤已删除。见 <a href="docs/10_皮肤收口_v0.2.md">10 皮肤收口</a>。</div>
+  </section>
+
+  <section class="panel" id="panel-products">
+    <h2>产品</h2>
+    <p class="lede">同一套语法，不同介质。截图来自真实构建 + Headless Chrome，Tab 走查记录在 <a href="docs/09_产品走查_v0.2.md">09 产品走查</a>。</p>
+    <div class="shots">
+      <a class="shot" href="docs/shots/website-home.png"><img src="docs/shots/website-home.png" alt="未来档案首页"><p><b>未来档案</b> · Web · 0.29.0 ｜ 4 页 / 53 步 Tab / 0 缺失焦点 · 点击看全图</p></a>
+      <a class="shot" href="docs/shots/livefab-home.png"><img src="docs/shots/livefab-home.png" alt="LiveFab 首页"><p><b>LiveFab</b> · Web · 0.4.0 ｜ 服务卡片与 CTA 已使用组件层 · 点击看全图</p></a>
+      <a class="shot" href="docs/shots/website-search-search.png"><img src="docs/shots/website-search-search.png" alt="网站搜索弹窗"><p><b>搜索弹窗</b> · Meta+K 打开；输入框焦点使用独立蓝 · 点击看全图</p></a>
+      <a class="shot" href="../projects/mainline/future-debris/docs/shots/theme_preview.png"><img src="../projects/mainline/future-debris/docs/shots/theme_preview.png" alt="未来残片主题预览"><p><b>未来残片</b> · Godot · 0.22.0 ｜ token → Theme，15 项断言 · 点击看全图</p></a>
+    </div>
+    <table>
+      <thead><tr><th>产品</th><th>介质</th><th>版本</th><th>证据</th></tr></thead>
+      <tbody>
+        <tr><td>未来档案</td><td>Nuxt / Web</td><td>0.29.0</td><td><a href="../projects/website/README.md">README</a> · <a href="docs/09_产品走查_v0.2.md">走查</a></td></tr>
+        <tr><td>LiveFab</td><td>Astro / Web</td><td>0.4.0</td><td><a href="../projects/livefab/README.md">README</a> · <a href="docs/09_产品走查_v0.2.md">走查</a></td></tr>
+        <tr><td>未来残片</td><td>Godot</td><td>0.22.0</td><td><a href="../projects/mainline/future-debris/README.md">README</a> · <a href="../projects/mainline/future-debris/docs/shots/README.md">截图</a></td></tr>
+        <tr><td>明日频道</td><td>Godot</td><td>0.2.5</td><td><a href="docs/07_风格卡登记.md">风格卡</a> · <a href="../projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres">.tres</a></td></tr>
+        <tr><td>App kit</td><td>iOS / Android</td><td>未发布</td><td><a href="kits/app/README.md">规范</a> · <a href="tokens/dist/app/tokens.json">tokens.json</a>（无真实消费者）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel" id="panel-checks">
+    <h2>验收</h2>
+    <p class="lede">机器守的部分：四道通用闸门 + 风格卡 + 组件契约 + 使用审计 + 生成物一致性。运行 <code>bash design/tools/check.sh</code> 可全部复跑。</p>
+    <div class="grid g2">
+      <div class="card">
+        <h3>闸门</h3>
+        <div class="gate"><span class="dot"></span><span class="name">Token 结构 / 类型 / 别名 / 字阶</span><code>check_tokens.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">对比度 / 层级 / focus 分离</span><code>check_contrast.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">裸色值 / 裸尺寸</span><code>check_no_raw_values.ts</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">生成物无 diff</span><code>build_tokens.ts --check</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">明日频道 .tres 风格卡对账</span><code>check_tomorrows_channel_skin.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">组件契约 + 组件 CSS</span><code>check_component_contracts.ts</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">组件真实消费者审计</span><code>check_component_usage.ts</code><span class="st">4/4</span></div><div class="gate"><span class="dot"></span><span class="name">Web 组件层产物一致</span><code>build_web_kit.ts --check</code><span class="st">3/3</span></div><div class="gate"><span class="dot"></span><span class="name">HUB 与源一致（含自检）</span><code>build_hub.ts --check</code><span class="st">4/4</span></div>
+      </div>
+      <div class="card">
+        <h3>状态</h3>
+        <p><span class="chip ok">M1/M2 block</span> <span class="chip ok">链接 0 失效</span> <span class="chip ok">对比度 AA</span> <span class="chip ok">Tab 0 缺失焦点</span></p>
+        <p><span class="chip warn">Form Field 1 个消费者</span> <span class="chip warn">App kit 无消费者</span> <span class="chip">打印/实体后置</span></p>
+        <h3>例外</h3>
+        <p>Active <b>0</b> ｜ Resolved <b>2</b>。见 <a href="docs/exceptions.md">例外登记</a>。</p>
+        <h3>已知债务</h3>
+        <p>首个 App 消费者未出现；Form Field 等待第二个真实表单；打印/实体按 D6 后置。</p>
+      </div>
+    </div>
+    <div class="callout"><b>运行时提醒</b>：网站构建产物在本机 Bun 1.4.0 下曾触发 NAPI 崩溃，走查改用 Node 完成；部署前需按目标运行时复核。详见 <a href="docs/09_产品走查_v0.2.md">09 产品走查 §一</a>。</div>
+  </section>
+
+  <section class="panel" id="panel-decisions">
+    <h2>决策与文档</h2>
+    <h3>决策总表</h3>
+    <table>
+      <thead><tr><th>#</th><th>决策</th><th>选择</th><th>状态</th></tr></thead>
+      <tbody><tr><td><code>D1</code></td><td>定位</td><td>治理系统，而非风格指南</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D2</code></td><td>品牌架构</td><td>母品牌背书 + 产品子品牌</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D3</code></td><td>系统模型</td><td>五层 + ref / sys / product 三层 token</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D4</code></td><td>单一事实来源</td><td>JSON 为源 + 生成各端 + CI 对账</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D5</code></td><td>视觉基调</td><td>双模 Archive + Console</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D6</code></td><td>介质优先级</td><td>Web + Godot 先行；打印/实体后置</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D7</code></td><td>治理权限</td><td>设计主控可否决 token 违规</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D8</code></td><td>版本策略</td><td>SemVer + 稳定性分级 + 弃用窗口</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D9</code></td><td>资产与法务</td><td>开源字体 + 自有图标 + 溯源</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D10</code></td><td>首版范围</td><td>地基 + 两个试点；外观基本不变</td><td><span class="chip ok">已裁决</span></td></tr></tbody>
+    </table>
+    <h3>路线</h3>
+    <div class="grid g3">
+      <div class="card"><h3>P0 决策与收编</h3><p><span class="chip ok">已完成</span></p></div><div class="card"><h3>P1 地基</h3><p><span class="chip ok">已完成</span></p></div><div class="card"><h3>P2 双试点</h3><p><span class="chip ok">已完成</span></p></div><div class="card"><h3>P3 扩展（LiveFab / 明日频道 / 组件 / App kit）</h3><p><span class="chip warn">进行中</span></p></div><div class="card"><h3>P4 印刷</h3><p><span class="chip ">未开始</span></p></div><div class="card"><h3>P5 实体</h3><p><span class="chip ">未开始</span></p></div>
+    </div>
+    <h3>文档索引</h3>
+    <div class="grid g3"><a class="card doc-card" href="docs/00_决策总表.md">
+    <code>00_决策总表</code><h3>00 · 设计系统决策总表</h3></a><a class="card doc-card" href="docs/01_现状盘点.md">
+    <code>01_现状盘点</code><h3>01 · 现状盘点：四套视觉定义，已经分叉</h3></a><a class="card doc-card" href="docs/02_系统架构.md">
+    <code>02_系统架构</code><h3>02 · 系统架构：一套语法，多种介质</h3></a><a class="card doc-card" href="docs/03_治理与运营.md">
+    <code>03_治理与运营</code><h3>03 · 治理与运营：让设计成为统筹层</h3></a><a class="card doc-card" href="docs/04_落地路线.md">
+    <code>04_落地路线</code><h3>04 · 落地路线：先两个试点，再谈全介质</h3></a><a class="card doc-card" href="docs/05_实现记录_v0.1.md">
+    <code>05_实现记录_v0.1</code><h3>05 · v0.1 实现记录：地基与两个试点</h3></a><a class="card doc-card" href="docs/06_实现记录_v0.2.md">
+    <code>06_实现记录_v0.2</code><h3>06 · v0.2 实现记录：网站全量 token 化、LiveFab 接入与治理收口</h3></a><a class="card doc-card" href="docs/07_风格卡登记.md">
+    <code>07_风格卡登记</code><h3>07 · 风格卡登记（Style Card Registry）</h3></a><a class="card doc-card" href="docs/08_组件落地_v0.2.md">
+    <code>08_组件落地_v0.2</code><h3>08 · 组件落地记录：共享 Web 组件层与渐进接入</h3></a><a class="card doc-card" href="docs/09_产品走查_v0.2.md">
+    <code>09_产品走查_v0.2</code><h3>09 · 产品走查：真实渲染与 Tab 焦点审计</h3></a><a class="card doc-card" href="docs/10_皮肤收口_v0.2.md">
+    <code>10_皮肤收口_v0.2</code><h3>10 · 皮肤收口：8px 面板圆角与按钮变体</h3></a><a class="card doc-card" href="docs/11_App_kit_v0.2.md">
+    <code>11_App_kit_v0.2</code><h3>11 · App kit 起步：平台无关 token 与移动端规范</h3></a><a class="card doc-card" href="docs/exceptions.md">
+    <code>exceptions</code><h3>设计系统例外登记</h3></a></div>
+    <h3>变更日志与发布</h3>
+    <p class="lede">设计系统 <a href="CHANGELOG.md">CHANGELOG</a> ｜ 工作区 <a href="../CHANGELOG.md">CHANGELOG</a>。v0.2 发布 tag：<code>design-v0.2.0</code>、<code>workspace-v0.5.0</code>、<code>website-v0.29.0</code>、<code>livefab-v0.4.0</code>、<code>future-debris-v0.22.0</code>、<code>tomorrows-channel-v0.2.5</code>。App kit 在 <code>[未发布]</code>。</p>
+  </section>
+</main>
+<div class="toast" id="toast">已复制</div>
+<script>
+document.body.classList.add('js');
+const tabs = [...document.querySelectorAll('nav.tabs button')];
+const panels = [...document.querySelectorAll('.panel')];
+function select(id, push){
+  const pid = 'panel-' + id;
+  if (!panels.some(p => p.id === pid)) id = panels[0].id.replace('panel-', '');
+  const target = 'panel-' + id;
+  panels.forEach(p => p.classList.toggle('active', p.id === target));
+  tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === id)));
+  if (push && location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'instant'});
+}
+tabs.forEach(b => b.addEventListener('click', () => select(b.dataset.tab, true)));
+let prev = null;
+addEventListener('beforeprint', () => {
+  prev = panels.filter(p => p.classList.contains('active')).map(p => p.id);
+  panels.forEach(p => p.classList.add('active'));
+});
+addEventListener('afterprint', () => {
+  if (prev) panels.forEach(p => p.classList.toggle('active', prev.includes(p.id)));
+});
+addEventListener('hashchange', () => select(location.hash.slice(1), false));
+select(location.hash.slice(1) || 'overview', false);
+
+const filter = document.getElementById('token-filter');
+if (filter) filter.addEventListener('input', () => {
+  const q = filter.value.trim().toLowerCase();
+  document.querySelectorAll('#token-groups .swatch').forEach(el => {
+    el.style.display = !q || el.dataset.search.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+
+const toast = document.getElementById('toast');
+document.querySelectorAll('.swatch[data-hex]').forEach(el => {
+  el.addEventListener('click', async () => {
+    const hex = el.dataset.hex;
+    try { await navigator.clipboard.writeText(hex); }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = hex; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    toast.textContent = '已复制 ' + hex;
+    toast.classList.add('on');
+    clearTimeout(window.__toast);
+    window.__toast = setTimeout(() => toast.classList.remove('on'), 1200);
+  });
+});
+</script>
+</body>
+</html>
