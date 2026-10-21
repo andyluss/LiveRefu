@@ -13,7 +13,9 @@
 | **产品 / 策划 / 非技术维护者** | [`doc/`](doc/README.md)（**题材知识库索引**，从这进去）、[`projects/mainline/README.md`](projects/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`.godot-home/` |
 | **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`projects/mainline/future-debris/`](projects/mainline/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
 | **只想快速看设计系统** | [`design/HUB.html`](design/HUB.html)（Token / 风格卡 / 组件 / 产品 / 验收一页看完） | [`design/README.md`](design/README.md) |
-| **开发 / 维护者 / 与 AI 协作** | [`rules/`](rules/README.md)（**规则的权威**）、[`tech/`](tech/README.md)（技术详解）、[`tools/`](tools/)（检查器）、[`.github/workflows/`](.github/workflows/verify.yml)（CI） | —— |
+| **开发 / 维护者 / 与 AI 协作** | [`rules/`](rules/README.md)（**规则的权威**）、[`AGENTS.md`](AGENTS.md)（AI 提交回报硬规范）、[`tech/`](tech/README.md)（技术详解）、[`tools/`](tools/)（检查器）、[`.github/workflows/`](.github/workflows/verify.yml)（CI） | —— |
+
+> **AI 代理**：开始前先读 [`AGENTS.md`](AGENTS.md)——每次有提交，回答最开头必须列提交表（SHA / 消息 / 时间 / 分支 / 推送）。
 
 > **为什么这样分**：根目录**不追求"条目最少"**，而是**"每类人都能一眼找到自己的入口、并知道哪些与自己无关"**。
 > 把技术目录藏起来反而会让人找不到规则；所以做法是**导览**而不是隐藏。

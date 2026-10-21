@@ -15,6 +15,7 @@
 
 ### 新增
 
+- **新增根 [`AGENTS.md`](AGENTS.md)：本工作区 AI 协作硬规范**——只要本次回答有提交，回答最开头必须列提交表（SHA / 提交信息 / author time / 分支 / 推送 / 备注），即使只有一条；同时约定提交、变更日志、tag、推送与失败报告。
 - 根 [`README.md`](README.md) 增加 `design/` 入口与 [`design/HUB.html`](design/HUB.html) 链接（读者分流 + 目录表 + 工作区说明）。
 - **新增 [`design/HUB.html`](design/HUB.html)：设计系统一页式可视化总览**：由 [`design/tools/build_hub.ts`](design/tools/build_hub.ts) 从 token / 组件 / 文档 / 产品源码生成，含总览、Token 色板与字阶、风格卡、组件采用矩阵、产品截图、验收闸门、决策与文档索引；生成器自检 4/4，`build_hub --check` 已接入 `check.sh`，HUB 不会被静默写旧。
 - **设计系统 v0.3 · App kit 起步**：新增平台无关 [`design/tokens/dist/app/tokens.json`](design/tokens/dist/app/tokens.json)（20 色 / 5 级字阶 / 触控与尺寸 / 无障碍阈值）与 [iOS/Android 规范](design/kits/app/README.md)；生成物 7 → 8。**尚无真实 App 消费者**，不声称已接入/已验收。记录见 [`design/docs/11_App_kit_v0.2.md`](design/docs/11_App_kit_v0.2.md)。
@@ -22,6 +23,7 @@
 ### 变更
 
 - `design/tools/build_tokens.ts` 增加 App JSON 导出；`build_tokens --check` 现在校验 8 个生成物。
+- 根 [`README.md`](README.md) 的“开发 / 维护者 / 与 AI 协作”入口加入 [`AGENTS.md`](AGENTS.md)，并增加 AI 代理先读提示。
 - **补记设计系统 v0.1.0**：把原先并入 0.2.0 的 v0.1 条目拆成独立 `[0.1.0]` 版本段，并补打 `design-v0.1.0` tag（指向 v0.1 提交 `e91985d`）。
 
 ## [0.5.0] - 2026-10-21 13:50 · 设计系统 v0.2 与组件落地
