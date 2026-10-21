@@ -15,8 +15,8 @@
 
 ### 新增
 
-- **新增 [`design/TODO.md`](design/TODO.md)：设计系统专属待办**——App kit / 组件 / Archive 亮色 / 打印实体 / HUB / 无障碍 / 发布的 13 项清单，含等待拍板与最近完成；根 TODO 保留跨项目摘要。
-- **新增根 [`TODO.md`](TODO.md)：工作区唯一顶级待办入口**——P0/P1/P2、等待用户拍板、最近完成、维护规则；当前列了网站部署运行时、首个 App 消费者、Archive 亮色、Form Field 第二消费者、v0.3 发布、打印/实体、组件扩展、视觉回归与 HUB 迭代。
+- **新增 [`design/TODO.md`](design/TODO.md)：设计系统专属待办**——App kit / 组件 / Archive 亮色 / 打印实体 / HUB / 无障碍 / 发布的 13 项清单，含等待拍板与最近完成；根 TODO 只保留非设计跨项目事项。
+- **新增根 [`TODO.md`](TODO.md)：工作区跨项目顶级待办入口**——P0/P1/P2、维护规则；当前仅列 T-001 网站部署运行时；设计系统条目见 `design/TODO.md`。
 - **新增根 [`AGENTS.md`](AGENTS.md)：本工作区 AI 协作硬规范**——只要本次回答有提交，回答最开头必须列提交表（SHA / 提交信息 / author time / 分支 / 推送 / 备注），即使只有一条；同时约定提交、变更日志、tag、推送与失败报告。
 - 根 [`README.md`](README.md) 增加 `design/` 入口与 [`design/HUB.html`](design/HUB.html) 链接（读者分流 + 目录表 + 工作区说明）。
 - **新增 [`design/HUB.html`](design/HUB.html)：设计系统一页式可视化总览**：由 [`design/tools/build_hub.ts`](design/tools/build_hub.ts) 从 token / 组件 / 文档 / 产品源码生成，含总览、Token 色板与字阶、风格卡、组件采用矩阵、产品截图、验收闸门、决策与文档索引；生成器自检 4/4，`build_hub --check` 已接入 `check.sh`，HUB 不会被静默写旧。
@@ -24,6 +24,7 @@
 
 ### 变更
 
+- **收敛待办**：根 TODO 中设计系统相关条目（T-002–T-010、设计拍板、设计完成项）全部迁入 [`design/TODO.md`](design/TODO.md)；根表只保留 T-001 网站运行时与设计入口，不再复制细节。
 - `design/tools/build_tokens.ts` 增加 App JSON 导出；`build_tokens --check` 现在校验 8 个生成物。
 - 根 [`README.md`](README.md) 的“开发 / 维护者 / 与 AI 协作”入口加入 [`AGENTS.md`](AGENTS.md)，并增加 AI 代理先读提示。
 - [`design/README.md`](design/README.md) 与 [`design/HUB.html`](design/HUB.html) 增加 `design/TODO.md` 入口；根 [`TODO.md`](TODO.md) 注明设计系统明细位置。

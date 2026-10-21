@@ -10,7 +10,7 @@
 
 ### 新增
 
-- **新增 [`TODO.md`](TODO.md)：设计系统专属待办**——App kit / 组件 / Archive 亮色 / 打印实体 / HUB / 无障碍 / 发布的 13 项清单，含等待拍板与最近完成；根 [`TODO.md`](../TODO.md) 保留跨项目摘要。
+- **新增 [`TODO.md`](TODO.md)：设计系统专属待办**——App kit / 组件 / Archive 亮色 / 打印实体 / HUB / 无障碍 / 发布的 13 项清单，含等待拍板与最近完成；根 [`TODO.md`](../TODO.md) 只保留非设计跨项目事项。
 - **新增 [`HUB.html`](HUB.html)：设计系统一页式可视化总览**，由 [`tools/build_hub.ts`](tools/build_hub.ts) 从 token / 组件 / 文档 / 产品源码生成；含总览、Token 色板与字阶、风格卡、组件采用矩阵、产品截图、验收闸门、决策与文档索引。生成器自检 4/4，`build_hub --check` 已接入 `check.sh`。
 - **App kit 起步（v0.3）**：新增平台无关 [`tokens/dist/app/tokens.json`](tokens/dist/app/tokens.json)（20 个语义色、UI 5 级字阶、控件/触控/图标尺寸、间距/圆角/描边/动效、无障碍阈值）；生成物 7 → **8 个**。
 - 新增 [`kits/app/README.md`](kits/app/README.md)（iOS/Android 消费方式 + 12 项验收清单）与 [`docs/11_App_kit_v0.2.md`](docs/11_App_kit_v0.2.md)。
@@ -18,6 +18,7 @@
 
 ### 变更
 
+- **待办收敛**：`design/TODO.md` 成为设计系统唯一明细与状态来源；根 TODO 设计条目迁入，移除“根 TODO”映射列；补充产品发布完成项。
 - [`build_tokens.ts`](tools/build_tokens.ts) 增加 `buildAppJson`；`build_tokens --check` 现在检查 8 个产物。
 - **HUB 支持三态主题**：右上角切换“系统 / 亮色 / 暗色”，记忆到 `localStorage`；亮色是 HUB 查看器主题（暖纸色），不是新的产品风格卡或设计系统亮色模式。
 - **补记 `[0.1.0]` 版本段并补打 `design-v0.1.0`**：原 v0.1 条目曾并入 0.2.0，现按版本拆分；0.1.0 时间取 v0.1 提交 `e91985d` 的提交时间。
