@@ -744,6 +744,7 @@ function generate(): string {
     </div>
     <h3>文档索引</h3>
     ${docCards(docRows)}
+    <p class="lede">跨项目最高优先级待办见 <a href="../TODO.md">TODO.md</a>；本页只汇总设计系统状态。</p>
     <h3>变更日志与发布</h3>
     <p class="lede">设计系统 <a href="CHANGELOG.md">CHANGELOG</a> ｜ 工作区 <a href="../CHANGELOG.md">CHANGELOG</a>。设计系统 tag：<code>design-v0.0.1</code> / <code>design-v0.1.0</code> / <code>design-v0.2.0</code>；工作区与产品 tag：<code>workspace-v0.5.0</code>、<code>website-v0.29.0</code>、<code>livefab-v0.4.0</code>、<code>future-debris-v0.22.0</code>、<code>tomorrows-channel-v0.2.5</code>。App kit 在 <code>[未发布]</code>。</p>
   </section>

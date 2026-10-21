@@ -15,6 +15,7 @@
 
 ### 新增
 
+- **新增根 [`TODO.md`](TODO.md)：工作区唯一顶级待办入口**——P0/P1/P2、等待用户拍板、最近完成、维护规则；当前列了网站部署运行时、首个 App 消费者、Archive 亮色、Form Field 第二消费者、v0.3 发布、打印/实体、组件扩展、视觉回归与 HUB 迭代。
 - **新增根 [`AGENTS.md`](AGENTS.md)：本工作区 AI 协作硬规范**——只要本次回答有提交，回答最开头必须列提交表（SHA / 提交信息 / author time / 分支 / 推送 / 备注），即使只有一条；同时约定提交、变更日志、tag、推送与失败报告。
 - 根 [`README.md`](README.md) 增加 `design/` 入口与 [`design/HUB.html`](design/HUB.html) 链接（读者分流 + 目录表 + 工作区说明）。
 - **新增 [`design/HUB.html`](design/HUB.html)：设计系统一页式可视化总览**：由 [`design/tools/build_hub.ts`](design/tools/build_hub.ts) 从 token / 组件 / 文档 / 产品源码生成，含总览、Token 色板与字阶、风格卡、组件采用矩阵、产品截图、验收闸门、决策与文档索引；生成器自检 4/4，`build_hub --check` 已接入 `check.sh`，HUB 不会被静默写旧。
@@ -24,6 +25,7 @@
 
 - `design/tools/build_tokens.ts` 增加 App JSON 导出；`build_tokens --check` 现在校验 8 个生成物。
 - 根 [`README.md`](README.md) 的“开发 / 维护者 / 与 AI 协作”入口加入 [`AGENTS.md`](AGENTS.md)，并增加 AI 代理先读提示。
+- 根 [`README.md`](README.md) 增加 [`TODO.md`](TODO.md) 的读者入口与目录表项；[`AGENTS.md`](AGENTS.md) 增加“开始任务前先看 TODO、完成/新增/阻塞时同步更新”。
 - [`AGENTS.md`](AGENTS.md) 增加“**Git 推送一次失败即放弃**”：不连续重试，提交表标“推送失败”并给出重试命令。
 - [`design/HUB.html`](design/HUB.html) 支持“系统 / 亮色 / 暗色”三态主题切换（记忆到 `localStorage`）；亮色为 HUB 查看器主题，不是新的产品风格卡。
 - **补记设计系统 v0.1.0**：把原先并入 0.2.0 的 v0.1 条目拆成独立 `[0.1.0]` 版本段，并补打 `design-v0.1.0` tag（指向 v0.1 提交 `e91985d`）。
