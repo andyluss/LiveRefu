@@ -13,6 +13,7 @@
 | [`check_contrast.ts`](check_contrast.ts) | 68 组对比度 + 7 组层级 + 3 组 focus 分离 | 7/7 |
 | [`check_no_raw_values.ts`](check_no_raw_values.ts) | 网站 app 全量裸色值；`--all` 报告游戏未迁移面（注释已剥离） | 8/8 |
 | [`check_tomorrows_channel_skin.ts`](check_tomorrows_channel_skin.ts) | 《明日频道》磁带 `.tres` ↔ `product.tomorrows-channel.*` 对账 | 7/7 |
+| [`check_component_contracts.ts`](check_component_contracts.ts) | 组件契约五节齐全、token 存在、无裸值 | 6/6 |
 | [`check.sh`](check.sh) | 一键跑全部自检 + 闸门 | — |
 
 ## 二、常用命令

@@ -67,7 +67,7 @@
   --lr-type-ui-title-2-size: 20px;
   --lr-type-ui-title-2-weight: 600;
 
-  /* sys.space / radius / border / motion / shadow / icon / grid */
+  /* sys.size / space / radius / border / motion / shadow / icon / grid */
   --lr-border-control: 1.5px;
   --lr-border-focus: 2px;
   --lr-border-focus-offset: 1px;
@@ -85,6 +85,13 @@
   --lr-radius-control: 4px;
   --lr-radius-panel: 8px;
   --lr-shadow-elevated: 0 2px 8px rgba(0,0,0,.35);
+  --lr-size-control-lg: 48px;
+  --lr-size-control-md: 40px;
+  --lr-size-control-sm: 32px;
+  --lr-size-icon-lg: 32px;
+  --lr-size-icon-md: 24px;
+  --lr-size-icon-sm: 16px;
+  --lr-size-touch-min: 44px;
   --lr-space-12: 12px;
   --lr-space-16: 16px;
   --lr-space-24: 24px;

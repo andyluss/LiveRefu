@@ -136,6 +136,7 @@
 
 | 类别 | 值 | 单位 |
 | --- | --- | --- |
+| size | control 32/40/48 · touch min 44 · icon 16/24/32 | px |
 | space | 4 / 8 / 12 / 16 / 24 / 32 | px |
 | radius | control 4 / panel 8 | px |
 | border | control 1.5 / focus 2 / offset 1 | px |

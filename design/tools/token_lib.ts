@@ -599,9 +599,9 @@ export function buildWebCss(tokens: TokenMap, productName: string): string {
     lines.push(`  ${cssVar(path)}: ${cssValue(token)};`)
   }
 
-  section('sys.space / radius / border / motion / shadow / icon / grid')
+  section('sys.size / space / radius / border / motion / shadow / icon / grid')
   for (const [path, token] of [...tokens].sort(([a], [b]) => a.localeCompare(b))) {
-    if (!/^sys\.(space|radius|border|motion|shadow|icon|grid)\./.test(path)) continue
+    if (!/^sys\.(size|space|radius|border|motion|shadow|icon|grid)\./.test(path)) continue
     if (!shouldEmitCss(token)) continue
     lines.push(`  ${cssVar(path)}: ${cssValue(token)};`)
   }
@@ -773,6 +773,7 @@ export function buildDocs(tokens: TokenMap): string {
   lines.push('## 尺度')
   lines.push('')
   const scaleRows = [
+    ['size', 'control 32/40/48 · touch min 44 · icon 16/24/32', 'px'],
     ['space', '4 / 8 / 12 / 16 / 24 / 32', 'px'],
     ['radius', 'control 4 / panel 8', 'px'],
     ['border', 'control 1.5 / focus 2 / offset 1', 'px'],

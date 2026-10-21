@@ -3,7 +3,7 @@
   "concern": "design",
   "root": ".",
   "root_docs": ["README.md", "CHANGELOG.md"],
-  "type_vocab": ["docs", "tokens", "kits", "tools"],
+  "type_vocab": ["docs", "tokens", "kits", "components", "tools"],
   "code_types": ["tools"],
   "empty_ok_types": [],
   "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },

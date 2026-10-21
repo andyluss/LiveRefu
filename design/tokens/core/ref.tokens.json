@@ -63,6 +63,15 @@
         "300": { "$value": "#C9D3DD", "$type": "color" }
       }
     },
+    "size": {
+      "16": { "$value": "16px", "$type": "dimension" },
+      "20": { "$value": "20px", "$type": "dimension" },
+      "24": { "$value": "24px", "$type": "dimension" },
+      "32": { "$value": "32px", "$type": "dimension" },
+      "40": { "$value": "40px", "$type": "dimension" },
+      "44": { "$value": "44px", "$type": "dimension" },
+      "48": { "$value": "48px", "$type": "dimension" }
+    },
     "space": {
       "4": { "$value": "4px", "$type": "dimension" },
       "8": { "$value": "8px", "$type": "dimension" },

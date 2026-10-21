@@ -120,6 +120,21 @@
         }
       }
     },
+    "size": {
+      "control": {
+        "sm": { "$value": "{ref.size.32}", "$type": "dimension" },
+        "md": { "$value": "{ref.size.40}", "$type": "dimension" },
+        "lg": { "$value": "{ref.size.48}", "$type": "dimension" }
+      },
+      "touch": {
+        "min": { "$value": "{ref.size.44}", "$type": "dimension" }
+      },
+      "icon": {
+        "sm": { "$value": "{ref.size.16}", "$type": "dimension" },
+        "md": { "$value": "{ref.size.24}", "$type": "dimension" },
+        "lg": { "$value": "{ref.size.32}", "$type": "dimension" }
+      }
+    },
     "space": {
       "4": { "$value": "{ref.space.4}", "$type": "dimension" },
       "8": { "$value": "{ref.space.8}", "$type": "dimension" },

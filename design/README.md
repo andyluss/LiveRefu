@@ -1,7 +1,7 @@
 # LiveRefu Design System（LRDS）· 项目设计系统
 
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
-> **状态**：**v0.2 第二阶段已落地**——v0.1 地基 + 网站/LiveFab token 化 + 明日频道风格卡登记 + `design/` M1/M2 转 `block`。
+> **状态**：**v0.2 第二阶段已落地**——v0.1 地基 + 网站/LiveFab token 化 + 明日频道风格卡 + `design/` M1/M2 转 `block` + 3 个组件契约（draft）。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
 
 ## 一、这是什么（以及不是什么）
@@ -107,7 +107,8 @@ design/
 ### v0.2 第二阶段（治理收口）
 
 - **明日频道风格卡登记**：`SC-TOMORROWS-CHANNEL-TAPE-v1` 落库（9 色 + 色温/光比/装饰参数），新增 [`check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts) 与 `.tres` 对账（7/7 自检）；登记表见 [07](docs/07_风格卡登记.md)。
-- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（22 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（26 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **3 个组件契约（draft）**：[button](components/button.md) / [form-field](components/form-field.md) / [panel](components/panel.md)；契约闸门 6/6（五节齐全、token 存在、无裸值）。**只写契约，不建组件库**；等两个平台真实实现后再验收。
 - **证据**：[06 实现记录 §五](docs/06_实现记录_v0.2.md)。
 
 ### 常用命令
@@ -123,7 +124,7 @@ node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts
 
 ### 下一步（v0.2 剩余）
 
-1. 3 个高频组件契约（按钮、表单、面板）——先从两个真实消费者里抽，不做全家桶；
+1. 把 3 个契约落到两个真实消费者（网站 + LiveFab，或网站 + Godot），再回写差异；
 2. App kit 起步；
 3. 网站 6px 圆角（EX-20261021-02）做一次视觉评审。
 
