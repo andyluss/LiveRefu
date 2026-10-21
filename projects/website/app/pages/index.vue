@@ -55,7 +55,7 @@ useShareMeta({
     <section class="section">
       <div class="section__head"><h2 class="section__title">入口</h2></div>
       <div class="grid grid--3">
-        <NuxtLink v-for="s in sections" :key="s.to" :to="s.to" class="card">
+        <NuxtLink v-for="s in sections" :key="s.to" :to="s.to" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">{{ s.title }}</h3>
           <p class="card__desc">{{ s.desc }}</p>
         </NuxtLink>
@@ -69,15 +69,15 @@ useShareMeta({
     <section class="section">
       <div class="section__head"><h2 class="section__title">从哪里读起</h2></div>
       <div class="grid grid--3">
-        <NuxtLink to="/wiki/main/00-general-introduction" class="card">
+        <NuxtLink to="/wiki/main/00-general-introduction" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">00 总论 · 未来的考古学</h3>
           <p class="card__desc">全卷纲领：三层时间模型、七纪分期、四元素与七机制。</p>
         </NuxtLink>
-        <NuxtLink to="/wiki/main/12-punk-genealogy" class="card">
+        <NuxtLink to="/wiki/main/12-punk-genealogy" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">12 谱系篇 · 朋克宇宙学</h3>
           <p class="card__desc">「××朋克」命名三定律与全系谱地图。</p>
         </NuxtLink>
-        <NuxtLink to="/wiki/main/17-vaporwave" class="card">
+        <NuxtLink to="/wiki/main/17-vaporwave" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">17 蒸汽波篇</h3>
           <p class="card__desc">时代错置的听觉乡愁：蒸汽波与合成波辨析。</p>
         </NuxtLink>
@@ -90,7 +90,7 @@ useShareMeta({
         <NuxtLink to="/blog" class="eras__src" style="margin-left:auto">全部 →</NuxtLink>
       </div>
       <div class="grid grid--3">
-        <NuxtLink v-for="p in latestPosts" :key="p.path" :to="p.path" class="card">
+        <NuxtLink v-for="p in latestPosts" :key="p.path" :to="p.path" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">{{ p.title }}</h3>
           <p class="card__desc">{{ p.description }}</p>
         </NuxtLink>

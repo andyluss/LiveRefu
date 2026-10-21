@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LRDS Web Components · Preview</title>
+  <link rel="stylesheet" href="../../tokens/dist/web/future-archive.css">
+  <link rel="stylesheet" href="components.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--lr-space-32);
+      background: var(--lr-color-bg-base);
+      color: var(--lr-color-text-primary);
+      font-family: var(--lr-ref-font-family-sans, sans-serif);
+      line-height: 1.6;
+    }
+    main { max-width: var(--lr-grid-web-max-width); margin: 0 auto; }
+    h1 { font-size: var(--lr-type-ui-title-1-size); line-height: var(--lr-type-ui-title-1-line-height); margin: 0 0 var(--lr-space-8); }
+    h2 { font-size: var(--lr-type-ui-title-2-size); line-height: var(--lr-type-ui-title-2-line-height); margin: var(--lr-space-24) 0 var(--lr-space-12); }
+    p { color: var(--lr-color-text-secondary); margin: 0 0 var(--lr-space-16); }
+    .row { display: flex; flex-wrap: wrap; gap: var(--lr-space-12); align-items: center; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: var(--lr-space-16); }
+    .stack { display: grid; gap: var(--lr-space-16); max-width: 28rem; }
+    .hint { color: var(--lr-color-text-muted); font-size: var(--lr-type-ui-caption-size); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>LRDS Web Components</h1>
+    <p>设计系统预览，不是产品页面。所有颜色与尺寸来自 <code>--lr-*</code> token；交互态请用键盘 Tab / 鼠标悬停查看。</p>
+
+    <h2>Button</h2>
+    <div class="row">
+      <button class="lr-button lr-button--primary" type="button">开始计时</button>
+      <button class="lr-button lr-button--secondary" type="button">保存草稿</button>
+      <button class="lr-button lr-button--ghost" type="button">取消</button>
+      <button class="lr-button lr-button--danger" type="button">删除卡片</button>
+      <button class="lr-button lr-button--primary" type="button" aria-busy="true">保存中…</button>
+      <button class="lr-button lr-button--secondary" type="button" aria-disabled="true">不可用</button>
+      <button class="lr-button lr-button--secondary" type="button" disabled>禁用</button>
+    </div>
+    <p class="hint">尺寸：</p>
+    <div class="row">
+      <button class="lr-button lr-button--secondary lr-button--sm" type="button">Small</button>
+      <button class="lr-button lr-button--secondary" type="button">Medium</button>
+      <button class="lr-button lr-button--secondary lr-button--lg" type="button">Large</button>
+    </div>
+
+    <h2>Panel</h2>
+    <div class="grid">
+      <section class="lr-panel">
+        <div class="lr-panel__header"><h3 class="lr-panel__title">静态面板</h3></div>
+        <div class="lr-panel__body"><p>用于一组相关信息；不是控件。</p></div>
+      </section>
+      <a class="lr-panel lr-panel--interactive" href="#panel">
+        <div class="lr-panel__header"><h3 class="lr-panel__title">可交互卡片</h3></div>
+        <div class="lr-panel__body"><p>整张卡是一个链接；内部不再嵌套按钮。</p></div>
+      </a>
+      <section class="lr-panel lr-panel--elevated">
+        <div class="lr-panel__header"><h3 class="lr-panel__title">浮起面板</h3></div>
+        <div class="lr-panel__body"><p>只给弹窗/浮层用阴影。</p></div>
+        <div class="lr-panel__footer"><button class="lr-button lr-button--secondary" type="button">关闭</button></div>
+      </section>
+    </div>
+
+    <h2>Form Field</h2>
+    <div class="stack">
+      <div class="lr-field">
+        <label class="lr-field__label" for="demo-name">频道名称</label>
+        <input class="lr-field__control" id="demo-name" type="text" placeholder="例如：磁带频道">
+        <p class="lr-field__help">会显示在频道列表里。</p>
+      </div>
+      <div class="lr-field" data-state="error">
+        <label class="lr-field__label" for="demo-error">频道名称 <span class="lr-field__required">*</span></label>
+        <input class="lr-field__control" id="demo-error" type="text" value="未命名" aria-invalid="true">
+        <p class="lr-field__error">名称已被占用，换一个。</p>
+      </div>
+      <div class="lr-field">
+        <label class="lr-field__label" for="demo-disabled">只读字段</label>
+        <input class="lr-field__control" id="demo-disabled" type="text" value="磁带频道" readonly>
+        <p class="lr-field__help">只读与禁用不同：只读仍可聚焦、可复制。</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

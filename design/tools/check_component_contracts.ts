@@ -26,6 +26,7 @@ import {
 } from './token_lib.ts'
 
 const CONTRACTS = join(DESIGN_ROOT, 'components')
+const COMPONENT_CSS = join(DESIGN_ROOT, 'kits/web/components.css')
 const SELF_TEST = process.argv.includes('--self-test')
 
 const REQUIRED_HEADINGS = [
@@ -71,6 +72,21 @@ export function checkContract(text: string, known: Set<string>): string[] {
     }
   }
 
+  return errors
+}
+
+export function checkComponentCss(text: string, known: Set<string>): string[] {
+  const errors: string[] = []
+  const refs = [...new Set(text.match(/--lr-[a-z0-9-]+/g) ?? [])]
+  if (refs.length < 10) errors.push(`CSS token 引用不足：${refs.length} 个（至少 10 个）`)
+  for (const ref of refs) {
+    if (!known.has(ref)) errors.push(`未知 token：${ref}`)
+  }
+  const raw = [...new Set(text.match(RAW_VALUE) ?? [])]
+  for (const value of raw) errors.push(`裸值：${value}（改用 --lr-*）`)
+  for (const selector of ['.lr-button', '.lr-panel', '.lr-field']) {
+    if (!text.includes(selector)) errors.push(`缺少组件选择器：${selector}`)
+  }
   return errors
 }
 
@@ -123,6 +139,18 @@ default / focus / disabled
       '缺 focus 状态 → 报错',
       checkContract(valid.replace(/focus/gi, 'hover'), known).some(e => e.includes('状态缺少')),
       '状态必须覆盖 focus',
+    ],
+    [
+      '组件 CSS 裸 px → 报错',
+      checkComponentCss('.lr-button{min-height:40px}', known).some(e => e.includes('裸值')),
+      'CSS 不得写裸尺寸',
+    ],
+    [
+      '组件 CSS 未知 token → 报错',
+      checkComponentCss('.lr-button{color:var(--lr-color-nope)}', known).some(e =>
+        e.includes('未知 token'),
+      ),
+      'CSS 的 token 必须存在',
     ],
   ]
 
@@ -178,7 +206,15 @@ function main(): number {
     return 1
   }
 
-  console.log(`\n✓ ${files.length} 个组件契约全部合规`)
+  const cssErrors = checkComponentCss(readFileSync(COMPONENT_CSS, 'utf8'), known)
+  if (cssErrors.length) {
+    console.error(`\n✗ 组件 CSS 不合规（${cssErrors.length} 项）：`)
+    for (const e of cssErrors) console.error(`  - ${e}`)
+    return 1
+  }
+  console.log(`  ✓ kits/web/components.css`)
+
+  console.log(`\n✓ ${files.length} 个组件契约 + 组件 CSS 全部合规`)
   return 0
 }
 

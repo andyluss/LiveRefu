@@ -38,7 +38,7 @@ const counts = computed(() => ({
     <section class="section">
       <div class="section__head"><h2 class="section__title">主卷 · 未来的考古</h2></div>
       <div class="grid grid--3">
-        <NuxtLink v-for="g in nav.main" :key="g.title" to="/wiki/main" class="card">
+        <NuxtLink v-for="g in nav.main" :key="g.title" to="/wiki/main" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">{{ g.title }}</h3>
           <p class="card__desc">{{ g.items.length }} 篇 · {{ g.items.map(i => i.text).join('、') }}</p>
         </NuxtLink>
@@ -48,7 +48,7 @@ const counts = computed(() => ({
     <section class="section">
       <div class="section__head"><h2 class="section__title">朋克五卷</h2></div>
       <div class="grid grid--3">
-        <NuxtLink v-for="p in nav.punks" :key="p.slug" :to="p.route" class="card">
+        <NuxtLink v-for="p in nav.punks" :key="p.slug" :to="p.route" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">{{ p.title }}</h3>
           <p class="card__desc">{{ p.items.length }} 篇 · 定义与谱系 / 历史年表 / 美学与视觉 / 批评与争议 …</p>
         </NuxtLink>
@@ -58,7 +58,7 @@ const counts = computed(() => ({
     <section class="section">
       <div class="section__head"><h2 class="section__title">附录卷</h2></div>
       <div class="grid grid--3">
-        <NuxtLink v-for="a in nav.appendix" :key="a.slug" :to="a.route" class="card">
+        <NuxtLink v-for="a in nav.appendix" :key="a.slug" :to="a.route" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">{{ a.title }}</h3>
           <p class="card__desc">{{ a.items.length }} 篇</p>
         </NuxtLink>

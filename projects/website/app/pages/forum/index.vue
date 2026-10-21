@@ -54,7 +54,7 @@ const triggers = [
     <section class="section">
       <div class="section__head"><h2 class="section__title">两段式路线</h2></div>
       <div class="grid grid--3">
-        <div v-for="s in stages" :key="s.key" class="card" :class="{ 'card--on': s.done }">
+        <div v-for="s in stages" :key="s.key" class="card lr-panel" :class="{ 'card--on': s.done }">
           <div class="stage__head">
             <h3 class="card__title">{{ s.title }}</h3>
             <span class="stage__status" :class="{ 'stage__status--on': s.done }">{{ s.status }}</span>

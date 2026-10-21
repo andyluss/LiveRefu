@@ -24,6 +24,10 @@ run design/tools/check_tomorrows_channel_skin.ts --self-test
 run design/tools/check_tomorrows_channel_skin.ts
 run design/tools/check_component_contracts.ts --self-test
 run design/tools/check_component_contracts.ts
+run design/tools/build_web_kit.ts --self-test
+run design/tools/build_web_kit.ts --check
+run design/tools/check_component_usage.ts --self-test
+run design/tools/check_component_usage.ts
 
 echo ""
 echo "✓ LRDS 设计系统闸门全部通过（含风格卡对账）"

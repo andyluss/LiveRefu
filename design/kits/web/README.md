@@ -42,7 +42,34 @@
 - 旧代码可继续用 `--bg` / `--teal` 等兼容别名；**新代码请直接用 `--lr-*`**。
 - 不要同时加载两个产品的生成 CSS——它们的旧变量别名会冲突。
 
-## 三、规则
+## 三、共享组件层（v0.2）
+
+源：[`components.css`](components.css)（手写，只引用 token）；生成物：
+
+- `design/tokens/dist/web/components.css`
+- `projects/website/app/assets/components.generated.css`
+- `projects/livefab/portal/src/assets/components.generated.css`
+
+产品按 **tokens → components → 产品主题** 的顺序加载。当前是**渐进接入**：
+
+| 组件 | 网站 | LiveFab | 说明 |
+| --- | --- | --- | --- |
+| Button | 4 个文件 / 12 处 | 1 个文件 / 1 处 | 保留 `.deco-btn` / `.cta` 皮肤，组件层提供基线与焦点/禁用行为 |
+| Panel | 6 个文件 / 22 处 | 1 个文件 / 1 处 | `.card` / `ul.svc li` 叠加 `lr-panel`，产品样式覆盖表面 |
+| Form Field | 1 个文件 / 1 处 | 无 | 搜索框使用 wrapper + control；LiveFab 当前没有表单，不硬造第二个消费者 |
+
+**预览**：[`preview.html`](preview.html)——按钮三尺寸与六态、面板三变体、字段默认/错误/只读。
+
+![LRDS Web Components 预览](preview.png)
+
+```bash
+node --experimental-strip-types design/tools/build_web_kit.ts
+node --experimental-strip-types design/tools/check_component_usage.ts
+```
+
+> **这是基础层，不是换肤**：产品仍保留自己的视觉；等视觉评审通过后再逐步删除产品侧的重复样式。搜索框的焦点色已从 `--teal` 改为 `--focus`（独立蓝），修掉“焦点=强调色”。
+
+## 四、规则
 
 - **不要手改生成物**：改 `design/tokens/`，然后跑 `build_tokens.ts`。
 - **不要在业务 CSS/Vue/TS 里写 `#hex` 或 `rgba()`**：用 `--lr-*`；例外必须登记到 [`docs/exceptions.md`](../../docs/exceptions.md)。
@@ -50,7 +77,7 @@
 - 交互边框：用 `--lr-color-line-strong`，不要用 `--lr-color-line-subtle`（后者只用于装饰分隔线）。
 - 半透明遮罩/阴影用 8 位 hex token（`#RRGGBBAA`），不要把 `rgba()` 写回业务代码。
 
-## 四、验收
+## 五、验收
 
 ```bash
 node --experimental-strip-types design/tools/build_tokens.ts --check

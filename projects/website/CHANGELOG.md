@@ -31,6 +31,18 @@
 
 > 设计债 `EX-20261021-01`（组件裸色值）已收口；`EX-20261021-02`（6px 圆角）仍待视觉评审。
 
+### 变更（共享 Web 组件层渐进接入）
+
+- 新增 [`app/assets/components.generated.css`](app/assets/components.generated.css)（由 [`design/kits/web/components.css`](../../design/kits/web/components.css) 生成，勿手改），并在 `nuxt.config.ts` 里按 **tokens → components → theme** 加载。
+- `.deco-btn` 叠加 `lr-button lr-button--secondary`（4 个文件 / 12 处）；`.card` 叠加 `lr-panel`（6 个文件 / 22 处；论坛静态阶段卡只加基础 `lr-panel`，不加 `--interactive`）；搜索框外层加 `.lr-field`、输入框加 `lr-field__control`。
+- **搜索框焦点修复**：`.search-input:focus` 从 `--teal` 改为 `--focus`（独立蓝），并使用 `--lr-border-focus` / `--lr-border-focus-offset`。
+- 本轮是**渐进接入**：产品 `.deco-btn` / `.card` 皮肤仍覆盖组件层主要视觉；下一步做完整截图 + Tab 走查后再删除重复样式。
+
+### 验收
+
+- `bun run build`：通过；产物 CSS 已包含 `.lr-button--primary` / `.lr-panel--interactive`。
+- `bun run tools/verify-contrast.ts`：27/27。
+
 ## [0.28.0] - 2026-10-03 17:48
 
 ### 变更（改名《未来档案》+ 目录改 website；Giscus 端到端验证通过；项目暂停）

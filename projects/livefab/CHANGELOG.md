@@ -20,6 +20,12 @@
 - **有意的视觉变化**：焦点描边从 `--teal-bright` 改为 `--focus`（独立蓝 `#8AB4F8`），只在键盘焦点时可见，修掉“焦点=强调色”。
 - **验收**：`bun run build` 通过；产物 CSS 确认包含 `--bg:var(--lr-livefab-bg)`；门户不再有裸色值。
 
+### 变更（共享 Web 组件层渐进接入）
+
+- 新增 [`src/assets/components.generated.css`](portal/src/assets/components.generated.css)（由 [`design/kits/web/components.css`](../../design/kits/web/components.css) 生成，勿手改），与 tokens 一起在 `Base.astro` 引入。
+- `.cta` 叠加 `lr-button lr-button--secondary`；`ul.svc li` 叠加 `lr-panel`。产品原有 `.cta` / `ul.svc li` 样式保留，本轮是**渐进接入**。
+- `bun run build` 通过；产物 CSS 已包含 `.lr-button--primary` / `.lr-panel--interactive`。
+
 ### 变更（变更日志校验器提升为工作区级）
 
 本项目的变更日志校验器原本在 `tools/check-changelog.ts`，写死了路径与 `livefab-v` 前缀。

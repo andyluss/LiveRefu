@@ -7,11 +7,11 @@
 
 | 契约 | 状态 | 消费者 | 说明 |
 | --- | --- | --- | --- |
-| [button](button.md) | draft | 网站、LiveFab、未来应用 | 主/次/幽灵/危险；sm/md/lg；6 种状态 |
-| [form-field](form-field.md) | draft | 网站、LiveFab、未来应用 | 标签/输入/帮助/错误/必填；8 种状态 |
-| [panel](panel.md) | draft | 网站、LiveFab、游戏 HUD | 静态面板 / 可交互卡片；头/身/脚 |
+| [button](button.md) | draft · **已渐进接入** | 网站 4 文件 / 12 处；LiveFab 1 处 | 主/次/幽灵/危险；sm/md/lg；6 种状态 |
+| [form-field](form-field.md) | draft · **已接入网站** | 网站搜索框（wrapper + control）；LiveFab 无表单 | 标签/输入/帮助/错误/必填；8 种状态 |
+| [panel](panel.md) | draft · **已渐进接入** | 网站 6 文件 / 22 处；LiveFab 1 处 | 静态面板 / 可交互卡片；头/身/脚 |
 
-> “draft” = 契约已写、尚未在两个平台完成实现与截图验收；不是“可以随便改”。
+> “draft” = 契约已写、已在真实产品渐进接入，但尚未完成两个平台的完整视觉/键盘走查；不是“可以随便改”。组件层与使用审计见 [`../kits/web/README.md`](../kits/web/README.md) 与 [`../tools/check_component_usage.ts`](../tools/check_component_usage.ts)。
 
 ## 二、契约模板（每个组件必须有的五节）
 

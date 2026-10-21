@@ -23,7 +23,7 @@ useHead({ title: '朋克五卷 · 明日档案' })
       </header>
 
       <div class="grid grid--3">
-        <NuxtLink v-for="p in nav.punks" :key="p.slug" :to="p.route" class="card">
+        <NuxtLink v-for="p in nav.punks" :key="p.slug" :to="p.route" class="card lr-panel lr-panel--interactive">
           <h3 class="card__title">{{ p.title }}</h3>
           <p class="card__desc">{{ p.items.length }} 篇</p>
         </NuxtLink>

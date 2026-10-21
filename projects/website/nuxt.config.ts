@@ -31,8 +31,12 @@ export default defineNuxtConfig({
     },
   },
 
-  // tokens.generated.css 由 design/tokens 生成（勿手改）；必须排在 theme.css 之前
-  css: ['~/assets/tokens.generated.css', '~/assets/theme.css'],
+  // tokens / components 由设计系统生成（勿手改）；必须排在 theme.css 之前
+  css: [
+    '~/assets/tokens.generated.css',
+    '~/assets/components.generated.css',
+    '~/assets/theme.css',
+  ],
 
   app: {
     head: {

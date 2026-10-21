@@ -26,7 +26,7 @@ const navLinks = [
         <div class="header-actions">
           <SearchDialog />
           <button
-            class="deco-btn"
+            class="deco-btn lr-button lr-button--secondary"
             type="button"
             :aria-pressed="enabled"
             title="CRT 扫描线质感（可关闭）"

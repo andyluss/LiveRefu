@@ -112,7 +112,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
 <template>
   <div>
     <!-- 触发按钮（头部用） -->
-    <button class="deco-btn" type="button" title="站内搜索（⌘K）" @click="openDialog">
+    <button class="deco-btn lr-button lr-button--secondary" type="button" title="站内搜索（⌘K）" @click="openDialog">
       搜索 ⌘K
     </button>
 
@@ -127,17 +127,19 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
       >
         <div ref="dialogEl" class="search-panel" @keydown="onKeydown" @keydown.tab="onTabTrap">
           <div class="search-head">
-            <input
-              ref="inputEl"
-              v-model="query"
-              class="search-input"
-              type="search"
-              placeholder="搜索论文、术语、人名…"
-              autocomplete="off"
-              aria-label="搜索关键词"
-              @input="onInput"
-            >
-            <button class="deco-btn" type="button" @click="closeDialog">ESC</button>
+            <div class="lr-field search-field">
+              <input
+                ref="inputEl"
+                v-model="query"
+                class="search-input lr-field__control"
+                type="search"
+                placeholder="搜索论文、术语、人名…"
+                autocomplete="off"
+                aria-label="搜索关键词"
+                @input="onInput"
+              >
+            </div>
+            <button class="deco-btn lr-button lr-button--secondary" type="button" @click="closeDialog">ESC</button>
           </div>
 
           <div class="search-body">
@@ -202,6 +204,10 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
   padding: 0.7rem 0.8rem;
   border-bottom: 1px solid var(--line);
 }
+.search-field {
+  flex: 1;
+  min-width: 0;
+}
 .search-input {
   flex: 1;
   background: var(--bg);
@@ -213,9 +219,9 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
   padding: 0.55rem 0.7rem;
 }
 .search-input:focus {
-  outline: 2px solid var(--teal);
-  outline-offset: 1px;
-  border-color: var(--teal);
+  outline: var(--lr-border-focus) solid var(--focus);
+  outline-offset: var(--lr-border-focus-offset);
+  border-color: var(--focus);
 }
 .search-body {
   overflow-y: auto;
