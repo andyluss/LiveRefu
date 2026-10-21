@@ -18,10 +18,11 @@
 ### 变更
 
 - [`build_tokens.ts`](tools/build_tokens.ts) 增加 `buildAppJson`；`build_tokens --check` 现在检查 8 个产物。
+- **补记 `[0.1.0]` 版本段并补打 `design-v0.1.0`**：原 v0.1 条目曾并入 0.2.0，现按版本拆分；0.1.0 时间取 v0.1 提交 `e91985d` 的提交时间。
 
 ## [0.2.0] - 2026-10-21 13:50 · v0.2 治理、组件与皮肤收口
 
-> **v0.1 已通过用户验收；v0.2 第一、二阶段已实现。** 发布时把本段按版本拆分（v0.1.0 / v0.2.0）并打 `design-v*`。
+> **v0.2 第一到第四阶段：网站/LiveFab 全量 token 化、明日频道风格卡、M1/M2 block、组件契约与共享 Web 组件层、8px 皮肤收口、产品走查。**
 
 ### 新增
 
@@ -55,11 +56,6 @@
   - 网站 `GalleryGrid.vue` / `SearchDialog.vue` / `gallery/index.vue` 与 `theme.css` 的遮罩、阴影、高亮全部改用 token；网站 app 裸色值 0 处（26 个文件）。
   - LiveFab 门户改为 `import tokens.generated.css`，删除 11 个内联色值。
   - 新增 [`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md)。
-- **三层 token 源**（186 个）：[`tokens/core/ref.tokens.json`](tokens/core/ref.tokens.json)（61）、[`tokens/core/sys.tokens.json`](tokens/core/sys.tokens.json)（92）、[`tokens/products/future-archive.tokens.json`](tokens/products/future-archive.tokens.json)（15）、[`tokens/products/future-debris.atomic.tokens.json`](tokens/products/future-debris.atomic.tokens.json)（18）；[`tokens/schema/tokens.schema.json`](tokens/schema/tokens.schema.json)。
-- **生成器与闸门**：[`tools/token_lib.ts`](tools/token_lib.ts)、[`tools/build_tokens.ts`](tools/build_tokens.ts)（8/8 自检）、[`tools/check_tokens.ts`](tools/check_tokens.ts)（7/7）、[`tools/check_contrast.ts`](tools/check_contrast.ts)（7/7，68 组对比度 + 7 组层级 + 3 组 focus 分离）、[`tools/check_no_raw_values.ts`](tools/check_no_raw_values.ts)（v0.1 5/5；v0.2 8/8，含 rgba 与 GDScript 注释处理）、[`tools/check.sh`](tools/check.sh)。
-- **生成物**：`tokens/dist/web/tokens.css`、`tokens/dist/godot/tokens.json`、`tokens/dist/docs/tokens.md`；产品副本 `projects/website/app/assets/tokens.generated.css`、`projects/mainline/future-debris/game/data/tokens.json`。
-- **介质包说明**：[`kits/web/README.md`](kits/web/README.md)、[`kits/godot/README.md`](kits/godot/README.md)。
-- **实现记录与例外**：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/exceptions.md`](docs/exceptions.md)（EX-20261021-01 网站组件裸色值、EX-20261021-02 网站 6px 圆角）。
 
 ### 变更
 
@@ -71,6 +67,30 @@
 - **v0.2 第四阶段**：网站卡片采用 8px 面板圆角；技术/描边按钮改为组件变体；产品侧重复基础皮肤删除；重跑截图 + Tab 走查。
 - **v0.2：裸色值闸门扩大到整个网站 app**（`.vue` / `.ts` / `.css`，26 个文件），不再只查 `theme.css`；`--all` 仍对游戏脚本只报告。
 - **v0.2：LiveFab 不再复制 token**：`product.livefab` 成为独立风格卡，门户消费 `livefab.css`；两个 Web 产品的旧变量别名各自独立，避免 `--bg` 互相覆盖。
+
+### 修复
+
+- **LiveFab `--focus` 不再复用强调色**：焦点描边由 `--teal-bright` 改为独立蓝 `#8AB4F8`，只在键盘焦点时可见。
+
+### 备注
+
+- **v0.2 未做**：打印/实体、母品牌命名、全组件库。App kit 在 v0.3 起步（见 `[未发布]`）。债务与收口计划见 [10 §五](docs/10_皮肤收口_v0.2.md)。
+
+## [0.1.0] - 2026-10-21 12:43 · 地基与两个试点
+
+> v0.1 地基：三层 token、生成器、四道闸门、网站与《未来残片》两个试点。
+> 此版本当时未单独记入日志；2026-10-21 补记并打 `design-v0.1.0`。
+
+### 新增
+
+- **三层 token 源**（186 个）：[`tokens/core/ref.tokens.json`](tokens/core/ref.tokens.json)（61）、[`tokens/core/sys.tokens.json`](tokens/core/sys.tokens.json)（92）、[`tokens/products/future-archive.tokens.json`](tokens/products/future-archive.tokens.json)（15）、[`tokens/products/future-debris.atomic.tokens.json`](tokens/products/future-debris.atomic.tokens.json)（18）；[`tokens/schema/tokens.schema.json`](tokens/schema/tokens.schema.json)。
+- **生成器与闸门**：[`tools/token_lib.ts`](tools/token_lib.ts)、[`tools/build_tokens.ts`](tools/build_tokens.ts)（8/8 自检）、[`tools/check_tokens.ts`](tools/check_tokens.ts)（7/7）、[`tools/check_contrast.ts`](tools/check_contrast.ts)（7/7，68 组对比度 + 7 组层级 + 3 组 focus 分离）、[`tools/check_no_raw_values.ts`](tools/check_no_raw_values.ts)（v0.1 5/5；v0.2 8/8，含 rgba 与 GDScript 注释处理）、[`tools/check.sh`](tools/check.sh)。
+- **生成物**：`tokens/dist/web/tokens.css`、`tokens/dist/godot/tokens.json`、`tokens/dist/docs/tokens.md`；产品副本 `projects/website/app/assets/tokens.generated.css`、`projects/mainline/future-debris/game/data/tokens.json`。
+- **介质包说明**：[`kits/web/README.md`](kits/web/README.md)、[`kits/godot/README.md`](kits/godot/README.md)。
+- **实现记录与例外**：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/exceptions.md`](docs/exceptions.md)（EX-20261021-01 网站组件裸色值、EX-20261021-02 网站 6px 圆角）。
+
+### 变更
+
 - **四道闸门接入根 pre-commit 与 CI**：暂存涉及 `design/`、网站 `theme.css` / `tokens.generated.css` 或游戏 `game/data/tokens.json` 时自动跑 `bash design/tools/check.sh`；CI 另加网站 `verify-contrast.ts`。
 - **D1–D10 全部裁决**（用户：按推荐执行，D2/D5 确认；暂不用设计工具；实体后定；v0.1 外观不变）；[`docs/00_决策总表.md`](docs/00_决策总表.md) 转为 v1.0 并新增裁决记录。
 - **网站试点**：`projects/website/app/assets/theme.css` 删除裸色值，旧变量名由生成物别名提供；`nuxt.config.ts` 在主题前加载 `tokens.generated.css`；`tools/verify-contrast.ts` 改为从生成物解析 token。
@@ -78,15 +98,15 @@
 
 ### 修复
 
-- **LiveFab `--focus` 不再复用强调色**：焦点描边由 `--teal-bright` 改为独立蓝 `#8AB4F8`，只在键盘焦点时可见。
 - **网站 `--focus` 不再复用强调色**：由 `#57D8C8`（= `--teal-bright`）改为独立蓝 `#8AB4F8`。这是 v0.1 唯一有意的视觉变化，只在键盘焦点时可见。
 
 ### 备注
 
-- **未做**：全组件库、Figma 库、App kit、打印/实体、母品牌命名。债务与收口计划见 [10 §五](docs/10_皮肤收口_v0.2.md)。
+- v0.1 的 `check_no_raw_values` 只查已迁移表面（5/5）；v0.2 扩到整个网站 app（8/8）。
+- v0.1 的 `tokens/dist/web/tokens.css` 在 v0.2 拆为 `future-archive.css` / `livefab.css`。
+- EX-20261021-01 / EX-20261021-02 在 v0.1 登记，v0.2 收口。
 
 ## [0.0.1] - 2026-10-21 12:26 · 立项决策包
-
 
 ### 新增
 
