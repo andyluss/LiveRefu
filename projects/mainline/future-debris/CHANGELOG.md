@@ -3,7 +3,7 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../../rules/R05-changelog.md)
 > 与 [tech/changelog-convention.md](../../../tech/changelog-convention.md)。
 
-## [0.22.0] - 2026-10-21 12:41
+## [0.22.0] - 2026-10-21 13:50
 
 ### 变更（token 源上移到设计系统；game/data/tokens.json 改为生成物）
 

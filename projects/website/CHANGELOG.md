@@ -3,7 +3,7 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循 Keep a Changelog 风格：`新增` / `变更` / `修复` / `移除`。
 > 项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/)。内容源（唯一权威）在 [`doc/retro-futurism/`](../../doc/retro-futurism/README.md) 与 [`doc/punks/`](../../doc/punks/README.md)。
 
-## [0.29.0] - 2026-10-21 12:58
+## [0.29.0] - 2026-10-21 13:50
 
 ### 变更（颜色改为消费设计系统 token；焦点色修复）
 
