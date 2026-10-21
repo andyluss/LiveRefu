@@ -12,7 +12,7 @@
 | --- | --- | --- |
 | **产品 / 策划 / 非技术维护者** | [`doc/`](doc/README.md)（**题材知识库索引**，从这进去）、[`projects/mainline/README.md`](projects/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`.godot-home/` |
 | **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`projects/mainline/future-debris/`](projects/mainline/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
-| **想知道现在最该做什么** | [`TODO.md`](TODO.md)（跨项目顶级待办、等待拍板、最近完成） | 各项目内部 `docs/` 与 TODO |
+| **想知道现在最该做什么** | [`TODO.md`](TODO.md)（跨项目顶级待办、等待拍板、状态） | 各项目内部 `docs/` 与 TODO |
 | **只想快速看设计系统** | [`design/HUB.html`](design/HUB.html)（Token / 风格卡 / 组件 / 产品 / 验收一页看完） | [`design/README.md`](design/README.md) |
 | **开发 / 维护者 / 与 AI 协作** | [`rules/`](rules/README.md)（**规则的权威**）、[`AGENTS.md`](AGENTS.md)（AI 提交回报硬规范）、[`tech/`](tech/README.md)（技术详解）、[`tools/`](tools/)（检查器）、[`.github/workflows/`](.github/workflows/verify.yml)（CI） | —— |
 
@@ -40,7 +40,7 @@
 | --- | --- | --- |
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
 | [`design/`](design/README.md) | **项目设计系统（LRDS）**：一页式 HUB、三层 token、风格卡、组件契约、Web/Godot/App 介质包、验收闸门 | [`design/HUB.html`](design/HUB.html) |
-| [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、最近完成；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
+| [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、状态；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
 | [`doc/`](doc/README.md) | **复古未来主义知识库（索引）**：三卷的知识库入口——主卷论文集 + 朋克专题五卷 + Refu Game 001 策划卷。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`doc/README.md`](doc/README.md) |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
 | [`doc/punks/`](doc/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`doc/punks/README.md`](doc/punks/README.md) |

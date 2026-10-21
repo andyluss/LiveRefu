@@ -18,7 +18,7 @@
 
 ### 变更
 
-- **时间与例外表可读性**：`design/TODO.md` 的「最近完成」按 R06 精确到分、按完成提交拆分；`docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段，并追加收口时间/方式。
+- **时间与例外表可读性**：`docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段，并追加收口时间/方式；`design/TODO.md` 移除「最近完成」段，完成项改为在总表改状态。
 - **待办收敛**：`design/TODO.md` 成为设计系统唯一明细与状态来源；根 TODO 设计条目迁入，移除“根 TODO”映射列；补充产品发布完成项。
 - [`build_tokens.ts`](tools/build_tokens.ts) 增加 `buildAppJson`；`build_tokens --check` 现在检查 8 个产物。
 - **HUB 支持三态主题**：右上角切换“系统 / 亮色 / 暗色”，记忆到 `localStorage`；亮色是 HUB 查看器主题（暖纸色），不是新的产品风格卡或设计系统亮色模式。

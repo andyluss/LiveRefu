@@ -15,7 +15,7 @@
 | R03 | [相对链接校验](R03-link-validation.md) | pre-commit 钩子 + CI 两道闸门校验内部相对链接 | 已定·已落地 | [`tech/hooks-readme.md`](../tech/hooks-readme.md) |
 | R04 | [数据 schema 校验](R04-data-validation.md) | 数据表按 schema 契约校验（必填/type/enum/范围） | 已定·已落地 | [`tech/formalization.md`](../tech/formalization.md)（数据契约部分） |
 | R05 | [变更日志记录约定](R05-changelog.md) | 每次（非琐碎）变更写变更日志；琐碎改动豁免 | 已定·现行 | [`tech/changelog-convention.md`](../tech/changelog-convention.md) |
-| R06 | [时间与时间戳约定](R06-time.md) | 时间一律东八区、**精确到分**、不得脑内手写（已提交取 git 提交时间 / 新建取系统时钟）；**时间类新约定一律追加进本文** | 已定·现行 | [M2](meta/M2-naming-vocabulary.md)（命名词表）、[`tech/docs-convention.md`](../tech/docs-convention.md)（日期部分） |
+| R06 | [时间与时间戳约定](R06-time.md) | 时间一律东八区、**精确到分**、不得脑内手写；完成项取完成提交，多提交拆条；命令显式 `TZ=Asia/Shanghai`；**时间类新约定一律追加进本文** | 已定·现行 | [M2](meta/M2-naming-vocabulary.md)（命名词表）、[`tech/docs-convention.md`](../tech/docs-convention.md)（日期部分） |
 
 ## 二、元规则（M 系列，[`meta/`](meta/README.md)）
 

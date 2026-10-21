@@ -24,7 +24,9 @@
 
 ### 变更
 
-- **设计文档可读性**：`design/TODO.md` 的「最近完成」按 R06 精确到分并按完成提交拆分；`design/docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段（违反/理由/替代方案/Owner/到期/状态）与收口时间/方式。
+- **R06 时间规则 v3**：完成项取完成提交 author time；一条目跨多提交时拆条或取最后提交并注明范围；时间命令显式 `TZ=Asia/Shanghai` + `--date=format`，弃用依赖机器时区的 `format-local`。
+- **TODO 瘦身**：根/设计 TODO 移除「最近完成」段；完成项直接在总表改 `已完成`，不再维护完成日志；根/设计 README、AGENTS 同步。
+- **设计文档可读性**：`design/docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段（违反/理由/替代方案/Owner/到期/状态）与收口时间/方式；`design/TODO.md` 移除「最近完成」段，完成项改为在总表改状态。
 - **收敛待办**：根 TODO 中设计系统相关条目（T-002–T-010、设计拍板、设计完成项）全部迁入 [`design/TODO.md`](design/TODO.md)；根表只保留 T-001 网站运行时与设计入口，不再复制细节。
 - `design/tools/build_tokens.ts` 增加 App JSON 导出；`build_tokens --check` 现在校验 8 个生成物。
 - 根 [`README.md`](README.md) 的“开发 / 维护者 / 与 AI 协作”入口加入 [`AGENTS.md`](AGENTS.md)，并增加 AI 代理先读提示。
