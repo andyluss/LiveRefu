@@ -14,6 +14,11 @@
       "why": "规则目录自身（元规则之家）"
     },
     {
+      "path": "design",
+      "mode": "pending",
+      "why": "设计系统新建（2026-10-21）：v0.1 补 M1/M2 判定配置，实测 0 违规后转 block"
+    },
+    {
       "path": "projects/mainline",
       "mode": "block",
       "config": "rules/meta/tools/config-projects-mainline.json",

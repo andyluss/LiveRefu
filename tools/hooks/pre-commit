@@ -263,6 +263,7 @@ for lg in $STAGED_LOGS; do
     projects/mainline/CHANGELOG.md)         prefix="mainline-v" ;;
     projects/refu-game-001/CHANGELOG.md)    prefix="refu-game-001-v" ;;
     projects/tomorrows-channel/CHANGELOG.md) prefix="tomorrows-channel-v" ;;
+    design/CHANGELOG.md)                  prefix="design-v" ;;
     *) prefix="" ;;
   esac
   check_changelog "$lg" "$prefix" "$lg"

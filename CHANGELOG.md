@@ -14,11 +14,13 @@
 ## [未发布]
 
 ### 变更
+- [`tools/hooks/pre-commit`](tools/hooks/pre-commit) 的 CHANGELOG 校验新增 `design/CHANGELOG.md` → `design-v` 标签前缀，使设计系统版本与 git tag 对齐（与根 `workspace-v`、各项目前缀同一机制）。
 - **[`tools/hooks/pre-commit`](tools/hooks/pre-commit) 新增一步：HUB 页面与工程对账**（触发条件：改动 `projects/mainline/HUB.html` 或它的数据来源——数据表 / `run.sh` / 用例表）。
   - 动机：给人看的汇总页里的数字**必然过期**，而"页面写 120 卡、实际已 150 卡"这类偏差此前**没有任何检查会发现**；现在它会拦截提交。
   - 实现要点：核对来源**从工程现读**（数据表 `entries`、`run.sh` 的闸门步数、`case_list.gd` 的用例数），**推导不出即判失败**（不静默跳过），同一数字在页面出现多次则**逐个核对**。
 
 ### 新增
+- **新增 [`design/`](design/README.md) 设计系统立项决策包**：建立工作区级设计系统（LRDS）的定位、原则、决策队列与治理提案——[README](design/README.md) + [D1–D10 决策总表](design/docs/00_决策总表.md) + [现状盘点](design/docs/01_现状盘点.md)（四套视觉定义已分叉，含 focus 色复用、`--line` 误用等合规缺陷）+ [系统架构](design/docs/02_系统架构.md)（五层模型、`ref`/`sys`/`product` 三层 token、单一事实源与生成管线）+ [治理与运营](design/docs/03_治理与运营.md) + [落地路线](design/docs/04_落地路线.md) + [设计系统日志](design/CHANGELOG.md)。**状态：D1–D10 全部待用户裁决，尚未开始 token 与实现。** 同时在元规则覆盖清单 [`workspace-scope.json`](rules/meta/tools/workspace-scope.json) 中登记为 `pending`（`v0.1` 补 M1/M2 配置后转 `block`），缺口明示而非隐形。
 - 新增 [`doc/tower-defense/可视化/`](doc/tower-defense/可视化/README.md)：塔防研究卷的**离线可交互图**（自包含 HTML，无外部依赖）——[00 总图索引](doc/tower-defense/可视化/00_总图_研究可视化索引.html)（文档→图关系网）、[01 视觉语法·一屏四问](doc/tower-defense/可视化/01_视觉语法_一屏四问.html)（图层开关实时判定四项关键信息＋1 秒读图自测，含八条画面检查表）、[02 难度标签·可解释难度](doc/tower-defense/可视化/02_难度标签_可解释难度.html)（B/P 滑块 → D、λ=1.35·D³、解析通关率与四档标签，含指标矩阵与远征双口径）、[03 视觉谱系·五种取向](doc/tower-defense/可视化/03_视觉谱系_五种取向.html)；研究卷卷首、美学卷与 AI 卷 README 加入口，策划侧可视化 README 增相关链接。
 - 塔防研究卷再增两卷并统一数值口径：
   ① 新增 [`tower-defense/美学卷/`](doc/tower-defense/美学卷/README.md)（5 篇约 10,273 汉字）：视觉语法（一屏四问、俯视与等距取舍、路径四层编码、明度分带与色加形、特效优先级与粒子预算、8 条画面检查表）、复古未来（雷达屏/沙盘/剖面/指挥台四母题、CRT 后处理上限、三件载体分工、单主光与反例）、千禧透明（四层结构×三档透明度、四个系统可视化收益、可读性四保险与 bling 三级、键色 60/25/10/5）、读图效率（1 秒四问测试、字号与对比度口径、裁决顺序、信息密度预算、发布前 10 条验收表）、代表作视觉谱系（五种取向对照）；
