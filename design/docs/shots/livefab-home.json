@@ -1,0 +1,107 @@
+{
+  "page": "LiveFab 首页",
+  "url": "http://127.0.0.1:4321/",
+  "title": "工作室底座 · LiveFab",
+  "screenshot": "design/docs/shots/livefab-home.png",
+  "focus": [
+    {
+      "tag": "A",
+      "className": "",
+      "text": "官网与博客",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "社区论坛",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "cta lr-button lr-button--secondary",
+      "text": "登录",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "官网与博客",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "社区论坛",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "cta lr-button lr-button--secondary",
+      "text": "登录",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "官网与博客",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "社区论坛",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "cta lr-button lr-button--secondary",
+      "text": "登录",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "官网与博客",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "社区论坛",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    }
+  ]
+}

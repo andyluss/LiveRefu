@@ -16,9 +16,14 @@
 | [`check_component_contracts.ts`](check_component_contracts.ts) | 组件契约五节齐全、token 存在、无裸值；共享组件 CSS | 8/8 |
 | [`build_web_kit.ts`](build_web_kit.ts) | 把 `kits/web/components.css` 复制到设计产物与两个产品；`--check` 比对 | 3/3 |
 | [`check_component_usage.ts`](check_component_usage.ts) | 审计 button/panel/field 的真实消费者数与引用数 | 4/4 |
+| [`capture_products.ts`](capture_products.ts) | **手动**：真实页面截图 + Tab 焦点审计（需本地服务与 Chrome CDP） | 2/2 |
 | [`check.sh`](check.sh) | 一键跑全部自检 + 闸门 | — |
 
-## 二、常用命令
+## 二、手动工具
+
+`capture_products.ts` 不在 CI/pre-commit 里跑：它需要两个已构建的产品服务与一个开启 CDP 的 Chrome。用法见 [`../docs/09_产品走查_v0.2.md`](../docs/09_产品走查_v0.2.md)。
+
+## 三、常用命令
 
 ```bash
 bash design/tools/check.sh                  # 全部
@@ -27,14 +32,14 @@ node --experimental-strip-types design/tools/build_tokens.ts --check
 node --experimental-strip-types design/tools/check_no_raw_values.ts --all
 ```
 
-## 三、加一个新闸门
+## 四、加一个新闸门
 
 1. 在 `token_lib.ts` 里放**纯函数**（便于自检），CLI 只做 I/O；
 2. 写 `--self-test`：至少一个“好数据不误报”、一个“坏数据必须报错”，并断言**错误类型**；
 3. 接入 `check.sh`；
 4. 更新 [`../docs/02_系统架构.md`](../docs/02_系统架构.md) 的闸门表与 [`../CHANGELOG.md`](../CHANGELOG.md)。
 
-## 四、边界
+## 五、边界
 
 - 不在检查器里硬编码设计值：从 token 读。
 - 不为了通过审计而弱化阈值：对比度不达标时改设计或改 token。

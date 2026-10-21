@@ -37,6 +37,8 @@
 - `.deco-btn` 叠加 `lr-button lr-button--secondary`（4 个文件 / 12 处）；`.card` 叠加 `lr-panel`（6 个文件 / 22 处；论坛静态阶段卡只加基础 `lr-panel`，不加 `--interactive`）；搜索框外层加 `.lr-field`、输入框加 `lr-field__control`。
 - **搜索框焦点修复**：`.search-input:focus` 从 `--teal` 改为 `--focus`（独立蓝），并使用 `--lr-border-focus` / `--lr-border-focus-offset`。
 - 本轮是**渐进接入**：产品 `.deco-btn` / `.card` 皮肤仍覆盖组件层主要视觉；下一步做完整截图 + Tab 走查后再删除重复样式。
+- **走查结果**：4 个页面、53 步 Tab、0 个缺失可见焦点；截图与报告见 [`design/docs/09_产品走查_v0.2.md`](../../design/docs/09_产品走查_v0.2.md)。
+- **运行时备注**：本机 Bun 1.4.0 运行构建产物触发 NAPI 崩溃（SIGABRT），Node 可正常服务；部署前需按目标运行时复核。
 
 ### 验收
 

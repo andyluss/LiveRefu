@@ -16,7 +16,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 27 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 29 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。
@@ -26,6 +26,10 @@
   - 新增 [`tools/build_web_kit.ts`](tools/build_web_kit.ts)（3/3 自检）与 [`tools/check_component_usage.ts`](tools/check_component_usage.ts)（4/4 自检）。
   - 网站 4 文件 / 12 处 button、6 文件 / 22 处 panel、1 处 field；LiveFab 1 处 button + 1 处 panel；**渐进接入**，产品皮肤保留。
   - [`check_component_contracts.ts`](tools/check_component_contracts.ts) 扩到组件 CSS，自检 8/8。
+- **v0.2 产品走查（2026-10-21）。**
+  - 新增 [`tools/capture_products.ts`](tools/capture_products.ts)（2/2 自检）：真实页面全页截图 + Tab 焦点序列 + `Meta+K` 搜索弹窗。
+  - 4 个页面（网站首页 / Wiki 列表 / 搜索弹窗 / LiveFab 首页）、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [`docs/shots/`](docs/shots/)，结论见 [`docs/09_产品走查_v0.2.md`](docs/09_产品走查_v0.2.md)。
+  - 运行发现：网站构建产物在本机 Bun 1.4.0 下触发 NAPI 崩溃（SIGABRT），改用 Node 完成走查；部署运行时需复核。
 - **v0.2 第一阶段（2026-10-21）：网站全量颜色 token 化 + LiveFab 接入。**
   - 新增 [`tokens/products/livefab.tokens.json`](tokens/products/livefab.tokens.json)（12 个颜色）；`product.*` 总数 53。
   - Web 生成拆为每产品一份：[`dist/web/future-archive.css`](tokens/dist/web/future-archive.css)、[`dist/web/livefab.css`](tokens/dist/web/livefab.css)；不再有共享的 `tokens.css`。

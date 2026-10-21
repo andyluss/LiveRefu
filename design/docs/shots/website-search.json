@@ -1,0 +1,174 @@
+{
+  "page": "网站首页 · 搜索弹窗",
+  "url": "http://127.0.0.1:3100/",
+  "title": "明日档案 · 复古未来主义 · 明日档案",
+  "screenshot": "design/docs/shots/website-search.png",
+  "focus": [
+    {
+      "tag": "A",
+      "className": "router-link-active router-link-exact-active brand",
+      "text": "明日档案 RETRO-FUTURISM ARCHIVE",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "Wiki",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "博客",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "画廊",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "论坛",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "",
+      "text": "搜索",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "BUTTON",
+      "className": "deco-btn lr-button lr-button--secondary",
+      "text": "搜索 ⌘K",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "BUTTON",
+      "className": "deco-btn lr-button lr-button--secondary",
+      "text": "CRT ON",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "card lr-panel lr-panel--interactive",
+      "text": "Wiki 知识库 论文集与朋克谱系专卷，共 129 篇。交叉引用已全部可点击。",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "card lr-panel lr-panel--interactive",
+      "text": "博客 编辑部写作：站点说明、方法论笔记与考据随笔。",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "card lr-panel lr-panel--interactive",
+      "text": "多媒体画廊 卡面、单位设定、战场地图与美学方案，共 [object Object] 件视觉素材。",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "A",
+      "className": "card lr-panel lr-panel--interactive",
+      "text": "论坛 读者讨论区。（M2 建设中）",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "BUTTON",
+      "className": "deco-btn lr-button lr-button--secondary",
+      "text": "ESC",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "INPUT",
+      "className": "search-input lr-field__control",
+      "text": "搜索关键词",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "BUTTON",
+      "className": "deco-btn lr-button lr-button--secondary",
+      "text": "ESC",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "INPUT",
+      "className": "search-input lr-field__control",
+      "text": "搜索关键词",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "BUTTON",
+      "className": "deco-btn lr-button lr-button--secondary",
+      "text": "ESC",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    },
+    {
+      "tag": "INPUT",
+      "className": "search-input lr-field__control",
+      "text": "搜索关键词",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(138, 180, 248)",
+      "boxShadow": "none",
+      "visible": true
+    }
+  ],
+  "dialog": {
+    "open": true,
+    "screenshot": "design/docs/shots/website-search-search.png"
+  }
+}
