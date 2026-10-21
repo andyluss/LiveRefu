@@ -57,7 +57,7 @@
       "path": "projects/tomorrows-channel",
       "mode": "block",
       "config": "rules/meta/tools/config-tomorrows-channel.json",
-      "why": "已写专门配置，2026-10-08 实测 0 违规（30 合规）"
+      "why": "已写专门配置，2026-10-08 实测 0 违规（29 合规）"
     },
     {
       "path": "projects/refu-game-001",

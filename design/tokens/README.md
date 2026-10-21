@@ -37,6 +37,7 @@ tokens/
     ├── web/future-archive.css
     ├── web/livefab.css
     ├── godot/tokens.json
+    ├── app/tokens.json
     └── docs/tokens.md
 ```
 

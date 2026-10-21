@@ -7,7 +7,7 @@
 | --- | --- | --- | --- |
 | [web](web/README.md) | **v0.2 试点** | `dist/web/future-archive.css` / `livefab.css` | CSS 变量 + 旧变量兼容别名；网站与 LiveFab 已接入 |
 | [godot](godot/README.md) | **v0.1 试点** | `dist/godot/tokens.json` | 与《未来残片》现有 schema 一致；`ThemeBuilder` 编译 Theme |
-| app | v0.2 | SwiftUI / Compose token 导出 | 触控目标、安全区、Dynamic Type、平台导航 |
+| [app](app/README.md) | **v0.3 起步** | `dist/app/tokens.json`（平台无关 JSON） | 触控目标、安全区、Dynamic Type、平台导航；**尚无真实 App 消费者** |
 | print | v0.3 | CSV/JSON 规格 + 版式模板 | CMYK/专色、纸张、出血、条码/法务位 |
 | physical | v0.4 | CMF 规格 + 刀版 + 供应商清单 | 颜色/材料/表面、工艺、公差、包装、安全 |
 

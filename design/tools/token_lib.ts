@@ -708,6 +708,82 @@ export function buildGodotJson(tokens: TokenMap): string {
 }
 
 // ══════════════════════════════════════════════════════════════════════
+// 生成：App token JSON（平台无关）
+// ══════════════════════════════════════════════════════════════════════
+
+export function buildAppJson(tokens: TokenMap): string {
+  const colors: Record<string, string> = {}
+  for (const [path, token] of [...tokens].sort(([a], [b]) => a.localeCompare(b))) {
+    if (!path.startsWith('sys.color.')) continue
+    colors[path.replace('sys.color.', '')] = String(token.value)
+  }
+
+  const type = UI_LEVELS.map(level => ({
+    token: level,
+    size: dimensionToNumber(getString(tokens, `sys.type.ui.${level}.size`)),
+    lineHeight: getNumber(tokens, `sys.type.ui.${level}.lineHeight`),
+    weight: getNumber(tokens, `sys.type.ui.${level}.weight`),
+    use: getString(tokens, `sys.type.ui.${level}.use`),
+  }))
+
+  const data = {
+    schemaVersion: 1,
+    name: 'lrds.app.tokens',
+    platform: 'ios-android',
+    unit: 'logical-px',
+    note:
+      '由 design/tokens 生成。1 logical px 在基线上映射为 iOS pt / Android dp；' +
+      '文字必须随系统 Dynamic Type / fontScale 缩放，不得用固定高度裁切。' +
+      '颜色只引用 sys.* 语义；产品风格卡另行叠加。',
+    colors,
+    type,
+    size: {
+      control: {
+        sm: dimensionToNumber(getString(tokens, 'sys.size.control.sm')),
+        md: dimensionToNumber(getString(tokens, 'sys.size.control.md')),
+        lg: dimensionToNumber(getString(tokens, 'sys.size.control.lg')),
+      },
+      touch: {
+        min: dimensionToNumber(getString(tokens, 'sys.size.touch.min')),
+      },
+      icon: {
+        sm: dimensionToNumber(getString(tokens, 'sys.size.icon.sm')),
+        md: dimensionToNumber(getString(tokens, 'sys.size.icon.md')),
+        lg: dimensionToNumber(getString(tokens, 'sys.size.icon.lg')),
+      },
+    },
+    space: [4, 8, 12, 16, 24, 32],
+    radius: {
+      control: dimensionToNumber(getString(tokens, 'sys.radius.control')),
+      panel: dimensionToNumber(getString(tokens, 'sys.radius.panel')),
+    },
+    border: {
+      control: dimensionToNumber(getString(tokens, 'sys.border.control')),
+      focus: dimensionToNumber(getString(tokens, 'sys.border.focus')),
+      focusOffset: dimensionToNumber(getString(tokens, 'sys.border.focusOffset')),
+    },
+    motion: {
+      fast: durationToNumber(getString(tokens, 'sys.motion.duration.fast')),
+      base: durationToNumber(getString(tokens, 'sys.motion.duration.base')),
+      slow: durationToNumber(getString(tokens, 'sys.motion.duration.slow')),
+      standard: getValue(tokens, 'sys.motion.easing.standard'),
+      emphasis: getValue(tokens, 'sys.motion.easing.emphasis'),
+    },
+    shadow: {
+      elevated: String(getValue(tokens, 'sys.shadow.elevated')),
+    },
+    accessibility: {
+      minTouchTarget: dimensionToNumber(getString(tokens, 'sys.size.touch.min')),
+      minContrastText: 4.5,
+      minContrastUi: 3,
+      minTextScale: 2.0,
+    },
+  }
+
+  return `${JSON.stringify(data, null, 2)}\n`
+}
+
+// ══════════════════════════════════════════════════════════════════════
 // 生成：Markdown token 参考
 // ══════════════════════════════════════════════════════════════════════
 
@@ -811,6 +887,11 @@ export function buildAll(designRoot = DESIGN_ROOT, workspaceRoot = WORKSPACE_ROO
       path: join(designRoot, 'tokens/dist/godot/tokens.json'),
       content: godot,
       label: 'design/tokens/dist/godot/tokens.json',
+    },
+    {
+      path: join(designRoot, 'tokens/dist/app/tokens.json'),
+      content: buildAppJson(loaded.tokens),
+      label: 'design/tokens/dist/app/tokens.json',
     },
     {
       path: join(designRoot, 'tokens/dist/docs/tokens.md'),
