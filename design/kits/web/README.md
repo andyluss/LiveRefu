@@ -50,12 +50,12 @@
 - `projects/website/app/assets/components.generated.css`
 - `projects/livefab/portal/src/assets/components.generated.css`
 
-产品按 **tokens → components → 产品主题** 的顺序加载。当前是**渐进接入**：
+产品按 **tokens → components → 产品主题** 的顺序加载。v0.2 已做**皮肤收口**：基础表面/描边/圆角交给组件层，产品只保留排版与 hover 强调。
 
 | 组件 | 网站 | LiveFab | 说明 |
 | --- | --- | --- | --- |
-| Button | 4 个文件 / 12 处 | 1 个文件 / 1 处 | 保留 `.deco-btn` / `.cta` 皮肤，组件层提供基线与焦点/禁用行为 |
-| Panel | 6 个文件 / 22 处 | 1 个文件 / 1 处 | `.card` / `ul.svc li` 叠加 `lr-panel`，产品样式覆盖表面 |
+| Button | 4 个文件 / 12 处 | 1 个文件 / 1 处 | 技术/描边按钮成为 `lr-button--technical` / `--outline` 变体；产品重复皮肤已删除 |
+| Panel | 6 个文件 / 22 处 | 1 个文件 / 1 处 | `.card` / `ul.svc li` 使用 `lr-panel`；8px 圆角 / 1.5px 边框 / 组件内边距 |
 | Form Field | 1 个文件 / 1 处 | 无 | 搜索框使用 wrapper + control；LiveFab 当前没有表单，不硬造第二个消费者 |
 
 **预览**：[`preview.html`](preview.html)——按钮三尺寸与六态、面板三变体、字段默认/错误/只读。
@@ -67,7 +67,7 @@ node --experimental-strip-types design/tools/build_web_kit.ts
 node --experimental-strip-types design/tools/check_component_usage.ts
 ```
 
-> **这是基础层，不是换肤**：产品仍保留自己的视觉；等视觉评审通过后再逐步删除产品侧的重复样式。搜索框的焦点色已从 `--teal` 改为 `--focus`（独立蓝），修掉“焦点=强调色”。
+> **基础层已收口**：产品侧 `.deco-btn` / `.cta` / `.card` 的重复基础样式已删除；技术/描边按钮、8px 面板圆角均为组件层决策。完整记录见 [10 皮肤收口](../../docs/10_皮肤收口_v0.2.md)。搜索框焦点色为 `--focus`（独立蓝）。
 
 ## 四、规则
 

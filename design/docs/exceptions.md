@@ -5,15 +5,14 @@
 
 ## 当前例外
 
-| ID | 产品 / 位置 | 违反了什么 | 理由 | 替代方案 / 收口计划 | Owner | 到期 | 状态 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| **EX-20261021-02** | 《未来档案》`app/assets/theme.css` | 圆角 `6px` 不在系统 4/8 阶梯内 | v0.1 要求“外观基本不变”，不把圆角改动混进 token 迁移；6px 是现有视觉的一部分 | v0.2 做一次视觉评审：改 8px（更接近系统）或把 6px 正式纳入阶梯并记录代价 | 设计主控 | **2027-01-31** | active |
+（暂无 active 例外。）
 
 ## 已收口
 
 | ID | 产品 / 位置 | 收口日期 | 怎么收口的 |
 | --- | --- | --- | --- |
 | **EX-20261021-01** | 《未来档案》`GalleryGrid.vue`、`SearchDialog.vue`、`pages/gallery/index.vue`、`theme.css` | **2026-10-21** | 产品层补 8 个 alpha/overlay token（`scanline` / `vignette` / `overlayStrong` / `overlayPanel` / `overlaySearch` / `shadow` / `surfaceDeep` / `onWarning`），8 位 hex 与 `rgba()` 等价；网站 app 全量裸色值检查通过。见 [06](06_实现记录_v0.2.md)。 |
+| **EX-20261021-02** | 《未来档案》`app/assets/theme.css` + `.card` | **2026-10-21** | 采用 8px 面板圆角：`--radius` 改为 `--lr-radius-panel`；`.card` 基础表面交给 `.lr-panel`；按钮改用组件层 4px 控件圆角。见 [10](10_皮肤收口_v0.2.md)。 |
 
 ## 登记规则
 

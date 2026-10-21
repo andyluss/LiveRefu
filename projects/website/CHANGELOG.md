@@ -36,7 +36,7 @@
 - 新增 [`app/assets/components.generated.css`](app/assets/components.generated.css)（由 [`design/kits/web/components.css`](../../design/kits/web/components.css) 生成，勿手改），并在 `nuxt.config.ts` 里按 **tokens → components → theme** 加载。
 - `.deco-btn` 叠加 `lr-button lr-button--secondary`（4 个文件 / 12 处）；`.card` 叠加 `lr-panel`（6 个文件 / 22 处；论坛静态阶段卡只加基础 `lr-panel`，不加 `--interactive`）；搜索框外层加 `.lr-field`、输入框加 `lr-field__control`。
 - **搜索框焦点修复**：`.search-input:focus` 从 `--teal` 改为 `--focus`（独立蓝），并使用 `--lr-border-focus` / `--lr-border-focus-offset`。
-- 本轮是**渐进接入**：产品 `.deco-btn` / `.card` 皮肤仍覆盖组件层主要视觉；下一步做完整截图 + Tab 走查后再删除重复样式。
+- 本轮先做**渐进接入**；随后完成皮肤收口（见下节），删除 `.deco-btn` / `.card` 的重复基础样式。
 - **走查结果**：4 个页面、53 步 Tab、0 个缺失可见焦点；截图与报告见 [`design/docs/09_产品走查_v0.2.md`](../../design/docs/09_产品走查_v0.2.md)。
 - **运行时备注**：本机 Bun 1.4.0 运行构建产物触发 NAPI 崩溃（SIGABRT），Node 可正常服务；部署前需按目标运行时复核。
 
@@ -44,6 +44,14 @@
 
 - `bun run build`：通过；产物 CSS 已包含 `.lr-button--primary` / `.lr-panel--interactive`。
 - `bun run tools/verify-contrast.ts`：27/27。
+
+### 变更（皮肤收口：8px 面板圆角 + 按钮变体）
+
+- **卡片圆角 6 → 8px**：`--radius` 改为 `--lr-radius-panel`；`.card` 删除 `background / border / border-radius / padding`，由 `.lr-panel` 提供表面；只保留 `.card:hover` 的 teal 强调与标题/描述排版。EX-20261021-02 resolved。
+- **技术按钮正式化**：`.deco-btn` 的重复 CSS 删除，改用组件层 `lr-button lr-button--technical`（等宽/caption/raised 底/4px 控件圆角）；`aria-pressed` 由组件层统一处理。
+- **搜索框圆角**：`.search-input` 改用 `--lr-radius-control`（4px），与组件层一致。
+- **视觉 delta（有意）**：卡片 8px 圆角 / 1.5px 边框 / 16·24px 内边距 / 略深的表面；技术按钮 4px 圆角 / 1.5px 边框。信息结构与交互位置不变。
+- **重新走查**：4 页、53 步 Tab、0 缺失可见焦点；过程中发现并修复 `white-space: nowrap` 误加到 panel 导致卡片文字溢出的回归。
 
 ## [0.28.0] - 2026-10-03 17:48
 

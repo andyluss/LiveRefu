@@ -23,8 +23,9 @@
 ### 变更（共享 Web 组件层渐进接入）
 
 - 新增 [`src/assets/components.generated.css`](portal/src/assets/components.generated.css)（由 [`design/kits/web/components.css`](../../design/kits/web/components.css) 生成，勿手改），与 tokens 一起在 `Base.astro` 引入。
-- `.cta` 叠加 `lr-button lr-button--secondary`；`ul.svc li` 叠加 `lr-panel`。产品原有 `.cta` / `ul.svc li` 样式保留，本轮是**渐进接入**。
+- `.cta` 改用 `lr-button lr-button--outline`；`ul.svc li` 改用 `lr-panel`。**删除**产品侧 `.cta` 与 `ul.svc li` 的重复边框/底色/圆角/内边距；面板统一 8px 圆角 / 1.5px 边框 / 16·24px 内边距。
 - `bun run build` 通过；产物 CSS 已包含 `.lr-button--primary` / `.lr-panel--interactive`。
+- **走查**：4 页、53 步 Tab、0 缺失可见焦点；截图见 [`design/docs/09_产品走查_v0.2.md`](../../design/docs/09_产品走查_v0.2.md)，皮肤收口记录见 [`design/docs/10_皮肤收口_v0.2.md`](../../design/docs/10_皮肤收口_v0.2.md)。
 
 ### 变更（变更日志校验器提升为工作区级）
 

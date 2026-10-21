@@ -92,7 +92,7 @@ onBeforeUnmount(() => {
           <div class="lb-bar">
             <span class="lb-count">{{ index + 1 }} / {{ items.length }}</span>
             <span class="lb-title">{{ current.title }}</span>
-            <button ref="closeBtn" class="deco-btn lr-button lr-button--secondary" type="button" @click="close">关闭 ESC</button>
+            <button ref="closeBtn" class="deco-btn lr-button lr-button--technical" type="button" @click="close">关闭 ESC</button>
           </div>
 
           <div class="lb-stage">

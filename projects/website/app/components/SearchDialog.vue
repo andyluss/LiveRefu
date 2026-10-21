@@ -112,7 +112,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
 <template>
   <div>
     <!-- 触发按钮（头部用） -->
-    <button class="deco-btn lr-button lr-button--secondary" type="button" title="站内搜索（⌘K）" @click="openDialog">
+    <button class="deco-btn lr-button lr-button--technical" type="button" title="站内搜索（⌘K）" @click="openDialog">
       搜索 ⌘K
     </button>
 
@@ -139,7 +139,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
                 @input="onInput"
               >
             </div>
-            <button class="deco-btn lr-button lr-button--secondary" type="button" @click="closeDialog">ESC</button>
+            <button class="deco-btn lr-button lr-button--technical" type="button" @click="closeDialog">ESC</button>
           </div>
 
           <div class="search-body">
@@ -212,7 +212,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
   flex: 1;
   background: var(--bg);
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
+  border-radius: var(--lr-radius-control);
   color: var(--text);
   font-family: var(--font-ui);
   font-size: 1rem;

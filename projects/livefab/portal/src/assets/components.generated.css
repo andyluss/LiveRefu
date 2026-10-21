@@ -17,6 +17,7 @@
   font-size: var(--lr-type-ui-body-size);
   line-height: var(--lr-type-ui-body-line-height);
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   user-select: none;
   transition:
@@ -64,6 +65,35 @@
 
 .lr-button--ghost:hover {
   background: var(--lr-color-bg-raised);
+}
+
+/* 技术标签式按钮：网站 CRT/搜索等“仪表标签”场景；等值承接原 .deco-btn 的视觉。 */
+.lr-button--technical {
+  background: var(--lr-color-bg-raised);
+  border-color: var(--lr-color-line-strong);
+  color: var(--lr-color-text-secondary);
+  font-family: var(--lr-ref-font-family-mono);
+  font-size: var(--lr-type-ui-caption-size);
+  letter-spacing: 0.1em;
+  padding: var(--lr-space-4) var(--lr-space-12);
+}
+
+.lr-button--technical:hover,
+.lr-button--technical[aria-pressed='true'] {
+  color: var(--lr-color-action-primary-hover);
+  border-color: var(--lr-color-action-primary);
+}
+
+/* 描边行动按钮：透明底 + 行动色边框；等值承接原 .cta。 */
+.lr-button--outline {
+  background: transparent;
+  border-color: var(--lr-color-action-primary);
+  color: var(--lr-color-action-primary-hover);
+}
+
+.lr-button--outline:hover {
+  background: var(--lr-color-bg-raised);
+  border-color: var(--lr-color-action-primary-hover);
 }
 
 .lr-button--danger {

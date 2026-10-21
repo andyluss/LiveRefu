@@ -24,7 +24,7 @@
     },
     {
       "tag": "A",
-      "className": "cta lr-button lr-button--secondary",
+      "className": "cta lr-button lr-button--outline",
       "text": "登录",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",
@@ -51,7 +51,7 @@
     },
     {
       "tag": "A",
-      "className": "cta lr-button lr-button--secondary",
+      "className": "cta lr-button lr-button--outline",
       "text": "登录",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",
@@ -78,7 +78,7 @@
     },
     {
       "tag": "A",
-      "className": "cta lr-button lr-button--secondary",
+      "className": "cta lr-button lr-button--outline",
       "text": "登录",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",

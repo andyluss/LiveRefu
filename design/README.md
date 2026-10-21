@@ -1,7 +1,7 @@
 # LiveRefu Design System（LRDS）· 项目设计系统
 
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
-> **状态**：**v0.2 治理收口 + 组件渐进接入**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约与共享 Web 组件层。
+> **状态**：**v0.2 皮肤收口完成**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
 
 ## 一、这是什么（以及不是什么）
@@ -19,7 +19,7 @@
 
 | 你是 | 从这里开始 | 然后 |
 | --- | --- | --- |
-| **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D10 已裁决） | [05 v0.1](docs/05_实现记录_v0.1.md) / [06 v0.2](docs/06_实现记录_v0.2.md) / [08 组件落地](docs/08_组件落地_v0.2.md) / [09 产品走查](docs/09_产品走查_v0.2.md) |
+| **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D10 已裁决） | [05 v0.1](docs/05_实现记录_v0.1.md) / [06 v0.2](docs/06_实现记录_v0.2.md) / [08 组件落地](docs/08_组件落地_v0.2.md) / [09 产品走查](docs/09_产品走查_v0.2.md) / [10 皮肤收口](docs/10_皮肤收口_v0.2.md) |
 | **执行者 / 设计主控** | [02 系统架构](docs/02_系统架构.md)（五层模型、三层 token、单一事实来源） | [03 治理与运营](docs/03_治理与运营.md)（权限、版本、闸门） |
 | **产品负责人** | [04 落地路线](docs/04_落地路线.md)（试点、阶段、Definition of Done） | 对应的介质包：[Web](kits/web/README.md) / [Godot](kits/godot/README.md) ｜ [07 风格卡登记](docs/07_风格卡登记.md) |
 | **AI 代理** | [03 §七 AI 协作约定](docs/03_治理与运营.md) | 改任何视觉相关文件前，先跑 [`tools/check.sh`](tools/check.sh) |
@@ -107,10 +107,11 @@ design/
 ### v0.2 第二阶段（治理收口）
 
 - **明日频道风格卡登记**：`SC-TOMORROWS-CHANNEL-TAPE-v1` 落库（9 色 + 色温/光比/装饰参数），新增 [`check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts) 与 `.tres` 对账（7/7 自检）；登记表见 [07](docs/07_风格卡登记.md)。
-- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（29 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（30 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
 - **3 个组件契约（draft）**：[button](components/button.md) / [form-field](components/form-field.md) / [panel](components/panel.md)；契约闸门 **8/8**（五节、token、裸值、组件 CSS）。
 - **共享 Web 组件层渐进接入**：[components.css](kits/web/components.css) + 生成副本；网站/LiveFab 已叠加 `lr-button` / `lr-panel`，搜索框接入 `lr-field`；使用审计 **4/4**（button/panel 各 2 产品，field 1 产品）。预览图：[preview.png](kits/web/preview.png)。
-- **产品走查**：4 个页面（网站首页 / Wiki 列表 / 搜索弹窗 / LiveFab 首页）、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [09 产品走查](docs/09_产品走查_v0.2.md)。
+- **产品走查**：4 个页面、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [09 产品走查](docs/09_产品走查_v0.2.md)。
+- **皮肤收口**：卡片圆角 6 → **8px**（EX-02 resolved）；新增 `lr-button--technical` / `--outline` 两个产品驱动变体；删除 `.deco-btn` / `.cta` / `.card` 的重复基础皮肤；修复 `white-space: nowrap` 误加到 panel 的回归，并重新走查（53 步 / 0 缺失）。见 [10 皮肤收口](docs/10_皮肤收口_v0.2.md)。
 - **证据**：[06 实现记录 §五](docs/06_实现记录_v0.2.md)、[08 组件落地](docs/08_组件落地_v0.2.md)、[09 产品走查](docs/09_产品走查_v0.2.md)。
 
 ### 常用命令
@@ -124,11 +125,11 @@ cd projects/website && bun run tools/verify-contrast.ts && bun run build
 node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts
 ```
 
-### 下一步（v0.2 剩余）
+### 下一步
 
-1. 决定网站卡片圆角：6px（现状）还是 8px（系统阶梯）——EX-20261021-02；
-2. 决定按钮是否迁移到组件层 secondary/primary 视觉；决策后再删除产品侧重复皮肤；
-3. App kit 起步。
+1. App kit 起步（触控目标、安全区、Dynamic Type）；
+2. Form Field 等待第二个真实表单消费者；
+3. 打印/实体按 D6 后置。
 
 ### `v0.1` 明确不做
 
@@ -139,4 +140,4 @@ node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts
 - 工作区规则：[`rules/`](../rules/README.md) ｜ 变更日志：[`CHANGELOG.md`](../CHANGELOG.md) ｜ 技术详解：[`tech/`](../tech/README.md)
 - 视觉方向的上游决策：[`projects/mainline/docs/05_美术与技术方向.md`](../projects/mainline/docs/05_美术与技术方向.md)（Q6 已裁决：语法层 + 风格卡）
 - 决策体例参考：[`projects/mainline/docs/00_决策总表.md`](../projects/mainline/docs/00_决策总表.md)（推荐 / 代价 / 推翻条件 / 不回删原文）
-- 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md)、[`docs/08_组件落地_v0.2.md`](docs/08_组件落地_v0.2.md)、[`docs/09_产品走查_v0.2.md`](docs/09_产品走查_v0.2.md) ｜ 风格卡：[`docs/07_风格卡登记.md`](docs/07_风格卡登记.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)
+- 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md)、[`docs/08_组件落地_v0.2.md`](docs/08_组件落地_v0.2.md)、[`docs/09_产品走查_v0.2.md`](docs/09_产品走查_v0.2.md)、[`docs/10_皮肤收口_v0.2.md`](docs/10_皮肤收口_v0.2.md) ｜ 风格卡：[`docs/07_风格卡登记.md`](docs/07_风格卡登记.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)

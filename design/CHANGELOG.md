@@ -16,7 +16,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 29 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 30 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。
@@ -25,6 +25,11 @@
   - 新增 [`kits/web/components.css`](kits/web/components.css)：`.lr-button` / `.lr-panel` / `.lr-field`，只引用 token；新增 [`kits/web/preview.html`](kits/web/preview.html) 与真实渲染图 [`preview.png`](kits/web/preview.png)。
   - 新增 [`tools/build_web_kit.ts`](tools/build_web_kit.ts)（3/3 自检）与 [`tools/check_component_usage.ts`](tools/check_component_usage.ts)（4/4 自检）。
   - 网站 4 文件 / 12 处 button、6 文件 / 22 处 panel、1 处 field；LiveFab 1 处 button + 1 处 panel；**渐进接入**，产品皮肤保留。
+- **v0.2 第四阶段（2026-10-21）：皮肤收口。**
+  - 新增 `lr-button--technical` / `lr-button--outline` 两个产品驱动变体；button 契约与预览同步。
+  - 卡片圆角 6 → **8px**（`--radius` = `--lr-radius-panel`）；`.card` 基础表面交给 `.lr-panel`；删除 `.deco-btn` / `.cta` / `ul.svc li` 的重复基础皮肤。
+  - 新增 [`docs/10_皮肤收口_v0.2.md`](docs/10_皮肤收口_v0.2.md)；EX-20261021-02 resolved。
+  - 重新走查 4 页 / 53 步 Tab / 0 缺失焦点；过程中发现并修复 `white-space: nowrap` 误加到 `.lr-panel--interactive` 的回归。
   - [`check_component_contracts.ts`](tools/check_component_contracts.ts) 扩到组件 CSS，自检 8/8。
 - **v0.2 产品走查（2026-10-21）。**
   - 新增 [`tools/capture_products.ts`](tools/capture_products.ts)（2/2 自检）：真实页面全页截图 + Tab 焦点序列 + `Meta+K` 搜索弹窗。
@@ -50,6 +55,7 @@
 - **组件契约纳入 `check.sh`**：五节、token、裸值、状态四项检查（6/6 自检）。
 - **共享组件层纳入 `check.sh`**：组件产物一致（3/3）+ 使用审计（4/4）+ 组件 CSS 校验（8/8）。
 - **网站搜索框焦点改为 `--focus`**：去掉最后一处 `--teal` 焦点。
+- **v0.2 第四阶段**：网站卡片采用 8px 面板圆角；技术/描边按钮改为组件变体；产品侧重复基础皮肤删除；重跑截图 + Tab 走查。
 - **v0.2：裸色值闸门扩大到整个网站 app**（`.vue` / `.ts` / `.css`，26 个文件），不再只查 `theme.css`；`--all` 仍对游戏脚本只报告。
 - **v0.2：LiveFab 不再复制 token**：`product.livefab` 成为独立风格卡，门户消费 `livefab.css`；两个 Web 产品的旧变量别名各自独立，避免 `--bg` 互相覆盖。
 - **四道闸门接入根 pre-commit 与 CI**：暂存涉及 `design/`、网站 `theme.css` / `tokens.generated.css` 或游戏 `game/data/tokens.json` 时自动跑 `bash design/tools/check.sh`；CI 另加网站 `verify-contrast.ts`。
@@ -64,7 +70,7 @@
 
 ### 备注
 
-- **未做**：全组件库、Figma 库、打印/实体、母品牌命名。债务与收口计划见 [06 §六](docs/06_实现记录_v0.2.md)。
+- **未做**：全组件库、Figma 库、App kit、打印/实体、母品牌命名。债务与收口计划见 [10 §五](docs/10_皮肤收口_v0.2.md)。
 
 ## [0.0.1] - 2026-10-21 12:25 · 立项决策包
 

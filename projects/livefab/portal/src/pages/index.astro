@@ -35,10 +35,10 @@ const hiddenCount = SERVICES.length - visible.length
   </ul>
 
   {identity ? (
-    <p style="margin-top:1.6rem"><a class="cta lr-button lr-button--secondary" href={`https://${hosts.portal}/account/`}>进入个人中心</a></p>
+    <p style="margin-top:1.6rem"><a class="cta lr-button lr-button--outline" href={`https://${hosts.portal}/account/`}>进入个人中心</a></p>
   ) : (
     <p style="margin-top:1.6rem">
-      <a class="cta lr-button lr-button--secondary" href={`https://${hosts.auth}/?rd=https://${hosts.portal}/account/`}>登录</a>
+      <a class="cta lr-button lr-button--outline" href={`https://${hosts.auth}/?rd=https://${hosts.portal}/account/`}>登录</a>
       <span class="kv" style="margin-left:.8rem">还有 {hiddenCount} 个件登录后可见</span>
     </p>
   )}

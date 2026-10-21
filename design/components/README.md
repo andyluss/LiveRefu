@@ -7,11 +7,11 @@
 
 | 契约 | 状态 | 消费者 | 说明 |
 | --- | --- | --- | --- |
-| [button](button.md) | draft · **已渐进接入** | 网站 4 文件 / 12 处；LiveFab 1 处 | 主/次/幽灵/危险；sm/md/lg；6 种状态 |
-| [form-field](form-field.md) | draft · **已接入网站** | 网站搜索框（wrapper + control）；LiveFab 无表单 | 标签/输入/帮助/错误/必填；8 种状态 |
-| [panel](panel.md) | draft · **已渐进接入** | 网站 6 文件 / 22 处；LiveFab 1 处 | 静态面板 / 可交互卡片；头/身/脚 |
+| [button](button.md) | draft · **已接入（皮肤收口）** | 网站 4 文件 / 12 处；LiveFab 1 处 | 主/次/幽灵/危险；sm/md/lg；6 种状态 |
+| [form-field](form-field.md) | draft · **已接入网站（唯一消费者）** | 网站搜索框（wrapper + control）；LiveFab 无表单 | 标签/输入/帮助/错误/必填；8 种状态 |
+| [panel](panel.md) | draft · **已接入（皮肤收口）** | 网站 6 文件 / 22 处；LiveFab 1 处 | 静态面板 / 可交互卡片；头/身/脚 |
 
-> “draft” = 契约已写、已在真实产品渐进接入，但尚未完成两个平台的完整视觉/键盘走查；不是“可以随便改”。组件层与使用审计见 [`../kits/web/README.md`](../kits/web/README.md) 与 [`../tools/check_component_usage.ts`](../tools/check_component_usage.ts)。
+> “draft” = 契约已写、已在真实产品接入并通过 Tab 走查，但尚未覆盖第二个平台（App/Godot）的完整实现；不是“可以随便改”。组件层、使用审计与皮肤收口见 [`../kits/web/README.md`](../kits/web/README.md)、[`../tools/check_component_usage.ts`](../tools/check_component_usage.ts)、[`../docs/10_皮肤收口_v0.2.md`](../docs/10_皮肤收口_v0.2.md)。
 
 ## 二、契约模板（每个组件必须有的五节）
 

@@ -60,7 +60,7 @@
     },
     {
       "tag": "BUTTON",
-      "className": "deco-btn lr-button lr-button--secondary",
+      "className": "deco-btn lr-button lr-button--technical",
       "text": "搜索 ⌘K",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",
@@ -69,7 +69,7 @@
     },
     {
       "tag": "BUTTON",
-      "className": "deco-btn lr-button lr-button--secondary",
+      "className": "deco-btn lr-button lr-button--technical",
       "text": "CRT ON",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",
@@ -114,7 +114,7 @@
     },
     {
       "tag": "BUTTON",
-      "className": "deco-btn lr-button lr-button--secondary",
+      "className": "deco-btn lr-button lr-button--technical",
       "text": "ESC",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",
@@ -132,7 +132,7 @@
     },
     {
       "tag": "BUTTON",
-      "className": "deco-btn lr-button lr-button--secondary",
+      "className": "deco-btn lr-button lr-button--technical",
       "text": "ESC",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",
@@ -150,7 +150,7 @@
     },
     {
       "tag": "BUTTON",
-      "className": "deco-btn lr-button lr-button--secondary",
+      "className": "deco-btn lr-button lr-button--technical",
       "text": "ESC",
       "focusVisible": true,
       "outline": "solid 2px rgb(138, 180, 248)",

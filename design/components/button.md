@@ -26,6 +26,8 @@
 | primary | 一个视图只能有一个主行动 | `--lr-color-action-primary` / `--lr-color-action-on-primary` | 同时只允许一个主按钮 |
 | secondary | 次要行动 | `--lr-color-bg-raised` / `--lr-color-text-primary` | 边框用 `--lr-color-line-strong` |
 | ghost | 低权重、工具条 | 透明 / `--lr-color-text-primary` | hover 才出现底色 |
+| technical | 技术标签/仪表按钮（搜索、CRT 开关） | `--lr-color-bg-raised` / `--lr-color-text-secondary` | 等宽字体、小号、`aria-pressed` 可表示开关 |
+| outline | 描边行动（登录、跳转） | 透明 / `--lr-color-action-primary-hover` | 边框用行动色，不使用填充 |
 | danger | 删除、不可逆操作 | `--lr-color-feedback-danger` / `--lr-color-text-inverse` | 必须二次确认或明确后果 |
 
 ## 二、状态
@@ -76,4 +78,4 @@
 
 ## 六、Tokens
 
-`--lr-color-action-primary`、`--lr-color-action-primary-hover`、`--lr-color-action-on-primary`、`--lr-color-bg-raised`、`--lr-color-bg-surface`、`--lr-color-bg-sunken`、`--lr-color-text-primary`、`--lr-color-text-muted`、`--lr-color-text-inverse`、`--lr-color-line-strong`、`--lr-color-feedback-danger`、`--lr-color-focus-ring`、`--lr-border-control`、`--lr-border-focus`、`--lr-border-focus-offset`、`--lr-size-control-sm`、`--lr-size-control-md`、`--lr-size-control-lg`、`--lr-size-touch-min`、`--lr-size-icon-sm`、`--lr-size-icon-md`、`--lr-space-8`、`--lr-space-12`、`--lr-radius-control`、`--lr-type-ui-body-size`、`--lr-type-ui-caption-size`、`--lr-motion-duration-fast`、`--lr-motion-easing-standard`
+`--lr-color-action-primary`、`--lr-color-action-primary-hover`、`--lr-color-action-on-primary`、`--lr-color-bg-raised`、`--lr-color-text-secondary`、`--lr-ref-font-family-mono`、`--lr-color-bg-surface`、`--lr-color-bg-sunken`、`--lr-color-text-primary`、`--lr-color-text-muted`、`--lr-color-text-inverse`、`--lr-color-line-strong`、`--lr-color-feedback-danger`、`--lr-color-focus-ring`、`--lr-border-control`、`--lr-border-focus`、`--lr-border-focus-offset`、`--lr-size-control-sm`、`--lr-size-control-md`、`--lr-size-control-lg`、`--lr-size-touch-min`、`--lr-size-icon-sm`、`--lr-size-icon-md`、`--lr-space-8`、`--lr-space-12`、`--lr-radius-control`、`--lr-type-ui-body-size`、`--lr-type-ui-caption-size`、`--lr-motion-duration-fast`、`--lr-motion-easing-standard`

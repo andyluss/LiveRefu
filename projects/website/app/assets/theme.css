@@ -14,7 +14,7 @@
   --focus-width: var(--lr-border-focus);
 
   /* v0.1 保留网站现有 6px；v0.2 再收敛到设计系统的 4/8 圆角阶梯。 */
-  --radius: 6px;
+  --radius: var(--lr-radius-panel);
   --maxw: var(--lr-grid-web-max-width);
 
   --font-ui: ui-sans-serif, system-ui, -apple-system, 'SF Pro SC', 'PingFang SC',
@@ -118,21 +118,7 @@ html[data-crt='on'] body::after {
 .nav a { color: var(--text-dim); font-size: 0.9rem; }
 .nav a:hover, .nav a.router-link-active { color: var(--teal-bright); text-decoration: none; }
 
-/* 装饰按钮（CRT 开关之类） */
-.deco-btn {
-  background: var(--bg-elev-2);
-  border: 1px solid var(--line-strong);
-  color: var(--text-dim);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  padding: 0.28rem 0.6rem;
-  border-radius: var(--radius);
-  cursor: pointer;
-  white-space: nowrap;
-}
-.deco-btn:hover { color: var(--teal-bright); border-color: var(--teal); }
-.deco-btn[aria-pressed='true'] { color: var(--teal-bright); border-color: var(--teal); }
+/* 技术标签式按钮由组件层 .lr-button--technical 提供（原 .deco-btn 皮肤已收口）。 */
 
 /* ---------- Hero ---------- */
 .hero { padding: 4rem 0 2.5rem; border-bottom: 1px solid var(--line); }
@@ -165,13 +151,7 @@ html[data-crt='on'] body::after {
 /* ---------- 卡片网格 ---------- */
 .grid { display: grid; gap: 1rem; }
 .grid--3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.card {
-  background: var(--bg-elev);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  padding: 1.2rem 1.3rem;
-  display: block;
-}
+/* 卡片表面由组件层 .lr-panel 提供；这里只保留产品特有的 hover 强调。 */
 .card:hover { border-color: var(--teal); text-decoration: none; }
 .card__title { color: var(--cream); font-weight: 600; margin: 0 0 0.4rem; font-size: 1rem; }
 .card__desc { color: var(--text-faint); font-size: 0.84rem; margin: 0; line-height: 1.6; }
