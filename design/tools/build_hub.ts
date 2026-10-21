@@ -403,12 +403,26 @@ function generate(): string {
     ['HUB 与源一致（含自检）', 'build_hub.ts --check', '4/4'],
   ] as const
 
+  const lightVars = '--bg:#F7F3EA; --surface:#FFFDF8; --raised:#EDE6D8; --text:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line-strong:#8A8275; --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8'
   const html = `<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LRDS · 设计系统 HUB</title>
+<script>
+(function(){
+  try {
+    var q = new URLSearchParams(location.search).get('theme');
+    var t = (q === 'light' || q === 'dark' || q === 'system')
+      ? q
+      : (localStorage.getItem('lrds-hub-theme') || 'system');
+    document.documentElement.dataset.theme = t;
+  } catch (e) {
+    document.documentElement.dataset.theme = 'system';
+  }
+})();
+</script>
 <!-- 由 design/tools/build_hub.ts 生成；不要手改。 -->
 <style>
   :root{
@@ -419,6 +433,11 @@ function generate(): string {
     --radius:8px; --gap:16px;
     --sans:${sans.join(', ')};
     --mono:${mono.join(', ')};
+    color-scheme:dark;
+  }
+  html[data-theme="light"]{ ${lightVars}; color-scheme:light; }
+  @media (prefers-color-scheme: light){
+    html[data-theme="system"]{ ${lightVars}; color-scheme:light; }
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--sans)}
@@ -430,6 +449,11 @@ function generate(): string {
   .brand{font-size:19px;font-weight:700;letter-spacing:.03em}
   .brand .en{color:var(--muted);font-weight:400;font-size:12.5px;margin-left:8px}
   .stamp{margin-left:auto;color:var(--muted);font-size:12.5px;font-family:var(--mono)}
+  .theme-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--bg)}
+  .theme-switch button{appearance:none;border:0;background:transparent;color:var(--dim);font:inherit;font-size:12px;padding:4px 9px;border-radius:999px;cursor:pointer}
+  .theme-switch button:hover{color:var(--text)}
+  .theme-switch button[aria-pressed="true"]{background:var(--surface);color:var(--teal);font-weight:600;box-shadow:inset 0 0 0 1px var(--teal)}
+  .theme-switch button:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
   .hint{color:var(--dim);font-size:12.5px;margin:3px 0 10px}
   nav.tabs{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
   nav.tabs button{appearance:none;background:transparent;color:var(--dim);border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:9px 14px;font:inherit;font-size:14px;cursor:pointer}
@@ -518,8 +542,15 @@ function generate(): string {
   input[type=search]:focus{outline:2px solid var(--focus);outline-offset:1px}
   @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots{grid-template-columns:1fr}.type-row{grid-template-columns:1fr}.topbar{padding:10px 14px 0}main{padding:16px}}
   @media print{
+    :root, html[data-theme]{
+      --bg:#fff; --surface:#fff; --raised:#f5f5f5;
+      --text:#111; --dim:#333; --muted:#444;
+      --line:#bbb; --line-strong:#777;
+      --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8;
+      color-scheme:light;
+    }
     body{background:#fff;color:#111}
-    .topbar,nav.tabs,.toast,input[type=search]{display:none!important}
+    .topbar,nav.tabs,.toast,input[type=search],.theme-switch{display:none!important}
     main{max-width:none;padding:0}
     body.js .panel{display:block!important;break-inside:auto}
     .card,.stat,.shot,.gate{break-inside:avoid}
@@ -534,8 +565,13 @@ function generate(): string {
   <div class="topline">
     <div class="brand">LRDS · 设计系统 HUB<span class="en">LiveRefu Design System</span></div>
     <div class="stamp">v${esc(version)} 已发布 ｜ App kit 起步（未发布）</div>
+    <div class="theme-switch" role="group" aria-label="主题">
+      <button type="button" data-theme-set="system" aria-pressed="true">系统</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">亮色</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">暗色</button>
+    </div>
   </div>
-  <div class="hint">一页看完：Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值。打印时自动展开全部 Tab。</div>
+  <div class="hint">一页看完：Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值；右上角可切换系统 / 亮色 / 暗色。打印时自动展开全部 Tab。</div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>总览</button>
     <button role="tab" data-tab="tokens"><span class="n">02</span>Token</button>
@@ -737,6 +773,15 @@ addEventListener('afterprint', () => {
 });
 addEventListener('hashchange', () => select(location.hash.slice(1), false));
 select(location.hash.slice(1) || 'overview', false);
+
+const themeButtons = [...document.querySelectorAll('[data-theme-set]')];
+function setTheme(t, persist){
+  document.documentElement.dataset.theme = t;
+  themeButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === t)));
+  if (persist) { try { localStorage.setItem('lrds-hub-theme', t); } catch (e) {} }
+}
+themeButtons.forEach(b => b.addEventListener('click', () => setTheme(b.dataset.themeSet, true)));
+setTheme(document.documentElement.dataset.theme || 'system', false);
 
 const filter = document.getElementById('token-filter');
 if (filter) filter.addEventListener('input', () => {

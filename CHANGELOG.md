@@ -24,6 +24,8 @@
 
 - `design/tools/build_tokens.ts` 增加 App JSON 导出；`build_tokens --check` 现在校验 8 个生成物。
 - 根 [`README.md`](README.md) 的“开发 / 维护者 / 与 AI 协作”入口加入 [`AGENTS.md`](AGENTS.md)，并增加 AI 代理先读提示。
+- [`AGENTS.md`](AGENTS.md) 增加“**Git 推送一次失败即放弃**”：不连续重试，提交表标“推送失败”并给出重试命令。
+- [`design/HUB.html`](design/HUB.html) 支持“系统 / 亮色 / 暗色”三态主题切换（记忆到 `localStorage`）；亮色为 HUB 查看器主题，不是新的产品风格卡。
 - **补记设计系统 v0.1.0**：把原先并入 0.2.0 的 v0.1 条目拆成独立 `[0.1.0]` 版本段，并补打 `design-v0.1.0` tag（指向 v0.1 提交 `e91985d`）。
 
 ## [0.5.0] - 2026-10-21 13:50 · 设计系统 v0.2 与组件落地
