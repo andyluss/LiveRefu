@@ -5,7 +5,7 @@
 
 | Kit | 状态 | 消费方式 | 说明 |
 | --- | --- | --- | --- |
-| [web](web/README.md) | **v0.1 试点** | `dist/web/tokens.css` | CSS 变量 + 旧变量兼容别名；网站已接入 |
+| [web](web/README.md) | **v0.2 试点** | `dist/web/future-archive.css` / `livefab.css` | CSS 变量 + 旧变量兼容别名；网站与 LiveFab 已接入 |
 | [godot](godot/README.md) | **v0.1 试点** | `dist/godot/tokens.json` | 与《未来残片》现有 schema 一致；`ThemeBuilder` 编译 Theme |
 | app | v0.2 | SwiftUI / Compose token 导出 | 触控目标、安全区、Dynamic Type、平台导航 |
 | print | v0.3 | CSV/JSON 规格 + 版式模板 | CMYK/专色、纸张、出血、条码/法务位 |

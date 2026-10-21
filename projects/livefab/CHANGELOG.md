@@ -13,6 +13,13 @@
 
 > 下一轮的改动写在这里；发布时并入新版本号并补上时间。
 
+### 变更（门户改为消费设计系统 token）
+
+- 新增 [`src/assets/tokens.generated.css`](portal/src/assets/tokens.generated.css)（由 [`design/tokens/`](../../design/tokens/) 生成，勿手改）；[`Base.astro`](portal/src/layouts/Base.astro) 删除 11 个内联色值，改为 `import '../assets/tokens.generated.css'`。
+- 设计系统新增 `product.livefab` 风格卡（12 个颜色，等值迁移）；旧变量名（`--bg` / `--teal` / `--amber` …）由生成物别名提供，页面其余 CSS 未改。
+- **有意的视觉变化**：焦点描边从 `--teal-bright` 改为 `--focus`（独立蓝 `#8AB4F8`），只在键盘焦点时可见，修掉“焦点=强调色”。
+- **验收**：`bun run build` 通过；产物 CSS 确认包含 `--bg:var(--lr-livefab-bg)`；门户不再有裸色值。
+
 ### 变更（变更日志校验器提升为工作区级）
 
 本项目的变更日志校验器原本在 `tools/check-changelog.ts`，写死了路径与 `livefab-v` 前缀。

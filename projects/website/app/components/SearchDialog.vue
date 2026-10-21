@@ -178,7 +178,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(4, 8, 13, 0.72);
+  background: var(--lr-future-archive-overlay-search);
   backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
@@ -192,7 +192,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
   background: var(--bg-elev);
   border: 1px solid var(--teal);
   border-radius: var(--radius);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 18px 60px var(--lr-future-archive-shadow);
   overflow: hidden;
 }
 .search-head {
@@ -269,7 +269,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
 }
 .search-hit__snippet :deep(mark) {
   background: var(--amber);
-  color: #1a1206;
+  color: var(--lr-future-archive-on-warning);
   border-radius: 2px;
   padding: 0 0.15em;
 }

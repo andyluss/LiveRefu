@@ -24,11 +24,13 @@ tokens/
 │   └── sys.tokens.json       # 通用语义 + UI/Editorial 双字阶
 ├── products/
 │   ├── future-archive.tokens.json
-│   └── future-debris.atomic.tokens.json
+│   ├── future-debris.atomic.tokens.json
+│   └── livefab.tokens.json
 ├── schema/
 │   └── tokens.schema.json    # 编辑器补全/早期报错
 └── dist/                     # 生成物（勿手改）
-    ├── web/tokens.css
+    ├── web/future-archive.css
+    ├── web/livefab.css
     ├── godot/tokens.json
     └── docs/tokens.md
 ```
@@ -47,7 +49,7 @@ bash design/tools/check.sh
 
 ## 四、当前尺度
 
-- 颜色：见自动生成的 [`dist/docs/tokens.md`](dist/docs/tokens.md)；
+- 颜色：见自动生成的 [`dist/docs/tokens.md`](dist/docs/tokens.md)；支持 `#RRGGBB` 与 `#RRGGBBAA`（alpha 只用于遮罩/阴影等装饰，不用于文字对比度）；
 - UI 字阶：5 级（28/20/16/14/32）；
 - Editorial 字阶：7 级（48/36/28/22/16/14/12）；
 - 间距：4/8/12/16/24/32；

@@ -76,7 +76,7 @@ const total = computed(() => (albums.value ?? []).reduce((n, a) => n + a.count, 
 .album:hover { border-color: var(--teal); text-decoration: none; }
 .album__cover {
   aspect-ratio: 4 / 3;
-  background: #06090d;
+  background: var(--lr-future-archive-surface-deep);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -3,7 +3,7 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循 Keep a Changelog 风格：`新增` / `变更` / `修复` / `移除`。
 > 项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/)。内容源（唯一权威）在 [`doc/retro-futurism/`](../../doc/retro-futurism/README.md) 与 [`doc/punks/`](../../doc/punks/README.md)。
 
-## [0.29.0] - 2026-10-21 12:41
+## [0.29.0] - 2026-10-21 12:58
 
 ### 变更（颜色改为消费设计系统 token；焦点色修复）
 
@@ -16,7 +16,20 @@
 - `bun run tools/verify-contrast.ts`：27/27 组合达 WCAG AA，层级与 focus 分离通过。
 - `bun run build`：通过；产物 CSS 中确认包含生成 token 与 `--bg` 别名。
 
-> 说明：`GalleryGrid.vue` / `SearchDialog.vue` / `gallery/index.vue` 的遮罩、阴影、高亮色仍是裸值，已登记为设计债 [EX-20261021-01](../../design/docs/exceptions.md)，v0.2 收口。
+> 说明：`GalleryGrid.vue` / `SearchDialog.vue` / `gallery/index.vue` 的遮罩、阴影、高亮色曾为裸值，已收口（见 [EX-20261021-01](../../design/docs/exceptions.md)）；组件与 alpha token 的追加见下。
+
+### 变更（网站 app 全量颜色 token 化）
+
+- 产品层新增 8 个 alpha/overlay token（`scanline` / `vignette` / `overlayStrong` / `overlayPanel` / `overlaySearch` / `shadow` / `surfaceDeep` / `onWarning`），支持 8 位 hex（`#RRGGBBAA`），与原来的 `rgba()` 值等价。
+- [`app/assets/theme.css`](app/assets/theme.css) 的 CRT 扫描线/暗角改用 token；[`GalleryGrid.vue`](app/components/GalleryGrid.vue) 的灯箱遮罩/深底/半透明面板、[`SearchDialog.vue`](app/components/SearchDialog.vue) 的搜索遮罩/投影/高亮文字、[`gallery/index.vue`](app/pages/gallery/index.vue) 的深底全部改用 `--lr-future-archive-*`。
+- 裸色值闸门受检面从 `theme.css` 扩到整个 `app/`（26 个 CSS/Vue/TS 文件），当前 **0 处裸色值**。
+
+### 验收
+
+- `bun run tools/verify-contrast.ts`：27/27 组合达 WCAG AA。
+- `bun run build`：通过；产物 CSS 确认包含 overlay/scanline 等新 token。
+
+> 设计债 `EX-20261021-01`（组件裸色值）已收口；`EX-20261021-02`（6px 圆角）仍待视觉评审。
 
 ## [0.28.0] - 2026-10-03 17:48
 

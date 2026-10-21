@@ -1,7 +1,7 @@
 # LiveRefu Design System（LRDS）· 项目设计系统
 
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
-> **状态**：**v0.1 地基已落地**——三层 token、生成器、四道闸门、网站与《未来残片》两个试点已接入；外观基本不变。
+> **状态**：**v0.2 第一阶段已落地**——v0.1 地基 + 网站全量颜色 token 化 + LiveFab 门户接入；外观基本不变。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
 
 ## 一、这是什么（以及不是什么）
@@ -19,7 +19,7 @@
 
 | 你是 | 从这里开始 | 然后 |
 | --- | --- | --- |
-| **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D10 已裁决） | [05 实现记录](docs/05_实现记录_v0.1.md)（v0.1 做了什么、证据在哪） |
+| **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D10 已裁决） | [05 v0.1 记录](docs/05_实现记录_v0.1.md) / [06 v0.2 记录](docs/06_实现记录_v0.2.md)（做了什么、证据在哪） |
 | **执行者 / 设计主控** | [02 系统架构](docs/02_系统架构.md)（五层模型、三层 token、单一事实来源） | [03 治理与运营](docs/03_治理与运营.md)（权限、版本、闸门） |
 | **产品负责人** | [04 落地路线](docs/04_落地路线.md)（试点、阶段、Definition of Done） | 对应的介质包：[Web](kits/web/README.md) / [Godot](kits/godot/README.md) |
 | **AI 代理** | [03 §七 AI 协作约定](docs/03_治理与运营.md) | 改任何视觉相关文件前，先跑 [`tools/check.sh`](tools/check.sh) |
@@ -70,8 +70,8 @@ design/
 │   ├── web/                  # 网页接入说明
 │   └── godot/                # Godot 接入说明
 ├── tools/                    # token_lib / build / 三个 check / check.sh
-├── components/               # 组件契约（v0.2 起）
-├── assets/                   # 品牌资产（v0.2 起）
+├── components/               # 组件契约（v0.2 剩余）
+├── assets/                   # 品牌资产（v0.3 起）
 └── references/               # 参考、法务登记、moodboard
 ```
 
@@ -83,7 +83,7 @@ design/
 | --- | --- | --- |
 | [《未来残片》视觉 token 契约](../projects/mainline/future-debris/docs/04_视觉语言与设计token.md) | **语法层 / 风格卡**两层结构、语义命名、对比度闸门、检查器自检 | 游戏专属的 `--power` / `--residue`（已下沉为产品语义） |
 | [《未来档案》主题 CSS](../projects/website/app/assets/theme.css) | 已验证的暗色阅读配色、可关闭 CRT、系统 CJK 字体策略 | 与游戏重复的第二套色值（已改为消费生成 token） |
-| [LiveFab L9 复用纪律](../projects/livefab/docs/01_定位与角色.md) | “复用纪律、不复用内容”、对比度闸门、验收编排器思路 | 内联复制 token 的做法（v0.2 迁移） |
+| [LiveFab L9 复用纪律](../projects/livefab/docs/01_定位与角色.md) | “复用纪律、不复用内容”、对比度闸门、验收编排器思路 | 内联复制 token 的做法（v0.2 已迁移） |
 | [《明日频道》磁带皮肤](../projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres) | 暖色材质与光照作为**风格卡**的合法差异 | 散落在 `.tres` 里、无法对账的裸色值（v0.2 登记） |
 
 ## 七、当前状态与下一步
@@ -97,6 +97,13 @@ design/
 - **游戏试点**：`game/data/tokens.json` 改为生成物；`check_tokens.py`、`run.sh contrast`、`run.sh theme` 全绿；
 - **证据**：[05 实现记录](docs/05_实现记录_v0.1.md)。
 
+### v0.2 第一阶段
+
+- **网站全量颜色 token 化**：主题 + `GalleryGrid.vue` / `SearchDialog.vue` / `gallery/index.vue` 的遮罩、阴影、高亮全部改用产品 token；新增 8 个 8 位 hex 的 alpha token；网站 app 裸色值 **0 处**（26 个文件）。
+- **LiveFab 接入**：新增 `product.livefab` 风格卡，门户改为 `import tokens.generated.css`，删除 11 个内联色值；`bun run build` 通过，产物 CSS 确认包含生成 token。
+- **多产品 Web 生成**：`dist/web/future-archive.css` 与 `dist/web/livefab.css` 各自独立，旧变量别名不再互相覆盖。
+- **证据**：[06 实现记录](docs/06_实现记录_v0.2.md)。
+
 ### 常用命令
 
 ```bash
@@ -107,14 +114,13 @@ cd projects/mainline/future-debris && ./run.sh contrast && ./run.sh theme
 cd projects/website && bun run tools/verify-contrast.ts && bun run build
 ```
 
-### 下一步（v0.2，按优先级）
+### 下一步（v0.2 剩余）
 
-1. 网站组件裸色值（遮罩/阴影/高亮）→ 补 overlay/shadow/onWarning token，收口 [EX-20261021-01](docs/exceptions.md)；
-2. LiveFab 接入生成 CSS，删除内联复制；
-3. 明日频道暖色风格卡登记；
-4. `design/` M1/M2 配置转 `block`；
-5. 3–5 个组件契约（按钮、表单、面板、导航、反馈）；
-6. App kit 起步。
+1. 明日频道暖色风格卡登记；
+2. `design/` M1/M2 配置转 `block`；
+3. 3–5 个组件契约（按钮、表单、面板、导航、反馈）；
+4. App kit 起步；
+5. 网站 6px 圆角（EX-20261021-02）做一次视觉评审。
 
 ### `v0.1` 明确不做
 
@@ -125,4 +131,4 @@ cd projects/website && bun run tools/verify-contrast.ts && bun run build
 - 工作区规则：[`rules/`](../rules/README.md) ｜ 变更日志：[`CHANGELOG.md`](../CHANGELOG.md) ｜ 技术详解：[`tech/`](../tech/README.md)
 - 视觉方向的上游决策：[`projects/mainline/docs/05_美术与技术方向.md`](../projects/mainline/docs/05_美术与技术方向.md)（Q6 已裁决：语法层 + 风格卡）
 - 决策体例参考：[`projects/mainline/docs/00_决策总表.md`](../projects/mainline/docs/00_决策总表.md)（推荐 / 代价 / 推翻条件 / 不回删原文）
-- 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)
+- 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)

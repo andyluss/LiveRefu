@@ -24,7 +24,15 @@
         "amber": { "$value": "{ref.color.amber.500}", "$type": "color" },
         "rust": { "$value": "{ref.color.orange.500}", "$type": "color" },
         "chrome": { "$value": "{ref.color.chrome.300}", "$type": "color" },
-        "focus": { "$value": "{sys.color.focus.ring}", "$type": "color" }
+        "focus": { "$value": "{sys.color.focus.ring}", "$type": "color" },
+        "scanline": { "$value": "#00000024", "$type": "color" },
+        "vignette": { "$value": "#0000006B", "$type": "color" },
+        "overlayStrong": { "$value": "#03060AED", "$type": "color" },
+        "overlayPanel": { "$value": "#121A26D9", "$type": "color" },
+        "overlaySearch": { "$value": "#04080DB8", "$type": "color" },
+        "shadow": { "$value": "#0000008C", "$type": "color" },
+        "surfaceDeep": { "$value": "#06090D", "$type": "color" },
+        "onWarning": { "$value": "#1A1206", "$type": "color" }
       }
     }
   }

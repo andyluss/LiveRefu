@@ -63,12 +63,20 @@
 | `color.focus` | `#8AB4F8` | `{sys.color.focus.ring}` |
 | `color.line` | `#24303F` | `{ref.color.neutral.500}` |
 | `color.lineStrong` | `#66727F` | `{ref.color.neutral.700}` |
+| `color.onWarning` | `#1A1206` | — |
+| `color.overlayPanel` | `#121A26D9` | — |
+| `color.overlaySearch` | `#04080DB8` | — |
+| `color.overlayStrong` | `#03060AED` | — |
 | `color.rust` | `#C8703C` | `{ref.color.orange.500}` |
+| `color.scanline` | `#00000024` | — |
+| `color.shadow` | `#0000008C` | — |
+| `color.surfaceDeep` | `#06090D` | — |
 | `color.teal` | `#3FB8AB` | `{ref.color.teal.500}` |
 | `color.tealBright` | `#57D8C8` | `{ref.color.teal.200}` |
 | `color.text` | `#E8E4D9` | `{ref.color.paper.100}` |
 | `color.textDim` | `#9AA7B8` | `{ref.color.neutral.850}` |
 | `color.textFaint` | `#808D9F` | `{ref.color.neutral.800}` |
+| `color.vignette` | `#0000006B` | — |
 
 ## product.future-debris.color
 
@@ -92,6 +100,23 @@
 | `color.textDim` | `#A9A395` | `{ref.color.warmgray.100}` |
 | `color.textFaint` | `#9E9889` | `{ref.color.warmgray.200}` |
 | `color.warn` | `#FFC857` | `{sys.color.feedback.warning}` |
+
+## product.livefab.color
+
+| token | 值 | 来源 |
+| --- | --- | --- |
+| `color.amber` | `#D9A441` | `{ref.color.amber.400}` |
+| `color.bg` | `#0B0F14` | `{ref.color.neutral.0}` |
+| `color.bgElev` | `#111823` | `{ref.color.neutral.200}` |
+| `color.bgElev2` | `#161D26` | `{ref.color.neutral.300}` |
+| `color.focus` | `#8AB4F8` | `{sys.color.focus.ring}` |
+| `color.line` | `#24303F` | `{ref.color.neutral.500}` |
+| `color.lineStrong` | `#66727F` | `{ref.color.neutral.700}` |
+| `color.teal` | `#4FB3A6` | `{ref.color.teal.300}` |
+| `color.tealBright` | `#57D8C8` | `{ref.color.teal.200}` |
+| `color.text` | `#DBE4EE` | `{ref.color.paper.150}` |
+| `color.textDim` | `#A9B6C6` | `{ref.color.neutral.900}` |
+| `color.textFaint` | `#808D9F` | `{ref.color.neutral.800}` |
 
 ## 尺度
 

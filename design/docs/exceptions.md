@@ -7,12 +7,13 @@
 
 | ID | 产品 / 位置 | 违反了什么 | 理由 | 替代方案 / 收口计划 | Owner | 到期 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| **EX-20261021-01** | 《未来档案》`GalleryGrid.vue`、`SearchDialog.vue`、`pages/gallery/index.vue` | 业务代码出现裸色值（`#hex` / `rgba()`），未走 token | 这些是遮罩、阴影、搜索高亮的 alpha 色；v0.1 的 token 模型只支持 6 位 hex，没有 alpha/overlay 语义 | v0.2 补 `sys.color.overlay.scrim` / `overlay.panel` / `shadow` / `onWarning`（8 位 hex 或 alpha token），迁移后删除本例外 | 设计主控 | **2027-01-31** | active |
 | **EX-20261021-02** | 《未来档案》`app/assets/theme.css` | 圆角 `6px` 不在系统 4/8 阶梯内 | v0.1 要求“外观基本不变”，不把圆角改动混进 token 迁移；6px 是现有视觉的一部分 | v0.2 做一次视觉评审：改 8px（更接近系统）或把 6px 正式纳入阶梯并记录代价 | 设计主控 | **2027-01-31** | active |
 
 ## 已收口
 
-（暂无。收口后把状态改为 `resolved`，保留记录，不删除。）
+| ID | 产品 / 位置 | 收口日期 | 怎么收口的 |
+| --- | --- | --- | --- |
+| **EX-20261021-01** | 《未来档案》`GalleryGrid.vue`、`SearchDialog.vue`、`pages/gallery/index.vue`、`theme.css` | **2026-10-21** | 产品层补 8 个 alpha/overlay token（`scanline` / `vignette` / `overlayStrong` / `overlayPanel` / `overlaySearch` / `shadow` / `surfaceDeep` / `onWarning`），8 位 hex 与 `rgba()` 等价；网站 app 全量裸色值检查通过。见 [06](06_实现记录_v0.2.md)。 |
 
 ## 登记规则
 

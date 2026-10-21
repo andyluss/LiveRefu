@@ -59,8 +59,8 @@ html[data-crt='on'] body::before {
   pointer-events: none;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.14) 0px,
-    rgba(0, 0, 0, 0.14) 1px,
+    var(--lr-future-archive-scanline) 0px,
+    var(--lr-future-archive-scanline) 1px,
     transparent 1px,
     transparent 3px
   );
@@ -73,7 +73,7 @@ html[data-crt='on'] body::after {
   inset: 0;
   z-index: 9998;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.42) 100%);
+  background: radial-gradient(ellipse at center, transparent 55%, var(--lr-future-archive-vignette) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {

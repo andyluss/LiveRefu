@@ -147,7 +147,7 @@ onBeforeUnmount(() => {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(3, 6, 10, 0.93);
+  background: var(--lr-future-archive-overlay-strong);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -179,14 +179,14 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   min-height: 0;
-  background: #06090d;
+  background: var(--lr-future-archive-surface-deep);
 }
 .lb-img { max-width: 100%; max-height: 72vh; object-fit: contain; display: block; }
 .lb-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(18, 26, 38, 0.85);
+  background: var(--lr-future-archive-overlay-panel);
   border: 1px solid var(--line-strong);
   color: var(--cream);
   font-size: 1.6rem;

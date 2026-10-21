@@ -8,7 +8,7 @@
  *   node --experimental-strip-types design/tools/build_tokens.ts --self-test
  *
  * 产物：
- *   design/tokens/dist/web/tokens.css
+ *   design/tokens/dist/web/{future-archive,livefab}.css
  *   design/tokens/dist/godot/tokens.json
  *   design/tokens/dist/docs/tokens.md
  *   projects/website/app/assets/tokens.generated.css

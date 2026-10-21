@@ -1,8 +1,11 @@
 ---
 // LiveFab 门户 · 公共外壳
 //
-// 设计语言刻意复用《未来档案》的原子时代配色与对比度纪律（L9：复用纪律不复用内容）。
-// 颜色取自已验证过 WCAG AA 的那套 token，避免在这里重新发明一套。
+// 设计语言复用工作区设计系统（L9：复用纪律不复用内容）。
+// 颜色来自 ../assets/tokens.generated.css（由 design/tokens 生成，勿手改）；
+// 旧变量名（--bg / --teal / ...）由生成物作为兼容别名提供。
+import '../assets/tokens.generated.css'
+
 interface Props {
   title: string
   /** 已登录身份；未登录为 null */
@@ -27,17 +30,6 @@ const LEVEL_LABEL: Record<string, string> = {
   <style is:global>
     :root {
       color-scheme: dark;
-      --bg: #0b0f14;
-      --bg-elev: #111823;
-      --bg-elev-2: #161d26;
-      --line: #24303f;
-      --line-strong: #66727f;
-      --text: #dbe4ee;
-      --text-dim: #a9b6c6;
-      --text-faint: #808d9f;
-      --teal: #4fb3a6;
-      --teal-bright: #57d8c8;
-      --amber: #d9a441;
     }
     * { box-sizing: border-box; }
     body {
@@ -46,7 +38,7 @@ const LEVEL_LABEL: Record<string, string> = {
     }
     a { color: var(--teal-bright); }
     a:focus-visible, button:focus-visible {
-      outline: 2px solid var(--teal-bright); outline-offset: 2px; border-radius: 3px;
+      outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px;
     }
     .wrap { max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
     header.top {

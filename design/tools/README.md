@@ -8,10 +8,10 @@
 | 工具 | 作用 | 自检 |
 | --- | --- | --- |
 | [`token_lib.ts`](token_lib.ts) | 加载、别名解析、校验、CSS/Godot/Markdown 生成 | — |
-| [`build_tokens.ts`](build_tokens.ts) | 生成 5 个产物；`--check` 校验生成物无 diff | 8/8 |
+| [`build_tokens.ts`](build_tokens.ts) | 生成 7 个产物；`--check` 校验生成物无 diff | 8/8 |
 | [`check_tokens.ts`](check_tokens.ts) | 结构 / 类型 / 别名 / 字阶 / 间距 / 产品层 | 7/7 |
 | [`check_contrast.ts`](check_contrast.ts) | 68 组对比度 + 7 组层级 + 3 组 focus 分离 | 7/7 |
-| [`check_no_raw_values.ts`](check_no_raw_values.ts) | 已迁移表面裸色值；`--all` 报告未迁移面 | 5/5 |
+| [`check_no_raw_values.ts`](check_no_raw_values.ts) | 网站 app 全量裸色值；`--all` 报告游戏未迁移面（注释已剥离） | 8/8 |
 | [`check.sh`](check.sh) | 一键跑全部自检 + 闸门 | — |
 
 ## 二、常用命令
