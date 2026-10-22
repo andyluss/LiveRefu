@@ -404,6 +404,51 @@ function generate(): string {
   ] as const
 
   const lightVars = '--bg:#F7F3EA; --surface:#FFFDF8; --raised:#EDE6D8; --text:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line-strong:#8A8275; --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8'
+  const evolutionMetrics = [
+    { name: '共享 token', past: '0', now: String(total), target: '≤260', note: '先语义后色值；控制 token 动物园' },
+    { name: '风格卡', past: '0', now: String(cards.length), target: '5', note: '第 5 张等首个 App' },
+    { name: '组件契约', past: '0', now: String(comps.length), target: '3–5', note: '只随真实消费者扩展' },
+    { name: '已接入/登记产品', past: '0', now: '4', target: '5', note: '网站/LiveFab/未来残片/明日频道；App 待接入' },
+    { name: '已落地介质', past: '0', now: '2', target: '5', note: 'Web/Godot；App/打印/实体后置' },
+    { name: '无障碍', past: '无闸门', now: 'AA · 0 缺失焦点', target: 'App + SR', note: '焦点独立、对比度、Tab 走查' },
+  ]
+
+  const timeline = [
+    { when: '2027 H2', kind: 'future', title: '实体 / 打印介质起步', metrics: ['介质 5/5', '打印 kit', '实体规范'], body: '等实体产品形态确定；先做材质/工艺/包装决策清单，再谈印刷与量产。' },
+    { when: '2027 H1', kind: 'future', title: 'App v0.3 + 第 5 张风格卡', metrics: ['产品 5', '风格卡 5', '组件 3–5'], body: '首个 App 消费者接入 app/tokens.json；真机走查后再决定 Swift/Kotlin 常量。' },
+    { when: '2026 Q4', kind: 'future', title: 'Archive 亮色 + Form Field 第二消费者', metrics: ['Archive 亮色', 'Form Field', '无障碍审计'], body: '网站阅读页先行；找不到真实表单就不扩 Form Field。' },
+    { when: '2026-10-22 12:16', kind: 'now', title: '现在：v0.2.0 已发布，v0.3 起步', metrics: [`${total} token`, `${cards.length} 风格卡`, `${comps.length} 契约`, '4 产品', '0 active 例外', 'HUB 三态'], body: 'App kit 可接入但无真实 App；HUB 支持系统/亮色/暗色；下一步是 Archive 亮色与首个 App。' },
+    { when: '2026-10-22 09:54', kind: 'past', title: '入门长文', metrics: ['1.7 万字符'], body: '把设计系统的概念、治理与失败模式写成一篇可读的入门文章。' },
+    { when: '2026-10-21 15:33', kind: 'past', title: 'HUB 三态主题', metrics: ['系统/亮色/暗色'], body: 'HUB 支持查询参数与 localStorage 记忆；打印强制亮色。' },
+    { when: '2026-10-21 15:14', kind: 'past', title: '一页式 HUB', metrics: ['7 个 Tab', '生成物 8'], body: '把 Token / 风格卡 / 组件 / 产品 / 验收 / 决策收进一页。' },
+    { when: '2026-10-21 13:56', kind: 'past', title: 'App kit 起步', metrics: ['app/tokens.json', '20 色', '5 字阶'], body: '平台无关 JSON + iOS/Android 规范；但无真实消费者。' },
+    { when: '2026-10-21 13:50', kind: 'past', title: 'v0.2.0 发布', metrics: ['229 token', '4 风格卡', '3 契约', '53 Tab'], body: '设计系统 v0.2.0、网站 0.29.0、LiveFab 0.4.0、未来残片 0.22.0、明日频道 0.2.5。' },
+    { when: '2026-10-21 13:47', kind: 'past', title: '皮肤收口', metrics: ['8px 面板', '技术/描边按钮'], body: '卡片交回 lr-panel，删除重复皮肤；发现 nowrap 回归并修复。' },
+    { when: '2026-10-21 13:37', kind: 'past', title: '53 步 Tab 走查', metrics: ['4 页', '0 缺失焦点'], body: '网站首页 / Wiki / 搜索 / LiveFab；Bun 运行时崩溃，改用 Node 完成。' },
+    { when: '2026-10-21 13:25', kind: 'past', title: '共享 Web 组件层', metrics: ['button/panel/field'], body: '渐进接入网站与 LiveFab；产品皮肤暂时保留。' },
+    { when: '2026-10-21 13:12', kind: 'past', title: '3 个组件契约', metrics: ['229 token'], body: 'button / form-field / panel 契约先于实现；尺寸 token 补齐。' },
+    { when: '2026-10-21 13:09', kind: 'past', title: '风格卡 + M1/M2 block', metrics: ['4 风格卡', 'block'], body: '明日频道磁带卡登记；design/ 纳入结构闸门。' },
+    { when: '2026-10-21 13:04', kind: 'past', title: '网站 token 化 + LiveFab', metrics: ['2 产品', '裸值 0'], body: '网站全量颜色 token 化；LiveFab 接入 12 个颜色。' },
+    { when: '2026-10-21 12:43', kind: 'past', title: 'v0.1 地基', metrics: ['186 token', '5 生成物', '4 闸门'], body: '三层 token、生成器、四道闸门、网站/游戏两个试点。' },
+    { when: '2026-10-21 12:26', kind: 'past', title: '立项决策包', metrics: ['D1–D10', '0 实现'], body: '先裁决治理、架构、双模、版本策略，再动手。' },
+    { when: '2026-10 之前', kind: 'past', title: '没有统一系统之前', metrics: ['4 套视觉', 'focus 复用', '0 共享 token'], body: '网站 theme.css、游戏 tokens.json、LiveFab 内联样式、明日频道 .tres 各自演化。' },
+  ]
+
+  const timelineHtml = timeline.map(item => `<article class="tl-item ${item.kind}">
+    <div class="tl-when">${esc(item.when)}${item.kind === 'now' ? ' <span class="tl-now">NOW</span>' : ''}</div>
+    <div class="tl-card">
+      <h3>${esc(item.title)}</h3>
+      <div class="tl-metrics">${item.metrics.map(m => `<span class="tl-metric">${esc(m)}</span>`).join('')}</div>
+      <p>${esc(item.body)}</p>
+    </div>
+  </article>`).join('')
+
+  const metricsHtml = evolutionMetrics.map(m => `<div class="metric">
+    <div class="name">${esc(m.name)}</div>
+    <div class="flow"><span class="past">${esc(m.past)}</span><span class="arrow">→</span><span class="now">${esc(m.now)}</span><span class="arrow">→</span><span class="target">${esc(m.target)}</span></div>
+    <div class="note">${esc(m.note)}</div>
+  </div>`).join('')
+
   const html = `<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -536,11 +581,42 @@ function generate(): string {
   .doc-card code{font-size:11px;color:var(--muted)}
   .callout{background:var(--surface);border-left:3px solid var(--teal);padding:12px 14px;border-radius:0 var(--radius) var(--radius) 0;color:var(--dim);margin:12px 0}
   .callout b{color:var(--text)}
+  .evo-note{color:var(--dim);font-size:12.5px;margin:6px 0 12px}
+  .tl-legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:11.5px;font-family:var(--mono);margin:6px 0 14px}
+  .tl-legend b{color:var(--teal)}
+  .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 20px}
+  .metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:11px 12px}
+  .metric .name{font-size:12px;color:var(--muted);letter-spacing:.04em}
+  .metric .flow{display:flex;align-items:baseline;gap:5px;font-family:var(--mono);font-size:15px;margin:5px 0 4px;flex-wrap:wrap}
+  .metric .past{color:var(--muted);font-size:11.5px}
+  .metric .now{color:var(--teal);font-weight:700}
+  .metric .target{color:var(--amber);font-size:11.5px}
+  .metric .arrow{color:var(--line-strong);font-size:10px}
+  .metric .note{color:var(--dim);font-size:11.5px;line-height:1.45}
+  .timeline{position:relative;margin:4px 0 0;padding-left:34px}
+  .timeline::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--teal) 0%,var(--line-strong) 48%,var(--line) 100%)}
+  .tl-item{position:relative;margin:0 0 14px}
+  .tl-item::before{content:'';position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--line-strong);z-index:1}
+  .tl-item.future::before{border-color:var(--teal);border-style:dashed}
+  .tl-item.now::before{background:var(--teal);border-color:var(--teal);box-shadow:0 0 0 4px color-mix(in srgb,var(--teal) 18%,transparent)}
+  .tl-item.past::before{background:var(--line);border-color:var(--line)}
+  .tl-when{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:4px}
+  .tl-now{display:inline-block;background:var(--teal);color:var(--bg);border-radius:999px;padding:1px 6px;font-size:9.5px;font-weight:700;letter-spacing:.08em}
+  .tl-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+  .tl-item.now .tl-card{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--surface))}
+  .tl-item.future .tl-card{border-style:dashed;opacity:.92}
+  .tl-item.past .tl-card{opacity:.94}
+  .tl-card h3{margin:0 0 6px;font-size:14px;color:var(--text)}
+  .tl-card p{margin:6px 0 0;color:var(--dim);font-size:12.5px;line-height:1.55}
+  .tl-metrics{display:flex;flex-wrap:wrap;gap:4px}
+  .tl-metric{font-family:var(--mono);font-size:10.5px;color:var(--teal);border:1px solid color-mix(in srgb,var(--teal) 35%,transparent);border-radius:999px;padding:1px 7px}
+  .tl-item.future .tl-metric{color:var(--dim);border-color:var(--line)}
+  .tl-item.past .tl-metric{color:var(--dim);border-color:var(--line)}
   .toast{position:fixed;right:18px;bottom:18px;background:var(--raised);border:1px solid var(--line-strong);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12.5px;opacity:0;transform:translateY(4px);transition:.18s;pointer-events:none;z-index:50}
   .toast.on{opacity:1;transform:none}
   input[type=search]{width:100%;max-width:420px;background:var(--bg);border:1.5px solid var(--line-strong);border-radius:4px;color:var(--text);padding:8px 10px;font:inherit;font-size:13px;margin:8px 0 12px}
   input[type=search]:focus{outline:2px solid var(--focus);outline-offset:1px}
-  @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots{grid-template-columns:1fr}.type-row{grid-template-columns:1fr}.topbar{padding:10px 14px 0}main{padding:16px}}
+  @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots,.metric-grid{grid-template-columns:1fr 1fr}.type-row{grid-template-columns:1fr}.topbar{padding:10px 14px 0}main{padding:16px}.timeline{padding-left:28px}.tl-item::before{left:-23px}}
   @media print{
     :root, html[data-theme]{
       --bg:#fff; --surface:#fff; --raised:#f5f5f5;
@@ -553,7 +629,7 @@ function generate(): string {
     .topbar,nav.tabs,.toast,input[type=search],.theme-switch{display:none!important}
     main{max-width:none;padding:0}
     body.js .panel{display:block!important;break-inside:auto}
-    .card,.stat,.shot,.gate{break-inside:avoid}
+    .card,.stat,.shot,.gate,.tl-item{break-inside:avoid}
     a{color:#111;border-bottom:none}
     .swatch,.card,.stat{background:#fff;border-color:#bbb}
     .hint,.lede,.muted,.swatch-meta small{color:#444}
@@ -571,15 +647,16 @@ function generate(): string {
       <button type="button" data-theme-set="dark" aria-pressed="false">暗色</button>
     </div>
   </div>
-  <div class="hint">一页看完：Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值；右上角可切换系统 / 亮色 / 暗色。打印时自动展开全部 Tab。</div>
+  <div class="hint">一页看完：总览 / 演进 / Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值；右上角可切换系统 / 亮色 / 暗色。打印时自动展开全部 Tab。</div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>总览</button>
-    <button role="tab" data-tab="tokens"><span class="n">02</span>Token</button>
-    <button role="tab" data-tab="cards"><span class="n">03</span>风格卡</button>
-    <button role="tab" data-tab="components"><span class="n">04</span>组件</button>
-    <button role="tab" data-tab="products"><span class="n">05</span>产品</button>
-    <button role="tab" data-tab="checks"><span class="n">06</span>验收</button>
-    <button role="tab" data-tab="decisions"><span class="n">07</span>决策与文档</button>
+    <button role="tab" data-tab="evolution"><span class="n">02</span>演进</button>
+    <button role="tab" data-tab="tokens"><span class="n">03</span>Token</button>
+    <button role="tab" data-tab="cards"><span class="n">04</span>风格卡</button>
+    <button role="tab" data-tab="components"><span class="n">05</span>组件</button>
+    <button role="tab" data-tab="products"><span class="n">06</span>产品</button>
+    <button role="tab" data-tab="checks"><span class="n">07</span>验收</button>
+    <button role="tab" data-tab="decisions"><span class="n">08</span>决策与文档</button>
   </nav>
 </header>
 <main>
@@ -621,6 +698,15 @@ function generate(): string {
       </tbody>
     </table>
     <div class="callout"><b>当前边界</b>：设计系统 v0.2 已发布；App kit 是“可接入”而不是“已接入”。Form Field 只有网站搜索框一个真实消费者。</div>
+  </section>
+
+  <section class="panel" id="panel-evolution">
+    <h2>演进</h2>
+    <p class="lede">从未来的预期向下滚动，经过现在，回到已经发生的历史。未来是目标，<b>不是承诺</b>；现在是 2026-10-22 的快照；过去的时间取提交 author time，精确到分。</p>
+    <div class="tl-legend"><span><b>↑ 未来预期</b>（非承诺）</span><span><b>● 现在</b>（2026-10-22 快照）</span><span><b>↓ 过去历史</b>（提交 / 发布）</span></div>
+    <div class="metric-grid">${metricsHtml}</div>
+    <div class="timeline">${timelineHtml}</div>
+    <div class="callout"><b>怎么读</b>：指标卡是“过去 → 现在 → 预期”；时间轴上方是未来目标，中间是当前状态，下方是已经发生的提交。未来目标不是 OKR，也不是日期承诺；它们只是当前判断下的方向。</div>
   </section>
 
   <section class="panel" id="panel-tokens">

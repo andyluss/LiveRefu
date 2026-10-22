@@ -130,11 +130,42 @@
   .doc-card code{font-size:11px;color:var(--muted)}
   .callout{background:var(--surface);border-left:3px solid var(--teal);padding:12px 14px;border-radius:0 var(--radius) var(--radius) 0;color:var(--dim);margin:12px 0}
   .callout b{color:var(--text)}
+  .evo-note{color:var(--dim);font-size:12.5px;margin:6px 0 12px}
+  .tl-legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:11.5px;font-family:var(--mono);margin:6px 0 14px}
+  .tl-legend b{color:var(--teal)}
+  .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 20px}
+  .metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:11px 12px}
+  .metric .name{font-size:12px;color:var(--muted);letter-spacing:.04em}
+  .metric .flow{display:flex;align-items:baseline;gap:5px;font-family:var(--mono);font-size:15px;margin:5px 0 4px;flex-wrap:wrap}
+  .metric .past{color:var(--muted);font-size:11.5px}
+  .metric .now{color:var(--teal);font-weight:700}
+  .metric .target{color:var(--amber);font-size:11.5px}
+  .metric .arrow{color:var(--line-strong);font-size:10px}
+  .metric .note{color:var(--dim);font-size:11.5px;line-height:1.45}
+  .timeline{position:relative;margin:4px 0 0;padding-left:34px}
+  .timeline::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--teal) 0%,var(--line-strong) 48%,var(--line) 100%)}
+  .tl-item{position:relative;margin:0 0 14px}
+  .tl-item::before{content:'';position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--line-strong);z-index:1}
+  .tl-item.future::before{border-color:var(--teal);border-style:dashed}
+  .tl-item.now::before{background:var(--teal);border-color:var(--teal);box-shadow:0 0 0 4px color-mix(in srgb,var(--teal) 18%,transparent)}
+  .tl-item.past::before{background:var(--line);border-color:var(--line)}
+  .tl-when{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:4px}
+  .tl-now{display:inline-block;background:var(--teal);color:var(--bg);border-radius:999px;padding:1px 6px;font-size:9.5px;font-weight:700;letter-spacing:.08em}
+  .tl-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+  .tl-item.now .tl-card{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--surface))}
+  .tl-item.future .tl-card{border-style:dashed;opacity:.92}
+  .tl-item.past .tl-card{opacity:.94}
+  .tl-card h3{margin:0 0 6px;font-size:14px;color:var(--text)}
+  .tl-card p{margin:6px 0 0;color:var(--dim);font-size:12.5px;line-height:1.55}
+  .tl-metrics{display:flex;flex-wrap:wrap;gap:4px}
+  .tl-metric{font-family:var(--mono);font-size:10.5px;color:var(--teal);border:1px solid color-mix(in srgb,var(--teal) 35%,transparent);border-radius:999px;padding:1px 7px}
+  .tl-item.future .tl-metric{color:var(--dim);border-color:var(--line)}
+  .tl-item.past .tl-metric{color:var(--dim);border-color:var(--line)}
   .toast{position:fixed;right:18px;bottom:18px;background:var(--raised);border:1px solid var(--line-strong);color:var(--text);border-radius:8px;padding:8px 12px;font-size:12.5px;opacity:0;transform:translateY(4px);transition:.18s;pointer-events:none;z-index:50}
   .toast.on{opacity:1;transform:none}
   input[type=search]{width:100%;max-width:420px;background:var(--bg);border:1.5px solid var(--line-strong);border-radius:4px;color:var(--text);padding:8px 10px;font:inherit;font-size:13px;margin:8px 0 12px}
   input[type=search]:focus{outline:2px solid var(--focus);outline-offset:1px}
-  @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots{grid-template-columns:1fr}.type-row{grid-template-columns:1fr}.topbar{padding:10px 14px 0}main{padding:16px}}
+  @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots,.metric-grid{grid-template-columns:1fr 1fr}.type-row{grid-template-columns:1fr}.topbar{padding:10px 14px 0}main{padding:16px}.timeline{padding-left:28px}.tl-item::before{left:-23px}}
   @media print{
     :root, html[data-theme]{
       --bg:#fff; --surface:#fff; --raised:#f5f5f5;
@@ -147,7 +178,7 @@
     .topbar,nav.tabs,.toast,input[type=search],.theme-switch{display:none!important}
     main{max-width:none;padding:0}
     body.js .panel{display:block!important;break-inside:auto}
-    .card,.stat,.shot,.gate{break-inside:avoid}
+    .card,.stat,.shot,.gate,.tl-item{break-inside:avoid}
     a{color:#111;border-bottom:none}
     .swatch,.card,.stat{background:#fff;border-color:#bbb}
     .hint,.lede,.muted,.swatch-meta small{color:#444}
@@ -165,15 +196,16 @@
       <button type="button" data-theme-set="dark" aria-pressed="false">暗色</button>
     </div>
   </div>
-  <div class="hint">一页看完：Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值；右上角可切换系统 / 亮色 / 暗色。打印时自动展开全部 Tab。</div>
+  <div class="hint">一页看完：总览 / 演进 / Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值；右上角可切换系统 / 亮色 / 暗色。打印时自动展开全部 Tab。</div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>总览</button>
-    <button role="tab" data-tab="tokens"><span class="n">02</span>Token</button>
-    <button role="tab" data-tab="cards"><span class="n">03</span>风格卡</button>
-    <button role="tab" data-tab="components"><span class="n">04</span>组件</button>
-    <button role="tab" data-tab="products"><span class="n">05</span>产品</button>
-    <button role="tab" data-tab="checks"><span class="n">06</span>验收</button>
-    <button role="tab" data-tab="decisions"><span class="n">07</span>决策与文档</button>
+    <button role="tab" data-tab="evolution"><span class="n">02</span>演进</button>
+    <button role="tab" data-tab="tokens"><span class="n">03</span>Token</button>
+    <button role="tab" data-tab="cards"><span class="n">04</span>风格卡</button>
+    <button role="tab" data-tab="components"><span class="n">05</span>组件</button>
+    <button role="tab" data-tab="products"><span class="n">06</span>产品</button>
+    <button role="tab" data-tab="checks"><span class="n">07</span>验收</button>
+    <button role="tab" data-tab="decisions"><span class="n">08</span>决策与文档</button>
   </nav>
 </header>
 <main>
@@ -215,6 +247,165 @@
       </tbody>
     </table>
     <div class="callout"><b>当前边界</b>：设计系统 v0.2 已发布；App kit 是“可接入”而不是“已接入”。Form Field 只有网站搜索框一个真实消费者。</div>
+  </section>
+
+  <section class="panel" id="panel-evolution">
+    <h2>演进</h2>
+    <p class="lede">从未来的预期向下滚动，经过现在，回到已经发生的历史。未来是目标，<b>不是承诺</b>；现在是 2026-10-22 的快照；过去的时间取提交 author time，精确到分。</p>
+    <div class="tl-legend"><span><b>↑ 未来预期</b>（非承诺）</span><span><b>● 现在</b>（2026-10-22 快照）</span><span><b>↓ 过去历史</b>（提交 / 发布）</span></div>
+    <div class="metric-grid"><div class="metric">
+    <div class="name">共享 token</div>
+    <div class="flow"><span class="past">0</span><span class="arrow">→</span><span class="now">229</span><span class="arrow">→</span><span class="target">≤260</span></div>
+    <div class="note">先语义后色值；控制 token 动物园</div>
+  </div><div class="metric">
+    <div class="name">风格卡</div>
+    <div class="flow"><span class="past">0</span><span class="arrow">→</span><span class="now">4</span><span class="arrow">→</span><span class="target">5</span></div>
+    <div class="note">第 5 张等首个 App</div>
+  </div><div class="metric">
+    <div class="name">组件契约</div>
+    <div class="flow"><span class="past">0</span><span class="arrow">→</span><span class="now">3</span><span class="arrow">→</span><span class="target">3–5</span></div>
+    <div class="note">只随真实消费者扩展</div>
+  </div><div class="metric">
+    <div class="name">已接入/登记产品</div>
+    <div class="flow"><span class="past">0</span><span class="arrow">→</span><span class="now">4</span><span class="arrow">→</span><span class="target">5</span></div>
+    <div class="note">网站/LiveFab/未来残片/明日频道；App 待接入</div>
+  </div><div class="metric">
+    <div class="name">已落地介质</div>
+    <div class="flow"><span class="past">0</span><span class="arrow">→</span><span class="now">2</span><span class="arrow">→</span><span class="target">5</span></div>
+    <div class="note">Web/Godot；App/打印/实体后置</div>
+  </div><div class="metric">
+    <div class="name">无障碍</div>
+    <div class="flow"><span class="past">无闸门</span><span class="arrow">→</span><span class="now">AA · 0 缺失焦点</span><span class="arrow">→</span><span class="target">App + SR</span></div>
+    <div class="note">焦点独立、对比度、Tab 走查</div>
+  </div></div>
+    <div class="timeline"><article class="tl-item future">
+    <div class="tl-when">2027 H2</div>
+    <div class="tl-card">
+      <h3>实体 / 打印介质起步</h3>
+      <div class="tl-metrics"><span class="tl-metric">介质 5/5</span><span class="tl-metric">打印 kit</span><span class="tl-metric">实体规范</span></div>
+      <p>等实体产品形态确定；先做材质/工艺/包装决策清单，再谈印刷与量产。</p>
+    </div>
+  </article><article class="tl-item future">
+    <div class="tl-when">2027 H1</div>
+    <div class="tl-card">
+      <h3>App v0.3 + 第 5 张风格卡</h3>
+      <div class="tl-metrics"><span class="tl-metric">产品 5</span><span class="tl-metric">风格卡 5</span><span class="tl-metric">组件 3–5</span></div>
+      <p>首个 App 消费者接入 app/tokens.json；真机走查后再决定 Swift/Kotlin 常量。</p>
+    </div>
+  </article><article class="tl-item future">
+    <div class="tl-when">2026 Q4</div>
+    <div class="tl-card">
+      <h3>Archive 亮色 + Form Field 第二消费者</h3>
+      <div class="tl-metrics"><span class="tl-metric">Archive 亮色</span><span class="tl-metric">Form Field</span><span class="tl-metric">无障碍审计</span></div>
+      <p>网站阅读页先行；找不到真实表单就不扩 Form Field。</p>
+    </div>
+  </article><article class="tl-item now">
+    <div class="tl-when">2026-10-22 12:16 <span class="tl-now">NOW</span></div>
+    <div class="tl-card">
+      <h3>现在：v0.2.0 已发布，v0.3 起步</h3>
+      <div class="tl-metrics"><span class="tl-metric">229 token</span><span class="tl-metric">4 风格卡</span><span class="tl-metric">3 契约</span><span class="tl-metric">4 产品</span><span class="tl-metric">0 active 例外</span><span class="tl-metric">HUB 三态</span></div>
+      <p>App kit 可接入但无真实 App；HUB 支持系统/亮色/暗色；下一步是 Archive 亮色与首个 App。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-22 09:54</div>
+    <div class="tl-card">
+      <h3>入门长文</h3>
+      <div class="tl-metrics"><span class="tl-metric">1.7 万字符</span></div>
+      <p>把设计系统的概念、治理与失败模式写成一篇可读的入门文章。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 15:33</div>
+    <div class="tl-card">
+      <h3>HUB 三态主题</h3>
+      <div class="tl-metrics"><span class="tl-metric">系统/亮色/暗色</span></div>
+      <p>HUB 支持查询参数与 localStorage 记忆；打印强制亮色。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 15:14</div>
+    <div class="tl-card">
+      <h3>一页式 HUB</h3>
+      <div class="tl-metrics"><span class="tl-metric">7 个 Tab</span><span class="tl-metric">生成物 8</span></div>
+      <p>把 Token / 风格卡 / 组件 / 产品 / 验收 / 决策收进一页。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:56</div>
+    <div class="tl-card">
+      <h3>App kit 起步</h3>
+      <div class="tl-metrics"><span class="tl-metric">app/tokens.json</span><span class="tl-metric">20 色</span><span class="tl-metric">5 字阶</span></div>
+      <p>平台无关 JSON + iOS/Android 规范；但无真实消费者。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:50</div>
+    <div class="tl-card">
+      <h3>v0.2.0 发布</h3>
+      <div class="tl-metrics"><span class="tl-metric">229 token</span><span class="tl-metric">4 风格卡</span><span class="tl-metric">3 契约</span><span class="tl-metric">53 Tab</span></div>
+      <p>设计系统 v0.2.0、网站 0.29.0、LiveFab 0.4.0、未来残片 0.22.0、明日频道 0.2.5。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:47</div>
+    <div class="tl-card">
+      <h3>皮肤收口</h3>
+      <div class="tl-metrics"><span class="tl-metric">8px 面板</span><span class="tl-metric">技术/描边按钮</span></div>
+      <p>卡片交回 lr-panel，删除重复皮肤；发现 nowrap 回归并修复。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:37</div>
+    <div class="tl-card">
+      <h3>53 步 Tab 走查</h3>
+      <div class="tl-metrics"><span class="tl-metric">4 页</span><span class="tl-metric">0 缺失焦点</span></div>
+      <p>网站首页 / Wiki / 搜索 / LiveFab；Bun 运行时崩溃，改用 Node 完成。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:25</div>
+    <div class="tl-card">
+      <h3>共享 Web 组件层</h3>
+      <div class="tl-metrics"><span class="tl-metric">button/panel/field</span></div>
+      <p>渐进接入网站与 LiveFab；产品皮肤暂时保留。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:12</div>
+    <div class="tl-card">
+      <h3>3 个组件契约</h3>
+      <div class="tl-metrics"><span class="tl-metric">229 token</span></div>
+      <p>button / form-field / panel 契约先于实现；尺寸 token 补齐。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:09</div>
+    <div class="tl-card">
+      <h3>风格卡 + M1/M2 block</h3>
+      <div class="tl-metrics"><span class="tl-metric">4 风格卡</span><span class="tl-metric">block</span></div>
+      <p>明日频道磁带卡登记；design/ 纳入结构闸门。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 13:04</div>
+    <div class="tl-card">
+      <h3>网站 token 化 + LiveFab</h3>
+      <div class="tl-metrics"><span class="tl-metric">2 产品</span><span class="tl-metric">裸值 0</span></div>
+      <p>网站全量颜色 token 化；LiveFab 接入 12 个颜色。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 12:43</div>
+    <div class="tl-card">
+      <h3>v0.1 地基</h3>
+      <div class="tl-metrics"><span class="tl-metric">186 token</span><span class="tl-metric">5 生成物</span><span class="tl-metric">4 闸门</span></div>
+      <p>三层 token、生成器、四道闸门、网站/游戏两个试点。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10-21 12:26</div>
+    <div class="tl-card">
+      <h3>立项决策包</h3>
+      <div class="tl-metrics"><span class="tl-metric">D1–D10</span><span class="tl-metric">0 实现</span></div>
+      <p>先裁决治理、架构、双模、版本策略，再动手。</p>
+    </div>
+  </article><article class="tl-item past">
+    <div class="tl-when">2026-10 之前</div>
+    <div class="tl-card">
+      <h3>没有统一系统之前</h3>
+      <div class="tl-metrics"><span class="tl-metric">4 套视觉</span><span class="tl-metric">focus 复用</span><span class="tl-metric">0 共享 token</span></div>
+      <p>网站 theme.css、游戏 tokens.json、LiveFab 内联样式、明日频道 .tres 各自演化。</p>
+    </div>
+  </article></div>
+    <div class="callout"><b>怎么读</b>：指标卡是“过去 → 现在 → 预期”；时间轴上方是未来目标，中间是当前状态，下方是已经发生的提交。未来目标不是 OKR，也不是日期承诺；它们只是当前判断下的方向。</div>
   </section>
 
   <section class="panel" id="panel-tokens">
