@@ -152,6 +152,11 @@
   .evo-table tbody tr.now td{background:color-mix(in srgb,var(--teal) 7%,var(--surface))}
   .evo-table tbody td.evo-main h3{margin:0 0 4px;font-size:13.5px;color:var(--text)}
   .evo-table tbody td.evo-main p{margin:0;color:var(--dim);font-size:12px;line-height:1.5}
+  .tl-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+  .tl-tag{font-family:var(--mono);font-size:10px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:1px 6px;background:var(--bg)}
+  .evo-table tbody tr.future .tl-tag{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 35%,transparent);background:transparent}
+  .evo-table tbody tr.now .tl-tag{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 35%,transparent)}
+  .evo-table tbody tr.past .tl-tag{color:var(--dim)}
   .evo-table tbody tr.future td.evo-main h3{color:var(--dim)}
   .evo-table tbody tr.past td.evo-main h3{color:var(--text)}
   .evo-table tbody td.mcell{width:9.6%;padding:12px 6px;text-align:center;font-family:var(--mono);font-size:11.5px}
@@ -261,6 +266,7 @@
       <div class="tl-when">2027 H2</div>
       <h3>实体 / 打印介质起步</h3>
       <p>等实体产品形态确定；先做材质/工艺/包装决策清单，再谈印刷与量产。</p>
+      <div class="tl-tags"><span class="tl-tag">介质 5/5</span><span class="tl-tag">打印 kit</span><span class="tl-tag">实体规范</span></div>
     </td>
     <td class="mcell"><span class="mval">≤260</span></td><td class="mcell"><span class="mval">5</span></td><td class="mcell"><span class="mval">3–5</span></td><td class="mcell"><span class="mval">5</span></td><td class="mcell"><span class="mval">5</span></td><td class="mcell"><span class="mval">App+SR</span></td>
   </tr><tr class="future">
@@ -268,6 +274,7 @@
       <div class="tl-when">2027 H1</div>
       <h3>App v0.3 + 第 5 张风格卡</h3>
       <p>首个 App 消费者接入 app/tokens.json；真机走查后再决定 Swift/Kotlin 常量。</p>
+      <div class="tl-tags"><span class="tl-tag">产品 5</span><span class="tl-tag">风格卡 5</span><span class="tl-tag">组件 3–5</span></div>
     </td>
     <td class="mcell"><span class="mval">≤260</span></td><td class="mcell"><span class="mval">5</span></td><td class="mcell"><span class="mval">3–5</span></td><td class="mcell"><span class="mval">5</span></td><td class="mcell"><span class="mval">3</span></td><td class="mcell"><span class="mval">App+SR</span></td>
   </tr><tr class="future">
@@ -275,6 +282,7 @@
       <div class="tl-when">2026 Q4</div>
       <h3>Archive 亮色 + Form Field 第二消费者</h3>
       <p>网站阅读页先行；找不到真实表单就不扩 Form Field。</p>
+      <div class="tl-tags"><span class="tl-tag">Archive 亮色</span><span class="tl-tag">Form Field</span><span class="tl-tag">无障碍审计</span></div>
     </td>
     <td class="mcell"><span class="mval">≤240</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mval">3</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mval">2</span></td><td class="mcell"><span class="mval">Archive</span></td>
   </tr><tr class="now">
@@ -282,6 +290,7 @@
       <div class="tl-when">2026-10-22 12:16 <span class="tl-now">NOW</span></div>
       <h3>现在：v0.2.0 已发布，v0.3 起步</h3>
       <p>App kit 可接入但无真实 App；HUB 支持系统/亮色/暗色；下一步是 Archive 亮色与首个 App。</p>
+      <div class="tl-tags"><span class="tl-tag">229 token</span><span class="tl-tag">4 风格卡</span><span class="tl-tag">3 契约</span><span class="tl-tag">4 产品</span><span class="tl-tag">0 active 例外</span><span class="tl-tag">HUB 三态</span></div>
     </td>
     <td class="mcell"><span class="mval">229</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mval">3</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mval">2</span></td><td class="mcell"><span class="mval">AA</span></td>
   </tr><tr class="past">
@@ -289,6 +298,7 @@
       <div class="tl-when">2026-10-22 09:54</div>
       <h3>入门长文</h3>
       <p>把设计系统的概念、治理与失败模式写成一篇可读的入门文章。</p>
+      <div class="tl-tags"><span class="tl-tag">1.7 万字符</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -296,6 +306,7 @@
       <div class="tl-when">2026-10-21 15:33</div>
       <h3>HUB 三态主题</h3>
       <p>HUB 支持查询参数与 localStorage 记忆；打印强制亮色。</p>
+      <div class="tl-tags"><span class="tl-tag">系统/亮色/暗色</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -303,6 +314,7 @@
       <div class="tl-when">2026-10-21 15:14</div>
       <h3>一页式 HUB</h3>
       <p>把 Token / 风格卡 / 组件 / 产品 / 验收 / 决策收进一页。</p>
+      <div class="tl-tags"><span class="tl-tag">7 个 Tab</span><span class="tl-tag">生成物 8</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -310,6 +322,7 @@
       <div class="tl-when">2026-10-21 13:56</div>
       <h3>App kit 起步</h3>
       <p>平台无关 JSON + iOS/Android 规范；但无真实消费者。</p>
+      <div class="tl-tags"><span class="tl-tag">app/tokens.json</span><span class="tl-tag">20 色</span><span class="tl-tag">5 字阶</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -317,6 +330,7 @@
       <div class="tl-when">2026-10-21 13:50</div>
       <h3>v0.2.0 发布</h3>
       <p>设计系统 v0.2.0、网站 0.29.0、LiveFab 0.4.0、未来残片 0.22.0、明日频道 0.2.5。</p>
+      <div class="tl-tags"><span class="tl-tag">229 token</span><span class="tl-tag">4 风格卡</span><span class="tl-tag">3 契约</span><span class="tl-tag">53 Tab</span></div>
     </td>
     <td class="mcell"><span class="mval">229</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mval">3</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mval">2</span></td><td class="mcell"><span class="mval">AA</span></td>
   </tr><tr class="past">
@@ -324,6 +338,7 @@
       <div class="tl-when">2026-10-21 13:47</div>
       <h3>皮肤收口</h3>
       <p>卡片交回 lr-panel，删除重复皮肤；发现 nowrap 回归并修复。</p>
+      <div class="tl-tags"><span class="tl-tag">8px 面板</span><span class="tl-tag">技术/描边按钮</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -331,6 +346,7 @@
       <div class="tl-when">2026-10-21 13:37</div>
       <h3>53 步 Tab 走查</h3>
       <p>网站首页 / Wiki / 搜索 / LiveFab；Bun 运行时崩溃，改用 Node 完成。</p>
+      <div class="tl-tags"><span class="tl-tag">4 页</span><span class="tl-tag">0 缺失焦点</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mval">0 缺失焦点</span></td>
   </tr><tr class="past">
@@ -338,6 +354,7 @@
       <div class="tl-when">2026-10-21 13:25</div>
       <h3>共享 Web 组件层</h3>
       <p>渐进接入网站与 LiveFab；产品皮肤暂时保留。</p>
+      <div class="tl-tags"><span class="tl-tag">button/panel/field</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -345,6 +362,7 @@
       <div class="tl-when">2026-10-21 13:12</div>
       <h3>3 个组件契约</h3>
       <p>button / form-field / panel 契约先于实现；尺寸 token 补齐。</p>
+      <div class="tl-tags"><span class="tl-tag">229 token</span></div>
     </td>
     <td class="mcell"><span class="mval">229</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mval">3</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -352,6 +370,7 @@
       <div class="tl-when">2026-10-21 13:09</div>
       <h3>风格卡 + M1/M2 block</h3>
       <p>明日频道磁带卡登记；design/ 纳入结构闸门。</p>
+      <div class="tl-tags"><span class="tl-tag">4 风格卡</span><span class="tl-tag">block</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mval">4</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -359,6 +378,7 @@
       <div class="tl-when">2026-10-21 13:04</div>
       <h3>网站 token 化 + LiveFab</h3>
       <p>网站全量颜色 token 化；LiveFab 接入 12 个颜色。</p>
+      <div class="tl-tags"><span class="tl-tag">2 产品</span><span class="tl-tag">裸值 0</span></div>
     </td>
     <td class="mcell"><span class="mval">206</span></td><td class="mcell"><span class="mval">3</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mval">3</span></td><td class="mcell"><span class="mval">2</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -366,6 +386,7 @@
       <div class="tl-when">2026-10-21 12:43</div>
       <h3>v0.1 地基</h3>
       <p>三层 token、生成器、四道闸门、网站/游戏两个试点。</p>
+      <div class="tl-tags"><span class="tl-tag">186 token</span><span class="tl-tag">5 生成物</span><span class="tl-tag">4 闸门</span></div>
     </td>
     <td class="mcell"><span class="mval">186</span></td><td class="mcell"><span class="mval">2</span></td><td class="mcell"><span class="mval">0</span></td><td class="mcell"><span class="mval">2</span></td><td class="mcell"><span class="mval">2</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -373,6 +394,7 @@
       <div class="tl-when">2026-10-21 12:26</div>
       <h3>立项决策包</h3>
       <p>先裁决治理、架构、双模、版本策略，再动手。</p>
+      <div class="tl-tags"><span class="tl-tag">D1–D10</span><span class="tl-tag">0 实现</span></div>
     </td>
     <td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td><td class="mcell"><span class="mempty">·</span></td>
   </tr><tr class="past">
@@ -380,6 +402,7 @@
       <div class="tl-when">2026-10 之前</div>
       <h3>没有统一系统之前</h3>
       <p>网站 theme.css、游戏 tokens.json、LiveFab 内联样式、明日频道 .tres 各自演化。</p>
+      <div class="tl-tags"><span class="tl-tag">4 套视觉</span><span class="tl-tag">focus 复用</span><span class="tl-tag">0 共享 token</span></div>
     </td>
     <td class="mcell"><span class="mval">0</span></td><td class="mcell"><span class="mval">0</span></td><td class="mcell"><span class="mval">0</span></td><td class="mcell"><span class="mval">0</span></td><td class="mcell"><span class="mval">0</span></td><td class="mcell"><span class="mval">无闸门</span></td>
   </tr></tbody>

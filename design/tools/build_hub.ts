@@ -418,26 +418,27 @@ function generate(): string {
     kind: 'future' | 'now' | 'past'
     title: string
     body: string
+    tags?: string[]
     values?: Record<string, string>
   }> = [
-    { when: '2027 H2', kind: 'future', title: '实体 / 打印介质起步', body: '等实体产品形态确定；先做材质/工艺/包装决策清单，再谈印刷与量产。', values: { tokens: '≤260', cards: '5', contracts: '3–5', products: '5', media: '5', a11y: 'App+SR' } },
-    { when: '2027 H1', kind: 'future', title: 'App v0.3 + 第 5 张风格卡', body: '首个 App 消费者接入 app/tokens.json；真机走查后再决定 Swift/Kotlin 常量。', values: { tokens: '≤260', cards: '5', contracts: '3–5', products: '5', media: '3', a11y: 'App+SR' } },
-    { when: '2026 Q4', kind: 'future', title: 'Archive 亮色 + Form Field 第二消费者', body: '网站阅读页先行；找不到真实表单就不扩 Form Field。', values: { tokens: '≤240', cards: '4', contracts: '3', products: '4', media: '2', a11y: 'Archive' } },
-    { when: '2026-10-22 12:16', kind: 'now', title: '现在：v0.2.0 已发布，v0.3 起步', body: 'App kit 可接入但无真实 App；HUB 支持系统/亮色/暗色；下一步是 Archive 亮色与首个 App。', values: { tokens: String(total), cards: String(cards.length), contracts: String(comps.length), products: '4', media: '2', a11y: 'AA' } },
-    { when: '2026-10-22 09:54', kind: 'past', title: '入门长文', body: '把设计系统的概念、治理与失败模式写成一篇可读的入门文章。' },
-    { when: '2026-10-21 15:33', kind: 'past', title: 'HUB 三态主题', body: 'HUB 支持查询参数与 localStorage 记忆；打印强制亮色。' },
-    { when: '2026-10-21 15:14', kind: 'past', title: '一页式 HUB', body: '把 Token / 风格卡 / 组件 / 产品 / 验收 / 决策收进一页。' },
-    { when: '2026-10-21 13:56', kind: 'past', title: 'App kit 起步', body: '平台无关 JSON + iOS/Android 规范；但无真实消费者。' },
-    { when: '2026-10-21 13:50', kind: 'past', title: 'v0.2.0 发布', body: '设计系统 v0.2.0、网站 0.29.0、LiveFab 0.4.0、未来残片 0.22.0、明日频道 0.2.5。', values: { tokens: '229', cards: '4', contracts: '3', products: '4', media: '2', a11y: 'AA' } },
-    { when: '2026-10-21 13:47', kind: 'past', title: '皮肤收口', body: '卡片交回 lr-panel，删除重复皮肤；发现 nowrap 回归并修复。' },
-    { when: '2026-10-21 13:37', kind: 'past', title: '53 步 Tab 走查', body: '网站首页 / Wiki / 搜索 / LiveFab；Bun 运行时崩溃，改用 Node 完成。', values: { a11y: '0 缺失焦点' } },
-    { when: '2026-10-21 13:25', kind: 'past', title: '共享 Web 组件层', body: '渐进接入网站与 LiveFab；产品皮肤暂时保留。' },
-    { when: '2026-10-21 13:12', kind: 'past', title: '3 个组件契约', body: 'button / form-field / panel 契约先于实现；尺寸 token 补齐。', values: { tokens: '229', contracts: '3' } },
-    { when: '2026-10-21 13:09', kind: 'past', title: '风格卡 + M1/M2 block', body: '明日频道磁带卡登记；design/ 纳入结构闸门。', values: { cards: '4', products: '4' } },
-    { when: '2026-10-21 13:04', kind: 'past', title: '网站 token 化 + LiveFab', body: '网站全量颜色 token 化；LiveFab 接入 12 个颜色。', values: { tokens: '206', cards: '3', products: '3', media: '2' } },
-    { when: '2026-10-21 12:43', kind: 'past', title: 'v0.1 地基', body: '三层 token、生成器、四道闸门、网站/游戏两个试点。', values: { tokens: '186', cards: '2', contracts: '0', products: '2', media: '2' } },
-    { when: '2026-10-21 12:26', kind: 'past', title: '立项决策包', body: '先裁决治理、架构、双模、版本策略，再动手。' },
-    { when: '2026-10 之前', kind: 'past', title: '没有统一系统之前', body: '网站 theme.css、游戏 tokens.json、LiveFab 内联样式、明日频道 .tres 各自演化。', values: { tokens: '0', cards: '0', contracts: '0', products: '0', media: '0', a11y: '无闸门' } },
+    { when: '2027 H2', kind: 'future', title: '实体 / 打印介质起步', body: '等实体产品形态确定；先做材质/工艺/包装决策清单，再谈印刷与量产。', tags: ['介质 5/5', '打印 kit', '实体规范'], values: { tokens: '≤260', cards: '5', contracts: '3–5', products: '5', media: '5', a11y: 'App+SR' } },
+    { when: '2027 H1', kind: 'future', title: 'App v0.3 + 第 5 张风格卡', body: '首个 App 消费者接入 app/tokens.json；真机走查后再决定 Swift/Kotlin 常量。', tags: ['产品 5', '风格卡 5', '组件 3–5'], values: { tokens: '≤260', cards: '5', contracts: '3–5', products: '5', media: '3', a11y: 'App+SR' } },
+    { when: '2026 Q4', kind: 'future', title: 'Archive 亮色 + Form Field 第二消费者', body: '网站阅读页先行；找不到真实表单就不扩 Form Field。', tags: ['Archive 亮色', 'Form Field', '无障碍审计'], values: { tokens: '≤240', cards: '4', contracts: '3', products: '4', media: '2', a11y: 'Archive' } },
+    { when: '2026-10-22 12:16', kind: 'now', title: '现在：v0.2.0 已发布，v0.3 起步', body: 'App kit 可接入但无真实 App；HUB 支持系统/亮色/暗色；下一步是 Archive 亮色与首个 App。', tags: [`${total} token`, `${cards.length} 风格卡`, `${comps.length} 契约`, '4 产品', '0 active 例外', 'HUB 三态'], values: { tokens: String(total), cards: String(cards.length), contracts: String(comps.length), products: '4', media: '2', a11y: 'AA' } },
+    { when: '2026-10-22 09:54', kind: 'past', title: '入门长文', body: '把设计系统的概念、治理与失败模式写成一篇可读的入门文章。', tags: ['1.7 万字符'] },
+    { when: '2026-10-21 15:33', kind: 'past', title: 'HUB 三态主题', body: 'HUB 支持查询参数与 localStorage 记忆；打印强制亮色。', tags: ['系统/亮色/暗色'] },
+    { when: '2026-10-21 15:14', kind: 'past', title: '一页式 HUB', body: '把 Token / 风格卡 / 组件 / 产品 / 验收 / 决策收进一页。', tags: ['7 个 Tab', '生成物 8'] },
+    { when: '2026-10-21 13:56', kind: 'past', title: 'App kit 起步', body: '平台无关 JSON + iOS/Android 规范；但无真实消费者。', tags: ['app/tokens.json', '20 色', '5 字阶'] },
+    { when: '2026-10-21 13:50', kind: 'past', title: 'v0.2.0 发布', body: '设计系统 v0.2.0、网站 0.29.0、LiveFab 0.4.0、未来残片 0.22.0、明日频道 0.2.5。', tags: ['229 token', '4 风格卡', '3 契约', '53 Tab'], values: { tokens: '229', cards: '4', contracts: '3', products: '4', media: '2', a11y: 'AA' } },
+    { when: '2026-10-21 13:47', kind: 'past', title: '皮肤收口', body: '卡片交回 lr-panel，删除重复皮肤；发现 nowrap 回归并修复。', tags: ['8px 面板', '技术/描边按钮'] },
+    { when: '2026-10-21 13:37', kind: 'past', title: '53 步 Tab 走查', body: '网站首页 / Wiki / 搜索 / LiveFab；Bun 运行时崩溃，改用 Node 完成。', tags: ['4 页', '0 缺失焦点'], values: { a11y: '0 缺失焦点' } },
+    { when: '2026-10-21 13:25', kind: 'past', title: '共享 Web 组件层', body: '渐进接入网站与 LiveFab；产品皮肤暂时保留。', tags: ['button/panel/field'] },
+    { when: '2026-10-21 13:12', kind: 'past', title: '3 个组件契约', body: 'button / form-field / panel 契约先于实现；尺寸 token 补齐。', tags: ['229 token'], values: { tokens: '229', contracts: '3' } },
+    { when: '2026-10-21 13:09', kind: 'past', title: '风格卡 + M1/M2 block', body: '明日频道磁带卡登记；design/ 纳入结构闸门。', tags: ['4 风格卡', 'block'], values: { cards: '4', products: '4' } },
+    { when: '2026-10-21 13:04', kind: 'past', title: '网站 token 化 + LiveFab', body: '网站全量颜色 token 化；LiveFab 接入 12 个颜色。', tags: ['2 产品', '裸值 0'], values: { tokens: '206', cards: '3', products: '3', media: '2' } },
+    { when: '2026-10-21 12:43', kind: 'past', title: 'v0.1 地基', body: '三层 token、生成器、四道闸门、网站/游戏两个试点。', tags: ['186 token', '5 生成物', '4 闸门'], values: { tokens: '186', cards: '2', contracts: '0', products: '2', media: '2' } },
+    { when: '2026-10-21 12:26', kind: 'past', title: '立项决策包', body: '先裁决治理、架构、双模、版本策略，再动手。', tags: ['D1–D10', '0 实现'] },
+    { when: '2026-10 之前', kind: 'past', title: '没有统一系统之前', body: '网站 theme.css、游戏 tokens.json、LiveFab 内联样式、明日频道 .tres 各自演化。', tags: ['4 套视觉', 'focus 复用', '0 共享 token'], values: { tokens: '0', cards: '0', contracts: '0', products: '0', media: '0', a11y: '无闸门' } },
   ]
 
   const timelineHtml = timeline.map(item => `<tr class="${item.kind}">
@@ -445,6 +446,7 @@ function generate(): string {
       <div class="tl-when">${esc(item.when)}${item.kind === 'now' ? ' <span class="tl-now">NOW</span>' : ''}</div>
       <h3>${esc(item.title)}</h3>
       <p>${esc(item.body)}</p>
+      ${item.tags?.length ? `<div class="tl-tags">${item.tags.map(t => `<span class="tl-tag">${esc(t)}</span>`).join('')}</div>` : ''}
     </td>
     ${evolutionMetrics.map(m => {
       const v = item.values?.[m.key]
@@ -606,6 +608,11 @@ function generate(): string {
   .evo-table tbody tr.now td{background:color-mix(in srgb,var(--teal) 7%,var(--surface))}
   .evo-table tbody td.evo-main h3{margin:0 0 4px;font-size:13.5px;color:var(--text)}
   .evo-table tbody td.evo-main p{margin:0;color:var(--dim);font-size:12px;line-height:1.5}
+  .tl-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+  .tl-tag{font-family:var(--mono);font-size:10px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:1px 6px;background:var(--bg)}
+  .evo-table tbody tr.future .tl-tag{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 35%,transparent);background:transparent}
+  .evo-table tbody tr.now .tl-tag{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 35%,transparent)}
+  .evo-table tbody tr.past .tl-tag{color:var(--dim)}
   .evo-table tbody tr.future td.evo-main h3{color:var(--dim)}
   .evo-table tbody tr.past td.evo-main h3{color:var(--text)}
   .evo-table tbody td.mcell{width:9.6%;padding:12px 6px;text-align:center;font-family:var(--mono);font-size:11.5px}
