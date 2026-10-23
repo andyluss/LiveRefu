@@ -13,6 +13,9 @@
 
 ## [未发布]
 
+### 变更
+- **元规则 M1/M2 的判定配置为新目录留出入口**：[`rules/meta/tools/config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置（`projects/mainline/cards/` 自带 README，按 M1 属"可自成一体"的子关注点），并把点文件（`.gitignore`）纳入命名白名单——原先的正则要求首字符为字母数字，会把点文件判为"根目录未声明文件"。
+
 ### 新增
 
 - [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。

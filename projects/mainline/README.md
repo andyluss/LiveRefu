@@ -71,6 +71,8 @@
   projects/mainline/            ← 纲领：决策与讨论历史（长期留存，不随项目结束）
   ├── README.md  CHANGELOG.md   ← 纲领自己的说明与日志
   ├── docs/                     ← 提案、裁决、调研；discussions/ 存讨论记录
+  ├── HUB.html                  ← **给人看的一页纸汇总**（隔久了先看这个）
+  ├── cards/                    ← **卡面设计试验台**（HTML/CSS 版式与材质，定稿后回灌引擎）
   └── future-debris/            ← 当前具体项目（代号即目录名）
       ├── README.md  CHANGELOG.md   ← 项目自己的说明与日志
       ├── docs/  game/  tools/  run.sh

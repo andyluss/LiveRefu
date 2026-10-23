@@ -1,0 +1,3 @@
+# 单张渲染是**导出物**（由 render.sh 从 index.html + cards.js 重出），不入库：
+# 每张 2× 约 1.5MB，而它们完全可以再生。入库的只有 preview.png（一张联系表，供快速阅览）。
+out/
