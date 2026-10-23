@@ -33,6 +33,9 @@ var _affordable := true
 var _compact := false
 var _dark := false
 var _card_scale := COMPACT_SCALE
+## >0 时覆盖 [UiScale]：卡牌库要用"更小的卡面"一屏多看几张，
+## 而 UiScale 是为可读性放大用的，两者目的相反。
+var display_scale := 0.0
 
 ## 静态出口：CardBlocks 是 static，用它读"当前这张卡的朝向与势力色"
 static var _dark_now := false
@@ -75,7 +78,11 @@ func _relayout() -> void:
 
 ## 绘制缩放 = **设计缩放**（紧凑/完整）× **显示缩放**（[UiScale]，出素材时放大）。
 func _scale() -> float:
-	return _card_scale if _compact else UiScale.factor()
+	if _compact:
+		return _card_scale
+	if display_scale > 0.0:
+		return display_scale
+	return UiScale.factor()
 
 func _draw() -> void:
 	if _card == null or _tokens == null or _font == null:

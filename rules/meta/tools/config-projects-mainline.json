@@ -102,6 +102,32 @@
       ],
       "sub_concerns": [],
       "sub_configs": {}
+    },
+    "guide": {
+      "_comment": "玩法说明的生成器（自带 README 的子关注点）：只有 build_guide.py + README。",
+      "root_docs": [
+        "README.md",
+        "build_guide.py"
+      ],
+      "type_vocab": [],
+      "code_types": [],
+      "empty_ok_types": [],
+      "doc_naming": {
+        "default": [
+          "^[a-z0-9][a-z0-9_]*\\.py$",
+          "^README$"
+        ]
+      },
+      "skip_dirs": [
+        ".git",
+        "__pycache__"
+      ],
+      "skip_prefixes": [
+        ".",
+        "_"
+      ],
+      "sub_concerns": [],
+      "sub_configs": {}
     }
   }
 }

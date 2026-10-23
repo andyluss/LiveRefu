@@ -12,6 +12,9 @@ extends Control
 ## 这条也说明一件事：**卡面契约的 520×720 放不进 1280×720 的窗口**，
 ## 全尺寸卡面只适合"卡牌库/详情"，对局内必须用紧凑模式（手牌就是 0.32 倍）。
 const GAP := 16
+## 卡牌库用更小的卡面（一屏多看几张）。**列数必须按"设计宽度 × 缩放"算**，
+## 否则按 520 算、实际画 520×缩放，会算多列而互相挤压（1080p 下第三张被裁）。
+const GALLERY_SCALE := 0.62
 
 func _ready() -> void:
 	var loaded := ThemeIo.load_or_build(false)
@@ -45,7 +48,8 @@ func _compose(theme: Theme, tokens: TokenSet) -> Control:
 	scroll.custom_minimum_size = Vector2(0, 560)
 	var grid := GridContainer.new()
 	grid.theme = theme
-	grid.columns = maxi(1, int((get_viewport_rect().size.x - 64) / (CardView.W + GAP)))
+	var cell := CardView.W * GALLERY_SCALE + GAP
+	grid.columns = maxi(1, int((get_viewport_rect().size.x - 64) / cell))
 	grid.add_theme_constant_override("h_separation", GAP)
 	grid.add_theme_constant_override("v_separation", GAP)
 	var ids := catalog.cards.keys()
@@ -54,6 +58,7 @@ func _compose(theme: Theme, tokens: TokenSet) -> Control:
 	for id in ids:
 		var view := CardView.new()
 		grid.add_child(view)
+		view.display_scale = GALLERY_SCALE
 		view.setup_full(catalog.cards[id], tokens, font, "light")
 	scroll.add_child(grid)
 	root.add_child(scroll)
