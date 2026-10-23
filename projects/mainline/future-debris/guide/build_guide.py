@@ -19,9 +19,9 @@ import pathlib
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent          # mainline/guide/
-MAINLINE = HERE.parent                                  # mainline/
-TABLES = MAINLINE / "future-debris/game/data/tables"
-OUT = MAINLINE / "GUIDE.html"
+MAINLINE = HERE.parent.parent                           # mainline/
+TABLES = HERE.parent / "game/data/tables"
+OUT = HERE.parent / "GUIDE.html"
 
 FACTION_ZH = {"FAC-ATOMIC-AEC": "原子能委员会", "FAC-ATOMIC-SUB": "郊区秩序",
               "FAC-ATOMIC-HAU": "清运承包方", "FAC-ATOMIC-ROA": "辐射漫游者"}
@@ -439,7 +439,7 @@ def main() -> int:
     check = "--check" in sys.argv
     if check:
         if not OUT.exists():
-            print(f"✗ 缺 {OUT.relative_to(MAINLINE.parent.parent)}，请先运行 build_guide.py")
+            print(f"✗ 缺 {OUT.relative_to(MAINLINE)}，请先运行 build_guide.py")
             return 1
         if OUT.read_text(encoding="utf-8") != html:
             print("✗ GUIDE.html 已过期（与数据表不一致），请重跑 build_guide.py")
@@ -447,7 +447,7 @@ def main() -> int:
         print("✓ GUIDE.html 与数据一致")
         return 0
     OUT.write_text(html, encoding="utf-8")
-    print(f"已生成 {OUT.relative_to(MAINLINE.parent.parent)}（{len(html) / 1024:.1f} KB）")
+    print(f"已生成 {OUT.relative_to(MAINLINE)}（{len(html) / 1024:.1f} KB）")
     return 0
 
 

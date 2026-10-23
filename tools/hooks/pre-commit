@@ -226,7 +226,7 @@ fi
 # ---- 5.9) HUB 页面与工程对账（防"给人看的页面"悄悄过期）----
 # HUB.html 里的数字（120 卡 / 16 关 / 43 用例…）一定会过期，而"页面写 120、实际已 150"
 # 这种偏差没有任何东西会发现。只要改动 HUB 或它的数据来源，就重新对账。
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^projects/mainline/(HUB\.html|future-debris/(game/data/tables/|run\.sh|game/scenes/tools/cases/))'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^projects/mainline/future-debris/(HUB\.html|GUIDE\.html|game/data/tables/|run\.sh|game/scenes/tools/cases/)'; then
   HUB_CHECK="projects/mainline/future-debris/tools/check_hub.py"
   if [ -f "$HUB_CHECK" ]; then
     echo "[pre-commit:hub] HUB 页面与工程对账..." >&2

@@ -12,7 +12,7 @@ import pathlib
 
 HERE = pathlib.Path(__file__).resolve().parent
 CARDS_DIR = HERE.parent
-TABLES = CARDS_DIR.parent / "future-debris/game/data/tables/cards.json"
+TABLES = CARDS_DIR.parent / "game/data/tables/cards.json"
 FLAVOR = CARDS_DIR / "flavor.json"
 OUT = CARDS_DIR / "cards.js"
 

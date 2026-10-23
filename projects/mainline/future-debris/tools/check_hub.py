@@ -29,7 +29,7 @@ import sys
 HERE = pathlib.Path(__file__).resolve().parent
 FD = HERE.parent                 # future-debris/
 MAINLINE = FD.parent             # mainline/
-HUB = MAINLINE / "HUB.html"
+HUB = FD / "HUB.html"
 TABLES = FD / "game/data/tables"
 RUN_SH = FD / "run.sh"
 CASE_LIST = FD / "game/scenes/tools/cases/case_list.gd"

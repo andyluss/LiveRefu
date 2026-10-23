@@ -1,5 +1,5 @@
 // 由 tools/build_cards_js.py 生成，请勿手改（改展示集请改脚本里的 SHOWCASE）。
-// 数据源：mainline/future-debris/game/data/tables/cards.json（共 120 张，此处展示 9 张）
+// 数据源：future-debris/game/data/tables/cards.json（共 120 张，此处展示 9 张）
 window.CARDS = [
   {
     "id": "RC-ATOMIC-001",

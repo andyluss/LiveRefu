@@ -1,7 +1,7 @@
 # cards · 卡面设计（进化试验台）
 
 > **这是什么**：卡面**设计**的实验区——在这里把卡面做好看，定稿后再回灌到游戏的
-> [`CardView`](../future-debris/game/scripts/view/card/card_view.gd)。
+> [`CardView`](../game/scripts/view/card/card_view.gd)。
 > **这不是**游戏内实现：这里不跑 Godot，只产出版式与材质规范。
 >
 > 打开 [`index.html`](index.html) 看九张样卡（双击即可，数据在同目录 `cards.js`）。
@@ -17,7 +17,7 @@
 ## 一、为什么要有这个目录
 
 游戏里的卡面（`card_view.gd`）六段布局是**对的**：`TOP 64 / ART 300 / KEYS 44 / STATS 90 / TEXT 120 / BOTTOM 48`。
-问题是**材质语言没做出来**——[`docs/02 风格卡`](../future-debris/docs/style-samples/02_风格卡_原子纪元.svg) 早就规定了
+问题是**材质语言没做出来**——[`docs/02 风格卡`](../docs/style-samples/02_风格卡_原子纪元.svg) 早就规定了
 镀铬 / 搪瓷 / 半透明塑料、星爆 / 电子轨道 / 放射线、扫描线 / 网点，但实现出来是一片片**纯深色矩形**：
 没有反射、没有网点、没有颗粒。**规则写到了，手没做到。**
 
@@ -74,7 +74,7 @@
 
 ## 六、视觉系统
 
-**色值全部取自 [`game/data/tokens.json`](../future-debris/game/data/tokens.json)，未新增任何颜色。**
+**色值全部取自 [`game/data/tokens.json`](../game/data/tokens.json)，未新增任何颜色。**
 
 | 用途 | 取值 | 说明 |
 | --- | --- | --- |

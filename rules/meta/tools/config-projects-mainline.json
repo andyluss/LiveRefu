@@ -38,7 +38,9 @@
       "root_docs": [
         "README.md",
         "CHANGELOG.md",
-        "run.sh"
+        "run.sh",
+        "HUB.html",
+        "GUIDE.html"
       ],
       "type_vocab": [
         "docs",
@@ -68,66 +70,67 @@
         "_"
       ],
       "sub_concerns": [],
-      "sub_configs": {}
-    },
-    "cards": {
-      "_comment": "卡面设计试验台（自带 README 的子关注点）。out/ 是 render.sh 的导出物，跳过校验。",
-      "root_docs": [
-        "README.md",
-        "index.html",
-        "cards.js",
-        "render.sh"
-      ],
-      "type_vocab": [],
-      "code_types": [
-        "tools"
-      ],
-      "empty_ok_types": [],
-      "doc_naming": {
-        "default": [
-          "^[a-z0-9][a-z0-9-]*\\.(html|js|sh|json)$",
-          "^preview-[a-z]+-(light|dark|compare|sizes)\\.webp$|^preview-(light|dark|compare|sizes)\\.webp$",
-          "^README$",
-          "^\\.[A-Za-z0-9_]+$"
-        ]
-      },
-      "skip_dirs": [
-        "out",
-        ".git",
-        "__pycache__"
-      ],
-      "skip_prefixes": [
-        ".",
-        "_"
-      ],
-      "sub_concerns": [],
-      "sub_configs": {}
-    },
-    "guide": {
-      "_comment": "玩法说明的生成器（自带 README 的子关注点）：只有 build_guide.py + README。",
-      "root_docs": [
-        "README.md",
-        "build_guide.py"
-      ],
-      "type_vocab": [],
-      "code_types": [],
-      "empty_ok_types": [],
-      "doc_naming": {
-        "default": [
-          "^[a-z0-9][a-z0-9_]*\\.py$",
-          "^README$"
-        ]
-      },
-      "skip_dirs": [
-        ".git",
-        "__pycache__"
-      ],
-      "skip_prefixes": [
-        ".",
-        "_"
-      ],
-      "sub_concerns": [],
-      "sub_configs": {}
+      "sub_configs": {
+        "cards": {
+          "_comment": "卡面设计试验台（自带 README 的子关注点）。out/ 是 render.sh 的导出物，跳过校验。",
+          "root_docs": [
+            "README.md",
+            "index.html",
+            "cards.js",
+            "render.sh"
+          ],
+          "type_vocab": [],
+          "code_types": [
+            "tools"
+          ],
+          "empty_ok_types": [],
+          "doc_naming": {
+            "default": [
+              "^[a-z0-9][a-z0-9-]*\\.(html|js|sh|json)$",
+              "^preview-[a-z]+-(light|dark|compare|sizes)\\.webp$|^preview-(light|dark|compare|sizes)\\.webp$",
+              "^README$",
+              "^\\.[A-Za-z0-9_]+$"
+            ]
+          },
+          "skip_dirs": [
+            "out",
+            ".git",
+            "__pycache__"
+          ],
+          "skip_prefixes": [
+            ".",
+            "_"
+          ],
+          "sub_concerns": [],
+          "sub_configs": {}
+        },
+        "guide": {
+          "_comment": "玩法说明的生成器（自带 README 的子关注点）：只有 build_guide.py + README。",
+          "root_docs": [
+            "README.md",
+            "build_guide.py"
+          ],
+          "type_vocab": [],
+          "code_types": [],
+          "empty_ok_types": [],
+          "doc_naming": {
+            "default": [
+              "^[a-z0-9][a-z0-9_]*\\.py$",
+              "^README$"
+            ]
+          },
+          "skip_dirs": [
+            ".git",
+            "__pycache__"
+          ],
+          "skip_prefixes": [
+            ".",
+            "_"
+          ],
+          "sub_concerns": [],
+          "sub_configs": {}
+        }
+      }
     }
   }
 }

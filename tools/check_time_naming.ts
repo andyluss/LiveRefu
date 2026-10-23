@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // check_time_naming —— 校验带时间戳的文件名是否符合 [R06 时间与时间戳约定](../../rules/R06-time.md)。
 //
-// 覆盖范围（**时事件目录**）：`projects/mainline/docs/discussions/` 与 `**/plans/**`。
+// 覆盖范围（**时事件目录**）：`projects/mainline/future-debris/docs/discussions/` 与 `**/plans/**`。
 //
 // ★ 为什么只守"看起来像时间戳的文件"，而不是"目录下所有文件都必须带时间戳"：
 //   实测 `plans/**` 里**合法地混着**非时间戳文件——`00-project-plan.md`（编号式计划）、
@@ -81,7 +81,7 @@ function checkAgainstCommit(name: string, commitTime: string): { ok: boolean; wh
 /** 是否是受管目录（时事件目录） */
 function isCovered(rel: string): boolean {
   const p = '/' + rel
-  return p.startsWith('/projects/mainline/docs/discussions/') || p.includes('/plans/')
+  return p.startsWith('/projects/mainline/future-debris/docs/discussions/') || p.includes('/plans/')
 }
 
 /** 收集受管目录下的文件（相对路径） */
