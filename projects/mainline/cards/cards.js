@@ -9,6 +9,7 @@ window.CARDS = [
     "rarity": "common",
     "cost": 2,
     "power": 6,
+    "might": 6,
     "compute": 0,
     "residue": 1,
     "keywords": [
@@ -26,6 +27,7 @@ window.CARDS = [
     "rarity": "common",
     "cost": 3,
     "power": 9,
+    "might": 9,
     "compute": 0,
     "residue": 2,
     "keywords": [
@@ -43,6 +45,7 @@ window.CARDS = [
     "rarity": "rare",
     "cost": 1,
     "power": 4,
+    "might": 4,
     "compute": 1,
     "residue": 3,
     "keywords": [
@@ -60,6 +63,7 @@ window.CARDS = [
     "rarity": "common",
     "cost": 1,
     "power": 1,
+    "might": 1,
     "compute": 0,
     "residue": 0,
     "keywords": [
@@ -76,6 +80,7 @@ window.CARDS = [
     "rarity": "rare",
     "cost": 3,
     "power": 7,
+    "might": 7,
     "compute": 1,
     "residue": 0,
     "keywords": [
@@ -92,6 +97,7 @@ window.CARDS = [
     "rarity": "epic",
     "cost": 5,
     "power": 4,
+    "might": 4,
     "compute": 0,
     "residue": 4,
     "keywords": [
@@ -109,6 +115,7 @@ window.CARDS = [
     "rarity": "rare",
     "cost": 2,
     "power": 0,
+    "might": 0,
     "compute": 0,
     "residue": 0,
     "keywords": [
@@ -125,6 +132,7 @@ window.CARDS = [
     "rarity": "rare",
     "cost": 3,
     "power": 8,
+    "might": 8,
     "compute": 1,
     "residue": 0,
     "keywords": [
@@ -141,6 +149,7 @@ window.CARDS = [
     "rarity": "epic",
     "cost": 4,
     "power": 3,
+    "might": 3,
     "compute": 0,
     "residue": 2,
     "keywords": [

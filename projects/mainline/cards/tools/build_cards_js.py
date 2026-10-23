@@ -29,7 +29,7 @@ SHOWCASE = [
     "RC-ATOMIC-012",  # ROA 史诗 残片
 ]
 
-FIELDS = ("id", "name", "faction", "kind", "rarity", "cost", "power", "compute", "residue",
+FIELDS = ("id", "name", "faction", "kind", "rarity", "cost", "power", "might", "compute", "residue",
           "keywords", "text")
 
 

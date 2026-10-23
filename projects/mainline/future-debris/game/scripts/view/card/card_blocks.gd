@@ -1,111 +1,72 @@
 extends RefCounted
 class_name CardBlocks
-## 卡面的三段**绘制原语**：关键词 / 数值块 / 说明文本。
+## 卡面的**内容层**：六段各自的排版（顶栏 / 关键词 / 数值 / 规则+风味 / 底栏）。
 ##
-## 为什么从 [CardView] 拆出来：卡面绘制天然会越写越长（每段都有自己的排版细节），
-## 而"按顺序装配六段"与"某一段怎么排版"是两件事。拆开后 CardView 只读顺序，
-## 每段的排版改动不会牵动整张卡。
+## 与 [CardMaterial] 的分工：材质层画"这张卡是什么做的"，本文件画"这张卡说了什么"。
+## 三者的位置由 [CardView] 的六段契约常量决定，本文件只负责"在给定盒子里怎么排"。
 ##
-## 三者都是 static、接收 `canvas`（由 CardView 把自己传进来）与显式参数：
-## 它们只调用 canvas 的 draw_* 与取 token，自己不持有任何状态。
+## 风格卡规定「只用圆角矩形 + 长反射条 + 单点镜红」，所以这里所有形状都是圆角矩形，
+## 唯一的红色焦点留给费用章与数值条——不引入第二套语言。
 
-## 顶栏：左侧卡名，右侧费用（`number-lg` 等宽数字，不抖动）。
+## 顶栏：左侧"势力代号 · 势力名"，右侧费用章（搪瓷圆章 + 压印数字）
 static func top(canvas: CanvasItem, rect: Rect2, s: float, card: CardData, cost: int,
 		tokens: TokenSet, font: Font) -> void:
-	var y := CardView.TOP * s
-	canvas.draw_line(rect.position + Vector2(0, y), rect.position + Vector2(rect.size.x, y),
-		tokens.color("--line"), 1.0)
-	draw_text(canvas, rect.position + Vector2(12 * s, y * 0.62), card.name, "title-2", "--text",
-		s, tokens, font)
-	var label := "费 %d" % cost
+	var x := CardView.PAD_L * s
+	var dark := CardView.is_dark()
+	var dept := card.faction.replace("FAC-ATOMIC-", "")
+	var dot := Vector2(x + 4.0 * s, 16.0 * s)
+	canvas.draw_circle(dot, 3.4 * s, tokens.color(CardView.accent_token(card)))
+	CardType.text(canvas, Vector2(x + 13.0 * s, 19.0 * s), dept, "caption",
+		"--text-faint" if not dark else "--text-faint", s, tokens, font)
+	CardType.text(canvas, Vector2(x, 50.0 * s), card.name, "title-2",
+		"--text" if dark else "--material-shadow", s, tokens, font)
+	# 费用章：圆章 + 压印数字（唯一的"镜红"焦点在数字下方的红环上）
+	var c := Vector2(rect.size.x - 38.0 * s, 36.0 * s)
+	# 搪瓷圆章：外圈米白 → 内圈深色（带势力色）× 数字**用米白**。
+	# 教训：一开始把数字写成深色（以为内圈是亮的），结果深底上深字——几乎看不见。
+	canvas.draw_circle(c, 24.0 * s, tokens.color("--material-hi"))
+	canvas.draw_circle(c, 19.0 * s, tokens.color("--bg-elev-2").lerp(tokens.color("--accent"), 0.30))
+	canvas.draw_arc(c, 22.0 * s, 0.0, TAU, 32, tokens.color("--accent"), maxf(1.0, 1.6 * s), true)
 	var size := int(tokens.size("number-lg") * s)
+	var label := str(cost)
 	var width := font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
-	draw_text(canvas, rect.position + Vector2(rect.size.x - 12 * s - width, y * 0.7), label,
-		"number-lg", "--text", s, tokens, font)
+	canvas.draw_string(font, c + Vector2(-width * 0.5, size * 0.36), label,
+		HORIZONTAL_ALIGNMENT_LEFT, -1, size, tokens.color("--material-hi"))
 
-## 底栏：左侧阵营名（去掉 FAC-ATOMIC- 前缀），右侧卡号。
+## 底栏：势力名 + 类型 + 卡号 + 条码（条码是"归档"的视觉落款）
 static func bottom(canvas: CanvasItem, rect: Rect2, s: float, card: CardData,
 		tokens: TokenSet, font: Font) -> void:
 	var y := rect.size.y - CardView.BOTTOM * s
-	canvas.draw_line(rect.position + Vector2(0, y), rect.position + Vector2(rect.size.x, y),
-		tokens.color("--line"), 1.0)
+	canvas.draw_line(Vector2(0, y), Vector2(rect.size.x, y), Color(0, 0, 0, 0.18), maxf(1.0, s))
 	var baseline := y + CardView.BOTTOM * 0.62 * s
-	draw_text(canvas, rect.position + Vector2(12 * s, baseline),
-		card.faction.replace("FAC-ATOMIC-", ""), "caption", "--text-faint", s, tokens, font)
+	CardType.text(canvas, Vector2(CardView.PAD_L * s, baseline),
+		card.faction.replace("FAC-ATOMIC-", ""), "caption", "--text-dim", s, tokens, font)
 	var size := int(tokens.size("caption") * s)
 	var width := font.get_string_size(card.id, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
-	draw_text(canvas, rect.position + Vector2(rect.size.x - 12 * s - width, baseline), card.id,
+	CardType.text(canvas, Vector2(rect.size.x - 46.0 * s - width, baseline), card.id,
 		"caption", "--text-faint", s, tokens, font)
+	# 条码：12 根不等宽竖线
+	for i in 12:
+		var bx := rect.size.x - 42.0 * s + float(i) * 3.2 * s
+		var w := 1.6 if i % 3 else 2.4
+		canvas.draw_rect(Rect2(Vector2(bx, y + 14.0 * s), Vector2(w * s, 14.0 * s)),
+			Color(tokens.color("--material-shadow"), 0.55))
 
-## 单行文字（左对齐，位置由调用方给）。
-static func draw_text(canvas: CanvasItem, at: Vector2, text: String, level: String,
-		color_token: String, s: float, tokens: TokenSet, font: Font) -> void:
-	canvas.draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1,
-		int(tokens.size(level) * s), tokens.color(color_token))
-
-## 关键词：胶囊形标签，从左排。
+## 关键词：圆角搪瓷小牌，前缀一颗势力色圆点
 static func keys(canvas: CanvasItem, rect: Rect2, s: float, card: CardData,
 		tokens: TokenSet, font: Font) -> void:
 	var y := (CardView.TOP + CardView.ART) * s
-	var x := 12.0 * s
+	var x := CardView.PAD_L * s
 	for keyword in card.keywords:
-		var width := (float(keyword.length()) * 9.0 + 20.0) * s
-		var box := Rect2(Vector2(x, y + 8 * s), Vector2(width, (CardView.KEYS - 18) * s))
-		canvas.draw_rect(box, tokens.color("--bg-elev-1"), true)
-		canvas.draw_rect(box, tokens.color("--line-strong"), false, 1.0)
-		centered(canvas, box, keyword, "caption", "--text-dim", s, tokens, font)
-		x += width + 8 * s
-
-## 数值块：三格等宽（电力 / 残渣 / 战力），**位置固定**。
-static func stats(canvas: CanvasItem, rect: Rect2, s: float, card: CardData, might: int,
-		tokens: TokenSet, font: Font) -> void:
-	var y := (CardView.TOP + CardView.ART + CardView.KEYS) * s
-	var cell := rect.size.x / 3.0
-	var entries := [
-		["电力", card.power, "--power"],
-		["残渣", card.residue, "--residue"],
-		["战力", might, "--text"],
-	]
-	for index in entries.size():
-		var box := Rect2(Vector2(cell * index, y), Vector2(cell, CardView.STATS * s))
-		canvas.draw_rect(box, tokens.color("--bg-elev-1"), true)
-		canvas.draw_rect(box, tokens.color("--line"), false, 1.0)
-		centered(canvas, Rect2(box.position, Vector2(box.size.x, box.size.y * 0.42)),
-			str(entries[index][0]), "caption", "--text-dim", s, tokens, font)
-		centered(canvas, Rect2(box.position + Vector2(0, box.size.y * 0.40),
-			Vector2(box.size.x, box.size.y * 0.6)), str(entries[index][1]),
-			"title-2", str(entries[index][2]), s, tokens, font)
-
-## 说明文本：按宽度**自动折行**（卡牌说明必须完整可读，不能截断）。
-static func flavor(canvas: CanvasItem, rect: Rect2, s: float, card: CardData,
-		tokens: TokenSet, font: Font) -> void:
-	var y := (CardView.TOP + CardView.ART + CardView.KEYS + CardView.STATS) * s
-	var area := Rect2(Vector2(12 * s, y + 6 * s),
-		Vector2(rect.size.x - 24 * s, (CardView.TEXT - 12) * s))
-	var size := int(tokens.size("caption") * s)
-	var line_height := float(size) * 1.5
-	var offset := 0.0
-	var line := ""
-	for word in card.text.split(" "):
-		var probe := line + ("" if line == "" else " ") + word
-		var too_wide := font.get_string_size(probe, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x > area.size.x
-		if too_wide and line != "":
-			_draw_line(canvas, area.position + Vector2(0, offset + float(size)), line, size, tokens, font)
-			offset += line_height
-			line = word
-		else:
-			line = probe
-	if line != "":
-		_draw_line(canvas, area.position + Vector2(0, offset + float(size)), line, size, tokens, font)
-
-static func _draw_line(canvas: CanvasItem, at: Vector2, text: String, size: int,
-		tokens: TokenSet, font: Font) -> void:
-	canvas.draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, tokens.color("--text-dim"))
-
-## 在盒子里居中画一行字（标签与数值都用它）。
-static func centered(canvas: CanvasItem, box: Rect2, text: String, level: String,
-		color_token: String, s: float, tokens: TokenSet, font: Font) -> void:
-	var size := int(tokens.size(level) * s)
-	var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
-	canvas.draw_string(font, box.position + Vector2((box.size.x - width) * 0.5, box.size.y * 0.78),
-		text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, tokens.color(color_token))
+		var width := (float(keyword.length()) * 9.0 + 22.0) * s
+		var box := Rect2(Vector2(x, y + 6 * s), Vector2(width, 28.0 * s))
+		var chip := StyleBoxFlat.new()
+		chip.bg_color = tokens.color("--bg-elev-1")
+		chip.set_corner_radius_all(int(4.0 * s))
+		canvas.draw_style_box(chip, box)
+		canvas.draw_circle(Vector2(x + 9.0 * s, box.position.y + 14.0 * s), 2.6 * s,
+			tokens.color(CardView.accent_token(card)))
+		canvas.draw_string(font, Vector2(x + 16.0 * s, box.position.y + 19.0 * s), keyword,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, int(tokens.size("caption") * s),
+			tokens.color("--text-dim"))
+		x += width + 7.0 * s

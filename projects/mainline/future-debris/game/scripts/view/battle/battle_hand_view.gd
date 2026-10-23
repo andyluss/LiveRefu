@@ -57,7 +57,8 @@ func refresh() -> void:
 		var card: CardData = _battle.hand[index]
 		var cost := CardCost.of(_battle, card, 0)
 		var affordable := cost <= ResourceSystem.power(_battle.resources)
-		_views[index].setup_compact(card, _tokens, _font, cost, card.might, affordable, _card_scale)
+		_views[index].setup_compact(card, _tokens, _font, cost, card.might, affordable,
+			_card_scale, "dark")
 	queue_redraw()
 
 func select(index: int) -> void:

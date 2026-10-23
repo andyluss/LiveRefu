@@ -54,7 +54,7 @@ func _compose(theme: Theme, tokens: TokenSet) -> Control:
 	for id in ids:
 		var view := CardView.new()
 		grid.add_child(view)
-		view.setup_full(catalog.cards[id], tokens, font)
+		view.setup_full(catalog.cards[id], tokens, font, "light")
 	scroll.add_child(grid)
 	root.add_child(scroll)
 	return root

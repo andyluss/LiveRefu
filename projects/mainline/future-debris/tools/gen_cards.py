@@ -206,13 +206,17 @@ def generate(seed: dict, want_total: int) -> list:
 
 
 # 卡表契约的字段白名单：生成器内部的记账字段不得写进表
-CONTRACT_FIELDS = ("id", "name", "faction", "kind", "rarity", "cost", "power",
-                   "compute", "residue", "keywords", "text")
+CONTRACT_FIELDS = ("id", "name", "faction", "kind", "rarity", "cost", "power", "might",
+                   "compute", "residue", "keywords", "text", "flavor")
 
 
 def strip_internal(entries: list) -> list:
-    """只保留契约字段。**内部记账字段（如 might）写进表会污染契约**，
-    且数据闸门不会报错——它只检查已知字段。"""
+    """只保留契约字段。
+
+    ★ 2026-10-23 更正：原先 might 被当作"内部记账字段"**故意不写表**，理由是"怕污染契约"。
+    但那导致卡面用 `power`（供电）冒充战力——实测 **120 张里 94 张**的卡面战力与它自己
+    正文写的战力不一致（正文由生成器打印了真实 might）。用户看得见的错，比契约多一个
+    字段严重得多。因此 might 现在是**正式契约字段**，两边必须一致。"""
     out = []
     for entry in entries:
         out.append({key: entry[key] for key in CONTRACT_FIELDS if key in entry})
@@ -301,7 +305,11 @@ def run_self_test() -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="future-debris 卡表量产管线")
-    parser.add_argument("--target", type=int, default=12, help="生成到总计多少张（含手写卡）")
+    # ⚠️ 默认值曾写死 12，于是 **裸跑 `python3 tools/gen_cards.py` 会把卡池重置成 12 张并覆盖**
+    #    （实测踩过：108 张生成卡一次被抹掉）。现在默认 = **当前表里的条数**，
+    #    裸跑变成"按现有规模重新生成"，幂等且不会缩池；要改规模必须显式给 --target。
+    parser.add_argument("--target", type=int, default=None,
+                        help="生成到总计多少张（含手写卡）；省略 = 保持当前表的规模")
     parser.add_argument("--dry-run", action="store_true", help="只打印，不写文件")
     parser.add_argument("--self-test", action="store_true", help="先跑生成器自检（只读，不落盘）")
     parser.add_argument("--check-balance", action="store_true",
@@ -329,6 +337,9 @@ def main() -> int:
     seed = load_seed()
     table = load_cards()
     manual = manual_entries(table)
+    if args.target is None:
+        args.target = max(len(table.get("entries", [])), len(manual))
+        print(f"[卡表量产] 未给 --target，按当前表规模 {args.target} 张重建（缩池必须显式指定）")
     if args.target < len(manual):
         print(f"用法错误：--target {args.target} 小于手写卡数量 {len(manual)}", file=sys.stderr)
         return 2
