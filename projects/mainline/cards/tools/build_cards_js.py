@@ -13,6 +13,7 @@ import pathlib
 HERE = pathlib.Path(__file__).resolve().parent
 CARDS_DIR = HERE.parent
 TABLES = CARDS_DIR.parent / "future-debris/game/data/tables/cards.json"
+FLAVOR = CARDS_DIR / "flavor.json"
 OUT = CARDS_DIR / "cards.js"
 
 # 展示集：覆盖 4 势力 × 6 种类 × 3 稀有度
@@ -35,13 +36,23 @@ FIELDS = ("id", "name", "faction", "kind", "rarity", "cost", "power", "compute",
 def main() -> int:
     data = json.loads(TABLES.read_text(encoding="utf-8"))
     by_id = {e["id"]: e for e in data["entries"]}
+    flavor = {}
+    if FLAVOR.exists():
+        raw = json.loads(FLAVOR.read_text(encoding="utf-8"))
+        flavor = {k: v for k, v in raw.items() if not k.startswith("_")}
+
     picked = []
     for cid in SHOWCASE:
         e = by_id.get(cid)
         if e is None:
             print(f"缺卡：{cid}")
             return 1
-        picked.append({k: e[k] for k in FIELDS if k in e})
+        row = {k: e[k] for k in FIELDS if k in e}
+        if cid in flavor:
+            row["flavor"] = flavor[cid]
+        else:
+            print(f"提示：{cid} 没有风味文字（flavor.json）")
+        picked.append(row)
 
     body = json.dumps(picked, ensure_ascii=False, indent=2)
     OUT.write_text(

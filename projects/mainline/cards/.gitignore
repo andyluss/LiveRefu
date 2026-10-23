@@ -1,3 +1,4 @@
-# 单张渲染是**导出物**（由 render.sh 从 index.html + cards.js 重出），不入库：
-# 每张 2× 约 1.5MB，而它们完全可以再生。入库的只有 preview.png（一张联系表，供快速阅览）。
+# 全套单张渲染是**导出物**（由 render.sh 从 index.html + cards.js 重出），不入库：
+# 54 张 WebP 共约数 MB，且完全可以再生。
+# 入库的只有 4 张对比预览（preview-*.webp），用于快速阅览与评审留档。
 out/

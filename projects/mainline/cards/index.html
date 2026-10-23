@@ -4,226 +4,308 @@
 <meta charset="utf-8">
 <title>未来残片 · 卡面设计（cards/）</title>
 <!--
-  ══ 卡面设计的进化试验台（不是游戏内原型） ══
+  ══ 卡面设计试验台 ══
 
-  既有卡面（future-debris/game/scripts/view/card/card_view.gd）六段布局是对的，
-  但**材质语言没做出来**：没有镀铬反射、没有网点、没有扫描线，全是纯深色矩形。
+  既有卡面（future-debris/.../card_view.gd）六段布局是对的，但风格卡规定的材质语言
+  没被实现（没有镀铬反射/网点/扫描线，全是纯深色矩形）。这里把那套语言做出来。
 
-  本文件把那套语言真正渲染出来，并加进那个时代的工业物件细节。
-  设计概念：**「提案卡」是一块归档的搪瓷金属提案板** ——
-    搪瓷面 + 镀铬包边 / 凹陷视窗里放几何插画 / 网点+扫描线模拟印刷 /
-    打孔·套准标记·压印序号·条码等归档痕迹。
-
-  打开：双击即可（数据在同目录 cards.js）。
-    ?card=<id>   单张（截图用）      ?sheet=1   联系表
+  两套朝向 × 三档尺寸，**结构完全相同、信息不删**（只调排版比例与字号）：
+    朝向 theme：light = 杂志式（米白搪瓷）／ dark = 暗卡（黑铬 + 视窗成光源）
+    尺寸 size ：l = 520×720 ／ m = 420×582 ／ s = 340×471
 -->
 <style>
-  /* ── 色值全部来自 game/data/tokens.json ── */
+  /* ══════════ 语言层：色值全部来自 game/data/tokens.json ══════════ */
   :root{
     --bg:#10161C; --text:#F3EDE1; --dim:#A9A395;
-    --cream:#F3EDE1; --cream-2:#E7DFCD; --cream-3:#D8CEB8;
-    --chrome-hi:#FFFDF6; --chrome-blue:#8E9AA6; --chrome-lo:#6F7B89;
-    --enamel-deep:#123236;
+    --cream:#F3EDE1;
     --power:#4FD1C5; --residue:#FF6B35; --accent:#E4572E; --ok:#7BD389; --warn:#FFC857;
-    --ink:#241f17; --ink-2:#4a3f2c; --ink-3:#8a7f66;
-    --card-w:520px; --card-h:720px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--text);
     font:15px/1.6 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif}
   .mono{font-family:Menlo,"SF Mono",Consolas,"DejaVu Sans Mono",monospace}
 
-  /* ══════════ 卡面 ══════════ */
-  .card{position:relative;width:var(--card-w);height:var(--card-h);--acc:#4FD1C5;
-    filter:drop-shadow(0 20px 38px rgba(0,0,0,.58)) drop-shadow(0 3px 7px rgba(0,0,0,.5))}
+  /* ══════════════════════════════════════════════════════════
+     尺寸令牌：结构不变，只变比例与字号（信息一项不删）
+     ══════════════════════════════════════════════════════════ */
+  .card{
+    --acc:#4FD1C5;
+    position:relative;width:var(--w);height:var(--h);
+    filter:drop-shadow(0 20px 38px rgba(0,0,0,.58)) drop-shadow(0 3px 7px rgba(0,0,0,.5));
+  }
+  .card[data-size="l"]{
+    --w:520px; --h:720px; --r:18px; --pad:7px; --fr:12px;
+    --h-top:70px; --h-art:316px; --h-keys:40px; --h-stats:84px; --h-bottom:46px;
+    --pl:28px; --pr:16px; --gap-art:14px;
+    --f-dept:8px; --f-name:25px; --f-rar:7.5px; --f-cost:27px; --cost:50px;
+    --f-kw:11.5px; --f-label:8px; --f-num:29px; --f-rules:13.5px; --f-flavor:11px;
+    --f-serial:8.5px; --f-stamp:10.5px; --kw-pad:3.5px 10px 3.5px 21px;
+    --stat-pad:11px 11px 8px; --art-r:9px;
+  }
+  .card[data-size="m"]{
+    --w:420px; --h:582px; --r:15px; --pad:6px; --fr:10px;
+    --h-top:58px; --h-art:256px; --h-keys:33px; --h-stats:70px; --h-bottom:38px;
+    --pl:23px; --pr:13px; --gap-art:11px;
+    --f-dept:7px; --f-name:20.5px; --f-rar:6.5px; --f-cost:22px; --cost:41px;
+    --f-kw:10px; --f-label:7px; --f-num:23px; --f-rules:11.2px; --f-flavor:9.2px;
+    --f-serial:7.2px; --f-stamp:8.8px; --kw-pad:3px 8px 3px 18px;
+    --stat-pad:9px 8px 6px; --art-r:7px;
+  }
+  .card[data-size="s"]{
+    --w:340px; --h:471px; --r:12px; --pad:5px; --fr:8px;
+    --h-top:48px; --h-art:186px; --h-keys:28px; --h-stats:58px; --h-bottom:32px;
+    --pl:19px; --pr:11px; --gap-art:9px;
+    --f-dept:6px; --f-name:17px; --f-rar:5.5px; --f-cost:18px; --cost:34px;
+    --f-kw:8.6px; --f-label:6px; --f-num:18px; --f-rules:9.4px; --f-flavor:7.8px;
+    --f-serial:6.2px; --f-stamp:7.4px; --kw-pad:2.5px 7px 2.5px 15px;
+    --stat-pad:7px 7px 4px; --art-r:6px;
+  }
 
-  /* 镀铬包边：多段长反射 */
-  .plate{position:absolute;inset:0;border-radius:18px;padding:7px;
-    background:linear-gradient(146deg,
-      #FFFDF6 0%, #F6F1E3 8%, #CFD6DB 20%, #8E9AA6 31%, #6F7B89 39%,
-      #A9B4BE 48%, #E9E4D6 60%, #FFFDF6 69%, #D6DBDF 79%, #98A4AF 89%, #F2EDDF 100%);
-    box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 -1px 0 rgba(0,0,0,.4) inset,
-      0 0 0 1px rgba(0,0,0,.6)}
-  .plate::before{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;
-    background:linear-gradient(114deg, rgba(255,255,255,0) 24%, rgba(255,255,255,.95) 37%,
-      rgba(255,255,255,.15) 44%, rgba(255,255,255,0) 51%,
-      rgba(255,255,255,.6) 67%, rgba(255,255,255,0) 77%);
-    mix-blend-mode:screen}
+  /* ══════════ 朝向①：杂志式（米白搪瓷 + 深色视窗） ══════════ */
+  .card[data-theme="light"]{
+    --plate:linear-gradient(146deg,#FFFDF6 0%,#F6F1E3 8%,#CFD6DB 20%,#8E9AA6 31%,#6F7B89 39%,
+      #A9B4BE 48%,#E9E4D6 60%,#FFFDF6 69%,#D6DBDF 79%,#98A4AF 89%,#F2EDDF 100%);
+    --face:radial-gradient(120% 80% at 50% -12%,#FCF8EE 0%,#F3EDE1 44%,#E7DFCD 100%);
+    --face-sh:0 1px 0 rgba(255,255,255,.95) inset,0 -2px 3px rgba(120,105,80,.22) inset,0 0 0 1px rgba(150,135,105,.38) inset;
+    --ink:#241f17; --ink-2:#3a3327; --ink-3:#8a7f66;
+    --hair:rgba(150,135,105,.4);
+    --well:linear-gradient(180deg,#F8F3E7,#E3DAC5);
+    --well-sh:0 1px 0 rgba(255,255,255,.95) inset,0 -2px 0 rgba(140,125,95,.25) inset,0 1px 2px rgba(90,75,45,.2);
+    --kw:linear-gradient(180deg,#FBF7EC,#E6DDC9);
+    --kw-sh:0 1px 0 rgba(255,255,255,.95) inset,0 -1.5px 0 rgba(140,125,95,.28) inset,0 1px 2px rgba(90,75,45,.22);
+    --hole:radial-gradient(circle at 38% 32%,#c4b9a2,#8d8269 58%,#655d4b);
+    --hole-sh:0 1px 1px rgba(255,255,255,.9),inset 0 1px 3px rgba(0,0,0,.6);
+    --grain-blend:multiply; --grain-op:.26;
+    --art-bg:radial-gradient(135% 105% at 50% 6%,#20615F 0%,#123236 48%,#06161A 100%);
+    --art-sh:0 5px 14px rgba(0,0,0,.5) inset,0 -1px 0 rgba(255,255,255,.3) inset,0 0 0 1px rgba(88,70,42,.6),0 1px 0 rgba(255,255,255,.6);
+    --art-filter:none;
+    --sign-hair:rgba(140,125,95,.45); --sig:rgba(120,105,80,.28);
+    --stampbox:rgba(178,68,38,.62); --stampbox-t:rgba(178,68,38,.88);
+    --bottom:linear-gradient(180deg,rgba(150,135,105,.10),rgba(150,135,105,.22));
+    --bottom-hair:rgba(150,135,105,.4);
+    --bar:#3d3527;
+    --name-sh:0 1px 0 rgba(255,255,255,.95);
+    --num-sh:0 1px 0 rgba(255,255,255,.95);
+    --rar-bg:linear-gradient(180deg,#FBF7EC,#E6DDC9); --rar-ink:#6a5f49;
+    --wm-op:.055;
+  }
 
-  /* 搪瓷面 */
-  .face{position:absolute;inset:7px;border-radius:12px;overflow:hidden;
-    background:radial-gradient(120% 80% at 50% -12%, #FCF8EE 0%, var(--cream) 44%, var(--cream-2) 100%);
-    box-shadow:0 1px 0 rgba(255,255,255,.95) inset, 0 -2px 3px rgba(120,105,80,.22) inset,
-      0 0 0 1px rgba(150,135,105,.38) inset;
-    display:flex;flex-direction:column}
-  .face::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:30;opacity:.26;
+  /* ══════════ 朝向②：暗卡（黑铬包边 + 视窗成为光源） ══════════ */
+  .card[data-theme="dark"]{
+    --plate:linear-gradient(146deg,#5C6A78 0%,#2A3540 9%,#8B98A6 20%,#CED6DD 27%,#39454F 36%,
+      #141B22 46%,#7E8B98 58%,#D7DEE4 64%,#2F3A45 74%,#101820 86%,#6A7885 94%,#1A232C 100%);
+    --face:radial-gradient(130% 86% at 50% -16%,#1B242D 0%,#141B22 46%,#0A1015 100%);
+    --face-sh:0 1px 0 rgba(255,255,255,.14) inset,0 -2px 4px rgba(0,0,0,.6) inset,0 0 0 1px rgba(0,0,0,.6) inset;
+    --ink:#F3EDE1; --ink-2:#D5CDBC; --ink-3:#948E7E;
+    --hair:rgba(243,237,225,.16);
+    --well:linear-gradient(180deg,#202B36,#141C24);
+    --well-sh:0 1px 0 rgba(255,255,255,.10) inset,0 -2px 0 rgba(0,0,0,.45) inset,0 1px 2px rgba(0,0,0,.5);
+    --kw:linear-gradient(180deg,#26323E,#1A232C);
+    --kw-sh:0 1px 0 rgba(255,255,255,.12) inset,0 -1.5px 0 rgba(0,0,0,.5) inset,0 1px 2px rgba(0,0,0,.45);
+    --hole:radial-gradient(circle at 38% 32%,#0B1116,#05090C 60%,#000);
+    --hole-sh:0 1px 1px rgba(255,255,255,.16),inset 0 1px 3px rgba(0,0,0,.9);
+    --grain-blend:screen; --grain-op:.10;
+    /* 视窗更亮并向内发光：暗卡上"插画就是光源" */
+    --art-bg:radial-gradient(135% 105% at 50% 4%,#2C7A72 0%,#154044 46%,#08171B 100%);
+    --art-sh:0 0 34px rgba(79,209,197,.22) inset,0 0 0 1px rgba(79,209,197,.34),
+      0 -1px 0 rgba(255,255,255,.20) inset,0 0 22px rgba(79,209,197,.16);
+    --art-filter:brightness(1.14) saturate(1.10);
+    --sign-hair:rgba(243,237,225,.20); --sig:rgba(243,237,225,.24);
+    --stampbox:rgba(228,87,46,.72); --stampbox-t:rgba(240,120,80,.95);
+    --bottom:linear-gradient(180deg,rgba(243,237,225,.05),rgba(0,0,0,.35));
+    --bottom-hair:rgba(243,237,225,.14);
+    --bar:#CFC7B6;
+    --name-sh:0 0 12px rgba(79,209,197,.30);
+    --num-sh:0 0 10px rgba(79,209,197,.22);
+    --rar-bg:linear-gradient(180deg,#26323E,#1A232C); --rar-ink:#CFC7B6;
+    --wm-op:.09;
+  }
+
+  /* ══════════ 本体 ══════════ */
+  .plate{position:absolute;inset:0;border-radius:var(--r);padding:var(--pad);background:var(--plate);
+    box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 -1px 0 rgba(0,0,0,.5) inset,0 0 0 1px rgba(0,0,0,.6)}
+  .plate::before{content:"";position:absolute;inset:0;border-radius:var(--r);pointer-events:none;
+    background:linear-gradient(114deg,rgba(255,255,255,0) 24%,rgba(255,255,255,.92) 37%,
+      rgba(255,255,255,.14) 44%,rgba(255,255,255,0) 51%,rgba(255,255,255,.55) 67%,rgba(255,255,255,0) 77%);
+    mix-blend-mode:screen;opacity:.9}
+
+  .face{position:absolute;inset:var(--pad);border-radius:var(--fr);overflow:hidden;background:var(--face);
+    box-shadow:var(--face-sh);display:flex;flex-direction:column}
+  .face::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:30;opacity:var(--grain-op);
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.6'/></svg>");
-    mix-blend-mode:multiply}
+    mix-blend-mode:var(--grain-blend)}
 
   /* 稀有度 */
-  .card[data-rarity="rare"] .face{
-    box-shadow:0 1px 0 rgba(255,255,255,.95) inset, 0 -2px 3px rgba(120,105,80,.22) inset,
-      0 0 0 1px rgba(150,135,105,.38) inset, 0 0 0 5px rgba(79,209,197,.20) inset}
-  .card[data-rarity="epic"] .face{
-    box-shadow:0 1px 0 rgba(255,255,255,.95) inset, 0 -2px 3px rgba(120,105,80,.22) inset,
-      0 0 0 1px rgba(150,135,105,.38) inset, 0 0 0 5px rgba(255,200,87,.26) inset}
-  /* 史诗箔片：斜向箔带（打印时被 gamma 吃掉是预期的） */
-  .card[data-rarity="epic"] .face::before{content:"";position:absolute;inset:0;z-index:29;
-    pointer-events:none;opacity:.34;
-    background:linear-gradient(104deg,
-      rgba(255,200,87,0) 34%, rgba(255,200,87,.75) 41%, rgba(255,255,255,.95) 45%,
-      rgba(123,211,137,.55) 49%, rgba(255,107,53,.45) 53%, rgba(255,200,87,0) 61%);
+  .card[data-rarity="rare"] .face{box-shadow:var(--face-sh),0 0 0 var(--fr) rgba(79,209,197,.22) inset}
+  .card[data-rarity="epic"] .face{box-shadow:var(--face-sh),0 0 0 var(--fr) rgba(255,200,87,.30) inset}
+  .card[data-rarity="epic"] .face::before{content:"";position:absolute;inset:0;z-index:29;pointer-events:none;
+    opacity:.40;background:linear-gradient(104deg,rgba(255,200,87,0) 34%,rgba(255,200,87,.75) 41%,
+      rgba(255,255,255,.95) 45%,rgba(123,211,137,.55) 49%,rgba(255,107,53,.45) 53%,rgba(255,200,87,0) 61%);
     mix-blend-mode:overlay}
 
-  /* 左缘打孔（归档活页）——内容整体躲开这条 22px 的带子 */
-  .holes{position:absolute;left:4px;top:0;bottom:0;width:16px;z-index:12;
-    display:flex;flex-direction:column;justify-content:space-around;padding:52px 0 40px;pointer-events:none}
-  .holes i{width:10px;height:10px;border-radius:50%;display:block;
-    background:radial-gradient(circle at 38% 32%, #c4b9a2, #8d8269 58%, #655d4b);
-    box-shadow:0 1px 1px rgba(255,255,255,.9), inset 0 1px 3px rgba(0,0,0,.6)}
+  /* 左缘打孔 */
+  .holes{position:absolute;left:3px;top:0;bottom:0;width:14px;z-index:12;display:flex;
+    flex-direction:column;justify-content:space-around;padding:52px 0 40px;pointer-events:none}
+  .holes i{width:9px;height:9px;border-radius:50%;display:block;background:var(--hole);box-shadow:var(--hole-sh)}
 
-  /* ══ 1. 顶栏（两行 + 费用章） ══ */
-  .top{position:relative;height:70px;flex:none;padding:10px 16px 0 28px;
-    display:flex;align-items:flex-start;gap:12px}
+  /* ══ 顶栏 ══ */
+  .top{position:relative;height:var(--h-top);flex:none;padding:calc(var(--f-dept)*1.2) var(--pr) 0 var(--pl);
+    display:flex;align-items:flex-start;gap:calc(var(--f-name)*.5)}
   .top .l{min-width:0;flex:1}
-  .dept{font-family:Menlo,monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;
+  .dept{font-family:Menlo,monospace;font-size:var(--f-dept);letter-spacing:.18em;text-transform:uppercase;
     color:var(--ink-3);display:flex;align-items:center;gap:6px}
-  .dept::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acc);
-    box-shadow:0 0 0 1.5px rgba(255,255,255,.9),0 0 0 2.5px rgba(0,0,0,.10)}
-  .name{margin:2px 0 0;font-size:25px;line-height:1.1;font-weight:800;letter-spacing:.5px;
-    color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.95)}
-  .rar{margin-left:auto;flex:none;margin-top:1px;font-family:Menlo,monospace;font-size:7.5px;
-    letter-spacing:.16em;padding:3px 6px;border-radius:3px;color:#6a5f49;
-    background:linear-gradient(180deg,#FBF7EC,#E6DDC9);
-    box-shadow:0 1px 0 #fff inset,0 -1.5px 0 rgba(140,125,95,.25) inset,0 1px 2px rgba(90,75,45,.2)}
-
-  /* 费用章：镀铬环 + 搪瓷心 */
-  .cost{flex:none;width:50px;height:50px;border-radius:50%;position:relative;
+  .dept::before{content:"";width:.75em;height:.75em;border-radius:50%;background:var(--acc);
+    box-shadow:0 0 0 1.5px rgba(255,255,255,.35),0 0 6px currentColor}
+  .name{margin:.06em 0 0;font-size:var(--f-name);line-height:1.1;font-weight:800;letter-spacing:.02em;
+    color:var(--ink);text-shadow:var(--name-sh)}
+  .rar{margin-left:auto;flex:none;margin-top:1px;font-family:Menlo,monospace;font-size:var(--f-rar);
+    letter-spacing:.16em;padding:.3em .55em;border-radius:3px;color:var(--rar-ink);background:var(--rar-bg);
+    box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 -1.5px 0 rgba(0,0,0,.18) inset}
+  .cost{flex:none;width:var(--cost);height:var(--cost);border-radius:50%;position:relative;
     display:grid;place-items:center;margin-top:-1px;
-    background:radial-gradient(circle at 34% 28%, #FFFDF6, #E9E4D6 34%, #C6CBD1 62%, #98A4AF 100%);
-    box-shadow:0 2px 0 rgba(255,255,255,.95) inset, 0 -3px 6px rgba(110,95,70,.4) inset,
-      0 3px 6px rgba(80,68,45,.35), 0 0 0 1px rgba(120,105,80,.35)}
-  .cost .ring{position:absolute;inset:6px;border-radius:50%;
-    background:radial-gradient(circle at 40% 32%, #FFF8E6, color-mix(in srgb, var(--acc) 26%, #EFE7D4) 70%, #D6CBB2);
-    box-shadow:0 1px 2px rgba(0,0,0,.18) inset, 0 1px 0 rgba(255,255,255,.9)}
-  .cost b{position:relative;font-family:Menlo,monospace;font-size:27px;font-weight:800;
-    color:#332c20;text-shadow:0 1px 0 #fff,0 -1px 0 rgba(0,0,0,.20)}
+    background:radial-gradient(circle at 34% 28%,#FFFDF6,#E9E4D6 34%,#C6CBD1 62%,#98A4AF 100%);
+    box-shadow:0 2px 0 rgba(255,255,255,.85) inset,0 -3px 6px rgba(30,40,50,.45) inset,
+      0 3px 6px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.35)}
+  .cost .ring{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle at 40% 32%,#FFF8E6,#EFE7D4 70%,#D6CBB2);
+    box-shadow:0 1px 2px rgba(0,0,0,.2) inset,0 1px 0 rgba(255,255,255,.9)}
+  .cost b{position:relative;font-family:Menlo,monospace;font-size:var(--f-cost);font-weight:800;
+    color:#332c20;text-shadow:0 1px 0 #fff,0 -1px 0 rgba(0,0,0,.2)}
 
-  /* ══ 2. 视窗 ══ */
-  .art{position:relative;height:316px;flex:none;margin:0 14px 0 24px;border-radius:9px;overflow:hidden;
-    background:radial-gradient(135% 105% at 50% 6%, #20615F 0%, #123236 48%, #06161A 100%);
-    box-shadow:0 5px 14px rgba(0,0,0,.5) inset, 0 -1px 0 rgba(255,255,255,.3) inset,
-      0 0 0 1px rgba(88,70,42,.6), 0 1px 0 rgba(255,255,255,.6)}
-  .art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+  /* ══ 视窗 ══ */
+  .art{position:relative;height:var(--h-art);flex:none;margin:0 var(--gap-art) 0 var(--pl);border-radius:var(--art-r);
+    overflow:hidden;background:var(--art-bg);box-shadow:var(--art-sh)}
+  .art svg{position:absolute;inset:0;width:100%;height:100%;display:block;filter:var(--art-filter)}
   .art .halftone{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.38;
-    background-image:radial-gradient(rgba(243,237,225,.42) 1px, transparent 1.3px);
-    background-size:4px 4px;
-    -webkit-mask-image:radial-gradient(115% 88% at 50% 26%, #000 34%, transparent 82%);
-            mask-image:radial-gradient(115% 88% at 50% 26%, #000 34%, transparent 82%)}
+    background-image:radial-gradient(rgba(243,237,225,.42) 1px,transparent 1.3px);background-size:4px 4px;
+    -webkit-mask-image:radial-gradient(115% 88% at 50% 26%,#000 34%,transparent 82%);
+            mask-image:radial-gradient(115% 88% at 50% 26%,#000 34%,transparent 82%)}
   .art .scan{position:absolute;inset:0;pointer-events:none;
-    background:repeating-linear-gradient(0deg, rgba(0,0,0,.17) 0 1px, rgba(0,0,0,0) 1px 3px)}
-  /* 玻璃罩：左上高光 + 底部极轻压暗（不要压掉地平线网格） */
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.17) 0 1px,rgba(0,0,0,0) 1px 3px)}
   .art .glass{position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(158deg, rgba(255,255,255,.22), rgba(255,255,255,0) 24%);
+    background:linear-gradient(158deg,rgba(255,255,255,.2),rgba(255,255,255,0) 24%);
     box-shadow:inset 0 0 22px rgba(0,0,0,.35)}
-  .reg{position:absolute;width:11px;height:11px;z-index:9;opacity:.5}
+  .reg{position:absolute;width:9px;height:9px;z-index:9;opacity:.5}
   .reg::before,.reg::after{content:"";position:absolute;background:var(--cream)}
-  .reg::before{left:5px;top:0;width:1px;height:11px}
-  .reg::after{top:5px;left:0;height:1px;width:11px}
+  .reg::before{left:4px;top:0;width:1px;height:9px} .reg::after{top:4px;left:0;height:1px;width:9px}
   .reg[data-p="tl"]{left:7px;top:7px} .reg[data-p="tr"]{right:7px;top:7px}
   .reg[data-p="bl"]{left:7px;bottom:7px} .reg[data-p="br"]{right:7px;bottom:7px}
 
-  /* ══ 3. 关键词 ══ */
-  .keys{height:40px;flex:none;margin:7px 14px 0 24px;display:flex;align-items:center;gap:7px;list-style:none}
-  .keys li{position:relative;padding:3.5px 10px 3.5px 21px;border-radius:4px;
-    font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#2b2619;
-    background:linear-gradient(180deg,#FBF7EC,#E6DDC9);
-    box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 -1.5px 0 rgba(140,125,95,.28) inset,
-      0 1px 2px rgba(90,75,45,.22)}
-  .keys li::before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;
-    margin-top:-3px;border-radius:50%;background:var(--acc);
-    box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 1px 2px rgba(0,0,0,.3)}
-  .keys .k-label{margin-left:auto;background:none;box-shadow:none;padding:0;
-    font-family:Menlo,monospace;font-size:8px;letter-spacing:.18em;color:#a89c82;font-weight:400}
+  /* ══ 关键词 ══ */
+  .keys{height:var(--h-keys);flex:none;margin:calc(var(--f-kw)*.55) var(--gap-art) 0 var(--pl);
+    display:flex;align-items:center;gap:.5em;list-style:none}
+  .keys li{position:relative;padding:var(--kw-pad);border-radius:4px;font-size:var(--f-kw);font-weight:700;
+    letter-spacing:.05em;color:var(--ink);background:var(--kw);box-shadow:var(--kw-sh)}
+  .keys li::before{content:"";position:absolute;left:.5em;top:50%;width:.42em;height:.42em;margin-top:-.21em;
+    border-radius:50%;background:var(--acc);box-shadow:0 0 0 1.2px rgba(255,255,255,.4),0 0 5px currentColor}
+  .keys .k-label{margin-left:auto;background:none;box-shadow:none;padding:0;font-family:Menlo,monospace;
+    font-size:var(--f-label);letter-spacing:.18em;color:var(--ink-3);font-weight:400}
   .keys .k-label::before{display:none}
 
-  /* ══ 4. 数值（三只仪表） ══ */
-  .stats{height:84px;flex:none;margin:6px 14px 0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .stat{position:relative;border-radius:6px;padding:11px 11px 8px;overflow:hidden;
-    display:flex;flex-direction:column;justify-content:space-between;
-    background:linear-gradient(180deg,#F8F3E7,#E3DAC5);
-    box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 -2px 0 rgba(140,125,95,.25) inset,
-      0 1px 2px rgba(90,75,45,.20)}
+  /* ══ 数值 ══ */
+  .stats{height:var(--h-stats);flex:none;margin:calc(var(--f-kw)*.45) var(--gap-art) 0 var(--pl);
+    display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--f-num)*.28)}
+  .stat{position:relative;border-radius:5px;padding:var(--stat-pad);overflow:hidden;
+    display:flex;flex-direction:column;justify-content:space-between;background:var(--well);box-shadow:var(--well-sh)}
   .stat::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--c);
-    box-shadow:0 1px 0 rgba(255,255,255,.65)}
-  .stat::after{content:"";position:absolute;right:-14px;bottom:-14px;width:42px;height:42px;
-    border-radius:50%;background:var(--c);opacity:.10}
-  .stat b{font-family:Menlo,monospace;font-size:29px;line-height:1;font-weight:800;
-    color:#26221a;text-shadow:0 1px 0 rgba(255,255,255,.95);letter-spacing:-.02em}
-  .stat span{font-family:Menlo,monospace;font-size:8px;letter-spacing:.13em;text-transform:uppercase;
-    color:var(--ink-3);white-space:nowrap}
-  .stat.r{--c:var(--residue)} .stat.m{--c:#8c7a55} .stat.p{--c:var(--power)}
+    box-shadow:0 1px 0 rgba(255,255,255,.45)}
+  .stat::after{content:"";position:absolute;right:-14px;bottom:-14px;width:42px;height:42px;border-radius:50%;
+    background:var(--c);opacity:.10}
+  .stat b{font-family:Menlo,monospace;font-size:var(--f-num);line-height:1;font-weight:800;color:var(--ink);
+    text-shadow:var(--num-sh);letter-spacing:-.02em}
+  .stat span{font-family:Menlo,monospace;font-size:var(--f-label);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stat.r{--c:var(--residue)} .stat.m{--c:#8C7A55} .stat.p{--c:var(--power)}
 
-  /* ══ 5. 规则文本（含说明抬头 + 编号/签核位） ══ */
-  .text{flex:1;margin:7px 14px 0 24px;padding:8px 10px 0 12px;position:relative;
-    display:flex;flex-direction:column;
-    border-top:1px solid rgba(150,135,105,.4);
-    background:linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,0) 34%)}
-  .text .h{font-family:Menlo,monospace;font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;
-    color:#a1957b;margin-bottom:5px;display:flex;align-items:center;gap:6px}
-  .text .h::after{content:"";flex:1;height:1px;background:rgba(140,125,95,.30)}
-  /* 规则正文竖向居中：短文案时空白上下均分，读起来是"留白"而不是"缺内容" */
-  .text .mid{flex:1;display:flex;align-items:center;position:relative}
-  .text .body{font-size:13.5px;line-height:1.66;color:#2e2820;position:relative;z-index:1}
-  .text .body em{font-style:normal;font-weight:700;color:var(--accent)}
-  /* 淡刻水印：原子轨道，压在文本下面（4% 不抢字） */
-  .text .wm{position:absolute;right:-8px;bottom:-6px;width:150px;height:110px;opacity:.055;
-    background:
-      radial-gradient(closest-side, transparent 62%, var(--acc) 63%, transparent 65%),
-      radial-gradient(closest-side, transparent 38%, var(--acc) 39%, transparent 41%);
-    border-radius:50%;transform:rotate(-14deg)}
-  /* 签核位：把"提案被归档"这件事画出来 */
-  .sign{margin-bottom:6px;display:flex;align-items:center;gap:9px;
-    padding-top:5px;border-top:1px dashed rgba(140,125,95,.42)}
-  .sign .sig{flex:1;height:15px;
-    background:repeating-linear-gradient(90deg, rgba(120,105,80,.28) 0 1px, transparent 1px 3px);
-    -webkit-mask-image:linear-gradient(90deg,#000,transparent 96%);
-            mask-image:linear-gradient(90deg,#000,transparent 96%)}
-  .sign .lbl{font-family:Menlo,monospace;font-size:7px;letter-spacing:.18em;color:#a89c82}
-  .sign .stampbox{flex:none;width:52px;height:22px;border-radius:2px;border:1.4px solid rgba(178,68,38,.62);
-    display:grid;place-items:center;color:rgba(178,68,38,.88);
-    font-size:8px;font-weight:800;letter-spacing:.06em;
-    box-shadow:0 0 0 1px rgba(178,68,38,.18) inset;margin-right:2px}
+  /* ══ 文本（规则 + 风味 + 签核） ══ */
+  .text{flex:1;margin:calc(var(--f-kw)*.45) var(--gap-art) 0 var(--pl);
+    padding:calc(var(--f-label)*.9) .55em 0 .75em;position:relative;display:flex;flex-direction:column;
+    border-top:1px solid var(--hair)}
+  .text .h{font-family:Menlo,monospace;font-size:var(--f-label);letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:.4em;display:flex;align-items:center;gap:.5em}
+  .text .h::after{content:"";flex:1;height:1px;background:var(--hair)}
+  .mid{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;gap:.45em}
+  .body{font-size:var(--f-rules);line-height:1.6;color:var(--ink-2);position:relative;z-index:1}
+  .flavor{font-size:var(--f-flavor);line-height:1.5;color:var(--ink-3);position:relative;z-index:1;
+    padding-left:.7em;border-left:2px solid var(--acc);font-weight:500;opacity:.95}
+  .wm{position:absolute;right:-6px;bottom:-8px;width:42%;padding-top:31%;opacity:var(--wm-op);border-radius:50%;
+    background:radial-gradient(closest-side,transparent 62%,var(--acc) 63%,transparent 65%),
+      radial-gradient(closest-side,transparent 38%,var(--acc) 39%,transparent 41%);transform:rotate(-14deg)}
+  .sign{margin-bottom:.5em;display:flex;align-items:center;gap:.6em;padding-top:.4em;border-top:1px dashed var(--sign-hair)}
+  .sign .lbl{font-family:Menlo,monospace;font-size:var(--f-label);letter-spacing:.16em;color:var(--ink-3)}
+  .sign .sig{flex:1;height:.9em;background:repeating-linear-gradient(90deg,var(--sig) 0 1px,transparent 1px 3px);
+    -webkit-mask-image:linear-gradient(90deg,#000,transparent 96%);mask-image:linear-gradient(90deg,#000,transparent 96%)}
+  .sign .stampbox{flex:none;width:5.2em;height:2.2em;border-radius:2px;border:1.4px solid var(--stampbox);
+    display:grid;place-items:center;color:var(--stampbox-t);font-size:var(--f-label);font-weight:800;
+    letter-spacing:.06em;box-shadow:0 0 0 1px rgba(0,0,0,.08) inset;margin-right:2px}
 
-  /* ══ 6. 底栏 ══ */
-  .bottom{height:46px;flex:none;margin-top:auto;padding:0 16px 0 28px;
-    display:flex;align-items:center;gap:8px;
-    background:linear-gradient(180deg, rgba(150,135,105,.10), rgba(150,135,105,.22));
-    box-shadow:0 -1px 0 rgba(150,135,105,.4) inset}
-  .stamp{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;
-    letter-spacing:.03em;color:var(--ink-2)}
-  .stamp::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc);
-    box-shadow:0 0 0 1.5px rgba(255,255,255,.85)}
-  .sep{width:1px;height:12px;background:rgba(140,125,95,.45)}
-  .kindtag{font-family:Menlo,monospace;font-size:8px;letter-spacing:.14em;color:var(--ink-3)}
-  .serial{margin-left:auto;font-family:Menlo,monospace;font-size:8.5px;letter-spacing:.1em;
-    color:var(--ink-3)}
-  .barcode{width:52px;height:15px;opacity:.7;
-    background:repeating-linear-gradient(90deg,#3d3527 0 1px,transparent 1px 2px,
-      #3d3527 2px 4px,transparent 4px 5px,#3d3527 5px 6px,transparent 6px 9px)}
+  /* ══ 底栏 ══ */
+  .bottom{height:var(--h-bottom);flex:none;margin-top:auto;padding:0 var(--pr) 0 var(--pl);
+    display:flex;align-items:center;gap:.55em;background:var(--bottom);box-shadow:0 -1px 0 var(--bottom-hair) inset}
+  .stamp{display:flex;align-items:center;gap:.45em;font-size:var(--f-stamp);font-weight:700;
+    letter-spacing:.03em;color:var(--ink-2);white-space:nowrap}
+  .stamp::before{content:"";width:.55em;height:.55em;border-radius:50%;background:var(--acc);
+    box-shadow:0 0 0 1.4px rgba(255,255,255,.28),0 0 5px currentColor}
+  .sep{width:1px;height:1.1em;background:var(--hair)}
+  .kindtag{font-family:Menlo,monospace;font-size:var(--f-serial);letter-spacing:.14em;color:var(--ink-3)}
+  .serial{margin-left:auto;font-family:Menlo,monospace;font-size:var(--f-serial);letter-spacing:.08em;color:var(--ink-3);white-space:nowrap}
+  .barcode{width:4.6em;height:1.5em;opacity:.7;
+    background:repeating-linear-gradient(90deg,var(--bar) 0 1px,transparent 1px 2px,
+      var(--bar) 2px 4px,transparent 4px 5px,var(--bar) 5px 6px,transparent 6px 9px)}
 
-  /* ══════════ 画廊 ══════════ */
-  .gallery{padding:34px 30px 60px;max-width:1800px;margin:0 auto}
-  .gallery h1{font-size:24px;margin:0 0 4px}
-  .gallery .sub{color:var(--dim);font-size:13px;margin-bottom:26px;max-width:900px;line-height:1.7}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:34px;
-    justify-items:center}
-  .sheet .grid{grid-template-columns:repeat(3,520px);gap:16px}
-  .solo{padding:0;margin:0;display:block;width:var(--card-w);height:var(--card-h);overflow:hidden}
+  /* ══════════ 页面：画廊 / 对比 / 尺寸阶梯 ══════════ */
+  .bar{position:sticky;top:0;z-index:50;background:rgba(16,22,28,.94);backdrop-filter:blur(8px);
+    border-bottom:1px solid #2A3742;padding:12px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .bar h1{font-size:16px;margin:0;white-space:nowrap}
+  .bar .grp{display:flex;align-items:center;gap:6px}
+  .bar .grp>span{color:var(--dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .bar button{appearance:none;background:#18212B;color:var(--dim);border:1px solid #2A3742;border-radius:6px;
+    padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer}
+  .bar button:hover{color:var(--text);border-color:#6F7B89}
+  .bar button[aria-pressed="true"]{background:#4FD1C5;color:#08181B;border-color:#4FD1C5;font-weight:700}
+  .wrap{padding:30px 26px 60px;max-width:1900px;margin:0 auto}
+  .wrap .sub{color:var(--dim);font-size:12.5px;max-width:1000px;line-height:1.75;margin-bottom:24px}
+  .grid{display:grid;gap:30px;justify-items:center}
+  .m-grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+  .m-compare{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+  .m-scale{grid-template-columns:repeat(auto-fit,minmax(340px,1fr));align-items:end}
+  .cap{margin-top:8px;font-family:Menlo,monospace;font-size:11px;color:var(--dim);letter-spacing:.1em;text-align:center}
+  .cell{display:flex;flex-direction:column;align-items:center}
+  /* 单张模式（供 render.sh 截图）：去掉工具栏与留白，画面**恰好等于卡片本身** */
+  body.solo .bar{display:none}
+  body.solo .wrap{padding:0;max-width:none;margin:0}
+  body.solo .grid{gap:0;display:block}
+  body.solo .cap{display:none}
+  /* 钉到左上角：无论容器如何居中，导出图都**恰好等于卡面**（不受任何偏移影响） */
+  body.solo .card{position:absolute;left:0;top:0}
+  body.solo{overflow:hidden}
+  @media print{
+    .bar{display:none}
+    html,body{background:#fff}
+    .wrap{padding:0}
+    .cap{color:#333}
+  }
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div class="bar">
+  <h1>未来残片 · 卡面设计</h1>
+  <div class="grp"><span>朝向</span>
+    <button data-k="theme" data-v="light">杂志式</button>
+    <button data-k="theme" data-v="dark">暗卡</button>
+  </div>
+  <div class="grp"><span>尺寸</span>
+    <button data-k="size" data-v="l">大 520</button>
+    <button data-k="size" data-v="m">中 420</button>
+    <button data-k="size" data-v="s">小 340</button>
+  </div>
+  <div class="grp"><span>视图</span>
+    <button data-k="mode" data-v="grid">全部</button>
+    <button data-k="mode" data-v="compare">两朝向对比</button>
+    <button data-k="mode" data-v="scale">三尺寸对比</button>
+  </div>
+</div>
+<div class="wrap" id="root"></div>
+
 <script src="cards.js"></script>
 <script>
 const FACTIONS = {
@@ -232,28 +314,27 @@ const FACTIONS = {
   'FAC-ATOMIC-HAU': { short:'HAU', zh:'清运承包方', acc:'#FF6B35' },
   'FAC-ATOMIC-ROA': { short:'ROA', zh:'辐射漫游者', acc:'#FFC857' },
 };
-const KINDS = {
-  tower:{zh:'塔',en:'TOWER'}, unit:{zh:'单位',en:'UNIT'}, skill:{zh:'技能',en:'SKILL'},
-  support:{zh:'支援',en:'SUPPORT'}, modifier:{zh:'改装',en:'MODIFIER'}, relic:{zh:'残片',en:'RELIC'},
-};
+const KINDS = { tower:{zh:'塔',en:'TOWER'}, unit:{zh:'单位',en:'UNIT'}, skill:{zh:'技能',en:'SKILL'},
+  support:{zh:'支援',en:'SUPPORT'}, modifier:{zh:'改装',en:'MODIFIER'}, relic:{zh:'残片',en:'RELIC'} };
 const RARITY = { common:{en:'STANDARD'}, rare:{en:'RARE'}, epic:{en:'EPIC'} };
+const THEMES = { light:'杂志式', dark:'暗卡' };
+const SIZES  = { l:'大', m:'中', s:'小' };
+const SIZE_WH = { l:'520×720', m:'420×582', s:'340×471' };
 
 function seedOf(s){ let h=2166136261; for(const c of s){ h^=c.charCodeAt(0); h=(h*16777619)>>>0; } return h>>>0; }
 function rng(seed){ let s=seed||1; return ()=>{ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
 
 /* ══════════════════════════════════════════════════════════════
-   程序化插画：风格卡规定「只用圆角矩形 + 长反射条 + 单点镜红」，
-   所以不画写实图像 —— 几何体 + 轨道 + 放射线 + 一颗红点。
-   构图公式（六种母题共用，保证同一个世界里）：
-     辉光 → 大日盘/放射 → 地平线与透视网格 → 主体 → 轨道 → 前景横栏 → 星爆
+   程序化插画：几何母题（风格卡规定只用圆角矩形 + 长反射条 + 单点镜红）
+   构图公式：辉光 → 日盘+放射 → 地平线与透视地面 → 电子轨道 → 深漆器主体 → 前景细栏 → 星爆
    ══════════════════════════════════════════════════════════════ */
 function art(card, acc, seed){
   const R = rng(seed), cx = 248, G = [];
   const rot = R()*360;
   const put = s => G.push(s);
-  const HZ = 212;                       // 地平线
-  const k = card.kind;                  // 母题类型（轨道块先用到，故提前声明）
-  const baseY = HZ + 26;                // 主体基线
+  const HZ = 212;
+  const k = card.kind;
+  const baseY = HZ + 26;
 
   put(`<defs>
     <radialGradient id="sky" cx="50%" cy="26%" r="74%">
@@ -270,7 +351,6 @@ function art(card, acc, seed){
       <stop offset="0%" stop-color="#041012" stop-opacity=".10"/>
       <stop offset="100%" stop-color="#041012" stop-opacity=".70"/>
     </linearGradient>
-    <!-- 主体：深漆器（大面积不反光），轮廓与细节才用铬 -->
     <linearGradient id="lacq" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#54687B"/><stop offset="26%" stop-color="#3A4A59"/>
       <stop offset="62%" stop-color="#232E39"/><stop offset="100%" stop-color="#161E26"/>
@@ -279,11 +359,6 @@ function art(card, acc, seed){
       <stop offset="0%" stop-color="#22303B"/><stop offset="26%" stop-color="#4E6274"/>
       <stop offset="55%" stop-color="#2C3A46"/><stop offset="82%" stop-color="#465A6C"/>
       <stop offset="100%" stop-color="#1B242D"/>
-    </linearGradient>
-    <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFFFFF"/><stop offset="34%" stop-color="#DCE1E5"/>
-      <stop offset="52%" stop-color="#8B96A1"/><stop offset="70%" stop-color="#E8E3D5"/>
-      <stop offset="100%" stop-color="#A6B0BA"/>
     </linearGradient>
     <linearGradient id="chromeH" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#5F6A74"/><stop offset="16%" stop-color="#FFFFFF"/>
@@ -297,14 +372,13 @@ function art(card, acc, seed){
     </linearGradient>
   </defs>`);
 
-  /* 天空 + 大日盘（纯光，不实心） */
   put(`<rect width="496" height="300" fill="url(#sky)"/>`);
   const sunR = 78;
   put(`<circle cx="${cx}" cy="132" r="${sunR*2.0}" fill="url(#sunG)"/>`);
   { const rays=26;
     for(let i=0;i<rays;i++){
       const a=(i/rays)*Math.PI*2;
-      if (Math.sin(a) > 0.28) continue;                 // 只在上半圈放射
+      if (Math.sin(a) > 0.28) continue;
       const r1=sunR*1.10, r2=sunR*(1.26+(i%2?0.10:0.28));
       put(`<line x1="${cx+Math.cos(a)*r1}" y1="${132+Math.sin(a)*r1}"
         x2="${cx+Math.cos(a)*r2}" y2="${132+Math.sin(a)*r2}"
@@ -314,52 +388,44 @@ function art(card, acc, seed){
   put(`<circle cx="${cx}" cy="132" r="${sunR}" fill="none" stroke="${acc}" stroke-opacity=".34" stroke-width="1.5"/>`);
   put(`<circle cx="${cx}" cy="132" r="${sunR-13}" fill="none" stroke="${acc}" stroke-opacity=".16" stroke-width="1"/>`);
 
-  /* 地面：只用中性压暗 + 强调色细线（不用大色块，避免发脏） */
   put(`<rect x="0" y="${HZ}" width="496" height="${300-HZ}" fill="url(#floorFade)"/>`);
   put(`<line x1="0" y1="${HZ}" x2="496" y2="${HZ}" stroke="${acc}" stroke-opacity=".62" stroke-width="1.6"/>`);
   for(let i=0;i<7;i++){
     const y = HZ + Math.pow(i/6, 1.8) * 92;
-    put(`<line x1="0" y1="${y}" x2="496" y2="${y}" stroke="${acc}"
-      stroke-opacity="${.26 - i*.030}" stroke-width="1"/>`);
+    put(`<line x1="0" y1="${y}" x2="496" y2="${y}" stroke="${acc}" stroke-opacity="${.26 - i*.030}" stroke-width="1"/>`);
   }
   for(let i=-6;i<=6;i++){
-    put(`<line x1="${cx+i*34}" y1="${HZ}" x2="${cx+i*140}" y2="300"
-      stroke="${acc}" stroke-opacity=".12" stroke-width="1"/>`);
+    put(`<line x1="${cx+i*34}" y1="${HZ}" x2="${cx+i*140}" y2="300" stroke="${acc}" stroke-opacity=".12" stroke-width="1"/>`);
   }
 
-  /* 轨道 */
+  const rim = `stroke="#F1EADA" stroke-opacity=".92" stroke-width="1.5"`;
+  const rimSoft = `stroke="#F1EADA" stroke-opacity=".40" stroke-width="1"`;
+
+  /* 轨道（在主体之前：主体压在轨道上） */
   const orbY = k==='skill' ? 176 : (k==='relic' ? baseY-40 : baseY-52);
   for(let i=0;i<2;i++){
     put(`<ellipse cx="${cx}" cy="${orbY}" rx="${112+i*38}" ry="${28+i*12}" fill="none"
       stroke="${acc}" stroke-opacity="${.34-i*.09}" stroke-width="1.3"
       transform="rotate(${rot*0.5 + i*16} ${cx} ${orbY})"/>`);
     const a=(rot*0.5+i*16)*Math.PI/180;
-    put(`<circle cx="${cx+Math.cos(a)*(112+i*38)}" cy="${orbY+Math.sin(a)*(28+i*12)}"
-      r="${3.4-i*0.8}" fill="${acc}" opacity=".95"/>`);
+    put(`<circle cx="${cx+Math.cos(a)*(112+i*38)}" cy="${orbY+Math.sin(a)*(28+i*12)}" r="${3.4-i*0.8}" fill="${acc}" opacity=".95"/>`);
   }
-
-  /* ── 母题：主体=深漆器 + 亮铬轮廓 + 强调色细线 ── */
-  const rim = `stroke="#F1EADA" stroke-opacity=".92" stroke-width="1.5"`;
-  const rimSoft = `stroke="#F1EADA" stroke-opacity=".40" stroke-width="1"`;
 
   if(k==='tower'){
     const V = seed % 3;
-    if(V===0){                                   // 变体 0：三级堆叠 + 中央天线
+    if(V===0){
       const w=[196,154,112], h=[23,21,19];
       const topY = baseY - 3*(h[0]+15);
       for(let i=0;i<3;i++){
         const yy = baseY - (i+1)*(h[0]+15);
-        put(`<rect x="${cx-w[i]/2}" y="${yy}" width="${w[i]}" height="${h[i]}" rx="${h[i]/2}"
-          fill="url(#lacqH)" ${rim}/>`);
-        put(`<rect x="${cx-w[i]/2+9}" y="${yy+h[i]/2-1.3}" width="${w[i]-18}" height="2.6" rx="1.3"
-          fill="url(#chromeH)" opacity=".95"/>`);
-        put(`<rect x="${cx-w[i]/2+13}" y="${yy+h[i]-5.5}" width="${w[i]-26}" height="1.6" rx=".8"
-          fill="${acc}" opacity=".75"/>`);
+        put(`<rect x="${cx-w[i]/2}" y="${yy}" width="${w[i]}" height="${h[i]}" rx="${h[i]/2}" fill="url(#lacqH)" ${rim}/>`);
+        put(`<rect x="${cx-w[i]/2+9}" y="${yy+h[i]/2-1.3}" width="${w[i]-18}" height="2.6" rx="1.3" fill="url(#chromeH)" opacity=".95"/>`);
+        put(`<rect x="${cx-w[i]/2+13}" y="${yy+h[i]-5.5}" width="${w[i]-26}" height="1.6" rx=".8" fill="${acc}" opacity=".75"/>`);
       }
       put(`<rect x="${cx-3.5}" y="${topY-48}" width="7" height="54" rx="3.5" fill="url(#lacq)" ${rimSoft}/>`);
       put(`<circle cx="${cx}" cy="${topY-52}" r="6.5" fill="#E4572E"/>`);
       put(`<circle cx="${cx}" cy="${topY-52}" r="12" fill="none" stroke="#E4572E" stroke-opacity=".5" stroke-width="1.4"/>`);
-    } else if(V===1){                            // 变体 1：宽基座 + 双塔柱 + 横梁
+    } else if(V===1){
       put(`<rect x="${cx-104}" y="${baseY-30}" width="208" height="26" rx="8" fill="url(#lacqH)" ${rim}/>`);
       put(`<rect x="${cx-96}" y="${baseY-24}" width="192" height="2.6" rx="1.3" fill="url(#chromeH)" opacity=".9"/>`);
       for(const dx of [-52,52]){
@@ -370,18 +436,15 @@ function art(card, acc, seed){
       put(`<rect x="${cx-52}" y="${baseY-124}" width="104" height="2.4" rx="1.2" fill="url(#chromeH)" opacity=".9"/>`);
       put(`<circle cx="${cx}" cy="${baseY-144}" r="6" fill="#E4572E"/>`);
       put(`<rect x="${cx-30}" y="${baseY-40}" width="60" height="2.6" rx="1.3" fill="${acc}" opacity=".8"/>`);
-    } else {                                     // 变体 2：四层细叠 + 侧翼稳定器
+    } else {
       const w=[172,150,128,106], h=13;
       for(let i=0;i<4;i++){
         const yy = baseY - (i+1)*(h+13);
-        put(`<rect x="${cx-w[i]/2}" y="${yy}" width="${w[i]}" height="${h}" rx="${h/2}"
-          fill="url(#lacqH)" ${rim}/>`);
-        put(`<rect x="${cx-w[i]/2+8}" y="${yy+h/2-1.1}" width="${w[i]-16}" height="2.2" rx="1.1"
-          fill="url(#chromeH)" opacity=".92"/>`);
+        put(`<rect x="${cx-w[i]/2}" y="${yy}" width="${w[i]}" height="${h}" rx="${h/2}" fill="url(#lacqH)" ${rim}/>`);
+        put(`<rect x="${cx-w[i]/2+8}" y="${yy+h/2-1.1}" width="${w[i]-16}" height="2.2" rx="1.1" fill="url(#chromeH)" opacity=".92"/>`);
       }
       for(const sgn of [-1,1]){
-        put(`<path d="M ${cx+sgn*122} ${baseY-6} L ${cx+sgn*152} ${baseY-40} L ${cx+sgn*152} ${baseY-6} Z"
-          fill="url(#lacq)" ${rimSoft}/>`);
+        put(`<path d="M ${cx+sgn*122} ${baseY-6} L ${cx+sgn*152} ${baseY-40} L ${cx+sgn*152} ${baseY-6} Z" fill="url(#lacq)" ${rimSoft}/>`);
       }
       put(`<circle cx="${cx}" cy="${baseY-4*(h+13)-14}" r="6" fill="#E4572E"/>`);
       put(`<rect x="${cx-34}" y="${baseY-2}" width="68" height="2.6" rx="1.3" fill="${acc}" opacity=".7"/>`);
@@ -390,14 +453,11 @@ function art(card, acc, seed){
   }
 
   if(k==='unit'){
-    const V = seed % 3;
-    const w=168,h=150,y=baseY-h-4;
-    if(V===0){                                   // 变体 0：拱形盾
+    const V = seed % 3, w=168, h=150, y=baseY-h-4;
+    if(V===0){
       put(`<path d="M ${cx-w/2} ${y} L ${cx+w/2} ${y} L ${cx+w/2} ${y+h*0.50}
-        Q ${cx+w/2} ${y+h*0.92} ${cx} ${y+h+14} Q ${cx-w/2} ${y+h*0.92} ${cx-w/2} ${y+h*0.50} Z"
-        fill="url(#lacq)" ${rim}/>`);
-      put(`<path d="M ${cx-w/2+7} ${y+7} L ${cx+w/2-7} ${y+7}"
-        stroke="#FFFFFF" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round"/>`);
+        Q ${cx+w/2} ${y+h*0.92} ${cx} ${y+h+14} Q ${cx-w/2} ${y+h*0.92} ${cx-w/2} ${y+h*0.50} Z" fill="url(#lacq)" ${rim}/>`);
+      put(`<path d="M ${cx-w/2+7} ${y+7} L ${cx+w/2-7} ${y+7}" stroke="#FFFFFF" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round"/>`);
       put(`<circle cx="${cx}" cy="${y+58}" r="33" fill="#0A1A1E" stroke="${acc}" stroke-opacity=".9" stroke-width="2"/>`);
       put(`<circle cx="${cx}" cy="${y+58}" r="23" fill="${acc}" fill-opacity=".16"/>`);
       put(`<circle cx="${cx}" cy="${y+58}" r="11" fill="${acc}"/>`);
@@ -408,31 +468,26 @@ function art(card, acc, seed){
         put(`<rect x="${bx}" y="${y+26}" width="26" height="6" rx="3" fill="url(#chromeH)" ${rimSoft}/>`);
         put(`<rect x="${bx+4}" y="${y+40}" width="18" height="3" rx="1.5" fill="${acc}" opacity=".55"/>`);
       }
-    } else if(V===1){                            // 变体 1：六边碑 + 顶部光冠
+    } else if(V===1){
       const hex = `${cx},${y+6} ${cx+w/2},${y+h*0.26} ${cx+w/2},${y+h*0.74} ${cx},${y+h+12} ${cx-w/2},${y+h*0.74} ${cx-w/2},${y+h*0.26}`;
       put(`<polygon points="${hex}" fill="url(#lacq)" ${rim}/>`);
-      put(`<polygon points="${cx},${y+16} ${cx+w/2-9},${y+h*0.30} ${cx+w/2-9},${y+h*0.70} ${cx},${y+h+2} ${cx-w/2+9},${y+h*0.70} ${cx-w/2+9},${y+h*0.30}"
-        fill="none" stroke="${acc}" stroke-opacity=".45" stroke-width="1.2"/>`);
+      put(`<polygon points="${cx},${y+16} ${cx+w/2-9},${y+h*0.30} ${cx+w/2-9},${y+h*0.70} ${cx},${y+h+2} ${cx-w/2+9},${y+h*0.70} ${cx-w/2+9},${y+h*0.30}" fill="none" stroke="${acc}" stroke-opacity=".45" stroke-width="1.2"/>`);
       put(`<circle cx="${cx}" cy="${y+62}" r="30" fill="#0A1A1E" stroke="${acc}" stroke-opacity=".85" stroke-width="2"/>`);
       put(`<circle cx="${cx}" cy="${y+62}" r="9" fill="${acc}"/>`);
       put(`<circle cx="${cx+11}" cy="${y+51}" r="4.4" fill="#E4572E"/>`);
       for(let i=0;i<7;i++){
         const a=Math.PI + (i/6)*Math.PI;
-        put(`<line x1="${cx+Math.cos(a)*34}" y1="${y+62+Math.sin(a)*34}"
-          x2="${cx+Math.cos(a)*46}" y2="${y+62+Math.sin(a)*46}"
-          stroke="${acc}" stroke-opacity=".6" stroke-width="1.6"/>`);
+        put(`<line x1="${cx+Math.cos(a)*34}" y1="${y+62+Math.sin(a)*34}" x2="${cx+Math.cos(a)*46}" y2="${y+62+Math.sin(a)*46}" stroke="${acc}" stroke-opacity=".6" stroke-width="1.6"/>`);
       }
-    } else {                                     // 变体 2：立板 + 双翼
+    } else {
       put(`<rect x="${cx-46}" y="${y}" width="92" height="${h+10}" rx="10" fill="url(#lacq)" ${rim}/>`);
       put(`<rect x="${cx-36}" y="${y+8}" width="72" height="2.4" rx="1.2" fill="#FFFFFF" opacity=".6"/>`);
       put(`<circle cx="${cx}" cy="${y+52}" r="26" fill="#0A1A1E" stroke="${acc}" stroke-opacity=".85" stroke-width="1.8"/>`);
       put(`<circle cx="${cx}" cy="${y+52}" r="8" fill="${acc}"/>`);
       put(`<circle cx="${cx+9}" cy="${y+43}" r="4" fill="#E4572E"/>`);
       for(const sgn of [-1,1]){
-        put(`<path d="M ${cx+sgn*46} ${y+30} L ${cx+sgn*104} ${y+52} L ${cx+sgn*104} ${y+h*0.80} L ${cx+sgn*46} ${y+h*0.62} Z"
-          fill="url(#lacqH)" ${rimSoft}/>`);
-        put(`<rect x="${cx+sgn*54+(sgn<0?-40:0)}" y="${y+62}" width="40" height="2.6" rx="1.3"
-          fill="${acc}" opacity=".6"/>`);
+        put(`<path d="M ${cx+sgn*46} ${y+30} L ${cx+sgn*104} ${y+52} L ${cx+sgn*104} ${y+h*0.80} L ${cx+sgn*46} ${y+h*0.62} Z" fill="url(#lacqH)" ${rimSoft}/>`);
+        put(`<rect x="${cx+sgn*54+(sgn<0?-40:0)}" y="${y+62}" width="40" height="2.6" rx="1.3" fill="${acc}" opacity=".6"/>`);
       }
     }
     put(`<ellipse cx="${cx}" cy="${baseY+10}" rx="${w*0.40}" ry="7" fill="${acc}" opacity=".16"/>`);
@@ -442,14 +497,11 @@ function art(card, acc, seed){
     const cy2 = 176, n=22;
     for(let i=0;i<n;i++){
       const a=(i/n)*Math.PI*2 + R()*0.04, L=116+R()*52;
-      put(`<line x1="${cx+Math.cos(a)*30}" y1="${cy2+Math.sin(a)*30}"
-        x2="${cx+Math.cos(a)*L}" y2="${cy2+Math.sin(a)*L}"
-        stroke="${i%4===0?'#FFFDF6':acc}" stroke-opacity="${i%4===0?.92:.40}"
-        stroke-width="${i%4===0?2.2:1.2}"/>`);
+      put(`<line x1="${cx+Math.cos(a)*30}" y1="${cy2+Math.sin(a)*30}" x2="${cx+Math.cos(a)*L}" y2="${cy2+Math.sin(a)*L}"
+        stroke="${i%4===0?'#FFFDF6':acc}" stroke-opacity="${i%4===0?.92:.40}" stroke-width="${i%4===0?2.2:1.2}"/>`);
     }
-    [32,58,86].forEach((r,i)=>put(`<circle cx="${cx}" cy="${cy2}" r="${r}" fill="none"
-      stroke="${acc}" stroke-opacity="${.62-i*.15}" stroke-width="${2.6-i*.7}"
-      stroke-dasharray="${i===1?'6 7':'none'}"/>`));
+    [32,58,86].forEach((r,i)=>put(`<circle cx="${cx}" cy="${cy2}" r="${r}" fill="none" stroke="${acc}"
+      stroke-opacity="${.62-i*.15}" stroke-width="${2.6-i*.7}" stroke-dasharray="${i===1?'6 7':'none'}"/>`));
     put(`<circle cx="${cx}" cy="${cy2}" r="19" fill="url(#lacq)" ${rim}/>`);
     put(`<circle cx="${cx}" cy="${cy2}" r="7" fill="#E4572E"/>`);
     put(`<ellipse cx="${cx}" cy="${cy2+96}" rx="128" ry="10" fill="${acc}" opacity=".14"/>`);
@@ -457,21 +509,19 @@ function art(card, acc, seed){
 
   if(k==='support'){
     const V = seed % 3, cy2 = baseY - 36;
-    // 底座
     put(`<rect x="${cx-84}" y="${baseY+2}" width="168" height="12" rx="6" fill="url(#lacqH)" ${rim}/>`);
     put(`<rect x="${cx-74}" y="${baseY+6}" width="148" height="2.2" rx="1.1" fill="url(#chromeH)" opacity=".85"/>`);
-    if(V===1){                                   // 变体 1：双头
+    if(V===1){
       for(const dx of [-42,42]){
         put(`<rect x="${cx+dx-30}" y="${cy2-16}" width="60" height="13" rx="6.5" fill="url(#lacqH)" ${rim}/>`);
         put(`<rect x="${cx+dx-17}" y="${cy2-4}" width="34" height="30" rx="7" fill="url(#lacq)" ${rim}/>`);
         for(let i=0;i<3;i++){
           const r=30+i*22;
-          put(`<path d="M ${cx+dx-r} ${cy2-8} A ${r} ${r*0.66} 0 0 1 ${cx+dx+r} ${cy2-8}"
-            fill="none" stroke="${acc}" stroke-opacity="${.5-i*.13}" stroke-width="1.5"
-            stroke-dasharray="${i?'4 6':'none'}"/>`);
+          put(`<path d="M ${cx+dx-r} ${cy2-8} A ${r} ${r*0.66} 0 0 1 ${cx+dx+r} ${cy2-8}" fill="none"
+            stroke="${acc}" stroke-opacity="${.5-i*.13}" stroke-width="1.5" stroke-dasharray="${i?'4 6':'none'}"/>`);
         }
       }
-    } else {                                     // 变体 0/2：单头（宽/窄）
+    } else {
       const wTop = V===0 ? 124 : 96;
       put(`<rect x="${cx-wTop/2}" y="${cy2-18}" width="${wTop}" height="15" rx="7.5" fill="url(#lacqH)" ${rim}/>`);
       put(`<rect x="${cx-wTop/2+8}" y="${cy2-15}" width="${wTop-16}" height="2.2" rx="1.1" fill="url(#chromeH)" opacity=".9"/>`);
@@ -479,52 +529,40 @@ function art(card, acc, seed){
       put(`<rect x="${cx-26}" y="${cy2+8}" width="52" height="2.8" rx="1.4" fill="${acc}" opacity=".85"/>`);
       for(let i=0;i<3;i++){
         const r=54+i*34;
-        put(`<path d="M ${cx-r} ${cy2-10} A ${r} ${r*0.70} 0 0 1 ${cx+r} ${cy2-10}"
-          fill="none" stroke="${acc}" stroke-opacity="${.52-i*.13}" stroke-width="1.7"
-          stroke-dasharray="${i?'4 6':'none'}"/>`);
+        put(`<path d="M ${cx-r} ${cy2-10} A ${r} ${r*0.70} 0 0 1 ${cx+r} ${cy2-10}" fill="none"
+          stroke="${acc}" stroke-opacity="${.52-i*.13}" stroke-width="1.7" stroke-dasharray="${i?'4 6':'none'}"/>`);
       }
     }
-    // 水点铺满下半幅
     for(let i=0;i<26;i++){
       const tt=R(), x=cx-118+tt*236, y=cy2+26+Math.pow(R(),0.7)*74;
-      put(`<circle cx="${x}" cy="${y}" r="${1.2+R()*1.9}"
-        fill="${i%7===0?'#E4572E':acc}" opacity="${.35+R()*.55}"/>`);
+      put(`<circle cx="${x}" cy="${y}" r="${1.2+R()*1.9}" fill="${i%7===0?'#E4572E':acc}" opacity="${.35+R()*.55}"/>`);
     }
     put(`<ellipse cx="${cx}" cy="${baseY+16}" rx="86" ry="8" fill="${acc}" opacity=".18"/>`);
   }
 
   if(k==='modifier'){
     const V = seed % 3, gy = baseY - 2;
-    // 台面
     put(`<rect x="${cx-124}" y="${gy+20}" width="248" height="14" rx="4" fill="url(#lacqH)" ${rim}/>`);
     put(`<rect x="${cx-116}" y="${gy+24}" width="232" height="2.2" rx="1.1" fill="url(#chromeH)" opacity=".85"/>`);
-    // 两侧刻度
     for(const sgn of [-1,1]){
       const baseX = cx + sgn*150;
       put(`<line x1="${baseX}" y1="${gy-88}" x2="${baseX}" y2="${gy+18}" stroke="${acc}" stroke-opacity=".35" stroke-width="1.2"/>`);
       for(let i=0;i<16;i++){
         const yy = gy-86+i*6.6;
-        put(`<line x1="${baseX}" y1="${yy}" x2="${baseX - sgn*(i%3?5:10)}" y2="${yy}"
-          stroke="${acc}" stroke-opacity=".34" stroke-width="1"/>`);
+        put(`<line x1="${baseX}" y1="${yy}" x2="${baseX - sgn*(i%3?5:10)}" y2="${yy}" stroke="${acc}" stroke-opacity=".34" stroke-width="1"/>`);
       }
     }
-    // 表盘
-    put(`<path d="M ${cx-96} ${gy+14} A 96 96 0 0 1 ${cx+96} ${gy+14}" fill="none"
-      stroke="${acc}" stroke-opacity=".70" stroke-width="2.4"/>`);
+    put(`<path d="M ${cx-96} ${gy+14} A 96 96 0 0 1 ${cx+96} ${gy+14}" fill="none" stroke="${acc}" stroke-opacity=".70" stroke-width="2.4"/>`);
     for(let i=0;i<=12;i++){
       const a=Math.PI*(i/12);
-      put(`<line x1="${cx-Math.cos(a)*90}" y1="${gy+14-Math.sin(a)*90}"
-        x2="${cx-Math.cos(a)*76}" y2="${gy+14-Math.sin(a)*76}"
+      put(`<line x1="${cx-Math.cos(a)*90}" y1="${gy+14-Math.sin(a)*90}" x2="${cx-Math.cos(a)*76}" y2="${gy+14-Math.sin(a)*76}"
         stroke="${acc}" stroke-opacity=".65" stroke-width="${i%3?1.4:2.2}"/>`);
     }
-    // 指针（变体决定角度与数量）
     const na=Math.PI*(V===0?0.68:V===1?0.42:0.55);
-    put(`<line x1="${cx}" y1="${gy+14}" x2="${cx-Math.cos(na)*74}" y2="${gy+14-Math.sin(na)*74}"
-      stroke="#E4572E" stroke-width="3.6" stroke-linecap="round"/>`);
+    put(`<line x1="${cx}" y1="${gy+14}" x2="${cx-Math.cos(na)*74}" y2="${gy+14-Math.sin(na)*74}" stroke="#E4572E" stroke-width="3.6" stroke-linecap="round"/>`);
     if(V===2){
       const nb=Math.PI*0.92;
-      put(`<line x1="${cx}" y1="${gy+14}" x2="${cx-Math.cos(nb)*60}" y2="${gy+14-Math.sin(nb)*60}"
-        stroke="${acc}" stroke-width="2" stroke-opacity=".8" stroke-linecap="round"/>`);
+      put(`<line x1="${cx}" y1="${gy+14}" x2="${cx-Math.cos(nb)*60}" y2="${gy+14-Math.sin(nb)*60}" stroke="${acc}" stroke-width="2" stroke-opacity=".8" stroke-linecap="round"/>`);
     }
     put(`<circle cx="${cx}" cy="${gy+14}" r="9" fill="url(#lacq)" ${rim}/>`);
     put(`<circle cx="${cx}" cy="${gy+14}" r="3" fill="#E4572E"/>`);
@@ -534,48 +572,40 @@ function art(card, acc, seed){
     const by = baseY + 4;
     put(`<rect x="${cx-100}" y="${by}" width="200" height="15" rx="7.5" fill="url(#lacqH)" ${rim}/>`);
     put(`<rect x="${cx-66}" y="${by+8}" width="132" height="6" rx="3" fill="#041012" opacity=".7"/>`);
-    put(`<path d="M ${cx-50} ${by} Q ${cx-58} ${by-54} ${cx-14} ${by-78}
-      Q ${cx+20} ${by-98} ${cx+44} ${by-58} Q ${cx+60} ${by-22} ${cx+50} ${by} Z"
-      fill="url(#lacq)" ${rim}/>`);
-    put(`<path d="M ${cx-28} ${by-48} Q ${cx-4} ${by-68} ${cx+22} ${by-52}"
-      fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="2.2" stroke-linecap="round"/>`);
+    put(`<path d="M ${cx-50} ${by} Q ${cx-58} ${by-54} ${cx-14} ${by-78} Q ${cx+20} ${by-98} ${cx+44} ${by-58} Q ${cx+60} ${by-22} ${cx+50} ${by} Z" fill="url(#lacq)" ${rim}/>`);
+    put(`<path d="M ${cx-28} ${by-48} Q ${cx-4} ${by-68} ${cx+22} ${by-52}" fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="2.2" stroke-linecap="round"/>`);
     put(`<circle cx="${cx+4}" cy="${by-40}" r="12" fill="${acc}" opacity=".55"/>`);
     put(`<circle cx="${cx+18}" cy="${by-51}" r="5" fill="#E4572E"/>`);
     put(`<ellipse cx="${cx}" cy="${by+17}" rx="100" ry="8" fill="${acc}" opacity=".16"/>`);
   }
 
-  /* 前景细栏 + 星爆 */
   put(`<rect x="0" y="286" width="496" height="2" fill="url(#railG)" opacity=".45"/>`);
   put(`<rect x="0" y="293" width="496" height="1.4" fill="url(#railG)" opacity=".28"/>`);
   const sx = R()>.5 ? 432 : 62, sy = 42;
   for(let i=0;i<8;i++){
     const a=(i/8)*Math.PI*2, L=i%2===0?17:9;
-    put(`<line x1="${sx+Math.cos(a)*4}" y1="${sy+Math.sin(a)*4}"
-      x2="${sx+Math.cos(a)*L}" y2="${sy+Math.sin(a)*L}"
+    put(`<line x1="${sx+Math.cos(a)*4}" y1="${sy+Math.sin(a)*4}" x2="${sx+Math.cos(a)*L}" y2="${sy+Math.sin(a)*L}"
       stroke="#FFFDF6" stroke-opacity=".55" stroke-width="1.5"/>`);
   }
-  /* 压印编号：每张卡自己的小铭牌（与底栏条码呼应） */
   const code = String(card.id).replace(/^RC-ATOMIC-/, '');
-  put(`<text x="34" y="278" font-family="Menlo,monospace" font-size="6.5"
-    fill="#F3EDE1" fill-opacity=".34" letter-spacing="1.5">PLATE ${code} · ${k.toUpperCase()}</text>`);
+  put(`<text x="34" y="278" font-family="Menlo,monospace" font-size="6.5" fill="#F3EDE1"
+    fill-opacity=".34" letter-spacing="1.5">PLATE ${code} · ${k.toUpperCase()}</text>`);
   return `<svg viewBox="0 0 496 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${G.join('')}</svg>`;
 }
 
 /* ══════════ 组装 ══════════ */
-function renderCard(card){
+function renderCard(card, theme='light', size='l'){
   const f = FACTIONS[card.faction] || { short:'???', zh:'未知', acc:'#A9A395' };
   const k = KINDS[card.kind] || { zh:card.kind, en:String(card.kind).toUpperCase() };
   const r = RARITY[card.rarity] || RARITY.common;
   const artSvg = art(card, f.acc, seedOf(card.id));
   const kw = (card.keywords||[]).map(w=>`<li>${w}</li>`).join('');
-
   return `
-  <article class="card" data-rarity="${card.rarity}" data-id="${card.id}"
-           style="--acc:${f.acc}">
+  <article class="card" data-rarity="${card.rarity}" data-theme="${theme}" data-size="${size}"
+           data-id="${card.id}" style="--acc:${f.acc}">
     <div class="plate"></div>
     <div class="face">
       <div class="holes"><i></i><i></i><i></i></div>
-
       <header class="top">
         <div class="l">
           <div class="dept">${f.short} · ${f.zh}</div>
@@ -584,37 +614,29 @@ function renderCard(card){
         <span class="rar">${r.en}</span>
         <div class="cost"><span class="ring"></span><b>${card.cost}</b></div>
       </header>
-
       <div class="art">
         ${artSvg}
-        <div class="halftone"></div>
-        <div class="scan"></div>
-        <div class="glass"></div>
+        <div class="halftone"></div><div class="scan"></div><div class="glass"></div>
         <span class="reg" data-p="tl"></span><span class="reg" data-p="tr"></span>
         <span class="reg" data-p="bl"></span><span class="reg" data-p="br"></span>
       </div>
-
       <ul class="keys">${kw}<li class="k-label">KEYWORDS</li></ul>
-
       <div class="stats">
         <div class="stat r"><b>${card.residue ?? 0}</b><span>RESIDUE 残渣</span></div>
         <div class="stat m"><b>${card.power ?? 0}</b><span>MIGHT 战力</span></div>
         <div class="stat p"><b>${card.compute ?? 0}</b><span>COMPUTE 算力</span></div>
       </div>
-
       <div class="text">
         <div class="h">RULES · 规则</div>
         <div class="mid">
           <span class="wm"></span>
           <div class="body">${card.text}</div>
+          ${card.flavor ? `<div class="flavor">「${card.flavor}」</div>` : ''}
         </div>
         <div class="sign">
-          <span class="lbl">FILED BY</span>
-          <span class="sig"></span>
-          <span class="stampbox">已备案</span>
+          <span class="lbl">FILED BY</span><span class="sig"></span><span class="stampbox">已备案</span>
         </div>
       </div>
-
       <footer class="bottom">
         <span class="stamp">${f.zh}</span>
         <span class="sep"></span>
@@ -626,31 +648,72 @@ function renderCard(card){
   </article>`;
 }
 
-/* ══════════ 启动 ══════════ */
+/* ══════════ 启动 / 交互 ══════════ */
 (function boot(){
   const q = new URLSearchParams(location.search);
-  const root = document.getElementById('root');
   const cards = window.CARDS || [];
-  const one = q.get('card');
-  if (one){
-    document.body.className = 'solo';
-    root.innerHTML = renderCard(cards.find(x=>x.id===one) || cards[0]);
-    return;
-  }
-  const sheet = q.get('sheet') === '1';
-  document.body.className = sheet ? 'sheet' : '';
-  root.innerHTML = `
-    <div class="gallery">
-      <h1>未来残片 · 卡面设计 v1</h1>
-      <div class="sub">
-        <b>${cards.length}</b> 张 · 概念：<b>归档的搪瓷提案板</b> ——
-        搪瓷面 + 镀铬包边 / 凹陷视窗 / 网点 + 扫描线 / 打孔·套准·压印序号·条码。
+  const root = document.getElementById('root');
+  const state = {
+    theme: q.get('theme') === 'dark' ? 'dark' : 'light',
+    size: ['l','m','s'].includes(q.get('size')) ? q.get('size') : 'l',
+    mode: ['grid','compare','scale'].includes(q.get('mode')) ? q.get('mode') : 'grid',
+    card: q.get('card') || null,
+  };
+  const syncBar = () => document.querySelectorAll('.bar button').forEach(b=>{
+    b.setAttribute('aria-pressed', String(state[b.dataset.k] === b.dataset.v));
+  });
+  const cell = (card, theme, size, cap) => `
+    <div class="cell" data-cell-id="${card.id}" data-cell-theme="${theme}" data-cell-size="${size}">${renderCard(card, theme, size)}${cap?`<div class="cap">${cap}</div>`:''}</div>`;
+
+  function paint(){
+    syncBar();
+    if (state.card){
+      document.body.classList.add('solo');
+      const c = cards.find(x=>x.id===state.card) || cards[0];
+      root.innerHTML = `<div class="grid m-grid">${cell(c, state.theme, state.size)}</div>`;
+      return;
+    }
+    document.body.classList.remove('solo');
+    let html = '';
+    if (state.mode === 'compare'){
+      const pick = cards.slice(0, 4);
+      html = `<div class="sub">同一个版式、两套材质：<b>杂志式</b>是"被印刷的米白搪瓷提案板"；
+        <b>暗卡</b>把视窗变成<b>光源</b>（黑铬包边 + 内发光），更贴游戏内深色 UI。
+        两边的结构、信息、字号<b>完全一致</b>，只换材质与明暗关系。</div>
+        <div class="grid m-compare">`;
+      for (const t of ['light','dark'])
+        for (const c of pick)
+          html += cell(c, t, state.size, `${THEMES[t]} · ${SIZES[state.size]} · ${c.name}`);
+      html += '</div>';
+    } else if (state.mode === 'scale'){
+      const c = cards.find(x=>x.id===(state.card||'RC-ATOMIC-009')) || cards[1];
+      html = `<div class="sub">三档尺寸是<b>同一套版式按比例收紧</b>，<b>信息一项不删</b>：
+        名称 / 势力 / 稀有度 / 费用 / 关键词 / 三项数值 / 规则 / 风味 / 编号 全都在。
+        中、小尺寸靠<b>收紧留白与行距</b>腾空间，不是删内容。</div>
+        <div class="grid m-scale">`;
+      for (const s of ['l','m','s'])
+        html += cell(c, state.theme, s, `${SIZES[s]} · ${s.toUpperCase()} · ${SIZE_WH[s]}`);
+      html += '</div>';
+    } else {
+      html = `<div class="sub"><b>${cards.length}</b> 张 · 概念：<b>归档的搪瓷提案板</b>。
         色值全部取自 <span class="mono">tokens.json</span>（未新增颜色）；
-        插画由卡号确定性生成（同卡同图，不需要美术逐张画）。
-        数据由 <span class="mono">tools/build_cards_js.py</span> 从真实卡表生成。
-      </div>
-      <div class="grid">${cards.map(renderCard).join('')}</div>
-    </div>`;
+        插画为纯几何母题、按卡号确定性生成（同卡同图）。
+        数据 + 风味文字由 <span class="mono">tools/build_cards_js.py</span> 生成。</div>
+        <div class="grid m-grid">${cards.map(c=>cell(c,state.theme,state.size)).join('')}</div>`;
+    }
+    root.innerHTML = html;
+  }
+
+  document.querySelector('.bar').addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    state[b.dataset.k] = b.dataset.v;
+    const u = new URLSearchParams(location.search);
+    u.set(b.dataset.k, b.dataset.v);
+    if (state.card) u.set('card', state.card);
+    history.replaceState(null,'','?'+u.toString());
+    paint();
+  });
+  paint();
 })();
 </script>
 </body>

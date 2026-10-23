@@ -85,7 +85,8 @@
       "empty_ok_types": [],
       "doc_naming": {
         "default": [
-          "^[a-z0-9][a-z0-9-]*\\.(html|js|sh|jpg|png|json)$",
+          "^[a-z0-9][a-z0-9-]*\\.(html|js|sh|json)$",
+          "^preview-[a-z]+-(light|dark|compare|sizes)\\.webp$|^preview-(light|dark|compare|sizes)\\.webp$",
           "^README$",
           "^\\.[A-Za-z0-9_]+$"
         ]
