@@ -7,6 +7,9 @@ import { fileURLToPath } from 'node:url'
 
 import { createApp } from '../src/app.ts'
 import { html, raw } from '../src/html.ts'
+import { createMailer } from '../src/mail.ts'
+import { fromStandard } from '../src/validate.ts'
+import { saveUpload } from '../src/upload.ts'
 
 const notesRoot = fileURLToPath(new URL('../../examples/notes', import.meta.url))
 
@@ -37,6 +40,28 @@ function post(path: string, cookie: string, data: Record<string, string>): Reque
   })
 }
 
+test('StandardSchema 适配与上传限制', async () => {
+  const schema = fromStandard<string>({
+    '~standard': {
+      version: 1,
+      vendor: 'test',
+      validate(value) {
+        return value === 'ok' ? { value } : { issues: [{ message: 'bad', path: ['field'] }] }
+      },
+    },
+  })
+  assert.equal(schema.parse('ok'), 'ok')
+  assert.throws(() => schema.parse('no'))
+
+  const dir = mkdtempSync(join(tmpdir(), 'qc-upload-'))
+  const file = new File(['hello'], 'a.txt', { type: 'text/plain' })
+  const saved = await saveUpload(file, { dir, maxBytes: 100, types: ['text/plain'] })
+  assert.equal(saved.size, 5)
+  assert.ok(saved.path.startsWith(dir))
+  await assert.rejects(() => saveUpload(new File(['x'], 'a.exe', { type: 'application/x-msdownload' }), { dir, types: ['text/plain'] }))
+  rmSync(dir, { recursive: true, force: true })
+})
+
 test('html 默认转义，raw 才允许原样输出', () => {
   const out = String(html`<p>${'<script>alert(1)</script>'}</p>`)
   assert.match(out, /&lt;script&gt;/)
@@ -48,7 +73,8 @@ test('notes: 注册 / 登录态 / CSRF / 个人笔记 / 删除 / 退出', async 
   process.env.QC_DB_PATH = join(dir, 'test.db')
   process.env.QC_DEV = '0'
 
-  const app = await createApp(notesRoot)
+  const mailer = createMailer({ transport: 'memory', from: 'test@example.com' }, notesRoot)
+  const app = await createApp(notesRoot, { mailer })
   try {
     const health = await app.handle(new Request('http://test/health'))
     assert.equal(health.status, 200)
@@ -140,6 +166,32 @@ test('notes: 注册 / 登录态 / CSRF / 个人笔记 / 删除 / 退出', async 
     const reloginCookie = sessionCookie(loggedIn)
     const reloginHome = await app.handle(new Request('http://test/', { headers: { cookie: reloginCookie } }))
     assert.equal(reloginHome.status, 200)
+
+    const forgotPage = await app.handle(new Request('http://test/forgot', { headers: { cookie: reloginCookie } }))
+    const forgotCsrf = csrfFrom(await forgotPage.text())
+    const forgot = await app.handle(post('/actions/auth/forgot', reloginCookie, {
+      _csrf: forgotCsrf,
+      email: 'a@example.com',
+    }))
+    assert.equal(forgot.status, 303)
+    assert.ok(app.mailer?.messages?.length, '应该发送重置邮件')
+    const mail = app.mailer!.messages!.at(-1)!
+    const tokenMatch = mail.text.match(/token=([^\s]+)/)
+    assert.ok(tokenMatch, '邮件应包含 token')
+    const resetToken = decodeURIComponent(tokenMatch[1])
+
+    const resetPage = await app.handle(new Request(`http://test/reset?token=${encodeURIComponent(resetToken)}`, { headers: { cookie: reloginCookie } }))
+    const resetCsrf = csrfFrom(await resetPage.text())
+    const reset = await app.handle(post('/actions/auth/reset', reloginCookie, {
+      _csrf: resetCsrf,
+      token: resetToken,
+      password: 'new-password',
+    }))
+    assert.equal(reset.status, 303)
+
+    assert.throws(() => app.auth!.login('a@example.com', 'correct-horse'))
+    const newLogin = app.auth!.login('a@example.com', 'new-password')
+    assert.ok(newLogin.cookie.startsWith('qc_session='))
   } finally {
     app.close()
     rmSync(dir, { recursive: true, force: true })

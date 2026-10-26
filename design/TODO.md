@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 13:47
+> 最后更新：2026-10-26 13:51
 
 ## 一、现在只看三件
 
@@ -37,7 +37,8 @@
 | **D-019** | 技术 | **P1** | 青橙全栈 P2：auth/表单/安全 | 已完成 | auth/CSRF/校验/安全头/限流/dogfood 已落地；2026-10-26 | — | [P2 记录](fullstack/10_P2实现记录.md) |
 | **D-020** | 技术 | **P1** | 青橙全栈 P3 核心：bundle/回填/health | 已完成 | esbuild bundle、`qc start` 自动用 bundle、auth 表单回填、`/health`；2026-10-26 | — | [P3 记录](fullstack/11_P3实现记录.md) |
 | **D-021** | 技术 | **P1** | 青橙全栈 P4 运维核心：日志/备份/部署 | 已完成 | request id/JSON 日志、`qc db backup/restore`、Docker/Compose 模板；2026-10-26 | — | [P4 记录](fullstack/12_P4实现记录.md) |
-| **D-022** | 技术 | **P1** | 青橙全栈 P5：账号生命周期/上传/HMR | 待开始 | 邮件/密码重置/OAuth、上传、通用表单 helper、`qc new` 包导入/HMR、CI/镜像、第二 dogfood | P4 核心已验收 | [P4 记录](fullstack/12_P4实现记录.md) |
+| **D-022** | 技术 | **P1** | 青橙全栈 P5 核心：重置/StandardSchema/上传 | 已完成 | mailer、密码重置、StandardSchema 适配、上传工具；2026-10-26 | — | [P5 记录](fullstack/13_P5实现记录.md) |
+| **D-023** | 技术 | **P1** | 青橙全栈 P6：SMTP/OAuth/HMR/CI | 待开始 | SMTP/OAuth/邮箱验证、上传扫描/对象存储、通用 form helper、`qc new` 包导入/HMR、CI/镜像、第二 dogfood | P5 核心已验收 | [P5 记录](fullstack/13_P5实现记录.md) |
 
 ## 三、等你拍板
 

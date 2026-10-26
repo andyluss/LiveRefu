@@ -1,6 +1,6 @@
 # 青橙全栈（QC Stack）· 技术框架提案
 
-> **状态**：**P4 运维核心已完成（日志/备份/部署模板）/ P5 待做** ｜ 日期：2026-10-26 13:47 ｜ 决策：F1–F12 已按推荐（见 [08](08_决策清单.md)）
+> **状态**：**P5 账号/数据核心已完成（重置/StandardSchema/上传）/ P6 待做** ｜ 日期：2026-10-26 13:51 ｜ 决策：F1–F12 已按推荐（见 [08](08_决策清单.md)）
 > **定位**：青橙设计的技术底座。不是新的设计系统，也不是 Nuxt/Astro 的换皮；是一套**Web 优先、全栈、可替换依赖**的应用框架。
 > **一句话**：让一个懂 TypeScript 和基本 Web 的人，不研究 bundler / HTTP / ORM / session / 部署细节，也能做出网站、应用和大部分游戏服务端需求；同时保留“随时接管底层”的出口。
 
@@ -98,6 +98,7 @@
 | [10 P2 实现记录](10_P2实现记录.md) | Auth/CSRF/校验/安全头/限流与 dogfood |
 | [11 P3 实现记录](11_P3实现记录.md) | esbuild bundle、表单回填、健康检查 |
 | [12 P4 实现记录](12_P4实现记录.md) | 请求 ID/日志、备份/恢复、Docker 模板 |
+| [13 P5 实现记录](13_P5实现记录.md) | 邮件/密码重置、StandardSchema、上传 |
 
 ## 七、与 LRDS / kits 的关系
 
@@ -112,6 +113,7 @@
 - **P2 已落地**：session/scrypt/CSRF/角色/校验/安全头/限流/请求体上限；notes 升级为注册/登录/个人笔记；2 个测试通过。
 - **P3 核心已落地**：esbuild bundle、`qc start` 自动用 bundle、auth 表单错误回填、`/health`。
 - **P4 运维核心已落地**：request id/JSON 日志、`qc db backup/restore`、Docker/Compose 模板。
-- **P5 待做**：邮件/密码重置/OAuth、上传、通用表单 helper、`qc new` 包导入/HMR、CI/镜像、第二个 dogfood。
-- `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](09_P1实现记录.md) / [10](10_P2实现记录.md) / [11](11_P3实现记录.md) / [12](12_P4实现记录.md)。
+- **P5 核心已落地**：mailer、密码重置、StandardSchema 适配、上传工具。
+- **P6 待做**：SMTP/OAuth/邮箱验证、上传扫描/对象存储、通用 form helper、`qc new` 包导入/HMR、CI/镜像、第二个 dogfood。
+- `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](09_P1实现记录.md) / [10](10_P2实现记录.md) / [11](11_P3实现记录.md) / [12](12_P4实现记录.md) / [13](13_P5实现记录.md)。
 - 不替换现有网站/LiveFab；P4 前不把示例当生产服务。

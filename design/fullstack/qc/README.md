@@ -45,7 +45,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1/P2/P3/P4 边界
+## P1–P5 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -58,7 +58,9 @@ qc.config.ts
 - ✅ 内置 `GET /health` + `x-request-id` + JSON 日志
 - ✅ `qc db backup` / `qc db restore --force`
 - ✅ Docker/Compose 模板（`templates/`）
-- ❌ 邮件/密码重置/OAuth / 上传类型与存储 / 通用表单 helper / Postgres / HMR / `qc new` 包导入（P5）
+- ✅ mailer（console/file/memory）+ 密码重置
+- ✅ StandardSchema `fromStandard` + 上传 `saveUpload`
+- ❌ SMTP/OAuth/邮箱验证 / 上传扫描/对象存储 / 通用表单 helper / Postgres / HMR / `qc new` 包导入（P6）
 
 ## 注意
 

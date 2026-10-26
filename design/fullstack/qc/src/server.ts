@@ -42,11 +42,12 @@ function writeResponse(res: ServerResponse, response: Response): void {
   response.arrayBuffer().then(buffer => res.end(Buffer.from(buffer)))
 }
 
-export async function startServer(options: { appRoot: string; port?: number; host?: string; config?: AppOptions['config']; layout?: AppOptions['layout']; authConfig?: AppOptions['authConfig']; modules?: AppOptions['modules'] }) {
+export async function startServer(options: { appRoot: string; port?: number; host?: string; config?: AppOptions['config']; layout?: AppOptions['layout']; authConfig?: AppOptions['authConfig']; mailer?: AppOptions['mailer']; modules?: AppOptions['modules'] }) {
   const app = await createApp(options.appRoot, {
     config: options.config,
     layout: options.layout,
     ...(options.authConfig !== undefined ? { authConfig: options.authConfig } : {}),
+    ...(options.mailer ? { mailer: options.mailer } : {}),
     ...(options.modules ? { modules: options.modules } : {}),
   })
   const server = createServer((req, res) => {

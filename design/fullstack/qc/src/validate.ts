@@ -58,3 +58,27 @@ export function object<T extends Record<string, Schema<any>>>(shape: T): Schema<
     },
   }
 }
+
+/** 最小 StandardSchema 适配位：同步 validate；异步 schema 请用 P6 的异步接口。 */
+export interface StandardSchemaV1<T> {
+  '~standard': {
+    version: 1
+    vendor: string
+    validate: (value: unknown) => { value: T } | { issues: Array<{ message: string; path?: Array<string | number> }> }
+  }
+}
+
+export function fromStandard<T>(schema: StandardSchemaV1<T>): Schema<T> {
+  return {
+    parse(input) {
+      const result = schema['~standard'].validate(input)
+      if ('value' in result) return result.value
+      const fields: Record<string, string> = {}
+      for (const issue of result.issues) {
+        const key = issue.path?.length ? String(issue.path[issue.path.length - 1]) : '_'
+        fields[key] = issue.message
+      }
+      throw new ValidationError(fields)
+    },
+  }
+}

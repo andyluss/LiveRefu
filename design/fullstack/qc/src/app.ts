@@ -4,6 +4,7 @@ import { extname, join, normalize, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 import { createAuth, defaultAuthConfig, type Auth, type AuthConfig } from './auth.ts'
+import { createMailer, type Mailer } from './mail.ts'
 import { loadConfig, resolveConfig, type QcConfig } from './config.ts'
 import { migrate, openDatabase, type Db } from './data.ts'
 import { html, SafeHtml } from './html.ts'
@@ -138,6 +139,7 @@ export interface AppOptions {
   config?: QcConfig
   layout?: Layout
   authConfig?: AuthConfig | null
+  mailer?: Mailer
   modules?: Record<string, unknown>
 }
 
@@ -148,6 +150,7 @@ export interface App {
   db: Db
   config: QcConfig
   auth: Auth | null
+  mailer: Mailer | null
   appRoot: string
 }
 
@@ -157,7 +160,8 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
   const db = openDatabase(config.db.path)
   migrate(db, join(root, 'app/data/migrations'))
   const authConfig = 'authConfig' in options ? (options.authConfig ?? null) : await loadAuthConfig(root)
-  const auth = authConfig ? createAuth(db, authConfig) : null
+  const mailer = authConfig ? (options.mailer ?? createMailer(authConfig.mail ?? { transport: 'console', from: 'no-reply@localhost' }, root)) : null
+  const auth = authConfig ? createAuth(db, authConfig, mailer!) : null
   const routes = discover(root)
   const layout = options.layout ?? await loadLayout(root)
   const modules = options.modules ?? {}
@@ -326,6 +330,7 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
     db,
     config,
     auth,
+    mailer,
     appRoot: root,
   }
 }

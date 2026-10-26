@@ -3,12 +3,14 @@ import { html, type SafeHtml } from './html.ts'
 import { HttpError } from './http.ts'
 import { nowIso } from './time.ts'
 import type { Db } from './data.ts'
+import type { MailConfig, Mailer } from './mail.ts'
 
 export interface AuthConfig {
   roles: string[]
   passwordMin: number
   sessionDays: number
   secureCookie: boolean
+  mail?: MailConfig
 }
 
 export const defaultAuthConfig: AuthConfig = {
@@ -53,6 +55,8 @@ export interface Auth {
   logout: (session: AuthSession) => string
   verifyCsrf: (session: AuthSession, form: FormData | null, request: Request) => boolean
   csrfField: (session: AuthSession) => SafeHtml
+  requestPasswordReset: (email: string, baseUrl: string) => Promise<void>
+  resetPassword: (token: string, password: string) => void
 }
 
 function sha256(value: string): string {
@@ -107,10 +111,17 @@ function ensureTables(db: Db): void {
       expires_at text not null,
       created_at text not null
     );
+    create table if not exists qc_password_resets (
+      token_hash text primary key,
+      user_id integer not null,
+      expires_at text not null,
+      used integer not null default 0,
+      created_at text not null
+    );
   `)
 }
 
-export function createAuth(db: Db, config: AuthConfig): Auth {
+export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
   ensureTables(db)
   const days = Math.max(1, config.sessionDays)
   const maxAge = days * 24 * 60 * 60
@@ -191,5 +202,39 @@ export function createAuth(db: Db, config: AuthConfig): Auth {
     return html`<input type="hidden" name="_csrf" value="${session.csrf}">`
   }
 
-  return { config, load, login, register, logout, verifyCsrf, csrfField }
+  async function requestPasswordReset(email: string, baseUrl: string): Promise<void> {
+    const normalized = email.trim().toLowerCase()
+    const row = db.one<UserRow>('select id, email, password_hash, role from qc_users where email = ?', [normalized])
+    if (!row) return
+    const token = randomToken(32)
+    const expiresAt = nowIso(new Date(Date.now() + 30 * 60 * 1000))
+    db.run('insert into qc_password_resets (token_hash, user_id, expires_at, used, created_at) values (?, ?, ?, 0, ?)', [
+      sha256(token), row.id, expiresAt, nowIso(),
+    ])
+    const link = `${baseUrl.replace(/\/$/, '')}/reset?token=${encodeURIComponent(token)}`
+    try {
+      await mailer.send({
+        to: row.email,
+        subject: '重置你的青橙全栈密码',
+        text: `打开以下链接重置密码（30 分钟内有效）：\n${link}\n\n如果不是你发起的，请忽略。`,
+      })
+    } catch (error) {
+      console.error('[qc] 重置邮件发送失败', error)
+    }
+  }
+
+  function resetPassword(token: string, password: string): void {
+    if (password.length < config.passwordMin) throw new HttpError(400, `密码至少 ${config.passwordMin} 位`, 'WEAK_PASSWORD')
+    const row = db.one<{ user_id: number }>('select user_id from qc_password_resets where token_hash = ? and used = 0 and expires_at > ?', [
+      sha256(token), nowIso(),
+    ])
+    if (!row) throw new HttpError(400, '重置链接无效或已过期', 'INVALID_RESET_TOKEN')
+    db.transaction(() => {
+      db.run('update qc_users set password_hash = ? where id = ?', [hashPassword(password), row.user_id])
+      db.run('update qc_password_resets set used = 1 where token_hash = ?', [sha256(token)])
+      db.run('delete from qc_sessions where user_id = ?', [row.user_id])
+    })
+  }
+
+  return { config, load, login, register, logout, verifyCsrf, csrfField, requestPasswordReset, resetPassword }
 }
