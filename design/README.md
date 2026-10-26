@@ -87,7 +87,7 @@ design/
 └── references/               # 参考、法务登记、moodboard
 ```
 
-> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 53 合规 / 0 违规）。
+> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 54 合规 / 0 违规）。
 
 ## 六、与既有资产的关系
 
@@ -119,7 +119,7 @@ design/
 ### v0.2 第二阶段（治理收口）
 
 - **明日频道风格卡登记**：`SC-TOMORROWS-CHANNEL-TAPE-v1` 落库（9 色 + 色温/光比/装饰参数），新增 [`check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts) 与 `.tres` 对账（7/7 自检）；登记表见 [07](docs/07_风格卡登记.md)。
-- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（53 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（54 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
 - **3 个组件契约（draft）**：[button](components/button.md) / [form-field](components/form-field.md) / [panel](components/panel.md)；契约闸门 **8/8**（五节、token、裸值、组件 CSS）。
 - **共享 Web 组件层渐进接入**：[components.css](kits/web/components.css) + 生成副本；网站/LiveFab 已叠加 `lr-button` / `lr-panel`，搜索框接入 `lr-field`；使用审计 **4/4**（button/panel 各 2 产品，field 1 产品）。预览图：[preview.png](kits/web/preview.png)。
 - **产品走查**：4 个页面、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [09 产品走查](docs/09_产品走查_v0.2.md)。
