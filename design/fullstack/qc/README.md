@@ -45,7 +45,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1–P6 边界
+## P1–P7 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -62,7 +62,9 @@ qc.config.ts
 - ✅ StandardSchema `fromStandard`（同步/异步）+ 上传 `saveUpload`
 - ✅ `formValues/formErrors` helper
 - ✅ 第二个 dogfood：`examples/bookmarks`
-- ❌ SMTP/OAuth / 上传扫描/对象存储 / 通用 form UI / Postgres / HMR / `qc new` 包导入（P7）
+- ✅ OAuth/OIDC adapter + API 邮件 transport
+- ✅ 可注入 fetch（OAuth 测试无需真实 IdP）
+- ❌ OAuth 通用路由/预设 / SMTP / 上传扫描/对象存储 / HMR / `qc new` 包导入 / CI（P8）
 
 ## 注意
 

@@ -78,6 +78,24 @@ test('StandardSchema 适配与上传限制', async () => {
   rmSync(dir, { recursive: true, force: true })
 })
 
+test('API mail transport 发送 JSON', async () => {
+  const original = globalThis.fetch
+  let captured: any = null
+  globalThis.fetch = (async (url: string, init: any) => {
+    captured = { url, init, body: JSON.parse(init.body) }
+    return new Response('{}', { status: 200 })
+  }) as typeof fetch
+  try {
+    const mailer = createMailer({ transport: 'api', from: 'a@example.com', endpoint: 'https://mail.example/send', token: 't' }, process.cwd())
+    await mailer.send({ to: 'b@example.com', subject: 'hi', text: 'body' })
+    assert.equal(captured.url, 'https://mail.example/send')
+    assert.equal(captured.body.to, 'b@example.com')
+    assert.equal(captured.init.headers.authorization, 'Bearer t')
+  } finally {
+    globalThis.fetch = original
+  }
+})
+
 test('html 默认转义，raw 才允许原样输出', () => {
   const out = String(html`<p>${'<script>alert(1)</script>'}</p>`)
   assert.match(out, /&lt;script&gt;/)

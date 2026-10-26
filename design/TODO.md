@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 13:55
+> 最后更新：2026-10-26 13:58
 
 ## 一、现在只看三件
 
@@ -39,7 +39,8 @@
 | **D-021** | 技术 | **P1** | 青橙全栈 P4 运维核心：日志/备份/部署 | 已完成 | request id/JSON 日志、`qc db backup/restore`、Docker/Compose 模板；2026-10-26 | — | [P4 记录](fullstack/12_P4实现记录.md) |
 | **D-022** | 技术 | **P1** | 青橙全栈 P5 核心：重置/StandardSchema/上传 | 已完成 | mailer、密码重置、StandardSchema 适配、上传工具；2026-10-26 | — | [P5 记录](fullstack/13_P5实现记录.md) |
 | **D-023** | 技术 | **P1** | 青橙全栈 P6 核心：邮箱验证/异步校验/第二 dogfood | 已完成 | 邮箱验证、异步 StandardSchema、form helper、bookmarks dogfood；2026-10-26 | — | [P6 记录](fullstack/14_P6实现记录.md) |
-| **D-024** | 技术 | **P1** | 青橙全栈 P7：SMTP/OAuth/HMR/CI | 待开始 | SMTP/API 邮件、OAuth/OIDC、上传对象存储/扫描、HMR、`qc new` 包导入、CI/镜像/日志采集 | P6 核心已验收 | [P6 记录](fullstack/14_P6实现记录.md) |
+| **D-024** | 技术 | **P1** | 青橙全栈 P7 核心：OAuth/API 邮件 | 已完成 | OAuth/OIDC adapter、API mail transport；6/6 测试；2026-10-26 | — | [P7 记录](fullstack/15_P7实现记录.md) |
+| **D-025** | 技术 | **P1** | 青橙全栈 P8：路由/预设/SMTP/HMR/CI | 待开始 | OAuth 通用路由/预设、SMTP、上传对象存储/扫描、`qc new` 包导入/HMR、CI/镜像/日志采集、第三 dogfood | P7 核心已验收 | [P7 记录](fullstack/15_P7实现记录.md) |
 
 ## 三、等你拍板
 

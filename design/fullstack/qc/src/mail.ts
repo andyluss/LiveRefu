@@ -15,9 +15,11 @@ export interface Mailer {
 }
 
 export interface MailConfig {
-  transport: 'console' | 'file' | 'memory'
+  transport: 'console' | 'file' | 'memory' | 'api'
   from: string
   file?: string
+  endpoint?: string
+  token?: string
 }
 
 export function createMailer(config: MailConfig, appRoot: string): Mailer {
@@ -27,6 +29,22 @@ export function createMailer(config: MailConfig, appRoot: string): Mailer {
       messages,
       async send(message) {
         messages.push(message)
+      },
+    }
+  }
+  if (config.transport === 'api') {
+    if (!config.endpoint) throw new Error('mail.api 需要 endpoint')
+    return {
+      async send(message) {
+        const response = await fetch(config.endpoint!, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            ...(config.token ? { authorization: `Bearer ${config.token}` } : {}),
+          },
+          body: JSON.stringify({ from: config.from, ...message }),
+        })
+        if (!response.ok) throw new Error(`mail API ${response.status}`)
       },
     }
   }

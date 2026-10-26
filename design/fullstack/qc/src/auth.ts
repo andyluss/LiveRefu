@@ -5,12 +5,29 @@ import { nowIso } from './time.ts'
 import type { Db } from './data.ts'
 import type { MailConfig, Mailer } from './mail.ts'
 
+export interface OAuthProvider {
+  authorizationUrl: string
+  tokenUrl: string
+  userInfoUrl: string
+  clientId: string
+  clientSecret: string
+  scope?: string
+}
+
+export interface OAuthProfile {
+  id?: string
+  email: string
+  name?: string
+  emailVerified?: boolean
+}
+
 export interface AuthConfig {
   roles: string[]
   passwordMin: number
   sessionDays: number
   secureCookie: boolean
   mail?: MailConfig
+  oauth?: Record<string, OAuthProvider>
 }
 
 export const defaultAuthConfig: AuthConfig = {
@@ -61,6 +78,8 @@ export interface Auth {
   resetPassword: (token: string, password: string) => void
   requestEmailVerification: (email: string, baseUrl: string) => Promise<void>
   verifyEmail: (token: string) => string
+  oauthStart: (provider: string, redirectUri: string) => URL
+  oauthCallback: (provider: string, code: string, state: string, redirectUri: string) => Promise<{ user: AuthUser; cookie: string }>
 }
 
 function sha256(value: string): string {
@@ -123,6 +142,13 @@ function ensureTables(db: Db): void {
       expires_at text not null,
       created_at text not null
     );
+    create table if not exists qc_oauth_states (
+      state text primary key,
+      provider text not null,
+      redirect_uri text not null,
+      expires_at text not null,
+      created_at text not null
+    );
     create table if not exists qc_password_resets (
       token_hash text primary key,
       user_id integer not null,
@@ -133,7 +159,7 @@ function ensureTables(db: Db): void {
   `)
 }
 
-export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
+export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: { fetch?: typeof fetch } = {}): Auth {
   ensureTables(db)
   const days = Math.max(1, config.sessionDays)
   const maxAge = days * 24 * 60 * 60
@@ -214,6 +240,74 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
     return html`<input type="hidden" name="_csrf" value="${session.csrf}">`
   }
 
+  function oauthStart(provider: string, redirectUri: string): URL {
+    const cfg = config.oauth?.[provider]
+    if (!cfg) throw new HttpError(400, `未知 OAuth provider: ${provider}`, 'OAUTH_PROVIDER')
+    const state = randomToken(24)
+    db.run('insert into qc_oauth_states (state, provider, redirect_uri, expires_at, created_at) values (?, ?, ?, ?, ?)', [
+      state, provider, redirectUri, nowIso(new Date(Date.now() + 10 * 60 * 1000)), nowIso(),
+    ])
+    const url = new URL(cfg.authorizationUrl)
+    url.searchParams.set('response_type', 'code')
+    url.searchParams.set('client_id', cfg.clientId)
+    url.searchParams.set('redirect_uri', redirectUri)
+    url.searchParams.set('state', state)
+    if (cfg.scope) url.searchParams.set('scope', cfg.scope)
+    return url
+  }
+
+  async function oauthCallback(provider: string, code: string, state: string, redirectUri: string): Promise<{ user: AuthUser; cookie: string }> {
+    const cfg = config.oauth?.[provider]
+    if (!cfg) throw new HttpError(400, `未知 OAuth provider: ${provider}`, 'OAUTH_PROVIDER')
+    const row = db.one<{ provider: string; redirect_uri: string }>('select provider, redirect_uri from qc_oauth_states where state = ? and expires_at > ?', [state, nowIso()])
+    if (!row || row.provider !== provider || row.redirect_uri !== redirectUri) {
+      throw new HttpError(400, 'OAuth state 无效或已过期', 'OAUTH_STATE')
+    }
+    db.run('delete from qc_oauth_states where state = ?', [state])
+    const fetchImpl = options.fetch ?? fetch
+    const tokenRes = await fetchImpl(cfg.tokenUrl, {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: redirectUri,
+        client_id: cfg.clientId,
+        client_secret: cfg.clientSecret,
+      }),
+    })
+    if (!tokenRes.ok) throw new HttpError(502, 'OAuth token 交换失败', 'OAUTH_TOKEN')
+    const token = await tokenRes.json() as { access_token?: string }
+    if (!token.access_token) throw new HttpError(502, 'OAuth 响应缺少 access_token', 'OAUTH_TOKEN')
+    const profileRes = await fetchImpl(cfg.userInfoUrl, {
+      headers: { authorization: `Bearer ${token.access_token}`, accept: 'application/json' },
+    })
+    if (!profileRes.ok) throw new HttpError(502, 'OAuth 用户信息获取失败', 'OAUTH_PROFILE')
+    const profile = await profileRes.json() as Record<string, unknown>
+    const email = String(profile.email ?? profile.mail ?? '').trim().toLowerCase()
+    if (!email) throw new HttpError(502, 'OAuth 未返回邮箱', 'OAUTH_EMAIL')
+    const verified = Boolean(profile.email_verified ?? profile.emailVerified ?? false)
+    let user = db.one<UserRow>('select id, email, password_hash, role, email_verified from qc_users where email = ?', [email])
+    if (!user) {
+      const id = db.insert('qc_users', {
+        email,
+        password_hash: hashPassword(randomToken(32)),
+        role: config.roles.includes('user') ? 'user' : (config.roles[0] ?? 'user'),
+        email_verified: verified ? 1 : 0,
+        created_at: nowIso(),
+      })
+      user = { id, email, password_hash: '', role: 'user', email_verified: verified ? 1 : 0 }
+    } else if (verified && !user.email_verified) {
+      db.run('update qc_users set email_verified = 1 where id = ?', [user.id])
+      user.email_verified = 1
+    }
+    const fresh = newSession(user.id)
+    return {
+      user: { id: user.id, email: user.email, role: user.role, emailVerified: Boolean(user.email_verified) },
+      cookie: fresh.cookie,
+    }
+  }
+
   async function requestEmailVerification(email: string, baseUrl: string): Promise<void> {
     const normalized = email.trim().toLowerCase()
     const row = db.one<UserRow>('select id, email, password_hash, role, email_verified from qc_users where email = ?', [normalized])
@@ -282,5 +376,5 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
     })
   }
 
-  return { config, load, login, register, logout, verifyCsrf, csrfField, requestPasswordReset, resetPassword, requestEmailVerification, verifyEmail }
+  return { config, load, login, register, logout, verifyCsrf, csrfField, requestPasswordReset, resetPassword, requestEmailVerification, verifyEmail, oauthStart, oauthCallback }
 }

@@ -1,6 +1,6 @@
 # 青橙全栈（QC Stack）· 技术框架提案
 
-> **状态**：**P6 账号/复用核心已完成（邮箱验证/异步校验/第二 dogfood）/ P7 待做** ｜ 日期：2026-10-26 13:55 ｜ 决策：F1–F12 已按推荐（见 [08](08_决策清单.md)）
+> **状态**：**P7 外部集成核心已完成（OAuth/API 邮件）/ P8 待做** ｜ 日期：2026-10-26 13:58 ｜ 决策：F1–F12 已按推荐（见 [08](08_决策清单.md)）
 > **定位**：青橙设计的技术底座。不是新的设计系统，也不是 Nuxt/Astro 的换皮；是一套**Web 优先、全栈、可替换依赖**的应用框架。
 > **一句话**：让一个懂 TypeScript 和基本 Web 的人，不研究 bundler / HTTP / ORM / session / 部署细节，也能做出网站、应用和大部分游戏服务端需求；同时保留“随时接管底层”的出口。
 
@@ -100,6 +100,7 @@
 | [12 P4 实现记录](12_P4实现记录.md) | 请求 ID/日志、备份/恢复、Docker 模板 |
 | [13 P5 实现记录](13_P5实现记录.md) | 邮件/密码重置、StandardSchema、上传 |
 | [14 P6 实现记录](14_P6实现记录.md) | 邮箱验证、异步校验、第二个 dogfood |
+| [15 P7 实现记录](15_P7实现记录.md) | OAuth/OIDC、API 邮件 |
 
 ## 七、与 LRDS / kits 的关系
 
@@ -116,6 +117,7 @@
 - **P4 运维核心已落地**：request id/JSON 日志、`qc db backup/restore`、Docker/Compose 模板。
 - **P5 核心已落地**：mailer、密码重置、StandardSchema 适配、上传工具。
 - **P6 核心已落地**：邮箱验证、异步 StandardSchema、form helper、第二个 dogfood（bookmarks）。
-- **P7 待做**：SMTP/API 邮件、OAuth/OIDC、上传对象存储/扫描、HMR、`qc new` 包导入、CI/镜像/日志采集。
-- `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](09_P1实现记录.md) / [10](10_P2实现记录.md) / [11](11_P3实现记录.md) / [12](12_P4实现记录.md) / [13](13_P5实现记录.md) / [14](14_P6实现记录.md)。
+- **P7 核心已落地**：OAuth/OIDC adapter、API 邮件 transport。
+- **P8 待做**：OAuth 通用路由/预设、SMTP、上传对象存储/扫描、`qc new` 包导入/HMR、CI/镜像/日志采集、第三 dogfood。
+- `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](09_P1实现记录.md) / [10](10_P2实现记录.md) / [11](11_P3实现记录.md) / [12](12_P4实现记录.md) / [13](13_P5实现记录.md) / [14](14_P6实现记录.md) / [15](15_P7实现记录.md)。
 - 不替换现有网站/LiveFab；P4 前不把示例当生产服务。
