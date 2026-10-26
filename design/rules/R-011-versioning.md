@@ -28,7 +28,12 @@ git tag --points-at HEAD
 
 - 安全修复可缩短弃用窗口，但必须在 CHANGELOG 的 Security 说明。
 
-## 五、变更记录
+## 五、反例 / 迁移
+
+- **反例**：移动已发布 tag；force push 改历史；无弃用窗口直接删 token；产品永远跟随 main。
+- **迁移**：补 deprecated 标记与替代项，至少一个 minor 周期；产品记录当前版本/哈希。
+
+## 六、变更记录
 
 | 日期 | 版本 | 变更 |
 | --- | --- | --- |

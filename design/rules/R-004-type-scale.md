@@ -29,7 +29,12 @@ node --experimental-strip-types design/tools/check_no_raw_values.ts --all
 - 评审标注/图表刻度可使用 8–12px，但必须显式标注“非产品界面”。
 - 平台系统字号（iOS Dynamic Type）由 App kit 映射，不新增 UI 层级。
 
-## 五、变更记录
+## 五、反例 / 迁移
+
+- **反例**：正文 13px；为落地页新增 15.5px；只改字号不改行高；标题用非等宽数字。
+- **迁移**：把 13–15px 正文归并到 `caption`/`body`，把临时层级并入最近的 5/7 级；在例外中登记过渡页。
+
+## 六、变更记录
 
 | 日期 | 版本 | 变更 |
 | --- | --- | --- |

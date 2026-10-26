@@ -28,7 +28,12 @@ node --experimental-strip-types rules/meta/tools/meta_rules_scope.ts
 
 - 临时实验目录必须带 `_` 前缀或在 `.tmp/`；不得提交。
 
-## 五、变更记录
+## 五、反例 / 迁移
+
+- **反例**：未声明 `type_vocab` 就建目录；空目录提交；在子关注点里堆无 README 的文件；规则文件用随意命名。
+- **迁移**：先改 `config-design.json`，补 README/命名，再移动文件；跑 M1/M2。
+
+## 六、变更记录
 
 | 日期 | 版本 | 变更 |
 | --- | --- | --- |

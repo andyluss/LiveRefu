@@ -658,7 +658,7 @@ function generate(): string {
       <button type="button" data-theme-set="dark" aria-pressed="false">深色</button>
     </div>
   </div>
-  <div class="hint">项目 HUB：总览 / 演进 / 验收 / 决策 / 文档。设计系统本身（token / 组件 / 风格卡 / 规则 / 主题）见 <a href="GUIDE.html">GUIDE.html</a>。由 <code>design/tools/build_hub.ts</code> 生成；右上角可切换系统 / 深色 / 浅色。</div>
+  <div class="hint">项目 HUB：总览 / 演进 / 验收 / 决策 / 文档。设计系统本身（token / 组件 / 风格卡 / 规则 / 主题）见 <a href="GUIDE.html">GUIDE.html</a>。由 <code>design/tools/build_hub.ts</code> 生成；右上角可切换系统 / 浅色 / 深色。</div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>总览</button>
     <button role="tab" data-tab="evolution"><span class="n">02</span>演进</button>

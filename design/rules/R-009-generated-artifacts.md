@@ -28,7 +28,12 @@ node --experimental-strip-types design/tools/build_hub.ts --check
 
 - 紧急热修可临时改产物，但必须当天回写源并重生成；否则不得提交。
 
-## 五、变更记录
+## 五、反例 / 迁移
+
+- **反例**：手改 `dist/web/*.css`；直接编辑 HUB.html；生成器与产物各改一半；GUIDE 复制 HUB 的运行时数据。
+- **迁移**：把手工修改回写到源（token/组件/HUB 数据），重跑生成器；对账通过后再提交。
+
+## 六、变更记录
 
 | 日期 | 版本 | 变更 |
 | --- | --- | --- |
