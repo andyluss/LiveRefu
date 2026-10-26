@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 14:38
+> 最后更新：2026-10-26 14:42
 
 ## 一、现在只看三件
 
@@ -50,7 +50,7 @@
 | **D-032** | 技术 | **P1** | 青橙全栈 P15 核心：第三 dogfood/密钥轮换 | 已完成 | guestbook、OAuth previousTokenKeys；10/10 测试；2026-10-26 | — | [P15 记录](fullstack/docs/implementation/23_P15实现记录.md) |
 | **D-033** | 技术 | **P1** | 青橙全栈 P16 核心：S3 校验/限速/扫描钩子 | 已完成 | checksum、maxPartsPerSecond、scan hook；10/10 测试；2026-10-26 | — | [P16 记录](fullstack/docs/implementation/24_P16实现记录.md) |
 | **D-034** | 技术 | **P1** | 青橙全栈 P17：发布检查 | 已完成 | 包 dry-run（4 files/32.3KB）、测试 10/10、发布检查文档；2026-10-26 | — | [P17 记录](fullstack/docs/implementation/25_P17实现记录.md) |
-| **D-035** | 技术 | **P1** | 青橙全栈 P18：推送/发布/HMR/SMTP | 待外部 | 先推送 P5–P17；npm registry/发布；HMR 立项；真实 SMTP STARTTLS；CI 真跑 | 用户决策 + 外部凭据 | [P17 记录](fullstack/docs/implementation/25_P17实现记录.md) |
+| **D-035** | 技术 | **P2** | 青橙全栈 P18：推送/发布/HMR/SMTP | 待外部 | 已收尾；事项转入[全栈 TODO](fullstack/docs/TODO.md)：推送、CI、npm、HMR、真实 SMTP | 用户决策 + 外部凭据 | [全栈 TODO](fullstack/docs/TODO.md) |
 
 ## 三、等你拍板
 

@@ -21,6 +21,7 @@
 ### 新增
 
 - [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。
+- **青橙全栈收尾**：新增 [`design/fullstack/docs/TODO.md`](design/fullstack/docs/TODO.md)，将推送/CI/npm/HMR/SMTP 等外部事项移出聊天；README/文档索引/design TODO/HUB 标记“已收尾”。
 - **青橙全栈 P17 发布准备**：包 dry-run（4 files/32.3KB）、发布检查文档、外部依赖边界；10/10 测试；`25_P17实现记录`。
 - **青橙全栈 P16 核心**：S3 `x-amz-checksum-sha256`、分片限速、`saveUpload({scan})`；10/10 测试；`24_P16实现记录`。
 - **青橙全栈 P15 核心**：第三个 dogfood `examples/guestbook`、OAuth `previousTokenKeys` 密钥轮换；10/10 测试；`23_P15实现记录`。

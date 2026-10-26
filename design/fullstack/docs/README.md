@@ -1,6 +1,6 @@
 # 青橙全栈 · 文档索引
 
-> 返回：[全栈 README](../README.md) ｜ 代码：[qc/](../qc/README.md) ｜ 示例：[notes](../examples/notes/README.md) · [bookmarks](../examples/bookmarks/README.md)
+> 返回：[全栈 README](../README.md) ｜ 收尾待办：[TODO](TODO.md) ｜ 代码：[qc/](../qc/README.md) ｜ 示例：[notes](../examples/notes/README.md) · [bookmarks](../examples/bookmarks/README.md) · [guestbook](../examples/guestbook/README.md)
 
 ## 设计文档（为什么 / 怎么想）
 
@@ -37,6 +37,10 @@
 | 23 | [P15](implementation/23_P15实现记录.md) | 第三 dogfood、OAuth 密钥轮换 |
 | 24 | [P16](implementation/24_P16实现记录.md) | S3 校验和、限速、扫描钩子 |
 | 25 | [P17](implementation/25_P17实现记录.md) | 发布检查与外部边界 |
+
+## 收尾
+
+- [TODO](TODO.md)：P18 外部事项与恢复入口。
 
 ## 约定
 
