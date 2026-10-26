@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **青橙全栈可视化**：新增 [`fullstack/HUB.html`](fullstack/HUB.html)（项目开发/发布）与 [`fullstack/GUIDE.html`](fullstack/GUIDE.html)（功能/用法），沿用 LRDS token/焦点/圆角/暗亮主题；README/HUB/文档索引已加入口。
 - **全栈 TODO 收拢**：`design/TODO.md` 的 D-018–D-035 移入 [`fullstack/docs/TODO.md`](fullstack/docs/TODO.md)，并按设计 TODO 的 ID/层/优先级/状态/下一步/依赖格式重排；design TODO 只保留设计系统事项与一行链接。
 - **青橙全栈收尾**：新增 [`docs/TODO.md`](fullstack/docs/TODO.md)，将推送/CI/npm/HMR/SMTP 等外部事项移出聊天；README/文档索引/design TODO/HUB 标记“已收尾”。
 - **青橙全栈 P17 发布准备**：包 dry-run（4 files/32.3KB）、发布检查文档、外部依赖边界；10/10 测试；`25_P17实现记录`。
@@ -62,7 +63,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 59 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 61 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。

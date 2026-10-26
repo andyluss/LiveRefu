@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>青橙全栈 · Project HUB</title>
+<meta name="description" content="青橙全栈（QC Stack）项目 HUB：阶段、实现记录、质量闸门、发布准备与待办。">
+<style>
+  :root{
+    --lr-color-bg-base:#0B0F14; --lr-color-bg-sunken:#0B1116; --lr-color-bg-surface:#111823; --lr-color-bg-raised:#161D26;
+    --lr-color-text-primary:#F3EDE1; --lr-color-text-secondary:#9AA7B8; --lr-color-text-muted:#808D9F;
+    --lr-color-line-subtle:#24303F; --lr-color-line-strong:#66727F;
+    --lr-color-action-primary:#4FD1C5; --lr-color-action-primary-hover:#57D8C8; --lr-color-feedback-warning:#FFC857;
+    --lr-color-feedback-danger:#FF6B35; --lr-color-feedback-success:#7BD389; --lr-color-focus-ring:#8AB4F8;
+    --lr-radius-control:4px; --lr-radius-panel:8px;
+    --lr-space-4:4px; --lr-space-8:8px; --lr-space-12:12px; --lr-space-16:16px; --lr-space-24:24px; --lr-space-32:32px;
+    --lr-ref-font-family-sans:ui-sans-serif,system-ui,-apple-system,"SF Pro SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --lr-ref-font-family-mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --bg:var(--lr-color-bg-base); --sunken:var(--lr-color-bg-sunken); --surface:var(--lr-color-bg-surface); --raised:var(--lr-color-bg-raised);
+    --text:var(--lr-color-text-primary); --dim:var(--lr-color-text-secondary); --muted:var(--lr-color-text-muted);
+    --line:var(--lr-color-line-subtle); --line-strong:var(--lr-color-line-strong);
+    --teal:var(--lr-color-action-primary); --teal-hi:var(--lr-color-action-primary-hover);
+    --amber:var(--lr-color-feedback-warning); --rust:var(--lr-color-feedback-danger); --ok:var(--lr-color-feedback-success); --focus:var(--lr-color-focus-ring);
+    color-scheme:dark;
+  }
+  html[data-theme="light"]{
+    --bg:#F7F3EA; --sunken:#EDE6D8; --surface:#FFFDF8; --raised:#EDE6D8;
+    --text:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line-strong:#8A8275;
+    --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--lr-ref-font-family-sans)}
+  a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 35%,transparent)}
+  a:hover{border-bottom-color:var(--focus)}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  code{font-family:var(--lr-ref-font-family-mono);font-size:.88em;background:var(--sunken);border:1px solid var(--line);border-radius:var(--lr-radius-control);padding:1px 5px}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--surface);color:var(--text);padding:8px 12px;border:1px solid var(--teal);border-radius:var(--lr-radius-control);z-index:30}
+  .skip:focus{left:8px}
+  .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 24px 0;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .brand{font-weight:700;font-size:18px;letter-spacing:.02em}
+  .brand span{color:var(--muted);font-weight:400;font-size:12px;letter-spacing:.12em;margin-left:8px;font-family:var(--lr-ref-font-family-mono)}
+  .top-status{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+  .chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--dim);white-space:nowrap}
+  .chip.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+  .chip.acc{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 45%,transparent)}
+  .chip.warn{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,transparent)}
+  .chip.todo{color:var(--rust);border-color:color-mix(in srgb,var(--rust) 45%,transparent)}
+  .theme{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--dim);font:inherit;font-size:12px;border-radius:999px;padding:4px 10px;cursor:pointer}
+  .theme:hover{color:var(--text);border-color:var(--line-strong)}
+  nav.tabs{max-width:1180px;margin:8px auto 0;padding:0 24px;display:flex;gap:2px;overflow-x:auto}
+  nav.tabs a{border:0;border-bottom:2px solid transparent;padding:10px 12px;color:var(--dim);font-size:13.5px;white-space:nowrap;border-radius:6px 6px 0 0}
+  nav.tabs a:hover{color:var(--text);background:color-mix(in srgb,var(--text) 3%,transparent)}
+  nav.tabs a .n{font-family:var(--lr-ref-font-family-mono);color:var(--muted);font-size:11px;margin-right:5px}
+  main{max-width:1180px;margin:0 auto;padding:28px 24px 72px}
+  section{scroll-margin-top:110px;margin:0 0 52px}
+  h1{font-size:clamp(30px,4.4vw,50px);line-height:1.08;letter-spacing:-.02em;margin:0 0 12px;max-width:100%;word-break:keep-all;overflow-wrap:normal}
+  h2{font-size:22px;line-height:1.3;margin:0 0 6px}
+  h3{font-size:15px;margin:0 0 6px}
+  p{margin:6px 0}
+  .lede{color:var(--dim);font-size:16px;max-width:74ch}
+  .eyebrow{font-family:var(--lr-ref-font-family-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+  .hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:32px;align-items:start;padding:18px 0 8px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .btn{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:7px 13px;border-radius:var(--lr-radius-control);border:1.5px solid var(--line-strong);background:var(--surface);color:var(--text);font:inherit;font-size:13.5px;border-bottom-width:1.5px}
+  .btn:hover{border-color:var(--teal);color:var(--teal)}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:var(--bg);font-weight:650}
+  .btn.primary:hover{background:var(--teal-hi);border-color:var(--teal-hi);color:var(--bg)}
+  .hero-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+  .hero-card .row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .hero-card .row:last-child{border-bottom:0}
+  .hero-card .row b{font-family:var(--lr-ref-font-family-mono);font-weight:600;color:var(--teal)}
+  .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:22px 0 18px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:12px 13px}
+  .stat .v{font-family:var(--lr-ref-font-family-mono);font-size:24px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+  .stat .l{color:var(--dim);font-size:11.5px;margin-top:4px}
+  .stat.a .v{color:var(--teal)}.stat.b .v{color:var(--amber)}.stat.c .v{color:var(--ok)}.stat.d .v{color:var(--rust)}
+  .progress{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:14px 16px;margin:0 0 18px}
+  .progress-head{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--dim);margin-bottom:8px}
+  .bar{height:12px;background:var(--sunken);border:1px solid var(--line);border-radius:999px;overflow:hidden;display:flex}
+  .bar span{display:block;height:100%}
+  .bar .done{background:linear-gradient(90deg,var(--teal),var(--teal-hi));width:100%}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;color:var(--muted);font-size:11.5px}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--teal);margin-right:5px}
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:14px 15px}
+  .card p{color:var(--dim);font-size:13px}
+  .card .meta{color:var(--muted);font-size:11.5px;font-family:var(--lr-ref-font-family-mono)}
+  .card .links{margin-top:8px;font-size:12px;display:flex;gap:10px;flex-wrap:wrap}
+  .phase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+  .phase{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:10px 11px;position:relative;min-height:96px}
+  .phase .id{font-family:var(--lr-ref-font-family-mono);font-size:10.5px;color:var(--teal);letter-spacing:.06em}
+  .phase h3{font-size:12.5px;margin:4px 0 3px;line-height:1.35;word-break:keep-all;white-space:nowrap}
+  .phase p{font-size:11.5px;color:var(--muted);line-height:1.45;margin:0}
+  .phase .dot{position:absolute;right:10px;top:10px;width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 16%,transparent)}
+  .phase.gate .dot{background:var(--amber);box-shadow:0 0 0 3px color-mix(in srgb,var(--amber) 16%,transparent)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+  th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  tbody tr:hover{background:color-mix(in srgb,var(--text) 2%,transparent)}
+  .num{font-family:var(--lr-ref-font-family-mono);white-space:nowrap}
+  .gate-list{display:grid;gap:6px;margin-top:12px}
+  .gate{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .gate:last-child{border-bottom:0}
+  .gate .ico{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--ok);color:var(--ok);font-size:11px;display:grid;place-items:center;flex:none;font-family:var(--lr-ref-font-family-mono)}
+  .gate.warn .ico{border-color:var(--amber);color:var(--amber)}
+  .gate .txt{color:var(--dim)}.gate b{color:var(--text)}
+  .callout{border-left:3px solid var(--teal);background:var(--surface);padding:12px 15px;border-radius:0 var(--lr-radius-panel) var(--lr-radius-panel) 0;color:var(--dim);font-size:13px}
+  .callout strong{color:var(--text)}
+  .code{background:var(--sunken);border:1px solid var(--line);border-radius:var(--lr-radius-panel);overflow:auto;padding:12px 14px;font-family:var(--lr-ref-font-family-mono);font-size:12px;line-height:1.65;color:var(--dim);white-space:pre}
+  .code b{color:var(--teal);font-weight:500}.code i{color:var(--amber);font-style:normal}.code u{color:var(--text);text-decoration:none}
+  .cols{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:start}
+  .links-row{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:18px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  @media (max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.phase-grid{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}}
+  @media (max-width:640px){.topbar-inner{padding:12px 16px 0}nav.tabs{padding:0 16px}main{padding:22px 16px 56px}.stats{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g4{grid-template-columns:1fr}.phase-grid{grid-template-columns:1fr}.hero-card{order:-1}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+  @media print{.topbar,nav.tabs,.theme,.hero-actions{display:none}body{background:#fff;color:#111}main{max-width:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到正文</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">青橙全栈 <span>QC STACK</span></div>
+    <div class="top-status">
+      <span class="chip ok">已收尾</span>
+      <span class="chip acc">P1–P17</span>
+      <button class="theme" id="theme" type="button" aria-pressed="false">浅色</button>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="页面导航">
+    <a href="#overview"><span class="n">01</span>总览</a>
+    <a href="#phases"><span class="n">02</span>阶段</a>
+    <a href="#quality"><span class="n">03</span>质量</a>
+    <a href="#release"><span class="n">04</span>发布</a>
+    <a href="#next"><span class="n">05</span>决策与待办</a>
+    <a href="#docs"><span class="n">06</span>文档</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section id="overview" aria-labelledby="overview-title">
+    <p class="eyebrow">Project HUB · Development &amp; Release</p>
+    <div class="hero">
+      <div>
+        <h1 id="overview-title">从零到一个可打包的<br>全栈框架</h1>
+        <p class="lede">青橙全栈（QC Stack）的项目视图：17 个阶段、10 个测试、3 个 dogfood、1 个预编译包。这里记录“做了什么、为什么收尾、下一步从哪里恢复”。功能与用法见 <a href="GUIDE.html">GUIDE.html</a>。</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="docs/README.md">读文档</a>
+          <a class="btn" href="docs/TODO.md">恢复待办</a>
+          <a class="btn" href="../HUB.html">LRDS 设计 HUB</a>
+          <a class="btn" href="GUIDE.html">功能指南</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="收尾快照">
+        <div class="row"><span>状态</span><b>已收尾</b></div>
+        <div class="row"><span>核心阶段</span><b>P1–P17</b></div>
+        <div class="row"><span>测试</span><b>10 / 10</b></div>
+        <div class="row"><span>Dogfood</span><b>notes · bookmarks · guestbook</b></div>
+        <div class="row"><span>设计闸门</span><b>0 违规</b></div>
+        <div class="row"><span>包 dry-run</span><b>32.3 kB</b></div>
+      </aside>
+    </div>
+
+    <div class="stats" aria-label="项目指标">
+      <div class="stat a"><div class="v">17</div><div class="l">阶段 P1–P17</div></div>
+      <div class="stat c"><div class="v">10</div><div class="l">测试全部通过</div></div>
+      <div class="stat b"><div class="v">3</div><div class="l">dogfood 示例</div></div>
+      <div class="stat a"><div class="v">4</div><div class="l">包内文件</div></div>
+      <div class="stat d"><div class="v">0</div><div class="l">M1/M2 违规</div></div>
+      <div class="stat c"><div class="v">32.3</div><div class="l">tarball kB</div></div>
+    </div>
+
+    <div class="progress">
+      <div class="progress-head"><span>收尾进度</span><span>17 / 17 阶段 · 发布准备完成</span></div>
+      <div class="bar"><span class="done"></span></div>
+      <div class="legend"><span><i></i>已完成</span><span>外部发布（npm/HMR/SMTP）不在收尾内</span></div>
+    </div>
+
+    <div class="callout"><strong>收尾不是“做完了所有事”</strong>：npm 发布、组件级 HMR、SMTP STARTTLS 被移到 <a href="docs/TODO.md">docs/TODO.md</a>，因为它们需要 registry/凭据/真实服务或独立运行时项目。当前代码、包、文档与测试是完整的本地交付。</div>
+  </section>
+
+  <section id="phases" aria-labelledby="phases-title">
+    <p class="eyebrow">01 / Timeline</p>
+    <h2 id="phases-title">17 个阶段：每一步都留下记录</h2>
+    <p class="lede">阶段按“能验证的能力”推进，而不是按文件数量。每个阶段都有实现记录、测试或 smoke；完整记录在 <a href="docs/implementation/">docs/implementation/</a>。</p>
+
+    <div class="phase-grid">
+      <article class="phase"><span class="dot"></span><div class="id">P1 · 09</div><h3>最小骨架</h3><p>文件路由、page/action、SQLite、HTML、迁移、CLI。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P2 · 10</div><h3>Auth / 安全</h3><p>session、scrypt、CSRF、校验、安全头、限流。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P3 · 11</div><h3>Bundle / 回填</h3><p>esbuild、`qc start`、`onError`、`/health`。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P4 · 12</div><h3>运维底座</h3><p>request id、JSON 日志、备份/恢复、Docker。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P5 · 13</div><h3>账号 / 上传</h3><p>mailer、密码重置、StandardSchema、上传。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P6 · 14</div><h3>验证 / 复用</h3><p>邮箱验证、异步 schema、form helper、bookmarks。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P7 · 15</div><h3>OAuth / 邮件 API</h3><p>OAuth/OIDC adapter、API mail transport。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P8 · 16</div><h3>路由 / 文档分区</h3><p>OAuth 通用路由、GitHub/Google 预设、docs 分区。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P9 · 17</div><h3>SMTP / 存储 / 刷新</h3><p>SMTP、Storage 接口、开发自动刷新、CI 模板。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P10 · 18</div><h3>S3 / PKCE</h3><p>SigV4 存储、OAuth PKCE S256。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P11 · 19</div><h3>预编译包</h3><p>`qc pack`、`qc new` 从 `@qingcheng/qc` 导入。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P12 · 20</div><h3>预签名 / Refresh</h3><p>presign/delete、OAuth refresh token。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P13 · 21</div><h3>Multipart / CI</h3><p>S3 multipart、刷新锁/撤销、CI workflow。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P14 · 22</div><h3>大文件 / 加密</h3><p>并发/重试/checkpoint、AES-GCM token。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P15 · 23</div><h3>第三 dogfood</h3><p>guestbook、`previousTokenKeys` 轮换。</p></article>
+      <article class="phase"><span class="dot"></span><div class="id">P16 · 24</div><h3>校验 / 扫描钩子</h3><p>checksum、分片限速、`scan` 钩子。</p></article>
+      <article class="phase gate"><span class="dot"></span><div class="id">P17 · 25</div><h3>发布准备</h3><p>包 dry-run、发布检查、外部边界。</p></article>
+    </div>
+
+    <div class="cols" style="margin-top:16px">
+      <div class="card">
+        <h3>阶段统计</h3>
+        <table>
+          <thead><tr><th>区间</th><th>能力</th><th>测试</th></tr></thead>
+          <tbody>
+            <tr><td class="num">P1–P4</td><td>骨架、auth、bundle、运维</td><td class="num">2→4</td></tr>
+            <tr><td class="num">P5–P8</td><td>账号、验证、OAuth、路由</td><td class="num">6→7</td></tr>
+            <tr><td class="num">P9–P12</td><td>SMTP/存储、S3/PKCE、包、预签名</td><td class="num">8→9</td></tr>
+            <tr><td class="num">P13–P17</td><td>multipart、加密、dogfood、扫描、发布</td><td class="num">9→10</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>实现记录</h3>
+        <p>09–25 共 17 篇；每篇都写“做了什么 / 验证 / 和文档的差异 / 下一步”。</p>
+        <div class="links"><a href="docs/implementation/09_P1实现记录.md">P1</a><a href="docs/implementation/13_P5实现记录.md">P5</a><a href="docs/implementation/17_P9实现记录.md">P9</a><a href="docs/implementation/21_P13实现记录.md">P13</a><a href="docs/implementation/25_P17实现记录.md">P17</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quality" aria-labelledby="quality-title">
+    <p class="eyebrow">02 / Quality</p>
+    <h2 id="quality-title">质量不是“跑过”，是可复现</h2>
+    <p class="lede">测试、设计闸门、链接、HUB、包 dry-run 都能在本地重复。CI workflow 已配置，真实 GitHub Actions 运行需要先推送。</p>
+    <div class="grid g3">
+      <article class="card"><div class="meta">TEST MATRIX</div><h3>10 / 10</h3><p>notes 4、bookmarks 1、guestbook 1、OAuth 1、OAuth routes 1、SMTP 1、S3 1。</p></div>
+      <article class="card"><div class="meta">DESIGN GATE</div><h3>M1/M2 · 0 违规</h3><p>文件组织、命名、子关注点；文档移入子目录后计数为 61。</p></div>
+      <article class="card"><div class="meta">LINKS</div><h3>0 失效</h3><p>全工作区 Markdown 内部链接扫描；包含两份新 HTML。</p></div>
+    </div>
+    <div class="gate-list">
+      <div class="gate"><span class="ico">✓</span><div class="txt"><b>Notes / auth / mail / upload</b>：注册、登录、CSRF、个人笔记、重置、验证、上传扫描。</div></div>
+      <div class="gate"><span class="ico">✓</span><div class="txt"><b>Bookmarks / Guestbook</b>：第二、第三个 dogfood；公共数据形态。</div></div>
+      <div class="gate"><span class="ico">✓</span><div class="txt"><b>OAuth / SMTP / S3</b>：fake provider / fake SMTP / fake S3；无外网依赖。</div></div>
+      <div class="gate warn"><span class="ico">!</span><div class="txt"><b>CI</b>：`.github/workflows/qc.yml` 已写，未真实运行；需要推送。</div></div>
+      <div class="gate warn"><span class="ico">!</span><div class="txt"><b>npm publish</b>：未发布；包 dry-run 通过。</div></div>
+    </div>
+  </section>
+
+  <section id="release" aria-labelledby="release-title">
+    <p class="eyebrow">03 / Release</p>
+    <h2 id="release-title">可打包，但还没有发布</h2>
+    <div class="cols">
+      <div>
+        <p class="lede">`qc pack` 生成 `dist/index.mjs` 与 `dist/cli.mjs`；`npm pack --dry-run` 验证 4 个文件、32.3 kB tarball。发布需要的不是代码，而是 registry 与账号决策。</p>
+        <div class="code"><b>@qingcheng/qc@0.1.0</b>
+README.md              3.3 kB
+dist/cli.mjs          57.0 kB
+dist/index.mjs        52.1 kB
+package.json           698 B
+------------------------------
+tarball               32.3 kB
+unpacked             113.0 kB
+shasum   5cfbd55374cce7b3a931e8c0aa162d6771e463b8</div>
+      </div>
+      <div class="card">
+        <h3>发布顺序</h3>
+        <ol style="margin:8px 0 0 18px;padding:0;color:var(--dim);font-size:13px">
+          <li>推送 P5–P17（你手动）</li>
+          <li>让 CI 真跑一次</li>
+          <li>定 registry / 访问级别</li>
+          <li>`npm publish`</li>
+          <li>远程 `qc new` 验证</li>
+        </ol>
+        <div class="links"><a href="docs/design/09_发布检查.md">发布检查</a><a href="docs/TODO.md">TODO</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="next" aria-labelledby="next-title">
+    <p class="eyebrow">04 / Decisions &amp; Next</p>
+    <h2 id="next-title">收尾后的恢复入口</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3>F1–F12：已采纳</h3>
+        <table>
+          <tbody>
+            <tr><td class="num">F3</td><td>Node 24 第一，Bun 可选</td></tr>
+            <tr><td class="num">F4</td><td>HTML-first + islands</td></tr>
+            <tr><td class="num">F5</td><td>SQLite + SQL-first</td></tr>
+            <tr><td class="num">F6</td><td>内置 session + OAuth adapter</td></tr>
+            <tr><td class="num">F11</td><td>只 Web；多端后置</td></tr>
+          </tbody>
+        </table>
+        <div class="links"><a href="docs/design/08_决策清单.md">完整决策</a></div>
+      </div>
+      <div class="card">
+        <h3>D-036–D-044：外部待办</h3>
+        <p>推送、CI、registry、npm 发布、远程 `qc new`、HMR 立项、真实 SMTP；以及 `.d.ts`、S3 重试、扫描器、OAuth 轮换。</p>
+        <div class="links"><a href="docs/TODO.md">TODO 总表</a><a href="docs/design/06_路线图与验收.md">路线图</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="docs" aria-labelledby="docs-title">
+    <p class="eyebrow">05 / Docs</p>
+    <h2 id="docs-title">读哪一篇</h2>
+    <div class="grid g4">
+      <a class="card" href="docs/design/01_理念与边界.md"><div class="meta">DESIGN</div><h3>01 理念与边界</h3><p>拥有契约，不拥有整个宇宙。</p></a>
+      <a class="card" href="docs/design/02_架构总览.md"><div class="meta">DESIGN</div><h3>02 架构总览</h3><p>五层、生命周期、项目结构。</p></a>
+      <a class="card" href="docs/design/03_应用契约与开发者体验.md"><div class="meta">DESIGN</div><h3>03 应用契约</h3><p>page/action/table/auth 四个词。</p></a>
+      <a class="card" href="docs/design/04_Web优先实现.md"><div class="meta">DESIGN</div><h3>04 Web 实现</h3><p>运行时、数据、auth、构建、部署。</p></a>
+    </div>
+    <div class="links-row" style="margin-top:14px">
+      <a href="README.md">全栈 README</a><a href="docs/README.md">文档索引</a><a href="docs/TODO.md">收尾 TODO</a><a href="GUIDE.html">功能 GUIDE</a><a href="examples/notes/README.md">notes 示例</a><a href="qc/README.md">qc 代码</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>青橙全栈 · Project HUB ｜ 2026-10-26</span>
+    <span>项目视图 · 功能视图见 <a href="GUIDE.html">GUIDE.html</a></span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('theme');
+  try { var saved=localStorage.getItem('qc-hub-theme'); if(saved==='light'||saved==='dark') root.dataset.theme=saved; } catch(e){}
+  function sync(){ var light=root.dataset.theme==='light'; btn.textContent=light?'深色':'浅色'; btn.setAttribute('aria-pressed',String(light)); }
+  btn.addEventListener('click',function(){ root.dataset.theme=root.dataset.theme==='light'?'dark':'light'; try{localStorage.setItem('qc-hub-theme',root.dataset.theme)}catch(e){} sync(); });
+  sync();
+})();
+</script>
+</body>
+</html>
