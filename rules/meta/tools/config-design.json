@@ -3,7 +3,7 @@
   "concern": "design",
   "root": ".",
   "root_docs": ["README.md", "CHANGELOG.md", "HUB.html", "TODO.md"],
-  "type_vocab": ["docs", "philosophy", "tokens", "kits", "components", "tools"],
+  "type_vocab": ["docs", "philosophy", "fullstack", "tokens", "kits", "components", "tools"],
   "code_types": ["tools"],
   "empty_ok_types": [],
   "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
