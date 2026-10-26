@@ -45,16 +45,16 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1 边界
+## P1/P2 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
 - ✅ CLI dev/start/build/db/doctor/new
-- ✅ 示例 notes + 2 个集成测试
-- ❌ auth/session/CSRF/权限（P2）
-- ❌ schema 校验 DSL（P2）
-- ❌ 真正 bundle（P1 build 是源码复制）
-- ❌ HMR / Postgres / 多端
+- ✅ auth：session cookie、scrypt 密码、CSRF、角色、`auth: 'required'`
+- ✅ 校验：`object/string` + 422；安全头/限流/2MiB 请求体上限
+- ✅ 示例 notes（注册/登录/个人笔记/删除/退出）+ 2 个集成测试
+- ❌ 真正的 bundle（build 仍是源码复制；P3）
+- ❌ 表单错误回填 / StandardSchema adapter / OAuth / 邮箱验证 / 上传 / Postgres / HMR
 
 ## 注意
 

@@ -1,14 +1,17 @@
-import { defineAction, redirect, badRequest, nowIso } from '../../qc.ts'
+import { defineAction, redirect, object, string, nowIso } from '../../qc.ts'
 
 export default defineAction({
-  handle({ form, db }) {
-    const title = String(form?.get('title') ?? '').trim()
-    const body = String(form?.get('body') ?? '').trim()
-    if (!title) throw badRequest('标题不能为空')
-    if (!body) throw badRequest('正文不能为空')
+  auth: 'required',
+  input: object({
+    title: string({ min: 1, max: 120, label: '标题' }),
+    body: string({ min: 1, max: 10000, label: '正文' }),
+  }),
+  handle({ input, db, user }) {
+    const data = input as { title: string; body: string }
     db.insert('notes', {
-      title,
-      body,
+      title: data.title,
+      body: data.body,
+      user_id: user!.id,
       created_at: nowIso(),
     })
     return redirect('/')

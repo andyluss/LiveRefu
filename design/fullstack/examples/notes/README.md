@@ -1,6 +1,6 @@
 # Notes · 青橙全栈 P1 示例
 
-最小可运行示例：文件路由、SQLite、迁移、HTML 表单、动作、布局。
+最小可运行示例：文件路由、SQLite、迁移、HTML 表单、动作、布局，以及 P2 的注册/登录/CSRF/个人笔记。
 
 ```bash
 npm run db:migrate
@@ -15,4 +15,4 @@ npm run doctor
 npm test
 ```
 
-范围：P1 骨架；auth、校验、打包在 P2。数据库文件在 `data/app.db`（已忽略）。
+范围：P2；打包/邮箱/上传在 P3。先注册账号，再创建笔记；每个用户只看到自己的笔记。数据库文件在 `data/app.db`（已忽略）。

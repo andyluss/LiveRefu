@@ -1,6 +1,7 @@
 import { html } from '../qc.ts'
 
-export default function layout({ title, children }: { title: string; children: unknown }) {
+export default function layout({ title, children, ctx }: { title: string; children: unknown; ctx: any }) {
+  const csrf = ctx.auth?.csrfField(ctx.session)
   return html`<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -30,7 +31,10 @@ export default function layout({ title, children }: { title: string; children: u
 <body><main>
   <header class="row" style="justify-content:space-between;margin-bottom:20px">
     <strong>青橙全栈 · Notes</strong>
-    <a href="/">全部笔记</a>
+    <span class="row">
+      ${ctx.user ? html`<span class="muted">${ctx.user.email}</span>
+        <form method="post" action="/actions/auth/logout">${csrf}<button type="submit">退出</button></form>` : html`<a href="/login">登录</a><a href="/register">注册</a>`}
+    </span>
   </header>
   ${children}
 </main></body>

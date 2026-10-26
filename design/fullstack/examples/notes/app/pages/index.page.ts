@@ -8,18 +8,21 @@ interface Note {
 }
 
 export default definePage({
+  auth: 'required',
   title: 'Notes · 青橙全栈',
-  load({ db }) {
+  load({ db, user }) {
     return {
-      notes: db.query<Note>('select id, title, body, created_at from notes order by id desc'),
+      notes: db.query<Note>('select id, title, body, created_at from notes where user_id = ? order by id desc', [user!.id]),
     }
   },
-  render({ notes }: { notes: Note[] }) {
+  render({ notes }: { notes: Note[] }, ctx) {
+    const csrf = ctx.auth!.csrfField(ctx.session!)
     return html`
       <h1>Notes</h1>
-      <p class="muted">P1 示例：文件路由、SQLite、HTML 表单、迁移。</p>
+      <p class="muted">P2 示例：登录、CSRF、校验、个人笔记、SQLite 迁移。</p>
 
       <form class="card" method="post" action="/actions/notes/create">
+        ${csrf}
         <div style="margin-bottom:8px"><input name="title" placeholder="标题" required maxlength="120"></div>
         <div style="margin-bottom:8px"><textarea name="body" placeholder="正文" required></textarea></div>
         <button type="submit">创建笔记</button>
