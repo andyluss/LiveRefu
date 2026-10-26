@@ -1,15 +1,15 @@
 {
-  "_comment": "M1+M2 判定配置 · design/（LRDS 设计系统）。tokens/ 与 kits/ 是子关注点；tokens 下的 core/products/schema/dist 是数据类，命名豁免；tools/ 是代码类，命名豁免。2026-10-21 实测 0 违规后转 block。",
+  "_comment": "M1+M2 判定配置 · design/（LRDS 设计系统）。tokens/、kits/ 与 ref/ 是子关注点；tokens 下的 core/products/schema/dist 是数据类，命名豁免；tools/ 是代码类，命名豁免。2026-10-21 实测 0 违规后转 block。",
   "concern": "design",
   "root": ".",
   "root_docs": ["README.md", "CHANGELOG.md", "HUB.html", "TODO.md"],
-  "type_vocab": ["docs", "tokens", "kits", "components", "tools"],
+  "type_vocab": ["docs", "philosophy", "tokens", "kits", "components", "tools"],
   "code_types": ["tools"],
   "empty_ok_types": [],
   "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
   "skip_dirs": ["node_modules", ".git"],
   "skip_prefixes": [".", "_"],
-  "sub_concerns": ["tokens", "kits"],
+  "sub_concerns": ["tokens", "kits", "ref"],
   "sub_concerns_dir": null,
   "sub_configs": {
     "tokens": {
@@ -29,6 +29,17 @@
       "code_types": ["web", "godot"],
       "empty_ok_types": [],
       "doc_naming": { "default": ["^[a-zA-Z0-9_.-]+$"] },
+      "skip_dirs": [],
+      "skip_prefixes": [".", "_"],
+      "sub_concerns": [],
+      "sub_configs": {}
+    },
+    "ref": {
+      "root_docs": ["README.md"],
+      "type_vocab": [],
+      "code_types": [],
+      "empty_ok_types": [],
+      "doc_naming": { "default": ["^[^/]+$"] },
       "skip_dirs": [],
       "skip_prefixes": [".", "_"],
       "sub_concerns": [],

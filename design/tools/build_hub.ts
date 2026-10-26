@@ -380,6 +380,7 @@ function generate(): string {
     ['D8', '版本策略', 'SemVer + 稳定性分级 + 弃用窗口', '已裁决'],
     ['D9', '资产与法务', '开源字体 + 自有图标 + 溯源', '已裁决'],
     ['D10', '首版范围', '地基 + 两个试点；外观基本不变', '已裁决'],
+    ['D-011', '青橙理念', '9 篇 / 三批 / 上位理念', '已裁决'],
   ] as const
 
   const roadmap = [
@@ -838,6 +839,7 @@ function generate(): string {
       <thead><tr><th>#</th><th>决策</th><th>选择</th><th>状态</th></tr></thead>
       <tbody>${decisions.map(([id, name, choice, st]) => `<tr><td><code>${id}</code></td><td>${esc(name)}</td><td>${esc(choice)}</td><td><span class="chip ok">${esc(st)}</span></td></tr>`).join('')}</tbody>
     </table>
+    <p class="lede">青橙理念（D-011）：<a href="philosophy/README.md">系列索引</a> · <a href="philosophy/00_总纲_青橙设计.md">00 总纲</a> · <a href="philosophy/01_未来考古_复古未来不是怀旧.md">01 未来考古</a> · <a href="philosophy/02_可感_从数字到现象.md">02 可感</a>。第一批已完稿，03–08 待写。</p>
     <h3>路线</h3>
     <div class="grid g3">
       ${roadmap.map(([name, st]) => `<div class="card"><h3>${esc(name)}</h3><p><span class="chip ${st === 'done' ? 'ok' : st === 'doing' ? 'warn' : ''}">${st === 'done' ? '已完成' : st === 'doing' ? '进行中' : '未开始'}</span></p></div>`).join('')}
