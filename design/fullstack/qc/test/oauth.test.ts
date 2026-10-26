@@ -35,7 +35,10 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     calls.push(url)
     if (url.includes('/token')) {
       tokenBody = String(init?.body ?? '')
-      return new Response(JSON.stringify({ access_token: 'access-token' }), { status: 200, headers: { 'content-type': 'application/json' } })
+      if (tokenBody.includes('grant_type=refresh_token')) {
+        return new Response(JSON.stringify({ access_token: 'refreshed-token' }), { status: 200, headers: { 'content-type': 'application/json' } })
+      }
+      return new Response(JSON.stringify({ access_token: 'access-token', refresh_token: 'refresh-token', expires_in: 3600 }), { status: 200, headers: { 'content-type': 'application/json' } })
     }
     if (url.includes('/me')) {
       return new Response(JSON.stringify({ email: 'oidc@example.com', email_verified: true }), { status: 200, headers: { 'content-type': 'application/json' } })
@@ -56,6 +59,9 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     assert.ok(result.cookie.startsWith('qc_session='))
     assert.deepEqual(calls.sort(), ['https://idp.example/me', 'https://idp.example/token'])
     assert.match(tokenBody, /code_verifier=/)
+    const refreshed = await auth.oauthRefresh('test', result.user.id)
+    assert.equal(refreshed, 'refreshed-token')
+    assert.match(tokenBody, /grant_type=refresh_token/)
   } finally {
     db.close()
     rmSync(dir, { recursive: true, force: true })

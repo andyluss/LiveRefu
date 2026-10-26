@@ -1,6 +1,6 @@
 # 青橙全栈（QC Stack）· 技术框架提案
 
-> **状态**：**P11 预编译包/`qc new` 包导入已完成 / P12 待做** ｜ 日期：2026-10-26 14:14 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
+> **状态**：**P12 S3 预签名/删除与 OAuth Refresh 已完成 / P13 待做** ｜ 日期：2026-10-26 14:18 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
 > **定位**：青橙设计的技术底座。不是新的设计系统，也不是 Nuxt/Astro 的换皮；是一套**Web 优先、全栈、可替换依赖**的应用框架。
 > **一句话**：让一个懂 TypeScript 和基本 Web 的人，不研究 bundler / HTTP / ORM / session / 部署细节，也能做出网站、应用和大部分游戏服务端需求；同时保留“随时接管底层”的出口。
 
@@ -105,6 +105,7 @@
 | [17 P9 实现记录](docs/implementation/17_P9实现记录.md) | SMTP、存储接口、开发自动刷新、CI 模板 |
 | [18 P10 实现记录](docs/implementation/18_P10实现记录.md) | S3 存储、OAuth PKCE |
 | [19 P11 实现记录](docs/implementation/19_P11实现记录.md) | 预编译包、`qc new` 包导入 |
+| [20 P12 实现记录](docs/implementation/20_P12实现记录.md) | S3 预签名/删除、OAuth refresh |
 
 ## 七、与 LRDS / kits 的关系
 
@@ -126,6 +127,7 @@
 - **P9 核心已落地**：SMTP、存储接口、开发自动刷新、CI 模板。
 - **P10 核心已落地**：S3 兼容存储（SigV4）、OAuth PKCE。
 - **P11 核心已落地**：预编译包、`qc new` 包导入（本地 `file:`/symlink）。
-- **P12 待做**：npm 发布/远程包、组件级 HMR、S3 multipart/预签名/扫描、OAuth refresh、第三 dogfood、真实 CI/镜像/日志。
+- **P12 核心已落地**：S3 预签名/删除、OAuth refresh。
+- **P13 待做**：S3 multipart/扫描、npm 发布/远程包、组件级 HMR、第三 dogfood、真实 CI/镜像/日志、SMTP STARTTLS。
 - `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](docs/implementation/09_P1实现记录.md) / [10](docs/implementation/10_P2实现记录.md) / [11](docs/implementation/11_P3实现记录.md) / [12](docs/implementation/12_P4实现记录.md) / [13](docs/implementation/13_P5实现记录.md) / [14](docs/implementation/14_P6实现记录.md) / [15](docs/implementation/15_P7实现记录.md) / [16](docs/implementation/16_P8实现记录.md) / [17](docs/implementation/17_P9实现记录.md) / [18](docs/implementation/18_P10实现记录.md) / [19](docs/implementation/19_P11实现记录.md)。
 - 不替换现有网站/LiveFab；P4 前不把示例当生产服务。

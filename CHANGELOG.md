@@ -21,6 +21,7 @@
 ### 新增
 
 - [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。
+- **青橙全栈 P12 核心**：S3 presign/delete、OAuth refresh token；9/9 测试；`20_P12实现记录`。
 - **青橙全栈 P11 核心**：`qc pack` 预编译包（`dist/index.mjs`/`dist/cli.mjs`）、`qc new` 通过 `@qingcheng/qc` 包导入；`19_P11实现记录`。
 - **青橙全栈 P10 核心**：S3 兼容存储（SigV4 PUT）、OAuth PKCE（S256）；9/9 测试；`18_P10实现记录`。
 - **青橙全栈 P9 核心**：SMTP transport、`Storage`/`LocalStorage`/`MemoryStorage`、开发自动刷新、CI 模板；8/8 测试；`17_P9实现记录`。

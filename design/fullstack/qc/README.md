@@ -46,7 +46,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1–P11 边界
+## P1–P12 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -70,7 +70,8 @@ qc.config.ts
 - ✅ S3 兼容存储（SigV4 PUT）、OAuth PKCE（S256）
 - ✅ `qc pack` 预编译包（`dist/index.mjs`/`dist/cli.mjs`）
 - ✅ `qc new` 通过 `@qingcheng/qc` 包导入（本地 file/symlink）
-- ❌ npm 发布/远程包 / 组件级 HMR / S3 multipart/扫描 / OAuth refresh（P12）
+- ✅ S3 presign/delete、OAuth refresh
+- ❌ npm 发布/远程包 / 组件级 HMR / S3 multipart/扫描（P13）
 
 ## 注意
 
