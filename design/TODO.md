@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 14:42
+> 最后更新：2026-10-26 14:48
 
 ## 一、现在只看三件
 
@@ -30,27 +30,11 @@
 | **D-012** | 治理 | **P2** | Token 弃用演练 | 待开始 | 用一次真实改名/移除验证 D8 的弃用窗口与产品 pinning | 需真实变更 |
 | **D-013** | 风格卡 | **P2** | 新风格卡接入清单 | 待开始 | 把四张卡的经验固化成 checklist：色板/材质/投影/对账 | 新产品 |
 | **D-014** | 治理 | **P2** | 决策记录制度完善 | 已完成 | 已采纳 C 混合制；见[制度](docs/decisions/README.md)；D3 样例；2026-10-26 12:10 | — |
-| **D-015** | 理念 | **P1** | 青橙理念第二批（03–05） | 已完成 | 03–05 已完稿；2026-10-26 12:48；见[理念](philosophy/README.md) | — | [理念](philosophy/README.md) |
-| **D-016** | 理念 | **P2** | 青橙理念第三批（06–08） | 已完成 | 06–08 已完稿；9 篇全部完成；2026-10-26 13:02 | — | [理念](philosophy/README.md) |
-| **D-017** | 理念 | **P2** | 青橙十问 × 未来残片试评审 | 已完成 | 桌面试评审完成；2026-10-26 13:10；关键红旗：照料型势力与受影响的人 | — | [评审](docs/13_青橙十问_未来残片试评审.md) |
-| **D-018** | 技术 | **P1** | 青橙全栈 P0 决策 | 已完成 | F1–F12 按推荐采纳；2026-10-26 | — | [决策清单](fullstack/docs/design/08_决策清单.md) |
-| **D-019** | 技术 | **P1** | 青橙全栈 P2：auth/表单/安全 | 已完成 | auth/CSRF/校验/安全头/限流/dogfood 已落地；2026-10-26 | — | [P2 记录](fullstack/docs/implementation/10_P2实现记录.md) |
-| **D-020** | 技术 | **P1** | 青橙全栈 P3 核心：bundle/回填/health | 已完成 | esbuild bundle、`qc start` 自动用 bundle、auth 表单回填、`/health`；2026-10-26 | — | [P3 记录](fullstack/docs/implementation/11_P3实现记录.md) |
-| **D-021** | 技术 | **P1** | 青橙全栈 P4 运维核心：日志/备份/部署 | 已完成 | request id/JSON 日志、`qc db backup/restore`、Docker/Compose 模板；2026-10-26 | — | [P4 记录](fullstack/docs/implementation/12_P4实现记录.md) |
-| **D-022** | 技术 | **P1** | 青橙全栈 P5 核心：重置/StandardSchema/上传 | 已完成 | mailer、密码重置、StandardSchema 适配、上传工具；2026-10-26 | — | [P5 记录](fullstack/docs/implementation/13_P5实现记录.md) |
-| **D-023** | 技术 | **P1** | 青橙全栈 P6 核心：邮箱验证/异步校验/第二 dogfood | 已完成 | 邮箱验证、异步 StandardSchema、form helper、bookmarks dogfood；2026-10-26 | — | [P6 记录](fullstack/docs/implementation/14_P6实现记录.md) |
-| **D-024** | 技术 | **P1** | 青橙全栈 P7 核心：OAuth/API 邮件 | 已完成 | OAuth/OIDC adapter、API mail transport；6/6 测试；2026-10-26 | — | [P7 记录](fullstack/docs/implementation/15_P7实现记录.md) |
-| **D-025** | 技术 | **P1** | 青橙全栈 P8 核心：OAuth 路由/预设/文档分区 | 已完成 | OAuth 通用路由、GitHub/Google 预设、docs 分区；7/7 测试；2026-10-26 | — | [P8 记录](fullstack/docs/implementation/16_P8实现记录.md) |
-| **D-026** | 技术 | **P1** | 青橙全栈 P9 核心：SMTP/存储/刷新/CI | 已完成 | SMTP、存储接口、开发自动刷新、CI 模板；8/8 测试；2026-10-26 | — | [P9 记录](fullstack/docs/implementation/17_P9实现记录.md) |
-| **D-027** | 技术 | **P1** | 青橙全栈 P10 核心：S3/PKCE | 已完成 | S3 SigV4、OAuth PKCE S256；9/9 测试；2026-10-26 | — | [P10 记录](fullstack/docs/implementation/18_P10实现记录.md) |
-| **D-028** | 技术 | **P1** | 青橙全栈 P11 核心：预编译包/包导入 | 已完成 | `qc pack`、`qc new` 通过 `@qingcheng/qc` 导入（本地 file/symlink）；2026-10-26 | — | [P11 记录](fullstack/docs/implementation/19_P11实现记录.md) |
-| **D-029** | 技术 | **P1** | 青橙全栈 P12 核心：S3 预签名/删除/Refresh | 已完成 | S3 presign/delete、OAuth refresh；9/9 测试；2026-10-26 | — | [P12 记录](fullstack/docs/implementation/20_P12实现记录.md) |
-| **D-030** | 技术 | **P1** | 青橙全栈 P13 核心：multipart/锁/CI | 已完成 | S3 multipart、OAuth 并发锁/撤销、CI workflow；9/9 测试；2026-10-26 | — | [P13 记录](fullstack/docs/implementation/21_P13实现记录.md) |
-| **D-031** | 技术 | **P1** | 青橙全栈 P14 核心：S3 大文件/OAuth 加密 | 已完成 | S3 并发/重试/checkpoint、OAuth AES-GCM；9/9 测试；2026-10-26 | — | [P14 记录](fullstack/docs/implementation/22_P14实现记录.md) |
-| **D-032** | 技术 | **P1** | 青橙全栈 P15 核心：第三 dogfood/密钥轮换 | 已完成 | guestbook、OAuth previousTokenKeys；10/10 测试；2026-10-26 | — | [P15 记录](fullstack/docs/implementation/23_P15实现记录.md) |
-| **D-033** | 技术 | **P1** | 青橙全栈 P16 核心：S3 校验/限速/扫描钩子 | 已完成 | checksum、maxPartsPerSecond、scan hook；10/10 测试；2026-10-26 | — | [P16 记录](fullstack/docs/implementation/24_P16实现记录.md) |
-| **D-034** | 技术 | **P1** | 青橙全栈 P17：发布检查 | 已完成 | 包 dry-run（4 files/32.3KB）、测试 10/10、发布检查文档；2026-10-26 | — | [P17 记录](fullstack/docs/implementation/25_P17实现记录.md) |
-| **D-035** | 技术 | **P2** | 青橙全栈 P18：推送/发布/HMR/SMTP | 待外部 | 已收尾；事项转入[全栈 TODO](fullstack/docs/TODO.md)：推送、CI、npm、HMR、真实 SMTP | 用户决策 + 外部凭据 | [全栈 TODO](fullstack/docs/TODO.md) |
+| **D-015** | 理念 | **P1** | 青橙理念第二批（03–05） | 已完成 | 03–05 已完稿；2026-10-26 12:48；见[理念](philosophy/README.md) | — |
+| **D-016** | 理念 | **P2** | 青橙理念第三批（06–08） | 已完成 | 06–08 已完稿；9 篇全部完成；2026-10-26 13:02；见[理念](philosophy/README.md) | — |
+| **D-017** | 理念 | **P2** | 青橙十问 × 未来残片试评审 | 已完成 | 桌面试评审完成；2026-10-26 13:10；关键红旗：照料型势力与受影响的人；见[评审](docs/13_青橙十问_未来残片试评审.md) | — |
+
+> 青橙全栈 P0–P18 事项已移入 [全栈 TODO](fullstack/docs/TODO.md)；本表只维护设计系统，不再保留全栈明细。
 
 ## 三、等你拍板
 

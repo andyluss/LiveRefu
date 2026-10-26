@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **全栈 TODO 收拢**：`design/TODO.md` 的 D-018–D-035 移入 [`fullstack/docs/TODO.md`](fullstack/docs/TODO.md)，并按设计 TODO 的 ID/层/优先级/状态/下一步/依赖格式重排；design TODO 只保留设计系统事项与一行链接。
 - **青橙全栈收尾**：新增 [`docs/TODO.md`](fullstack/docs/TODO.md)，将推送/CI/npm/HMR/SMTP 等外部事项移出聊天；README/文档索引/design TODO/HUB 标记“已收尾”。
 - **青橙全栈 P17 发布准备**：包 dry-run（4 files/32.3KB）、发布检查文档、外部依赖边界；10/10 测试；`25_P17实现记录`。
 - **青橙全栈 P16 核心**：S3 `x-amz-checksum-sha256`、分片限速、`saveUpload({scan})`；10/10 测试；`24_P16实现记录`。
