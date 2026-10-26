@@ -52,6 +52,7 @@ test('notes: 注册 / 登录态 / CSRF / 个人笔记 / 删除 / 退出', async 
   try {
     const health = await app.handle(new Request('http://test/health'))
     assert.equal(health.status, 200)
+    assert.ok(health.headers.get('x-request-id'))
     assert.deepEqual(await health.json(), { ok: true, uptime: Math.round(process.uptime()), db: 'ok' })
 
     const anonHome = await app.handle(new Request('http://test/'))

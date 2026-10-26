@@ -1,9 +1,10 @@
 #!/usr/bin/env -S node --experimental-strip-types
-import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, writeFileSync, copyFileSync, unlinkSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { spawn } from 'node:child_process'
 
+import { backup } from 'node:sqlite'
 import { loadConfig } from './config.ts'
 import { migrate, openDatabase } from './data.ts'
 import { discover } from './router.ts'
@@ -23,6 +24,8 @@ function help(): void {
   qc start [dir]        启动生产进程
   qc build [dir]        P1 源码构建（复制 app/public/config 到 dist）
   qc db migrate         应用迁移
+  qc db backup [file]   备份 SQLite
+  qc db restore <file> --force  恢复（覆盖）
   qc doctor             打印配置/路由/数据库
   qc new <dir>          创建最小应用
   qc help
@@ -149,6 +152,36 @@ async function dbMigrate(): Promise<void> {
   console.log(ran.length ? `✓ 已应用: ${ran.join(', ')}` : '✓ 无待应用迁移')
 }
 
+async function dbBackup(targetArg?: string): Promise<void> {
+  const config = await loadConfig(cwd)
+  if (!existsSync(config.db.path)) fail(`数据库不存在: ${config.db.path}`)
+  const stamp = nowIso().replace(/[:.]/g, '-').slice(0, 19)
+  const target = targetArg ? resolve(cwd, targetArg) : join(cwd, 'data', `backup-${stamp}.db`)
+  mkdirSync(dirname(target), { recursive: true })
+  const db = openDatabase(config.db.path)
+  try {
+    await backup(db.raw, target)
+  } finally {
+    db.close()
+  }
+  console.log(`✓ 备份: ${target}`)
+}
+
+async function dbRestore(sourceArg: string | undefined, force: boolean): Promise<void> {
+  if (!sourceArg) fail('用法: qc db restore <file> --force')
+  if (!force) fail('恢复会覆盖当前数据库；确认后加 --force')
+  const source = resolve(cwd, sourceArg)
+  if (!existsSync(source)) fail(`备份不存在: ${source}`)
+  const config = await loadConfig(cwd)
+  mkdirSync(dirname(config.db.path), { recursive: true })
+  copyFileSync(source, config.db.path)
+  for (const suffix of ['-wal', '-shm']) {
+    const file = `${config.db.path}${suffix}`
+    if (existsSync(file)) unlinkSync(file)
+  }
+  console.log(`✓ 已恢复: ${config.db.path}`)
+}
+
 async function doctor(): Promise<void> {
   const config = await loadConfig(cwd)
   const routes = discover(cwd)
@@ -170,6 +203,8 @@ async function main(): Promise<void> {
   if (command === 'start') return start(args[1])
   if (command === 'build') return build(args[1])
   if (command === 'db' && args[1] === 'migrate') return dbMigrate()
+  if (command === 'db' && args[1] === 'backup') return dbBackup(args[2])
+  if (command === 'db' && args[1] === 'restore') return dbRestore(args[2], args.includes('--force'))
   if (command === 'doctor') return doctor()
   fail(`未知命令: ${command}\n运行 qc help`)
 }

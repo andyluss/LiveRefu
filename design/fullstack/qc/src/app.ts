@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -10,6 +11,7 @@ import { HttpError, json } from './http.ts'
 import { discover, match, type Route } from './router.ts'
 import type { Action, Ctx, Page } from './contracts.ts'
 import { ValidationError } from './validate.ts'
+import { nowIso } from './time.ts'
 
 export type Layout = (args: { title: string; children: SafeHtml | string; ctx: Ctx }) => SafeHtml | string
 
@@ -178,8 +180,9 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
     if (current.count > limit) throw new HttpError(429, '请求过于频繁，请稍后再试', 'RATE_LIMITED')
   }
 
-  function finalize(response: Response, initialCookie: string, cookies: string[]): Response {
+  function finalizeResponse(response: Response, initialCookie: string, cookies: string[], requestId = ''): Response {
     const headers = new Headers(response.headers)
+    if (requestId && !headers.has('x-request-id')) headers.set('x-request-id', requestId)
     securityHeaders(headers)
     for (const cookie of [initialCookie, ...cookies].filter(Boolean)) {
       headers.append('set-cookie', cookie)
@@ -197,18 +200,24 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
     const pathname = url.pathname
     let initialCookie = ''
     const cookies: string[] = []
+    const requestId = request.headers.get('x-request-id') ?? randomUUID()
+    let finalStatus = 500
+    const finish = (response: Response): Response => {
+      finalStatus = response.status
+      return finalizeResponse(response, initialCookie, cookies, requestId)
+    }
     try {
       if (request.method === 'GET' || request.method === 'HEAD') {
         const asset = servePublic(root, pathname)
-        if (asset) return asset
+        if (asset) return finish(asset)
       }
 
       if (pathname === '/health' && request.method === 'GET') {
         try {
           db.query('select 1')
-          return finalize(json({ ok: true, uptime: Math.round(process.uptime()), db: 'ok' }), '', [])
+          return finish(json({ ok: true, uptime: Math.round(process.uptime()), db: 'ok' }))
         } catch {
-          return finalize(json({ ok: false, uptime: Math.round(process.uptime()), db: 'error' }, { status: 503 }), '', [])
+          return finish(json({ ok: false, uptime: Math.round(process.uptime()), db: 'error' }, { status: 503 }))
         }
       }
 
@@ -239,26 +248,26 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
 
       if (route.kind === 'page') {
         if (request.method !== 'GET' && request.method !== 'HEAD') {
-          return finalize(new Response('Method Not Allowed', { status: 405, headers: { allow: 'GET, HEAD' } }), initialCookie, cookies)
+          return finish(new Response('Method Not Allowed', { status: 405, headers: { allow: 'GET, HEAD' } }))
         }
         const mod = await loadModule(route)
         const page = mod.default as Page
         if (!page?.render) throw new Error(`页面缺少 render: ${route.file}`)
         if (page.auth === 'required' && !ctx.user) {
           const next = encodeURIComponent(pathname + url.search)
-          return finalize(new Response(null, { status: 303, headers: { location: `/login?next=${next}` } }), initialCookie, cookies)
+          return finish(new Response(null, { status: 303, headers: { location: `/login?next=${next}` } }))
         }
         const data = page.load ? await page.load(ctx) : {}
         const body = await page.render(data, ctx)
-        if (isResponse(body)) return finalize(body, initialCookie, cookies)
+        if (isResponse(body)) return finish(body)
         const title = typeof page.title === 'function' ? page.title(data, ctx) : (page.title ?? config.site.name)
         const rendered = layout({ title, children: body as SafeHtml | string, ctx })
-        return finalize(new Response(String(rendered), { headers: { 'content-type': 'text/html; charset=utf-8' } }), initialCookie, cookies)
+        return finish(new Response(String(rendered), { headers: { 'content-type': 'text/html; charset=utf-8' } }))
       }
 
       if (route.kind === 'action') {
         if (request.method !== 'POST') {
-          return finalize(new Response('Method Not Allowed', { status: 405, headers: { allow: 'POST' } }), initialCookie, cookies)
+          return finish(new Response('Method Not Allowed', { status: 405, headers: { allow: 'POST' } }))
         }
         const parsed = await parseBody(request)
         Object.assign(ctx, parsed)
@@ -276,28 +285,37 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
           } catch (error) {
             if (error instanceof ValidationError && action.onError) {
               const body = await action.onError(ctx, error)
-              if (isResponse(body)) return finalize(body, initialCookie, cookies)
+              if (isResponse(body)) return finish(body)
               const title = action.errorTitle ?? '表单错误'
               const rendered = layout({ title, children: body as SafeHtml | string, ctx })
-              return finalize(new Response(String(rendered), { status: 422, headers: { 'content-type': 'text/html; charset=utf-8' } }), initialCookie, cookies)
+              return finish(new Response(String(rendered), { status: 422, headers: { 'content-type': 'text/html; charset=utf-8' } }))
             }
             throw error
           }
         }
-        return finalize(toResponse(await action.handle(ctx)), initialCookie, cookies)
+        return finish(toResponse(await action.handle(ctx)))
       }
 
       const mod = await loadModule(route)
       const handler = mod[request.method]
       if (typeof handler !== 'function') {
-        return finalize(new Response('Method Not Allowed', { status: 405 }), initialCookie, cookies)
+        return finish(new Response('Method Not Allowed', { status: 405 }))
       }
-      return finalize(toResponse(await handler(ctx)), initialCookie, cookies)
+      return finish(toResponse(await handler(ctx)))
     } catch (error) {
       if (!(error instanceof HttpError)) console.error(error)
-      return finalize(errorResponse(error, dev), initialCookie, cookies)
+      return finish(errorResponse(error, dev))
     } finally {
-      if (dev) console.log(`${request.method} ${pathname} ${Date.now() - started}ms`)
+      const entry = {
+        time: nowIso(),
+        requestId,
+        method: request.method,
+        path: pathname,
+        status: finalStatus,
+        ms: Date.now() - started,
+      }
+      if (process.env.QC_LOG_FORMAT === 'json') console.log(JSON.stringify(entry))
+      else if (dev) console.log(`${request.method} ${pathname} ${finalStatus} ${entry.ms}ms`)
     }
   }
 

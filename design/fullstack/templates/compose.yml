@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: ./dist
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      QC_DB_PATH: /data/app.db
+      PORT: "3000"
+    volumes:
+      - app-data:/data
+    restart: unless-stopped
+
+volumes:
+  app-data:

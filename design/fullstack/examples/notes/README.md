@@ -17,6 +17,13 @@ npm test
 
 范围：P3 核心；邮箱/OAuth/上传/部署在 P4。先注册账号，再创建笔记；每个用户只看到自己的笔记。数据库文件在 `data/app.db`（已忽略）。
 
+备份/恢复：
+
+```bash
+node --experimental-strip-types ../../qc/src/cli.ts db backup data/backup.db
+node --experimental-strip-types ../../qc/src/cli.ts db restore data/backup.db --force
+```
+
 生产构建：
 
 ```bash

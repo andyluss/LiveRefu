@@ -840,7 +840,7 @@ function generate(): string {
       <tbody>${decisions.map(([id, name, choice, st]) => `<tr><td><code>${id}</code></td><td>${esc(name)}</td><td>${esc(choice)}</td><td><span class="chip ok">${esc(st)}</span></td></tr>`).join('')}</tbody>
     </table>
     <p class="lede">青橙理念（D-011）：<a href="philosophy/README.md">系列索引</a> · <a href="philosophy/00_总纲_青橙设计.md">00 总纲</a> · <a href="philosophy/01_未来考古_复古未来不是怀旧.md">01 未来考古</a> · <a href="philosophy/02_可感_从数字到现象.md">02 可感</a> · <a href="philosophy/03_可参与_技术如何保留人的位置.md">03 可参与</a> · <a href="philosophy/04_适当的未来_赛博朋克太阳朋克与中间地带.md">04 适当的未来</a> · <a href="philosophy/05_游戏作为未来实验室.md">05 游戏</a> · <a href="philosophy/06_多世界语法_共享问题不共享答案.md">06 多世界</a> · <a href="philosophy/07_边界_青橙设计拒绝什么.md">07 边界</a> · <a href="philosophy/08_青橙十问.md">08 十问</a>。9 篇已全部完稿。</p>
-    <p class="lede">青橙全栈（P3 bundle/回填已落地，P4 待做）：<a href="fullstack/README.md">README</a> · <a href="fullstack/11_P3实现记录.md">P3 记录</a> · <a href="fullstack/08_决策清单.md">决策清单</a>。</p>
+    <p class="lede">青橙全栈（P4 日志/备份/部署已落地，P5 待做）：<a href="fullstack/README.md">README</a> · <a href="fullstack/12_P4实现记录.md">P4 记录</a> · <a href="fullstack/08_决策清单.md">决策清单</a>。</p>
     <h3>路线</h3>
     <div class="grid g3">
       ${roadmap.map(([name, st]) => `<div class="card"><h3>${esc(name)}</h3><p><span class="chip ${st === 'done' ? 'ok' : st === 'doing' ? 'warn' : ''}">${st === 'done' ? '已完成' : st === 'doing' ? '进行中' : '未开始'}</span></p></div>`).join('')}

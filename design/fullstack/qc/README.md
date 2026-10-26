@@ -45,7 +45,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1/P2/P3 边界
+## P1/P2/P3/P4 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -55,8 +55,10 @@ qc.config.ts
 - ✅ 示例 notes（注册/登录/个人笔记/删除/退出）+ 2 个集成测试
 - ✅ 真 bundle（esbuild）+ `qc start` 自动用 `dist/server.mjs`
 - ✅ `Action.onError` + auth 表单错误回填
-- ✅ 内置 `GET /health`
-- ❌ 通用表单 helper / StandardSchema adapter / OAuth / 邮箱验证 / 上传 / Postgres / HMR / Docker/备份（P4）
+- ✅ 内置 `GET /health` + `x-request-id` + JSON 日志
+- ✅ `qc db backup` / `qc db restore --force`
+- ✅ Docker/Compose 模板（`templates/`）
+- ❌ 邮件/密码重置/OAuth / 上传类型与存储 / 通用表单 helper / Postgres / HMR / `qc new` 包导入（P5）
 
 ## 注意
 
