@@ -22,6 +22,7 @@ test('S3 storage: SigV4 PUT', async () => {
   assert.equal(captured.init.method, 'PUT')
   assert.match(captured.init.headers.authorization, /^AWS4-HMAC-SHA256 Credential=AKID\/\d{8}\/test-region\/s3\/aws4_request/)
   assert.match(captured.init.headers['x-amz-content-sha256'], /^[0-9a-f]{64}$/)
+  assert.ok(captured.init.headers['x-amz-checksum-sha256'])
 
   const signed = storage.presignGet('a/b.txt', 600)
   assert.match(signed, /X-Amz-Signature=[0-9a-f]{64}/)

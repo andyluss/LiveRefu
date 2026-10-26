@@ -34,6 +34,7 @@
 | 21 | [P13](implementation/21_P13实现记录.md) | S3 multipart、OAuth 锁/撤销、CI |
 | 22 | [P14](implementation/22_P14实现记录.md) | S3 大文件、OAuth token 加密 |
 | 23 | [P15](implementation/23_P15实现记录.md) | 第三 dogfood、OAuth 密钥轮换 |
+| 24 | [P16](implementation/24_P16实现记录.md) | S3 校验和、限速、扫描钩子 |
 
 ## 约定
 

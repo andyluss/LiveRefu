@@ -75,6 +75,7 @@ test('StandardSchema 适配与上传限制', async () => {
   assert.equal(saved.size, 5)
   assert.ok(saved.path.startsWith(dir))
   await assert.rejects(() => saveUpload(new File(['x'], 'a.exe', { type: 'application/x-msdownload' }), { dir, types: ['text/plain'] }))
+  await assert.rejects(() => saveUpload(new File(['bad'], 'bad.txt', { type: 'text/plain' }), { dir, scan: async () => { throw new Error('virus') } }))
   rmSync(dir, { recursive: true, force: true })
 })
 

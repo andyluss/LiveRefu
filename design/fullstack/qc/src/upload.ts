@@ -8,6 +8,7 @@ export interface UploadOptions {
   maxBytes?: number
   types?: string[]
   storage?: Storage
+  scan?: (data: Buffer, meta: { name: string; type: string; size: number }) => Promise<void>
 }
 
 export interface SavedUpload {
@@ -32,7 +33,9 @@ export async function saveUpload(file: unknown, options: UploadOptions): Promise
   }
   const ext = extname(file.name).toLowerCase() || '.bin'
   const name = `${randomUUID()}${ext}`
+  const data = Buffer.from(await file.arrayBuffer())
+  if (options.scan) await options.scan(data, { name: file.name, type: file.type, size: file.size })
   const storage = options.storage ?? new LocalStorage(options.dir)
-  const path = await storage.put(name, Buffer.from(await file.arrayBuffer()), file.type)
+  const path = await storage.put(name, data, file.type)
   return { path, name, size: file.size, type: file.type }
 }

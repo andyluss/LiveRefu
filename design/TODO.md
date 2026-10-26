@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 14:30
+> 最后更新：2026-10-26 14:34
 
 ## 一、现在只看三件
 
@@ -48,7 +48,8 @@
 | **D-030** | 技术 | **P1** | 青橙全栈 P13 核心：multipart/锁/CI | 已完成 | S3 multipart、OAuth 并发锁/撤销、CI workflow；9/9 测试；2026-10-26 | — | [P13 记录](fullstack/docs/implementation/21_P13实现记录.md) |
 | **D-031** | 技术 | **P1** | 青橙全栈 P14 核心：S3 大文件/OAuth 加密 | 已完成 | S3 并发/重试/checkpoint、OAuth AES-GCM；9/9 测试；2026-10-26 | — | [P14 记录](fullstack/docs/implementation/22_P14实现记录.md) |
 | **D-032** | 技术 | **P1** | 青橙全栈 P15 核心：第三 dogfood/密钥轮换 | 已完成 | guestbook、OAuth previousTokenKeys；10/10 测试；2026-10-26 | — | [P15 记录](fullstack/docs/implementation/23_P15实现记录.md) |
-| **D-033** | 技术 | **P1** | 青橙全栈 P16：扫描/发布/HMR/SMTP STARTTLS | 待开始 | S3 校验和/限速/扫描、npm 发布/远程包、组件级 HMR、SMTP STARTTLS/DKIM、真实 CI/镜像/日志 | P15 核心已验收 | [P15 记录](fullstack/docs/implementation/23_P15实现记录.md) |
+| **D-033** | 技术 | **P1** | 青橙全栈 P16 核心：S3 校验/限速/扫描钩子 | 已完成 | checksum、maxPartsPerSecond、scan hook；10/10 测试；2026-10-26 | — | [P16 记录](fullstack/docs/implementation/24_P16实现记录.md) |
+| **D-034** | 技术 | **P1** | 青橙全栈 P17：发布/HMR/SMTP STARTTLS | 待开始 | npm 发布/远程包、组件级 HMR、SMTP STARTTLS/DKIM、真实 CI/镜像/日志 | P16 核心已验收 | [P16 记录](fullstack/docs/implementation/24_P16实现记录.md) |
 
 ## 三、等你拍板
 

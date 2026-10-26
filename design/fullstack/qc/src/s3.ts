@@ -41,6 +41,7 @@ export class S3Storage implements Storage {
       host: url.host,
       'x-amz-content-sha256': payloadHash,
       'x-amz-date': amzDate,
+      'x-amz-checksum-sha256': createHash('sha256').update(data).digest('base64'),
       'content-type': type || 'application/octet-stream',
     }
     if (this.config.sessionToken) headers['x-amz-security-token'] = this.config.sessionToken
@@ -123,6 +124,7 @@ export class S3Storage implements Storage {
       host: url.host,
       'x-amz-content-sha256': payloadHash,
       'x-amz-date': amzDate,
+      'x-amz-checksum-sha256': createHash('sha256').update(body).digest('base64'),
     }
     if (type) headers['content-type'] = type
     if (this.config.sessionToken) headers['x-amz-security-token'] = this.config.sessionToken
@@ -168,7 +170,7 @@ export class S3Storage implements Storage {
     if (!response.ok) throw new Error(`S3 multipart abort ${response.status}`)
   }
 
-  async uploadLarge(key: string, data: Buffer, options: { partSize?: number; concurrency?: number; retries?: number; checkpointPath?: string } = {}): Promise<string> {
+  async uploadLarge(key: string, data: Buffer, options: { partSize?: number; concurrency?: number; retries?: number; checkpointPath?: string; maxPartsPerSecond?: number } = {}): Promise<string> {
     const partSize = Math.max(1, options.partSize ?? 8 * 1024 * 1024)
     const concurrency = Math.max(1, options.concurrency ?? 3)
     const retries = Math.max(0, options.retries ?? 2)
@@ -202,6 +204,9 @@ export class S3Storage implements Storage {
             const etag = await this.uploadPart(key, uploadId, partNumber, chunk)
             done.set(partNumber, etag)
             save()
+            if (options.maxPartsPerSecond && options.maxPartsPerSecond > 0) {
+              await new Promise(resolve => setTimeout(resolve, Math.ceil(1000 / options.maxPartsPerSecond!)))
+            }
             lastError = null
             break
           } catch (error) {
