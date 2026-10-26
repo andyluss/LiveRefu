@@ -1,6 +1,7 @@
 import { appendFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { nowIso } from './time.ts'
+import { sendSmtp } from './smtp.ts'
 
 export interface MailMessage {
   to: string
@@ -15,11 +16,16 @@ export interface Mailer {
 }
 
 export interface MailConfig {
-  transport: 'console' | 'file' | 'memory' | 'api'
+  transport: 'console' | 'file' | 'memory' | 'api' | 'smtp'
   from: string
   file?: string
   endpoint?: string
   token?: string
+  host?: string
+  port?: number
+  secure?: boolean
+  user?: string
+  pass?: string
 }
 
 export function createMailer(config: MailConfig, appRoot: string): Mailer {
@@ -29,6 +35,21 @@ export function createMailer(config: MailConfig, appRoot: string): Mailer {
       messages,
       async send(message) {
         messages.push(message)
+      },
+    }
+  }
+  if (config.transport === 'smtp') {
+    if (!config.host || !config.port) throw new Error('mail.smtp 需要 host/port')
+    return {
+      async send(message) {
+        await sendSmtp(message, {
+          host: config.host!,
+          port: config.port!,
+          secure: config.secure,
+          user: config.user,
+          pass: config.pass,
+          from: config.from,
+        })
       },
     }
   }

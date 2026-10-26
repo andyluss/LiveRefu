@@ -21,6 +21,7 @@
 ### 新增
 
 - [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。
+- **青橙全栈 P9 核心**：SMTP transport、`Storage`/`LocalStorage`/`MemoryStorage`、开发自动刷新、CI 模板；8/8 测试；`17_P9实现记录`。
 - **青橙全栈 P8 核心 + 文档分区**：OAuth 通用路由、GitHub/Google 预设；全栈文档迁入 `docs/design/` 与 `docs/implementation/`，新增 `docs/README.md`；7/7 测试；`16_P8实现记录`。
 - **青橙全栈 P7 核心**：OAuth/OIDC adapter（state/token/userinfo/session）、API 邮件 transport、可注入 fetch；6/6 测试；`15_P7实现记录`。
 - **青橙全栈 P6 核心**：邮箱验证、异步 StandardSchema、`formValues/formErrors`、第二个 dogfood `examples/bookmarks`；notes 3/3 + bookmarks 1/1；`14_P6实现记录`。

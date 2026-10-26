@@ -172,6 +172,7 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
     return import(pathToFileURL(route.file).href)
   }
   const dev = process.env.QC_DEV === '1'
+  const devVersion = randomUUID()
   const rateWindows = new Map<string, { count: number; reset: number }>()
 
   function rateLimit(key: string, limit: number, windowMs: number): void {
@@ -212,6 +213,11 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
       return finalizeResponse(response, initialCookie, cookies, requestId)
     }
     try {
+      if (dev && pathname === '/__qc/version') return finish(json({ version: devVersion }))
+      if (dev && pathname === '/__qc/reload.js') {
+        const script = `(()=>{let v=null;async function tick(){try{const r=await fetch('/__qc/version',{cache:'no-store'});const j=await r.json();if(v&&j.version!==v)location.reload();v=j.version}catch{}}setInterval(tick,1000);tick()})()`
+        return finish(new Response(script, { headers: { 'content-type': 'text/javascript; charset=utf-8' } }))
+      }
       if (request.method === 'GET' || request.method === 'HEAD') {
         const asset = servePublic(root, pathname)
         if (asset) return finish(asset)
@@ -267,7 +273,8 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
         if (isResponse(body)) return finish(body)
         const title = typeof page.title === 'function' ? page.title(data, ctx) : (page.title ?? config.site.name)
         const rendered = layout({ title, children: body as SafeHtml | string, ctx })
-        return finish(new Response(String(rendered), { headers: { 'content-type': 'text/html; charset=utf-8' } }))
+        const output = dev ? String(rendered).replace('</body>', '<script src="/__qc/reload.js" defer></script></body>') : String(rendered)
+        return finish(new Response(output, { headers: { 'content-type': 'text/html; charset=utf-8' } }))
       }
 
       if (route.kind === 'action') {

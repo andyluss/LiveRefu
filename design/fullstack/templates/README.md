@@ -15,3 +15,4 @@ docker run -p 3000:3000 -v my-data:/data -e QC_DB_PATH=/data/app.db my-app
 - 数据库在 `/data/app.db`；必须挂载卷。
 - 健康检查走 `/health`。
 - 备份：`qc db backup backup.db`；恢复：`qc db restore backup.db --force`。
+- CI：把 `ci.yml` 放到 `.github/workflows/`；按应用 scripts 调整 `npm test`。

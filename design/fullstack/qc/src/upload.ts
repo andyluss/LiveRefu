@@ -1,12 +1,13 @@
 import { randomUUID } from 'node:crypto'
-import { mkdirSync, writeFileSync } from 'node:fs'
-import { extname, join, resolve } from 'node:path'
+import { LocalStorage, type Storage } from './storage.ts'
+import { extname } from 'node:path'
 import { HttpError } from './http.ts'
 
 export interface UploadOptions {
   dir: string
   maxBytes?: number
   types?: string[]
+  storage?: Storage
 }
 
 export interface SavedUpload {
@@ -29,11 +30,9 @@ export async function saveUpload(file: unknown, options: UploadOptions): Promise
   if (options.types?.length && !options.types.includes(file.type)) {
     throw new UploadError(415, `不支持的文件类型: ${file.type || 'unknown'}`, 'UPLOAD_TYPE')
   }
-  const dir = resolve(options.dir)
-  mkdirSync(dir, { recursive: true })
   const ext = extname(file.name).toLowerCase() || '.bin'
   const name = `${randomUUID()}${ext}`
-  const path = join(dir, name)
-  writeFileSync(path, Buffer.from(await file.arrayBuffer()))
+  const storage = options.storage ?? new LocalStorage(options.dir)
+  const path = await storage.put(name, Buffer.from(await file.arrayBuffer()), file.type)
   return { path, name, size: file.size, type: file.type }
 }
