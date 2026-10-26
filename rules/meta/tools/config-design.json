@@ -1,5 +1,5 @@
 {
-  "_comment": "M1+M2 判定配置 · design/（LRDS 设计系统）。tokens/、kits/ 与 ref/ 是子关注点；tokens 下的 core/products/schema/dist 是数据类，命名豁免；tools/ 是代码类，命名豁免。2026-10-21 实测 0 违规后转 block。",
+  "_comment": "M1+M2 判定配置 · design/（LRDS 设计系统）。tokens/、kits/、ref/ 与 lab/ 是子关注点；tokens 下的 core/products/schema/dist 是数据类，命名豁免；tools/ 是代码类，命名豁免。2026-10-21 实测 0 违规后转 block。",
   "concern": "design",
   "root": ".",
   "root_docs": [
@@ -43,7 +43,8 @@
   "sub_concerns": [
     "tokens",
     "kits",
-    "ref"
+    "ref",
+    "lab"
   ],
   "sub_concerns_dir": null,
   "sub_configs": {
@@ -113,6 +114,30 @@
       "doc_naming": {
         "default": [
           "^[^/]+$"
+        ]
+      },
+      "skip_dirs": [],
+      "skip_prefixes": [
+        ".",
+        "_"
+      ],
+      "sub_concerns": [],
+      "sub_configs": {}
+    },
+    "lab": {
+      "root_docs": [
+        "README.md"
+      ],
+      "type_vocab": [
+        "os"
+      ],
+      "code_types": [
+        "os"
+      ],
+      "empty_ok_types": [],
+      "doc_naming": {
+        "default": [
+          "^[a-zA-Z0-9_.-]+$"
         ]
       },
       "skip_dirs": [],

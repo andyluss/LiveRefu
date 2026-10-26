@@ -28,6 +28,7 @@
 | **想看项目状态** | [`HUB.html`](HUB.html)（演进 / 验收 / 决策） | [TODO.md](TODO.md) / [CHANGELOG.md](CHANGELOG.md) |
 | **想看设计待办** | [TODO.md](TODO.md)（设计系统专属） | [根 TODO](../TODO.md)（跨项目） |
 | **想读入门文章** | [12 设计系统入门](docs/12_设计系统入门.md)（长文，非规范） | [HUB](HUB.html) / [00 决策总表](docs/00_决策总表.md) |
+| **想看实验** | [实验区](lab/README.md)（青橙 OS：9 应用 + 未来转盘） | [打开 OS](lab/os/index.html) / [规则](rules/README.md) |
 | **想看规则** | [规则目录](rules/README.md)（15 条，全部 active） | [GUIDE](GUIDE.html) / [决策总表](docs/00_决策总表.md) |
 | **想读青橙理念** | [青橙理念系列](philosophy/README.md)（9 篇已完稿） | [D-011](docs/decisions/D-011-philosophy-series.md) / [参考材料](ref/README.md) |
 | **想做全栈技术** | [青橙全栈（已收尾）](fullstack/README.md)（Web 优先） | [Project HUB](fullstack/HUB.html) / [Framework GUIDE](fullstack/GUIDE.html) / [决策清单](fullstack/docs/design/08_决策清单.md) |
@@ -88,6 +89,7 @@ design/
 │   ├── web/                  # 网页接入说明
 │   ├── godot/                # Godot 接入说明
 │   └── app/                  # iOS/Android 接入说明（v0.3 起步）
+├── lab/                      # 实验区（未来设计、青橙 OS）
 ├── rules/                    # 规则（一条一个文件，R-001…）
 ├── tools/                    # token 生成 / 契约 / 风格卡 / 使用审计 / 走查 / check.sh
 ├── components/               # 3 个契约（draft）+ 共享 Web 组件层
@@ -95,7 +97,7 @@ design/
 └── ref/                      # 参考理念/材料（非规范）
 ```
 
-> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 78 合规 / 0 违规）。
+> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 82 合规 / 0 违规）。
 
 ## 六、与既有资产的关系
 
@@ -127,7 +129,7 @@ design/
 ### v0.2 第二阶段（治理收口）
 
 - **明日频道风格卡登记**：`SC-TOMORROWS-CHANNEL-TAPE-v1` 落库（9 色 + 色温/光比/装饰参数），新增 [`check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts) 与 `.tres` 对账（7/7 自检）；登记表见 [07](docs/07_风格卡登记.md)。
-- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（78 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（82 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
 - **3 个组件契约（draft）**：[button](components/button.md) / [form-field](components/form-field.md) / [panel](components/panel.md)；契约闸门 **8/8**（五节、token、裸值、组件 CSS）。
 - **共享 Web 组件层渐进接入**：[components.css](kits/web/components.css) + 生成副本；网站/LiveFab 已叠加 `lr-button` / `lr-panel`，搜索框接入 `lr-field`；使用审计 **4/4**（button/panel 各 2 产品，field 1 产品）。预览图：[preview.png](kits/web/preview.png)。
 - **产品走查**：4 个页面、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [09 产品走查](docs/09_产品走查_v0.2.md)。

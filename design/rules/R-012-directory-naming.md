@@ -10,7 +10,7 @@
 
 ## 二、要求
 
-1. **类型目录**：`docs/` `philosophy/` `fullstack/` `tokens/` `kits/` `components/` `tools/` `rules/` `ref/`；新增类型先改 `type_vocab`。
+1. **类型目录**：`docs/` `philosophy/` `fullstack/` `tokens/` `kits/` `components/` `tools/` `rules/` `lab/` `ref/`；新增类型先改 `type_vocab`。
 2. **子关注点**：`tokens/` `kits/` `ref/`；子关注点有 README；不得在子关注点里静默堆文件。
 3. **命名**：文档默认 `NN_` 或小写/数字/点/横线；规则 `R-NNN-*.md`；代码类目录命名豁免。
 4. **根文档**：只允许 `README.md` `CHANGELOG.md` `HUB.html` `GUIDE.html` `TODO.md` 等已声明文件。
