@@ -1,6 +1,6 @@
 # R-001 · 三态主题：系统 / 浅色 / 深色
 
-> **状态**：`proposed`（格式已批准；待最终确认） ｜ **级别**：MUST ｜ **生效**：待批准
+> **状态**：`active`（2026-10-26 批准） ｜ **级别**：MUST ｜ **生效**：2026-10-26
 > **范围**：所有声明使用 LRDS 的 Web/App 界面；打印/实体按介质另定 ｜ **Owner**：设计主控
 > **关联**：D5 双模、E11 HUB 三态、[HUB](../HUB.html)、[GUIDE](../GUIDE.html)
 
@@ -41,4 +41,5 @@
 
 | 日期 | 版本 | 变更 |
 | --- | --- | --- |
+| 2026-10-26 | v1.0 | **用户批准**；三态顺序固定为 system / light / dark；统一 `lrds-theme`，取代各页面分散 key。 |
 | 2026-10-26 | v0.1 | 首版提案；统一 system/dark/light，取代各页面分散的 `lrds-hub-theme` / `qc-hub-theme` / `qc-guide-theme`。 |

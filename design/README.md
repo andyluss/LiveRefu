@@ -1,11 +1,11 @@
 # LiveRefu Design System（LRDS）· 项目设计系统
 
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
-> **状态**：**v0.2 已发布；v0.3 App kit 起步；青橙理念 00–08 已完稿；青橙全栈已收尾；规则 v1.0（R-001 待确认）**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token、青橙理念 00–08、青橙全栈已收尾（P1–P17）。
+> **状态**：**v0.2 已发布；v0.3 App kit 起步；青橙理念 00–08 已完稿；青橙全栈已收尾；规则 v1.0（R-001 已生效）**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token、青橙理念 00–08、青橙全栈已收尾（P1–P17）。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
 > **中文名（暂定）**：**青橙设计**——青/橙是复古未来常用色；只作暂定中文名，不替代公开母品牌名。
 > **先看这里**：设计系统本身看 [`GUIDE.html`](GUIDE.html)；项目状态/演进/验收/决策看 [`HUB.html`](HUB.html)（由 `tools/build_hub.ts` 生成）。
-> **规则**：[`rules/`](rules/README.md) —— 一条规则一个文件；R-001 三态主题待裁决。
+> **规则**：[`rules/`](rules/README.md) —— 一条规则一个文件；R-001 三态主题已生效。
 > **设计待办**：[`TODO.md`](TODO.md) —— 设计系统专属任务、等待拍板与状态。
 
 ## 一、这是什么（以及不是什么）
@@ -27,7 +27,7 @@
 | **想看项目状态** | [`HUB.html`](HUB.html)（演进 / 验收 / 决策） | [TODO.md](TODO.md) / [CHANGELOG.md](CHANGELOG.md) |
 | **想看设计待办** | [TODO.md](TODO.md)（设计系统专属） | [根 TODO](../TODO.md)（跨项目） |
 | **想读入门文章** | [12 设计系统入门](docs/12_设计系统入门.md)（长文，非规范） | [HUB](HUB.html) / [00 决策总表](docs/00_决策总表.md) |
-| **想看规则** | [规则目录](rules/README.md)（15 条，R-001 待裁决） | [GUIDE](GUIDE.html) / [决策总表](docs/00_决策总表.md) |
+| **想看规则** | [规则目录](rules/README.md)（15 条，全部 active） | [GUIDE](GUIDE.html) / [决策总表](docs/00_决策总表.md) |
 | **想读青橙理念** | [青橙理念系列](philosophy/README.md)（9 篇已完稿） | [D-011](docs/decisions/D-011-philosophy-series.md) / [参考材料](ref/README.md) |
 | **想做全栈技术** | [青橙全栈（已收尾）](fullstack/README.md)（Web 优先） | [Project HUB](fullstack/HUB.html) / [Framework GUIDE](fullstack/GUIDE.html) / [决策清单](fullstack/docs/design/08_决策清单.md) |
 | **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D11 已裁决；E01–E20 已执行；全栈 F1–F12 待裁决） | [05 v0.1](docs/05_实现记录_v0.1.md) / [06 v0.2](docs/06_实现记录_v0.2.md) / [08 组件落地](docs/08_组件落地_v0.2.md) / [09 产品走查](docs/09_产品走查_v0.2.md) / [10 皮肤收口](docs/10_皮肤收口_v0.2.md) / [11 App kit](docs/11_App_kit_v0.2.md) |

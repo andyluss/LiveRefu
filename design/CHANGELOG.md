@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **R-001 三态主题获批**：状态转 `active`；固定 system / light / dark 顺序；`lrds-theme` 统一；规则索引/README/GUIDE 同步。
 - **青橙设计规则 + GUIDE + HUB 分区**：新增 `design/rules/`（15 条；格式 v1.0，含“反例/迁移”；R-001 三态主题 proposed）；新增 `design/GUIDE.html`（设计系统本身），`design/HUB.html` 改为项目状态/演进/验收/决策；四份 HUB/GUIDE 统一 `lrds-theme`，顺序系统/浅色/深色。
 - **青橙全栈可视化**：新增 [`fullstack/HUB.html`](fullstack/HUB.html)（项目开发/发布）与 [`fullstack/GUIDE.html`](fullstack/GUIDE.html)（功能/用法），沿用 LRDS token/焦点/圆角/暗亮主题；README/HUB/文档索引已加入口。
 - **全栈 TODO 收拢**：`design/TODO.md` 的 D-018–D-035 移入 [`fullstack/docs/TODO.md`](fullstack/docs/TODO.md)，并按设计 TODO 的 ID/层/优先级/状态/下一步/依赖格式重排；design TODO 只保留设计系统事项与一行链接。
