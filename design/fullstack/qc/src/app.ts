@@ -140,6 +140,7 @@ export interface AppOptions {
   layout?: Layout
   authConfig?: AuthConfig | null
   mailer?: Mailer
+  fetch?: typeof fetch
   modules?: Record<string, unknown>
 }
 
@@ -161,7 +162,7 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
   migrate(db, join(root, 'app/data/migrations'))
   const authConfig = 'authConfig' in options ? (options.authConfig ?? null) : await loadAuthConfig(root)
   const mailer = authConfig ? (options.mailer ?? createMailer(authConfig.mail ?? { transport: 'console', from: 'no-reply@localhost' }, root)) : null
-  const auth = authConfig ? createAuth(db, authConfig, mailer!) : null
+  const auth = authConfig ? createAuth(db, authConfig, mailer!, { fetch: options.fetch }) : null
   const routes = discover(root)
   const layout = options.layout ?? await loadLayout(root)
   const modules = options.modules ?? {}

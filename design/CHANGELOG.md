@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **青橙全栈 P8 核心 + 文档分区**：OAuth 通用路由、GitHub/Google 预设；全栈文档迁入 `docs/design/` 与 `docs/implementation/`，新增 `docs/README.md`；7/7 测试；`16_P8实现记录`。
 - **青橙全栈 P7 核心**：OAuth/OIDC adapter（state/token/userinfo/session）、API 邮件 transport、可注入 fetch；6/6 测试；`15_P7实现记录`。
 - **青橙全栈 P6 核心**：邮箱验证、异步 StandardSchema、`formValues/formErrors`、第二个 dogfood `examples/bookmarks`；notes 3/3 + bookmarks 1/1；`14_P6实现记录`。
 - **青橙全栈 P5 核心**：mailer（console/file/memory）、密码重置（token 哈希/一次性/清 session）、`/forgot`、`/reset`、StandardSchema `fromStandard`、上传 `saveUpload`；3/3 测试；`13_P5实现记录`。
@@ -50,7 +51,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 73 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 59 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。

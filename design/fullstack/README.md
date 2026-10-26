@@ -1,6 +1,6 @@
 # 青橙全栈（QC Stack）· 技术框架提案
 
-> **状态**：**P7 外部集成核心已完成（OAuth/API 邮件）/ P8 待做** ｜ 日期：2026-10-26 13:58 ｜ 决策：F1–F12 已按推荐（见 [08](08_决策清单.md)）
+> **状态**：**P8 OAuth 路由/预设已完成，文档已分区 / P9 待做** ｜ 日期：2026-10-26 14:02 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
 > **定位**：青橙设计的技术底座。不是新的设计系统，也不是 Nuxt/Astro 的换皮；是一套**Web 优先、全栈、可替换依赖**的应用框架。
 > **一句话**：让一个懂 TypeScript 和基本 Web 的人，不研究 bundler / HTTP / ORM / session / 部署细节，也能做出网站、应用和大部分游戏服务端需求；同时保留“随时接管底层”的出口。
 
@@ -86,21 +86,22 @@
 
 | 文档 | 回答 |
 | --- | --- |
-| [01 理念与边界](01_理念与边界.md) | 为什么这样定位；什么不做；依赖哲学 |
-| [02 架构总览](02_架构总览.md) | 分层、请求生命周期、项目结构 |
-| [03 应用契约与开发者体验](03_应用契约与开发者体验.md) | 使用者怎么写页面/动作/数据/鉴权 |
-| [04 Web 优先实现](04_Web优先实现.md) | 运行时、HTTP、渲染、数据、auth、构建、部署 |
-| [05 多端扩展](05_多端扩展.md) | 移动端、游戏、CLI 怎么接；什么共享/不共享 |
-| [06 路线图与验收](06_路线图与验收.md) | 分阶段做什么、怎么算完成 |
-| [07 依赖治理与风险](07_依赖治理与风险.md) | 怎么避免“摆脱一个依赖，换来十个依赖” |
-| [08 决策清单](08_决策清单.md) | F1–F12 决策与推荐 |
-| [09 P1 实现记录](09_P1实现记录.md) | 骨架、验证结果、差异与 P2 清单 |
-| [10 P2 实现记录](10_P2实现记录.md) | Auth/CSRF/校验/安全头/限流与 dogfood |
-| [11 P3 实现记录](11_P3实现记录.md) | esbuild bundle、表单回填、健康检查 |
-| [12 P4 实现记录](12_P4实现记录.md) | 请求 ID/日志、备份/恢复、Docker 模板 |
-| [13 P5 实现记录](13_P5实现记录.md) | 邮件/密码重置、StandardSchema、上传 |
-| [14 P6 实现记录](14_P6实现记录.md) | 邮箱验证、异步校验、第二个 dogfood |
-| [15 P7 实现记录](15_P7实现记录.md) | OAuth/OIDC、API 邮件 |
+| [01 理念与边界](docs/design/01_理念与边界.md) | 为什么这样定位；什么不做；依赖哲学 |
+| [02 架构总览](docs/design/02_架构总览.md) | 分层、请求生命周期、项目结构 |
+| [03 应用契约与开发者体验](docs/design/03_应用契约与开发者体验.md) | 使用者怎么写页面/动作/数据/鉴权 |
+| [04 Web 优先实现](docs/design/04_Web优先实现.md) | 运行时、HTTP、渲染、数据、auth、构建、部署 |
+| [05 多端扩展](docs/design/05_多端扩展.md) | 移动端、游戏、CLI 怎么接；什么共享/不共享 |
+| [06 路线图与验收](docs/design/06_路线图与验收.md) | 分阶段做什么、怎么算完成 |
+| [07 依赖治理与风险](docs/design/07_依赖治理与风险.md) | 怎么避免“摆脱一个依赖，换来十个依赖” |
+| [08 决策清单](docs/design/08_决策清单.md) | F1–F12 决策与推荐 |
+| [09 P1 实现记录](docs/implementation/09_P1实现记录.md) | 骨架、验证结果、差异与 P2 清单 |
+| [10 P2 实现记录](docs/implementation/10_P2实现记录.md) | Auth/CSRF/校验/安全头/限流与 dogfood |
+| [11 P3 实现记录](docs/implementation/11_P3实现记录.md) | esbuild bundle、表单回填、健康检查 |
+| [12 P4 实现记录](docs/implementation/12_P4实现记录.md) | 请求 ID/日志、备份/恢复、Docker 模板 |
+| [13 P5 实现记录](docs/implementation/13_P5实现记录.md) | 邮件/密码重置、StandardSchema、上传 |
+| [14 P6 实现记录](docs/implementation/14_P6实现记录.md) | 邮箱验证、异步校验、第二个 dogfood |
+| [15 P7 实现记录](docs/implementation/15_P7实现记录.md) | OAuth/OIDC、API 邮件 |
+| [16 P8 实现记录](docs/implementation/16_P8实现记录.md) | OAuth 通用路由/预设、文档分区 |
 
 ## 七、与 LRDS / kits 的关系
 
@@ -118,6 +119,7 @@
 - **P5 核心已落地**：mailer、密码重置、StandardSchema 适配、上传工具。
 - **P6 核心已落地**：邮箱验证、异步 StandardSchema、form helper、第二个 dogfood（bookmarks）。
 - **P7 核心已落地**：OAuth/OIDC adapter、API 邮件 transport。
-- **P8 待做**：OAuth 通用路由/预设、SMTP、上传对象存储/扫描、`qc new` 包导入/HMR、CI/镜像/日志采集、第三 dogfood。
-- `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](09_P1实现记录.md) / [10](10_P2实现记录.md) / [11](11_P3实现记录.md) / [12](12_P4实现记录.md) / [13](13_P5实现记录.md) / [14](14_P6实现记录.md) / [15](15_P7实现记录.md)。
+- **P8 核心已落地**：OAuth 通用路由、GitHub/Google 预设；文档迁入 `docs/design/` 与 `docs/implementation/`。
+- **P9 待做**：SMTP、上传对象存储/扫描、`qc new` 包导入/HMR、CI/镜像/日志采集、第三 dogfood。
+- `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](docs/implementation/09_P1实现记录.md) / [10](docs/implementation/10_P2实现记录.md) / [11](docs/implementation/11_P3实现记录.md) / [12](docs/implementation/12_P4实现记录.md) / [13](docs/implementation/13_P5实现记录.md) / [14](docs/implementation/14_P6实现记录.md) / [15](docs/implementation/15_P7实现记录.md) / [16](docs/implementation/16_P8实现记录.md)。
 - 不替换现有网站/LiveFab；P4 前不把示例当生产服务。

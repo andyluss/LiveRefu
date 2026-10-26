@@ -45,7 +45,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1–P7 边界
+## P1–P8 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -64,7 +64,8 @@ qc.config.ts
 - ✅ 第二个 dogfood：`examples/bookmarks`
 - ✅ OAuth/OIDC adapter + API 邮件 transport
 - ✅ 可注入 fetch（OAuth 测试无需真实 IdP）
-- ❌ OAuth 通用路由/预设 / SMTP / 上传扫描/对象存储 / HMR / `qc new` 包导入 / CI（P8）
+- ✅ OAuth 通用路由 + GitHub/Google 预设（examples/notes）
+- ❌ SMTP / 上传扫描/对象存储 / HMR / `qc new` 包导入 / CI（P9）
 
 ## 注意
 

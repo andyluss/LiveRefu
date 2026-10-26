@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 13:58
+> 最后更新：2026-10-26 14:02
 
 ## 一、现在只看三件
 
@@ -33,14 +33,15 @@
 | **D-015** | 理念 | **P1** | 青橙理念第二批（03–05） | 已完成 | 03–05 已完稿；2026-10-26 12:48；见[理念](philosophy/README.md) | — | [理念](philosophy/README.md) |
 | **D-016** | 理念 | **P2** | 青橙理念第三批（06–08） | 已完成 | 06–08 已完稿；9 篇全部完成；2026-10-26 13:02 | — | [理念](philosophy/README.md) |
 | **D-017** | 理念 | **P2** | 青橙十问 × 未来残片试评审 | 已完成 | 桌面试评审完成；2026-10-26 13:10；关键红旗：照料型势力与受影响的人 | — | [评审](docs/13_青橙十问_未来残片试评审.md) |
-| **D-018** | 技术 | **P1** | 青橙全栈 P0 决策 | 已完成 | F1–F12 按推荐采纳；2026-10-26 | — | [决策清单](fullstack/08_决策清单.md) |
-| **D-019** | 技术 | **P1** | 青橙全栈 P2：auth/表单/安全 | 已完成 | auth/CSRF/校验/安全头/限流/dogfood 已落地；2026-10-26 | — | [P2 记录](fullstack/10_P2实现记录.md) |
-| **D-020** | 技术 | **P1** | 青橙全栈 P3 核心：bundle/回填/health | 已完成 | esbuild bundle、`qc start` 自动用 bundle、auth 表单回填、`/health`；2026-10-26 | — | [P3 记录](fullstack/11_P3实现记录.md) |
-| **D-021** | 技术 | **P1** | 青橙全栈 P4 运维核心：日志/备份/部署 | 已完成 | request id/JSON 日志、`qc db backup/restore`、Docker/Compose 模板；2026-10-26 | — | [P4 记录](fullstack/12_P4实现记录.md) |
-| **D-022** | 技术 | **P1** | 青橙全栈 P5 核心：重置/StandardSchema/上传 | 已完成 | mailer、密码重置、StandardSchema 适配、上传工具；2026-10-26 | — | [P5 记录](fullstack/13_P5实现记录.md) |
-| **D-023** | 技术 | **P1** | 青橙全栈 P6 核心：邮箱验证/异步校验/第二 dogfood | 已完成 | 邮箱验证、异步 StandardSchema、form helper、bookmarks dogfood；2026-10-26 | — | [P6 记录](fullstack/14_P6实现记录.md) |
-| **D-024** | 技术 | **P1** | 青橙全栈 P7 核心：OAuth/API 邮件 | 已完成 | OAuth/OIDC adapter、API mail transport；6/6 测试；2026-10-26 | — | [P7 记录](fullstack/15_P7实现记录.md) |
-| **D-025** | 技术 | **P1** | 青橙全栈 P8：路由/预设/SMTP/HMR/CI | 待开始 | OAuth 通用路由/预设、SMTP、上传对象存储/扫描、`qc new` 包导入/HMR、CI/镜像/日志采集、第三 dogfood | P7 核心已验收 | [P7 记录](fullstack/15_P7实现记录.md) |
+| **D-018** | 技术 | **P1** | 青橙全栈 P0 决策 | 已完成 | F1–F12 按推荐采纳；2026-10-26 | — | [决策清单](fullstack/docs/design/08_决策清单.md) |
+| **D-019** | 技术 | **P1** | 青橙全栈 P2：auth/表单/安全 | 已完成 | auth/CSRF/校验/安全头/限流/dogfood 已落地；2026-10-26 | — | [P2 记录](fullstack/docs/implementation/10_P2实现记录.md) |
+| **D-020** | 技术 | **P1** | 青橙全栈 P3 核心：bundle/回填/health | 已完成 | esbuild bundle、`qc start` 自动用 bundle、auth 表单回填、`/health`；2026-10-26 | — | [P3 记录](fullstack/docs/implementation/11_P3实现记录.md) |
+| **D-021** | 技术 | **P1** | 青橙全栈 P4 运维核心：日志/备份/部署 | 已完成 | request id/JSON 日志、`qc db backup/restore`、Docker/Compose 模板；2026-10-26 | — | [P4 记录](fullstack/docs/implementation/12_P4实现记录.md) |
+| **D-022** | 技术 | **P1** | 青橙全栈 P5 核心：重置/StandardSchema/上传 | 已完成 | mailer、密码重置、StandardSchema 适配、上传工具；2026-10-26 | — | [P5 记录](fullstack/docs/implementation/13_P5实现记录.md) |
+| **D-023** | 技术 | **P1** | 青橙全栈 P6 核心：邮箱验证/异步校验/第二 dogfood | 已完成 | 邮箱验证、异步 StandardSchema、form helper、bookmarks dogfood；2026-10-26 | — | [P6 记录](fullstack/docs/implementation/14_P6实现记录.md) |
+| **D-024** | 技术 | **P1** | 青橙全栈 P7 核心：OAuth/API 邮件 | 已完成 | OAuth/OIDC adapter、API mail transport；6/6 测试；2026-10-26 | — | [P7 记录](fullstack/docs/implementation/15_P7实现记录.md) |
+| **D-025** | 技术 | **P1** | 青橙全栈 P8 核心：OAuth 路由/预设/文档分区 | 已完成 | OAuth 通用路由、GitHub/Google 预设、docs 分区；7/7 测试；2026-10-26 | — | [P8 记录](fullstack/docs/implementation/16_P8实现记录.md) |
+| **D-026** | 技术 | **P1** | 青橙全栈 P9：SMTP/存储/HMR/CI | 待开始 | SMTP、上传对象存储/扫描、`qc new` 包导入/HMR、CI/镜像/日志采集、第三 dogfood | P8 核心已验收 | [P8 记录](fullstack/docs/implementation/16_P8实现记录.md) |
 
 ## 三、等你拍板
 
