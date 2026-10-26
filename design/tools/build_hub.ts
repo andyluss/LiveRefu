@@ -8,9 +8,9 @@
  *   生成一个自包含 HTML（内联 CSS/JS，无外部网络依赖），并用 --check 防止过期。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/build_hub.ts
- *   node --experimental-strip-types design/tools/build_hub.ts --check
- *   node --experimental-strip-types design/tools/build_hub.ts --self-test
+ *   node design/tools/build_hub.ts
+ *   node design/tools/build_hub.ts --check
+ *   node design/tools/build_hub.ts --self-test
  */
 
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
@@ -972,7 +972,7 @@ function main(): number {
       console.error(`✗ HUB 已过期：${relative(WORKSPACE_ROOT, OUT)} 第 ${diff.line} 行`)
       console.error(`    期望：${diff.expected}`)
       console.error(`    实际：${diff.actual}`)
-      console.error('  运行 `node --experimental-strip-types design/tools/build_hub.ts` 重新生成。')
+      console.error('  运行 `node design/tools/build_hub.ts` 重新生成。')
       return 1
     }
     console.log(`✓ HUB 与源一致（${(html.length / 1024).toFixed(1)} KB）`)

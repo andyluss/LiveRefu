@@ -17,7 +17,7 @@
  *   3. 搜索弹窗：Meta+K 打开并截图。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/capture_products.ts \
+ *   node design/tools/capture_products.ts \
  *     --website=http://127.0.0.1:3100 --livefab=http://127.0.0.1:4321 --cdp=http://127.0.0.1:9222
  */
 

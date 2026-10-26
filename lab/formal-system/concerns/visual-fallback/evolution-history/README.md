@@ -16,7 +16,7 @@
 **P1 · 元规则状态阶梯**（[`rule_evolution_timeline.ts`](tools/rule_evolution_timeline.ts)）
 
 ```bash
-node --experimental-strip-types lab/formal-system/concerns/visual-fallback/evolution-history/tools/rule_evolution_timeline.ts
+node lab/formal-system/concerns/visual-fallback/evolution-history/tools/rule_evolution_timeline.ts
 ```
 
 读 [`../../meta-rules/M*-*.md`](../../meta-rules/) 的演进历史表，把每条约规则的**状态机轨迹**画成阶梯图（x=版本，y=状态层级）：

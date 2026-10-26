@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --experimental-strip-types
+#!/usr/bin/env -S node
 import { existsSync, mkdirSync, readdirSync, writeFileSync, copyFileSync, unlinkSync, symlinkSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -115,7 +115,7 @@ export default defineAction({
 
 async function dev(): Promise<void> {
   const main = fileURLToPath(new URL('./server-main.ts', import.meta.url))
-  const child = spawn(process.execPath, ['--watch', '--experimental-strip-types', main], {
+  const child = spawn(process.execPath, ['--watch', main], {
     cwd,
     stdio: 'inherit',
     env: { ...process.env, QC_APP_ROOT: cwd, QC_DEV: '1' },

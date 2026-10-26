@@ -9,7 +9,7 @@ cd "$ROOT"
 run() {
   echo ""
   echo "── $* ──"
-  node --experimental-strip-types "$@"
+  node "$@"
 }
 
 run design/tools/check_tokens.ts --self-test

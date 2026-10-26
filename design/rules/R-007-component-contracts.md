@@ -20,9 +20,9 @@
 ## 三、验收
 
 ```bash
-node --experimental-strip-types design/tools/check_component_contracts.ts
-node --experimental-strip-types design/tools/check_component_usage.ts
-node --experimental-strip-types design/tools/build_web_kit.ts --check
+node design/tools/check_component_contracts.ts
+node design/tools/check_component_usage.ts
+node design/tools/build_web_kit.ts --check
 ```
 
 ## 四、例外

@@ -59,7 +59,7 @@ game/data/tokens.json  →  TokenSet  →  ThemeBuilder  →  future_debris.tres
 ## 六、验收
 
 ```bash
-node --experimental-strip-types design/tools/build_tokens.ts --check
+node design/tools/build_tokens.ts --check
 cd projects/mainline/future-debris
 python3 tools/check_tokens.py      # 文档 ↔ 生成物对账
 ./run.sh contrast                  # 30 组对比度 + 层级 + 样张

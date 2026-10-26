@@ -20,8 +20,8 @@
 ## 三、验收
 
 ```bash
-node --experimental-strip-types design/tools/check_contrast.ts
-node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts
+node design/tools/check_contrast.ts
+node design/tools/check_tomorrows_channel_skin.ts
 bash design/tools/check.sh
 ```
 

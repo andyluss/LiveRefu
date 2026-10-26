@@ -20,8 +20,8 @@
 ## 三、验收
 
 ```bash
-node --experimental-strip-types design/tools/check_tokens.ts
-node --experimental-strip-types design/tools/check_contrast.ts
+node design/tools/check_tokens.ts
+node design/tools/check_contrast.ts
 bash design/tools/check.sh
 ```
 

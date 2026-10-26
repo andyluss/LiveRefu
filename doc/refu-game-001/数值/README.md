@@ -25,16 +25,16 @@
 
 ```bash
 S=tools/sim_refu_game_001.ts
-node --experimental-strip-types $S --selftest                     # 1 模型自检（种子/单调性/解析一致）
-node --experimental-strip-types $S --verify-bands --n 20000       # 2 主线五章带位
-node --experimental-strip-types $S --verify-rogue --n 20000       # 3 远征 8 节点带位
-node --experimental-strip-types $S --verify-faction               # 4 族专属挑战卡（平均+纯流派双口径）
-node --experimental-strip-types $S --verify-seed                  # 5 每日种子与排行榜用例
-node --experimental-strip-types $S --verify-anti-air              # 6 三族对空覆盖
-node --experimental-strip-types $S --verify-air-matrix            # 7 空袭 × 三族 9 宫格公平性
-node --experimental-strip-types $S --verify-air-mix               # 8 纯空军/混编/纯地面 三形态
-node --experimental-strip-types $S --verify-pmod                  # 9 永久修饰卡 PMOD 双口径
-node --experimental-strip-types $S --report --out doc/refu-game-001/数值/体检报告.md   # 刷新报告
+node $S --selftest                     # 1 模型自检（种子/单调性/解析一致）
+node $S --verify-bands --n 20000       # 2 主线五章带位
+node $S --verify-rogue --n 20000       # 3 远征 8 节点带位
+node $S --verify-faction               # 4 族专属挑战卡（平均+纯流派双口径）
+node $S --verify-seed                  # 5 每日种子与排行榜用例
+node $S --verify-anti-air              # 6 三族对空覆盖
+node $S --verify-air-matrix            # 7 空袭 × 三族 9 宫格公平性
+node $S --verify-air-mix               # 8 纯空军/混编/纯地面 三形态
+node $S --verify-pmod                  # 9 永久修饰卡 PMOD 双口径
+node $S --report --out doc/refu-game-001/数值/体检报告.md   # 刷新报告
 ```
 
 - 第 1/4/5/6/7/8/9 项已接入 **pre-commit**（暂存涉及本卷或模拟脚本时自动触发）与 **CI**；

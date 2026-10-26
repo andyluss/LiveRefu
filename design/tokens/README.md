@@ -46,7 +46,7 @@ tokens/
 ```bash
 # 1. 改 core/ 或 products/ 下的 JSON
 # 2. 重新生成（会同时写产品副本）
-node --experimental-strip-types design/tools/build_tokens.ts
+node design/tools/build_tokens.ts
 # 3. 跑闸门
 bash design/tools/check.sh
 ```

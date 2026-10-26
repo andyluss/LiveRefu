@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# git pre-commit 钩子：拦截提交问题（全部用 TS 脚本跑，node --experimental-strip-types，见
+# git pre-commit 钩子：拦截提交问题（全部用 TS 脚本跑，node，见
 #   lab/formal-system/tech/rules/T01-default-ts-scripts.md）。
 #   1. 失效内部相对链接(检查暂存的 *.md, 交 tools/check_links.ts)。
 #   2. 数据表不符合 schema(检查暂存涉及的 data/tables 变更, 交 tools/check_data.ts)。
@@ -22,7 +22,7 @@ set -euo pipefail
 GIT_ROOT="$(git rev-parse --show-toplevel)"
 
 # 用 node 的 type-stripping 直接跑 TS（本仓库脚本 node/deno/bun 兼容）。
-run_ts() { node --experimental-strip-types "$1" "${@:2}"; }
+run_ts() { node "$1" "${@:2}"; }
 
 # ---- 1) 暂存的 Markdown 相对链接校验 ----
 LINK_SCRIPT="$GIT_ROOT/tools/check_links.ts"
@@ -173,7 +173,7 @@ if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(doc/refu-game-
       echo "[pre-commit:refu-sim] 通过。" >&2
     else
       echo "[pre-commit:refu-sim] 难度模型自检或带位校验失败，已拦截提交。" >&2
-      echo "  复核: node --experimental-strip-types tools/sim_refu_game_001.ts --verify-bands --n 20000" >&2
+      echo "  复核: node tools/sim_refu_game_001.ts --verify-bands --n 20000" >&2
       exit 1
     fi
   fi

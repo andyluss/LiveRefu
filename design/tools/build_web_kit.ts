@@ -6,9 +6,9 @@
  * 由本脚本保证一致。它不属于 token 生成器：组件 CSS 是代码，不是 token。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/build_web_kit.ts
- *   node --experimental-strip-types design/tools/build_web_kit.ts --check
- *   node --experimental-strip-types design/tools/build_web_kit.ts --self-test
+ *   node design/tools/build_web_kit.ts
+ *   node design/tools/build_web_kit.ts --check
+ *   node design/tools/build_web_kit.ts --self-test
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'

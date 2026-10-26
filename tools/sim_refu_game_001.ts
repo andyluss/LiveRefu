@@ -12,10 +12,10 @@
 //   解析胜率  = P(Poisson(λ_total) < LEAK_CAP)
 //
 // 用法：
-//   node --experimental-strip-types tools/sim_refu_game_001.ts --run
-//   node --experimental-strip-types tools/sim_refu_game_001.ts --selftest
-//   node --experimental-strip-types tools/sim_refu_game_001.ts --run --n 20000 --md /tmp/out.md
-//   node --experimental-strip-types tools/sim_refu_game_001.ts --stage 218 --p 1.3 --challenge 双流,加压
+//   node tools/sim_refu_game_001.ts --run
+//   node tools/sim_refu_game_001.ts --selftest
+//   node tools/sim_refu_game_001.ts --run --n 20000 --md /tmp/out.md
+//   node tools/sim_refu_game_001.ts --stage 218 --p 1.3 --challenge 双流,加压
 //
 // 参数：--n（每关局数，默认 5000）--seed（默认 20260914）--b-ref（默认 158）
 //       --lambda0（默认 1.35）--gamma（默认 3）--cap（默认 3）--sim-ratio（双流同时段占比，默认 0.667）--md（输出文件）

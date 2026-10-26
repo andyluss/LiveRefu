@@ -3,9 +3,9 @@
  * 从 design/tokens/ 生成各端产物。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/build_tokens.ts            # 写入
- *   node --experimental-strip-types design/tools/build_tokens.ts --check    # 只校验生成物是否最新
- *   node --experimental-strip-types design/tools/build_tokens.ts --self-test
+ *   node design/tools/build_tokens.ts            # 写入
+ *   node design/tools/build_tokens.ts --check    # 只校验生成物是否最新
+ *   node design/tools/build_tokens.ts --self-test
  *
  * 产物：
  *   design/tokens/dist/web/{future-archive,livefab}.css
@@ -111,7 +111,7 @@ function main(): number {
     if (failures) {
       console.error(
         `\n✗ ${failures}/${outputs.length} 个生成物与源不一致。` +
-          ' 运行 `node --experimental-strip-types design/tools/build_tokens.ts` 重新生成。',
+          ' 运行 `node design/tools/build_tokens.ts` 重新生成。',
       )
       return 1
     }

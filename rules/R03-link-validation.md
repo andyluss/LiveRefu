@@ -12,7 +12,7 @@
 2. **判定口径**：只判真正需要存在的**内部相对链接**；外链、纯锚点、无目标条目跳过；目标文件/目录不存在 = 失效 = 拦截。
 3. **启用**：clone 后运行一次 `./tools/install_hooks.sh`（设置 `core.hooksPath tools/hooks`，用相对路径、幂等可重跑）。
 4. **例外**：确认本次改动无需修复时，可用 `git commit --no-verify` 临时跳过（须自行确认链接）。
-5. **手动运行**：全量 `node --experimental-strip-types tools/check_links.ts`；模拟钩子 `bash tools/hooks/pre-commit`（退出码 0=通过）。
+5. **手动运行**：全量 `node tools/check_links.ts`；模拟钩子 `bash tools/hooks/pre-commit`（退出码 0=通过）。
 
 ## 三、备选（被放弃的选项）
 
@@ -25,7 +25,7 @@
 ## 四、判定标准
 
 - `bash tools/hooks/pre-commit` 退出码 `0`。
-- `node --experimental-strip-types tools/check_links.ts` 退出码 `0`。
+- `node tools/check_links.ts` 退出码 `0`。
 
 ## 五、自检问题
 

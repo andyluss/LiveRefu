@@ -1,7 +1,7 @@
 # T02 · 全链路 TS：脚本 / hooks / CI 同源同语言（已定）
 
 **一句话**：**技术脚本、pre-commit 钩子、CI 三者跑同一套 TypeScript**（`.ts`），不搞"本地 Python + CI TS"双轨，
-统一用 `node --experimental-strip-types`（或 deno/bun）。这是 [T01](T01-default-ts-scripts.md)（默认 TS）之上的**一致性约束**。
+统一用 `node`（或 deno/bun）。这是 [T01](T01-default-ts-scripts.md)（默认 TS）之上的**一致性约束**。
 
 ## 一、目标
 
@@ -13,7 +13,7 @@
 
 1. **可运行检查脚本统一 TS**（见 [T01](T01-default-ts-scripts.md)）：默认 `.ts`，node/deno/bun 兼容。
 2. **pre-commit 钩子与 CI 都运行 `.ts`**（同源），不各写一套逻辑。
-   - running 方式统一：`node --experimental-strip-types <script>.ts`（脚本本身 node/deno/bun 皆可跑）。
+   - running 方式统一：`node <script>.ts`（脚本本身 node/deno/bun 皆可跑）。
 3. **不双轨进链**：同一逻辑不出现"一套 Python 进钩子、一套 TS 进 CI"；`.py` 若保留，定位为**对照/溯源**，不进入执行链。
 4. `hub.ts --run` 作为"刷新入口"纳入 `verify.yml`（CI），保证"生成 → 校验 → 入口"都用 TS 跑。
 

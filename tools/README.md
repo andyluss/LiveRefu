@@ -8,10 +8,10 @@
 
 | 工具 | 作用 | 对应规则 | 跑法 |
 | --- | --- | --- | --- |
-| [`check_links.ts`](check_links.ts) | 校验工作区 Markdown 的**相对链接**是否失效 | [R03](../rules/R03-link-validation.md) | `node --experimental-strip-types tools/check_links.ts [-v] [--files …]` |
+| [`check_links.ts`](check_links.ts) | 校验工作区 Markdown 的**相对链接**是否失效 | [R03](../rules/R03-link-validation.md) | `node tools/check_links.ts [-v] [--files …]` |
 | [`check_changelog.ts`](check_changelog.ts) | 变更日志格式（版本头/时间倒序/标准类目/**版本号 ↔ git tag**） | [R05](../rules/R05-changelog.md) | `… --file <CHANGELOG> --tag-prefix <前缀>` |
-| [`check_time_naming.ts`](check_time_naming.ts) | **时间戳文件名**格式与"不得晚于首次提交时间" | [R06](../rules/R06-time.md) | `node --experimental-strip-types tools/check_time_naming.ts` |
-| [`check_data.ts`](check_data.ts) | 数据表是否符合 schema 契约（必填/type/enum/范围） | [R04](../rules/R04-data-validation.md) | `node --experimental-strip-types tools/check_data.ts -v` |
+| [`check_time_naming.ts`](check_time_naming.ts) | **时间戳文件名**格式与"不得晚于首次提交时间" | [R06](../rules/R06-time.md) | `node tools/check_time_naming.ts` |
+| [`check_data.ts`](check_data.ts) | 数据表是否符合 schema 契约（必填/type/enum/范围） | [R04](../rules/R04-data-validation.md) | `node tools/check_data.ts -v` |
 | [`sim_refu_game_001.ts`](sim_refu_game_001.ts) | 《节点防线》难度模型自检与章节带位校验 | 项目内约定 | `… --selftest` / `--verify-bands --n 20000` |
 
 > **Python 版（`check_links.py` / `check_data.py`）**：与 TS 版同功能，纯标准库、无需 node，供不便装 node 的环境使用。

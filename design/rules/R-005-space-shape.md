@@ -20,7 +20,7 @@
 ## 三、验收
 
 ```bash
-node --experimental-strip-types design/tools/check_no_raw_values.ts --all
+node design/tools/check_no_raw_values.ts --all
 bash design/tools/check.sh
 ```
 

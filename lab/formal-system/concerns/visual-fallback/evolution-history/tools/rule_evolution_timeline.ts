@@ -5,7 +5,7 @@
 // 把每条约规则的**状态机轨迹**画成阶梯图：x=版本(v1..vN)，y=状态层级(draft..retired)，每规则一条折线。
 // 一眼看出"谁一路升到已定、谁在回退/震荡、谁卡在 proposed"——这是 M3 状态机(多状态/子状态/迁移)的可视面。
 //
-// 用法：node --experimental-strip-types <本文件>     （或 deno run --allow-read / bun 直接跑）
+// 用法：node <本文件>     （或 deno run --allow-read / bun 直接跑）
 // 产出：同目录 rule-evolution-timeline.html / .json
 import * as fs from "node:fs";
 import * as path from "node:path";

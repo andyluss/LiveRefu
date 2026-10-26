@@ -13,10 +13,10 @@ M3 的演进状态检查在元规则的 `evolution/` 子关注点：[`../evoluti
 ## 用法
 
 ```bash
-node --experimental-strip-types rules/meta/tools/meta_rules_check.ts                  # 默认检查 rules/
-node --experimental-strip-types rules/meta/tools/meta_rules_check.ts --root <dir> --config <json>
-node --experimental-strip-types rules/meta/tools/meta_rules_check.ts --json <path>     # 额外写机器可读结果
-node --experimental-strip-types rules/meta/tools/meta_rules_check.ts --self-test
+node rules/meta/tools/meta_rules_check.ts                  # 默认检查 rules/
+node rules/meta/tools/meta_rules_check.ts --root <dir> --config <json>
+node rules/meta/tools/meta_rules_check.ts --json <path>     # 额外写机器可读结果
+node rules/meta/tools/meta_rules_check.ts --self-test
 ```
 
 退出码：`0`=全部符合；`1`=存在违规。默认配置 [`../meta-rules-config.json`](../meta-rules-config.json)（作用对象 `rules/`，见其中 `concern` 字段）。

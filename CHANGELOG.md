@@ -21,6 +21,7 @@
 ### 新增
 
 - [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。
+- **Node 22.18+ / 移除实验 flag**：当前脚本、CI、package scripts、当前文档统一用 `node`；最低 Node 22.18；QC 以 Node 24 为主；历史 CHANGELOG/实现记录保留原命令；`qc` 包加 `engines`。
 - **R-001 三态主题获批**：状态转 `active`；固定 system / light / dark 顺序；`lrds-theme` 统一；规则索引/README/GUIDE 同步。
 - **青橙设计规则 + GUIDE + HUB 分区**：新增 `design/rules/`（15 条；格式 v1.0，含“反例/迁移”；R-001 三态主题 proposed）；新增 `design/GUIDE.html`（设计系统本身），`design/HUB.html` 改为项目状态/演进/验收/决策；四份 HUB/GUIDE 统一 `lrds-theme`，顺序系统/浅色/深色。
 - **青橙全栈可视化**：新增 [`design/fullstack/HUB.html`](design/fullstack/HUB.html)（项目开发/发布）与 [`design/fullstack/GUIDE.html`](design/fullstack/GUIDE.html)（功能/用法），沿用 LRDS token/焦点/圆角/暗亮主题；README/HUB/文档索引已加入口。

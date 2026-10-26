@@ -15,9 +15,9 @@
 //      —— R06 §二.3 的"以提交时间为准"由此可机器核对；未提交的新文件只查格式。
 //
 // 用法：
-//   node --experimental-strip-types tools/check_time_naming.ts
-//   node --experimental-strip-types tools/check_time_naming.ts --files <相对路径…>   # pre-commit 用
-//   node --experimental-strip-types tools/check_time_naming.ts --self-test
+//   node tools/check_time_naming.ts
+//   node tools/check_time_naming.ts --files <相对路径…>   # pre-commit 用
+//   node tools/check_time_naming.ts --self-test
 
 import { execFileSync } from 'node:child_process'
 import { existsSync, readdirSync, statSync } from 'node:fs'

@@ -52,7 +52,7 @@
 ## 四、检查
 
 ```bash
-node --experimental-strip-types design/tools/check_component_contracts.ts
+node design/tools/check_component_contracts.ts
 ```
 
 检查：五节齐全、token 存在、无裸值、至少 5 个 token 引用、包含 focus 与 disabled 状态。每个检查器都必须能被负向用例证伪。

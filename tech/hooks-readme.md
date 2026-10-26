@@ -52,7 +52,7 @@ git config core.hooksPath tools/hooks
 | --- | --- |
 | 提示"存在失效链接" | 按输出修复相对链接深度（朝工作区根每深一级多一个 `../`），重新提交 |
 | 确认本次改动不需要修复 | `git commit --no-verify`（临时跳过钩子，提交前请自行确认链接） |
-| 想看看全工作区链接状态 | `node --experimental-strip-types tools/check_links.ts` |
+| 想看看全工作区链接状态 | `node tools/check_links.ts` |
 
 ### 手动跑钩子
 
@@ -69,7 +69,7 @@ echo $?   # 0=全部通过, 非 0=有检查被拦截
 
 即使本地未启用钩子（例如贡献者在未运行 `install_hooks.sh` 的机器上提交），推送到托管平台后由 CI 兜底拦截。
 
-- **平台**：**GitHub Actions**（[`.github/workflows/verify.yml`](../.github/workflows/verify.yml)），远端 [`andyluss/LiveRefu`](https://github.com/andyluss/LiveRefu)；push / PR 到 `main` 时触发。若你在 GitLab，用对应的 `.gitlab-ci.yml` 语法改写（触发器 + 一个跑 `node --experimental-strip-types tools/check_links.ts` 的 job），或在其它 CI 中复用一个执行同命令的步骤即可。
+- **平台**：**GitHub Actions**（[`.github/workflows/verify.yml`](../.github/workflows/verify.yml)），远端 [`andyluss/LiveRefu`](https://github.com/andyluss/LiveRefu)；push / PR 到 `main` 时触发。若你在 GitLab，用对应的 `.gitlab-ci.yml` 语法改写（触发器 + 一个跑 `node tools/check_links.ts` 的 job），或在其它 CI 中复用一个执行同命令的步骤即可。
 - **逻辑**：检出代码 → 用 Node 直接运行 TS `tools/check_links.ts`（纯标准库，无需安装依赖）→ 若返回非零则失败。默认扫描全工作区（`--sub` 不传即全量）；可按需加 `--sub studio001` 缩小范围。
 - **影响**：提交涉及失效相对链接时，CI 会标记检查失败，提示修复后再合入。
 - **CI 的完整校验集**：除链接外，[`.github/workflows/verify.yml`](../.github/workflows/verify.yml) 还跑数据 schema、lab 元规则（结构/演进/`STRUCTURE.md`），以及 **`rules/` 结构 M1+M2 与规则演进 M3（覆盖 M 与 R）**——与本地钩子互补、命令同源。
@@ -77,7 +77,7 @@ echo $?   # 0=全部通过, 非 0=有检查被拦截
 ### 手动验证 CI 同款命令
 
 ```bash
-node --experimental-strip-types tools/check_links.ts
+node tools/check_links.ts
 echo $?   # 0=通过, 1=有失效链接
 ```
 

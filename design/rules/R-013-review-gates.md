@@ -21,8 +21,8 @@
 
 ```bash
 bash design/tools/check.sh
-node --experimental-strip-types tools/check_links.ts
-node --experimental-strip-types tools/check_changelog.ts --file design/CHANGELOG.md --tag-prefix design-v
+node tools/check_links.ts
+node tools/check_changelog.ts --file design/CHANGELOG.md --tag-prefix design-v
 ```
 
 ## 四、例外

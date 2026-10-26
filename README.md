@@ -13,7 +13,7 @@
 | **产品 / 策划 / 非技术维护者** | [`doc/`](doc/README.md)（**题材知识库索引**，从这进去）、[`projects/mainline/README.md`](projects/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`.godot-home/` |
 | **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`projects/mainline/future-debris/`](projects/mainline/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
 | **想知道现在最该做什么** | [`TODO.md`](TODO.md)（跨项目顶级待办、等待拍板、状态） | 各项目内部 `docs/` 与 TODO |
-| **只想快速看设计系统** | [`design/HUB.html`](design/HUB.html)（Token / 风格卡 / 组件 / 产品 / 验收一页看完） | [`design/README.md`](design/README.md) |
+| **只想快速看设计系统** | [`design/GUIDE.html`](design/GUIDE.html)（设计系统本身）/ [`design/HUB.html`](design/HUB.html)（项目状态） | [`design/README.md`](design/README.md) |
 | **开发 / 维护者 / 与 AI 协作** | [`rules/`](rules/README.md)（**规则的权威**）、[`AGENTS.md`](AGENTS.md)（AI 提交回报硬规范）、[`tech/`](tech/README.md)（技术详解）、[`tools/`](tools/)（检查器）、[`.github/workflows/`](.github/workflows/verify.yml)（CI） | —— |
 
 > **AI 代理**：开始前先读 [`AGENTS.md`](AGENTS.md)——每次有提交，回答最开头必须列提交表（SHA / 消息 / 时间 / 分支 / 推送）。
@@ -27,7 +27,7 @@
 - **rules/**：规则目录。面向工作区整体的规则在此集中，分**具体规则**（R 系列，**已转正**，正文权威在此）与**元规则**（M 系列，整合自 lab，见 [`rules/meta/`](rules/meta/README.md)）。对应的 [`tech/`](tech/README.md) 文档为**技术详解 / 实施说明**（非规则权威）。
 - **doc/**：复古未来主义题材的研究知识库。以《复古未来主义论文集》为核心（21 篇总卷：理论地基、未来的考古、回收的未来、当代乡愁与多元、收束五段），并含蒸汽朋克、原子朋克、柴油朋克、赛博朋克、生物朋克等独立专题卷，以及合订本（PDF/HTML）与再生脚本。
 - ~~**studio/**：AI 开发角色的模拟工作场所~~ → **已搁置**：原"虚拟角色工作室"改为 [`studio001/`](studio001/README.md) **保留作历史资料**（角色身份卡与早期工作留痕），**不再使用/更新**。开发策略已转为**项目方直接结合 AI 开发**（不依赖虚拟角色分工）。
-- **design/**：**项目设计系统（LRDS）**。一套语法、多种介质：品牌、语义 token、风格卡、组件契约、Web/Godot/App 介质包与验收闸门。**一页式入口：[`design/HUB.html`](design/HUB.html)**；说明见 [`design/README.md`](design/README.md)。
+- **design/**：**项目设计系统（LRDS）**。一套语法、多种介质：品牌、语义 token、风格卡、组件契约、Web/Godot/App 介质包与验收闸门。**设计系统看 [`design/GUIDE.html`](design/GUIDE.html)，项目状态看 [`design/HUB.html`](design/HUB.html)**；说明见 [`design/README.md`](design/README.md)。
 - **projects/**：项目工作区。每个实际开发中的项目一个子目录（如 [`projects/tomorrows-channel/`](projects/tomorrows-channel/README.md)），内含项目 README、`CHANGELOG.md`（项目日志）与 `docs/`（按角色分目录的项目文档）。
 - **indie/**：独立项目区。存放与工作区主线无直接关联的**独立项目**，每个项目一个子目录、自成体系（见 [`indie/README.md`](indie/README.md)）。
 - **lab/**：实验项目区。小范围探索新协作路径、新形式化方法等**实验项目**（见 [`lab/README.md`](lab/README.md)，其下 [`lab/formal-system/`](lab/formal-system/README.md) 为形式化协作实验基地），成熟后回流主项目。
@@ -39,7 +39,7 @@
 | 路径 | 内容 | 入口 |
 | --- | --- | --- |
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
-| [`design/`](design/README.md) | **项目设计系统（LRDS）**：一页式 HUB、三层 token、风格卡、组件契约、Web/Godot/App 介质包、验收闸门 | [`design/HUB.html`](design/HUB.html) |
+| [`design/`](design/README.md) | **项目设计系统（LRDS）**：GUIDE（设计系统）/ HUB（项目）、三层 token、风格卡、组件契约、Web/Godot/App 介质包、验收闸门 | [`design/GUIDE.html`](design/GUIDE.html) |
 | [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、状态；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
 | [`doc/`](doc/README.md) | **复古未来主义知识库（索引）**：三卷的知识库入口——主卷论文集 + 朋克专题五卷 + Refu Game 001 策划卷。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`doc/README.md`](doc/README.md) |
 | [`doc/retro-futurism/`](doc/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](doc/retro-futurism/README.md) |
@@ -75,6 +75,7 @@
 - 想读题材理论 → 从 [`doc/retro-futurism/00_总论_未来的考古学与全卷地图.md`](doc/retro-futurism/00_总论_未来的考古学与全卷地图.md) 开始。
 - 想开发项目 → 从 [`projects/`](projects/tomorrows-channel/README.md)（现行项目）或 [`indie/`](indie/README.md)（独立项目）入手；**直接用 AI 协作**，不必套用虚拟角色。
 - 想了解工作区规则 / 校验 → [`rules/`](rules/README.md)；想做形式化协作实验 → [`lab/formal-system/`](lab/formal-system/README.md)。
+- **运行环境**：Node.js **22.18+**（TS strip types 默认开启，无需额外 flag）；青橙全栈以 Node 24 为主。
 - ~~想看工作室整体结构与协作拓扑~~ → 已搁置；仅作历史参考 [`studio001/README.md`](studio001/README.md)。
 
 ## 六、变更日志

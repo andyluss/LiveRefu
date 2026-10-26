@@ -11,8 +11,8 @@
  *   6. 两个产品风格卡存在，且产品颜色层只允许 color。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/check_tokens.ts
- *   node --experimental-strip-types design/tools/check_tokens.ts --self-test
+ *   node design/tools/check_tokens.ts
+ *   node design/tools/check_tokens.ts --self-test
  */
 
 import {

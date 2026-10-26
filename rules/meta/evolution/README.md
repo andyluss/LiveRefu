@@ -18,8 +18,8 @@
 ## 运行
 
 ```bash
-node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts             # 校验全部规则（M + R）
-node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts --self-test  # 自检(能抓非法迁移/状态)
+node rules/meta/evolution/rule_evolution_check.ts             # 校验全部规则（M + R）
+node rules/meta/evolution/rule_evolution_check.ts --self-test  # 自检(能抓非法迁移/状态)
 ```
 
 退出码：0=全部合法；1=有违规。

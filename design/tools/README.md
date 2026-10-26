@@ -1,6 +1,6 @@
 # Tools · 生成器与闸门
 
-> 零第三方依赖；Node / Deno / Bun 兼容；用 `node --experimental-strip-types` 直接跑。
+> 零第三方依赖；Node / Deno / Bun 兼容；Node **22.18+** 默认 strip types，用 `node` 直接跑（无需 flag）。
 > **每个检查器都必须带 `--self-test`，且负向用例断言错误类型**——只断言“有错”会让用例因无关错误而假通过。
 
 ## 一、工具
@@ -28,9 +28,9 @@
 
 ```bash
 bash design/tools/check.sh                  # 全部
-node --experimental-strip-types design/tools/build_tokens.ts
-node --experimental-strip-types design/tools/build_tokens.ts --check
-node --experimental-strip-types design/tools/check_no_raw_values.ts --all
+node design/tools/build_tokens.ts
+node design/tools/build_tokens.ts --check
+node design/tools/check_no_raw_values.ts --all
 ```
 
 ## 四、加一个新闸门

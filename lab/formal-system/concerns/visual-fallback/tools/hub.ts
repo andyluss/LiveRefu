@@ -124,8 +124,8 @@ function run_all() {
   ];
   for (const [name, tsPath] of jobs) {
     if (!fs.existsSync(tsPath)) continue;
-    console.log(`  -> node --experimental-strip-types ${name}.ts`);
-    spawnSync(process.execPath, ["--experimental-strip-types", tsPath], { cwd: ROOT, stdio: "inherit" });
+    console.log(`  -> node ${name}.ts`);
+    spawnSync(process.execPath, [tsPath], { cwd: ROOT, stdio: "inherit" });
   }
 }
 
@@ -193,7 +193,7 @@ a.card:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
 .notes{color:var(--dim);font-size:13px}</style></head>
 <body><div class="wrap"><h1>可视验证面 · 总览</h1>
 <div class="lead">formal-system 可视验证面（机器判定 → 可视异常面 → 人工复核）。点卡片进入对应面；<b>⚠ 复核</b>=该面有偏离/待人工。</div>
-<a class="run" href="#refresh">刷新全部面：node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/hub.ts --run</a>
+<a class="run" href="#refresh">刷新全部面：node lab/formal-system/concerns/visual-fallback/tools/hub.ts --run</a>
 ${render(cats)}
 <div class="notes">生成 ${hourNow()} · 由 ${path.basename(process.argv[1])} 读取各面 JSON 生成；\`--run\` 先依次刷新 consistency_heatmap / req_trace / data_invariants / design_review（visual_health 无 .ts 版本，故跳过）。</div>
 </div></body></html>`;

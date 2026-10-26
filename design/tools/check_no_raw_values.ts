@@ -10,9 +10,9 @@
  * 用来把设计债写在明处，而不是假装不存在。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/check_no_raw_values.ts
- *   node --experimental-strip-types design/tools/check_no_raw_values.ts --all
- *   node --experimental-strip-types design/tools/check_no_raw_values.ts --self-test
+ *   node design/tools/check_no_raw_values.ts
+ *   node design/tools/check_no_raw_values.ts --all
+ *   node design/tools/check_no_raw_values.ts --self-test
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs'

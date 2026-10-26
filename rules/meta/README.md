@@ -46,10 +46,10 @@
 - M3 演进状态（**覆盖元规则 M 与具体规则 R**）：[`evolution/rule_evolution_check.ts`](evolution/rule_evolution_check.ts)
 
 ```bash
-node --experimental-strip-types rules/meta/tools/meta_rules_check.ts            # 默认检查 rules/
-node --experimental-strip-types rules/meta/tools/meta_rules_check.ts --self-test
-node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts
-node --experimental-strip-types rules/meta/evolution/rule_evolution_check.ts --self-test
+node rules/meta/tools/meta_rules_check.ts            # 默认检查 rules/
+node rules/meta/tools/meta_rules_check.ts --self-test
+node rules/meta/evolution/rule_evolution_check.ts
+node rules/meta/evolution/rule_evolution_check.ts --self-test
 ```
 
 退出码：0=合规；1=有违规。作用范围 `rules/`；**已接入 pre-commit**（暂存涉及 `rules/` 时）**与 CI**（见配置 [`meta-rules-config.json`](meta-rules-config.json) 与 [`.github/workflows/verify.yml`](../../.github/workflows/verify.yml)）。

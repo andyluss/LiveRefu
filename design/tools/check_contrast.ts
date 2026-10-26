@@ -10,9 +10,9 @@
  *   普通文字 ≥ 4.5:1 ｜ 大字 ≥ 3:1 ｜ 非文字 UI（边框/焦点）≥ 3:1
  *
  * 用法：
- *   node --experimental-strip-types design/tools/check_contrast.ts
- *   node --experimental-strip-types design/tools/check_contrast.ts --verbose
- *   node --experimental-strip-types design/tools/check_contrast.ts --self-test
+ *   node design/tools/check_contrast.ts
+ *   node design/tools/check_contrast.ts --verbose
+ *   node design/tools/check_contrast.ts --self-test
  */
 
 import {

@@ -15,14 +15,14 @@ jobs:
         with:
           node-version: "24"
       - name: Notes / auth / mail / upload
-        run: node --experimental-strip-types design/fullstack/qc/test/notes.test.ts
+        run: node design/fullstack/qc/test/notes.test.ts
       - name: Second dogfood
-        run: node --experimental-strip-types design/fullstack/qc/test/bookmarks.test.ts
+        run: node design/fullstack/qc/test/bookmarks.test.ts
       - name: OAuth adapter
-        run: node --experimental-strip-types design/fullstack/qc/test/oauth.test.ts
+        run: node design/fullstack/qc/test/oauth.test.ts
       - name: OAuth routes
-        run: node --experimental-strip-types design/fullstack/qc/test/oauth-routes.test.ts
+        run: node design/fullstack/qc/test/oauth-routes.test.ts
       - name: SMTP
-        run: node --experimental-strip-types design/fullstack/qc/test/smtp.test.ts
+        run: node design/fullstack/qc/test/smtp.test.ts
       - name: S3
-        run: node --experimental-strip-types design/fullstack/qc/test/s3.test.ts
+        run: node design/fullstack/qc/test/s3.test.ts

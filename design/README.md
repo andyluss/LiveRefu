@@ -3,6 +3,7 @@
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
 > **状态**：**v0.2 已发布；v0.3 App kit 起步；青橙理念 00–08 已完稿；青橙全栈已收尾；规则 v1.0（R-001 已生效）**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token、青橙理念 00–08、青橙全栈已收尾（P1–P17）。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
+> **运行环境**：Node.js **22.18+**（TS strip 默认，无需额外 flag）；青橙全栈以 Node 24 为主。
 > **中文名（暂定）**：**青橙设计**——青/橙是复古未来常用色；只作暂定中文名，不替代公开母品牌名。
 > **先看这里**：设计系统本身看 [`GUIDE.html`](GUIDE.html)；项目状态/演进/验收/决策看 [`HUB.html`](HUB.html)（由 `tools/build_hub.ts` 生成）。
 > **规则**：[`rules/`](rules/README.md) —— 一条规则一个文件；R-001 三态主题已生效。
@@ -138,11 +139,11 @@ design/
 
 ```bash
 bash design/tools/check.sh                                   # 四道闸门 + 自检
-node --experimental-strip-types design/tools/build_tokens.ts # 改完 token 后重新生成
-node --experimental-strip-types design/tools/check_no_raw_values.ts --all  # 未迁移裸值报告
+node design/tools/build_tokens.ts # 改完 token 后重新生成
+node design/tools/check_no_raw_values.ts --all  # 未迁移裸值报告
 cd projects/mainline/future-debris && ./run.sh contrast && ./run.sh theme
 cd projects/website && bun run tools/verify-contrast.ts && bun run build
-node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts
+node design/tools/check_tomorrows_channel_skin.ts
 ```
 
 ### 下一步

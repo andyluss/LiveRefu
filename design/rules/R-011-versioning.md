@@ -20,7 +20,7 @@
 ## 三、验收
 
 ```bash
-node --experimental-strip-types tools/check_changelog.ts --file design/CHANGELOG.md --tag-prefix design-v
+node tools/check_changelog.ts --file design/CHANGELOG.md --tag-prefix design-v
 git tag --points-at HEAD
 ```
 

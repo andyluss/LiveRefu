@@ -16,7 +16,7 @@ Python 脚本**逐一补同名同功能的 `.ts`**，两者并存（避免"只�
 3. **跨运行时兼容（关键约束）**：只用三个运行时都有的能力——
    - `node:fs` / `node:path` / `process.argv` / `JSON` / 标准 `Date`、`Array` 等；**不用** node 私有 API、不用需安装的外部包。
    - 无 `enum`/`namespace`/装饰器（便于 type-stripping）；纯类型注解 + 普通 JS 运行时语义。
-   - 运行方式：`node --experimental-strip-types X.ts`、`deno run --allow-read X.ts`、`bun X.ts`。
+   - 运行方式：`node X.ts`、`deno run --allow-read X.ts`、`bun X.ts`。
 4. **运行时不判定的差异化**：仅当某能力只有 deno/bun 私有（如 `Deno.args`）时，改用跨运行时的 `process.argv` 等来拉齐。
 
 **权衡**：为"跨运行时 + 双语言"多一份源码；换来"不被单一运行时绑架、默认技术栈统一、溯源方便"。
@@ -33,7 +33,7 @@ Python 脚本**逐一补同名同功能的 `.ts`**，两者并存（避免"只�
 
 - 新增技术脚本（会被 CI/多运行时跑）→ **用 `.ts`**。
 - formal-system 内每个 `.py` 有同名 `.ts`（同功能、运行时无关）。
-- `.ts` 用运行时统一能力，`node --experimental-strip-types` / `deno run --allow-read` / `bun` **三者都直接跑**。
+- `.ts` 用运行时统一能力，`node` / `deno run --allow-read` / `bun` **三者都直接跑**。
 
 ## 五、自检问题
 
@@ -41,7 +41,7 @@ Python 脚本**逐一补同名同功能的 `.ts`**，两者并存（避免"只�
 
 ## 六、可验证 / 演进历史
 
-可验证：`node --experimental-strip-types <file>.ts && deno run --allow-read <file>.ts && bun <file>.ts`。
+可验证：`node <file>.ts && deno run --allow-read <file>.ts && bun <file>.ts`。
 
 | 版本 | 日期 | 状态 | 变更 | 依据 |
 | --- | --- | --- | --- | --- |

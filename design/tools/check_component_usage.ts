@@ -10,8 +10,8 @@
  * 这是“使用面”的审计，不是视觉验收；视觉验收要截图 + 键盘/触控走查。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/check_component_usage.ts
- *   node --experimental-strip-types design/tools/check_component_usage.ts --self-test
+ *   node design/tools/check_component_usage.ts
+ *   node design/tools/check_component_usage.ts --self-test
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs'

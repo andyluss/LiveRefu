@@ -25,8 +25,8 @@
  *      零 npm 依赖，跨 node / deno / bun 直接运行；越界路径容错，一键重跑。
  *
  * 用法（运行本文件时自动查找工作区根，位置无关）：
- *   node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/visual_health.ts            # 生成默认仪表盘
- *   node --experimental-strip-types lab/formal-system/concerns/visual-fallback/tools/visual_health.ts --out <path>  # 自定义输出
+ *   node lab/formal-system/concerns/visual-fallback/tools/visual_health.ts            # 生成默认仪表盘
+ *   node lab/formal-system/concerns/visual-fallback/tools/visual_health.ts --out <path>  # 自定义输出
  */
 
 import * as fs from "node:fs";

@@ -3,11 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --experimental-strip-types ../../qc/src/cli.ts dev",
-    "start": "node --experimental-strip-types ../../qc/src/cli.ts start",
-    "build": "node --experimental-strip-types ../../qc/src/cli.ts build",
-    "db:migrate": "node --experimental-strip-types ../../qc/src/cli.ts db migrate",
-    "doctor": "node --experimental-strip-types ../../qc/src/cli.ts doctor",
-    "test": "node --experimental-strip-types ../../qc/test/notes.test.ts"
+    "dev": "node ../../qc/src/cli.ts dev",
+    "start": "node ../../qc/src/cli.ts start",
+    "build": "node ../../qc/src/cli.ts build",
+    "db:migrate": "node ../../qc/src/cli.ts db migrate",
+    "doctor": "node ../../qc/src/cli.ts doctor",
+    "test": "node ../../qc/test/notes.test.ts"
   }
 }

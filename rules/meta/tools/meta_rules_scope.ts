@@ -17,9 +17,9 @@
 // 覆盖清单在 [workspace-scope.json](workspace-scope.json)（**缺口因此可见，而不是隐形**）。
 //
 // 用法：
-//   node --experimental-strip-types rules/meta/tools/meta_rules_scope.ts              # 全量（CI 用）
-//   node --experimental-strip-types rules/meta/tools/meta_rules_scope.ts --block-only # 只跑纳入闸门的（pre-commit 用）
-//   node --experimental-strip-types rules/meta/tools/meta_rules_scope.ts --self-test
+//   node rules/meta/tools/meta_rules_scope.ts              # 全量（CI 用）
+//   node rules/meta/tools/meta_rules_scope.ts --block-only # 只跑纳入闸门的（pre-commit 用）
+//   node rules/meta/tools/meta_rules_scope.ts --self-test
 
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
@@ -85,7 +85,7 @@ function runOne(c: Concern): number | null {
   if (!c.config) return null
   try {
     const out = execFileSync('node', [
-      '--experimental-strip-types', CHECKER,
+      CHECKER,
       '--root', c.path,
       '--config', resolve(ROOT, c.config),
     ], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })

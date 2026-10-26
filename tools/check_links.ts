@@ -8,10 +8,10 @@ import * as path from "node:path";
  * 与 check_links.py 同功能：命令行参数、扫描/校验逻辑、stdout 摘要、退出码完全一致。
  *
  * 用法：
- *     node --experimental-strip-types tools/check_links.ts              # 扫描全部 md
- *     node --experimental-strip-types tools/check_links.ts --sub studio001 # 只扫描 studio001/
- *     node --experimental-strip-types tools/check_links.ts --files README.md studio001/README.md
- *     node --experimental-strip-types tools/check_links.ts -v           # 连同"有效链接"一起打印
+ *     node tools/check_links.ts              # 扫描全部 md
+ *     node tools/check_links.ts --sub studio001 # 只扫描 studio001/
+ *     node tools/check_links.ts --files README.md studio001/README.md
+ *     node tools/check_links.ts -v           # 连同"有效链接"一起打印
  */
 
 // 以本脚本(工作区/tools/)为基准定位工作区根: 上溯到 .git 所在目录

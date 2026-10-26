@@ -10,8 +10,8 @@
  *   5. 状态小节覆盖 default / focus / disabled 三个关键词。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/check_component_contracts.ts
- *   node --experimental-strip-types design/tools/check_component_contracts.ts --self-test
+ *   node design/tools/check_component_contracts.ts
+ *   node design/tools/check_component_contracts.ts --self-test
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs'

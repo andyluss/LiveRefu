@@ -20,8 +20,8 @@
 ## 三、验收
 
 ```bash
-node --experimental-strip-types rules/meta/tools/meta_rules_check.ts --root design --config rules/meta/tools/config-design.json
-node --experimental-strip-types rules/meta/tools/meta_rules_scope.ts
+node rules/meta/tools/meta_rules_check.ts --root design --config rules/meta/tools/config-design.json
+node rules/meta/tools/meta_rules_scope.ts
 ```
 
 ## 四、例外

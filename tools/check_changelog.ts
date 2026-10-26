@@ -18,9 +18,9 @@
  *      是最有价值的一条（前面几条只保证"格式自洽"，这条保证"内容不假"）
  *
  * 用法（工作区级工具，可校验任意 CHANGELOG）：
- *   node --experimental-strip-types tools/check_changelog.ts --file CHANGELOG.md --tag-prefix workspace-v
- *   node --experimental-strip-types tools/check_changelog.ts --file projects/livefab/CHANGELOG.md --tag-prefix livefab-v
- *   node --experimental-strip-types tools/check_changelog.ts --selftest
+ *   node tools/check_changelog.ts --file CHANGELOG.md --tag-prefix workspace-v
+ *   node tools/check_changelog.ts --file projects/livefab/CHANGELOG.md --tag-prefix livefab-v
+ *   node tools/check_changelog.ts --selftest
  *
  * ★ 由 projects/livefab/tools/check-changelog.ts 提升而来（原本写死了路径与 tag 前缀）。
  *   提为工作区级是因为：本工作区有多个 CHANGELOG，规格相同、只是路径与 tag 前缀不同。
@@ -78,7 +78,7 @@ const check = (name: string, ok: boolean, detail = '') => {
 }
 
 // ⚠️ 刻意只用 node 内置模块（不用 Bun.*）：本脚本要能被**工作区 pre-commit 钩子**
-//    用 `node --experimental-strip-types` 直接跑（钩子的既有约定），
+//    用 `node` 直接跑（钩子的既有约定），
 //    而 Bun API 在 node 下不存在。因此这里用 execFileSync 而不是 Bun.spawnSync。
 const sh = (cmd: string[]) => {
   try {

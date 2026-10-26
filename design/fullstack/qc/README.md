@@ -5,14 +5,14 @@
 ## 命令
 
 ```bash
-node --experimental-strip-types src/cli.ts doctor
-node --experimental-strip-types src/cli.ts dev
-node --experimental-strip-types src/cli.ts start
-node --experimental-strip-types src/cli.ts db migrate
-node --experimental-strip-types src/cli.ts build
-node --experimental-strip-types src/cli.ts pack
-node --experimental-strip-types src/cli.ts new my-app
-node --experimental-strip-types test/notes.test.ts
+node src/cli.ts doctor
+node src/cli.ts dev
+node src/cli.ts start
+node src/cli.ts db migrate
+node src/cli.ts build
+node src/cli.ts pack
+node src/cli.ts new my-app
+node test/notes.test.ts
 ```
 
 ## 应用 API
@@ -80,5 +80,5 @@ qc.config.ts
 
 ## 注意
 
-- 运行需要 Node 24 与 `--experimental-strip-types`。
+- 运行需要 Node 24；Node 22.18+ 已默认 strip types，无需额外 flag。
 - `qc new` 目前写入指向本机框架源码的绝对 bridge；P2 打包后改为包导入。

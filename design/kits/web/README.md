@@ -63,8 +63,8 @@
 ![LRDS Web Components 预览](preview.png)
 
 ```bash
-node --experimental-strip-types design/tools/build_web_kit.ts
-node --experimental-strip-types design/tools/check_component_usage.ts
+node design/tools/build_web_kit.ts
+node design/tools/check_component_usage.ts
 ```
 
 > **基础层已收口**：产品侧 `.deco-btn` / `.cta` / `.card` 的重复基础样式已删除；技术/描边按钮、8px 面板圆角均为组件层决策。完整记录见 [10 皮肤收口](../../docs/10_皮肤收口_v0.2.md)。搜索框焦点色为 `--focus`（独立蓝）。
@@ -80,9 +80,9 @@ node --experimental-strip-types design/tools/check_component_usage.ts
 ## 五、验收
 
 ```bash
-node --experimental-strip-types design/tools/build_tokens.ts --check
-node --experimental-strip-types design/tools/check_contrast.ts
-node --experimental-strip-types design/tools/check_no_raw_values.ts
+node design/tools/build_tokens.ts --check
+node design/tools/check_contrast.ts
+node design/tools/check_no_raw_values.ts
 cd projects/website && bun run tools/verify-contrast.ts && bun run build
 cd projects/livefab/portal && bun run build
 ```

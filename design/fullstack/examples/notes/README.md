@@ -20,8 +20,8 @@ npm test
 备份/恢复：
 
 ```bash
-node --experimental-strip-types ../../qc/src/cli.ts db backup data/backup.db
-node --experimental-strip-types ../../qc/src/cli.ts db restore data/backup.db --force
+node ../../qc/src/cli.ts db backup data/backup.db
+node ../../qc/src/cli.ts db restore data/backup.db --force
 ```
 
 生产构建：

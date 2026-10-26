@@ -19,9 +19,9 @@
 ## 三、验收
 
 ```bash
-node --experimental-strip-types design/tools/build_tokens.ts --check
-node --experimental-strip-types design/tools/build_web_kit.ts --check
-node --experimental-strip-types design/tools/build_hub.ts --check
+node design/tools/build_tokens.ts --check
+node design/tools/build_web_kit.ts --check
+node design/tools/build_hub.ts --check
 ```
 
 ## 四、例外

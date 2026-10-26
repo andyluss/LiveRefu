@@ -7,9 +7,9 @@ import * as path from "node:path";
  * 纯标准库，无外部依赖（不依赖 jsonschema），与 check_data.py 同功能。
  *
  * 用法：
- *     node --experimental-strip-types tools/check_data.ts                # 校验 data/ 全表
- *     node --experimental-strip-types tools/check_data.ts -v             # 连同通过的表一起打印
- *     node --experimental-strip-types tools/check_data.ts --tables PROJ/data/tables
+ *     node tools/check_data.ts                # 校验 data/ 全表
+ *     node tools/check_data.ts -v             # 连同通过的表一起打印
+ *     node tools/check_data.ts --tables PROJ/data/tables
  */
 
 // 工作区根：本脚本位于 <root>/tools/

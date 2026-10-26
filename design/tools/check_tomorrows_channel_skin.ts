@@ -12,8 +12,8 @@
  *     与 token 文件 `meta.lighting` 一致。
  *
  * 用法：
- *   node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts
- *   node --experimental-strip-types design/tools/check_tomorrows_channel_skin.ts --self-test
+ *   node design/tools/check_tomorrows_channel_skin.ts
+ *   node design/tools/check_tomorrows_channel_skin.ts --self-test
  */
 
 import { readFileSync } from 'node:fs'
