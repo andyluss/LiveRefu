@@ -1,0 +1,10 @@
+{
+  "name": "@qingcheng/qc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": { "qc": "./src/cli.ts" },
+  "scripts": {
+    "test": "node --experimental-strip-types test/notes.test.ts"
+  }
+}

@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **青橙全栈 P1 骨架落地**：`qc/`（Node 原生 HTTP + node:sqlite + 文件路由 + page/action + HTML 模板 + 迁移 + CLI）与 `examples/notes/`；2 个集成测试通过；`qc doctor/start/build` 已 smoke；P2 auth/打包待做。
 - **新增青橙全栈（QC Stack）技术框架提案**：`design/fullstack/` 9 篇文档（理念/架构/应用契约/Web 实现/多端/路线/依赖治理/决策清单）；`D-018` 待决策；拍板前不写代码。
 - **青橙十问 × 未来残片试评审**：新增 [`docs/13`](docs/13_青橙十问_未来残片试评审.md)；桌面试评审，识别“照料型势力吃亏”“受影响的人缺席”两项红旗；`D-017` 完成。
 - **D-011 青橙理念体系**：9 篇（00–08）全部完稿（第三批：06 多世界语法、07 边界、08 青橙十问）；新增 [`philosophy/`](philosophy/README.md) 索引与 [`D-011` 记录](docs/decisions/D-011-philosophy-series.md)；`design/ref/` 增加参考索引并纳入 M1 子关注点；`design/TODO` 第二批与第三批均完成；下一步用真实项目过「青橙十问」。
@@ -43,7 +44,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 63 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 66 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。
