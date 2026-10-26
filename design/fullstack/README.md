@@ -1,6 +1,6 @@
 # 青橙全栈（QC Stack）· 技术框架提案
 
-> **状态**：**P16 S3 校验/限速/扫描钩子已完成 / P17 待做** ｜ 日期：2026-10-26 14:34 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
+> **状态**：**P17 发布准备完成；npm 发布/HMR/SMTP STARTTLS 待外部条件（P18）** ｜ 日期：2026-10-26 14:38 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
 > **定位**：青橙设计的技术底座。不是新的设计系统，也不是 Nuxt/Astro 的换皮；是一套**Web 优先、全栈、可替换依赖**的应用框架。
 > **一句话**：让一个懂 TypeScript 和基本 Web 的人，不研究 bundler / HTTP / ORM / session / 部署细节，也能做出网站、应用和大部分游戏服务端需求；同时保留“随时接管底层”的出口。
 
@@ -110,6 +110,7 @@
 | [22 P14 实现记录](docs/implementation/22_P14实现记录.md) | S3 大文件、OAuth token 加密 |
 | [23 P15 实现记录](docs/implementation/23_P15实现记录.md) | 第三 dogfood、OAuth 密钥轮换 |
 | [24 P16 实现记录](docs/implementation/24_P16实现记录.md) | S3 校验和、限速、上传扫描钩子 |
+| [25 P17 实现记录](docs/implementation/25_P17实现记录.md) | 发布检查；外部发布边界 |
 
 ## 七、与 LRDS / kits 的关系
 
@@ -136,6 +137,7 @@
 - **P14 核心已落地**：S3 大文件（并发/重试/checkpoint）、OAuth token AES-GCM 加密。
 - **P15 核心已落地**：第三 dogfood（guestbook）、OAuth 密钥轮换。
 - **P16 核心已落地**：S3 校验和、分片限速、上传扫描钩子。
-- **P17 待做**：npm 发布/远程包、组件级 HMR、SMTP STARTTLS/DKIM、真实 CI/镜像/日志。
+- **P17 发布准备完成**：包 dry-run、测试 10/10、发布检查文档；npm 发布/HMR/SMTP STARTTLS 待外部条件。
+- **P18 待决策**：推送并跑 CI、npm registry/发布、HMR 立项、真实 SMTP。
 - `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](docs/implementation/09_P1实现记录.md) / [10](docs/implementation/10_P2实现记录.md) / [11](docs/implementation/11_P3实现记录.md) / [12](docs/implementation/12_P4实现记录.md) / [13](docs/implementation/13_P5实现记录.md) / [14](docs/implementation/14_P6实现记录.md) / [15](docs/implementation/15_P7实现记录.md) / [16](docs/implementation/16_P8实现记录.md) / [17](docs/implementation/17_P9实现记录.md) / [18](docs/implementation/18_P10实现记录.md) / [19](docs/implementation/19_P11实现记录.md)。
 - 不替换现有网站/LiveFab；P4 前不把示例当生产服务。
