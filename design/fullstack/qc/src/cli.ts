@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --experimental-strip-types
-import { existsSync, mkdirSync, readdirSync, writeFileSync, copyFileSync, unlinkSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, writeFileSync, copyFileSync, unlinkSync, symlinkSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { spawn } from 'node:child_process'
@@ -10,6 +10,7 @@ import { migrate, openDatabase } from './data.ts'
 import { discover } from './router.ts'
 import { startServer } from './server.ts'
 import { buildApp } from './build.ts'
+import { pack } from './pack.ts'
 import { nowIso } from './time.ts'
 
 const args = process.argv.slice(2)
@@ -26,6 +27,7 @@ function help(): void {
   qc db migrate         应用迁移
   qc db backup [file]   备份 SQLite
   qc db restore <file> --force  恢复（覆盖）
+  qc pack               预编译包（dist/index.mjs + dist/cli.mjs）
   qc doctor             打印配置/路由/数据库
   qc new <dir>          创建最小应用
   qc help
@@ -43,14 +45,17 @@ function write(path: string, content: string): void {
   writeFileSync(path, content, 'utf8')
 }
 
-function makeApp(target: string): void {
+async function makeApp(target: string): Promise<void> {
   const dir = resolve(cwd, target)
   if (existsSync(dir) && readdirSync(dir).length > 0) fail(`目录非空: ${dir}`)
-  const indexPath = fileURLToPath(new URL('./index.ts', import.meta.url))
-  const cliPath = fileURLToPath(new URL('./cli.ts', import.meta.url))
-  const bridge = `export * from ${JSON.stringify(pathToFileURL(indexPath).href)}\n`
-  write(join(dir, 'app/qc.ts'), bridge)
-  write(join(dir, 'app/pages/index.page.ts'), `import { definePage, html } from '../qc.ts'
+  const qcRoot = fileURLToPath(new URL('..', import.meta.url))
+  if (!existsSync(join(qcRoot, 'dist/index.mjs'))) {
+    await pack()
+  }
+  const cliPath = join(qcRoot, 'dist/cli.mjs')
+  mkdirSync(join(dir, 'node_modules/@qingcheng'), { recursive: true })
+  symlinkSync(qcRoot, join(dir, 'node_modules/@qingcheng/qc'), 'dir')
+  write(join(dir, 'app/pages/index.page.ts'), `import { definePage, html } from '@qingcheng/qc'
 
 export default definePage({
   render() {
@@ -64,7 +69,7 @@ export default definePage({
   },
 })
 `)
-  write(join(dir, 'app/actions/notes/create.action.ts'), `import { defineAction, redirect, badRequest, nowIso } from '../../qc.ts'
+  write(join(dir, 'app/actions/notes/create.action.ts'), `import { defineAction, redirect, badRequest, nowIso } from '@qingcheng/qc'
 
 export default defineAction({
   async handle({ form, db }) {
@@ -93,12 +98,13 @@ export default defineAction({
     name: target.replace(/[^a-z0-9-]/gi, '-').toLowerCase() || 'qc-app',
     private: true,
     type: 'module',
+    dependencies: { '@qingcheng/qc': `file:${qcRoot}` },
     scripts: {
-      dev: `node --experimental-strip-types ${JSON.stringify(cliPath)} dev`,
-      start: `node --experimental-strip-types ${JSON.stringify(cliPath)} start`,
-      build: `node --experimental-strip-types ${JSON.stringify(cliPath)} build`,
-      'db:migrate': `node --experimental-strip-types ${JSON.stringify(cliPath)} db migrate`,
-      doctor: `node --experimental-strip-types ${JSON.stringify(cliPath)} doctor`,
+      dev: 'node ./node_modules/@qingcheng/qc/dist/cli.mjs dev',
+      start: 'node ./node_modules/@qingcheng/qc/dist/cli.mjs start',
+      build: 'node ./node_modules/@qingcheng/qc/dist/cli.mjs build',
+      'db:migrate': 'node ./node_modules/@qingcheng/qc/dist/cli.mjs db migrate',
+      doctor: 'node ./node_modules/@qingcheng/qc/dist/cli.mjs doctor',
     },
   }, null, 2) + '\n')
   write(join(dir, 'README.md'), `# QC App\n\n\`\`\`bash\nnpm run dev\n\`\`\`\n\n编辑 \`app/pages/index.page.ts\`；数据迁移在 \`app/data/migrations/\`。\n`)
@@ -199,6 +205,7 @@ async function main(): Promise<void> {
     if (!args[1]) fail('用法: qc new <dir>')
     return makeApp(args[1])
   }
+  if (command === 'pack') { const dist = await pack(); console.log(`✓ 预编译包: ${dist}`); return }
   if (command === 'dev') return dev()
   if (command === 'start') return start(args[1])
   if (command === 'build') return build(args[1])

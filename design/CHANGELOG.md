@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **青橙全栈 P11 核心**：`qc pack` 预编译包（`dist/index.mjs`/`dist/cli.mjs`）、`qc new` 通过 `@qingcheng/qc` 包导入；`19_P11实现记录`。
 - **青橙全栈 P10 核心**：S3 兼容存储（SigV4 PUT）、OAuth PKCE（S256）；9/9 测试；`18_P10实现记录`。
 - **青橙全栈 P9 核心**：SMTP transport、`Storage`/`LocalStorage`/`MemoryStorage`、开发自动刷新、CI 模板；8/8 测试；`17_P9实现记录`。
 - **青橙全栈 P8 核心 + 文档分区**：OAuth 通用路由、GitHub/Google 预设；全栈文档迁入 `docs/design/` 与 `docs/implementation/`，新增 `docs/README.md`；7/7 测试；`16_P8实现记录`。

@@ -10,6 +10,7 @@ node --experimental-strip-types src/cli.ts dev
 node --experimental-strip-types src/cli.ts start
 node --experimental-strip-types src/cli.ts db migrate
 node --experimental-strip-types src/cli.ts build
+node --experimental-strip-types src/cli.ts pack
 node --experimental-strip-types src/cli.ts new my-app
 node --experimental-strip-types test/notes.test.ts
 ```
@@ -45,7 +46,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1–P10 边界
+## P1–P11 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -67,7 +68,9 @@ qc.config.ts
 - ✅ OAuth 通用路由 + GitHub/Google 预设（examples/notes）
 - ✅ SMTP（隐式 TLS/明文）、存储接口、开发自动刷新、CI 模板
 - ✅ S3 兼容存储（SigV4 PUT）、OAuth PKCE（S256）
-- ❌ S3 multipart/扫描 / 真 HMR / 预编译包 / OAuth refresh（P11）
+- ✅ `qc pack` 预编译包（`dist/index.mjs`/`dist/cli.mjs`）
+- ✅ `qc new` 通过 `@qingcheng/qc` 包导入（本地 file/symlink）
+- ❌ npm 发布/远程包 / 组件级 HMR / S3 multipart/扫描 / OAuth refresh（P12）
 
 ## 注意
 
