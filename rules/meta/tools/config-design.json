@@ -2,46 +2,124 @@
   "_comment": "M1+M2 判定配置 · design/（LRDS 设计系统）。tokens/、kits/ 与 ref/ 是子关注点；tokens 下的 core/products/schema/dist 是数据类，命名豁免；tools/ 是代码类，命名豁免。2026-10-21 实测 0 违规后转 block。",
   "concern": "design",
   "root": ".",
-  "root_docs": ["README.md", "CHANGELOG.md", "HUB.html", "TODO.md"],
-  "type_vocab": ["docs", "philosophy", "fullstack", "tokens", "kits", "components", "tools"],
-  "code_types": ["tools"],
+  "root_docs": [
+    "README.md",
+    "CHANGELOG.md",
+    "HUB.html",
+    "TODO.md",
+    "GUIDE.html"
+  ],
+  "type_vocab": [
+    "docs",
+    "philosophy",
+    "fullstack",
+    "tokens",
+    "kits",
+    "components",
+    "tools",
+    "rules"
+  ],
+  "code_types": [
+    "tools"
+  ],
   "empty_ok_types": [],
-  "doc_naming": { "default": ["^\\d+_", "^[a-zA-Z0-9_.-]+$"] },
-  "skip_dirs": ["node_modules", ".git"],
-  "skip_prefixes": [".", "_"],
-  "sub_concerns": ["tokens", "kits", "ref"],
+  "doc_naming": {
+    "default": [
+      "^\\d+_",
+      "^[a-zA-Z0-9_.-]+$"
+    ],
+    "rules": [
+      "^R-\\d{3}-[a-z0-9-]+\\.md$"
+    ]
+  },
+  "skip_dirs": [
+    "node_modules",
+    ".git"
+  ],
+  "skip_prefixes": [
+    ".",
+    "_"
+  ],
+  "sub_concerns": [
+    "tokens",
+    "kits",
+    "ref"
+  ],
   "sub_concerns_dir": null,
   "sub_configs": {
     "tokens": {
-      "root_docs": ["README.md"],
-      "type_vocab": ["core", "products", "schema", "dist"],
-      "code_types": ["core", "products", "schema", "dist"],
+      "root_docs": [
+        "README.md"
+      ],
+      "type_vocab": [
+        "core",
+        "products",
+        "schema",
+        "dist"
+      ],
+      "code_types": [
+        "core",
+        "products",
+        "schema",
+        "dist"
+      ],
       "empty_ok_types": [],
-      "doc_naming": { "default": ["^[a-zA-Z0-9_.-]+$"] },
+      "doc_naming": {
+        "default": [
+          "^[a-zA-Z0-9_.-]+$"
+        ]
+      },
       "skip_dirs": [],
-      "skip_prefixes": [".", "_"],
+      "skip_prefixes": [
+        ".",
+        "_"
+      ],
       "sub_concerns": [],
       "sub_configs": {}
     },
     "kits": {
-      "root_docs": ["README.md"],
-      "type_vocab": ["web", "godot"],
-      "code_types": ["web", "godot"],
+      "root_docs": [
+        "README.md"
+      ],
+      "type_vocab": [
+        "web",
+        "godot"
+      ],
+      "code_types": [
+        "web",
+        "godot"
+      ],
       "empty_ok_types": [],
-      "doc_naming": { "default": ["^[a-zA-Z0-9_.-]+$"] },
+      "doc_naming": {
+        "default": [
+          "^[a-zA-Z0-9_.-]+$"
+        ]
+      },
       "skip_dirs": [],
-      "skip_prefixes": [".", "_"],
+      "skip_prefixes": [
+        ".",
+        "_"
+      ],
       "sub_concerns": [],
       "sub_configs": {}
     },
     "ref": {
-      "root_docs": ["README.md"],
+      "root_docs": [
+        "README.md"
+      ],
       "type_vocab": [],
       "code_types": [],
       "empty_ok_types": [],
-      "doc_naming": { "default": ["^[^/]+$"] },
+      "doc_naming": {
+        "default": [
+          "^[^/]+$"
+        ]
+      },
       "skip_dirs": [],
-      "skip_prefixes": [".", "_"],
+      "skip_prefixes": [
+        ".",
+        "_"
+      ],
       "sub_concerns": [],
       "sub_configs": {}
     }

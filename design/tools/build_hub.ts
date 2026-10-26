@@ -455,19 +455,19 @@ function generate(): string {
     }).join('')}
   </tr>`).join('')
 
-  const html = `<!doctype html>
+  let html = `<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>青橙设计 · LRDS HUB</title>
+<title>青橙设计 · 项目 HUB</title>
 <script>
 (function(){
   try {
     var q = new URLSearchParams(location.search).get('theme');
     var t = (q === 'light' || q === 'dark' || q === 'system')
       ? q
-      : (localStorage.getItem('lrds-hub-theme') || 'system');
+      : (localStorage.getItem('lrds-theme') || 'system');
     document.documentElement.dataset.theme = t;
   } catch (e) {
     document.documentElement.dataset.theme = 'system';
@@ -650,24 +650,20 @@ function generate(): string {
 <body>
 <header class="topbar">
   <div class="topline">
-    <div class="brand">青橙设计 · LRDS<span class="en">LiveRefu Design System</span></div>
+    <div class="brand">青橙设计 · PROJECT HUB<span class="en">LRDS / Project</span></div>
     <div class="stamp">v${esc(version)} 已发布 ｜ App kit 起步（未发布）</div>
     <div class="theme-switch" role="group" aria-label="主题">
       <button type="button" data-theme-set="system" aria-pressed="true">系统</button>
-      <button type="button" data-theme-set="light" aria-pressed="false">亮色</button>
-      <button type="button" data-theme-set="dark" aria-pressed="false">暗色</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">浅色</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">深色</button>
     </div>
   </div>
-  <div class="hint">一页看完：总览 / 演进 / Token / 风格卡 / 组件 / 产品 / 验收 / 决策。由 <code>design/tools/build_hub.ts</code> 生成；点击色块可复制色值；右上角可切换系统 / 亮色 / 暗色。打印时自动展开全部 Tab。</div>
+  <div class="hint">项目 HUB：总览 / 演进 / 验收 / 决策 / 文档。设计系统本身（token / 组件 / 风格卡 / 规则 / 主题）见 <a href="GUIDE.html">GUIDE.html</a>。由 <code>design/tools/build_hub.ts</code> 生成；右上角可切换系统 / 深色 / 浅色。</div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>总览</button>
     <button role="tab" data-tab="evolution"><span class="n">02</span>演进</button>
-    <button role="tab" data-tab="tokens"><span class="n">03</span>Token</button>
-    <button role="tab" data-tab="cards"><span class="n">04</span>风格卡</button>
-    <button role="tab" data-tab="components"><span class="n">05</span>组件</button>
-    <button role="tab" data-tab="products"><span class="n">06</span>产品</button>
-    <button role="tab" data-tab="checks"><span class="n">07</span>验收</button>
-    <button role="tab" data-tab="decisions"><span class="n">08</span>决策与文档</button>
+    <button role="tab" data-tab="checks"><span class="n">03</span>验收</button>
+    <button role="tab" data-tab="decisions"><span class="n">04</span>决策与文档</button>
   </nav>
 </header>
 <main>
@@ -882,7 +878,7 @@ const themeButtons = [...document.querySelectorAll('[data-theme-set]')];
 function setTheme(t, persist){
   document.documentElement.dataset.theme = t;
   themeButtons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === t)));
-  if (persist) { try { localStorage.setItem('lrds-hub-theme', t); } catch (e) {} }
+  if (persist) { try { localStorage.setItem('lrds-theme', t); } catch (e) {} }
 }
 themeButtons.forEach(b => b.addEventListener('click', () => setTheme(b.dataset.themeSet, true)));
 setTheme(document.documentElement.dataset.theme || 'system', false);
@@ -914,6 +910,24 @@ document.querySelectorAll('.swatch[data-hex]').forEach(el => {
 </script>
 </body>
 </html>`
+
+  html = html.replace(/[ \t]+$/gm, '')
+  // 项目 HUB 与设计 GUIDE 分离：只保留项目相关的总览/演进/验收/决策。
+  const stripPanel = (source: string, id: string): string => {
+    const start = source.indexOf(`<section class="panel" id="panel-${id}">`)
+    if (start < 0) return source
+    const end = source.indexOf('</section>', start)
+    if (end < 0) return source
+    return source.slice(0, start) + source.slice(end + '</section>'.length)
+  }
+  for (const id of ['tokens', 'cards', 'components', 'products']) html = stripPanel(html, id)
+  html = html.replace(/[ \t]+$/gm, '')
+  const principleStart = html.indexOf('    <h3>八条原则</h3>')
+  const productStart = html.indexOf('    <h3>产品覆盖</h3>', principleStart)
+  if (principleStart >= 0 && productStart > principleStart) {
+    html = html.slice(0, principleStart) + html.slice(productStart)
+  }
+  html = html.replace('项目 HUB：总览 / 演进 / 验收 / 决策 / 文档。设计系统本身（token / 组件 / 风格卡 / 规则 / 主题）见 <a href="GUIDE.html">GUIDE.html</a>。', '项目 HUB：总览 / 演进 / 验收 / 决策 / 文档。设计系统本身（token / 组件 / 风格卡 / 规则 / 主题）见 <a href="GUIDE.html">GUIDE.html</a>。')
 
   // 本地链接 / 图片必须存在；HUB 不许引用不存在的文件。
   const refs = [...html.matchAll(/(?:href|src)="([^"]+)"/g)]

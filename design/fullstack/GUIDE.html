@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" data-theme="system">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>青橙全栈 · Framework GUIDE</title>
 <meta name="description" content="青橙全栈（QC Stack）功能指南：page/action/table/auth、SQLite、HTML-first、bundle、mail、OAuth、S3 与安全默认值。">
+<script>(function(){try{var t=localStorage.getItem("lrds-theme")||"system";if(t==="dark"||t==="light"||t==="system")document.documentElement.dataset.theme=t;}catch(e){}})();</script>
 <style>
   :root{
     --lr-color-bg-base:#0B0F14; --lr-color-bg-sunken:#0B1116; --lr-color-bg-surface:#111823; --lr-color-bg-raised:#161D26;
@@ -29,6 +30,14 @@
     --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8;
     color-scheme:light;
   }
+  @media (prefers-color-scheme: light){
+    html[data-theme="system"]{
+      --bg:#F7F3EA; --sunken:#EDE6D8; --surface:#FFFDF8; --raised:#EDE6D8;
+      --text:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line-strong:#8A8275;
+      --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8;
+      color-scheme:light;
+    }
+  }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--lr-ref-font-family-sans)}
@@ -50,6 +59,11 @@
   .chip.warn{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,transparent)}
   .chip.todo{color:var(--rust);border-color:color-mix(in srgb,var(--rust) 45%,transparent)}
   .theme{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--dim);font:inherit;font-size:12px;border-radius:999px;padding:4px 10px;cursor:pointer}
+  .theme-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--bg)}
+  .theme-switch button{appearance:none;border:0;background:transparent;color:var(--dim);font:inherit;font-size:12px;padding:4px 9px;border-radius:999px;cursor:pointer}
+  .theme-switch button:hover{color:var(--text)}
+  .theme-switch button[aria-pressed="true"]{background:var(--surface);color:var(--teal);font-weight:600;box-shadow:inset 0 0 0 1px var(--teal)}
+  .theme-switch button:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
   .theme:hover{color:var(--text);border-color:var(--line-strong)}
   nav.tabs{max-width:1180px;margin:8px auto 0;padding:0 24px;display:flex;gap:2px;overflow-x:auto}
   nav.tabs a{border:0;border-bottom:2px solid transparent;padding:10px 12px;color:var(--dim);font-size:13.5px;white-space:nowrap;border-radius:6px 6px 0 0}
@@ -131,7 +145,11 @@
     <div class="top-status">
       <span class="chip ok">Web 全栈</span>
       <span class="chip acc">P1–P17</span>
-      <button class="theme" id="theme" type="button" aria-pressed="false">浅色</button>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-set="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false">深色</button>
+        <button type="button" data-theme-set="light" aria-pressed="false">浅色</button>
+      </div>
     </div>
   </div>
   <nav class="tabs" aria-label="页面导航">
@@ -342,12 +360,15 @@
 
 <script>
 (function(){
-  var root=document.documentElement, btn=document.getElementById('theme');
-  try { var saved=localStorage.getItem('qc-guide-theme'); if(saved==='light'||saved==='dark') root.dataset.theme=saved; } catch(e){}
-  function sync(){ var light=root.dataset.theme==='light'; btn.textContent=light?'深色':'浅色'; btn.setAttribute('aria-pressed',String(light)); }
-  btn.addEventListener('click',function(){ root.dataset.theme=root.dataset.theme==='light'?'dark':'light'; try{localStorage.setItem('qc-guide-theme',root.dataset.theme)}catch(e){} sync(); });
-  sync();
-})();
-</script>
+  var root=document.documentElement;
+  var buttons=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  function set(t,persist){
+    root.dataset.theme=t;
+    buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t));});
+    if(persist){try{localStorage.setItem('lrds-theme',t)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.themeSet,true);});});
+  set(root.dataset.theme||'system',false);
+})();</script>
 </body>
 </html>

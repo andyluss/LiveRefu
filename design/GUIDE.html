@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>青橙设计 · LRDS GUIDE</title>
+<meta name="description" content="青橙设计（LRDS）设计系统指南：五层模型、三层 token、组件、风格卡、三态主题、规则与介质接入。">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('lrds-theme') || 'system';
+    if (t !== 'system' && t !== 'dark' && t !== 'light') t = 'system';
+    document.documentElement.dataset.theme = t;
+  } catch (e) { document.documentElement.dataset.theme = 'system'; }
+})();
+</script>
+<style>
+  :root{
+    --lr-color-bg-base:#0B0F14; --lr-color-bg-sunken:#0B1116; --lr-color-bg-surface:#111823; --lr-color-bg-raised:#161D26;
+    --lr-color-text-primary:#F3EDE1; --lr-color-text-secondary:#9AA7B8; --lr-color-text-muted:#808D9F;
+    --lr-color-line-subtle:#24303F; --lr-color-line-strong:#66727F;
+    --lr-color-action-primary:#4FD1C5; --lr-color-action-primary-hover:#57D8C8; --lr-color-feedback-warning:#FFC857;
+    --lr-color-feedback-danger:#FF6B35; --lr-color-feedback-success:#7BD389; --lr-color-focus-ring:#8AB4F8;
+    --lr-color-material-mid:#39485A; --lr-color-material-highlight:#F3EDE1;
+    --lr-radius-control:4px; --lr-radius-panel:8px;
+    --lr-space-4:4px; --lr-space-8:8px; --lr-space-12:12px; --lr-space-16:16px; --lr-space-24:24px; --lr-space-32:32px;
+    --lr-ref-font-family-sans:ui-sans-serif,system-ui,-apple-system,"SF Pro SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --lr-ref-font-family-mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --bg:var(--lr-color-bg-base); --sunken:var(--lr-color-bg-sunken); --surface:var(--lr-color-bg-surface); --raised:var(--lr-color-bg-raised);
+    --text:var(--lr-color-text-primary); --dim:var(--lr-color-text-secondary); --muted:var(--lr-color-text-muted);
+    --line:var(--lr-color-line-subtle); --line-strong:var(--lr-color-line-strong);
+    --teal:var(--lr-color-action-primary); --teal-hi:var(--lr-color-action-primary-hover);
+    --amber:var(--lr-color-feedback-warning); --rust:var(--lr-color-feedback-danger); --ok:var(--lr-color-feedback-success); --focus:var(--lr-color-focus-ring);
+    color-scheme:dark;
+  }
+  html[data-theme="light"]{
+    --bg:#F7F3EA; --sunken:#EDE6D8; --surface:#FFFDF8; --raised:#EDE6D8;
+    --text:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line-strong:#8A8275;
+    --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: light){
+    html[data-theme="system"]{
+      --bg:#F7F3EA; --sunken:#EDE6D8; --surface:#FFFDF8; --raised:#EDE6D8;
+      --text:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line-strong:#8A8275;
+      --teal:#0B6B63; --teal-hi:#09544E; --amber:#7A4E00; --rust:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8;
+      color-scheme:light;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--lr-ref-font-family-sans)}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(760px 340px at 16% -8%,color-mix(in srgb,var(--teal) 9%,transparent),transparent 65%);z-index:-1}
+  a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 35%,transparent)}
+  a:hover{border-bottom-color:var(--focus)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  code{font-family:var(--lr-ref-font-family-mono);font-size:.88em;background:var(--sunken);border:1px solid var(--line);border-radius:var(--lr-radius-control);padding:1px 5px}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--surface);color:var(--text);padding:8px 12px;border:1px solid var(--teal);border-radius:var(--lr-radius-control);z-index:30}
+  .skip:focus{left:8px}
+  .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 24px 0;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .brand{font-weight:700;font-size:18px;letter-spacing:.02em}
+  .brand span{color:var(--muted);font-weight:400;font-size:12px;letter-spacing:.12em;margin-left:8px;font-family:var(--lr-ref-font-family-mono)}
+  .top-status{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;align-items:center}
+  .chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--dim);white-space:nowrap}
+  .chip.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+  .chip.acc{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 45%,transparent)}
+  .chip.warn{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,transparent)}
+  .theme-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--bg)}
+  .theme-switch button{appearance:none;border:0;background:transparent;color:var(--dim);font:inherit;font-size:12px;padding:4px 9px;border-radius:999px;cursor:pointer}
+  .theme-switch button:hover{color:var(--text)}
+  .theme-switch button[aria-pressed="true"]{background:var(--surface);color:var(--teal);font-weight:600;box-shadow:inset 0 0 0 1px var(--teal)}
+  .theme-switch button:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+  nav.tabs{max-width:1180px;margin:8px auto 0;padding:0 24px;display:flex;gap:2px;overflow-x:auto}
+  nav.tabs a{border:0;border-bottom:2px solid transparent;padding:10px 12px;color:var(--dim);font-size:13.5px;white-space:nowrap;border-radius:6px 6px 0 0}
+  nav.tabs a:hover{color:var(--text);background:color-mix(in srgb,var(--text) 3%,transparent)}
+  nav.tabs a .n{font-family:var(--lr-ref-font-family-mono);color:var(--muted);font-size:11px;margin-right:5px}
+  main{max-width:1180px;margin:0 auto;padding:28px 24px 72px}
+  section{scroll-margin-top:110px;margin:0 0 52px}
+  h1{font-size:clamp(30px,4.4vw,50px);line-height:1.08;letter-spacing:-.02em;margin:0 0 12px;max-width:100%;word-break:keep-all}
+  h2{font-size:22px;line-height:1.3;margin:0 0 6px}
+  h3{font-size:15px;margin:0 0 6px}
+  p{margin:6px 0}
+  .eyebrow{font-family:var(--lr-ref-font-family-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+  .lede{color:var(--dim);font-size:16px;max-width:74ch}
+  .hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:32px;align-items:start;padding:18px 0 8px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .btn{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:7px 13px;border-radius:var(--lr-radius-control);border:1.5px solid var(--line-strong);background:var(--surface);color:var(--text);font:inherit;font-size:13.5px}
+  .btn:hover{border-color:var(--teal);color:var(--teal)}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:var(--bg);font-weight:650}
+  .btn.primary:hover{background:var(--teal-hi);border-color:var(--teal-hi);color:var(--bg)}
+  .hero-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:15px 17px}
+  .hero-card .row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .hero-card .row:last-child{border-bottom:0}.hero-card b{font-family:var(--lr-ref-font-family-mono);color:var(--teal);font-weight:600}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 18px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:12px 13px}
+  .stat .v{font-family:var(--lr-ref-font-family-mono);font-size:24px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+  .stat .l{color:var(--dim);font-size:11.5px;margin-top:4px}
+  .stat.a .v{color:var(--teal)}.stat.b .v{color:var(--amber)}.stat.c .v{color:var(--ok)}
+  .grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:14px 15px}
+  .card p{color:var(--dim);font-size:13px}.card .meta{color:var(--muted);font-size:10.5px;font-family:var(--lr-ref-font-family-mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+  .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+  .principle{background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:11px 12px}
+  .principle .n{font-family:var(--lr-ref-font-family-mono);font-size:10px;color:var(--teal);letter-spacing:.08em}
+  .principle h3{font-size:12.5px;margin:4px 0 3px;line-height:1.35}.principle p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.45}
+  .layers{display:grid;gap:7px;margin-top:14px}
+  .layer{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:10px 13px}
+  .layer .l{font-family:var(--lr-ref-font-family-mono);font-size:11px;color:var(--teal);letter-spacing:.05em}
+  .layer .body{display:flex;gap:6px;flex-wrap:wrap;color:var(--dim);font-size:12px}
+  .layer .body span{border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+  .layer.core{border-color:color-mix(in srgb,var(--teal) 45%,var(--line));background:linear-gradient(90deg,color-mix(in srgb,var(--teal) 7%,var(--surface)),var(--surface))}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+  th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  tbody tr:hover{background:color-mix(in srgb,var(--text) 2%,transparent)}
+  .num{font-family:var(--lr-ref-font-family-mono);white-space:nowrap}
+  .swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:10px}
+  .swatch{display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--lr-radius-panel);padding:8px}
+  .swatch i{width:34px;height:34px;border-radius:3px;background:var(--c);border:1px solid var(--line-strong);flex:none}
+  .swatch code{font-size:10.5px;border:0;background:transparent;padding:0;color:var(--dim)}
+  .swatch b{font-size:12px;display:block}
+  .type-row{display:grid;grid-template-columns:150px 1fr;gap:12px;border-bottom:1px dashed var(--line);padding:8px 0}
+  .type-row .m{font-family:var(--lr-ref-font-family-mono);font-size:11px;color:var(--muted)}
+  .type-row .s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .type-title{font-size:28px;font-weight:700}.type-title2{font-size:20px;font-weight:600}.type-body{font-size:16px}.type-caption{font-size:14px;color:var(--dim)}.type-number{font-size:32px;font-weight:700;font-family:var(--lr-ref-font-family-mono)}
+  .callout{border-left:3px solid var(--teal);background:var(--surface);padding:12px 15px;border-radius:0 var(--lr-radius-panel) var(--lr-radius-panel) 0;color:var(--dim);font-size:13px}
+  .callout strong{color:var(--text)}
+  .links-row{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:18px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  @media (max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.principles{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:640px){.topbar-inner{padding:12px 16px 0}nav.tabs{padding:0 16px}main{padding:22px 16px 56px}.g2,.g3,.g4{grid-template-columns:1fr}.principles{grid-template-columns:1fr}.layer{grid-template-columns:1fr;gap:4px}.stats{grid-template-columns:1fr 1fr}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+  @media print{.topbar,nav.tabs,.theme-switch,.hero-actions{display:none!important}body{background:#fff;color:#111}main{max-width:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到正文</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">青橙设计 <span>LRDS · GUIDE</span></div>
+    <div class="top-status">
+      <span class="chip ok">v0.2 已发布</span>
+      <span class="chip acc">system / dark / light</span>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-set="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false">深色</button>
+        <button type="button" data-theme-set="light" aria-pressed="false">浅色</button>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="页面导航">
+    <a href="#overview"><span class="n">01</span>总览</a>
+    <a href="#principles"><span class="n">02</span>原则</a>
+    <a href="#layers"><span class="n">03</span>五层</a>
+    <a href="#tokens"><span class="n">04</span>Token</a>
+    <a href="#components"><span class="n">05</span>组件</a>
+    <a href="#cards"><span class="n">06</span>风格卡</a>
+    <a href="#theme"><span class="n">07</span>主题</a>
+    <a href="#rules"><span class="n">08</span>规则</a>
+    <a href="#use"><span class="n">09</span>使用</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section id="overview" aria-labelledby="overview-title">
+    <p class="eyebrow">Design System GUIDE · LRDS</p>
+    <div class="hero">
+      <div>
+        <h1 id="overview-title">一套语法，<br>多种介质</h1>
+        <p class="lede">青橙设计（LRDS）不是配色表：它把品牌、语义 token、组件契约、介质适配、资产与评审收在一套可机器校验的结构里。产品可以换风格卡，但不能换理解方式。</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#tokens">看 Token</a>
+          <a class="btn" href="#rules">看规则</a>
+          <a class="btn" href="HUB.html">项目 HUB</a>
+          <a class="btn" href="README.md">README</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="系统快照">
+        <div class="row"><span>当前版本</span><b>v0.2.0</b></div>
+        <div class="row"><span>Token</span><b>229</b></div>
+        <div class="row"><span>风格卡</span><b>4</b></div>
+        <div class="row"><span>组件契约</span><b>3</b></div>
+        <div class="row"><span>已接入产品</span><b>4</b></div>
+        <div class="row"><span>主题</span><b>system / dark / light</b></div>
+      </aside>
+    </div>
+
+    <div class="stats" aria-label="系统指标">
+      <div class="stat a"><div class="v">229</div><div class="l">共享 token</div></div>
+      <div class="stat b"><div class="v">4</div><div class="l">风格卡</div></div>
+      <div class="stat c"><div class="v">3</div><div class="l">组件契约</div></div>
+      <div class="stat a"><div class="v">0</div><div class="l">M1/M2 违规</div></div>
+    </div>
+
+    <div class="callout"><strong>先语义，后色值</strong>：业务只引用 <code>sys.*</code> / <code>product.*</code>；token 只写一次，CSS / Godot / App 由脚本生成；可访问性、焦点与主题是闸门，不是发布前补丁。</div>
+  </section>
+
+  <section id="principles" aria-labelledby="principles-title">
+    <p class="eyebrow">01 / Principles</p>
+    <h2 id="principles-title">八条原则（已冻结）</h2>
+    <div class="principles">
+      <div class="principle"><div class="n">01</div><h3>先语义，后色值</h3><p>业务只引用角色，不写 <code>#57d8c8</code>。</p></div>
+      <div class="principle"><div class="n">02</div><h3>一套语法，多种介质</h3><p>Web / Godot / App / 打印 / 实体共享理解方式。</p></div>
+      <div class="principle"><div class="n">03</div><h3>产品可变，理解不变</h3><p>换风格卡，不换信息位置与交互语法。</p></div>
+      <div class="principle"><div class="n">04</div><h3>无障碍是闸门</h3><p>对比度、焦点、缩放、减少动态由机器守。</p></div>
+      <div class="principle"><div class="n">05</div><h3>单一事实来源</h3><p>JSON 只写一次；生成物可复算、可对账。</p></div>
+      <div class="principle"><div class="n">06</div><h3>设计是闸门</h3><p>先规格后实现，发布前有验收；设计债按 P1。</p></div>
+      <div class="principle"><div class="n">07</div><h3>先收编，再统一</h3><p>保留合理差异，先对齐语义再替换取值。</p></div>
+      <div class="principle"><div class="n">08</div><h3>两个试点</h3><p>没有真实消费者，不算交付。</p></div>
+    </div>
+  </section>
+
+  <section id="layers" aria-labelledby="layers-title">
+    <p class="eyebrow">02 / Five layers</p>
+    <h2 id="layers-title">五层模型：从品牌到资产</h2>
+    <div class="layers">
+      <div class="layer"><div class="l">L0 品牌核心</div><div class="body"><span>定位</span><span>承诺</span><span>语气</span><span>标志</span><span>署名</span><span>法务</span></div></div>
+      <div class="layer core"><div class="l">L1 语法层</div><div class="body"><span>语义角色</span><span>字阶</span><span>间距</span><span>形状</span><span>动效</span><span>图标</span><span>网格</span><span>无障碍</span></div></div>
+      <div class="layer"><div class="l">L2 组件/模式</div><div class="body"><span>解剖</span><span>状态</span><span>交互契约</span><span>页面模式</span></div></div>
+      <div class="layer"><div class="l">L3 介质适配</div><div class="body"><span>Web</span><span>Godot</span><span>App</span><span>Print</span><span>Physical</span></div></div>
+      <div class="layer"><div class="l">L4 资产库</div><div class="body"><span>标志</span><span>图标</span><span>插画</span><span>摄影</span><span>3D</span><span>纹理</span><span>模板</span></div></div>
+    </div>
+    <div class="callout" style="margin-top:14px"><strong>一句话</strong>：产品改变外观，不改变理解方式；介质改变落地方式，不改变语义。</div>
+  </section>
+
+  <section id="tokens" aria-labelledby="tokens-title">
+    <p class="eyebrow">03 / Tokens</p>
+    <h2 id="tokens-title">三层 token：ref → sys → product</h2>
+    <div class="grid g3">
+      <div class="card"><div class="meta">REF</div><h3>原始值</h3><p>色相、尺度、字体族；低频变动。例：<code>ref.color.ink.950</code>。</p></div>
+      <div class="card"><div class="meta">SYS</div><h3>通用语义</h3><p>背景、文字、行动、反馈、焦点；跨产品共用。例：<code>sys.color.action.primary</code>。</p></div>
+      <div class="card"><div class="meta">PRODUCT</div><h3>产品语义</h3><p>产品/纪元专属角色；例：<code>product.future-debris.color.power</code>。</p></div>
+    </div>
+
+    <h3 style="margin-top:18px">语义色（当前深色值）</h3>
+    <div class="swatches">
+      <div class="swatch"><i style="--c:#0B0F14"></i><div><b>bg.base</b><code>#0B0F14</code></div></div>
+      <div class="swatch"><i style="--c:#111823"></i><div><b>bg.surface</b><code>#111823</code></div></div>
+      <div class="swatch"><i style="--c:#F3EDE1"></i><div><b>text.primary</b><code>#F3EDE1</code></div></div>
+      <div class="swatch"><i style="--c:#4FD1C5"></i><div><b>action.primary</b><code>#4FD1C5</code></div></div>
+      <div class="swatch"><i style="--c:#FFC857"></i><div><b>feedback.warning</b><code>#FFC857</code></div></div>
+      <div class="swatch"><i style="--c:#FF6B35"></i><div><b>feedback.danger</b><code>#FF6B35</code></div></div>
+      <div class="swatch"><i style="--c:#8AB4F8"></i><div><b>focus.ring</b><code>#8AB4F8</code></div></div>
+    </div>
+
+    <h3 style="margin-top:18px">UI 字阶（5 级）</h3>
+    <div class="type-row"><div class="m">title-1 · 28</div><div class="s type-title">从数字到现象</div></div>
+    <div class="type-row"><div class="m">title-2 · 20</div><div class="s type-title2">组件不是零件</div></div>
+    <div class="type-row"><div class="m">body · 16</div><div class="s type-body">正文默认 16px；中文不低于 16px。</div></div>
+    <div class="type-row"><div class="m">caption · 14</div><div class="s type-caption">标签、脚注、单位</div></div>
+    <div class="type-row"><div class="m">number-lg · 32</div><div class="s type-number">229</div></div>
+    <div class="callout" style="margin-top:10px"><strong>Editorial</strong> 另有 7 级（display 48 / h1 36 / h2 28 / h3 22 / body 16 / caption 14 / footnote 12）；不得为单页新增字号。详见 <a href="rules/R-004-type-scale.md">R-004</a>。</div>
+  </section>
+
+  <section id="components" aria-labelledby="components-title">
+    <p class="eyebrow">04 / Components</p>
+    <h2 id="components-title">契约先于实现</h2>
+    <div class="grid g3">
+      <a class="card" href="components/button.md"><div class="meta">CONTRACT</div><h3>Button</h3><p>primary / secondary / ghost / technical / outline / danger；6 态。</p></a>
+      <a class="card" href="components/form-field.md"><div class="meta">CONTRACT</div><h3>Form Field</h3><p>label / help / error / readonly；真实消费者：网站搜索框。</p></a>
+      <a class="card" href="components/panel.md"><div class="meta">CONTRACT</div><h3>Panel</h3><p>surface / interactive / elevated；8px 圆角。</p></a>
+    </div>
+    <div class="links-row" style="margin-top:12px"><a href="components/README.md">组件索引</a><a href="kits/web/preview.html">Web 组件预览</a><a href="kits/web/README.md">Web kit</a><a href="kits/godot/README.md">Godot kit</a><a href="kits/app/README.md">App kit</a><a href="tokens/README.md">Token 源</a><a href="tokens/dist/docs/tokens.md">完整 token 文档</a></div>
+  </section>
+
+  <section id="cards" aria-labelledby="cards-title">
+    <p class="eyebrow">05 / Style cards</p>
+    <h2 id="cards-title">换皮肤，不换语法</h2>
+    <div class="grid g4">
+      <div class="card"><div class="meta">SC-ARCHIVE</div><h3>未来档案</h3><p>Archive 纸感 / 登记 / 编辑；网站与知识库。</p></div>
+      <div class="card"><div class="meta">SC-FUTURE-DEBRIS</div><h3>未来残片</h3><p>原子纪元 / 镀铬 / 搪瓷 / 放射色。</p></div>
+      <div class="card"><div class="meta">SC-LIVEFAB</div><h3>LiveFab</h3><p>低装饰、功能优先的门户/仪表。</p></div>
+      <div class="card"><div class="meta">SC-TAPE</div><h3>明日频道</h3><p>磁带 / 暖棕 / 琥珀 / Console 暖色变体。</p></div>
+    </div>
+    <p class="lede" style="margin-top:10px">风格卡只改色板、材质、光源、装饰母题、图像处理与字体族；字阶、间距、焦点、信息位置不变。登记与对账见 <a href="docs/07_风格卡登记.md">07 风格卡登记</a>。</p>
+  </section>
+
+  <section id="theme" aria-labelledby="theme-title">
+    <p class="eyebrow">06 / Theme</p>
+    <h2 id="theme-title">三态主题：系统 / 深色 / 浅色</h2>
+    <div class="grid g2">
+      <div>
+        <p class="lede">默认跟随系统；用户可显式选择深色或浅色；选择持久化，系统切换实时响应。主题不是信息载体，两种外观都必须过对比度与焦点闸门。</p>
+        <div class="hero-actions">
+          <button class="btn" type="button" data-theme-set="system">跟随系统</button>
+          <button class="btn" type="button" data-theme-set="dark">深色</button>
+          <button class="btn" type="button" data-theme-set="light">浅色</button>
+        </div>
+        <p class="muted" style="font-size:12px">规则：[R-001](rules/R-001-theme-modes.md)（proposed，待批准）；存储键统一 `lrds-theme`。</p>
+      </div>
+      <div class="card">
+        <h3>硬要求</h3>
+        <ul style="margin:8px 0 0 18px;padding:0;color:var(--dim);font-size:13px">
+          <li>默认 `system`，不得强制单一外观。</li>
+          <li>三态控件，不得只做二态开关。</li>
+          <li>CSS 加载前设置 `data-theme`，避免闪烁。</li>
+          <li>两种外观都测对比度、焦点、禁用态。</li>
+          <li>打印强制浅色/白底。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="rules" aria-labelledby="rules-title">
+    <p class="eyebrow">07 / Rules</p>
+    <h2 id="rules-title">规则目录：一条规则一个文件</h2>
+    <p class="lede">规则与决策、实现文档分开：`design/rules/` 用 `R-NNN` 编号，状态/级别/范围/要求/验收/例外/关联固定。当前 15 条，R-001 待你裁决。</p>
+    <div class="grid g3">
+      <div class="card"><div class="meta">FOUNDATION</div><h3>Token / 命名 / 字阶</h3><p><a href="rules/R-002-token-source.md">R-002</a> · <a href="rules/R-003-semantic-naming.md">R-003</a> · <a href="rules/R-004-type-scale.md">R-004</a></p></div>
+      <div class="card"><div class="meta">INTERFACE</div><h3>间距 / 无障碍 / 组件</h3><p><a href="rules/R-005-space-shape.md">R-005</a> · <a href="rules/R-006-accessibility.md">R-006</a> · <a href="rules/R-007-component-contracts.md">R-007</a></p></div>
+      <div class="card"><div class="meta">GOVERNANCE</div><h3>生成 / 决策 / 版本</h3><p><a href="rules/R-009-generated-artifacts.md">R-009</a> · <a href="rules/R-010-decision-records.md">R-010</a> · <a href="rules/R-011-versioning.md">R-011</a></p></div>
+    </div>
+    <div class="links-row" style="margin-top:12px"><a href="rules/README.md">规则索引与格式</a><a href="rules/R-001-theme-modes.md">R-001 三态主题</a><a href="rules/R-008-style-cards.md">R-008 风格卡</a><a href="rules/R-012-directory-naming.md">R-012 目录</a><a href="rules/R-013-review-gates.md">R-013 闸门</a></div>
+  </section>
+
+  <section id="use" aria-labelledby="use-title">
+    <p class="eyebrow">08 / Use</p>
+    <h2 id="use-title">怎么接入</h2>
+    <div class="grid g3">
+      <div class="card"><div class="meta">WEB</div><h3>CSS 变量 + 组件类</h3><p>加载 `tokens/dist/web/<product>.css`，再加载 `components.css`；不写裸值。</p></div>
+      <div class="card"><div class="meta">GODOT</div><h3>JSON → Theme</h3><p>消费 `tokens/dist/godot/tokens.json`；产品风格卡投影到 `.tres` 并过对账。</p></div>
+      <div class="card"><div class="meta">APP</div><h3>平台无关 JSON</h3><p>`tokens/dist/app/tokens.json`；首个真实 App 后再决定 Swift/Kotlin 常量。</p></div>
+    </div>
+    <div class="callout" style="margin-top:12px"><strong>修改前</strong>：读 <a href="rules/README.md">rules/</a> 与相关契约；跑 <code>bash design/tools/check.sh</code>；改 token 源后重跑生成器。项目状态与阶段见 <a href="HUB.html">HUB.html</a>。</div>
+  </section>
+
+  <footer>
+    <span>青橙设计 · LRDS GUIDE ｜ 2026-10-26</span>
+    <span>项目视图见 <a href="HUB.html">HUB.html</a> ｜ 规则见 <a href="rules/README.md">rules/</a></span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var buttons=[].slice.call(document.querySelectorAll('[data-theme-set]'));
+  function set(t,persist){
+    root.dataset.theme=t;
+    buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.themeSet===t));});
+    if(persist){try{localStorage.setItem('lrds-theme',t)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.themeSet,true);});});
+  set(root.dataset.theme||'system',false);
+})();
+</script>
+</body>
+</html>

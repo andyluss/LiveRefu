@@ -21,6 +21,7 @@
 ### 新增
 
 - [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。
+- **青橙设计规则 + GUIDE + HUB 分区**：新增 `design/rules/`（15 条，R-001 三态主题 proposed）；新增 `design/GUIDE.html`（设计系统本身），`design/HUB.html` 改为项目状态/演进/验收/决策；四份 HUB/GUIDE 统一 `lrds-theme` 三态。
 - **青橙全栈可视化**：新增 [`design/fullstack/HUB.html`](design/fullstack/HUB.html)（项目开发/发布）与 [`design/fullstack/GUIDE.html`](design/fullstack/GUIDE.html)（功能/用法），沿用 LRDS token/焦点/圆角/暗亮主题；README/HUB/文档索引已加入口。
 - **全栈 TODO 收拢**：`design/TODO.md` 的 D-018–D-035 移入 [`design/fullstack/docs/TODO.md`](design/fullstack/docs/TODO.md)，并按设计 TODO 的 ID/层/优先级/状态/下一步/依赖格式重排；design TODO 只保留设计系统事项与一行链接。
 - **青橙全栈收尾**：新增 [`design/fullstack/docs/TODO.md`](design/fullstack/docs/TODO.md)，将推送/CI/npm/HMR/SMTP 等外部事项移出聊天；README/文档索引/design TODO/HUB 标记“已收尾”。

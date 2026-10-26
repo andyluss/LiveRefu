@@ -1,10 +1,11 @@
 # LiveRefu Design System（LRDS）· 项目设计系统
 
 > **一句话**：**一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
-> **状态**：**v0.2 已发布；v0.3 App kit 起步；青橙理念 00–08 已完稿；青橙全栈已收尾（P1–P17）**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token、青橙理念 00–08、青橙全栈已收尾（P1–P17）。
+> **状态**：**v0.2 已发布；v0.3 App kit 起步；青橙理念 00–08 已完稿；青橙全栈已收尾；规则 v0.1 草案待裁决**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token、青橙理念 00–08、青橙全栈已收尾（P1–P17）。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
 > **中文名（暂定）**：**青橙设计**——青/橙是复古未来常用色；只作暂定中文名，不替代公开母品牌名。
-> **先看这里**：[`HUB.html`](HUB.html) —— 一页看完 Token / 风格卡 / 组件 / 产品 / 验收 / 决策；由 `tools/build_hub.ts` 生成。
+> **先看这里**：设计系统本身看 [`GUIDE.html`](GUIDE.html)；项目状态/演进/验收/决策看 [`HUB.html`](HUB.html)（由 `tools/build_hub.ts` 生成）。
+> **规则**：[`rules/`](rules/README.md) —— 一条规则一个文件；R-001 三态主题待裁决。
 > **设计待办**：[`TODO.md`](TODO.md) —— 设计系统专属任务、等待拍板与状态。
 
 ## 一、这是什么（以及不是什么）
@@ -22,9 +23,11 @@
 
 | 你是 | 从这里开始 | 然后 |
 | --- | --- | --- |
-| **只想快速浏览** | [`HUB.html`](HUB.html)（可视化总览） | [00 决策总表](docs/00_决策总表.md) / [11 App kit](docs/11_App_kit_v0.2.md) |
+| **想看设计系统本身** | [`GUIDE.html`](GUIDE.html)（token / 组件 / 风格卡 / 主题 / 规则） | [rules/](rules/README.md) / [00 决策总表](docs/00_决策总表.md) |
+| **想看项目状态** | [`HUB.html`](HUB.html)（演进 / 验收 / 决策） | [TODO.md](TODO.md) / [CHANGELOG.md](CHANGELOG.md) |
 | **想看设计待办** | [TODO.md](TODO.md)（设计系统专属） | [根 TODO](../TODO.md)（跨项目） |
 | **想读入门文章** | [12 设计系统入门](docs/12_设计系统入门.md)（长文，非规范） | [HUB](HUB.html) / [00 决策总表](docs/00_决策总表.md) |
+| **想看规则** | [规则目录](rules/README.md)（15 条，R-001 待裁决） | [GUIDE](GUIDE.html) / [决策总表](docs/00_决策总表.md) |
 | **想读青橙理念** | [青橙理念系列](philosophy/README.md)（9 篇已完稿） | [D-011](docs/decisions/D-011-philosophy-series.md) / [参考材料](ref/README.md) |
 | **想做全栈技术** | [青橙全栈（已收尾）](fullstack/README.md)（Web 优先） | [Project HUB](fullstack/HUB.html) / [Framework GUIDE](fullstack/GUIDE.html) / [决策清单](fullstack/docs/design/08_决策清单.md) |
 | **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D11 已裁决；E01–E20 已执行；全栈 F1–F12 待裁决） | [05 v0.1](docs/05_实现记录_v0.1.md) / [06 v0.2](docs/06_实现记录_v0.2.md) / [08 组件落地](docs/08_组件落地_v0.2.md) / [09 产品走查](docs/09_产品走查_v0.2.md) / [10 皮肤收口](docs/10_皮肤收口_v0.2.md) / [11 App kit](docs/11_App_kit_v0.2.md) |
@@ -67,7 +70,8 @@
 ```
 design/
 ├── README.md                 # 本文件：出入口
-├── HUB.html                  # 一页式可视化总览（生成物）
+├── GUIDE.html                # 设计系统本身（静态指南）
+├── HUB.html                  # 项目状态/演进/验收/决策（生成物）
 ├── TODO.md                   # 设计系统专属待办
 ├── CHANGELOG.md              # 设计系统版本日志
 ├── philosophy/               # 青橙理念系列（00–08）
@@ -83,13 +87,14 @@ design/
 │   ├── web/                  # 网页接入说明
 │   ├── godot/                # Godot 接入说明
 │   └── app/                  # iOS/Android 接入说明（v0.3 起步）
+├── rules/                    # 规则（一条一个文件，R-001…）
 ├── tools/                    # token 生成 / 契约 / 风格卡 / 使用审计 / 走查 / check.sh
 ├── components/               # 3 个契约（draft）+ 共享 Web 组件层
 ├── assets/                   # 品牌资产（v0.3 起）
-└── references/               # 参考、法务登记、moodboard
+└── ref/                      # 参考理念/材料（非规范）
 ```
 
-> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 61 合规 / 0 违规）。
+> 目录规则遵循 [M1](../rules/meta/M1-file-organization.md) 与 [M2](../rules/meta/M2-naming-vocabulary.md)。`design/` 已纳入 M1/M2 `block`（[config-design.json](../rules/meta/tools/config-design.json)，实测 78 合规 / 0 违规）。
 
 ## 六、与既有资产的关系
 
@@ -121,7 +126,7 @@ design/
 ### v0.2 第二阶段（治理收口）
 
 - **明日频道风格卡登记**：`SC-TOMORROWS-CHANNEL-TAPE-v1` 落库（9 色 + 色温/光比/装饰参数），新增 [`check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts) 与 `.tres` 对账（7/7 自检）；登记表见 [07](docs/07_风格卡登记.md)。
-- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（61 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
+- **`design/` M1/M2 转 `block`**：新增 [`config-design.json`](../rules/meta/tools/config-design.json)，实测 0 违规（78 合规），工作区纳入闸门的关注点从 8 个增到 9 个；缺口不再以 `pending` 挂在明处。
 - **3 个组件契约（draft）**：[button](components/button.md) / [form-field](components/form-field.md) / [panel](components/panel.md)；契约闸门 **8/8**（五节、token、裸值、组件 CSS）。
 - **共享 Web 组件层渐进接入**：[components.css](kits/web/components.css) + 生成副本；网站/LiveFab 已叠加 `lr-button` / `lr-panel`，搜索框接入 `lr-field`；使用审计 **4/4**（button/panel 各 2 产品，field 1 产品）。预览图：[preview.png](kits/web/preview.png)。
 - **产品走查**：4 个页面、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [09 产品走查](docs/09_产品走查_v0.2.md)。
