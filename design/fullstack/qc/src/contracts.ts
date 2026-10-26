@@ -35,6 +35,8 @@ export interface Page {
 export interface Action {
   auth?: 'required' | 'optional'
   input?: Schema<any>
+  errorTitle?: string
+  onError?: (ctx: Ctx, error: unknown) => ActionResult | Promise<ActionResult>
   handle: (ctx: Ctx) => ActionResult | Promise<ActionResult>
 }
 

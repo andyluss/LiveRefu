@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "bin": { "qc": "./src/cli.ts" },
+  "bin": {
+    "qc": "./src/cli.ts"
+  },
   "scripts": {
     "test": "node --experimental-strip-types test/notes.test.ts"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
   }
 }

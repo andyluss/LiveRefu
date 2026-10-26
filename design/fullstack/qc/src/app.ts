@@ -3,7 +3,7 @@ import { extname, join, normalize, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 import { createAuth, defaultAuthConfig, type Auth, type AuthConfig } from './auth.ts'
-import { loadConfig, type QcConfig } from './config.ts'
+import { loadConfig, resolveConfig, type QcConfig } from './config.ts'
 import { migrate, openDatabase, type Db } from './data.ts'
 import { html, SafeHtml } from './html.ts'
 import { HttpError, json } from './http.ts'
@@ -11,7 +11,7 @@ import { discover, match, type Route } from './router.ts'
 import type { Action, Ctx, Page } from './contracts.ts'
 import { ValidationError } from './validate.ts'
 
-type Layout = (args: { title: string; children: SafeHtml | string; ctx: Ctx }) => SafeHtml | string
+export type Layout = (args: { title: string; children: SafeHtml | string; ctx: Ctx }) => SafeHtml | string
 
 const MIME: Record<string, string> = {
   '.css': 'text/css; charset=utf-8',
@@ -132,6 +132,13 @@ function securityHeaders(headers: Headers): void {
   }
 }
 
+export interface AppOptions {
+  config?: QcConfig
+  layout?: Layout
+  authConfig?: AuthConfig | null
+  modules?: Record<string, unknown>
+}
+
 export interface App {
   handle: (request: Request) => Promise<Response>
   close: () => void
@@ -142,15 +149,21 @@ export interface App {
   appRoot: string
 }
 
-export async function createApp(appRoot: string): Promise<App> {
+export async function createApp(appRoot: string, options: AppOptions = {}): Promise<App> {
   const root = resolve(appRoot)
-  const config = await loadConfig(root)
+  const config = options.config ? resolveConfig(options.config, root) : await loadConfig(root)
   const db = openDatabase(config.db.path)
   migrate(db, join(root, 'app/data/migrations'))
-  const authConfig = await loadAuthConfig(root)
+  const authConfig = 'authConfig' in options ? (options.authConfig ?? null) : await loadAuthConfig(root)
   const auth = authConfig ? createAuth(db, authConfig) : null
   const routes = discover(root)
-  const layout = await loadLayout(root)
+  const layout = options.layout ?? await loadLayout(root)
+  const modules = options.modules ?? {}
+  const loadModule = async (route: Route): Promise<any> => {
+    const bundled = modules[`${route.kind}:${route.route}`]
+    if (bundled) return bundled
+    return import(pathToFileURL(route.file).href)
+  }
   const dev = process.env.QC_DEV === '1'
   const rateWindows = new Map<string, { count: number; reset: number }>()
 
@@ -190,6 +203,15 @@ export async function createApp(appRoot: string): Promise<App> {
         if (asset) return asset
       }
 
+      if (pathname === '/health' && request.method === 'GET') {
+        try {
+          db.query('select 1')
+          return finalize(json({ ok: true, uptime: Math.round(process.uptime()), db: 'ok' }), '', [])
+        } catch {
+          return finalize(json({ ok: false, uptime: Math.round(process.uptime()), db: 'error' }, { status: 503 }), '', [])
+        }
+      }
+
       const pageRoute = routes.find(r => r.kind === 'page' && match(r.route, pathname))
       const actionRoute = routes.find(r => r.kind === 'action' && match(r.route, pathname))
       const apiRoute = routes.find(r => r.kind === 'api' && match(r.route, pathname))
@@ -219,7 +241,7 @@ export async function createApp(appRoot: string): Promise<App> {
         if (request.method !== 'GET' && request.method !== 'HEAD') {
           return finalize(new Response('Method Not Allowed', { status: 405, headers: { allow: 'GET, HEAD' } }), initialCookie, cookies)
         }
-        const mod = await import(pathToFileURL(route.file).href)
+        const mod = await loadModule(route)
         const page = mod.default as Page
         if (!page?.render) throw new Error(`页面缺少 render: ${route.file}`)
         if (page.auth === 'required' && !ctx.user) {
@@ -244,15 +266,28 @@ export async function createApp(appRoot: string): Promise<App> {
           const ok = auth.verifyCsrf(ctx.session!, parsed.form ?? null, request)
           if (!ok) throw new HttpError(403, 'CSRF 校验失败', 'CSRF_FAILED')
         }
-        const mod = await import(pathToFileURL(route.file).href)
+        const mod = await loadModule(route)
         const action = mod.default as Action
         if (action.auth === 'required' && !ctx.user) throw new HttpError(401, '需要登录', 'UNAUTHORIZED')
         if (!action?.handle) throw new Error(`动作缺少 handle: ${route.file}`)
-        if (action.input) ctx.input = action.input.parse(parsed.raw)
+        if (action.input) {
+          try {
+            ctx.input = action.input.parse(parsed.raw)
+          } catch (error) {
+            if (error instanceof ValidationError && action.onError) {
+              const body = await action.onError(ctx, error)
+              if (isResponse(body)) return finalize(body, initialCookie, cookies)
+              const title = action.errorTitle ?? '表单错误'
+              const rendered = layout({ title, children: body as SafeHtml | string, ctx })
+              return finalize(new Response(String(rendered), { status: 422, headers: { 'content-type': 'text/html; charset=utf-8' } }), initialCookie, cookies)
+            }
+            throw error
+          }
+        }
         return finalize(toResponse(await action.handle(ctx)), initialCookie, cookies)
       }
 
-      const mod = await import(pathToFileURL(route.file).href)
+      const mod = await loadModule(route)
       const handler = mod[request.method]
       if (typeof handler !== 'function') {
         return finalize(new Response('Method Not Allowed', { status: 405 }), initialCookie, cookies)

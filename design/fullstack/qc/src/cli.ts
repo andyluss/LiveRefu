@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --experimental-strip-types
-import { existsSync, mkdirSync, readdirSync, writeFileSync, cpSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { spawn } from 'node:child_process'
@@ -8,6 +8,7 @@ import { loadConfig } from './config.ts'
 import { migrate, openDatabase } from './data.ts'
 import { discover } from './router.ts'
 import { startServer } from './server.ts'
+import { buildApp } from './build.ts'
 import { nowIso } from './time.ts'
 
 const args = process.argv.slice(2)
@@ -114,31 +115,30 @@ async function dev(): Promise<void> {
 }
 
 async function start(rootArg?: string): Promise<void> {
-  const appRoot = rootArg ? resolve(cwd, rootArg) : cwd
-  const { url } = await startServer({ appRoot })
+  const argRoot = rootArg ? resolve(cwd, rootArg) : cwd
+  const directBundle = join(argRoot, 'server.mjs')
+  const distBundle = join(argRoot, 'dist/server.mjs')
+  const bundled = existsSync(directBundle) ? directBundle : existsSync(distBundle) ? distBundle : null
+  if (bundled) {
+    const runtimeRoot = bundled === directBundle ? argRoot : join(argRoot, 'dist')
+    const child = spawn(process.execPath, [bundled], {
+      cwd: runtimeRoot,
+      stdio: 'inherit',
+      env: { ...process.env, QC_APP_ROOT: runtimeRoot },
+    })
+    child.on('exit', code => process.exit(code ?? 0))
+    return
+  }
+  const { url } = await startServer({ appRoot: argRoot })
   console.log(`[qc] ${url}`)
 }
 
 async function build(rootArg?: string): Promise<void> {
   const appRoot = rootArg ? resolve(cwd, rootArg) : cwd
-  const config = await loadConfig(appRoot)
-  const routes = discover(appRoot)
-  const dist = join(appRoot, 'dist')
-  rmSync(dist, { recursive: true, force: true })
-  mkdirSync(dist, { recursive: true })
-  cpSync(join(appRoot, 'app'), join(dist, 'app'), { recursive: true })
-  if (existsSync(join(appRoot, 'public'))) cpSync(join(appRoot, 'public'), join(dist, 'public'), { recursive: true })
-  if (existsSync(join(appRoot, 'qc.config.ts'))) cpSync(join(appRoot, 'qc.config.ts'), join(dist, 'qc.config.ts'))
-  if (existsSync(join(appRoot, 'package.json'))) cpSync(join(appRoot, 'package.json'), join(dist, 'package.json'))
-  write(join(dist, 'qc-manifest.json'), JSON.stringify({
-    version: 1,
-    builtAt: nowIso(),
-    site: config.site.name,
-    db: config.db.path,
-    routes: routes.map(r => ({ kind: r.kind, route: r.route })),
-  }, null, 2) + '\n')
-  console.log(`✓ P1 源码构建到 ${dist}`)
-  console.log('  P2 会替换为真正的 server bundle；当前可用 `qc start dist` 验证。')
+  const result = await buildApp(appRoot)
+  console.log(`✓ bundle 到 ${result.dist}/server.mjs（${result.routes} 条路由）`)
+  console.log('  启动: qc start dist')
+  console.log('  注意: dist 默认使用 dist/data/app.db；生产请用 QC_DB_PATH 指向持久数据。')
 }
 
 async function dbMigrate(): Promise<void> {

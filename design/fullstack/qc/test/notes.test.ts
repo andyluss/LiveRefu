@@ -50,6 +50,10 @@ test('notes: 注册 / 登录态 / CSRF / 个人笔记 / 删除 / 退出', async 
 
   const app = await createApp(notesRoot)
   try {
+    const health = await app.handle(new Request('http://test/health'))
+    assert.equal(health.status, 200)
+    assert.deepEqual(await health.json(), { ok: true, uptime: Math.round(process.uptime()), db: 'ok' })
+
     const anonHome = await app.handle(new Request('http://test/'))
     assert.equal(anonHome.status, 303)
     assert.match(anonHome.headers.get('location') ?? '', /^\/login\?next=/)
@@ -60,6 +64,16 @@ test('notes: 注册 / 登录态 / CSRF / 个人笔记 / 删除 / 退出', async 
     const registerCookie = sessionCookie(registerPage)
     const registerCsrf = csrfFrom(registerHtml)
     assert.ok(registerCookie.startsWith('qc_session='))
+
+    const invalid = await app.handle(post('/actions/auth/register', registerCookie, {
+      _csrf: registerCsrf,
+      email: 'bad@example.com',
+      password: 'short',
+    }))
+    assert.equal(invalid.status, 422)
+    const invalidHtml = await invalid.text()
+    assert.match(invalidHtml, /至少 8 个字符/)
+    assert.match(invalidHtml, /value="bad@example.com"/)
 
     const registered = await app.handle(post('/actions/auth/register', registerCookie, {
       _csrf: registerCsrf,

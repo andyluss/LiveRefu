@@ -1,5 +1,5 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
-import { createApp } from './app.ts'
+import { createApp, type AppOptions } from './app.ts'
 
 const MAX_BODY = 2 * 1024 * 1024
 
@@ -42,8 +42,13 @@ function writeResponse(res: ServerResponse, response: Response): void {
   response.arrayBuffer().then(buffer => res.end(Buffer.from(buffer)))
 }
 
-export async function startServer(options: { appRoot: string; port?: number; host?: string }) {
-  const app = await createApp(options.appRoot)
+export async function startServer(options: { appRoot: string; port?: number; host?: string; config?: AppOptions['config']; layout?: AppOptions['layout']; authConfig?: AppOptions['authConfig']; modules?: AppOptions['modules'] }) {
+  const app = await createApp(options.appRoot, {
+    config: options.config,
+    layout: options.layout,
+    ...(options.authConfig !== undefined ? { authConfig: options.authConfig } : {}),
+    ...(options.modules ? { modules: options.modules } : {}),
+  })
   const server = createServer((req, res) => {
     toRequest(req)
       .then(request => app.handle(request))

@@ -14,14 +14,8 @@ const defaults: QcConfig = {
   server: { host: '127.0.0.1', port: 3000 },
 }
 
-export async function loadConfig(appRoot: string): Promise<QcConfig> {
+export function resolveConfig(user: Partial<QcConfig>, appRoot: string): QcConfig {
   const root = resolve(appRoot)
-  const file = join(root, 'qc.config.ts')
-  let user: Partial<QcConfig> = {}
-  if (existsSync(file)) {
-    const mod = await import(pathToFileURL(file).href)
-    user = mod.default ?? {}
-  }
   const config: QcConfig = {
     site: { ...defaults.site, ...(user.site ?? {}) },
     db: { ...defaults.db, ...(user.db ?? {}) },
@@ -32,4 +26,15 @@ export async function loadConfig(appRoot: string): Promise<QcConfig> {
   if (process.env.HOST) config.server.host = process.env.HOST
   config.db.path = resolve(root, config.db.path)
   return config
+}
+
+export async function loadConfig(appRoot: string): Promise<QcConfig> {
+  const root = resolve(appRoot)
+  const file = join(root, 'qc.config.ts')
+  let user: Partial<QcConfig> = {}
+  if (existsSync(file)) {
+    const mod = await import(pathToFileURL(file).href)
+    user = mod.default ?? {}
+  }
+  return resolveConfig(user, root)
 }

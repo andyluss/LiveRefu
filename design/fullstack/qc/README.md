@@ -45,7 +45,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1/P2 边界
+## P1/P2/P3 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -53,8 +53,10 @@ qc.config.ts
 - ✅ auth：session cookie、scrypt 密码、CSRF、角色、`auth: 'required'`
 - ✅ 校验：`object/string` + 422；安全头/限流/2MiB 请求体上限
 - ✅ 示例 notes（注册/登录/个人笔记/删除/退出）+ 2 个集成测试
-- ❌ 真正的 bundle（build 仍是源码复制；P3）
-- ❌ 表单错误回填 / StandardSchema adapter / OAuth / 邮箱验证 / 上传 / Postgres / HMR
+- ✅ 真 bundle（esbuild）+ `qc start` 自动用 `dist/server.mjs`
+- ✅ `Action.onError` + auth 表单错误回填
+- ✅ 内置 `GET /health`
+- ❌ 通用表单 helper / StandardSchema adapter / OAuth / 邮箱验证 / 上传 / Postgres / HMR / Docker/备份（P4）
 
 ## 注意
 
