@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 14:06
+> 最后更新：2026-10-26 14:10
 
 ## 一、现在只看三件
 
@@ -42,7 +42,8 @@
 | **D-024** | 技术 | **P1** | 青橙全栈 P7 核心：OAuth/API 邮件 | 已完成 | OAuth/OIDC adapter、API mail transport；6/6 测试；2026-10-26 | — | [P7 记录](fullstack/docs/implementation/15_P7实现记录.md) |
 | **D-025** | 技术 | **P1** | 青橙全栈 P8 核心：OAuth 路由/预设/文档分区 | 已完成 | OAuth 通用路由、GitHub/Google 预设、docs 分区；7/7 测试；2026-10-26 | — | [P8 记录](fullstack/docs/implementation/16_P8实现记录.md) |
 | **D-026** | 技术 | **P1** | 青橙全栈 P9 核心：SMTP/存储/刷新/CI | 已完成 | SMTP、存储接口、开发自动刷新、CI 模板；8/8 测试；2026-10-26 | — | [P9 记录](fullstack/docs/implementation/17_P9实现记录.md) |
-| **D-027** | 技术 | **P1** | 青橙全栈 P10：S3/HMR/包发布/第三 dogfood | 待开始 | S3/扫描、`qc new` 包导入、真 HMR、OAuth PKCE、第三 dogfood、真实 CI/日志采集 | P9 核心已验收 | [P9 记录](fullstack/docs/implementation/17_P9实现记录.md) |
+| **D-027** | 技术 | **P1** | 青橙全栈 P10 核心：S3/PKCE | 已完成 | S3 SigV4、OAuth PKCE S256；9/9 测试；2026-10-26 | — | [P10 记录](fullstack/docs/implementation/18_P10实现记录.md) |
+| **D-028** | 技术 | **P1** | 青橙全栈 P11：S3 完整/HMR/包发布 | 待开始 | S3 multipart/预签名/扫描、预编译包/`qc new`、组件级 HMR、OAuth refresh、第三 dogfood、真实 CI/日志 | P10 核心已验收 | [P10 记录](fullstack/docs/implementation/18_P10实现记录.md) |
 
 ## 三、等你拍板
 

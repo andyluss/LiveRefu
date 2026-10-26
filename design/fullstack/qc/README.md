@@ -45,7 +45,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1–P9 边界
+## P1–P10 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -66,7 +66,8 @@ qc.config.ts
 - ✅ 可注入 fetch（OAuth 测试无需真实 IdP）
 - ✅ OAuth 通用路由 + GitHub/Google 预设（examples/notes）
 - ✅ SMTP（隐式 TLS/明文）、存储接口、开发自动刷新、CI 模板
-- ❌ S3/扫描 / 真 HMR / `qc new` 包导入 / OAuth PKCE（P10）
+- ✅ S3 兼容存储（SigV4 PUT）、OAuth PKCE（S256）
+- ❌ S3 multipart/扫描 / 真 HMR / 预编译包 / OAuth refresh（P11）
 
 ## 注意
 

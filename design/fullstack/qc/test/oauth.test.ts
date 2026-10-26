@@ -24,14 +24,17 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
         clientId: 'client',
         clientSecret: 'secret',
         scope: 'openid email',
+        pkce: true,
       },
     },
   }
   const calls: string[] = []
-  const fetchImpl = (async (input: string | URL | Request) => {
+  let tokenBody = ''
+  const fetchImpl = (async (input: string | URL | Request, init?: RequestInit) => {
     const url = String(input)
     calls.push(url)
     if (url.includes('/token')) {
+      tokenBody = String(init?.body ?? '')
       return new Response(JSON.stringify({ access_token: 'access-token' }), { status: 200, headers: { 'content-type': 'application/json' } })
     }
     if (url.includes('/me')) {
@@ -45,11 +48,14 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     assert.equal(started.hostname, 'idp.example')
     const state = started.searchParams.get('state')
     assert.ok(state)
+    assert.ok(started.searchParams.get('code_challenge'))
+    assert.equal(started.searchParams.get('code_challenge_method'), 'S256')
     const result = await auth.oauthCallback('test', 'code', state, 'http://app.test/auth/callback')
     assert.equal(result.user.email, 'oidc@example.com')
     assert.equal(result.user.emailVerified, true)
     assert.ok(result.cookie.startsWith('qc_session='))
     assert.deepEqual(calls.sort(), ['https://idp.example/me', 'https://idp.example/token'])
+    assert.match(tokenBody, /code_verifier=/)
   } finally {
     db.close()
     rmSync(dir, { recursive: true, force: true })

@@ -12,6 +12,7 @@ export interface OAuthProvider {
   clientId: string
   clientSecret: string
   scope?: string
+  pkce?: boolean
 }
 
 export interface OAuthProfile {
@@ -146,6 +147,7 @@ function ensureTables(db: Db): void {
       state text primary key,
       provider text not null,
       redirect_uri text not null,
+      code_verifier text,
       expires_at text not null,
       created_at text not null
     );
@@ -244,8 +246,9 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
     const cfg = config.oauth?.[provider]
     if (!cfg) throw new HttpError(400, `未知 OAuth provider: ${provider}`, 'OAUTH_PROVIDER')
     const state = randomToken(24)
-    db.run('insert into qc_oauth_states (state, provider, redirect_uri, expires_at, created_at) values (?, ?, ?, ?, ?)', [
-      state, provider, redirectUri, nowIso(new Date(Date.now() + 10 * 60 * 1000)), nowIso(),
+    const verifier = cfg.pkce ? randomToken(48) : ''
+    db.run('insert into qc_oauth_states (state, provider, redirect_uri, code_verifier, expires_at, created_at) values (?, ?, ?, ?, ?, ?)', [
+      state, provider, redirectUri, verifier || null, nowIso(new Date(Date.now() + 10 * 60 * 1000)), nowIso(),
     ])
     const url = new URL(cfg.authorizationUrl)
     url.searchParams.set('response_type', 'code')
@@ -253,28 +256,34 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
     url.searchParams.set('redirect_uri', redirectUri)
     url.searchParams.set('state', state)
     if (cfg.scope) url.searchParams.set('scope', cfg.scope)
+    if (cfg.pkce) {
+      url.searchParams.set('code_challenge', createHash('sha256').update(verifier).digest('base64url'))
+      url.searchParams.set('code_challenge_method', 'S256')
+    }
     return url
   }
 
   async function oauthCallback(provider: string, code: string, state: string, redirectUri: string): Promise<{ user: AuthUser; cookie: string }> {
     const cfg = config.oauth?.[provider]
     if (!cfg) throw new HttpError(400, `未知 OAuth provider: ${provider}`, 'OAUTH_PROVIDER')
-    const row = db.one<{ provider: string; redirect_uri: string }>('select provider, redirect_uri from qc_oauth_states where state = ? and expires_at > ?', [state, nowIso()])
+    const row = db.one<{ provider: string; redirect_uri: string; code_verifier: string | null }>('select provider, redirect_uri, code_verifier from qc_oauth_states where state = ? and expires_at > ?', [state, nowIso()])
     if (!row || row.provider !== provider || row.redirect_uri !== redirectUri) {
       throw new HttpError(400, 'OAuth state 无效或已过期', 'OAUTH_STATE')
     }
     db.run('delete from qc_oauth_states where state = ?', [state])
     const fetchImpl = options.fetch ?? fetch
+    const tokenParams: Record<string, string> = {
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri,
+      client_id: cfg.clientId,
+      client_secret: cfg.clientSecret,
+    }
+    if (cfg.pkce && row.code_verifier) tokenParams.code_verifier = row.code_verifier
     const tokenRes = await fetchImpl(cfg.tokenUrl, {
       method: 'POST',
       headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
-      body: new URLSearchParams({
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: redirectUri,
-        client_id: cfg.clientId,
-        client_secret: cfg.clientSecret,
-      }),
+      body: new URLSearchParams(tokenParams),
     })
     if (!tokenRes.ok) throw new HttpError(502, 'OAuth token 交换失败', 'OAUTH_TOKEN')
     const token = await tokenRes.json() as { access_token?: string }

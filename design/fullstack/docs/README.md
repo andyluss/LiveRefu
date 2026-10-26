@@ -28,6 +28,7 @@
 | 15 | [P7](implementation/15_P7实现记录.md) | OAuth/OIDC、API 邮件 |
 | 16 | [P8](implementation/16_P8实现记录.md) | OAuth 路由/预设、文档分区 |
 | 17 | [P9](implementation/17_P9实现记录.md) | SMTP、存储接口、开发刷新、CI |
+| 18 | [P10](implementation/18_P10实现记录.md) | S3 存储、OAuth PKCE |
 
 ## 约定
 
