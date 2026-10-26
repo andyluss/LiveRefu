@@ -83,6 +83,7 @@ export interface Auth {
   oauthStart: (provider: string, redirectUri: string) => URL
   oauthCallback: (provider: string, code: string, state: string, redirectUri: string) => Promise<{ user: AuthUser; cookie: string }>
   oauthRefresh: (provider: string, userId: number) => Promise<string>
+  revokeOAuth: (provider: string, userId: number) => void
 }
 
 function sha256(value: string): string {
@@ -151,6 +152,7 @@ function ensureTables(db: Db): void {
       refresh_token text not null,
       access_token text,
       expires_at text,
+      refreshing integer not null default 0,
       updated_at text not null,
       primary key (provider, user_id)
     );
@@ -338,27 +340,37 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
     if (!cfg) throw new HttpError(400, `未知 OAuth provider: ${provider}`, 'OAUTH_PROVIDER')
     const row = db.one<{ refresh_token: string }>('select refresh_token from qc_oauth_tokens where provider = ? and user_id = ?', [provider, userId])
     if (!row) throw new HttpError(400, '没有可用的 refresh token', 'OAUTH_REFRESH')
-    const fetchImpl = options.fetch ?? fetch
-    const response = await fetchImpl(cfg.refreshUrl ?? cfg.tokenUrl, {
-      method: 'POST',
-      headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token: row.refresh_token,
-        client_id: cfg.clientId,
-        client_secret: cfg.clientSecret,
-      }),
-    })
-    if (!response.ok) throw new HttpError(502, 'OAuth refresh 失败', 'OAUTH_REFRESH')
-    const token = await response.json() as { access_token?: string; refresh_token?: string; expires_in?: number }
-    if (!token.access_token) throw new HttpError(502, 'OAuth refresh 缺少 access_token', 'OAUTH_REFRESH')
-    db.run('update qc_oauth_tokens set access_token = ?, refresh_token = ?, expires_at = ?, updated_at = ? where provider = ? and user_id = ?', [
-      token.access_token,
-      token.refresh_token ?? row.refresh_token,
-      token.expires_in ? nowIso(new Date(Date.now() + token.expires_in * 1000)) : null,
-      nowIso(), provider, userId,
-    ])
-    return token.access_token
+    const claimed = db.run('update qc_oauth_tokens set refreshing = 1 where provider = ? and user_id = ? and refreshing = 0', [provider, userId])
+    if (!claimed.changes) throw new HttpError(409, 'OAuth refresh 正在进行', 'OAUTH_REFRESH_BUSY')
+    try {
+      const fetchImpl = options.fetch ?? fetch
+      const response = await fetchImpl(cfg.refreshUrl ?? cfg.tokenUrl, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: row.refresh_token,
+          client_id: cfg.clientId,
+          client_secret: cfg.clientSecret,
+        }),
+      })
+      if (!response.ok) throw new HttpError(502, 'OAuth refresh 失败', 'OAUTH_REFRESH')
+      const token = await response.json() as { access_token?: string; refresh_token?: string; expires_in?: number }
+      if (!token.access_token) throw new HttpError(502, 'OAuth refresh 缺少 access_token', 'OAUTH_REFRESH')
+      db.run('update qc_oauth_tokens set access_token = ?, refresh_token = ?, expires_at = ?, updated_at = ? where provider = ? and user_id = ?', [
+        token.access_token,
+        token.refresh_token ?? row.refresh_token,
+        token.expires_in ? nowIso(new Date(Date.now() + token.expires_in * 1000)) : null,
+        nowIso(), provider, userId,
+      ])
+      return token.access_token
+    } finally {
+      db.run('update qc_oauth_tokens set refreshing = 0 where provider = ? and user_id = ?', [provider, userId])
+    }
+  }
+
+  function revokeOAuth(provider: string, userId: number): void {
+    db.run('delete from qc_oauth_tokens where provider = ? and user_id = ?', [provider, userId])
   }
 
   async function requestEmailVerification(email: string, baseUrl: string): Promise<void> {
@@ -429,5 +441,5 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
     })
   }
 
-  return { config, load, login, register, logout, verifyCsrf, csrfField, requestPasswordReset, resetPassword, requestEmailVerification, verifyEmail, oauthStart, oauthCallback, oauthRefresh }
+  return { config, load, login, register, logout, verifyCsrf, csrfField, requestPasswordReset, resetPassword, requestEmailVerification, verifyEmail, oauthStart, oauthCallback, oauthRefresh, revokeOAuth }
 }

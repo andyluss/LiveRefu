@@ -31,6 +31,7 @@
 | 18 | [P10](implementation/18_P10实现记录.md) | S3 存储、OAuth PKCE |
 | 19 | [P11](implementation/19_P11实现记录.md) | 预编译包、`qc new` 包导入 |
 | 20 | [P12](implementation/20_P12实现记录.md) | S3 预签名/删除、OAuth refresh |
+| 21 | [P13](implementation/21_P13实现记录.md) | S3 multipart、OAuth 锁/撤销、CI |
 
 ## 约定
 

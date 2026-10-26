@@ -1,0 +1,28 @@
+name: QC framework
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Notes / auth / mail / upload
+        run: node --experimental-strip-types design/fullstack/qc/test/notes.test.ts
+      - name: Second dogfood
+        run: node --experimental-strip-types design/fullstack/qc/test/bookmarks.test.ts
+      - name: OAuth adapter
+        run: node --experimental-strip-types design/fullstack/qc/test/oauth.test.ts
+      - name: OAuth routes
+        run: node --experimental-strip-types design/fullstack/qc/test/oauth-routes.test.ts
+      - name: SMTP
+        run: node --experimental-strip-types design/fullstack/qc/test/smtp.test.ts
+      - name: S3
+        run: node --experimental-strip-types design/fullstack/qc/test/s3.test.ts

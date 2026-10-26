@@ -62,6 +62,8 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     const refreshed = await auth.oauthRefresh('test', result.user.id)
     assert.equal(refreshed, 'refreshed-token')
     assert.match(tokenBody, /grant_type=refresh_token/)
+    auth.revokeOAuth('test', result.user.id)
+    await assert.rejects(() => auth.oauthRefresh('test', result.user.id))
   } finally {
     db.close()
     rmSync(dir, { recursive: true, force: true })

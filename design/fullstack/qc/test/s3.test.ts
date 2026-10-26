@@ -31,4 +31,23 @@ test('S3 storage: SigV4 PUT', async () => {
   await storage.delete('a/b.txt')
   assert.equal(captured.init.method, 'DELETE')
   assert.match(captured.init.headers.authorization, /^AWS4-HMAC-SHA256 Credential=AKID\//)
+
+  const calls: string[] = []
+  const multipartFetch = (async (input: URL | string, init: any) => {
+    calls.push(`${init.method} ${String(input)}`)
+    if (init.method === 'POST' && String(input).includes('uploads')) return new Response('<UploadId>u1</UploadId>', { status: 200 })
+    if (init.method === 'PUT') return new Response('', { status: 200, headers: { etag: '"e1"' } })
+    return new Response('', { status: 200 })
+  }) as typeof fetch
+  const multipart = new S3Storage({
+    endpoint: 'https://s3.example', region: 'test-region', bucket: 'bucket',
+    accessKeyId: 'AKID', secretAccessKey: 'SECRET', fetch: multipartFetch,
+  })
+  const uploadId = await multipart.createMultipart('big.bin')
+  assert.equal(uploadId, 'u1')
+  const etag = await multipart.uploadPart('big.bin', uploadId, 1, Buffer.from('part'))
+  assert.equal(etag, '"e1"')
+  await multipart.completeMultipart('big.bin', uploadId, [{ partNumber: 1, etag }])
+  await multipart.abortMultipart('big.bin', uploadId)
+  assert.equal(calls.length, 4)
 })

@@ -111,4 +111,60 @@ export class S3Storage implements Storage {
     if (!response.ok) throw new Error(`S3 DELETE ${response.status}`)
   }
 
+  private async signedRequest(method: string, key: string, query: Record<string, string>, body: Buffer, type?: string): Promise<Response> {
+    const endpoint = this.config.endpoint.replace(/\/$/, '')
+    const url = new URL(`${endpoint}/${this.config.bucket}/${pathEncode(key)}`)
+    const now = new Date()
+    const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, '')
+    const dateStamp = amzDate.slice(0, 8)
+    const payloadHash = hashHex(body)
+    const headers: Record<string, string> = {
+      host: url.host,
+      'x-amz-content-sha256': payloadHash,
+      'x-amz-date': amzDate,
+    }
+    if (type) headers['content-type'] = type
+    if (this.config.sessionToken) headers['x-amz-security-token'] = this.config.sessionToken
+    const encode = (value: string) => encodeURIComponent(value).replace(/[!'()*]/g, c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
+    const canonicalQuery = Object.keys(query).sort().map(name => `${encode(name)}=${encode(query[name])}`).join('&')
+    const signedHeaders = Object.keys(headers).sort()
+    const canonicalHeaders = signedHeaders.map(name => `${name}:${headers[name].trim()}\n`).join('')
+    const canonicalRequest = [method, url.pathname, canonicalQuery, canonicalHeaders, signedHeaders.join(';'), payloadHash].join('\n')
+    const scope = `${dateStamp}/${this.config.region}/s3/aws4_request`
+    const stringToSign = ['AWS4-HMAC-SHA256', amzDate, scope, hashHex(canonicalRequest)].join('\n')
+    const signingKey = hmac(hmac(hmac(hmac(`AWS4${this.config.secretAccessKey}`, dateStamp), this.config.region), 's3'), 'aws4_request')
+    const signature = createHmac('sha256', signingKey).update(stringToSign).digest('hex')
+    headers.authorization = `AWS4-HMAC-SHA256 Credential=${this.config.accessKeyId}/${scope}, SignedHeaders=${signedHeaders.join(';')}, Signature=${signature}`
+    const target = `${url.origin}${url.pathname}${canonicalQuery ? `?${canonicalQuery}` : ''}`
+    return (this.config.fetch ?? fetch)(target, { method, headers, body })
+  }
+
+  async createMultipart(key: string, type = 'application/octet-stream'): Promise<string> {
+    const response = await this.signedRequest('POST', key, { uploads: '' }, Buffer.alloc(0), type)
+    if (!response.ok) throw new Error(`S3 multipart create ${response.status}`)
+    const text = await response.text()
+    const match = text.match(/<UploadId>([^<]+)<\/UploadId>/)
+    if (!match) throw new Error('S3 multipart 响应缺少 UploadId')
+    return match[1]
+  }
+
+  async uploadPart(key: string, uploadId: string, partNumber: number, data: Buffer): Promise<string> {
+    const response = await this.signedRequest('PUT', key, { partNumber: String(partNumber), uploadId }, data, 'application/octet-stream')
+    if (!response.ok) throw new Error(`S3 multipart part ${response.status}`)
+    const etag = response.headers.get('etag')
+    if (!etag) throw new Error('S3 multipart 缺少 ETag')
+    return etag
+  }
+
+  async completeMultipart(key: string, uploadId: string, parts: Array<{ partNumber: number; etag: string }>): Promise<void> {
+    const body = `<CompleteMultipartUpload>${parts.map(part => `<Part><PartNumber>${part.partNumber}</PartNumber><ETag>${part.etag.replace(/"/g, '&quot;')}</ETag></Part>`).join('')}</CompleteMultipartUpload>`
+    const response = await this.signedRequest('POST', key, { uploadId }, Buffer.from(body), 'application/xml')
+    if (!response.ok) throw new Error(`S3 multipart complete ${response.status}`)
+  }
+
+  async abortMultipart(key: string, uploadId: string): Promise<void> {
+    const response = await this.signedRequest('DELETE', key, { uploadId }, Buffer.alloc(0))
+    if (!response.ok) throw new Error(`S3 multipart abort ${response.status}`)
+  }
+
 }
