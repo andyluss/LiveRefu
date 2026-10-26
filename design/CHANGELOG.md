@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **青橙全栈 P14 核心**：S3 `uploadLarge`（并发/重试/checkpoint）、OAuth token AES-256-GCM 加密；9/9 测试；`22_P14实现记录`。
 - **青橙全栈 P13 核心**：S3 multipart（create/upload/complete/abort）、OAuth refresh 并发锁/撤销、CI workflow；9/9 测试；`21_P13实现记录`。
 - **青橙全栈 P12 核心**：S3 presign/delete、OAuth refresh token；9/9 测试；`20_P12实现记录`。
 - **青橙全栈 P11 核心**：`qc pack` 预编译包（`dist/index.mjs`/`dist/cli.mjs`）、`qc new` 通过 `@qingcheng/qc` 包导入；`19_P11实现记录`。

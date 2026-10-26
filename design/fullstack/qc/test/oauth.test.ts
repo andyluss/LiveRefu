@@ -16,6 +16,7 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     passwordMin: 8,
     sessionDays: 30,
     secureCookie: false,
+    tokenKey: 'test-key',
     oauth: {
       test: {
         authorizationUrl: 'https://idp.example/authorize',
@@ -57,6 +58,7 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     assert.equal(result.user.email, 'oidc@example.com')
     assert.equal(result.user.emailVerified, true)
     assert.ok(result.cookie.startsWith('qc_session='))
+    assert.match(appDbToken(db, result.user.id), /^enc:/)
     assert.deepEqual(calls.sort(), ['https://idp.example/me', 'https://idp.example/token'])
     assert.match(tokenBody, /code_verifier=/)
     const refreshed = await auth.oauthRefresh('test', result.user.id)
@@ -69,3 +71,7 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     rmSync(dir, { recursive: true, force: true })
   }
 })
+
+function appDbToken(db: any, userId: number): string {
+  return db.one<{ refresh_token: string }>('select refresh_token from qc_oauth_tokens where user_id = ?', [userId])?.refresh_token ?? ''
+}

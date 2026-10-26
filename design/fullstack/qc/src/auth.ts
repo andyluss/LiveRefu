@@ -1,4 +1,4 @@
-import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto'
+import { createCipheriv, createDecipheriv, createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto'
 import { html, type SafeHtml } from './html.ts'
 import { HttpError } from './http.ts'
 import { nowIso } from './time.ts'
@@ -29,6 +29,7 @@ export interface AuthConfig {
   sessionDays: number
   secureCookie: boolean
   mail?: MailConfig
+  tokenKey?: string
   oauth?: Record<string, OAuthProvider>
 }
 
@@ -116,6 +117,27 @@ function parseCookie(request: Request, name: string): string | null {
 
 function serializeCookie(token: string, maxAgeSeconds: number, secure: boolean): string {
   return `qc_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAgeSeconds}${secure ? '; Secure' : ''}`
+}
+
+function tokenKey(value: string): Buffer {
+  const raw = Buffer.from(value, 'base64')
+  return raw.length === 32 ? raw : createHash('sha256').update(value).digest()
+}
+
+function encryptToken(value: string, key?: string): string {
+  if (!key) return value
+  const iv = randomBytes(12)
+  const cipher = createCipheriv('aes-256-gcm', tokenKey(key), iv)
+  const data = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()])
+  return `enc:${iv.toString('base64')}:${cipher.getAuthTag().toString('base64')}:${data.toString('base64')}`
+}
+
+function decryptToken(value: string, key?: string): string {
+  if (!key || !value.startsWith('enc:')) return value
+  const [, iv, tag, data] = value.split(':')
+  const decipher = createDecipheriv('aes-256-gcm', tokenKey(key), Buffer.from(iv, 'base64'))
+  decipher.setAuthTag(Buffer.from(tag, 'base64'))
+  return Buffer.concat([decipher.update(Buffer.from(data, 'base64')), decipher.final()]).toString('utf8')
 }
 
 function clearCookie(): string {
@@ -325,7 +347,7 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
     }
     if (token.refresh_token) {
       db.run('insert into qc_oauth_tokens (provider, user_id, refresh_token, access_token, expires_at, updated_at) values (?, ?, ?, ?, ?, ?) on conflict(provider, user_id) do update set refresh_token = excluded.refresh_token, access_token = excluded.access_token, expires_at = excluded.expires_at, updated_at = excluded.updated_at', [
-        provider, user.id, token.refresh_token, token.access_token, token.expires_in ? nowIso(new Date(Date.now() + token.expires_in * 1000)) : null, nowIso(),
+        provider, user.id, encryptToken(token.refresh_token, config.tokenKey), encryptToken(token.access_token, config.tokenKey), token.expires_in ? nowIso(new Date(Date.now() + token.expires_in * 1000)) : null, nowIso(),
       ])
     }
     const fresh = newSession(user.id)
@@ -340,6 +362,7 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
     if (!cfg) throw new HttpError(400, `未知 OAuth provider: ${provider}`, 'OAUTH_PROVIDER')
     const row = db.one<{ refresh_token: string }>('select refresh_token from qc_oauth_tokens where provider = ? and user_id = ?', [provider, userId])
     if (!row) throw new HttpError(400, '没有可用的 refresh token', 'OAUTH_REFRESH')
+    const refreshToken = decryptToken(row.refresh_token, config.tokenKey)
     const claimed = db.run('update qc_oauth_tokens set refreshing = 1 where provider = ? and user_id = ? and refreshing = 0', [provider, userId])
     if (!claimed.changes) throw new HttpError(409, 'OAuth refresh 正在进行', 'OAUTH_REFRESH_BUSY')
     try {
@@ -349,7 +372,7 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
         headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
         body: new URLSearchParams({
           grant_type: 'refresh_token',
-          refresh_token: row.refresh_token,
+          refresh_token: refreshToken,
           client_id: cfg.clientId,
           client_secret: cfg.clientSecret,
         }),
@@ -358,8 +381,8 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
       const token = await response.json() as { access_token?: string; refresh_token?: string; expires_in?: number }
       if (!token.access_token) throw new HttpError(502, 'OAuth refresh 缺少 access_token', 'OAUTH_REFRESH')
       db.run('update qc_oauth_tokens set access_token = ?, refresh_token = ?, expires_at = ?, updated_at = ? where provider = ? and user_id = ?', [
-        token.access_token,
-        token.refresh_token ?? row.refresh_token,
+        encryptToken(token.access_token, config.tokenKey),
+        encryptToken(token.refresh_token ?? refreshToken, config.tokenKey),
         token.expires_in ? nowIso(new Date(Date.now() + token.expires_in * 1000)) : null,
         nowIso(), provider, userId,
       ])

@@ -1,6 +1,6 @@
 # 青橙全栈（QC Stack）· 技术框架提案
 
-> **状态**：**P13 S3 multipart/OAuth 锁/CI 已完成 / P14 待做** ｜ 日期：2026-10-26 14:22 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
+> **状态**：**P14 S3 大文件/OAuth 加密已完成 / P15 待做** ｜ 日期：2026-10-26 14:26 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
 > **定位**：青橙设计的技术底座。不是新的设计系统，也不是 Nuxt/Astro 的换皮；是一套**Web 优先、全栈、可替换依赖**的应用框架。
 > **一句话**：让一个懂 TypeScript 和基本 Web 的人，不研究 bundler / HTTP / ORM / session / 部署细节，也能做出网站、应用和大部分游戏服务端需求；同时保留“随时接管底层”的出口。
 
@@ -107,6 +107,7 @@
 | [19 P11 实现记录](docs/implementation/19_P11实现记录.md) | 预编译包、`qc new` 包导入 |
 | [20 P12 实现记录](docs/implementation/20_P12实现记录.md) | S3 预签名/删除、OAuth refresh |
 | [21 P13 实现记录](docs/implementation/21_P13实现记录.md) | S3 multipart、OAuth 锁/撤销、CI |
+| [22 P14 实现记录](docs/implementation/22_P14实现记录.md) | S3 大文件、OAuth token 加密 |
 
 ## 七、与 LRDS / kits 的关系
 
@@ -130,6 +131,7 @@
 - **P11 核心已落地**：预编译包、`qc new` 包导入（本地 `file:`/symlink）。
 - **P12 核心已落地**：S3 预签名/删除、OAuth refresh。
 - **P13 核心已落地**：S3 multipart、OAuth 并发锁/撤销、CI workflow。
-- **P14 待做**：分片并发/重试/扫描、npm 发布/远程包、组件级 HMR、第三 dogfood、SMTP STARTTLS/DKIM。
+- **P14 核心已落地**：S3 大文件（并发/重试/checkpoint）、OAuth token AES-GCM 加密。
+- **P15 待做**：扫描/限速、npm 发布/远程包、组件级 HMR、第三 dogfood、SMTP STARTTLS/DKIM、真实 CI 运行。
 - `qc build` 已是 esbuild bundle；`qc new` 仍是本机绝对 bridge；见 [09](docs/implementation/09_P1实现记录.md) / [10](docs/implementation/10_P2实现记录.md) / [11](docs/implementation/11_P3实现记录.md) / [12](docs/implementation/12_P4实现记录.md) / [13](docs/implementation/13_P5实现记录.md) / [14](docs/implementation/14_P6实现记录.md) / [15](docs/implementation/15_P7实现记录.md) / [16](docs/implementation/16_P8实现记录.md) / [17](docs/implementation/17_P9实现记录.md) / [18](docs/implementation/18_P10实现记录.md) / [19](docs/implementation/19_P11实现记录.md)。
 - 不替换现有网站/LiveFab；P4 前不把示例当生产服务。

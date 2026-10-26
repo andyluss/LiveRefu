@@ -2,7 +2,7 @@
 
 > **设计系统专属待办**：App kit、组件、Archive 亮色、打印/实体、HUB、无障碍与发布。
 > 根 [`TODO.md`](../TODO.md) 只收非设计系统事项；**本文件是设计系统的唯一明细与状态来源**。设计系统若阻塞工作区发布，根表只留一行摘要链接，不复制细节。
-> 最后更新：2026-10-26 14:22
+> 最后更新：2026-10-26 14:26
 
 ## 一、现在只看三件
 
@@ -46,7 +46,8 @@
 | **D-028** | 技术 | **P1** | 青橙全栈 P11 核心：预编译包/包导入 | 已完成 | `qc pack`、`qc new` 通过 `@qingcheng/qc` 导入（本地 file/symlink）；2026-10-26 | — | [P11 记录](fullstack/docs/implementation/19_P11实现记录.md) |
 | **D-029** | 技术 | **P1** | 青橙全栈 P12 核心：S3 预签名/删除/Refresh | 已完成 | S3 presign/delete、OAuth refresh；9/9 测试；2026-10-26 | — | [P12 记录](fullstack/docs/implementation/20_P12实现记录.md) |
 | **D-030** | 技术 | **P1** | 青橙全栈 P13 核心：multipart/锁/CI | 已完成 | S3 multipart、OAuth 并发锁/撤销、CI workflow；9/9 测试；2026-10-26 | — | [P13 记录](fullstack/docs/implementation/21_P13实现记录.md) |
-| **D-031** | 技术 | **P1** | 青橙全栈 P14：分片/发布/HMR/第三 dogfood | 待开始 | S3 分片并发/重试/扫描、npm 发布/远程包、组件级 HMR、第三 dogfood、SMTP STARTTLS/DKIM | P13 核心已验收 | [P13 记录](fullstack/docs/implementation/21_P13实现记录.md) |
+| **D-031** | 技术 | **P1** | 青橙全栈 P14 核心：S3 大文件/OAuth 加密 | 已完成 | S3 并发/重试/checkpoint、OAuth AES-GCM；9/9 测试；2026-10-26 | — | [P14 记录](fullstack/docs/implementation/22_P14实现记录.md) |
+| **D-032** | 技术 | **P1** | 青橙全栈 P15：扫描/发布/HMR/第三 dogfood | 待开始 | S3 扫描/限速、npm 发布/远程包、组件级 HMR、第三 dogfood、SMTP STARTTLS/DKIM、真实 CI 运行 | P14 核心已验收 | [P14 记录](fullstack/docs/implementation/22_P14实现记录.md) |
 
 ## 三、等你拍板
 

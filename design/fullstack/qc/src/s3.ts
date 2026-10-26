@@ -1,4 +1,5 @@
 import { createHash, createHmac } from 'node:crypto'
+import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import type { Storage } from './storage.ts'
 
 export interface S3Config {
@@ -165,6 +166,61 @@ export class S3Storage implements Storage {
   async abortMultipart(key: string, uploadId: string): Promise<void> {
     const response = await this.signedRequest('DELETE', key, { uploadId }, Buffer.alloc(0))
     if (!response.ok) throw new Error(`S3 multipart abort ${response.status}`)
+  }
+
+  async uploadLarge(key: string, data: Buffer, options: { partSize?: number; concurrency?: number; retries?: number; checkpointPath?: string } = {}): Promise<string> {
+    const partSize = Math.max(1, options.partSize ?? 8 * 1024 * 1024)
+    const concurrency = Math.max(1, options.concurrency ?? 3)
+    const retries = Math.max(0, options.retries ?? 2)
+    const checkpoint = options.checkpointPath
+    let uploadId = ''
+    const done = new Map<number, string>()
+
+    if (checkpoint && existsSync(checkpoint)) {
+      const saved = JSON.parse(readFileSync(checkpoint, 'utf8')) as { uploadId: string; parts: Array<{ partNumber: number; etag: string }> }
+      uploadId = saved.uploadId
+      for (const part of saved.parts) done.set(part.partNumber, part.etag)
+    } else {
+      uploadId = await this.createMultipart(key)
+    }
+
+    const total = Math.max(1, Math.ceil(data.length / partSize))
+    const numbers = Array.from({ length: total }, (_, i) => i + 1).filter(n => !done.has(n))
+    let cursor = 0
+    const save = () => {
+      if (!checkpoint) return
+      writeFileSync(checkpoint, JSON.stringify({ uploadId, parts: [...done].map(([partNumber, etag]) => ({ partNumber, etag })) }, null, 2))
+    }
+    const worker = async () => {
+      while (cursor < numbers.length) {
+        const partNumber = numbers[cursor++]
+        const start = (partNumber - 1) * partSize
+        const chunk = data.subarray(start, Math.min(data.length, start + partSize))
+        let lastError: unknown
+        for (let attempt = 0; attempt <= retries; attempt++) {
+          try {
+            const etag = await this.uploadPart(key, uploadId, partNumber, chunk)
+            done.set(partNumber, etag)
+            save()
+            lastError = null
+            break
+          } catch (error) {
+            lastError = error
+            if (attempt < retries) await new Promise(resolve => setTimeout(resolve, 200 * 2 ** attempt))
+          }
+        }
+        if (lastError) throw lastError
+      }
+    }
+    try {
+      await Promise.all(Array.from({ length: Math.min(concurrency, numbers.length || 1) }, () => worker()))
+      await this.completeMultipart(key, uploadId, [...done].map(([partNumber, etag]) => ({ partNumber, etag })).sort((a, b) => a.partNumber - b.partNumber))
+      if (checkpoint) rmSync(checkpoint, { force: true })
+      return `${this.config.endpoint.replace(/\/$/, '')}/${this.config.bucket}/${pathEncode(key)}`
+    } catch (error) {
+      if (!checkpoint) await this.abortMultipart(key, uploadId).catch(() => null)
+      throw error
+    }
   }
 
 }

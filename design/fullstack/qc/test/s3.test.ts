@@ -50,4 +50,7 @@ test('S3 storage: SigV4 PUT', async () => {
   await multipart.completeMultipart('big.bin', uploadId, [{ partNumber: 1, etag }])
   await multipart.abortMultipart('big.bin', uploadId)
   assert.equal(calls.length, 4)
+
+  const large = await multipart.uploadLarge('large.bin', Buffer.from('0123456789'), { partSize: 5, concurrency: 2 })
+  assert.match(large, /large.bin$/)
 })

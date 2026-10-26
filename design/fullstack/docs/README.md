@@ -32,6 +32,7 @@
 | 19 | [P11](implementation/19_P11实现记录.md) | 预编译包、`qc new` 包导入 |
 | 20 | [P12](implementation/20_P12实现记录.md) | S3 预签名/删除、OAuth refresh |
 | 21 | [P13](implementation/21_P13实现记录.md) | S3 multipart、OAuth 锁/撤销、CI |
+| 22 | [P14](implementation/22_P14实现记录.md) | S3 大文件、OAuth token 加密 |
 
 ## 约定
 
