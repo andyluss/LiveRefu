@@ -14,7 +14,7 @@
     "README.md"
   ],
   "scripts": {
-    "test": "node --experimental-strip-types test/notes.test.ts && node --experimental-strip-types test/bookmarks.test.ts && node --experimental-strip-types test/oauth.test.ts && node --experimental-strip-types test/oauth-routes.test.ts && node --experimental-strip-types test/smtp.test.ts && node --experimental-strip-types test/s3.test.ts"
+    "test": "node --experimental-strip-types test/notes.test.ts && node --experimental-strip-types test/bookmarks.test.ts && node --experimental-strip-types test/oauth.test.ts && node --experimental-strip-types test/oauth-routes.test.ts && node --experimental-strip-types test/smtp.test.ts && node --experimental-strip-types test/s3.test.ts && node --experimental-strip-types test/guestbook.test.ts"
   },
   "dependencies": {
     "esbuild": "0.25.12"

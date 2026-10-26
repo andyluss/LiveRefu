@@ -46,7 +46,8 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     }
     throw new Error(`unexpected fetch: ${url}`)
   }) as typeof fetch
-  const auth = createAuth(db, config, createMailer({ transport: 'memory', from: 'test@example.com' }, dir), { fetch: fetchImpl })
+  const mailer = createMailer({ transport: 'memory', from: 'test@example.com' }, dir)
+  const auth = createAuth(db, config, mailer, { fetch: fetchImpl })
   try {
     const started = auth.oauthStart('test', 'http://app.test/auth/callback')
     assert.equal(started.hostname, 'idp.example')
@@ -61,11 +62,12 @@ test('OAuth/OIDC: state + token + userinfo + session', async () => {
     assert.match(appDbToken(db, result.user.id), /^enc:/)
     assert.deepEqual(calls.sort(), ['https://idp.example/me', 'https://idp.example/token'])
     assert.match(tokenBody, /code_verifier=/)
-    const refreshed = await auth.oauthRefresh('test', result.user.id)
+    const rotated = createAuth(db, { ...config, tokenKey: 'new-key', previousTokenKeys: ['test-key'] }, mailer, { fetch: fetchImpl })
+    const refreshed = await rotated.oauthRefresh('test', result.user.id)
     assert.equal(refreshed, 'refreshed-token')
     assert.match(tokenBody, /grant_type=refresh_token/)
-    auth.revokeOAuth('test', result.user.id)
-    await assert.rejects(() => auth.oauthRefresh('test', result.user.id))
+    rotated.revokeOAuth('test', result.user.id)
+    await assert.rejects(() => rotated.oauthRefresh('test', result.user.id))
   } finally {
     db.close()
     rmSync(dir, { recursive: true, force: true })

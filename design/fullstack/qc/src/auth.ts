@@ -30,6 +30,7 @@ export interface AuthConfig {
   secureCookie: boolean
   mail?: MailConfig
   tokenKey?: string
+  previousTokenKeys?: string[]
   oauth?: Record<string, OAuthProvider>
 }
 
@@ -132,12 +133,20 @@ function encryptToken(value: string, key?: string): string {
   return `enc:${iv.toString('base64')}:${cipher.getAuthTag().toString('base64')}:${data.toString('base64')}`
 }
 
-function decryptToken(value: string, key?: string): string {
+function decryptToken(value: string, key?: string, previous: string[] = []): string {
   if (!key || !value.startsWith('enc:')) return value
   const [, iv, tag, data] = value.split(':')
-  const decipher = createDecipheriv('aes-256-gcm', tokenKey(key), Buffer.from(iv, 'base64'))
-  decipher.setAuthTag(Buffer.from(tag, 'base64'))
-  return Buffer.concat([decipher.update(Buffer.from(data, 'base64')), decipher.final()]).toString('utf8')
+  let lastError: unknown
+  for (const candidate of [key, ...previous]) {
+    try {
+      const decipher = createDecipheriv('aes-256-gcm', tokenKey(candidate), Buffer.from(iv, 'base64'))
+      decipher.setAuthTag(Buffer.from(tag, 'base64'))
+      return Buffer.concat([decipher.update(Buffer.from(data, 'base64')), decipher.final()]).toString('utf8')
+    } catch (error) {
+      lastError = error
+    }
+  }
+  throw lastError ?? new Error('token 解密失败')
 }
 
 function clearCookie(): string {
@@ -362,7 +371,7 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer, options: 
     if (!cfg) throw new HttpError(400, `未知 OAuth provider: ${provider}`, 'OAUTH_PROVIDER')
     const row = db.one<{ refresh_token: string }>('select refresh_token from qc_oauth_tokens where provider = ? and user_id = ?', [provider, userId])
     if (!row) throw new HttpError(400, '没有可用的 refresh token', 'OAUTH_REFRESH')
-    const refreshToken = decryptToken(row.refresh_token, config.tokenKey)
+    const refreshToken = decryptToken(row.refresh_token, config.tokenKey, config.previousTokenKeys)
     const claimed = db.run('update qc_oauth_tokens set refreshing = 1 where provider = ? and user_id = ? and refreshing = 0', [provider, userId])
     if (!claimed.changes) throw new HttpError(409, 'OAuth refresh 正在进行', 'OAUTH_REFRESH_BUSY')
     try {

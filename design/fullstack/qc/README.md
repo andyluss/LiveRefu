@@ -46,7 +46,7 @@ app/layouts/default.layout.ts
 qc.config.ts
 ```
 
-## P1–P14 边界
+## P1–P15 边界
 
 - ✅ 文件路由 / page / action / layout / HTML 转义
 - ✅ SQLite / 迁移 / 参数化查询 / insert / transaction
@@ -73,7 +73,8 @@ qc.config.ts
 - ✅ S3 presign/delete、OAuth refresh
 - ✅ S3 multipart、OAuth 并发锁/撤销、CI workflow
 - ✅ S3 大文件（并发/重试/checkpoint）、OAuth token AES-GCM
-- ❌ npm 发布/远程包 / 组件级 HMR / 扫描/限速（P15）
+- ✅ 第三个 dogfood：guestbook；OAuth previousTokenKeys 轮换
+- ❌ npm 发布/远程包 / 组件级 HMR / 扫描/限速（P16）
 
 ## 注意
 
