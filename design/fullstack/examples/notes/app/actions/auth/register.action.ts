@@ -15,12 +15,13 @@ export default defineAction({
       errors: fields,
     })
   },
-  handle(ctx) {
+  async handle(ctx) {
     const ip = ctx.request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local'
     ctx.rateLimit!(`register:${ip}`, 5, 60_000)
     const input = ctx.input as { email: string; password: string }
     const result = ctx.auth!.register(input.email, input.password)
     ctx.setCookie!(result.cookie)
+    await ctx.auth!.requestEmailVerification(input.email, ctx.url.origin)
     return redirect('/')
   },
 })

@@ -10,6 +10,7 @@
 
 ### 新增
 
+- **青橙全栈 P6 核心**：邮箱验证、异步 StandardSchema、`formValues/formErrors`、第二个 dogfood `examples/bookmarks`；notes 3/3 + bookmarks 1/1；`14_P6实现记录`。
 - **青橙全栈 P5 核心**：mailer（console/file/memory）、密码重置（token 哈希/一次性/清 session）、`/forgot`、`/reset`、StandardSchema `fromStandard`、上传 `saveUpload`；3/3 测试；`13_P5实现记录`。
 - **青橙全栈 P4 运维核心**：`x-request-id` + JSON 日志、`qc db backup/restore`、Docker/Compose 部署模板；`12_P4实现记录`。
 - **青橙全栈 P3 核心**：esbuild bundle（`dist/server.mjs`）、`qc start` 自动识别 bundle、`qc start dist`、`Action.onError` 表单错误回填、内置 `/health`；新增 esbuild 0.25.12 devDependency；2/2 测试 + bundle smoke；`11_P3实现记录`。
@@ -48,7 +49,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 71 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 72 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。

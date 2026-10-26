@@ -285,7 +285,7 @@ export async function createApp(appRoot: string, options: AppOptions = {}): Prom
         if (!action?.handle) throw new Error(`动作缺少 handle: ${route.file}`)
         if (action.input) {
           try {
-            ctx.input = action.input.parse(parsed.raw)
+            ctx.input = await action.input.parse(parsed.raw)
           } catch (error) {
             if (error instanceof ValidationError && action.onError) {
               const body = await action.onError(ctx, error)

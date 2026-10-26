@@ -24,6 +24,7 @@ export interface AuthUser {
   id: number
   email: string
   role: string
+  emailVerified: boolean
 }
 
 export interface AuthSession {
@@ -38,6 +39,7 @@ interface UserRow {
   email: string
   password_hash: string
   role: string
+  email_verified: number
 }
 
 interface SessionRow {
@@ -57,6 +59,8 @@ export interface Auth {
   csrfField: (session: AuthSession) => SafeHtml
   requestPasswordReset: (email: string, baseUrl: string) => Promise<void>
   resetPassword: (token: string, password: string) => void
+  requestEmailVerification: (email: string, baseUrl: string) => Promise<void>
+  verifyEmail: (token: string) => string
 }
 
 function sha256(value: string): string {
@@ -102,6 +106,14 @@ function ensureTables(db: Db): void {
       email text unique not null,
       password_hash text not null,
       role text not null default 'user',
+      email_verified integer not null default 0,
+      created_at text not null
+    );
+    create table if not exists qc_email_verifications (
+      token_hash text primary key,
+      user_id integer not null,
+      expires_at text not null,
+      used integer not null default 0,
       created_at text not null
     );
     create table if not exists qc_sessions (
@@ -127,8 +139,8 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
   const maxAge = days * 24 * 60 * 60
 
   function userById(id: number): AuthUser | null {
-    const row = db.one<UserRow>('select id, email, role from qc_users where id = ?', [id])
-    return row ? { id: row.id, email: row.email, role: row.role } : null
+    const row = db.one<UserRow>('select id, email, role, email_verified from qc_users where id = ?', [id])
+    return row ? { id: row.id, email: row.email, role: row.role, emailVerified: Boolean(row.email_verified) } : null
   }
 
   function newSession(userId: number | null): { session: AuthSession; token: string; cookie: string } {
@@ -163,12 +175,12 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
 
   function login(email: string, password: string) {
     const normalized = email.trim().toLowerCase()
-    const row = db.one<UserRow>('select id, email, password_hash, role from qc_users where email = ?', [normalized])
+    const row = db.one<UserRow>('select id, email, password_hash, role, email_verified from qc_users where email = ?', [normalized])
     if (!row || !verifyPassword(password, row.password_hash)) {
       throw new HttpError(401, '邮箱或密码错误', 'INVALID_CREDENTIALS')
     }
     const fresh = newSession(row.id)
-    return { user: { id: row.id, email: row.email, role: row.role }, cookie: fresh.cookie }
+    return { user: { id: row.id, email: row.email, role: row.role, emailVerified: Boolean(row.email_verified) }, cookie: fresh.cookie }
   }
 
   function register(email: string, password: string) {
@@ -185,7 +197,7 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
       created_at: nowIso(),
     })
     const fresh = newSession(id)
-    return { user: { id, email: normalized, role: 'user' }, cookie: fresh.cookie }
+    return { user: { id, email: normalized, role: 'user', emailVerified: false }, cookie: fresh.cookie }
   }
 
   function logout(session: AuthSession): string {
@@ -200,6 +212,40 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
 
   function csrfField(session: AuthSession): SafeHtml {
     return html`<input type="hidden" name="_csrf" value="${session.csrf}">`
+  }
+
+  async function requestEmailVerification(email: string, baseUrl: string): Promise<void> {
+    const normalized = email.trim().toLowerCase()
+    const row = db.one<UserRow>('select id, email, password_hash, role, email_verified from qc_users where email = ?', [normalized])
+    if (!row || row.email_verified) return
+    const token = randomToken(32)
+    const expiresAt = nowIso(new Date(Date.now() + 24 * 60 * 60 * 1000))
+    db.run('insert into qc_email_verifications (token_hash, user_id, expires_at, used, created_at) values (?, ?, ?, 0, ?)', [
+      sha256(token), row.id, expiresAt, nowIso(),
+    ])
+    const link = `${baseUrl.replace(/\/$/, '')}/verify?token=${encodeURIComponent(token)}`
+    try {
+      await mailer.send({
+        to: row.email,
+        subject: '验证你的青橙全栈邮箱',
+        text: `打开以下链接验证邮箱（24 小时内有效）：\n${link}`,
+      })
+    } catch (error) {
+      console.error('[qc] 验证邮件发送失败', error)
+    }
+  }
+
+  function verifyEmail(token: string): string {
+    const row = db.one<{ user_id: number }>('select user_id from qc_email_verifications where token_hash = ? and used = 0 and expires_at > ?', [
+      sha256(token), nowIso(),
+    ])
+    if (!row) throw new HttpError(400, '验证链接无效或已过期', 'INVALID_VERIFY_TOKEN')
+    const user = db.one<{ email: string }>('select email from qc_users where id = ?', [row.user_id])
+    db.transaction(() => {
+      db.run('update qc_users set email_verified = 1 where id = ?', [row.user_id])
+      db.run('update qc_email_verifications set used = 1 where token_hash = ?', [sha256(token)])
+    })
+    return user?.email ?? ''
   }
 
   async function requestPasswordReset(email: string, baseUrl: string): Promise<void> {
@@ -236,5 +282,5 @@ export function createAuth(db: Db, config: AuthConfig, mailer: Mailer): Auth {
     })
   }
 
-  return { config, load, login, register, logout, verifyCsrf, csrfField, requestPasswordReset, resetPassword }
+  return { config, load, login, register, logout, verifyCsrf, csrfField, requestPasswordReset, resetPassword, requestEmailVerification, verifyEmail }
 }

@@ -10,6 +10,7 @@ import { html, raw } from '../src/html.ts'
 import { createMailer } from '../src/mail.ts'
 import { fromStandard } from '../src/validate.ts'
 import { saveUpload } from '../src/upload.ts'
+import { formValues } from '../src/form.ts'
 
 const notesRoot = fileURLToPath(new URL('../../examples/notes', import.meta.url))
 
@@ -52,6 +53,21 @@ test('StandardSchema 适配与上传限制', async () => {
   })
   assert.equal(schema.parse('ok'), 'ok')
   assert.throws(() => schema.parse('no'))
+
+  const asyncSchema = fromStandard<string>({
+    '~standard': {
+      version: 1,
+      vendor: 'test',
+      async validate(value) {
+        return value === 'ok' ? { value } : { issues: [{ message: 'bad' }] }
+      },
+    },
+  })
+  assert.equal(await asyncSchema.parse('ok'), 'ok')
+
+  const form = new FormData()
+  form.set('email', 'a@example.com')
+  assert.deepEqual(formValues(form, ['email', 'missing']), { email: 'a@example.com', missing: '' })
 
   const dir = mkdtempSync(join(tmpdir(), 'qc-upload-'))
   const file = new File(['hello'], 'a.txt', { type: 'text/plain' })
@@ -111,6 +127,14 @@ test('notes: 注册 / 登录态 / CSRF / 个人笔记 / 删除 / 退出', async 
     const authCookie = sessionCookie(registered)
     assert.ok(authCookie.startsWith('qc_session='))
     assert.notEqual(authCookie, registerCookie)
+
+    const verifyMail = app.mailer!.messages!.find(message => message.subject.includes('验证'))
+    assert.ok(verifyMail, '注册后应发送验证邮件')
+    const verifyTokenMatch = verifyMail.text.match(/token=([^\s]+)/)
+    assert.ok(verifyTokenMatch)
+    const verify = await app.handle(new Request(`http://test/verify?token=${verifyTokenMatch[1]}`))
+    assert.equal(verify.status, 200)
+    assert.equal(app.db.one<{ email_verified: number }>('select email_verified from qc_users where email = ?', ['a@example.com'])?.email_verified, 1)
 
     const home = await app.handle(new Request('http://test/', { headers: { cookie: authCookie } }))
     assert.equal(home.status, 200)

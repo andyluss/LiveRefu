@@ -1,6 +1,6 @@
 import { HttpError } from './http.ts'
 
-export type Schema<T> = { parse: (input: unknown) => T }
+export type Schema<T> = { parse: (input: unknown) => T | Promise<T> }
 
 export class ValidationError extends HttpError {
   fields: Record<string, string>
@@ -64,21 +64,24 @@ export interface StandardSchemaV1<T> {
   '~standard': {
     version: 1
     vendor: string
-    validate: (value: unknown) => { value: T } | { issues: Array<{ message: string; path?: Array<string | number> }> }
+    validate: (value: unknown) => { value: T } | { issues: Array<{ message: string; path?: Array<string | number> }> } | Promise<{ value: T } | { issues: Array<{ message: string; path?: Array<string | number> }> }>
   }
 }
 
 export function fromStandard<T>(schema: StandardSchemaV1<T>): Schema<T> {
+  const finish = (result: { value: T } | { issues: Array<{ message: string; path?: Array<string | number> }> }): T => {
+    if ('value' in result) return result.value
+    const fields: Record<string, string> = {}
+    for (const issue of result.issues) {
+      const key = issue.path?.length ? String(issue.path[issue.path.length - 1]) : '_'
+      fields[key] = issue.message
+    }
+    throw new ValidationError(fields)
+  }
   return {
     parse(input) {
       const result = schema['~standard'].validate(input)
-      if ('value' in result) return result.value
-      const fields: Record<string, string> = {}
-      for (const issue of result.issues) {
-        const key = issue.path?.length ? String(issue.path[issue.path.length - 1]) : '_'
-        fields[key] = issue.message
-      }
-      throw new ValidationError(fields)
+      return result instanceof Promise ? result.then(finish) : finish(result)
     },
   }
 }
