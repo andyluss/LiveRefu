@@ -459,7 +459,7 @@ function generate(): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LRDS · 设计系统 HUB</title>
+<title>青橙设计 · LRDS HUB</title>
 <script>
 (function(){
   try {
@@ -649,7 +649,7 @@ function generate(): string {
 <body>
 <header class="topbar">
   <div class="topline">
-    <div class="brand">LRDS · 设计系统 HUB<span class="en">LiveRefu Design System</span></div>
+    <div class="brand">青橙设计 · LRDS<span class="en">LiveRefu Design System</span></div>
     <div class="stamp">v${esc(version)} 已发布 ｜ App kit 起步（未发布）</div>
     <div class="theme-switch" role="group" aria-label="主题">
       <button type="button" data-theme-set="system" aria-pressed="true">系统</button>

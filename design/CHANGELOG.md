@@ -10,6 +10,8 @@
 
 ### 新增
 
+- **决策记录制度落地（E19）**：新增 [`decisions/README.md`](docs/decisions/README.md) 与 [`D-003` 样例](docs/decisions/D-003-five-layer-model.md)；`D-014` 完成；`00 决策总表` 升 v1.2。
+- **暂定中文名“青橙设计”（E20）**：`README` / D2 / HUB 使用该暂定名；代码与资产名仍为 `LRDS`，不替代公开品牌名。
 - **新增 [决策记录制度草案](docs/proposals/20261022-1326-决策记录制度草案.md)**：盘点工作区现有决策实践（design/mainline/LiveFab/website/实现裁决/discussions/M0/M3），给出 A/B/C/D 四种方案与推荐 C 混合制；`D-014` 转“草案中”。
 - **决策总表升级 v1.1**：新增 **E01–E18 执行决策**，与 D1–D10 战略决策分层；E 表按时间排序，只列选择、状态与详据链接；`design/TODO.md` 新增 **D-014 决策记录制度完善**。
 - **新增 [12 设计系统入门](docs/12_设计系统入门.md)**：面向初学者的设计系统长文，覆盖 token / 组件 / 模式 / 风格卡 / 治理 / 无障碍 / 失败模式 / AI / 最小启动清单；非规范正文。
@@ -38,7 +40,7 @@
   - 新增 [`tokens/products/tomorrows-channel.tape.tokens.json`](tokens/products/tomorrows-channel.tape.tokens.json)：`SC-TOMORROWS-CHANNEL-TAPE-v1`，9 色 + 色温/光比/装饰参数；产品 token 总数 53 → 62。
   - 新增 [`tools/check_tomorrows_channel_skin.ts`](tools/check_tomorrows_channel_skin.ts)：`.tres` ↔ token 对账（9 色 + 6 光照/装饰，7/7 自检）。
   - 新增 [`docs/07_风格卡登记.md`](docs/07_风格卡登记.md)：四张风格卡的 ID、源、投影、对账方式。
-  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 36 合规 / 0 违规。
+  - 新增 [`config-design.json`](../rules/meta/tools/config-design.json)：`design/` 的 M1/M2 配置，实测 37 合规 / 0 违规。
 - **v0.2 第二阶段追加（2026-10-21）：3 个组件契约（draft）。**
   - 新增 [`components/button.md`](components/button.md)、[`components/form-field.md`](components/form-field.md)、[`components/panel.md`](components/panel.md)：五节 + token 清单，覆盖 default/focus/disabled 等状态。
   - 新增 [`tools/check_component_contracts.ts`](tools/check_component_contracts.ts)：五节齐全、token 存在、无裸色/裸尺寸；自检 6/6。

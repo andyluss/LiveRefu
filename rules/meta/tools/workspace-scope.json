@@ -17,7 +17,7 @@
       "path": "design",
       "mode": "block",
       "config": "rules/meta/tools/config-design.json",
-      "why": "已写专门配置，2026-10-21 实测 0 违规（36 合规），具备纳入闸门的条件"
+      "why": "已写专门配置，2026-10-21 实测 0 违规（37 合规），具备纳入闸门的条件"
     },
     {
       "path": "projects/mainline",
