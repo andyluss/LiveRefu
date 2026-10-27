@@ -75,7 +75,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveLand 0.3 · local-first world / era authoring
+    console.log(`LiveLand 1.0 · local-first world / era authoring
 
 用法:
   node src/cli.ts check [world]          世界 lint
