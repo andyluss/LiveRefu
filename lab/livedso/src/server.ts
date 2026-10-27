@@ -5,6 +5,7 @@ import { extname, join, normalize, resolve } from 'node:path'
 import { URL } from 'node:url'
 import { loadVault, projection, saveContract, saveToken, stateView } from './vault.ts'
 import { reportMarkdown, runChecks } from './checks.ts'
+import { scanAdoption } from './adoption.ts'
 
 const WEB = resolve(import.meta.dirname, '../web')
 const MIME: Record<string, string> = {
@@ -63,6 +64,11 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         vault = loadVault(vaultRoot)
         result = runChecks(vault)
         return json(res, 200, { ...stateView(vault, result), runtime: process.version })
+      }
+      if (url.pathname === '/api/adopt' && req.method === 'POST') {
+        const body = JSON.parse(await readBody(req)) as { root?: string }
+        if (!body.root) return json(res, 400, { error: '需要 root（目录）' })
+        return json(res, 200, scanAdoption(body.root, vault))
       }
       if (url.pathname === '/api/contract' && req.method === 'POST') {
         const body = JSON.parse(await readBody(req)) as { id?: string; patch?: Record<string, unknown> }

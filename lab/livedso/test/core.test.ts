@@ -2,10 +2,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { cpSync, mkdtempSync, rmSync } from 'node:fs'
+import { cpSync, mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { loadVault, projection, saveContract } from '../src/vault.ts'
+import { scanAdoption } from '../src/adoption.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
 const root = fileURLToPath(new URL('../vault', import.meta.url))
@@ -69,5 +70,22 @@ test('contract editing writes back and survives reload', () => {
     assert.equal(next.summary, 'edited')
     assert.equal(next.states?.length, 5)
     assert.equal(loadVault(tmp).contracts.find(c => c.id === 'field')?.summary, 'edited')
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('adoption scan finds token refs, raw colors and unknown vars', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adopt-'))
+  try {
+    mkdirSync(join(tmp, 'src'))
+    writeFileSync(join(tmp, 'src', 'a.css'), 'a{color:var(--dso-sys-color-action-primary);background:#ffffff}\n')
+    writeFileSync(join(tmp, 'src', 'b.ts'), 'const x = "var(--dso-not-real)"\n')
+    const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+    const r = scanAdoption(tmp, vault)
+    assert.equal(r.filesScanned, 2)
+    assert.equal(r.tokenRefs, 1)
+    assert.equal(r.unknownRefs, 1)
+    assert.equal(r.rawColors, 1)
+    assert.equal(r.tokens[0]?.path, 'sys.color.action.primary')
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

@@ -7,11 +7,12 @@ import { loadVault, projection } from './vault.ts'
 import { reportMarkdown, runChecks } from './checks.ts'
 import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
+import { scanAdoption } from './adoption.ts'
 
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
-const vaultArg = process.env.LIVEDSO_VAULT || (cmd === 'serve' ? defaultVault : args[1] || defaultVault)
+const vaultArg = process.env.LIVEDSO_VAULT || (cmd === 'serve' || cmd === 'adopt' ? defaultVault : args[1] || defaultVault)
 const root = resolve(vaultArg)
 
 function printIssues(): number {
@@ -53,6 +54,24 @@ switch (cmd) {
     console.log(`imported ${r.tokens} files → ${target}`)
     break
   }
+  case 'adopt': {
+    const target = resolve(args[1] || '.')
+    const vault = loadVault(root)
+    const result = scanAdoption(target, vault)
+    if (args.includes('--json')) {
+      console.log(JSON.stringify(result, null, 2))
+    } else {
+      console.log(`scan: ${result.root}`)
+      console.log(`files: ${result.filesScanned} · token refs: ${result.tokenRefs} · raw colors: ${result.rawColors} · unknown --dso vars: ${result.unknownRefs}`)
+      for (const t of result.tokens.slice(0, 10)) console.log(`  token ${t.path} — ${t.count}`)
+      for (const u of result.unknown.slice(0, 20)) console.log(`  unknown ${u.name} — ${u.file}`)
+      for (const f of result.files.filter(x => x.rawColors > 0).slice(0, 20)) console.log(`  raw ${f.path} — ${f.rawColors}`)
+    }
+    if (result.errors.length) process.exitCode = 1
+    else if (args.includes('--strict') && result.unknownRefs > 0) process.exitCode = 1
+    else if (args.includes('--fail-on-raw') && result.rawColors > 0) process.exitCode = 1
+    break
+  }
   case 'serve': {
     const port = Number(args[1] || process.env.PORT || 4173)
     await startServer({ port, vault: root })
@@ -60,13 +79,15 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.1 · local-first design system operations
+    console.log(`LiveDSO 0.4 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
   node src/cli.ts report [vault] [out]    输出健康报告 Markdown
   node src/cli.ts build [vault] [out]     输出 CSS 投影
   node src/cli.ts import [src] [vault]    导入 design/tokens 到 vault-lrds
+  node src/cli.ts adopt [dir] [--json] [--strict|--fail-on-raw]
+                                          扫描代码中的 token/裸色引用
   node src/cli.ts serve [port]            启动 Web Workbench
 
 环境:

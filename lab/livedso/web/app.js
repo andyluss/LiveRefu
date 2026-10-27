@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '' };
+  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -60,6 +60,7 @@
     if (view === 'tokens') renderTokens();
     if (view === 'contracts') renderContracts();
     if (view === 'preview') renderPreview();
+    if (view === 'adoption') renderAdoption();
     if (view === 'style-cards') renderCards();
     if (view === 'checks') renderChecks();
     if (view === 'report') renderReport();
@@ -194,6 +195,32 @@
       toast('契约已保存', `${patch.title} · ${patch.states.length} states`);
     } catch (e) { toast('保存失败', e.message); }
   }
+  function renderAdoption() {
+    const a = state.adoption;
+    if (!a) return;
+    const summary = $('#adoption-summary');
+    if (summary) {
+      summary.innerHTML = `<div class="adoption-stat ok"><b>${a.filesScanned}</b><span>files scanned</span></div><div class="adoption-stat ok"><b>${a.tokenRefs}</b><span>token refs</span></div><div class="adoption-stat warn"><b>${a.rawColors}</b><span>raw colors</span></div><div class="adoption-stat warn"><b>${a.unknownRefs}</b><span>unknown vars</span></div><div class="adoption-stat"><b>${a.filesWithTokens}</b><span>files using tokens</span></div>`;
+    }
+    $('#adoption-status').textContent = a.errors.length ? 'scan error' : 'scanned';
+    $('#adoption-token-count').textContent = `${a.tokens.length} tokens`;
+    $('#adoption-file-count').textContent = `${a.files.length} files`;
+    $('#adoption-tokens').innerHTML = a.tokens.length ? a.tokens.slice(0, 80).map(t => `<div class="adoption-row"><code>${esc(t.path)}</code><b>${t.count}×</b></div>`).join('') : '<div class="empty">没有发现 token 引用。</div>';
+    const rows = a.files.slice(0, 100).map(f => `<div class="adoption-row"><code>${esc(f.path)}</code><span><b>${f.tokenRefs}</b> tok · <span class="${f.rawColors ? 'warn' : ''}">${f.rawColors}</span> raw${f.unknownRefs.length ? ` · <span class="bad">${f.unknownRefs.length}</span> unknown` : ''}</span></div>`).join('');
+    $('#adoption-files').innerHTML = (a.unknown.length ? `<div class="adoption-sub">未知 --dso- 变量</div>${a.unknown.slice(0, 40).map(u => `<div class="adoption-row"><code>${esc(u.name)}</code><span class="bad">${esc(u.file)}</span></div>`).join('')}` : '') + (rows || '<div class="empty">没有发现引用。</div>');
+  }
+  async function runAdoption() {
+    const root = $('#adoption-root')?.value?.trim();
+    if (!root) { toast('需要目录', '例如 ../../design 或 ../my-app'); return; }
+    try {
+      setStatus('ok', 'scanning');
+      const a = await api('/api/adopt', { method: 'POST', body: JSON.stringify({ root }) });
+      state.adoption = a;
+      renderAdoption();
+      setStatus('ok', 'local vault');
+      toast('扫描完成', `${a.filesScanned} files · ${a.tokenRefs} refs · ${a.rawColors} raw`);
+    } catch (e) { setStatus('err', 'scan failed'); toast('扫描失败', e.message); }
+  }
   function renderChecks() {
     if (!state.data) return;
     const c = state.data.checks;
@@ -300,6 +327,7 @@
       if (row) { openDrawer(row.dataset.token); return; }
       if (e.target.id === 'save-token') { saveSelected(); return; }
       if (e.target.closest('#run-checks') || e.target.closest('#quick-check')) { runChecks(); return; }
+      if (e.target.id === 'run-adoption') { runAdoption(); return; }
       if (e.target.id === 'gen-report') { generateReport(); return; }
       if (e.target.id === 'gen-css') { generateCss(); return; }
       if (e.target.id === 'download-report') { state.report ? download('livedso-health.md', state.report, 'text/markdown') : toast('还没有报告', '先生成健康报告。'); return; }

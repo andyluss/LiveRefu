@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b>LiveDSO</b><small>DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.3</span>
+    <span class="lab-chip">LAB / 0.4</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">Run checks</button>
@@ -48,7 +48,8 @@
       <button type="button" data-view="preview"><span class="ni">04</span>预览</button>
       <button type="button" data-view="style-cards"><span class="ni">05</span>风格卡 <span class="count" id="nav-cards">—</span></button>
       <button type="button" data-view="checks"><span class="ni">06</span>闸门 <span class="count warn" id="nav-issues">—</span></button>
-      <button type="button" data-view="report"><span class="ni">07</span>报告/投影</button>
+      <button type="button" data-view="adoption"><span class="ni">07</span>采用扫描</button>
+      <button type="button" data-view="report"><span class="ni">08</span>报告/投影</button>
     </nav>
     <div class="side-kicker">VAULT</div>
     <div class="vault-box">
@@ -130,6 +131,14 @@
       <p class="lede">先跑闸门，再谈发布。错误阻断；警告必须记录取舍。</p>
       <div class="check-summary" id="check-summary"></div>
       <div id="check-list" class="issue-list"><div class="empty">读取中……</div></div>
+    </section>
+
+    <section class="view" id="view-adoption" aria-labelledby="adoption-title">
+      <div class="view-head"><div><div class="eyebrow">ADOPTION / READ-ONLY</div><h1 id="adoption-title">Adoption scan</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
+      <p class="lede">扫描一个代码目录，看它有没有真的在用 vault 的 token，以及哪里还在写裸色、引用了不存在的 --dso- 变量。只读，不改目标目录。</p>
+      <div class="adoption-toolbar"><label class="search"><input id="adoption-root" type="text" placeholder="目录，例如 ../../design 或 ../my-app" spellcheck="false"></label><button class="btn" id="run-adoption" type="button">扫描</button><span class="chip" id="adoption-status">未扫描</span></div>
+      <div class="adoption-summary" id="adoption-summary"></div>
+      <div class="adoption-grid"><section class="panel"><div class="panel-head"><h2>被使用的 token</h2><span class="chip" id="adoption-token-count">—</span></div><div id="adoption-tokens" class="adoption-list"><div class="empty">输入目录后扫描。</div></div></section><section class="panel"><div class="panel-head"><h2>文件 / 裸色 / 未知引用</h2><span class="chip" id="adoption-file-count">—</span></div><div id="adoption-files" class="adoption-list"><div class="empty">输入目录后扫描。</div></div></section></div>
     </section>
 
     <section class="view" id="view-report" aria-labelledby="report-title">
