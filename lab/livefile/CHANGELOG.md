@@ -12,6 +12,7 @@
 
 ### Added
 
+- v0.1 baseline：本地 archive 索引、sidecar、搜索/时间线/集合、健康/备份/继承、三种导出、CLI；示例 archive 10 条目。
 - 元数据编辑：标题/类型/日期/来源/许可/保留/集合/标签/public，写回 sidecar。
 - 未整理条目可补 sidecar；原始文件不动。
 - 重复内容分组（hash），只提示不自动合并。

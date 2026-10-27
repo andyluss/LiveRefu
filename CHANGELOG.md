@@ -13,105 +13,32 @@
 
 ## [未发布]
 
+> **根日志只记工作区级变更。** 三项目、设计系统与青橙全栈的详细变更见各自日志：
+> [LiveDSO](lab/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
+
 ### 变更
 - **知识库目录更名 `doc/` → `docs/`**：`git mv` 整体迁移 566 个文件；同步根 README、AGENTS、rules/tech/tools、design/studio001/projects、网站内容层与 Godot 数据脚本中的根路径引用；`indie/` 内部的项目级 `doc/` 保持不动；`workspace-scope` 的豁免路径改为 `docs`。链接校验 0 失效。
 - **收编《磷环》Phosphorus Loop**：把未提交的塔防卡牌设计稿纳入 `docs/phosphorus-loop/PhosphorusLoop.md`；核心是“磷不是敌人，流失才是”，三层时间尺度 + 维护力/信任资源。
-- **[`AGENTS.md`](AGENTS.md) 新增「七、网络与代理」**：联网前先检测代理（环境变量 → 常见本地端口 7897/7890/1087/1080/8080/8888/6152/10808）；**走代理只用一次性参数**（`git -c http.proxy=…` / `curl --proxy` / `npm` 用前置环境变量），**禁止写进全局配置**（代理随时会被关，写死会变成"没网也连不上"的持久故障）；代理失败时**先去代理再试一次，两次都不行就停下并告知用户**（错误原文 + 代理地址 + 已试过的两种方式）；并记下"远端操作可能部分成功，失败后先 `ls-remote` 核对再补动作"这条实测教训。原「七、本文件的变更」顺延为「八」。
-- 生成物与一次性代理的取舍：内置 `web_fetch` / `web_search` **无法指定代理**，其失败而命令行可用时改用 `curl --proxy` 抓取。
-- **元规则 M1/M2 的判定配置为新目录留出入口**：[`rules/meta/tools/config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置（`projects/mainline/cards/` 自带 README，按 M1 属"可自成一体"的子关注点），并把点文件（`.gitignore`）纳入命名白名单——原先的正则要求首字符为字母数字，会把点文件判为"根目录未声明文件"。
+- **AGENTS 网络与代理**：[`AGENTS.md`](AGENTS.md) 新增「七、网络与代理」：联网前先检测代理；走代理只用一次性参数，禁止写进全局配置；代理失败时先去代理再试一次，两次都不行就停下并告知用户；并记录“远端操作可能部分成功，失败后先核对远端真实状态”。
+- **M1/M2 判定配置留出入口**：[`config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置，并把点文件纳入命名白名单，避免把合法文件判成“根目录未声明文件”。
+- **R06 时间规则 v3**：完成项取完成提交 author time；跨多提交拆条或取最后提交；时间命令显式 `TZ=Asia/Shanghai`；新增时间戳命名闸门。
 
 ### 新增
-- **三工具狗粮计划（仅记录，未启动）**：新增 [`lab/DOGFOOD.md`](lab/DOGFOOD.md)，把 9 个目标产品案例组织成 Wave 1–3 狗粮路线与反馈回路；三个项目 `04_商品化路径.md` 增加“狗粮计划”小节。
-- **三项目商品化文档补充目标产品案例**：LiveDSO 增加自由职业者发票/家庭能源/老人用药 App；LiveLand 增加 TTRPG 世界包/叙事游戏/互动展；LiveFile 增加家庭档案书/田野档案书/作品档案书。仅文档，未实施。
-- **三项目商品化提案（仅文档，未实施/未排期）**：LiveDSO 设计系统体检包、LiveLand World Pack、LiveFile Archive Book；分别写入各项目 `docs/04_商品化路径.md`，并在 README/路线图标注未来触发条件与边界。
-- **清澄（青橙谐音）成为核心概念**：新增 [`design/philosophy/09_清澄_透明作为方法.md`](design/philosophy/09_清澄_透明作为方法.md) 与 [`D-012`](design/docs/decisions/D-012-clear-as-core.md)；明确“青橙是颜色，清澄是颜色下面的水”，七种可见、透明≠曝光、开源≠自动清澄；同步 design README/GUIDE、软件卷、LiveDSO/LiveLand/LiveFile 文档。
-- **LiveFile v0.2**：元数据编辑/补 sidecar、重复内容分组、本地备份复制 + 恢复校验、公开页（只导出 `public` 条目、图片内嵌）；示例 archive 增至 11 条目。
-- **LiveFile v0.1（实验）**：[`lab/livefile/`](lab/livefile/README.md) —— 本地优先个人档案 OS；文件/sidecar 索引、全文/元数据搜索、时间线、集合、备份/继承健康、档案目录/清单/备份报告导出；示例 archive 10 条目 / 9 集合 / 6 类型。
-- **lab 三个项目 opt-in 根规则**：`livedso`、`liveland`、`livefile` 在各自 README 与 [`lab/README`](lab/README.md) 明确不适用 lab 实验豁免，按 R01/R02/R03/R05/AGENTS 执行，迁移 projects 时接入 M1/M2。
-- **LiveLand v0.1（实验）**：[`lab/liveland/`](lab/liveland/README.md) —— 本地优先、零依赖的世界/时代创作工具；世界约束、3 时代、canon/实体/资产/输出、世界 lint、添加 canon、世界圣经/风格指南/资产清单导出；示例「橙港」3 时代 / 12 canon / 8 实体 / 6 资产。
-- **用户目标分析**：`docs/software/product/01` 增加“三类采用姿态”分析（专业者/爱好者/普通人 × 使用者/买家/采用单位/关键性/设置容忍度），修正三个方向的用户判断；新增 [`docs/software/ecology/12_目标用户分析_专业人士爱好者与普通人.md`](docs/software/ecology/12_目标用户分析_专业人士爱好者与普通人.md)，补齐生态文集用户经济/验证框架。
-- **LiveDSO 许可与命名落地**：许可选 A（Apache-2.0 核心 + 商业托管/团队/审计）；贡献者政策 DCO 1.1；正式名暂定 **LiveDesign / 灵动设计**，LiveDSO 继续为代号；新增 `LICENSE`/`NOTICE`/`CONTRIBUTING`/`DCO`/`TRADEMARKS` 与 SPDX 头。
-- **LiveDSO v0.2 + 开源协议文集**：`lab/livedso` 增加 `import` 命令与 [`vault-lrds/`](lab/livedso/vault-lrds/README.md)（从 `design/tokens` 导入 6 文件 / 229 tokens）；新增 [`docs/software/licenses/`](docs/software/licenses/README.md) 10 篇协议文集（MIT/Apache/BSD、GPL/AGPL/LGPL、源可用、商业化、兼容性、AI、LiveDSO 选项与模板）。
-- **LiveDSO v0.1（实验）**：[`lab/livedso/`](lab/livedso/README.md) —— 本地优先、零依赖的设计系统操作台；token 解析/别名、对比度/裸值/契约/风格卡检查、健康报告、CSS 投影、Node 原生 API + Web Workbench；示例 vault 与 LRDS 解耦。
-- **三个 Top 产品方向深潜**：[`设计系统操作台`](docs/software/product/02_设计系统操作台.md)、[`世界与时代创作工具`](docs/software/product/03_世界与时代创作工具.md)、[`本地优先个人档案 OS`](docs/software/product/04_本地优先个人档案OS.md) —— 每篇含用户/痛点、数据模型、MVP、开源与收费、获客、90 天验证、指标与停止条件；`product/README` 作为深潜索引。
-- **新增「软件生态与产品机会」卷**：[`docs/software/README.md`](docs/software/README.md) —— 一篇产品机会长文（代码编辑器、创作工具、设计系统操作台、世界创作、个人档案、家庭服务器等 12 个非游戏方向 + 评分/商业模式/90 天计划），加 12 篇软件生态文集（基础/数据/工具/知识/协作/交易/生活/公共/AI/美学 + 总论/结语）；`docs/README` 由四卷升为五卷。
-
-- [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。
-- **青橙设计实验区 + 青橙 OS**：新增 `design/lab/README.md` 与实验规则；`design/lab/os/` 为 9 应用、3 未来层、零构建 Web 模拟桌面；含窗口管理、Spotlight、控制中心、可追溯状态、三态主题、移动端降级；M1 82/0。
-- **Node 22.18+ / 移除实验 flag**：当前脚本、CI、package scripts、当前文档统一用 `node`；最低 Node 22.18；QC 以 Node 24 为主；历史 CHANGELOG/实现记录保留原命令；`qc` 包加 `engines`。
-- **R-001 三态主题获批**：状态转 `active`；固定 system / light / dark 顺序；`lrds-theme` 统一；规则索引/README/GUIDE 同步。
-- **青橙设计规则 + GUIDE + HUB 分区**：新增 `design/rules/`（15 条；格式 v1.0，含“反例/迁移”；R-001 三态主题 proposed）；新增 `design/GUIDE.html`（设计系统本身），`design/HUB.html` 改为项目状态/演进/验收/决策；四份 HUB/GUIDE 统一 `lrds-theme`，顺序系统/浅色/深色。
-- **青橙全栈可视化**：新增 [`design/fullstack/HUB.html`](design/fullstack/HUB.html)（项目开发/发布）与 [`design/fullstack/GUIDE.html`](design/fullstack/GUIDE.html)（功能/用法），沿用 LRDS token/焦点/圆角/暗亮主题；README/HUB/文档索引已加入口。
-- **全栈 TODO 收拢**：`design/TODO.md` 的 D-018–D-035 移入 [`design/fullstack/docs/TODO.md`](design/fullstack/docs/TODO.md)，并按设计 TODO 的 ID/层/优先级/状态/下一步/依赖格式重排；design TODO 只保留设计系统事项与一行链接。
-- **青橙全栈收尾**：新增 [`design/fullstack/docs/TODO.md`](design/fullstack/docs/TODO.md)，将推送/CI/npm/HMR/SMTP 等外部事项移出聊天；README/文档索引/design TODO/HUB 标记“已收尾”。
-- **青橙全栈 P17 发布准备**：包 dry-run（4 files/32.3KB）、发布检查文档、外部依赖边界；10/10 测试；`25_P17实现记录`。
-- **青橙全栈 P16 核心**：S3 `x-amz-checksum-sha256`、分片限速、`saveUpload({scan})`；10/10 测试；`24_P16实现记录`。
-- **青橙全栈 P15 核心**：第三个 dogfood `examples/guestbook`、OAuth `previousTokenKeys` 密钥轮换；10/10 测试；`23_P15实现记录`。
-- **青橙全栈 P14 核心**：S3 `uploadLarge`（并发/重试/checkpoint）、OAuth token AES-256-GCM 加密；9/9 测试；`22_P14实现记录`。
-- **青橙全栈 P13 核心**：S3 multipart（create/upload/complete/abort）、OAuth refresh 并发锁/撤销、CI workflow；9/9 测试；`21_P13实现记录`。
-- **青橙全栈 P12 核心**：S3 presign/delete、OAuth refresh token；9/9 测试；`20_P12实现记录`。
-- **青橙全栈 P11 核心**：`qc pack` 预编译包（`dist/index.mjs`/`dist/cli.mjs`）、`qc new` 通过 `@qingcheng/qc` 包导入；`19_P11实现记录`。
-- **青橙全栈 P10 核心**：S3 兼容存储（SigV4 PUT）、OAuth PKCE（S256）；9/9 测试；`18_P10实现记录`。
-- **青橙全栈 P9 核心**：SMTP transport、`Storage`/`LocalStorage`/`MemoryStorage`、开发自动刷新、CI 模板；8/8 测试；`17_P9实现记录`。
-- **青橙全栈 P8 核心 + 文档分区**：OAuth 通用路由、GitHub/Google 预设；全栈文档迁入 `docs/design/` 与 `docs/implementation/`，新增 `docs/README.md`；7/7 测试；`16_P8实现记录`。
-- **青橙全栈 P7 核心**：OAuth/OIDC adapter（state/token/userinfo/session）、API 邮件 transport、可注入 fetch；6/6 测试；`15_P7实现记录`。
-- **青橙全栈 P6 核心**：邮箱验证、异步 StandardSchema、`formValues/formErrors`、第二个 dogfood `examples/bookmarks`；notes 3/3 + bookmarks 1/1；`14_P6实现记录`。
-- **青橙全栈 P5 核心**：mailer（console/file/memory）、密码重置（token 哈希/一次性/清 session）、`/forgot`、`/reset`、StandardSchema `fromStandard`、上传 `saveUpload`；3/3 测试；`13_P5实现记录`。
-- **青橙全栈 P4 运维核心**：`x-request-id` + JSON 日志、`qc db backup/restore`、Docker/Compose 部署模板；`12_P4实现记录`。
-- **青橙全栈 P3 核心**：esbuild bundle（`dist/server.mjs`）、`qc start` 自动识别 bundle、`qc start dist`、`Action.onError` 表单错误回填、内置 `/health`；新增 esbuild 0.25.12 devDependency；2/2 测试 + bundle smoke；`11_P3实现记录`。
-- **青橙全栈 P2**：auth（session/scrypt/CSRF/角色）、表单校验、安全头、限流、2MiB 请求体上限；notes 升级为注册/登录/个人笔记/删除/退出；2 个集成测试通过；`10_P2实现记录`。
-- **青橙全栈 P1 骨架落地**：`design/fullstack/qc/`（Node 原生 HTTP + node:sqlite + 文件路由 + page/action + HTML 模板 + 迁移 + CLI）与 `examples/notes/`；2 个集成测试通过；P2 auth/打包待做。
-- **新增青橙全栈（QC Stack）技术框架提案**：`design/fullstack/` 9 篇文档（理念/架构/应用契约/Web 实现/多端/路线/依赖治理/决策清单）；`D-018` 待决策；拍板前不写代码。
-- **青橙十问 × 未来残片试评审**：新增 [`design/docs/13`](design/docs/13_青橙十问_未来残片试评审.md)；桌面试评审，识别“照料型势力吃亏”“受影响的人缺席”两项红旗；`D-017` 完成。
-- **青橙设计理念体系（D-011）**：9 篇（00–08）全部完稿（第三批：06 多世界语法、07 边界、08 青橙十问）；新增 `design/philosophy/`、`D-011` 记录与 `design/ref/README.md`；`design/TODO` 第二批与第三批均完成；下一步用真实项目过「青橙十问」。
-- **设计系统决策记录制度落地**：新增 `design/docs/decisions/README.md` 与 D3 样例；`D-014` 完成；`00 决策总表` v1.2。
-- **设计系统暂定中文名“青橙设计”**：README / D2 / HUB 更新；代码名仍为 `LRDS`，不替代公开品牌名。
-- **新增 [设计系统决策记录制度草案](design/docs/proposals/20261022-1326-决策记录制度草案.md)**：盘点工作区现有决策实践，给出 A/B/C/D 四种方案与推荐 C 混合制；`design/TODO.md` 的 D-014 转“草案中”。
-- **设计系统决策总表 v1.1**：新增 E01–E18 执行决策，与 D1–D10 战略决策分层；E 表按时间排序、只列选择/状态/详据；`design/TODO.md` 新增 D-014 决策记录制度完善。
-- **新增 [design/docs/12_设计系统入门.md](design/docs/12_设计系统入门.md)**：面向初学者的设计系统长文，覆盖 token / 组件 / 模式 / 风格卡 / 治理 / 无障碍 / 失败模式 / AI / 最小启动清单；非规范正文。
-- **新增 [`design/TODO.md`](design/TODO.md)：设计系统专属待办**——App kit / 组件 / Archive 亮色 / 打印实体 / HUB / 无障碍 / 发布的 13 项清单，含等待拍板与最近完成；根 TODO 只保留非设计跨项目事项。
-- **新增根 [`TODO.md`](TODO.md)：工作区跨项目顶级待办入口**——P0/P1/P2、维护规则；当前仅列 T-001 网站部署运行时；设计系统条目见 `design/TODO.md`。
-- **新增根 [`AGENTS.md`](AGENTS.md)：本工作区 AI 协作硬规范**——只要本次回答有提交，回答最开头必须列提交表（SHA / 提交信息 / author time / 分支 / 推送 / 备注），即使只有一条；同时约定提交、变更日志、tag、推送与失败报告。
-- 根 [`README.md`](README.md) 增加 `design/` 入口与 [`design/HUB.html`](design/HUB.html) 链接（读者分流 + 目录表 + 工作区说明）。
-- **新增 [`design/HUB.html`](design/HUB.html)：设计系统一页式可视化总览**：由 [`design/tools/build_hub.ts`](design/tools/build_hub.ts) 从 token / 组件 / 文档 / 产品源码生成，含总览、Token 色板与字阶、风格卡、组件采用矩阵、产品截图、验收闸门、决策与文档索引；生成器自检 4/4，`build_hub --check` 已接入 `check.sh`，HUB 不会被静默写旧。
-- **设计系统 v0.3 · App kit 起步**：新增平台无关 [`design/tokens/dist/app/tokens.json`](design/tokens/dist/app/tokens.json)（20 色 / 5 级字阶 / 触控与尺寸 / 无障碍阈值）与 [iOS/Android 规范](design/kits/app/README.md)；生成物 7 → 8。**尚无真实 App 消费者**，不声称已接入/已验收。记录见 [`design/docs/11_App_kit_v0.2.md`](design/docs/11_App_kit_v0.2.md)。
-
-### 变更
-
-- **R06 时间规则 v3**：完成项取完成提交 author time；一条目跨多提交时拆条或取最后提交并注明范围；时间命令显式 `TZ=Asia/Shanghai` + `--date=format`，弃用依赖机器时区的 `format-local`。
-- **TODO 瘦身**：根/设计 TODO 移除「最近完成」段；完成项直接在总表改 `已完成`，不再维护完成日志；根/设计 README、AGENTS 同步。
-- **设计文档可读性**：`design/docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段（违反/理由/替代方案/Owner/到期/状态）与收口时间/方式；`design/TODO.md` 移除「最近完成」段，完成项改为在总表改状态。
-- **收敛待办**：根 TODO 中设计系统相关条目（T-002–T-010、设计拍板、设计完成项）全部迁入 [`design/TODO.md`](design/TODO.md)；根表只保留 T-001 网站运行时与设计入口，不再复制细节。
-- `design/tools/build_tokens.ts` 增加 App JSON 导出；`build_tokens --check` 现在校验 8 个生成物。
-- 根 [`README.md`](README.md) 的“开发 / 维护者 / 与 AI 协作”入口加入 [`AGENTS.md`](AGENTS.md)，并增加 AI 代理先读提示。
-- [`design/README.md`](design/README.md) 与 [`design/HUB.html`](design/HUB.html) 增加 `design/TODO.md` 入口；根 [`TODO.md`](TODO.md) 注明设计系统明细位置。
-- 根 [`README.md`](README.md) 增加 [`TODO.md`](TODO.md) 的读者入口与目录表项；[`AGENTS.md`](AGENTS.md) 增加“开始任务前先看 TODO、完成/新增/阻塞时同步更新”。
-- [`AGENTS.md`](AGENTS.md) 增加“**Git 推送一次失败即放弃**”：不连续重试，提交表标“推送失败”并给出重试命令。
-- [`design/HUB.html`](design/HUB.html) 支持“系统 / 亮色 / 暗色”三态主题切换（记忆到 `localStorage`）；亮色为 HUB 查看器主题，不是新的产品风格卡。
-- **补记设计系统 v0.1.0**：把原先并入 0.2.0 的 v0.1 条目拆成独立 `[0.1.0]` 版本段，并补打 `design-v0.1.0` tag（指向 v0.1 提交 `e91985d`）。
+- **软件生态与产品机会卷**：新增 [`docs/software/`](docs/software/README.md)（产品机会长文 + 3 篇深潜 + 13 篇生态文集 + 10 篇开源协议文集 + 用户目标分析）；`docs/README` 由四卷升为五卷。
+- **lab 三个项目 opt-in 根规则**：`livedso`、`liveland`、`livefile` 明确不适用 lab 实验豁免，按 R01/R02/R03/R05/AGENTS 执行，迁移 projects 时接入 M1/M2。
+- **Node 22.18+ / 移除实验 flag**：当前脚本、CI、package scripts 与文档统一用 `node`；最低 Node 22.18；QC 以 Node 24 为主。
+- **根入口与规范**：根 [`README.md`](README.md)、[`TODO.md`](TODO.md)、[`AGENTS.md`](AGENTS.md) 与 [`rules/`](rules/README.md) 的入口/分流/记录规范收口；根日志只保留工作区级条目。
 
 ## [0.5.0] - 2026-10-21 13:50 · 设计系统 v0.2 与组件落地
 
 ### 变更
-- **设计系统 v0.2 第二阶段追加**：`check.sh` 增加组件契约闸门（五节 / token / 裸值 / 状态）。
-- **设计系统 v0.2 第三阶段**：`check.sh` 增加组件产物一致与使用审计；网站搜索框焦点从 `--teal` 改为 `--focus`。
-- **设计系统 v0.2 第二阶段**：`design/tools/check.sh` 增加明日频道风格卡对账；`design/` 纳入 M1/M2 闸门（block 9 个关注点）。
-- **设计系统 v0.2 的闸门与生成调整**：`check_no_raw_values` 受检面由 `theme.css` 扩到整个网站 app；Web 生成按产品拆为 `future-archive.css` / `livefab.css`；LiveFab 不再复制 token，焦点色改为独立蓝。
-- **设计系统四道闸门接入 pre-commit 与 CI**：暂存涉及 `design/`、网站主题/生成 token 或游戏 `game/data/tokens.json` 时，自动跑 `bash design/tools/check.sh`（结构 / 对比度 / 裸色值 / 生成物，均含自检）；CI 另加网站 `verify-contrast.ts` 一步。这样“改了 token 忘了生成”或“业务代码又写裸色值”会在提交前被拦住。
 - [`tools/hooks/pre-commit`](tools/hooks/pre-commit) 的 CHANGELOG 校验新增 `design/CHANGELOG.md` → `design-v` 标签前缀，使设计系统版本与 git tag 对齐（与根 `workspace-v`、各项目前缀同一机制）。
 - **[`tools/hooks/pre-commit`](tools/hooks/pre-commit) 新增一步：HUB 页面与工程对账**（触发条件：改动 `projects/mainline/HUB.html` 或它的数据来源——数据表 / `run.sh` / 用例表）。
   - 动机：给人看的汇总页里的数字**必然过期**，而"页面写 120 卡、实际已 150 卡"这类偏差此前**没有任何检查会发现**；现在它会拦截提交。
   - 实现要点：核对来源**从工程现读**（数据表 `entries`、`run.sh` 的闸门步数、`case_list.gd` 的用例数），**推导不出即判失败**（不静默跳过），同一数字在页面出现多次则**逐个核对**。
 
 ### 新增
-- **新增 [`design/`](design/README.md) 设计系统立项决策包**：建立工作区级设计系统（LRDS）的定位、原则、决策队列与治理提案——[README](design/README.md) + [D1–D10 决策总表](design/docs/00_决策总表.md) + [现状盘点](design/docs/01_现状盘点.md)（四套视觉定义已分叉，含 focus 色复用、`--line` 误用等合规缺陷）+ [系统架构](design/docs/02_系统架构.md)（五层模型、`ref`/`sys`/`product` 三层 token、单一事实源与生成管线）+ [治理与运营](design/docs/03_治理与运营.md) + [落地路线](design/docs/04_落地路线.md) + [设计系统日志](design/CHANGELOG.md)。**状态：D1–D10 全部待用户裁决，尚未开始 token 与实现。** 同时在元规则覆盖清单 [`workspace-scope.json`](rules/meta/tools/workspace-scope.json) 中登记为 `pending`（`v0.1` 补 M1/M2 配置后转 `block`），缺口明示而非隐形。
-- **设计系统 v0.1 地基落地（两个试点已接入，外观基本不变）**：186 个三层 token（`ref` 61 / `sys` 92 / `product` 33）+ 生成器 + 四道闸门（结构 / 对比度与层级 / 裸色值 / 生成物无 diff，均带 `--self-test`）；[《未来档案》](design/kits/web/README.md) 的 `theme.css` 与 [《未来残片》](design/kits/godot/README.md) 的 `game/data/tokens.json` 改为消费生成物，网站 `bun run build`、游戏 `check_tokens.py` / `run.sh contrast` / `run.sh theme` 全部通过。唯一有意的视觉变化：网站 `--focus` 从强调青改为独立蓝，修掉“焦点=强调色”的缺陷。实现记录与债务见 [`design/docs/05_实现记录_v0.1.md`](design/docs/05_实现记录_v0.1.md)。
-- **设计系统 v0.2 第一阶段（网站全量 token 化 + LiveFab 接入）**：网站 app（主题 + `GalleryGrid` / `SearchDialog` / `gallery/index`）的遮罩、阴影、高亮改用 8 个新增 alpha/overlay token，26 个 CSS/Vue/TS 文件裸色值归零；LiveFab 门户新增 `product.livefab` 风格卡、删除 11 个内联色值并改为 import 生成 CSS；Web 生成拆为 `future-archive.css` / `livefab.css`。网站 `bun run build`、LiveFab `bun run build`、网站对比度 27/27、设计四道闸门全绿。记录见 [`design/docs/06_实现记录_v0.2.md`](design/docs/06_实现记录_v0.2.md)。
-- **设计系统 v0.2 第二阶段（治理收口）**：《明日频道》磁带皮肤登记为 `SC-TOMORROWS-CHANNEL-TAPE-v1`（9 色 + 色温/光比/装饰参数），新增 `.tres` ↔ token 对账闸门（7/7 自检）；[`design/` 的 M1/M2](rules/meta/tools/workspace-scope.json) 从 `pending` 转 `block`（新增 [`config-design.json`](rules/meta/tools/config-design.json)，实测 61 合规 / 0 违规），工作区纳入闸门的关注点 8 → 9。风格卡登记见 [`design/docs/07_风格卡登记.md`](design/docs/07_风格卡登记.md)。
-- **设计系统 v0.2 第二阶段追加：3 个组件契约（draft）**：[button](design/components/button.md) / [form-field](design/components/form-field.md) / [panel](design/components/panel.md)，五节 + token 清单；新增 [`check_component_contracts.ts`](design/tools/check_component_contracts.ts)（6/6 自检，检查五节、token、裸值、状态）；新增 `sys.size.*` 尺寸 token，token 总数 215 → 229。**只写契约，不建组件库**。
-- **设计系统 v0.2 第三阶段：共享 Web 组件层与渐进接入**：[`design/kits/web/components.css`](design/kits/web/components.css) 提供 `.lr-button` / `.lr-panel` / `.lr-field`；生成副本接入[网站](projects/website/app/assets/components.generated.css)与 [LiveFab](projects/livefab/portal/src/assets/components.generated.css)；网站 4 文件 / 12 处 button、6 文件 / 22 处 panel、搜索框 1 处 field，LiveFab 1 处 button + 1 处 panel。新增 [`build_web_kit.ts`](design/tools/build_web_kit.ts)（3/3）、[`check_component_usage.ts`](design/tools/check_component_usage.ts)（4/4）与[组件预览图](design/kits/web/preview.png)。**渐进接入，不建组件库**；完整视觉/键盘走查待做。
-- **设计系统 v0.2 产品走查（真实渲染 + Tab）**：网站首页 / Wiki 列表 / 搜索弹窗 / LiveFab 首页 4 个页面、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [`design/docs/shots/`](design/docs/shots/)，结论见 [`design/docs/09_产品走查_v0.2.md`](design/docs/09_产品走查_v0.2.md)。运行发现网站构建产物在本机 Bun 1.4.0 下触发 NAPI 崩溃（SIGABRT），改用 Node 完成走查；部署运行时需复核。
-- **设计系统 v0.2 第四阶段：皮肤收口**：卡片圆角 6 → 8px（EX-20261021-02 resolved）；新增 `lr-button--technical` / `--outline` 变体；删除网站 `.deco-btn` / `.card` 与 LiveFab `.cta` / `ul.svc li` 的重复基础皮肤；修复 `white-space: nowrap` 误加 panel 的回归；重跑 4 页 / 53 步 Tab / 0 缺失焦点。记录见 [`design/docs/10_皮肤收口_v0.2.md`](design/docs/10_皮肤收口_v0.2.md)。
+- **设计系统 v0.2 / v0.1**：详细变更已迁入 [`design/CHANGELOG.md`](design/CHANGELOG.md)（v0.1/v0.2 段）；根日志只保留设计闸门接入 pre-commit 的工作区影响。
 - 新增 [`docs/tower-defense/可视化/`](docs/tower-defense/可视化/README.md)：塔防研究卷的**离线可交互图**（自包含 HTML，无外部依赖）——[00 总图索引](docs/tower-defense/可视化/00_总图_研究可视化索引.html)（文档→图关系网）、[01 视觉语法·一屏四问](docs/tower-defense/可视化/01_视觉语法_一屏四问.html)（图层开关实时判定四项关键信息＋1 秒读图自测，含八条画面检查表）、[02 难度标签·可解释难度](docs/tower-defense/可视化/02_难度标签_可解释难度.html)（B/P 滑块 → D、λ=1.35·D³、解析通关率与四档标签，含指标矩阵与远征双口径）、[03 视觉谱系·五种取向](docs/tower-defense/可视化/03_视觉谱系_五种取向.html)；研究卷卷首、美学卷与 AI 卷 README 加入口，策划侧可视化 README 增相关链接。
 - 塔防研究卷再增两卷并统一数值口径：
   ① 新增 [`tower-defense/美学卷/`](docs/tower-defense/美学卷/README.md)（5 篇约 10,273 汉字）：视觉语法（一屏四问、俯视与等距取舍、路径四层编码、明度分带与色加形、特效优先级与粒子预算、8 条画面检查表）、复古未来（雷达屏/沙盘/剖面/指挥台四母题、CRT 后处理上限、三件载体分工、单主光与反例）、千禧透明（四层结构×三档透明度、四个系统可视化收益、可读性四保险与 bling 三级、键色 60/25/10/5）、读图效率（1 秒四问测试、字号与对比度口径、裁决顺序、信息密度预算、发布前 10 条验收表）、代表作视觉谱系（五种取向对照）；

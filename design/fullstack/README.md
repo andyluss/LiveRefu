@@ -3,7 +3,7 @@
 > **状态**：**已收尾（P1–P17 核心/发布准备完成）；外部事项见 [TODO](docs/TODO.md)** ｜ 日期：2026-10-26 14:42 ｜ 决策：F1–F12 已按推荐（见 [08](docs/design/08_决策清单.md)）
 > **定位**：青橙设计的技术底座。不是新的设计系统，也不是 Nuxt/Astro 的换皮；是一套**Web 优先、全栈、可替换依赖**的应用框架。
 > **一句话**：让一个懂 TypeScript 和基本 Web 的人，不研究 bundler / HTTP / ORM / session / 部署细节，也能做出网站、应用和大部分游戏服务端需求；同时保留“随时接管底层”的出口。
-> **可视化**：[Project HUB](HUB.html)（开发/发布）· [Framework GUIDE](GUIDE.html)（功能/用法）
+> **日志**：[`CHANGELOG.md`](CHANGELOG.md) ｜ **可视化**：[Project HUB](HUB.html)（开发/发布）· [Framework GUIDE](GUIDE.html)（功能/用法）
 
 ## 一、为什么现在做
 
