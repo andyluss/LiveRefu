@@ -4,12 +4,13 @@
 > `新增` / `变更` / `修复` / `移除`。项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/README.md)。
 > 策划卷（设计源）在 [`projects/refu-game-001/docs/design/`](docs/design/README.md)，本项目是其实现物。
 
-## [0.1.5] - 2026-10-27 21:19
+## [0.1.5] - 2026-10-27 21:27
 
 ### 变更
 
 - **策划卷迁入项目文档**：`docs/refu-game-001/` → `docs/design/`；项目文档仍保留实现文档，设计源与实现物在同一项目下分层。
-- 迁移后链接、素材路径与数值校验路径同步；`docs/design/` 仍为设计源，`docs/` 为实现/验收文档。
+- **难度模拟器归位**：`tools/sim_refu_game_001.ts` → `projects/refu-game-001/tools/sim_refu_game_001.ts`；模型、CLI 参数与输出不变。
+- 迁移后链接、素材路径、数值校验与 CI/pre-commit 路径同步；`docs/design/` 仍为设计源，`docs/` 为实现/验收文档。
 
 #### 策划卷历史（自 `docs/CHANGELOG.md` 迁入，时间取 git 提交）
 

@@ -62,10 +62,11 @@ projects/refu-game-001/
 │   │   ├── app/         # 界面控制：菜单/关卡/卡组/图鉴 + battle/（各面板与弹窗）
 │   │   └── tools/       # 验收（sim/）/ 自动玩家（auto_*）/ 录像（demo/）/ 截图（shot/）
 │   └── scenes/
-└── tools/               # 数据管线（Python）
+└── tools/               # 数据管线（Python）+ 难度模拟器（TS）
     ├── sync_assets.py       # 美术出图 → game/assets
     ├── extract_map_data.py  # 地图卡出图 → maps.json（几何抽取）
     ├── verify_data.py       # ★ 游戏数据表 ↔ 策划文档 逐字段交叉校验
+    ├── sim_refu_game_001.ts # 难度模型模拟/九项 --verify-* 校验
     ├── record_demo.sh       # 录制完整流程演示视频（Godot 帧序列 → H.264 MP4）
     └── make_video.swift     # 帧序列 → MP4 编码器（AVFoundation，无 ffmpeg 依赖）
 ```

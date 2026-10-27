@@ -71,7 +71,7 @@ svg.appendChild(E('text',{x:x+85,y:110,'text-anchor':'middle',class:'ax'},c[1]))
 if(i<cols.length-1)svg.appendChild(E('path',{d:'M '+(x+170)+' 96 L '+(x+198)+' 96',stroke:'var(--muted)','stroke-width':1.5,'marker-end':'url(#a)'}))});
 svg.appendChild(E('defs',{})).appendChild(E('marker',{id:'a',viewBox:'0 0 10 10',refX:'8',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'})).appendChild(E('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'var(--muted)'}));
 svg.appendChild(E('text',{x:30,y:150,class:'ax'},'决策 → 规范 → 内容 → 验算 → 可视：任何一层改动都要沿这条链回到 CHANGELOG 记账。'));
-svg.appendChild(E('text',{x:30,y:170,class:'ax'},'数值口径是被冻结点：改它必须重跑 tools/sim_refu_game_001.ts 的九项校验，并刷新 01–06 号图。'));
+svg.appendChild(E('text',{x:30,y:170,class:'ax'},'数值口径是被冻结点：改它必须重跑 projects/refu-game-001/tools/sim_refu_game_001.ts 的九项校验，并刷新 01–06 号图。'));
 })();
 </script>
 </body>

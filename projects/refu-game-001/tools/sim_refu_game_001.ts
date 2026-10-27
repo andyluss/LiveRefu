@@ -12,10 +12,10 @@
 //   解析胜率  = P(Poisson(λ_total) < LEAK_CAP)
 //
 // 用法：
-//   node tools/sim_refu_game_001.ts --run
-//   node tools/sim_refu_game_001.ts --selftest
-//   node tools/sim_refu_game_001.ts --run --n 20000 --md /tmp/out.md
-//   node tools/sim_refu_game_001.ts --stage 218 --p 1.3 --challenge 双流,加压
+//   node projects/refu-game-001/tools/sim_refu_game_001.ts --run
+//   node projects/refu-game-001/tools/sim_refu_game_001.ts --selftest
+//   node projects/refu-game-001/tools/sim_refu_game_001.ts --run --n 20000 --md /tmp/out.md
+//   node projects/refu-game-001/tools/sim_refu_game_001.ts --stage 218 --p 1.3 --challenge 双流,加压
 //
 // 参数：--n（每关局数，默认 5000）--seed（默认 20260914）--b-ref（默认 158）
 //       --lambda0（默认 1.35）--gamma（默认 3）--cap（默认 3）--sim-ratio（双流同时段占比，默认 0.667）--md（输出文件）
@@ -473,7 +473,7 @@ function buildReport(): string {
   const L: string[] = [];
   L.push("# Refu Game 001 · 数值体检报告（自动生成）", "");
   L.push(`> 生成日期（东八区）：${date} ｜ 参数：n=${RUNS} seed=${SEED} λ0=${LAMBDA0} γ=${GAMMA} cap=${CAP} B_ref=${B_REF}`);
-  L.push("> 本报告由 `tools/sim_refu_game_001.ts --report` 生成；改动数值后重跑并刷新本文件。", "");
+  L.push("> 本报告由 `projects/refu-game-001/tools/sim_refu_game_001.ts --report` 生成；改动数值后重跑并刷新本文件。", "");
   L.push("## 一、模型自检", "");
   const st = selftestFailures();
   L.push(st.length ? `- ❌ FAIL：${st.join("；")}` : "- ✅ PASS（种子可复现、单调性、模拟/解析一致）", "");
@@ -581,7 +581,7 @@ async function main(): Promise<void> {
   console.log(challengeMd);
   const out = arg("md", "");
   if (out) {
-    const body = "# Refu Game 001 · 难度模拟输出\n\n> 由 `tools/sim_refu_game_001.ts` 生成；参数：n=" + RUNS + " seed=" + SEED + " λ0=" + LAMBDA0 + " γ=" + GAMMA + " cap=" + CAP + "\n\n" + md + "\n\n" + challengeMd + "\n";
+    const body = "# Refu Game 001 · 难度模拟输出\n\n> 由 `projects/refu-game-001/tools/sim_refu_game_001.ts` 生成；参数：n=" + RUNS + " seed=" + SEED + " λ0=" + LAMBDA0 + " γ=" + GAMMA + " cap=" + CAP + "\n\n" + md + "\n\n" + challengeMd + "\n";
     const fs = await import("node:fs");
     fs.writeFileSync(out, body, "utf8");
     console.log("\n[written] " + out);

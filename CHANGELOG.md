@@ -19,7 +19,7 @@
 ### 变更
 - **AGENTS 网络与代理**：[`AGENTS.md`](AGENTS.md) 新增「七、网络与代理」：联网前先检测代理；走代理只用一次性参数，禁止写进全局配置；代理失败时先去代理再试一次，两次都不行就停下并告知用户；并记录“远端操作可能部分成功，失败后先核对远端真实状态”。
 - **M1/M2 判定配置留出入口**：[`config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置，并把点文件纳入命名白名单，避免把合法文件判成“根目录未声明文件”。
-- **Refu Game 001 策划卷迁入项目文档**：`docs/refu-game-001/` → `projects/refu-game-001/docs/design/`；知识库日志与项目日志已分别记录，时间取 git 提交。
+- **Refu Game 001 策划卷与难度模拟器迁入项目**：`docs/refu-game-001/` → `projects/refu-game-001/docs/design/`；`tools/sim_refu_game_001.ts` → `projects/refu-game-001/tools/`；知识库/项目日志已记录，时间取 git 提交。
 - **R06 时间规则 v3**：完成项取完成提交 author time；跨多提交拆条或取最后提交；时间命令显式 `TZ=Asia/Shanghai`；新增时间戳命名闸门。
 
 ### 新增

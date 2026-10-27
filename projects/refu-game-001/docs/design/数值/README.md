@@ -24,7 +24,7 @@
 改动本目录任何首值后，**依次跑完九项校验（全部 PASS 才算完成），并刷新体检报告**：
 
 ```bash
-S=tools/sim_refu_game_001.ts
+S=projects/refu-game-001/tools/sim_refu_game_001.ts
 node $S --selftest                     # 1 模型自检（种子/单调性/解析一致）
 node $S --verify-bands --n 20000       # 2 主线五章带位
 node $S --verify-rogue --n 20000       # 3 远征 8 节点带位

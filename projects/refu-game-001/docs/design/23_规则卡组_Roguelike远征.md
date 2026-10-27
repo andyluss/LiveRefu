@@ -53,7 +53,7 @@
 ## 五、D 曲线与难度（脚本已验）
 
 节点 i 的目标难度 `D_i = 0.9 + 0.10i`；永久修饰的等效战力增长取 `P=1.08`，对应预算 `B_i = 170.6 × (0.9 + 0.10i)`。
-实测（`tools/sim_refu_game_001.ts --verify-rogue --n 20000` → **PASS**）：
+实测（`projects/refu-game-001/tools/sim_refu_game_001.ts --verify-rogue --n 20000` → **PASS**）：
 
 | 节点 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8（BOSS） |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |

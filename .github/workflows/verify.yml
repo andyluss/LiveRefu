@@ -5,7 +5,7 @@ name: Verify
 #   lab/formal-system/tech/rules/T01-default-ts-scripts.md）：
 #   1. Markdown 相对链接是否失效 (tools/check_links.ts)
 #   2. 数据表是否符合 schema 契约 (tools/check_data.ts)
-#   3. Refu Game 001 难度模型自检与章节带位校验 (tools/sim_refu_game_001.ts --selftest / --verify-bands)
+#   3. Refu Game 001 难度模型自检与章节带位校验 (projects/refu-game-001/tools/sim_refu_game_001.ts --selftest / --verify-bands)
 #   4. 元规则结构(M1+M2)/演进状态(M3)/STRUCTURE.md(M4) (lab/formal-system/concerns/meta-rules/*.ts)
 #   5. 规则目录 rules/ 的结构(M1+M2) 与规则演进状态(M3, 覆盖元规则 M 与具体规则 R) (rules/meta/*.ts)
 #   6. 刷新入口页（hub.ts --run 一键重新生成全部可视面）
@@ -53,20 +53,20 @@ jobs:
         run: node tools/check_data.ts -v
 
       - name: Refu Game 001 difficulty model self-test (TS)
-        run: node tools/sim_refu_game_001.ts --selftest
+        run: node projects/refu-game-001/tools/sim_refu_game_001.ts --selftest
 
       - name: Refu Game 001 difficulty band check (TS)
-        run: node tools/sim_refu_game_001.ts --verify-bands --n 20000
+        run: node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-bands --n 20000
 
       - name: Refu Game 001 content checks (TS)
         run: |
-          node tools/sim_refu_game_001.ts --verify-rogue --n 20000
-          node tools/sim_refu_game_001.ts --verify-faction
-          node tools/sim_refu_game_001.ts --verify-seed
-          node tools/sim_refu_game_001.ts --verify-anti-air
-          node tools/sim_refu_game_001.ts --verify-air-matrix
-          node tools/sim_refu_game_001.ts --verify-air-mix
-          node tools/sim_refu_game_001.ts --verify-pmod
+          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-rogue --n 20000
+          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-faction
+          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-seed
+          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-anti-air
+          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-air-matrix
+          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-air-mix
+          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-pmod
 
       - name: Meta-rules structure check (M1+M2, TS)
         run: node lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts
