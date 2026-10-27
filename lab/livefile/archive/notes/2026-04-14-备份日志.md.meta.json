@@ -1,0 +1,10 @@
+{
+  "title": "备份日志",
+  "type": "note",
+  "created": "2026-04-14",
+  "source": "家庭维护记录",
+  "license": "private",
+  "collections": ["家庭维护"],
+  "tags": ["备份", "维护"],
+  "retention": "permanent"
+}

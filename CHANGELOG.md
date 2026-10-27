@@ -21,6 +21,8 @@
 - **元规则 M1/M2 的判定配置为新目录留出入口**：[`rules/meta/tools/config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置（`projects/mainline/cards/` 自带 README，按 M1 属"可自成一体"的子关注点），并把点文件（`.gitignore`）纳入命名白名单——原先的正则要求首字符为字母数字，会把点文件判为"根目录未声明文件"。
 
 ### 新增
+- **LiveFile v0.1（实验）**：[`lab/livefile/`](lab/livefile/README.md) —— 本地优先个人档案 OS；文件/sidecar 索引、全文/元数据搜索、时间线、集合、备份/继承健康、档案目录/清单/备份报告导出；示例 archive 10 条目 / 9 集合 / 6 类型。
+- **lab 三个项目 opt-in 根规则**：`livedso`、`liveland`、`livefile` 在各自 README 与 [`lab/README`](lab/README.md) 明确不适用 lab 实验豁免，按 R01/R02/R03/R05/AGENTS 执行，迁移 projects 时接入 M1/M2。
 - **LiveLand v0.1（实验）**：[`lab/liveland/`](lab/liveland/README.md) —— 本地优先、零依赖的世界/时代创作工具；世界约束、3 时代、canon/实体/资产/输出、世界 lint、添加 canon、世界圣经/风格指南/资产清单导出；示例「橙港」3 时代 / 12 canon / 8 实体 / 6 资产。
 - **用户目标分析**：`docs/software/product/01` 增加“三类采用姿态”分析（专业者/爱好者/普通人 × 使用者/买家/采用单位/关键性/设置容忍度），修正三个方向的用户判断；新增 [`docs/software/ecology/12_目标用户分析_专业人士爱好者与普通人.md`](docs/software/ecology/12_目标用户分析_专业人士爱好者与普通人.md)，补齐生态文集用户经济/验证框架。
 - **LiveDSO 许可与命名落地**：许可选 A（Apache-2.0 核心 + 商业托管/团队/审计）；贡献者政策 DCO 1.1；正式名暂定 **LiveDesign / 灵动设计**，LiveDSO 继续为代号；新增 `LICENSE`/`NOTICE`/`CONTRIBUTING`/`DCO`/`TRADEMARKS` 与 SPDX 头。

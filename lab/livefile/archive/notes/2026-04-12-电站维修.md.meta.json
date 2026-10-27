@@ -1,0 +1,11 @@
+{
+  "title": "电站维修记录",
+  "type": "note",
+  "created": "2026-04-12",
+  "source": "现场记录",
+  "license": "private",
+  "collections": ["家庭维护", "橙港"],
+  "tags": ["维修", "能源"],
+  "retention": "7y",
+  "person": "我"
+}

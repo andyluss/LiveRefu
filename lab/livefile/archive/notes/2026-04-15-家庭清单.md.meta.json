@@ -1,0 +1,10 @@
+{
+  "title": "家庭应急清单",
+  "type": "note",
+  "created": "2026-04-15",
+  "source": "家庭会议",
+  "license": "private",
+  "collections": ["家庭", "家庭维护"],
+  "tags": ["应急", "清单"],
+  "retention": "permanent"
+}

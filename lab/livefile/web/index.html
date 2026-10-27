@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="system" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveFile · Personal Archive</title>
+<meta name="description" content="LiveFile：本地优先的个人档案 OS。索引、时间线、集合、来源、备份与继承。">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('livefile-theme') || 'system';
+    if (t !== 'system' && t !== 'light' && t !== 'dark') t = 'system';
+    var mq = matchMedia('(prefers-color-scheme: dark)');
+    document.documentElement.dataset.theme = t;
+    document.documentElement.dataset.mode = t === 'system' ? (mq.matches ? 'dark' : 'light') : t;
+  } catch (e) {}
+})();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%230B0F14'/%3E%3Cpath d='M5 4h10l4 4v12H5Z' fill='none' stroke='%23FFC857' stroke-width='1.7'/%3E%3Cpath d='M8 12h8M8 15h8M8 9h4' stroke='%234FD1C5' stroke-width='1.5'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="#" data-view="overview">
+      <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8M8 15h8M8 9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      <span class="brand-text"><b>LiveFile</b><small>PERSONAL ARCHIVE</small></span>
+    </a>
+    <span class="lab-chip">LAB / 0.1</span>
+    <span class="status" id="status"><i></i><span>connecting</span></span>
+    <div class="top-actions"><button class="btn ghost" id="run-scan" type="button">Re-scan</button><div class="theme-switch" role="group" aria-label="主题"><button data-theme-set="system" type="button" aria-pressed="true">系统</button><button data-theme-set="light" type="button" aria-pressed="false">浅色</button><button data-theme-set="dark" type="button" aria-pressed="false">深色</button></div></div>
+  </header>
+  <aside class="sidebar">
+    <div class="kicker">ARCHIVE</div>
+    <nav class="nav">
+      <button data-view="overview" class="active" type="button"><span>01</span>总览</button>
+      <button data-view="timeline" type="button"><span>02</span>时间线</button>
+      <button data-view="items" type="button"><span>03</span>条目 <em id="nav-items">—</em></button>
+      <button data-view="collections" type="button"><span>04</span>集合 <em id="nav-collections">—</em></button>
+      <button data-view="health" type="button"><span>05</span>健康 <em id="nav-issues">—</em></button>
+      <button data-view="export" type="button"><span>06</span>导出</button>
+    </nav>
+    <div class="kicker">VAULT</div>
+    <div class="archive-box"><code id="archive-path">archive/</code><p>文件与 sidecar 都在本地；不上传、不训练。</p><strong id="archive-version">v0.1.0</strong></div>
+    <div class="side-foot"><span>local only</span><span id="node-version">Node —</span></div>
+  </aside>
+  <main class="main" id="main">
+    <section class="view active" id="view-overview">
+      <div class="view-head"><div><div class="eyebrow">PERSONAL ARCHIVE / 2026</div><h1>你的数字生活，<br>十年后还能打开吗？</h1></div><div class="head-meta"><span class="chip" id="archive-id">archive</span><span class="chip" id="item-count">— items</span></div></div>
+      <p class="lede" id="archive-lede">不是又一个笔记 App：索引你已有的文件，保留来源、时间、许可与保管人；让档案能被找到、备份、继承。</p>
+      <div class="overview-grid">
+        <article class="health"><div class="ring" id="health-ring"><div><b id="health-score">—</b><span>/100</span></div></div><div><div class="eyebrow">ARCHIVE HEALTH</div><h2 id="health-label">读取中</h2><p id="health-detail">扫描文件与 sidecar。</p><button class="btn small ghost" data-view="health" type="button">查看健康 →</button></div></article>
+        <div class="stats"><div><span>Items</span><b id="s-items">—</b><small>indexed</small></div><div><span>Collections</span><b id="s-collections">—</b><small>views</small></div><div><span>Unmanaged</span><b id="s-unmanaged">—</b><small>no metadata</small></div><div><span>Bytes</span><b id="s-bytes">—</b><small>local files</small></div></div>
+      </div>
+      <div class="overview-grid two">
+        <section class="panel"><div class="panel-head"><h2>最近的条目</h2><button class="text-btn" data-view="timeline" type="button">时间线 →</button></div><div id="recent" class="recent"></div></section>
+        <section class="panel"><div class="panel-head"><h2>备份与保管</h2><span class="chip" id="backup-chip">—</span></div><div id="backup-card" class="backup-card"></div></section>
+      </div>
+      <section class="panel"><div class="panel-head"><h2>集合</h2><button class="text-btn" data-view="collections" type="button">全部 →</button></div><div id="overview-collections" class="collection-strip"></div></section>
+    </section>
+
+    <section class="view" id="view-timeline">
+      <div class="view-head"><div><div class="eyebrow">TIME / MEMORY</div><h1>Timeline</h1></div><div class="head-meta"><span class="chip" id="timeline-count">—</span></div></div>
+      <p class="lede">按时间看档案：不是“文件列表”，而是你生活的顺序。缺失日期会显示为“未知”。</p>
+      <div id="timeline" class="timeline"></div>
+    </section>
+
+    <section class="view" id="view-items">
+      <div class="view-head"><div><div class="eyebrow">ITEMS / SOURCES</div><h1>Items</h1></div><div class="head-meta"><span class="chip" id="item-filter-count">—</span></div></div>
+      <p class="lede">条目 = 文件 + sidecar：标题、类型、时间、来源、许可、集合、保留期限。缺失会被标出来。</p>
+      <div class="toolbar"><label class="search"><input id="item-search" type="search" placeholder="搜索标题 / 集合 / 标签 / 内容" autocomplete="off"></label><select id="type-filter"><option value="">全部类型</option></select><select id="collection-filter"><option value="">全部集合</option></select></div>
+      <div id="item-grid" class="item-grid"></div>
+    </section>
+
+    <section class="view" id="view-collections">
+      <div class="view-head"><div><div class="eyebrow">COLLECTIONS</div><h1>Collections</h1></div><div class="head-meta"><span class="chip" id="collection-count">—</span></div></div>
+      <p class="lede">集合不是文件夹：同一件东西可以同时属于“家庭”“维修”“橙港”。</p>
+      <div id="collection-grid" class="collection-grid"></div>
+    </section>
+
+    <section class="view" id="view-health">
+      <div class="view-head"><div><div class="eyebrow">BACKUP / INHERITANCE</div><h1>Health</h1></div><div class="head-meta"><span class="chip" id="health-chip">—</span></div></div>
+      <p class="lede">健康不是“文件数”，而是：来源可追溯、备份可恢复、保管人明确、十年后还能打开。</p>
+      <div id="health-summary" class="health-summary"></div>
+      <div class="health-grid"><section class="panel"><div class="panel-head"><h2>档案问题</h2><span class="chip" id="issue-count">—</span></div><div id="issue-list" class="issues"></div></section><section class="panel"><div class="panel-head"><h2>备份 / 继承</h2></div><div id="inherit-card" class="inherit-card"></div></section></div>
+    </section>
+
+    <section class="view" id="view-export">
+      <div class="view-head"><div><div class="eyebrow">OUTPUT</div><h1>Export</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
+      <p class="lede">导出不是“上传”：档案目录、机器清单、备份/继承报告都可以带走。</p>
+      <div class="output-actions"><button class="btn" data-export="catalog" type="button">档案目录 .md</button><button class="btn ghost" data-export="manifest" type="button">清单 .json</button><button class="btn ghost" data-export="backup" type="button">备份/继承报告 .md</button><button class="btn ghost" id="download-output" type="button">下载当前输出</button></div>
+      <section class="panel"><div class="panel-head"><h2 id="output-title">输出预览</h2><span class="chip" id="output-status">未生成</span></div><pre id="output-preview" class="code-panel">选择一种输出。</pre></section>
+    </section>
+  </main>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="drawer" id="drawer" hidden><div class="backdrop" data-close-drawer></div><aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title"><div class="drawer-head"><div><div class="eyebrow">ITEM</div><h2 id="drawer-title">—</h2></div><button class="icon-btn" data-close-drawer type="button" aria-label="关闭">×</button></div><div id="drawer-body"></div></aside></div>
+<script src="app.js"></script>
+</body>
+</html>

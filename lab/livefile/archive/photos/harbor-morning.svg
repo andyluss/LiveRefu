@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f3e7c9"/><stop offset="1" stop-color="#b85c2a"/></linearGradient></defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <circle cx="860" cy="210" r="120" fill="#f7d78a" opacity=".9"/>
+  <path d="M0 560 Q300 480 600 560 T1200 540 V800 H0Z" fill="#1f6b4a" opacity=".85"/>
+  <path d="M0 650 Q240 590 480 650 T960 630 T1200 660 V800 H0Z" fill="#0b3d31" opacity=".8"/>
+  <g stroke="#f3ede1" stroke-width="2" opacity=".7"><path d="M120 180h180M120 200h120M80 230h100"/><path d="M760 120h200M800 142h120"/></g>
+  <text x="80" y="730" fill="#f3ede1" font-family="serif" font-size="28">橙港 · 清晨 06:40</text>
+</svg>

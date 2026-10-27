@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#10221c"/>
+  <rect x="80" y="160" width="1040" height="520" fill="#17382a" stroke="#6f8f77" stroke-width="2"/>
+  <rect x="150" y="240" width="320" height="330" fill="#e8d4a8"/>
+  <rect x="520" y="240" width="230" height="180" fill="#b85c2a"/>
+  <rect x="790" y="240" width="250" height="330" fill="#2b5f4a"/>
+  <path d="M120 680h960" stroke="#e8b84a" stroke-width="3"/>
+  <text x="80" y="740" fill="#f3ede1" font-family="serif" font-size="28">第三维修站 · 周六下午</text>
+</svg>

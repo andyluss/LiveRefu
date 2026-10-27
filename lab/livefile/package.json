@@ -1,0 +1,17 @@
+{
+  "name": "livefile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "LiveFile — local-first personal archive workbench",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "node --watch src/cli.ts serve",
+    "start": "node src/cli.ts serve",
+    "check": "node src/cli.ts check",
+    "catalog": "node src/cli.ts catalog",
+    "manifest": "node src/cli.ts manifest",
+    "backup": "node src/cli.ts backup",
+    "test": "node --test test/archive.test.ts"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "title": "社区电站维修费",
+  "type": "receipt",
+  "created": "2026-04-12",
+  "source": "维修站登记 R-2026-0412",
+  "license": "private",
+  "collections": ["家庭维护", "凭证"],
+  "tags": ["票据", "维修"],
+  "retention": "7y"
+}

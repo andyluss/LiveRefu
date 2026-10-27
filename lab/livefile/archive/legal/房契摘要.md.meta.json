@@ -1,0 +1,11 @@
+{
+  "title": "房契摘要",
+  "type": "legal",
+  "created": "2031-06-01",
+  "source": "港务档案局 / 家庭档案",
+  "license": "private",
+  "collections": ["家庭", "法律"],
+  "tags": ["房产", "凭证"],
+  "retention": "permanent",
+  "person": "家庭"
+}

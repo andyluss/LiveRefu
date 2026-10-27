@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#1a1c22"/>
+  <circle cx="600" cy="380" r="190" fill="none" stroke="#ffc857" stroke-width="2" opacity=".8"/>
+  <path d="M360 540 600 190l240 350Z" fill="none" stroke="#5ce1e6" stroke-width="2" opacity=".7"/>
+  <text x="80" y="730" fill="#e6eef3" font-family="serif" font-size="28">未整理：这是哪一天？</text>
+</svg>
