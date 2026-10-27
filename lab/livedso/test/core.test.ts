@@ -11,6 +11,7 @@ import { loadRegistry } from '../src/registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from '../src/history.ts'
 import { runCi } from '../src/ci.ts'
 import { allTrends } from '../src/trend.ts'
+import { pluginTestAll } from '../src/plugin-test.ts'
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
@@ -190,4 +191,18 @@ test('example plugins load', async () => {
   const loaded = await loadPlugins(fileURLToPath(new URL('../examples/plugins', import.meta.url)))
   assert.equal(loaded.errors.length, 0)
   assert.equal(loaded.plugins.length, 2)
+})
+
+
+test('plugin test matrix runs across vaults', async () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-plugin-matrix-'))
+  try {
+    for (const name of ['a', 'b']) cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true })
+    writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
+    const loaded = await loadPlugins(fileURLToPath(new URL('../examples/plugins', import.meta.url)))
+    const matrix = pluginTestAll(join(tmp, 'vaults.json'), loaded.plugins, loaded.errors)
+    assert.equal(matrix.vaults.length, 2)
+    assert.equal(matrix.vaults[0]?.plugins.length, 2)
+    assert.ok(matrix.vaults[0]!.issues.length >= 1)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

@@ -75,12 +75,21 @@ node src/cli.ts ci --plugins ./plugins --strict
 
 ## 五、自检
 
+单 vault：
+
 ```bash
 node src/cli.ts plugin-test --plugins examples/plugins
-node src/cli.ts plugin-test --plugins ./plugins --json
 ```
 
-输出插件名、issue 数、error 数；有 `plugin.load` / `plugin.runtime` / issue `error` 时退出码 `1`。
+跨 vault 矩阵：
+
+```bash
+node src/cli.ts plugin-test --all --plugins examples/plugins
+node src/cli.ts plugin-test --all --plugins examples/plugins --json
+```
+
+矩阵按 `vaults.json` 逐个 vault 跑同一插件，输出 plugins / issues / errors；任一 vault 加载失败或 issue 为 error 时退出码 `1`。
+
 
 ## 五、安全边界
 

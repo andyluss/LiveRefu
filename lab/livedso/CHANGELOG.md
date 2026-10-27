@@ -1,12 +1,18 @@
 # LiveDSO Changelog
 
-## [未发布]
+## [0.13.0] - 2026-10-27 22:48
 
-### 新增
+### Added
 
-- 新增 [`docs/04_商品化路径.md`](docs/04_商品化路径.md)：设计系统体检包未来提案；未实施、未排期。
-- 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
-- `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
+- **跨 vault 插件矩阵**：`plugin-test --all` 按 `vaults.json` 逐个 vault 运行同一插件；`--json` 输出矩阵；任一 vault 失败或 issue 为 error 时退出码 `1`。
+- 插件自检文档补充单 vault / 跨 vault 两种用法。
+
+### Changed
+
+- 将原 `[未发布]` 的 3 项（商品化路径、DOGFOOD、目标产品案例）按实际引入时间（19:50–20:04）归入 `0.3.0` 发布记录；`[未发布]` 清空。
+- `node:test` 从 15 项增至 16 项（插件矩阵）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- 未做：本地报告模板、更多跨 vault 视图；留到 v0.14。
 
 ## [0.12.0] - 2026-10-27 22:43
 
@@ -142,6 +148,9 @@
 
 - **契约编辑**：Workbench 的 Contracts 卡片增加编辑入口；标题/状态/说明/anatomy/states/tokens/keyboard/a11y/do/dont 可改，写回 `contracts/*.json`。
 - **真实 token 预览**：新增 Preview 视图，用当前 vault 的解析值渲染按钮/输入/面板；支持风格卡选择与 default/hover/focus/disabled 状态切换。
+- 新增 [`docs/04_商品化路径.md`](docs/04_商品化路径.md)：设计系统体检包未来提案；未实施、未排期。
+- 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
+- `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
 ### Changed
 

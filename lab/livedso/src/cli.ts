@@ -10,6 +10,7 @@ import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
 import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from './history.ts'
 import { allTrends } from './trend.ts'
+import { pluginTestAll } from './plugin-test.ts'
 import { formatCi, markdownCi, runCi } from './ci.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
 
@@ -140,6 +141,23 @@ switch (cmd) {
     break
   }
   case 'plugin-test': {
+    if (args.includes('--all')) {
+      const flag = (name: string) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined }
+      const matrix = pluginTestAll(resolve(flag('--registry') || 'vaults.json'), loadedPlugins.plugins, loadedPlugins.errors)
+      if (args.includes('--json')) console.log(JSON.stringify(matrix, null, 2))
+      else {
+        for (const v of matrix.vaults) {
+          const errors = v.issues.filter(i => i.severity === 'error').length
+          console.log(`\n${v.id} · ${v.name}${v.error ? ` · ${v.error}` : ''}`)
+          console.log(`  plugins: ${v.plugins.join(', ') || 'none'} · issues: ${v.issues.length} · errors: ${errors}`)
+          for (const i of v.issues) console.log(`    [${i.severity}] ${i.code}${i.path ? ` ${i.path}` : ''} — ${i.message}`)
+        }
+        if (matrix.registryErrors.length) console.log(`registry: ${matrix.registryErrors.join('; ')}`)
+      }
+      const bad = loadedPlugins.errors.length || matrix.registryErrors.length || matrix.vaults.some(v => v.error || v.issues.some(i => i.severity === 'error'))
+      process.exitCode = bad ? 1 : 0
+      break
+    }
     const vault = loadVault(root)
     const issues = [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)]
     if (args.includes('--json')) console.log(JSON.stringify({ plugins: loadedPlugins.plugins.map(p => p.name), errors: loadedPlugins.errors, issues }, null, 2))
@@ -179,7 +197,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.12 · local-first design system operations
+    console.log(`LiveDSO 0.13 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -194,6 +212,7 @@ switch (cmd) {
   node src/cli.ts trend [--json]           快照趋势（token/弃用/契约/风格卡）
   node src/cli.ts trend --all [--registry <file>]  跨 vault 趋势
   node src/cli.ts plugin-test [--json]     本地插件加载/运行自检
+  node src/cli.ts plugin-test --all [--registry <file>]  跨 vault 插件矩阵
   node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
                                           跨 vault 本地 CI 门禁
   node src/cli.ts serve [port]            启动 Web Workbench
