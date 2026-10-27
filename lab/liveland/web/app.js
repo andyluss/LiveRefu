@@ -4,7 +4,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', era: 'archive', output: '', outputName: 'world-bible.md' };
+  const state = { data: null, view: 'overview', era: 'archive', output: '', outputName: 'world-bible.md', worlds: [], activeWorld: '' };
   const labels = { canon: 'canon', draft: 'draft', rumor: 'rumor' };
 
   async function api(path, options = {}) {
@@ -33,6 +33,21 @@
     $$('.nav button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
     renderAll();
     window.scrollTo({ top: 0 });
+  }
+  function renderWorldSelect() {
+    const sel = $('#world-select'); if (!sel) return;
+    const list = state.data?.worlds || [];
+    const active = state.data?.activeWorld?.id || '';
+    sel.innerHTML = list.map(w => `<option value="${esc(w.id)}" ${w.id === active ? 'selected' : ''}>${esc(w.name)}</option>`).join('');
+  }
+  async function switchWorld(id) {
+    try {
+      const data = await api('/api/world', { method: 'POST', body: JSON.stringify({ id }) });
+      state.data = data;
+      state.era = data.world.eras[0]?.id || '';
+      renderAll(); renderWorldSelect();
+      toast('世界已切换', `${data.world.title} · ${data.stats.canon} canon`);
+    } catch (e) { toast('切换失败', e.message); renderWorldSelect(); }
   }
   function renderAll() {
     if (!state.data) return;
@@ -101,10 +116,19 @@
     if ($('#canon-form [name="era"]').children.length === 0) $('#canon-form [name="era"]').innerHTML = world.eras.map(e => `<option value="${esc(e.id)}">${esc(e.name)}</option>`).join('');
     $('#canon-list').innerHTML = filteredCanon().map(c => {
       const bad = (c.conflictsWith || []).length || (c.dependsOn || []).some(d => !world.canon.some(x => x.id === d));
-      return `<article class="canon-card ${bad ? 'error' : ''}"><div class="top"><span class="id">${esc(c.id)}</span><span class="era">${esc(c.era)}</span><span class="conf">${esc(c.confidence)}</span></div><p>${esc(c.statement)}</p><div class="src">来源：${esc((c.sources || []).join('、') || '—')}${c.dependsOn?.length ? ` ｜ 依赖：${esc(c.dependsOn.join('、'))}` : ''}${c.conflictsWith?.length ? ` ｜ 冲突：${esc(c.conflictsWith.join('、'))}` : ''}</div></article>`;
+      return `<article class="canon-card ${bad ? 'error' : ''}"><div class="top"><span class="id">${esc(c.id)}</span><span class="era">${esc(c.era)}</span><span class="conf">${esc(c.confidence)}</span><span class="canon-actions"><button class="text-btn" type="button" data-canon-edit="${esc(c.id)}">编辑</button><button class="text-btn danger" type="button" data-canon-delete="${esc(c.id)}">删除</button></span></div><p>${esc(c.statement)}</p><div class="src">来源：${esc((c.sources || []).join('、') || '—')}${c.dependsOn?.length ? ` ｜ 依赖：${esc(c.dependsOn.join('、'))}` : ''}${c.conflictsWith?.length ? ` ｜ 冲突：${esc(c.conflictsWith.join('、'))}` : ''}</div></article>`;
     }).join('') || '<div class="empty">没有匹配的 canon。</div>';
   }
 
+  function openCanonEdit(id) {
+    const c = state.data.world.canon.find(x => x.id === id); if (!c) return;
+    const form = $('#canon-edit-form'); form.hidden = false; form.dataset.id = id;
+    form.querySelector('[name="era"]').innerHTML = state.data.world.eras.map(e => `<option value="${esc(e.id)}" ${e.id === c.era ? 'selected' : ''}>${esc(e.name)}</option>`).join('');
+    form.querySelector('[name="confidence"]').value = c.confidence;
+    form.querySelector('[name="source"]').value = (c.sources || [])[0] || '';
+    form.querySelector('[name="statement"]').value = c.statement;
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
   function renderEntities() {
     const world = state.data.world;
     $('#entity-count').textContent = `${world.entities.length} entities`;
@@ -113,7 +137,7 @@
   function renderAssets() {
     const world = state.data.world;
     $('#asset-count').textContent = `${world.assets.length} assets`;
-    $('#asset-rows').innerHTML = world.assets.map(a => `<tr><td><b>${esc(a.title)}</b><br><span class="muted">${esc(a.id)} · ${esc(a.path)}</span></td><td>${esc(a.era)}</td><td>${esc(a.type)}</td><td class="${a.source ? '' : 'bad'}">${esc(a.source || '缺来源')}</td><td class="${a.license ? 'good' : 'bad'}">${esc(a.license || '缺许可')}</td><td>${esc(a.status)}</td></tr>`).join('');
+    $('#asset-rows').innerHTML = world.assets.map(a => `<tr><td><div class="asset-cell">${/^image$/.test(a.type) || /\.(svg|png|jpe?g|webp|gif)$/i.test(a.path) ? `<img class="asset-thumb" loading="lazy" src="/api/asset?path=${encodeURIComponent(a.path)}" alt="">` : '<span class="asset-thumb empty">·</span>'}<div><b>${esc(a.title)}</b><br><span class="muted">${esc(a.id)} · ${esc(a.path)}</span></div></div></td><td>${esc(a.era)}</td><td>${esc(a.type)}</td><td class="${a.source ? '' : 'bad'}">${esc(a.source || '缺来源')}</td><td class="${a.license ? 'good' : 'bad'}">${esc(a.license || '缺许可')}</td><td>${esc(a.status)}</td></tr>`).join('');
   }
   function renderLint() {
     const l = state.data.lint;
@@ -130,8 +154,16 @@
     $('#output-title').textContent = state.outputName;
   }
 
+  async function deleteCanon(id) {
+    if (!confirm(`删除 ${id}？`)) return;
+    try {
+      const r = await api('/api/canon/delete', { method: 'POST', body: JSON.stringify({ id }) });
+      state.data.world = r.world; state.data.lint = r.lint; state.data.stats = r.stats;
+      renderAll(); toast('Canon 已删除', id);
+    } catch (e) { toast('删除失败', e.message); }
+  }
   async function refresh() {
-    try { status('local world', 'ok'); state.data = await api('/api/world'); $('#world-path').textContent = 'lab/liveland/world'; $('#node-version').textContent = state.data.runtime || 'local'; renderAll(); }
+    try { status('local world', 'ok'); state.data = await api('/api/world'); $('#world-path').textContent = 'lab/liveland/world'; $('#node-version').textContent = state.data.runtime || 'local'; renderAll(); renderWorldSelect(); }
     catch (e) { status('offline', 'err'); toast('连接失败', e.message); }
   }
   async function runLint() {
@@ -156,10 +188,12 @@
       const v = e.target.closest('[data-view]'); if (v) { switchView(v.dataset.view); return; }
       const t = e.target.closest('[data-theme-set]'); if (t) { themeSet(t.dataset.themeSet, true); return; }
       const ex = e.target.closest('[data-export]'); if (ex) { exportOut(ex.dataset.export); return; }
+      const ce = e.target.closest('[data-canon-edit]'); if (ce) { openCanonEdit(ce.dataset.canonEdit); return; }
+      const cd = e.target.closest('[data-canon-delete]'); if (cd) { deleteCanon(cd.dataset.canonDelete); return; }
       if (e.target.id === 'run-lint') { runLint(); return; }
       if (e.target.id === 'download-output') {
         if (!state.output) { toast('还没有输出', '先生成一种输出。'); return; }
-        download(state.output, state.outputName, state.outputName.endsWith('.json') ? 'application/json' : 'text/markdown');
+        download(state.output, state.outputName, state.outputName.endsWith('.json') ? 'application/json' : state.outputName.endsWith('.html') ? 'text/html' : 'text/markdown');
       }
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') { /* no drawer */ } });
@@ -176,6 +210,15 @@
         renderAll();
         toast('Canon 已加入', r.fact.id);
       } catch (err) { toast('加入失败', err.message); }
+    });
+    $('#world-select')?.addEventListener('change', e => switchWorld(e.target.value));
+    $('#cancel-canon-edit')?.addEventListener('click', () => { $('#canon-edit-form').hidden = true; });
+    $('#canon-edit-form')?.addEventListener('submit', async e => {
+      e.preventDefault(); const form = e.target; const fd = new FormData(form);
+      try {
+        const r = await api('/api/canon/update', { method: 'POST', body: JSON.stringify({ id: form.dataset.id, patch: { era: fd.get('era'), confidence: fd.get('confidence'), statement: fd.get('statement'), sources: [String(fd.get('source') || '').trim()].filter(Boolean) } }) });
+        state.data.world = r.world; state.data.lint = r.lint; state.data.stats = r.stats; form.hidden = true; renderAll(); toast('Canon 已保存', form.dataset.id);
+      } catch (err) { toast('保存失败', err.message); }
     });
     $$('[data-theme-set]').forEach(b => b.addEventListener('click', () => themeSet(b.dataset.themeSet, true)));
     themeSet(document.documentElement.dataset.theme || 'system', false);

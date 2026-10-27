@@ -1,0 +1,35 @@
+{
+  "id": "glass-coast",
+  "title": "灰岸",
+  "subtitle": "风把盐吹成玻璃的地方",
+  "premise": "灰岸没有稳定的海岸线，只有被潮汐与风不断重写的边界。居民用可回收的盐玻璃建造临时聚落，每十年迁移一次。",
+  "owner": "liveland-demo",
+  "version": "0.1.0",
+  "constraints": [
+    { "id": "c1", "label": "潮汐优先", "statement": "任何永久建筑必须高于百年潮位。" },
+    { "id": "c2", "label": "玻璃可逆", "statement": "所有结构必须能被拆解并回炉。" },
+    { "id": "c3", "label": "迁徙记忆", "statement": "聚落迁移时，档案与墓志必须一起搬走。" }
+  ],
+  "eras": [
+    { "id": "salt", "name": "盐季", "subtitle": "低潮定居", "from": "1900", "to": "1980", "tech": "盐玻璃、潮汐磨", "maintenance": "每季由潮汐工修补", "cost": "迁徙频繁，学校无法固定", "summary": "人们在低潮时建屋，高潮时离开。", "style": { "colors": ["#F4EAD9", "#1F9E96", "#C47A3D", "#E8B44A"], "materials": ["盐玻璃", "回收木", "潮汐黏土"], "light": "低角度海光" } },
+    { "id": "signal", "name": "信季", "subtitle": "浮标网络", "from": "1980", "to": "现在", "tech": "浮标信标、盐玻璃天线", "maintenance": "由信标合作社维护", "cost": "网络覆盖越广，维护债务越高", "summary": "聚落用浮标网络同步迁徙时间。", "style": { "colors": ["#0B1724", "#3EE6D0", "#FF5FA2", "#FFC857"], "materials": ["盐玻璃", "浮标合金", "回收线缆"], "light": "夜间信标" } }
+  ],
+  "entities": [
+    { "id": "e1", "name": "潮汐工", "type": "org", "era": "salt", "summary": "负责修补盐玻璃结构。" },
+    { "id": "e2", "name": "信标合作社", "type": "org", "era": "signal", "summary": "维护浮标网络的居民组织。" },
+    { "id": "e3", "name": "第十号浮标", "type": "place", "era": "signal", "summary": "最后一枚仍在发送迁徙信号的浮标。" }
+  ],
+  "canon": [
+    { "id": "canon.salt.tide", "era": "salt", "statement": "盐季的聚落只在低潮时存在。", "confidence": "canon", "sources": ["潮汐日志"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.signal.network", "era": "signal", "statement": "信标网络由居民合作社共同维护。", "confidence": "canon", "sources": ["合作社章程"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.signal.last", "era": "signal", "statement": "第十号浮标是最后一个仍在工作的节点。", "confidence": "draft", "sources": ["维修记录"], "dependsOn": ["canon.signal.network"], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.salt.archive", "era": "salt", "statement": "每次迁徙必须带走全部档案。", "confidence": "canon", "sources": ["迁徙口述"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" }
+  ],
+  "assets": [
+    { "id": "asset.glass.harbor", "title": "灰岸晨光", "era": "salt", "type": "image", "source": "hand-drawn", "license": "CC-BY-4.0", "status": "final", "path": "assets/harbor-morning.svg" },
+    { "id": "asset.glass.signal", "title": "夜間信标", "era": "signal", "type": "image", "source": "generated", "license": "CC-BY-4.0", "status": "draft", "path": "assets/nightops.svg" }
+  ],
+  "outputs": [
+    { "id": "out.glass", "name": "灰岸世界页", "type": "html", "era": "all", "status": "draft", "note": "本地导出" }
+  ]
+}

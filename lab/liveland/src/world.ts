@@ -35,6 +35,23 @@ export function addCanon(file: string, world: World, input: { era: string; state
   return fact
 }
 
+export function updateCanon(file: string, world: World, id: string, patch: Partial<CanonFact>): CanonFact {
+  const fact = world.canon.find(c => c.id === id)
+  if (!fact) throw new Error(`canon 不存在：${id}`)
+  if (patch.era && !world.eras.some(e => e.id === patch.era)) throw new Error(`未知时代：${patch.era}`)
+  Object.assign(fact, patch)
+  fact.statement = fact.statement.trim()
+  saveWorld(file, world)
+  return fact
+}
+
+export function deleteCanon(file: string, world: World, id: string): void {
+  const index = world.canon.findIndex(c => c.id === id)
+  if (index < 0) throw new Error(`canon 不存在：${id}`)
+  world.canon.splice(index, 1)
+  saveWorld(file, world)
+}
+
 export function stats(world: World): { eras: number; canon: number; entities: number; assets: number; outputs: number; constraints: number } {
   return {
     eras: world.eras.length,

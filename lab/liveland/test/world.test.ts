@@ -1,8 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { loadWorld, stats } from '../src/world.ts'
-import { assetManifest, lintWorld, styleGuide, worldBible } from '../src/lint.ts'
+import { cpSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { deleteCanon, loadWorld, stats, updateCanon } from '../src/world.ts'
+import { assetManifest, htmlWorld, lintWorld, styleGuide, worldBible } from '../src/lint.ts'
+import { loadWorldRegistry } from '../src/registry.ts'
 
 const file = fileURLToPath(new URL('../world/orange-harbor.world.json', import.meta.url))
 
@@ -31,4 +35,31 @@ test('world outputs are generated', () => {
   assert.ok(styleGuide(w).includes('风格指南'))
   const manifest = JSON.parse(assetManifest(w)) as { assets: unknown[] }
   assert.equal(manifest.assets.length, 6)
+})
+
+
+test('registry resolves world paths and canon edit/delete writes back', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'liveland-'))
+  try {
+    const worldFile = join(tmp, 'world.json')
+    cpSync(file, worldFile)
+    writeFileSync(join(tmp, 'worlds.json'), JSON.stringify({ worlds: [{ id: 'one', name: 'One', path: 'world.json' }] }))
+    const reg = loadWorldRegistry(join(tmp, 'worlds.json'), worldFile)
+    assert.equal(reg.worlds[0]?.path, worldFile)
+    const world = loadWorld(worldFile)
+    const id = world.canon[0]!.id
+    updateCanon(worldFile, world, id, { statement: 'edited statement', confidence: 'canon' })
+    assert.equal(loadWorld(worldFile).canon[0]?.statement, 'edited statement')
+    deleteCanon(worldFile, loadWorld(worldFile), id)
+    assert.equal(loadWorld(worldFile).canon.some(c => c.id === id), false)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+test('html world export escapes content', () => {
+  const world = loadWorld(file)
+  world.title = '<橙港>'
+  const html = htmlWorld(world)
+  assert.match(html, /&lt;橙港&gt;/)
+  assert.match(html, /<html/)
+  assert.match(html, /Canon/)
 })

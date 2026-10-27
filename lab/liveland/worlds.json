@@ -1,0 +1,14 @@
+{
+  "worlds": [
+    {
+      "id": "orange-harbor",
+      "name": "橙港",
+      "path": "world/orange-harbor.world.json"
+    },
+    {
+      "id": "glass-coast",
+      "name": "灰岸",
+      "path": "world/glass-coast.world.json"
+    }
+  ]
+}

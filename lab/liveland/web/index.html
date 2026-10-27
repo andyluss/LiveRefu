@@ -26,7 +26,7 @@
       <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5 9 6.5l4.2 6.8 2.8-4.2 4.5 9.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3.5 20.5h17" stroke="currentColor" stroke-width="1.3" opacity=".45"/></svg></span>
       <span class="brand-text"><b>LiveLand</b><small>WORLD / ERA AUTHORING</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.1</span>
+    <span class="lab-chip">LAB / 0.2</span>
     <span class="status" id="status"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-lint" type="button">World lint</button>
@@ -47,7 +47,7 @@
       <button data-view="outputs" type="button"><span>07</span>输出</button>
     </nav>
     <div class="kicker">WORLD</div>
-    <div class="world-box"><code id="world-path">world/</code><p>本地 JSON；不训练、不上传、不生图。</p><strong id="world-version">—</strong></div>
+    <div class="world-box"><select id="world-select" aria-label="切换世界"></select><code id="world-path">world/</code><p>本地 JSON；不训练、不上传、不生图。</p><strong id="world-version">—</strong></div>
     <div class="side-foot"><span>zero deps</span><span id="node-version">Node —</span></div>
   </aside>
   <main class="main" id="main">
@@ -80,6 +80,7 @@
         <div id="canon-list" class="canon-list"><div class="empty">读取中……</div></div>
         <form id="canon-form" class="panel add-fact"><div class="eyebrow">ADD CANON</div><h2>加入一条事实</h2><label>时代<select name="era" required></select></label><label>置信度<select name="confidence"><option value="draft">draft</option><option value="canon">canon</option><option value="rumor">rumor</option></select></label><label>来源<input name="source" placeholder="访谈 / 文档 / 观察"></label><label>陈述<textarea name="statement" rows="5" placeholder="一条可被引用、可被检查的设定……" required></textarea></label><button class="btn primary" type="submit">加入 canon</button><p class="fine">写入 world JSON；不会自动提交 Git。</p></form>
       </div>
+      <form id="canon-edit-form" class="panel add-fact" hidden><div class="eyebrow">EDIT CANON</div><h2>编辑事实</h2><div class="row2"><label>时代<select name="era" required></select></label><label>置信度<select name="confidence"><option value="draft">draft</option><option value="canon">canon</option><option value="rumor">rumor</option></select></label></div><label>来源<input name="source" placeholder="访谈 / 文档 / 观察"></label><label>陈述<textarea name="statement" rows="4" required></textarea></label><div class="actions"><button class="btn primary" type="submit">保存</button><button class="btn ghost" type="button" id="cancel-canon-edit">取消</button></div></form>
     </section>
 
     <section class="view" id="view-entities">
@@ -104,7 +105,7 @@
     <section class="view" id="view-outputs">
       <div class="view-head"><div><div class="eyebrow">OUTPUT</div><h1>Outputs</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
       <p class="lede">同一份 canon，输出世界圣经、风格指南与资产清单；输出不是事实源。</p>
-      <div class="output-actions"><button class="btn" type="button" data-export="bible">世界圣经 .md</button><button class="btn ghost" type="button" data-export="style">风格指南 .md</button><button class="btn ghost" type="button" data-export="assets">资产清单 .json</button><button class="btn ghost" type="button" id="download-output">下载当前输出</button></div>
+      <div class="output-actions"><button class="btn" type="button" data-export="bible">世界圣经 .md</button><button class="btn ghost" type="button" data-export="style">风格指南 .md</button><button class="btn ghost" type="button" data-export="assets">资产清单 .json</button><button class="btn ghost" type="button" data-export="html">世界页 .html</button><button class="btn ghost" type="button" id="download-output">下载当前输出</button></div>
       <section class="panel"><div class="panel-head"><h2 id="output-title">输出预览</h2><span class="chip" id="output-status">未生成</span></div><pre id="output-preview" class="code-panel">选择一种输出。</pre></section>
       <section class="panel" style="margin-top:8px"><div class="panel-head"><h2>输出登记</h2><span class="chip" id="output-count">—</span></div><div id="output-list" class="output-list"></div></section>
     </section>
