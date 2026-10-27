@@ -1,5 +1,5 @@
 {
-  "_note": "卡表数据。规则层字段严格引自 docs/refu-game-001/14_卡表_铁砧联邦核心12卡.md 与 数值/01_铁砧联邦_12卡.md，未经改动；由 tools/verify_data.py 交叉校验。",
+  "_note": "卡表数据。规则层字段严格引自 projects/refu-game-001/docs/design/14_卡表_铁砧联邦核心12卡.md 与 数值/01_铁砧联邦_12卡.md，未经改动；由 tools/verify_data.py 交叉校验。",
   "_schema": {
     "卡面层": [
       "name",

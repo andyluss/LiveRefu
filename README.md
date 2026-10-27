@@ -41,10 +41,10 @@
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
 | [`design/`](design/README.md) | **项目设计系统（LRDS）**：**清澄为核**；GUIDE（设计系统）/ HUB（项目）/ lab（实验区）、三层 token、风格卡、组件契约、Web/Godot/App 介质包、验收闸门 | [`design/GUIDE.html`](design/GUIDE.html) ｜ [Lab](design/lab/README.md) |
 | [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、状态；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
-| [`docs/`](docs/README.md) | **复古未来主义知识库（索引）**：五卷的知识库入口——主卷论文集 + 朋克专题五卷 + Refu Game 001 策划卷 + 塔防研究 + 软件生态与产品机会。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`docs/README.md`](docs/README.md) |
+| [`docs/`](docs/README.md) | **复古未来主义知识库（索引）**：四卷的知识库入口——主卷论文集 + 朋克专题五卷 + 塔防研究 + 软件生态与产品机会。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`docs/README.md`](docs/README.md) |
 | [`docs/retro-futurism/`](docs/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](docs/retro-futurism/README.md) |
 | [`docs/punks/`](docs/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`docs/punks/README.md`](docs/punks/README.md) |
-| [`docs/refu-game-001/`](docs/refu-game-001/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图 + 卡表与数值 + 故事 + 可视化 + 美术设定；其**可运行实现**见 [`projects/refu-game-001/`](projects/refu-game-001/README.md) | [`docs/refu-game-001/README.md`](docs/refu-game-001/README.md) |
+| [`projects/refu-game-001/docs/design/`](projects/refu-game-001/docs/design/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图 + 卡表与数值 + 故事 + 可视化 + 美术设定；其**可运行实现**见 [`projects/refu-game-001/`](projects/refu-game-001/README.md) | [`projects/refu-game-001/docs/design/README.md`](projects/refu-game-001/docs/design/README.md) |
 | [`docs/software/`](docs/software/README.md) | 软件生态与产品机会：青橙/清澄适配的非游戏产品 + 13 篇软件生态文集 | [`docs/software/README.md`](docs/software/README.md) |
 | [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：每个实际开发中的项目一个子目录（含项目 README、`CHANGELOG.md`、`docs/`） | —— |
 | [`projects/mainline/`](projects/mainline/README.md) | **主线纲领 · 决策与讨论空间**（不是某个具体游戏）：容纳"下一款主线产品"的长期建议、裁决与讨论历史；**可容纳多个具体项目**——决策历史长期留存，具体项目可按需更替 | [`projects/mainline/README.md`](projects/mainline/README.md) |

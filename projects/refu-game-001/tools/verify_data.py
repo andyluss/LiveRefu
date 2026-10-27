@@ -3,7 +3,7 @@
 """verify_data.py —— 游戏数据表 ↔ 策划文档 的交叉校验。
 
 动机：本项目的数据表要求"严格照文档数值"（见 docs/01_实现裁决记录.md A1）。
-手抄会漂移，所以校验不是抽查而是逐字段比对——把 docs/refu-game-001/ 的
+手抄会漂移，所以校验不是抽查而是逐字段比对——把 projects/refu-game-001/docs/design/ 的
 Markdown 表格当唯一真相，反向读出数字，再和 game/data/*.json 对齐。
 
 检查项：
@@ -29,7 +29,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PROJECT_ROOT.parents[1]
-DOC = REPO_ROOT / "doc" / "refu-game-001"
+DOC = REPO_ROOT / "projects" / "refu-game-001" / "docs" / "design"
 DATA = PROJECT_ROOT / "game" / "data"
 
 # 已知偏差：出图与卡表不一致时在此登记（脚本输出 WARN，不 FAIL，但必须显式登记）

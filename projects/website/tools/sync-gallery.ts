@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
 /**
- * 画廊条目生成器：扫描 `docs/` 下的视觉素材 → `content/gallery/*.md`。
+ * 画廊条目生成器：扫描 `projects/refu-game-001/docs/design/` 下的视觉素材 → `content/gallery/*.md`。
  *
  * 与 `sync-content.ts` 同源原则（见 docs/03 §二）：
- *   **docs/ 是唯一内容权威，本脚本只读不写源文件**；素材通过 `/media/**`
+ *   **策划卷是唯一内容权威，本脚本只读不写源文件**；素材通过 `/media/**`
  *   路由只读暴露（见 server/routes/media/[...].get.ts），不复制进 public/。
  *
  * 为什么用「一条 md 一个作品」而不是一个 JSON：这样画廊条目同样是可版本化、
@@ -21,8 +21,7 @@ import { fileURLToPath } from 'node:url'
 const HERE = dirname(fileURLToPath(import.meta.url))
 const PROJECT_ROOT = resolve(HERE, '..')
 const WORKSPACE_ROOT = resolve(PROJECT_ROOT, '../..')
-const DOC = resolve(WORKSPACE_ROOT, 'docs')
-const ART = join(DOC, 'refu-game-001/美术')
+const ART = resolve(WORKSPACE_ROOT, 'projects/refu-game-001/docs/design/美术')
 const OUT = join(PROJECT_ROOT, 'content/gallery')
 
 const check = process.argv.includes('--check')
@@ -61,7 +60,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '全量出图/卡面/PNG预览',
     ext: 'png',
     tags: ['卡面', '全量出图'],
-    credit: 'docs/refu-game-001/美术/全量出图/卡面（PNG 预览；矢量源为同目录同名 SVG）',
+    credit: 'projects/refu-game-001/docs/design/美术/全量出图/卡面（PNG 预览；矢量源为同目录同名 SVG）',
     note: '卡面版式含卡号、费用、槽位色带、关键词与数值块。',
   },
   {
@@ -70,7 +69,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '全量出图/单位/PNG预览',
     ext: 'png',
     tags: ['单位设定', '全量出图'],
-    credit: 'docs/refu-game-001/美术/全量出图/单位（PNG 预览；矢量源为同目录同名 SVG）',
+    credit: 'projects/refu-game-001/docs/design/美术/全量出图/单位（PNG 预览；矢量源为同目录同名 SVG）',
     note: '敌方六原型（小兵/快速/装甲/空中/精英/BOSS）与三从族个体的设定图。',
   },
   {
@@ -79,7 +78,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '全量出图/地图/PNG预览',
     ext: 'png',
     tags: ['地图', '全量出图'],
-    credit: 'docs/refu-game-001/美术/全量出图/地图（PNG 预览；矢量源为同目录同名 SVG）',
+    credit: 'projects/refu-game-001/docs/design/美术/全量出图/地图（PNG 预览；矢量源为同目录同名 SVG）',
     note: '含路径、三类塔位、地形、入口基地、图例与波次卡组标注。',
   },
   {
@@ -88,7 +87,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '全量出图/地图动态/PNG预览',
     ext: 'png',
     tags: ['地图动态', '全量出图'],
-    credit: 'docs/refu-game-001/美术/全量出图/地图动态（SVG 源含 SMIL animateMotion 动画）',
+    credit: 'projects/refu-game-001/docs/design/美术/全量出图/地图动态（SVG 源含 SMIL animateMotion 动画）',
     note: '四张双入口图的波次并行帧，带流向箭头、呼吸波与 BOSS 走位标注。',
   },
   {
@@ -97,7 +96,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '全量出图/汇总/PNG预览',
     ext: 'png',
     tags: ['汇总图', '全量出图'],
-    credit: 'docs/refu-game-001/美术/全量出图/汇总',
+    credit: 'projects/refu-game-001/docs/design/美术/全量出图/汇总',
     note: '按族群分组的 12 卡汇总等总览图。',
   },
   {
@@ -106,7 +105,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '美术设定001/SVG案例/PNG预览',
     ext: 'png',
     tags: ['美学方案001', '风格案例'],
-    credit: 'docs/refu-game-001/美术/美术设定001/SVG案例（PNG 预览；矢量源为上一级同名 SVG）',
+    credit: 'projects/refu-game-001/docs/design/美术/美术设定001/SVG案例（PNG 预览；矢量源为上一级同名 SVG）',
     note: '复古未来基调方案：模块炮塔、孵化巢与幼虫、棱镜哨塔、卡面版式样板、峡谷哨站俯视图、色板与材质条。',
   },
   {
@@ -115,7 +114,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '美术设定002/SVG案例/PNG预览',
     ext: 'png',
     tags: ['美学方案002', '风格案例'],
-    credit: 'docs/refu-game-001/美术/美术设定002/SVG案例（PNG 预览；矢量源为上一级同名 SVG）',
+    credit: 'projects/refu-game-001/docs/design/美术/美术设定002/SVG案例（PNG 预览；矢量源为上一级同名 SVG）',
     note: '千禧透明美学平行方案：亚克力工事、凝胶卵膜、晶体棱镜塔、透明玩具壳小工、镭射箔挂件、透明亚克力卡面。',
   },
   {
@@ -124,7 +123,7 @@ const ALBUMS: AlbumSpec[] = [
     dir: '导出/2048',
     ext: 'png',
     tags: ['高清导出'],
-    credit: 'docs/refu-game-001/美术/导出/2048',
+    credit: 'projects/refu-game-001/docs/design/美术/导出/2048',
     note: '可直接用于展示与印刷的 2048px 位图导出。',
   },
 ]
@@ -193,7 +192,7 @@ function collect(): Entry[] {
 
     files.forEach((file, i) => {
       const abs = join(dir, file)
-      const relToDoc = relative(DOC, abs).replace(/\\/g, '/')
+      const relToDoc = relative(WORKSPACE_ROOT, abs).replace(/\\/g, '/')
       out.push({
         album: spec.key,
         albumTitle: spec.title,
@@ -233,7 +232,7 @@ function slug(s: string): string {
 function main() {
   const entries = collect()
   if (entries.length === 0) {
-    console.error('✗ 未收集到任何素材，请检查 docs/refu-game-001/美术 路径')
+    console.error('✗ 未收集到任何素材，请检查 projects/refu-game-001/docs/design/美术 路径')
     process.exit(1)
   }
 

@@ -26,8 +26,8 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PROJECT_ROOT.parents[1]
-MAP_ART_DIR = REPO_ROOT / "doc" / "refu-game-001" / "美术" / "全量出图" / "地图" / "PNG预览"
-MAP_SVG_DIR = REPO_ROOT / "doc" / "refu-game-001" / "美术" / "全量出图" / "地图"
+MAP_ART_DIR = REPO_ROOT / "projects" / "refu-game-001" / "docs" / "design" / "美术" / "全量出图" / "地图" / "PNG预览"
+MAP_SVG_DIR = REPO_ROOT / "projects" / "refu-game-001" / "docs" / "design" / "美术" / "全量出图" / "地图"
 OUT_PATH = PROJECT_ROOT / "game" / "data" / "maps.json"
 
 # 美术源里的图中文名 → 数据表 id
@@ -179,7 +179,7 @@ def build_map(name: str) -> dict:
         "name": cn_name,
         "faction": faction,
         "image": f"res://assets/maps/{name}.png",
-        "svg": f"docs/refu-game-001/美术/全量出图/地图/{name}.svg",
+        "svg": f"projects/refu-game-001/docs/design/美术/全量出图/地图/{name}.svg",
         "canvas": {"width": 980, "height": 660},
         "grid": {"x0": 22, "y0": 26, "cols": 10, "rows": 8, "cell_w": 90, "cell_h": 72},
         "entrances": parse_entrances(svg),

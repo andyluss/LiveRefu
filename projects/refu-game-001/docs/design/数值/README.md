@@ -34,7 +34,7 @@ node $S --verify-anti-air              # 6 三族对空覆盖
 node $S --verify-air-matrix            # 7 空袭 × 三族 9 宫格公平性
 node $S --verify-air-mix               # 8 纯空军/混编/纯地面 三形态
 node $S --verify-pmod                  # 9 永久修饰卡 PMOD 双口径
-node $S --report --out docs/refu-game-001/数值/体检报告.md   # 刷新报告
+node $S --report --out projects/refu-game-001/docs/design/数值/体检报告.md   # 刷新报告
 ```
 
 - 第 1/4/5/6/7/8/9 项已接入 **pre-commit**（暂存涉及本卷或模拟脚本时自动触发）与 **CI**；

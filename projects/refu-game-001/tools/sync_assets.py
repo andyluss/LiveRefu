@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""sync_assets.py —— 把 docs/refu-game-001/美术/ 的出图同步进 Godot 工程 game/assets/。
+"""sync_assets.py —— 把 projects/refu-game-001/docs/design/美术/ 的出图同步进 Godot 工程 game/assets/。
 
-为什么需要它：美术源（SVG + PNG 预览）属于策划卷 docs/refu-game-001/美术/，
+为什么需要它：美术源（SVG + PNG 预览）属于策划卷 projects/refu-game-001/docs/design/美术/，
 是"唯一数值与版式来源"；Godot 的 res:// 只能加载工程内文件，所以在游戏工程里
 保留一份**派生副本**，并由本脚本负责同步。改美术 = 重跑本脚本，不手改 assets。
 
@@ -25,7 +25,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PROJECT_ROOT.parents[1]
-ART_ROOT = REPO_ROOT / "doc" / "refu-game-001" / "美术" / "全量出图"
+ART_ROOT = REPO_ROOT / "projects" / "refu-game-001" / "docs" / "design" / "美术" / "全量出图"
 ASSET_ROOT = PROJECT_ROOT / "game" / "assets"
 
 # M1 垂直切片：铁砧联邦 12 卡（含齿轮帮支援 3 张）。

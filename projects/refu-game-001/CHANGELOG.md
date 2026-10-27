@@ -2,22 +2,35 @@
 
 > 记录本项目的里程碑、关键决策与工程变更。遵循 Keep a Changelog 风格：
 > `新增` / `变更` / `修复` / `移除`。项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/README.md)。
-> 策划卷（设计源）在 [`docs/refu-game-001/`](../../docs/refu-game-001/README.md)，本项目是其实现物。
+> 策划卷（设计源）在 [`projects/refu-game-001/docs/design/`](docs/design/README.md)，本项目是其实现物。
+
+## [0.1.5] - 2026-10-27 21:19
+
+### 变更
+
+- **策划卷迁入项目文档**：`docs/refu-game-001/` → `docs/design/`；项目文档仍保留实现文档，设计源与实现物在同一项目下分层。
+- 迁移后链接、素材路径与数值校验路径同步；`docs/design/` 仍为设计源，`docs/` 为实现/验收文档。
+
+#### 策划卷历史（自 `docs/CHANGELOG.md` 迁入，时间取 git 提交）
+
+- **2026-09-14 12:35**（`7dc0985`）确立变更记录分层方案（C）：当时根日志为权威，卷内仅契约文档维护修订记录；迁入项目后由项目日志记录项目级变更。
+- **2026-09-14 13:08**（`fa85f54`）采纳 D9「合约卡」（自选难度修饰卡组）。
+- **2026-09-14 13:20**（`3ec742b`）挑战卡更名、补两张卡表，并定案 D10 编辑器内测策略。
 
 ## [0.1.4] - 2026-09-16 15:44
 
 ### 变更
 
 - **`projects/refu-game-001/` 结构重构：23 → 128 个 .gd，核心逻辑 ≤50 / 界面 ≤100 代码行**（注释与空行不计，物理行兜底）。
-  新增执行器 [`tools/check_file_size.py`](../../projects/refu-game-001/tools/check_file_size.py)（`./run.sh lint`，已接入 `./run.sh check` 第一道闸门），
+  新增执行器 [`tools/check_file_size.py`](tools/check_file_size.py)（`./run.sh lint`，已接入 `./run.sh check` 第一道闸门），
   把"一个文件只做一件事"从口号变成会让构建失败的门槛。主要动作：`core/battle.gd` 1462 行（1187 代码行）拆为
   `battle_state`（状态）→ `battle_api`（只读查询门面）→ `battle`（生命周期+命令）三层 + `core/battle/` 下 41 个静态系统
   （属性管线/钩子解释器/敌人行为/波次/放置/结算各自成文件，逻辑用组合而非继承）；`TowerUnit`/`EnemyUnit`/`BlockerUnit`
   各拆 `*_state.gd` + `*_unit.gd`（字段搬基类，`tw.hp` 这类字段直达写法零改动）；`view/` 拆六个 painter + 只读绘制上下文
   并把 `UiKit` 变成纯转发门面（颜色→`palette.gd`、控件→`widgets.gd`）；`app/battle_screen.gd` 744 行拆为装配+驱动 +
   `app/battle/` 各面板与弹窗；`tools/` 拆 `sim/`（用例/驱动/报告）、`auto_*`、`demo/`（时间轴/字幕/战斗驱动）、`shot/`。
-  新增 [`docs/06_文件预算与拆分约定.md`](../../projects/refu-game-001/docs/06_文件预算与拆分约定.md) 与
-  [`docs/07_代码地图.md`](../../projects/refu-game-001/docs/07_代码地图.md)（24 条"想改 X → 去哪个文件"）。**验证**：四道闸门全 PASS
+  新增 [`docs/06_文件预算与拆分约定.md`](docs/06_文件预算与拆分约定.md) 与
+  [`docs/07_代码地图.md`](docs/07_代码地图.md)（24 条"想改 X → 去哪个文件"）。**验证**：四道闸门全 PASS
   （数据 7 项 / 地图 6 张 / 资源 28 个 / 无头验收 19 项 + 预算 0 超），且验收数值与重构前逐字一致（漏怪 1、基地 19/20、用时 215s、评级 S 0.87）；
   表现层另做逐字节像素对照（三组截图 SHA256 与重构前相同）。中途发现并回退一处行为漂移：自动玩家的阻挡单位放置时机被拆分改动（204s ≠ 215s），已还原调用顺序。
 
@@ -39,7 +52,7 @@
 **目标**：让"一个文件只做一件事"变成可执行的约定——核心逻辑 ≤50 代码行、界面 ≤100 代码行（注释与空行不计，
 物理行兜底），由 `tools/check_file_size.py` 强制，超预算 `./run.sh check` 直接 FAIL。
 
-- **执行器**：新增 [`tools/check_file_size.py`](../refu-game-001/tools/check_file_size.py)（`./run.sh lint`），
+- **执行器**：新增 [`tools/check_file_size.py`](tools/check_file_size.py)（`./run.sh lint`），
   已接入 `./run.sh check` 的第一道闸门；定义"代码行"口径（去空行/`#` 注释/三引号块）。
 - **新增冒烟测试**（`./run.sh smoke`，也挂在 `check` 里）：无头把演示场景跑 4 秒，任何 `SCRIPT ERROR` 即 FAIL。
   加它的直接原因：拆分 `demo_director` 时漏声明了一个成员变量，19 条验收用例全过、但录像整段失败

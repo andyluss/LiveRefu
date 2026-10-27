@@ -2,9 +2,9 @@ import { createReadStream, existsSync, statSync } from 'node:fs'
 import { join, normalize, resolve } from 'node:path'
 
 /**
- * 媒体服务路由：`/media/**` → 工作区 `docs/` 下的视觉素材。
+ * 媒体服务路由：`/media/**` → 工作区 `docs/` 或策划卷 `design/` 下的视觉素材。
  *
- * 为什么需要它：画廊要展示的来源素材位于 `docs/refu-game-001/美术/`，
+ * 为什么需要它：画廊要展示的来源素材位于 `projects/refu-game-001/docs/design/美术/`，
  * 在 Nuxt 工程目录**之外**。按 D2「docs/ 是唯一内容权威、站点不改写它」，
  * 我们既不复制这些文件进 `public/`，也不去动它们——
  * 而是在**路由层只读地**把它们暴露出来（见 docs/01 §二 的资产盘点）。
@@ -15,6 +15,7 @@ import { join, normalize, resolve } from 'node:path'
 
 const WORKSPACE_ROOT = resolve(process.cwd(), '../..')
 const DOC_ROOT = resolve(WORKSPACE_ROOT, 'docs')
+const DESIGN_ROOT = resolve(WORKSPACE_ROOT, 'projects/refu-game-001/docs/design')
 
 const MIME: Record<string, string> = {
   '.png': 'image/png',
@@ -42,9 +43,10 @@ export default defineEventHandler((event) => {
     throw createError({ statusCode: 400, statusMessage: '路径编码非法' })
   }
 
-  const abs = resolve(join(DOC_ROOT, normalize(decoded)))
-  // 目录穿越防护：必须仍在 docs/ 之内
-  if (abs !== DOC_ROOT && !abs.startsWith(DOC_ROOT + '/')) {
+  const abs = resolve(WORKSPACE_ROOT, normalize(decoded))
+  // 目录穿越防护：只允许 docs/ 或策划卷 design/ 之内
+  const allowed = [DOC_ROOT, DESIGN_ROOT]
+  if (!allowed.some(root => abs === root || abs.startsWith(root + '/'))) {
     throw createError({ statusCode: 403, statusMessage: '越界访问' })
   }
   if (!existsSync(abs) || !statSync(abs).isFile()) {

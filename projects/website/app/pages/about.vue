@@ -58,7 +58,7 @@ const total = nav.main.reduce((n, g) => n + g.items.length, 0)
       <div class="section__head"><h2 class="section__title">视觉素材与版权</h2></div>
       <div class="prose">
         <p>
-          画廊栏目展示的视觉素材来自工作区 <code>docs/refu-game-001/美术/</code>，
+          画廊栏目展示的视觉素材来自工作区 <code>projects/refu-game-001/docs/design/美术/</code>，
           为关联项目《Refu Game 001 · 节点防线》的美术产出，共 99 件。
           素材以 SVG 为源、位图为生成物；本站<strong>只读引用，不做修改</strong>，
           也不复制进站点目录，而是经 <code>/media/**</code> 路由暴露。

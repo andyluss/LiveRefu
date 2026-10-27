@@ -137,7 +137,7 @@ if (!existsSync(lsPath)) {
 
 // ---- 4) 与仓库实际的路径自洽性 ----
 // 文档/配置里引用 docs/ 的地方必须真的存在（这是画廊的素材源）
-const docDir = join(WORKSPACE_ROOT, 'docs/refu-game-001/美术')
+const docDir = join(WORKSPACE_ROOT, 'projects/refu-game-001/docs/design/美术')
 record('素材源目录存在', existsSync(docDir), docDir.replace(WORKSPACE_ROOT + '/', ''))
 
 // 部署文档必须存在

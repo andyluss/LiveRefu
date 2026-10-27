@@ -19,6 +19,7 @@
 ### 变更
 - **AGENTS 网络与代理**：[`AGENTS.md`](AGENTS.md) 新增「七、网络与代理」：联网前先检测代理；走代理只用一次性参数，禁止写进全局配置；代理失败时先去代理再试一次，两次都不行就停下并告知用户；并记录“远端操作可能部分成功，失败后先核对远端真实状态”。
 - **M1/M2 判定配置留出入口**：[`config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置，并把点文件纳入命名白名单，避免把合法文件判成“根目录未声明文件”。
+- **Refu Game 001 策划卷迁入项目文档**：`docs/refu-game-001/` → `projects/refu-game-001/docs/design/`；知识库日志与项目日志已分别记录，时间取 git 提交。
 - **R06 时间规则 v3**：完成项取完成提交 author time；跨多提交拆条或取最后提交；时间命令显式 `TZ=Asia/Shanghai`；新增时间戳命名闸门。
 
 ### 新增
@@ -170,7 +171,7 @@
 
 ### 变更
 
-- **`studio/` 更名 `studio001/` 并搁置（开发策略转向）**：原"模拟人类组织 / 虚拟角色"的 AI 开发工作室更名为 [`studio001/`](studio001/README.md)，**保留作历史资料、不再使用/更新**；工作区开发策略调整为**由项目方直接结合 AI 开发**（不依赖虚拟角色分工）。同步更新全工作区引用（根 `README.md`、`rules/`（R01/R02/README/meta-M1）、`tech/`、`projects/tomorrows-channel/`、`indie/`、`lab/`、`docs/refu-game-001/` 及工具脚本 `tools/check_links.*`、lab 的 visual-fallback 扫描目录），[`studio001/README.md`](studio001/README.md) 增搁置标注；链接校验 0 失效、规则/元规则检查 0 违规。
+- **`studio/` 更名 `studio001/` 并搁置（开发策略转向）**：原"模拟人类组织 / 虚拟角色"的 AI 开发工作室更名为 [`studio001/`](studio001/README.md)，**保留作历史资料、不再使用/更新**；工作区开发策略调整为**由项目方直接结合 AI 开发**（不依赖虚拟角色分工）。同步更新全工作区引用（根 `README.md`、`rules/`（R01/R02/README/meta-M1）、`tech/`、`projects/tomorrows-channel/`、`indie/`、`lab/`、`projects/refu-game-001/docs/design/` 及工具脚本 `tools/check_links.*`、lab 的 visual-fallback 扫描目录），[`studio001/README.md`](studio001/README.md) 增搁置标注；链接校验 0 失效、规则/元规则检查 0 违规。
 - 根 [`README.md`](README.md) 增加 `indie/`、`lab/`、`rules/` 的目录说明与导览行；`lab/` 入口改为指向其自身的 README。
 - 根 `README.md` 改写「约定豁免」说明：明确列出被豁免的具体规则（R01–R05）。
 - [`tech/README.md`](tech/README.md) 更新：实验性技术规则成熟后的回流目标由 `tech/` 改为根 `rules/`。

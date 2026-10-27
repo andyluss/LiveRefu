@@ -37,7 +37,7 @@ const total = computed(() => (albums.value ?? []).reduce((n, a) => n + a.count, 
       <div class="hero__kicker">Gallery</div>
       <h1 class="hero__title">多媒体画廊</h1>
       <p class="hero__lede">
-        来自工作区 <code>docs/refu-game-001/美术/</code> 的视觉素材——卡面、单位设定、战场地图、
+        来自工作区 <code>projects/refu-game-001/docs/design/美术/</code> 的视觉素材——卡面、单位设定、战场地图、
         地图动态与两套美学方案。共 {{ total }} 件，按专辑浏览；点开可放大，支持键盘 ←→ 切换。
       </p>
       <p class="hero__lede">
