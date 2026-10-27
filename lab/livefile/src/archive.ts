@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import { join, relative, resolve, sep } from 'node:path'
 import type { ArchiveIndex, ArchiveItem, BackupStatus, Inheritance, ItemMeta } from './types.ts'
 
@@ -60,6 +60,7 @@ export function scanArchive(root: string): ArchiveIndex {
       tags: meta?.tags || [],
       retention: meta?.retention || '',
       person: meta?.person || '',
+      isPublic: Boolean(meta?.public),
       size: st.size,
       sha256: sha256(file),
       mtime: st.mtime.toISOString(),
@@ -96,4 +97,40 @@ export function stats(index: ArchiveIndex): { items: number; collections: number
 
 export function itemByPath(index: ArchiveIndex, id: string): ArchiveItem | undefined {
   return index.items.find(i => i.id === id)
+}
+
+
+export function itemAbsPath(root: string, id: string): string {
+  const absRoot = resolve(root)
+  const file = resolve(absRoot, id)
+  if (file !== absRoot && !file.startsWith(absRoot + sep)) throw new Error('路径越界')
+  return file
+}
+
+export function saveItemMeta(root: string, id: string, patch: ItemMeta): ArchiveItem {
+  const file = itemAbsPath(root, id)
+  if (!existsSync(file) || !statSync(file).isFile()) throw new Error('文件不存在：' + id)
+  const sidecar = file + '.meta.json'
+  let current: ItemMeta = {}
+  if (existsSync(sidecar)) {
+    try { current = JSON.parse(readFileSync(sidecar, 'utf8')) as ItemMeta } catch { current = {} }
+  }
+  const next: ItemMeta = { ...current, ...patch }
+  // Do not write undefined/empty collection lists unless explicitly provided.
+  if (patch.collections) next.collections = patch.collections.filter(Boolean)
+  if (patch.tags) next.tags = patch.tags.filter(Boolean)
+  writeFileSync(sidecar, JSON.stringify(next, null, 2) + '\n', 'utf8')
+  const index = scanArchive(root)
+  const item = index.items.find(i => i.id === id)
+  if (!item) throw new Error('索引失败：' + id)
+  return item
+}
+
+export function duplicateGroups(index: ArchiveIndex): Array<{ hash: string; items: ArchiveItem[] }> {
+  const map = new Map<string, ArchiveItem[]>()
+  for (const item of index.items) {
+    if (!map.has(item.sha256)) map.set(item.sha256, [])
+    map.get(item.sha256)!.push(item)
+  }
+  return [...map.entries()].filter(([, items]) => items.length > 1).map(([hash, items]) => ({ hash, items }))
 }

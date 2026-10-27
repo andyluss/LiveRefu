@@ -4,6 +4,8 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { scanArchive, stats } from './archive.ts'
 import { backupReport, catalog, healthCheck, manifest } from './health.ts'
+import { recordRestore, runBackup, verifyRestore } from './backup.ts'
+import { publicHtml } from './public.ts'
 import { startServer } from './server.ts'
 
 const args = process.argv.slice(2)
@@ -52,6 +54,34 @@ switch (cmd) {
     console.log(`wrote ${out}`)
     break
   }
+  case 'backup-run': {
+    const target = args[1] || 'reports/backup'
+    const index = scanArchive(archiveDir)
+    const result = runBackup(index, resolve(target))
+    console.log(result.ok ? `backup ok: ${result.files} files` : `backup failed: ${result.errors.length} errors`)
+    console.log(`target: ${result.target}`)
+    for (const e of result.errors) console.log('  ' + e)
+    process.exitCode = result.ok ? 0 : 1
+    break
+  }
+  case 'restore-check': {
+    const source = args[1]
+    if (!source) { console.error('用法: node src/cli.ts restore-check <backup-dir>'); process.exitCode = 1; break }
+    const result = verifyRestore(resolve(source))
+    recordRestore(archiveDir, result)
+    console.log(result.ok ? `restore ok: ${result.checked} files` : `restore failed: ${result.errors.length} errors`)
+    for (const e of result.errors) console.log('  ' + e)
+    process.exitCode = result.ok ? 0 : 1
+    break
+  }
+  case 'public': {
+    const index = scanArchive(archiveDir)
+    const out = resolve(args[2] || 'reports/public-archive.html')
+    mkdirSync(dirname(out), { recursive: true })
+    writeFileSync(out, publicHtml(index), 'utf8')
+    console.log(`wrote ${out}`)
+    break
+  }
   case 'serve': {
     const port = Number(args[1] || process.env.PORT || 4175)
     await startServer({ port, archive: archiveDir })
@@ -66,6 +96,9 @@ switch (cmd) {
   node src/cli.ts catalog [archive] [out]     生成档案目录 Markdown
   node src/cli.ts manifest [archive] [out]    生成机器可读清单 JSON
   node src/cli.ts backup [archive] [out]      生成备份/继承报告
+  node src/cli.ts backup-run <target>         复制备份并校验
+  node src/cli.ts restore-check <target>      校验恢复（只读）
+  node src/cli.ts public [archive] [out]      生成独立公开页
   node src/cli.ts serve [port]                启动 Web Workbench
 
 环境:

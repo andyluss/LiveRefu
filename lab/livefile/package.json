@@ -1,10 +1,12 @@
 {
   "name": "livefile",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "LiveFile — local-first personal archive workbench",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "node --watch src/cli.ts serve",
     "start": "node src/cli.ts serve",

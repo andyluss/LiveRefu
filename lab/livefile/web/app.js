@@ -93,7 +93,7 @@
     if (colSelect.options.length === 1) d.collections.forEach(c => colSelect.add(new Option(c.name, c.name)));
     const list = filtered();
     $('#item-filter-count').textContent = `${list.length} / ${d.items.length}`;
-    $('#item-grid').innerHTML = list.map(i => `<button class="item-card" data-item="${esc(i.id)}" type="button"><span class="type">${esc(i.type)}</span><h3>${esc(i.title)}</h3><p>${esc(i.collections.join(' / ') || '未归类')} · ${esc(i.tags.join(' / ') || '无标签')}</p><div class="foot"><span class="${i.hasMeta ? '' : 'missing'}">${i.hasMeta ? 'sidecar' : '缺元数据'}</span><span>${esc(dateLabel(i.created))}</span></div></button>`).join('') || '<div class="empty">没有匹配的条目。</div>';
+    $('#item-grid').innerHTML = list.map(i => `<button class="item-card" data-item="${esc(i.id)}" type="button"><span class="type">${esc(i.type)}${i.isPublic ? ' · public' : ''}</span><h3>${esc(i.title)}</h3><p>${esc(i.collections.join(' / ') || '未归类')} · ${esc(i.tags.join(' / ') || '无标签')}</p><div class="foot"><span class="${i.hasMeta ? '' : 'missing'}">${i.hasMeta ? 'sidecar' : '缺元数据'}</span><span>${esc(dateLabel(i.created))}</span></div></button>`).join('') || '<div class="empty">没有匹配的条目。</div>';
     bindItems($('#item-grid'));
   }
   function collections() {
@@ -109,6 +109,11 @@
     $('#issue-count').textContent = `${d.health.issues.length} issues`;
     $('#issue-list').innerHTML = d.health.issues.map(issueHtml).join('') || '<div class="empty">没有发现问题。</div>';
     $('#inherit-card').innerHTML = `<div class="row"><span>保管人</span><b>${esc(d.inheritance.custodian || '—')}</b></div><div class="row"><span>访问范围</span><b>${esc(d.inheritance.access || '—')}</b></div><div class="row"><span>密钥保管</span><b>${esc(d.inheritance.keyCustodian || '—')}</b></div><div class="row"><span>上次复核</span><b>${esc(d.inheritance.lastReviewed || '—')}</b></div><div class="row"><span>备份位置</span><b>${esc((d.backup.locations || []).join(' / ') || '—')}</b></div><p class="note">${esc(d.inheritance.condition || '')}<br><br>${esc(d.inheritance.note || '')}</p>`;
+    const dups = d.duplicates || [];
+    $('#duplicate-count').textContent = `${dups.length} groups`;
+    $('#duplicate-list').innerHTML = dups.length ? dups.map(g => `<div class="dup-group"><b>内容完全相同</b>${g.items.map(i => `<div>${esc(i.title)} <code>${esc(i.path)}</code></div>`).join('')}<code>sha256: ${esc(g.hash.slice(0, 16))}…</code></div>`).join('') : '<div class="empty">没有重复内容。</div>';
+    if (!$('#backup-target').value) $('#backup-target').value = 'reports/backup';
+    if (!$('#restore-source').value) $('#restore-source').value = 'reports/backup';
   }
   function exportView() {
     $('#output-preview').textContent = state.output || '选择一种输出。';
@@ -120,8 +125,27 @@
     state.selected = item;
     $('#drawer-title').textContent = item.title;
     const preview = isImage(item) ? `<img src="${fileUrl(item.path)}" alt="${esc(item.title)}">` : `<div>${esc(item.preview || '（二进制/无文本预览）')}</div>`;
-    $('#drawer-body').innerHTML = `<div class="meta"><b>类型</b><span>${esc(item.type)}</span><b>日期</b><span>${esc(item.created)}</span><b>来源</b><span class="${item.source ? '' : 'missing'}">${esc(item.source || '缺来源')}</span><b>许可</b><span class="${item.license ? '' : 'missing'}">${esc(item.license || '缺许可')}</span><b>集合</b><span>${esc(item.collections.join('、') || '—')}</span><b>标签</b><span>${esc(item.tags.join('、') || '—')}</span><b>保留</b><span>${esc(item.retention || '—')}</span><b>文件</b><span class="file-link">${esc(item.path)}</span><b>SHA</b><span class="file-link">${esc(item.sha256.slice(0, 16))}…</span></div><div class="preview">${preview}</div><p class="note">${item.hasMeta ? 'sidecar 元数据已找到。' : '没有 sidecar：这是未整理条目，来源/许可/时间不可追溯。'}</p>`;
+    const types = ['note', 'receipt', 'letter', 'legal', 'photo', 'audio', 'data', 'file'];
+    $('#drawer-body').innerHTML = `<div class="preview">${preview}</div><p class="note">${item.hasMeta ? 'sidecar 已找到。修改会写回 sidecar；原始文件不动。' : '没有 sidecar：保存后会为这个文件创建 sidecar，原始文件不动。'}</p><form class="drawer-form" id="item-form" data-path="${esc(item.path)}"><label>标题<input name="title" required value="${esc(item.title)}"></label><label>类型<select name="type">${types.map(t => `<option value="${t}" ${t === item.type ? 'selected' : ''}>${t}</option>`).join('')}</select></label><label>日期<input name="created" type="date" value="${esc(item.created)}"></label><label>来源<input name="source" value="${esc(item.source)}" placeholder="现场 / 文档 / 访谈"></label><label>许可<input name="license" value="${esc(item.license)}" placeholder="private / CC-BY-4.0"></label><label>保留<input name="retention" value="${esc(item.retention)}" placeholder="permanent / 7y"></label><label class="wide">集合（逗号分隔）<input name="collections" value="${esc(item.collections.join(', '))}"></label><label class="wide">标签（逗号分隔）<input name="tags" value="${esc(item.tags.join(', '))}"></label><label class="wide check"><input name="public" type="checkbox" ${item.isPublic ? 'checked' : ''}> 在公开页显示（只导出标记为 public 的条目）</label><div class="wide"><div class="drawer-actions"><button class="btn primary" type="submit">保存 sidecar</button><button class="btn ghost" type="button" data-close-drawer>取消</button></div><p class="file-link">SHA ${esc(item.sha256.slice(0, 16))}… ｜ ${esc(item.path)}</p></div></form>`;
     $('#drawer').hidden = false;
+  }
+  async function saveItem(form) {
+    const fd = new FormData(form);
+    const meta = {
+      title: String(fd.get('title') || '').trim(),
+      type: String(fd.get('type') || 'file'),
+      created: String(fd.get('created') || ''),
+      source: String(fd.get('source') || '').trim(),
+      license: String(fd.get('license') || '').trim(),
+      retention: String(fd.get('retention') || '').trim(),
+      collections: String(fd.get('collections') || '').split(/[,，]/).map(s => s.trim()).filter(Boolean),
+      tags: String(fd.get('tags') || '').split(/[,，]/).map(s => s.trim()).filter(Boolean),
+      public: fd.get('public') === 'on'
+    };
+    try {
+      const r = await api('/api/item', { method: 'POST', body: JSON.stringify({ path: form.dataset.path, meta }) });
+      state.data = r; closeDrawer(); renderAll(); toast('已保存', meta.title || form.dataset.path);
+    } catch (e) { toast('保存失败', e.message); }
   }
   function closeDrawer() { $('#drawer').hidden = true; state.selected = null; }
   function bindItems(root) { $$('[data-item]', root).forEach(el => el.addEventListener('click', () => openItem(el.dataset.item))); }
@@ -135,6 +159,18 @@
     catch (e) { toast('生成失败', e.message); }
   }
   function download(text, name, mime) { const blob = new Blob([text], { type: mime }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); }
+  async function runBackupUi() {
+    const target = $('#backup-target').value.trim();
+    if (!target) { toast('需要目标目录', '例如 reports/backup'); return; }
+    try { const r = await api('/api/backup', { method: 'POST', body: JSON.stringify({ target }) }); state.data = r; renderAll(); switchView('health'); toast(r.result.ok ? '备份已验证' : '备份有问题', `${r.result.files} files · ${r.result.target}`); }
+    catch (e) { toast('备份失败', e.message); }
+  }
+  async function restoreCheckUi() {
+    const source = $('#restore-source').value.trim();
+    if (!source) { toast('需要备份目录', '填写含 backup-manifest.json 的目录'); return; }
+    try { const r = await api('/api/restore-check', { method: 'POST', body: JSON.stringify({ source }) }); state.data = r; renderAll(); switchView('health'); toast(r.result.ok ? '恢复校验通过' : '恢复校验失败', `${r.result.checked} files · ${r.result.errors.length} errors`); }
+    catch (e) { toast('校验失败', e.message); }
+  }
 
   function bind() {
     document.addEventListener('click', e => {
@@ -142,10 +178,13 @@
       const t = e.target.closest('[data-theme-set]'); if (t) { themeSet(t.dataset.themeSet, true); return; }
       if (e.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
       if (e.target.id === 'run-scan') { scan(); return; }
+      if (e.target.id === 'run-backup') { runBackupUi(); return; }
+      if (e.target.id === 'restore-check') { restoreCheckUi(); return; }
       const ex = e.target.closest('[data-export]'); if (ex) { exportOut(ex.dataset.export); return; }
-      if (e.target.id === 'download-output') { if (!state.output) { toast('还没有输出', '先生成一种输出。'); return; } download(state.output, state.outputName, state.outputName.endsWith('.json') ? 'application/json' : 'text/markdown'); return; }
+      if (e.target.id === 'download-output') { if (!state.output) { toast('还没有输出', '先生成一种输出。'); return; } download(state.output, state.outputName, state.outputName.endsWith('.json') ? 'application/json' : state.outputName.endsWith('.html') ? 'text/html' : 'text/markdown'); return; }
       const c = e.target.closest('[data-collection]'); if (c) { state.filter.collection = c.dataset.collection; state.filter.q = ''; switchView('items'); return; }
     });
+    document.addEventListener('submit', e => { if (e.target.id === 'item-form') { e.preventDefault(); saveItem(e.target); } });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
     $('#item-search')?.addEventListener('input', e => { state.filter.q = e.target.value; items(); });
     $('#type-filter')?.addEventListener('change', e => { state.filter.type = e.target.value; items(); });

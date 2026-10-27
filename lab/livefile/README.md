@@ -1,6 +1,6 @@
 # LiveFile · 本地优先个人档案 OS（实验）
 
-> **代号**：LiveFile ｜ **正式名**：未定 ｜ **版本**：0.1.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
+> **代号**：LiveFile ｜ **正式名**：未定 ｜ **版本**：0.2.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livefile/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：不是又一个笔记 App，而是一个**可检索、可备份、可发布、可继承的个人档案**：文件是你的，索引是你的，退出也是你的。
 
@@ -13,7 +13,10 @@ LiveFile 索引一个本地 `archive/` 目录：
 - 全文检索（Markdown/文本）与元数据检索；
 - 时间线、集合、条目详情；
 - 备份状态、继承安排、健康报告；
-- 导出档案目录、机器清单、备份/继承报告。
+- 导出档案目录、机器清单、备份/继承报告、公开页；
+- 元数据编辑与补 sidecar；
+- 重复内容分组提示；
+- 本地备份复制 + 恢复校验。
 
 它不是：
 
@@ -43,6 +46,9 @@ node src/cli.ts check
 node src/cli.ts catalog
 node src/cli.ts manifest
 node src/cli.ts backup
+node src/cli.ts backup-run reports/backup
+node src/cli.ts restore-check reports/backup
+node src/cli.ts public
 node src/cli.ts serve 4175
 # http://127.0.0.1:4175
 
@@ -51,17 +57,24 @@ npm test
 
 `LIVEFILE_ARCHIVE=/path/to/archive` 可切换档案目录。
 
-## 四、v0.1 已实现
+## 四、v0.2 已实现
 
 - 文件索引：hash、大小、mtime、类型；
 - sidecar 元数据：标题、类型、来源、许可、集合、标签、保留、人物；
 - 搜索/过滤、时间线、集合；
 - 条目抽屉：文本/图片预览、来源、许可、SHA、缺失提示；
+- 元数据编辑：标题/类型/日期/来源/许可/保留/集合/标签/public；
+- 未整理条目可一键补 sidecar；
+- 重复内容分组（hash），只提示不自动合并；
+- 本地备份：复制 archive + `backup-manifest.json` + hash 校验；
+- 恢复校验：只读验证，不覆盖当前档案；
+- 公开页：只导出 `public:true` 的条目，图片内嵌；
 - 健康：未整理条目、缺来源/许可/保留、重复 hash、备份过期/未验证/无异地、恢复演练、继承复核；
 - 备份/继承报告 + 3-2-1 恢复清单；
-- 导出：档案目录 Markdown、机器清单 JSON、备份/继承报告；
+- 导出：档案目录 Markdown、机器清单 JSON、备份/继承报告、公开页 HTML；
 - 三态主题（系统/浅色/深色）；
-- 示例 archive：10 条目 / 9 集合 / 6 类型；故意保留 1 个未整理条目 + 备份/继承过期。
+- 示例 archive：11 条目 / 9 集合 / 6 类型；故意保留 1 个未整理条目、1 组重复、备份/继承过期。
+- 健康分 84/100（0 errors / 4 warnings）。
 
 ## 五、Archive 结构
 
@@ -71,6 +84,7 @@ archive/
   photos/…svg
   receipts/…md
   inbox/未整理照片.svg             # 无 sidecar，健康检查会标出
+  inbox/电站维修记录-副本.md        # 与 notes 版本 hash 相同，重复提示
   .backup.json                  # 备份状态
   inheritance.json              # 保管/继承安排
   notes/2026-04-12-电站维修.md.meta.json
@@ -87,7 +101,8 @@ Sidecar 示例：
   "license": "private",
   "collections": ["家庭维护", "橙港"],
   "tags": ["维修", "能源"],
-  "retention": "7y"
+  "retention": "7y",
+  "public": false
 }
 ```
 
@@ -107,6 +122,8 @@ src/
   types.ts     # Item/Archive/Health
   archive.ts   # 扫描/索引/sidecar
   health.ts    # 健康/导出/备份报告
+  backup.ts    # 备份复制/恢复校验
+  public.ts    # 独立公开页
   server.ts    # Node 原生 HTTP API + 静态文件（127.0.0.1）
   cli.ts       # check/catalog/manifest/backup/serve
 web/
@@ -124,9 +141,10 @@ test/          # node:test
 | D1 | 本地文件 + sidecar | 不锁定；软件停止也能读 |
 | D2 | 只索引，不搬文件 | 尊重已有目录；降低迁移风险 |
 | D3 | 首版只读 + 导出 | 先验证“找到/备份/继承”，不做编辑器 |
+| D3b | v0.2 可编辑 sidecar | 原始文件仍不动；编辑只写 sidecar |
 | D4 | 健康包含备份/继承 | 普通人的“丢失”不是文件数问题 |
 | D5 | 首版用户：信息密集者 | “普通人”是终局，不是配置极客 |
-| D6 | 不做云/账号/AI | v0.1 先本地可信 |
+| D6 | 不做云/账号/AI | 先本地可信 |
 
 ## 九、工作区规则
 
@@ -135,13 +153,14 @@ test/          # node:test
 ## 十、边界
 
 - 只索引文本/Markdown 与图片预览；PDF/视频暂不解析；
-- 不做 OCR、AI 分类、去重合并（只提示）；
-- 不做多用户/权限/同步；
+- 不做 OCR、AI 分类；去重只提示，不自动合并；
+- 不做实时同步/云备份（备份是本地复制）；
+- 不做多用户/权限/实时同步；
 - 不做法律遗嘱/合规认证；
 - 不自动 Git 提交。
 
 ## 十一、下一步
 
-- v0.2：元数据编辑、导入/去重、备份执行、公开页；
+- v0.2 已完成：元数据编辑、重复提示、本地备份/恢复校验、公开页；
 - v0.3：家庭共享/权限、恢复演练向导、机构版；
 - 先用自己的 1 个真实 archive 跑 30 天。

@@ -64,7 +64,7 @@ export function manifest(index: ArchiveIndex): string {
     collections: index.collections,
     items: index.items.map(i => ({
       id: i.id, title: i.title, type: i.type, created: i.created, source: i.source, license: i.license,
-      collections: i.collections, tags: i.tags, retention: i.retention, person: i.person,
+      collections: i.collections, tags: i.tags, retention: i.retention, person: i.person, public: i.isPublic,
       size: i.size, sha256: i.sha256, path: i.path
     }))
   }, null, 2) + '\n'

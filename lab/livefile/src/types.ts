@@ -9,6 +9,7 @@ export interface ItemMeta {
   retention?: string
   person?: string
   note?: string
+  public?: boolean
 }
 export interface ArchiveItem {
   id: string
@@ -22,6 +23,7 @@ export interface ArchiveItem {
   tags: string[]
   retention: string
   person: string
+  isPublic: boolean
   size: number
   sha256: string
   mtime: string
