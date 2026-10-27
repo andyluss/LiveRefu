@@ -10,6 +10,8 @@
 
 ### 新增
 
+- **清澄作为核心中的核心（D-012）**：新增 [`philosophy/09_清澄_透明作为方法.md`](philosophy/09_清澄_透明作为方法.md) 与 [`D-012`](docs/decisions/D-012-clear-as-core.md)；青橙是颜色，清澄是颜色下面的水；七种可见（来源/代价/维护/权限/不确定性/退路/资金治理）；明确透明≠曝光、开源≠自动清澄。设计 README / GUIDE / 理念索引 / 软件卷 / 三个 lab 项目同步。
+
 - **实验区 + 青橙 OS**：新增 `design/lab/README.md` 与实验规则；`design/lab/os/` 为 9 应用、3 未来层、零构建 Web 模拟桌面；含窗口管理、Spotlight、控制中心、可追溯状态、三态主题、移动端降级；M1 82/0。
 - **Node 22.18+ / 移除实验 flag**：当前脚本、CI、package scripts、当前文档统一用 `node`；最低 Node 22.18；QC 以 Node 24 为主；历史 CHANGELOG/实现记录保留原命令；`qc` 包加 `engines`。
 - **R-001 三态主题获批**：状态转 `active`；固定 system / light / dark 顺序；`lrds-theme` 统一；规则索引/README/GUIDE 同步。
