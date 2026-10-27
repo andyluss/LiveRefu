@@ -1,0 +1,12 @@
+{
+  "id": "field",
+  "title": "Form Field",
+  "status": "draft",
+  "summary": "标签、帮助、错误与输入必须关联；错误不能只靠颜色。",
+  "anatomy": ["label", "control", "help", "error"],
+  "tokens": ["sys.color.text.primary", "sys.color.feedback.danger", "sys.color.focus.ring"],
+  "keyboard": "Tab 进入；错误文本可被屏幕阅读器读取。",
+  "a11y": "label for/id；aria-describedby；错误用文本说明。",
+  "do": ["错误放在字段附近", "保留帮助文本"],
+  "dont": ["不要 placeholder 当 label"]
+}

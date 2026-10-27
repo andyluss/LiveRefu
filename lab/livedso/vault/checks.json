@@ -1,0 +1,13 @@
+{
+  "contrast": [
+    { "fg": "sys.color.text.primary", "bg": "sys.color.bg.base", "min": 4.5, "label": "正文 on 画布" },
+    { "fg": "sys.color.text.secondary", "bg": "sys.color.bg.surface", "min": 4.5, "label": "次级文字 on 面板" },
+    { "fg": "sys.color.text.muted", "bg": "sys.color.bg.surface", "min": 7, "label": "弱化文字 on 面板（AAA 目标）" },
+    { "fg": "sys.color.action.onPrimary", "bg": "sys.color.action.primary", "min": 4.5, "label": "主按钮文字" },
+    { "fg": "sys.color.focus.ring", "bg": "sys.color.bg.base", "min": 3, "label": "焦点环" }
+  ],
+  "focusToken": "sys.color.focus.ring",
+  "actionToken": "sys.color.action.primary",
+  "rawValueTiers": ["sys", "product"],
+  "contractRequired": ["anatomy", "states", "tokens", "keyboard", "a11y", "do", "dont"]
+}

@@ -1,0 +1,202 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "meta": {
+    "name": "LiveDSO · LRDS sample",
+    "version": "0.1.0",
+    "note": "LiveDSO 的示例 vault。与 LRDS 解耦；这里只借用一组语义结构做演示。"
+  },
+  "ref": {
+    "color": {
+      "neutral": {
+        "0": {
+          "$value": "#0B0F14",
+          "$type": "color"
+        },
+        "100": {
+          "$value": "#0B1116",
+          "$type": "color"
+        },
+        "200": {
+          "$value": "#111823",
+          "$type": "color"
+        },
+        "300": {
+          "$value": "#161D26",
+          "$type": "color"
+        },
+        "500": {
+          "$value": "#24303F",
+          "$type": "color"
+        },
+        "700": {
+          "$value": "#66727F",
+          "$type": "color"
+        },
+        "800": {
+          "$value": "#808D9F",
+          "$type": "color"
+        },
+        "850": {
+          "$value": "#9AA7B8",
+          "$type": "color"
+        }
+      },
+      "paper": {
+        "50": {
+          "$value": "#F3EDE1",
+          "$type": "color"
+        }
+      },
+      "teal": {
+        "200": {
+          "$value": "#57D8C8",
+          "$type": "color"
+        },
+        "400": {
+          "$value": "#4FD1C5",
+          "$type": "color"
+        }
+      },
+      "amber": {
+        "300": {
+          "$value": "#FFC857",
+          "$type": "color"
+        }
+      },
+      "orange": {
+        "300": {
+          "$value": "#FF6B35",
+          "$type": "color"
+        }
+      },
+      "blue": {
+        "300": {
+          "$value": "#8AB4F8",
+          "$type": "color"
+        }
+      },
+      "green": {
+        "300": {
+          "$value": "#7BD389",
+          "$type": "color"
+        }
+      }
+    }
+  },
+  "sys": {
+    "color": {
+      "bg": {
+        "base": {
+          "$value": "{ref.color.neutral.0}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.color.neutral.200}",
+          "$type": "color"
+        },
+        "raised": {
+          "$value": "{ref.color.neutral.300}",
+          "$type": "color"
+        },
+        "sunken": {
+          "$value": "{ref.color.neutral.100}",
+          "$type": "color"
+        }
+      },
+      "text": {
+        "primary": {
+          "$value": "{ref.color.paper.50}",
+          "$type": "color"
+        },
+        "secondary": {
+          "$value": "{ref.color.neutral.850}",
+          "$type": "color"
+        },
+        "muted": {
+          "$value": "{ref.color.neutral.800}",
+          "$type": "color"
+        }
+      },
+      "line": {
+        "subtle": {
+          "$value": "{ref.color.neutral.500}",
+          "$type": "color"
+        },
+        "strong": {
+          "$value": "{ref.color.neutral.700}",
+          "$type": "color"
+        }
+      },
+      "action": {
+        "primary": {
+          "$value": "{ref.color.teal.400}",
+          "$type": "color"
+        },
+        "primaryHover": {
+          "$value": "{ref.color.teal.200}",
+          "$type": "color"
+        },
+        "onPrimary": {
+          "$value": "{ref.color.neutral.0}",
+          "$type": "color"
+        }
+      },
+      "feedback": {
+        "success": {
+          "$value": "{ref.color.green.300}",
+          "$type": "color"
+        },
+        "warning": {
+          "$value": "{ref.color.amber.300}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.color.orange.300}",
+          "$type": "color"
+        }
+      },
+      "focus": {
+        "ring": {
+          "$value": "{ref.color.blue.300}",
+          "$type": "color"
+        }
+      },
+      "material": {
+        "shadow": {
+          "$value": "#00000066",
+          "$type": "color"
+        }
+      }
+    },
+    "type": {
+      "ui": {
+        "body": {
+          "size": {
+            "$value": "16px",
+            "$type": "dimension"
+          },
+          "weight": {
+            "$value": 400,
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": 1.6,
+            "$type": "number"
+          }
+        }
+      }
+    }
+  },
+  "product": {
+    "livedso": {
+      "canvas": {
+        "$value": "{sys.color.bg.base}",
+        "$type": "color"
+      },
+      "panel": {
+        "$value": "{sys.color.bg.surface}",
+        "$type": "color"
+      }
+    }
+  }
+}

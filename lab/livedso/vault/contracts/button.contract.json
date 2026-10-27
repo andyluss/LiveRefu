@@ -1,0 +1,13 @@
+{
+  "id": "button",
+  "title": "Button",
+  "status": "stable",
+  "summary": "触发一个明确动作；主次分明，不做没有动作的按钮。",
+  "anatomy": ["container", "label", "optional icon"],
+  "states": ["default", "hover", "active", "focus-visible", "disabled"],
+  "tokens": ["sys.color.action.primary", "sys.color.action.onPrimary", "sys.color.focus.ring"],
+  "keyboard": "Enter/Space 触发；Tab 可达；焦点环可见。",
+  "a11y": "禁用时使用 aria-disabled；不要用颜色作为唯一状态。",
+  "do": ["一个主按钮只做一件事", "危险动作使用 danger 语义"],
+  "dont": ["不要用主按钮做取消", "不要把 loading 当成禁用"]
+}
