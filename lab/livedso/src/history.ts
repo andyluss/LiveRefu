@@ -18,7 +18,9 @@ export interface Snapshot {
   tokens: Record<string, SnapshotToken>
   contracts: Record<string, string>
   styleCards: Record<string, string>
+  metrics?: SnapshotMetrics
 }
+export interface SnapshotMetrics { tokens: number; deprecated: number; contracts: number; styleCards: number }
 export interface TokenChange {
   path: string
   before: SnapshotToken
@@ -55,7 +57,7 @@ function snapshotOf(vault: Vault): Omit<Snapshot, 'id' | 'createdAt'> {
   for (const c of vault.contracts) contracts[c.id] = JSON.stringify(c)
   const styleCards: Record<string, string> = {}
   for (const c of vault.styleCards) styleCards[c.id] = JSON.stringify(c)
-  return { vault: vault.meta.name || vault.root.split('/').pop() || 'vault', version: vault.meta.version || '', tokens, contracts, styleCards }
+  return { vault: vault.meta.name || vault.root.split('/').pop() || 'vault', version: vault.meta.version || '', tokens, contracts, styleCards, metrics: { tokens: Object.keys(tokens).length, deprecated: Object.values(tokens).filter(t => t.deprecated).length, contracts: Object.keys(contracts).length, styleCards: Object.keys(styleCards).length } }
 }
 
 export function createSnapshot(vault: Vault): Snapshot {
@@ -69,17 +71,22 @@ export function createSnapshot(vault: Vault): Snapshot {
   return snapshot
 }
 
-export function listSnapshots(vault: Vault): Array<Pick<Snapshot, 'id' | 'createdAt' | 'vault' | 'version'> & { tokens: number; contracts: number; styleCards: number }> {
+export function listSnapshots(vault: Vault): Array<Pick<Snapshot, 'id' | 'createdAt' | 'vault' | 'version'> & SnapshotMetrics> {
   const dir = historyDir(vault)
   if (!existsSync(dir)) return []
   const out = []
   for (const name of readdirSync(dir).filter(n => n.endsWith('.json')).sort().reverse()) {
     try {
       const s = JSON.parse(readFileSync(join(dir, name), 'utf8')) as Snapshot
-      out.push({ id: s.id, createdAt: s.createdAt, vault: s.vault, version: s.version, tokens: Object.keys(s.tokens || {}).length, contracts: Object.keys(s.contracts || {}).length, styleCards: Object.keys(s.styleCards || {}).length })
+      const tokens = Object.keys(s.tokens || {}).length
+      out.push({ id: s.id, createdAt: s.createdAt, vault: s.vault, version: s.version, tokens, deprecated: s.metrics?.deprecated ?? Object.values(s.tokens || {}).filter(t => t.deprecated).length, contracts: Object.keys(s.contracts || {}).length, styleCards: Object.keys(s.styleCards || {}).length })
     } catch { /* ignore malformed local snapshot */ }
   }
   return out
+}
+
+export function trendSnapshots(vault: Vault): Array<Pick<Snapshot, 'id' | 'createdAt'> & SnapshotMetrics> {
+  return listSnapshots(vault).slice().reverse().map(x => ({ id: x.id, createdAt: x.createdAt, tokens: x.tokens, deprecated: x.deprecated, contracts: x.contracts, styleCards: x.styleCards }))
 }
 
 export function loadSnapshot(vault: Vault, id: string): Snapshot {

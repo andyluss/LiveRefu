@@ -270,8 +270,11 @@
     const el = $('#history-list');
     $('#history-count').textContent = `${list.length} snapshots`;
     $('#history-status').textContent = list.length ? '本地已加载' : '还没有快照';
-    $('#history-summary').innerHTML = `<div class="history-stat"><b>${list.length}</b><span>snapshots</span></div><div class="history-stat"><b>${list[0]?.tokens ?? '—'}</b><span>latest tokens</span></div><div class="history-stat"><b>${list[0]?.contracts ?? '—'}</b><span>latest contracts</span></div><div class="history-stat"><b>${list[0]?.styleCards ?? '—'}</b><span>latest cards</span></div>`;
+    $('#history-summary').innerHTML = `<div class="history-stat"><b>${list.length}</b><span>snapshots</span></div><div class="history-stat"><b>${list[0]?.tokens ?? '—'}</b><span>latest tokens</span></div><div class="history-stat"><b>${list[0]?.deprecated ?? '—'}</b><span>deprecated</span></div><div class="history-stat"><b>${list[0]?.contracts ?? '—'}</b><span>latest contracts</span></div><div class="history-stat"><b>${list[0]?.styleCards ?? '—'}</b><span>latest cards</span></div>`;
     if (!el) return;
+    const trend = list.slice().reverse();
+    const maxTokens = Math.max(1, ...trend.map(x => x.tokens));
+    $('#history-trend').innerHTML = trend.length ? `<div class="eyebrow">TREND · OLDEST → NEWEST</div><div class="trend-bars">${trend.map(x => `<div class="trend-col" title="${esc(x.createdAt)}"><div class="trend-bar" style="height:${Math.max(4, Math.round(x.tokens / maxTokens * 100))}%"></div><span>${x.tokens}</span></div>`).join('')}</div><div class="trend-meta">${trend.length} 份快照 ｜ 最新 deprecated ${trend[trend.length - 1]?.deprecated ?? 0}` : '';
     el.innerHTML = list.length ? list.map(x => `<button class="history-item ${state.historyId === x.id ? 'active' : ''}" data-history="${esc(x.id)}" type="button"><code>${esc(x.id)}</code><small>${esc(x.createdAt)} · ${x.tokens} tokens / ${x.contracts} contracts</small></button>`).join('') : '<div class="empty">点击“创建快照”生成第一份。</div>';
     if (!state.diff) $('#history-diff').innerHTML = '<div class="empty">选一个快照查看当前 vault 与它的差异。</div>';
   }

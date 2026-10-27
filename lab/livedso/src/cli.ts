@@ -8,7 +8,7 @@ import { reportMarkdown, runChecks } from './checks.ts'
 import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
-import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
+import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from './history.ts'
 import { formatCi, markdownCi, runCi } from './ci.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
 
@@ -22,7 +22,7 @@ for (let i = 1; i < args.length; i++) {
   if (a.startsWith('--')) { if (FLAGS_WITH_VALUE.has(a)) i++; continue }
   positionals.push(a)
 }
-const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff', 'ci'].includes(cmd)
+const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff', 'ci', 'trend'].includes(cmd)
 const vaultArg = process.env.LIVEDSO_VAULT || (defaultVaultCmd ? defaultVault : positionals[0] || defaultVault)
 const root = resolve(vaultArg)
 const pluginDir = resolve(args.includes('--plugins') ? args[args.indexOf('--plugins') + 1]! : process.env.LIVEDSO_PLUGINS || fileURLToPath(new URL('../plugins', import.meta.url)))
@@ -98,6 +98,17 @@ switch (cmd) {
     if (!list.length) console.log('no snapshots')
     break
   }
+  case 'trend': {
+    const vault = loadVault(root)
+    const trend = trendSnapshots(vault)
+    if (args.includes('--json')) console.log(JSON.stringify(trend, null, 2))
+    else {
+      console.log('createdAt                     tokens  deprecated  contracts  cards')
+      for (const x of trend) console.log(`${x.createdAt.padEnd(28)} ${String(x.tokens).padStart(6)}  ${String(x.deprecated).padStart(10)}  ${String(x.contracts).padStart(9)}  ${x.styleCards}`)
+      if (!trend.length) console.log('no snapshots')
+    }
+    break
+  }
   case 'diff': {
     if (!positionals[0]) { console.error('用法: node src/cli.ts diff <snapshot-id> [--json]'); process.exitCode = 1; break }
     const vault = loadVault(root)
@@ -141,7 +152,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.9 · local-first design system operations
+    console.log(`LiveDSO 0.10 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -153,6 +164,7 @@ switch (cmd) {
   node src/cli.ts snapshot                 创建本地快照
   node src/cli.ts history                  列出快照
   node src/cli.ts diff <id> [--json]       对比当前 vault 与快照
+  node src/cli.ts trend [--json]           快照趋势（token/弃用/契约/风格卡）
   node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
                                           跨 vault 本地 CI 门禁
   node src/cli.ts serve [port]            启动 Web Workbench

@@ -8,6 +8,20 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
+## [0.10.0] - 2026-10-27 22:36
+
+### Added
+
+- **跨快照趋势**：快照记录 tokens / deprecated / contracts / styleCards 指标；`trend` 命令输出时间序列。
+- **History UI 趋势条**：History 页显示旧→新的 token 数量柱状趋势与最新弃用数。
+- 快照指标向后兼容：旧快照没有 `metrics` 时从 token 数据回退计算。
+
+### Changed
+
+- `node:test` 13 项（历史测试增加趋势断言）。
+- 未做：CI 模板、插件示例库、跨 vault 趋势；留到 v0.11。
+- 云/账号/团队/私有 registry/托管继续搁置。
+
 ## [0.9.0] - 2026-10-27 22:32
 
 ### Added

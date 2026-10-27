@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle } from '../src/vault.ts'
 import { scanAdoption } from '../src/adoption.ts'
 import { loadRegistry } from '../src/registry.ts'
-import { createSnapshot, diffSnapshot, listSnapshots } from '../src/history.ts'
+import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from '../src/history.ts'
 import { runCi } from '../src/ci.ts'
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
@@ -132,6 +132,8 @@ test('local history snapshots and diffs', () => {
     saveToken(vault, 'sys.color.text.primary', '#FFFFFF')
     const diff = diffSnapshot(loadVault(tmp), snap.id)
     assert.equal(diff.changedTokens.length, 1)
+    createSnapshot(loadVault(tmp))
+    assert.equal(trendSnapshots(loadVault(tmp)).length, 2)
     assert.equal(diff.changedTokens[0]?.path, 'sys.color.text.primary')
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })
