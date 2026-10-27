@@ -1,5 +1,19 @@
 # LiveDSO Changelog
 
+## [0.17.0] - 2026-10-27 22:58
+
+### Added
+
+- **报告包**：`report --bundle --out-dir <dir>` 一次生成全部内置/自定义模板与 `index.md`，适合 CI artifact。
+- **API**：`POST /api/report/bundle` 返回 `{ files, index }`，不写服务器目录。
+- **模板示例**：`templates/reports/deprecations.md`、`templates/reports/contracts.md`。
+
+### Changed
+
+- `node:test` 从 17 项增至 18 项（报告包构建）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- 未做：更多本地报告、模板示例库；留到 v0.18。
+
 ## [0.16.0] - 2026-10-27 22:55
 
 ### Added

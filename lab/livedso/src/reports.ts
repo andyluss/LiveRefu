@@ -115,3 +115,17 @@ function context(vault: Vault, result: CheckResult): Record<string, unknown> {
     styleCardItems: vault.styleCards.map(c => ({ id: c.id, name: c.name, era: c.era || '', note: c.note || '', colors: (c.colors || []).join(', ') }))
   }
 }
+
+export interface ReportBundleFile { id: string; name: string; markdown: string }
+export interface ReportBundle { files: ReportBundleFile[]; index: string }
+
+export function buildReportBundle(vault: Vault, result: CheckResult, dir: string): ReportBundle {
+  const files = listReportTemplates(dir).map(t => ({ id: t.id, name: t.name, markdown: renderReport(vault, result, t.id, dir) }))
+  const index = `# LiveDSO · Report Bundle
+
+> Vault: \`${vault.meta.name || vault.root}\` ｜ ${files.length} reports ｜ Generated: ${new Date(Date.now() + 8 * 3600 * 1000).toISOString().replace('Z', '+08:00')}
+
+${files.map(f => `- [${f.name}](${f.id}.md)`).join('\n')}
+`
+  return { files, index }
+}

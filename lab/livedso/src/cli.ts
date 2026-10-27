@@ -5,7 +5,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadVault, projection } from './vault.ts'
 import { runChecks } from './checks.ts'
-import { listReportTemplates, renderReport } from './reports.ts'
+import { buildReportBundle, listReportTemplates, renderReport } from './reports.ts'
 import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
@@ -18,7 +18,7 @@ import { loadPlugins, runPlugins } from './plugins.ts'
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
-const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--template', '--max-warnings', '--max-raw', '--max-deprecated'])
+const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--max-warnings', '--max-raw', '--max-deprecated'])
 const positionals: string[] = []
 for (let i = 1; i < args.length; i++) {
   const a = args[i]!
@@ -52,6 +52,16 @@ switch (cmd) {
     }
     const vault = loadVault(root)
     const result = runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)])
+    if (args.includes('--bundle')) {
+      const di = args.indexOf('--out-dir')
+      const outDir = resolve(di >= 0 ? args[di + 1]! : 'reports/bundle')
+      const bundle = buildReportBundle(vault, result, new URL('../templates/reports', import.meta.url).pathname)
+      mkdirSync(outDir, { recursive: true })
+      for (const f of bundle.files) writeFileSync(resolve(outDir, `${f.id}.md`), f.markdown + '\n', 'utf8')
+      writeFileSync(resolve(outDir, 'index.md'), bundle.index, 'utf8')
+      console.log(`wrote ${bundle.files.length} reports → ${outDir}`)
+      break
+    }
     const ti = args.indexOf('--template')
     const template = ti >= 0 ? args[ti + 1] || 'health' : 'health'
     const outFlag = args.indexOf('--out')
@@ -205,13 +215,14 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.16 · local-first design system operations
+    console.log(`LiveDSO 0.17 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
   node src/cli.ts report [vault] [out] [--template <id>] [--out <file>]
                                           输出报告（health/release/custom）
   node src/cli.ts report --list-templates              列出报告模板
+  node src/cli.ts report --bundle [--out-dir <dir>]   生成全部报告 + index.md
   node src/cli.ts build [vault] [out]     输出 CSS 投影
   node src/cli.ts import [src] [vault]    导入 design/tokens 到 vault-lrds
   node src/cli.ts adopt [dir] [--json] [--strict|--fail-on-raw]

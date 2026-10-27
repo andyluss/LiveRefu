@@ -12,7 +12,7 @@ import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from '../
 import { runCi } from '../src/ci.ts'
 import { allTrends } from '../src/trend.ts'
 import { pluginTestAll } from '../src/plugin-test.ts'
-import { listReportTemplates, renderReport } from '../src/reports.ts'
+import { buildReportBundle, listReportTemplates, renderReport } from '../src/reports.ts'
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
@@ -225,4 +225,16 @@ test('report templates render builtin and custom placeholders', () => {
     assert.match(inventory, /deprecated/)
     assert.equal(listReportTemplates(join(tmp, 'templates')).some(t => t.id === 'custom'), true)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('report bundle builds all templates and an index', () => {
+  const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+  const result = runChecks(vault)
+  const bundle = buildReportBundle(vault, result, fileURLToPath(new URL('../templates/reports', import.meta.url)))
+  assert.ok(bundle.files.length >= 6)
+  assert.ok(bundle.files.some(f => f.id === 'inventory'))
+  assert.ok(bundle.files.some(f => f.id === 'deprecations'))
+  assert.match(bundle.index, /Report Bundle/)
+  assert.match(bundle.index, /inventory\.md/)
 })
