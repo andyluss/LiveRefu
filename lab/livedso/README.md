@@ -1,6 +1,6 @@
 # LiveDSO · 设计系统操作台（实验）
 
-> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.7.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
+> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.8.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -20,6 +20,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - 多 vault 切换（`vaults.json`）与风格卡并排对比；
 - token 生命周期（deprecated / replacedBy / note）、契约/风格卡弃用检查、采用扫描统计弃用引用；
 - 本地快照（`vault/.history/`）与当前 vault 的只读差异；
+- 跨 vault 本地 CI 门禁（`ci`）：健康、阈值、采用扫描、基线 diff、JSON/Markdown 输出；
 - 生成健康报告与 CSS 投影；
 - 在 Web Workbench 里搜索、查看、改值、重跑闸门。
 
@@ -27,7 +28,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 
 - 另一个 Figma/组件画布；
 - 另一个静态文档站；
-- 云协作平台（v0.7 没有账号、同步、计费）；
+- 云协作平台（v0.8 没有账号、同步、计费）；
 - 青橙设计的内部工具。它是独立产品，只是把 LRDS 当作**示例 vault**。
 
 ## 二、与青橙设计的关系
@@ -57,6 +58,7 @@ node src/cli.ts adopt ../../design                    # 扫描采用/裸色
 node src/cli.ts snapshot                              # 创建本地快照
 node src/cli.ts history                               # 列出快照
 node src/cli.ts diff <snapshot-id>                    # 对比当前 vault
+node src/cli.ts ci --adopt ../../design --out reports/ci.md  # 本地 CI 门禁
 node src/cli.ts serve 4173   # 打开 http://127.0.0.1:4173
 LIVEDSO_VAULT="$PWD/vault-lrds" node src/cli.ts serve 4173  # 用真实 case
 ```
@@ -70,7 +72,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v0.7 已实现
+## 四、v0.8 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -120,6 +122,7 @@ src/
   vault.ts       # vault 读取/保存 token/契约/状态
   registry.ts    # vaults.json 读取/路径解析
   history.ts     # 本地快照/差异
+  ci.ts          # 跨 vault 本地 CI 门禁     # 本地快照/差异
   adoption.ts    # 只读采用扫描（token/裸色/未知变量）
   server.ts      # Node 原生 HTTP + API + 静态文件
   cli.ts         # check/report/build/serve/import
@@ -153,6 +156,7 @@ test/            # node:test
 | D15 | v0.5 多 vault + 风格卡对比 | 注册表只存路径；切换只影响当前服务；对比只读 |
 | D16 | v0.6 token 生命周期 | deprecated/replacedBy 写源 JSON；lint/采用扫描只读检查 |
 | D17 | v0.7 本地快照/差异 | 快照写 `vault/.history/`；只读 diff，不自动回滚；云/账号继续搁置 |
+| D18 | v0.8 本地 CI | `ci` 聚合所有 vault；阈值/退出码；不接云、不上传 |
 
 ## 八、路线图（待验证）
 
@@ -161,8 +165,9 @@ test/            # node:test
 - **v0.4（已完成）**：采用扫描（CLI/API/UI）。
 - **v0.5（已完成）**：多 vault 切换、风格卡并排对比。
 - **v0.6（已完成）**：token 生命周期/弃用。
-- **v0.7（当前）**：本地快照与差异；云/账号/团队/托管按用户裁决继续搁置。
-- **v0.8**：本地 CI 集成、插件 API、跨 vault 报告；仍不做云/账号。
+- **v0.7（已完成）**：本地快照与差异。
+- **v0.8（当前）**：跨 vault 本地 CI 门禁；云/账号/团队/私有 registry/托管继续搁置。
+- **v0.9**：本地插件 API、CI 报告模板、跨 vault 趋势；仍不做云/账号。
 - **之后**：托管/CI/审计服务；开源核心 + 企业版。
 
 ## 九、已裁决
@@ -177,10 +182,10 @@ test/            # node:test
 
 ## 十、边界
 
-- 不读/写 LRDS 的组件 CSS 或产品代码（v0.7）；采用扫描是只读。
+- 不读/写 LRDS 的组件 CSS 或产品代码（v0.8）；采用扫描是只读。
 - 不做自动 Git 提交；
 - 不做云同步/账号/计费；
-- 不做完整的 token 树编辑器（v0.7 只改值/契约/生命周期，不建树）；不做自动改代码。
+- 不做完整的 token 树编辑器（v0.8 只改值/契约/生命周期，不建树）；不做自动改代码。
 - 快照不自动回滚；只读差异，恢复由人决定。
 
 ## 十一、商品化（未来，未实施）
@@ -189,7 +194,17 @@ test/            # node:test
 - 目标产品案例（发票 App/家庭能源/用药提醒）、触发条件、定价、边界见 [`docs/04_商品化路径.md`](docs/04_商品化路径.md)；跨项目狗粮计划见 [`../DOGFOOD.md`](../DOGFOOD.md)；
 - **现在不做**：不加 SaaS、账号、计费；云/账号/团队/私有 registry/托管**按用户裁决搁置**；先把本地快照、diff、CI 做稳。
 
-## 十二、发布检查
+## 十二、CI 集成
+
+本地/任意 CI 运行：
+
+```bash
+node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
+```
+
+门禁：错误必须为 0；`--strict` 还要求无警告/裸色/未知变量/弃用引用；支持 `--max-warnings`、`--max-raw`、`--max-deprecated`、`--baseline`。详见 [`docs/06_CI集成.md`](docs/06_CI集成.md)。
+
+## 十三、发布检查
 
 每次发布按 [`docs/05_发布检查清单.md`](docs/05_发布检查清单.md) 执行：旧版本段不可删除，发布提交后立刻打 `livedso-v*` tag。
 

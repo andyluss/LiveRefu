@@ -9,11 +9,12 @@ import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
+import { formatCi, markdownCi, runCi } from './ci.ts'
 
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
-const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff'].includes(cmd)
+const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff', 'ci'].includes(cmd)
 const vaultArg = process.env.LIVEDSO_VAULT || (defaultVaultCmd ? defaultVault : args[1] || defaultVault)
 const root = resolve(vaultArg)
 
@@ -102,6 +103,25 @@ switch (cmd) {
     }
     break
   }
+  case 'ci': {
+    const flag = (name: string) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined }
+    const num = (name: string) => { const v = flag(name); return v === undefined ? undefined : Number(v) }
+    const result = runCi({
+      registry: resolve(flag('--registry') || 'vaults.json'),
+      adopt: flag('--adopt') ? resolve(flag('--adopt')!) : undefined,
+      baseline: flag('--baseline'),
+      strict: args.includes('--strict'),
+      maxWarnings: num('--max-warnings'),
+      maxRaw: num('--max-raw'),
+      maxDeprecated: num('--max-deprecated')
+    })
+    const out = flag('--out')
+    if (out) { mkdirSync(dirname(resolve(out)), { recursive: true }); writeFileSync(resolve(out), markdownCi(result), 'utf8'); console.log(`wrote ${resolve(out)}`) }
+    if (args.includes('--json')) console.log(JSON.stringify(result, null, 2))
+    else if (!out) console.log(formatCi(result))
+    process.exitCode = result.ok ? 0 : 1
+    break
+  }
   case 'serve': {
     const port = Number(args[1] || process.env.PORT || 4173)
     await startServer({ port, vault: root })
@@ -109,7 +129,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.7 · local-first design system operations
+    console.log(`LiveDSO 0.8 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -121,6 +141,8 @@ switch (cmd) {
   node src/cli.ts snapshot                 创建本地快照
   node src/cli.ts history                  列出快照
   node src/cli.ts diff <id> [--json]       对比当前 vault 与快照
+  node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
+                                          跨 vault 本地 CI 门禁
   node src/cli.ts serve [port]            启动 Web Workbench
 
 环境:

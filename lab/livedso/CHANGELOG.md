@@ -8,6 +8,20 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
+## [0.8.0] - 2026-10-27 22:30
+
+### Added
+
+- **本地 CI 门禁**：`ci` 命令读取 `vaults.json`，聚合所有 vault 的健康分/errors/warnings；支持 `--strict`、`--max-warnings`、`--max-raw`、`--max-deprecated`、`--adopt`、`--baseline`、`--json`、`--out`。
+- **跨 vault 汇总**：一次输出 token/contract/style-card 总量、各 vault 分数、采用扫描与基线 diff；退出码可用于任意 CI。
+- **CI 文档**：[`docs/06_CI集成.md`](docs/06_CI集成.md) 提供本地运行、阈值与 GitHub Actions 片段。
+- 不接云、不建账号、不上传 vault。
+
+### Changed
+
+- `node:test` 从 11 项增至 12 项（跨 vault CI 聚合 + 严格阈值）。
+- 未做：本地插件 API、趋势报告；留到 v0.9。
+
 ## [0.7.0] - 2026-10-27 22:28
 
 ### Added

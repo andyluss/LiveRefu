@@ -9,6 +9,7 @@ import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle } fr
 import { scanAdoption } from '../src/adoption.ts'
 import { loadRegistry } from '../src/registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from '../src/history.ts'
+import { runCi } from '../src/ci.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
 const root = fileURLToPath(new URL('../vault', import.meta.url))
@@ -131,5 +132,19 @@ test('local history snapshots and diffs', () => {
     const diff = diffSnapshot(loadVault(tmp), snap.id)
     assert.equal(diff.changedTokens.length, 1)
     assert.equal(diff.changedTokens[0]?.path, 'sys.color.text.primary')
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('CI aggregates multiple vaults and enforces thresholds', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-ci-'))
+  try {
+    for (const name of ['a', 'b']) cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true })
+    writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
+    const ok = runCi({ registry: join(tmp, 'vaults.json') })
+    assert.equal(ok.vaults.length, 2)
+    assert.equal(ok.ok, true)
+    const strict = runCi({ registry: join(tmp, 'vaults.json'), strict: true })
+    assert.equal(strict.ok, false)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })
