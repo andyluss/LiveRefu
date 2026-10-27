@@ -16,3 +16,4 @@
 | --- | --- | --- |
 | [`formal-system/`](formal-system/README.md) | 形式化协作实验基地（Rust/CUE/Alloy + 属性测试），成熟后回流主项目 | [`formal-system/README.md`](formal-system/README.md) |
 | [`livedso/`](livedso/README.md) | **LiveDSO**：本地优先的设计系统操作台；token/契约/风格卡/闸门/报告 | [`livedso/README.md`](livedso/README.md) |
+| [`liveland/`](liveland/README.md) | **LiveLand**：本地优先的世界/时代创作工具；canon/时代/实体/资产/lint/导出 | [`liveland/README.md`](liveland/README.md) |

@@ -1,0 +1,15 @@
+{
+  "name": "liveland",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "LiveLand — local-first world / era authoring workbench",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "node --watch src/cli.ts serve",
+    "start": "node src/cli.ts serve",
+    "check": "node src/cli.ts check",
+    "report": "node src/cli.ts report",
+    "test": "node --test test/world.test.ts"
+  }
+}

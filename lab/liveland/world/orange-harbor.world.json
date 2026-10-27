@@ -1,0 +1,103 @@
+{
+  "id": "orange-harbor",
+  "title": "橙港",
+  "subtitle": "一座在能源转型后被重新居住的海港",
+  "premise": "橙港曾是一座依赖外部能源与重工业的海港。能源转型后，城市被合作社、维修站与远程承包商共同接管；同一套海风、旧管线与社区网络，在三个时代里长出三种未来。",
+  "owner": "worldbuilding",
+  "version": "0.1.0",
+  "constraints": [
+    { "id": "tech", "label": "技术", "statement": "1970s 材料 + 2020s 网络 + 有限 AI；没有无代价的无限能源。" },
+    { "id": "energy", "label": "能源", "statement": "社区光伏、潮汐与电池为主；夜间降级非必要服务。" },
+    { "id": "material", "label": "材料", "statement": "稀土与芯片受限；维修、复用、拆解是常态。" },
+    { "id": "society", "label": "社会", "statement": "合作社、市政与远程外包并存；维护被看见，但不总是被支付。" },
+    { "id": "forbidden", "label": "禁止", "statement": "无代价的无限能源；没有维护者的全自动；把代价藏在界面外。" }
+  ],
+  "eras": [
+    {
+      "id": "archive",
+      "name": "Archive",
+      "subtitle": "现在 / 档案",
+      "from": "2026",
+      "to": "2031",
+      "tech": "旧电网 + 纸张登记 + 局部网络",
+      "maintenance": "本地档案员与住户",
+      "cost": "低密度、手工维护、速度慢",
+      "summary": "纸、登记、可读的现在。停电时，档案仍然能打开。",
+      "style": {
+        "colors": ["#F3EDE1", "#0B6B63", "#A83A14", "#7A4E00"],
+        "materials": ["纸", "墨", "旧搪瓷", "木"],
+        "light": "午后偏暖，低对比"
+      }
+    },
+    {
+      "id": "solar",
+      "name": "Solar",
+      "subtitle": "提案 / 社区",
+      "from": "2032",
+      "to": "2040",
+      "tech": "社区光伏 + 潮汐 + 本地电池",
+      "maintenance": "社区维修站与住户",
+      "cost": "低密度、速度慢、需要参与",
+      "summary": "适当的未来：能源本地化、维修可见、社区参与；代价是效率与速度。",
+      "style": {
+        "colors": ["#F3E7C9", "#1F6B4A", "#B85C2A", "#E8B84A"],
+        "materials": ["陶土", "再生木", "太阳能板", "帆布"],
+        "light": "金色侧光，柔和阴影"
+      }
+    },
+    {
+      "id": "cyber",
+      "name": "Cyber",
+      "subtitle": "诊断 / 外包",
+      "from": "2041",
+      "to": "2055",
+      "tech": "城市电网 + 远程维护 + 高密度传感",
+      "maintenance": "远程承包商，知识不落地",
+      "cost": "监控、依赖、退出成本高",
+      "summary": "高效率、高密度、24 小时城市；代价是监控、外包与不可见的维护。",
+      "style": {
+        "colors": ["#070B18", "#5CE1E6", "#FF5FA2", "#FFC857"],
+        "materials": ["玻璃", "阳极氧化铝", "冷光", "电缆"],
+        "light": "冷色顶光，扫描线"
+      }
+    }
+  ],
+  "entities": [
+    { "id": "place-orange-harbor", "name": "橙港", "type": "place", "era": "archive", "summary": "海港旧城，潮汐与风是城市的背景音。" },
+    { "id": "place-repair-station", "name": "第三维修站", "type": "place", "era": "solar", "summary": "社区维修站，周六开放，提供焊锡、工具与下午。" },
+    { "id": "place-archive", "name": "港务档案局", "type": "place", "era": "archive", "summary": "保存港口、土地与维修记录的三层旧楼。" },
+    { "id": "person-alan", "name": "阿岚", "type": "person", "era": "solar", "summary": "维修站协调员；相信“修得好”比“买新的”更重要。" },
+    { "id": "person-xiaoman", "name": "小满", "type": "person", "era": "cyber", "summary": "远程承包商的城市接口人；知道系统哪里会坏。" },
+    { "id": "org-coop", "name": "潮汐合作社", "type": "org", "era": "solar", "summary": "运营社区电站与共享电池的合作社。" },
+    { "id": "org-nightops", "name": "NightOps", "type": "org", "era": "cyber", "summary": "远程维护承包商；SLA 很好，知识不落地。" },
+    { "id": "tech-struvite", "name": "鸟粪石反应器", "type": "tech", "era": "solar", "summary": "把黄水中的磷回收成白色颗粒；需要镁盐与维护。" }
+  ],
+  "canon": [
+    { "id": "canon.archive.energy", "era": "archive", "statement": "社区电站是 Archive 时代的主要电源。", "confidence": "canon", "sources": ["港口能源档案 03"], "dependsOn": [], "conflictsWith": ["canon.archive.no-grid"], "owner": "worldbuilding" },
+    { "id": "canon.archive.no-grid", "era": "archive", "statement": "Archive 时代没有本地电网，所有电力来自外部。", "confidence": "draft", "sources": ["旧访谈 12"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.archive.repair", "era": "archive", "statement": "档案局用纸与复印机保存维修记录，断网仍可查。", "confidence": "canon", "sources": ["档案局观察"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.solar.grid", "era": "solar", "statement": "社区光伏、潮汐与共享电池构成微网，夜间降级非必要服务。", "confidence": "canon", "sources": ["社区电站账本"], "dependsOn": ["canon.solar.battery"], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.solar.battery", "era": "solar", "statement": "共享电池由潮汐合作社维护，容量有限，优先供医疗与冷藏。", "confidence": "canon", "sources": ["合作社手册"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.solar.depends", "era": "solar", "statement": "维修站依赖鸟粪石反应器的备件供应。", "confidence": "draft", "sources": ["维修站访谈"], "dependsOn": ["canon.missing.spares"], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.solar.cost", "era": "solar", "statement": "Solar 的效率较低，因为每个节点都需要人参与维护。", "confidence": "canon", "sources": ["设计手记"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.cyber.grid", "era": "cyber", "statement": "城市电网覆盖全港，远程承包商负责夜间维护。", "confidence": "canon", "sources": ["NightOps 服务协议"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.cyber.surveillance", "era": "cyber", "statement": "高密度传感用于预测故障，也用于行为分析。", "confidence": "canon", "sources": ["城市传感器条例"], "dependsOn": ["canon.cyber.grid"], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.cyber.cost", "era": "cyber", "statement": "维护知识集中在远程承包商，退出成本高。", "confidence": "canon", "sources": ["小满访谈"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.material.repair", "era": "archive", "statement": "稀土与芯片受限，维修与拆解是常态。", "confidence": "canon", "sources": ["港口物资表"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" },
+    { "id": "canon.people.alan", "era": "solar", "statement": "阿岚相信“修得好”比“买新的”更重要。", "confidence": "canon", "sources": ["人物小传"], "dependsOn": [], "conflictsWith": [], "owner": "worldbuilding" }
+  ],
+  "assets": [
+    { "id": "asset-harbor-morning", "title": "橙港清晨", "era": "archive", "type": "image", "source": "hand-drawn", "license": "CC-BY-4.0", "status": "final", "path": "assets/harbor-morning.svg" },
+    { "id": "asset-repair-station", "title": "第三维修站", "era": "solar", "type": "image", "source": "hand-drawn", "license": "CC-BY-4.0", "status": "final", "path": "assets/repair-station.svg" },
+    { "id": "asset-struvite", "title": "鸟粪石反应器", "era": "solar", "type": "image", "source": "diagram", "license": "CC-BY-SA-4.0", "status": "draft", "path": "assets/struvite.svg" },
+    { "id": "asset-nightops", "title": "NightOps 控制层", "era": "cyber", "type": "image", "source": "generated", "license": "", "status": "draft", "path": "assets/nightops.svg" },
+    { "id": "asset-archive-room", "title": "档案局三层", "era": "archive", "type": "image", "source": "", "license": "internal", "status": "draft", "path": "assets/archive-room.svg" },
+    { "id": "asset-tide", "title": "潮汐表", "era": "solar", "type": "data", "source": "community log", "license": "CC0-1.0", "status": "final", "path": "assets/tide.csv" }
+  ],
+  "outputs": [
+    { "id": "out-bible", "name": "世界圣经", "type": "markdown", "era": "all", "status": "ready", "note": "约束/时代/canon/实体/资产" },
+    { "id": "out-web", "name": "世界页", "type": "web", "era": "all", "status": "draft", "note": "公开阅读页" },
+    { "id": "out-game", "name": "游戏资源表", "type": "json", "era": "solar", "status": "draft", "note": "资产 + 风格卡" },
+    { "id": "out-print", "name": "设定集", "type": "print", "era": "archive", "status": "not-started", "note": "印刷版世界书" }
+  ]
+}

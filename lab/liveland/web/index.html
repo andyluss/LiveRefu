@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="system" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveLand · World / Era Authoring</title>
+<meta name="description" content="LiveLand：本地优先的世界与时代创作工具。世界、时代、canon、实体、资产、输出。">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('liveland-theme') || 'system';
+    if (t !== 'system' && t !== 'light' && t !== 'dark') t = 'system';
+    var mq = matchMedia('(prefers-color-scheme: dark)');
+    document.documentElement.dataset.theme = t;
+    document.documentElement.dataset.mode = t === 'system' ? (mq.matches ? 'dark' : 'light') : t;
+  } catch (e) {}
+})();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%230B0F14'/%3E%3Cpath d='M4 17 9 7l4 6 3-4 4 8' fill='none' stroke='%23FFC857' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="#" data-view="overview">
+      <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5 9 6.5l4.2 6.8 2.8-4.2 4.5 9.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3.5 20.5h17" stroke="currentColor" stroke-width="1.3" opacity=".45"/></svg></span>
+      <span class="brand-text"><b>LiveLand</b><small>WORLD / ERA AUTHORING</small></span>
+    </a>
+    <span class="lab-chip">LAB / 0.1</span>
+    <span class="status" id="status"><i></i><span>connecting</span></span>
+    <div class="top-actions">
+      <button class="btn ghost" id="run-lint" type="button">World lint</button>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button data-theme-set="system" type="button" aria-pressed="true">系统</button><button data-theme-set="light" type="button" aria-pressed="false">浅色</button><button data-theme-set="dark" type="button" aria-pressed="false">深色</button>
+      </div>
+    </div>
+  </header>
+  <aside class="sidebar">
+    <div class="kicker">ATLAS</div>
+    <nav class="nav">
+      <button data-view="overview" class="active" type="button"><span>01</span>总览</button>
+      <button data-view="eras" type="button"><span>02</span>时代 <em id="nav-eras">—</em></button>
+      <button data-view="canon" type="button"><span>03</span>Canon <em id="nav-canon">—</em></button>
+      <button data-view="entities" type="button"><span>04</span>实体 <em id="nav-entities">—</em></button>
+      <button data-view="assets" type="button"><span>05</span>资产 <em id="nav-assets">—</em></button>
+      <button data-view="lint" type="button"><span>06</span>Lint <em id="nav-issues">—</em></button>
+      <button data-view="outputs" type="button"><span>07</span>输出</button>
+    </nav>
+    <div class="kicker">WORLD</div>
+    <div class="world-box"><code id="world-path">world/</code><p>本地 JSON；不训练、不上传、不生图。</p><strong id="world-version">—</strong></div>
+    <div class="side-foot"><span>zero deps</span><span id="node-version">Node —</span></div>
+  </aside>
+  <main class="main" id="main">
+    <section class="view active" id="view-overview">
+      <div class="view-head"><div><div class="eyebrow">WORLD COMPILER</div><h1 id="world-title">读取世界中……</h1></div><div class="head-meta"><span class="chip" id="world-id">world</span><span class="chip" id="era-count">— eras</span></div></div>
+      <p class="lede" id="world-premise">一个世界不是设定集；是规则、代价与可被继续写下去的空间。</p>
+      <div class="overview-grid">
+        <article class="health"><div class="ring" id="health-ring"><div><b id="health-score">—</b><span>/100</span></div></div><div><div class="eyebrow">WORLD HEALTH</div><h2 id="health-label">等待 lint</h2><p id="health-detail">读取 canon、资产与时代。</p><button class="btn small ghost" data-view="lint" type="button">查看问题 →</button></div></article>
+        <div class="stats"><div><span>Eras</span><b id="s-eras">—</b></div><div><span>Canon</span><b id="s-canon">—</b></div><div><span>Entities</span><b id="s-entities">—</b></div><div><span>Assets</span><b id="s-assets">—</b></div></div>
+      </div>
+      <div class="overview-grid two">
+        <section class="panel"><div class="panel-head"><h2>世界约束</h2><span class="chip">canon rules</span></div><div id="constraints" class="constraints"></div></section>
+        <section class="panel"><div class="panel-head"><h2>时代</h2><span class="chip">3 futures</span></div><div id="overview-eras" class="era-list"></div></section>
+      </div>
+      <section class="panel"><div class="panel-head"><h2>最近的信号</h2><button class="text-btn" data-view="lint" type="button">全部 →</button></div><div id="overview-issues" class="issues compact"><div class="empty">读取中……</div></div></section>
+    </section>
+
+    <section class="view" id="view-eras">
+      <div class="view-head"><div><div class="eyebrow">TIME / WORLDS</div><h1>Eras</h1></div><div class="head-meta"><span class="chip" id="era-total">—</span></div></div>
+      <p class="lede">时代不是换色板，而是同一世界在技术、能源、劳动与代价上的不同状态。</p>
+      <div id="era-tabs" class="era-tabs"></div>
+      <div id="era-detail" class="era-detail"></div>
+    </section>
+
+    <section class="view" id="view-canon">
+      <div class="view-head"><div><div class="eyebrow">CANON / SOURCES</div><h1>Canon</h1></div><div class="head-meta"><span class="chip" id="canon-count">—</span></div></div>
+      <p class="lede">每条设定都应可追溯：来源、依赖、冲突、置信度。Canon 不是散文，是世界的事实层。</p>
+      <div class="toolbar"><label class="search"><input id="canon-search" type="search" placeholder="搜索 statement / id / source" autocomplete="off"></label><select id="canon-era"><option value="">全部时代</option></select><select id="canon-confidence"><option value="">全部置信度</option><option value="canon">canon</option><option value="draft">draft</option><option value="rumor">rumor</option></select></div>
+      <div class="canon-layout">
+        <div id="canon-list" class="canon-list"><div class="empty">读取中……</div></div>
+        <form id="canon-form" class="panel add-fact"><div class="eyebrow">ADD CANON</div><h2>加入一条事实</h2><label>时代<select name="era" required></select></label><label>置信度<select name="confidence"><option value="draft">draft</option><option value="canon">canon</option><option value="rumor">rumor</option></select></label><label>来源<input name="source" placeholder="访谈 / 文档 / 观察"></label><label>陈述<textarea name="statement" rows="5" placeholder="一条可被引用、可被检查的设定……" required></textarea></label><button class="btn primary" type="submit">加入 canon</button><p class="fine">写入 world JSON；不会自动提交 Git。</p></form>
+      </div>
+    </section>
+
+    <section class="view" id="view-entities">
+      <div class="view-head"><div><div class="eyebrow">CAST / PLACES</div><h1>Entities</h1></div><div class="head-meta"><span class="chip" id="entity-count">—</span></div></div>
+      <p class="lede">地点、人物、组织、技术：每个实体都应该能落到一个时代，并回答“谁维护它”。</p>
+      <div id="entity-grid" class="entity-grid"></div>
+    </section>
+
+    <section class="view" id="view-assets">
+      <div class="view-head"><div><div class="eyebrow">ASSETS / PROVENANCE</div><h1>Assets</h1></div><div class="head-meta"><span class="chip" id="asset-count">—</span></div></div>
+      <p class="lede">资产不是“图库”：每一件都要有来源、许可、时代与状态。没有许可的资产不能发布。</p>
+      <div class="table-wrap panel"><table><thead><tr><th>资产</th><th>时代</th><th>类型</th><th>来源</th><th>许可</th><th>状态</th></tr></thead><tbody id="asset-rows"></tbody></table></div>
+    </section>
+
+    <section class="view" id="view-lint">
+      <div class="view-head"><div><div class="eyebrow">WORLD LINT</div><h1>Lint</h1></div><div class="head-meta"><span class="chip" id="lint-score">—</span></div></div>
+      <p class="lede">先查矛盾，再谈发布。错误阻断；警告要写清取舍。</p>
+      <div id="lint-summary" class="lint-summary"></div>
+      <div id="lint-list" class="issues"></div>
+    </section>
+
+    <section class="view" id="view-outputs">
+      <div class="view-head"><div><div class="eyebrow">OUTPUT</div><h1>Outputs</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
+      <p class="lede">同一份 canon，输出世界圣经、风格指南与资产清单；输出不是事实源。</p>
+      <div class="output-actions"><button class="btn" type="button" data-export="bible">世界圣经 .md</button><button class="btn ghost" type="button" data-export="style">风格指南 .md</button><button class="btn ghost" type="button" data-export="assets">资产清单 .json</button><button class="btn ghost" type="button" id="download-output">下载当前输出</button></div>
+      <section class="panel"><div class="panel-head"><h2 id="output-title">输出预览</h2><span class="chip" id="output-status">未生成</span></div><pre id="output-preview" class="code-panel">选择一种输出。</pre></section>
+      <section class="panel" style="margin-top:8px"><div class="panel-head"><h2>输出登记</h2><span class="chip" id="output-count">—</span></div><div id="output-list" class="output-list"></div></section>
+    </section>
+  </main>
+</div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
