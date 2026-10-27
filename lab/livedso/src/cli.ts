@@ -10,17 +10,27 @@ import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
 import { formatCi, markdownCi, runCi } from './ci.ts'
+import { loadPlugins, runPlugins } from './plugins.ts'
 
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
+const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--max-warnings', '--max-raw', '--max-deprecated'])
+const positionals: string[] = []
+for (let i = 1; i < args.length; i++) {
+  const a = args[i]!
+  if (a.startsWith('--')) { if (FLAGS_WITH_VALUE.has(a)) i++; continue }
+  positionals.push(a)
+}
 const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff', 'ci'].includes(cmd)
-const vaultArg = process.env.LIVEDSO_VAULT || (defaultVaultCmd ? defaultVault : args[1] || defaultVault)
+const vaultArg = process.env.LIVEDSO_VAULT || (defaultVaultCmd ? defaultVault : positionals[0] || defaultVault)
 const root = resolve(vaultArg)
+const pluginDir = resolve(args.includes('--plugins') ? args[args.indexOf('--plugins') + 1]! : process.env.LIVEDSO_PLUGINS || fileURLToPath(new URL('../plugins', import.meta.url)))
+const loadedPlugins = await loadPlugins(pluginDir)
 
 function printIssues(): number {
   const vault = loadVault(root)
-  const result = runChecks(vault)
+  const result = runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)])
   console.log(`vault: ${root}`)
   console.log(`tokens: ${vault.tokens.size} · contracts: ${vault.contracts.length} · style cards: ${vault.styleCards.length}`)
   console.log(`health: ${result.score}/100 · errors: ${result.errors} · warnings: ${result.warnings}`)
@@ -34,8 +44,8 @@ switch (cmd) {
     break
   case 'report': {
     const vault = loadVault(root)
-    const result = runChecks(vault)
-    const out = resolve(args[2] || 'reports/health.md')
+    const result = runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)])
+    const out = resolve(positionals[1] || 'reports/health.md')
     mkdirSync(dirname(out), { recursive: true })
     writeFileSync(out, reportMarkdown(vault, result) + '\n', 'utf8')
     console.log(`wrote ${out}`)
@@ -43,22 +53,22 @@ switch (cmd) {
   }
   case 'build': {
     const vault = loadVault(root)
-    const out = resolve(args[2] || 'dist/tokens.css')
+    const out = resolve(positionals[1] || 'dist/tokens.css')
     mkdirSync(dirname(out), { recursive: true })
     writeFileSync(out, projection(vault), 'utf8')
     console.log(`wrote ${out}`)
     break
   }
   case 'import': {
-    const src = resolve(args[1] || '../../design/tokens')
-    const target = resolve(args[2] || 'vault-lrds')
+    const src = resolve(positionals[0] || '../../design/tokens')
+    const target = resolve(positionals[1] || 'vault-lrds')
     const sample = fileURLToPath(new URL('../vault', import.meta.url))
     const r = importTokens(src, target, sample)
     console.log(`imported ${r.tokens} files → ${target}`)
     break
   }
   case 'adopt': {
-    const target = resolve(args[1] || '.')
+    const target = resolve(positionals[0] || '.')
     const vault = loadVault(root)
     const result = scanAdoption(target, vault)
     if (args.includes('--json')) {
@@ -89,9 +99,9 @@ switch (cmd) {
     break
   }
   case 'diff': {
-    if (!args[1]) { console.error('用法: node src/cli.ts diff <snapshot-id> [--json]'); process.exitCode = 1; break }
+    if (!positionals[0]) { console.error('用法: node src/cli.ts diff <snapshot-id> [--json]'); process.exitCode = 1; break }
     const vault = loadVault(root)
-    const result = diffSnapshot(vault, args[1])
+    const result = diffSnapshot(vault, positionals[0]!)
     if (args.includes('--json')) console.log(JSON.stringify(result, null, 2))
     else {
       console.log(`diff ${result.id}: +${result.counts.added} -${result.counts.removed} ~${result.counts.changed}`)
@@ -113,7 +123,9 @@ switch (cmd) {
       strict: args.includes('--strict'),
       maxWarnings: num('--max-warnings'),
       maxRaw: num('--max-raw'),
-      maxDeprecated: num('--max-deprecated')
+      maxDeprecated: num('--max-deprecated'),
+      plugins: loadedPlugins.plugins,
+      pluginErrors: loadedPlugins.errors
     })
     const out = flag('--out')
     if (out) { mkdirSync(dirname(resolve(out)), { recursive: true }); writeFileSync(resolve(out), markdownCi(result), 'utf8'); console.log(`wrote ${resolve(out)}`) }
@@ -123,13 +135,13 @@ switch (cmd) {
     break
   }
   case 'serve': {
-    const port = Number(args[1] || process.env.PORT || 4173)
-    await startServer({ port, vault: root })
+    const port = Number(positionals[0] || process.env.PORT || 4173)
+    await startServer({ port, vault: root, plugins: pluginDir })
     break
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.8 · local-first design system operations
+    console.log(`LiveDSO 0.9 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题

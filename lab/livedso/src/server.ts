@@ -8,6 +8,8 @@ import { reportMarkdown, runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
 import { loadRegistry } from './registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
+import { loadPlugins, runPlugins } from './plugins.ts'
+import type { Vault } from './types.ts'
 
 const WEB = resolve(import.meta.dirname, '../web')
 const MIME: Record<string, string> = {
@@ -43,22 +45,25 @@ function staticFile(pathname: string): { file: string; type: string } | null {
   return { file, type: MIME[extname(file)] || 'application/octet-stream' }
 }
 
-export interface ServerOptions { port?: number; vault?: string; registry?: string }
+export interface ServerOptions { port?: number; vault?: string; registry?: string; plugins?: string }
 
-export function startServer(options: ServerOptions = {}): Promise<{ port: number; close: () => Promise<void> }> {
+export async function startServer(options: ServerOptions = {}): Promise<{ port: number; close: () => Promise<void> }> {
   const fallbackRoot = resolve(options.vault || process.env.LIVEDSO_VAULT || join(import.meta.dirname, '../vault'))
   const registry = loadRegistry(resolve(options.registry || process.env.LIVEDSO_REGISTRY || join(import.meta.dirname, '../vaults.json')), fallbackRoot)
   let vaultRoot = fallbackRoot
   let active = registry.vaults.find(v => resolve(v.path) === vaultRoot) || { id: 'custom', name: 'Custom vault', path: vaultRoot }
   const port = Number(options.port || process.env.PORT || 4173)
+  const pluginDir = resolve(options.plugins || process.env.LIVEDSO_PLUGINS || join(import.meta.dirname, '../plugins'))
+  const loadedPlugins = await loadPlugins(pluginDir)
+  const check = (target: Vault) => runChecks(target, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, target)])
   const scoped = (view: object): object => ({ ...view, vaults: registry.vaults, activeVault: active, registryErrors: registry.errors })
   const server = createServer(async (req, res) => {
     try {
       const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`)
       if (url.pathname === '/favicon.ico') { res.writeHead(204); return res.end() }
-      if (url.pathname === '/api/health') return json(res, 200, { ok: true, service: 'livedso', vault: vaultRoot, activeVault: active })
+      if (url.pathname === '/api/health') return json(res, 200, { ok: true, service: 'livedso', vault: vaultRoot, activeVault: active, plugins: loadedPlugins.plugins.map(p => p.name), pluginErrors: loadedPlugins.errors.length })
       let vault = loadVault(vaultRoot)
-      let result = runChecks(vault)
+      let result = check(vault)
       if (url.pathname === '/api/vaults' && req.method === 'GET') return json(res, 200, { vaults: registry.vaults, activeVault: active, registryErrors: registry.errors })
       if (url.pathname === '/api/vault' && req.method === 'POST') {
         const body = JSON.parse(await readBody(req)) as { id?: string }
@@ -67,7 +72,7 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         active = next
         vaultRoot = resolve(next.path)
         vault = loadVault(vaultRoot)
-        result = runChecks(vault)
+        result = check(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
       }
       if (url.pathname === '/api/state' && req.method === 'GET') return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
@@ -79,7 +84,7 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         if (!body.path || typeof body.value !== 'string') return json(res, 400, { error: '需要 path 与 value（string）' })
         saveToken(vault, body.path, body.value)
         vault = loadVault(vaultRoot)
-        result = runChecks(vault)
+        result = check(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
       }
       if (url.pathname === '/api/token/lifecycle' && req.method === 'POST') {
@@ -87,7 +92,7 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         if (!body.path) return json(res, 400, { error: '需要 path' })
         saveTokenLifecycle(vault, body.path, { deprecated: Boolean(body.deprecated), replacedBy: body.replacedBy, note: body.note })
         vault = loadVault(vaultRoot)
-        result = runChecks(vault)
+        result = check(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
       }
       if (url.pathname === '/api/history' && req.method === 'GET') return json(res, 200, { snapshots: listSnapshots(vault) })
@@ -113,7 +118,7 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         for (const [key, value] of Object.entries(body.patch)) if (allowed.has(key)) patch[key] = value
         saveContract(vault, body.id, patch)
         vault = loadVault(vaultRoot)
-        result = runChecks(vault)
+        result = check(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
       }
       if (url.pathname.startsWith('/api/')) return json(res, 404, { error: 'not found' })
@@ -132,6 +137,7 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
       console.log(`LiveDSO · http://127.0.0.1:${actualPort}`)
       console.log(`vault · ${vaultRoot}`)
       console.log(`vaults · ${registry.vaults.map(v => v.id).join(', ')}`)
+      console.log(`plugins · ${loadedPlugins.plugins.map(p => p.name).join(', ') || 'none'}`)
       resolvePromise({
         port: actualPort,
         close: () => new Promise<void>((resolveClose, rejectClose) => server.close(err => err ? rejectClose(err) : resolveClose()))

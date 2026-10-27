@@ -4,6 +4,8 @@ import { loadVault } from './vault.ts'
 import { runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
 import { diffSnapshot } from './history.ts'
+import { runPlugins, type LocalPlugin } from './plugins.ts'
+import type { Issue } from './types.ts'
 
 export interface CiOptions {
   registry?: string
@@ -13,6 +15,8 @@ export interface CiOptions {
   maxWarnings?: number
   maxRaw?: number
   maxDeprecated?: number
+  plugins?: LocalPlugin[]
+  pluginErrors?: Issue[]
 }
 export interface CiVaultResult {
   id: string
@@ -46,7 +50,7 @@ export function runCi(options: CiOptions = {}): CiResult {
   for (const entry of registry.vaults) {
     try {
       const vault = loadVault(entry.path)
-      const checks = runChecks(vault)
+      const checks = runChecks(vault, [...(options.pluginErrors || []), ...runPlugins(options.plugins || [], vault)])
       const adoption = options.adopt ? scanAdoption(options.adopt, vault) : null
       const diff = options.baseline ? diffSnapshot(vault, options.baseline) : null
       vaults.push({

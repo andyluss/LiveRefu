@@ -10,6 +10,7 @@ import { scanAdoption } from '../src/adoption.ts'
 import { loadRegistry } from '../src/registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from '../src/history.ts'
 import { runCi } from '../src/ci.ts'
+import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
 const root = fileURLToPath(new URL('../vault', import.meta.url))
@@ -146,5 +147,21 @@ test('CI aggregates multiple vaults and enforces thresholds', () => {
     assert.equal(ok.ok, true)
     const strict = runCi({ registry: join(tmp, 'vaults.json'), strict: true })
     assert.equal(strict.ok, false)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('local plugin loads and contributes issues', async () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-plugin-'))
+  try {
+    mkdirSync(join(tmp, 'plugins'))
+    writeFileSync(join(tmp, 'plugins', 'brand.mjs'), `export default { name: 'brand', check({ vault }) { return [{ code: 'brand.rule', severity: 'warn', path: 'brand', message: 'brand rule', detail: String(vault.tokens.size) }] } }\n`)
+    const loaded = await loadPlugins(join(tmp, 'plugins'))
+    assert.equal(loaded.errors.length, 0)
+    assert.equal(loaded.plugins.length, 1)
+    const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+    const result = runChecks(vault, [...loaded.errors, ...runPlugins(loaded.plugins, vault)])
+    assert.equal(result.warnings, 4)
+    assert.ok(result.issues.some(i => i.code === 'brand.rule'))
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

@@ -53,8 +53,8 @@ export function colorOf(vault: Vault, path: string): RGB | null {
   return typeof value === 'string' ? parseColor(value) : null
 }
 
-export function runChecks(vault: Vault): CheckResult {
-  const issues: Issue[] = []
+export function runChecks(vault: Vault, extraIssues: Issue[] = []): CheckResult {
+  const issues: Issue[] = [...extraIssues]
   const push = (issue: Issue): void => { issues.push(issue) }
   const cfg = vault.checks || {}
   const rawTiers = new Set(cfg.rawValueTiers || [])

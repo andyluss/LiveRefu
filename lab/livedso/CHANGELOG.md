@@ -8,6 +8,21 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
+## [0.9.0] - 2026-10-27 22:32
+
+### Added
+
+- **本地检查插件**：`plugins/*.mjs` 可导出函数或 `{ name, check }`；issue 进入健康分、Checks、Report、CI。
+- **接入点**：`check` / `report` / `ci` 支持 `--plugins`，`LIVEDSO_PLUGINS` 覆盖；`serve` 默认加载 `plugins/`。
+- **插件文档**：[`docs/07_插件API.md`](docs/07_插件API.md) 说明接口、示例、安全边界。
+- 插件加载/运行失败分别产生 `plugin.load` / `plugin.runtime` error，不静默吞掉。
+
+### Changed
+
+- 插件运行在本地进程内，**无沙箱**；只加载可信代码；不接云、不上传。
+- `node:test` 从 12 项增至 13 项（插件加载 + issue 注入）。
+- 未做：跨快照趋势、CI 模板、插件示例库；留到 v0.10。
+
 ## [0.8.0] - 2026-10-27 22:30
 
 ### Added
