@@ -8,6 +8,20 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
+## [0.7.0] - 2026-10-27 22:28
+
+### Added
+
+- **本地快照**：`snapshot` 命令、`POST /api/history`、Workbench History 视图；写入 `vault/.history/`，不依赖 Git/云。
+- **只读差异**：`history` / `diff <id>` CLI、`GET /api/history`、`POST /api/history/diff`；对比 token（值/解析值/弃用/替代）、契约、风格卡的增删改。
+- **本地历史 UI**：创建快照、列出快照、选择查看差异；不自动回滚。
+- `.history/` 加入忽略规则，快照默认不进 Git。
+
+### Changed
+
+- 云/账号/团队/私有 registry/托管按用户裁决**继续搁置**；v0.7 只做本地能力。
+- `node:test` 从 10 项增至 11 项（快照创建/列表/差异）。
+
 ## [0.6.0] - 2026-10-27 22:18
 
 ### Added

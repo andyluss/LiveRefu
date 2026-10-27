@@ -8,11 +8,13 @@ import { reportMarkdown, runChecks } from './checks.ts'
 import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
+import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
 
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
-const vaultArg = process.env.LIVEDSO_VAULT || (cmd === 'serve' || cmd === 'adopt' ? defaultVault : args[1] || defaultVault)
+const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff'].includes(cmd)
+const vaultArg = process.env.LIVEDSO_VAULT || (defaultVaultCmd ? defaultVault : args[1] || defaultVault)
 const root = resolve(vaultArg)
 
 function printIssues(): number {
@@ -72,6 +74,34 @@ switch (cmd) {
     else if (args.includes('--fail-on-raw') && result.rawColors > 0) process.exitCode = 1
     break
   }
+  case 'snapshot': {
+    const vault = loadVault(root)
+    const snap = createSnapshot(vault)
+    console.log(`snapshot ${snap.id} · ${Object.keys(snap.tokens).length} tokens · ${snap.vault}`)
+    break
+  }
+  case 'history': {
+    const vault = loadVault(root)
+    const list = listSnapshots(vault)
+    for (const x of list) console.log(`${x.id}  ${x.createdAt}  ${x.tokens} tokens / ${x.contracts} contracts / ${x.styleCards} cards`)
+    if (!list.length) console.log('no snapshots')
+    break
+  }
+  case 'diff': {
+    if (!args[1]) { console.error('用法: node src/cli.ts diff <snapshot-id> [--json]'); process.exitCode = 1; break }
+    const vault = loadVault(root)
+    const result = diffSnapshot(vault, args[1])
+    if (args.includes('--json')) console.log(JSON.stringify(result, null, 2))
+    else {
+      console.log(`diff ${result.id}: +${result.counts.added} -${result.counts.removed} ~${result.counts.changed}`)
+      for (const x of result.addedTokens) console.log(`  + token ${x}`)
+      for (const x of result.removedTokens) console.log(`  - token ${x}`)
+      for (const x of result.changedTokens) console.log(`  ~ token ${x.path}`)
+      for (const x of result.changedContracts) console.log(`  ~ contract ${x}`)
+      for (const x of result.changedStyleCards) console.log(`  ~ style-card ${x}`)
+    }
+    break
+  }
   case 'serve': {
     const port = Number(args[1] || process.env.PORT || 4173)
     await startServer({ port, vault: root })
@@ -79,7 +109,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.6 · local-first design system operations
+    console.log(`LiveDSO 0.7 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -88,6 +118,9 @@ switch (cmd) {
   node src/cli.ts import [src] [vault]    导入 design/tokens 到 vault-lrds
   node src/cli.ts adopt [dir] [--json] [--strict|--fail-on-raw]
                                           扫描代码中的 token/裸色引用
+  node src/cli.ts snapshot                 创建本地快照
+  node src/cli.ts history                  列出快照
+  node src/cli.ts diff <id> [--json]       对比当前 vault 与快照
   node src/cli.ts serve [port]            启动 Web Workbench
 
 环境:

@@ -5,9 +5,10 @@ import { fileURLToPath } from 'node:url'
 import { cpSync, mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { loadVault, projection, saveContract, saveTokenLifecycle } from '../src/vault.ts'
+import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle } from '../src/vault.ts'
 import { scanAdoption } from '../src/adoption.ts'
 import { loadRegistry } from '../src/registry.ts'
+import { createSnapshot, diffSnapshot, listSnapshots } from '../src/history.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
 const root = fileURLToPath(new URL('../vault', import.meta.url))
@@ -115,5 +116,20 @@ test('registry resolves vault paths relative to its file', () => {
     assert.equal(r.errors.length, 0)
     assert.equal(r.vaults.length, 2)
     assert.equal(r.vaults[1]?.path, join(tmp, 'nested', 'vault-b'))
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('local history snapshots and diffs', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-history-'))
+  try {
+    cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    const vault = loadVault(tmp)
+    const snap = createSnapshot(vault)
+    assert.equal(listSnapshots(vault).length, 1)
+    saveToken(vault, 'sys.color.text.primary', '#FFFFFF')
+    const diff = diffSnapshot(loadVault(tmp), snap.id)
+    assert.equal(diff.changedTokens.length, 1)
+    assert.equal(diff.changedTokens[0]?.path, 'sys.color.text.primary')
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

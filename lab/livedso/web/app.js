@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '' };
+  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '' };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -61,6 +61,7 @@
     if (view === 'contracts') renderContracts();
     if (view === 'preview') renderPreview();
     if (view === 'adoption') renderAdoption();
+    if (view === 'history') loadHistory();
     if (view === 'style-cards') renderCards();
     if (view === 'checks') renderChecks();
     if (view === 'report') renderReport();
@@ -257,6 +258,46 @@
     const shared = [...ta].filter(x => tb.has(x));
     $('#compare-grid').innerHTML = `<article class="compare-card"><div class="era">${esc(a.era || '—')}</div><h3>${esc(a.name)}</h3><div class="compare-swatches">${c(a)}</div><p>${esc(a.note || '没有写维护/代价。')}</p><div class="compare-token">${(a.colors || []).map(x => esc(x)).join('<br>') || '—'}</div></article><article class="compare-card"><div class="era">${esc(b.era || '—')}</div><h3>${esc(b.name)}</h3><div class="compare-swatches">${c(b)}</div><p>${esc(b.note || '没有写维护/代价。')}</p><div class="compare-token">${(b.colors || []).map(x => esc(x)).join('<br>') || '—'}</div></article><div class="compare-shared">共享色：${shared.length ? esc(shared.join('、')) : '无'} ｜ 语法相同，皮肤不同；不要用风格卡替代 token 语义。</div>`;
   }
+  async function loadHistory() {
+    try {
+      const r = await api('/api/history');
+      state.history = r.snapshots || [];
+      renderHistory();
+    } catch (e) { toast('历史加载失败', e.message); }
+  }
+  function renderHistory() {
+    const list = state.history || [];
+    const el = $('#history-list');
+    $('#history-count').textContent = `${list.length} snapshots`;
+    $('#history-status').textContent = list.length ? '本地已加载' : '还没有快照';
+    $('#history-summary').innerHTML = `<div class="history-stat"><b>${list.length}</b><span>snapshots</span></div><div class="history-stat"><b>${list[0]?.tokens ?? '—'}</b><span>latest tokens</span></div><div class="history-stat"><b>${list[0]?.contracts ?? '—'}</b><span>latest contracts</span></div><div class="history-stat"><b>${list[0]?.styleCards ?? '—'}</b><span>latest cards</span></div>`;
+    if (!el) return;
+    el.innerHTML = list.length ? list.map(x => `<button class="history-item ${state.historyId === x.id ? 'active' : ''}" data-history="${esc(x.id)}" type="button"><code>${esc(x.id)}</code><small>${esc(x.createdAt)} · ${x.tokens} tokens / ${x.contracts} contracts</small></button>`).join('') : '<div class="empty">点击“创建快照”生成第一份。</div>';
+    if (!state.diff) $('#history-diff').innerHTML = '<div class="empty">选一个快照查看当前 vault 与它的差异。</div>';
+  }
+  async function snapshotNow() {
+    try {
+      const r = await api('/api/history', { method: 'POST', body: '{}' });
+      state.history = r.snapshots || [];
+      state.historyId = r.snapshot.id;
+      await diffHistory(r.snapshot.id);
+      toast('快照已创建', r.snapshot.id);
+    } catch (e) { toast('创建失败', e.message); }
+  }
+  async function diffHistory(id) {
+    try {
+      const d = await api('/api/history/diff', { method: 'POST', body: JSON.stringify({ id }) });
+      state.diff = d; state.historyId = id;
+      renderHistory(); renderDiff();
+    } catch (e) { toast('对比失败', e.message); }
+  }
+  function renderDiff() {
+    const d = state.diff; if (!d) return;
+    $('#diff-status').textContent = `+${d.counts.added} −${d.counts.removed} ~${d.counts.changed}`;
+    const row = (cls, sign, text, detail = '') => `<div class="diff-row ${cls}"><span class="sign">${sign}</span><div><code>${esc(text)}</code>${detail ? `<div class="diff-detail">${esc(detail)}</div>` : ''}</div></div>`;
+    const parts = [...d.addedTokens.map(x => row('add', '+', x)), ...d.removedTokens.map(x => row('remove', '−', x)), ...d.changedTokens.map(x => row('change', '~', x.path, `${x.before.raw} → ${x.after.raw}`)), ...d.addedContracts.map(x => row('add', '+', 'contract ' + x)), ...d.removedContracts.map(x => row('remove', '−', 'contract ' + x)), ...d.changedContracts.map(x => row('change', '~', 'contract ' + x)), ...d.addedStyleCards.map(x => row('add', '+', 'style-card ' + x)), ...d.removedStyleCards.map(x => row('remove', '−', 'style-card ' + x)), ...d.changedStyleCards.map(x => row('change', '~', 'style-card ' + x))];
+    $('#history-diff').innerHTML = parts.join('') || '<div class="empty">当前 vault 与这份快照没有差异。</div>';
+  }
   function renderChecks() {
     if (!state.data) return;
     const c = state.data.checks;
@@ -378,6 +419,8 @@
       if (e.target.id === 'save-lifecycle') { saveLifecycle(); return; }
       if (e.target.closest('#run-checks') || e.target.closest('#quick-check')) { runChecks(); return; }
       if (e.target.id === 'run-adoption') { runAdoption(); return; }
+      if (e.target.id === 'snapshot-now') { snapshotNow(); return; }
+      const hi = e.target.closest('[data-history]'); if (hi) { diffHistory(hi.dataset.history); return; }
       if (e.target.id === 'gen-report') { generateReport(); return; }
       if (e.target.id === 'gen-css') { generateCss(); return; }
       if (e.target.id === 'download-report') { state.report ? download('livedso-health.md', state.report, 'text/markdown') : toast('还没有报告', '先生成健康报告。'); return; }

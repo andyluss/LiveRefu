@@ -7,6 +7,7 @@ import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle, sta
 import { reportMarkdown, runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
 import { loadRegistry } from './registry.ts'
+import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
 
 const WEB = resolve(import.meta.dirname, '../web')
 const MIME: Record<string, string> = {
@@ -88,6 +89,16 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         vault = loadVault(vaultRoot)
         result = runChecks(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
+      }
+      if (url.pathname === '/api/history' && req.method === 'GET') return json(res, 200, { snapshots: listSnapshots(vault) })
+      if (url.pathname === '/api/history' && req.method === 'POST') {
+        const snapshot = createSnapshot(vault)
+        return json(res, 200, { snapshot, snapshots: listSnapshots(vault) })
+      }
+      if (url.pathname === '/api/history/diff' && req.method === 'POST') {
+        const body = JSON.parse(await readBody(req)) as { id?: string }
+        if (!body.id) return json(res, 400, { error: '需要 id' })
+        return json(res, 200, diffSnapshot(vault, body.id))
       }
       if (url.pathname === '/api/adopt' && req.method === 'POST') {
         const body = JSON.parse(await readBody(req)) as { root?: string }
