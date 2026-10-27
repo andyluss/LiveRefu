@@ -26,7 +26,7 @@
       <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8M8 15h8M8 9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       <span class="brand-text"><b>LiveFile</b><small>PERSONAL ARCHIVE</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.3</span>
+    <span class="lab-chip">LAB / 0.4</span>
     <span class="status" id="status"><i></i><span>connecting</span></span>
     <div class="top-actions"><button class="btn ghost" id="run-scan" type="button">Re-scan</button><div class="theme-switch" role="group" aria-label="主题"><button data-theme-set="system" type="button" aria-pressed="true">系统</button><button data-theme-set="light" type="button" aria-pressed="false">浅色</button><button data-theme-set="dark" type="button" aria-pressed="false">深色</button></div></div>
   </header>
@@ -84,13 +84,14 @@
       <p class="lede">健康不是“文件数”，而是：来源可追溯、备份可恢复、保管人明确、十年后还能打开。</p>
       <div id="health-summary" class="health-summary"></div>
       <div class="health-grid"><section class="panel"><div class="panel-head"><h2>档案问题</h2><span class="chip" id="issue-count">—</span></div><div id="issue-list" class="issues"></div></section><section class="panel"><div class="panel-head"><h2>备份 / 继承</h2></div><div id="inherit-card" class="inherit-card"></div></section></div>
+      <section class="panel" style="margin-top:8px"><div class="panel-head"><h2>保留期审计</h2><span class="chip" id="retention-count">—</span></div><div id="retention-list" class="issues"><div class="empty">读取中……</div></div></section>
       <div class="health-grid" style="margin-top:8px"><section class="panel"><div class="panel-head"><h2>重复内容</h2><span class="chip" id="duplicate-count">—</span></div><div id="duplicate-list" class="duplicates"></div></section><section class="panel"><div class="panel-head"><h2>备份执行 / 恢复校验</h2><span class="chip">local</span></div><div class="backup-tools"><label>备份到（目录）<input id="backup-target" placeholder="reports/backup"></label><button class="btn small" id="run-backup" type="button">运行备份</button><label>从备份校验恢复<input id="restore-source" placeholder="reports/backup"></label><button class="btn small ghost" id="restore-check" type="button">校验恢复</button><p class="fine">备份会复制 archive 到目标目录并写 backup-manifest；目标不能在 archive 内部。恢复校验只读，不会覆盖当前档案。</p></div></section></div>
     </section>
 
     <section class="view" id="view-export">
       <div class="view-head"><div><div class="eyebrow">OUTPUT</div><h1>Export</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
       <p class="lede">导出不是“上传”：档案目录、机器清单、备份/继承报告都可以带走。</p>
-      <div class="output-actions"><button class="btn" data-export="catalog" type="button">档案目录 .md</button><button class="btn ghost" data-export="manifest" type="button">清单 .json</button><button class="btn ghost" data-export="backup" type="button">备份/继承报告 .md</button><button class="btn ghost" data-export="public" type="button">公开页 .html</button><button class="btn ghost" id="download-output" type="button">下载当前输出</button></div>
+      <div class="output-actions"><button class="btn" data-export="catalog" type="button">档案目录 .md</button><button class="btn ghost" data-export="manifest" type="button">清单 .json</button><button class="btn ghost" data-export="backup" type="button">备份/继承报告 .md</button><button class="btn ghost" data-export="public" type="button">公开页 .html</button><button class="btn ghost" id="download-output" type="button">下载当前输出</button></div><div class="backup-tools" style="margin-top:7px"><label>继承包输出目录<input id="inherit-target" placeholder="reports/inheritance"></label><button class="btn small" id="run-inherit" type="button">生成继承包</button><p class="fine">包含 archive 副本、继承清单、公开页与说明；不能放在 archive 内部。</p></div>
       <section class="panel"><div class="panel-head"><h2 id="output-title">输出预览</h2><span class="chip" id="output-status">未生成</span></div><pre id="output-preview" class="code-panel">选择一种输出。</pre></section>
     </section>
   </main>

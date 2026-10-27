@@ -1,5 +1,19 @@
 # LiveFile Changelog
 
+## [0.4.0] - 2026-10-28 07:31
+
+### Added
+
+- **保留期审计**：解析 `permanent` / `YYYY-MM-DD` / `7y` / `6m`；标记 overdue / due / invalid，进入健康检查与 Health 页。
+- **继承包**：`inherit <out>` / `POST /api/inherit` / Export 页按钮；输出 archive 副本、`inheritance-package.json`、`public.html` 与说明。
+- CLI：`retention`。
+
+### Changed
+
+- `node:test` 从 7 项增至 8 项（保留期 + 继承包）。
+- 家庭共享/权限/托管继续搁置。
+- 恢复演练向导、多档案留到 v0.5。
+
 ## [0.3.0] - 2026-10-28 07:30
 
 ### Added

@@ -6,6 +6,8 @@ import { scanArchive, stats } from './archive.ts'
 import { backupReport, catalog, healthCheck, manifest } from './health.ts'
 import { recordRestore, runBackup, verifyRestore } from './backup.ts'
 import { publicHtml } from './public.ts'
+import { buildInheritancePackage } from './inherit.ts'
+import { retentionAudit } from './retention.ts'
 import { startServer } from './server.ts'
 
 const args = process.argv.slice(2)
@@ -46,6 +48,13 @@ switch (cmd) {
     console.log(`wrote ${out}`)
     break
   }
+  case 'retention': {
+    const index = scanArchive(archiveDir)
+    const rows = retentionAudit(index)
+    for (const r of rows) console.log(`${r.status.padEnd(9)} ${r.expires || '—'}  ${r.item.path}  ${r.policy}`)
+    if (!rows.length) console.log('no retention issues')
+    break
+  }
   case 'backup': {
     const index = scanArchive(archiveDir)
     const out = resolve(args[2] || 'reports/backup-report.md')
@@ -74,6 +83,17 @@ switch (cmd) {
     process.exitCode = result.ok ? 0 : 1
     break
   }
+  case 'inherit': {
+    const out = args[1]
+    if (!out) { console.error('用法: node src/cli.ts inherit <out-dir>'); process.exitCode = 1; break }
+    const index = scanArchive(archiveDir)
+    const result = buildInheritancePackage(index, resolve(out))
+    console.log(result.ok ? `inheritance package ok: ${result.files} files` : `inheritance package had ${result.errors.length} errors`)
+    console.log(`out: ${result.out}`)
+    for (const e of result.errors) console.log('  ' + e)
+    process.exitCode = result.ok ? 0 : 1
+    break
+  }
   case 'public': {
     const index = scanArchive(archiveDir)
     const out = resolve(args[2] || 'reports/public-archive.html')
@@ -89,16 +109,18 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveFile 0.3 · local-first personal archive
+    console.log(`LiveFile 0.4 · local-first personal archive
 
 用法:
   node src/cli.ts check [archive]             索引 + 健康检查
   node src/cli.ts catalog [archive] [out]     生成档案目录 Markdown
   node src/cli.ts manifest [archive] [out]    生成机器可读清单 JSON
+  node src/cli.ts retention [archive]        保留期审计
   node src/cli.ts backup [archive] [out]      生成备份/继承报告
   node src/cli.ts backup-run <target>         复制备份并校验
   node src/cli.ts restore-check <target>      校验恢复（只读）
   node src/cli.ts public [archive] [out]      生成独立公开页
+  node src/cli.ts inherit <out-dir>           生成继承包（原始文件 + 清单 + 公开页）
   node src/cli.ts serve [port]                启动 Web Workbench
 
 环境:

@@ -1,4 +1,5 @@
 import type { ArchiveIndex, ArchiveItem, HealthResult, Issue } from './types.ts'
+import { retentionAudit } from './retention.ts'
 
 function daysSince(date?: string): number | null {
   if (!date) return null
@@ -24,6 +25,12 @@ export function healthCheck(index: ArchiveIndex): HealthResult {
     if (!item.retention) push({ code: 'item.retention', severity: 'warn', path: item.path, message: `${item.title} 没有保留期限。` })
     if (seen.has(item.sha256)) push({ code: 'item.duplicate', severity: 'warn', path: item.path, message: `${item.title} 与 ${seen.get(item.sha256)?.title} 内容完全相同。` })
     else seen.set(item.sha256, item)
+  }
+
+  for (const r of retentionAudit(index)) {
+    if (r.status === 'overdue') push({ code: 'retention.overdue', severity: 'warn', path: r.item.path, message: `${r.item.title} 的保留期已过（${r.expires}）；需要复核/续期。` })
+    else if (r.status === 'due') push({ code: 'retention.due', severity: 'warn', path: r.item.path, message: `${r.item.title} 的保留期将在 ${r.expires} 到期。` })
+    else if (r.status === 'invalid') push({ code: 'retention.invalid', severity: 'warn', path: r.item.path, message: `${r.item.title} 的保留策略无法解析：${r.policy}` })
   }
 
   const backup = index.backup

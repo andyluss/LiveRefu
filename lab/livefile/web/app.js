@@ -113,6 +113,9 @@
     const dups = d.duplicates || [];
     $('#duplicate-count').textContent = `${dups.length} groups`;
     $('#duplicate-list').innerHTML = dups.length ? dups.map(g => `<div class="dup-group"><b>内容完全相同</b>${g.items.map(i => `<div>${esc(i.title)} <code>${esc(i.path)}</code></div>`).join('')}<code>sha256: ${esc(g.hash.slice(0, 16))}…</code></div>`).join('') : '<div class="empty">没有重复内容。</div>';
+    const ret = d.retention || [];
+    $('#retention-count').textContent = `${ret.length} due`;
+    $('#retention-list').innerHTML = ret.length ? ret.map(r => `<div class="issue ${r.status === 'overdue' ? 'warn' : 'info'}"><span class="sev">${esc(r.status)}</span><div class="msg">${esc(r.item.title)} <small>${esc(r.policy)} · ${esc(r.expires || '—')}</small></div><code>${esc(r.item.path)}</code></div>`).join('') : '<div class="empty">没有到期/即将到期条目。</div>';
     if (!$('#backup-target').value) $('#backup-target').value = 'reports/backup';
     if (!$('#restore-source').value) $('#restore-source').value = 'reports/backup';
   }
@@ -187,6 +190,13 @@
     try { const r = await api('/api/backup', { method: 'POST', body: JSON.stringify({ target }) }); state.data = r; renderAll(); switchView('health'); toast(r.result.ok ? '备份已验证' : '备份有问题', `${r.result.files} files · ${r.result.target}`); }
     catch (e) { toast('备份失败', e.message); }
   }
+  async function inheritUi() {
+    const target = $('#inherit-target')?.value.trim() || 'reports/inheritance';
+    try {
+      const r = await api('/api/inherit', { method: 'POST', body: JSON.stringify({ target }) });
+      toast(r.ok ? '继承包已生成' : '继承包有问题', `${r.files} files · ${r.out}`);
+    } catch (e) { toast('生成失败', e.message); }
+  }
   async function restoreCheckUi() {
     const source = $('#restore-source').value.trim();
     if (!source) { toast('需要备份目录', '填写含 backup-manifest.json 的目录'); return; }
@@ -203,6 +213,7 @@
       if (e.target.id === 'apply-batch') { applyBatch(); return; }
       if (e.target.id === 'run-backup') { runBackupUi(); return; }
       if (e.target.id === 'restore-check') { restoreCheckUi(); return; }
+      if (e.target.id === 'run-inherit') { inheritUi(); return; }
       const ex = e.target.closest('[data-export]'); if (ex) { exportOut(ex.dataset.export); return; }
       if (e.target.id === 'download-output') { if (!state.output) { toast('还没有输出', '先生成一种输出。'); return; } download(state.output, state.outputName, state.outputName.endsWith('.json') ? 'application/json' : state.outputName.endsWith('.html') ? 'text/html' : 'text/markdown'); return; }
       const c = e.target.closest('[data-collection]'); if (c) { state.filter.collection = c.dataset.collection; state.filter.q = ''; switchView('items'); return; }

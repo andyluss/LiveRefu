@@ -6,6 +6,8 @@ import { duplicateGroups, saveItemMeta, saveItemsMeta, scanArchive, stats } from
 import type { ItemMeta } from './types.ts'
 import { recordRestore, runBackup, verifyRestore } from './backup.ts'
 import { publicHtml } from './public.ts'
+import { retentionAudit } from './retention.ts'
+import { buildInheritancePackage } from './inherit.ts'
 import { backupReport, catalog, healthCheck, manifest } from './health.ts'
 
 const WEB = resolve(import.meta.dirname, '../web')
@@ -43,11 +45,11 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
       if (url.pathname === '/api/state' && req.method === 'GET') {
         const index = scanArchive(archiveDir)
         const health = healthCheck(index)
-        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health, stats: stats(index), runtime: process.version })
+        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health, stats: stats(index), retention: retentionAudit(index), runtime: process.version })
       }
       if (url.pathname === '/api/scan' && req.method === 'POST') {
         const index = scanArchive(archiveDir)
-        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index) })
+        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), retention: retentionAudit(index) })
       }
       if (url.pathname === '/api/item' && req.method === 'POST') {
         const input = JSON.parse(await readBody(req)) as { path?: string; meta?: ItemMeta }
@@ -59,7 +61,7 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         }
         saveItemMeta(archiveDir, input.path, patch)
         const index = scanArchive(archiveDir)
-        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), runtime: process.version })
+        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), retention: retentionAudit(index), runtime: process.version })
       }
       if (url.pathname === '/api/items/batch' && req.method === 'POST') {
         const input = JSON.parse(await readBody(req)) as { paths?: string[]; patch?: ItemMeta }
@@ -69,7 +71,7 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         for (const key of allowed) if (key in input.patch) (patch as Record<string, unknown>)[key] = input.patch[key]
         saveItemsMeta(archiveDir, input.paths, patch)
         const index = scanArchive(archiveDir)
-        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), runtime: process.version })
+        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), retention: retentionAudit(index), runtime: process.version })
       }
       if (url.pathname === '/api/backup' && req.method === 'POST') {
         const { target } = JSON.parse(await readBody(req)) as { target?: string }
@@ -86,6 +88,12 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         recordRestore(archiveDir, report)
         const index = scanArchive(archiveDir)
         return json(res, 200, { result: report, ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), runtime: process.version })
+      }
+      if (url.pathname === '/api/inherit' && req.method === 'POST') {
+        const { target } = JSON.parse(await readBody(req)) as { target?: string }
+        if (!target) return json(res, 400, { error: '需要 target' })
+        const index = scanArchive(archiveDir)
+        return json(res, 200, buildInheritancePackage(index, target))
       }
       if (url.pathname === '/api/export' && req.method === 'POST') {
         const { type } = JSON.parse(await readBody(req)) as { type?: string }

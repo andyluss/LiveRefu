@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { cpSync, mkdtempSync, rmSync } from 'node:fs'
+import { cpSync, existsSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -8,6 +8,8 @@ import { duplicateGroups, saveItemMeta, saveItemsMeta, scanArchive, stats } from
 import { backupReport, catalog, healthCheck, manifest } from '../src/health.ts'
 import { runBackup, verifyRestore } from '../src/backup.ts'
 import { publicHtml } from '../src/public.ts'
+import { retentionAudit, retentionStatus } from '../src/retention.ts'
+import { buildInheritancePackage } from '../src/inherit.ts'
 
 const root = fileURLToPath(new URL('../archive', import.meta.url))
 
@@ -90,5 +92,26 @@ test('batch metadata applies to selected items', () => {
       assert.equal(item?.license, 'private')
       assert.deepEqual(item?.tags, ['batch'])
     }
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('retention audit parses policy and inheritance package builds', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livefile-retention-'))
+  try {
+    const src = join(tmp, 'archive')
+    cpSync(root, src, { recursive: true })
+    const idx = scanArchive(src)
+    const item = idx.items.find(i => i.path === 'notes/2026-04-12-电站维修.md')!
+    assert.equal(retentionStatus(item).status, 'active')
+    assert.equal(retentionStatus({ ...item, retention: '2020-01-01' }).status, 'overdue')
+    assert.ok(Array.isArray(retentionAudit(idx)))
+    const out = join(tmp, 'inheritance')
+    const pkg = buildInheritancePackage(idx, out)
+    assert.equal(pkg.ok, true)
+    assert.equal(pkg.files, 11)
+    assert.ok(existsSync(join(out, 'README.md')))
+    assert.ok(existsSync(join(out, 'inheritance-package.json')))
+    assert.ok(existsSync(join(out, 'public.html')))
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })
