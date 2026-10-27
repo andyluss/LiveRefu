@@ -8,17 +8,46 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
-## [0.4.0] - 2026-10-27 21:40
+## [0.4.0] - 2026-10-27 21:41
 
 ### Added
 
 - **采用扫描**：新增 `adopt` 命令、`POST /api/adopt` 与 Workbench 的 Adoption 视图；只读扫描一个代码目录，统计 token 引用、裸色、未知 `--dso-` 变量与文件分布。
 - **CLI 严格模式**：`--json`、`--strict`（未知变量失败）、`--fail-on-raw`（裸色失败）。
-- **v0.3 baseline**：契约编辑、真实 token 组件预览、7 项测试。
-- **v0.2 baseline**：`import` 命令与 `vault-lrds/` 真实 LRDS case（6 文件 / 229 tokens）；本地 token/契约/风格卡/闸门/报告/CSS 投影/Workbench；许可 Apache-2.0 + DCO。
 
 ### Changed
 
 - 采用扫描只读；不自动改目标代码、不上传目标目录。
 - 未做：多 vault、风格卡对比、团队/私有 registry；留到 v0.5。
 - `node:test` 8 项（新增采用扫描测试）。
+
+## [0.3.0] - 2026-10-27 21:37
+
+### Added
+
+- **契约编辑**：Workbench 的 Contracts 卡片增加编辑入口；标题/状态/说明/anatomy/states/tokens/keyboard/a11y/do/dont 可改，写回 `contracts/*.json`。
+- **真实 token 预览**：新增 Preview 视图，用当前 vault 的解析值渲染按钮/输入/面板；支持风格卡选择与 default/hover/focus/disabled 状态切换。
+
+### Changed
+
+- 契约编辑与 token 编辑都只写源 JSON；不自动提交 Git。
+- **未做**：采用扫描、多 vault、团队/私有 registry；留到 v0.3 后续/v0.4。
+- `node:test` 从 6 项增至 7 项（新增契约写回/重载测试）。
+
+## [0.2.0] - 2026-10-27 13:07
+
+### Added
+
+- `import` 命令：从 `design/tokens/` 导入 ref/sys/product 到 LiveDSO vault。
+- `vault-lrds/`：真实 LRDS case（6 个文件 / 229 tokens），含契约/风格卡/检查配置。
+- **v0.1 baseline**：本地 vault、token 解析/别名、3 类闸门、契约、风格卡、健康报告、CSS 投影、Workbench、`check/report/build/serve`、`node:test`。
+- 首批用户决策：独立开发者。
+- 许可：Apache-2.0（核心）+ 商业托管/团队/审计；贡献者政策 DCO 1.1。
+- 正式名暂定 LiveDesign / 灵动设计；LiveDSO 继续作代号。
+- 新增 `LICENSE` / `NOTICE` / `CONTRIBUTING.md` / `DCO` / `TRADEMARKS.md`；核心源码加 SPDX 头。
+
+### Changed
+
+- 只编辑 token 值，不编辑 token 树/契约。
+- 无云同步/账号/计费；无 Figma 同步；无采用扫描。
+- 0.1.0 是内部 prototype，不单独发版/打 tag；首个版本为 0.2.0。
