@@ -220,6 +220,9 @@ test('report templates render builtin and custom placeholders', () => {
     writeFileSync(join(tmp, 'templates', 'custom.md'), '# {{vault.name}} · {{score}} · {{counts.tokens}}\n{{generatedAt}}')
     const custom = renderReport(vault, result, 'custom', join(tmp, 'templates'))
     assert.match(custom, /LiveDSO · LRDS sample/)
+    const inventory = renderReport(vault, result, 'inventory')
+    assert.match(inventory, /sys\.color\.action\.primaryHover/)
+    assert.match(inventory, /deprecated/)
     assert.equal(listReportTemplates(join(tmp, 'templates')).some(t => t.id === 'custom'), true)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

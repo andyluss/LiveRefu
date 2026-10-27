@@ -3,7 +3,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { basename, join, resolve } from 'node:path'
 import type { CheckResult, Vault } from './types.ts'
 import { reportMarkdown } from './checks.ts'
-import { formatValue } from './tokens.ts'
+import { formatValue, toCssVariable } from './tokens.ts'
 
 export interface ReportTemplateInfo {
   id: string
@@ -68,9 +68,25 @@ export function renderReport(vault: Vault, result: CheckResult, id = 'health', d
     if (!file.startsWith(resolve(dir) + '/') || !existsSync(file)) throw new Error(`报告模板不存在：${id}`)
     text = readFileSync(file, 'utf8')
   }
-  const ctx = context(vault, result)
+  return renderTemplate(text, context(vault, result))
+}
+
+function lookup(ctx: Record<string, unknown>, key: string): unknown {
+  return key.split('.').reduce<unknown>((cur, part) => cur && typeof cur === 'object' ? (cur as Record<string, unknown>)[part] : undefined, ctx)
+}
+
+/** 渲染安全占位符：#each 风格循环 + #if 条件，不执行代码。 */
+function renderTemplate(text: string, ctx: Record<string, unknown>): string {
+  const loop = /\{\{#(tokens|issues|contracts|styleCards)\}\}([\s\S]*?)\{\{\/\1\}\}/g
+  text = text.replace(loop, (_, name: string, body: string) => {
+    const key = ({ tokens: 'tokenItems', issues: 'issueItems', contracts: 'contractItems', styleCards: 'styleCardItems' } as Record<string, string>)[name] || name
+    const list = ctx[key]
+    if (!Array.isArray(list)) return ''
+    return list.map(item => renderTemplate(body, (item || {}) as Record<string, unknown>)).join('')
+  })
+  text = text.replace(/\{\{#if\s+([a-zA-Z0-9_.]+)\s*\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, key: string, body: string) => lookup(ctx, key) ? renderTemplate(body, ctx) : '')
   return text.replace(/\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}/g, (_, key: string) => {
-    const value = key.split('.').reduce<unknown>((cur, part) => cur && typeof cur === 'object' ? (cur as Record<string, unknown>)[part] : undefined, ctx)
+    const value = lookup(ctx, key)
     return value === undefined || value === null ? '' : String(value)
   })
 }
@@ -92,6 +108,10 @@ function context(vault: Vault, result: CheckResult): Record<string, unknown> {
     issues,
     tokensTable: `| Path | Tier | Type | Resolved | Lifecycle |\n| --- | --- | --- | --- | --- |\n${tokenRows}`,
     contracts,
-    styleCards
+    styleCards,
+    tokenItems: tokens.map(t => ({ path: t.path, tier: t.tier, type: t.type, raw: formatValue(t.rawValue), resolved: formatValue(t.resolvedValue), deprecated: Boolean(t.deprecated), replacedBy: t.replacedBy || '', note: t.deprecationNote || '', cssVar: toCssVariable(t.path), file: t.sourceFile.split('/').pop() })),
+    issueItems: result.issues.map(i => ({ severity: i.severity, code: i.code, path: i.path || '', message: i.message, detail: i.detail || '' })),
+    contractItems: vault.contracts.map(c => ({ id: c.id, title: c.title, status: c.status || '', summary: c.summary || '', states: (c.states || []).join(', '), tokens: (c.tokens || []).join(', ') })),
+    styleCardItems: vault.styleCards.map(c => ({ id: c.id, name: c.name, era: c.era || '', note: c.note || '', colors: (c.colors || []).join(', ') }))
   }
 }

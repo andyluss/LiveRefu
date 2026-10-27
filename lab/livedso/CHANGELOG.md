@@ -1,5 +1,19 @@
 # LiveDSO Changelog
 
+## [0.16.0] - 2026-10-27 22:55
+
+### Added
+
+- **报告模板循环/条件**：`{{#tokens}}` / `{{#issues}}` / `{{#contracts}}` / `{{#styleCards}}` 与 `{{#if}}`；安全占位符，不执行代码。
+- **示例模板**：[`templates/reports/inventory.md`](templates/reports/inventory.md)，逐 token 列出解析值与弃用状态。
+- `docs/08_报告模板.md` 增加循环/条件字段表。
+
+### Changed
+
+- `node:test` 保持 17 项（现有模板测试增加 inventory 断言）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- 未做：更多本地报告、模板示例库；留到 v0.17。
+
 ## [0.15.0] - 2026-10-27 22:54
 
 ### Added
