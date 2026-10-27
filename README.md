@@ -61,7 +61,7 @@
 
 ## 三、文档约定
 
-文档书写的**规则**见 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)（技术详解 [`tech/docs-convention.md`](tech/docs-convention.md)）。要点：
+文档书写的**规则与格式规格**见 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)。要点：
 
 - 简体中文，Markdown（UTF-8）；`docs/` 编号体例、`studio001/` 角色体例见该文件；
 - **相对链接深度**：链接须以「目标文件相对当前文档的正确深度」书写（朝向工作区根每深一级多一个 `../`）；例如从 `studio001/主策划/` 链到 `docs/retro-futurism/` 应写 `../../docs/retro-futurism/...`；

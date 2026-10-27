@@ -87,4 +87,4 @@ echo $?   # 0=通过, 1=有失效链接
 
 - `core.hooksPath` 指向的目录需**被 git 跟踪**（`tools/hooks/` 已入库），钩子随仓库共享，而非依赖不入库的 `.git/hooks/`。
 - 两道闸门按需互补：本地钩子拦截得早（提交前、未合入）；CI 兜底覆盖未启用本地钩子的人（提交后、合入前）。
-- 文档约定（相对链接深度等）见 [`docs-convention.md`](docs-convention.md)。
+- 文档约定（相对链接深度等）见 [`rules/R01`](../rules/R01-docs-convention.md)。

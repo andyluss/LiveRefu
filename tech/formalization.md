@@ -82,4 +82,4 @@
 
 - **已落地**：`tools/check_data.py`（层次 1）、CI Godot 加载检查（层次 3）、根 `.gitignore`。
 - **未做**：层次 2 / 4 / 5（按演进路线推进）。
-- 关联：[`docs-convention.md`](docs-convention.md)（文档约定）、[`hooks-readme.md`](hooks-readme.md)（钩子/CI）、[`R02`](../rules/R02-git-convention.md)（提交约定，正文）。
+- 关联：[`R01`](../rules/R01-docs-convention.md)（文档约定，正文）、[`hooks-readme.md`](hooks-readme.md)（钩子/CI）、[`R02`](../rules/R02-git-convention.md)（提交约定，正文）。

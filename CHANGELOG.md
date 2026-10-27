@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](lab/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **R01 整合文档技术规格**：[`tech/docs-convention.md`](tech/docs-convention.md) 的相对链接深度、校验机制、日期示例并入 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)；tech 文件只保留指针。
 - **R02 整合 Git 技术规格**：[`tech/git-convention.md`](tech/git-convention.md) 的 Conventional Commits 格式/type/scope/subject/body/footer/历史约定并入 [`rules/R02-git-convention.md`](rules/R02-git-convention.md)；tech 文件只保留指针。
 - **R05 整合变更日志技术规格**：[`tech/changelog-convention.md`](tech/changelog-convention.md) 的格式/类目/发布/append-only 内容并入 [`rules/R05-changelog.md`](rules/R05-changelog.md)；tech 文件只保留指针，规则与格式规格不再两处维护。
 - **变更日志 append-only 闸门**：[`tools/check_changelog.ts`](tools/check_changelog.ts) 增加“旧版本段不可删除”检查；[`rules/R05`](rules/R05-changelog.md) 新增 §十 硬规则；LiveDSO 增加发布检查清单。

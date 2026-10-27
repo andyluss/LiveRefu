@@ -1,7 +1,7 @@
 # ADR-0000：<决策主题>（模板）
 
 > 状态：**草稿**（accepted / rejected / superseded by ADR-00NN）
-> 日期：YYYY-MM-DD（东八区，见根 `tech/docs-convention.md` 日期约定）
+> 日期：YYYY-MM-DD（东八区，见根 [`R01`](../../../../rules/R01-docs-convention.md) 日期约定）
 > 决策者：<角色 / 角色组>
 
 ## 背景
