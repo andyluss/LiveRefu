@@ -1,0 +1,6 @@
+{
+  "vaults": [
+    { "id": "sample", "name": "LRDS sample", "path": "vault" },
+    { "id": "lrds", "name": "LRDS real", "path": "vault-lrds" }
+  ]
+}

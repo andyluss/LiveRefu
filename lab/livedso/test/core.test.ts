@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { loadVault, projection, saveContract } from '../src/vault.ts'
 import { scanAdoption } from '../src/adoption.ts'
+import { loadRegistry } from '../src/registry.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
 const root = fileURLToPath(new URL('../vault', import.meta.url))
@@ -87,5 +88,19 @@ test('adoption scan finds token refs, raw colors and unknown vars', () => {
     assert.equal(r.unknownRefs, 1)
     assert.equal(r.rawColors, 1)
     assert.equal(r.tokens[0]?.path, 'sys.color.action.primary')
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('registry resolves vault paths relative to its file', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-registry-'))
+  try {
+    const dir = join(tmp, 'nested')
+    mkdirSync(dir)
+    writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'vault-a' }, { id: 'b', path: 'nested/vault-b' }] }))
+    const r = loadRegistry(join(tmp, 'vaults.json'), join(tmp, 'vault-a'))
+    assert.equal(r.errors.length, 0)
+    assert.equal(r.vaults.length, 2)
+    assert.equal(r.vaults[1]?.path, join(tmp, 'nested', 'vault-b'))
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

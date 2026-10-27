@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b>LiveDSO</b><small>DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.4</span>
+    <span class="lab-chip">LAB / 0.5</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">Run checks</button>
@@ -53,6 +53,7 @@
     </nav>
     <div class="side-kicker">VAULT</div>
     <div class="vault-box">
+      <select id="vault-select" class="vault-select" aria-label="切换 vault"></select>
       <code id="vault-path">vault/</code>
       <p>本地读写；不上传。示例数据与 LRDS 解耦。</p>
       <button class="text-btn" type="button" data-view="report">查看健康报告 →</button>
@@ -124,6 +125,7 @@
       <div class="view-head"><div><div class="eyebrow">WORLD SKINS</div><h1 id="cards-title">Style cards</h1></div><div class="head-meta"><span class="chip" id="card-filter-count">—</span></div></div>
       <p class="lede">风格卡只换皮肤，不换语法。每张卡都应该写清谁维护、代价是什么。</p>
       <div id="card-grid" class="card-grid"><div class="empty">读取中……</div></div>
+      <section class="panel compare-panel"><div class="panel-head"><div><div class="eyebrow">SIDE BY SIDE</div><h2>风格卡对比</h2></div><span class="chip">2 cards</span></div><div class="compare-toolbar"><label>卡 A<select id="compare-a"></select></label><label>卡 B<select id="compare-b"></select></label></div><div id="compare-grid" class="compare-grid"><div class="empty">至少需要两张风格卡。</div></div></section>
     </section>
 
     <section class="view" id="view-checks" aria-labelledby="checks-title">

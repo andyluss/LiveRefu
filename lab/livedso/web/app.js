@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null };
+  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '' };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -67,6 +67,21 @@
     window.scrollTo({ top: 0 });
   }
 
+  function renderVaultSelect() {
+    const select = $('#vault-select');
+    if (!select || !state.data?.vaults) return;
+    const active = state.data.activeVault?.id || '';
+    select.innerHTML = state.data.vaults.map(v => `<option value="${esc(v.id)}" ${v.id === active ? 'selected' : ''}>${esc(v.name)}</option>`).join('');
+  }
+  async function switchVault(id) {
+    try {
+      const data = await api('/api/vault', { method: 'POST', body: JSON.stringify({ id }) });
+      state.data = data;
+      state.previewCard = '';
+      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
+      toast('Vault 已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} tokens`);
+    } catch (e) { toast('切换失败', e.message); renderVaultSelect(); }
+  }
   function renderOverview() {
     if (!state.data) return;
     const d = state.data;
@@ -134,6 +149,7 @@
       const badges = required.map(k => `<span class="badge ${c[k] ? 'ok' : 'miss'}">${esc(k)}</span>`).join('');
       return `<article class="contract-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>${esc(c.title)}</h3><button class="text-btn contract-edit" type="button" data-edit-contract="${esc(c.id)}">编辑 →</button><span class="chip">${esc(c.status || '—')}</span></div><p>${esc(c.summary || '没有说明。')}</p><div class="badges">${badges}</div><div class="contract-meta"><b>id</b><span><code>${esc(c.id)}</code></span><b>states</b><span>${esc((c.states || []).join(' · ') || '—')}</span><b>tokens</b><span>${esc((c.tokens || []).join(' · ') || '—')}</span></div></article>`;
     }).join('');
+    renderCompare();
   }
   function styleColor(value) {
     if (tokenColor(value)) return value;
@@ -221,6 +237,25 @@
       toast('扫描完成', `${a.filesScanned} files · ${a.tokenRefs} refs · ${a.rawColors} raw`);
     } catch (e) { setStatus('err', 'scan failed'); toast('扫描失败', e.message); }
   }
+  function styleCardById(id) { return (state.data?.styleCards || []).find(c => c.id === id); }
+  function renderCompare() {
+    const cards = state.data?.styleCards || [];
+    const aSel = $('#compare-a'), bSel = $('#compare-b');
+    if (!aSel || !bSel) return;
+    if (!cards.length) { $('#compare-grid').innerHTML = '<div class="empty">没有风格卡。</div>'; return; }
+    const currentA = state.compareA || cards[0]?.id || '';
+    const currentB = state.compareB || cards[1]?.id || cards[0]?.id || '';
+    const options = (sel, current) => { sel.innerHTML = cards.map(c => `<option value="${esc(c.id)}" ${c.id === current ? 'selected' : ''}>${esc(c.name)}</option>`).join(''); sel.value = current; };
+    options(aSel, cards.some(c => c.id === currentA) ? currentA : cards[0].id);
+    options(bSel, cards.some(c => c.id === currentB) ? currentB : cards[0].id);
+    state.compareA = aSel.value; state.compareB = bSel.value;
+    const a = styleCardById(state.compareA), b = styleCardById(state.compareB);
+    if (!a || !b) return;
+    const c = x => (x.colors || []).map(v => `<i style="background:${esc(styleColor(v))}"></i>`).join('');
+    const ta = new Set(a.colors || []), tb = new Set(b.colors || []);
+    const shared = [...ta].filter(x => tb.has(x));
+    $('#compare-grid').innerHTML = `<article class="compare-card"><div class="era">${esc(a.era || '—')}</div><h3>${esc(a.name)}</h3><div class="compare-swatches">${c(a)}</div><p>${esc(a.note || '没有写维护/代价。')}</p><div class="compare-token">${(a.colors || []).map(x => esc(x)).join('<br>') || '—'}</div></article><article class="compare-card"><div class="era">${esc(b.era || '—')}</div><h3>${esc(b.name)}</h3><div class="compare-swatches">${c(b)}</div><p>${esc(b.note || '没有写维护/代价。')}</p><div class="compare-token">${(b.colors || []).map(x => esc(x)).join('<br>') || '—'}</div></article><div class="compare-shared">共享色：${shared.length ? esc(shared.join('、')) : '无'} ｜ 语法相同，皮肤不同；不要用风格卡替代 token 语义。</div>`;
+  }
   function renderChecks() {
     if (!state.data) return;
     const c = state.data.checks;
@@ -272,7 +307,7 @@
       setStatus('ok', 'local vault');
       state.data = await api('/api/state');
       state.error = null;
-      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview();
+      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
       if (state.view === 'report') renderReport();
     } catch (e) {
       state.error = e.message;
@@ -334,7 +369,7 @@
       if (e.target.id === 'download-css') { state.css ? download('livedso-tokens.css', state.css, 'text/css') : toast('还没有 CSS', '先生成 CSS 投影。'); return; }
     });
     document.addEventListener('submit', (e) => { if (e.target.id === 'contract-form') { e.preventDefault(); saveContract(e.target); } });
-    document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } });
+    document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } if (e.target.id === 'vault-select') switchVault(e.target.value); if (e.target.id === 'compare-a') { state.compareA = e.target.value; renderCompare(); } if (e.target.id === 'compare-b') { state.compareB = e.target.value; renderCompare(); } });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeDrawer();
     });

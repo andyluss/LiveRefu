@@ -1,6 +1,6 @@
 # LiveDSO · 设计系统操作台（实验）
 
-> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.4.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
+> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.5.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -17,6 +17,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - 用 vault token 实时渲染组件预览；
 - 编辑组件契约并写回 JSON；
 - 扫描代码中的 token 引用、裸色与未知 `--dso-` 变量；
+- 多 vault 切换（`vaults.json`）与风格卡并排对比；
 - 生成健康报告与 CSS 投影；
 - 在 Web Workbench 里搜索、查看、改值、重跑闸门。
 
@@ -24,7 +25,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 
 - 另一个 Figma/组件画布；
 - 另一个静态文档站；
-- 云协作平台（v0.4 没有账号、同步、计费）；
+- 云协作平台（v0.5 没有账号、同步、计费）；
 - 青橙设计的内部工具。它是独立产品，只是把 LRDS 当作**示例 vault**。
 
 ## 二、与青橙设计的关系
@@ -64,7 +65,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v0.4 已实现
+## 四、v0.5 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -73,7 +74,7 @@ Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走�
 - 健康分与问题列表；
 - Markdown 健康报告；
 - CSS variables 投影；
-- Web UI：总览、Tokens 搜索/过滤/改值、Contracts 编辑、Preview、Style cards、Checks、Adoption、Report；
+- Web UI：总览、Tokens 搜索/过滤/改值、Contracts 编辑、Preview、Style cards + 对比、Checks、Adoption、Report；Vault 切换；
 - 三态主题（系统/浅色/深色）；
 - CLI：`check` / `report` / `build` / `serve` / `import` / `adopt`；
 - `vault-lrds/`：从 `design/tokens` 导入的真实 case（229 tokens）。
@@ -112,6 +113,7 @@ src/
   tokens.ts      # 解析/别名/CSS 投影
   checks.ts      # 闸门/健康分/Markdown 报告
   vault.ts       # vault 读取/保存 token/契约/状态
+  registry.ts    # vaults.json 读取/路径解析
   adoption.ts    # 只读采用扫描（token/裸色/未知变量）
   server.ts      # Node 原生 HTTP + API + 静态文件
   cli.ts         # check/report/build/serve/import
@@ -119,6 +121,7 @@ web/
   index.html     # Workbench
   styles.css     # 独立视觉（非 LRDS 依赖）
   app.js         # 无框架 UI
+vaults.json      # 多 vault 注册表
 vault/           # 示例数据
 test/            # node:test
 ```
@@ -141,13 +144,15 @@ test/            # node:test
 | D12 | v0.2 导入 `design/tokens` | 真实 LRDS case：229 tokens |
 | D13 | v0.3 契约编辑 + 预览 | 契约写回 JSON；预览只读 token，不渲染真实产品组件 |
 | D14 | v0.4 采用扫描 | 只读扫描代码；统计 token 引用/裸色/未知变量，不自动改目标代码 |
+| D15 | v0.5 多 vault + 风格卡对比 | 注册表只存路径；切换只影响当前服务；对比只读 |
 
 ## 八、路线图（待验证）
 
 - **v0.2（已完成）**：LRDS 真实 case 导入。
 - **v0.3（已完成）**：契约编辑、真实 token 组件预览。
-- **v0.4（当前）**：采用扫描（CLI/API/UI）；多 vault、风格卡对比、私有 registry 下一步。
-- **v0.5**：团队/多 vault、风格卡对比、私有 registry、版本/弃用。
+- **v0.4（已完成）**：采用扫描（CLI/API/UI）。
+- **v0.5（当前）**：多 vault 切换、风格卡并排对比；团队/私有 registry/版本弃用下一步。
+- **v0.6**：团队/权限、私有 registry、版本/弃用、托管。
 - **之后**：托管/CI/审计服务；开源核心 + 企业版。
 
 ## 九、已裁决
@@ -162,16 +167,16 @@ test/            # node:test
 
 ## 十、边界
 
-- 不读/写 LRDS 的组件 CSS 或产品代码（v0.4）；采用扫描是只读。
+- 不读/写 LRDS 的组件 CSS 或产品代码（v0.5）；采用扫描是只读。
 - 不做自动 Git 提交；
 - 不做云同步/账号/计费；
-- 不做完整的 token 树编辑器（v0.4 只改值/契约，不建树）；不做自动改代码。
+- 不做完整的 token 树编辑器（v0.5 只改值/契约，不建树）；不做自动改代码。
 
 ## 十一、商品化（未来，未实施）
 
 - 未来可选扩展：**设计系统体检包**（报告 + 修复计划），不是当前版本功能；
 - 目标产品案例（发票 App/家庭能源/用药提醒）、触发条件、定价、边界见 [`docs/04_商品化路径.md`](docs/04_商品化路径.md)；跨项目狗粮计划见 [`../DOGFOOD.md`](../DOGFOOD.md)；
-- **现在不做**：不加 SaaS、账号、计费；先把 v0.4 采用扫描做稳，再做多 vault/团队。
+- **现在不做**：不加 SaaS、账号、计费；先把 v0.5 多 vault/对比做稳，再做团队/私有 registry。
 
 ## 十二、发布检查
 
