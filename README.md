@@ -65,7 +65,7 @@
 
 - 简体中文，Markdown（UTF-8）；`docs/` 编号体例、`studio001/` 角色体例见该文件；
 - **相对链接深度**：链接须以「目标文件相对当前文档的正确深度」书写（朝向工作区根每深一级多一个 `../`）；例如从 `studio001/主策划/` 链到 `docs/retro-futurism/` 应写 `../../docs/retro-futurism/...`；
-- **校验**：`git commit` 前由 pre-commit 钩子自动拦截失效链接；提交后由 CI 兜底（见 [`tech/hooks-readme.md`](tech/hooks-readme.md)）。
+- **校验**：`git commit` 前由 pre-commit 钩子自动拦截失效链接；提交后由 CI 兜底（见 [`rules/R03-link-validation.md`](rules/R03-link-validation.md)）。
 
 ## 四、Git 与提交信息约定
 

@@ -34,7 +34,7 @@
 
 “相对链接写错”靠两道闸门拦截：
 
-1. **pre-commit 钩子（本地）**：每次 `git commit` 校验本次暂存的 Markdown 内部链接，失效即阻断并打印明细。启用见 [`tools/install_hooks.sh`](../tools/install_hooks.sh)，说明见 [`tech/hooks-readme.md`](../tech/hooks-readme.md)。
+1. **pre-commit 钩子（本地）**：每次 `git commit` 校验本次暂存的 Markdown 内部链接，失效即阻断并打印明细。启用见 [`tools/install_hooks.sh`](../tools/install_hooks.sh)，说明见 [`R03`](R03-link-validation.md)。
 2. **CI 链接检查（提交后兜底）**：push / PR 时由 CI 跑链接校验；即使本地未启用钩子，也会在托管平台暴露。
 
 手动全量检查：

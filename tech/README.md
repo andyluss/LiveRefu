@@ -11,7 +11,7 @@
 | [`git-convention.md`](git-convention.md) | **已整合，仅保留指针**；正文见 [R02](../rules/R02-git-convention.md) | [R02](../rules/R02-git-convention.md) |
 | [`docs-convention.md`](docs-convention.md) | **已整合，仅保留指针**；正文见 [R01](../rules/R01-docs-convention.md) | [R01](../rules/R01-docs-convention.md) |
 | [`changelog-convention.md`](changelog-convention.md) | **已整合，仅保留指针**；正文见 [R05](../rules/R05-changelog.md) | [R05](../rules/R05-changelog.md) |
-| [`hooks-readme.md`](hooks-readme.md) | 相对链接校验：pre-commit 钩子 + CI 的启用/跳过/常见处理 | [R03](../rules/R03-link-validation.md) |
+| [`hooks-readme.md`](hooks-readme.md) | **已整合，仅保留指针**；正文见 [R03](../rules/R03-link-validation.md) | [R03](../rules/R03-link-validation.md) |
 | [`formalization.md`](formalization.md) | 形式化验证：数据 schema 校验 + CI Godot 加载检查，GDScript 边界与演进路线 | [R04](../rules/R04-data-validation.md)（仅「数据 schema 校验」部分） |
 
 > 注：**技术性规则**现以实验形式放于 [`lab/formal-system/tech/rules/`](../lab/formal-system/tech/rules/README.md)（服务本形式化系统），成熟后再回流入工作区根 [`rules/`](../rules/README.md)（规则目录）。
