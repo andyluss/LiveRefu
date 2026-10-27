@@ -1,9 +1,11 @@
 # LiveDSO · 设计系统操作台（实验）
 
+> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO
+
 > **代号**：LiveDSO ｜ **正式名**：未定 ｜ **版本**：0.2.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
-> **首批用户**：独立开发者 ｜ **许可**：未定（见 [`docs/software/licenses/`](../../docs/software/licenses/README.md)）
+> **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
 
 ## 一、它是什么
 
@@ -129,8 +131,10 @@ test/            # node:test
 | D6 | Web UI 无框架 | 零构建、可审计、适合本地工具 |
 | D7 | 报告/投影可下载 | 可进 PR/CI，不绑定平台 |
 | D8 | 首批用户：独立开发者 | 个人导入/报告/价格优先；团队版后置 |
-| D9 | 正式名/许可仍待定 | 先用代号 LiveDSO；许可先看协议文集 |
-| D10 | v0.2 导入 `design/tokens` | 真实 LRDS case：229 tokens |
+| D9 | 正式名 | 代号 LiveDSO；正式名暂定 **LiveDesign / 灵动设计**，未来可能改 |
+| D10 | 许可 | **A：Apache-2.0 核心 + 商业托管/团队/审计** |
+| D11 | 贡献者政策 | **DCO 1.1**，不使用 CLA |
+| D12 | v0.2 导入 `design/tokens` | 真实 LRDS case：229 tokens |
 
 ## 八、路线图（待验证）
 
@@ -138,12 +142,15 @@ test/            # node:test
 - **v0.3**：团队/多 vault、私有 registry、风格卡对比、版本/弃用。
 - **之后**：托管/CI/审计服务；开源核心 + 企业版。
 
-## 九、已裁决与仍待定
+## 九、已裁决
 
-- **代号**：LiveDSO（正式名未定）。
+- **代号**：LiveDSO。
+- **正式名（暂定）**：**LiveDesign / 灵动设计**，未来可能改。
 - **首批用户**：独立开发者。
-- **LRDS 接入**：v0.2 直接导入 `design/tokens`（已完成）。
-- **许可**：未定；先读 [`docs/software/licenses/`](../../docs/software/licenses/README.md)，再选。
+- **许可**：**A：Apache-2.0 核心 + 商业托管/团队/审计**。
+- **贡献者政策**：**DCO 1.1**（`git commit -s`）。
+- **LRDS 接入**：v0.2 直接导入 `design/tokens`（已完成，229 tokens）。
+- **许可文件**：[`LICENSE`](LICENSE) / [`NOTICE`](NOTICE) / [`CONTRIBUTING.md`](CONTRIBUTING.md) / [`DCO`](DCO) / [`TRADEMARKS.md`](TRADEMARKS.md)。
 
 ## 十、边界
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import type { CheckResult, Issue, Vault } from './types.ts'
 import { formatValue, isColorToken, resolveToken } from './tokens.ts'
 

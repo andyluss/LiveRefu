@@ -7,7 +7,10 @@
 - `import` 命令：从 `design/tokens/` 导入 ref/sys/product 到 LiveDSO vault。
 - `vault-lrds/`：真实 LRDS case（6 个文件 / 229 tokens），含契约/风格卡/检查配置。
 - **v0.1 baseline**：本地 vault、token 解析/别名、3 类闸门、契约、风格卡、健康报告、CSS 投影、Workbench、`check/report/build/serve`、`node:test`。
-- 首批用户决策：独立开发者；正式名/许可仍待定。
+- 首批用户决策：独立开发者。
+- 许可：Apache-2.0（核心）+ 商业托管/团队/审计；贡献者政策 DCO 1.1。
+- 正式名暂定 LiveDesign / 灵动设计；LiveDSO 继续作代号。
+- 新增 `LICENSE` / `NOTICE` / `CONTRIBUTING.md` / `DCO` / `TRADEMARKS.md`；核心源码加 SPDX 头。
 
 ### Changed
 

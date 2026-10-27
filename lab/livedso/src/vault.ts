@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import type { ChecksConfig, Contract, JsonObject, JsonValue, StyleCard, Vault } from './types.ts'

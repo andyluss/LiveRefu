@@ -17,5 +17,6 @@
     "build": "node src/cli.ts build",
     "report": "node src/cli.ts report",
     "test": "node --test test/core.test.ts"
-  }
+  },
+  "license": "Apache-2.0"
 }

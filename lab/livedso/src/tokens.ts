@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import type { JsonObject, JsonValue, TokenRecord, Vault } from './types.ts'
 
 const ALIAS_RE = /^\{([^{}]+)\}$/
