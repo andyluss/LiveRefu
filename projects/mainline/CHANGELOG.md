@@ -1,7 +1,7 @@
 # mainline · 纲领日志（CHANGELOG）
 
 > 记录**纲领**（"下一款主线产品"的决策与讨论空间）自己的变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)
-> 与 [tech/changelog-convention.md](../../tech/changelog-convention.md)。
+> 与 [R05](../../rules/R05-changelog.md)。
 >
 > **本日志不记具体产品的开发**：那些记在各项目的 `CHANGELOG.md`（如
 > [`future-debris/CHANGELOG.md`](future-debris/CHANGELOG.md)）。历史上有 17 段产品内容记在这里，

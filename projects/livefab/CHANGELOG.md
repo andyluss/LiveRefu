@@ -1,7 +1,7 @@
 # LiveFab · 项目日志（CHANGELOG）
 
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)
-> 与 [tech/changelog-convention.md](../../tech/changelog-convention.md)：
+> 与 [R05](../../rules/R05-changelog.md)：
 > **Keep a Changelog 类目 + SemVer 版本 + 东八区时间（精确到分）**。
 > 项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/)。
 >

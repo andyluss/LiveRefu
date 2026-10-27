@@ -77,7 +77,7 @@
 
 - 命名词表与类型目录：[M2](meta/M2-naming-vocabulary.md)
 - 文档体例与东八区日期：[`tech/docs-convention.md`](../tech/docs-convention.md)
-- 变更日志版本时间与标签一致性：[`tech/changelog-convention.md`](../tech/changelog-convention.md)
+- 变更日志版本时间与标签一致性：[`rules/R05`](R05-changelog.md) §八
 - 文件名校验器：[`tools/check_time_naming.ts`](../tools/check_time_naming.ts)
 
 ## 七、演进历史

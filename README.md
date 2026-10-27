@@ -81,4 +81,4 @@
 
 ## 六、变更日志
 
-工作区根级变更记于 [`CHANGELOG.md`](CHANGELOG.md)，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [SemVer](https://semver.org/)；**每次（非琐碎）变更都须记录**（规则见 [`rules/R05-changelog.md`](rules/R05-changelog.md)，格式规格见 [`tech/changelog-convention.md`](tech/changelog-convention.md)）。琐碎改动（如改错别字、纯格式）豁免。
+工作区根级变更记于 [`CHANGELOG.md`](CHANGELOG.md)，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [SemVer](https://semver.org/)；**每次（非琐碎）变更都须记录**（规则与格式规格见 [`rules/R05-changelog.md`](rules/R05-changelog.md)）。琐碎改动（如改错别字、纯格式）豁免。
