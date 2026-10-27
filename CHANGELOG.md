@@ -21,6 +21,7 @@
 - **元规则 M1/M2 的判定配置为新目录留出入口**：[`rules/meta/tools/config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置（`projects/mainline/cards/` 自带 README，按 M1 属"可自成一体"的子关注点），并把点文件（`.gitignore`）纳入命名白名单——原先的正则要求首字符为字母数字，会把点文件判为"根目录未声明文件"。
 
 ### 新增
+- **新增「软件生态与产品机会」卷**：[`docs/software/README.md`](docs/software/README.md) —— 一篇产品机会长文（代码编辑器、创作工具、设计系统操作台、世界创作、个人档案、家庭服务器等 12 个非游戏方向 + 评分/商业模式/90 天计划），加 12 篇软件生态文集（基础/数据/工具/知识/协作/交易/生活/公共/AI/美学 + 总论/结语）；`docs/README` 由四卷升为五卷。
 
 - [`design/HUB.html`](design/HUB.html) 新增「演进」Tab：未来 → 现在 → 过去的纵向主列 + 右侧 6 个指标列（token / 风格卡 / 契约 / 产品 / 介质 / 无障碍），按时间点对齐；主列保留事件标签；未来目标标注“非承诺”。
 - **青橙设计实验区 + 青橙 OS**：新增 `design/lab/README.md` 与实验规则；`design/lab/os/` 为 9 应用、3 未来层、零构建 Web 模拟桌面；含窗口管理、Spotlight、控制中心、可追溯状态、三态主题、移动端降级；M1 82/0。

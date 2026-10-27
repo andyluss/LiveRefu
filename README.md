@@ -25,7 +25,7 @@
 ## 一、工作区是什么
 
 - **rules/**：规则目录。面向工作区整体的规则在此集中，分**具体规则**（R 系列，**已转正**，正文权威在此）与**元规则**（M 系列，整合自 lab，见 [`rules/meta/`](rules/meta/README.md)）。对应的 [`tech/`](tech/README.md) 文档为**技术详解 / 实施说明**（非规则权威）。
-- **docs/**：复古未来主义题材的研究知识库。以《复古未来主义论文集》为核心（21 篇总卷：理论地基、未来的考古、回收的未来、当代乡愁与多元、收束五段），并含蒸汽朋克、原子朋克、柴油朋克、赛博朋克、生物朋克等独立专题卷，以及合订本（PDF/HTML）与再生脚本。
+- **docs/**：复古未来主义题材的研究知识库。以《复古未来主义论文集》为核心（21 篇总卷：理论地基、未来的考古、回收的未来、当代乡愁与多元、收束五段），并含蒸汽朋克、原子朋克、柴油朋克、赛博朋克、生物朋克等独立专题卷、软件生态与产品机会文集，以及合订本（PDF/HTML）与再生脚本。
 - ~~**studio/**：AI 开发角色的模拟工作场所~~ → **已搁置**：原"虚拟角色工作室"改为 [`studio001/`](studio001/README.md) **保留作历史资料**（角色身份卡与早期工作留痕），**不再使用/更新**。开发策略已转为**项目方直接结合 AI 开发**（不依赖虚拟角色分工）。
 - **design/**：**项目设计系统（LRDS）**。一套语法、多种介质：品牌、语义 token、风格卡、组件契约、Web/Godot/App 介质包与验收闸门。**设计系统看 [`design/GUIDE.html`](design/GUIDE.html)，项目状态看 [`design/HUB.html`](design/HUB.html)，实验区看 [`design/lab/`](design/lab/README.md)**；说明见 [`design/README.md`](design/README.md)。
 - **projects/**：项目工作区。每个实际开发中的项目一个子目录（如 [`projects/tomorrows-channel/`](projects/tomorrows-channel/README.md)），内含项目 README、`CHANGELOG.md`（项目日志）与 `docs/`（按角色分目录的项目文档）。
@@ -41,10 +41,11 @@
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
 | [`design/`](design/README.md) | **项目设计系统（LRDS）**：GUIDE（设计系统）/ HUB（项目）/ lab（实验区）、三层 token、风格卡、组件契约、Web/Godot/App 介质包、验收闸门 | [`design/GUIDE.html`](design/GUIDE.html) ｜ [Lab](design/lab/README.md) |
 | [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、状态；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
-| [`docs/`](docs/README.md) | **复古未来主义知识库（索引）**：三卷的知识库入口——主卷论文集 + 朋克专题五卷 + Refu Game 001 策划卷。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`docs/README.md`](docs/README.md) |
+| [`docs/`](docs/README.md) | **复古未来主义知识库（索引）**：五卷的知识库入口——主卷论文集 + 朋克专题五卷 + Refu Game 001 策划卷 + 塔防研究 + 软件生态与产品机会。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`docs/README.md`](docs/README.md) |
 | [`docs/retro-futurism/`](docs/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](docs/retro-futurism/README.md) |
 | [`docs/punks/`](docs/punks/README.md) | 独立专题卷（atompunk / biopunk / cyberpunk / dieselpunk / steampunk），各 README + 00—08 + 合订本 | [`docs/punks/README.md`](docs/punks/README.md) |
 | [`docs/refu-game-001/`](docs/refu-game-001/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图 + 卡表与数值 + 故事 + 可视化 + 美术设定；其**可运行实现**见 [`projects/refu-game-001/`](projects/refu-game-001/README.md) | [`docs/refu-game-001/README.md`](docs/refu-game-001/README.md) |
+| [`docs/software/`](docs/software/README.md) | 软件生态与产品机会：青橙设计适配的非游戏产品 + 12 层软件生态文集 | [`docs/software/README.md`](docs/software/README.md) |
 | [`projects/`](projects/tomorrows-channel/README.md) | 项目工作区：每个实际开发中的项目一个子目录（含项目 README、`CHANGELOG.md`、`docs/`） | —— |
 | [`projects/mainline/`](projects/mainline/README.md) | **主线纲领 · 决策与讨论空间**（不是某个具体游戏）：容纳"下一款主线产品"的长期建议、裁决与讨论历史；**可容纳多个具体项目**——决策历史长期留存，具体项目可按需更替 | [`projects/mainline/README.md`](projects/mainline/README.md) |
 | [`projects/mainline/future-debris/`](projects/mainline/future-debris/README.md) | **当前主线具体项目《未来残片》**（代号 `future-debris`，正式立项）：Godot 4.7 四层结构（core/view/app/data）+ **八道验收闸门**（文件预算 / 数据契约 / 视觉 token / 工程导入 / 主题落地 / 无头自检 / 玩法行为 / 场景视图）+ **43 项玩法断言**；卡池 **T3（120 张）**、**16 关 / 8 章**、4 势力 × 2 套胜利条件、11 条规则卡；商店页素材（1080p 截图 + 预告片）已产出 | [`projects/mainline/future-debris/README.md`](projects/mainline/future-debris/README.md) |
