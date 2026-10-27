@@ -1,0 +1,132 @@
+{
+  "$schema": "../schema/tokens.schema.json",
+  "meta": {
+    "name": "LRDS Ref",
+    "version": "0.1.0",
+    "note": "原始值层：只回答“有哪些值”，不回答“用在哪”。命名中的数字是稳定的引用锚点，不承诺是完美的设计阶梯；v0.2 再做色板收敛。"
+  },
+  "ref": {
+    "color": {
+      "neutral": {
+        "0": { "$value": "#0B0F14", "$type": "color" },
+        "50": { "$value": "#0B1017", "$type": "color" },
+        "100": { "$value": "#0B1116", "$type": "color" },
+        "150": { "$value": "#10161C", "$type": "color" },
+        "200": { "$value": "#111823", "$type": "color" },
+        "250": { "$value": "#121A26", "$type": "color" },
+        "300": { "$value": "#161D26", "$type": "color" },
+        "350": { "$value": "#18212B", "$type": "color" },
+        "400": { "$value": "#18222F", "$type": "color" },
+        "450": { "$value": "#212E3A", "$type": "color" },
+        "500": { "$value": "#24303F", "$type": "color" },
+        "550": { "$value": "#2A3742", "$type": "color" },
+        "600": { "$value": "#39485A", "$type": "color" },
+        "700": { "$value": "#66727F", "$type": "color" },
+        "750": { "$value": "#6F7B89", "$type": "color" },
+        "800": { "$value": "#808D9F", "$type": "color" },
+        "850": { "$value": "#9AA7B8", "$type": "color" },
+        "900": { "$value": "#A9B6C6", "$type": "color" }
+      },
+      "warmgray": {
+        "100": { "$value": "#A9A395", "$type": "color" },
+        "200": { "$value": "#9E9889", "$type": "color" }
+      },
+      "paper": {
+        "50": { "$value": "#F3EDE1", "$type": "color" },
+        "100": { "$value": "#E8E4D9", "$type": "color" },
+        "150": { "$value": "#DBE4EE", "$type": "color" },
+        "200": { "$value": "#E8D9A0", "$type": "color" }
+      },
+      "teal": {
+        "200": { "$value": "#57D8C8", "$type": "color" },
+        "300": { "$value": "#4FB3A6", "$type": "color" },
+        "400": { "$value": "#4FD1C5", "$type": "color" },
+        "500": { "$value": "#3FB8AB", "$type": "color" }
+      },
+      "amber": {
+        "300": { "$value": "#FFC857", "$type": "color" },
+        "400": { "$value": "#D9A441", "$type": "color" },
+        "500": { "$value": "#E0A94A", "$type": "color" }
+      },
+      "orange": {
+        "300": { "$value": "#FF6B35", "$type": "color" },
+        "400": { "$value": "#E4572E", "$type": "color" },
+        "500": { "$value": "#C8703C", "$type": "color" }
+      },
+      "blue": {
+        "300": { "$value": "#8AB4F8", "$type": "color" }
+      },
+      "green": {
+        "300": { "$value": "#7BD389", "$type": "color" }
+      },
+      "chrome": {
+        "300": { "$value": "#C9D3DD", "$type": "color" }
+      }
+    },
+    "size": {
+      "16": { "$value": "16px", "$type": "dimension" },
+      "20": { "$value": "20px", "$type": "dimension" },
+      "24": { "$value": "24px", "$type": "dimension" },
+      "32": { "$value": "32px", "$type": "dimension" },
+      "40": { "$value": "40px", "$type": "dimension" },
+      "44": { "$value": "44px", "$type": "dimension" },
+      "48": { "$value": "48px", "$type": "dimension" }
+    },
+    "space": {
+      "4": { "$value": "4px", "$type": "dimension" },
+      "8": { "$value": "8px", "$type": "dimension" },
+      "12": { "$value": "12px", "$type": "dimension" },
+      "16": { "$value": "16px", "$type": "dimension" },
+      "24": { "$value": "24px", "$type": "dimension" },
+      "32": { "$value": "32px", "$type": "dimension" }
+    },
+    "radius": {
+      "control": { "$value": "4px", "$type": "dimension" },
+      "panel": { "$value": "8px", "$type": "dimension" }
+    },
+    "font": {
+      "family": {
+        "sans": {
+          "$value": ["ui-sans-serif", "system-ui", "-apple-system", "SF Pro SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "sans-serif"],
+          "$type": "fontFamily"
+        },
+        "mono": {
+          "$value": ["ui-monospace", "SF Mono", "JetBrains Mono", "Menlo", "Consolas", "monospace"],
+          "$type": "fontFamily"
+        },
+        "monoGodot": {
+          "$value": ["Menlo", "DejaVu Sans Mono", "Consolas", "monospace"],
+          "$type": "fontFamily"
+        },
+        "serif": {
+          "$value": ["ui-serif", "Songti SC", "Noto Serif CJK SC", "serif"],
+          "$type": "fontFamily"
+        }
+      },
+      "weight": {
+        "regular": { "$value": 400, "$type": "fontWeight" },
+        "medium": { "$value": 500, "$type": "fontWeight" },
+        "semibold": { "$value": 600, "$type": "fontWeight" },
+        "bold": { "$value": 700, "$type": "fontWeight" }
+      }
+    },
+    "motion": {
+      "duration": {
+        "fast": { "$value": "120ms", "$type": "duration" },
+        "base": { "$value": "220ms", "$type": "duration" },
+        "slow": { "$value": "420ms", "$type": "duration" }
+      },
+      "easing": {
+        "standard": { "$value": [0.2, 0, 0.2, 1], "$type": "cubicBezier" },
+        "emphasis": { "$value": [0.2, 0, 0, 1], "$type": "cubicBezier" }
+      }
+    },
+    "shadow": {
+      "elevated": { "$value": "0 2px 8px rgba(0,0,0,.35)", "$type": "shadow" }
+    },
+    "icon": {
+      "canvas": { "$value": "24px", "$type": "dimension" },
+      "stroke": { "$value": "1.5px", "$type": "dimension" }
+    }
+  }
+}

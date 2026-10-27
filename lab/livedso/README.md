@@ -1,8 +1,9 @@
 # LiveDSO · 设计系统操作台（实验）
 
-> **代号**：LiveDSO ｜ **正式名**：未定 ｜ **版本**：0.1.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
+> **代号**：LiveDSO ｜ **正式名**：未定 ｜ **版本**：0.2.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
+> **首批用户**：独立开发者 ｜ **许可**：未定（见 [`docs/software/licenses/`](../../docs/software/licenses/README.md)）
 
 ## 一、它是什么
 
@@ -19,7 +20,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 
 - 另一个 Figma/组件画布；
 - 另一个静态文档站；
-- 云协作平台（v0.1 没有账号、同步、计费）；
+- 云协作平台（v0.2 没有账号、同步、计费）；
 - 青橙设计的内部工具。它是独立产品，只是把 LRDS 当作**示例 vault**。
 
 ## 二、与青橙设计的关系
@@ -44,7 +45,9 @@ cd lab/livedso
 node src/cli.ts check        # 终端检查
 node src/cli.ts report       # 生成 reports/health.md
 node src/cli.ts build        # 生成 dist/tokens.css
+node src/cli.ts import ../../design/tokens vault-lrds  # 真实 LRDS case
 node src/cli.ts serve 4173   # 打开 http://127.0.0.1:4173
+LIVEDSO_VAULT="$PWD/vault-lrds" node src/cli.ts serve 4173  # 用真实 case
 ```
 
 也可以：
@@ -56,7 +59,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v0.1 已实现
+## 四、v0.2 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -67,7 +70,8 @@ Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走�
 - CSS variables 投影；
 - Web UI：总览、Tokens 搜索/过滤/改值、Contracts、Style cards、Checks、Report；
 - 三态主题（系统/浅色/深色）；
-- CLI：`check` / `report` / `build` / `serve`。
+- CLI：`check` / `report` / `build` / `serve` / `import`；
+- `vault-lrds/`：从 `design/tokens` 导入的真实 case（229 tokens）。
 
 ## 五、Vault 格式
 
@@ -93,7 +97,7 @@ Token 示例：
 }
 ```
 
-注意：v0.1 的编辑只写回 token 源 JSON；不会自动提交 Git。真实项目应先开分支/PR。
+注意：v0.2 的编辑只写回 token 源 JSON；不会自动提交 Git。真实项目应先开分支/PR。
 
 ## 六、架构
 
@@ -124,24 +128,26 @@ test/            # node:test
 | D5 | 不做 Figma 克隆/文档站 | 差异化在运维，不在画布 |
 | D6 | Web UI 无框架 | 零构建、可审计、适合本地工具 |
 | D7 | 报告/投影可下载 | 可进 PR/CI，不绑定平台 |
+| D8 | 首批用户：独立开发者 | 个人导入/报告/价格优先；团队版后置 |
+| D9 | 正式名/许可仍待定 | 先用代号 LiveDSO；许可先看协议文集 |
+| D10 | v0.2 导入 `design/tokens` | 真实 LRDS case：229 tokens |
 
 ## 八、路线图（待验证）
 
-- **v0.1（当前）**：本地 vault + 检查 + 报告 + CSS 投影 + Workbench。
-- **v0.2**：契约编辑、视觉预览、采用扫描（按 repo/产品）、GitHub PR 评论。
-- **v0.3**：多 vault/团队、私有 registry、风格卡对比、版本/弃用。
+- **v0.2（当前）**：LRDS 真实 case 导入；契约编辑、视觉预览、采用扫描仍待做。
+- **v0.3**：团队/多 vault、私有 registry、风格卡对比、版本/弃用。
 - **之后**：托管/CI/审计服务；开源核心 + 企业版。
 
-## 九、需要你决策
+## 九、已裁决与仍待定
 
-1. **正式名**：LiveDSO 作为代号；正式名未定。
-2. **开源许可**：MIT / Apache-2.0（核心）+ 企业版，还是 AGPL？
-3. **第一客户**：设计系统团队 / 代理机构 / 独立开发者？
-4. **LRDS 接入**：是否在 v0.2 直接导入 `design/tokens` 做真实 case？
+- **代号**：LiveDSO（正式名未定）。
+- **首批用户**：独立开发者。
+- **LRDS 接入**：v0.2 直接导入 `design/tokens`（已完成）。
+- **许可**：未定；先读 [`docs/software/licenses/`](../../docs/software/licenses/README.md)，再选。
 
 ## 十、边界
 
-- 不读/写 LRDS 的组件 CSS 或产品代码（v0.1）；
+- 不读/写 LRDS 的组件 CSS 或产品代码（v0.2）；
 - 不做自动 Git 提交；
 - 不做云同步/账号/计费；
-- 不做完整的 token 编辑器（v0.1 只改值，不建树）。
+- 不做完整的 token 编辑器（v0.2 只改值，不建树）。

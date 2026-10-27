@@ -1,0 +1,34 @@
+{
+  "$schema": "../schema/tokens.schema.json",
+  "meta": {
+    "name": "Tomorrow's Channel · Tape",
+    "product": "tomorrows-channel",
+    "era": "tape",
+    "styleCard": "SC-TOMORROWS-CHANNEL-TAPE-v1",
+    "version": "0.1.0",
+    "note": "《明日频道》磁带风格卡。颜色/光照全部等值登记自 tape_channel_skin.tres；只登记、不迁移——引擎侧仍由 ChannelSkin 承载，由 design/tools/check_tomorrows_channel_skin.ts 对账。",
+    "lighting": {
+      "deviceWarmK": 2400,
+      "lampWarmK": 2800,
+      "glowRatio": [0.6, 0.4],
+      "decorEnabled": true,
+      "scanlineOpacity": 0.08,
+      "decorFontName": ""
+    }
+  },
+  "product": {
+    "tomorrows-channel": {
+      "color": {
+        "baseDark": { "$value": "#221610", "$type": "color" },
+        "midBeige": { "$value": "#C7B394", "$type": "color" },
+        "litWarm": { "$value": "#F5E9CE", "$type": "color" },
+        "phosphorAmber": { "$value": "#FFB000", "$type": "color" },
+        "phosphorGreen": { "$value": "#7FC98A", "$type": "color" },
+        "emphasis": { "$value": "#E39A4C", "$type": "color" },
+        "housingBeige": { "$value": "#C7B491", "$type": "color" },
+        "housingDark": { "$value": "#2C2113", "$type": "color" },
+        "dialAmber": { "$value": "#FFB04A", "$type": "color" }
+      }
+    }
+  }
+}

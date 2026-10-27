@@ -1,0 +1,39 @@
+{
+  "$schema": "../schema/tokens.schema.json",
+  "meta": {
+    "name": "Future Archive · Console",
+    "product": "future-archive",
+    "mode": "console",
+    "version": "0.1.0",
+    "note": "《未来档案》网站的风格卡。v0.1 只做“等值迁移”：除 focus 外，每个值都保持现状；focus 从 teal-bright 改为独立蓝，修掉“焦点=强调色”的可用性缺陷。"
+  },
+  "product": {
+    "future-archive": {
+      "color": {
+        "bg": { "$value": "{ref.color.neutral.50}", "$type": "color" },
+        "bgElev": { "$value": "{ref.color.neutral.250}", "$type": "color" },
+        "bgElev2": { "$value": "{ref.color.neutral.400}", "$type": "color" },
+        "line": { "$value": "{ref.color.neutral.500}", "$type": "color" },
+        "lineStrong": { "$value": "{ref.color.neutral.700}", "$type": "color" },
+        "text": { "$value": "{ref.color.paper.100}", "$type": "color" },
+        "textDim": { "$value": "{ref.color.neutral.850}", "$type": "color" },
+        "textFaint": { "$value": "{ref.color.neutral.800}", "$type": "color" },
+        "teal": { "$value": "{ref.color.teal.500}", "$type": "color" },
+        "tealBright": { "$value": "{ref.color.teal.200}", "$type": "color" },
+        "cream": { "$value": "{ref.color.paper.200}", "$type": "color" },
+        "amber": { "$value": "{ref.color.amber.500}", "$type": "color" },
+        "rust": { "$value": "{ref.color.orange.500}", "$type": "color" },
+        "chrome": { "$value": "{ref.color.chrome.300}", "$type": "color" },
+        "focus": { "$value": "{sys.color.focus.ring}", "$type": "color" },
+        "scanline": { "$value": "#00000024", "$type": "color" },
+        "vignette": { "$value": "#0000006B", "$type": "color" },
+        "overlayStrong": { "$value": "#03060AED", "$type": "color" },
+        "overlayPanel": { "$value": "#121A26D9", "$type": "color" },
+        "overlaySearch": { "$value": "#04080DB8", "$type": "color" },
+        "shadow": { "$value": "#0000008C", "$type": "color" },
+        "surfaceDeep": { "$value": "#06090D", "$type": "color" },
+        "onWarning": { "$value": "#1A1206", "$type": "color" }
+      }
+    }
+  }
+}

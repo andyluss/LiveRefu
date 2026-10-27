@@ -45,3 +45,12 @@ test('report and CSS projection are generated', () => {
   const css = projection(vault)
   assert.ok(css.includes('--dso-sys-color-bg-base'))
 })
+
+test('real LRDS case imports 229 tokens', () => {
+  const vault = loadVault(fileURLToPath(new URL('../vault-lrds', import.meta.url)))
+  assert.equal(vault.errors.length, 0)
+  assert.equal(vault.tokens.size, 229)
+  assert.equal(vault.contracts.length, 2)
+  assert.equal(vault.styleCards.length, 3)
+  assert.equal(vault.tokens.get('sys.color.bg.base')?.resolvedValue, '#0B0F14')
+})

@@ -1,11 +1,15 @@
 {
   "name": "livedso",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "LiveDSO — local-first design system operations workbench",
-  "engines": { "node": ">=24" },
-  "bin": { "livedso": "./src/cli.ts" },
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": {
+    "livedso": "./src/cli.ts"
+  },
   "scripts": {
     "dev": "node --watch src/cli.ts serve",
     "start": "node src/cli.ts serve",

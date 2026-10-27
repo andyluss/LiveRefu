@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { loadVault, projection } from './vault.ts'
 import { reportMarkdown, runChecks } from './checks.ts'
 import { startServer } from './server.ts'
+import { importTokens } from './import.ts'
 
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
@@ -43,6 +44,14 @@ switch (cmd) {
     console.log(`wrote ${out}`)
     break
   }
+  case 'import': {
+    const src = resolve(args[1] || '../../design/tokens')
+    const target = resolve(args[2] || 'vault-lrds')
+    const sample = fileURLToPath(new URL('../vault', import.meta.url))
+    const r = importTokens(src, target, sample)
+    console.log(`imported ${r.tokens} files → ${target}`)
+    break
+  }
   case 'serve': {
     const port = Number(args[1] || process.env.PORT || 4173)
     await startServer({ port, vault: root })
@@ -56,6 +65,7 @@ switch (cmd) {
   node src/cli.ts check [vault]           检查并打印问题
   node src/cli.ts report [vault] [out]    输出健康报告 Markdown
   node src/cli.ts build [vault] [out]     输出 CSS 投影
+  node src/cli.ts import [src] [vault]    导入 design/tokens 到 vault-lrds
   node src/cli.ts serve [port]            启动 Web Workbench
 
 环境:
