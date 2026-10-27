@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null };
+  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '' };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -59,6 +59,7 @@
     if (view === 'overview') renderOverview();
     if (view === 'tokens') renderTokens();
     if (view === 'contracts') renderContracts();
+    if (view === 'preview') renderPreview();
     if (view === 'style-cards') renderCards();
     if (view === 'checks') renderChecks();
     if (view === 'report') renderReport();
@@ -130,7 +131,7 @@
     grid.innerHTML = list.map(c => {
       const required = requiredFields();
       const badges = required.map(k => `<span class="badge ${c[k] ? 'ok' : 'miss'}">${esc(k)}</span>`).join('');
-      return `<article class="contract-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>${esc(c.title)}</h3><span class="chip">${esc(c.status || '—')}</span></div><p>${esc(c.summary || '没有说明。')}</p><div class="badges">${badges}</div><div class="contract-meta"><b>id</b><span><code>${esc(c.id)}</code></span><b>states</b><span>${esc((c.states || []).join(' · ') || '—')}</span><b>tokens</b><span>${esc((c.tokens || []).join(' · ') || '—')}</span></div></article>`;
+      return `<article class="contract-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>${esc(c.title)}</h3><button class="text-btn contract-edit" type="button" data-edit-contract="${esc(c.id)}">编辑 →</button><span class="chip">${esc(c.status || '—')}</span></div><p>${esc(c.summary || '没有说明。')}</p><div class="badges">${badges}</div><div class="contract-meta"><b>id</b><span><code>${esc(c.id)}</code></span><b>states</b><span>${esc((c.states || []).join(' · ') || '—')}</span><b>tokens</b><span>${esc((c.tokens || []).join(' · ') || '—')}</span></div></article>`;
     }).join('');
   }
   function styleColor(value) {
@@ -149,6 +150,49 @@
     const grid = $('#card-grid');
     if (!cards.length) { grid.innerHTML = '<div class="empty">没有风格卡。</div>'; return; }
     grid.innerHTML = cards.map(c => `<article class="style-card"><div class="style-swatches">${(c.colors || []).map(color => `<i style="background:${esc(styleColor(color))}"></i>`).join('')}</div><div class="style-body"><div class="era">${esc(c.era || '—')}</div><h3>${esc(c.name)}</h3><p>${esc(c.note || '没有写维护/代价。')}</p><div class="badges" style="margin-top:7px">${(c.colors || []).map(x => `<span class="badge">${esc(x)}</span>`).join('')}</div></div></article>`).join('');
+  }
+  function renderPreview() {
+    if (!state.data) return;
+    const d = state.data;
+    const cards = d.styleCards || [];
+    const select = $('#preview-card');
+    if (select) {
+      const current = state.previewCard || cards[0]?.id || '';
+      select.innerHTML = cards.map(c => `<option value="${esc(c.id)}">${esc(c.name)}${c.era ? ' · ' + esc(c.era) : ''}</option>`).join('');
+      select.value = cards.some(c => c.id === current) ? current : (cards[0]?.id || '');
+      state.previewCard = select.value;
+    }
+    const card = cards.find(c => c.id === state.previewCard) || cards[0];
+    const vars = d.tokens.filter(t => t.cssVar && t.resolved).map(t => `${t.cssVar}:${t.resolved}`).join(';');
+    const st = state.previewState;
+    const btn = (label, extra = '') => `<button class="pv-btn ${extra} ${st}" type="button" ${st === 'disabled' ? 'disabled' : ''}>${label}</button>`;
+    const canvas = $('#preview-canvas');
+    if (canvas) {
+      canvas.setAttribute('style', vars);
+      canvas.innerHTML = `<div class="pv-row">${btn('主按钮')}${btn('次要按钮', 'secondary')}${btn('幽灵按钮', 'ghost')}</div><label class="pv-field"><span>邮箱</span><input class="pv-input ${st === 'focus' ? 'focus' : ''}" value="you@example.com" ${st === 'disabled' ? 'disabled' : ''}><small class="pv-error">${st === 'disabled' ? '禁用时仍需说明原因。' : '错误用文本说明，不只靠颜色。'}</small></label><div class="pv-panel"><div><b>面板标题</b><small>这套 token 来自当前 vault，不是截图。</small></div><span class="pv-badge">${esc(st)}</span></div>`;
+    }
+    $('#preview-token-count').textContent = `${d.tokens.filter(t => t.cssVar).length} tokens`;
+    $('#preview-tokens').innerHTML = ['sys.color.action.primary','sys.color.action.onPrimary','sys.color.focus.ring','sys.color.text.primary','sys.color.feedback.danger'].map(path => `<code>${esc(path)}</code>`).join('');
+    $('#preview-palette').innerHTML = (card?.colors || []).map(c => `<i style="background:${esc(styleColor(c))}"></i>`).join('');
+    $$('[data-preview-state]').forEach(b => b.classList.toggle('active', b.dataset.previewState === st));
+  }
+  function openContract(id) {
+    const c = state.data?.contracts.find(x => x.id === id); if (!c) return;
+    $('#contract-drawer-title').textContent = c.title || c.id;
+    const arr = v => Array.isArray(v) ? v.join('\n') : '';
+    $('#contract-drawer-body').innerHTML = `<form class="contract-form" id="contract-form" data-id="${esc(c.id)}"><div class="row2"><label>标题<input name="title" value="${esc(c.title || '')}" required></label><label>状态<select name="status">${['draft','stable','deprecated'].map(x => `<option value="${x}" ${x === (c.status || 'draft') ? 'selected' : ''}>${x}</option>`).join('')}</select></label></div><label>说明<textarea name="summary" rows="3">${esc(c.summary || '')}</textarea></label><div class="row2"><label>anatomy（每行一项）<textarea name="anatomy" rows="4">${esc(arr(c.anatomy))}</textarea></label><label>states（每行一项）<textarea name="states" rows="4">${esc(arr(c.states))}</textarea></label></div><label>tokens（每行一个 token path）<textarea name="tokens" rows="4">${esc(arr(c.tokens))}</textarea></label><div class="row2"><label>keyboard<textarea name="keyboard" rows="3">${esc(c.keyboard || '')}</textarea></label><label>a11y<textarea name="a11y" rows="3">${esc(c.a11y || '')}</textarea></label></div><div class="row2"><label>do（每行一项）<textarea name="do" rows="3">${esc(arr(c.do))}</textarea></label><label>dont（每行一项）<textarea name="dont" rows="3">${esc(arr(c.dont))}</textarea></label></div><p class="hint">保存会写回 contracts/${esc(c.id)}.contract.json；不自动提交 Git。</p><div class="drawer-actions"><button class="btn" type="submit">保存契约</button><button class="btn ghost" type="button" data-close-contract>取消</button></div></form>`;
+    $('#contract-drawer').hidden = false;
+  }
+  function closeContract() { $('#contract-drawer').hidden = true; }
+  async function saveContract(form) {
+    const lines = v => String(v || '').split('\n').map(x => x.trim()).filter(Boolean);
+    const fd = new FormData(form);
+    const patch = { title: String(fd.get('title') || '').trim(), status: String(fd.get('status') || 'draft'), summary: String(fd.get('summary') || '').trim(), anatomy: lines(fd.get('anatomy')), states: lines(fd.get('states')), tokens: lines(fd.get('tokens')), keyboard: String(fd.get('keyboard') || '').trim(), a11y: String(fd.get('a11y') || '').trim(), do: lines(fd.get('do')), dont: lines(fd.get('dont')) };
+    try {
+      const data = await api('/api/contract', { method: 'POST', body: JSON.stringify({ id: form.dataset.id, patch }) });
+      state.data = data; closeContract(); refresh();
+      toast('契约已保存', `${patch.title} · ${patch.states.length} states`);
+    } catch (e) { toast('保存失败', e.message); }
   }
   function renderChecks() {
     if (!state.data) return;
@@ -201,7 +245,7 @@
       setStatus('ok', 'local vault');
       state.data = await api('/api/state');
       state.error = null;
-      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks();
+      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview();
       if (state.view === 'report') renderReport();
     } catch (e) {
       state.error = e.message;
@@ -249,6 +293,9 @@
       const theme = e.target.closest('[data-theme-set]');
       if (theme) { applyTheme(theme.dataset.themeSet, true); toast('外观', THEME_LABEL[theme.dataset.themeSet]); return; }
       if (e.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
+      if (e.target.closest('[data-close-contract]')) { closeContract(); return; }
+      const ec = e.target.closest('[data-edit-contract]'); if (ec) { openContract(ec.dataset.editContract); return; }
+      const ps = e.target.closest('[data-preview-state]'); if (ps) { state.previewState = ps.dataset.previewState; renderPreview(); return; }
       const row = e.target.closest('[data-token]');
       if (row) { openDrawer(row.dataset.token); return; }
       if (e.target.id === 'save-token') { saveSelected(); return; }
@@ -258,6 +305,8 @@
       if (e.target.id === 'download-report') { state.report ? download('livedso-health.md', state.report, 'text/markdown') : toast('还没有报告', '先生成健康报告。'); return; }
       if (e.target.id === 'download-css') { state.css ? download('livedso-tokens.css', state.css, 'text/css') : toast('还没有 CSS', '先生成 CSS 投影。'); return; }
     });
+    document.addEventListener('submit', (e) => { if (e.target.id === 'contract-form') { e.preventDefault(); saveContract(e.target); } });
+    document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeDrawer();
     });

@@ -3,7 +3,7 @@ import { createServer } from 'node:http'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { URL } from 'node:url'
-import { loadVault, projection, saveToken, stateView } from './vault.ts'
+import { loadVault, projection, saveContract, saveToken, stateView } from './vault.ts'
 import { reportMarkdown, runChecks } from './checks.ts'
 
 const WEB = resolve(import.meta.dirname, '../web')
@@ -60,6 +60,17 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         const body = JSON.parse(await readBody(req)) as { path?: string; value?: string }
         if (!body.path || typeof body.value !== 'string') return json(res, 400, { error: '需要 path 与 value（string）' })
         saveToken(vault, body.path, body.value)
+        vault = loadVault(vaultRoot)
+        result = runChecks(vault)
+        return json(res, 200, { ...stateView(vault, result), runtime: process.version })
+      }
+      if (url.pathname === '/api/contract' && req.method === 'POST') {
+        const body = JSON.parse(await readBody(req)) as { id?: string; patch?: Record<string, unknown> }
+        if (!body.id || !body.patch) return json(res, 400, { error: '需要 id 与 patch' })
+        const allowed = new Set(['title', 'status', 'summary', 'anatomy', 'states', 'tokens', 'keyboard', 'a11y', 'do', 'dont'])
+        const patch: Record<string, unknown> = {}
+        for (const [key, value] of Object.entries(body.patch)) if (allowed.has(key)) patch[key] = value
+        saveContract(vault, body.id, patch)
         vault = loadVault(vaultRoot)
         result = runChecks(vault)
         return json(res, 200, { ...stateView(vault, result), runtime: process.version })

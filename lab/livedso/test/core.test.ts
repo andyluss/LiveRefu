@@ -2,7 +2,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { loadVault, projection } from '../src/vault.ts'
+import { cpSync, mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { loadVault, projection, saveContract } from '../src/vault.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
 const root = fileURLToPath(new URL('../vault', import.meta.url))
@@ -54,4 +57,17 @@ test('real LRDS case imports 229 tokens', () => {
   assert.equal(vault.contracts.length, 2)
   assert.equal(vault.styleCards.length, 3)
   assert.equal(vault.tokens.get('sys.color.bg.base')?.resolvedValue, '#0B0F14')
+})
+
+
+test('contract editing writes back and survives reload', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-contract-'))
+  try {
+    cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    const vault = loadVault(tmp)
+    const next = saveContract(vault, 'field', { states: ['default', 'hover', 'active', 'focus-visible', 'disabled'], summary: 'edited' })
+    assert.equal(next.summary, 'edited')
+    assert.equal(next.states?.length, 5)
+    assert.equal(loadVault(tmp).contracts.find(c => c.id === 'field')?.summary, 'edited')
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

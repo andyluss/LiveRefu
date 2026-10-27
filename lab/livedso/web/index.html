@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b>LiveDSO</b><small>DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.1</span>
+    <span class="lab-chip">LAB / 0.3</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">Run checks</button>
@@ -45,9 +45,10 @@
       <button type="button" data-view="overview" class="active"><span class="ni">01</span>总览</button>
       <button type="button" data-view="tokens"><span class="ni">02</span>Tokens <span class="count" id="nav-tokens">—</span></button>
       <button type="button" data-view="contracts"><span class="ni">03</span>契约 <span class="count" id="nav-contracts">—</span></button>
-      <button type="button" data-view="style-cards"><span class="ni">04</span>风格卡 <span class="count" id="nav-cards">—</span></button>
-      <button type="button" data-view="checks"><span class="ni">05</span>闸门 <span class="count warn" id="nav-issues">—</span></button>
-      <button type="button" data-view="report"><span class="ni">06</span>报告/投影</button>
+      <button type="button" data-view="preview"><span class="ni">04</span>预览</button>
+      <button type="button" data-view="style-cards"><span class="ni">05</span>风格卡 <span class="count" id="nav-cards">—</span></button>
+      <button type="button" data-view="checks"><span class="ni">06</span>闸门 <span class="count warn" id="nav-issues">—</span></button>
+      <button type="button" data-view="report"><span class="ni">07</span>报告/投影</button>
     </nav>
     <div class="side-kicker">VAULT</div>
     <div class="vault-box">
@@ -110,6 +111,14 @@
       <div id="contract-grid" class="contract-grid"><div class="empty">读取中……</div></div>
     </section>
 
+    <section class="view" id="view-preview" aria-labelledby="preview-title">
+      <div class="view-head"><div><div class="eyebrow">LIVE COMPONENT PREVIEW</div><h1 id="preview-title">Preview</h1></div><div class="head-meta"><span class="chip">vault tokens</span></div></div>
+      <p class="lede">用 vault 里的真实 token 渲染组件，而不是看截图。预览只读取解析值，不写回。</p>
+      <div class="preview-toolbar"><label>风格卡<select id="preview-card"></select></label><div class="preview-states" role="group" aria-label="预览状态"><button type="button" data-preview-state="default" class="active">Default</button><button type="button" data-preview-state="hover">Hover</button><button type="button" data-preview-state="focus">Focus</button><button type="button" data-preview-state="disabled">Disabled</button></div><span class="chip" id="preview-token-count">—</span></div>
+      <div class="preview-stage"><div id="preview-canvas" class="preview-canvas"><div class="empty">读取 token 中……</div></div></div>
+      <div class="preview-foot"><div><div class="eyebrow">TOKENS IN USE</div><div id="preview-tokens" class="preview-tokens"></div></div><div class="preview-card-palette"><div class="eyebrow">STYLE CARD</div><div id="preview-palette" class="preview-palette"></div></div></div>
+    </section>
+
     <section class="view" id="view-style-cards" aria-labelledby="cards-title">
       <div class="view-head"><div><div class="eyebrow">WORLD SKINS</div><h1 id="cards-title">Style cards</h1></div><div class="head-meta"><span class="chip" id="card-filter-count">—</span></div></div>
       <p class="lede">风格卡只换皮肤，不换语法。每张卡都应该写清谁维护、代价是什么。</p>
@@ -140,6 +149,13 @@
   <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
     <div class="drawer-head"><div><div class="eyebrow">TOKEN INSPECTOR</div><h2 id="drawer-title">Token</h2></div><button class="icon-btn" type="button" data-close-drawer aria-label="关闭">×</button></div>
     <div id="drawer-body"></div>
+  </aside>
+</div>
+<div class="drawer" id="contract-drawer" hidden>
+  <div class="drawer-backdrop" data-close-contract></div>
+  <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="contract-drawer-title">
+    <div class="drawer-head"><div><div class="eyebrow">CONTRACT EDITOR</div><h2 id="contract-drawer-title">Contract</h2></div><button class="icon-btn" type="button" data-close-contract aria-label="关闭">×</button></div>
+    <div id="contract-drawer-body"></div>
   </aside>
 </div>
 <div class="toasts" id="toasts" aria-live="polite"></div>

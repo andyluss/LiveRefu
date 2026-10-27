@@ -94,6 +94,21 @@ export function saveToken(vault: Vault, tokenPath: string, value: JsonValue): vo
   writeFileSync(file, JSON.stringify(source, null, 2) + '\n', 'utf8')
 }
 
+export function saveContract(vault: Vault, id: string, patch: Partial<Contract>): Contract {
+  const dir = join(vault.root, 'contracts')
+  const names = existsSync(dir) ? readdirSync(dir).filter(n => n.endsWith('.json')).sort() : []
+  for (const name of names) {
+    const file = join(dir, name)
+    let current: Contract
+    try { current = JSON.parse(readFileSync(file, 'utf8')) as Contract } catch { continue }
+    if ((current.id || name.replace(/\.json$/, '')) !== id) continue
+    const next: Contract = { ...current, ...patch, id: current.id || id }
+    writeFileSync(file, JSON.stringify(next, null, 2) + '\n', 'utf8')
+    return next
+  }
+  throw new Error(`contract 不存在：${id}`)
+}
+
 export function stateView(vault: Vault, result: import('./types.ts').CheckResult): object {
   const bgBase = colorOf(vault, 'sys.color.bg.base')
   const tokens = [...vault.tokens.values()]
