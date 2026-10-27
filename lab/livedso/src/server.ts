@@ -9,6 +9,7 @@ import { scanAdoption } from './adoption.ts'
 import { loadRegistry } from './registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
+import { allTrends } from './trend.ts'
 import type { Vault } from './types.ts'
 
 const WEB = resolve(import.meta.dirname, '../web')
@@ -95,6 +96,7 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
         result = check(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
       }
+      if (url.pathname === '/api/trends' && req.method === 'GET') return json(res, 200, allTrends(registry.file))
       if (url.pathname === '/api/history' && req.method === 'GET') return json(res, 200, { snapshots: listSnapshots(vault) })
       if (url.pathname === '/api/history' && req.method === 'POST') {
         const snapshot = createSnapshot(vault)

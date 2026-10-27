@@ -9,6 +9,7 @@ import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
 import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from './history.ts'
+import { allTrends } from './trend.ts'
 import { formatCi, markdownCi, runCi } from './ci.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
 
@@ -99,6 +100,20 @@ switch (cmd) {
     break
   }
   case 'trend': {
+    if (args.includes('--all')) {
+      const flag = (name: string) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined }
+      const result = allTrends(resolve(flag('--registry') || 'vaults.json'))
+      if (args.includes('--json')) console.log(JSON.stringify(result, null, 2))
+      else {
+        for (const v of result.vaults) {
+          console.log(`\n${v.id} · ${v.name}${v.error ? ` · ${v.error}` : ''}`)
+          for (const x of v.points) console.log(`  ${x.createdAt}  ${x.tokens} tokens / ${x.deprecated} deprecated / ${x.contracts} contracts / ${x.styleCards} cards`)
+          if (!v.points.length && !v.error) console.log('  no snapshots')
+        }
+        if (result.errors.length) console.log(`errors: ${result.errors.join('; ')}`)
+      }
+      break
+    }
     const vault = loadVault(root)
     const trend = trendSnapshots(vault)
     if (args.includes('--json')) console.log(JSON.stringify(trend, null, 2))
@@ -152,7 +167,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.10 · local-first design system operations
+    console.log(`LiveDSO 0.11 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -165,6 +180,7 @@ switch (cmd) {
   node src/cli.ts history                  列出快照
   node src/cli.ts diff <id> [--json]       对比当前 vault 与快照
   node src/cli.ts trend [--json]           快照趋势（token/弃用/契约/风格卡）
+  node src/cli.ts trend --all [--registry <file>]  跨 vault 趋势
   node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
                                           跨 vault 本地 CI 门禁
   node src/cli.ts serve [port]            启动 Web Workbench

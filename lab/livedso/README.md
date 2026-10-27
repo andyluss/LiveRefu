@@ -1,6 +1,6 @@
 # LiveDSO · 设计系统操作台（实验）
 
-> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.10.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
+> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.11.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -23,6 +23,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - 跨 vault 本地 CI 门禁（`ci`）：健康、阈值、采用扫描、基线 diff、JSON/Markdown 输出；
 - 本地检查插件（`plugins/*.mjs`）：品牌/命名/业务规则接入 check/report/ci/Workbench；
 - 跨快照趋势：token / 弃用 / 契约 / 风格卡随时间的本地变化；
+- 跨 vault 趋势、可复制 CI 模板、可复制插件示例；
 - 生成健康报告与 CSS 投影；
 - 在 Web Workbench 里搜索、查看、改值、重跑闸门。
 
@@ -30,7 +31,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 
 - 另一个 Figma/组件画布；
 - 另一个静态文档站；
-- 云协作平台（v0.10 没有账号、同步、计费）；
+- 云协作平台（v0.11 没有账号、同步、计费）；
 - 青橙设计的内部工具。它是独立产品，只是把 LRDS 当作**示例 vault**。
 
 ## 二、与青橙设计的关系
@@ -62,6 +63,7 @@ node src/cli.ts history                               # 列出快照
 node src/cli.ts diff <snapshot-id>                    # 对比当前 vault
 node src/cli.ts ci --adopt ../../design --out reports/ci.md  # 本地 CI 门禁
 node src/cli.ts trend                                  # 快照趋势
+node src/cli.ts trend --all                            # 跨 vault 趋势
 node src/cli.ts serve 4173   # 打开 http://127.0.0.1:4173
 LIVEDSO_VAULT="$PWD/vault-lrds" node src/cli.ts serve 4173  # 用真实 case
 ```
@@ -75,7 +77,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v0.10 已实现
+## 四、v0.11 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -163,6 +165,7 @@ test/            # node:test
 | D18 | v0.8 本地 CI | `ci` 聚合所有 vault；阈值/退出码；不接云、不上传 |
 | D19 | v0.9 本地插件 | `plugins/*.mjs` 受信本地代码；无沙箱；不接云 |
 | D20 | v0.10 跨快照趋势 | 只读历史快照；展示数量/弃用；不接云 |
+| D21 | v0.11 跨 vault 趋势 + 模板 | 聚合各 vault 快照；模板/示例可复制；本地优先 |
 
 ## 八、路线图（待验证）
 
@@ -174,8 +177,9 @@ test/            # node:test
 - **v0.7（已完成）**：本地快照与差异。
 - **v0.8（已完成）**：跨 vault 本地 CI 门禁。
 - **v0.9（已完成）**：本地检查插件。
-- **v0.10（当前）**：跨快照趋势；云/账号/团队/私有 registry/托管继续搁置。
-- **v0.11**：CI 模板、插件示例库、跨 vault 趋势；仍不做云/账号。
+- **v0.10（已完成）**：跨快照趋势。
+- **v0.11（当前）**：跨 vault 趋势、CI 模板、插件示例；云/账号/团队/私有 registry/托管继续搁置。
+- **v0.12**：更多本地报告模板、插件测试工具；仍不做云/账号。
 - **之后**：托管/CI/审计服务；开源核心 + 企业版。
 
 ## 九、已裁决
@@ -190,10 +194,10 @@ test/            # node:test
 
 ## 十、边界
 
-- 不读/写 LRDS 的组件 CSS 或产品代码（v0.10）；采用扫描是只读。
+- 不读/写 LRDS 的组件 CSS 或产品代码（v0.11）；采用扫描是只读。
 - 不做自动 Git 提交；
 - 不做云同步/账号/计费；
-- 不做完整的 token 树编辑器（v0.10 只改值/契约/生命周期，不建树）；不做自动改代码；插件无沙箱。
+- 不做完整的 token 树编辑器（v0.11 只改值/契约/生命周期，不建树）；不做自动改代码；插件无沙箱。
 - 快照不自动回滚；只读差异，恢复由人决定。
 
 ## 十一、商品化（未来，未实施）
@@ -214,7 +218,9 @@ node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
 
 本地插件：`plugins/*.mjs`，用 `--plugins` 或 `LIVEDSO_PLUGINS` 加载；不是沙箱，只加载可信代码。详见 [`docs/07_插件API.md`](docs/07_插件API.md)。
 
-趋势：`node src/cli.ts trend` 或 Workbench History 页查看快照趋势；只读本地 `.history/`。
+趋势：`node src/cli.ts trend` 或 Workbench History 页查看快照趋势；`trend --all` 聚合所有 vault；只读本地 `.history/`。
+
+模板与示例：[`templates/`](templates/)（GitHub Actions / GitLab CI）、[`examples/plugins/`](examples/plugins/)（可复制插件）。
 
 ## 十三、发布检查
 

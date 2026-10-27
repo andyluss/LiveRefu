@@ -10,6 +10,7 @@ import { scanAdoption } from '../src/adoption.ts'
 import { loadRegistry } from '../src/registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from '../src/history.ts'
 import { runCi } from '../src/ci.ts'
+import { allTrends } from '../src/trend.ts'
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
@@ -166,4 +167,27 @@ test('local plugin loads and contributes issues', async () => {
     assert.equal(result.warnings, 4)
     assert.ok(result.issues.some(i => i.code === 'brand.rule'))
   } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('cross-vault trends read each vault history', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-trends-'))
+  try {
+    for (const name of ['a', 'b']) {
+      cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true })
+      createSnapshot(loadVault(join(tmp, name)))
+    }
+    writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
+    const r = allTrends(join(tmp, 'vaults.json'))
+    assert.equal(r.vaults.length, 2)
+    assert.equal(r.vaults[0]?.points.length, 1)
+    assert.equal(r.vaults[0]?.points[0]?.deprecated, 1)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('example plugins load', async () => {
+  const loaded = await loadPlugins(fileURLToPath(new URL('../examples/plugins', import.meta.url)))
+  assert.equal(loaded.errors.length, 0)
+  assert.equal(loaded.plugins.length, 2)
 })

@@ -1,0 +1,10 @@
+# Copy to .gitlab-ci.yml and adjust paths.
+livedso:
+  image: node:24
+  script:
+    - cd lab/livedso
+    - node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
+  artifacts:
+    when: always
+    paths:
+      - lab/livedso/reports/ci.md

@@ -8,6 +8,21 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
+## [0.11.0] - 2026-10-27 22:41
+
+### Added
+
+- **跨 vault 趋势**：`trend --all` 与 `GET /api/trends` 聚合 `vaults.json` 中每个 vault 的快照指标（tokens / deprecated / contracts / cards）。
+- **可复制 CI 模板**：[`templates/github-actions.yml`](templates/github-actions.yml)、[`templates/gitlab-ci.yml`](templates/gitlab-ci.yml)，默认在 `lab/livedso` 下跑 `ci --strict`。
+- **插件示例库**：[`examples/plugins/brand-rules.mjs`](examples/plugins/brand-rules.mjs)、[`examples/plugins/token-naming.mjs`](examples/plugins/token-naming.mjs)，可复制到 `plugins/`。
+- 新增 [`templates/README.md`](templates/README.md) 与 [`examples/README.md`](examples/README.md)。
+
+### Changed
+
+- `node:test` 从 13 项增至 15 项（跨 vault 趋势 + 示例插件加载）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- 未做：本地报告模板、插件测试工具；留到 v0.12。
+
 ## [0.10.0] - 2026-10-27 22:36
 
 ### Added

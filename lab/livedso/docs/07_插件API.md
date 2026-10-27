@@ -80,7 +80,18 @@ node src/cli.ts ci --plugins ./plugins --strict
 - 插件加载失败会产生 `plugin.load` error；运行抛错会产生 `plugin.runtime` error，不会静默吞掉。
 - 不上传 vault、token、代码。
 
-## 六、边界
+## 六、示例
+
+可复制示例：
+
+- [`../examples/plugins/brand-rules.mjs`](../examples/plugins/brand-rules.mjs)
+- [`../examples/plugins/token-naming.mjs`](../examples/plugins/token-naming.mjs)
+
+```bash
+node src/cli.ts check --plugins examples/plugins
+```
+
+## 七、边界
 
 - 不做云插件市场；
 - 不做账号/权限；
