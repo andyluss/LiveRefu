@@ -72,6 +72,7 @@ test('contract editing writes back and survives reload', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-contract-'))
   try {
     cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    rmSync(join(tmp, '.history'), { recursive: true, force: true })
     const vault = loadVault(tmp)
     const next = saveContract(vault, 'field', { states: ['default', 'hover', 'active', 'focus-visible', 'disabled'], summary: 'edited' })
     assert.equal(next.summary, 'edited')
@@ -85,6 +86,7 @@ test('token lifecycle writes back and is visible after reload', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-lifecycle-'))
   try {
     cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    rmSync(join(tmp, '.history'), { recursive: true, force: true })
     saveTokenLifecycle(loadVault(tmp), 'sys.color.action.primaryHover', { deprecated: true, replacedBy: 'sys.color.action.primary', note: 'test' })
     const t = loadVault(tmp).tokens.get('sys.color.action.primaryHover')
     assert.equal(t?.deprecated, true)
@@ -129,6 +131,7 @@ test('local history snapshots and diffs', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-history-'))
   try {
     cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    rmSync(join(tmp, '.history'), { recursive: true, force: true })
     const vault = loadVault(tmp)
     const snap = createSnapshot(vault)
     assert.equal(listSnapshots(vault).length, 1)
@@ -145,7 +148,7 @@ test('local history snapshots and diffs', () => {
 test('CI aggregates multiple vaults and enforces thresholds', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-ci-'))
   try {
-    for (const name of ['a', 'b']) cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true })
+    for (const name of ['a', 'b']) { cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true }); rmSync(join(tmp, name, '.history'), { recursive: true, force: true }) }
     writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
     const ok = runCi({ registry: join(tmp, 'vaults.json') })
     assert.equal(ok.vaults.length, 2)
@@ -177,6 +180,7 @@ test('cross-vault trends read each vault history', () => {
   try {
     for (const name of ['a', 'b']) {
       cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true })
+      rmSync(join(tmp, name, '.history'), { recursive: true, force: true })
       createSnapshot(loadVault(join(tmp, name)))
     }
     writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
@@ -198,7 +202,7 @@ test('example plugins load', async () => {
 test('plugin test matrix runs across vaults', async () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-plugin-matrix-'))
   try {
-    for (const name of ['a', 'b']) cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true })
+    for (const name of ['a', 'b']) { cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true }); rmSync(join(tmp, name, '.history'), { recursive: true, force: true }) }
     writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
     const loaded = await loadPlugins(fileURLToPath(new URL('../examples/plugins', import.meta.url)))
     const matrix = pluginTestAll(join(tmp, 'vaults.json'), loaded.plugins, loaded.errors)

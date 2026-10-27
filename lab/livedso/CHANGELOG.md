@@ -1,5 +1,19 @@
 # LiveDSO Changelog
 
+## [0.18.0] - 2026-10-28 07:24
+
+### Added
+
+- **模板嵌套条件**：安全解析器支持 `{{#if}}` 嵌套与循环内条件；不再依赖正则匹配。
+- `inventory.md` 展示弃用替代链：`deprecated → replacedBy`。
+- 语法错误会明确报错（未闭合/不匹配块）。
+
+### Changed
+
+- `node:test` 保持 18 项（现有 inventory 断言覆盖嵌套）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- LiveDSO 本地功能进入收敛阶段。
+
 ## [0.17.0] - 2026-10-27 22:58
 
 ### Added

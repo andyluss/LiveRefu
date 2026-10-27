@@ -75,20 +75,77 @@ function lookup(ctx: Record<string, unknown>, key: string): unknown {
   return key.split('.').reduce<unknown>((cur, part) => cur && typeof cur === 'object' ? (cur as Record<string, unknown>)[part] : undefined, ctx)
 }
 
-/** 渲染安全占位符：#each 风格循环 + #if 条件，不执行代码。 */
+type TemplateNode =
+  | { kind: 'text'; text: string }
+  | { kind: 'var'; key: string }
+  | { kind: 'if'; key: string; children: TemplateNode[] }
+  | { kind: 'loop'; name: string; children: TemplateNode[] }
+
+const LOOP_FIELDS: Record<string, string> = { tokens: 'tokenItems', issues: 'issueItems', contracts: 'contractItems', styleCards: 'styleCardItems' }
+
+/** 极小的安全模板解析器：只支持变量、#if、循环，不执行代码。 */
+function parseTemplate(text: string): TemplateNode[] {
+  const root: TemplateNode[] = []
+  const stack: Array<{ nodes: TemplateNode[]; close?: string }> = [{ nodes: root }]
+  let i = 0
+  while (i < text.length) {
+    const start = text.indexOf('{{', i)
+    if (start < 0) {
+      stack[stack.length - 1]!.nodes.push({ kind: 'text', text: text.slice(i) })
+      break
+    }
+    if (start > i) stack[stack.length - 1]!.nodes.push({ kind: 'text', text: text.slice(i, start) })
+    const end = text.indexOf('}}', start + 2)
+    if (end < 0) throw new Error('报告模板语法错误：未闭合的 {{')
+    const tag = text.slice(start + 2, end).trim()
+    i = end + 2
+    if (!tag) continue
+    if (tag.startsWith('#if ')) {
+      const node: TemplateNode = { kind: 'if', key: tag.slice(4).trim(), children: [] }
+      stack[stack.length - 1]!.nodes.push(node)
+      stack.push({ nodes: node.children, close: 'if' })
+      continue
+    }
+    if (tag.startsWith('#')) {
+      const name = tag.slice(1).trim()
+      if (!LOOP_FIELDS[name]) throw new Error(`报告模板语法错误：未知循环 ${name}`)
+      const node: TemplateNode = { kind: 'loop', name, children: [] }
+      stack[stack.length - 1]!.nodes.push(node)
+      stack.push({ nodes: node.children, close: name })
+      continue
+    }
+    if (tag.startsWith('/')) {
+      const close = tag.slice(1).trim()
+      const top = stack.pop()
+      if (!top || top.close !== close) throw new Error(`报告模板语法错误：不匹配的 {{/${close}}}`)
+      continue
+    }
+    stack[stack.length - 1]!.nodes.push({ kind: 'var', key: tag })
+  }
+  if (stack.length !== 1) throw new Error(`报告模板语法错误：未闭合的 {{#${stack[stack.length - 1]!.close}}}`)
+  return root
+}
+
+function renderNodes(nodes: TemplateNode[], ctx: Record<string, unknown>): string {
+  let out = ''
+  for (const node of nodes) {
+    if (node.kind === 'text') out += node.text
+    else if (node.kind === 'var') {
+      const value = lookup(ctx, node.key)
+      if (value !== undefined && value !== null) out += String(value)
+    } else if (node.kind === 'if') {
+      if (lookup(ctx, node.key)) out += renderNodes(node.children, ctx)
+    } else {
+      const key = LOOP_FIELDS[node.name] || node.name
+      const list = ctx[key]
+      if (Array.isArray(list)) for (const item of list) out += renderNodes(node.children, (item || {}) as Record<string, unknown>)
+    }
+  }
+  return out
+}
+
 function renderTemplate(text: string, ctx: Record<string, unknown>): string {
-  const loop = /\{\{#(tokens|issues|contracts|styleCards)\}\}([\s\S]*?)\{\{\/\1\}\}/g
-  text = text.replace(loop, (_, name: string, body: string) => {
-    const key = ({ tokens: 'tokenItems', issues: 'issueItems', contracts: 'contractItems', styleCards: 'styleCardItems' } as Record<string, string>)[name] || name
-    const list = ctx[key]
-    if (!Array.isArray(list)) return ''
-    return list.map(item => renderTemplate(body, (item || {}) as Record<string, unknown>)).join('')
-  })
-  text = text.replace(/\{\{#if\s+([a-zA-Z0-9_.]+)\s*\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, key: string, body: string) => lookup(ctx, key) ? renderTemplate(body, ctx) : '')
-  return text.replace(/\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}/g, (_, key: string) => {
-    const value = lookup(ctx, key)
-    return value === undefined || value === null ? '' : String(value)
-  })
+  return renderNodes(parseTemplate(text), ctx)
 }
 
 function context(vault: Vault, result: CheckResult): Record<string, unknown> {
