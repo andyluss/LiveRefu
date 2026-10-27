@@ -12,6 +12,7 @@ import { createSnapshot, diffSnapshot, listSnapshots, trendSnapshots } from '../
 import { runCi } from '../src/ci.ts'
 import { allTrends } from '../src/trend.ts'
 import { pluginTestAll } from '../src/plugin-test.ts'
+import { listReportTemplates, renderReport } from '../src/reports.ts'
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
@@ -204,5 +205,21 @@ test('plugin test matrix runs across vaults', async () => {
     assert.equal(matrix.vaults.length, 2)
     assert.equal(matrix.vaults[0]?.plugins.length, 2)
     assert.ok(matrix.vaults[0]!.issues.length >= 1)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('report templates render builtin and custom placeholders', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-report-'))
+  try {
+    const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+    const result = runChecks(vault)
+    const release = renderReport(vault, result, 'release')
+    assert.match(release, /Health/); assert.match(release, /37/)
+    mkdirSync(join(tmp, 'templates'))
+    writeFileSync(join(tmp, 'templates', 'custom.md'), '# {{vault.name}} · {{score}} · {{counts.tokens}}\n{{generatedAt}}')
+    const custom = renderReport(vault, result, 'custom', join(tmp, 'templates'))
+    assert.match(custom, /LiveDSO · LRDS sample/)
+    assert.equal(listReportTemplates(join(tmp, 'templates')).some(t => t.id === 'custom'), true)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

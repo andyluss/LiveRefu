@@ -4,12 +4,13 @@ import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { URL } from 'node:url'
 import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle, stateView } from './vault.ts'
-import { reportMarkdown, runChecks } from './checks.ts'
+import { runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
 import { loadRegistry } from './registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
 import { allTrends } from './trend.ts'
+import { listReportTemplates, renderReport } from './reports.ts'
 import type { Vault } from './types.ts'
 
 const WEB = resolve(import.meta.dirname, '../web')
@@ -78,7 +79,11 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
       }
       if (url.pathname === '/api/state' && req.method === 'GET') return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
       if (url.pathname === '/api/check' && req.method === 'POST') return json(res, 200, { checks: result })
-      if (url.pathname === '/api/report' && req.method === 'POST') return json(res, 200, { markdown: reportMarkdown(vault, result) })
+      if (url.pathname === '/api/report/templates' && req.method === 'GET') return json(res, 200, { templates: listReportTemplates(new URL('../templates/reports', import.meta.url).pathname) })
+      if (url.pathname === '/api/report' && req.method === 'POST') {
+        const body = JSON.parse(await readBody(req)) as { template?: string }
+        return json(res, 200, { markdown: renderReport(vault, result, body.template || 'health', new URL('../templates/reports', import.meta.url).pathname) })
+      }
       if (url.pathname === '/api/projection' && req.method === 'POST') return json(res, 200, { css: projection(vault) })
       if (url.pathname === '/api/token' && req.method === 'POST') {
         const body = JSON.parse(await readBody(req)) as { path?: string; value?: string }

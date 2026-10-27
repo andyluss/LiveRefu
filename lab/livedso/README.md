@@ -1,6 +1,6 @@
 # LiveDSO · 设计系统操作台（实验）
 
-> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.13.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
+> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.14.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -26,6 +26,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - 跨 vault 趋势、可复制 CI 模板、可复制插件示例；
 - Workbench 跨 vault Trends 视图与 `plugin-test` 插件自检；
 - `plugin-test --all` 跨 vault 插件测试矩阵；
+- 本地报告模板（`health` / `release` / `templates/reports/*.md`）；
 - 生成健康报告与 CSS 投影；
 - 在 Web Workbench 里搜索、查看、改值、重跑闸门。
 
@@ -33,7 +34,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 
 - 另一个 Figma/组件画布；
 - 另一个静态文档站；
-- 云协作平台（v0.13 没有账号、同步、计费）；
+- 云协作平台（v0.14 没有账号、同步、计费）；
 - 青橙设计的内部工具。它是独立产品，只是把 LRDS 当作**示例 vault**。
 
 ## 二、与青橙设计的关系
@@ -68,6 +69,7 @@ node src/cli.ts trend                                  # 快照趋势
 node src/cli.ts trend --all                            # 跨 vault 趋势
 node src/cli.ts plugin-test --plugins examples/plugins  # 插件自检
 node src/cli.ts plugin-test --all --plugins examples/plugins  # 跨 vault 矩阵
+node src/cli.ts report --template release --out reports/release.md  # 报告模板
 node src/cli.ts serve 4173   # 打开 http://127.0.0.1:4173
 LIVEDSO_VAULT="$PWD/vault-lrds" node src/cli.ts serve 4173  # 用真实 case
 ```
@@ -81,7 +83,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v0.13 已实现
+## 四、v0.14 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -172,6 +174,7 @@ test/            # node:test
 | D21 | v0.11 跨 vault 趋势 + 模板 | 聚合各 vault 快照；模板/示例可复制；本地优先 |
 | D22 | v0.12 趋势 UI + 插件自检 | 趋势视图只读；plugin-test 只本地运行 |
 | D23 | v0.13 插件测试矩阵 | 对一个插件跑所有 vault；本地只读；不接云 |
+| D24 | v0.14 报告模板 | 本地 Markdown 占位符；不执行代码；不接云 |
 
 ## 八、路线图（待验证）
 
@@ -186,8 +189,9 @@ test/            # node:test
 - **v0.10（已完成）**：跨快照趋势。
 - **v0.11（已完成）**：跨 vault 趋势、CI 模板、插件示例。
 - **v0.12（已完成）**：跨 vault Trends UI、`plugin-test`。
-- **v0.13（当前）**：`plugin-test --all` 插件矩阵；云/账号/团队/私有 registry/托管继续搁置。
-- **v0.14**：本地报告模板、更多跨 vault 视图；仍不做云/账号。
+- **v0.13（已完成）**：`plugin-test --all` 插件矩阵。
+- **v0.14（当前）**：本地报告模板；云/账号/团队/私有 registry/托管继续搁置。
+- **v0.15**：更多跨 vault 视图、报告模板变量扩展；仍不做云/账号。
 - **之后**：托管/CI/审计服务；开源核心 + 企业版。
 
 ## 九、已裁决
@@ -202,10 +206,10 @@ test/            # node:test
 
 ## 十、边界
 
-- 不读/写 LRDS 的组件 CSS 或产品代码（v0.13）；采用扫描是只读。
+- 不读/写 LRDS 的组件 CSS 或产品代码（v0.14）；采用扫描是只读。
 - 不做自动 Git 提交；
 - 不做云同步/账号/计费；
-- 不做完整的 token 树编辑器（v0.13 只改值/契约/生命周期，不建树）；不做自动改代码；插件无沙箱。
+- 不做完整的 token 树编辑器（v0.14 只改值/契约/生命周期，不建树）；不做自动改代码；插件无沙箱；报告模板不执行代码。
 - 快照不自动回滚；只读差异，恢复由人决定。
 
 ## 十一、商品化（未来，未实施）
@@ -231,6 +235,8 @@ node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
 模板与示例：[`templates/`](templates/)（GitHub Actions / GitLab CI）、[`examples/plugins/`](examples/plugins/)（可复制插件）。
 
 趋势 UI：Workbench 的 **Trends** 页；插件自检：`node src/cli.ts plugin-test --plugins examples/plugins`；跨 vault 矩阵：`plugin-test --all`。
+
+报告模板：`report --list-templates`、`report --template release --out reports/release.md`；详见 [`docs/08_报告模板.md`](docs/08_报告模板.md)。
 
 ## 十三、发布检查
 

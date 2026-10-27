@@ -1,5 +1,20 @@
 # LiveDSO Changelog
 
+## [0.14.0] - 2026-10-27 22:52
+
+### Added
+
+- **本地报告模板**：内置 `health` / `release`，自定义 `templates/reports/*.md`；占位符替换，不执行代码。
+- **CLI**：`report --list-templates`、`--template <id>`、`--out <file>`。
+- **API/UI**：`GET /api/report/templates`、`POST /api/report` body `{template}`；Report 页可选择模板。
+- 新增 [`docs/08_报告模板.md`](docs/08_报告模板.md) 与示例模板 [`templates/reports/summary.md`](templates/reports/summary.md)。
+
+### Changed
+
+- `node:test` 从 16 项增至 17 项（内置/自定义模板渲染）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- 未做：更多跨 vault 视图、模板变量扩展；留到 v0.15。
+
 ## [0.13.0] - 2026-10-27 22:48
 
 ### Added

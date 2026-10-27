@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b>LiveDSO</b><small>DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.13</span>
+    <span class="lab-chip">LAB / 0.14</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">Run checks</button>
@@ -163,9 +163,9 @@
     <section class="view" id="view-report" aria-labelledby="report-title">
       <div class="view-head"><div><div class="eyebrow">OUTPUT</div><h1 id="report-title">Report & projection</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
       <p class="lede">健康报告与 CSS 投影都是生成物：可复制、可下载、可进 PR，不需要上传。</p>
-      <div class="report-actions"><button class="btn" type="button" id="gen-report">生成健康报告</button><button class="btn ghost" type="button" id="download-report">下载 .md</button><button class="btn ghost" type="button" id="gen-css">生成 CSS 投影</button><button class="btn ghost" type="button" id="download-css">下载 .css</button></div>
+      <div class="report-actions"><label class="report-template-label">模板<select id="report-template"></select></label><button class="btn" type="button" id="gen-report">生成报告</button><button class="btn ghost" type="button" id="download-report">下载 .md</button><button class="btn ghost" type="button" id="gen-css">生成 CSS 投影</button><button class="btn ghost" type="button" id="download-css">下载 .css</button></div>
       <div class="report-grid">
-        <section class="panel"><div class="panel-head"><h2>Health report</h2><span class="chip" id="report-status">未生成</span></div><pre id="report-output" class="code-panel">点击“生成健康报告”。</pre></section>
+        <section class="panel"><div class="panel-head"><h2 id="report-heading">Health report</h2><span class="chip" id="report-status">未生成</span></div><pre id="report-output" class="code-panel">点击“生成健康报告”。</pre></section>
         <section class="panel"><div class="panel-head"><h2>CSS projection</h2><span class="chip" id="css-status">未生成</span></div><pre id="css-output" class="code-panel">点击“生成 CSS 投影”。</pre></section>
       </div>
     </section>

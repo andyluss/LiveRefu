@@ -4,7 +4,8 @@ import { writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadVault, projection } from './vault.ts'
-import { reportMarkdown, runChecks } from './checks.ts'
+import { runChecks } from './checks.ts'
+import { listReportTemplates, renderReport } from './reports.ts'
 import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
 import { scanAdoption } from './adoption.ts'
@@ -17,7 +18,7 @@ import { loadPlugins, runPlugins } from './plugins.ts'
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
-const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--max-warnings', '--max-raw', '--max-deprecated'])
+const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--template', '--max-warnings', '--max-raw', '--max-deprecated'])
 const positionals: string[] = []
 for (let i = 1; i < args.length; i++) {
   const a = args[i]!
@@ -45,11 +46,18 @@ switch (cmd) {
     process.exitCode = printIssues()
     break
   case 'report': {
+    if (args.includes('--list-templates')) {
+      for (const t of listReportTemplates(new URL('../templates/reports', import.meta.url).pathname)) console.log(`${t.id}\t${t.custom ? 'custom' : 'builtin'}\t${t.description || t.name}`)
+      break
+    }
     const vault = loadVault(root)
     const result = runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)])
-    const out = resolve(positionals[1] || 'reports/health.md')
+    const ti = args.indexOf('--template')
+    const template = ti >= 0 ? args[ti + 1] || 'health' : 'health'
+    const outFlag = args.indexOf('--out')
+    const out = resolve(outFlag >= 0 ? args[outFlag + 1]! : positionals[1] || `reports/${template}.md`)
     mkdirSync(dirname(out), { recursive: true })
-    writeFileSync(out, reportMarkdown(vault, result) + '\n', 'utf8')
+    writeFileSync(out, renderReport(vault, result, template, new URL('../templates/reports', import.meta.url).pathname) + '\n', 'utf8')
     console.log(`wrote ${out}`)
     break
   }
@@ -197,11 +205,13 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.13 · local-first design system operations
+    console.log(`LiveDSO 0.14 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
-  node src/cli.ts report [vault] [out]    输出健康报告 Markdown
+  node src/cli.ts report [vault] [out] [--template <id>] [--out <file>]
+                                          输出报告（health/release/custom）
+  node src/cli.ts report --list-templates              列出报告模板
   node src/cli.ts build [vault] [out]     输出 CSS 投影
   node src/cli.ts import [src] [vault]    导入 design/tokens 到 vault-lrds
   node src/cli.ts adopt [dir] [--json] [--strict|--fail-on-raw]

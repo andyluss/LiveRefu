@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null };
+  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, reportTemplate: 'health' };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -65,7 +65,7 @@
     if (view === 'trends') loadTrends();
     if (view === 'style-cards') renderCards();
     if (view === 'checks') renderChecks();
-    if (view === 'report') renderReport();
+    if (view === 'report') { loadReportTemplates(); renderReport(); }
     window.scrollTo({ top: 0 });
   }
 
@@ -327,6 +327,7 @@
     renderIssues($('#check-list'), c.issues, false);
   }
   function renderReport() {
+    $('#report-heading').textContent = state.reportTemplate === 'health' ? 'Health report' : `Report · ${state.reportTemplate || 'health'}`;
     $('#report-output').textContent = state.report || '点击“生成健康报告”。';
     $('#css-output').textContent = state.css || '点击“生成 CSS 投影”。';
     $('#report-status').textContent = state.report ? '已生成' : '未生成';
@@ -403,12 +404,23 @@
       toast('Checks 完成', `${state.data.checks.errors} errors · ${state.data.checks.warnings} warnings`);
     } catch (e) { setStatus('err', 'check failed'); toast('检查失败', e.message); }
   }
+  async function loadReportTemplates() {
+    try {
+      const r = await api('/api/report/templates');
+      const sel = $('#report-template');
+      if (!sel) return;
+      const current = state.reportTemplate || 'health';
+      sel.innerHTML = r.templates.map(t => `<option value="${esc(t.id)}" ${t.id === current ? 'selected' : ''}>${esc(t.name)}${t.custom ? ' · custom' : ''}</option>`).join('');
+      sel.value = r.templates.some(t => t.id === current) ? current : 'health';
+      state.reportTemplate = sel.value;
+    } catch { /* templates are optional */ }
+  }
   async function generateReport() {
     try {
-      const r = await api('/api/report', { method: 'POST', body: '{}' });
+      const r = await api('/api/report', { method: 'POST', body: JSON.stringify({ template: state.reportTemplate || 'health' }) });
       state.report = r.markdown;
       renderReport();
-      toast('报告已生成', '可下载 .md 或复制进 PR。');
+      toast('报告已生成', `${state.reportTemplate || 'health'} · 可下载 .md 或复制进 PR。`);
     } catch (e) { toast('生成失败', e.message); }
   }
   async function generateCss() {
@@ -445,11 +457,11 @@
       const hi = e.target.closest('[data-history]'); if (hi) { diffHistory(hi.dataset.history); return; }
       if (e.target.id === 'gen-report') { generateReport(); return; }
       if (e.target.id === 'gen-css') { generateCss(); return; }
-      if (e.target.id === 'download-report') { state.report ? download('livedso-health.md', state.report, 'text/markdown') : toast('还没有报告', '先生成健康报告。'); return; }
+      if (e.target.id === 'download-report') { state.report ? download(`livedso-${state.reportTemplate || 'health'}.md`, state.report, 'text/markdown') : toast('还没有报告', '先生成健康报告。'); return; }
       if (e.target.id === 'download-css') { state.css ? download('livedso-tokens.css', state.css, 'text/css') : toast('还没有 CSS', '先生成 CSS 投影。'); return; }
     });
     document.addEventListener('submit', (e) => { if (e.target.id === 'contract-form') { e.preventDefault(); saveContract(e.target); } });
-    document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } if (e.target.id === 'vault-select') switchVault(e.target.value); if (e.target.id === 'compare-a') { state.compareA = e.target.value; renderCompare(); } if (e.target.id === 'compare-b') { state.compareB = e.target.value; renderCompare(); } });
+    document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } if (e.target.id === 'report-template') { state.reportTemplate = e.target.value; } if (e.target.id === 'vault-select') switchVault(e.target.value); if (e.target.id === 'compare-a') { state.compareA = e.target.value; renderCompare(); } if (e.target.id === 'compare-b') { state.compareB = e.target.value; renderCompare(); } });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeDrawer();
     });
