@@ -8,6 +8,21 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
+## [0.6.0] - 2026-10-27 22:18
+
+### Added
+
+- **Token 生命周期**：token 叶可写 `deprecated` / `replacedBy` / `deprecationNote`；Workbench Tokens 支持按生命周期过滤、标记弃用并写回源 JSON。
+- **弃用检查**：替代 token 不存在/指向自己/替代链仍弃用；契约/风格卡仍引用弃用 token 时告警；报告 Inventory 增加 Lifecycle 列。
+- **采用扫描统计弃用引用**：Adoption 结果增加 `deprecatedRefs`，CLI/API/UI 都能看到代码里对弃用 token 的引用。
+- 示例 vault 把 `sys.color.action.primaryHover` 标为 deprecated，替代为 `sys.color.action.primary`。
+
+### Changed
+
+- 生命周期编辑只写 token 源 JSON；不自动提交 Git。
+- `node:test` 从 9 项增至 10 项（生命周期写回 + 采用扫描弃用统计）。
+- 未做：团队/权限、私有 registry、托管；留到 v0.7。
+
 ## [0.5.0] - 2026-10-27 22:15
 
 ### Added

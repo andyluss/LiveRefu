@@ -69,6 +69,20 @@ export function runChecks(vault: Vault): CheckResult {
     }
   }
 
+  // 1b. Lifecycle / deprecation
+  for (const token of vault.tokens.values()) {
+    if (!token.deprecated) continue
+    if (!token.replacedBy) {
+      push({ code: 'token.deprecated-no-replacement', severity: 'warn', path: token.path, message: `${token.path} 已弃用但没有写 replacedBy。`, detail: token.deprecationNote })
+    } else if (token.replacedBy === token.path) {
+      push({ code: 'token.deprecated-self', severity: 'error', path: token.path, message: `${token.path} 的 replacedBy 指向自己。` })
+    } else if (!vault.tokens.has(token.replacedBy)) {
+      push({ code: 'token.deprecated-target', severity: 'error', path: token.path, message: `${token.path} 的替代 token 不存在：${token.replacedBy}` })
+    } else if (vault.tokens.get(token.replacedBy)?.deprecated) {
+      push({ code: 'token.deprecated-chain', severity: 'warn', path: token.path, message: `${token.path} 的替代 token 也已弃用：${token.replacedBy}` })
+    }
+  }
+
   // 2. Focus must be independent from action
   if (cfg.focusToken && cfg.actionToken) {
     const f = resolveToken(cfg.focusToken, vault.tokens)
@@ -111,6 +125,8 @@ export function runChecks(vault: Vault): CheckResult {
     for (const tokenPath of contract.tokens || []) {
       if (!vault.tokens.has(tokenPath)) {
         push({ code: 'contract.token-missing', severity: 'error', path: contract.id, message: `${contract.title} 引用了不存在的 token：${tokenPath}` })
+      } else if (vault.tokens.get(tokenPath)?.deprecated) {
+        push({ code: 'contract.deprecated-token', severity: 'warn', path: contract.id, message: `${contract.title} 仍引用已弃用 token：${tokenPath}`, detail: vault.tokens.get(tokenPath)?.deprecationNote })
       }
     }
   }
@@ -122,6 +138,8 @@ export function runChecks(vault: Vault): CheckResult {
     for (const color of card.colors || []) {
       if (typeof color === 'string' && color.includes('.') && !vault.tokens.has(color)) {
         push({ code: 'style-card.token-missing', severity: 'warn', path: card.id, message: `${card.name} 引用了不存在的 token：${color}` })
+      } else if (typeof color === 'string' && vault.tokens.get(color)?.deprecated) {
+        push({ code: 'style-card.deprecated-token', severity: 'warn', path: card.id, message: `${card.name} 仍引用已弃用 token：${color}` })
       }
     }
   }
@@ -134,7 +152,7 @@ export function runChecks(vault: Vault): CheckResult {
 }
 
 export function reportMarkdown(vault: Vault, result: CheckResult): string {
-  const rows = [...vault.tokens.values()].map(t => `| \`${t.path}\` | ${t.tier} | ${t.type} | ${formatValue(t.resolvedValue)} | ${t.sourceFile.split('/').pop()} |`).join('\n')
+  const rows = [...vault.tokens.values()].map(t => `| \`${t.path}\` | ${t.tier} | ${t.type} | ${formatValue(t.resolvedValue)} | ${t.deprecated ? 'deprecated' : 'active'} | ${t.sourceFile.split('/').pop()} |`).join('\n')
   const issues = result.issues.length
     ? result.issues.map(i => `- **${i.severity.toUpperCase()}** \`${i.code}\`${i.path ? ` · \`${i.path}\`` : ''} — ${i.message}${i.detail ? `\n  - ${i.detail}` : ''}`).join('\n')
     : '- 没有发现问题。'
@@ -159,8 +177,8 @@ ${issues}
 
 ## Token Inventory
 
-| Path | Tier | Type | Resolved | File |
-| --- | --- | --- | --- | --- |
+| Path | Tier | Type | Resolved | Lifecycle | File |
+| --- | --- | --- | --- | --- | --- |
 ${rows}
 
 ## Contracts

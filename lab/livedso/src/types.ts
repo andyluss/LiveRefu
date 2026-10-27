@@ -11,6 +11,9 @@ export interface TokenRecord {
   alias: string | null
   sourceFile: string
   description?: string
+  deprecated?: boolean
+  replacedBy?: string
+  deprecationNote?: string
 }
 
 export interface ContrastPair {

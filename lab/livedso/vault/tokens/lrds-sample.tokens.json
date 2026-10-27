@@ -134,7 +134,10 @@
         },
         "primaryHover": {
           "$value": "{ref.color.teal.200}",
-          "$type": "color"
+          "$type": "color",
+          "deprecated": true,
+          "replacedBy": "sys.color.action.primary",
+          "deprecationNote": "hover 由交互状态生成；不要再新增直接引用。"
         },
         "onPrimary": {
           "$value": "{ref.color.neutral.0}",

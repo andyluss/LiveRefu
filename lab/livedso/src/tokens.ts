@@ -40,6 +40,7 @@ export function flattenTokens(source: JsonValue, sourceFile: string): TokenRecor
       if (!prefix) return
       const value = node.$value
       const alias = typeof value === 'string' && ALIAS_RE.test(value) ? value.replace(/[{}]/g, '') : null
+      const deprecated = node.deprecated === true || typeof node.deprecated === 'string'
       out.push({
         path: prefix,
         tier: prefix.split('.')[0] || 'root',
@@ -48,7 +49,10 @@ export function flattenTokens(source: JsonValue, sourceFile: string): TokenRecor
         resolvedValue: null,
         alias,
         sourceFile,
-        description: typeof node.$description === 'string' ? node.$description : undefined
+        description: typeof node.$description === 'string' ? node.$description : undefined,
+        deprecated,
+        replacedBy: typeof node.replacedBy === 'string' ? node.replacedBy : undefined,
+        deprecationNote: typeof node.deprecationNote === 'string' ? node.deprecationNote : (typeof node.deprecated === 'string' ? node.deprecated : undefined)
       })
       return
     }

@@ -109,6 +109,22 @@ export function saveContract(vault: Vault, id: string, patch: Partial<Contract>)
   throw new Error(`contract 不存在：${id}`)
 }
 
+export function saveTokenLifecycle(vault: Vault, tokenPath: string, input: { deprecated?: boolean; replacedBy?: string; note?: string }): void {
+  const token = vault.tokens.get(tokenPath)
+  if (!token) throw new Error(`token 不存在：${tokenPath}`)
+  const file = token.sourceFile
+  const source = JSON.parse(readFileSync(file, 'utf8')) as JsonObject
+  const node = getAtPath(source, tokenPath)
+  if (!isObject(node)) throw new Error(`token 节点不是对象：${tokenPath}`)
+  if (input.deprecated) node.deprecated = true
+  else delete node.deprecated
+  if (input.replacedBy?.trim()) node.replacedBy = input.replacedBy.trim()
+  else delete node.replacedBy
+  if (input.note?.trim()) node.deprecationNote = input.note.trim()
+  else delete node.deprecationNote
+  writeFileSync(file, JSON.stringify(source, null, 2) + '\n', 'utf8')
+}
+
 export function stateView(vault: Vault, result: import('./types.ts').CheckResult): object {
   const bgBase = colorOf(vault, 'sys.color.bg.base')
   const tokens = [...vault.tokens.values()]
@@ -125,6 +141,9 @@ export function stateView(vault: Vault, result: import('./types.ts').CheckResult
         alias: t.alias,
         source: t.sourceFile.split('/').pop(),
         cssVar: toCssVariable(t.path),
+        deprecated: Boolean(t.deprecated),
+        replacedBy: t.replacedBy || null,
+        deprecationNote: t.deprecationNote || null,
         onBase: onBase ? Number(onBase.toFixed(2)) : null
       }
     })

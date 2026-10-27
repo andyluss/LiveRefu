@@ -121,7 +121,8 @@
     const q = ($('#token-search')?.value || '').trim().toLowerCase();
     const tier = $('#tier-filter')?.value || '';
     const type = $('#type-filter')?.value || '';
-    return state.data.tokens.filter(t => (!tier || t.tier === tier) && (!type || t.type === type) && (!q || (t.path + t.resolved + (t.alias || '')).toLowerCase().includes(q)));
+    const lifecycle = $('#lifecycle-filter')?.value || '';
+    return state.data.tokens.filter(t => (!tier || t.tier === tier) && (!type || t.type === type) && (!lifecycle || (lifecycle === 'deprecated' ? !!t.deprecated : !t.deprecated)) && (!q || (t.path + t.resolved + (t.alias || '')).toLowerCase().includes(q)));
   }
   function renderTokens() {
     if (!state.data) return;
@@ -133,7 +134,7 @@
       const color = tokenColor(t.resolved) || tokenColor(t.raw);
       const ratio = t.onBase == null ? '—' : `${t.onBase}:1`;
       const ratioClass = t.onBase != null && t.onBase >= 4.5 ? 'ok' : 'low';
-      return `<tr data-token="${esc(t.path)}"><td>${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}<code>${esc(t.path)}</code></td><td><span class="tier ${esc(t.tier)}">${esc(t.tier)}</span></td><td><code>${esc(t.raw)}</code></td><td><code>${esc(t.resolved)}</code></td><td><span class="ratio ${t.onBase == null ? '' : ratioClass}">${ratio}</span></td><td><code>${esc(t.source)}</code></td></tr>`;
+      return `<tr data-token="${esc(t.path)}"><td>${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}<code>${esc(t.path)}</code></td><td><span class="tier ${esc(t.tier)}">${esc(t.tier)}</span></td><td><code>${esc(t.raw)}</code></td><td><code>${esc(t.resolved)}</code></td><td>${t.deprecated ? `<span class="lifecycle-badge">deprecated</span>` : '<span class="lifecycle-active">active</span>'}</td><td><span class="ratio ${t.onBase == null ? '' : ratioClass}">${ratio}</span></td><td><code>${esc(t.source)}</code></td></tr>`;
     }).join('');
   }
 
@@ -216,14 +217,14 @@
     if (!a) return;
     const summary = $('#adoption-summary');
     if (summary) {
-      summary.innerHTML = `<div class="adoption-stat ok"><b>${a.filesScanned}</b><span>files scanned</span></div><div class="adoption-stat ok"><b>${a.tokenRefs}</b><span>token refs</span></div><div class="adoption-stat warn"><b>${a.rawColors}</b><span>raw colors</span></div><div class="adoption-stat warn"><b>${a.unknownRefs}</b><span>unknown vars</span></div><div class="adoption-stat"><b>${a.filesWithTokens}</b><span>files using tokens</span></div>`;
+      summary.innerHTML = `<div class="adoption-stat ok"><b>${a.filesScanned}</b><span>files scanned</span></div><div class="adoption-stat ok"><b>${a.tokenRefs}</b><span>token refs</span></div><div class="adoption-stat warn"><b>${a.deprecatedRefs}</b><span>deprecated refs</span></div><div class="adoption-stat warn"><b>${a.rawColors}</b><span>raw colors</span></div><div class="adoption-stat warn"><b>${a.unknownRefs}</b><span>unknown vars</span></div><div class="adoption-stat"><b>${a.filesWithTokens}</b><span>files using tokens</span></div>`;
     }
     $('#adoption-status').textContent = a.errors.length ? 'scan error' : 'scanned';
     $('#adoption-token-count').textContent = `${a.tokens.length} tokens`;
     $('#adoption-file-count').textContent = `${a.files.length} files`;
     $('#adoption-tokens').innerHTML = a.tokens.length ? a.tokens.slice(0, 80).map(t => `<div class="adoption-row"><code>${esc(t.path)}</code><b>${t.count}×</b></div>`).join('') : '<div class="empty">没有发现 token 引用。</div>';
     const rows = a.files.slice(0, 100).map(f => `<div class="adoption-row"><code>${esc(f.path)}</code><span><b>${f.tokenRefs}</b> tok · <span class="${f.rawColors ? 'warn' : ''}">${f.rawColors}</span> raw${f.unknownRefs.length ? ` · <span class="bad">${f.unknownRefs.length}</span> unknown` : ''}</span></div>`).join('');
-    $('#adoption-files').innerHTML = (a.unknown.length ? `<div class="adoption-sub">未知 --dso- 变量</div>${a.unknown.slice(0, 40).map(u => `<div class="adoption-row"><code>${esc(u.name)}</code><span class="bad">${esc(u.file)}</span></div>`).join('')}` : '') + (rows || '<div class="empty">没有发现引用。</div>');
+    $('#adoption-files').innerHTML = (a.deprecated.length ? `<div class="adoption-sub">弃用 token 引用</div>${a.deprecated.slice(0, 40).map(d => `<div class="adoption-row"><code>${esc(d.path)}</code><span class="warn">${esc(d.file)}</span></div>`).join('')}` : '') + (a.unknown.length ? `<div class="adoption-sub">未知 --dso- 变量</div>${a.unknown.slice(0, 40).map(u => `<div class="adoption-row"><code>${esc(u.name)}</code><span class="bad">${esc(u.file)}</span></div>`).join('')}` : '') + (rows || '<div class="empty">没有发现引用。</div>');
   }
   async function runAdoption() {
     const root = $('#adoption-root')?.value?.trim();
@@ -277,12 +278,25 @@
     state.selected = t;
     $('#drawer-title').textContent = t.path;
     const color = tokenColor(t.resolved) || tokenColor(t.raw);
-    $('#drawer-body').innerHTML = `<div class="field"><label>tier / type</label><div class="value-box">${esc(t.tier)} / ${esc(t.type)}</div></div><div class="field"><label>raw value（vault）</label><div class="value-box">${esc(t.raw)}</div></div><div class="field"><label>resolved</label><div class="value-box">${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}${esc(t.resolved)}</div></div><div class="field"><label>alias</label><div class="value-box">${esc(t.alias || '—')}</div></div><div class="field"><label>contrast vs bg.base</label><div class="value-box">${t.onBase == null ? '—' : t.onBase + ':1'}</div></div><div class="field"><label>new value</label><input id="token-value" value="${esc(t.raw)}" spellcheck="false"></div><div class="drawer-actions"><button class="btn" type="button" id="save-token">保存到 vault</button><button class="btn ghost" type="button" data-close-drawer>取消</button></div><p class="drawer-note">保存会写回源 JSON；LiveDSO 不自动提交 Git。真实项目中建议先开分支/PR。</p>`;
+    $('#drawer-body').innerHTML = `<div class="field"><label>tier / type</label><div class="value-box">${esc(t.tier)} / ${esc(t.type)}</div></div><div class="field"><label>raw value（vault）</label><div class="value-box">${esc(t.raw)}</div></div><div class="field"><label>resolved</label><div class="value-box">${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}${esc(t.resolved)}</div></div><div class="field"><label>alias</label><div class="value-box">${esc(t.alias || '—')}</div></div><div class="field"><label>contrast vs bg.base</label><div class="value-box">${t.onBase == null ? '—' : t.onBase + ':1'}</div></div><div class="field"><label>lifecycle</label><label class="check-row"><input id="token-deprecated" type="checkbox" ${t.deprecated ? 'checked' : ''}> deprecated</label><input id="token-replaced-by" placeholder="replacedBy token path" value="${esc(t.replacedBy || '')}"><input id="token-note" placeholder="deprecation note" value="${esc(t.deprecationNote || '')}"></div><div class="field"><label>new value</label><input id="token-value" value="${esc(t.raw)}" spellcheck="false"></div><div class="drawer-actions"><button class="btn" type="button" id="save-token">保存到 vault</button><button class="btn ghost" type="button" id="save-lifecycle">保存生命周期</button><button class="btn ghost" type="button" data-close-drawer>取消</button></div><p class="drawer-note">保存会写回源 JSON；LiveDSO 不自动提交 Git。真实项目中建议先开分支/PR。</p>`;
     $('#token-drawer').hidden = false;
     setTimeout(() => $('#token-value')?.focus(), 30);
   }
   function closeDrawer() { $('#token-drawer').hidden = true; state.selected = null; }
 
+  async function saveLifecycle() {
+    if (!state.selected) return;
+    const path = state.selected.path;
+    const deprecated = $('#token-deprecated')?.checked || false;
+    const replacedBy = $('#token-replaced-by')?.value || '';
+    const note = $('#token-note')?.value || '';
+    try {
+      const data = await api('/api/token/lifecycle', { method: 'POST', body: JSON.stringify({ path, deprecated, replacedBy, note }) });
+      state.data = data; closeDrawer();
+      renderOverview(); renderTokens(); renderChecks(); renderPreview();
+      toast('生命周期已保存', `${path} · ${deprecated ? 'deprecated' : 'active'}`);
+    } catch (e) { toast('保存失败', e.message); }
+  }
   async function saveSelected() {
     if (!state.selected) return;
     const value = $('#token-value')?.value;
@@ -361,6 +375,7 @@
       const row = e.target.closest('[data-token]');
       if (row) { openDrawer(row.dataset.token); return; }
       if (e.target.id === 'save-token') { saveSelected(); return; }
+      if (e.target.id === 'save-lifecycle') { saveLifecycle(); return; }
       if (e.target.closest('#run-checks') || e.target.closest('#quick-check')) { runChecks(); return; }
       if (e.target.id === 'run-adoption') { runAdoption(); return; }
       if (e.target.id === 'gen-report') { generateReport(); return; }
@@ -373,7 +388,7 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeDrawer();
     });
-    ['token-search', 'tier-filter', 'type-filter'].forEach(id => $('#' + id)?.addEventListener('input', renderTokens));
+    ['token-search', 'tier-filter', 'type-filter', 'lifecycle-filter'].forEach(id => $('#' + id)?.addEventListener('input', renderTokens));
     $('#copy-css')?.addEventListener('click', async () => {
       try {
         const r = await api('/api/projection', { method: 'POST', body: '{}' });

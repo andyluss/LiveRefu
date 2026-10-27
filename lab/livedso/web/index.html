@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b>LiveDSO</b><small>DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.5</span>
+    <span class="lab-chip">LAB / 0.6</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">Run checks</button>
@@ -101,10 +101,10 @@
       <div class="toolbar">
         <label class="search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15 15 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="token-search" type="search" placeholder="搜索 path / value / alias" autocomplete="off"></label>
         <select id="tier-filter" aria-label="按层过滤"><option value="">全部层</option><option value="ref">ref</option><option value="sys">sys</option><option value="product">product</option></select>
-        <select id="type-filter" aria-label="按类型过滤"><option value="">全部类型</option><option value="color">color</option><option value="dimension">dimension</option><option value="number">number</option><option value="string">string</option></select>
+        <select id="type-filter" aria-label="按类型过滤"><option value="">全部类型</option><option value="color">color</option><option value="dimension">dimension</option><option value="number">number</option><option value="string">string</option></select><select id="lifecycle-filter" aria-label="按生命周期过滤"><option value="">全部生命周期</option><option value="active">active</option><option value="deprecated">deprecated</option></select>
         <button class="btn small ghost" type="button" id="copy-css">复制 CSS 投影</button>
       </div>
-      <div class="table-wrap panel"><table class="token-table"><thead><tr><th>Token</th><th>Tier</th><th>Value</th><th>Resolved</th><th>Contrast</th><th>File</th></tr></thead><tbody id="token-rows"><tr><td colspan="6" class="empty">读取中……</td></tr></tbody></table></div>
+      <div class="table-wrap panel"><table class="token-table"><thead><tr><th>Token</th><th>Tier</th><th>Value</th><th>Resolved</th><th>Lifecycle</th><th>Contrast</th><th>File</th></tr></thead><tbody id="token-rows"><tr><td colspan="7" class="empty">读取中……</td></tr></tbody></table></div>
     </section>
 
     <section class="view" id="view-contracts" aria-labelledby="contracts-title">

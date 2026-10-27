@@ -3,7 +3,7 @@ import { createServer } from 'node:http'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { URL } from 'node:url'
-import { loadVault, projection, saveContract, saveToken, stateView } from './vault.ts'
+import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle, stateView } from './vault.ts'
 import { reportMarkdown, runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
 import { loadRegistry } from './registry.ts'
@@ -77,6 +77,14 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
         const body = JSON.parse(await readBody(req)) as { path?: string; value?: string }
         if (!body.path || typeof body.value !== 'string') return json(res, 400, { error: '需要 path 与 value（string）' })
         saveToken(vault, body.path, body.value)
+        vault = loadVault(vaultRoot)
+        result = runChecks(vault)
+        return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
+      }
+      if (url.pathname === '/api/token/lifecycle' && req.method === 'POST') {
+        const body = JSON.parse(await readBody(req)) as { path?: string; deprecated?: boolean; replacedBy?: string; note?: string }
+        if (!body.path) return json(res, 400, { error: '需要 path' })
+        saveTokenLifecycle(vault, body.path, { deprecated: Boolean(body.deprecated), replacedBy: body.replacedBy, note: body.note })
         vault = loadVault(vaultRoot)
         result = runChecks(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })

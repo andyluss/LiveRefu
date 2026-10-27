@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { cpSync, mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { loadVault, projection, saveContract } from '../src/vault.ts'
+import { loadVault, projection, saveContract, saveTokenLifecycle } from '../src/vault.ts'
 import { scanAdoption } from '../src/adoption.ts'
 import { loadRegistry } from '../src/registry.ts'
 import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
@@ -75,16 +75,29 @@ test('contract editing writes back and survives reload', () => {
 })
 
 
+test('token lifecycle writes back and is visible after reload', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-lifecycle-'))
+  try {
+    cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    saveTokenLifecycle(loadVault(tmp), 'sys.color.action.primaryHover', { deprecated: true, replacedBy: 'sys.color.action.primary', note: 'test' })
+    const t = loadVault(tmp).tokens.get('sys.color.action.primaryHover')
+    assert.equal(t?.deprecated, true)
+    assert.equal(t?.replacedBy, 'sys.color.action.primary')
+    assert.equal(t?.deprecationNote, 'test')
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
 test('adoption scan finds token refs, raw colors and unknown vars', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-adopt-'))
   try {
     mkdirSync(join(tmp, 'src'))
-    writeFileSync(join(tmp, 'src', 'a.css'), 'a{color:var(--dso-sys-color-action-primary);background:#ffffff}\n')
+    writeFileSync(join(tmp, 'src', 'a.css'), 'a{color:var(--dso-sys-color-action-primary);border-color:var(--dso-sys-color-action-primaryhover);background:#ffffff}\n')
     writeFileSync(join(tmp, 'src', 'b.ts'), 'const x = "var(--dso-not-real)"\n')
     const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
     const r = scanAdoption(tmp, vault)
     assert.equal(r.filesScanned, 2)
-    assert.equal(r.tokenRefs, 1)
+    assert.equal(r.tokenRefs, 2)
+    assert.equal(r.deprecatedRefs, 1)
     assert.equal(r.unknownRefs, 1)
     assert.equal(r.rawColors, 1)
     assert.equal(r.tokens[0]?.path, 'sys.color.action.primary')

@@ -7,6 +7,7 @@ import { toCssVariable } from './tokens.ts'
 export interface AdoptionFile {
   path: string
   tokenRefs: number
+  deprecatedRefs: number
   rawColors: number
   unknownRefs: string[]
 }
@@ -17,9 +18,11 @@ export interface AdoptionResult {
   filesWithTokens: number
   filesWithRawColor: number
   tokenRefs: number
+  deprecatedRefs: number
   rawColors: number
   unknownRefs: number
   tokens: Array<{ path: string; count: number }>
+  deprecated: Array<{ file: string; path: string }>
   unknown: Array<{ file: string; name: string }>
   files: AdoptionFile[]
   errors: string[]
@@ -43,7 +46,7 @@ export function scanAdoption(root: string, vault: Vault): AdoptionResult {
   const absRoot = resolve(root)
   const errors: string[] = []
   if (!existsSync(absRoot) || !statSync(absRoot).isDirectory()) {
-    return { root: absRoot, filesScanned: 0, filesWithTokens: 0, filesWithRawColor: 0, tokenRefs: 0, rawColors: 0, unknownRefs: 0, tokens: [], unknown: [], files: [], errors: [`目录不存在：${absRoot}`] }
+    return { root: absRoot, filesScanned: 0, filesWithTokens: 0, filesWithRawColor: 0, tokenRefs: 0, deprecatedRefs: 0, rawColors: 0, unknownRefs: 0, tokens: [], deprecated: [], unknown: [], files: [], errors: [`目录不存在：${absRoot}`] }
   }
   const varToPath = new Map<string, string>()
   for (const t of vault.tokens.values()) varToPath.set(toCssVariable(t.path), t.path)
@@ -51,6 +54,7 @@ export function scanAdoption(root: string, vault: Vault): AdoptionResult {
   walk(absRoot, files)
   const counts = new Map<string, number>()
   const unknown: Array<{ file: string; name: string }> = []
+  const deprecated: Array<{ file: string; path: string }> = []
   const records: AdoptionFile[] = []
   for (const file of files) {
     let text = ''
@@ -62,7 +66,7 @@ export function scanAdoption(root: string, vault: Vault): AdoptionResult {
     let knownRefs = 0
     for (const name of refs) {
       const path = varToPath.get(name)
-      if (path) { counts.set(path, (counts.get(path) || 0) + 1); knownRefs++ }
+      if (path) { counts.set(path, (counts.get(path) || 0) + 1); knownRefs++; if (vault.tokens.get(path)?.deprecated) deprecated.push({ file: rel, path }) }
       else if (name.startsWith('--dso-')) { missing.push(name); unknown.push({ file: rel, name }) }
     }
     if (knownRefs || raw.length || missing.length) {
@@ -77,9 +81,11 @@ export function scanAdoption(root: string, vault: Vault): AdoptionResult {
     filesWithTokens: records.filter(f => f.tokenRefs > 0).length,
     filesWithRawColor: records.filter(f => f.rawColors > 0).length,
     tokenRefs: records.reduce((n, f) => n + f.tokenRefs, 0),
+    deprecatedRefs: deprecated.length,
     rawColors,
     unknownRefs: unknown.length,
     tokens,
+    deprecated,
     unknown,
     files: records.sort((a, b) => b.tokenRefs + b.rawColors - (a.tokenRefs + a.rawColors)),
     errors
@@ -101,10 +107,15 @@ export function adoptionMarkdown(result: AdoptionResult): string {
 | Files with raw colors | ${result.filesWithRawColor} |
 | Raw color literals | ${result.rawColors} |
 | Unknown --dso vars | ${result.unknownRefs} |
+| Deprecated token refs | ${result.deprecatedRefs} |
 
 ## Top tokens
 
 ${result.tokens.slice(0, 20).map(t => `- \`${t.path}\` — ${t.count}`).join('\n') || '- none'}
+
+## Deprecated token refs
+
+${result.deprecated.map(d => `- \`${d.path}\` — ${d.file}`).join('\n') || '- none'}
 
 ## Unknown references
 
