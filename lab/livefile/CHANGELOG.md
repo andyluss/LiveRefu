@@ -1,5 +1,11 @@
 # LiveFile Changelog
 
+## [未发布]
+
+### 新增
+
+- 新增 [`docs/04_商品化路径.md`](docs/04_商品化路径.md)：Archive Book 未来提案；未实施、未排期。
+
 ## [0.2.0] - 2026-10-27 13:59
 
 ### Added

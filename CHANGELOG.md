@@ -21,6 +21,7 @@
 - **元规则 M1/M2 的判定配置为新目录留出入口**：[`rules/meta/tools/config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置（`projects/mainline/cards/` 自带 README，按 M1 属"可自成一体"的子关注点），并把点文件（`.gitignore`）纳入命名白名单——原先的正则要求首字符为字母数字，会把点文件判为"根目录未声明文件"。
 
 ### 新增
+- **三项目商品化提案（仅文档，未实施/未排期）**：LiveDSO 设计系统体检包、LiveLand World Pack、LiveFile Archive Book；分别写入各项目 `docs/04_商品化路径.md`，并在 README/路线图标注未来触发条件与边界。
 - **清澄（青橙谐音）成为核心概念**：新增 [`design/philosophy/09_清澄_透明作为方法.md`](design/philosophy/09_清澄_透明作为方法.md) 与 [`D-012`](design/docs/decisions/D-012-clear-as-core.md)；明确“青橙是颜色，清澄是颜色下面的水”，七种可见、透明≠曝光、开源≠自动清澄；同步 design README/GUIDE、软件卷、LiveDSO/LiveLand/LiveFile 文档。
 - **LiveFile v0.2**：元数据编辑/补 sidecar、重复内容分组、本地备份复制 + 恢复校验、公开页（只导出 `public` 条目、图片内嵌）；示例 archive 增至 11 条目。
 - **LiveFile v0.1（实验）**：[`lab/livefile/`](lab/livefile/README.md) —— 本地优先个人档案 OS；文件/sidecar 索引、全文/元数据搜索、时间线、集合、备份/继承健康、档案目录/清单/备份报告导出；示例 archive 10 条目 / 9 集合 / 6 类型。
