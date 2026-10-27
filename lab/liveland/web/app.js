@@ -4,7 +4,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', era: 'archive', output: '', outputName: 'world-bible.md', worlds: [], activeWorld: '' };
+  const state = { data: null, view: 'overview', era: 'archive', output: '', outputName: 'world-bible.md', worlds: [], activeWorld: '', compareA: '', compareB: '' };
   const labels = { canon: 'canon', draft: 'draft', rumor: 'rumor' };
 
   async function api(path, options = {}) {
@@ -98,8 +98,21 @@
     const ents = world.entities.filter(x => x.era === e.id);
     $('#era-detail').innerHTML = `<article class="era-hero"><div class="sub">${esc(e.subtitle)}</div><h2>${esc(e.name)}</h2><div class="period">${esc(e.from)} – ${esc(e.to)}</div><p class="lede" style="margin:0 0 8px">${esc(e.summary)}</p><div class="swatches">${e.style.colors.map(c => `<i style="background:${esc(c)}"></i>`).join('')}</div><div class="materials">${e.style.materials.map(m => `<span>${esc(m)}</span>`).join('')}</div><div class="era-meta"><b>技术</b><span>${esc(e.tech)}</span><b>维护</b><span>${esc(e.maintenance)}</span><b>代价</b><span>${esc(e.cost)}</span><b>光照</b><span>${esc(e.style.light)}</span></div></article><div class="era-side"><section class="panel"><div class="panel-head"><h2>本时代 canon</h2><span class="chip">${facts.length}</span></div><div class="mini-list">${facts.length ? facts.map(f => `<div><b>${esc(f.id)}</b><br>${esc(f.statement)}</div>`).join('') : '<div class="muted">暂无。</div>'}</div></section><section class="panel"><div class="panel-head"><h2>本时代实体</h2><span class="chip">${ents.length}</span></div><div class="mini-list">${ents.length ? ents.map(x => `<div><b>${esc(x.name)}</b> · ${esc(x.type)}<br>${esc(x.summary)}</div>`).join('') : '<div class="muted">暂无。</div>'}</div></section></div>`;
     $$('#era-tabs [data-era]').forEach(b => b.addEventListener('click', () => { state.era = b.dataset.era; renderEras(); }));
+    renderEraCompare();
   }
 
+  function renderEraCompare() {
+    const eras = state.data.world.eras;
+    const aSel = $('#era-compare-a'), bSel = $('#era-compare-b');
+    if (!aSel || !bSel || eras.length < 2) return;
+    const a = eras.some(e => e.id === state.compareA) ? state.compareA : eras[0].id;
+    const b = eras.some(e => e.id === state.compareB) ? state.compareB : eras[1].id;
+    aSel.innerHTML = eras.map(e => `<option value="${esc(e.id)}" ${e.id === a ? 'selected' : ''}>${esc(e.name)}</option>`).join('');
+    bSel.innerHTML = eras.map(e => `<option value="${esc(e.id)}" ${e.id === b ? 'selected' : ''}>${esc(e.name)}</option>`).join('');
+    state.compareA = a; state.compareB = b;
+    const card = e => `<article class="compare-era"><div class="sub">${esc(e.from)}–${esc(e.to)}</div><h3>${esc(e.name)}</h3><p>${esc(e.summary)}</p><div class="compare-swatches">${e.style.colors.map(c => `<i style="background:${esc(c)}"></i>`).join('')}</div><dl><dt>技术</dt><dd>${esc(e.tech)}</dd><dt>维护</dt><dd>${esc(e.maintenance)}</dd><dt>代价</dt><dd>${esc(e.cost)}</dd><dt>材料</dt><dd>${esc(e.style.materials.join('、'))}</dd><dt>光照</dt><dd>${esc(e.style.light)}</dd></dl></article>`;
+    $('#era-compare').innerHTML = card(eras.find(e => e.id === a)) + card(eras.find(e => e.id === b)) + `<div class="compare-meta">语法相同，皮肤不同；canon、信息位置、可读性不随时代变化。</div>`;
+  }
   function filteredCanon() {
     const q = ($('#canon-search')?.value || '').toLowerCase();
     const era = $('#canon-era')?.value || '';
@@ -199,6 +212,8 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') { /* no drawer */ } });
     $('#canon-search')?.addEventListener('input', renderCanon);
     ['canon-era', 'canon-confidence'].forEach(id => $('#' + id)?.addEventListener('change', renderCanon));
+    $('#era-compare-a')?.addEventListener('change', e => { state.compareA = e.target.value; renderEraCompare(); });
+    $('#era-compare-b')?.addEventListener('change', e => { state.compareB = e.target.value; renderEraCompare(); });
     $('#canon-form')?.addEventListener('submit', async e => {
       e.preventDefault();
       const fd = new FormData(e.target);
