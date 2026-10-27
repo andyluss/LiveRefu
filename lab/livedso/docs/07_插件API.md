@@ -73,6 +73,15 @@ node src/cli.ts ci --plugins ./plugins --strict
 
 插件 `error` 会阻断；`warn` 在 `--strict` 下阻断。
 
+## 五、自检
+
+```bash
+node src/cli.ts plugin-test --plugins examples/plugins
+node src/cli.ts plugin-test --plugins ./plugins --json
+```
+
+输出插件名、issue 数、error 数；有 `plugin.load` / `plugin.runtime` / issue `error` 时退出码 `1`。
+
 ## 五、安全边界
 
 - **只加载本地可信代码**；不加载远程/第三方 URL。

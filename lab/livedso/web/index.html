@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b>LiveDSO</b><small>DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.11</span>
+    <span class="lab-chip">LAB / 0.12</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">Run checks</button>
@@ -50,7 +50,8 @@
       <button type="button" data-view="checks"><span class="ni">06</span>闸门 <span class="count warn" id="nav-issues">—</span></button>
       <button type="button" data-view="adoption"><span class="ni">07</span>采用扫描</button>
       <button type="button" data-view="history"><span class="ni">08</span>历史</button>
-      <button type="button" data-view="report"><span class="ni">09</span>报告/投影</button>
+      <button type="button" data-view="trends"><span class="ni">09</span>趋势</button>
+      <button type="button" data-view="report"><span class="ni">10</span>报告/投影</button>
     </nav>
     <div class="side-kicker">VAULT</div>
     <div class="vault-box">
@@ -150,6 +151,13 @@
       <div class="history-toolbar"><button class="btn" id="snapshot-now" type="button">创建快照</button><span class="chip" id="history-status">未加载</span></div>
       <div id="history-summary" class="history-summary"></div><div id="history-trend" class="history-trend"></div>
       <div class="history-grid"><section class="panel"><div class="panel-head"><h2>快照</h2><span class="chip" id="history-count">—</span></div><div id="history-list" class="history-list"><div class="empty">还没有快照。</div></div></section><section class="panel"><div class="panel-head"><h2>差异</h2><span class="chip" id="diff-status">选择快照</span></div><div id="history-diff" class="history-diff"><div class="empty">选一个快照查看当前 vault 与它的差异。</div></div></section></div>
+    </section>
+
+    <section class="view" id="view-trends" aria-labelledby="trends-title">
+      <div class="view-head"><div><div class="eyebrow">LOCAL TRENDS</div><h1 id="trends-title">Trends</h1></div><div class="head-meta"><span class="chip">all vaults</span></div></div>
+      <p class="lede">把多个 vault 的快照放在一起看。只读本地 <code>.history/</code>，不上传、不依赖云。</p>
+      <div class="trends-toolbar"><button class="btn" id="refresh-trends" type="button">刷新</button><span class="chip" id="trends-status">未加载</span></div>
+      <div id="trends-grid" class="trends-grid"><div class="empty">读取中……</div></div>
     </section>
 
     <section class="view" id="view-report" aria-labelledby="report-title">

@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '' };
+  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -62,6 +62,7 @@
     if (view === 'preview') renderPreview();
     if (view === 'adoption') renderAdoption();
     if (view === 'history') loadHistory();
+    if (view === 'trends') loadTrends();
     if (view === 'style-cards') renderCards();
     if (view === 'checks') renderChecks();
     if (view === 'report') renderReport();
@@ -301,6 +302,23 @@
     const parts = [...d.addedTokens.map(x => row('add', '+', x)), ...d.removedTokens.map(x => row('remove', '−', x)), ...d.changedTokens.map(x => row('change', '~', x.path, `${x.before.raw} → ${x.after.raw}`)), ...d.addedContracts.map(x => row('add', '+', 'contract ' + x)), ...d.removedContracts.map(x => row('remove', '−', 'contract ' + x)), ...d.changedContracts.map(x => row('change', '~', 'contract ' + x)), ...d.addedStyleCards.map(x => row('add', '+', 'style-card ' + x)), ...d.removedStyleCards.map(x => row('remove', '−', 'style-card ' + x)), ...d.changedStyleCards.map(x => row('change', '~', 'style-card ' + x))];
     $('#history-diff').innerHTML = parts.join('') || '<div class="empty">当前 vault 与这份快照没有差异。</div>';
   }
+  async function loadTrends() {
+    try {
+      const r = await api('/api/trends');
+      state.trends = r;
+      renderTrends();
+    } catch (e) { toast('趋势加载失败', e.message); }
+  }
+  function renderTrends() {
+    const r = state.trends;
+    $('#trends-status').textContent = r ? `${r.vaults.length} vaults` : '未加载';
+    if (!r?.vaults?.length) { $('#trends-grid').innerHTML = '<div class="empty">没有注册 vault。</div>'; return; }
+    $('#trends-grid').innerHTML = r.vaults.map(v => {
+      const max = Math.max(1, ...v.points.map(p => p.tokens));
+      const latest = v.points[v.points.length - 1];
+      return `<article class="trend-vault"><h3>${esc(v.name)}</h3><div class="meta">${esc(v.id)} · ${v.points.length} snapshots</div>${v.error ? `<div class="err">${esc(v.error)}</div>` : v.points.length ? `<div class="bars">${v.points.map(p => `<div class="bar" title="${esc(p.createdAt)}" style="height:${Math.max(4, Math.round(p.tokens / max * 100))}%"></div>`).join('')}</div><div class="latest"><span>${latest?.tokens ?? '—'} tokens</span><span>${latest?.deprecated ?? '—'} deprecated</span><span>${latest?.contracts ?? '—'} contracts</span><span>${latest?.styleCards ?? '—'} cards</span></div>` : '<div class="empty">还没有快照。</div>'}</article>`;
+    }).join('') + (r.errors?.length ? `<div class="trend-vault"><div class="err">${r.errors.map(esc).join('<br>')}</div></div>` : '');
+  }
   function renderChecks() {
     if (!state.data) return;
     const c = state.data.checks;
@@ -423,6 +441,7 @@
       if (e.target.closest('#run-checks') || e.target.closest('#quick-check')) { runChecks(); return; }
       if (e.target.id === 'run-adoption') { runAdoption(); return; }
       if (e.target.id === 'snapshot-now') { snapshotNow(); return; }
+      if (e.target.id === 'refresh-trends') { loadTrends(); return; }
       const hi = e.target.closest('[data-history]'); if (hi) { diffHistory(hi.dataset.history); return; }
       if (e.target.id === 'gen-report') { generateReport(); return; }
       if (e.target.id === 'gen-css') { generateCss(); return; }

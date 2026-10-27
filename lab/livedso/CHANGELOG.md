@@ -8,6 +8,20 @@
 - 新增跨项目 [`DOGFOOD.md`](../DOGFOOD.md) 与 `04` 狗粮计划：9 个未来案例、Wave 1–3、反馈回路；未启动。
 - `04_商品化路径.md` 增加 3 个目标产品案例：自由职业者发票 App、家庭能源 App、老人用药提醒 App。
 
+## [0.12.0] - 2026-10-27 22:43
+
+### Added
+
+- **Trends 视图**：Workbench 新增跨 vault 趋势页；按 vault 展示快照 token 柱状、最新 deprecated/contracts/cards 与加载错误。
+- **`plugin-test`**：CLI 本地插件自检；`--json` 输出插件名、load/runtime errors、issue；有 error 时退出码 1。
+- 插件上下文版本更新为 0.12。
+
+### Changed
+
+- `node:test` 保持 15 项（趋势/示例插件已有覆盖）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- 未做：本地报告模板、插件测试矩阵；留到 v0.13。
+
 ## [0.11.0] - 2026-10-27 22:41
 
 ### Added

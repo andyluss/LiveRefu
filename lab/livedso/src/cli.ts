@@ -23,7 +23,7 @@ for (let i = 1; i < args.length; i++) {
   if (a.startsWith('--')) { if (FLAGS_WITH_VALUE.has(a)) i++; continue }
   positionals.push(a)
 }
-const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff', 'ci', 'trend'].includes(cmd)
+const defaultVaultCmd = ['serve', 'adopt', 'snapshot', 'history', 'diff', 'ci', 'trend', 'plugin-test'].includes(cmd)
 const vaultArg = process.env.LIVEDSO_VAULT || (defaultVaultCmd ? defaultVault : positionals[0] || defaultVault)
 const root = resolve(vaultArg)
 const pluginDir = resolve(args.includes('--plugins') ? args[args.indexOf('--plugins') + 1]! : process.env.LIVEDSO_PLUGINS || fileURLToPath(new URL('../plugins', import.meta.url)))
@@ -139,6 +139,18 @@ switch (cmd) {
     }
     break
   }
+  case 'plugin-test': {
+    const vault = loadVault(root)
+    const issues = [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)]
+    if (args.includes('--json')) console.log(JSON.stringify({ plugins: loadedPlugins.plugins.map(p => p.name), errors: loadedPlugins.errors, issues }, null, 2))
+    else {
+      console.log(`plugins: ${loadedPlugins.plugins.map(p => p.name).join(', ') || 'none'}`)
+      console.log(`issues: ${issues.length} · errors: ${issues.filter(i => i.severity === 'error').length}`)
+      for (const i of issues) console.log(`  [${i.severity}] ${i.code}${i.path ? ` ${i.path}` : ''} — ${i.message}`)
+    }
+    process.exitCode = issues.some(i => i.severity === 'error') ? 1 : 0
+    break
+  }
   case 'ci': {
     const flag = (name: string) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined }
     const num = (name: string) => { const v = flag(name); return v === undefined ? undefined : Number(v) }
@@ -167,7 +179,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 0.11 · local-first design system operations
+    console.log(`LiveDSO 0.12 · local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -181,6 +193,7 @@ switch (cmd) {
   node src/cli.ts diff <id> [--json]       对比当前 vault 与快照
   node src/cli.ts trend [--json]           快照趋势（token/弃用/契约/风格卡）
   node src/cli.ts trend --all [--registry <file>]  跨 vault 趋势
+  node src/cli.ts plugin-test [--json]     本地插件加载/运行自检
   node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
                                           跨 vault 本地 CI 门禁
   node src/cli.ts serve [port]            启动 Web Workbench
