@@ -14,9 +14,9 @@
 
 ## 子目录
 
-| 子目录 | 内容 | 入口 |
-| --- | --- | --- |
-| [`formal-system/`](formal-system/README.md) | 形式化协作实验基地（Rust/CUE/Alloy + 属性测试），成熟后回流主项目 | [`formal-system/README.md`](formal-system/README.md) |
-| [`livedso/`](livedso/README.md) | **LiveDSO**：本地优先的设计系统操作台；token/契约/风格卡/闸门/报告 | [`livedso/README.md`](livedso/README.md) |
-| [`liveland/`](liveland/README.md) | **LiveLand**：本地优先的世界/时代创作工具；canon/时代/实体/资产/lint/导出 | [`liveland/README.md`](liveland/README.md) |
-| [`livefile/`](livefile/README.md) | **LiveFile**：本地优先的个人档案 OS；索引/时间线/集合/来源/备份/继承 | [`livefile/README.md`](livefile/README.md) |
+| 子目录 | 内容 | 是否豁免根目录通用规则 | 入口 |
+| --- | --- | --- | --- |
+| [`formal-system/`](formal-system/README.md) | 形式化协作实验基地（Rust/CUE/Alloy + 属性测试），成熟后回流主项目 | **是**（默认，未另约定） | [`formal-system/README.md`](formal-system/README.md) |
+| [`livedso/`](livedso/README.md) | **LiveDSO**：本地优先的设计系统操作台；token/契约/风格卡/闸门/报告 | **否**（特别约定） | [`livedso/README.md`](livedso/README.md) |
+| [`liveland/`](liveland/README.md) | **LiveLand**：本地优先的世界/时代创作工具；canon/时代/实体/资产/lint/导出 | **否**（特别约定） | [`liveland/README.md`](liveland/README.md) |
+| [`livefile/`](livefile/README.md) | **LiveFile**：本地优先的个人档案 OS；索引/时间线/集合/来源/备份/继承 | **否**（特别约定） | [`livefile/README.md`](livefile/README.md) |
