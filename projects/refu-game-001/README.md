@@ -1,6 +1,6 @@
 # Refu Game 001 · 节点防线（可运行工程）
 
-> 卡面：用途＝项目入口 ｜ 依赖：[`doc/refu-game-001/`](../../doc/refu-game-001/README.md) 策划卷 ｜ 状态：M1 垂直切片可玩 · 2026-09-16
+> 卡面：用途＝项目入口 ｜ 依赖：[`docs/refu-game-001/`](../../docs/refu-game-001/README.md) 策划卷 ｜ 状态：M1 垂直切片可玩 · 2026-09-16
 > 一句话：把策划卷的"卡片即规则"落成一个**真能玩、能验收**的 Godot 4.7 竖屏塔防——铁砧联邦 12 卡 + 峡谷哨站 6 波 + 挑战卡 + 评级结算。
 
 | 我要…… | 去哪 |
@@ -51,7 +51,7 @@ projects/refu-game-001/
 ├── game/                # ★ Godot 4.7 工程
 │   ├── project.godot
 │   ├── run.sh           # 统一入口：run / editor / check / import / shot
-│   ├── assets/          # 从 doc/ 美术出图同步来的 PNG（cards/maps/units）
+│   ├── assets/          # 从 docs/ 美术出图同步来的 PNG（cards/maps/units）
 │   ├── data/            # ★ 数据表（JSON）：cards/enemies/maps/waves/challenges/rules/balance
 │   ├── scripts/
 │   │   ├── core/        # ★ 纯逻辑：battle.gd（域对象）+ battle/（41 个子系统）+ 单位/路径/卡组
@@ -111,6 +111,6 @@ python3 tools/verify_data.py          # 数据表 ↔ 策划文档 逐字段对�
 
 ## 六、与策划卷的关系
 
-- 本工程是 [`doc/refu-game-001/`](../../doc/refu-game-001/README.md) 的**实现物**，不是新的设计源：
+- 本工程是 [`docs/refu-game-001/`](../../docs/refu-game-001/README.md) 的**实现物**，不是新的设计源：
   规则冲突以策划文档为准，实测反馈写进 [04_调参与实测发现](docs/04_调参与实测发现.md) 供策划裁决；
 - 实现过程中发现的 **2 处文档/出图不一致** 已逐条记录（未擅改文档），见同文件 F5、F6。

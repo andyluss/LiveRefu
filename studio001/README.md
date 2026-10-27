@@ -20,7 +20,7 @@
 ## 二、工作区专注方向
 
 - 本工作区的长期主题是 **复古未来（Retro-futurism）** 题材的项目开发。
-- 题材/美学知识库沉淀在 [`doc/retro-futurism/`](../doc/retro-futurism/README.md)（21 篇总卷）及各专题卷 [`doc/punks/`](../doc/punks/README.md)（atompunk / biopunk / cyberpunk / dieselpunk / steampunk 等）。
+- 题材/美学知识库沉淀在 [`docs/retro-futurism/`](../docs/retro-futurism/README.md)（21 篇总卷）及各专题卷 [`docs/punks/`](../docs/punks/README.md)（atompunk / biopunk / cyberpunk / dieselpunk / steampunk 等）。
 - 各角色草案里的美学关键词（磁带未来主义、原子朋克、太空时代、蒸汽波、Y2K/Frutiger Aero 等）均可在知识库中查阅原始论述。
 
 ## 三、角色目录速览
@@ -45,10 +45,10 @@
 
 ## 四、文档约定
 
-1. **语言与格式**：简体中文，Markdown（UTF-8），与 `doc/` 现有体例保持一致。
+1. **语言与格式**：简体中文，Markdown（UTF-8），与 `docs/` 现有体例保持一致。
 2. **命名**：角色目录内统一 `README.md` 为入口；工作文档用 `两位序号_主题.md`，如 `01_美术风格方向草案.md`。
 3. **草案状态**：未定稿文档在标题注明 `（草案 v0.x）`；未决问题用 `【待定】` 标出；确定结论写入文档末尾「决策记录」。
-4. **引用**：跨角色引用用相对路径链到对方目录；引用知识库时链到 `doc/` 对应卷。
+4. **引用**：跨角色引用用相对路径链到对方目录；引用知识库时链到 `docs/` 对应卷。
 5. **变更**：每个角色目录内的文档只由该角色维护；需要其他角色意见时在文档「协作请求」小节登记。
 
 ## 五、初始待办（工作室层面）

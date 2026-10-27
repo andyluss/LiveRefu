@@ -47,7 +47,7 @@ PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
 ReadWritePaths=/var/lib/retro
-# 注意：/media 由 Caddy 静态服务，应用侧仍会读 doc/，故 doc 需可读（ProtectSystem=strict 下读是允许的）
+# 注意：/media 由 Caddy 静态服务，应用侧仍会读 docs/，故 doc 需可读（ProtectSystem=strict 下读是允许的）
 
 [Install]
 WantedBy=multi-user.target

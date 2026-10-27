@@ -52,7 +52,7 @@ type Suite = {
 }
 
 const SUITES: Suite[] = [
-  { name: 'content-sync', what: '内容/画廊生成物是否与 doc/ 一致', needs: 'none', cmd: ['bun', 'run', 'tools/sync-content.ts', '--check'] },
+  { name: 'content-sync', what: '内容/画廊生成物是否与 docs/ 一致', needs: 'none', cmd: ['bun', 'run', 'tools/sync-content.ts', '--check'] },
   { name: 'gallery-sync', what: '画廊条目是否最新', needs: 'none', cmd: ['bun', 'run', 'tools/sync-gallery.ts', '--check'] },
   { name: 'build-artifacts', what: '构建产物完整性（srvx 条件导出等）', needs: 'none', cmd: ['bun', 'run', 'tools/check-build.ts'] },
   { name: 'contrast', what: 'WCAG 对比度 + 视觉层级', needs: 'none', cmd: ['bun', 'run', 'tools/verify-contrast.ts'] },

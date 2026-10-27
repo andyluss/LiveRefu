@@ -1,6 +1,6 @@
 ; Engine configuration file.
 ; Refu Game 001 · 卡片式塔防（M1 垂直切片：铁砧联邦 12 卡 + 峡谷哨站 6 波）
-; 竖屏手机优先（doc/refu-game-001/07_移动端与界面.md）；渲染器与工作区主线一致用 GL Compatibility。
+; 竖屏手机优先（docs/refu-game-001/07_移动端与界面.md）；渲染器与工作区主线一致用 GL Compatibility。
 
 config_version=5
 

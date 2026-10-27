@@ -45,7 +45,7 @@ const navLinks = [
     <footer class="site-footer">
       <div class="wrap">
         《明日档案》· 复古未来主义知识库 —— 内容正文以
-        <code>doc/</code> 为唯一权威，本站在构建期由
+        <code>docs/</code> 为唯一权威，本站在构建期由
         <code>tools/sync-content.ts</code> 单向生成。
       </div>
     </footer>

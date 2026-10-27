@@ -98,7 +98,7 @@ function collect(): string[] {
       if (isCovered(rel)) out.push(rel)
     }
   }
-  for (const top of ['projects', 'lab', 'doc', 'indie']) {
+  for (const top of ['projects', 'lab', 'docs', 'indie']) {
     const abs = join(ROOT, top)
     if (existsSync(abs)) walk(abs)
   }

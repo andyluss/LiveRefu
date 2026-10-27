@@ -2,7 +2,7 @@
 
 > 主美术 · 2026-09-08 13:20 · 状态：**M1 美术基线（placeholder 美术的"带温度"定调）**，供程序 / 图形 / UI 收敛。
 > 生效范围：**仅磁带暖未来频道（M1 = 单频道闭环）**。太空 / 蒸汽波在本基线**不做任何正式美术铺路**（见 §六 范围守门）。
-> 依据：开发计划 [`00-project-plan.md`](../../plans/00-project-plan.md) §四「磁带 LUT / 基调色值」与 M1 验收 #1「频道氛围成立（占位皮肤 + 音景 + 低打扰轮播；关动态后静态底图+音景仍成立）」；主美术 [`01_art-direction-draft.md`](01_art-direction-draft.md)（方向 A 磁带）、[`02_art-spec-draft.md`](02_art-spec-draft.md)（规格骨架）、[`04_response-gdd.md`](04_response-gdd.md)（母意象「容器暖光 × 频道色」双层光）；图形程序员 A [`04_response-gdd.md`](../graphics-programmer-a/04_response-gdd.md) §八（双层光 Way A 分层合成）；知识库 [14_磁带篇](../../../../doc/retro-futurism/14_磁带篇_磁带未来主义_模拟接口的暖未来.md)；素材库 [`moodboard/方向A_磁带暖未来/`](moodboard/方向A_磁带暖未来/)（17 张，可参考复用）。
+> 依据：开发计划 [`00-project-plan.md`](../../plans/00-project-plan.md) §四「磁带 LUT / 基调色值」与 M1 验收 #1「频道氛围成立（占位皮肤 + 音景 + 低打扰轮播；关动态后静态底图+音景仍成立）」；主美术 [`01_art-direction-draft.md`](01_art-direction-draft.md)（方向 A 磁带）、[`02_art-spec-draft.md`](02_art-spec-draft.md)（规格骨架）、[`04_response-gdd.md`](04_response-gdd.md)（母意象「容器暖光 × 频道色」双层光）；图形程序员 A [`04_response-gdd.md`](../graphics-programmer-a/04_response-gdd.md) §八（双层光 Way A 分层合成）；知识库 [14_磁带篇](../../../../docs/retro-futurism/14_磁带篇_磁带未来主义_模拟接口的暖未来.md)；素材库 [`moodboard/方向A_磁带暖未来/`](moodboard/方向A_磁带暖未来/)（17 张，可参考复用）。
 
 ---
 

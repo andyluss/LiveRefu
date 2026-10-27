@@ -31,7 +31,7 @@ const fmtDate = (d: string) => d?.slice(0, 10) ?? ''
       <h1 class="hero__title">博客</h1>
       <p class="hero__lede">
         编辑部写作：站点说明、方法论笔记、以及读论文集时顺手记下的东西。
-        与 Wiki 不同，这里是<strong>新写作</strong>，不是 <code>doc/</code> 的呈现。
+        与 Wiki 不同，这里是<strong>新写作</strong>，不是 <code>docs/</code> 的呈现。
       </p>
     </div>
 

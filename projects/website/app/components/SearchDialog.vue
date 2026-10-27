@@ -163,7 +163,7 @@ function breadcrumb(hit: { titles: string[]; title: string }) {
                 >
                   <span class="search-hit__crumb">{{ breadcrumb(hit) }}</span>
                   <span class="search-hit__title" v-html="hit.snippets?.title || hit.title" />
-                  <!-- eslint-disable-next-line vue/no-v-html -- 内容为本地 doc/ 生成，非用户输入 -->
+                  <!-- eslint-disable-next-line vue/no-v-html -- 内容为本地 docs/ 生成，非用户输入 -->
                   <span class="search-hit__snippet" v-html="snippetHtml(hit)" />
                 </a>
               </li>

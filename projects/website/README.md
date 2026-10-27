@@ -1,6 +1,6 @@
 # 《未来档案》· 复古未来主义网站
 
-> 卡面：用途＝项目入口 ｜ 依赖：内容源 [`doc/retro-futurism/`](../../doc/retro-futurism/README.md) + [`doc/punks/`](../../doc/punks/README.md) ｜ 状态：**M0+M1 已交付、M2 第一阶段（Giscus）已上线并端到端验证、M3 除部署外完成** · 2026-10-03
+> 卡面：用途＝项目入口 ｜ 依赖：内容源 [`docs/retro-futurism/`](../../docs/retro-futurism/README.md) + [`docs/punks/`](../../docs/punks/README.md) ｜ 状态：**M0+M1 已交付、M2 第一阶段（Giscus）已上线并端到端验证、M3 除部署外完成** · 2026-10-03
 > 一句话：把工作区已有的 14 万字复古未来主义知识库，做成一个**可读、可逛、可讨论**的站点——Wiki 承载知识体系、博客承载编辑部写作、画廊承载视觉素材、论坛承载读者讨论。
 
 > **改名记录（2026-10-03）**：项目名由《明日档案》改为 **《未来档案》**，
@@ -55,7 +55,7 @@ bun run verify --skip=browser          # CI 无头环境：跳过需要浏览器
 <summary>各套件明细（点击展开）</summary>
 
 ```
-✓ content-sync     内容/画廊生成物与 doc/ 一致
+✓ content-sync     内容/画廊生成物与 docs/ 一致
 ✓ gallery-sync     画廊条目是否最新
 ✓ build-artifacts  构建产物完整性（srvx 条件导出等）
 ✓ contrast         27 个前景/背景组合达 WCAG AA + 视觉层级断言
@@ -82,7 +82,7 @@ bun run verify --skip=browser          # CI 无头环境：跳过需要浏览器
 ## 三、M0 交付回顾（内容适配层）
 
 M0 的出口判据「91 篇论文能自动变成站点页面且交叉链接可点」**超额达成**（实际 129 篇）。
-核心是[内容适配层](tools/sync-content.ts)：把 `doc/` **单向、幂等**转换，**不改源文件一个字节**，
+核心是[内容适配层](tools/sync-content.ts)：把 `docs/` **单向、幂等**转换，**不改源文件一个字节**，
 解决源文档三个"不能直接贴上网"的特征：
 
 | 源文档现状 | 问题 | 适配层处理 |
@@ -122,7 +122,7 @@ projects/website/
 │   │   ├── migrate.ts        # ★ 迁移执行器（幂等，只需 Bun）
 │   │   └── migrations/       # ★ 迁移 SQL（schema 的唯一真相，必须入库）
 │   └── routes/
-│       ├── media/[...].get.ts        # ★ /media/** → 只读暴露 doc/ 下素材（含穿越防护）
+│       ├── media/[...].get.ts        # ★ /media/** → 只读暴露 docs/ 下素材（含穿越防护）
 │       ├── api/health/storage.get.ts # ★ 存储健康检查（真做读写 + 外键验证）
 │       ├── og.png.get.ts             # ★ OG 分享图（1200×630，带强缓存）
 │       ├── rss.xml.ts                # RSS 2.0
@@ -133,8 +133,8 @@ projects/website/
 │   ├── retro-futurism.service# systemd 单元（必须用 bun 启动）
 │   └── litestream.yml        # 持续备份到对象存储
 ├── tools/
-│   ├── sync-content.ts       # ★ 内容适配层（doc/ → content/wiki/）
-│   ├── sync-gallery.ts       # ★ 画廊条目生成（doc/美术 → content/gallery/）
+│   ├── sync-content.ts       # ★ 内容适配层（docs/ → content/wiki/）
+│   ├── sync-gallery.ts       # ★ 画廊条目生成（docs/美术 → content/gallery/）
 │   ├── check-build.ts        # ★ 构建后置：产物完整性（srvx 条件导出补齐）
 │   ├── backup-db.ts          # ★ 备份 + **自校验**（未验证的备份等于没有备份）
 │   ├── verify-site.ts        # ★ 验收：全篇目 + 索引页 + 站内链接可达性
@@ -157,7 +157,7 @@ cd projects/website
 export PATH="/opt/homebrew/bin:$PATH"   # 本机 Bun 在 /opt/homebrew/bin
 
 bun install
-bun run sync:all        # doc/ → content/wiki/ + content/gallery/（改过 doc/ 或 tools/ 后重跑）
+bun run sync:all        # docs/ → content/wiki/ + content/gallery/（改过 docs/ 或 tools/ 后重跑）
 bun run dev             # 开发服务器
 
 bun run build           # 生产构建 + 产物校验（注意：产物要用 bun 运行）
@@ -212,8 +212,8 @@ bun run tools/verify-giscus.ts --base=http://localhost:3100 --base-configured=ht
 
 ## 七、五个关键设计判断
 
-1. **`doc/` 是唯一内容权威**，站点是呈现层——不复制、不改写正文；
-2. **写「内容适配层」而非手工改 doc/**（原因见 §四）；
+1. **`docs/` 是唯一内容权威**，站点是呈现层——不复制、不改写正文；
+2. **写「内容适配层」而非手工改 docs/**（原因见 §四）；
 3. **读优先，写其次**：Wiki/博客/画廊的性能优先于论坛功能深度；
 4. **「七纪时间轴」做成全局导航**：画廊按年代筛选与 Wiki 按纪读史共用一个心智模型——这是本站的记忆点；
 5. **论坛与内容分家**：文件式内容（Nuxt Content）与关系型社区数据（数据库）分别选型，不强行统一。

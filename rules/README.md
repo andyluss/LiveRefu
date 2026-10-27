@@ -10,7 +10,7 @@
 
 | 编号 | 规则 | 一句话 | 状态 | 技术详解 |
 | --- | --- | --- | --- | --- |
-| R01 | [文档约定](R01-docs-convention.md) | 简体中文 Markdown；doc/studio001 体例；相对链接深度；东八区日期 | 已定·现行 | [`tech/docs-convention.md`](../tech/docs-convention.md) |
+| R01 | [文档约定](R01-docs-convention.md) | 简体中文 Markdown；docs/studio001 体例；相对链接深度；东八区日期 | 已定·现行 | [`tech/docs-convention.md`](../tech/docs-convention.md) |
 | R02 | [Git 与提交信息约定](R02-git-convention.md) | Conventional Commits；描述用中文、标记用英文；AI 自动提交 | 已定·现行 | [`tech/git-convention.md`](../tech/git-convention.md) |
 | R03 | [相对链接校验](R03-link-validation.md) | pre-commit 钩子 + CI 两道闸门校验内部相对链接 | 已定·已落地 | [`tech/hooks-readme.md`](../tech/hooks-readme.md) |
 | R04 | [数据 schema 校验](R04-data-validation.md) | 数据表按 schema 契约校验（必填/type/enum/范围） | 已定·已落地 | [`tech/formalization.md`](../tech/formalization.md)（数据契约部分） |
@@ -40,11 +40,11 @@
 
 | 目录 | 为何豁免 | 推翻条件 |
 | --- | --- | --- |
-| `doc/`（无顶层 README，见下） | **题材知识库自成体系**（编号卷 + 各专题卷 + 合订本），目的是**内容**而非工程结构；强套 M1/M2 的类型词表需要大规模重构，而收益极低 | 若决定整体重构知识库体例，则重新评估 |
+| `docs/`（无顶层 README，见下） | **题材知识库自成体系**（编号卷 + 各专题卷 + 合订本），目的是**内容**而非工程结构；强套 M1/M2 的类型词表需要大规模重构，而收益极低 | 若决定整体重构知识库体例，则重新评估 |
 | [`studio001/`](../studio001/README.md) | **已搁置的历史资料，刻意冻结**——对历史记录做结构检查，会迫使修改"当时的记录"，与本工作区"**保留当时的判断**"的原则冲突 | 若决定重新启用该目录（而非留档），则重新评估 |
 
-> **已补齐（2026-10-08）**：`doc/` 此前缺少顶层出入口，而根 [`README.md`](../README.md) 的"你是哪种读者"正把非技术读者指向这里——
-> 没有索引页会让人"进去看到一堆卷、不知从哪开始"。现已新增 [`doc/README.md`](../doc/README.md)（**纯索引**：只维护"有哪几卷、入口在哪"，
+> **已补齐（2026-10-08）**：`docs/` 此前缺少顶层出入口，而根 [`README.md`](../README.md) 的"你是哪种读者"正把非技术读者指向这里——
+> 没有索引页会让人"进去看到一堆卷、不知从哪开始"。现已新增 [`docs/README.md`](../docs/README.md)（**纯索引**：只维护"有哪几卷、入口在哪"，
 > **不维护卷内清单**，避免与各卷卷首分叉）。这属于 M1 的出入口要求，**与豁免不冲突**——豁免的是卷内的结构与命名，
 > 出入口是给人指路的，本就该有。
 
@@ -62,14 +62,14 @@
 | **block** | 纳入闸门，必须 0 违规 | `rules/`、`projects/mainline/`、`tech/`、`tools/`、`projects/livefab/`、`projects/tomorrows-channel/`、`projects/refu-game-001/`、`projects/website/` |
 | **report** | 只报告不拦截，欠账可见 | **（空）** |
 | **pending** | 尚未配置 | **（空）** |
-| **exempt** | 按本节豁免 | `doc/`、`studio001/`、`indie/`、`lab/` |
+| **exempt** | 按本节豁免 | `docs/`、`studio001/`、`indie/`、`lab/` |
 
 **当前状态：`report` 与 `pending` 均已归零——工作区不再有"没被检查、也没被说明"的关注点。** 每个顶层关注点要么纳入闸门，要么有**写在明处的豁免理由**。
 
 - **为什么不全开**：实测用通用配置跑 `projects/` 会产出上百条**因配置不全而来的假阳性**；闸门一旦变成噪声，人就开始绕过它，比不查更糟。
 - **怎么推进**：某个关注点先写自己的判定配置 → 跑到 0 违规 → 把它的 `mode` 从 `report` 改成 `block`。**一次只开一个，且开之前先确认是干净的。**
   2026-10-08 首批转正三个：`tech/`（10 合规）、`projects/tomorrows-channel`（29）、`projects/refu-game-001`（18）——它们本来就只有通用配置，写了专门配置后一次达标。
-  同日续转四个：`tools/`（11）、`projects/livefab`（21）、`projects/website`（34），并把 `doc/` 与 `studio001/` 明确定为豁免。
+  同日续转四个：`tools/`（11）、`projects/livefab`（21）、`projects/website`（34），并把 `docs/` 与 `studio001/` 明确定为豁免。
   **实测结论：这些"欠账"全部是配置精度的产物，不是真结构债**——例如 `website` 的 6 条里有 3 条是**被 gitignore 的生成物目录**（`.data`/`.output`/`backups`）。
   写配置时踩到一个值得记的点：**`skip_prefixes`（点开头）只过滤文件、不过滤目录**，所以 `.output` 这类点目录必须显式写进 `skip_dirs`。
 

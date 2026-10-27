@@ -1,7 +1,7 @@
 extends Node
 ## GameData —— 数据表门面（autoload）：只持有数据 + 转发查询，实现见 data/ 下的两个静态类。
 ##
-## 数据来源：game/data/*.json，由 tools/ 下的脚本从 doc/refu-game-001/ 的策划文档抽取并交叉
+## 数据来源：game/data/*.json，由 tools/ 下的脚本从 docs/refu-game-001/ 的策划文档抽取并交叉
 ## 校验（tools/verify_data.py）。**游戏逻辑只通过本节点读数据**，卡片规则层字段不在代码里硬编码，
 ## 保证"改数据不改代码"。
 

@@ -2,7 +2,7 @@
 
 > 记录本项目的里程碑、关键决策与工程变更。遵循 Keep a Changelog 风格：
 > `新增` / `变更` / `修复` / `移除`。项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/README.md)。
-> 策划卷（设计源）在 [`doc/refu-game-001/`](../../doc/refu-game-001/README.md)，本项目是其实现物。
+> 策划卷（设计源）在 [`docs/refu-game-001/`](../../docs/refu-game-001/README.md)，本项目是其实现物。
 
 ## [0.1.4] - 2026-09-16 15:44
 

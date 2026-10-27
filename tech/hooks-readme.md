@@ -2,7 +2,7 @@
 
 > 本文说明本仓库用**两级闸门**校验 Markdown 相对链接：本地 pre-commit 钩子（提交前）+ CI 链接检查（提交后兜底）。工具脚本见 [`../tools/check_links.ts`](../tools/check_links.ts)、[`../tools/install_hooks.sh`](../tools/install_hooks.sh)、[`../tools/hooks/pre-commit`](../tools/hooks/pre-commit)。
 > **规则权威**：[`rules/R03-link-validation.md`](../rules/R03-link-validation.md)（R03 相对链接校验）。本文为**技术详解 / 实施说明**。
-> 为什么需要：本工作区文档大量使用跨目录相对链接（如 `studio001/主策划/` 指向 `doc/` 知识库），深度写错（`../doc` 应为 `../../doc`）会在本地 IDE / 预览器 / 网页版变成失效链接。
+> 为什么需要：本工作区文档大量使用跨目录相对链接（如 `studio001/主策划/` 指向 `docs/` 知识库），深度写错（`../doc` 应为 `../../doc`）会在本地 IDE / 预览器 / 网页版变成失效链接。
 
 ---
 
@@ -42,7 +42,7 @@ git config core.hooksPath tools/hooks
 | `projects/tomorrows-channel/data/{tables,schema}/` | 数据表 schema 契约（[R04](../rules/R04-data-validation.md)） | [`tools/check_data.ts`](../tools/check_data.ts) |
 | `lab/formal-system/` | 元规则结构 M1+M2 / 演进 M3 / `STRUCTURE.md` M4 | `lab/formal-system/concerns/meta-rules/*.ts` |
 | `rules/` | 规则目录结构 M1+M2 + 规则演进 M3（**覆盖元规则 M 与具体规则 R**） | [`rules/meta/tools/meta_rules_check.ts`](../rules/meta/tools/meta_rules_check.ts)、[`rules/meta/evolution/rule_evolution_check.ts`](../rules/meta/evolution/rule_evolution_check.ts) |
-| `doc/refu-game-001/`、`tools/sim_refu_game_001.ts` | Refu Game 001 难度模型：自检 + 章节带位 + 远征节点带位 | [`tools/sim_refu_game_001.ts`](../tools/sim_refu_game_001.ts) |
+| `docs/refu-game-001/`、`tools/sim_refu_game_001.ts` | Refu Game 001 难度模型：自检 + 章节带位 + 远征节点带位 | [`tools/sim_refu_game_001.ts`](../tools/sim_refu_game_001.ts) |
 
 > `rules/` 两项为**目录级**检查（扫 `rules/` 全树），故以"暂存是否涉及 `rules/`"为触发条件。
 

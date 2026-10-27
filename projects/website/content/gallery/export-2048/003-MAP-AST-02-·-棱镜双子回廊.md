@@ -6,5 +6,5 @@ media: "image"
 src: "/media/refu-game-001/美术/导出/2048/MAP_MAP-AST-02_棱镜双子回廊.png"
 order: 3
 tags: ["高清导出"]
-credit: "doc/refu-game-001/美术/导出/2048"
+credit: "docs/refu-game-001/美术/导出/2048"
 ---

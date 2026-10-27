@@ -119,6 +119,6 @@ projects/future-debris/
 ## 七、相关
 
 - 决策与提案：[`../mainline/`](../README.md) ｜ 决策总表：[`00_决策总表`](../docs/00_决策总表.md)
-- 题材知识库（世界观与纪元划分的权威）：[`../../doc/retro-futurism/`](../../../doc/retro-futurism/README.md)
+- 题材知识库（世界观与纪元划分的权威）：[`../../docs/retro-futurism/`](../../../docs/retro-futurism/README.md)
 - 被并入/参考的既有工程：[`../refu-game-001/`](../../refu-game-001/README.md)（工程分层与验收方式的来源）
 - 工作区变更日志：[`../../CHANGELOG.md`](../../../CHANGELOG.md)

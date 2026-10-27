@@ -14,6 +14,8 @@
 ## [未发布]
 
 ### 变更
+- **知识库目录更名 `doc/` → `docs/`**：`git mv` 整体迁移 566 个文件；同步根 README、AGENTS、rules/tech/tools、design/studio001/projects、网站内容层与 Godot 数据脚本中的根路径引用；`indie/` 内部的项目级 `doc/` 保持不动；`workspace-scope` 的豁免路径改为 `docs`。链接校验 0 失效。
+- **收编《磷环》Phosphorus Loop**：把未提交的塔防卡牌设计稿纳入 `docs/phosphorus-loop/PhosphorusLoop.md`；核心是“磷不是敌人，流失才是”，三层时间尺度 + 维护力/信任资源。
 - **[`AGENTS.md`](AGENTS.md) 新增「七、网络与代理」**：联网前先检测代理（环境变量 → 常见本地端口 7897/7890/1087/1080/8080/8888/6152/10808）；**走代理只用一次性参数**（`git -c http.proxy=…` / `curl --proxy` / `npm` 用前置环境变量），**禁止写进全局配置**（代理随时会被关，写死会变成"没网也连不上"的持久故障）；代理失败时**先去代理再试一次，两次都不行就停下并告知用户**（错误原文 + 代理地址 + 已试过的两种方式）；并记下"远端操作可能部分成功，失败后先 `ls-remote` 核对再补动作"这条实测教训。原「七、本文件的变更」顺延为「八」。
 - 生成物与一次性代理的取舍：内置 `web_fetch` / `web_search` **无法指定代理**，其失败而命令行可用时改用 `curl --proxy` 抓取。
 - **元规则 M1/M2 的判定配置为新目录留出入口**：[`rules/meta/tools/config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置（`projects/mainline/cards/` 自带 README，按 M1 属"可自成一体"的子关注点），并把点文件（`.gitignore`）纳入命名白名单——原先的正则要求首字符为字母数字，会把点文件判为"根目录未声明文件"。
@@ -96,36 +98,36 @@
 - **设计系统 v0.2 第三阶段：共享 Web 组件层与渐进接入**：[`design/kits/web/components.css`](design/kits/web/components.css) 提供 `.lr-button` / `.lr-panel` / `.lr-field`；生成副本接入[网站](projects/website/app/assets/components.generated.css)与 [LiveFab](projects/livefab/portal/src/assets/components.generated.css)；网站 4 文件 / 12 处 button、6 文件 / 22 处 panel、搜索框 1 处 field，LiveFab 1 处 button + 1 处 panel。新增 [`build_web_kit.ts`](design/tools/build_web_kit.ts)（3/3）、[`check_component_usage.ts`](design/tools/check_component_usage.ts)（4/4）与[组件预览图](design/kits/web/preview.png)。**渐进接入，不建组件库**；完整视觉/键盘走查待做。
 - **设计系统 v0.2 产品走查（真实渲染 + Tab）**：网站首页 / Wiki 列表 / 搜索弹窗 / LiveFab 首页 4 个页面、53 步 Tab、**0 个缺失可见焦点**；截图与报告在 [`design/docs/shots/`](design/docs/shots/)，结论见 [`design/docs/09_产品走查_v0.2.md`](design/docs/09_产品走查_v0.2.md)。运行发现网站构建产物在本机 Bun 1.4.0 下触发 NAPI 崩溃（SIGABRT），改用 Node 完成走查；部署运行时需复核。
 - **设计系统 v0.2 第四阶段：皮肤收口**：卡片圆角 6 → 8px（EX-20261021-02 resolved）；新增 `lr-button--technical` / `--outline` 变体；删除网站 `.deco-btn` / `.card` 与 LiveFab `.cta` / `ul.svc li` 的重复基础皮肤；修复 `white-space: nowrap` 误加 panel 的回归；重跑 4 页 / 53 步 Tab / 0 缺失焦点。记录见 [`design/docs/10_皮肤收口_v0.2.md`](design/docs/10_皮肤收口_v0.2.md)。
-- 新增 [`doc/tower-defense/可视化/`](doc/tower-defense/可视化/README.md)：塔防研究卷的**离线可交互图**（自包含 HTML，无外部依赖）——[00 总图索引](doc/tower-defense/可视化/00_总图_研究可视化索引.html)（文档→图关系网）、[01 视觉语法·一屏四问](doc/tower-defense/可视化/01_视觉语法_一屏四问.html)（图层开关实时判定四项关键信息＋1 秒读图自测，含八条画面检查表）、[02 难度标签·可解释难度](doc/tower-defense/可视化/02_难度标签_可解释难度.html)（B/P 滑块 → D、λ=1.35·D³、解析通关率与四档标签，含指标矩阵与远征双口径）、[03 视觉谱系·五种取向](doc/tower-defense/可视化/03_视觉谱系_五种取向.html)；研究卷卷首、美学卷与 AI 卷 README 加入口，策划侧可视化 README 增相关链接。
+- 新增 [`docs/tower-defense/可视化/`](docs/tower-defense/可视化/README.md)：塔防研究卷的**离线可交互图**（自包含 HTML，无外部依赖）——[00 总图索引](docs/tower-defense/可视化/00_总图_研究可视化索引.html)（文档→图关系网）、[01 视觉语法·一屏四问](docs/tower-defense/可视化/01_视觉语法_一屏四问.html)（图层开关实时判定四项关键信息＋1 秒读图自测，含八条画面检查表）、[02 难度标签·可解释难度](docs/tower-defense/可视化/02_难度标签_可解释难度.html)（B/P 滑块 → D、λ=1.35·D³、解析通关率与四档标签，含指标矩阵与远征双口径）、[03 视觉谱系·五种取向](docs/tower-defense/可视化/03_视觉谱系_五种取向.html)；研究卷卷首、美学卷与 AI 卷 README 加入口，策划侧可视化 README 增相关链接。
 - 塔防研究卷再增两卷并统一数值口径：
-  ① 新增 [`tower-defense/美学卷/`](doc/tower-defense/美学卷/README.md)（5 篇约 10,273 汉字）：视觉语法（一屏四问、俯视与等距取舍、路径四层编码、明度分带与色加形、特效优先级与粒子预算、8 条画面检查表）、复古未来（雷达屏/沙盘/剖面/指挥台四母题、CRT 后处理上限、三件载体分工、单主光与反例）、千禧透明（四层结构×三档透明度、四个系统可视化收益、可读性四保险与 bling 三级、键色 60/25/10/5）、读图效率（1 秒四问测试、字号与对比度口径、裁决顺序、信息密度预算、发布前 10 条验收表）、代表作视觉谱系（五种取向对照）；
-  ② 新增 [`tower-defense/AI卷/`](doc/tower-defense/AI卷/README.md)（5 篇约 9,974 汉字）：AI 基准适配性（六个友好属性与四条限制、三类任务、最小可行协议）、复杂度与最优解边界（Suttichaya NP-hard 的准确表述 + Greedy Spiders 对照 + 近似算法）、LLM/RL 进展（TowerMind AAAI-26、IEEE CoG 2024、LiverDefense）、可解释难度（`B/P/D` 三元组、标签协议、五项指标矩阵）、实验协议与 12 条复现清单；
-  ③ **数值口径统一**：远征八节点改为"设计表 84.4%→3.6%（23 号文档）／脚本 `--verify-rogue --n 20000` 实测 84.5%→3.8%"并列呈现，论文、数值卷 01/05/06 同步，并注明差异来源（随机种子与样本量，逐点 ≤0.6pp）；论文第九、十一节与附录 B 补入两卷互链，`tower-defense/README` 分卷表与 `doc/README` 卷行同步。 ④ **论文按 AI 文献核对补正**（现 16,170 汉字）：细化 CoG 2024 一行（实验对象为《植物大战僵尸》、PPO 选策略 + 脚本 AI 执行、用于关卡自动化测试、报告成功率），补 TowerMind 的观测形态/战争迷雾/合法动作率/人类基线，补 LiverDefense 与 ITOR 两篇的作者与卷期，新增 5.1 节的三条经典出处（Karp 1972 集合覆盖、Nemhauser-Wolsey-Fisher 1978 贪心近似、Itai 等 1982 网格哈密顿路径），并在 11.3 增列"AI 做关卡测试"这一落地用途。
+  ① 新增 [`tower-defense/美学卷/`](docs/tower-defense/美学卷/README.md)（5 篇约 10,273 汉字）：视觉语法（一屏四问、俯视与等距取舍、路径四层编码、明度分带与色加形、特效优先级与粒子预算、8 条画面检查表）、复古未来（雷达屏/沙盘/剖面/指挥台四母题、CRT 后处理上限、三件载体分工、单主光与反例）、千禧透明（四层结构×三档透明度、四个系统可视化收益、可读性四保险与 bling 三级、键色 60/25/10/5）、读图效率（1 秒四问测试、字号与对比度口径、裁决顺序、信息密度预算、发布前 10 条验收表）、代表作视觉谱系（五种取向对照）；
+  ② 新增 [`tower-defense/AI卷/`](docs/tower-defense/AI卷/README.md)（5 篇约 9,974 汉字）：AI 基准适配性（六个友好属性与四条限制、三类任务、最小可行协议）、复杂度与最优解边界（Suttichaya NP-hard 的准确表述 + Greedy Spiders 对照 + 近似算法）、LLM/RL 进展（TowerMind AAAI-26、IEEE CoG 2024、LiverDefense）、可解释难度（`B/P/D` 三元组、标签协议、五项指标矩阵）、实验协议与 12 条复现清单；
+  ③ **数值口径统一**：远征八节点改为"设计表 84.4%→3.6%（23 号文档）／脚本 `--verify-rogue --n 20000` 实测 84.5%→3.8%"并列呈现，论文、数值卷 01/05/06 同步，并注明差异来源（随机种子与样本量，逐点 ≤0.6pp）；论文第九、十一节与附录 B 补入两卷互链，`tower-defense/README` 分卷表与 `docs/README` 卷行同步。 ④ **论文按 AI 文献核对补正**（现 16,170 汉字）：细化 CoG 2024 一行（实验对象为《植物大战僵尸》、PPO 选策略 + 脚本 AI 执行、用于关卡自动化测试、报告成功率），补 TowerMind 的观测形态/战争迷雾/合法动作率/人类基线，补 LiverDefense 与 ITOR 两篇的作者与卷期，新增 5.1 节的三条经典出处（Karp 1972 集合覆盖、Nemhauser-Wolsey-Fisher 1978 贪心近似、Itai 等 1982 网格哈密顿路径），并在 11.3 增列"AI 做关卡测试"这一落地用途。
 - 塔防研究卷扩为三卷，并按新开的网络代理**补做联网事实核查**：
   ① **论文修订**（15,548 汉字）：补入经核查的硬事实（Missile Command 1980-06／Rampart 1990-10 的机制与"prototypical tower defense"出处、Turret Defense 2000-05 与 Sunken Defense 2001-11 的可考最早命名、COM2uS 2007/2008 "Tower Defense" 商标与 2010 发函、Flash Element TD 2007-01-12、Desktop Tower Defense 2007-03-03 的"无预设路径"与 mazing 动机及 1,570 万次游玩、PvZ 主创受魔兽 III mod 启发的反向提问、Kingdom Rush 2011-07-28 Flash 首发与销量口径冲突、Bloons TD 2009 因商标改名、Sanctum/Orcs Must Die! 与 Iron Grip: Warlord 2008、Anomaly 2011-04-08、保卫萝卜 2.5 亿下载、明日方舟收入数据标注二手转述），新增 4.9 词源与命名史、mazing/juggling/hybrid/tower wars 术语、AI 与优化文献表（TowerMind AAAI-26、IEEE CoG 2024、LiverDefense、ITOR 背包建模），并加入一条**引文警告**：FUN 2018 的 Restricted Power 研究的是 Greedy Spiders 而非塔防；
-  ② 新增 [`tower-defense/案例卷/`](doc/tower-defense/案例卷/README.md)（4 篇约 9,847 汉字）：Rampart 与 Desktop Tower Defense、PvZ 与 Kingdom Rush、Bloons TD 与 Sanctum/Orcs Must Die!、Anomaly 与明日方舟/保卫萝卜，统一六段模板（档案／七要件拆解／它证明了什么／可迁移做法／来源／互链）；
-  ③ 新增 [`tower-defense/数值卷/`](doc/tower-defense/数值卷/README.md)（7 篇约 9,254 汉字）：模型定义与推导（含模型 vs 实测 8 行对照）、八步参数标定、横向对照方法（置信度 A/B/C 与不等价性）、敏感性分析（实跑：γ=2/4 与 cap=2/4 均 FAIL，只有 γ=3 五章全 PASS）、验收与 CI、远征与挑战卡数学校验、建模常见错误；`tower-defense/README`、`doc/README` 卷行与卷首同步。
-- 新增研究卷 [`doc/tower-defense/`](doc/tower-defense/README.md)：**《塔防游戏研究：内涵与外延》**（约 1.4 万汉字，单篇论文）——内涵（七个构成要件 + 判据测试表）、外延（家族相似与「要素 × 类型」判定矩阵）、历史谱系（Missile Command / Rampart / 魔兽 III 自定义图 / Desktop Tower Defense / PvZ / Kingdom Rush / Anomaly / 保卫萝卜 / 明日方舟）、形式分析（`B`、`D=(B/B_ref)×(P_ref/P)`、泊松漏怪与胜率函数，附本作五章 94.9%→43.6% 与远征 84.4%→3.6% 实测表）、设计空间与五种亚型、心理（Flow/MDA/损失厌恶/结构随机）、经济与关卡成本、美学与在地化、坏塔防六症状、融合接口与 AI 方向，附录含术语表、文献与资料（含 [Desktop tower defense is NP-hard](https://doi.org/10.1007/978-3-319-60675-0_2) 及理论著作）与 20 条设计检查清单；`doc/README.md` 由三卷更新为四卷并增入口。
-- **补上知识库出入口 [`doc/README.md`](doc/README.md)**（此前 `doc/` 没有顶层 README，是上一轮记下的待办）：
-  - **为什么需要**：`doc/` 是知识库，读者一进去会看到一堆卷而不知从哪开始；而根 [`README.md`](README.md) 的"你是哪种读者"**正把非技术维护者指向这里**——没有索引页，友好度就在最后一跳断掉。
+  ② 新增 [`tower-defense/案例卷/`](docs/tower-defense/案例卷/README.md)（4 篇约 9,847 汉字）：Rampart 与 Desktop Tower Defense、PvZ 与 Kingdom Rush、Bloons TD 与 Sanctum/Orcs Must Die!、Anomaly 与明日方舟/保卫萝卜，统一六段模板（档案／七要件拆解／它证明了什么／可迁移做法／来源／互链）；
+  ③ 新增 [`tower-defense/数值卷/`](docs/tower-defense/数值卷/README.md)（7 篇约 9,254 汉字）：模型定义与推导（含模型 vs 实测 8 行对照）、八步参数标定、横向对照方法（置信度 A/B/C 与不等价性）、敏感性分析（实跑：γ=2/4 与 cap=2/4 均 FAIL，只有 γ=3 五章全 PASS）、验收与 CI、远征与挑战卡数学校验、建模常见错误；`tower-defense/README`、`docs/README` 卷行与卷首同步。
+- 新增研究卷 [`docs/tower-defense/`](docs/tower-defense/README.md)：**《塔防游戏研究：内涵与外延》**（约 1.4 万汉字，单篇论文）——内涵（七个构成要件 + 判据测试表）、外延（家族相似与「要素 × 类型」判定矩阵）、历史谱系（Missile Command / Rampart / 魔兽 III 自定义图 / Desktop Tower Defense / PvZ / Kingdom Rush / Anomaly / 保卫萝卜 / 明日方舟）、形式分析（`B`、`D=(B/B_ref)×(P_ref/P)`、泊松漏怪与胜率函数，附本作五章 94.9%→43.6% 与远征 84.4%→3.6% 实测表）、设计空间与五种亚型、心理（Flow/MDA/损失厌恶/结构随机）、经济与关卡成本、美学与在地化、坏塔防六症状、融合接口与 AI 方向，附录含术语表、文献与资料（含 [Desktop tower defense is NP-hard](https://doi.org/10.1007/978-3-319-60675-0_2) 及理论著作）与 20 条设计检查清单；`docs/README.md` 由三卷更新为四卷并增入口。
+- **补上知识库出入口 [`docs/README.md`](docs/README.md)**（此前 `docs/` 没有顶层 README，是上一轮记下的待办）：
+  - **为什么需要**：`docs/` 是知识库，读者一进去会看到一堆卷而不知从哪开始；而根 [`README.md`](README.md) 的"你是哪种读者"**正把非技术维护者指向这里**——没有索引页，友好度就在最后一跳断掉。
   - **做法：纯索引，只指路不重述**。本文只维护"**有哪几卷、入口在哪**"，**卷内清单一律交给各卷自己的卷首**——两处清单必然分叉（这是本工作区反复验证过的模式）。
   - 内容：三卷一览（含规模与入口）+ **按目的分流**（先看全局地图 / 通读主卷 / 只读某个"××朋克" / 离线合订本 / 看某款游戏策划 / 查术语），并写明**题材权威在此、其它部分引用而不复制**。
-  - 与豁免的关系：`doc/` 豁免的是**卷内结构与命名**（机器校验不覆盖）；**出入口是给人指路的，本就该有**——两者不冲突。已把 [`rules/README.md`](rules/README.md) §三 里那条"待办"更新为"已补齐"，避免留下过期陈述。
-  - 同步：[`README.md`](README.md) 的目录表补 `doc/` 一行、读者分流行改为指向索引入口。
+  - 与豁免的关系：`docs/` 豁免的是**卷内结构与命名**（机器校验不覆盖）；**出入口是给人指路的，本就该有**——两者不冲突。已把 [`rules/README.md`](rules/README.md) §三 里那条"待办"更新为"已补齐"，避免留下过期陈述。
+  - 同步：[`README.md`](README.md) 的目录表补 `docs/` 一行、读者分流行改为指向索引入口。
 
 ### 变更
 - **元规则覆盖收口：`report` 与 `pending` 双双归零——工作区不再有"没被检查、也没被说明"的关注点**。`block` 由 3 个扩到 **8 个**，另加 **4 个写在明处的豁免**：
-  - 新转正四个：`tools/`（11 合规）、`projects/livefab`（21）、`projects/website`（34）；`doc/` 与 `studio001/` 按用户裁决**明确定为豁免**（理由与推翻条件见 [`rules/README.md`](rules/README.md) §三）。
+  - 新转正四个：`tools/`（11 合规）、`projects/livefab`（21）、`projects/website`（34）；`docs/` 与 `studio001/` 按用户裁决**明确定为豁免**（理由与推翻条件见 [`rules/README.md`](rules/README.md) §三）。
   - **实测结论：这些"欠账"全部是配置精度的产物，不是真结构债**。最典型的是 `projects/website` 的 6 条里有 3 条是**被 gitignore 的生成物目录**（`.data`/`.output`/`backups`）。
   - 写配置时踩到并记录一个易错点：**`skip_prefixes`（点开头）只过滤文件、不过滤目录**——所以 `.output` 这类**点目录必须显式写进 `skip_dirs`**，否则会被判"未知类型目录"。
   - **`tools/` 有一条真缺口并已修**：它按 M1 应有出入口 `README.md` 而没有。新增 [`tools/README.md`](tools/README.md)（工具清单 + 跑法 + "检查器必须自检"的硬要求），并把 [`tech/README.md`](tech/README.md) 里那份重复的工具表**改为指向它**——两处列表必然分叉。
-  - **顺带发现（待办）**：`doc/` 缺少顶层 `README.md`（出入口）。按 M1 本应有一个，这是它被豁免后**已知且接受**的缺口；但根 [`README.md`](README.md) 的"你是哪种读者"正把非技术读者指向 `doc/`，**那里没有索引页会让人迷路**——建议后续补一个纯索引的 `doc/README.md`（不改任何卷的内容）。
+  - **顺带发现（待办）**：`docs/` 缺少顶层 `README.md`（出入口）。按 M1 本应有一个，这是它被豁免后**已知且接受**的缺口；但根 [`README.md`](README.md) 的"你是哪种读者"正把非技术读者指向 `docs/`，**那里没有索引页会让人迷路**——建议后续补一个纯索引的 `docs/README.md`（不改任何卷的内容）。
 
 ### 变更
 - **元规则覆盖首批转正：`block` 由 2 个关注点扩到 5 个**（[`workspace-scope.json`](rules/meta/tools/workspace-scope.json)）：新增 `tech/`（10 合规）、`projects/tomorrows-channel`（29）、`projects/refu-game-001`（18）——各写了**专门判定配置**，实测 **0 违规**。这三个此前只有通用配置，写了忠实配置后一次达标（**"实测 0 违规"是转正的前置条件**，不是转正后的期望）。
   - 写配置时发现检查器的一个**易错点并记录**：类型目录**不是完全不透明的叶子**——它会被**再查一层文件命名**。因此 `tech/references/`（放数据与资产，非文档）必须给它**单独的命名规则**（`doc_naming.references`），否则 `gh_meta.jsonl`、`visualization-edf21c0f.html` 这类文件会被误判为"命名不合规"。
   - 另记一条：命名正则匹配的是**含扩展名的完整文件名**，写 `^[a-z0-9-]+$` 会漏掉 `.md`（本次即因此先报 5 条假阳性，已改为 `\.md$`）。
-  - `report` 剩余 5 个：`tools/`（2）、`doc/`（粗估 332）、`studio001/`（2）、`projects/livefab`（2）、`projects/website`（6）——**欠账数字保持可见**。
+  - `report` 剩余 5 个：`tools/`（2）、`docs/`（粗估 332）、`studio001/`（2）、`projects/livefab`（2）、`projects/website`（6）——**欠账数字保持可见**。
 
 ### 变更
 - **修正 `tech/changelog-convention.md` 的模板与示例**（用户直接修改）：结构模板与完整示例里的版本头 `## [1.2.0] - 2026-09-09` / `## [2.0.0] - 2026-09-09` 补上时分（`2026-09-09 10:11`），与 §五 的格式规定一致——**示例若不合规，抄示例的人必然写出不合规的日志**。已核实：纳入范围内的版本头现已**全部**精确到分（残留的只到日期者仅在被豁免的 `indie/dsh-pet-refu/` 与第三方 `node_modules/`）。
@@ -147,7 +149,7 @@
 - **元规则 M1+M2 的机器校验从"只覆盖 `rules/` 与 `lab/`"扩到工作区各关注点**（[`rules/meta/tools/workspace-scope.json`](rules/meta/tools/workspace-scope.json) + [`meta_rules_scope.ts`](rules/meta/tools/meta_rules_scope.ts)，接入 pre-commit 与 CI）：
   - **为什么必须做**：此前 M1/M2 只有两处写了判定配置，于是"**在项目里另立一套命名不会被任何检查发现**"——2026-10-08 的讨论记录命名与 M2 冲突，就是这么漏过去的。
   - **为什么不一次全开**：实测用通用配置跑 `projects/` 会产出上百条**因配置不全而来的假阳性**（如子关注点没给子配置时，其内所有目录都被判"未知类型目录"）。**闸门一旦变成噪声，人就开始绕过它——比不查更糟。** 故分四级：`block`（纳入闸门，必须 0 违规）/ `report`（只报告不拦截，欠账可见）/ `pending`（尚未配置）/ `exempt`（按 rules/README §三 豁免）。
-  - **当前覆盖**：`block` = `rules/`、`projects/mainline/`（后者实测 **44 合规 / 0 违规**，具备纳入条件）；`report` = `tech/`、`tools/`、`doc/`（欠账粗估 332 条，需专门配置）、`studio001/`、`livefab`、`tomorrows-channel`、`refu-game-001`、`website`；`exempt` = `indie/`、`lab/`。
+  - **当前覆盖**：`block` = `rules/`、`projects/mainline/`（后者实测 **44 合规 / 0 违规**，具备纳入条件）；`report` = `tech/`、`tools/`、`docs/`（欠账粗估 332 条，需专门配置）、`studio001/`、`livefab`、`tomorrows-channel`、`refu-game-001`、`website`；`exempt` = `indie/`、`lab/`。
   - **执行器的一条防假通过设计**：从检查器输出里**取不到违规数时返回 `null` 而非 `0`**，block 条目取不到数即判失败（自检里有这条负向用例）——否则"检查器崩了"会被当成"没有违规"。
   - 缺口写进 [`rules/README.md`](rules/README.md) **§3.1**（"机器校验的实际覆盖"），并给出推进方式：**一次只开一个关注点，且开之前先确认它是干净的**。
   - 负向自检 **7/7**。
@@ -247,10 +249,10 @@
 
 ### 变更
 
-- **`studio/` 更名 `studio001/` 并搁置（开发策略转向）**：原"模拟人类组织 / 虚拟角色"的 AI 开发工作室更名为 [`studio001/`](studio001/README.md)，**保留作历史资料、不再使用/更新**；工作区开发策略调整为**由项目方直接结合 AI 开发**（不依赖虚拟角色分工）。同步更新全工作区引用（根 `README.md`、`rules/`（R01/R02/README/meta-M1）、`tech/`、`projects/tomorrows-channel/`、`indie/`、`lab/`、`doc/refu-game-001/` 及工具脚本 `tools/check_links.*`、lab 的 visual-fallback 扫描目录），[`studio001/README.md`](studio001/README.md) 增搁置标注；链接校验 0 失效、规则/元规则检查 0 违规。
-- **D9 更名与 D10 定案，并补三份卡表产出**：`doc/refu-game-001/` 的"合约卡"对外更名为**挑战卡**（旧称保留于文档备注）；新增 [`13_卡表_挑战卡样例.md`](doc/refu-game-001/13_卡表_挑战卡样例.md)（首发 5 张挑战卡 + 奖励系数）、[`14_卡表_铁砧联邦核心12卡.md`](doc/refu-game-001/14_卡表_铁砧联邦核心12卡.md)（主族核心 12 卡 + 羁绊）；`00_决策记录` 增补 D10（编辑器与 UGC：先内测后开放）并升至 v1.2；[`06_关卡与地图卡`](doc/refu-game-001/06_关卡与地图卡.md) 与 [`09_路线图与融合玩法`](doc/refu-game-001/09_路线图与融合玩法.md) 同步编辑器策略与版本路线；README 与术语表补索引。
-- **采纳 D9「合约卡」（自选难度修饰卡组）**：`doc/refu-game-001/` 的 [`06_关卡与地图卡`](doc/refu-game-001/06_关卡与地图卡.md) 新增"合约卡"规范（字段/示例/约束/复用价值），[`09_路线图与融合玩法`](doc/refu-game-001/09_路线图与融合玩法.md) 增加"向赛季与排行榜延伸"与版本路线调整，[`00_决策记录`](doc/refu-game-001/00_决策记录.md) 增补 D9 并更新修订记录至 v1.1；思路参考《明日方舟》危机合约（见 [`12_参考_明日方舟设计拆解`](doc/refu-game-001/12_参考_明日方舟设计拆解.md)）。
-- **确立变更记录分层方案（C）**：根 `CHANGELOG.md` 为唯一权威；`doc/refu-game-001/` 仅契约类文档（`00_决策记录`、`02_卡片规则系统`、`11_数值框架表`）维护文末「修订记录」小表；细粒度历史交由 `git log -- <文件>`，错别字/格式不记（R05 琐碎豁免）。该约定写入该卷 README 的写作约定节，并为三篇契约文档补「修订记录」表。
+- **`studio/` 更名 `studio001/` 并搁置（开发策略转向）**：原"模拟人类组织 / 虚拟角色"的 AI 开发工作室更名为 [`studio001/`](studio001/README.md)，**保留作历史资料、不再使用/更新**；工作区开发策略调整为**由项目方直接结合 AI 开发**（不依赖虚拟角色分工）。同步更新全工作区引用（根 `README.md`、`rules/`（R01/R02/README/meta-M1）、`tech/`、`projects/tomorrows-channel/`、`indie/`、`lab/`、`docs/refu-game-001/` 及工具脚本 `tools/check_links.*`、lab 的 visual-fallback 扫描目录），[`studio001/README.md`](studio001/README.md) 增搁置标注；链接校验 0 失效、规则/元规则检查 0 违规。
+- **D9 更名与 D10 定案，并补三份卡表产出**：`docs/refu-game-001/` 的"合约卡"对外更名为**挑战卡**（旧称保留于文档备注）；新增 [`13_卡表_挑战卡样例.md`](docs/refu-game-001/13_卡表_挑战卡样例.md)（首发 5 张挑战卡 + 奖励系数）、[`14_卡表_铁砧联邦核心12卡.md`](docs/refu-game-001/14_卡表_铁砧联邦核心12卡.md)（主族核心 12 卡 + 羁绊）；`00_决策记录` 增补 D10（编辑器与 UGC：先内测后开放）并升至 v1.2；[`06_关卡与地图卡`](docs/refu-game-001/06_关卡与地图卡.md) 与 [`09_路线图与融合玩法`](docs/refu-game-001/09_路线图与融合玩法.md) 同步编辑器策略与版本路线；README 与术语表补索引。
+- **采纳 D9「合约卡」（自选难度修饰卡组）**：`docs/refu-game-001/` 的 [`06_关卡与地图卡`](docs/refu-game-001/06_关卡与地图卡.md) 新增"合约卡"规范（字段/示例/约束/复用价值），[`09_路线图与融合玩法`](docs/refu-game-001/09_路线图与融合玩法.md) 增加"向赛季与排行榜延伸"与版本路线调整，[`00_决策记录`](docs/refu-game-001/00_决策记录.md) 增补 D9 并更新修订记录至 v1.1；思路参考《明日方舟》危机合约（见 [`12_参考_明日方舟设计拆解`](docs/refu-game-001/12_参考_明日方舟设计拆解.md)）。
+- **确立变更记录分层方案（C）**：根 `CHANGELOG.md` 为唯一权威；`docs/refu-game-001/` 仅契约类文档（`00_决策记录`、`02_卡片规则系统`、`11_数值框架表`）维护文末「修订记录」小表；细粒度历史交由 `git log -- <文件>`，错别字/格式不记（R05 琐碎豁免）。该约定写入该卷 README 的写作约定节，并为三篇契约文档补「修订记录」表。
 - 根 [`README.md`](README.md) 增加 `indie/`、`lab/`、`rules/` 的目录说明与导览行；`lab/` 入口改为指向其自身的 README。
 - 根 `README.md` 改写「约定豁免」说明：明确列出被豁免的具体规则（R01–R05）。
 - [`tech/README.md`](tech/README.md) 更新：实验性技术规则成熟后的回流目标由 `tech/` 改为根 `rules/`。

@@ -293,7 +293,7 @@ check('版本时间不在未来', future.length === 0,
 //   它只看**路径引用**，是启发式，**不能证明**一条目真的属于工作区级。
 //   所以判定收得很窄（宁可漏报、不要误报）：
 //     仅当一条目**只**引用某一个子项目下的路径，且**完全不**引用工作区级路径
-//     （tools/ rules/ tech/ doc/）与第二个子项目时，才判为违规。
+//     （tools/ rules/ tech/ docs/）与第二个子项目时，才判为违规。
 //   像"pre-commit 钩子改了什么（顺带提到 livefab）"这类**不会**被误报。
 //   而"某项目做了什么"这种一眼可见的，它抓得住。
 function projectOnlySections(text: string): string[] {

@@ -156,7 +156,7 @@ fi
 
 # ---- 5) Refu Game 001 难度模型校验（暂存涉及该卷或模拟脚本时）----
 SIM_SCRIPT="$GIT_ROOT/tools/sim_refu_game_001.ts"
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(doc/refu-game-001/|tools/sim_refu_game_001\.ts)'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(docs/refu-game-001/|tools/sim_refu_game_001\.ts)'; then
   if [ ! -f "$SIM_SCRIPT" ]; then
     echo "[pre-commit:refu-sim] 未找到 ${SIM_SCRIPT}，跳过难度模型校验。" >&2
   else

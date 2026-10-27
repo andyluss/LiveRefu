@@ -23,17 +23,17 @@ const total = nav.main.reduce((n, g) => n + g.items.length, 0)
       <div class="section__head"><h2 class="section__title">内容从哪来</h2></div>
       <div class="prose">
         <p>
-          本站的 Wiki 正文<strong>全部来自工作区 <code>doc/</code> 的既有论文集</strong>，
+          本站的 Wiki 正文<strong>全部来自工作区 <code>docs/</code> 的既有论文集</strong>，
           共 {{ total }} 篇（主卷 21 + 朋克五卷 45 + 附录七卷 63）。
-          博客栏目的文章是编辑部新写作，与 <code>doc/</code> 无关。
+          博客栏目的文章是编辑部新写作，与 <code>docs/</code> 无关。
         </p>
         <p>
-          站点在构建期由一个<strong>内容适配层</strong>把 <code>doc/</code> 单向转换成结构化内容：
+          站点在构建期由一个<strong>内容适配层</strong>把 <code>docs/</code> 单向转换成结构化内容：
           解析篇首的关键词与摘要为元数据、把「（见 16 末日篇）」这类纯文本交叉引用改写成可点击链接、
           再由引用关系生成每篇页脚的「被引用于」区块。
         </p>
         <p>
-          <strong><code>doc/</code> 是内容的唯一权威</strong>，站点是它的呈现层。
+          <strong><code>docs/</code> 是内容的唯一权威</strong>，站点是它的呈现层。
           转换是单向且幂等的——原始文稿不被改动一个字节。
         </p>
       </div>
@@ -58,7 +58,7 @@ const total = nav.main.reduce((n, g) => n + g.items.length, 0)
       <div class="section__head"><h2 class="section__title">视觉素材与版权</h2></div>
       <div class="prose">
         <p>
-          画廊栏目展示的视觉素材来自工作区 <code>doc/refu-game-001/美术/</code>，
+          画廊栏目展示的视觉素材来自工作区 <code>docs/refu-game-001/美术/</code>，
           为关联项目《Refu Game 001 · 节点防线》的美术产出，共 99 件。
           素材以 SVG 为源、位图为生成物；本站<strong>只读引用，不做修改</strong>，
           也不复制进站点目录，而是经 <code>/media/**</code> 路由暴露。
@@ -74,7 +74,7 @@ const total = nav.main.reduce((n, g) => n + g.items.length, 0)
       <div class="prose">
         <p>
           论坛栏目（讨论、提问、补充考据）尚在建设中。当前如需指出事实错误或补充资料，
-          请直接联系维护者；考据类补充会先并入 <code>doc/</code> 的原始文稿，再自动反映到站点。
+          请直接联系维护者；考据类补充会先并入 <code>docs/</code> 的原始文稿，再自动反映到站点。
         </p>
       </div>
     </section>

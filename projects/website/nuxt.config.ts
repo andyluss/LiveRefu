@@ -53,7 +53,7 @@ export default defineNuxtConfig({
     },
   },
 
-  // 内容由 tools/sync-content.ts 从 doc/ 生成；此处只声明构建行为
+  // 内容由 tools/sync-content.ts 从 docs/ 生成；此处只声明构建行为
   content: {
     build: {
       markdown: {

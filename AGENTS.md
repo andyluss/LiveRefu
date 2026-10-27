@@ -55,7 +55,7 @@ git tag --points-at HEAD
 
 ## 五、适用范围
 
-- 根仓库所有对话，包括 `design/`、`projects/`、`doc/`、`rules/`、`tools/` 等。
+- 根仓库所有对话，包括 `design/`、`projects/`、`docs/`、`rules/`、`tools/` 等。
 - `indie/` 是独立子仓库；若在对话中操作它，也按本表回报，除非该子仓库自己的 `AGENTS.md` 另有更严格规定。
 - 用户明确说“不用表格 / 不用提交”时，以用户指令为准，并在回答里说明已按用户要求豁免。
 

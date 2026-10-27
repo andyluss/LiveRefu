@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * 内容适配层：doc/ → content/wiki/
+ * 内容适配层：docs/ → content/wiki/
  *
  * 设计依据见 docs/03_信息架构与内容模型.md §二。
  *
@@ -9,7 +9,7 @@
  *   2. 交叉引用是纯文本（如「（见 16 末日篇）」），点不动
  *   3. 卷属 / 篇序 / slug 需由路径与文件名推导
  *
- * 原则：**doc/ 是唯一内容权威，本脚本只读不写源文件**（单向、幂等）。
+ * 原则：**docs/ 是唯一内容权威，本脚本只读不写源文件**（单向、幂等）。
  *
  * 用法：
  *   bun run tools/sync-content.ts            # 生成 content/wiki/
@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url'
 const HERE = dirname(fileURLToPath(import.meta.url))
 const PROJECT_ROOT = resolve(HERE, '..')
 const WORKSPACE_ROOT = resolve(PROJECT_ROOT, '../..')
-const DOC = join(WORKSPACE_ROOT, 'doc')
+const DOC = join(WORKSPACE_ROOT, 'docs')
 const OUT = join(PROJECT_ROOT, 'content/wiki')
 
 // ---------------------------------------------------------------------------
@@ -377,7 +377,7 @@ function rewriteRef(inner: string, self: Doc): string | null {
   return null
 }
 
-/** 把 `doc/retro-futurism/NN` 形态的裸引用也转掉 */
+/** 把 `docs/retro-futurism/NN` 形态的裸引用也转掉 */
 function rewriteBarePaths(text: string): { out: string; hits: number } {
   let hits = 0
   const out = text.replace(/doc\/retro-futurism\/(\d\d)/g, (m, nn: string) => {
@@ -536,7 +536,7 @@ function main() {
   for (const d of docs) byId.set(d.id, d)
 
   if (docs.length === 0) {
-    console.error('✗ 未解析到任何源文档，请检查 doc/ 路径')
+    console.error('✗ 未解析到任何源文档，请检查 docs/ 路径')
     process.exit(1)
   }
 

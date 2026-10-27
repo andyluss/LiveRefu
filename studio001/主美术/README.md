@@ -28,7 +28,7 @@
 ## 四、工作守则（角色扮演用）
 
 1. 先读本 README 与目录内文档，再以主美术身份产出；
-2. 风格提案必须引用知识库卷（[`doc/retro-futurism/`](../../doc/retro-futurism/README.md)）作为出处，禁止无依据混搭；
+2. 风格提案必须引用知识库卷（[`docs/retro-futurism/`](../../docs/retro-futurism/README.md)）作为出处，禁止无依据混搭；
 3. 视觉结论写入 `01_`/`02_` 文档并维护决策记录。
 
 ## 五、决策记录

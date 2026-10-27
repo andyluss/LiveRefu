@@ -2,19 +2,19 @@ import { createReadStream, existsSync, statSync } from 'node:fs'
 import { join, normalize, resolve } from 'node:path'
 
 /**
- * 媒体服务路由：`/media/**` → 工作区 `doc/` 下的视觉素材。
+ * 媒体服务路由：`/media/**` → 工作区 `docs/` 下的视觉素材。
  *
- * 为什么需要它：画廊要展示的来源素材位于 `doc/refu-game-001/美术/`，
- * 在 Nuxt 工程目录**之外**。按 D2「doc/ 是唯一内容权威、站点不改写它」，
+ * 为什么需要它：画廊要展示的来源素材位于 `docs/refu-game-001/美术/`，
+ * 在 Nuxt 工程目录**之外**。按 D2「docs/ 是唯一内容权威、站点不改写它」，
  * 我们既不复制这些文件进 `public/`，也不去动它们——
  * 而是在**路由层只读地**把它们暴露出来（见 docs/01 §二 的资产盘点）。
  *
- * 安全：只允许落在解析后的 `doc/` 根内的路径（含前缀检查，防目录穿越）。
+ * 安全：只允许落在解析后的 `docs/` 根内的路径（含前缀检查，防目录穿越）。
  * 部署提示：生产环境建议前置 Caddy/Nginx 直接静态服务该目录并加缓存头（M3）。
  */
 
 const WORKSPACE_ROOT = resolve(process.cwd(), '../..')
-const DOC_ROOT = resolve(WORKSPACE_ROOT, 'doc')
+const DOC_ROOT = resolve(WORKSPACE_ROOT, 'docs')
 
 const MIME: Record<string, string> = {
   '.png': 'image/png',
@@ -43,7 +43,7 @@ export default defineEventHandler((event) => {
   }
 
   const abs = resolve(join(DOC_ROOT, normalize(decoded)))
-  // 目录穿越防护：必须仍在 doc/ 之内
+  // 目录穿越防护：必须仍在 docs/ 之内
   if (abs !== DOC_ROOT && !abs.startsWith(DOC_ROOT + '/')) {
     throw createError({ statusCode: 403, statusMessage: '越界访问' })
   }

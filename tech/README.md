@@ -28,5 +28,5 @@
 
 ## 约定
 
-- 技术规范文档使用 `kebab-case` 文件名（`git-convention.md` 等），避免用编号，便于与 doc/、studio001/ 的业务体例区分。
+- 技术规范文档使用 `kebab-case` 文件名（`git-convention.md` 等），避免用编号，便于与 docs/、studio001/ 的业务体例区分。
 - 修改任一技术规范后，请同步更新本文索引与根 README 的对应入口。

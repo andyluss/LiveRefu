@@ -67,7 +67,7 @@
       "name": "峡谷哨站",
       "faction": "ANV",
       "image": "res://assets/maps/MAP-ANV-01_峡谷哨站.png",
-      "svg": "doc/refu-game-001/美术/全量出图/地图/MAP-ANV-01_峡谷哨站.svg",
+      "svg": "docs/refu-game-001/美术/全量出图/地图/MAP-ANV-01_峡谷哨站.svg",
       "canvas": {
         "width": 980,
         "height": 660
@@ -207,7 +207,7 @@
       "name": "双闸峡谷",
       "faction": "ANV",
       "image": "res://assets/maps/MAP-ANV-02_双闸峡谷.png",
-      "svg": "doc/refu-game-001/美术/全量出图/地图/MAP-ANV-02_双闸峡谷.svg",
+      "svg": "docs/refu-game-001/美术/全量出图/地图/MAP-ANV-02_双闸峡谷.svg",
       "canvas": {
         "width": 980,
         "height": 660
@@ -390,7 +390,7 @@
       "name": "棱镜回廊",
       "faction": "AST",
       "image": "res://assets/maps/MAP-AST-01_棱镜回廊.png",
-      "svg": "doc/refu-game-001/美术/全量出图/地图/MAP-AST-01_棱镜回廊.svg",
+      "svg": "docs/refu-game-001/美术/全量出图/地图/MAP-AST-01_棱镜回廊.svg",
       "canvas": {
         "width": 980,
         "height": 660
@@ -508,7 +508,7 @@
       "name": "棱镜双子回廊",
       "faction": "AST",
       "image": "res://assets/maps/MAP-AST-02_棱镜双子回廊.png",
-      "svg": "doc/refu-game-001/美术/全量出图/地图/MAP-AST-02_棱镜双子回廊.svg",
+      "svg": "docs/refu-game-001/美术/全量出图/地图/MAP-AST-02_棱镜双子回廊.svg",
       "canvas": {
         "width": 980,
         "height": 660
@@ -687,7 +687,7 @@
       "name": "双岔要塞",
       "faction": "MULTI",
       "image": "res://assets/maps/MAP-MULTI-01_双岔要塞.png",
-      "svg": "doc/refu-game-001/美术/全量出图/地图/MAP-MULTI-01_双岔要塞.svg",
+      "svg": "docs/refu-game-001/美术/全量出图/地图/MAP-MULTI-01_双岔要塞.svg",
       "canvas": {
         "width": 980,
         "height": 660
@@ -864,7 +864,7 @@
       "name": "腐殖洼地",
       "faction": "TID",
       "image": "res://assets/maps/MAP-TID-01_腐殖洼地.png",
-      "svg": "doc/refu-game-001/美术/全量出图/地图/MAP-TID-01_腐殖洼地.svg",
+      "svg": "docs/refu-game-001/美术/全量出图/地图/MAP-TID-01_腐殖洼地.svg",
       "canvas": {
         "width": 980,
         "height": 660

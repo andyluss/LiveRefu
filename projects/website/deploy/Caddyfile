@@ -27,9 +27,9 @@ retro-futurism.example {
 	}
 
 	# ---- 媒体素材：直接由 Caddy 送，不经过应用 ----
-	# 画廊素材在 doc/ 下，Nitro 有一个只读的 /media/** 路由，
+	# 画廊素材在 docs/ 下，Nitro 有一个只读的 /media/** 路由，
 	# 但生产上让反代直接静态服务更快、更省应用内存。
-	# 注意 root 指向的目录必须与应用解析出的 doc/ 一致。
+	# 注意 root 指向的目录必须与应用解析出的 docs/ 一致。
 	handle_path /media/* {
 		root * /srv/retro-futurism/LiveRefu/doc
 		file_server

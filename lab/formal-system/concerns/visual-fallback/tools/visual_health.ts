@@ -251,7 +251,7 @@ function themes_for(rel: string): string {
   const top = parts[0];
   if (top === "doc") {
     if (parts.length >= 2 && parts[1] === "retro-futurism") {
-      const rest = rel.slice("doc/retro-futurism/".length);
+      const rest = rel.slice("docs/retro-futurism/".length);
       // 附录_<theme>卷/README.md -> 主题从目录名
       if (rest.startsWith("附录_")) {
         const seg = /^附录_([^/]+)卷/.exec(rest);

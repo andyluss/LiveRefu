@@ -179,7 +179,7 @@ def build_map(name: str) -> dict:
         "name": cn_name,
         "faction": faction,
         "image": f"res://assets/maps/{name}.png",
-        "svg": f"doc/refu-game-001/美术/全量出图/地图/{name}.svg",
+        "svg": f"docs/refu-game-001/美术/全量出图/地图/{name}.svg",
         "canvas": {"width": 980, "height": 660},
         "grid": {"x0": 22, "y0": 26, "cols": 10, "rows": 8, "cell_w": 90, "cell_h": 72},
         "entrances": parse_entrances(svg),

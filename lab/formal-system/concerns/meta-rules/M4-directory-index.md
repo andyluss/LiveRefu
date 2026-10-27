@@ -13,7 +13,7 @@
 
 1. **每个目录一份 `STRUCTURE.md`**（与 `README.md` 互补：README 是"出入口/怎么用"；STRUCTURE 是"里面有什么/什么关系"）。
    - 内容三节：**目录结构**（树）、**条目说明**（每条目一行）、**文件关系图**（mermaid `graph TD`）。
-   - 文件关系图至少画出**层级包含关系**；对 doc/code，尽量补 md→md 互链、`use`/`import` 等**语义关系**边。
+   - 文件关系图至少画出**层级包含关系**；对 docs/code，尽量补 md→md 互链、`use`/`import` 等**语义关系**边。
 2. **统一索引**：树根 README 末尾加"目录结构说明索引"，列出所有 `STRUCTURE.md`（带相对链接），一处到位。
 3. **工具化**：`structure_gen.py` 生成、`structure_check.py` 检测（存在 + 含三小节 + 有 mermaid）；检测接入元规则检查。
 

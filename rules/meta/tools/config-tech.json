@@ -1,5 +1,5 @@
 {
-  "_comment": "M1+M2 判定配置 · tech/（工作区技术详解目录）。文件名约定为 kebab-case（见 tech/README.md §约定，刻意区别于 doc/ 的编号体例）。",
+  "_comment": "M1+M2 判定配置 · tech/（工作区技术详解目录）。文件名约定为 kebab-case（见 tech/README.md §约定，刻意区别于 docs/ 的编号体例）。",
   "concern": "tech",
   "root": ".",
   "root_docs": [

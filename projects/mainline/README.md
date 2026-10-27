@@ -78,7 +78,7 @@
 ## 四、与工作区其它部分的关系
 
 - 本目录受工作区根规则约束：[`rules/R01`](../../rules/R01-docs-convention.md)（文档体例与相对链接）、[`rules/R02`](../../rules/R02-git-convention.md)（提交信息）、[`rules/R03`](../../rules/R03-link-validation.md)（链接校验）、[`rules/R05`](../../rules/R05-changelog.md)（变更日志）。
-- **题材权威**在 [`doc/retro-futurism/`](../../doc/retro-futurism/README.md) 与 [`doc/punks/`](../../doc/punks/README.md)：本目录引用它，**不复制、不改写**它的结论。
+- **题材权威**在 [`docs/retro-futurism/`](../../docs/retro-futurism/README.md) 与 [`docs/punks/`](../../docs/punks/README.md)：本目录引用它，**不复制、不改写**它的结论。
 - **既有项目可复用、可并入，但不默认继承**：[`../refu-game-001/`](../refu-game-001/README.md)（卡片塔防垂直切片，含 36 张卡面与四道验收闸门）、[`../tomorrows-channel/`](../tomorrows-channel/README.md)（氛围陪伴应用）、[`../website/`](../website/README.md)（《未来档案》网站，已暂停）、[`../../indie/live-rpg/`](../../indie/README.md)（活世界工作台，独立仓库）。是否并入由 Q2/Q4 决定。
 - **目录结构（2026-10-01 起）**：本目录是**纲领**；每个具体项目是它的一个子目录，**按代号命名**（符合 [08 §三](docs/08_共同语言与命名.md) 的"项目目录 = `projects/<代号>/`"——`mainline/` 本身不是项目、故不受此约束，其子目录才是项目）：
 
@@ -127,4 +127,4 @@
 ## 六、相关
 
 - 工作区总览：[`../../README.md`](../../README.md)
-- 题材总论（读题材从这里开始）：[`doc/retro-futurism/00_总论_未来的考古学与全卷地图.md`](../../doc/retro-futurism/00_总论_未来的考古学与全卷地图.md)
+- 题材总论（读题材从这里开始）：[`docs/retro-futurism/00_总论_未来的考古学与全卷地图.md`](../../docs/retro-futurism/00_总论_未来的考古学与全卷地图.md)

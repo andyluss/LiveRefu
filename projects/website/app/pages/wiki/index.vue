@@ -17,7 +17,7 @@ const counts = computed(() => ({
       <h1 class="hero__title">复古未来主义知识库</h1>
       <p class="hero__lede">
         本站 Wiki 收录工作区已有的复古未来主义论文集与朋克谱系专卷。
-        正文以 <code>doc/</code> 为唯一权威，构建期自动生成；篇目之间的「见 …」交叉引用已全部可点击。
+        正文以 <code>docs/</code> 为唯一权威，构建期自动生成；篇目之间的「见 …」交叉引用已全部可点击。
       </p>
       <div class="hero__stats">
         <div>

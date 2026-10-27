@@ -3,9 +3,9 @@ import { defineContentConfig, defineCollection, z } from '@nuxt/content'
 /**
  * 内容集合定义。
  *
- * - `wiki`：正文由 `tools/sync-content.ts` 从 doc/ 单向生成，
+ * - `wiki`：正文由 `tools/sync-content.ts` 从 docs/ 单向生成，
  *   frontmatter 字段即该脚本写入的字段（见 docs/03_信息架构与内容模型.md §3.1）。
- * - `blog`：**手写**（Nuxt Content 原生用法），是新写作，与 doc/ 无关（见 §3.2）。
+ * - `blog`：**手写**（Nuxt Content 原生用法），是新写作，与 docs/ 无关（见 §3.2）。
  * - `gallery`：画廊条目，由 `content/gallery/*.md` 的 frontmatter 描述（见 §3.3）。
  */
 export default defineContentConfig({

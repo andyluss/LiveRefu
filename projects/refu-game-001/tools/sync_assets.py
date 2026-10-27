@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""sync_assets.py —— 把 doc/refu-game-001/美术/ 的出图同步进 Godot 工程 game/assets/。
+"""sync_assets.py —— 把 docs/refu-game-001/美术/ 的出图同步进 Godot 工程 game/assets/。
 
-为什么需要它：美术源（SVG + PNG 预览）属于策划卷 doc/refu-game-001/美术/，
+为什么需要它：美术源（SVG + PNG 预览）属于策划卷 docs/refu-game-001/美术/，
 是"唯一数值与版式来源"；Godot 的 res:// 只能加载工程内文件，所以在游戏工程里
 保留一份**派生副本**，并由本脚本负责同步。改美术 = 重跑本脚本，不手改 assets。
 

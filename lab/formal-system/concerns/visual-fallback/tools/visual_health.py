@@ -196,7 +196,7 @@ def themes_for(rel):
     top = parts[0]
     if top == "doc":
         if len(parts) >= 2 and parts[1] == "retro-futurism":
-            rest = rel[len("doc/retro-futurism/"):]
+            rest = rel[len("docs/retro-futurism/"):]
             # 附录_<theme>卷/README.md -> 主题从目录名
             if rest.startswith("附录_"):
                 seg = re.match(r"附录_([^/]+)卷", rest)

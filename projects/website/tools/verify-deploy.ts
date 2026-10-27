@@ -69,7 +69,7 @@ if (!existsSync(caddyPath)) {
 
   // root 指向的目录必须是绝对路径（否则部署后才 404 一大片）
   // 注意：必须**跳过注释行**——否则注释里出现 "root" 一词会被误判为指令
-  // （本项目就在中文注释里写了「root 指向的目录必须与应用解析出的 doc/ 一致」，踩过一次）
+  // （本项目就在中文注释里写了「root 指向的目录必须与应用解析出的 docs/ 一致」，踩过一次）
   const directiveLines = caddy
     .split('\n')
     .map(l => l.trim())
@@ -136,8 +136,8 @@ if (!existsSync(lsPath)) {
 }
 
 // ---- 4) 与仓库实际的路径自洽性 ----
-// 文档/配置里引用 doc/ 的地方必须真的存在（这是画廊的素材源）
-const docDir = join(WORKSPACE_ROOT, 'doc/refu-game-001/美术')
+// 文档/配置里引用 docs/ 的地方必须真的存在（这是画廊的素材源）
+const docDir = join(WORKSPACE_ROOT, 'docs/refu-game-001/美术')
 record('素材源目录存在', existsSync(docDir), docDir.replace(WORKSPACE_ROOT + '/', ''))
 
 // 部署文档必须存在

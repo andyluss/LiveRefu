@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // sim_refu_game_001 —— Refu Game 001 难度模型模拟脚本（跨运行时 TypeScript：node/deno/bun 直跑）
 //
-// 用途：把 doc/refu-game-001/21_模拟验算表_章节胜率矩阵.md 的胜率模型从"解析估算"
+// 用途：把 docs/refu-game-001/21_模拟验算表_章节胜率矩阵.md 的胜率模型从"解析估算"
 //       升级为"可复算的蒙特卡洛模拟"，并输出可直接粘贴的 Markdown 表格。
 //
 // 模型（与 21 号文档同源）：
