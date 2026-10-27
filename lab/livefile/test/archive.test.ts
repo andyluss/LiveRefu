@@ -4,7 +4,7 @@ import { cpSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { duplicateGroups, saveItemMeta, scanArchive, stats } from '../src/archive.ts'
+import { duplicateGroups, saveItemMeta, saveItemsMeta, scanArchive, stats } from '../src/archive.ts'
 import { backupReport, catalog, healthCheck, manifest } from '../src/health.ts'
 import { runBackup, verifyRestore } from '../src/backup.ts'
 import { publicHtml } from '../src/public.ts'
@@ -74,4 +74,21 @@ test('catalog/manifest/backup reports generate', () => {
   assert.ok(catalog(idx, h).includes('档案目录'))
   assert.equal((JSON.parse(manifest(idx)) as { items: unknown[] }).items.length, 11)
   assert.ok(backupReport(idx, h).includes('备份与继承报告'))
+})
+
+
+test('batch metadata applies to selected items', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livefile-batch-'))
+  try {
+    cpSync(root, tmp, { recursive: true })
+    const paths = ['inbox/未整理照片.svg', 'inbox/电站维修记录-副本.md']
+    saveItemsMeta(tmp, paths, { source: 'batch', license: 'private', retention: 'permanent', tags: ['batch'] })
+    const idx = scanArchive(tmp)
+    for (const path of paths) {
+      const item = idx.items.find(i => i.id === path)
+      assert.equal(item?.source, 'batch')
+      assert.equal(item?.license, 'private')
+      assert.deepEqual(item?.tags, ['batch'])
+    }
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

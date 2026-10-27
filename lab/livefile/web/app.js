@@ -4,7 +4,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', output: '', outputName: 'archive-catalog.md', selected: null, filter: { q: '', type: '', collection: '' } };
+  const state = { data: null, view: 'overview', output: '', outputName: 'archive-catalog.md', selected: null, batch: new Set(), filter: { q: '', type: '', collection: '' } };
 
   async function api(path, options = {}) {
     const res = await fetch(path, Object.assign({ headers: { 'content-type': 'application/json' } }, options));
@@ -93,8 +93,9 @@
     if (colSelect.options.length === 1) d.collections.forEach(c => colSelect.add(new Option(c.name, c.name)));
     const list = filtered();
     $('#item-filter-count').textContent = `${list.length} / ${d.items.length}`;
-    $('#item-grid').innerHTML = list.map(i => `<button class="item-card" data-item="${esc(i.id)}" type="button"><span class="type">${esc(i.type)}${i.isPublic ? ' · public' : ''}</span><h3>${esc(i.title)}</h3><p>${esc(i.collections.join(' / ') || '未归类')} · ${esc(i.tags.join(' / ') || '无标签')}</p><div class="foot"><span class="${i.hasMeta ? '' : 'missing'}">${i.hasMeta ? 'sidecar' : '缺元数据'}</span><span>${esc(dateLabel(i.created))}</span></div></button>`).join('') || '<div class="empty">没有匹配的条目。</div>';
+    $('#item-grid').innerHTML = list.map(i => `<button class="item-card ${state.batch.has(i.id) ? 'selected-card' : ''}" data-item="${esc(i.id)}" type="button"><input class="item-select" type="checkbox" data-batch-item="${esc(i.id)}" ${state.batch.has(i.id) ? 'checked' : ''} aria-label="选择 ${esc(i.title)}"><span class="type">${esc(i.type)}${i.isPublic ? ' · public' : ''}</span><h3>${esc(i.title)}</h3><p>${esc(i.collections.join(' / ') || '未归类')} · ${esc(i.tags.join(' / ') || '无标签')}</p><div class="foot"><span class="${i.hasMeta ? '' : 'missing'}">${i.hasMeta ? 'sidecar' : '缺元数据'}</span><span>${esc(dateLabel(i.created))}</span></div></button>`).join('') || '<div class="empty">没有匹配的条目。</div>';
     bindItems($('#item-grid'));
+    renderBatchBar();
   }
   function collections() {
     const d = state.data;
@@ -148,7 +149,28 @@
     } catch (e) { toast('保存失败', e.message); }
   }
   function closeDrawer() { $('#drawer').hidden = true; state.selected = null; }
-  function bindItems(root) { $$('[data-item]', root).forEach(el => el.addEventListener('click', () => openItem(el.dataset.item))); }
+  function renderBatchBar() {
+    const selected = state.batch.size;
+    const el = $('#batch-count'); if (el) el.textContent = `${selected} selected`;
+    const btn = $('#apply-batch'); if (btn) btn.disabled = selected === 0;
+  }
+  async function applyBatch() {
+    if (!state.batch.size) { toast('没有选中条目', '先勾选条目。'); return; }
+    const split = id => String($('#' + id)?.value || '').split(/[,，]/).map(s => s.trim()).filter(Boolean);
+    const patch = {};
+    const source = $('#batch-source')?.value.trim(); if (source) patch.source = source;
+    const license = $('#batch-license')?.value.trim(); if (license) patch.license = license;
+    const retention = $('#batch-retention')?.value.trim(); if (retention) patch.retention = retention;
+    const collections = split('batch-collections'); if (collections.length) patch.collections = collections;
+    const tags = split('batch-tags'); if (tags.length) patch.tags = tags;
+    if ($('#batch-public')?.checked) patch.public = true;
+    if (!Object.keys(patch).length) { toast('没有可应用字段', '至少填一项。'); return; }
+    try {
+      const r = await api('/api/items/batch', { method: 'POST', body: JSON.stringify({ paths: [...state.batch], patch }) });
+      state.data = r; state.batch.clear(); renderAll(); toast('批量已保存', `${Object.keys(patch).length} 个字段`);
+    } catch (e) { toast('批量保存失败', e.message); }
+  }
+  function bindItems(root) { $$('[data-item]', root).forEach(el => el.addEventListener('click', e => { if (e.target.closest('[data-batch-item]')) return; openItem(el.dataset.item); })); }
   async function refresh() {
     try { setStatus('local archive', 'ok'); state.data = await api('/api/state'); renderAll(); }
     catch (e) { setStatus('offline', 'err'); toast('连接失败', e.message); }
@@ -178,12 +200,14 @@
       const t = e.target.closest('[data-theme-set]'); if (t) { themeSet(t.dataset.themeSet, true); return; }
       if (e.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
       if (e.target.id === 'run-scan') { scan(); return; }
+      if (e.target.id === 'apply-batch') { applyBatch(); return; }
       if (e.target.id === 'run-backup') { runBackupUi(); return; }
       if (e.target.id === 'restore-check') { restoreCheckUi(); return; }
       const ex = e.target.closest('[data-export]'); if (ex) { exportOut(ex.dataset.export); return; }
       if (e.target.id === 'download-output') { if (!state.output) { toast('还没有输出', '先生成一种输出。'); return; } download(state.output, state.outputName, state.outputName.endsWith('.json') ? 'application/json' : state.outputName.endsWith('.html') ? 'text/html' : 'text/markdown'); return; }
       const c = e.target.closest('[data-collection]'); if (c) { state.filter.collection = c.dataset.collection; state.filter.q = ''; switchView('items'); return; }
     });
+    document.addEventListener('change', e => { const b = e.target.closest('[data-batch-item]'); if (!b) return; const id = b.dataset.batchItem; if (b.checked) state.batch.add(id); else state.batch.delete(id); items(); });
     document.addEventListener('submit', e => { if (e.target.id === 'item-form') { e.preventDefault(); saveItem(e.target); } });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
     $('#item-search')?.addEventListener('input', e => { state.filter.q = e.target.value; items(); });

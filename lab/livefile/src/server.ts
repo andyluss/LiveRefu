@@ -2,7 +2,7 @@ import { createServer } from 'node:http'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { URL } from 'node:url'
-import { duplicateGroups, saveItemMeta, scanArchive, stats } from './archive.ts'
+import { duplicateGroups, saveItemMeta, saveItemsMeta, scanArchive, stats } from './archive.ts'
 import type { ItemMeta } from './types.ts'
 import { recordRestore, runBackup, verifyRestore } from './backup.ts'
 import { publicHtml } from './public.ts'
@@ -58,6 +58,16 @@ export function startServer(options: ServerOptions = {}): Promise<{ port: number
           if (key in input.meta) (patch as Record<string, unknown>)[key] = input.meta[key]
         }
         saveItemMeta(archiveDir, input.path, patch)
+        const index = scanArchive(archiveDir)
+        return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), runtime: process.version })
+      }
+      if (url.pathname === '/api/items/batch' && req.method === 'POST') {
+        const input = JSON.parse(await readBody(req)) as { paths?: string[]; patch?: ItemMeta }
+        if (!Array.isArray(input.paths) || !input.paths.length || !input.patch) return json(res, 400, { error: '需要 paths 与 patch' })
+        const allowed: Array<keyof ItemMeta> = ['source', 'license', 'collections', 'tags', 'retention', 'type']
+        const patch: ItemMeta = {}
+        for (const key of allowed) if (key in input.patch) (patch as Record<string, unknown>)[key] = input.patch[key]
+        saveItemsMeta(archiveDir, input.paths, patch)
         const index = scanArchive(archiveDir)
         return json(res, 200, { ...index, duplicates: duplicateGroups(index), health: healthCheck(index), stats: stats(index), runtime: process.version })
       }

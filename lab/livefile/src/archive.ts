@@ -126,6 +126,11 @@ export function saveItemMeta(root: string, id: string, patch: ItemMeta): Archive
   return item
 }
 
+export function saveItemsMeta(root: string, ids: string[], patch: ItemMeta): ArchiveItem[] {
+  if (!ids.length) throw new Error('需要至少一个条目')
+  return ids.map(id => saveItemMeta(root, id, patch))
+}
+
 export function duplicateGroups(index: ArchiveIndex): Array<{ hash: string; items: ArchiveItem[] }> {
   const map = new Map<string, ArchiveItem[]>()
   for (const item of index.items) {

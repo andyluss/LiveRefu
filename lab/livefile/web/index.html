@@ -26,7 +26,7 @@
       <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8M8 15h8M8 9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       <span class="brand-text"><b>LiveFile</b><small>PERSONAL ARCHIVE</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.2</span>
+    <span class="lab-chip">LAB / 0.3</span>
     <span class="status" id="status"><i></i><span>connecting</span></span>
     <div class="top-actions"><button class="btn ghost" id="run-scan" type="button">Re-scan</button><div class="theme-switch" role="group" aria-label="主题"><button data-theme-set="system" type="button" aria-pressed="true">系统</button><button data-theme-set="light" type="button" aria-pressed="false">浅色</button><button data-theme-set="dark" type="button" aria-pressed="false">深色</button></div></div>
   </header>
@@ -69,6 +69,7 @@
       <div class="view-head"><div><div class="eyebrow">ITEMS / SOURCES</div><h1>Items</h1></div><div class="head-meta"><span class="chip" id="item-filter-count">—</span></div></div>
       <p class="lede">条目 = 文件 + sidecar：标题、类型、时间、来源、许可、集合、保留期限。缺失会被标出来。</p>
       <div class="toolbar"><label class="search"><input id="item-search" type="search" placeholder="搜索标题 / 集合 / 标签 / 内容" autocomplete="off"></label><select id="type-filter"><option value="">全部类型</option></select><select id="collection-filter"><option value="">全部集合</option></select></div>
+      <section class="panel batch-panel"><div class="panel-head"><h2>批量补元数据</h2><span class="chip" id="batch-count">0 selected</span></div><div class="batch-grid"><label>来源<input id="batch-source" placeholder="来源（留空不改）"></label><label>许可<input id="batch-license" placeholder="private / CC-BY-4.0"></label><label>集合<input id="batch-collections" placeholder="用逗号分隔"></label><label>标签<input id="batch-tags" placeholder="用逗号分隔"></label><label>保留<input id="batch-retention" placeholder="permanent / 7y"></label><label class="check"><input id="batch-public" type="checkbox"> 标记 public</label></div><div class="batch-actions"><button class="btn small" id="apply-batch" type="button">应用到选中</button><span class="fine">只改 sidecar，不动原始文件；留空字段不覆盖。</span></div></section>
       <div id="item-grid" class="item-grid"></div>
     </section>
 

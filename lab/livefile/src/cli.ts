@@ -89,7 +89,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveFile 0.1 · local-first personal archive
+    console.log(`LiveFile 0.3 · local-first personal archive
 
 用法:
   node src/cli.ts check [archive]             索引 + 健康检查
