@@ -11,7 +11,7 @@
 | 编号 | 规则 | 一句话 | 状态 | 技术详解 |
 | --- | --- | --- | --- | --- |
 | R01 | [文档约定](R01-docs-convention.md) | 简体中文 Markdown；docs/studio001 体例；相对链接深度；东八区日期 | 已定·现行 | [`tech/docs-convention.md`](../tech/docs-convention.md) |
-| R02 | [Git 与提交信息约定](R02-git-convention.md) | Conventional Commits；描述用中文、标记用英文；AI 自动提交 | 已定·现行 | [`tech/git-convention.md`](../tech/git-convention.md) |
+| R02 | [Git 与提交信息约定](R02-git-convention.md) | Conventional Commits；描述用中文、标记用英文；AI 自动提交 | 已定·现行 | [R02 正文](R02-git-convention.md) |
 | R03 | [相对链接校验](R03-link-validation.md) | pre-commit 钩子 + CI 两道闸门校验内部相对链接 | 已定·已落地 | [`tech/hooks-readme.md`](../tech/hooks-readme.md) |
 | R04 | [数据 schema 校验](R04-data-validation.md) | 数据表按 schema 契约校验（必填/type/enum/范围） | 已定·已落地 | [`tech/formalization.md`](../tech/formalization.md)（数据契约部分） |
 | R05 | [变更日志记录约定](R05-changelog.md) | 每次（非琐碎）变更写变更日志；含格式/发布/append-only | 已定·现行 | [R05 正文](R05-changelog.md) |

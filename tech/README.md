@@ -8,7 +8,7 @@
 
 | 文档 | 内容 | 对应规则（权威） |
 | --- | --- | --- |
-| [`git-convention.md`](git-convention.md) | Git 与提交信息约定（Conventional Commits、自动提交、历史约定） | [R02](../rules/R02-git-convention.md) |
+| [`git-convention.md`](git-convention.md) | **已整合，仅保留指针**；正文见 [R02](../rules/R02-git-convention.md) | [R02](../rules/R02-git-convention.md) |
 | [`docs-convention.md`](docs-convention.md) | 文档约定（md 体例、**相对链接深度**与校验机制） | [R01](../rules/R01-docs-convention.md) |
 | [`changelog-convention.md`](changelog-convention.md) | **已整合，仅保留指针**；正文见 [R05](../rules/R05-changelog.md) | [R05](../rules/R05-changelog.md) |
 | [`hooks-readme.md`](hooks-readme.md) | 相对链接校验：pre-commit 钩子 + CI 的启用/跳过/常见处理 | [R03](../rules/R03-link-validation.md) |
