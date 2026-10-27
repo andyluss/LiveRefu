@@ -21,6 +21,7 @@
 - **元规则 M1/M2 的判定配置为新目录留出入口**：[`rules/meta/tools/config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置（`projects/mainline/cards/` 自带 README，按 M1 属"可自成一体"的子关注点），并把点文件（`.gitignore`）纳入命名白名单——原先的正则要求首字符为字母数字，会把点文件判为"根目录未声明文件"。
 
 ### 新增
+- **用户目标分析**：`docs/software/product/01` 增加“三类采用姿态”分析（专业者/爱好者/普通人 × 使用者/买家/采用单位/关键性/设置容忍度），修正三个方向的用户判断；新增 [`docs/software/ecology/12_目标用户分析_专业人士爱好者与普通人.md`](docs/software/ecology/12_目标用户分析_专业人士爱好者与普通人.md)，补齐生态文集用户经济/验证框架。
 - **LiveDSO 许可与命名落地**：许可选 A（Apache-2.0 核心 + 商业托管/团队/审计）；贡献者政策 DCO 1.1；正式名暂定 **LiveDesign / 灵动设计**，LiveDSO 继续为代号；新增 `LICENSE`/`NOTICE`/`CONTRIBUTING`/`DCO`/`TRADEMARKS` 与 SPDX 头。
 - **LiveDSO v0.2 + 开源协议文集**：`lab/livedso` 增加 `import` 命令与 [`vault-lrds/`](lab/livedso/vault-lrds/README.md)（从 `design/tokens` 导入 6 文件 / 229 tokens）；新增 [`docs/software/licenses/`](docs/software/licenses/README.md) 10 篇协议文集（MIT/Apache/BSD、GPL/AGPL/LGPL、源可用、商业化、兼容性、AI、LiveDSO 选项与模板）。
 - **LiveDSO v0.1（实验）**：[`lab/livedso/`](lab/livedso/README.md) —— 本地优先、零依赖的设计系统操作台；token 解析/别名、对比度/裸值/契约/风格卡检查、健康报告、CSS 投影、Node 原生 API + Web Workbench；示例 vault 与 LRDS 解耦。
