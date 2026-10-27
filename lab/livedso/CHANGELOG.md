@@ -1,5 +1,19 @@
 # LiveDSO Changelog
 
+## [0.15.0] - 2026-10-27 22:54
+
+### Added
+
+- **Vaults 健康总览**：Workbench 新增 Vaults 页，列出所有注册 vault 的健康分、errors/warnings、tokens/contracts/cards，并可直接切换。
+- **API**：`GET /api/vaults/overview` 聚合各 vault 检查结果与当前 activeVault。
+- 切换只影响当前本地服务进程，不写 vault 配置。
+
+### Changed
+
+- `node:test` 保持 17 项（沿用现有 CI/注册表覆盖）。
+- 云/账号/团队/私有 registry/托管继续搁置。
+- 未做：报告模板变量扩展、更多本地报告；留到 v0.16。
+
 ## [0.14.0] - 2026-10-27 22:52
 
 ### Added

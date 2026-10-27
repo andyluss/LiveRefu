@@ -10,6 +10,7 @@ import { loadRegistry } from './registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
 import { allTrends } from './trend.ts'
+import { runCi } from './ci.ts'
 import { listReportTemplates, renderReport } from './reports.ts'
 import type { Vault } from './types.ts'
 
@@ -101,6 +102,7 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
         result = check(vault)
         return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
       }
+      if (url.pathname === '/api/vaults/overview' && req.method === 'GET') return json(res, 200, { ...runCi({ registry: registry.file, plugins: loadedPlugins.plugins, pluginErrors: loadedPlugins.errors }), activeVault: active })
       if (url.pathname === '/api/trends' && req.method === 'GET') return json(res, 200, allTrends(registry.file))
       if (url.pathname === '/api/history' && req.method === 'GET') return json(res, 200, { snapshots: listSnapshots(vault) })
       if (url.pathname === '/api/history' && req.method === 'POST') {

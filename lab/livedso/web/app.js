@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, reportTemplate: 'health' };
+  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, overview: null, reportTemplate: 'health' };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -63,6 +63,7 @@
     if (view === 'adoption') renderAdoption();
     if (view === 'history') loadHistory();
     if (view === 'trends') loadTrends();
+    if (view === 'vaults') loadVaultsOverview();
     if (view === 'style-cards') renderCards();
     if (view === 'checks') renderChecks();
     if (view === 'report') { loadReportTemplates(); renderReport(); }
@@ -81,8 +82,10 @@
       state.data = data;
       state.previewCard = '';
       renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
+      if (state.view === 'vaults') loadVaultsOverview();
       toast('Vault 已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} tokens`);
-    } catch (e) { toast('切换失败', e.message); renderVaultSelect(); }
+      return data;
+    } catch (e) { toast('切换失败', e.message); renderVaultSelect(); return null; }
   }
   function renderOverview() {
     if (!state.data) return;
@@ -319,6 +322,23 @@
       return `<article class="trend-vault"><h3>${esc(v.name)}</h3><div class="meta">${esc(v.id)} · ${v.points.length} snapshots</div>${v.error ? `<div class="err">${esc(v.error)}</div>` : v.points.length ? `<div class="bars">${v.points.map(p => `<div class="bar" title="${esc(p.createdAt)}" style="height:${Math.max(4, Math.round(p.tokens / max * 100))}%"></div>`).join('')}</div><div class="latest"><span>${latest?.tokens ?? '—'} tokens</span><span>${latest?.deprecated ?? '—'} deprecated</span><span>${latest?.contracts ?? '—'} contracts</span><span>${latest?.styleCards ?? '—'} cards</span></div>` : '<div class="empty">还没有快照。</div>'}</article>`;
     }).join('') + (r.errors?.length ? `<div class="trend-vault"><div class="err">${r.errors.map(esc).join('<br>')}</div></div>` : '');
   }
+  async function loadVaultsOverview() {
+    try {
+      const r = await api('/api/vaults/overview');
+      state.overview = r;
+      renderVaultsOverview();
+    } catch (e) { toast('Vault 总览加载失败', e.message); }
+  }
+  function renderVaultsOverview() {
+    const r = state.overview;
+    if (!r) return;
+    $('#vaults-status').textContent = `${r.vaults.length} vaults`;
+    $('#vaults-count').textContent = `${r.totals.tokens} tokens`;
+    $('#vaults-grid').innerHTML = r.vaults.map(v => {
+      const active = r.activeVault?.id === v.id;
+      return `<article class="vault-card ${active ? 'active' : ''}"><h3>${esc(v.name)}</h3><div class="meta">${esc(v.id)} · ${esc(v.path)}</div><div class="score">${v.error ? '—' : v.score}<small>/100</small></div>${v.error ? `<div class="err">${esc(v.error)}</div>` : ''}<div class="facts"><span><b>${v.tokens}</b>tokens</span><span><b>${v.contracts}</b>contracts</span><span><b>${v.styleCards}</b>cards</span><span><b>${v.warnings}</b>warnings</span></div><div class="actions">${active ? '<span class="chip">当前</span>' : `<button class="text-btn" type="button" data-overview-switch="${esc(v.id)}">切换 →</button>`}<span class="chip">${v.errors} errors</span></div></article>`;
+    }).join('');
+  }
   function renderChecks() {
     if (!state.data) return;
     const c = state.data.checks;
@@ -454,6 +474,8 @@
       if (e.target.id === 'run-adoption') { runAdoption(); return; }
       if (e.target.id === 'snapshot-now') { snapshotNow(); return; }
       if (e.target.id === 'refresh-trends') { loadTrends(); return; }
+      if (e.target.id === 'refresh-vaults') { loadVaultsOverview(); return; }
+      const vs = e.target.closest('[data-overview-switch]'); if (vs) { switchVault(vs.dataset.overviewSwitch).then(() => loadVaultsOverview()); return; }
       const hi = e.target.closest('[data-history]'); if (hi) { diffHistory(hi.dataset.history); return; }
       if (e.target.id === 'gen-report') { generateReport(); return; }
       if (e.target.id === 'gen-css') { generateCss(); return; }

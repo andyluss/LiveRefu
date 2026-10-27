@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b>LiveDSO</b><small>DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 0.14</span>
+    <span class="lab-chip">LAB / 0.15</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">Run checks</button>
@@ -51,7 +51,8 @@
       <button type="button" data-view="adoption"><span class="ni">07</span>采用扫描</button>
       <button type="button" data-view="history"><span class="ni">08</span>历史</button>
       <button type="button" data-view="trends"><span class="ni">09</span>趋势</button>
-      <button type="button" data-view="report"><span class="ni">10</span>报告/投影</button>
+      <button type="button" data-view="vaults"><span class="ni">10</span>Vaults</button>
+      <button type="button" data-view="report"><span class="ni">11</span>报告/投影</button>
     </nav>
     <div class="side-kicker">VAULT</div>
     <div class="vault-box">
@@ -158,6 +159,13 @@
       <p class="lede">把多个 vault 的快照放在一起看。只读本地 <code>.history/</code>，不上传、不依赖云。</p>
       <div class="trends-toolbar"><button class="btn" id="refresh-trends" type="button">刷新</button><span class="chip" id="trends-status">未加载</span></div>
       <div id="trends-grid" class="trends-grid"><div class="empty">读取中……</div></div>
+    </section>
+
+    <section class="view" id="view-vaults" aria-labelledby="vaults-title">
+      <div class="view-head"><div><div class="eyebrow">LOCAL FLEET</div><h1 id="vaults-title">Vaults</h1></div><div class="head-meta"><span class="chip" id="vaults-count">—</span></div></div>
+      <p class="lede">一个本地总览：每个 vault 的健康分、错误/警告与资产数量。切换只影响当前本地服务。</p>
+      <div class="vaults-toolbar"><button class="btn" id="refresh-vaults" type="button">刷新</button><span class="chip" id="vaults-status">未加载</span></div>
+      <div id="vaults-grid" class="vaults-grid"><div class="empty">读取中……</div></div>
     </section>
 
     <section class="view" id="view-report" aria-labelledby="report-title">
