@@ -242,3 +242,13 @@ test('report bundle builds all templates and an index', () => {
   assert.match(bundle.index, /Report Bundle/)
   assert.match(bundle.index, /inventory\.md/)
 })
+
+
+test('minimal example vault is valid', () => {
+  const vault = loadVault(fileURLToPath(new URL('../examples/minimal-vault', import.meta.url)))
+  const result = runChecks(vault)
+  assert.equal(vault.tokens.size, 10)
+  assert.equal(vault.contracts.length, 1)
+  assert.equal(result.errors, 0)
+  assert.equal(result.warnings, 0)
+})

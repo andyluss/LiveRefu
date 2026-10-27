@@ -1,0 +1,28 @@
+{
+  "ref": {
+    "color": {
+      "ink": { "$value": "#0B0F14", "$type": "color" },
+      "paper": { "$value": "#F6F1E7", "$type": "color" },
+      "teal": { "$value": "#1F9E96", "$type": "color" },
+      "amber": { "$value": "#FFC857", "$type": "color" }
+    }
+  },
+  "sys": {
+    "color": {
+      "bg": {
+        "base": { "$value": "{ref.color.ink}", "$type": "color" },
+        "surface": { "$value": "#141A21", "$type": "color" }
+      },
+      "text": {
+        "primary": { "$value": "{ref.color.paper}", "$type": "color" }
+      },
+      "action": {
+        "primary": { "$value": "{ref.color.teal}", "$type": "color" },
+        "onPrimary": { "$value": "#06110F", "$type": "color" }
+      },
+      "focus": {
+        "ring": { "$value": "{ref.color.amber}", "$type": "color" }
+      }
+    }
+  }
+}

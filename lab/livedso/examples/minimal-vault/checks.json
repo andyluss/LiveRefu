@@ -1,0 +1,10 @@
+{
+  "contrast": [
+    { "fg": "sys.color.text.primary", "bg": "sys.color.bg.base", "min": 4.5, "label": "正文 on 画布" },
+    { "fg": "sys.color.action.onPrimary", "bg": "sys.color.action.primary", "min": 4.5, "label": "主按钮文字" }
+  ],
+  "focusToken": "sys.color.focus.ring",
+  "actionToken": "sys.color.action.primary",
+  "rawValueTiers": [],
+  "contractRequired": ["anatomy", "states", "tokens", "keyboard", "a11y", "do", "dont"]
+}

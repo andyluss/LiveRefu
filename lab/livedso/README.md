@@ -1,6 +1,6 @@
 # LiveDSO · 设计系统操作台（实验）
 
-> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：0.18.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
+> **正式名（暂定）**：LiveDesign / 灵动设计 ｜ **代号**：LiveDSO ｜ **版本**：1.0.0 ｜ **状态**：`prototype` ｜ **日期**：2026-10-27
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -30,7 +30,8 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - Workbench Vaults 健康总览与切换；
 - 报告模板循环/条件（token/issues/contracts/styleCards 明细）；
 - 报告包：一次生成全部模板 + `index.md`，适合 CI artifact；
-- 模板条件支持嵌套（安全解析器，不执行代码）。
+- 模板条件支持嵌套（安全解析器，不执行代码）；
+- 最小示例 vault 与 v1.0 快速开始文档。
 - 生成健康报告与 CSS 投影；
 - 在 Web Workbench 里搜索、查看、改值、重跑闸门。
 
@@ -88,7 +89,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v0.18 已实现
+## 四、v1.0 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -255,6 +256,12 @@ Vaults 总览：Workbench **Vaults** 页；`GET /api/vaults/overview` 聚合所�
 ## 十三、发布检查
 
 每次发布按 [`docs/05_发布检查清单.md`](docs/05_发布检查清单.md) 执行：旧版本段不可删除，发布提交后立刻打 `livedso-v*` tag。
+
+## 十四、v1.0 案例与文档
+
+- [`docs/09_快速开始与案例.md`](docs/09_快速开始与案例.md)；
+- [`examples/minimal-vault/`](examples/minimal-vault/)：10 token / 1 契约 / 1 风格卡；
+- 稳定边界：本地优先，不接云/账号/团队；写操作只写源 JSON。
 
 ## 工作区规则
 

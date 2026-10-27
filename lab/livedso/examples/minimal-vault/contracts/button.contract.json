@@ -1,0 +1,13 @@
+{
+  "id": "button",
+  "title": "Button",
+  "status": "stable",
+  "summary": "触发一个明确动作。",
+  "anatomy": ["container", "label"],
+  "states": ["default", "hover", "active", "focus-visible", "disabled"],
+  "tokens": ["sys.color.action.primary", "sys.color.action.onPrimary", "sys.color.focus.ring"],
+  "keyboard": "Enter/Space 触发；Tab 可达。",
+  "a11y": "焦点环可见；禁用态使用 aria-disabled。",
+  "do": ["一个主按钮只做一件事"],
+  "dont": ["不要用主按钮做取消"]
+}

@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.0.0] - 2026-10-28 07:47
+
+### Added
+
+- **最小示例 vault**：[`examples/minimal-vault/`](examples/minimal-vault/)，10 tokens / 1 契约 / 1 风格卡，`check` 100/100。
+- **快速开始与案例**：[`docs/09_快速开始与案例.md`](docs/09_快速开始与案例.md)，覆盖 sample/LRDS real/minimal、adopt、snapshot、CI、插件、报告包。
+- v1.0 稳定边界：本地优先；不接云/账号/团队；写操作只写源 JSON。
+
+### Changed
+
+- `node:test` 18 → **19**（最小示例 vault 校验）。
+- 版本从 0.18 升到 **1.0**：本地核心范围冻结。
+
 ## [0.18.0] - 2026-10-28 07:24
 
 ### Added
