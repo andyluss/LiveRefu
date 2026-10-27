@@ -13,7 +13,8 @@
  *   4. 每个 `###` 必须以下列标准类目之一开头：新增/变更/弃用/移除/修复/安全
  *   5. 版本段不能为空
  *   6. 时间不能在未来
- *   7. ★ **版本号与 git tag 对得上**：若存在 `livefab-v<版本>` 标签，
+ *   7. ★ **旧版本段不可删除**（append-only；对比 HEAD 与当前文件）
+ *   8. ★ **版本号与 git tag 对得上**：若存在 `livefab-v<版本>` 标签，
  *      版本头的时间必须等于该标签指向提交的时间——这条把 CHANGELOG 与 git 钉在一起，
  *      是最有价值的一条（前面几条只保证"格式自洽"，这条保证"内容不假"）
  *
@@ -27,7 +28,7 @@
  */
 
 import { readFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { relative, resolve } from 'node:path'
 import { execFileSync } from 'node:child_process'
 
 // ⚠️ 用 import.meta.dirname 而不是 Bun 专有的 import.meta.dir —— 本脚本要能在 node 下跑
@@ -182,6 +183,16 @@ function tagAllowance(
   return { ok: blocked.length === 0 && mismatched.length === 0, blocked, allowed, mismatched }
 }
 
+/** 旧文件里存在、当前文件里消失的版本号。用于 append-only 把关。 */
+function deletedVersions(oldText: string, newText: string): string[] {
+  const vers = (text: string) => new Set(
+    text.split('\n').map(l => l.match(VERSION_HEAD)?.[1]).filter((v): v is string => Boolean(v))
+  )
+  const oldV = vers(oldText)
+  const newV = vers(newText)
+  return [...oldV].filter(v => !newV.has(v))
+}
+
 // ══════════════════════════════════════════════════════════════════════
 // 自检：给校验逻辑喂**已知坏数据**，确认它会失败
 // ══════════════════════════════════════════════════════════════════════
@@ -210,6 +221,7 @@ if (SELFTEST) {
       [{ ver: '0.2.0', exists: true, gitTime: '2026-01-02 00:00', docTime: '2026-01-02 00:00' },
        { ver: '0.1.0', exists: false, gitTime: '', docTime: '2026-01-01 00:00' }], '0.2.0').ok,
       '更早版本缺 tag → 必须被拒'],
+    ['旧版本段不可删除', () => deletedVersions('## [0.2.0] - 2026-01-02 00:00\n### 新增\n- x\n## [0.1.0] - 2026-01-01 00:00\n### 新增\n- y\n', '## [0.2.0] - 2026-01-02 00:00\n### 新增\n- x\n').length === 0, '删除旧版本必须被拒'],
     ['tag 时间不符必须被拒', () => tagAllowance(
       [{ ver: '0.2.0', exists: true, gitTime: '2026-01-01 00:00', docTime: '2026-01-02 00:00' }], '0.2.0').ok,
       '标签时间与版本头不符 → 必须被拒'],
@@ -239,6 +251,15 @@ if (SELFTEST) {
 console.log(`变更日志校验（${REL_FILE}${TAG_PREFIX ? `, tag 前缀 ${TAG_PREFIX}` : ''}）\n`)
 const text = readFileSync(FILE, 'utf8')
 const p = parse(text)
+
+// ★ append-only：旧版本段不得消失。不是格式问题，是历史完整性问题。
+//   新文件（HEAD 不存在）不适用；老文件缺版本即失败。
+const relFile = relative(ROOT, FILE).split('\\').join('/')
+const oldShow = sh(['git', 'show', `HEAD:${relFile}`])
+const oldText = oldShow.code === 0 ? oldShow.out : ''
+const removedVersions = oldText ? deletedVersions(oldText, text) : []
+check('旧版本段未被删除（append-only）', removedVersions.length === 0,
+  removedVersions.length ? `历史版本消失：${removedVersions.join(', ')}；禁止折叠/删除，缺 tag 请补 tag` : (oldText ? '无版本段被删除' : '新文件'))
 
 check('存在版本段', p.versions.length > 0, `${p.versions.length} 个版本`)
 check('版本头格式合法', allHeadsValid(text),

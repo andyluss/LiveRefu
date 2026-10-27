@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](lab/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **变更日志 append-only 闸门**：[`tools/check_changelog.ts`](tools/check_changelog.ts) 增加“旧版本段不可删除”检查；[`tech/changelog-convention.md`](tech/changelog-convention.md) 新增 §十一 硬规则；LiveDSO 增加发布检查清单。
 - **AGENTS 网络与代理**：[`AGENTS.md`](AGENTS.md) 新增「七、网络与代理」：联网前先检测代理；走代理只用一次性参数，禁止写进全局配置；代理失败时先去代理再试一次，两次都不行就停下并告知用户；并记录“远端操作可能部分成功，失败后先核对远端真实状态”。
 - **M1/M2 判定配置留出入口**：[`config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置，并把点文件纳入命名白名单，避免把合法文件判成“根目录未声明文件”。
 - **Refu Game 001 策划卷与难度模拟器迁入项目**：`docs/refu-game-001/` → `projects/refu-game-001/docs/design/`；`tools/sim_refu_game_001.ts` → `projects/refu-game-001/tools/`；知识库/项目日志已记录，时间取 git 提交。
