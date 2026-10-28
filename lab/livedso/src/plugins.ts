@@ -49,7 +49,7 @@ export function runPlugins(plugins: LocalPlugin[], vault: Vault): Issue[] {
   const issues: Issue[] = []
   for (const plugin of plugins) {
     try {
-      const result = plugin.check({ vault, version: '1.10.0' })
+      const result = plugin.check({ vault, version: '1.11.0' })
       for (const issue of result || []) issues.push(normalizeIssue(issue, plugin.name))
     } catch (e) {
       issues.push({ code: 'plugin.runtime', severity: 'error', path: plugin.name, message: `插件运行失败：${(e as Error).message}` })

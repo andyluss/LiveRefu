@@ -1,5 +1,19 @@
 # LiveDSO Changelog
 
+## [1.11.0] - 2026-10-28 19:32
+
+### Added
+
+- **3 个严格 schema 样板**：`minimal` / `lrds-sample` / `lrds-real` 顶层只含 `meta + ref + sys + component + product`；无 `theme`。
+- A 档角色映射到现有 `sys.color.*`；其余进 `product.<card>.role`；原始色进 `ref.generated`。
+- schema 支持 token 生命周期字段 `deprecated` / `replacedBy` / `deprecationNote`。
+
+### Changed
+
+- token 计数：lrds-sample 463、lrds-real 635、minimal 419。
+- `schema:check` 默认校验 3 个样板；`schema:check:all` 用于暴露其余 8 个待迁移项。
+- 测试 25 项；版本 1.10.0 → 1.11.0。
+
 ## [1.10.0] - 2026-10-28 19:30
 
 ### Added

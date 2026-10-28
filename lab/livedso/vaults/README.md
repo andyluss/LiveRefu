@@ -7,8 +7,8 @@
 
 | id | 目录 | 类型 | 特点 |
 | --- | --- | --- | --- |
-| `sample` | `lrds-sample/` | 自有示例 | LRDS 示例；331 tokens（37 core + 150 role + 144 scale）；含弃用/契约/风格卡 |
-| `lrds` | `lrds-real/` | 真实导入 | 从工作区 `design/tokens/` 导入；505 tokens（229 core + 150 role + 144 scale） |
+| `sample` | `lrds-sample/` | 自有示例 | LRDS 示例；463 tokens；LRDS schema 试点；含弃用/契约/风格卡 |
+| `lrds` | `lrds-real/` | 真实导入 | 从工作区 `design/tokens/` 导入；635 tokens；LRDS schema 试点 |
 | `minimal` | `minimal/` | 最小起点 | 10 tokens / 1 契约 / 1 风格卡 |
 | `material-3` | `material-3/` | 流行系统启发 | Material 3 风格的角色命名与色调 |
 | `carbon` | `carbon/` | 流行系统启发 | Carbon 风格的 layer/text/interactive |

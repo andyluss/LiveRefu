@@ -1,613 +1,581 @@
 {
-  "theme": {
+  "meta": {
+    "name": "lrds-sample style roles",
+    "version": "1.0.0"
+  },
+  "product": {
     "archive": {
-      "color": {
-        "bg": {
-          "$value": "{sys.color.bg.base}",
-          "$type": "color"
-        },
+      "role": {
         "bgSubtle": {
-          "$value": "#14181c",
-          "$type": "color"
-        },
-        "surface": {
-          "$value": "{sys.color.bg.surface}",
+          "$value": "{ref.generated.archive.role.bgSubtle}",
           "$type": "color"
         },
         "surfaceRaised": {
-          "$value": "#232932",
+          "$value": "{ref.generated.archive.role.surfaceRaised}",
           "$type": "color"
         },
         "surfaceSunken": {
-          "$value": "#14181c",
+          "$value": "{ref.generated.archive.role.surfaceSunken}",
           "$type": "color"
         },
         "surfaceHover": {
-          "$value": "#232932",
-          "$type": "color"
-        },
-        "text": {
-          "$value": "{sys.color.text.primary}",
+          "$value": "{ref.generated.archive.role.surfaceHover}",
           "$type": "color"
         },
         "textOnSurface": {
-          "$value": "#f3ede1",
+          "$value": "{ref.generated.archive.role.textOnSurface}",
           "$type": "color"
         },
         "textMuted": {
-          "$value": "#d0ccc2",
+          "$value": "{ref.generated.archive.role.textMuted}",
           "$type": "color"
         },
         "textSubtle": {
-          "$value": "#adaaa4",
+          "$value": "{ref.generated.archive.role.textSubtle}",
           "$type": "color"
         },
         "textInverse": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.archive.role.textInverse}",
           "$type": "color"
         },
         "textLink": {
-          "$value": "#4fd1c5",
+          "$value": "{ref.generated.archive.role.textLink}",
           "$type": "color"
         },
         "textVisited": {
-          "$value": "#bae3d7",
+          "$value": "{ref.generated.archive.role.textVisited}",
           "$type": "color"
         },
         "textDisabled": {
-          "$value": "#737370",
+          "$value": "{ref.generated.archive.role.textDisabled}",
           "$type": "color"
         },
         "border": {
-          "$value": "#afada8",
+          "$value": "{ref.generated.archive.role.border}",
           "$type": "color"
         },
         "borderStrong": {
-          "$value": "#d1cdc5",
+          "$value": "{ref.generated.archive.role.borderStrong}",
           "$type": "color"
         },
         "borderSubtle": {
-          "$value": "#6b6d6f",
+          "$value": "{ref.generated.archive.role.borderSubtle}",
           "$type": "color"
         },
         "divider": {
-          "$value": "#55585c",
-          "$type": "color"
-        },
-        "focus": {
-          "$value": "{sys.color.focus.ring}",
-          "$type": "color"
-        },
-        "action": {
-          "$value": "{sys.color.action.primary}",
+          "$value": "{ref.generated.archive.role.divider}",
           "$type": "color"
         },
         "actionHover": {
-          "$value": "#63d4c8",
+          "$value": "{ref.generated.archive.role.actionHover}",
           "$type": "color"
         },
         "actionPressed": {
-          "$value": "#41aaa2",
+          "$value": "{ref.generated.archive.role.actionPressed}",
           "$type": "color"
         },
         "actionDisabled": {
-          "$value": "#307a75",
-          "$type": "color"
-        },
-        "onAction": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.archive.role.actionDisabled}",
           "$type": "color"
         },
         "secondaryAction": {
-          "$value": "#111823",
+          "$value": "{ref.generated.archive.role.secondaryAction}",
           "$type": "color"
         },
         "onSecondaryAction": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.archive.role.onSecondaryAction}",
           "$type": "color"
         },
         "ghostAction": {
-          "$value": "#f3ede1",
-          "$type": "color"
-        },
-        "danger": {
-          "$value": "{sys.color.feedback.danger}",
+          "$value": "{ref.generated.archive.role.ghostAction}",
           "$type": "color"
         },
         "onDanger": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.archive.role.onDanger}",
           "$type": "color"
         },
         "dangerSubtle": {
-          "$value": "#281a18",
+          "$value": "{ref.generated.archive.role.dangerSubtle}",
           "$type": "color"
         },
         "success": {
-          "$value": "#4fd1c5",
+          "$value": "{ref.generated.archive.role.success}",
           "$type": "color"
         },
         "onSuccess": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.archive.role.onSuccess}",
           "$type": "color"
         },
         "successSubtle": {
-          "$value": "#132629",
+          "$value": "{ref.generated.archive.role.successSubtle}",
           "$type": "color"
         },
         "warning": {
-          "$value": "#8ab4f8",
+          "$value": "{ref.generated.archive.role.warning}",
           "$type": "color"
         },
         "onWarning": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.archive.role.onWarning}",
           "$type": "color"
         },
         "warningSubtle": {
-          "$value": "#1a232f",
+          "$value": "{ref.generated.archive.role.warningSubtle}",
           "$type": "color"
         },
         "info": {
-          "$value": "#4fd1c5",
+          "$value": "{ref.generated.archive.role.info}",
           "$type": "color"
         },
         "onInfo": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.archive.role.onInfo}",
           "$type": "color"
         },
         "infoSubtle": {
-          "$value": "#132629",
+          "$value": "{ref.generated.archive.role.infoSubtle}",
           "$type": "color"
         },
         "accent": {
-          "$value": "#4fd1c5",
+          "$value": "{ref.generated.archive.role.accent}",
           "$type": "color"
         },
         "accent2": {
-          "$value": "#ff6b35",
+          "$value": "{ref.generated.archive.role.accent2}",
           "$type": "color"
         },
         "selection": {
-          "$value": "#235352",
+          "$value": "{ref.generated.archive.role.selection}",
           "$type": "color"
         },
         "codeBg": {
-          "$value": "#171a1e",
+          "$value": "{ref.generated.archive.role.codeBg}",
           "$type": "color"
         },
         "codeText": {
-          "$value": "#f3ede1",
+          "$value": "{ref.generated.archive.role.codeText}",
           "$type": "color"
         },
         "chart1": {
-          "$value": "#4fd1c5",
+          "$value": "{ref.generated.archive.role.chart1}",
           "$type": "color"
         },
         "chart2": {
-          "$value": "#8ab4f8",
+          "$value": "{ref.generated.archive.role.chart2}",
           "$type": "color"
         },
         "chart3": {
-          "$value": "#ff6b35",
+          "$value": "{ref.generated.archive.role.chart3}",
           "$type": "color"
         },
         "chart4": {
-          "$value": "#4fd1c5",
+          "$value": "{ref.generated.archive.role.chart4}",
           "$type": "color"
         },
         "chart5": {
-          "$value": "#8ab4f8",
+          "$value": "{ref.generated.archive.role.chart5}",
           "$type": "color"
         },
         "chart6": {
-          "$value": "#4fd1c5",
+          "$value": "{ref.generated.archive.role.chart6}",
           "$type": "color"
         }
       }
     },
     "cyber": {
-      "color": {
+      "role": {
         "bg": {
-          "$value": "#070B18",
+          "$value": "{ref.generated.cyber.role.bg}",
           "$type": "color"
         },
         "bgSubtle": {
-          "$value": "#101420",
+          "$value": "{ref.generated.cyber.role.bgSubtle}",
           "$type": "color"
         },
         "surface": {
-          "$value": "#0B1724",
+          "$value": "{ref.generated.cyber.role.surface}",
           "$type": "color"
         },
         "surfaceRaised": {
-          "$value": "#1e2834",
+          "$value": "{ref.generated.cyber.role.surfaceRaised}",
           "$type": "color"
         },
         "surfaceSunken": {
-          "$value": "#101420",
+          "$value": "{ref.generated.cyber.role.surfaceSunken}",
           "$type": "color"
         },
         "surfaceHover": {
-          "$value": "#1e2834",
+          "$value": "{ref.generated.cyber.role.surfaceHover}",
           "$type": "color"
         },
         "text": {
-          "$value": "#F4F0E8",
+          "$value": "{ref.generated.cyber.role.text}",
           "$type": "color"
         },
         "textOnSurface": {
-          "$value": "#f4f0e8",
+          "$value": "{ref.generated.cyber.role.textOnSurface}",
           "$type": "color"
         },
         "textMuted": {
-          "$value": "#d0cec9",
+          "$value": "{ref.generated.cyber.role.textMuted}",
           "$type": "color"
         },
         "textSubtle": {
-          "$value": "#adabaa",
+          "$value": "{ref.generated.cyber.role.textSubtle}",
           "$type": "color"
         },
         "textInverse": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.cyber.role.textInverse}",
           "$type": "color"
         },
         "textLink": {
-          "$value": "#5ce1e6",
+          "$value": "{ref.generated.cyber.role.textLink}",
           "$type": "color"
         },
         "textVisited": {
-          "$value": "#bfebe7",
+          "$value": "{ref.generated.cyber.role.textVisited}",
           "$type": "color"
         },
         "textDisabled": {
-          "$value": "#727276",
+          "$value": "{ref.generated.cyber.role.textDisabled}",
           "$type": "color"
         },
         "border": {
-          "$value": "#aeafad",
+          "$value": "{ref.generated.cyber.role.border}",
           "$type": "color"
         },
         "borderStrong": {
-          "$value": "#d1cfcb",
+          "$value": "{ref.generated.cyber.role.borderStrong}",
           "$type": "color"
         },
         "borderSubtle": {
-          "$value": "#686e72",
+          "$value": "{ref.generated.cyber.role.borderSubtle}",
           "$type": "color"
         },
         "divider": {
-          "$value": "#51585f",
+          "$value": "{ref.generated.cyber.role.divider}",
           "$type": "color"
         },
         "focus": {
-          "$value": "#FFC857",
+          "$value": "{ref.generated.cyber.role.focus}",
           "$type": "color"
         },
         "action": {
-          "$value": "#5CE1E6",
+          "$value": "{ref.generated.cyber.role.action}",
           "$type": "color"
         },
         "actionHover": {
-          "$value": "#6ee3e6",
+          "$value": "{ref.generated.cyber.role.actionHover}",
           "$type": "color"
         },
         "actionPressed": {
-          "$value": "#4bb6bd",
+          "$value": "{ref.generated.cyber.role.actionPressed}",
           "$type": "color"
         },
         "actionDisabled": {
-          "$value": "#368189",
-          "$type": "color"
-        },
-        "onAction": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.cyber.role.actionDisabled}",
           "$type": "color"
         },
         "secondaryAction": {
-          "$value": "#0b1724",
+          "$value": "{ref.generated.cyber.role.secondaryAction}",
           "$type": "color"
         },
         "onSecondaryAction": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.cyber.role.onSecondaryAction}",
           "$type": "color"
         },
         "ghostAction": {
-          "$value": "#f4f0e8",
+          "$value": "{ref.generated.cyber.role.ghostAction}",
           "$type": "color"
         },
         "danger": {
-          "$value": "#FF5FA2",
+          "$value": "{ref.generated.cyber.role.danger}",
           "$type": "color"
         },
         "onDanger": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.cyber.role.onDanger}",
           "$type": "color"
         },
         "dangerSubtle": {
-          "$value": "#251529",
+          "$value": "{ref.generated.cyber.role.dangerSubtle}",
           "$type": "color"
         },
         "success": {
-          "$value": "#5ce1e6",
+          "$value": "{ref.generated.cyber.role.success}",
           "$type": "color"
         },
         "onSuccess": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.cyber.role.onSuccess}",
           "$type": "color"
         },
         "successSubtle": {
-          "$value": "#112531",
-          "$type": "color"
-        },
-        "warning": {
-          "$value": "#ffc857",
+          "$value": "{ref.generated.cyber.role.successSubtle}",
           "$type": "color"
         },
         "onWarning": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.cyber.role.onWarning}",
           "$type": "color"
         },
         "warningSubtle": {
-          "$value": "#252220",
+          "$value": "{ref.generated.cyber.role.warningSubtle}",
           "$type": "color"
         },
         "info": {
-          "$value": "#5ce1e6",
+          "$value": "{ref.generated.cyber.role.info}",
           "$type": "color"
         },
         "onInfo": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.cyber.role.onInfo}",
           "$type": "color"
         },
         "infoSubtle": {
-          "$value": "#112531",
+          "$value": "{ref.generated.cyber.role.infoSubtle}",
           "$type": "color"
         },
         "accent": {
-          "$value": "#5ce1e6",
+          "$value": "{ref.generated.cyber.role.accent}",
           "$type": "color"
         },
         "accent2": {
-          "$value": "#ff5fa2",
+          "$value": "{ref.generated.cyber.role.accent2}",
           "$type": "color"
         },
         "selection": {
-          "$value": "#255660",
+          "$value": "{ref.generated.cyber.role.selection}",
           "$type": "color"
         },
         "codeBg": {
-          "$value": "#131622",
+          "$value": "{ref.generated.cyber.role.codeBg}",
           "$type": "color"
         },
         "codeText": {
-          "$value": "#f4f0e8",
+          "$value": "{ref.generated.cyber.role.codeText}",
           "$type": "color"
         },
         "chart1": {
-          "$value": "#5ce1e6",
+          "$value": "{ref.generated.cyber.role.chart1}",
           "$type": "color"
         },
         "chart2": {
-          "$value": "#ffc857",
+          "$value": "{ref.generated.cyber.role.chart2}",
           "$type": "color"
         },
         "chart3": {
-          "$value": "#ff5fa2",
+          "$value": "{ref.generated.cyber.role.chart3}",
           "$type": "color"
         },
         "chart4": {
-          "$value": "#5ce1e6",
+          "$value": "{ref.generated.cyber.role.chart4}",
           "$type": "color"
         },
         "chart5": {
-          "$value": "#ffc857",
+          "$value": "{ref.generated.cyber.role.chart5}",
           "$type": "color"
         },
         "chart6": {
-          "$value": "#5ce1e6",
+          "$value": "{ref.generated.cyber.role.chart6}",
           "$type": "color"
         }
       }
     },
     "solar": {
-      "color": {
+      "role": {
         "bg": {
-          "$value": "#F3E7C9",
+          "$value": "{ref.generated.solar.role.bg}",
           "$type": "color"
         },
         "bgSubtle": {
-          "$value": "#eae0c3",
+          "$value": "{ref.generated.solar.role.bgSubtle}",
           "$type": "color"
         },
         "surface": {
-          "$value": "#E8D8B8",
+          "$value": "{ref.generated.solar.role.surface}",
           "$type": "color"
         },
         "surfaceRaised": {
-          "$value": "#e0d1b2",
+          "$value": "{ref.generated.solar.role.surfaceRaised}",
           "$type": "color"
         },
         "surfaceSunken": {
-          "$value": "#eae0c3",
+          "$value": "{ref.generated.solar.role.surfaceSunken}",
           "$type": "color"
         },
         "surfaceHover": {
-          "$value": "#d7cbad",
+          "$value": "{ref.generated.solar.role.surfaceHover}",
           "$type": "color"
         },
         "text": {
-          "$value": "#18352B",
+          "$value": "{ref.generated.solar.role.text}",
           "$type": "color"
         },
         "textOnSurface": {
-          "$value": "#18352b",
+          "$value": "{ref.generated.solar.role.textOnSurface}",
           "$type": "color"
         },
         "textMuted": {
-          "$value": "#395043",
+          "$value": "{ref.generated.solar.role.textMuted}",
           "$type": "color"
         },
         "textSubtle": {
-          "$value": "#5a6a5a",
+          "$value": "{ref.generated.solar.role.textSubtle}",
           "$type": "color"
         },
         "textInverse": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.solar.role.textInverse}",
           "$type": "color"
         },
         "textLink": {
-          "$value": "#1f6b4a",
+          "$value": "{ref.generated.solar.role.textLink}",
           "$type": "color"
         },
         "textVisited": {
-          "$value": "#1a4836",
+          "$value": "{ref.generated.solar.role.textVisited}",
           "$type": "color"
         },
         "textDisabled": {
-          "$value": "#909782",
+          "$value": "{ref.generated.solar.role.textDisabled}",
           "$type": "color"
         },
         "border": {
-          "$value": "#566655",
+          "$value": "{ref.generated.solar.role.border}",
           "$type": "color"
         },
         "borderStrong": {
-          "$value": "#374d40",
+          "$value": "{ref.generated.solar.role.borderStrong}",
           "$type": "color"
         },
         "borderSubtle": {
-          "$value": "#959780",
+          "$value": "{ref.generated.solar.role.borderSubtle}",
           "$type": "color"
         },
         "divider": {
-          "$value": "#aaa78e",
+          "$value": "{ref.generated.solar.role.divider}",
           "$type": "color"
         },
         "focus": {
-          "$value": "#E8B84A",
+          "$value": "{ref.generated.solar.role.focus}",
           "$type": "color"
         },
         "action": {
-          "$value": "#1F6B4A",
+          "$value": "{ref.generated.solar.role.action}",
           "$type": "color"
         },
         "actionHover": {
-          "$value": "#1e6546",
+          "$value": "{ref.generated.solar.role.actionHover}",
           "$type": "color"
         },
         "actionPressed": {
-          "$value": "#498463",
+          "$value": "{ref.generated.solar.role.actionPressed}",
           "$type": "color"
         },
         "actionDisabled": {
-          "$value": "#7ea383",
+          "$value": "{ref.generated.solar.role.actionDisabled}",
           "$type": "color"
         },
         "onAction": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.solar.role.onAction}",
           "$type": "color"
         },
         "secondaryAction": {
-          "$value": "#e8d8b8",
+          "$value": "{ref.generated.solar.role.secondaryAction}",
           "$type": "color"
         },
         "onSecondaryAction": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.solar.role.onSecondaryAction}",
           "$type": "color"
         },
         "ghostAction": {
-          "$value": "#18352b",
+          "$value": "{ref.generated.solar.role.ghostAction}",
           "$type": "color"
         },
         "danger": {
-          "$value": "#B85C2A",
+          "$value": "{ref.generated.solar.role.danger}",
           "$type": "color"
         },
         "onDanger": {
-          "$value": "#0b0f14",
+          "$value": "{ref.generated.solar.role.onDanger}",
           "$type": "color"
         },
         "dangerSubtle": {
-          "$value": "#ecd6b6",
+          "$value": "{ref.generated.solar.role.dangerSubtle}",
           "$type": "color"
         },
         "success": {
-          "$value": "#1f6b4a",
+          "$value": "{ref.generated.solar.role.success}",
           "$type": "color"
         },
         "onSuccess": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.solar.role.onSuccess}",
           "$type": "color"
         },
         "successSubtle": {
-          "$value": "#dad8ba",
+          "$value": "{ref.generated.solar.role.successSubtle}",
           "$type": "color"
         },
         "warning": {
-          "$value": "#18352b",
+          "$value": "{ref.generated.solar.role.warning}",
           "$type": "color"
         },
         "onWarning": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.solar.role.onWarning}",
           "$type": "color"
         },
         "warningSubtle": {
-          "$value": "#d9d2b6",
+          "$value": "{ref.generated.solar.role.warningSubtle}",
           "$type": "color"
         },
         "info": {
-          "$value": "#1f6b4a",
+          "$value": "{ref.generated.solar.role.info}",
           "$type": "color"
         },
         "onInfo": {
-          "$value": "#f6f1e7",
+          "$value": "{ref.generated.solar.role.onInfo}",
           "$type": "color"
         },
         "infoSubtle": {
-          "$value": "#dad8ba",
+          "$value": "{ref.generated.solar.role.infoSubtle}",
           "$type": "color"
         },
         "accent": {
-          "$value": "#1f6b4a",
+          "$value": "{ref.generated.solar.role.accent}",
           "$type": "color"
         },
         "accent2": {
-          "$value": "#b85c2a",
+          "$value": "{ref.generated.solar.role.accent2}",
           "$type": "color"
         },
         "selection": {
-          "$value": "#a9bc9d",
+          "$value": "{ref.generated.solar.role.selection}",
           "$type": "color"
         },
         "codeBg": {
-          "$value": "#e8dec1",
+          "$value": "{ref.generated.solar.role.codeBg}",
           "$type": "color"
         },
         "codeText": {
-          "$value": "#18352b",
+          "$value": "{ref.generated.solar.role.codeText}",
           "$type": "color"
         },
         "chart1": {
-          "$value": "#1f6b4a",
+          "$value": "{ref.generated.solar.role.chart1}",
           "$type": "color"
         },
         "chart2": {
-          "$value": "#18352b",
+          "$value": "{ref.generated.solar.role.chart2}",
           "$type": "color"
         },
         "chart3": {
-          "$value": "#b85c2a",
+          "$value": "{ref.generated.solar.role.chart3}",
           "$type": "color"
         },
         "chart4": {
-          "$value": "#1f6b4a",
+          "$value": "{ref.generated.solar.role.chart4}",
           "$type": "color"
         },
         "chart5": {
-          "$value": "#18352b",
+          "$value": "{ref.generated.solar.role.chart5}",
           "$type": "color"
         },
         "chart6": {
-          "$value": "#1f6b4a",
+          "$value": "{ref.generated.solar.role.chart6}",
           "$type": "color"
         }
       }

@@ -17,7 +17,7 @@ function walk(value: unknown, path: string, file: string, issues: SchemaIssue[])
   if ('$value' in obj) {
     if (!('$type' in obj)) issues.push({ file, path, message: '缺少 $type' })
     else if (!types.has(String(obj.$type))) issues.push({ file, path, message: `非法 $type: ${String(obj.$type)}` })
-    for (const key of Object.keys(obj)) if (key !== '$value' && key !== '$type') issues.push({ file, path, message: `token 多余字段: ${key}` })
+    for (const key of Object.keys(obj)) if (!['$value', '$type', 'deprecated', 'replacedBy', 'deprecationNote'].includes(key)) issues.push({ file, path, message: `token 多余字段: ${key}` })
     return
   }
   for (const [key, child] of Object.entries(obj)) walk(child, path ? `${path}.${key}` : key, file, issues)
@@ -46,9 +46,13 @@ if (isMain) {
   const json = process.argv.includes('--json')
   const idx = process.argv.indexOf('--vault')
   const only = idx >= 0 ? process.argv[idx + 1] : ''
-  const roots = only
-    ? [resolve(ROOT, 'vaults', only)]
-    : readdirSync(join(ROOT, 'vaults')).map(id => join(ROOT, 'vaults', id)).filter(p => statSync(p).isDirectory())
+  const pilot = process.argv.includes('--pilot')
+  const pilots = ['minimal', 'lrds-sample', 'lrds-real']
+  const roots = pilot
+    ? pilots.map(id => resolve(ROOT, 'vaults', id))
+    : only
+      ? [resolve(ROOT, 'vaults', only)]
+      : readdirSync(join(ROOT, 'vaults')).map(id => join(ROOT, 'vaults', id)).filter(p => statSync(p).isDirectory())
   const results = roots.map(checkVaultSchema)
   if (json) console.log(JSON.stringify(only ? results[0] : results, null, 2))
   else {

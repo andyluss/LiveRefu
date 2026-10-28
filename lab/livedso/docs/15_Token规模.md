@@ -39,14 +39,14 @@
 
 | 藏库 | Token 总数 |
 | --- | --- |
-| LRDS sample | 331 |
-| LRDS real | 505 |
+| LRDS sample | 463 |
+| LRDS real | 635 |
 | Minimal | 304 |
 | 其余 8 套 | 304–306 |
 
 ## 四、严格 schema 试点
 
-`vaults/minimal/` 已作为第一个严格遵循 LRDS schema 的 vault：
+`vaults/minimal/` / `vaults/lrds-sample/` / `vaults/lrds-real/` 已作为严格遵循 LRDS schema 的样板：
 
 ```text
 meta + ref + sys + component + product

@@ -1,6 +1,6 @@
 {
   "name": "livedso",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "private": true,
   "type": "module",
   "description": "LiveDSO — local-first design system operations workbench",
@@ -20,7 +20,7 @@
     "i18n:check": "node tools/i18n-audit.ts",
     "skin:check": "node tools/skin-check.ts",
     "skin:snapshot": "node tools/skin-snapshot.ts",
-    "schema:check": "node tools/check-vault-schema.ts --vault minimal",
+    "schema:check": "node tools/check-vault-schema.ts --pilot",
     "schema:check:all": "node tools/check-vault-schema.ts"
   },
   "license": "Apache-2.0"
