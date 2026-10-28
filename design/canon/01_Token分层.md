@@ -113,7 +113,7 @@ component.input.border   → sys.color.line.subtle
 不要为每张风格卡复制完整角色集：
 
 ```text
-theme.<card>.*      全量 50 角色副本   ← 反模式
+theme.<card>.*      完整角色副本   ← 反模式
 ```
 
 原因：

@@ -12,6 +12,8 @@
 
 ### 新增
 
+- **润色设计纲领**：统一角色路径为 `sys.color.*`，删除项目迁移历史/版本状态，`09 落地检查表` 改为通用验收问题；`03` 明确历史全量副本迁移后删除，不再新增。
+
 - **清理 `01_Token分层`**：移除 v2.0/v1.9.1 迁移状态与“50 角色都进 sys.role”的过时表述；收敛为 `ref/sys/component/product` 原则，迁移细节留在 `projects/livedso/docs/16_项目状态.md`。
 
 - **LiveDSO 迁入 `design/projects/livedso/`**：从实验区 `lab/` 转为 LRDS 正式项目；设计纲领不再承载项目实现细节，项目状态移到 `projects/livedso/docs/16_项目状态.md`。
