@@ -1,0 +1,11 @@
+{
+  "source": { "format": "tailwind" },
+  "theme": { "id": "tw-brand", "name": "Tailwind Brand", "mode": "light" },
+  "roles": {
+    "bg": "tailwind.color.bg", "surface": "tailwind.color.surface", "surfaceRaised": "tailwind.color.surfaceRaised", "surfaceSunken": "tailwind.color.surfaceSunken",
+    "text": "tailwind.color.text", "textMuted": "tailwind.color.textMuted", "textInverse": "tailwind.color.textInverse",
+    "action": "tailwind.color.action", "onAction": "tailwind.color.onAction", "actionHover": "tailwind.color.actionHover",
+    "focus": "tailwind.color.focus", "border": "tailwind.color.border", "borderStrong": "tailwind.color.borderStrong",
+    "danger": "tailwind.color.danger", "success": "tailwind.color.success", "warning": "tailwind.color.warning"
+  }
+}

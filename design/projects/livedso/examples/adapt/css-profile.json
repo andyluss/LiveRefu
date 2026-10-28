@@ -1,0 +1,19 @@
+{
+  "source": { "format": "css" },
+  "themes": [
+    { "id": "css-light", "name": "CSS Light", "mode": "light", "roles": {
+      "bg": "css.default.bg", "surface": "css.default.surface", "surfaceRaised": "css.default.surface-raised", "surfaceSunken": "css.default.surface-sunken",
+      "text": "css.default.text", "textMuted": "css.default.text-muted", "textInverse": "css.default.text-inverse",
+      "action": "css.default.action", "onAction": "css.default.on-action", "actionHover": "css.default.action-hover",
+      "focus": "css.default.focus", "border": "css.default.border", "borderStrong": "css.default.border-strong",
+      "danger": "css.default.danger", "success": "css.default.success", "warning": "css.default.warning"
+    } },
+    { "id": "css-dark", "name": "CSS Dark", "mode": "dark", "roles": {
+      "bg": "css.dark.bg", "surface": "css.dark.surface", "surfaceRaised": "css.dark.surface-raised", "surfaceSunken": "css.dark.surface-sunken",
+      "text": "css.dark.text", "textMuted": "css.dark.text-muted", "textInverse": "css.dark.text-inverse",
+      "action": "css.dark.action", "onAction": "css.dark.on-action", "actionHover": "css.dark.action-hover",
+      "focus": "css.dark.focus", "border": "css.dark.border", "borderStrong": "css.dark.border-strong",
+      "danger": "css.dark.danger", "success": "css.dark.success", "warning": "css.dark.warning"
+    } }
+  ]
+}

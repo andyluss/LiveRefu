@@ -1,0 +1,42 @@
+{
+  "light": {
+    "color": {
+      "background": { "$value": "#F7F3EA", "$type": "color" },
+      "surface": { "$value": "#FFFDF8", "$type": "color" },
+      "surfaceRaised": { "$value": "#F1EBDD", "$type": "color" },
+      "surfaceSunken": { "$value": "#EDE6D8", "$type": "color" },
+      "text": { "$value": "#1B222B", "$type": "color" },
+      "textMuted": { "$value": "#4F5B68", "$type": "color" },
+      "textInverse": { "$value": "#FFFDF8", "$type": "color" },
+      "action": { "$value": "#0B6B63", "$type": "color" },
+      "onAction": { "$value": "#FFFFFF", "$type": "color" },
+      "actionHover": { "$value": "#0E857B", "$type": "color" },
+      "focus": { "$value": "#1D4ED8", "$type": "color" },
+      "border": { "$value": "#8A8275", "$type": "color" },
+      "borderStrong": { "$value": "#5E6773", "$type": "color" },
+      "danger": { "$value": "#A83A14", "$type": "color" },
+      "success": { "$value": "#2F6B3A", "$type": "color" },
+      "warning": { "$value": "#7A4E00", "$type": "color" }
+    }
+  },
+  "dark": {
+    "color": {
+      "background": { "$value": "#1B222B", "$type": "color" },
+      "surface": { "$value": "#242E38", "$type": "color" },
+      "surfaceRaised": { "$value": "#2E3945", "$type": "color" },
+      "surfaceSunken": { "$value": "#161C24", "$type": "color" },
+      "text": { "$value": "#F7F3EA", "$type": "color" },
+      "textMuted": { "$value": "#B8C2CE", "$type": "color" },
+      "textInverse": { "$value": "#1B222B", "$type": "color" },
+      "action": { "$value": "#4FD1C5", "$type": "color" },
+      "onAction": { "$value": "#06110F", "$type": "color" },
+      "actionHover": { "$value": "#6ADFD4", "$type": "color" },
+      "focus": { "$value": "#8AB4F8", "$type": "color" },
+      "border": { "$value": "#9AA7B8", "$type": "color" },
+      "borderStrong": { "$value": "#B8C2CE", "$type": "color" },
+      "danger": { "$value": "#FF8A65", "$type": "color" },
+      "success": { "$value": "#7BD389", "$type": "color" },
+      "warning": { "$value": "#FFC857", "$type": "color" }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": { "format": "dtcg" },
+  "themes": [
+    {
+      "id": "paper-light", "name": "Paper Light", "mode": "light",
+      "roles": {
+        "bg": "light.color.background", "surface": "light.color.surface",
+        "surfaceRaised": "light.color.surfaceRaised", "surfaceSunken": "light.color.surfaceSunken",
+        "text": "light.color.text", "textMuted": "light.color.textMuted", "textInverse": "light.color.textInverse",
+        "action": "light.color.action", "onAction": "light.color.onAction", "actionHover": "light.color.actionHover",
+        "focus": "light.color.focus", "border": "light.color.border", "borderStrong": "light.color.borderStrong",
+        "danger": "light.color.danger", "success": "light.color.success", "warning": "light.color.warning"
+      }
+    },
+    {
+      "id": "paper-dark", "name": "Paper Dark", "mode": "dark",
+      "roles": {
+        "bg": "dark.color.background", "surface": "dark.color.surface",
+        "surfaceRaised": "dark.color.surfaceRaised", "surfaceSunken": "dark.color.surfaceSunken",
+        "text": "dark.color.text", "textMuted": "dark.color.textMuted", "textInverse": "dark.color.textInverse",
+        "action": "dark.color.action", "onAction": "dark.color.onAction", "actionHover": "dark.color.actionHover",
+        "focus": "dark.color.focus", "border": "dark.color.border", "borderStrong": "dark.color.borderStrong",
+        "danger": "dark.color.danger", "success": "dark.color.success", "warning": "dark.color.warning"
+      }
+    }
+  ]
+}

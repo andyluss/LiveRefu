@@ -1,0 +1,24 @@
+{
+  "theme": {
+    "extend": {
+      "colors": {
+        "bg": "#F7F3EA",
+        "surface": "#FFFDF8",
+        "surfaceRaised": "#F1EBDD",
+        "surfaceSunken": "#EDE6D8",
+        "text": "#1B222B",
+        "textMuted": "#4F5B68",
+        "textInverse": "#FFFDF8",
+        "action": "#0B6B63",
+        "onAction": "#FFFFFF",
+        "actionHover": "#0E857B",
+        "focus": "#1D4ED8",
+        "border": "#8A8275",
+        "borderStrong": "#5E6773",
+        "danger": "#A83A14",
+        "success": "#2F6B3A",
+        "warning": "#7A4E00"
+      }
+    }
+  }
+}

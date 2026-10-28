@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.16.0] - 2026-10-28 20:28
+
+### Added
+
+- **适配器 P1**：CSS variables、Tailwind JSON、多主题 → `sys` + `product.<theme>` + 每主题风格卡。
+- `--suggest` 输出 B 档角色建议（仅建议，不自动写入）。
+- 新增 `examples/adapt/theme.css`、`css-profile.json`、`tailwind.tokens.json`、`tailwind-profile.json`、`multi.tokens.json`、`multi-profile.json`。
+- 文档 [`docs/17_适配器.md`](docs/17_适配器.md) 更新到 P1。
+
+### Changed
+
+- 测试 28 → **31**；版本 1.15.0 → 1.16.0。
+
 ## [1.15.0] - 2026-10-28 20:20
 
 ### Added

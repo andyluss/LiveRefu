@@ -361,6 +361,46 @@ test('DTCG adapter rejects missing mappings', () => {
     writeFileSync(profile, JSON.stringify({ theme: { id: 'broken' }, roles: { bg: 'color.background' } }))
     const result = adaptVault({ source, profile, out: join(tmp, 'out') })
     assert.equal(result.ok, false)
-    assert.ok(result.issues.some(i => i.path === 'roles.text'))
+    assert.ok(result.issues.some(i => i.path.endsWith('roles.text')))
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('adapter handles multi-theme DTCG and suggestions', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-multi-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/multi.tokens.json', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/multi-profile.json', import.meta.url))
+    const result = adaptVault({ source, profile, out: tmp, suggest: true })
+    assert.equal(result.ok, true, result.issues.map(i => i.message).join(' | '))
+    assert.deepEqual(result.themes, ['paper-light', 'paper-dark'])
+    assert.ok(result.suggestions.length > 0)
+    assert.equal(checkVaultSchema(tmp).ok, true)
+    assert.equal(loadVault(tmp).styleCards.length, 2)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+test('adapter handles CSS variables with themes', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-css-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/theme.css', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/css-profile.json', import.meta.url))
+    const result = adaptVault({ source, profile, out: tmp })
+    assert.equal(result.ok, true, result.issues.map(i => i.message).join(' | '))
+    assert.equal(result.format, 'css')
+    assert.equal(result.themes.length, 2)
+    assert.equal(checkVaultSchema(tmp).ok, true)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+test('adapter handles Tailwind JSON', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-tw-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/tailwind.tokens.json', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/tailwind-profile.json', import.meta.url))
+    const result = adaptVault({ source, profile, out: tmp })
+    assert.equal(result.ok, true, result.issues.map(i => i.message).join(' | '))
+    assert.equal(result.format, 'tailwind')
+    assert.equal(checkVaultSchema(tmp).ok, true)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

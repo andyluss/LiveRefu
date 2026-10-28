@@ -221,13 +221,14 @@ switch (cmd) {
       break
     }
     try {
-      const result = adaptVault({ source, profile, out, check: args.includes('--check'), dryRun: args.includes('--dry-run') })
+      const result = adaptVault({ source, profile, out, check: args.includes('--check'), dryRun: args.includes('--dry-run'), suggest: args.includes('--suggest') })
       if (args.includes('--json')) console.log(JSON.stringify(result, null, 2))
       else {
         console.log(`adapt · ${result.theme} · source tokens ${result.sourceTokens} · mapped roles ${result.mappedRoles}`)
         console.log(`source hash ${result.sourceHash}`)
         console.log(`output ${result.out}`)
         for (const issue of result.issues) console.log(`  [error] ${issue.path} — ${issue.message}`)
+        for (const s of result.suggestions) console.log(`  [suggest:${s.confidence}] ${s.role} ← ${s.source}`)
       }
       process.exitCode = result.ok ? 0 : 1
     } catch (e) {
@@ -243,7 +244,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveAtelier 1.15.0 · (LiveDSO) local-first design system operations
+    console.log(`LiveAtelier 1.16.0 · (LiveDSO) local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -264,7 +265,7 @@ switch (cmd) {
   node src/cli.ts plugin-test --all [--registry <file>]  跨 vault 插件矩阵
   node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
                                           跨 vault 本地 CI 门禁
-  node src/cli.ts adapt --source <dir> --profile <map.json> --out <vault> [--dry-run] [--check]
+  node src/cli.ts adapt --source <dir> --profile <map.json> --out <vault> [--dry-run] [--check] [--suggest]
                                           从 DTCG 源生成 LRDS 兼容 vault
   node src/cli.ts serve [port]            启动 Web Workbench
 
