@@ -2,7 +2,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { cpSync, mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle } from '../src/vault.ts'
@@ -261,4 +261,19 @@ test('style cards expose preview roles', () => {
     assert.ok(card.roles && typeof card.roles === 'object')
     assert.ok(card.roles.bg)
   }
+})
+
+
+test('frontend exposes routes, i18n, skins and nav groups', () => {
+  const html = readFileSync(fileURLToPath(new URL('../web/index.html', import.meta.url)), 'utf8')
+  const js = readFileSync(fileURLToPath(new URL('../web/app.js', import.meta.url)), 'utf8')
+  const i18n = readFileSync(fileURLToPath(new URL('../web/i18n.js', import.meta.url)), 'utf8')
+  assert.match(html, /id="lang-toggle"/)
+  assert.match(html, /id="skin-select"/)
+  assert.match(html, /class="nav-group"/)
+  assert.match(js, /hashchange/)
+  assert.match(js, /routeFromHash/)
+  assert.match(js, /applySkin/)
+  assert.match(i18n, /LiveAtelier/)
+  assert.match(html, /灵动构坊/)
 })

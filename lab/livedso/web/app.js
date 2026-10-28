@@ -5,7 +5,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: 'overview', error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, overview: null, reportTemplate: 'health' };
+  const state = { data: null, view: (location.hash.replace(/^#\/?/, '').split(/[/?]/)[0] || 'overview'), error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, overview: null, reportTemplate: 'health', skin: '' };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -52,7 +52,27 @@
     if (document.documentElement.dataset.theme === 'system') applyTheme('system', false);
   });
 
+  const ROUTES = new Set(['overview', 'tokens', 'contracts', 'preview', 'style-cards', 'checks', 'adoption', 'history', 'trends', 'vaults', 'report'])
+  function routeFromHash() {
+    const raw = (location.hash || '').replace(/^#\/?/, '').split(/[/?]/)[0]
+    return ROUTES.has(raw) ? raw : 'overview'
+  }
+  function navigate(view) {
+    if (!ROUTES.has(view)) view = 'overview'
+    if (routeFromHash() === view && location.hash === `#/${view}`) switchView(view)
+    else location.hash = `#/${view}`
+  }
+  function applyRoute() {
+    const view = routeFromHash()
+    if (location.hash !== `#/${view}`) history.replaceState(null, '', `#/${view}`)
+    switchView(view)
+    if (state.data && (view === 'history' || view === 'trends' || view === 'vaults')) {
+      // async loaders are triggered by switchView
+    }
+  }
+
   function switchView(view) {
+    if (!ROUTES.has(view)) view = 'overview'
     state.view = view;
     $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
     $$('.nav button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
@@ -70,6 +90,35 @@
     window.scrollTo({ top: 0 });
   }
 
+  function renderSkinSelect() {
+    const sel = $('#skin-select');
+    if (!sel || !state.data) return;
+    const current = state.skin || '';
+    sel.innerHTML = '<option value="">默认</option>' + state.data.styleCards.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+    sel.value = state.data.styleCards.some(c => c.id === current) ? current : '';
+    state.skin = sel.value;
+  }
+  function applySkin(id) {
+    const root = document.documentElement;
+    const keys = ['--bg','--bg2','--surface','--surface2','--raised','--text','--dim','--muted','--line','--line2','--accent','--accent2','--warn','--danger','--ok','--focus','--glass'];
+    for (const key of keys) root.style.removeProperty(key);
+    if (!id) { state.skin = ''; try { localStorage.removeItem('livedso-skin'); } catch (e) {} return; }
+    const card = state.data?.styleCards.find(c => c.id === id);
+    if (!card) return;
+    const s = previewSkin(card);
+    const map = {
+      '--bg': s['--dso-sys-color-bg-base'], '--bg2': s['--dso-sys-color-bg-sunken'], '--surface': s['--dso-sys-color-bg-surface'],
+      '--surface2': s['--dso-sys-color-bg-surface'], '--raised': s['--dso-sys-color-bg-surface'],
+      '--text': s['--dso-sys-color-text-primary'], '--dim': s['--dso-sys-color-text-secondary'], '--muted': s['--dso-sys-color-text-muted'],
+      '--line': s['--dso-sys-color-line-subtle'], '--line2': s['--dso-sys-color-line-strong'],
+      '--accent': s['--dso-sys-color-action-primary'], '--accent2': s['--dso-sys-color-feedback-danger'],
+      '--warn': s['--dso-sys-color-focus-ring'], '--danger': s['--dso-sys-color-feedback-danger'], '--ok': s['--dso-sys-color-action-primary'],
+      '--focus': s['--dso-sys-color-focus-ring'], '--glass': 'color-mix(in srgb, ' + s['--dso-sys-color-bg-surface'] + ' 86%, transparent)'
+    };
+    for (const [k, v] of Object.entries(map)) if (v) root.style.setProperty(k, v);
+    state.skin = id;
+    try { localStorage.setItem('livedso-skin', id); } catch (e) {}
+  }
   function renderVaultSelect() {
     const select = $('#vault-select');
     if (!select || !state.data?.vaults) return;
@@ -81,7 +130,9 @@
       const data = await api('/api/vault', { method: 'POST', body: JSON.stringify({ id }) });
       state.data = data;
       state.previewCard = '';
-      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
+      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect(); renderSkinSelect();
+      state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
+      if (state.skin) applySkin(state.skin);
       if (state.view === 'vaults') loadVaultsOverview();
       toast('Vault 已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} tokens`);
       return data;
@@ -438,7 +489,9 @@
       setStatus('ok', 'local vault');
       state.data = await api('/api/state');
       state.error = null;
-      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
+      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect(); renderSkinSelect();
+      state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
+      if (state.skin) applySkin(state.skin);
       if (state.view === 'report') renderReport();
     } catch (e) {
       state.error = e.message;
@@ -493,7 +546,7 @@
   function bind() {
     document.addEventListener('click', (e) => {
       const view = e.target.closest('[data-view]');
-      if (view) { switchView(view.dataset.view); return; }
+      if (view) { navigate(view.dataset.view); return; }
       const theme = e.target.closest('[data-theme-set]');
       if (theme) { applyTheme(theme.dataset.themeSet, true); toast('外观', THEME_LABEL[theme.dataset.themeSet]); return; }
       if (e.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
@@ -517,7 +570,7 @@
       if (e.target.id === 'download-css') { state.css ? download('livedso-tokens.css', state.css, 'text/css') : toast('还没有 CSS', '先生成 CSS 投影。'); return; }
     });
     document.addEventListener('submit', (e) => { if (e.target.id === 'contract-form') { e.preventDefault(); saveContract(e.target); } });
-    document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } if (e.target.id === 'report-template') { state.reportTemplate = e.target.value; } if (e.target.id === 'vault-select') switchVault(e.target.value); if (e.target.id === 'compare-a') { state.compareA = e.target.value; renderCompare(); } if (e.target.id === 'compare-b') { state.compareB = e.target.value; renderCompare(); } });
+    document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } if (e.target.id === 'report-template') { state.reportTemplate = e.target.value; } if (e.target.id === 'vault-select') switchVault(e.target.value); if (e.target.id === 'skin-select') applySkin(e.target.value); if (e.target.id === 'compare-a') { state.compareA = e.target.value; renderCompare(); } if (e.target.id === 'compare-b') { state.compareB = e.target.value; renderCompare(); } });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeDrawer();
     });
@@ -534,7 +587,8 @@
     applyTheme(document.documentElement.dataset.theme || 'system', false);
   }
 
+  window.addEventListener('hashchange', applyRoute);
   bind();
-  refresh();
+  refresh().then(applyRoute);
   setInterval(() => { if (state.data && state.view !== 'tokens') renderOverview(); }, 60000);
 })();

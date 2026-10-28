@@ -1,6 +1,6 @@
 # LiveAtelier · 灵动构坊（代号 LiveDSO）
 
-> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.0.3 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
+> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.1.0 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -31,6 +31,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - 报告模板循环/条件（token/issues/contracts/styleCards 明细）；
 - 报告包：一次生成全部模板 + `index.md`，适合 CI artifact；
 - 模板条件支持嵌套（安全解析器，不执行代码）；
+- hash 路由与深链、中文/English 切换、风格卡自应用、分组导航；
 - 最小示例 vault 与 v1.0 快速开始文档。
 - 生成健康报告与 CSS 投影；
 - 在 Web Workbench 里搜索、查看、改值、重跑闸门。
@@ -89,7 +90,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v1.0 已实现
+## 四、v1.1 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -248,7 +249,15 @@ test/            # node:test
 - 目标产品案例（发票 App/家庭能源/用药提醒）、触发条件、定价、边界见 [`docs/04_商品化路径.md`](docs/04_商品化路径.md)；跨项目狗粮计划见 [`../DOGFOOD.md`](../DOGFOOD.md)；
 - **现在不做**：不加 SaaS、账号、计费；云/账号/团队/私有 registry/托管**按用户裁决搁置**；先把本地快照、diff、CI 做稳。
 
-## 十二、CI 集成与插件
+## 十二、路由、语言与皮肤
+
+- 路由：`#/overview` … `#/report`；
+- 语言：顶部 `EN` / `中文`，默认跟随浏览器，存 localStorage；
+- 皮肤：顶栏选择风格卡，把 `roles` 应用到 LiveAtelier 自身；
+- 词表：[`docs/11_本地化词表.md`](docs/11_本地化词表.md)；
+- 说明：[`docs/10_路由_本地化_皮肤.md`](docs/10_路由_本地化_皮肤.md)。
+
+## 十三、CI 集成与插件
 
 本地/任意 CI 运行：
 
@@ -270,7 +279,7 @@ node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
 
 Vaults 总览：Workbench **Vaults** 页；`GET /api/vaults/overview` 聚合所有 vault 健康分。
 
-## 十三、发布检查
+## 十四、发布检查
 
 每次发布按 [`docs/05_发布检查清单.md`](docs/05_发布检查清单.md) 执行：旧版本段不可删除，发布提交后立刻打 `livedso-v*` tag。
 

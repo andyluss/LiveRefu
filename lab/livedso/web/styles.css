@@ -157,3 +157,13 @@ select{border:1px solid var(--line);background:var(--surface);border-radius:var(
 
 /* v0.15 · vault health fleet */
 .vaults-toolbar{display:flex;gap:6px;align-items:center;margin-bottom:8px}.vaults-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px}.vault-card{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:11px}.vault-card.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}.vault-card h3{font:600 21px var(--font-serif);margin:0}.vault-card .meta{font:8px var(--font-mono);color:var(--muted);margin:2px 0 8px;word-break:break-all}.vault-card .score{font:28px var(--font-mono);line-height:1;color:var(--accent)}.vault-card .score small{font:9px var(--font-mono);color:var(--muted)}.vault-card .facts{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:8px 0;font:8px var(--font-mono);color:var(--dim)}.vault-card .facts b{display:block;font:13px var(--font-mono);color:var(--text)}.vault-card .actions{display:flex;gap:5px;align-items:center;border-top:1px dashed var(--line);padding-top:7px}.vault-card .err{color:var(--danger);font-size:9px;margin-top:6px}
+
+/* v1.1 · grouped navigation + hash routes */
+.nav-group{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.nav-group-title{font:8px var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:5px 8px 3px}
+.nav-group:last-child{margin-bottom:0}
+@media (max-width:980px){.nav{flex-direction:row;gap:6px;align-items:flex-start}.nav-group{flex-direction:row;margin-bottom:0;align-items:center}.nav-group-title{padding:0 4px}.nav-group button{padding:6px 8px}}
+
+/* v1.3 · dogfood skin */
+.skin-label{display:flex;align-items:center;gap:5px;font:8px var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.skin-label select{border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--text);font:9px var(--font-mono);padding:3px 5px;outline:none}

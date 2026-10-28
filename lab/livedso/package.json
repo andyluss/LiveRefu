@@ -1,6 +1,6 @@
 {
   "name": "livedso",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "LiveAtelier / 灵动构坊 (LiveDSO) — local-first design system operations workbench",

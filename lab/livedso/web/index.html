@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LiveAtelier · Design System Operations</title>
-<meta name="description" content="LiveDSO：本地优先的设计系统操作台。Token、契约、风格卡、闸门与报告。">
+<title>LiveAtelier · 设计系统操作台</title>
+<meta name="description" content="LiveAtelier / 灵动构坊：本地优先的设计系统操作台。Token、契约、风格卡、闸门与报告。">
 <script>
 (function(){
   try {
@@ -23,14 +23,16 @@
 <body>
 <div class="app-shell">
   <header class="topbar">
-    <a class="brand" href="#" data-view="overview" aria-label="LiveDSO 总览">
+    <a class="brand" href="#/overview" data-view="overview" aria-label="LiveAtelier 概览">
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
-      <span class="brand-text"><b>LiveAtelier</b><small>LIVEDSO · DESIGN SYSTEM OPS</small></span>
+      <span class="brand-text"><b data-i18n-zh="灵动构坊" data-i18n-en="LiveAtelier">LiveAtelier</b><small data-i18n-zh="LIVEDSO · 设计系统操作台" data-i18n-en="LIVEDSO · DESIGN SYSTEM OPS">LIVEDSO · DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 1.0.3</span>
+    <span class="lab-chip">LAB / 1.1.0</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
-      <button class="btn ghost" id="run-checks" type="button">Run checks</button>
+      <button class="btn ghost" id="run-checks" type="button">运行闸门</button>
+      <button class="btn ghost" id="lang-toggle" type="button" aria-label="切换语言">EN</button>
+      <label class="skin-label">皮肤<select id="skin-select" aria-label="应用风格卡到工作台"><option value="">默认</option></select></label>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-set="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-set="light" aria-pressed="false">浅色</button>
@@ -40,19 +42,26 @@
   </header>
 
   <aside class="sidebar" aria-label="主导航">
-    <div class="side-kicker">WORKBENCH</div>
     <nav class="nav">
-      <button type="button" data-view="overview" class="active"><span class="ni">01</span>总览</button>
-      <button type="button" data-view="tokens"><span class="ni">02</span>Tokens <span class="count" id="nav-tokens">—</span></button>
-      <button type="button" data-view="contracts"><span class="ni">03</span>契约 <span class="count" id="nav-contracts">—</span></button>
-      <button type="button" data-view="preview"><span class="ni">04</span>预览</button>
-      <button type="button" data-view="style-cards"><span class="ni">05</span>风格卡 <span class="count" id="nav-cards">—</span></button>
-      <button type="button" data-view="checks"><span class="ni">06</span>闸门 <span class="count warn" id="nav-issues">—</span></button>
-      <button type="button" data-view="adoption"><span class="ni">07</span>采用扫描</button>
-      <button type="button" data-view="history"><span class="ni">08</span>历史</button>
-      <button type="button" data-view="trends"><span class="ni">09</span>趋势</button>
-      <button type="button" data-view="vaults"><span class="ni">10</span>Vaults</button>
-      <button type="button" data-view="report"><span class="ni">11</span>报告/投影</button>
+      <div class="nav-group"><div class="nav-group-title">工作台</div>
+        <button type="button" data-view="overview" class="active">总览</button>
+        <button type="button" data-view="tokens">Tokens <span class="count" id="nav-tokens">—</span></button>
+        <button type="button" data-view="contracts">契约 <span class="count" id="nav-contracts">—</span></button>
+        <button type="button" data-view="preview">预览</button>
+      </div>
+      <div class="nav-group"><div class="nav-group-title">审视</div>
+        <button type="button" data-view="style-cards">风格卡 <span class="count" id="nav-cards">—</span></button>
+        <button type="button" data-view="checks">闸门 <span class="count warn" id="nav-issues">—</span></button>
+        <button type="button" data-view="adoption">采用扫描</button>
+      </div>
+      <div class="nav-group"><div class="nav-group-title">本地</div>
+        <button type="button" data-view="history">历史</button>
+        <button type="button" data-view="trends">趋势</button>
+        <button type="button" data-view="vaults">多库</button>
+      </div>
+      <div class="nav-group"><div class="nav-group-title">输出</div>
+        <button type="button" data-view="report">报告/投影</button>
+      </div>
     </nav>
     <div class="side-kicker">VAULT</div>
     <div class="vault-box">
@@ -111,35 +120,35 @@
     </section>
 
     <section class="view" id="view-contracts" aria-labelledby="contracts-title">
-      <div class="view-head"><div><div class="eyebrow">COMPONENT PROMISES</div><h1 id="contracts-title">Contracts</h1></div><div class="head-meta"><span class="chip" id="contract-filter-count">—</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">COMPONENT PROMISES</div><h1 id="contracts-title">组件契约</h1></div><div class="head-meta"><span class="chip" id="contract-filter-count">—</span></div></div>
       <p class="lede">组件契约不是文档装饰：缺状态、缺 token、缺键盘说明都会被闸门看见。</p>
       <div id="contract-grid" class="contract-grid"><div class="empty">读取中……</div></div>
     </section>
 
     <section class="view" id="view-preview" aria-labelledby="preview-title">
-      <div class="view-head"><div><div class="eyebrow">LIVE COMPONENT PREVIEW</div><h1 id="preview-title">Preview</h1></div><div class="head-meta"><span class="chip">vault tokens</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">LIVE COMPONENT PREVIEW</div><h1 id="preview-title">组件预览</h1></div><div class="head-meta"><span class="chip">vault tokens</span></div></div>
       <p class="lede">用 vault 里的真实 token 渲染组件，而不是看截图。预览只读取解析值，不写回。</p>
-      <div class="preview-toolbar"><label>风格卡<select id="preview-card"></select></label><div class="preview-states" role="group" aria-label="预览状态"><button type="button" data-preview-state="default" class="active">Default</button><button type="button" data-preview-state="hover">Hover</button><button type="button" data-preview-state="focus">Focus</button><button type="button" data-preview-state="disabled">Disabled</button></div><span class="chip" id="preview-token-count">—</span></div>
+      <div class="preview-toolbar"><label>风格卡<select id="preview-card"></select></label><div class="preview-states" role="group" aria-label="预览状态"><button type="button" data-preview-state="default" class="active">默认</button><button type="button" data-preview-state="hover">悬停</button><button type="button" data-preview-state="focus">聚焦</button><button type="button" data-preview-state="disabled">禁用</button></div><span class="chip" id="preview-token-count">—</span></div>
       <div class="preview-stage"><div id="preview-canvas" class="preview-canvas"><div class="empty">读取 token 中……</div></div></div>
       <div class="preview-foot"><div><div class="eyebrow">TOKENS IN USE</div><div id="preview-tokens" class="preview-tokens"></div></div><div class="preview-card-palette"><div class="eyebrow">STYLE CARD</div><div id="preview-palette" class="preview-palette"></div></div></div>
     </section>
 
     <section class="view" id="view-style-cards" aria-labelledby="cards-title">
-      <div class="view-head"><div><div class="eyebrow">WORLD SKINS</div><h1 id="cards-title">Style cards</h1></div><div class="head-meta"><span class="chip" id="card-filter-count">—</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">WORLD SKINS</div><h1 id="cards-title">风格卡</h1></div><div class="head-meta"><span class="chip" id="card-filter-count">—</span></div></div>
       <p class="lede">风格卡只换皮肤，不换语法。每张卡都应该写清谁维护、代价是什么。</p>
       <div id="card-grid" class="card-grid"><div class="empty">读取中……</div></div>
       <section class="panel compare-panel"><div class="panel-head"><div><div class="eyebrow">SIDE BY SIDE</div><h2>风格卡对比</h2></div><span class="chip">2 cards</span></div><div class="compare-toolbar"><label>卡 A<select id="compare-a"></select></label><label>卡 B<select id="compare-b"></select></label></div><div id="compare-grid" class="compare-grid"><div class="empty">至少需要两张风格卡。</div></div></section>
     </section>
 
     <section class="view" id="view-checks" aria-labelledby="checks-title">
-      <div class="view-head"><div><div class="eyebrow">GATES</div><h1 id="checks-title">Checks</h1></div><div class="head-meta"><span class="chip" id="check-score">—</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">GATES</div><h1 id="checks-title">质量闸门</h1></div><div class="head-meta"><span class="chip" id="check-score">—</span></div></div>
       <p class="lede">先跑闸门，再谈发布。错误阻断；警告必须记录取舍。</p>
       <div class="check-summary" id="check-summary"></div>
       <div id="check-list" class="issue-list"><div class="empty">读取中……</div></div>
     </section>
 
     <section class="view" id="view-adoption" aria-labelledby="adoption-title">
-      <div class="view-head"><div><div class="eyebrow">ADOPTION / READ-ONLY</div><h1 id="adoption-title">Adoption scan</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">ADOPTION / READ-ONLY</div><h1 id="adoption-title">采用扫描</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
       <p class="lede">扫描一个代码目录，看它有没有真的在用 vault 的 token，以及哪里还在写裸色、引用了不存在的 --dso- 变量。只读，不改目标目录。</p>
       <div class="adoption-toolbar"><label class="search"><input id="adoption-root" type="text" placeholder="目录，例如 ../../design 或 ../my-app" spellcheck="false"></label><button class="btn" id="run-adoption" type="button">扫描</button><span class="chip" id="adoption-status">未扫描</span></div>
       <div class="adoption-summary" id="adoption-summary"></div>
@@ -147,7 +156,7 @@
     </section>
 
     <section class="view" id="view-history" aria-labelledby="history-title">
-      <div class="view-head"><div><div class="eyebrow">LOCAL HISTORY</div><h1 id="history-title">History</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">LOCAL HISTORY</div><h1 id="history-title">历史快照</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
       <p class="lede">快照只写本地 vault 的 <code>.history/</code>，不上传、不依赖 Git。对比只读，不会自动回滚。</p>
       <div class="history-toolbar"><button class="btn" id="snapshot-now" type="button">创建快照</button><span class="chip" id="history-status">未加载</span></div>
       <div id="history-summary" class="history-summary"></div><div id="history-trend" class="history-trend"></div>
@@ -155,26 +164,26 @@
     </section>
 
     <section class="view" id="view-trends" aria-labelledby="trends-title">
-      <div class="view-head"><div><div class="eyebrow">LOCAL TRENDS</div><h1 id="trends-title">Trends</h1></div><div class="head-meta"><span class="chip">all vaults</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">LOCAL TRENDS</div><h1 id="trends-title">趋势</h1></div><div class="head-meta"><span class="chip">all vaults</span></div></div>
       <p class="lede">把多个 vault 的快照放在一起看。只读本地 <code>.history/</code>，不上传、不依赖云。</p>
       <div class="trends-toolbar"><button class="btn" id="refresh-trends" type="button">刷新</button><span class="chip" id="trends-status">未加载</span></div>
       <div id="trends-grid" class="trends-grid"><div class="empty">读取中……</div></div>
     </section>
 
     <section class="view" id="view-vaults" aria-labelledby="vaults-title">
-      <div class="view-head"><div><div class="eyebrow">LOCAL FLEET</div><h1 id="vaults-title">Vaults</h1></div><div class="head-meta"><span class="chip" id="vaults-count">—</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">LOCAL FLEET</div><h1 id="vaults-title">多库总览</h1></div><div class="head-meta"><span class="chip" id="vaults-count">—</span></div></div>
       <p class="lede">一个本地总览：每个 vault 的健康分、错误/警告与资产数量。切换只影响当前本地服务。</p>
       <div class="vaults-toolbar"><button class="btn" id="refresh-vaults" type="button">刷新</button><span class="chip" id="vaults-status">未加载</span></div>
       <div id="vaults-grid" class="vaults-grid"><div class="empty">读取中……</div></div>
     </section>
 
     <section class="view" id="view-report" aria-labelledby="report-title">
-      <div class="view-head"><div><div class="eyebrow">OUTPUT</div><h1 id="report-title">Report & projection</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">OUTPUT</div><h1 id="report-title">报告与投影</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
       <p class="lede">健康报告与 CSS 投影都是生成物：可复制、可下载、可进 PR，不需要上传。</p>
       <div class="report-actions"><label class="report-template-label">模板<select id="report-template"></select></label><button class="btn" type="button" id="gen-report">生成报告</button><button class="btn ghost" type="button" id="download-report">下载 .md</button><button class="btn ghost" type="button" id="gen-css">生成 CSS 投影</button><button class="btn ghost" type="button" id="download-css">下载 .css</button></div>
       <div class="report-grid">
-        <section class="panel"><div class="panel-head"><h2 id="report-heading">Health report</h2><span class="chip" id="report-status">未生成</span></div><pre id="report-output" class="code-panel">点击“生成健康报告”。</pre></section>
-        <section class="panel"><div class="panel-head"><h2>CSS projection</h2><span class="chip" id="css-status">未生成</span></div><pre id="css-output" class="code-panel">点击“生成 CSS 投影”。</pre></section>
+        <section class="panel"><div class="panel-head"><h2 id="report-heading">健康报告</h2><span class="chip" id="report-status">未生成</span></div><pre id="report-output" class="code-panel">点击“生成健康报告”。</pre></section>
+        <section class="panel"><div class="panel-head"><h2>CSS 投影</h2><span class="chip" id="css-status">未生成</span></div><pre id="css-output" class="code-panel">点击“生成 CSS 投影”。</pre></section>
       </div>
     </section>
   </main>
@@ -195,6 +204,7 @@
   </aside>
 </div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
