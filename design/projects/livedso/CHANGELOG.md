@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.14.1] - 2026-10-28 20:01
+
+### Fixed
+
+- **Material 3 / Dark 侧栏浅黄色**：`applySkin` 仍读取旧的 `bg-sunken` / `line-subtle` / `line-strong`，没有覆盖 `--bg2`、`--line`，侧栏退回浅色主题。
+- 对齐为 `bg-surface-sunken` / `border-subtle` / `border-strong`；新增回归测试防再次漂移。
+- 迁移后的 token 文件 `meta.name` 统一，不再把顶部藏库名覆盖成 “Material 3 product roles”。
+- 顶栏 “实验 /” 改为 “项目 /”。
+
+### Changed
+
+- 版本 1.14.0 → 1.14.1；测试 25 → **26**。
+
 ## [1.14.0] - 2026-10-28 19:50
 
 ### Changed

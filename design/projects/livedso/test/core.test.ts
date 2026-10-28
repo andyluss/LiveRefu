@@ -323,3 +323,13 @@ test('minimal is LRDS schema compliant', () => {
   assert.equal(result.ok, true, result.issues.map(i => `${i.file} ${i.path}: ${i.message}`).join(' | '))
   assert.equal(result.files, 4)
 })
+
+
+test('skin token names align with generated tokens', () => {
+  const js = readFileSync(fileURLToPath(new URL('../web/app.js', import.meta.url)), 'utf8')
+  assert.match(js, /--dso-sys-color-bg-surface-sunken/)
+  assert.match(js, /--dso-sys-color-border-subtle/)
+  assert.match(js, /--dso-sys-color-border-strong/)
+  assert.doesNotMatch(js, /'--dso-sys-color-bg-sunken'/)
+  assert.doesNotMatch(js, /'--dso-sys-color-line-subtle'/)
+})

@@ -1,7 +1,7 @@
 {
   "$schema": "../schema/tokens.schema.json",
   "meta": {
-    "name": "Future Debris · Atomic Era",
+    "name": "LRDS real",
     "product": "future-debris",
     "era": "atomic",
     "mode": "console",
@@ -11,24 +11,78 @@
   "product": {
     "future-debris": {
       "color": {
-        "bgBase": { "$value": "{ref.color.neutral.150}", "$type": "color" },
-        "bgElev1": { "$value": "{ref.color.neutral.350}", "$type": "color" },
-        "bgElev2": { "$value": "{ref.color.neutral.450}", "$type": "color" },
-        "surfaceSunken": { "$value": "{ref.color.neutral.100}", "$type": "color" },
-        "materialMid": { "$value": "{ref.color.neutral.600}", "$type": "color" },
-        "materialHi": { "$value": "{ref.color.paper.50}", "$type": "color" },
-        "materialShadow": { "$value": "{ref.color.neutral.150}", "$type": "color" },
-        "text": { "$value": "{sys.color.text.primary}", "$type": "color" },
-        "textDim": { "$value": "{ref.color.warmgray.100}", "$type": "color" },
-        "textFaint": { "$value": "{ref.color.warmgray.200}", "$type": "color" },
-        "line": { "$value": "{ref.color.neutral.550}", "$type": "color" },
-        "lineStrong": { "$value": "{ref.color.neutral.750}", "$type": "color" },
-        "power": { "$value": "{sys.color.action.primary}", "$type": "color" },
-        "residue": { "$value": "{sys.color.feedback.danger}", "$type": "color" },
-        "accent": { "$value": "{ref.color.orange.400}", "$type": "color" },
-        "focus": { "$value": "{sys.color.focus.ring}", "$type": "color" },
-        "warn": { "$value": "{sys.color.feedback.warning}", "$type": "color" },
-        "ok": { "$value": "{sys.color.feedback.success}", "$type": "color" }
+        "bgBase": {
+          "$value": "{ref.color.neutral.150}",
+          "$type": "color"
+        },
+        "bgElev1": {
+          "$value": "{ref.color.neutral.350}",
+          "$type": "color"
+        },
+        "bgElev2": {
+          "$value": "{ref.color.neutral.450}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.color.neutral.100}",
+          "$type": "color"
+        },
+        "materialMid": {
+          "$value": "{ref.color.neutral.600}",
+          "$type": "color"
+        },
+        "materialHi": {
+          "$value": "{ref.color.paper.50}",
+          "$type": "color"
+        },
+        "materialShadow": {
+          "$value": "{ref.color.neutral.150}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{sys.color.text.primary}",
+          "$type": "color"
+        },
+        "textDim": {
+          "$value": "{ref.color.warmgray.100}",
+          "$type": "color"
+        },
+        "textFaint": {
+          "$value": "{ref.color.warmgray.200}",
+          "$type": "color"
+        },
+        "line": {
+          "$value": "{ref.color.neutral.550}",
+          "$type": "color"
+        },
+        "lineStrong": {
+          "$value": "{ref.color.neutral.750}",
+          "$type": "color"
+        },
+        "power": {
+          "$value": "{sys.color.action.primary}",
+          "$type": "color"
+        },
+        "residue": {
+          "$value": "{sys.color.feedback.danger}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.color.orange.400}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{sys.color.focus.ring}",
+          "$type": "color"
+        },
+        "warn": {
+          "$value": "{sys.color.feedback.warning}",
+          "$type": "color"
+        },
+        "ok": {
+          "$value": "{sys.color.feedback.success}",
+          "$type": "color"
+        }
       }
     }
   }

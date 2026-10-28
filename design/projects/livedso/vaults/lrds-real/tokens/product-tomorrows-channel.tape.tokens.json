@@ -1,7 +1,7 @@
 {
   "$schema": "../schema/tokens.schema.json",
   "meta": {
-    "name": "Tomorrow's Channel · Tape",
+    "name": "LRDS real",
     "product": "tomorrows-channel",
     "era": "tape",
     "styleCard": "SC-TOMORROWS-CHANNEL-TAPE-v1",
@@ -10,7 +10,10 @@
     "lighting": {
       "deviceWarmK": 2400,
       "lampWarmK": 2800,
-      "glowRatio": [0.6, 0.4],
+      "glowRatio": [
+        0.6,
+        0.4
+      ],
       "decorEnabled": true,
       "scanlineOpacity": 0.08,
       "decorFontName": ""
@@ -19,15 +22,42 @@
   "product": {
     "tomorrows-channel": {
       "color": {
-        "baseDark": { "$value": "#221610", "$type": "color" },
-        "midBeige": { "$value": "#C7B394", "$type": "color" },
-        "litWarm": { "$value": "#F5E9CE", "$type": "color" },
-        "phosphorAmber": { "$value": "#FFB000", "$type": "color" },
-        "phosphorGreen": { "$value": "#7FC98A", "$type": "color" },
-        "emphasis": { "$value": "#E39A4C", "$type": "color" },
-        "housingBeige": { "$value": "#C7B491", "$type": "color" },
-        "housingDark": { "$value": "#2C2113", "$type": "color" },
-        "dialAmber": { "$value": "#FFB04A", "$type": "color" }
+        "baseDark": {
+          "$value": "#221610",
+          "$type": "color"
+        },
+        "midBeige": {
+          "$value": "#C7B394",
+          "$type": "color"
+        },
+        "litWarm": {
+          "$value": "#F5E9CE",
+          "$type": "color"
+        },
+        "phosphorAmber": {
+          "$value": "#FFB000",
+          "$type": "color"
+        },
+        "phosphorGreen": {
+          "$value": "#7FC98A",
+          "$type": "color"
+        },
+        "emphasis": {
+          "$value": "#E39A4C",
+          "$type": "color"
+        },
+        "housingBeige": {
+          "$value": "#C7B491",
+          "$type": "color"
+        },
+        "housingDark": {
+          "$value": "#2C2113",
+          "$type": "color"
+        },
+        "dialAmber": {
+          "$value": "#FFB04A",
+          "$type": "color"
+        }
       }
     }
   }

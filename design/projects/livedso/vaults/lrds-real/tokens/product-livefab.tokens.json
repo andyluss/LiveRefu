@@ -1,7 +1,7 @@
 {
   "$schema": "../schema/tokens.schema.json",
   "meta": {
-    "name": "LiveFab · Portal",
+    "name": "LRDS real",
     "product": "livefab",
     "mode": "console",
     "version": "0.1.0",
@@ -10,18 +10,54 @@
   "product": {
     "livefab": {
       "color": {
-        "bg": { "$value": "{ref.color.neutral.0}", "$type": "color" },
-        "bgElev": { "$value": "{ref.color.neutral.200}", "$type": "color" },
-        "bgElev2": { "$value": "{ref.color.neutral.300}", "$type": "color" },
-        "line": { "$value": "{ref.color.neutral.500}", "$type": "color" },
-        "lineStrong": { "$value": "{ref.color.neutral.700}", "$type": "color" },
-        "text": { "$value": "{ref.color.paper.150}", "$type": "color" },
-        "textDim": { "$value": "{ref.color.neutral.900}", "$type": "color" },
-        "textFaint": { "$value": "{ref.color.neutral.800}", "$type": "color" },
-        "teal": { "$value": "{ref.color.teal.300}", "$type": "color" },
-        "tealBright": { "$value": "{ref.color.teal.200}", "$type": "color" },
-        "amber": { "$value": "{ref.color.amber.400}", "$type": "color" },
-        "focus": { "$value": "{sys.color.focus.ring}", "$type": "color" }
+        "bg": {
+          "$value": "{ref.color.neutral.0}",
+          "$type": "color"
+        },
+        "bgElev": {
+          "$value": "{ref.color.neutral.200}",
+          "$type": "color"
+        },
+        "bgElev2": {
+          "$value": "{ref.color.neutral.300}",
+          "$type": "color"
+        },
+        "line": {
+          "$value": "{ref.color.neutral.500}",
+          "$type": "color"
+        },
+        "lineStrong": {
+          "$value": "{ref.color.neutral.700}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.color.paper.150}",
+          "$type": "color"
+        },
+        "textDim": {
+          "$value": "{ref.color.neutral.900}",
+          "$type": "color"
+        },
+        "textFaint": {
+          "$value": "{ref.color.neutral.800}",
+          "$type": "color"
+        },
+        "teal": {
+          "$value": "{ref.color.teal.300}",
+          "$type": "color"
+        },
+        "tealBright": {
+          "$value": "{ref.color.teal.200}",
+          "$type": "color"
+        },
+        "amber": {
+          "$value": "{ref.color.amber.400}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{sys.color.focus.ring}",
+          "$type": "color"
+        }
       }
     }
   }

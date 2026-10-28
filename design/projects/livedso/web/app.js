@@ -132,10 +132,10 @@
     }
     const s = previewSkin(card);
     const map = {
-      '--bg': s['--dso-sys-color-bg-base'], '--bg2': s['--dso-sys-color-bg-sunken'], '--surface': s['--dso-sys-color-bg-surface'],
+      '--bg': s['--dso-sys-color-bg-base'], '--bg2': s['--dso-sys-color-bg-surface-sunken'], '--surface': s['--dso-sys-color-bg-surface'],
       '--surface2': s['--dso-sys-color-bg-surface-raised'], '--raised': s['--dso-sys-color-bg-surface-raised'],
       '--text': s['--dso-sys-color-text-primary'], '--dim': s['--dso-sys-color-text-secondary'], '--muted': s['--dso-sys-color-text-muted'],
-      '--line': s['--dso-sys-color-line-subtle'], '--line2': s['--dso-sys-color-line-strong'],
+      '--line': s['--dso-sys-color-border-subtle'], '--line2': s['--dso-sys-color-border-strong'],
       '--bg-subtle': s['--dso-sys-color-bg-subtle'], '--surface-hover': s['--dso-sys-color-bg-surface-hover'],
       '--text-on-surface': s['--dso-sys-color-text-on-surface'],
       '--text-inverse': s['--dso-sys-color-text-inverse'], '--text-link': s['--dso-sys-color-text-link'],
