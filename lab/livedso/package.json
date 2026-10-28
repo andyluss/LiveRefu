@@ -1,6 +1,6 @@
 {
   "name": "livedso",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "private": true,
   "type": "module",
   "description": "LiveAtelier / 灵动构坊 (LiveDSO) — local-first design system operations workbench",
@@ -16,7 +16,8 @@
     "check": "node src/cli.ts check",
     "build": "node src/cli.ts build",
     "report": "node src/cli.ts report",
-    "test": "node --test test/core.test.ts"
+    "test": "node --test test/core.test.ts",
+    "i18n:check": "node tools/i18n-audit.ts"
   },
   "license": "Apache-2.0"
 }
