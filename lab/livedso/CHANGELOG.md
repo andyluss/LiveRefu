@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.5.1] - 2026-10-28 13:39
+
+### Added
+
+- 风格卡页显示 **AA / AAA / FAIL** 徽标与 `通过数/总数`；数据来自 `GET /api/skins/audit`。
+- `npm run skin:snapshot`：33 张卡 × overview/tokens/checks 三页截图，输出 manifest；支持 `--limit` / `--vault`。
+
+### Changed
+
+- 文档 `14_皮肤质量.md` 更新 P1/P2 状态。
+- 版本 1.5.0 → 1.5.1；`node:test` 保持 23 项。
+
 ## [1.5.0] - 2026-10-28 13:36
 
 ### Added

@@ -6,7 +6,7 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const loc = (en, zh) => (window.LiveDSO_I18N?.locale === 'en' ? en : zh);
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const state = { data: null, view: (location.hash.replace(/^#\/?/, '').split(/[/?]/)[0] || 'overview'), error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, overview: null, reportTemplate: 'health', skin: '' };
+  const state = { data: null, view: (location.hash.replace(/^#\/?/, '').split(/[/?]/)[0] || 'overview'), error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, overview: null, reportTemplate: 'health', skin: '', skinAudits: null };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
@@ -138,9 +138,11 @@
       const data = await api('/api/vault', { method: 'POST', body: JSON.stringify({ id }) });
       state.data = data;
       state.previewCard = '';
+      state.skinAudits = null;
       renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect(); renderSkinSelect();
       state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
       if (state.skin) applySkin(state.skin);
+      loadSkinAudits();
       if (state.view === 'vaults') loadVaultsOverview();
       toast('藏库已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} ${loc('tokens','个 Token')}`);
       return data;
@@ -228,10 +230,34 @@
     if (!state.data) return;
     const order = { archive: 0, solar: 1, cyber: 2 };
     const cards = [...state.data.styleCards].sort((a, b) => (order[a.id] ?? 9) - (order[b.id] ?? 9) || a.name.localeCompare(b.name));
+    const audits = state.skinAudits?.audits || [];
+    const byId = new Map(audits.map(a => [a.id, a]));
+    const grade = (a) => {
+      if (!a) return { label: '…', cls: 'pending' };
+      if (!a.ok) return { label: 'FAIL', cls: 'fail' };
+      const ratio = (name) => a.pairs.find(p => p.name === name)?.ratio || 0;
+      const aaa = ratio('text/surface') >= 7 && ratio('textMuted/surface') >= 7 && ratio('onAction/action') >= 7 && ratio('focus/surface') >= 4.5 && ratio('border/surface') >= 4.5;
+      return { label: aaa ? 'AAA' : 'AA', cls: aaa ? 'aaa' : 'pass' };
+    };
     $('#card-filter-count').textContent = `${cards.length} ${loc('cards','张卡')}`;
+    const pass = audits.filter(a => a.ok).length, fail = audits.length - pass;
+    const summary = $('#skin-audit-summary');
+    if (summary) summary.textContent = audits.length ? `${pass}/${audits.length} ${loc('passing','通过')}${fail ? ` · ${fail} ${loc('failing','不达标')}` : ''}` : loc('Checking contrast…','检查对比度……');
     const grid = $('#card-grid');
     if (!cards.length) { grid.innerHTML = '<div class="empty">没有风格卡。</div>'; return; }
-    grid.innerHTML = cards.map(c => `<article class="style-card"><div class="style-swatches">${(c.colors || []).map(color => `<i style="background:${esc(styleColor(color))}"></i>`).join('')}</div><div class="style-body"><div class="era">${esc(c.era || '—')}</div><h3>${esc(c.name)}</h3><p>${esc(c.note || '没有写维护/代价。')}</p><div class="badges" style="margin-top:7px">${(c.colors || []).map(x => `<span class="badge">${esc(x)}</span>`).join('')}</div></div></article>`).join('');
+    grid.innerHTML = cards.map(c => {
+      const a = byId.get(c.id); const g = grade(a);
+      const detail = a ? a.pairs.map(p => `${p.name} ${p.ratio}:1${p.ok ? '' : ' ✗'}`).join(' · ') : '';
+      return `<article class="style-card"><span class="skin-grade ${g.cls}" title="${esc(detail)}">${g.label}</span><div class="style-swatches">${(c.colors || []).map(color => `<i style="background:${esc(styleColor(color))}"></i>`).join('')}</div><div class="style-body"><div class="era">${esc(c.era || '—')}</div><h3>${esc(c.name)}</h3><p>${esc(c.note || '没有写维护/代价。')}</p><div class="badges" style="margin-top:7px">${(c.colors || []).map(x => `<span class="badge">${esc(x)}</span>`).join('')}</div></div></article>`;
+    }).join('');
+  }
+  async function loadSkinAudits() {
+    try {
+      state.skinAudits = await api('/api/skins/audit');
+    } catch (e) {
+      state.skinAudits = null;
+    }
+    if (state.view === 'style-cards') renderCards();
   }
   function colorLum(hex) {
     const h = String(hex || '').replace('#', '');
@@ -523,6 +549,7 @@
       state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
       if (state.skin) applySkin(state.skin);
       if (state.view === 'report') renderReport();
+      loadSkinAudits();
     } catch (e) {
       state.error = e.message;
       setStatus('err', loc('Offline','离线'));

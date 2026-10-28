@@ -6,6 +6,7 @@ import { URL } from 'node:url'
 import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle, stateView } from './vault.ts'
 import { localizeCheckResult, runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
+import { auditSkin } from './skin.ts'
 import { loadRegistry } from './registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
@@ -81,6 +82,10 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
         return json(res, 200, { ...scoped(stateView(vault, localized())), runtime: process.version })
       }
       if (url.pathname === '/api/state' && req.method === 'GET') return json(res, 200, { ...scoped(stateView(vault, localized())), runtime: process.version })
+      if (url.pathname === '/api/skins/audit' && req.method === 'GET') {
+        const audits = vault.styleCards.map(card => auditSkin(vault, card))
+        return json(res, 200, { audits, summary: { total: audits.length, passing: audits.filter(a => a.ok).length, failing: audits.filter(a => !a.ok).length } })
+      }
       if (url.pathname === '/api/check' && req.method === 'POST') return json(res, 200, { checks: localized() })
       if (url.pathname === '/api/report/bundle' && req.method === 'POST') return json(res, 200, buildReportBundle(vault, localized(), new URL('../templates/reports', import.meta.url).pathname))
       if (url.pathname === '/api/report/templates' && req.method === 'GET') return json(res, 200, { templates: listReportTemplates(new URL('../templates/reports', import.meta.url).pathname) })
