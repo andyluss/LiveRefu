@@ -593,6 +593,70 @@
         "$value": "8px",
         "$type": "dimension"
       }
+    },
+    "component": {
+      "button": {
+        "height": {
+          "$value": "36px",
+          "$type": "dimension"
+        },
+        "paddingX": {
+          "$value": "14px",
+          "$type": "dimension"
+        },
+        "radius": {
+          "$value": "6px",
+          "$type": "dimension"
+        }
+      },
+      "input": {
+        "height": {
+          "$value": "38px",
+          "$type": "dimension"
+        },
+        "paddingX": {
+          "$value": "10px",
+          "$type": "dimension"
+        },
+        "radius": {
+          "$value": "6px",
+          "$type": "dimension"
+        }
+      },
+      "card": {
+        "padding": {
+          "$value": "16px",
+          "$type": "dimension"
+        },
+        "radius": {
+          "$value": "10px",
+          "$type": "dimension"
+        }
+      },
+      "nav": {
+        "width": {
+          "$value": "238px",
+          "$type": "dimension"
+        }
+      },
+      "table": {
+        "rowHeight": {
+          "$value": "38px",
+          "$type": "dimension"
+        }
+      },
+      "modal": {
+        "width": {
+          "$value": "640px",
+          "$type": "dimension"
+        }
+      },
+      "toast": {
+        "width": {
+          "$value": "320px",
+          "$type": "dimension"
+        }
+      }
     }
   },
   "sys": {
@@ -628,70 +692,6 @@
           "$value": "{ref.color.amber}",
           "$type": "color"
         }
-      }
-    }
-  },
-  "component": {
-    "button": {
-      "height": {
-        "$value": "36px",
-        "$type": "dimension"
-      },
-      "paddingX": {
-        "$value": "14px",
-        "$type": "dimension"
-      },
-      "radius": {
-        "$value": "6px",
-        "$type": "dimension"
-      }
-    },
-    "input": {
-      "height": {
-        "$value": "38px",
-        "$type": "dimension"
-      },
-      "paddingX": {
-        "$value": "10px",
-        "$type": "dimension"
-      },
-      "radius": {
-        "$value": "6px",
-        "$type": "dimension"
-      }
-    },
-    "card": {
-      "padding": {
-        "$value": "16px",
-        "$type": "dimension"
-      },
-      "radius": {
-        "$value": "10px",
-        "$type": "dimension"
-      }
-    },
-    "nav": {
-      "width": {
-        "$value": "238px",
-        "$type": "dimension"
-      }
-    },
-    "table": {
-      "rowHeight": {
-        "$value": "38px",
-        "$type": "dimension"
-      }
-    },
-    "modal": {
-      "width": {
-        "$value": "640px",
-        "$type": "dimension"
-      }
-    },
-    "toast": {
-      "width": {
-        "$value": "320px",
-        "$type": "dimension"
       }
     }
   }

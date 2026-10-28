@@ -1,5 +1,12 @@
 # LiveDSO Changelog
 
+## [1.9.1] - 2026-10-28 19:23
+
+### Changed
+
+- **冻结 v2.0 为实验**：保留 tag `livedso-v2.0.0`；main 回到 v1.9 的 LRDS 结构（`theme`/role 层恢复）。
+- v2.0 不删除历史；后续只做 schema、`component` 与少量缺口的缓慢演进。
+
 ## [2.0.0] - 2026-10-28 14:23
 
 ### Breaking
