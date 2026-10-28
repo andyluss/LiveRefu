@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.12.0] - 2026-10-28 19:37
+
+### Added
+
+- **material-3 严格 schema 试点**：原生 `md.*` 收进 `ref.source.md.*`，scale 进 `ref`，component 进顶层 `component`；A 档角色进 `sys.color.*`，其余进 `product.<card>.role`，原始色进 `ref.generated`。
+- `schema:check` 现在校验 4 个样板：minimal / lrds-sample / lrds-real / material-3。
+
+### Changed
+
+- material-3 token 数 306 → 422；风格卡仍 50 角色。
+- 版本 1.11.0 → 1.12.0；测试保持 25 项。
+
 ## [1.11.0] - 2026-10-28 19:32
 
 ### Added

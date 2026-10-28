@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "md.sys.color.primary",
-    "md.sys.color.on-primary",
-    "md.sys.color.focus"
+    "ref.source.md.sys.color.primary",
+    "ref.source.md.sys.color.on-primary",
+    "ref.source.md.sys.color.focus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

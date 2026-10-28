@@ -47,7 +47,7 @@ if (isMain) {
   const idx = process.argv.indexOf('--vault')
   const only = idx >= 0 ? process.argv[idx + 1] : ''
   const pilot = process.argv.includes('--pilot')
-  const pilots = ['minimal', 'lrds-sample', 'lrds-real']
+  const pilots = ['minimal', 'lrds-sample', 'lrds-real', 'material-3']
   const roots = pilot
     ? pilots.map(id => resolve(ROOT, 'vaults', id))
     : only

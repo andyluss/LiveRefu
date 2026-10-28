@@ -42,11 +42,12 @@
 | LRDS sample | 463 |
 | LRDS real | 635 |
 | Minimal | 304 |
-| 其余 8 套 | 304–306 |
+| Material 3 | 422 |
+| 其余 7 套 | 304–306 |
 
 ## 四、严格 schema 试点
 
-`vaults/minimal/` / `vaults/lrds-sample/` / `vaults/lrds-real/` 已作为严格遵循 LRDS schema 的样板：
+`vaults/minimal/` / `vaults/lrds-sample/` / `vaults/lrds-real/` / `vaults/material-3/` 已作为严格遵循 LRDS schema 的样板：
 
 ```text
 meta + ref + sys + component + product
