@@ -2,20 +2,21 @@
   "id": "material-3-mono",
   "name": "Material 3 / Mono",
   "era": "sample",
-  "note": "outline surface, ink action, high-contrast utility",
+  "note": "white canvas, outline surface, ink type and ink action",
   "colors": [
     "md.sys.color.surface",
-    "md.sys.color.outline",
-    "md.ref.neutral.0",
+    "md.ref.primary.100",
+    "md.sys.color.on-surface",
     "md.sys.color.on-surface",
     "md.sys.color.error"
   ],
   "roles": {
     "bg": "md.sys.color.surface",
-    "surface": "md.sys.color.outline",
-    "text": "md.ref.neutral.0",
+    "surface": "md.ref.primary.100",
+    "text": "md.sys.color.on-surface",
     "action": "md.sys.color.on-surface",
     "focus": "md.ref.blue.40",
-    "danger": "md.sys.color.error"
+    "danger": "md.sys.color.error",
+    "onAction": "md.ref.neutral.0"
   }
 }

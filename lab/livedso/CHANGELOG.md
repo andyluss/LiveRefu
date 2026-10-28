@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.5.3] - 2026-10-28 13:47
+
+### Fixed
+
+- **Atompunk / Chrome 导航不可见**：卡同时设置 `bg=#14213D`、`text=#14213D`，而 sidebar 用 `bg2`，实际对比度 1:1；原 audit 只看 `text/surface`（9.18:1），误判通过。
+- 修复 Material 3 / Mono 同类问题：背景与文字同色，改为 ink type + 浅紫 surface。
+- `skin:check` 新增 `text/bg`、`textMuted/bg`、`textMuted/sunken` 三组检查，防止“亮 surface 掩盖暗 bg”。
+
+### Changed
+
+- 版本 1.5.2 → 1.5.3；33 张卡仍全部通过。
+
 ## [1.5.2] - 2026-10-28 13:44
 
 ### Fixed

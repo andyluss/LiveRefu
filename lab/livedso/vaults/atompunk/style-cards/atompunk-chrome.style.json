@@ -2,20 +2,23 @@
   "id": "atompunk-chrome",
   "name": "Atompunk / Chrome",
   "era": "sample",
-  "note": "navy frame with chrome surface and ink type",
+  "note": "light chrome frame with navy type, teal action and amber focus",
   "colors": [
-    "ap.color.bg",
     "ap.ref.chrome",
+    "ap.ref.cream",
     "ap.ref.navy",
     "ap.color.action",
     "ap.color.danger"
   ],
   "roles": {
-    "bg": "ap.color.bg",
+    "bg": "ap.ref.chrome",
     "surface": "ap.ref.chrome",
+    "surfaceRaised": "ap.ref.cream",
     "text": "ap.ref.navy",
+    "textMuted": "ap.color.surface",
     "action": "ap.color.action",
-    "focus": "ap.color.focus",
-    "danger": "ap.color.danger"
+    "focus": "ap.color.action",
+    "danger": "ap.color.danger",
+    "border": "ap.ref.navy"
   }
 }

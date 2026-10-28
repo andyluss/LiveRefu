@@ -104,7 +104,10 @@ export function auditSkin(vault: Vault, card: StyleCard): SkinAudit {
     pairs.push({ name, ratio: Math.round(ratio * 100) / 100, min, ok: ratio + 0.005 >= min })
   }
   add('text/surface', s.text, s.surface, 4.5)
+  add('text/bg', s.text, s.bg, 4.5)
   add('textMuted/surface', s.muted, s.surface, 4.5)
+  add('textMuted/bg', s.muted, s.bg, 4.5)
+  add('textMuted/sunken', s.muted, s.sunken, 4.5)
   add('onAction/action', s.onAction, s.action, 4.5)
   add('focus/surface', s.focus, s.surface, 3)
   add('border/surface', s.line, s.surface, 3)
