@@ -1,0 +1,68 @@
+{
+  "brand": {
+    "background": {
+      "value": "#F7F3EA",
+      "type": "color"
+    },
+    "surface": {
+      "value": "#FFFDF8",
+      "type": "color"
+    },
+    "surfaceRaised": {
+      "value": "#F1EBDD",
+      "type": "color"
+    },
+    "surfaceSunken": {
+      "value": "#EDE6D8",
+      "type": "color"
+    },
+    "text": {
+      "value": "#1B222B",
+      "type": "color"
+    },
+    "textMuted": {
+      "value": "#4F5B68",
+      "type": "color"
+    },
+    "textInverse": {
+      "value": "#FFFDF8",
+      "type": "color"
+    },
+    "action": {
+      "value": "#0B6B63",
+      "type": "color"
+    },
+    "onAction": {
+      "value": "#FFFFFF",
+      "type": "color"
+    },
+    "actionHover": {
+      "value": "#0E857B",
+      "type": "color"
+    },
+    "focus": {
+      "value": "#1D4ED8",
+      "type": "color"
+    },
+    "border": {
+      "value": "#8A8275",
+      "type": "color"
+    },
+    "borderStrong": {
+      "value": "#5E6773",
+      "type": "color"
+    },
+    "danger": {
+      "value": "#A83A14",
+      "type": "color"
+    },
+    "success": {
+      "value": "#2F6B3A",
+      "type": "color"
+    },
+    "warning": {
+      "value": "#7A4E00",
+      "type": "color"
+    }
+  }
+}

@@ -1,6 +1,12 @@
 {
-  "theme": { "id": "paper-brand", "name": "Paper Brand", "mode": "light" },
-  "source": { "format": "dtcg" },
+  "theme": {
+    "id": "paper-brand",
+    "name": "Paper Brand",
+    "mode": "light"
+  },
+  "source": {
+    "format": "dtcg"
+  },
   "roles": {
     "bg": "color.background",
     "surface": "color.surface",
@@ -19,5 +25,9 @@
     "success": "color.success",
     "warning": "color.warning"
   },
-  "missing": "fail"
+  "missing": "fail",
+  "component": {
+    "button.bg": "sys.color.action",
+    "button.border": "color.border"
+  }
 }

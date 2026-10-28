@@ -1,0 +1,29 @@
+{
+  "theme": {
+    "id": "figma-brand",
+    "name": "Figma Brand",
+    "mode": "light"
+  },
+  "source": {
+    "format": "figma"
+  },
+  "roles": {
+    "bg": "brand.background",
+    "surface": "brand.surface",
+    "surfaceRaised": "brand.surfaceRaised",
+    "surfaceSunken": "brand.surfaceSunken",
+    "text": "brand.text",
+    "textMuted": "brand.textMuted",
+    "textInverse": "brand.textInverse",
+    "action": "brand.action",
+    "onAction": "brand.onAction",
+    "actionHover": "brand.actionHover",
+    "focus": "brand.focus",
+    "border": "brand.border",
+    "borderStrong": "brand.borderStrong",
+    "danger": "brand.danger",
+    "success": "brand.success",
+    "warning": "brand.warning"
+  },
+  "missing": "fail"
+}

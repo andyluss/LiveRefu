@@ -348,6 +348,7 @@ test('DTCG adapter generates a schema-compatible vault', () => {
     assert.equal(schema.ok, true, schema.issues.map(i => i.message).join(' | '))
     const vault = loadVault(tmp)
     assert.ok(vault.tokens.has('sys.color.bg'))
+    assert.ok(vault.tokens.has('component.button.bg'))
     assert.equal(vault.styleCards.length, 1)
     assert.equal(Object.keys(vault.styleCards[0]!.roles || {}).length, 16)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
@@ -402,5 +403,43 @@ test('adapter handles Tailwind JSON', () => {
     assert.equal(result.ok, true, result.issues.map(i => i.message).join(' | '))
     assert.equal(result.format, 'tailwind')
     assert.equal(checkVaultSchema(tmp).ok, true)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('adapter handles Style Dictionary and Figma exports', () => {
+  for (const [file, profile] of [
+    ['style-dictionary.tokens.json', 'style-dictionary-profile.json'],
+    ['figma.tokens.json', 'figma-profile.json']
+  ]) {
+    const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-export-'))
+    try {
+      const source = fileURLToPath(new URL(`../examples/adapt/${file}`, import.meta.url))
+      const prof = fileURLToPath(new URL(`../examples/adapt/${profile}`, import.meta.url))
+      const result = adaptVault({ source, profile: prof, out: tmp })
+      assert.equal(result.ok, true, result.issues.map(i => i.message).join(' | '))
+      assert.equal(checkVaultSchema(tmp).ok, true)
+    } finally { rmSync(tmp, { recursive: true, force: true }) }
+  }
+})
+
+test('adapter writes suggestion draft and detects source drift', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-drift-'))
+  try {
+    const fixture = fileURLToPath(new URL('../examples/adapt/source.tokens.json', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/profile.json', import.meta.url))
+    const source = join(tmp, 'source.json')
+    cpSync(fixture, source)
+    const out = join(tmp, 'out')
+    const suggest = join(tmp, 'suggest.json')
+    const first = adaptVault({ source, profile, out, suggestOut: suggest })
+    assert.equal(first.ok, true)
+    assert.ok(readFileSync(suggest, 'utf8').includes('Suggestions only'))
+    const data = JSON.parse(readFileSync(source, 'utf8'))
+    data.color.background.$value = '#F7F3EB'
+    writeFileSync(source, JSON.stringify(data, null, 2))
+    const drift = adaptVault({ source, profile, out, check: true })
+    assert.equal(drift.ok, false)
+    assert.ok(drift.issues.some(i => i.path === 'tokens/tokens.json'))
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

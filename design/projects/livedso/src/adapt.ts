@@ -18,10 +18,11 @@ export const B_ROLES = SKIN_ROLES.filter(r => !(CORE_ROLES as readonly string[])
 
 export interface AdaptTheme { id: string; name?: string; mode?: 'light' | 'dark'; roles: Record<string, string> }
 export interface AdaptProfile {
-  source?: { root?: string; format?: 'dtcg' | 'css' | 'tailwind' }
+  source?: { root?: string; format?: 'dtcg' | 'css' | 'tailwind' | 'style-dictionary' | 'figma' }
   theme?: { id: string; name?: string; mode?: 'light' | 'dark' }
   themes?: AdaptTheme[]
   roles?: Record<string, string>
+  component?: Record<string, string>
   missing?: 'fail' | 'warn'
 }
 export interface AdaptIssue { path: string; message: string }
@@ -38,6 +39,7 @@ export interface AdaptResult {
   suggestions: AdaptSuggestion[]
   sourceHash: string
   files: string[]
+  suggestionFile?: string
 }
 
 type SourceToken = { path: string; value: JsonValue; type: string; file: string }
@@ -100,6 +102,36 @@ function parseTailwind(file: string, raw: string): SourceToken[] {
   walk(colors, '')
   return out
 }
+function parseLoose(file: string, raw: string): SourceToken[] {
+  const data = JSON.parse(raw) as JsonValue
+  const out: SourceToken[] = []
+  const walk = (value: JsonValue, prefix: string) => {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return
+    const obj = value as Record<string, JsonValue>
+    if ('$value' in obj || 'value' in obj && ('type' in obj || typeof obj.value === 'string')) {
+      if (!prefix) throw new Error(`${file} 存在空 token 路径`)
+      const type = String(obj.$type || obj.type || inferType(String(obj.$value ?? obj.value))).toLowerCase()
+      out.push({ path: prefix, value: (obj.$value ?? obj.value) as JsonValue, type, file })
+      return
+    }
+    for (const [key, child] of Object.entries(obj)) {
+      if (key === '$schema' || key === 'meta') continue
+      walk(child, prefix ? `${prefix}.${key}` : key)
+    }
+  }
+  walk(data, '')
+  return out
+}
+function setPath(root: Record<string, JsonValue>, path: string, value: JsonValue): void {
+  const parts = path.split('.').filter(Boolean)
+  let cur: Record<string, JsonValue> = root
+  for (const part of parts.slice(0, -1)) {
+    if (!cur[part] || typeof cur[part] !== 'object' || Array.isArray(cur[part])) cur[part] = {} as JsonValue
+    cur = cur[part] as Record<string, JsonValue>
+  }
+  cur[parts[parts.length - 1]!] = value
+}
+
 function collectTokens(root: string, format: string): Source {
   const files = collectFiles(root)
   const hash = createHash('sha256')
@@ -114,6 +146,10 @@ function collectTokens(root: string, format: string): Source {
     }
     if (format === 'tailwind' || file.endsWith('.json') && /tailwind/i.test(file)) {
       for (const t of parseTailwind(file, raw)) tokens.set(t.path, t)
+      continue
+    }
+    if (format === 'style-dictionary' || format === 'figma') {
+      for (const t of parseLoose(file, raw)) tokens.set(t.path, t)
       continue
     }
     let data: JsonValue
@@ -168,6 +204,8 @@ function detectFormat(sourceRoot: string, profile: AdaptProfile): string {
   const files = collectFiles(sourceRoot)
   if (files.some(f => f.endsWith('.css'))) return 'css'
   if (files.some(f => /tailwind/i.test(f))) return 'tailwind'
+  if (files.some(f => /style[-_]?dictionary/i.test(f))) return 'style-dictionary'
+  if (files.some(f => /figma|tokens[-_]?studio/i.test(f))) return 'figma'
   return 'dtcg'
 }
 function suggestRoles(tokens: Map<string, SourceToken>, mapped: Set<string>): AdaptSuggestion[] {
@@ -192,7 +230,7 @@ function suggestRoles(tokens: Map<string, SourceToken>, mapped: Set<string>): Ad
 }
 
 /** Convert DTCG/CSS/Tailwind source + explicit mapping into a schema-compatible vault. */
-export function adaptVault(options: { source: string; profile: string; out: string; check?: boolean; dryRun?: boolean; suggest?: boolean }): AdaptResult {
+export function adaptVault(options: { source: string; profile: string; out: string; check?: boolean; dryRun?: boolean; suggest?: boolean; suggestOut?: string }): AdaptResult {
   const profilePath = resolve(options.profile)
   const sourceRoot = resolve(options.source)
   let profile: AdaptProfile
@@ -213,8 +251,8 @@ export function adaptVault(options: { source: string; profile: string; out: stri
       if (tokens.get(sourcePath)!.type !== 'color') issues.push({ path: `${theme.id}.roles.${role}`, message: `角色必须是 color：${sourcePath}` })
     }
   }
-  const suggestions = options.suggest ? suggestRoles(tokens, new Set(CORE_ROLES)) : []
-  if (issues.length) return { ok: false, out: resolve(options.out), theme: themes[0]!.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: 0, issues, suggestions, sourceHash: hash, files: [] }
+  const suggestions = (options.suggest || options.suggestOut) ? suggestRoles(tokens, new Set(CORE_ROLES)) : []
+  if (issues.length) return { ok: false, out: resolve(options.out), theme: themes[0]!.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: 0, issues, suggestions, sourceHash: hash, files: [], suggestionFile: undefined }
   const ref: Record<string, JsonValue> = { source: { external: Object.fromEntries([...rewritten].map(([path, value]) => [path, { $value: value, $type: tokens.get(path)!.type }])) } }
   const sys: Record<string, JsonValue> = { color: {} }
   const def = themes[0]!
@@ -229,9 +267,21 @@ export function adaptVault(options: { source: string; profile: string; out: stri
     }
     if (Object.keys(block).length) product[theme.id] = { role: block }
   }
+  const component: Record<string, JsonValue> = {}
+  for (const [key, target] of Object.entries(profile.component || {})) {
+    if (target.startsWith('sys.')) {
+      if (!target.startsWith('sys.color.')) { issues.push({ path: `component.${key}`, message: `component 只允许 sys.color.* 或源 token：${target}` }); continue }
+      setPath(component, key, { $value: `{${target}}`, $type: 'color' })
+      continue
+    }
+    if (!tokens.has(target)) { issues.push({ path: `component.${key}`, message: `源 token 不存在：${target}` }); continue }
+    setPath(component, key, { $value: `{ref.source.external.${target}}`, $type: tokens.get(target)!.type })
+  }
+  if (issues.length) return { ok: false, out: resolve(options.out), theme: def.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: CORE_ROLES.length, issues, suggestions, sourceHash: hash, files: [], suggestionFile: undefined }
   const meta = { name: def.name || def.id, version: '1.0.0', note: `Generated by LiveDSO adapt; source=${relative(process.cwd(), sourceRoot)}; sourceHash=${hash}; profile=${relative(process.cwd(), profilePath)}`, mode: def.mode || 'light', sourceHash: hash, format, themes: themes.map(t => ({ id: t.id, name: t.name || t.id, mode: t.mode || 'light' })) }
   const generated: Record<string, JsonValue> = { meta, ref, sys }
   if (Object.keys(product).length) generated.product = product
+  if (Object.keys(component).length) generated.component = component
   const cards = themes.map(theme => {
     const roles: Record<string, string> = {}
     for (const role of CORE_ROLES) roles[role] = (product[theme.id] as any)?.role?.[role] ? `product.${theme.id}.role.${role}` : `sys.color.${role}`
@@ -239,8 +289,21 @@ export function adaptVault(options: { source: string; profile: string; out: stri
   })
   const filesOut = ['tokens/tokens.json', ...cards.map(c => `style-cards/${c.id}.style.json`), 'README.md']
   const out = resolve(options.out)
-  if (options.dryRun) return { ok: true, out, theme: def.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: CORE_ROLES.length, issues, suggestions, sourceHash: hash, files: filesOut }
-  const write = (p: string, data: string) => { const abs = resolve(out, p); mkdirSync(resolve(abs, '..'), { recursive: true }); writeFileSync(abs, data, 'utf8') }
+  let suggestionFile: string | undefined
+  if (options.suggestOut) {
+    suggestionFile = resolve(options.suggestOut)
+    if (!options.dryRun) {
+      mkdirSync(resolve(suggestionFile, '..'), { recursive: true })
+      writeFileSync(suggestionFile, JSON.stringify({ note: 'Suggestions only; review before merging into profile.roles.', theme: def.id, roles: Object.fromEntries(suggestions.map(s => [s.role, s.source])), suggestions }, null, 2) + '\n', 'utf8')
+    }
+  }
+  if (options.dryRun) return { ok: true, out, theme: def.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: CORE_ROLES.length, issues, suggestions, sourceHash: hash, files: filesOut, suggestionFile }
+  const writeAll = (base: string) => {
+    const write = (p: string, data: string) => { const abs = resolve(base, p); mkdirSync(resolve(abs, '..'), { recursive: true }); writeFileSync(abs, data, 'utf8') }
+    write('tokens/tokens.json', JSON.stringify(generated, null, 2) + '\n')
+    for (const card of cards) write(`style-cards/${card.id}.style.json`, JSON.stringify(card, null, 2) + '\n')
+    write('README.md', `# ${def.name || def.id}\n\n> Generated by LiveDSO \`adapt\`; do not hand-edit.\n\n- source: \`${relative(process.cwd(), sourceRoot)}\`\n- source hash: \`${hash}\`\n- profile: \`${relative(process.cwd(), profilePath)}\`\n- format: ${format}\n- themes: ${themes.map(t => t.id).join(', ')}\n- source tokens: ${tokens.size}\n`)
+  }
   // contrast is checked per theme before writing
   for (const theme of themes) {
     const colors = Object.fromEntries(CORE_ROLES.map(role => [role, resolvedColor(theme.roles[role]!, tokens)]))
@@ -253,18 +316,22 @@ export function adaptVault(options: { source: string; profile: string; out: stri
       if (ratio + 0.005 < min) issues.push({ path: `${theme.id}.${fg}/${bg}`, message: `对比度 ${ratio.toFixed(2)}:1 < ${min}:1` })
     }
   }
-  if (issues.length) return { ok: false, out, theme: def.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: CORE_ROLES.length, issues, suggestions, sourceHash: hash, files: filesOut }
-  write('tokens/tokens.json', JSON.stringify(generated, null, 2) + '\n')
-  for (const card of cards) write(`style-cards/${card.id}.style.json`, JSON.stringify(card, null, 2) + '\n')
-  write('README.md', `# ${def.name || def.id}\n\n> Generated by LiveDSO \`adapt\`; do not hand-edit.\n\n- source: \`${relative(process.cwd(), sourceRoot)}\`\n- source hash: \`${hash}\`\n- profile: \`${relative(process.cwd(), profilePath)}\`\n- format: ${format}\n- themes: ${themes.map(t => t.id).join(', ')}\n- source tokens: ${tokens.size}\n`)
+  if (issues.length) return { ok: false, out, theme: def.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: CORE_ROLES.length, issues, suggestions, sourceHash: hash, files: filesOut, suggestionFile }
   if (options.check) {
-    const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-check-'))
-    try {
-      adaptVault({ source: sourceRoot, profile: profilePath, out: tmp })
-      for (const file of filesOut) {
-        if (!existsSync(resolve(out, file)) || readFileSync(resolve(out, file), 'utf8') !== readFileSync(resolve(tmp, file), 'utf8')) issues.push({ path: file, message: '生成物与源不一致，请重新 adapt' })
-      }
-    } finally { rmSync(tmp, { recursive: true, force: true }) }
+    if (!existsSync(out)) {
+      issues.push({ path: out, message: '生成物不存在，请先运行 adapt' })
+    } else {
+      const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-check-'))
+      try {
+        writeAll(tmp)
+        for (const file of filesOut) {
+          if (!existsSync(resolve(out, file)) || readFileSync(resolve(out, file), 'utf8') !== readFileSync(resolve(tmp, file), 'utf8')) issues.push({ path: file, message: '生成物与源不一致，请重新 adapt' })
+        }
+      } finally { rmSync(tmp, { recursive: true, force: true }) }
+    }
+  } else {
+    writeAll(out)
   }
-  return { ok: issues.length === 0, out, theme: def.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: CORE_ROLES.length, issues, suggestions, sourceHash: hash, files: filesOut }
+
+  return { ok: issues.length === 0, out, theme: def.id, themes: themes.map(t => t.id), format, sourceTokens: tokens.size, mappedRoles: CORE_ROLES.length, issues, suggestions, sourceHash: hash, files: filesOut, suggestionFile }
 }

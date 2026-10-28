@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.17.0] - 2026-10-28 20:31
+
+### Added
+
+- **适配器 P2**：Style Dictionary / Figma Tokens Studio 的 `value/type` JSON；可选 `component` 映射；`--suggest-out` 建议草稿。
+- `--check` 改为**只校验不覆盖**，source hash 漂移会失败；新增 drift 测试。
+- 新增 SD / Figma fixture 与 component 映射示例。
+
+### Changed
+
+- 测试 31 → **33**；版本 1.16.0 → 1.17.0。
+
 ## [1.16.0] - 2026-10-28 20:28
 
 ### Added
