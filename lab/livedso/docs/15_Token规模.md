@@ -44,14 +44,28 @@
 | Minimal | 304 |
 | 其余 8 套 | 304–306 |
 
-## 四、真正的限制
+## 四、严格 schema 试点
+
+`vaults/minimal/` 已作为第一个严格遵循 LRDS schema 的 vault：
+
+```text
+meta + ref + sys + component + product
+```
+
+- 无 `theme` 顶层；
+- A 档角色映射到现有 `sys.color.*`；
+- 其余角色走 `product.<card>.role`；
+- 原始色进 `ref.generated`；
+- 校验：`npm run schema:check`。
+
+## 五、真正的限制
 
 1. **检查成本**：每加一个 token，检查/投影/采用扫描会多一点工作量；这是性能成本，不是上限。
 2. **契约引用**：契约只能引用存在的 token；新增 token 不会自动进入契约。
 3. **设计责任**：token 越多，命名/弃用/维护成本越高；不要为了数量堆 token。
 4. **测试计数**：部分回归测试固定断言 token 数，扩展后需同步更新。
 
-## 五、如何继续扩
+## 六、如何继续扩
 
 - 新 token 放在对应 vault 的 `tokens/*.json`；
 - 颜色保持 `$type: "color"`；尺寸用 `dimension`；数字用 `number`；

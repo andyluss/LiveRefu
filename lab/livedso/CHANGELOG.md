@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.10.0] - 2026-10-28 19:30
+
+### Added
+
+- **严格 LRDS schema 试点**：`vaults/minimal/` 现在只含 `meta + ref + sys + component + product`；删除 `theme` 顶层。
+- A 档角色映射到现有 `sys.color.*`；其余角色走 `product.<card>.role`；原始色进 `ref.generated`。
+- 新增 `tools/check-vault-schema.ts` 与 `npm run schema:check`（默认校验 minimal）/ `schema:check:all`。
+
+### Changed
+
+- `minimal` token 数 304 → 419；测试 24 → **25**。
+- 版本 1.9.1 → 1.10.0；v2.0 仍为实验 tag。
+
 ## [1.9.1] - 2026-10-28 19:23
 
 ### Changed

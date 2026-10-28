@@ -16,6 +16,7 @@ import { buildReportBundle, listReportTemplates, renderReport } from '../src/rep
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { localizeCheckResult, runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 import { auditSkin, SKIN_ROLES } from '../src/skin.ts'
+import { checkVaultSchema } from '../tools/check-vault-schema.ts'
 
 const root = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
 const registryFile = fileURLToPath(new URL('../vaults.json', import.meta.url))
@@ -249,7 +250,7 @@ test('report bundle builds all templates and an index', () => {
 test('minimal example vault is valid', () => {
   const vault = loadVault(fileURLToPath(new URL('../vaults/minimal', import.meta.url)))
   const result = runChecks(vault)
-  assert.equal(vault.tokens.size, 304)
+  assert.equal(vault.tokens.size, 419)
   assert.equal(vault.contracts.length, 1)
   assert.equal(result.errors, 0)
   assert.equal(result.warnings, 0)
@@ -314,4 +315,11 @@ test('all registered vaults load and have no blocking errors', () => {
 test('skin schema exposes extended roles', () => {
   assert.ok(SKIN_ROLES.length >= 45)
   for (const role of ['textLink', 'borderSubtle', 'actionHover', 'onDanger', 'successSubtle', 'chart1']) assert.ok(SKIN_ROLES.includes(role as never), role)
+})
+
+
+test('minimal is LRDS schema compliant', () => {
+  const result = checkVaultSchema(fileURLToPath(new URL('../vaults/minimal', import.meta.url)))
+  assert.equal(result.ok, true, result.issues.map(i => `${i.file} ${i.path}: ${i.message}`).join(' | '))
+  assert.equal(result.files, 4)
 })
