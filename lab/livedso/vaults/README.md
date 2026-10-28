@@ -1,14 +1,14 @@
 # LiveDSO · Vault 样本集
 
-> 所有内置 vault 都在本目录；`vaults.json` 注册后可在 Workbench / CI 切换。每套含 3 张风格卡（原 LRDS 也为 3 张）；全部 33 张卡都有 50 个显式角色，并通过 `npm run skin:check` 对比度门禁。
+> 所有内置 vault 都在本目录；`vaults.json` 注册后可在 Workbench / CI 切换。每套含 3 张风格卡（原 LRDS 也为 3 张）；全部 33 张卡都有 50 个显式角色，角色统一落在 `theme.<card>.color.<role>` token 命名空间，并通过 `npm run skin:check` 对比度门禁。
 > 这些是**原创近似样本**，用于验证通用性；不是任何品牌的官方 token 包，也不代表隶属、赞助或背书。
 
 ## 1. 目录
 
 | id | 目录 | 类型 | 特点 |
 | --- | --- | --- | --- |
-| `sample` | `lrds-sample/` | 自有示例 | LRDS 示例；37 tokens；含弃用/契约/风格卡 |
-| `lrds` | `lrds-real/` | 真实导入 | 从工作区 `design/tokens/` 导入；229 tokens |
+| `sample` | `lrds-sample/` | 自有示例 | LRDS 示例；37 core + 150 role tokens；含弃用/契约/风格卡 |
+| `lrds` | `lrds-real/` | 真实导入 | 从工作区 `design/tokens/` 导入；229 core + 150 role tokens |
 | `minimal` | `minimal/` | 最小起点 | 10 tokens / 1 契约 / 1 风格卡 |
 | `material-3` | `material-3/` | 流行系统启发 | Material 3 风格的角色命名与色调 |
 | `carbon` | `carbon/` | 流行系统启发 | Carbon 风格的 layer/text/interactive |

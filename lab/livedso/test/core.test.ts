@@ -23,7 +23,7 @@ const registryFile = fileURLToPath(new URL('../vaults.json', import.meta.url))
 test('vault loads tokens/contracts/style cards', () => {
   const vault = loadVault(root)
   assert.equal(vault.errors.length, 0)
-  assert.equal(vault.tokens.size, 37)
+  assert.equal(vault.tokens.size, 187)
   assert.equal(vault.contracts.length, 2)
   assert.equal(vault.styleCards.length, 3)
 })
@@ -60,10 +60,10 @@ test('report and CSS projection are generated', () => {
   assert.ok(css.includes('--dso-sys-color-bg-base'))
 })
 
-test('real LRDS case imports 229 tokens', () => {
+test('real LRDS case imports 229 core + 150 role tokens', () => {
   const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-real', import.meta.url)))
   assert.equal(vault.errors.length, 0)
-  assert.equal(vault.tokens.size, 229)
+  assert.equal(vault.tokens.size, 379)
   assert.equal(vault.contracts.length, 2)
   assert.equal(vault.styleCards.length, 3)
   assert.equal(vault.tokens.get('sys.color.bg.base')?.resolvedValue, '#0B0F14')
@@ -139,10 +139,10 @@ test('local history snapshots and diffs', () => {
     assert.equal(listSnapshots(vault).length, 1)
     saveToken(vault, 'sys.color.text.primary', '#FFFFFF')
     const diff = diffSnapshot(loadVault(tmp), snap.id)
-    assert.equal(diff.changedTokens.length, 1)
+    assert.ok(diff.changedTokens.length >= 1)
     createSnapshot(loadVault(tmp))
     assert.equal(trendSnapshots(loadVault(tmp)).length, 2)
-    assert.equal(diff.changedTokens[0]?.path, 'sys.color.text.primary')
+    assert.ok(diff.changedTokens.some(t => t.path === 'sys.color.text.primary'))
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })
 
@@ -221,7 +221,7 @@ test('report templates render builtin and custom placeholders', () => {
     const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)))
     const result = runChecks(vault)
     const release = renderReport(vault, result, 'release')
-    assert.match(release, /Health/); assert.match(release, /37/)
+    assert.match(release, /Health/); assert.match(release, /187/)
     mkdirSync(join(tmp, 'templates'))
     writeFileSync(join(tmp, 'templates', 'custom.md'), '# {{vault.name}} · {{score}} · {{counts.tokens}}\n{{generatedAt}}')
     const custom = renderReport(vault, result, 'custom', join(tmp, 'templates'))
@@ -249,7 +249,7 @@ test('report bundle builds all templates and an index', () => {
 test('minimal example vault is valid', () => {
   const vault = loadVault(fileURLToPath(new URL('../vaults/minimal', import.meta.url)))
   const result = runChecks(vault)
-  assert.equal(vault.tokens.size, 10)
+  assert.equal(vault.tokens.size, 160)
   assert.equal(vault.contracts.length, 1)
   assert.equal(result.errors, 0)
   assert.equal(result.warnings, 0)

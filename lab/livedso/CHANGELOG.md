@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.8.0] - 2026-10-28 14:04
+
+### Added
+
+- 每个藏库新增 **150 个角色 token**（3 张卡 × 50），统一命名空间 `theme.<card>.color.<role>`。
+- 33 张风格卡的角色全部改为 token 引用，不再在卡内写 `#rrggbb`；基础色通过 `{native.token}` 别名链接。
+- 角色 token 化的同时保留原生 token 命名体系，角色层只做语义映射。
+
+### Changed
+
+- token 计数更新：sample 187、lrds-real 379、minimal 160（含 role tokens）。
+- `node:test` 保持 24 项；`skin:check` 33/33 通过。
+
 ## [1.7.0] - 2026-10-28 14:01
 
 ### Added

@@ -7,7 +7,7 @@
 > node src/cli.ts import ../../design/tokens vaults/lrds-real
 > ```
 >
-> 导入内容：`core/ref.tokens.json`、`core/sys.tokens.json`、`products/*.tokens.json`（6 个文件 / 229 tokens）。
+> 导入内容：`core/ref.tokens.json`、`core/sys.tokens.json`、`products/*.tokens.json`（6 个文件 / 229 core tokens（另含 150 个 theme role tokens））。
 > `contracts/`、`style-cards/`、`checks.json` 从示例 vault 复制并按真实 case 调整（product 层允许裸值）。
 >
 > 使用：
