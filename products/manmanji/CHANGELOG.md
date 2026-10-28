@@ -1,5 +1,17 @@
 # 慢慢记 Changelog
 
+## [1.2.0] - 2026-10-28 21:54
+
+### Changed
+
+- **风格与外观分离**：顶栏新增独立“风格主题”选择与“系统/浅色/深色”三段外观控件；设置页同步。
+- 风格改为 7 个族，每族固定 light/dark 两个变体；`data-style` 表示风格，`data-theme` 表示 system/light/dark（R-001）。
+- 外观持久化到 `localStorage['lrds-theme']`；系统模式监听 `prefers-color-scheme`；首屏内联脚本避免闪烁。
+
+### Fixed
+
+- 修正生成主题 CSS 注释中的 `*/` 导致首个变体选择器失效；生成选择器改为 `[data-style]`。
+
 ## [1.1.0] - 2026-10-28 21:44
 
 ### Added

@@ -99,7 +99,7 @@ test('HTTP API handles state, ledger and invoice payment', async () => {
 
 test('web navigation wires data-view buttons to hash routes', () => {
   const js = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8')
-  assert.match(js, /\$\(('#nav'|\"#nav\")\)\.addEventListener/)
+  assert.match(js, /\$\('#nav'\)\.addEventListener/)
   assert.match(js, /button\[data-view\]/)
   assert.match(js, /location\.hash = next/)
 })
@@ -109,7 +109,22 @@ test('generated themes are complete and parseable', () => {
   const css = readFileSync(new URL('../web/themes.generated.css', import.meta.url), 'utf8')
   const js = readFileSync(new URL('../web/themes.generated.js', import.meta.url), 'utf8')
   assert.match(js, /retro-paper/)
-  assert.match(js, /material-dark/)
-  assert.match(css, /\[data-theme="retro-paper"\]/)
-  assert.doesNotMatch(css, /style-cards \[data-theme/)
+  assert.match(js, /material-3-dark/)
+  assert.match(css, /\[data-style="retro-paper"\]/)
+  assert.doesNotMatch(css, /style-cards \[data-style/)
+})
+
+
+test('theme mode and style are separate (R-001)', () => {
+  const js = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8')
+  const html = readFileSync(new URL('../web/index.html', import.meta.url), 'utf8')
+  const css = readFileSync(new URL('../web/themes.generated.css', import.meta.url), 'utf8')
+  assert.match(js, /root\.dataset\.theme = state\.mode/)
+  assert.match(js, /root\.dataset\.style = effective/)
+  assert.match(js, /localStorage\.setItem\(MODE_KEY/)
+  assert.match(html, /data-mode="system"/)
+  assert.match(html, /data-mode="light"/)
+  assert.match(html, /data-mode="dark"/)
+  assert.match(css, /\[data-style="retro-paper"\]/)
+  assert.doesNotMatch(css, /\[data-theme="retro-paper"\]/)
 })

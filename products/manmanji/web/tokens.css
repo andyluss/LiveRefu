@@ -28,7 +28,7 @@
   --mm-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   color-scheme: light;
 }
-[data-theme="night"] {
+[data-style="night"] {
   --mm-bg: #121A1D;
   --mm-bg-2: #0C1316;
   --mm-surface: #1A2529;

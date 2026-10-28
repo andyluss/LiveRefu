@@ -4,7 +4,7 @@
  */
 
 /* Retro / Paper · retro-futurism/retro-paper */
-[data-theme="retro-paper"] {
+[data-style="retro-paper"] {
   color-scheme: light;
   --mm-bg: #F3E3C3;
   --mm-bg-2: #EADBBC;
@@ -28,7 +28,7 @@
 }
 
 /* Retro / CRT · retro-futurism/retro-crt */
-[data-theme="retro-crt"] {
+[data-style="retro-crt"] {
   color-scheme: dark;
   --mm-bg: #2A211B;
   --mm-bg-2: #2A2620;
@@ -51,8 +51,32 @@
   --mm-rust: #B23A48;
 }
 
+/* Cassette / Daylight · cassette-futurism/cassette-daylight */
+[data-style="cassette-daylight"] {
+  color-scheme: light;
+  --mm-bg: #D8C3A5;
+  --mm-bg-2: #D0BC9F;
+  --mm-surface: #F4A261;
+  --mm-raised: #EB9C5E;
+  --mm-paper: #F4A261;
+  --mm-text: #171717;
+  --mm-muted: #171717;
+  --mm-faint: #514B42;
+  --mm-line: #171717;
+  --mm-line-strong: #382C22;
+  --mm-action: #171717;
+  --mm-on-action: #D8C3A5;
+  --mm-action-hover: #171717;
+  --mm-focus: #2A9D8F;
+  --mm-danger: #B23A48;
+  --mm-warning: #171717;
+  --mm-success: #171717;
+  --mm-amber: #171717;
+  --mm-rust: #B23A48;
+}
+
 /* Cassette / Amber · cassette-futurism/cassette-amber */
-[data-theme="cassette-amber"] {
+[data-style="cassette-amber"] {
   color-scheme: dark;
   --mm-bg: #171717;
   --mm-bg-2: #201D1A;
@@ -75,9 +99,33 @@
   --mm-rust: #B23A48;
 }
 
-/* Atompunk · atompunk/atompunk */
-[data-theme="atompunk"] {
+/* Atompunk / Chrome · atompunk/atompunk-chrome */
+[data-style="atompunk-chrome"] {
   color-scheme: light;
+  --mm-bg: #BFC5CC;
+  --mm-bg-2: #B8BEC6;
+  --mm-surface: #BFC5CC;
+  --mm-raised: #F5E6CA;
+  --mm-paper: #BFC5CC;
+  --mm-text: #14213D;
+  --mm-muted: #1E2D4F;
+  --mm-faint: #475268;
+  --mm-line: #14213D;
+  --mm-line-strong: #2E3A52;
+  --mm-action: #1F6F78;
+  --mm-on-action: #F6F1E7;
+  --mm-action-hover: #1E6671;
+  --mm-focus: #1F6F78;
+  --mm-danger: #C0392B;
+  --mm-warning: #1F6F78;
+  --mm-success: #1F6F78;
+  --mm-amber: #1F6F78;
+  --mm-rust: #C0392B;
+}
+
+/* Atompunk / Alert · atompunk/atompunk-alert */
+[data-style="atompunk-alert"] {
+  color-scheme: dark;
   --mm-bg: #14213D;
   --mm-bg-2: #1D2943;
   --mm-surface: #1E2D4F;
@@ -88,19 +136,43 @@
   --mm-faint: #B2ABA0;
   --mm-line: #B5AFA5;
   --mm-line-strong: #D5CAB8;
-  --mm-action: #1F6F78;
+  --mm-action: #C0392B;
   --mm-on-action: #F6F1E7;
-  --mm-action-hover: #397D82;
+  --mm-action-hover: #C64E3E;
   --mm-focus: #F4A261;
   --mm-danger: #C0392B;
   --mm-warning: #F4A261;
-  --mm-success: #1F6F78;
+  --mm-success: #C0392B;
   --mm-amber: #F4A261;
   --mm-rust: #C0392B;
 }
 
+/* Material 3 / Light · material-3/material-3 */
+[data-style="material-3"] {
+  color-scheme: light;
+  --mm-bg: #FFFFFF;
+  --mm-bg-2: #F6F6F6;
+  --mm-surface: #FFFFFF;
+  --mm-raised: #F6F6F6;
+  --mm-paper: #FFFFFF;
+  --mm-text: #1C1B1F;
+  --mm-muted: #3E3D41;
+  --mm-faint: #605F62;
+  --mm-line: #605F62;
+  --mm-line-strong: #3E3D41;
+  --mm-action: #6750A4;
+  --mm-on-action: #F6F1E7;
+  --mm-action-hover: #5E4A94;
+  --mm-focus: #0061A4;
+  --mm-danger: #B3261E;
+  --mm-warning: #0061A4;
+  --mm-success: #6750A4;
+  --mm-amber: #0061A4;
+  --mm-rust: #B3261E;
+}
+
 /* Material 3 / Dark · material-3/material-3-dark */
-[data-theme="material-dark"] {
+[data-style="material-3-dark"] {
   color-scheme: dark;
   --mm-bg: #1C1B1F;
   --mm-bg-2: #252428;
@@ -124,7 +196,7 @@
 }
 
 /* Tailwind / Paper · tailwind/tailwind-paper */
-[data-theme="tailwind-paper"] {
+[data-style="tailwind-paper"] {
   color-scheme: light;
   --mm-bg: #F8FAFC;
   --mm-bg-2: #EEF0F3;
@@ -147,8 +219,56 @@
   --mm-rust: #F43F5E;
 }
 
+/* Tailwind / Dark · tailwind/tailwind */
+[data-style="tailwind"] {
+  color-scheme: dark;
+  --mm-bg: #020617;
+  --mm-bg-2: #0C1020;
+  --mm-surface: #020617;
+  --mm-raised: #161A29;
+  --mm-paper: #020617;
+  --mm-text: #F8FAFC;
+  --mm-muted: #D3D5DA;
+  --mm-faint: #AEB1B7;
+  --mm-line: #AEB1B7;
+  --mm-line-strong: #D3D5DA;
+  --mm-action: #2DD4BF;
+  --mm-on-action: #0B0F14;
+  --mm-action-hover: #45D9C6;
+  --mm-focus: #FBBF24;
+  --mm-danger: #F43F5E;
+  --mm-warning: #FBBF24;
+  --mm-success: #2DD4BF;
+  --mm-amber: #FBBF24;
+  --mm-rust: #F43F5E;
+}
+
+/* Carbon / Light · carbon/carbon */
+[data-style="carbon"] {
+  color-scheme: light;
+  --mm-bg: #F4F4F4;
+  --mm-bg-2: #EBEBEB;
+  --mm-surface: #FFFFFF;
+  --mm-raised: #F6F6F6;
+  --mm-paper: #FFFFFF;
+  --mm-text: #161616;
+  --mm-muted: #373737;
+  --mm-faint: #595959;
+  --mm-line: #5C5C5C;
+  --mm-line-strong: #393939;
+  --mm-action: #0043CE;
+  --mm-on-action: #F6F1E7;
+  --mm-action-hover: #033EB8;
+  --mm-focus: #0043CE;
+  --mm-danger: #DA1E28;
+  --mm-warning: #0043CE;
+  --mm-success: #0043CE;
+  --mm-amber: #0043CE;
+  --mm-rust: #DA1E28;
+}
+
 /* Carbon / Night · carbon/carbon-night */
-[data-theme="carbon-night"] {
+[data-style="carbon-night"] {
   color-scheme: dark;
   --mm-bg: #161616;
   --mm-bg-2: #1F1F1F;

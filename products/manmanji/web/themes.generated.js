@@ -3,11 +3,55 @@ export const THEMES = [
   {
     "id": "paper",
     "name": "纸感 · Paper",
+    "light": "paper",
+    "dark": "night"
+  },
+  {
+    "id": "retro",
+    "name": "Retro",
+    "light": "retro-paper",
+    "dark": "retro-crt"
+  },
+  {
+    "id": "cassette",
+    "name": "Cassette",
+    "light": "cassette-daylight",
+    "dark": "cassette-amber"
+  },
+  {
+    "id": "atompunk",
+    "name": "Atompunk",
+    "light": "atompunk-chrome",
+    "dark": "atompunk-alert"
+  },
+  {
+    "id": "material",
+    "name": "Material 3",
+    "light": "material-3",
+    "dark": "material-3-dark"
+  },
+  {
+    "id": "tailwind",
+    "name": "Tailwind",
+    "light": "tailwind-paper",
+    "dark": "tailwind"
+  },
+  {
+    "id": "carbon",
+    "name": "Carbon",
+    "light": "carbon",
+    "dark": "carbon-night"
+  }
+]
+export const VARIANTS = [
+  {
+    "id": "paper",
+    "name": "纸感 · Light",
     "mode": "light"
   },
   {
     "id": "night",
-    "name": "夜间 · Night",
+    "name": "夜间 · Dark",
     "mode": "dark"
   },
   {
@@ -21,23 +65,48 @@ export const THEMES = [
     "mode": "dark"
   },
   {
+    "id": "cassette-daylight",
+    "name": "Cassette / Daylight",
+    "mode": "light"
+  },
+  {
     "id": "cassette-amber",
     "name": "Cassette / Amber",
     "mode": "dark"
   },
   {
-    "id": "atompunk",
-    "name": "Atompunk",
+    "id": "atompunk-chrome",
+    "name": "Atompunk / Chrome",
     "mode": "light"
   },
   {
-    "id": "material-dark",
+    "id": "atompunk-alert",
+    "name": "Atompunk / Alert",
+    "mode": "dark"
+  },
+  {
+    "id": "material-3",
+    "name": "Material 3 / Light",
+    "mode": "light"
+  },
+  {
+    "id": "material-3-dark",
     "name": "Material 3 / Dark",
     "mode": "dark"
   },
   {
     "id": "tailwind-paper",
     "name": "Tailwind / Paper",
+    "mode": "light"
+  },
+  {
+    "id": "tailwind",
+    "name": "Tailwind / Dark",
+    "mode": "dark"
+  },
+  {
+    "id": "carbon",
+    "name": "Carbon / Light",
     "mode": "light"
   },
   {

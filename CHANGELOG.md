@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **慢慢记 v1.2**：风格主题与浅/深外观分离，7 族 × 2 变体；对齐 R-001。
 - **慢慢记 v1.1**：9 个主题，7 个由 LiveDSO 风格卡生成（狗粮）。
 - **慢慢记 v1.0.1**：修复顶部导航按钮无响应；补导航回归测试。
 - **新增 `products/manmanji/`（慢慢记 v1.0）**：本地优先通用记账 + 自由职业发票扩展包；Node 原生服务、无构建单页、JSON 持久化；产品文档/测试/CHANGELOG 齐全。

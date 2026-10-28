@@ -1,6 +1,6 @@
 {
   "name": "manmanji",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
   "description": "慢慢记 · 本地优先的通用记账与自由职业扩展包",
