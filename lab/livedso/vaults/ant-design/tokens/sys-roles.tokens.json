@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "name": "ant-design sys roles",
+    "version": "1.0.0"
+  },
+  "sys": {
+    "color": {
+      "bg": {
+        "$value": "{ref.source.ant.colorBgContainer}",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "{ref.source.ant.colorPrimaryBg}",
+        "$type": "color"
+      },
+      "surfaceRaised": {
+        "$value": "{ref.generated.ant-design.role.surfaceRaised}",
+        "$type": "color"
+      },
+      "surfaceSunken": {
+        "$value": "{ref.generated.ant-design.role.surfaceSunken}",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "{ref.source.ant.colorText}",
+        "$type": "color"
+      },
+      "textMuted": {
+        "$value": "{ref.generated.ant-design.role.textMuted}",
+        "$type": "color"
+      },
+      "textInverse": {
+        "$value": "{ref.generated.ant-design.role.textInverse}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{ref.generated.ant-design.role.border}",
+        "$type": "color"
+      },
+      "borderStrong": {
+        "$value": "{ref.generated.ant-design.role.borderStrong}",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "{ref.source.ant.colorFocus}",
+        "$type": "color"
+      },
+      "action": {
+        "$value": "{ref.source.ant.colorPrimary}",
+        "$type": "color"
+      },
+      "actionHover": {
+        "$value": "{ref.generated.ant-design.role.actionHover}",
+        "$type": "color"
+      },
+      "onAction": {
+        "$value": "{ref.generated.ant-design.role.onAction}",
+        "$type": "color"
+      },
+      "danger": {
+        "$value": "{ref.source.ant.colorError}",
+        "$type": "color"
+      },
+      "success": {
+        "$value": "{ref.generated.ant-design.role.success}",
+        "$type": "color"
+      },
+      "warning": {
+        "$value": "{ref.generated.ant-design.role.warning}",
+        "$type": "color"
+      }
+    }
+  }
+}

@@ -1,0 +1,536 @@
+{
+  "meta": {
+    "name": "polaris product roles",
+    "version": "1.0.0"
+  },
+  "product": {
+    "polaris": {
+      "role": {
+        "bgSubtle": {
+          "$value": "{ref.generated.polaris.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.polaris.role.surfaceHover}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.polaris.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.polaris.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.polaris.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.polaris.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.polaris.role.textDisabled}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.polaris.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.polaris.role.divider}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.polaris.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.polaris.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.polaris.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.polaris.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.polaris.role.ghostAction}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.polaris.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.polaris.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.polaris.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.polaris.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.polaris.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.polaris.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.polaris.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.polaris.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.polaris.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.polaris.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.polaris.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.polaris.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.polaris.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.polaris.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.polaris.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.polaris.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.polaris.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.polaris.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.polaris.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.polaris.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "polaris-night": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.p.color.text}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.polaris-night.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.p.color.text}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.polaris-night.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.polaris-night.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.polaris-night.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.p.ref.white}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.polaris-night.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.generated.polaris-night.role.textMuted}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.polaris-night.role.textSubtle}",
+          "$type": "color"
+        },
+        "textInverse": {
+          "$value": "{ref.generated.polaris-night.role.textInverse}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.polaris-night.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.polaris-night.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.polaris-night.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.generated.polaris-night.role.border}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.polaris-night.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.polaris-night.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.polaris-night.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.p.color.focus}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.p.color.interactive}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.polaris-night.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.polaris-night.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.polaris-night.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.polaris-night.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.polaris-night.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.polaris-night.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.p.color.critical}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.polaris-night.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.polaris-night.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.polaris-night.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.polaris-night.role.successSubtle}",
+          "$type": "color"
+        },
+        "warning": {
+          "$value": "{ref.generated.polaris-night.role.warning}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.polaris-night.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.polaris-night.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.polaris-night.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.polaris-night.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.polaris-night.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.polaris-night.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.polaris-night.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.polaris-night.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.polaris-night.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.polaris-night.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.polaris-night.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.polaris-night.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.polaris-night.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.polaris-night.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.polaris-night.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.polaris-night.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "polaris-mono": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.p.color.surface}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.polaris-mono.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.p.color.bg}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.polaris-mono.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.polaris-mono.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.polaris-mono.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.p.color.text}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.polaris-mono.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.generated.polaris-mono.role.textMuted}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.polaris-mono.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.polaris-mono.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.polaris-mono.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.polaris-mono.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.generated.polaris-mono.role.border}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.polaris-mono.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.polaris-mono.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.polaris-mono.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.p.color.focus}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.p.color.text}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.polaris-mono.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.polaris-mono.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.polaris-mono.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.polaris-mono.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.polaris-mono.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.polaris-mono.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.p.color.critical}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.polaris-mono.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.polaris-mono.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "success": {
+          "$value": "{ref.generated.polaris-mono.role.success}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.polaris-mono.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.polaris-mono.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.polaris-mono.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.polaris-mono.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.polaris-mono.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.polaris-mono.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.polaris-mono.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.polaris-mono.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.polaris-mono.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.polaris-mono.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.polaris-mono.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.polaris-mono.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.polaris-mono.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.polaris-mono.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.polaris-mono.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.polaris-mono.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.polaris-mono.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.polaris-mono.role.chart6}",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

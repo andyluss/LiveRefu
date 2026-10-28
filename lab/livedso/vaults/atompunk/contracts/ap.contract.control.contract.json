@@ -1,5 +1,5 @@
 {
-  "id": "ap.contract.control",
+  "id": "ref.source.ap.contract.control",
   "title": "Control Panel",
   "status": "stable",
   "summary": "Atompunk sample: navy, cream, atomic teal, hazard red, chrome.",
@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "ap.color.action",
-    "ap.ref.cream",
-    "ap.color.focus"
+    "ref.source.ap.color.action",
+    "ref.source.ap.ref.cream",
+    "ref.source.ap.color.focus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

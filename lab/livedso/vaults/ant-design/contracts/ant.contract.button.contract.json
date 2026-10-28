@@ -1,5 +1,5 @@
 {
-  "id": "ant.contract.button",
+  "id": "ref.source.ant.contract.button",
   "title": "Button",
   "status": "stable",
   "summary": "Ant Design inspired sample; not an official Ant token package.",
@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "ant.colorPrimary",
-    "ant.ref.white",
-    "ant.colorFocus"
+    "ref.source.ant.colorPrimary",
+    "ref.source.ant.ref.white",
+    "ref.source.ant.colorFocus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

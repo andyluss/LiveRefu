@@ -1,5 +1,5 @@
 {
-  "id": "cds.contract.primary-button",
+  "id": "ref.source.cds.contract.primary-button",
   "title": "Primary Button",
   "status": "stable",
   "summary": "IBM Carbon inspired sample; not an official Carbon token package.",
@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "cds.color.interactive",
-    "cds.ref.white",
-    "cds.color.focus"
+    "ref.source.cds.color.interactive",
+    "ref.source.cds.ref.white",
+    "ref.source.cds.color.focus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

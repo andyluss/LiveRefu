@@ -1,0 +1,516 @@
+{
+  "meta": {
+    "name": "ant-design product roles",
+    "version": "1.0.0"
+  },
+  "product": {
+    "ant-design": {
+      "role": {
+        "bgSubtle": {
+          "$value": "{ref.generated.ant-design.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.ant-design.role.surfaceHover}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.ant-design.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.ant-design.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.ant-design.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.ant-design.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.ant-design.role.textDisabled}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.ant-design.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.ant-design.role.divider}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.ant-design.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.ant-design.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.ant-design.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.ant-design.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.ant-design.role.ghostAction}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.ant-design.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.ant-design.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.ant-design.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.ant-design.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.ant-design.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.ant-design.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.ant-design.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.ant-design.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.ant-design.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.ant-design.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.ant-design.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.ant-design.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.ant-design.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.ant-design.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.ant-design.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.ant-design.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.ant-design.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.ant-design.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.ant-design.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.ant-design.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "ant-dark": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.ant.colorText}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.ant-dark.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.ant.colorText}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.ant-dark.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.ant-dark.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.ant-dark.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.ant.ref.white}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.ant-dark.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.generated.ant-dark.role.textMuted}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.ant-dark.role.textSubtle}",
+          "$type": "color"
+        },
+        "textInverse": {
+          "$value": "{ref.generated.ant-dark.role.textInverse}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.ant-dark.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.ant-dark.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.ant-dark.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.generated.ant-dark.role.border}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.ant-dark.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.ant-dark.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.ant-dark.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.ant.colorFocus}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.ant.colorPrimary}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.ant-dark.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.ant-dark.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.ant-dark.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.ant-dark.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.ant-dark.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.ant-dark.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.ant.colorError}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.ant-dark.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.ant-dark.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.ant-dark.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.ant-dark.role.successSubtle}",
+          "$type": "color"
+        },
+        "warning": {
+          "$value": "{ref.generated.ant-dark.role.warning}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.ant-dark.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.ant-dark.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.ant-dark.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.ant-dark.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.ant-dark.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.ant-dark.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.ant-dark.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.ant-dark.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.ant-dark.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.ant-dark.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.ant-dark.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.ant-dark.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.ant-dark.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.ant-dark.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.ant-dark.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.ant-dark.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "ant-mono": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.ant.colorBgContainer}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.ant-mono.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.ant.colorPrimaryBg}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.ant-mono.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.ant.colorText}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.ant-mono.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.ant-mono.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.ant-mono.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.ant-mono.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.ant-mono.role.textDisabled}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.ant-mono.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.ant-mono.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.ant.colorFocus}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.ant.colorText}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.ant-mono.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.ant-mono.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.ant-mono.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.ant-mono.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.ant-mono.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.ant-mono.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.ant.colorError}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.ant-mono.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.ant-mono.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "success": {
+          "$value": "{ref.generated.ant-mono.role.success}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.ant-mono.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.ant-mono.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.ant-mono.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.ant-mono.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.ant-mono.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.ant-mono.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.ant-mono.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.ant-mono.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.ant-mono.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.ant-mono.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.ant-mono.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.ant-mono.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.ant-mono.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.ant-mono.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.ant-mono.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.ant-mono.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.ant-mono.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.ant-mono.role.chart6}",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

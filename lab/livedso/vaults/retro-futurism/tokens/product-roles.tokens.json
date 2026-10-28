@@ -1,0 +1,536 @@
+{
+  "meta": {
+    "name": "retro-futurism product roles",
+    "version": "1.0.0"
+  },
+  "product": {
+    "retro-futurism": {
+      "role": {
+        "bgSubtle": {
+          "$value": "{ref.generated.retro-futurism.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.retro-futurism.role.surfaceHover}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.retro-futurism.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.retro-futurism.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.retro-futurism.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.retro-futurism.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.retro-futurism.role.textDisabled}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.retro-futurism.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.retro-futurism.role.divider}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.retro-futurism.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.retro-futurism.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.retro-futurism.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.retro-futurism.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.retro-futurism.role.ghostAction}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.retro-futurism.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.retro-futurism.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.retro-futurism.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.retro-futurism.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.retro-futurism.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.retro-futurism.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.retro-futurism.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.retro-futurism.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.retro-futurism.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.retro-futurism.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.retro-futurism.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.retro-futurism.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.retro-futurism.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.retro-futurism.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.retro-futurism.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.retro-futurism.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.retro-futurism.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.retro-futurism.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.retro-futurism.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.retro-futurism.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "retro-crt": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.rf.color.surface}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.retro-crt.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.rf.color.surface}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.retro-crt.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.retro-crt.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.retro-crt.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.rf.ref.teal}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.retro-crt.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.source.rf.ref.cream}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.retro-crt.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.retro-crt.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.retro-crt.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.retro-crt.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.generated.retro-crt.role.border}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.retro-crt.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.retro-crt.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.retro-crt.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.rf.ref.amber}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.rf.ref.amber}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.retro-crt.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.retro-crt.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.retro-crt.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.retro-crt.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.retro-crt.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.retro-crt.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.rf.color.danger}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.retro-crt.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.retro-crt.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "success": {
+          "$value": "{ref.generated.retro-crt.role.success}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.retro-crt.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.retro-crt.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.retro-crt.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.retro-crt.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.retro-crt.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.retro-crt.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.retro-crt.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.retro-crt.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.retro-crt.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.retro-crt.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.retro-crt.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.retro-crt.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.retro-crt.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.retro-crt.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.retro-crt.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.retro-crt.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.retro-crt.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.retro-crt.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "retro-paper": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.rf.ref.cream}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.retro-paper.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.rf.ref.cream}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.retro-paper.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.retro-paper.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.retro-paper.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.rf.ref.ink}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.retro-paper.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.generated.retro-paper.role.textMuted}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.retro-paper.role.textSubtle}",
+          "$type": "color"
+        },
+        "textInverse": {
+          "$value": "{ref.generated.retro-paper.role.textInverse}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.retro-paper.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.retro-paper.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.retro-paper.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.generated.retro-paper.role.border}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.retro-paper.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.retro-paper.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.retro-paper.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.rf.ref.teal}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.rf.ref.rust}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.retro-paper.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.retro-paper.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.retro-paper.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.retro-paper.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.retro-paper.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.retro-paper.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.rf.color.danger}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.retro-paper.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.retro-paper.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.retro-paper.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.retro-paper.role.successSubtle}",
+          "$type": "color"
+        },
+        "warning": {
+          "$value": "{ref.generated.retro-paper.role.warning}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.retro-paper.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.retro-paper.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.retro-paper.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.retro-paper.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.retro-paper.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.retro-paper.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.retro-paper.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.retro-paper.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.retro-paper.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.retro-paper.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.retro-paper.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.retro-paper.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.retro-paper.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.retro-paper.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.retro-paper.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.retro-paper.role.chart6}",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

@@ -43,7 +43,13 @@
 | LRDS real | 635 |
 | Minimal | 304 |
 | Material 3 | 422 |
-| 其余 7 套 | 304–306 |
+| Carbon | 422 |
+| Polaris | 423 |
+| Ant Design | 413 |
+| Tailwind | 430 |
+| Retro Futurism | 423 |
+| Cassette Futurism | 425 |
+| Atompunk | 411 |
 
 ## 四、严格 schema 试点
 

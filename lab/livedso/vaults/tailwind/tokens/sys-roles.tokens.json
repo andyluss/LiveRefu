@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "name": "tailwind sys roles",
+    "version": "1.0.0"
+  },
+  "sys": {
+    "color": {
+      "bg": {
+        "$value": "{ref.source.tw.color.bg}",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "{ref.source.tw.ref.slate.950}",
+        "$type": "color"
+      },
+      "surfaceRaised": {
+        "$value": "{ref.generated.tailwind.role.surfaceRaised}",
+        "$type": "color"
+      },
+      "surfaceSunken": {
+        "$value": "{ref.generated.tailwind.role.surfaceSunken}",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "{ref.source.tw.color.text}",
+        "$type": "color"
+      },
+      "textMuted": {
+        "$value": "{ref.generated.tailwind.role.textMuted}",
+        "$type": "color"
+      },
+      "textInverse": {
+        "$value": "{ref.generated.tailwind.role.textInverse}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{ref.generated.tailwind.role.border}",
+        "$type": "color"
+      },
+      "borderStrong": {
+        "$value": "{ref.generated.tailwind.role.borderStrong}",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "{ref.source.tw.color.focus}",
+        "$type": "color"
+      },
+      "action": {
+        "$value": "{ref.source.tw.color.action}",
+        "$type": "color"
+      },
+      "actionHover": {
+        "$value": "{ref.generated.tailwind.role.actionHover}",
+        "$type": "color"
+      },
+      "onAction": {
+        "$value": "{ref.generated.tailwind.role.onAction}",
+        "$type": "color"
+      },
+      "danger": {
+        "$value": "{ref.source.tw.color.danger}",
+        "$type": "color"
+      },
+      "success": {
+        "$value": "{ref.generated.tailwind.role.success}",
+        "$type": "color"
+      },
+      "warning": {
+        "$value": "{ref.generated.tailwind.role.warning}",
+        "$type": "color"
+      }
+    }
+  }
+}

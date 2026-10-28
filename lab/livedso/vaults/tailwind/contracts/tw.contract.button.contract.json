@@ -1,5 +1,5 @@
 {
-  "id": "tw.contract.button",
+  "id": "ref.source.tw.contract.button",
   "title": "Button",
   "status": "stable",
   "summary": "Tailwind CSS palette inspired sample; not an official Tailwind token package.",
@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "tw.color.action",
-    "tw.color.on-action",
-    "tw.color.focus"
+    "ref.source.tw.color.action",
+    "ref.source.tw.color.on-action",
+    "ref.source.tw.color.focus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

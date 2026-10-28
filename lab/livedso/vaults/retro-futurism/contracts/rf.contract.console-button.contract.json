@@ -1,5 +1,5 @@
 {
-  "id": "rf.contract.console-button",
+  "id": "ref.source.rf.contract.console-button",
   "title": "Console Button",
   "status": "stable",
   "summary": "Retro-future sample: warm paper, rust, CRT teal, amber.",
@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "rf.color.action",
-    "rf.ref.ink",
-    "rf.color.focus"
+    "ref.source.rf.color.action",
+    "ref.source.rf.ref.ink",
+    "ref.source.rf.color.focus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

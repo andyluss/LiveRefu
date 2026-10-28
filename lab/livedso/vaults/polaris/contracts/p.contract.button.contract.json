@@ -1,5 +1,5 @@
 {
-  "id": "p.contract.button",
+  "id": "ref.source.p.contract.button",
   "title": "Button",
   "status": "stable",
   "summary": "Shopify Polaris inspired sample; not an official Polaris token package.",
@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "p.color.interactive",
-    "p.ref.white",
-    "p.color.focus"
+    "ref.source.p.color.interactive",
+    "ref.source.p.ref.white",
+    "ref.source.p.color.focus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

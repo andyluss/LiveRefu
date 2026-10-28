@@ -1,5 +1,5 @@
 {
-  "id": "cf.contract.transport",
+  "id": "ref.source.cf.contract.transport",
   "title": "Transport Control",
   "status": "stable",
   "summary": "Cassette-future sample: charcoal, beige, orange, cyan indicators.",
@@ -15,9 +15,9 @@
     "disabled"
   ],
   "tokens": [
-    "cf.color.action",
-    "cf.ref.charcoal",
-    "cf.color.focus"
+    "ref.source.cf.color.action",
+    "ref.source.cf.ref.charcoal",
+    "ref.source.cf.color.focus"
   ],
   "keyboard": "Enter/Space; Tab reachable.",
   "a11y": "Visible focus ring; disabled uses aria-disabled.",

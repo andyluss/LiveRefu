@@ -1,0 +1,544 @@
+{
+  "meta": {
+    "name": "cassette-futurism product roles",
+    "version": "1.0.0"
+  },
+  "product": {
+    "cassette-futurism": {
+      "role": {
+        "bgSubtle": {
+          "$value": "{ref.generated.cassette-futurism.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.cassette-futurism.role.surfaceHover}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.cassette-futurism.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.cassette-futurism.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.cassette-futurism.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.cassette-futurism.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.cassette-futurism.role.textDisabled}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.cassette-futurism.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.cassette-futurism.role.divider}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.cassette-futurism.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.cassette-futurism.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.cassette-futurism.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.cassette-futurism.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.cassette-futurism.role.ghostAction}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.cassette-futurism.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.cassette-futurism.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.cassette-futurism.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.cassette-futurism.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.cassette-futurism.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.cassette-futurism.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.cassette-futurism.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.cassette-futurism.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.cassette-futurism.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.cassette-futurism.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.cassette-futurism.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.cassette-futurism.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.cassette-futurism.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.cassette-futurism.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.cassette-futurism.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.cassette-futurism.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.cassette-futurism.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.cassette-futurism.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.cassette-futurism.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.cassette-futurism.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "cassette-amber": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.cf.color.bg}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.cassette-amber.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.cf.color.surface}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.cassette-amber.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.cassette-amber.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.cassette-amber.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.cf.ref.amber}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.cassette-amber.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.generated.cassette-amber.role.textMuted}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.cassette-amber.role.textSubtle}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.cassette-amber.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.cassette-amber.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.cassette-amber.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.generated.cassette-amber.role.border}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.cassette-amber.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.cassette-amber.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.cassette-amber.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.cf.ref.cyan}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.cf.ref.amber}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.cassette-amber.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.cassette-amber.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.cassette-amber.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.cassette-amber.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.cassette-amber.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.cassette-amber.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.cf.color.danger}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.cassette-amber.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.cassette-amber.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "success": {
+          "$value": "{ref.generated.cassette-amber.role.success}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.cassette-amber.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.cassette-amber.role.successSubtle}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.cassette-amber.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.cassette-amber.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.cassette-amber.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.cassette-amber.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.cassette-amber.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.cassette-amber.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.cassette-amber.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.cassette-amber.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.cassette-amber.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.cassette-amber.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.cassette-amber.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.cassette-amber.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.cassette-amber.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.cassette-amber.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.cassette-amber.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.cassette-amber.role.chart6}",
+          "$type": "color"
+        }
+      }
+    },
+    "cassette-daylight": {
+      "role": {
+        "bg": {
+          "$value": "{ref.source.cf.ref.beige}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.cassette-daylight.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ref.source.cf.ref.amber}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.cassette-daylight.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.cassette-daylight.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.cassette-daylight.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ref.source.cf.ref.charcoal}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.cassette-daylight.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.source.cf.ref.charcoal}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.cassette-daylight.role.textSubtle}",
+          "$type": "color"
+        },
+        "textInverse": {
+          "$value": "{ref.generated.cassette-daylight.role.textInverse}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.cassette-daylight.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.cassette-daylight.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.cassette-daylight.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.source.cf.ref.charcoal}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.cassette-daylight.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.cassette-daylight.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.cassette-daylight.role.divider}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{ref.source.cf.ref.cyan}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ref.source.cf.ref.charcoal}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.cassette-daylight.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.cassette-daylight.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.cassette-daylight.role.actionDisabled}",
+          "$type": "color"
+        },
+        "onAction": {
+          "$value": "{ref.source.cf.ref.beige}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.cassette-daylight.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.cassette-daylight.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.cassette-daylight.role.ghostAction}",
+          "$type": "color"
+        },
+        "danger": {
+          "$value": "{ref.source.cf.color.danger}",
+          "$type": "color"
+        },
+        "onDanger": {
+          "$value": "{ref.generated.cassette-daylight.role.onDanger}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.cassette-daylight.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "success": {
+          "$value": "{ref.generated.cassette-daylight.role.success}",
+          "$type": "color"
+        },
+        "onSuccess": {
+          "$value": "{ref.generated.cassette-daylight.role.onSuccess}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.cassette-daylight.role.successSubtle}",
+          "$type": "color"
+        },
+        "warning": {
+          "$value": "{ref.generated.cassette-daylight.role.warning}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.cassette-daylight.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.cassette-daylight.role.warningSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.cassette-daylight.role.info}",
+          "$type": "color"
+        },
+        "onInfo": {
+          "$value": "{ref.generated.cassette-daylight.role.onInfo}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.cassette-daylight.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.cassette-daylight.role.accent}",
+          "$type": "color"
+        },
+        "accent2": {
+          "$value": "{ref.generated.cassette-daylight.role.accent2}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.cassette-daylight.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.cassette-daylight.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.cassette-daylight.role.codeText}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.cassette-daylight.role.chart1}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.cassette-daylight.role.chart2}",
+          "$type": "color"
+        },
+        "chart3": {
+          "$value": "{ref.generated.cassette-daylight.role.chart3}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.cassette-daylight.role.chart4}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.cassette-daylight.role.chart5}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.cassette-daylight.role.chart6}",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

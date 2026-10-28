@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.13.0] - 2026-10-28 19:41
+
+### Added
+
+- **全部 11 个 vault 通过严格 LRDS schema**：顶层只含 `meta + ref + sys + component + product`。
+- 原生 token 收进 `ref.source.<vendor>`；scale 进 `ref`；component 进顶层；角色 A 档进 `sys.color.*`，其余进 `product.<card>.role`；原始色进 `ref.generated`。
+- `schema:check` 默认校验全量；`schema:check:pilot` 保留 4 个快速样板。
+
+### Changed
+
+- Token 总量：ant 413 / atompunk 411 / carbon 422 / cassette 425 / material 422 / polaris 423 / retro 423 / tailwind 430 / minimal 419 / sample 463 / real 635。
+- 版本 1.12.0 → 1.13.0；测试 25 项。
+
 ## [1.12.0] - 2026-10-28 19:37
 
 ### Added

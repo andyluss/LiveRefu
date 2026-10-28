@@ -11,13 +11,13 @@
 | `lrds` | `lrds-real/` | 真实导入 | 从工作区 `design/tokens/` 导入；635 tokens；LRDS schema 试点 |
 | `minimal` | `minimal/` | 最小起点 | 10 tokens / 1 契约 / 1 风格卡 |
 | `material-3` | `material-3/` | 流行系统启发 | Material 3；422 tokens；LRDS schema 试点 |
-| `carbon` | `carbon/` | 流行系统启发 | Carbon 风格的 layer/text/interactive |
-| `polaris` | `polaris/` | 流行系统启发 | Polaris 风格的 bg/surface/text/interactive |
-| `ant-design` | `ant-design/` | 流行系统启发 | Ant Design 风格的 camelCase token |
-| `tailwind` | `tailwind/` | 流行系统启发 | Tailwind 色阶 + 深色底 |
-| `retro-futurism` | `retro-futurism/` | 复古未来 | 纸、锈红、CRT 青、琥珀 |
-| `cassette-futurism` | `cassette-futurism/` | 复古未来 | 炭黑、米色、橙色、青色指示 |
-| `atompunk` | `atompunk/` | 复古未来 | 海军蓝、奶油、原子青、危险红 |
+| `carbon` | `carbon/` | 流行系统启发 | Carbon；422 tokens；LRDS schema 试点 |
+| `polaris` | `polaris/` | 流行系统启发 | Polaris；423 tokens；LRDS schema 试点 |
+| `ant-design` | `ant-design/` | 流行系统启发 | Ant Design；413 tokens；LRDS schema 试点 |
+| `tailwind` | `tailwind/` | 流行系统启发 | Tailwind；430 tokens；LRDS schema 试点 |
+| `retro-futurism` | `retro-futurism/` | 复古未来 | 423 tokens；LRDS schema 试点 |
+| `cassette-futurism` | `cassette-futurism/` | 复古未来 | 425 tokens；LRDS schema 试点 |
+| `atompunk` | `atompunk/` | 复古未来 | 411 tokens；LRDS schema 试点 |
 
 ## 2. 使用
 

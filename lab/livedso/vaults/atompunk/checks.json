@@ -1,20 +1,20 @@
 {
   "contrast": [
     {
-      "fg": "ap.color.text",
-      "bg": "ap.color.bg",
+      "fg": "ref.source.ap.color.text",
+      "bg": "ref.source.ap.color.bg",
       "min": 4.5,
       "label": "sample text contrast"
     },
     {
-      "fg": "ap.ref.cream",
-      "bg": "ap.color.action",
+      "fg": "ref.source.ap.ref.cream",
+      "bg": "ref.source.ap.color.action",
       "min": 4.5,
       "label": "sample text contrast"
     }
   ],
-  "focusToken": "ap.color.focus",
-  "actionToken": "ap.color.action",
+  "focusToken": "ref.source.ap.color.focus",
+  "actionToken": "ref.source.ap.color.action",
   "rawValueTiers": [],
   "contractRequired": [
     "anatomy",

@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "name": "carbon sys roles",
+    "version": "1.0.0"
+  },
+  "sys": {
+    "color": {
+      "bg": {
+        "$value": "{ref.source.cds.color.layer}",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "{ref.source.cds.ref.white}",
+        "$type": "color"
+      },
+      "surfaceRaised": {
+        "$value": "{ref.generated.carbon.role.surfaceRaised}",
+        "$type": "color"
+      },
+      "surfaceSunken": {
+        "$value": "{ref.generated.carbon.role.surfaceSunken}",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "{ref.source.cds.color.text.primary}",
+        "$type": "color"
+      },
+      "textMuted": {
+        "$value": "{ref.generated.carbon.role.textMuted}",
+        "$type": "color"
+      },
+      "textInverse": {
+        "$value": "{ref.generated.carbon.role.textInverse}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{ref.generated.carbon.role.border}",
+        "$type": "color"
+      },
+      "borderStrong": {
+        "$value": "{ref.generated.carbon.role.borderStrong}",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "{ref.source.cds.color.focus}",
+        "$type": "color"
+      },
+      "action": {
+        "$value": "{ref.source.cds.color.focus}",
+        "$type": "color"
+      },
+      "actionHover": {
+        "$value": "{ref.generated.carbon.role.actionHover}",
+        "$type": "color"
+      },
+      "onAction": {
+        "$value": "{ref.generated.carbon.role.onAction}",
+        "$type": "color"
+      },
+      "danger": {
+        "$value": "{ref.source.cds.color.support.error}",
+        "$type": "color"
+      },
+      "success": {
+        "$value": "{ref.generated.carbon.role.success}",
+        "$type": "color"
+      },
+      "warning": {
+        "$value": "{ref.generated.carbon.role.warning}",
+        "$type": "color"
+      }
+    }
+  }
+}

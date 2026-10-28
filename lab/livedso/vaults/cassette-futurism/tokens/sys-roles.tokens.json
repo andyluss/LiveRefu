@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "name": "cassette-futurism sys roles",
+    "version": "1.0.0"
+  },
+  "sys": {
+    "color": {
+      "bg": {
+        "$value": "{ref.source.cf.color.bg}",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "{ref.source.cf.color.surface}",
+        "$type": "color"
+      },
+      "surfaceRaised": {
+        "$value": "{ref.generated.cassette-futurism.role.surfaceRaised}",
+        "$type": "color"
+      },
+      "surfaceSunken": {
+        "$value": "{ref.generated.cassette-futurism.role.surfaceSunken}",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "{ref.source.cf.color.text}",
+        "$type": "color"
+      },
+      "textMuted": {
+        "$value": "{ref.generated.cassette-futurism.role.textMuted}",
+        "$type": "color"
+      },
+      "textInverse": {
+        "$value": "{ref.generated.cassette-futurism.role.textInverse}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{ref.generated.cassette-futurism.role.border}",
+        "$type": "color"
+      },
+      "borderStrong": {
+        "$value": "{ref.generated.cassette-futurism.role.borderStrong}",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "{ref.source.cf.color.focus}",
+        "$type": "color"
+      },
+      "action": {
+        "$value": "{ref.source.cf.color.action}",
+        "$type": "color"
+      },
+      "actionHover": {
+        "$value": "{ref.generated.cassette-futurism.role.actionHover}",
+        "$type": "color"
+      },
+      "onAction": {
+        "$value": "{ref.generated.cassette-futurism.role.onAction}",
+        "$type": "color"
+      },
+      "danger": {
+        "$value": "{ref.source.cf.color.danger}",
+        "$type": "color"
+      },
+      "success": {
+        "$value": "{ref.generated.cassette-futurism.role.success}",
+        "$type": "color"
+      },
+      "warning": {
+        "$value": "{ref.generated.cassette-futurism.role.warning}",
+        "$type": "color"
+      }
+    }
+  }
+}
