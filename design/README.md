@@ -80,6 +80,7 @@ design/
 ├── TODO.md                   # 设计系统专属待办
 ├── CHANGELOG.md              # 设计系统版本日志
 ├── canon/                    # 设计系统纲领（总纲/分层/角色/主题/质量/治理）
+├── projects/                 # 与 LRDS 协同演进的正式项目（LiveDSO）
 ├── philosophy/               # 青橙理念系列（00–09，清澄为核心）
 ├── fullstack/                # 青橙全栈技术框架提案
 ├── ref/                      # 参考理念材料（非规范）
@@ -117,7 +118,7 @@ design/
 ### 已完成（v0.1）
 
 - **四层 token（component 可选）**：`ref` 68 / `sys` 99 / `component` 18 / `product` 62，共 247 个；
-- **v2.0 实验冻结**：LiveDSO v2.0 仅作实验 tag；main 回到 v1.9.1，按纲领逐库迁移；
+- **LiveDSO 正式项目**：`design/projects/livedso/`；11/11 vault 已通过 LRDS schema；v2.0 仅作实验 tag；
 - **生成器**：`build_tokens.ts` 生成 Web CSS、Godot JSON、token 文档、两个产品副本；
 - **四道闸门**：结构、对比度/层级/focus、裸色值、生成物无 diff；每个都有 `--self-test`，已接入 pre-commit 与 CI；
 - **网站试点**：`theme.css` 改为消费生成 token；唯一有意的视觉变化是 `--focus` 从强调青改为独立蓝；

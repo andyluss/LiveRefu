@@ -1,0 +1,210 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="zh-CN" data-theme="system" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveAtelier · 设计系统操作台</title>
+<meta name="description" content="LiveAtelier / 灵动构坊：本地优先的设计系统操作台。Token、契约、风格卡、闸门与报告。">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('livedso-theme') || 'system';
+    if (t !== 'system' && t !== 'light' && t !== 'dark') t = 'system';
+    var mq = matchMedia('(prefers-color-scheme: dark)');
+    document.documentElement.dataset.theme = t;
+    document.documentElement.dataset.mode = t === 'system' ? (mq.matches ? 'dark' : 'light') : t;
+  } catch (e) {}
+})();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%230B0F14'/%3E%3Cpath d='M5 6h14M5 12h9M5 18h14' stroke='%234FD1C5' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" href="#/overview" data-view="overview" aria-label="灵动构坊概览">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      <span class="brand-text"><b data-i18n-zh="灵动构坊" data-i18n-en="LiveAtelier">LiveAtelier</b><small data-i18n-zh="LIVEDSO · 设计系统操作台" data-i18n-en="LIVEDSO · DESIGN SYSTEM OPS">设计系统操作台</small></span>
+    </a>
+    <span class="lab-chip"><span data-i18n-zh="实验" data-i18n-en="LAB">实验</span> / 1.14.0</span>
+    <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
+    <div class="top-actions">
+      <button class="btn ghost" id="run-checks" type="button">运行闸门</button>
+      <button class="btn ghost" id="lang-toggle" type="button" aria-label="切换语言">EN</button>
+      <label class="skin-label">皮肤<select id="skin-select" aria-label="应用风格卡到工作台"><option value="">默认</option></select></label>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-set="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-set="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <aside class="sidebar" aria-label="主导航">
+    <nav class="nav">
+      <div class="nav-group"><div class="nav-group-title">工作台</div>
+        <button type="button" data-view="overview" class="active">总览</button>
+        <button type="button" data-view="tokens">Tokens <span class="count" id="nav-tokens">—</span></button>
+        <button type="button" data-view="contracts">契约 <span class="count" id="nav-contracts">—</span></button>
+        <button type="button" data-view="preview">预览</button>
+      </div>
+      <div class="nav-group"><div class="nav-group-title">审视</div>
+        <button type="button" data-view="style-cards">风格卡 <span class="count" id="nav-cards">—</span></button>
+        <button type="button" data-view="checks">闸门 <span class="count warn" id="nav-issues">—</span></button>
+        <button type="button" data-view="adoption">采用扫描</button>
+      </div>
+      <div class="nav-group"><div class="nav-group-title">本地</div>
+        <button type="button" data-view="history">历史</button>
+        <button type="button" data-view="trends">趋势</button>
+        <button type="button" data-view="vaults">藏库</button>
+      </div>
+      <div class="nav-group"><div class="nav-group-title">输出</div>
+        <button type="button" data-view="report">报告/投影</button>
+      </div>
+    </nav>
+    <div class="side-kicker">藏库</div>
+    <div class="vault-box">
+      <select id="vault-select" class="vault-select" aria-label="切换藏库"></select>
+      <code id="vault-path">vaults/</code>
+      <p>本地读写；不上传。示例数据与 LRDS 解耦。</p>
+      <button class="text-btn" type="button" data-view="report">查看健康报告 →</button>
+    </div>
+    <div class="side-foot"><span data-i18n-zh="零依赖" data-i18n-en="Zero deps">零依赖</span><span id="node-version"></span></div>
+  </aside>
+
+  <main class="main" id="main">
+    <section class="view active" id="view-overview" aria-labelledby="overview-title">
+      <div class="view-head">
+        <div><div class="eyebrow">系统观测台</div><h1 id="overview-title">你的设计系统，<br>现在是什么状态？</h1></div>
+        <div class="head-meta"><span class="chip" id="vault-meta">藏库</span><span class="chip" id="token-count">— Token</span></div>
+      </div>
+      <p class="lede">灵动构坊 把设计系统当成一套持续运行的系统：源、契约、风格卡、闸门、投影与报告。不是另一个文档站；先让漂移可见。</p>
+      <div class="hero-grid">
+        <article class="health-card">
+          <div class="health-ring" id="health-ring"><div><b id="health-score">—</b><span>/100</span></div></div>
+          <div class="health-copy"><div class="eyebrow">健康</div><h2 id="health-label">等待读取</h2><p id="health-detail">启动本地藏库后生成。</p><button class="btn small ghost" type="button" data-view="checks">查看问题 →</button></div>
+        </article>
+        <div class="metric-grid">
+          <div class="metric"><span>Token</span><b id="m-tokens">—</b><small>事实源</small></div>
+          <div class="metric"><span>组件契约</span><b id="m-contracts">—</b><small>组件承诺</small></div>
+          <div class="metric"><span>风格卡</span><b id="m-cards">—</b><small>世界皮肤</small></div>
+          <div class="metric"><span>问题</span><b id="m-issues">—</b><small>错误 + 警告</small></div>
+        </div>
+      </div>
+      <div class="overview-grid">
+        <section class="panel"><div class="panel-head"><div><div class="eyebrow">最近信号</div><h2>最需要处理的信号</h2></div><button class="text-btn" type="button" data-view="checks">全部 →</button></div><div id="overview-issues" class="issue-list compact"><div class="empty">读取中……</div></div></section>
+        <section class="panel"><div class="panel-head"><div><div class="eyebrow">工作流</div><h2>一条可跑的链路</h2></div></div>
+          <ol class="flow">
+            <li><span>01</span><div><b>源</b><small>token JSON / 语义分层</small></div></li>
+            <li><span>02</span><div><b>契约</b><small>组件承诺 + token 引用</small></div></li>
+            <li><span>03</span><div><b>闸门</b><small>对比度 / 裸值 / 别名 / 契约</small></div></li>
+            <li><span>04</span><div><b>投影</b><small>CSS 变量 + 报告</small></div></li>
+          </ol>
+          <div class="panel-actions"><button class="btn small" type="button" id="quick-check">运行闸门</button><button class="btn small ghost" type="button" data-view="tokens">浏览 Token</button></div>
+        </section>
+      </div>
+      <div class="callout"><b>独立但相邻</b>：灵动构坊 是独立产品/实验；默认藏库是示例。你可以用 <code>LIVEDSO_VAULT</code> 指向任何 DTCG 风格 token 目录；LRDS 只是第一个适配样本。</div>
+    </section>
+
+    <section class="view" id="view-tokens" aria-labelledby="tokens-title">
+      <div class="view-head"><div><div class="eyebrow">事实源</div><h1 id="tokens-title">Tokens</h1></div><div class="head-meta"><span class="chip" id="token-filter-count">—</span></div></div>
+      <p class="lede">看得到源、别名与解析值。语义层写裸色会被标出来；改值会写回藏库文件。</p>
+      <div class="toolbar">
+        <label class="search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15 15 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="token-search" type="search" placeholder="搜索路径 / 值 / 别名" autocomplete="off"></label>
+        <select id="tier-filter" aria-label="按层过滤"><option value="">全部层</option><option value="ref">ref</option><option value="sys">sys</option><option value="product">product</option></select>
+        <select id="type-filter" aria-label="按类型过滤"><option value="">全部类型</option><option value="color">color</option><option value="dimension">dimension</option><option value="number">number</option><option value="string">string</option></select><select id="lifecycle-filter" aria-label="按生命周期过滤"><option value="">全部生命周期</option><option value="active">active</option><option value="deprecated">deprecated</option></select>
+        <button class="btn small ghost" type="button" id="copy-css">复制 CSS 投影</button>
+      </div>
+      <div class="table-wrap panel"><table class="token-table"><thead><tr><th>Token</th><th>层级</th><th>值</th><th>解析值</th><th>生命周期</th><th>对比度</th><th>文件</th></tr></thead><tbody id="token-rows"><tr><td colspan="7" class="empty">读取中……</td></tr></tbody></table></div>
+    </section>
+
+    <section class="view" id="view-contracts" aria-labelledby="contracts-title">
+      <div class="view-head"><div><div class="eyebrow">组件承诺</div><h1 id="contracts-title">组件契约</h1></div><div class="head-meta"><span class="chip" id="contract-filter-count">—</span></div></div>
+      <p class="lede">组件契约不是文档装饰：缺状态、缺 token、缺键盘说明都会被闸门看见。</p>
+      <div id="contract-grid" class="contract-grid"><div class="empty">读取中……</div></div>
+    </section>
+
+    <section class="view" id="view-preview" aria-labelledby="preview-title">
+      <div class="view-head"><div><div class="eyebrow">实时组件预览</div><h1 id="preview-title">组件预览</h1></div><div class="head-meta"><span class="chip">藏库 Token</span></div></div>
+      <p class="lede">用藏库里的真实 token 渲染组件，而不是看截图。预览只读取解析值，不写回。</p>
+      <div class="preview-toolbar"><label>风格卡<select id="preview-card"></select></label><div class="preview-states" role="group" aria-label="预览状态"><button type="button" data-preview-state="default" class="active">默认</button><button type="button" data-preview-state="hover">悬停</button><button type="button" data-preview-state="focus">聚焦</button><button type="button" data-preview-state="disabled">禁用</button></div><span class="chip" id="preview-token-count">—</span></div>
+      <div class="preview-stage"><div id="preview-canvas" class="preview-canvas"><div class="empty">读取 token 中……</div></div></div>
+      <div class="preview-foot"><div><div class="eyebrow">使用中的 Token</div><div id="preview-tokens" class="preview-tokens"></div></div><div class="preview-card-palette"><div class="eyebrow">风格卡</div><div id="preview-palette" class="preview-palette"></div></div></div>
+    </section>
+
+    <section class="view" id="view-style-cards" aria-labelledby="cards-title">
+      <div class="view-head"><div><div class="eyebrow">世界皮肤</div><h1 id="cards-title">风格卡</h1></div><div class="head-meta"><span class="chip" id="skin-audit-summary">—</span><span class="chip" id="card-filter-count">—</span></div></div>
+      <p class="lede">风格卡只换皮肤，不换语法。每张卡都应该写清谁维护、代价是什么。</p>
+      <div id="card-grid" class="card-grid"><div class="empty">读取中……</div></div>
+      <section class="panel compare-panel"><div class="panel-head"><div><div class="eyebrow">并排对比</div><h2>风格卡对比</h2></div><span class="chip">A / B</span></div><div class="compare-toolbar"><label>卡 A<select id="compare-a"></select></label><label>卡 B<select id="compare-b"></select></label></div><div id="compare-grid" class="compare-grid"><div class="empty">至少需要两张风格卡。</div></div></section>
+    </section>
+
+    <section class="view" id="view-checks" aria-labelledby="checks-title">
+      <div class="view-head"><div><div class="eyebrow">闸门</div><h1 id="checks-title">质量闸门</h1></div><div class="head-meta"><span class="chip" id="check-score">—</span></div></div>
+      <p class="lede">先跑闸门，再谈发布。错误阻断；警告必须记录取舍。</p>
+      <div class="check-summary" id="check-summary"></div>
+      <div id="check-list" class="issue-list"><div class="empty">读取中……</div></div>
+    </section>
+
+    <section class="view" id="view-adoption" aria-labelledby="adoption-title">
+      <div class="view-head"><div><div class="eyebrow">采用扫描 / 只读</div><h1 id="adoption-title">采用扫描</h1></div><div class="head-meta"><span class="chip">仅本地</span></div></div>
+      <p class="lede">扫描一个代码目录，看它有没有真的在用 藏库的 token，以及哪里还在写裸色、引用了不存在的 --dso- 变量。只读，不改目标目录。</p>
+      <div class="adoption-toolbar"><label class="search"><input id="adoption-root" type="text" placeholder="目录，例如 ../../design 或 ../my-app" spellcheck="false"></label><button class="btn" id="run-adoption" type="button">扫描</button><span class="chip" id="adoption-status">未扫描</span></div>
+      <div class="adoption-summary" id="adoption-summary"></div>
+      <div class="adoption-grid"><section class="panel"><div class="panel-head"><h2>被使用的 token</h2><span class="chip" id="adoption-token-count">—</span></div><div id="adoption-tokens" class="adoption-list"><div class="empty">输入目录后扫描。</div></div></section><section class="panel"><div class="panel-head"><h2>文件 / 裸色 / 未知引用</h2><span class="chip" id="adoption-file-count">—</span></div><div id="adoption-files" class="adoption-list"><div class="empty">输入目录后扫描。</div></div></section></div>
+    </section>
+
+    <section class="view" id="view-history" aria-labelledby="history-title">
+      <div class="view-head"><div><div class="eyebrow">本地历史</div><h1 id="history-title">历史快照</h1></div><div class="head-meta"><span class="chip">仅本地</span></div></div>
+      <p class="lede">快照只写本地藏库的 <code>.history/</code>，不上传、不依赖 Git。对比只读，不会自动回滚。</p>
+      <div class="history-toolbar"><button class="btn" id="snapshot-now" type="button">创建快照</button><span class="chip" id="history-status">未加载</span></div>
+      <div id="history-summary" class="history-summary"></div><div id="history-trend" class="history-trend"></div>
+      <div class="history-grid"><section class="panel"><div class="panel-head"><h2>快照</h2><span class="chip" id="history-count">—</span></div><div id="history-list" class="history-list"><div class="empty">还没有快照。</div></div></section><section class="panel"><div class="panel-head"><h2>差异</h2><span class="chip" id="diff-status">选择快照</span></div><div id="history-diff" class="history-diff"><div class="empty">选一个快照查看当前藏库与它的差异。</div></div></section></div>
+    </section>
+
+    <section class="view" id="view-trends" aria-labelledby="trends-title">
+      <div class="view-head"><div><div class="eyebrow">本地趋势</div><h1 id="trends-title">趋势</h1></div><div class="head-meta"><span class="chip">全部藏库</span></div></div>
+      <p class="lede">把多个藏库的快照放在一起看。只读本地 <code>.history/</code>，不上传、不依赖云。</p>
+      <div class="trends-toolbar"><button class="btn" id="refresh-trends" type="button">刷新</button><span class="chip" id="trends-status">未加载</span></div>
+      <div id="trends-grid" class="trends-grid"><div class="empty">读取中……</div></div>
+    </section>
+
+    <section class="view" id="view-vaults" aria-labelledby="vaults-title">
+      <div class="view-head"><div><div class="eyebrow">本地多藏库</div><h1 id="vaults-title">多藏库总览</h1></div><div class="head-meta"><span class="chip" id="vaults-count">—</span></div></div>
+      <p class="lede">一个本地总览：每个藏库的健康分、错误/警告与资产数量。切换只影响当前本地服务。</p>
+      <div class="vaults-toolbar"><button class="btn" id="refresh-vaults" type="button">刷新</button><span class="chip" id="vaults-status">未加载</span></div>
+      <div id="vaults-grid" class="vaults-grid"><div class="empty">读取中……</div></div>
+    </section>
+
+    <section class="view" id="view-report" aria-labelledby="report-title">
+      <div class="view-head"><div><div class="eyebrow">输出</div><h1 id="report-title">报告与投影</h1></div><div class="head-meta"><span class="chip">仅本地</span></div></div>
+      <p class="lede">健康报告与 CSS 投影都是生成物：可复制、可下载、可进 PR，不需要上传。</p>
+      <div class="report-actions"><label class="report-template-label">模板<select id="report-template"></select></label><button class="btn" type="button" id="gen-report">生成报告</button><button class="btn ghost" type="button" id="download-report">下载 .md</button><button class="btn ghost" type="button" id="gen-css">生成 CSS 投影</button><button class="btn ghost" type="button" id="download-css">下载 .css</button></div>
+      <div class="report-grid">
+        <section class="panel"><div class="panel-head"><h2 id="report-heading">健康报告</h2><span class="chip" id="report-status">未生成</span></div><pre id="report-output" class="code-panel">点击“生成健康报告”。</pre></section>
+        <section class="panel"><div class="panel-head"><h2>CSS 投影</h2><span class="chip" id="css-status">未生成</span></div><pre id="css-output" class="code-panel">点击“生成 CSS 投影”。</pre></section>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="drawer" id="token-drawer" hidden>
+  <div class="drawer-backdrop" data-close-drawer></div>
+  <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div class="drawer-head"><div><div class="eyebrow">Token 检查器</div><h2 id="drawer-title">Token</h2></div><button class="icon-btn" type="button" data-close-drawer aria-label="关闭">×</button></div>
+    <div id="drawer-body"></div>
+  </aside>
+</div>
+<div class="drawer" id="contract-drawer" hidden>
+  <div class="drawer-backdrop" data-close-contract></div>
+  <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="contract-drawer-title">
+    <div class="drawer-head"><div><div class="eyebrow">契约编辑器</div><h2 id="contract-drawer-title">契约</h2></div><button class="icon-btn" type="button" data-close-contract aria-label="关闭">×</button></div>
+    <div id="contract-drawer-body"></div>
+  </aside>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

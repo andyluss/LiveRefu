@@ -1,0 +1,22 @@
+# Copy to .github/workflows/livedso.yml and adjust paths.
+name: livedso
+on:
+  push:
+  pull_request:
+
+jobs:
+  design-system:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: LiveDSO CI
+        working-directory: design/projects/livedso
+        run: node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: livedso-ci
+          path: design/projects/livedso/reports/ci.md

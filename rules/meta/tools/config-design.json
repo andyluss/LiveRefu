@@ -45,7 +45,8 @@
     "tokens",
     "kits",
     "ref",
-    "lab"
+    "lab",
+    "projects"
   ],
   "sub_concerns_dir": null,
   "sub_configs": {
@@ -142,6 +143,33 @@
         ]
       },
       "skip_dirs": [],
+      "skip_prefixes": [
+        ".",
+        "_"
+      ],
+      "sub_concerns": [],
+      "sub_configs": {}
+    },
+    "projects": {
+      "root_docs": [
+        "README.md"
+      ],
+      "type_vocab": [
+        "livedso"
+      ],
+      "code_types": [
+        "livedso"
+      ],
+      "empty_ok_types": [],
+      "doc_naming": {
+        "default": [
+          "^[a-zA-Z0-9_.-]+$"
+        ]
+      },
+      "skip_dirs": [
+        "node_modules",
+        ".git"
+      ],
       "skip_prefixes": [
         ".",
         "_"

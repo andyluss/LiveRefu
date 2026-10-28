@@ -12,6 +12,8 @@
 
 ### 新增
 
+- **LiveDSO 迁入 `design/projects/livedso/`**：从实验区 `lab/` 转为 LRDS 正式项目；设计纲领不再承载项目实现细节，项目状态移到 `projects/livedso/docs/16_项目状态.md`。
+
 - **严格 schema 全覆盖**：`minimal` / `lrds-sample` / `lrds-real` / `material-3` 及其余 7 套已转为 `meta + ref + sys + component + product`；A 档角色映射现有 `sys.color.*`，其余进 `product.<card>.role`，原始色进 `ref.generated`。
 - schema 的 token 允许生命周期字段 `deprecated` / `replacedBy` / `deprecationNote`，支持弃用审计。
 

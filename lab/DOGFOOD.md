@@ -1,6 +1,6 @@
 # 三工具狗粮计划（未来，未排期）
 
-> **状态**：只记录，**未启动、未排期** ｜ 日期：2026-10-27 ｜ 关联：[LiveDSO](livedso/README.md) · [LiveLand](liveland/README.md) · [LiveFile](livefile/README.md)
+> **状态**：只记录，**未启动、未排期** ｜ 日期：2026-10-27 ｜ 关联：[LiveDSO](../design/projects/livedso/README.md) · [LiveLand](liveland/README.md) · [LiveFile](livefile/README.md)
 > **原则**：九个案例是未来的“复杂型狗粮”，不是当前承诺；一次只并行少量，且必须把真实问题回流到三个生产工具。
 
 ## 一、为什么要吃自己的狗粮

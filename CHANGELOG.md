@@ -14,7 +14,7 @@
 ## [未发布]
 
 > **根日志只记工作区级变更。** 知识库、三项目、设计系统与青橙全栈的详细变更见各自日志：
-> [知识库](docs/CHANGELOG.md) · [LiveDSO](lab/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
+> [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
 - **R03 整合钩子/CI 技术说明**：[`tech/hooks-readme.md`](tech/hooks-readme.md) 的 pre-commit 启用、暂存校验范围、全部钩子项、例外与 CI 兜底并入 [`rules/R03-link-validation.md`](rules/R03-link-validation.md)；tech 文件只保留指针。

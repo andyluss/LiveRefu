@@ -10,7 +10,7 @@
 - 实验项目可按自身性质**自定义**目录结构、文档体例与提交风格，以探索为优先，不必迁就工作区主线。
 - 若有**特别约定**（即某个实验项目明确要求遵循某条根规则），在该子项目的 README 中写明即可；**未写明的，一律豁免**根目录规则。
 
-> **特别约定（2026-10-27）**：`livedso/`、`liveland/`、`livefile/` 三个项目**不适用**本目录的实验豁免，按工作区根目录通用规则执行（R01 文档体例、R02 Git/提交、R03 相对链接、R05 变更日志、AGENTS 回报；目录/命名按 M1/M2 的 projects 标准准备，迁移到 `projects/` 时接入配置）。
+> **特别约定（2026-10-27）**：`liveland/`、`livefile/` 两个项目**不适用**本目录的实验豁免；`livedso/` 已迁入 `design/projects/livedso/`，成为设计系统正式项目，按工作区根目录通用规则执行（R01 文档体例、R02 Git/提交、R03 相对链接、R05 变更日志、AGENTS 回报；目录/命名按 M1/M2 的 projects 标准准备，迁移到 `projects/` 时接入配置）。
 
 ## 狗粮计划
 
@@ -21,6 +21,6 @@
 | 子目录 | 内容 | 是否豁免根目录通用规则 | 入口 |
 | --- | --- | --- | --- |
 | [`formal-system/`](formal-system/README.md) | 形式化协作实验基地（Rust/CUE/Alloy + 属性测试），成熟后回流主项目 | **是**（默认，未另约定） | [`formal-system/README.md`](formal-system/README.md) |
-| [`livedso/`](livedso/README.md) | **LiveDSO**：本地优先的设计系统操作台；token/契约/风格卡/闸门/报告 | **否**（特别约定） | [`livedso/README.md`](livedso/README.md) |
+| —— | LiveDSO 已迁出至 [`design/projects/livedso/`](../design/projects/livedso/README.md) | 正式项目 | [`README.md`](../design/projects/livedso/README.md) |
 | [`liveland/`](liveland/README.md) | **LiveLand**：本地优先的世界/时代创作工具；canon/时代/实体/资产/lint/导出 | **否**（特别约定） | [`liveland/README.md`](liveland/README.md) |
 | [`livefile/`](livefile/README.md) | **LiveFile**：本地优先的个人档案 OS；索引/时间线/集合/来源/备份/继承 | **否**（特别约定） | [`livefile/README.md`](livefile/README.md) |

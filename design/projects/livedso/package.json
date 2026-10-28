@@ -1,0 +1,28 @@
+{
+  "name": "livedso",
+  "version": "1.14.0",
+  "private": true,
+  "type": "module",
+  "description": "LiveDSO — local-first design system operations workbench",
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": {
+    "livedso": "./src/cli.ts"
+  },
+  "scripts": {
+    "dev": "node --watch src/cli.ts serve",
+    "start": "node src/cli.ts serve",
+    "check": "node src/cli.ts check",
+    "build": "node src/cli.ts build",
+    "report": "node src/cli.ts report",
+    "test": "node --test test/core.test.ts",
+    "i18n:check": "node tools/i18n-audit.ts",
+    "skin:check": "node tools/skin-check.ts",
+    "skin:snapshot": "node tools/skin-snapshot.ts",
+    "schema:check": "node tools/check-vault-schema.ts",
+    "schema:check:all": "node tools/check-vault-schema.ts",
+    "schema:check:pilot": "node tools/check-vault-schema.ts --pilot"
+  },
+  "license": "Apache-2.0"
+}
