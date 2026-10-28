@@ -17,7 +17,7 @@ export interface SkinDerived {
   mode: 'light' | 'dark'
   bg: RGB; bgSubtle: RGB;
   surface: RGB; surfaceRaised: RGB; surfaceSunken: RGB; surfaceHover: RGB;
-  text: RGB; textMuted: RGB; textSubtle: RGB; textInverse: RGB; textLink: RGB; textVisited: RGB; textDisabled: RGB;
+  text: RGB; textOnSurface: RGB; textMuted: RGB; textSubtle: RGB; textInverse: RGB; textLink: RGB; textVisited: RGB; textDisabled: RGB;
   border: RGB; borderStrong: RGB; borderSubtle: RGB; divider: RGB; focus: RGB;
   action: RGB; actionHover: RGB; actionPressed: RGB; actionDisabled: RGB; onAction: RGB;
   secondaryAction: RGB; onSecondaryAction: RGB; ghostAction: RGB;
@@ -32,7 +32,7 @@ export interface SkinDerived {
 
 export const SKIN_ROLES = [
   'bg', 'bgSubtle', 'surface', 'surfaceRaised', 'surfaceSunken', 'surfaceHover',
-  'text', 'textMuted', 'textSubtle', 'textInverse', 'textLink', 'textVisited', 'textDisabled',
+  'text', 'textOnSurface', 'textMuted', 'textSubtle', 'textInverse', 'textLink', 'textVisited', 'textDisabled',
   'border', 'borderStrong', 'borderSubtle', 'divider', 'focus',
   'action', 'actionHover', 'actionPressed', 'actionDisabled', 'onAction',
   'secondaryAction', 'onSecondaryAction', 'ghostAction',
@@ -109,6 +109,7 @@ export function deriveSkin(vault: Vault, card: StyleCard): SkinDerived {
     surfaceSunken: role('surfaceSunken', mix(text, bg, 4)),
     surfaceHover: role('surfaceHover', mix(text, surface, 8)),
     text,
+    textOnSurface: role('textOnSurface', text),
     textMuted: muted,
     textSubtle: role('textSubtle', mix(text, bg, 70)),
     textInverse: role('textInverse', on(surface)),
@@ -185,6 +186,7 @@ export function skinTokens(vault: Vault, card: StyleCard): Record<string, string
     'bg-surface-sunken': s.surfaceSunken,
     'bg-surface-hover': s.surfaceHover,
     'text-primary': s.text,
+    'text-on-surface': s.textOnSurface,
     'text-secondary': s.textMuted,
     'text-muted': s.textSubtle,
     'text-inverse': s.textInverse,

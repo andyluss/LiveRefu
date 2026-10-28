@@ -6,7 +6,7 @@
   --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
   --r: 8px; --rc: 4px;
   --bg:#0B0F14; --bg2:#0B1116; --surface:#111823; --surface2:#0E151F; --raised:#161D26;
-  --text:#F3EDE1; --dim:#9AA7B8; --muted:#808D9F; --line:#24303F; --line2:#66727F;
+  --text:#F3EDE1; --text-on-surface:#F3EDE1; --dim:#9AA7B8; --muted:#808D9F; --line:#24303F; --line2:#66727F;
   --accent:#4FD1C5; --accent2:#FF6B35; --warn:#FFC857; --danger:#FF6B35; --ok:#7BD389; --focus:#8AB4F8;
   --glass:rgba(17,24,35,.82); --shadow:0 24px 70px rgba(0,0,0,.38);
   --bg-subtle:#0B1116; --surface-hover:#161D26; --text-inverse:#0B0F14; --text-link:#4FD1C5; --text-visited:#A78BFA; --text-disabled:#66727F;
@@ -17,7 +17,7 @@
 }
 html[data-mode="light"]{
   --bg:#F7F3EA; --bg2:#F1EBDD; --surface:#FFFDF8; --surface2:#F6F0E3; --raised:#EDE6D8;
-  --text:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line2:#8A8275;
+  --text:#1B222B; --text-on-surface:#1B222B; --dim:#4F5B68; --muted:#5E6773; --line:#D8D0C1; --line2:#8A8275;
   --accent:#0B6B63; --accent2:#A83A14; --warn:#7A4E00; --danger:#A83A14; --ok:#2F6B3A; --focus:#1D4ED8;
   --glass:rgba(255,253,248,.86); --shadow:0 24px 70px rgba(60,45,20,.16);
   --bg-subtle:#F1EBDD; --surface-hover:#EDE6D8; --text-inverse:#FFFDF8; --text-link:#0B6B63; --text-visited:#6D28D9; --text-disabled:#8A8275;

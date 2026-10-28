@@ -49,7 +49,7 @@ export interface Contract {
 export interface StyleCardRoles {
   bg?: string; bgSubtle?: string;
   surface?: string; surfaceRaised?: string; surfaceSunken?: string; surfaceHover?: string;
-  text?: string; textMuted?: string; textSubtle?: string; textInverse?: string;
+  text?: string; textOnSurface?: string; textMuted?: string; textSubtle?: string; textInverse?: string;
   textLink?: string; textVisited?: string; textDisabled?: string;
   border?: string; borderStrong?: string; borderSubtle?: string; divider?: string;
   focus?: string;

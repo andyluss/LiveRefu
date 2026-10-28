@@ -120,7 +120,7 @@
   }
   function applySkin(id) {
     const root = document.documentElement;
-    const keys = ['--bg','--bg2','--bg-subtle','--surface','--surface2','--raised','--surface-hover','--text','--dim','--muted','--text-inverse','--text-link','--text-visited','--text-disabled','--line','--line2','--border-subtle','--divider','--accent','--accent-on','--accent-hover','--accent-pressed','--accent-disabled','--secondary','--secondary-on','--accent2','--warn','--danger','--danger-soft','--ok','--success','--success-soft','--warning-soft','--info','--info-soft','--focus','--glass','--shadow','--backdrop','--selection','--code-bg','--code-text','--chart-1','--chart-2','--chart-3','--chart-4','--chart-5','--chart-6'];
+    const keys = ['--bg','--bg2','--bg-subtle','--surface','--surface2','--raised','--surface-hover','--text','--text-on-surface','--dim','--muted','--text-inverse','--text-link','--text-visited','--text-disabled','--line','--line2','--border-subtle','--divider','--accent','--accent-on','--accent-hover','--accent-pressed','--accent-disabled','--secondary','--secondary-on','--accent2','--warn','--danger','--danger-soft','--ok','--success','--success-soft','--warning-soft','--info','--info-soft','--focus','--glass','--shadow','--backdrop','--selection','--code-bg','--code-text','--chart-1','--chart-2','--chart-3','--chart-4','--chart-5','--chart-6'];
     for (const key of keys) root.style.removeProperty(key);
     if (!id) { state.skin = ''; root.style.removeProperty('color-scheme'); delete root.dataset.skinMode; try { localStorage.removeItem('livedso-skin'); } catch (e) {} syncSelectionUrl(); return; }
     const card = state.data?.styleCards.find(c => c.id === id);
@@ -137,6 +137,7 @@
       '--text': s['--dso-sys-color-text-primary'], '--dim': s['--dso-sys-color-text-secondary'], '--muted': s['--dso-sys-color-text-muted'],
       '--line': s['--dso-sys-color-line-subtle'], '--line2': s['--dso-sys-color-line-strong'],
       '--bg-subtle': s['--dso-sys-color-bg-subtle'], '--surface-hover': s['--dso-sys-color-bg-surface-hover'],
+      '--text-on-surface': s['--dso-sys-color-text-on-surface'],
       '--text-inverse': s['--dso-sys-color-text-inverse'], '--text-link': s['--dso-sys-color-text-link'],
       '--text-visited': s['--dso-sys-color-text-visited'], '--text-disabled': s['--dso-sys-color-text-disabled'],
       '--border-subtle': s['--dso-sys-color-border-muted'], '--divider': s['--dso-sys-color-divider'],
@@ -319,6 +320,7 @@
     const surface = pick('surface', palette[1] || bg);
     const mode = card?.mode || (colorLum(bg) > 0.45 ? 'light' : 'dark');
     const text = pick('text', textOn(bg));
+    const textOnSurface = pick('textOnSurface', text);
     const action = pick('action', palette[3] || palette[2] || '#4FD1C5');
     const focus = ensureContrast(pick('focus', palette[4] || action), surface, 3, text);
     const danger = pick('danger', '#FF6B35');
@@ -346,6 +348,7 @@
       '--dso-sys-color-bg-surface-sunken': sunken,
       '--dso-sys-color-bg-surface-hover': pick('surfaceHover', mixColor(text, surface, 8)),
       '--dso-sys-color-text-primary': text,
+      '--dso-sys-color-text-on-surface': textOnSurface,
       '--dso-sys-color-text-secondary': muted,
       '--dso-sys-color-text-muted': subtle,
       '--dso-sys-color-text-inverse': pick('textInverse', textOn(surface)),

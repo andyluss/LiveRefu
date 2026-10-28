@@ -1,5 +1,15 @@
 # LiveDSO Changelog
 
+## [1.6.1] - 2026-10-28 13:56
+
+### Added
+
+- 第 **50** 个皮肤角色 `textOnSurface`：用于“文字与主 surface 不同”的卡（例如亮 surface + 暗背景），并提供 `--dso-sys-color-text-on-surface` / `--text-on-surface`。
+
+### Changed
+
+- 版本 1.6.0 → 1.6.1；23 → **24** 项测试。
+
 ## [1.6.0] - 2026-10-28 13:56
 
 ### Added
