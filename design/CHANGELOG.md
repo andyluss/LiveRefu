@@ -12,6 +12,9 @@
 
 ### 新增
 
+- **设计系统纲领文集 [`canon/`](canon/README.md)**：独立于项目流水账的纲领层，含总纲、Token 分层、50 语义角色、主题/风格卡、组件契约、质量闸门、多品牌多介质、实现工具链、治理、落地检查表。
+- 明确 `ref`（原始值）/ `sys.role`（默认语义）/ `component`（组件）/ `product.<card>`（稀疏覆盖）四层；`theme.<card>` 只作迁移别名，`theme-roles.tokens.json` 不再作为全量副本新增。
+
 - **清澄作为核心中的核心（D-012）**：新增 [`philosophy/09_清澄_透明作为方法.md`](philosophy/09_清澄_透明作为方法.md) 与 [`D-012`](docs/decisions/D-012-clear-as-core.md)；青橙是颜色，清澄是颜色下面的水；七种可见（来源/代价/维护/权限/不确定性/退路/资金治理）；明确透明≠曝光、开源≠自动清澄。设计 README / GUIDE / 理念索引 / 软件卷 / 三个 lab 项目同步。
 
 - **实验区 + 青橙 OS**：新增 `design/lab/README.md` 与实验规则；`design/lab/os/` 为 9 应用、3 未来层、零构建 Web 模拟桌面；含窗口管理、Spotlight、控制中心、可追溯状态、三态主题、移动端降级；M1 82/0。
