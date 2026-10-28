@@ -1,5 +1,16 @@
 # LiveDSO Changelog
 
+## [1.5.2] - 2026-10-28 13:44
+
+### Fixed
+
+- 切换 vault 后，不再把旧 vault 的皮肤 id 从 localStorage 恢复；找不到对应风格卡时清空皮肤、`data-skin-mode` 与 localStorage。
+- 避免“皮肤选择器为空但变量仍是旧卡”的半套状态。
+
+### Changed
+
+- 版本 1.5.1 → 1.5.2；`node:test` 保持 23 项。
+
 ## [1.5.1] - 2026-10-28 13:39
 
 ### Added

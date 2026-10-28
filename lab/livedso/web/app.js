@@ -101,13 +101,25 @@
     sel.value = state.data.styleCards.some(c => c.id === current) ? current : '';
     state.skin = sel.value;
   }
+  function restoreSkin() {
+    let saved = state.skin || '';
+    if (!saved) { try { saved = localStorage.getItem('livedso-skin') || ''; } catch (e) {} }
+    const card = state.data?.styleCards.find(c => c.id === saved);
+    state.skin = card?.id || '';
+    if (state.skin) applySkin(state.skin); else applySkin('');
+    renderSkinSelect();
+  }
   function applySkin(id) {
     const root = document.documentElement;
     const keys = ['--bg','--bg2','--surface','--surface2','--raised','--text','--dim','--muted','--line','--line2','--accent','--accent-on','--accent2','--warn','--danger','--ok','--focus','--glass','--shadow','--backdrop'];
     for (const key of keys) root.style.removeProperty(key);
     if (!id) { state.skin = ''; root.style.removeProperty('color-scheme'); delete root.dataset.skinMode; try { localStorage.removeItem('livedso-skin'); } catch (e) {} return; }
     const card = state.data?.styleCards.find(c => c.id === id);
-    if (!card) return;
+    if (!card) {
+      state.skin = ''; root.style.removeProperty('color-scheme'); delete root.dataset.skinMode;
+      try { localStorage.removeItem('livedso-skin'); } catch (e) {}
+      return;
+    }
     const s = previewSkin(card);
     const map = {
       '--bg': s['--dso-sys-color-bg-base'], '--bg2': s['--dso-sys-color-bg-sunken'], '--surface': s['--dso-sys-color-bg-surface'],
@@ -139,9 +151,8 @@
       state.data = data;
       state.previewCard = '';
       state.skinAudits = null;
-      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect(); renderSkinSelect();
-      state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
-      if (state.skin) applySkin(state.skin);
+      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
+      restoreSkin();
       loadSkinAudits();
       if (state.view === 'vaults') loadVaultsOverview();
       toast('藏库已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} ${loc('tokens','个 Token')}`);
@@ -545,9 +556,8 @@
       setStatus('ok', loc('Local vault','本地藏库'));
       state.data = await api('/api/state');
       state.error = null;
-      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect(); renderSkinSelect();
-      state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
-      if (state.skin) applySkin(state.skin);
+      renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
+      restoreSkin();
       if (state.view === 'report') renderReport();
       loadSkinAudits();
     } catch (e) {
