@@ -1,6 +1,6 @@
 # LiveDSO · 设计系统操作台（正式名 LiveAtelier / 灵动构坊）
 
-> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.4.1 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
+> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.5.0 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -103,7 +103,8 @@ Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走�
 - 三态主题（系统/浅色/深色）；
 - CLI：`check` / `report` / `build` / `serve` / `import` / `adopt`；
 - `vaults/lrds-real/`：从 `design/tokens` 导入的真实 case（229 tokens）；
-- `vaults/*`：11 套 vault（LRDS、minimal、5 套流行系统启发、3 套复古未来），每套 3 张风格卡。
+- `vaults/*`：11 套 vault（LRDS、minimal、5 套流行系统启发、3 套复古未来），每套 3 张风格卡；
+- 皮肤质量：派生层级/边框/弱文字 + `npm run skin:check` 对比度门禁。
 
 ## 五、Vault 样本集
 
@@ -276,7 +277,7 @@ test/            # node:test
 - 中文 Vault 术语：**藏库**（代码/配置仍用 vault）。
 - 词表：[`docs/13_本地化词表.md`](docs/13_本地化词表.md)；
 - 审计：`npm run i18n:check`（覆盖率 + 关键行为）；
-- 路由：[`docs/10_路由.md`](docs/10_路由.md)；本地化：[`docs/11_本地化.md`](docs/11_本地化.md)；自我皮肤：[`docs/12_自我皮肤.md`](docs/12_自我皮肤.md)。
+- 路由：[`docs/10_路由.md`](docs/10_路由.md)；本地化：[`docs/11_本地化.md`](docs/11_本地化.md)；自我皮肤：[`docs/12_自我皮肤.md`](docs/12_自我皮肤.md)；皮肤质量：[`docs/14_皮肤质量.md`](docs/14_皮肤质量.md)。
 
 ## 十四、CI 集成与插件
 

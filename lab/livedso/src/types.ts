@@ -52,6 +52,8 @@ export interface StyleCard {
   era?: string
   note?: string
   colors?: string[]
+  mode?: 'light' | 'dark'
+  roles?: Record<string, string>
   [key: string]: unknown
 }
 

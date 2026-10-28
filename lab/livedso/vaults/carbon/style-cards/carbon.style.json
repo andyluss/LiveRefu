@@ -14,7 +14,7 @@
     "bg": "cds.color.layer",
     "surface": "cds.ref.white",
     "text": "cds.color.text.primary",
-    "action": "cds.color.interactive",
+    "action": "cds.color.focus",
     "focus": "cds.color.focus",
     "danger": "cds.color.support.error"
   }

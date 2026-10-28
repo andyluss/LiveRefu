@@ -103,22 +103,27 @@
   }
   function applySkin(id) {
     const root = document.documentElement;
-    const keys = ['--bg','--bg2','--surface','--surface2','--raised','--text','--dim','--muted','--line','--line2','--accent','--accent2','--warn','--danger','--ok','--focus','--glass'];
+    const keys = ['--bg','--bg2','--surface','--surface2','--raised','--text','--dim','--muted','--line','--line2','--accent','--accent-on','--accent2','--warn','--danger','--ok','--focus','--glass','--shadow','--backdrop'];
     for (const key of keys) root.style.removeProperty(key);
-    if (!id) { state.skin = ''; try { localStorage.removeItem('livedso-skin'); } catch (e) {} return; }
+    if (!id) { state.skin = ''; root.style.removeProperty('color-scheme'); delete root.dataset.skinMode; try { localStorage.removeItem('livedso-skin'); } catch (e) {} return; }
     const card = state.data?.styleCards.find(c => c.id === id);
     if (!card) return;
     const s = previewSkin(card);
     const map = {
       '--bg': s['--dso-sys-color-bg-base'], '--bg2': s['--dso-sys-color-bg-sunken'], '--surface': s['--dso-sys-color-bg-surface'],
-      '--surface2': s['--dso-sys-color-bg-surface'], '--raised': s['--dso-sys-color-bg-surface'],
+      '--surface2': s['--dso-sys-color-bg-surface-raised'], '--raised': s['--dso-sys-color-bg-surface-raised'],
       '--text': s['--dso-sys-color-text-primary'], '--dim': s['--dso-sys-color-text-secondary'], '--muted': s['--dso-sys-color-text-muted'],
       '--line': s['--dso-sys-color-line-subtle'], '--line2': s['--dso-sys-color-line-strong'],
-      '--accent': s['--dso-sys-color-action-primary'], '--accent2': s['--dso-sys-color-feedback-danger'],
-      '--warn': s['--dso-sys-color-focus-ring'], '--danger': s['--dso-sys-color-feedback-danger'], '--ok': s['--dso-sys-color-action-primary'],
-      '--focus': s['--dso-sys-color-focus-ring'], '--glass': 'color-mix(in srgb, ' + s['--dso-sys-color-bg-surface'] + ' 86%, transparent)'
+      '--accent': s['--dso-sys-color-action-primary'], '--accent-on': s['--dso-sys-color-action-on-primary'],
+      '--accent2': s['--dso-sys-color-feedback-danger'],
+      '--warn': s['--dso-sys-color-feedback-warning'], '--danger': s['--dso-sys-color-feedback-danger'], '--ok': s['--dso-sys-color-feedback-success'],
+      '--focus': s['--dso-sys-color-focus-ring'], '--glass': 'color-mix(in srgb, ' + s['--dso-sys-color-bg-surface'] + ' 86%, transparent)',
+      '--shadow': s['--dso-shadow'], '--backdrop': colorLum(s['--dso-sys-color-bg-base']) > 0.45 ? 'rgba(40,30,10,.28)' : 'rgba(0,0,0,.48)'
     };
     for (const [k, v] of Object.entries(map)) if (v) root.style.setProperty(k, v);
+    const mode = colorLum(s['--dso-sys-color-bg-base']) > 0.45 ? 'light' : 'dark';
+    root.style.colorScheme = mode;
+    root.dataset.skinMode = mode;
     state.skin = id;
     try { localStorage.setItem('livedso-skin', id); } catch (e) {}
   }
@@ -235,30 +240,51 @@
     const rgb = [0, 2, 4].map(i => parseInt(full.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
     return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
   }
-  function textOn(hex) { return colorLum(hex) > 0.45 ? '#0B0F14' : '#F6F1E7'; }
+  function contrastHex(a, b) {
+    const la = colorLum(a), lb = colorLum(b);
+    const hi = Math.max(la, lb), lo = Math.min(la, lb);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function textOn(hex) { return contrastHex('#0B0F14', hex) >= contrastHex('#F6F1E7', hex) ? '#0B0F14' : '#F6F1E7'; }
+  function mixColor(a, b, pct) { return `color-mix(in srgb, ${a} ${pct}%, ${b})`; }
+  function ensureContrast(fg, bg, min, fallback) { return contrastHex(fg, bg) + 0.005 >= min ? fg : fallback; }
   function previewSkin(card) {
     const palette = (card?.colors || []).map(styleColor).filter(c => c && c !== 'transparent');
     const role = card?.roles || {};
-    const bg = styleColor(role.bg) || palette[0] || '#0B0F14';
-    const surface = styleColor(role.surface) || palette[1] || bg;
-    const action = styleColor(role.action) || palette[3] || palette[2] || '#4FD1C5';
-    const focus = styleColor(role.focus) || palette[4] || action;
-    const danger = styleColor(role.danger) || '#FF6B35';
-    const text = styleColor(role.text) || textOn(bg);
+    const pick = (key, fallback) => role[key] ? (styleColor(role[key]) || fallback) : fallback;
+    const bg = pick('bg', palette[0] || '#0B0F14');
+    const surface = pick('surface', palette[1] || bg);
+    const mode = card?.mode || (colorLum(bg) > 0.45 ? 'light' : 'dark');
+    const text = pick('text', textOn(bg));
+    const action = pick('action', palette[3] || palette[2] || '#4FD1C5');
+    const focus = pick('focus', palette[4] || action);
+    const danger = pick('danger', '#FF6B35');
+    const line = pick('border', mixColor(text, surface, 70));
+    const lineStrong = pick('borderStrong', mixColor(text, surface, 85));
+    const muted = pick('textMuted', mixColor(text, bg, 85));
+    const subtle = pick('textSubtle', mixColor(text, bg, 70));
+    const raised = pick('surfaceRaised', mode === 'light' ? mixColor(text, surface, 4) : mixColor(text, surface, 8));
+    const sunken = pick('surfaceSunken', mixColor(text, bg, 4));
+    const onAction = pick('onAction', textOn(action));
+    const success = pick('success', action);
+    const warning = pick('warning', focus);
     return {
       '--dso-sys-color-bg-base': bg,
       '--dso-sys-color-bg-surface': surface,
-      '--dso-sys-color-bg-raised': surface,
-      '--dso-sys-color-bg-sunken': bg,
+      '--dso-sys-color-bg-surface-raised': raised,
+      '--dso-sys-color-bg-sunken': sunken,
       '--dso-sys-color-text-primary': text,
-      '--dso-sys-color-text-secondary': text,
-      '--dso-sys-color-text-muted': text,
+      '--dso-sys-color-text-secondary': muted,
+      '--dso-sys-color-text-muted': subtle,
       '--dso-sys-color-action-primary': action,
-      '--dso-sys-color-action-on-primary': textOn(action),
-      '--dso-sys-color-focus-ring': focus,
+      '--dso-sys-color-action-on-primary': onAction,
+      '--dso-sys-color-focus-ring': ensureContrast(focus, surface, 3, text),
       '--dso-sys-color-feedback-danger': danger,
-      '--dso-sys-color-line-subtle': surface,
-      '--dso-sys-color-line-strong': text
+      '--dso-sys-color-feedback-success': success,
+      '--dso-sys-color-feedback-warning': warning,
+      '--dso-sys-color-line-subtle': line,
+      '--dso-sys-color-line-strong': lineStrong,
+      '--dso-shadow': mode === 'light' ? '0 24px 70px rgba(60,45,20,.16)' : '0 24px 70px rgba(0,0,0,.38)'
     };
   }
   function renderPreview() {
@@ -552,7 +578,10 @@
       const view = e.target.closest('[data-view]');
       if (view) { navigate(view.dataset.view); return; }
       const theme = e.target.closest('[data-theme-set]');
-      if (theme) { applyTheme(theme.dataset.themeSet, true); toast('外观', THEME_LABEL[theme.dataset.themeSet]); return; }
+      if (theme) {
+        if (state.skin) { applySkin(''); const sk = $('#skin-select'); if (sk) sk.value = ''; toast('皮肤已重置', '主题切换优先于风格卡。'); }
+        applyTheme(theme.dataset.themeSet, true); toast('外观', THEME_LABEL[theme.dataset.themeSet]); return;
+      }
       if (e.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
       if (e.target.closest('[data-close-contract]')) { closeContract(); return; }
       const ec = e.target.closest('[data-edit-contract]'); if (ec) { openContract(ec.dataset.editContract); return; }

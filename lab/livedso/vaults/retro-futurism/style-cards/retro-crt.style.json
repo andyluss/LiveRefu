@@ -15,6 +15,7 @@
     "text": "rf.ref.teal",
     "action": "rf.ref.amber",
     "focus": "rf.ref.amber",
-    "danger": "rf.color.danger"
+    "danger": "rf.color.danger",
+    "textMuted": "rf.ref.cream"
   }
 }

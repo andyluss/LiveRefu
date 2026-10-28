@@ -12,10 +12,13 @@
   ],
   "roles": {
     "bg": "cf.ref.beige",
-    "surface": "cf.ref.beige",
+    "surface": "cf.ref.amber",
     "text": "cf.ref.charcoal",
-    "action": "cf.ref.orange",
+    "action": "cf.ref.charcoal",
     "focus": "cf.ref.cyan",
-    "danger": "cf.color.danger"
+    "danger": "cf.color.danger",
+    "textMuted": "cf.ref.charcoal",
+    "onAction": "cf.ref.beige",
+    "border": "cf.ref.charcoal"
   }
 }

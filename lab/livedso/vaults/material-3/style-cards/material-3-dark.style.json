@@ -12,10 +12,13 @@
   ],
   "roles": {
     "bg": "md.sys.color.on-surface",
-    "surface": "md.sys.color.primary",
+    "surface": "md.sys.color.on-surface",
     "text": "md.ref.neutral.0",
     "action": "md.ref.primary.100",
     "focus": "md.ref.blue.40",
-    "danger": "md.sys.color.error"
+    "danger": "md.sys.color.error",
+    "surfaceRaised": "md.sys.color.primary",
+    "border": "md.sys.color.outline",
+    "onAction": "md.sys.color.on-surface"
   }
 }

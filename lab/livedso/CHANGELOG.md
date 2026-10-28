@@ -1,5 +1,24 @@
 # LiveDSO Changelog
 
+## [1.5.0] - 2026-10-28 13:36
+
+### Added
+
+- **皮肤质量门禁**：`tools/skin-check.ts` / `npm run skin:check`，检查 33 张卡的 text/surface、muted/surface、onAction/action、focus/surface、border/surface 对比度；失败退出码 1。
+- **派生 skin tokens**：`surfaceRaised` / `sunken` / `textMuted` / `subtle` / `border` / `onAction` / `success` / `warning`，旧 6 角色卡可兼容运行。
+- 皮肤模式写入 `color-scheme` 与 `data-skin-mode`；主题切换会先清除皮肤，避免两套系统打架。
+
+### Fixed
+
+- 修复 `surface2/raised=surface`、`line=surface`、`dim/muted=text`、`ok=action`、`warn=focus` 导致的层级消失。
+- 修复 Material 3 / Dark（surface 用主色）、Cassette / Daylight（bg/surface/line 同色）、Tailwind / Paper（无边框）三张坏卡。
+- 预览画布、抽屉遮罩、阴影改用派生 token。
+
+### Changed
+
+- 文档新增 [`docs/14_皮肤质量.md`](docs/14_皮肤质量.md)；`docs/12`/README 链接。
+- `node:test` 保持 23 项；版本 1.4.1 → 1.5.0。
+
 ## [1.4.1] - 2026-10-28 13:25
 
 ### Added
