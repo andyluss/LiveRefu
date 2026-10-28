@@ -1,9 +1,9 @@
 {
   "name": "livefile",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
-  "description": "LiveFile — local-first personal archive workbench",
+  "description": "LiveFile / 灵动档案 — local-first personal archive workbench",
   "engines": {
     "node": ">=24"
   },
@@ -15,5 +15,6 @@
     "manifest": "node src/cli.ts manifest",
     "backup": "node src/cli.ts backup",
     "test": "node --test test/archive.test.ts"
-  }
+  },
+  "license": "Apache-2.0"
 }

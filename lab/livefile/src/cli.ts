@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: Apache-2.0
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -109,7 +110,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveFile 1.0 · local-first personal archive
+    console.log(`LiveFile 1.0.1 · local-first personal archive
 
 用法:
   node src/cli.ts check [archive]             索引 + 健康检查

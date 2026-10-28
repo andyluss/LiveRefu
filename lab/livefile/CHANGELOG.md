@@ -1,5 +1,14 @@
 # LiveFile Changelog
 
+## [1.0.1] - 2026-10-28 08:42
+
+### Changed
+
+- **正式名确定为 LiveFile / 灵动档案**；README、产品定义、决策记录、UI 品牌同步。
+- **许可与 LiveDSO 一致**：Apache-2.0（核心）+ 商业托管/团队/审计；DCO 1.1。
+- 新增 `LICENSE` / `NOTICE` / `CONTRIBUTING.md` / `DCO` / `TRADEMARKS.md`；源码/前端加 SPDX 头。
+- 版本 1.0.0 → 1.0.1；UI 顶栏显示 `LAB / 1.0.1`。
+
 ## [1.0.0] - 2026-10-28 07:48
 
 ### Added

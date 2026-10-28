@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import type { ArchiveIndex, ArchiveItem, HealthResult, Issue } from './types.ts'
 import { retentionAudit } from './retention.ts'
 

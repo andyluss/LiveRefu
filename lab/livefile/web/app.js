@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /* LiveFile · personal archive UI. */
 (function () {
   'use strict';

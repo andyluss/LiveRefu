@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join, relative, resolve, sep } from 'node:path'
 import type { ArchiveIndex } from './types.ts'
