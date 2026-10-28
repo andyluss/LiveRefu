@@ -1,6 +1,6 @@
 # LiveDSO · Vault 样本集
 
-> 所有内置 vault 都在本目录；`vaults.json` 注册后可在 Workbench / CI 切换。每套含 3 张风格卡（原 LRDS 也为 3 张）；全部通过 `npm run skin:check` 对比度门禁。
+> 所有内置 vault 都在本目录；`vaults.json` 注册后可在 Workbench / CI 切换。每套含 3 张风格卡（原 LRDS 也为 3 张）；全部 33 张卡都有 50 个显式角色，并通过 `npm run skin:check` 对比度门禁。
 > 这些是**原创近似样本**，用于验证通用性；不是任何品牌的官方 token 包，也不代表隶属、赞助或背书。
 
 ## 1. 目录

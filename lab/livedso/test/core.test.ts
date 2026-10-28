@@ -304,6 +304,7 @@ test('all registered vaults load and have no blocking errors', () => {
     assert.ok(vault.contracts.length > 0, `${entry.id} has contracts`)
     assert.ok(vault.styleCards.length >= 3, `${entry.id} has at least 3 style cards`)
     assert.ok(vault.styleCards.every(c => c.roles?.bg && c.roles?.surface && c.roles?.text && c.roles?.action && c.roles?.focus), `${entry.id} style cards have preview roles`)
+    for (const card of vault.styleCards) assert.equal(Object.keys(card.roles || {}).length, 50, `${entry.id}/${card.id} has 50 explicit roles`)
     for (const card of vault.styleCards) assert.ok(auditSkin(vault, card).ok, `${entry.id}/${card.id} passes skin audit`)
     assert.equal(result.errors, 0, `${entry.id} has no errors`)
   }
