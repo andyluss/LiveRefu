@@ -1,6 +1,15 @@
 {
   "vaults": [
-    { "id": "sample", "name": "LRDS sample", "path": "vault" },
-    { "id": "lrds", "name": "LRDS real", "path": "vault-lrds" }
+    { "id": "sample", "name": "LRDS sample", "path": "vaults/lrds-sample" },
+    { "id": "lrds", "name": "LRDS real", "path": "vaults/lrds-real" },
+    { "id": "minimal", "name": "Minimal", "path": "vaults/minimal" },
+    { "id": "material-3", "name": "Material 3 · inspired", "path": "vaults/material-3" },
+    { "id": "carbon", "name": "Carbon · inspired", "path": "vaults/carbon" },
+    { "id": "polaris", "name": "Polaris · inspired", "path": "vaults/polaris" },
+    { "id": "ant-design", "name": "Ant Design · inspired", "path": "vaults/ant-design" },
+    { "id": "tailwind", "name": "Tailwind · inspired", "path": "vaults/tailwind" },
+    { "id": "retro-futurism", "name": "Retro Futurism", "path": "vaults/retro-futurism" },
+    { "id": "cassette-futurism", "name": "Cassette Futurism", "path": "vaults/cassette-futurism" },
+    { "id": "atompunk", "name": "Atompunk", "path": "vaults/atompunk" }
   ]
 }

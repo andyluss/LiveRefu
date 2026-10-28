@@ -12,7 +12,7 @@
 ```bash
 cd lab/livedso
 node src/cli.ts check
-node src/cli.ts check vault-lrds
+node src/cli.ts check vaults/lrds-real
 npm test
 node src/cli.ts serve 4173
 ```
@@ -20,7 +20,7 @@ node src/cli.ts serve 4173
 ## 二、提交前
 
 - 代码通过 `npm test`；
-- 改动 token/契约/风格卡时，跑 `node src/cli.ts check` 与 `check vault-lrds`；
+- 改动 token/契约/风格卡时，跑 `node src/cli.ts check` 与 `check vaults/lrds-real`；
 - 更新 `CHANGELOG.md`（非琐碎改动）；
 - 不在 PR 中提交密钥、个人路径、用户 vault 内容；
 - UI 改动附截图或说明如何验证。

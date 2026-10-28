@@ -17,7 +17,7 @@ import { loadPlugins, runPlugins } from './plugins.ts'
 
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
-const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
+const defaultVault = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
 const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--lang', '--max-warnings', '--max-raw', '--max-deprecated'])
 const positionals: string[] = []
 for (let i = 1; i < args.length; i++) {
@@ -83,8 +83,8 @@ switch (cmd) {
   }
   case 'import': {
     const src = resolve(positionals[0] || '../../design/tokens')
-    const target = resolve(positionals[1] || 'vault-lrds')
-    const sample = fileURLToPath(new URL('../vault', import.meta.url))
+    const target = resolve(positionals[1] || 'vaults/lrds-real')
+    const sample = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
     const r = importTokens(src, target, sample)
     console.log(`imported ${r.tokens} files → ${target}`)
     break
@@ -217,7 +217,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveAtelier 1.3.1 · (LiveDSO) local-first design system operations
+    console.log(`LiveAtelier 1.4.0 · (LiveDSO) local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -226,7 +226,7 @@ switch (cmd) {
   node src/cli.ts report --list-templates              列出报告模板
   node src/cli.ts report --bundle [--out-dir <dir>]   生成全部报告 + index.md
   node src/cli.ts build [vault] [out]     输出 CSS 投影
-  node src/cli.ts import [src] [vault]    导入 design/tokens 到 vault-lrds
+  node src/cli.ts import [src] [vault]    导入 design/tokens 到 vaults/lrds-real
   node src/cli.ts adopt [dir] [--json] [--strict|--fail-on-raw]
                                           扫描代码中的 token/裸色引用
   node src/cli.ts snapshot                 创建本地快照

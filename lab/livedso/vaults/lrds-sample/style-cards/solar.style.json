@@ -1,0 +1,21 @@
+{
+  "id": "solar",
+  "name": "Solar",
+  "era": "提案",
+  "note": "本地能源、社区维修；低密度、速度慢、需要参与。",
+  "colors": [
+    "#F3E7C9",
+    "#1F6B4A",
+    "#B85C2A",
+    "#E8B84A",
+    "#18352B"
+  ],
+  "roles": {
+    "bg": "#F3E7C9",
+    "surface": "#E8D8B8",
+    "text": "#18352B",
+    "action": "#1F6B4A",
+    "focus": "#E8B84A",
+    "danger": "#B85C2A"
+  }
+}

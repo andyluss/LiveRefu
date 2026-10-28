@@ -1,0 +1,30 @@
+{
+  "id": "ant.contract.button",
+  "title": "Button",
+  "status": "stable",
+  "summary": "Ant Design inspired sample; not an official Ant token package.",
+  "anatomy": [
+    "container",
+    "label"
+  ],
+  "states": [
+    "default",
+    "hover",
+    "active",
+    "focus-visible",
+    "disabled"
+  ],
+  "tokens": [
+    "ant.colorPrimary",
+    "ant.ref.white",
+    "ant.colorFocus"
+  ],
+  "keyboard": "Enter/Space; Tab reachable.",
+  "a11y": "Visible focus ring; disabled uses aria-disabled.",
+  "do": [
+    "One clear action per control"
+  ],
+  "dont": [
+    "Do not use primary action for cancel"
+  ]
+}

@@ -1,6 +1,6 @@
-# LiveAtelier · 灵动构坊（代号 LiveDSO）
+# LiveDSO · 设计系统操作台（正式名 LiveAtelier / 灵动构坊）
 
-> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.3.1 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
+> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.4.0 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -10,7 +10,7 @@
 
 LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台：
 
-- 读取一个 `vault/`（DTCG 风格 token JSON + 契约 + 风格卡）；
+- 读取一个 `vaults/lrds-sample/`（DTCG 风格 token JSON + 契约 + 风格卡）；
 - 解析别名、计算对比度、检查语义层裸值；
 - 检查组件契约的完整性与 token 引用；
 - 预览风格卡；
@@ -19,7 +19,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - 扫描代码中的 token 引用、裸色与未知 `--dso-` 变量；
 - 多 vault 切换（`vaults.json`）与风格卡并排对比；
 - token 生命周期（deprecated / replacedBy / note）、契约/风格卡弃用检查、采用扫描统计弃用引用；
-- 本地快照（`vault/.history/`）与当前 vault 的只读差异；
+- 本地快照（`vaults/lrds-sample/.history/`）与当前 vault 的只读差异；
 - 跨 vault 本地 CI 门禁（`ci`）：健康、阈值、采用扫描、基线 diff、JSON/Markdown 输出；
 - 本地检查插件（`plugins/*.mjs`）：品牌/命名/业务规则接入 check/report/ci/Workbench；
 - 跨快照趋势：token / 弃用 / 契约 / 风格卡随时间的本地变化；
@@ -54,7 +54,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 | 依赖 | 不 import LRDS 代码 | 不依赖 LiveDSO |
 | 关系 | 可用 LRDS 作为示例/首批客户 | 可用 LiveDSO 做运维 |
 
-默认 `vault/` 是“LRDS sample”，用于演示；真实使用时用 `LIVEDSO_VAULT` 指向自己的目录。
+默认 `vaults/lrds-sample/` 是“LRDS sample”，用于演示；真实使用时用 `LIVEDSO_VAULT` 指向自己的目录。
 
 ## 三、跑起来
 
@@ -65,7 +65,7 @@ cd lab/livedso
 node src/cli.ts check        # 终端检查
 node src/cli.ts report       # 生成 reports/health.md
 node src/cli.ts build        # 生成 dist/tokens.css
-node src/cli.ts import ../../design/tokens vault-lrds  # 真实 LRDS case
+node src/cli.ts import ../../design/tokens vaults/lrds-real  # 真实 LRDS case
 node src/cli.ts adopt ../../design                    # 扫描采用/裸色
 node src/cli.ts snapshot                              # 创建本地快照
 node src/cli.ts history                               # 列出快照
@@ -78,7 +78,7 @@ node src/cli.ts plugin-test --all --plugins examples/plugins  # 跨 vault 矩阵
 node src/cli.ts report --template release --out reports/release.md  # 报告模板
 node src/cli.ts report --bundle --out-dir reports/bundle  # 报告包
 node src/cli.ts serve 4173   # 打开 http://127.0.0.1:4173
-LIVEDSO_VAULT="$PWD/vault-lrds" node src/cli.ts serve 4173  # 用真实 case
+LIVEDSO_VAULT="$PWD/vaults/lrds-real" node src/cli.ts serve 4173  # 用真实 case
 ```
 
 也可以：
@@ -90,7 +90,7 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v1.1 已实现
+## 四、v1.4 已实现
 
 - Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
@@ -102,12 +102,23 @@ Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走�
 - Web UI：总览、Tokens 搜索/过滤/改值/生命周期、Contracts 编辑、Preview、Style cards + 对比、Checks、Adoption、History、Report；Vault 切换；
 - 三态主题（系统/浅色/深色）；
 - CLI：`check` / `report` / `build` / `serve` / `import` / `adopt`；
-- `vault-lrds/`：从 `design/tokens` 导入的真实 case（229 tokens）。
+- `vaults/lrds-real/`：从 `design/tokens` 导入的真实 case（229 tokens）；
+- `vaults/*`：11 套 vault（LRDS、minimal、5 套流行系统启发、3 套复古未来）。
 
-## 五、Vault 格式
+## 五、Vault 样本集
+
+所有 vault 在 [`vaults/`](vaults/)，注册见 [`vaults.json`](vaults.json)。
+
+| id | 类型 |
+| --- | --- |
+| `sample` / `lrds` / `minimal` | 自有/真实/最小样本 |
+| `material-3` / `carbon` / `polaris` / `ant-design` / `tailwind` | 流行系统启发 |
+| `retro-futurism` / `cassette-futurism` / `atompunk` | 复古未来 |
+
+## 六、Vault 格式
 
 ```text
-vault/
+vaults/<id>/
   tokens/*.json          # DTCG 风格：{ "$value": ..., "$type": ... }
   contracts/*.json       # 组件契约
   style-cards/*.json     # 风格卡
@@ -147,7 +158,7 @@ Token 示例：
 
 值可以是 token path 或 hex；缺省时回退到 `colors` 顺序。
 
-## 六、架构
+## 七、架构
 
 ```text
 src/
@@ -158,7 +169,7 @@ src/
   registry.ts    # vaults.json 读取/路径解析
   history.ts     # 本地快照/差异
   ci.ts          # 跨 vault 本地 CI 门禁
-  plugins.ts     # 本地检查插件加载/运行     # 本地快照/差异
+  plugins.ts     # 本地检查插件加载/运行
   adoption.ts    # 只读采用扫描（token/裸色/未知变量）
   server.ts      # Node 原生 HTTP + API + 静态文件
   cli.ts         # check/report/build/serve/import
@@ -167,11 +178,11 @@ web/
   styles.css     # 独立视觉（非 LRDS 依赖）
   app.js         # 无框架 UI
 vaults.json      # 多 vault 注册表
-vault/           # 示例数据
+vaults/          # 11 套 vault 样本
 test/            # node:test
 ```
 
-## 七、已做的决定
+## 八、已做的决定
 
 | # | 决定 | 理由 |
 | --- | --- | --- |
@@ -191,7 +202,7 @@ test/            # node:test
 | D14 | v0.4 采用扫描 | 只读扫描代码；统计 token 引用/裸色/未知变量，不自动改目标代码 |
 | D15 | v0.5 多 vault + 风格卡对比 | 注册表只存路径；切换只影响当前服务；对比只读 |
 | D16 | v0.6 token 生命周期 | deprecated/replacedBy 写源 JSON；lint/采用扫描只读检查 |
-| D17 | v0.7 本地快照/差异 | 快照写 `vault/.history/`；只读 diff，不自动回滚；云/账号继续搁置 |
+| D17 | v0.7 本地快照/差异 | 快照写 `vaults/lrds-sample/.history/`；只读 diff，不自动回滚；云/账号继续搁置 |
 | D18 | v0.8 本地 CI | `ci` 聚合所有 vault；阈值/退出码；不接云、不上传 |
 | D19 | v0.9 本地插件 | `plugins/*.mjs` 受信本地代码；无沙箱；不接云 |
 | D20 | v0.10 跨快照趋势 | 只读历史快照；展示数量/弃用；不接云 |
@@ -211,7 +222,7 @@ test/            # node:test
 | D34 | v1.2.3 UI 标签 | eyebrow/表头/状态本地化 |
 | D35 | v1.2.4 指标/流程标签 | overview 指标与流程本地化 |
 
-## 八、路线图（待验证）
+## 九、路线图（待验证）
 
 - **v0.2（已完成）**：LRDS 真实 case 导入。
 - **v0.3（已完成）**：契约编辑、真实 token 组件预览。
@@ -232,7 +243,7 @@ test/            # node:test
 - **v0.18（当前）**：模板嵌套条件；云/账号/团队/私有 registry/托管继续搁置。
 - **之后**：托管/CI/审计服务；开源核心 + 企业版。
 
-## 九、已裁决
+## 十、已裁决
 
 - **代号**：LiveDSO。
 - **正式名**：**LiveAtelier / 灵动构坊**，已定。
@@ -242,7 +253,7 @@ test/            # node:test
 - **LRDS 接入**：v0.2 直接导入 `design/tokens`（已完成，229 tokens）。
 - **许可文件**：[`LICENSE`](LICENSE) / [`NOTICE`](NOTICE) / [`CONTRIBUTING.md`](CONTRIBUTING.md) / [`DCO`](DCO) / [`TRADEMARKS.md`](TRADEMARKS.md)。
 
-## 十、边界
+## 十一、边界
 
 - 不读/写 LRDS 的组件 CSS 或产品代码（v0.18）；采用扫描是只读。
 - 不做自动 Git 提交；
@@ -250,13 +261,13 @@ test/            # node:test
 - 不做完整的 token 树编辑器（v0.18 只改值/契约/生命周期，不建树）；不做自动改代码；插件无沙箱；报告模板不执行代码。
 - 快照不自动回滚；只读差异，恢复由人决定。
 
-## 十一、商品化（未来，未实施）
+## 十二、商品化（未来，未实施）
 
 - 未来可选扩展：**设计系统体检包**（报告 + 修复计划），不是当前版本功能；
 - 目标产品案例（发票 App/家庭能源/用药提醒）、触发条件、定价、边界见 [`docs/04_商品化路径.md`](docs/04_商品化路径.md)；跨项目狗粮计划见 [`../DOGFOOD.md`](../DOGFOOD.md)；
 - **现在不做**：不加 SaaS、账号、计费；云/账号/团队/私有 registry/托管**按用户裁决搁置**；先把本地快照、diff、CI 做稳。
 
-## 十二、路由、语言与皮肤
+## 十三、路由、语言与皮肤
 
 - 路由：`#/overview` … `#/report`；
 - 语言：顶部 `EN` / `中文`，`?lang=zh|en` 强制覆盖，默认跟随浏览器；
@@ -267,7 +278,7 @@ test/            # node:test
 - 审计：`npm run i18n:check`（覆盖率 + 关键行为）；
 - 路由：[`docs/10_路由.md`](docs/10_路由.md)；本地化：[`docs/11_本地化.md`](docs/11_本地化.md)；自我皮肤：[`docs/12_自我皮肤.md`](docs/12_自我皮肤.md)。
 
-## 十三、CI 集成与插件
+## 十四、CI 集成与插件
 
 本地/任意 CI 运行：
 
@@ -289,14 +300,15 @@ node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
 
 Vaults 总览：Workbench **Vaults** 页；`GET /api/vaults/overview` 聚合所有 vault 健康分。
 
-## 十四、发布检查
+## 十五、发布检查
 
 每次发布按 [`docs/05_发布检查清单.md`](docs/05_发布检查清单.md) 执行：旧版本段不可删除，发布提交后立刻打 `livedso-v*` tag。
 
-## 十四、v1.0 案例与文档
+## 十六、v1.4 案例与文档
 
 - [`docs/09_快速开始与案例.md`](docs/09_快速开始与案例.md)；
-- [`examples/minimal-vault/`](examples/minimal-vault/)：10 token / 1 契约 / 1 风格卡；
+- [`vaults/README.md`](vaults/README.md)：全部 11 套 vault 与通用性说明；
+- [`vaults/minimal/`](vaults/minimal/)：10 token / 1 契约 / 1 风格卡；
 - 稳定边界：本地优先，不接云/账号/团队；写操作只写源 JSON。
 
 ## 工作区规则

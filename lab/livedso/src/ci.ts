@@ -44,7 +44,7 @@ export interface CiResult {
 
 export function runCi(options: CiOptions = {}): CiResult {
   const registryFile = options.registry || new URL('../vaults.json', import.meta.url).pathname
-  const registry = loadRegistry(registryFile, new URL('../vault', import.meta.url).pathname)
+  const registry = loadRegistry(registryFile, new URL('../vaults/lrds-sample', import.meta.url).pathname)
   const reasons: string[] = []
   const vaults: CiVaultResult[] = []
   for (const entry of registry.vaults) {

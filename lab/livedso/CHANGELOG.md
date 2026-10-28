@@ -1,5 +1,28 @@
 # LiveDSO Changelog
 
+## [1.4.0] - 2026-10-28 13:20
+
+### Added
+
+- **Vault 样本集**：全部收进 `vaults/`，`vaults.json` 注册 11 套：
+  - 自有/真实/最小：`lrds-sample` / `lrds-real` / `minimal`；
+  - 流行系统启发：`material-3` / `carbon` / `polaris` / `ant-design` / `tailwind`；
+  - 复古未来：`retro-futurism` / `cassette-futurism` / `atompunk`。
+- 每套样本含 tokens / 1 契约 / 1 风格卡 / checks；不同命名体系（`md.*` / `cds.*` / `p.*` / `ant.*` / `tw.*` / `rf.*` / `cf.*` / `ap.*`）。
+- 预览“使用中的 Token”改为读取风格卡 roles，不再硬编码 `sys.color.*`。
+- 新增全量 vault 回归测试：11 套加载、无 error、风格卡 roles 完整。
+
+### Changed
+
+- `vault/` → `vaults/lrds-sample/`；`vault-lrds/` → `vaults/lrds-real/`；`examples/minimal-vault/` → `vaults/minimal/`。
+- README/docs 路径、CLI 默认值、`vaults.json`、测试同步。
+- `node:test` 22 → **23**。
+- 版本 1.3.1 → 1.4.0。
+
+### Note
+
+- 流行系统样本是原创近似，不是官方 token 包；见 [`vaults/README.md`](vaults/README.md) 的商标/版权说明。
+
 ## [1.3.1] - 2026-10-28 12:45
 
 ### Changed
@@ -132,7 +155,7 @@
 
 ### Added
 
-- **最小示例 vault**：[`examples/minimal-vault/`](examples/minimal-vault/)，10 tokens / 1 契约 / 1 风格卡，`check` 100/100。
+- **最小示例 vault**：[`vaults/minimal/`](vaults/minimal/)，10 tokens / 1 契约 / 1 风格卡，`check` 100/100。
 - **快速开始与案例**：[`docs/09_快速开始与案例.md`](docs/09_快速开始与案例.md)，覆盖 sample/LRDS real/minimal、adopt、snapshot、CI、插件、报告包。
 - v1.0 稳定边界：本地优先；不接云/账号/团队；写操作只写源 JSON。
 

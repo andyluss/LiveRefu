@@ -1,0 +1,21 @@
+{
+  "id": "atompunk",
+  "name": "Atompunk",
+  "era": "sample",
+  "note": "Atompunk sample: navy, cream, atomic teal, hazard red, chrome.",
+  "colors": [
+    "ap.color.bg",
+    "ap.color.text",
+    "ap.color.action",
+    "ap.color.focus",
+    "ap.color.danger"
+  ],
+  "roles": {
+    "bg": "ap.color.bg",
+    "surface": "ap.color.surface",
+    "text": "ap.color.text",
+    "action": "ap.color.action",
+    "focus": "ap.color.focus",
+    "danger": "ap.color.danger"
+  }
+}

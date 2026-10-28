@@ -283,7 +283,8 @@
       canvas.innerHTML = `<div class="pv-row">${btn('主按钮')}${btn('次要按钮', 'secondary')}${btn('幽灵按钮', 'ghost')}</div><label class="pv-field"><span>邮箱</span><input class="pv-input ${st === 'focus' ? 'focus' : ''}" value="you@example.com" ${st === 'disabled' ? 'disabled' : ''}><small class="pv-error">${st === 'disabled' ? '禁用时仍需说明原因。' : '错误用文本说明，不只靠颜色。'}</small></label><div class="pv-panel"><div><b>面板标题</b><small>这套 token 来自当前藏库，不是截图。</small></div><span class="pv-badge">${esc({ default: loc('default','默认'), hover: loc('hover','悬停'), focus: loc('focus','聚焦'), disabled: loc('disabled','禁用') }[st] || st)}</span></div>`;
     }
     $('#preview-token-count').textContent = `${d.tokens.filter(t => t.cssVar).length} ${loc('tokens','个 Token')}`;
-    $('#preview-tokens').innerHTML = ['sys.color.action.primary','sys.color.action.onPrimary','sys.color.focus.ring','sys.color.text.primary','sys.color.feedback.danger'].map(path => `<code>${esc(path)}</code>`).join('');
+    const rolePaths = [...new Set(Object.values(card?.roles || {}).filter(Boolean))];
+    $('#preview-tokens').innerHTML = (rolePaths.length ? rolePaths : (card?.colors || [])).map(path => `<code>${esc(path)}</code>`).join('');
     $('#preview-palette').innerHTML = (card?.colors || []).map(c => `<i style="background:${esc(styleColor(c))}"></i>`).join('');
     $$('[data-preview-state]').forEach(b => b.classList.toggle('active', b.dataset.previewState === st));
   }

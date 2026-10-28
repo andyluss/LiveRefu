@@ -1,0 +1,21 @@
+{
+  "id": "tailwind",
+  "name": "Tailwind",
+  "era": "sample",
+  "note": "Tailwind CSS palette inspired sample; not an official Tailwind token package.",
+  "colors": [
+    "tw.color.bg",
+    "tw.color.text",
+    "tw.color.action",
+    "tw.color.focus",
+    "tw.color.danger"
+  ],
+  "roles": {
+    "bg": "tw.color.bg",
+    "surface": "tw.ref.slate.950",
+    "text": "tw.color.text",
+    "action": "tw.color.action",
+    "focus": "tw.color.focus",
+    "danger": "tw.color.danger"
+  }
+}

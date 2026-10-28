@@ -1,0 +1,20 @@
+{
+  "id": "paper",
+  "name": "Paper",
+  "era": "当前",
+  "note": "低密度、可读、手工维护；示例风格卡。",
+  "colors": [
+    "sys.color.bg.base",
+    "sys.color.text.primary",
+    "sys.color.action.primary",
+    "sys.color.focus.ring"
+  ],
+  "roles": {
+    "bg": "sys.color.bg.base",
+    "surface": "sys.color.bg.surface",
+    "text": "sys.color.text.primary",
+    "action": "sys.color.action.primary",
+    "focus": "sys.color.focus.ring",
+    "danger": "sys.color.action.primary"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "contrast": [
+    {
+      "fg": "cds.color.text.primary",
+      "bg": "cds.color.layer",
+      "min": 4.5,
+      "label": "sample text contrast"
+    },
+    {
+      "fg": "cds.ref.white",
+      "bg": "cds.color.interactive",
+      "min": 4.5,
+      "label": "sample text contrast"
+    }
+  ],
+  "focusToken": "cds.color.focus",
+  "actionToken": "cds.color.interactive",
+  "rawValueTiers": [],
+  "contractRequired": [
+    "anatomy",
+    "states",
+    "tokens",
+    "keyboard",
+    "a11y",
+    "do",
+    "dont"
+  ]
+}

@@ -16,7 +16,7 @@ export interface AllTrends {
 }
 
 export function allTrends(registryFile: string): AllTrends {
-  const registry = loadRegistry(registryFile, new URL('../vault', import.meta.url).pathname)
+  const registry = loadRegistry(registryFile, new URL('../vaults/lrds-sample', import.meta.url).pathname)
   const errors = [...registry.errors]
   const vaults: VaultTrend[] = []
   for (const entry of registry.vaults) {

@@ -1,0 +1,21 @@
+{
+  "id": "polaris",
+  "name": "Polaris",
+  "era": "sample",
+  "note": "Shopify Polaris inspired sample; not an official Polaris token package.",
+  "colors": [
+    "p.color.surface",
+    "p.color.text",
+    "p.color.interactive",
+    "p.color.focus",
+    "p.color.critical"
+  ],
+  "roles": {
+    "bg": "p.color.bg",
+    "surface": "p.color.surface",
+    "text": "p.color.text",
+    "action": "p.color.interactive",
+    "focus": "p.color.focus",
+    "danger": "p.color.critical"
+  }
+}

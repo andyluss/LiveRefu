@@ -1,0 +1,28 @@
+{
+  "contrast": [
+    {
+      "fg": "ant.colorText",
+      "bg": "ant.colorBgContainer",
+      "min": 4.5,
+      "label": "sample text contrast"
+    },
+    {
+      "fg": "ant.ref.white",
+      "bg": "ant.colorPrimary",
+      "min": 4.5,
+      "label": "sample text contrast"
+    }
+  ],
+  "focusToken": "ant.colorFocus",
+  "actionToken": "ant.colorPrimary",
+  "rawValueTiers": [],
+  "contractRequired": [
+    "anatomy",
+    "states",
+    "tokens",
+    "keyboard",
+    "a11y",
+    "do",
+    "dont"
+  ]
+}

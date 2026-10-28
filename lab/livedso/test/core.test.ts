@@ -16,7 +16,8 @@ import { buildReportBundle, listReportTemplates, renderReport } from '../src/rep
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { localizeCheckResult, runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
-const root = fileURLToPath(new URL('../vault', import.meta.url))
+const root = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
+const registryFile = fileURLToPath(new URL('../vaults.json', import.meta.url))
 
 test('vault loads tokens/contracts/style cards', () => {
   const vault = loadVault(root)
@@ -59,7 +60,7 @@ test('report and CSS projection are generated', () => {
 })
 
 test('real LRDS case imports 229 tokens', () => {
-  const vault = loadVault(fileURLToPath(new URL('../vault-lrds', import.meta.url)))
+  const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-real', import.meta.url)))
   assert.equal(vault.errors.length, 0)
   assert.equal(vault.tokens.size, 229)
   assert.equal(vault.contracts.length, 2)
@@ -71,7 +72,7 @@ test('real LRDS case imports 229 tokens', () => {
 test('contract editing writes back and survives reload', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-contract-'))
   try {
-    cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    cpSync(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)), tmp, { recursive: true })
     rmSync(join(tmp, '.history'), { recursive: true, force: true })
     const vault = loadVault(tmp)
     const next = saveContract(vault, 'field', { states: ['default', 'hover', 'active', 'focus-visible', 'disabled'], summary: 'edited' })
@@ -85,7 +86,7 @@ test('contract editing writes back and survives reload', () => {
 test('token lifecycle writes back and is visible after reload', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-lifecycle-'))
   try {
-    cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    cpSync(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)), tmp, { recursive: true })
     rmSync(join(tmp, '.history'), { recursive: true, force: true })
     saveTokenLifecycle(loadVault(tmp), 'sys.color.action.primaryHover', { deprecated: true, replacedBy: 'sys.color.action.primary', note: 'test' })
     const t = loadVault(tmp).tokens.get('sys.color.action.primaryHover')
@@ -101,7 +102,7 @@ test('adoption scan finds token refs, raw colors and unknown vars', () => {
     mkdirSync(join(tmp, 'src'))
     writeFileSync(join(tmp, 'src', 'a.css'), 'a{color:var(--dso-sys-color-action-primary);border-color:var(--dso-sys-color-action-primaryhover);background:#ffffff}\n')
     writeFileSync(join(tmp, 'src', 'b.ts'), 'const x = "var(--dso-not-real)"\n')
-    const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+    const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)))
     const r = scanAdoption(tmp, vault)
     assert.equal(r.filesScanned, 2)
     assert.equal(r.tokenRefs, 2)
@@ -130,7 +131,7 @@ test('registry resolves vault paths relative to its file', () => {
 test('local history snapshots and diffs', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-history-'))
   try {
-    cpSync(fileURLToPath(new URL('../vault', import.meta.url)), tmp, { recursive: true })
+    cpSync(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)), tmp, { recursive: true })
     rmSync(join(tmp, '.history'), { recursive: true, force: true })
     const vault = loadVault(tmp)
     const snap = createSnapshot(vault)
@@ -148,7 +149,7 @@ test('local history snapshots and diffs', () => {
 test('CI aggregates multiple vaults and enforces thresholds', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-ci-'))
   try {
-    for (const name of ['a', 'b']) { cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true }); rmSync(join(tmp, name, '.history'), { recursive: true, force: true }) }
+    for (const name of ['a', 'b']) { cpSync(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)), join(tmp, name), { recursive: true }); rmSync(join(tmp, name, '.history'), { recursive: true, force: true }) }
     writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
     const ok = runCi({ registry: join(tmp, 'vaults.json') })
     assert.equal(ok.vaults.length, 2)
@@ -167,7 +168,7 @@ test('local plugin loads and contributes issues', async () => {
     const loaded = await loadPlugins(join(tmp, 'plugins'))
     assert.equal(loaded.errors.length, 0)
     assert.equal(loaded.plugins.length, 1)
-    const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+    const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)))
     const result = runChecks(vault, [...loaded.errors, ...runPlugins(loaded.plugins, vault)])
     assert.equal(result.warnings, 4)
     assert.ok(result.issues.some(i => i.code === 'brand.rule'))
@@ -179,7 +180,7 @@ test('cross-vault trends read each vault history', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-trends-'))
   try {
     for (const name of ['a', 'b']) {
-      cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true })
+      cpSync(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)), join(tmp, name), { recursive: true })
       rmSync(join(tmp, name, '.history'), { recursive: true, force: true })
       createSnapshot(loadVault(join(tmp, name)))
     }
@@ -202,7 +203,7 @@ test('example plugins load', async () => {
 test('plugin test matrix runs across vaults', async () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-plugin-matrix-'))
   try {
-    for (const name of ['a', 'b']) { cpSync(fileURLToPath(new URL('../vault', import.meta.url)), join(tmp, name), { recursive: true }); rmSync(join(tmp, name, '.history'), { recursive: true, force: true }) }
+    for (const name of ['a', 'b']) { cpSync(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)), join(tmp, name), { recursive: true }); rmSync(join(tmp, name, '.history'), { recursive: true, force: true }) }
     writeFileSync(join(tmp, 'vaults.json'), JSON.stringify({ vaults: [{ id: 'a', name: 'A', path: 'a' }, { id: 'b', name: 'B', path: 'b' }] }))
     const loaded = await loadPlugins(fileURLToPath(new URL('../examples/plugins', import.meta.url)))
     const matrix = pluginTestAll(join(tmp, 'vaults.json'), loaded.plugins, loaded.errors)
@@ -216,7 +217,7 @@ test('plugin test matrix runs across vaults', async () => {
 test('report templates render builtin and custom placeholders', () => {
   const tmp = mkdtempSync(join(tmpdir(), 'livedso-report-'))
   try {
-    const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+    const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)))
     const result = runChecks(vault)
     const release = renderReport(vault, result, 'release')
     assert.match(release, /Health/); assert.match(release, /37/)
@@ -233,7 +234,7 @@ test('report templates render builtin and custom placeholders', () => {
 
 
 test('report bundle builds all templates and an index', () => {
-  const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+  const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)))
   const result = runChecks(vault)
   const bundle = buildReportBundle(vault, result, fileURLToPath(new URL('../templates/reports', import.meta.url)))
   assert.ok(bundle.files.length >= 6)
@@ -245,7 +246,7 @@ test('report bundle builds all templates and an index', () => {
 
 
 test('minimal example vault is valid', () => {
-  const vault = loadVault(fileURLToPath(new URL('../examples/minimal-vault', import.meta.url)))
+  const vault = loadVault(fileURLToPath(new URL('../vaults/minimal', import.meta.url)))
   const result = runChecks(vault)
   assert.equal(vault.tokens.size, 10)
   assert.equal(vault.contracts.length, 1)
@@ -255,7 +256,7 @@ test('minimal example vault is valid', () => {
 
 
 test('style cards expose preview roles', () => {
-  const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+  const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)))
   assert.equal(vault.styleCards.length, 3)
   for (const card of vault.styleCards) {
     assert.ok(card.roles && typeof card.roles === 'object')
@@ -280,10 +281,26 @@ test('frontend exposes routes, i18n, skins and nav groups', () => {
 
 
 test('rule messages have English versions', () => {
-  const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+  const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url)))
   const result = runChecks(vault)
   assert.ok(result.issues.length > 0)
   assert.ok(result.issues.every(i => typeof i.messageEn === 'string' && i.messageEn.length > 0))
   const en = localizeCheckResult(result, 'en')
   assert.ok(en.issues.every(i => /^[\x00-\x7F]+$/.test(i.message)))
+})
+
+
+test('all registered vaults load and have no blocking errors', () => {
+  const registry = loadRegistry(registryFile, root)
+  assert.equal(registry.errors.length, 0)
+  assert.equal(registry.vaults.length, 11)
+  for (const entry of registry.vaults) {
+    const vault = loadVault(entry.path)
+    const result = runChecks(vault)
+    assert.ok(vault.tokens.size > 0, `${entry.id} has tokens`)
+    assert.ok(vault.contracts.length > 0, `${entry.id} has contracts`)
+    assert.ok(vault.styleCards.length > 0, `${entry.id} has style cards`)
+    assert.ok(vault.styleCards.every(c => c.roles?.bg && c.roles?.surface && c.roles?.text && c.roles?.action && c.roles?.focus), `${entry.id} style cards have preview roles`)
+    assert.equal(result.errors, 0, `${entry.id} has no errors`)
+  }
 })

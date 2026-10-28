@@ -19,7 +19,7 @@ export interface PluginTestMatrix {
 }
 
 export function pluginTestAll(registryFile: string, plugins: LocalPlugin[], loadErrors: Issue[] = []): PluginTestMatrix {
-  const registry = loadRegistry(registryFile, new URL('../vault', import.meta.url).pathname)
+  const registry = loadRegistry(registryFile, new URL('../vaults/lrds-sample', import.meta.url).pathname)
   const vaults: PluginTestVault[] = []
   for (const entry of registry.vaults) {
     try {

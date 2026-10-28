@@ -1,0 +1,21 @@
+{
+  "id": "cassette-futurism",
+  "name": "Cassette",
+  "era": "sample",
+  "note": "Cassette-future sample: charcoal, beige, orange, cyan indicators.",
+  "colors": [
+    "cf.color.bg",
+    "cf.color.text",
+    "cf.color.action",
+    "cf.color.focus",
+    "cf.color.danger"
+  ],
+  "roles": {
+    "bg": "cf.color.bg",
+    "surface": "cf.color.surface",
+    "text": "cf.color.text",
+    "action": "cf.color.action",
+    "focus": "cf.color.focus",
+    "danger": "cf.color.danger"
+  }
+}

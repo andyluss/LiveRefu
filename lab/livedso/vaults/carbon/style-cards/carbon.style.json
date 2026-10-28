@@ -1,0 +1,21 @@
+{
+  "id": "carbon",
+  "name": "Carbon",
+  "era": "sample",
+  "note": "IBM Carbon inspired sample; not an official Carbon token package.",
+  "colors": [
+    "cds.color.layer",
+    "cds.ref.white",
+    "cds.color.text.primary",
+    "cds.color.interactive",
+    "cds.color.support.error"
+  ],
+  "roles": {
+    "bg": "cds.color.layer",
+    "surface": "cds.ref.white",
+    "text": "cds.color.text.primary",
+    "action": "cds.color.interactive",
+    "focus": "cds.color.focus",
+    "danger": "cds.color.support.error"
+  }
+}

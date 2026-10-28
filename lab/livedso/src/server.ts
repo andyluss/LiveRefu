@@ -51,7 +51,7 @@ function staticFile(pathname: string): { file: string; type: string } | null {
 export interface ServerOptions { port?: number; vault?: string; registry?: string; plugins?: string }
 
 export async function startServer(options: ServerOptions = {}): Promise<{ port: number; close: () => Promise<void> }> {
-  const fallbackRoot = resolve(options.vault || process.env.LIVEDSO_VAULT || join(import.meta.dirname, '../vault'))
+  const fallbackRoot = resolve(options.vault || process.env.LIVEDSO_VAULT || join(import.meta.dirname, '../vaults/lrds-sample'))
   const registry = loadRegistry(resolve(options.registry || process.env.LIVEDSO_REGISTRY || join(import.meta.dirname, '../vaults.json')), fallbackRoot)
   let vaultRoot = fallbackRoot
   let active = registry.vaults.find(v => resolve(v.path) === vaultRoot) || { id: 'custom', name: 'Custom vault', path: vaultRoot }

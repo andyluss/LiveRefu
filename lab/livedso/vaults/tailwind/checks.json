@@ -1,0 +1,28 @@
+{
+  "contrast": [
+    {
+      "fg": "tw.color.text",
+      "bg": "tw.color.bg",
+      "min": 4.5,
+      "label": "sample text contrast"
+    },
+    {
+      "fg": "tw.color.on-action",
+      "bg": "tw.color.action",
+      "min": 4.5,
+      "label": "sample text contrast"
+    }
+  ],
+  "focusToken": "tw.color.focus",
+  "actionToken": "tw.color.action",
+  "rawValueTiers": [],
+  "contractRequired": [
+    "anatomy",
+    "states",
+    "tokens",
+    "keyboard",
+    "a11y",
+    "do",
+    "dont"
+  ]
+}

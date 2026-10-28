@@ -1,7 +1,0 @@
-{
-  "id": "archive",
-  "name": "Archive",
-  "era": "现在",
-  "note": "纸、登记、可读的现在；低密度、手工维护。",
-  "colors": ["sys.color.bg.base", "sys.color.bg.surface", "sys.color.text.primary", "sys.color.action.primary", "sys.color.feedback.warning"]
-}

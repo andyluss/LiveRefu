@@ -1,0 +1,21 @@
+{
+  "id": "retro-futurism",
+  "name": "Retro",
+  "era": "sample",
+  "note": "Retro-future sample: warm paper, rust, CRT teal, amber.",
+  "colors": [
+    "rf.color.bg",
+    "rf.color.text",
+    "rf.color.action",
+    "rf.color.focus",
+    "rf.color.danger"
+  ],
+  "roles": {
+    "bg": "rf.color.bg",
+    "surface": "rf.color.surface",
+    "text": "rf.color.text",
+    "action": "rf.color.action",
+    "focus": "rf.color.focus",
+    "danger": "rf.color.danger"
+  }
+}

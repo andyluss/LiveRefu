@@ -1,0 +1,28 @@
+{
+  "contrast": [
+    {
+      "fg": "md.sys.color.on-surface",
+      "bg": "md.sys.color.surface",
+      "min": 4.5,
+      "label": "sample text contrast"
+    },
+    {
+      "fg": "md.sys.color.on-primary",
+      "bg": "md.sys.color.primary",
+      "min": 4.5,
+      "label": "sample text contrast"
+    }
+  ],
+  "focusToken": "md.sys.color.focus",
+  "actionToken": "md.sys.color.primary",
+  "rawValueTiers": [],
+  "contractRequired": [
+    "anatomy",
+    "states",
+    "tokens",
+    "keyboard",
+    "a11y",
+    "do",
+    "dont"
+  ]
+}

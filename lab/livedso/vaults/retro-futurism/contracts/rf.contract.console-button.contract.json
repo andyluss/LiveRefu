@@ -1,0 +1,30 @@
+{
+  "id": "rf.contract.console-button",
+  "title": "Console Button",
+  "status": "stable",
+  "summary": "Retro-future sample: warm paper, rust, CRT teal, amber.",
+  "anatomy": [
+    "container",
+    "label"
+  ],
+  "states": [
+    "default",
+    "hover",
+    "active",
+    "focus-visible",
+    "disabled"
+  ],
+  "tokens": [
+    "rf.color.action",
+    "rf.ref.ink",
+    "rf.color.focus"
+  ],
+  "keyboard": "Enter/Space; Tab reachable.",
+  "a11y": "Visible focus ring; disabled uses aria-disabled.",
+  "do": [
+    "One clear action per control"
+  ],
+  "dont": [
+    "Do not use primary action for cancel"
+  ]
+}

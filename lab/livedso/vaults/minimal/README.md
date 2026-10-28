@@ -1,4 +1,4 @@
-# 灵动构坊 · 最小 Vault 示例
+# LiveDSO · 最小 Vault 示例
 
 一个可运行的最小设计系统 vault：
 
@@ -10,9 +10,9 @@
 运行：
 
 ```bash
-node src/cli.ts check examples/minimal-vault
-LIVEDSO_VAULT=examples/minimal-vault node src/cli.ts serve 4173
-node src/cli.ts report examples/minimal-vault reports/minimal-health.md
+node src/cli.ts check vaults/minimal
+LIVEDSO_VAULT=vaults/minimal node src/cli.ts serve 4173
+node src/cli.ts report vaults/minimal reports/minimal-health.md
 ```
 
 适合作为新 vault 的复制起点，不是完整产品 token 集。

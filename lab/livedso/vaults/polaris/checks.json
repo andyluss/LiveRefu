@@ -1,0 +1,28 @@
+{
+  "contrast": [
+    {
+      "fg": "p.color.text",
+      "bg": "p.color.surface",
+      "min": 4.5,
+      "label": "sample text contrast"
+    },
+    {
+      "fg": "p.ref.white",
+      "bg": "p.color.interactive",
+      "min": 4.5,
+      "label": "sample text contrast"
+    }
+  ],
+  "focusToken": "p.color.focus",
+  "actionToken": "p.color.interactive",
+  "rawValueTiers": [],
+  "contractRequired": [
+    "anatomy",
+    "states",
+    "tokens",
+    "keyboard",
+    "a11y",
+    "do",
+    "dont"
+  ]
+}

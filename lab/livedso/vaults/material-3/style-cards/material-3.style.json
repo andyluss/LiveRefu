@@ -1,0 +1,21 @@
+{
+  "id": "material-3",
+  "name": "Material",
+  "era": "sample",
+  "note": "Material 3 inspired sample; not an official Material token package.",
+  "colors": [
+    "md.sys.color.surface",
+    "md.sys.color.on-surface",
+    "md.sys.color.primary",
+    "md.sys.color.focus",
+    "md.sys.color.error"
+  ],
+  "roles": {
+    "bg": "md.sys.color.surface",
+    "surface": "md.ref.neutral.0",
+    "text": "md.sys.color.on-surface",
+    "action": "md.sys.color.primary",
+    "focus": "md.sys.color.focus",
+    "danger": "md.sys.color.error"
+  }
+}
