@@ -62,10 +62,10 @@ export function runChecks(vault: Vault, extraIssues: Issue[] = []): CheckResult 
   // 1. Aliases and semantic raw values
   for (const token of vault.tokens.values()) {
     if (token.resolvedValue === null) {
-      push({ code: 'alias.broken', severity: 'error', path: token.path, message: `无法解析别名：${formatValue(token.rawValue)}`, detail: token.alias ? `目标 ${token.alias} 不存在或形成循环` : undefined })
+      push({ code: 'alias.broken', severity: 'error', path: token.path, message: `无法解析别名：${formatValue(token.rawValue)}`, messageEn: `Cannot resolve alias: ${formatValue(token.rawValue)}`, detail: token.alias ? `目标 ${token.alias} 不存在或形成循环` : undefined, detailEn: token.alias ? `Target ${token.alias} is missing or cyclic.` : undefined })
     }
     if (rawTiers.has(token.tier) && isColorToken(token) && token.alias === null) {
-      push({ code: 'token.raw-color', severity: 'warn', path: token.path, message: '语义层直接写了色值，建议改为引用 ref.*', detail: formatValue(token.rawValue) })
+      push({ code: 'token.raw-color', severity: 'warn', path: token.path, message: '语义层直接写了色值，建议改为引用 ref.*', messageEn: 'Semantic tier contains a raw color; reference ref.* instead.', detail: formatValue(token.rawValue), detailEn: formatValue(token.rawValue) })
     }
   }
 
@@ -73,13 +73,13 @@ export function runChecks(vault: Vault, extraIssues: Issue[] = []): CheckResult 
   for (const token of vault.tokens.values()) {
     if (!token.deprecated) continue
     if (!token.replacedBy) {
-      push({ code: 'token.deprecated-no-replacement', severity: 'warn', path: token.path, message: `${token.path} 已弃用但没有写 replacedBy。`, detail: token.deprecationNote })
+      push({ code: 'token.deprecated-no-replacement', severity: 'warn', path: token.path, message: `${token.path} 已弃用但没有写 replacedBy。`, messageEn: `${token.path} is deprecated but has no replacedBy.`, detail: token.deprecationNote, detailEn: token.deprecationNote })
     } else if (token.replacedBy === token.path) {
-      push({ code: 'token.deprecated-self', severity: 'error', path: token.path, message: `${token.path} 的 replacedBy 指向自己。` })
+      push({ code: 'token.deprecated-self', severity: 'error', path: token.path, message: `${token.path} 的 replacedBy 指向自己。`, messageEn: `${token.path} replacedBy points to itself.` })
     } else if (!vault.tokens.has(token.replacedBy)) {
-      push({ code: 'token.deprecated-target', severity: 'error', path: token.path, message: `${token.path} 的替代 token 不存在：${token.replacedBy}` })
+      push({ code: 'token.deprecated-target', severity: 'error', path: token.path, message: `${token.path} 的替代 token 不存在：${token.replacedBy}`, messageEn: `${token.path} replacement token does not exist: ${token.replacedBy}` })
     } else if (vault.tokens.get(token.replacedBy)?.deprecated) {
-      push({ code: 'token.deprecated-chain', severity: 'warn', path: token.path, message: `${token.path} 的替代 token 也已弃用：${token.replacedBy}` })
+      push({ code: 'token.deprecated-chain', severity: 'warn', path: token.path, message: `${token.path} 的替代 token 也已弃用：${token.replacedBy}`, messageEn: `${token.path} replacement token is also deprecated: ${token.replacedBy}` })
     }
   }
 
@@ -88,7 +88,7 @@ export function runChecks(vault: Vault, extraIssues: Issue[] = []): CheckResult 
     const f = resolveToken(cfg.focusToken, vault.tokens)
     const a = resolveToken(cfg.actionToken, vault.tokens)
     if (f && a && String(f).toLowerCase() === String(a).toLowerCase()) {
-      push({ code: 'focus.reuses-action', severity: 'error', path: cfg.focusToken, message: '焦点色与主行动色相同；焦点必须独立。' })
+      push({ code: 'focus.reuses-action', severity: 'error', path: cfg.focusToken, message: '焦点色与主行动色相同；焦点必须独立。', messageEn: 'Focus color equals the action color; focus must be independent.' })
     }
   }
 
@@ -105,7 +105,9 @@ export function runChecks(vault: Vault, extraIssues: Issue[] = []): CheckResult 
         severity: aaa ? 'warn' : 'error',
         path: `${pair.fg} on ${pair.bg}`,
         message: `${pair.label || '对比度'}：${ratio.toFixed(2)}:1，低于 ${pair.min}:1`,
-        detail: aaa ? '这是 AAA 目标，不阻断，但应记录取舍。' : '正文/交互对比度不达标。'
+        messageEn: `Contrast: ${ratio.toFixed(2)}:1, below ${pair.min}:1`,
+        detail: aaa ? '这是 AAA 目标，不阻断，但应记录取舍。' : '正文/交互对比度不达标。',
+        detailEn: aaa ? 'This is an AAA target; it does not block, but record the trade-off.' : 'Body/interaction contrast is below target.'
       })
     }
   }
@@ -116,30 +118,30 @@ export function runChecks(vault: Vault, extraIssues: Issue[] = []): CheckResult 
     for (const key of required) {
       const value = (contract as Record<string, unknown>)[key]
       if (value === undefined || value === null || (Array.isArray(value) && value.length === 0)) {
-        push({ code: 'contract.missing', severity: 'warn', path: contract.id, message: `${contract.title} 缺少契约字段：${key}` })
+        push({ code: 'contract.missing', severity: 'warn', path: contract.id, message: `${contract.title} 缺少契约字段：${key}`, messageEn: `${contract.title} is missing contract field: ${key}` })
       }
     }
     if (Array.isArray(contract.states) && contract.states.length < 5) {
-      push({ code: 'contract.states', severity: 'warn', path: contract.id, message: `${contract.title} 状态少于 5 个（default/hover/active/focus/disabled）。` })
+      push({ code: 'contract.states', severity: 'warn', path: contract.id, message: `${contract.title} 状态少于 5 个（default/hover/active/focus/disabled）。`, messageEn: `${contract.title} has fewer than 5 states (default/hover/active/focus/disabled).` })
     }
     for (const tokenPath of contract.tokens || []) {
       if (!vault.tokens.has(tokenPath)) {
-        push({ code: 'contract.token-missing', severity: 'error', path: contract.id, message: `${contract.title} 引用了不存在的 token：${tokenPath}` })
+        push({ code: 'contract.token-missing', severity: 'error', path: contract.id, message: `${contract.title} 引用了不存在的 token：${tokenPath}`, messageEn: `${contract.title} references a missing token: ${tokenPath}` })
       } else if (vault.tokens.get(tokenPath)?.deprecated) {
-        push({ code: 'contract.deprecated-token', severity: 'warn', path: contract.id, message: `${contract.title} 仍引用已弃用 token：${tokenPath}`, detail: vault.tokens.get(tokenPath)?.deprecationNote })
+        push({ code: 'contract.deprecated-token', severity: 'warn', path: contract.id, message: `${contract.title} 仍引用已弃用 token：${tokenPath}`, messageEn: `${contract.title} still references a deprecated token: ${tokenPath}`, detail: vault.tokens.get(tokenPath)?.deprecationNote, detailEn: vault.tokens.get(tokenPath)?.deprecationNote })
       }
     }
   }
 
   // 5. Style cards
   for (const card of vault.styleCards) {
-    if (!card.name) push({ code: 'style-card.name', severity: 'warn', path: card.id, message: '风格卡缺少 name。' })
-    if (!card.note) push({ code: 'style-card.note', severity: 'warn', path: card.id, message: `${card.name || card.id} 没有写“谁维护/代价”。` })
+    if (!card.name) push({ code: 'style-card.name', severity: 'warn', path: card.id, message: '风格卡缺少 name。', messageEn: 'Style card is missing name.' })
+    if (!card.note) push({ code: 'style-card.note', severity: 'warn', path: card.id, message: `${card.name || card.id} 没有写“谁维护/代价”。`, messageEn: `${card.name || card.id} has no maintenance/cost note.` })
     for (const color of card.colors || []) {
       if (typeof color === 'string' && color.includes('.') && !vault.tokens.has(color)) {
-        push({ code: 'style-card.token-missing', severity: 'warn', path: card.id, message: `${card.name} 引用了不存在的 token：${color}` })
+        push({ code: 'style-card.token-missing', severity: 'warn', path: card.id, message: `${card.name} 引用了不存在的 token：${color}`, messageEn: `${card.name} references a missing token: ${color}` })
       } else if (typeof color === 'string' && vault.tokens.get(color)?.deprecated) {
-        push({ code: 'style-card.deprecated-token', severity: 'warn', path: card.id, message: `${card.name} 仍引用已弃用 token：${color}` })
+        push({ code: 'style-card.deprecated-token', severity: 'warn', path: card.id, message: `${card.name} 仍引用已弃用 token：${color}`, messageEn: `${card.name} still references a deprecated token: ${color}` })
       }
     }
   }
@@ -149,6 +151,11 @@ export function runChecks(vault: Vault, extraIssues: Issue[] = []): CheckResult 
   const infos = issues.filter(i => i.severity === 'info').length
   const score = Math.max(0, Math.min(100, 100 - errors * 14 - warnings * 4))
   return { issues, errors, warnings, infos, score }
+}
+
+export function localizeCheckResult(result: CheckResult, lang: string): CheckResult {
+  if (lang !== 'en') return result
+  return { ...result, issues: result.issues.map(i => ({ ...i, message: i.messageEn || i.message, detail: i.detailEn ?? i.detail })) }
 }
 
 export function reportMarkdown(vault: Vault, result: CheckResult): string {

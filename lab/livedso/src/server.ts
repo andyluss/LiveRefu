@@ -4,7 +4,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { URL } from 'node:url'
 import { loadVault, projection, saveContract, saveToken, saveTokenLifecycle, stateView } from './vault.ts'
-import { runChecks } from './checks.ts'
+import { localizeCheckResult, runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
 import { loadRegistry } from './registry.ts'
 import { createSnapshot, diffSnapshot, listSnapshots } from './history.ts'
@@ -63,6 +63,8 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
   const server = createServer(async (req, res) => {
     try {
       const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`)
+      const lang = url.searchParams.get('lang') === 'en' ? 'en' : 'zh'
+      const localized = () => localizeCheckResult(result, lang)
       if (url.pathname === '/favicon.ico') { res.writeHead(204); return res.end() }
       if (url.pathname === '/api/health') return json(res, 200, { ok: true, service: 'livedso', vault: vaultRoot, activeVault: active, plugins: loadedPlugins.plugins.map(p => p.name), pluginErrors: loadedPlugins.errors.length })
       let vault = loadVault(vaultRoot)
@@ -76,15 +78,15 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
         vaultRoot = resolve(next.path)
         vault = loadVault(vaultRoot)
         result = check(vault)
-        return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
+        return json(res, 200, { ...scoped(stateView(vault, localized())), runtime: process.version })
       }
-      if (url.pathname === '/api/state' && req.method === 'GET') return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
-      if (url.pathname === '/api/check' && req.method === 'POST') return json(res, 200, { checks: result })
-      if (url.pathname === '/api/report/bundle' && req.method === 'POST') return json(res, 200, buildReportBundle(vault, result, new URL('../templates/reports', import.meta.url).pathname))
+      if (url.pathname === '/api/state' && req.method === 'GET') return json(res, 200, { ...scoped(stateView(vault, localized())), runtime: process.version })
+      if (url.pathname === '/api/check' && req.method === 'POST') return json(res, 200, { checks: localized() })
+      if (url.pathname === '/api/report/bundle' && req.method === 'POST') return json(res, 200, buildReportBundle(vault, localized(), new URL('../templates/reports', import.meta.url).pathname))
       if (url.pathname === '/api/report/templates' && req.method === 'GET') return json(res, 200, { templates: listReportTemplates(new URL('../templates/reports', import.meta.url).pathname) })
       if (url.pathname === '/api/report' && req.method === 'POST') {
         const body = JSON.parse(await readBody(req)) as { template?: string }
-        return json(res, 200, { markdown: renderReport(vault, result, body.template || 'health', new URL('../templates/reports', import.meta.url).pathname) })
+        return json(res, 200, { markdown: renderReport(vault, localized(), body.template || 'health', new URL('../templates/reports', import.meta.url).pathname) })
       }
       if (url.pathname === '/api/projection' && req.method === 'POST') return json(res, 200, { css: projection(vault) })
       if (url.pathname === '/api/token' && req.method === 'POST') {
@@ -93,7 +95,7 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
         saveToken(vault, body.path, body.value)
         vault = loadVault(vaultRoot)
         result = check(vault)
-        return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
+        return json(res, 200, { ...scoped(stateView(vault, localized())), runtime: process.version })
       }
       if (url.pathname === '/api/token/lifecycle' && req.method === 'POST') {
         const body = JSON.parse(await readBody(req)) as { path?: string; deprecated?: boolean; replacedBy?: string; note?: string }
@@ -101,7 +103,7 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
         saveTokenLifecycle(vault, body.path, { deprecated: Boolean(body.deprecated), replacedBy: body.replacedBy, note: body.note })
         vault = loadVault(vaultRoot)
         result = check(vault)
-        return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
+        return json(res, 200, { ...scoped(stateView(vault, localized())), runtime: process.version })
       }
       if (url.pathname === '/api/vaults/overview' && req.method === 'GET') return json(res, 200, { ...runCi({ registry: registry.file, plugins: loadedPlugins.plugins, pluginErrors: loadedPlugins.errors }), activeVault: active })
       if (url.pathname === '/api/trends' && req.method === 'GET') return json(res, 200, allTrends(registry.file))
@@ -129,7 +131,7 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
         saveContract(vault, body.id, patch)
         vault = loadVault(vaultRoot)
         result = check(vault)
-        return json(res, 200, { ...scoped(stateView(vault, result)), runtime: process.version })
+        return json(res, 200, { ...scoped(stateView(vault, localized())), runtime: process.version })
       }
       if (url.pathname.startsWith('/api/')) return json(res, 404, { error: 'not found' })
       const file = staticFile(url.pathname)

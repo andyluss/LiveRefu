@@ -14,7 +14,7 @@ import { allTrends } from '../src/trend.ts'
 import { pluginTestAll } from '../src/plugin-test.ts'
 import { buildReportBundle, listReportTemplates, renderReport } from '../src/reports.ts'
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
-import { runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
+import { localizeCheckResult, runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 
 const root = fileURLToPath(new URL('../vault', import.meta.url))
 
@@ -276,4 +276,14 @@ test('frontend exposes routes, i18n, skins and nav groups', () => {
   assert.match(js, /applySkin/)
   assert.match(i18n, /LiveAtelier/)
   assert.match(html, /灵动构坊/)
+})
+
+
+test('rule messages have English versions', () => {
+  const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+  const result = runChecks(vault)
+  assert.ok(result.issues.length > 0)
+  assert.ok(result.issues.every(i => typeof i.messageEn === 'string' && i.messageEn.length > 0))
+  const en = localizeCheckResult(result, 'en')
+  assert.ok(en.issues.every(i => /^[\x00-\x7F]+$/.test(i.message)))
 })

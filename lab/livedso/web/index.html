@@ -27,7 +27,7 @@
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
       <span class="brand-text"><b data-i18n-zh="灵动构坊" data-i18n-en="LiveAtelier">LiveAtelier</b><small data-i18n-zh="LIVEDSO · 设计系统操作台" data-i18n-en="LIVEDSO · DESIGN SYSTEM OPS">LIVEDSO · DESIGN SYSTEM OPS</small></span>
     </a>
-    <span class="lab-chip">LAB / 1.1.1</span>
+    <span class="lab-chip">LAB / 1.2.0</span>
     <span class="status-chip" id="status-chip"><i></i><span>connecting</span></span>
     <div class="top-actions">
       <button class="btn ghost" id="run-checks" type="button">运行闸门</button>
@@ -57,7 +57,7 @@
       <div class="nav-group"><div class="nav-group-title">本地</div>
         <button type="button" data-view="history">历史</button>
         <button type="button" data-view="trends">趋势</button>
-        <button type="button" data-view="vaults">多库</button>
+        <button type="button" data-view="vaults">藏库</button>
       </div>
       <div class="nav-group"><div class="nav-group-title">输出</div>
         <button type="button" data-view="report">报告/投影</button>
@@ -83,7 +83,7 @@
       <div class="hero-grid">
         <article class="health-card">
           <div class="health-ring" id="health-ring"><div><b id="health-score">—</b><span>/100</span></div></div>
-          <div class="health-copy"><div class="eyebrow">HEALTH</div><h2 id="health-label">等待读取</h2><p id="health-detail">启动本地 vault 后生成。</p><button class="btn small ghost" type="button" data-view="checks">查看问题 →</button></div>
+          <div class="health-copy"><div class="eyebrow">HEALTH</div><h2 id="health-label">等待读取</h2><p id="health-detail">启动本地藏库 后生成。</p><button class="btn small ghost" type="button" data-view="checks">查看问题 →</button></div>
         </article>
         <div class="metric-grid">
           <div class="metric"><span>Tokens</span><b id="m-tokens">—</b><small>source of truth</small></div>
@@ -109,7 +109,7 @@
 
     <section class="view" id="view-tokens" aria-labelledby="tokens-title">
       <div class="view-head"><div><div class="eyebrow">SOURCE OF TRUTH</div><h1 id="tokens-title">Tokens</h1></div><div class="head-meta"><span class="chip" id="token-filter-count">—</span></div></div>
-      <p class="lede">看得到源、别名与解析值。语义层写裸色会被标出来；改值会写回 vault 文件。</p>
+      <p class="lede">看得到源、别名与解析值。语义层写裸色会被标出来；改值会写回 藏库文件。</p>
       <div class="toolbar">
         <label class="search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15 15 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="token-search" type="search" placeholder="搜索 path / value / alias" autocomplete="off"></label>
         <select id="tier-filter" aria-label="按层过滤"><option value="">全部层</option><option value="ref">ref</option><option value="sys">sys</option><option value="product">product</option></select>
@@ -126,7 +126,7 @@
     </section>
 
     <section class="view" id="view-preview" aria-labelledby="preview-title">
-      <div class="view-head"><div><div class="eyebrow">LIVE COMPONENT PREVIEW</div><h1 id="preview-title">组件预览</h1></div><div class="head-meta"><span class="chip">vault tokens</span></div></div>
+      <div class="view-head"><div><div class="eyebrow">LIVE COMPONENT PREVIEW</div><h1 id="preview-title">组件预览</h1></div><div class="head-meta"><span class="chip">藏库 Token</span></div></div>
       <p class="lede">用 vault 里的真实 token 渲染组件，而不是看截图。预览只读取解析值，不写回。</p>
       <div class="preview-toolbar"><label>风格卡<select id="preview-card"></select></label><div class="preview-states" role="group" aria-label="预览状态"><button type="button" data-preview-state="default" class="active">默认</button><button type="button" data-preview-state="hover">悬停</button><button type="button" data-preview-state="focus">聚焦</button><button type="button" data-preview-state="disabled">禁用</button></div><span class="chip" id="preview-token-count">—</span></div>
       <div class="preview-stage"><div id="preview-canvas" class="preview-canvas"><div class="empty">读取 token 中……</div></div></div>
@@ -149,7 +149,7 @@
 
     <section class="view" id="view-adoption" aria-labelledby="adoption-title">
       <div class="view-head"><div><div class="eyebrow">ADOPTION / READ-ONLY</div><h1 id="adoption-title">采用扫描</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
-      <p class="lede">扫描一个代码目录，看它有没有真的在用 vault 的 token，以及哪里还在写裸色、引用了不存在的 --dso- 变量。只读，不改目标目录。</p>
+      <p class="lede">扫描一个代码目录，看它有没有真的在用 藏库的 token，以及哪里还在写裸色、引用了不存在的 --dso- 变量。只读，不改目标目录。</p>
       <div class="adoption-toolbar"><label class="search"><input id="adoption-root" type="text" placeholder="目录，例如 ../../design 或 ../my-app" spellcheck="false"></label><button class="btn" id="run-adoption" type="button">扫描</button><span class="chip" id="adoption-status">未扫描</span></div>
       <div class="adoption-summary" id="adoption-summary"></div>
       <div class="adoption-grid"><section class="panel"><div class="panel-head"><h2>被使用的 token</h2><span class="chip" id="adoption-token-count">—</span></div><div id="adoption-tokens" class="adoption-list"><div class="empty">输入目录后扫描。</div></div></section><section class="panel"><div class="panel-head"><h2>文件 / 裸色 / 未知引用</h2><span class="chip" id="adoption-file-count">—</span></div><div id="adoption-files" class="adoption-list"><div class="empty">输入目录后扫描。</div></div></section></div>
@@ -157,22 +157,22 @@
 
     <section class="view" id="view-history" aria-labelledby="history-title">
       <div class="view-head"><div><div class="eyebrow">LOCAL HISTORY</div><h1 id="history-title">历史快照</h1></div><div class="head-meta"><span class="chip">local only</span></div></div>
-      <p class="lede">快照只写本地 vault 的 <code>.history/</code>，不上传、不依赖 Git。对比只读，不会自动回滚。</p>
+      <p class="lede">快照只写本地藏库 的 <code>.history/</code>，不上传、不依赖 Git。对比只读，不会自动回滚。</p>
       <div class="history-toolbar"><button class="btn" id="snapshot-now" type="button">创建快照</button><span class="chip" id="history-status">未加载</span></div>
       <div id="history-summary" class="history-summary"></div><div id="history-trend" class="history-trend"></div>
-      <div class="history-grid"><section class="panel"><div class="panel-head"><h2>快照</h2><span class="chip" id="history-count">—</span></div><div id="history-list" class="history-list"><div class="empty">还没有快照。</div></div></section><section class="panel"><div class="panel-head"><h2>差异</h2><span class="chip" id="diff-status">选择快照</span></div><div id="history-diff" class="history-diff"><div class="empty">选一个快照查看当前 vault 与它的差异。</div></div></section></div>
+      <div class="history-grid"><section class="panel"><div class="panel-head"><h2>快照</h2><span class="chip" id="history-count">—</span></div><div id="history-list" class="history-list"><div class="empty">还没有快照。</div></div></section><section class="panel"><div class="panel-head"><h2>差异</h2><span class="chip" id="diff-status">选择快照</span></div><div id="history-diff" class="history-diff"><div class="empty">选一个快照查看当前藏库 与它的差异。</div></div></section></div>
     </section>
 
     <section class="view" id="view-trends" aria-labelledby="trends-title">
       <div class="view-head"><div><div class="eyebrow">LOCAL TRENDS</div><h1 id="trends-title">趋势</h1></div><div class="head-meta"><span class="chip">all vaults</span></div></div>
-      <p class="lede">把多个 vault 的快照放在一起看。只读本地 <code>.history/</code>，不上传、不依赖云。</p>
+      <p class="lede">把多个 藏库的快照放在一起看。只读本地 <code>.history/</code>，不上传、不依赖云。</p>
       <div class="trends-toolbar"><button class="btn" id="refresh-trends" type="button">刷新</button><span class="chip" id="trends-status">未加载</span></div>
       <div id="trends-grid" class="trends-grid"><div class="empty">读取中……</div></div>
     </section>
 
     <section class="view" id="view-vaults" aria-labelledby="vaults-title">
-      <div class="view-head"><div><div class="eyebrow">LOCAL FLEET</div><h1 id="vaults-title">多库总览</h1></div><div class="head-meta"><span class="chip" id="vaults-count">—</span></div></div>
-      <p class="lede">一个本地总览：每个 vault 的健康分、错误/警告与资产数量。切换只影响当前本地服务。</p>
+      <div class="view-head"><div><div class="eyebrow">LOCAL FLEET</div><h1 id="vaults-title">多藏库总览</h1></div><div class="head-meta"><span class="chip" id="vaults-count">—</span></div></div>
+      <p class="lede">一个本地总览：每个 藏库的健康分、错误/警告与资产数量。切换只影响当前本地服务。</p>
       <div class="vaults-toolbar"><button class="btn" id="refresh-vaults" type="button">刷新</button><span class="chip" id="vaults-status">未加载</span></div>
       <div id="vaults-grid" class="vaults-grid"><div class="empty">读取中……</div></div>
     </section>

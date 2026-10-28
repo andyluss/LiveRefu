@@ -71,8 +71,10 @@ export interface Issue {
   code: string
   severity: IssueSeverity
   message: string
+  messageEn?: string
   path?: string
   detail?: string
+  detailEn?: string
 }
 
 export interface CheckResult {

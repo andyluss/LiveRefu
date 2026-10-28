@@ -20,7 +20,7 @@ function normalizeIssue(raw: unknown, pluginName: string): Issue {
   if (typeof x.code !== 'string' || !x.code) throw new Error(`${pluginName} 的 issue 缺少 code`)
   if (typeof x.message !== 'string' || !x.message) throw new Error(`${pluginName} 的 issue 缺少 message`)
   const severity = SEVERITIES.has(x.severity as IssueSeverity) ? x.severity as IssueSeverity : 'warn'
-  return { code: x.code, severity, message: x.message, path: typeof x.path === 'string' ? x.path : undefined, detail: typeof x.detail === 'string' ? x.detail : undefined }
+  return { code: x.code, severity, message: x.message, messageEn: typeof x.messageEn === 'string' ? x.messageEn : undefined, path: typeof x.path === 'string' ? x.path : undefined, detail: typeof x.detail === 'string' ? x.detail : undefined, detailEn: typeof x.detailEn === 'string' ? x.detailEn : undefined }
 }
 
 export async function loadPlugins(dir: string): Promise<PluginLoadResult> {
@@ -49,7 +49,7 @@ export function runPlugins(plugins: LocalPlugin[], vault: Vault): Issue[] {
   const issues: Issue[] = []
   for (const plugin of plugins) {
     try {
-      const result = plugin.check({ vault, version: '1.1.1' })
+      const result = plugin.check({ vault, version: '1.2.0' })
       for (const issue of result || []) issues.push(normalizeIssue(issue, plugin.name))
     } catch (e) {
       issues.push({ code: 'plugin.runtime', severity: 'error', path: plugin.name, message: `插件运行失败：${(e as Error).message}` })

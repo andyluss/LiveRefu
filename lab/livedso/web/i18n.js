@@ -6,7 +6,7 @@
     '工作台': 'Workbench', '审视': 'Review', '本地': 'Local', '输出': 'Output',
     '总览': 'Overview', '契约': 'Contracts', '预览': 'Preview', '风格卡': 'Style cards',
     '闸门': 'Gates', '采用扫描': 'Adoption', '历史': 'History', '趋势': 'Trends',
-    '多库': 'Vaults', '报告/投影': 'Report / projection',
+    '藏库': 'Vault', '多藏库': 'Vaults', '多藏库总览': 'Vault overview', '报告/投影': 'Report / projection',
     '运行闸门': 'Run checks', '系统': 'System', '浅色': 'Light', '深色': 'Dark',
     '你的设计系统，': 'Your design system,', '现在是什么状态？': 'what state is it in?',
     '等待读取': 'Waiting for data', '启动本地 vault 后生成。': 'Generated after a local vault starts.',
@@ -99,7 +99,8 @@
   for (const [zh, en] of Object.entries(EN)) ZH[en] = zh;
   const attrs = ['placeholder', 'aria-label', 'title', 'alt'];
   const attrOrig = new WeakMap();
-  let locale = localStorage.getItem('livedso-locale') || (String(navigator.language || '').toLowerCase().startsWith('en') ? 'en' : 'zh');
+  const forcedLang = new URLSearchParams(location.search).get('lang');
+  let locale = (forcedLang === 'zh' || forcedLang === 'en') ? forcedLang : (localStorage.getItem('livedso-locale') || (String(navigator.language || '').toLowerCase().startsWith('en') ? 'en' : 'zh'));
   if (!['zh', 'en'].includes(locale)) locale = 'zh';
   let busy = false;
   const isChinese = s => /[\u4e00-\u9fff]/.test(s);
@@ -161,6 +162,7 @@
   function set(next) {
     locale = next === 'en' ? 'en' : 'zh';
     localStorage.setItem('livedso-locale', locale);
+    const u = new URL(location.href); u.searchParams.set('lang', locale); history.replaceState(null, '', u);
     apply(document.body);
     document.dispatchEvent(new CustomEvent('livedso:locale', { detail: { locale } }));
   }

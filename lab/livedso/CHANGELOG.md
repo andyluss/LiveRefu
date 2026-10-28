@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.2.0] - 2026-10-28 12:22
+
+### Added
+
+- **Vault 中文化**：中文 UI 统一为 **藏库**；`vault/`、`LIVEDSO_VAULT`、API/代码继续用 Vault/vault。
+- **规则英文版**：内置检查 issue 增加 `messageEn`/`detailEn`；API 用 `?lang=en` 返回英文，CLI 用 `--lang en`；插件可提供 `messageEn`。
+- **`?lang=zh|en` 强制覆盖**：优先于浏览器/localStorage；切换语言同步 URL。
+
+### Changed
+
+- `node:test` 21 → **22**（规则英文覆盖）。
+- 版本 1.1.1 → 1.2.0。
+
 ## [1.1.1] - 2026-10-28 12:05
 
 ### Changed

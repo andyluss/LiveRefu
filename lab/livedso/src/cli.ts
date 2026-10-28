@@ -4,7 +4,7 @@ import { writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadVault, projection } from './vault.ts'
-import { runChecks } from './checks.ts'
+import { localizeCheckResult, runChecks } from './checks.ts'
 import { buildReportBundle, listReportTemplates, renderReport } from './reports.ts'
 import { startServer } from './server.ts'
 import { importTokens } from './import.ts'
@@ -18,7 +18,7 @@ import { loadPlugins, runPlugins } from './plugins.ts'
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vault', import.meta.url))
-const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--max-warnings', '--max-raw', '--max-deprecated'])
+const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--lang', '--max-warnings', '--max-raw', '--max-deprecated'])
 const positionals: string[] = []
 for (let i = 1; i < args.length; i++) {
   const a = args[i]!
@@ -30,10 +30,12 @@ const vaultArg = process.env.LIVEDSO_VAULT || (defaultVaultCmd ? defaultVault : 
 const root = resolve(vaultArg)
 const pluginDir = resolve(args.includes('--plugins') ? args[args.indexOf('--plugins') + 1]! : process.env.LIVEDSO_PLUGINS || fileURLToPath(new URL('../plugins', import.meta.url)))
 const loadedPlugins = await loadPlugins(pluginDir)
+const langArg = args.indexOf('--lang')
+const lang = langArg >= 0 ? (args[langArg + 1] === 'en' ? 'en' : 'zh') : 'zh'
 
 function printIssues(): number {
   const vault = loadVault(root)
-  const result = runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)])
+  const result = localizeCheckResult(runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)]), lang)
   console.log(`vault: ${root}`)
   console.log(`tokens: ${vault.tokens.size} · contracts: ${vault.contracts.length} · style cards: ${vault.styleCards.length}`)
   console.log(`health: ${result.score}/100 · errors: ${result.errors} · warnings: ${result.warnings}`)
@@ -51,7 +53,7 @@ switch (cmd) {
       break
     }
     const vault = loadVault(root)
-    const result = runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)])
+    const result = localizeCheckResult(runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)]), lang)
     if (args.includes('--bundle')) {
       const di = args.indexOf('--out-dir')
       const outDir = resolve(di >= 0 ? args[di + 1]! : 'reports/bundle')
@@ -177,7 +179,7 @@ switch (cmd) {
       break
     }
     const vault = loadVault(root)
-    const issues = [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)]
+    const issues = localizeCheckResult(runChecks(vault, [...loadedPlugins.errors, ...runPlugins(loadedPlugins.plugins, vault)]), lang).issues
     if (args.includes('--json')) console.log(JSON.stringify({ plugins: loadedPlugins.plugins.map(p => p.name), errors: loadedPlugins.errors, issues }, null, 2))
     else {
       console.log(`plugins: ${loadedPlugins.plugins.map(p => p.name).join(', ') || 'none'}`)
@@ -215,7 +217,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveAtelier 1.1.1 · (LiveDSO) local-first design system operations
+    console.log(`LiveAtelier 1.2.0 · (LiveDSO) local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题

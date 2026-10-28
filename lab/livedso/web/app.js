@@ -9,7 +9,9 @@
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
 
   async function api(path, options) {
-    const res = await fetch(path, Object.assign({ headers: { 'content-type': 'application/json' } }, options || {}));
+    const lang = window.LiveDSO_I18N?.locale || 'zh';
+    const sep = path.includes('?') ? '&' : '?';
+    const res = await fetch(`${path}${sep}lang=${lang}`, Object.assign({ headers: { 'content-type': 'application/json' } }, options || {}));
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     return data;
@@ -134,7 +136,7 @@
       state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
       if (state.skin) applySkin(state.skin);
       if (state.view === 'vaults') loadVaultsOverview();
-      toast('Vault 已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} tokens`);
+      toast('藏库已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} tokens`);
       return data;
     } catch (e) { toast('切换失败', e.message); renderVaultSelect(); return null; }
   }
@@ -277,7 +279,7 @@
     const canvas = $('#preview-canvas');
     if (canvas) {
       canvas.setAttribute('style', vars);
-      canvas.innerHTML = `<div class="pv-row">${btn('主按钮')}${btn('次要按钮', 'secondary')}${btn('幽灵按钮', 'ghost')}</div><label class="pv-field"><span>邮箱</span><input class="pv-input ${st === 'focus' ? 'focus' : ''}" value="you@example.com" ${st === 'disabled' ? 'disabled' : ''}><small class="pv-error">${st === 'disabled' ? '禁用时仍需说明原因。' : '错误用文本说明，不只靠颜色。'}</small></label><div class="pv-panel"><div><b>面板标题</b><small>这套 token 来自当前 vault，不是截图。</small></div><span class="pv-badge">${esc(st)}</span></div>`;
+      canvas.innerHTML = `<div class="pv-row">${btn('主按钮')}${btn('次要按钮', 'secondary')}${btn('幽灵按钮', 'ghost')}</div><label class="pv-field"><span>邮箱</span><input class="pv-input ${st === 'focus' ? 'focus' : ''}" value="you@example.com" ${st === 'disabled' ? 'disabled' : ''}><small class="pv-error">${st === 'disabled' ? '禁用时仍需说明原因。' : '错误用文本说明，不只靠颜色。'}</small></label><div class="pv-panel"><div><b>面板标题</b><small>这套 token 来自当前藏库，不是截图。</small></div><span class="pv-badge">${esc(st)}</span></div>`;
     }
     $('#preview-token-count').textContent = `${d.tokens.filter(t => t.cssVar).length} tokens`;
     $('#preview-tokens').innerHTML = ['sys.color.action.primary','sys.color.action.onPrimary','sys.color.focus.ring','sys.color.text.primary','sys.color.feedback.danger'].map(path => `<code>${esc(path)}</code>`).join('');
@@ -365,7 +367,7 @@
     const maxTokens = Math.max(1, ...trend.map(x => x.tokens));
     $('#history-trend').innerHTML = trend.length ? `<div class="eyebrow">TREND · OLDEST → NEWEST</div><div class="trend-bars">${trend.map(x => `<div class="trend-col" title="${esc(x.createdAt)}"><div class="trend-bar" style="height:${Math.max(4, Math.round(x.tokens / maxTokens * 100))}%"></div><span>${x.tokens}</span></div>`).join('')}</div><div class="trend-meta">${trend.length} 份快照 ｜ 最新 deprecated ${trend[trend.length - 1]?.deprecated ?? 0}` : '';
     el.innerHTML = list.length ? list.map(x => `<button class="history-item ${state.historyId === x.id ? 'active' : ''}" data-history="${esc(x.id)}" type="button"><code>${esc(x.id)}</code><small>${esc(x.createdAt)} · ${x.tokens} tokens / ${x.contracts} contracts</small></button>`).join('') : '<div class="empty">点击“创建快照”生成第一份。</div>';
-    if (!state.diff) $('#history-diff').innerHTML = '<div class="empty">选一个快照查看当前 vault 与它的差异。</div>';
+    if (!state.diff) $('#history-diff').innerHTML = '<div class="empty">选一个快照查看当前藏库 与它的差异。</div>';
   }
   async function snapshotNow() {
     try {
@@ -388,7 +390,7 @@
     $('#diff-status').textContent = `+${d.counts.added} −${d.counts.removed} ~${d.counts.changed}`;
     const row = (cls, sign, text, detail = '') => `<div class="diff-row ${cls}"><span class="sign">${sign}</span><div><code>${esc(text)}</code>${detail ? `<div class="diff-detail">${esc(detail)}</div>` : ''}</div></div>`;
     const parts = [...d.addedTokens.map(x => row('add', '+', x)), ...d.removedTokens.map(x => row('remove', '−', x)), ...d.changedTokens.map(x => row('change', '~', x.path, `${x.before.raw} → ${x.after.raw}`)), ...d.addedContracts.map(x => row('add', '+', 'contract ' + x)), ...d.removedContracts.map(x => row('remove', '−', 'contract ' + x)), ...d.changedContracts.map(x => row('change', '~', 'contract ' + x)), ...d.addedStyleCards.map(x => row('add', '+', 'style-card ' + x)), ...d.removedStyleCards.map(x => row('remove', '−', 'style-card ' + x)), ...d.changedStyleCards.map(x => row('change', '~', 'style-card ' + x))];
-    $('#history-diff').innerHTML = parts.join('') || '<div class="empty">当前 vault 与这份快照没有差异。</div>';
+    $('#history-diff').innerHTML = parts.join('') || '<div class="empty">当前藏库 与这份快照没有差异。</div>';
   }
   async function loadTrends() {
     try {
@@ -400,7 +402,7 @@
   function renderTrends() {
     const r = state.trends;
     $('#trends-status').textContent = r ? `${r.vaults.length} vaults` : '未加载';
-    if (!r?.vaults?.length) { $('#trends-grid').innerHTML = '<div class="empty">没有注册 vault。</div>'; return; }
+    if (!r?.vaults?.length) { $('#trends-grid').innerHTML = '<div class="empty">没有注册藏库。</div>'; return; }
     $('#trends-grid').innerHTML = r.vaults.map(v => {
       const max = Math.max(1, ...v.points.map(p => p.tokens));
       const latest = v.points[v.points.length - 1];
@@ -412,7 +414,7 @@
       const r = await api('/api/vaults/overview');
       state.overview = r;
       renderVaultsOverview();
-    } catch (e) { toast('Vault 总览加载失败', e.message); }
+    } catch (e) { toast('藏库总览加载失败', e.message); }
   }
   function renderVaultsOverview() {
     const r = state.overview;
@@ -496,7 +498,7 @@
     } catch (e) {
       state.error = e.message;
       setStatus('err', 'offline');
-      $('#health-label').textContent = '无法连接本地 vault';
+      $('#health-label').textContent = '无法连接本地藏库';
       $('#health-detail').textContent = e.message + ' — 运行 node src/cli.ts serve';
       toast('连接失败', e.message);
     }
@@ -570,6 +572,7 @@
       if (e.target.id === 'download-css') { state.css ? download('livedso-tokens.css', state.css, 'text/css') : toast('还没有 CSS', '先生成 CSS 投影。'); return; }
     });
     document.addEventListener('submit', (e) => { if (e.target.id === 'contract-form') { e.preventDefault(); saveContract(e.target); } });
+    document.addEventListener('livedso:locale', () => { if (state.data) refresh(); });
     document.addEventListener('change', (e) => { if (e.target.id === 'preview-card') { state.previewCard = e.target.value; renderPreview(); } if (e.target.id === 'report-template') { state.reportTemplate = e.target.value; } if (e.target.id === 'vault-select') switchVault(e.target.value); if (e.target.id === 'skin-select') applySkin(e.target.value); if (e.target.id === 'compare-a') { state.compareA = e.target.value; renderCompare(); } if (e.target.id === 'compare-b') { state.compareB = e.target.value; renderCompare(); } });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeDrawer();
