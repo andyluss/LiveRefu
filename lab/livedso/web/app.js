@@ -162,7 +162,7 @@
     $('#vault-meta').textContent = d.meta.name || 'vault';
     $('#token-count').textContent = `${d.counts.tokens} ${loc('tokens','个 Token')}`;
     $('#vault-path').textContent = d.root.replace(/^.*\/lab\/livedso\//, 'lab/livedso/');
-    $('#node-version').textContent = d.runtime || 'local';
+    $('#node-version').textContent = 'Node: ' + (d.runtime || 'local');
     renderIssues($('#overview-issues'), d.checks.issues.slice(0, 5), true);
   }
 
