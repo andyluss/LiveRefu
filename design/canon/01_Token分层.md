@@ -118,7 +118,7 @@ component.input.border → sys.role.border
 1. 为每个藏库选一张 **默认卡**，把它的 50 角色落到 `sys.role`；
 2. 对每张非默认卡，逐角色与 `sys` 比较，只生成 `product.<card>.role` 的差异；
 3. 风格卡 `roles` 改为 `sys.role.*` 或 `product.<card>.role.*`；
-4. 删除 `theme-roles.tokens.json`；LiveDSO v2.0 已删除，不再保留 `theme.*` 别名；
+4. 删除 `theme-roles.tokens.json`；v2.0 实验曾删除，但 main 已回到 v1.9.1，按逐库迁移处理；
 5. 跑 `skin:check` 与视觉回归，确认视觉不变。
 
 ## 五、别名规则

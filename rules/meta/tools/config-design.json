@@ -17,7 +17,8 @@
     "kits",
     "components",
     "tools",
-    "rules"
+    "rules",
+    "canon"
   ],
   "code_types": [
     "tools"

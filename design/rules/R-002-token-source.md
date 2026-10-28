@@ -1,4 +1,4 @@
-# R-002 · Token 单一事实来源与三层结构
+# R-002 · Token 单一事实来源与四层结构
 
 > **状态**：`active` ｜ **级别**：MUST ｜ **生效**：2026-10-21
 > **范围**：颜色、字体、字号、间距、尺寸、圆角、描边、动效、阴影、图标 ｜ **Owner**：设计主控
@@ -10,12 +10,13 @@
 
 ## 二、要求
 
-1. **三层**：`ref.*`（原始值）→ `sys.*`（通用语义）→ `product.*`（产品/纪元语义）；业务只消费 `sys`/`product`。
-2. **源文件**：`tokens/core/*.tokens.json` 与 `tokens/products/*.tokens.json` 是唯一手写源；`tokens/dist/**` 是生成物。
-3. **生成**：Web CSS、Godot JSON、App JSON、token 文档由 `tools/build_tokens.ts` 生成；生成物提交并纳入对账。
-4. **不手改**：`dist/**`、`components.css`、Godot token 副本不得手改；改源后重跑。
-5. **Schema**：新增字段/类型先改 `tokens/schema/tokens.schema.json`，再过校验。
-6. **禁止裸值**：业务 CSS/TS/Vue/Godot 资源不得出现色值、字号、圆角、间距、动效时长裸值；例外必须登记。
+1. **四层**：`ref.*`（原始值）→ `sys.*`（通用语义）→ `component.*`（可选组件层）→ `product.*`（产品/纪元语义）；业务只消费 `sys`/`component`/`product`。
+2. **component 可选**：只允许引用 `ref`/`sys`，不放新的原始值；没有真实消费者的组件不建。
+3. **源文件**：`tokens/core/*.tokens.json` 与 `tokens/products/*.tokens.json` 是唯一手写源；`tokens/dist/**` 是生成物。
+4. **生成**：Web CSS、Godot JSON、App JSON、token 文档由 `tools/build_tokens.ts` 生成；生成物提交并纳入对账。
+5. **不手改**：`dist/**`、`components.css`、Godot token 副本不得手改；改源后重跑。
+6. **Schema**：新增字段/类型先改 `tokens/schema/tokens.schema.json`，再过校验。
+7. **禁止裸值**：业务 CSS/TS/Vue/Godot 资源不得出现色值、字号、圆角、间距、动效时长裸值；例外必须登记。
 
 ## 三、验收
 
@@ -41,3 +42,4 @@ bash design/tools/check.sh
 | 日期 | 版本 | 变更 |
 | --- | --- | --- |
 | 2026-10-21 | v1.0 | 从 D3/D4 与 v0.1 实现固化为规则。 |
+| 2026-10-28 | v1.1 | 增加可选 `component` 层；`ref/sys/component/product`；component 只引用 ref/sys。 |

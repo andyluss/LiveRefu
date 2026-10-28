@@ -12,7 +12,8 @@
 
 ### 新增
 
-- **LiveDSO v2.0 按纲领落地**：scale 归 `ref`，默认角色归 `sys.role`，风格卡差异归 `product.<card>.role`，`theme-roles.tokens.json` 删除；角色色值统一由 `ref-generated` 提供。
+- **LRDS 可选 component 层**：schema 与 `tokens/core/component.tokens.json` 增加 button/input/card；只引用 ref/sys，生成物同步。
+- **LiveDSO v2.0 冻结为实验**：tag `livedso-v2.0.0` 保留；main 回到 v1.9.1，避免一次性破坏 LRDS 结构。
 
 - **设计系统纲领文集 [`canon/`](canon/README.md)**：独立于项目流水账的纲领层，含总纲、Token 分层、50 语义角色、主题/风格卡、组件契约、质量闸门、多品牌多介质、实现工具链、治理、落地检查表。
 - 明确 `ref`（原始值）/ `sys.role`（默认语义）/ `component`（组件）/ `product.<card>`（稀疏覆盖）四层；`theme.<card>` 只作迁移别名，`theme-roles.tokens.json` 不再作为全量副本新增。

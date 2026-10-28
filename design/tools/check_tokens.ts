@@ -115,9 +115,10 @@ function main(): number {
 
   const refCount = [...loaded.tokens.keys()].filter(p => p.startsWith('ref.')).length
   const sysCount = [...loaded.tokens.keys()].filter(p => p.startsWith('sys.')).length
+  const componentCount = [...loaded.tokens.keys()].filter(p => p.startsWith('component.')).length
   const productCount = [...loaded.tokens.keys()].filter(p => p.startsWith('product.')).length
 
-  console.log(`Token 校验 · ${loaded.tokens.size} 个 token（ref ${refCount} / sys ${sysCount} / product ${productCount}）`)
+  console.log(`Token 校验 · ${loaded.tokens.size} 个 token（ref ${refCount} / sys ${sysCount} / component ${componentCount} / product ${productCount}）`)
   for (const w of loaded.warnings) console.log(`  [WARN] ${w}`)
 
   if (loaded.errors.length) {

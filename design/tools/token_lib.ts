@@ -193,6 +193,7 @@ export function loadTokens(designRoot = DESIGN_ROOT): LoadResult {
   const files = [
     join(coreDir, 'ref.tokens.json'),
     join(coreDir, 'sys.tokens.json'),
+    join(coreDir, 'component.tokens.json'),
     ...readdirSync(productDir)
       .filter(f => f.endsWith('.tokens.json'))
       .sort()
@@ -609,6 +610,12 @@ export function buildWebCss(tokens: TokenMap, productName: string): string {
   section('ref.font.family (for consumers that need the raw stack)')
   for (const [path, token] of [...tokens].sort(([a], [b]) => a.localeCompare(b))) {
     if (!path.startsWith('ref.font.family.')) continue
+    lines.push(`  ${cssVar(path)}: ${cssValue(token)};`)
+  }
+
+  section('component (optional)')
+  for (const [path, token] of [...tokens].sort(([a], [b]) => a.localeCompare(b))) {
+    if (!path.startsWith('component.')) continue
     lines.push(`  ${cssVar(path)}: ${cssValue(token)};`)
   }
 

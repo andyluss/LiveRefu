@@ -105,6 +105,26 @@
   --lr-ref-font-family-sans: ui-sans-serif, system-ui, -apple-system, "SF Pro SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --lr-ref-font-family-serif: ui-serif, "Songti SC", "Noto Serif CJK SC", serif;
 
+  /* component (optional) */
+  --lr-component-button-bg: #4FD1C5;
+  --lr-component-button-border: #24303F;
+  --lr-component-button-fg: #0B0F14;
+  --lr-component-button-focus: #8AB4F8;
+  --lr-component-button-height: 40px;
+  --lr-component-button-padding-x: 12px;
+  --lr-component-button-radius: 4px;
+  --lr-component-card-bg: #111823;
+  --lr-component-card-border: #24303F;
+  --lr-component-card-padding: 16px;
+  --lr-component-card-radius: 8px;
+  --lr-component-input-bg: #111823;
+  --lr-component-input-border: #24303F;
+  --lr-component-input-fg: #F3EDE1;
+  --lr-component-input-focus: #8AB4F8;
+  --lr-component-input-height: 40px;
+  --lr-component-input-padding-x: 12px;
+  --lr-component-input-radius: 4px;
+
   /* product.future-archive.color */
   --lr-future-archive-amber: #E0A94A;
   --lr-future-archive-bg: #0B1017;

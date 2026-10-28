@@ -4,31 +4,61 @@
   "title": "LRDS Design Token File",
   "description": "DTCG 风格的 token 文件。真正的约束由 design/tools/check_tokens.ts 执行；本 schema 供编辑器补全与早期报错。",
   "type": "object",
-  "required": ["meta"],
+  "required": [
+    "meta"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "meta": {
       "type": "object",
-      "required": ["name"],
+      "required": [
+        "name"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" },
-        "note": { "type": "string" },
-        "product": { "type": "string" },
-        "era": { "type": "string" },
-        "mode": { "type": "string" }
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "era": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        }
       },
       "additionalProperties": true
     },
-    "ref": { "$ref": "#/$defs/tree" },
-    "sys": { "$ref": "#/$defs/tree" },
-    "product": { "$ref": "#/$defs/tree" }
+    "ref": {
+      "$ref": "#/$defs/tree"
+    },
+    "sys": {
+      "$ref": "#/$defs/tree"
+    },
+    "product": {
+      "$ref": "#/$defs/tree"
+    },
+    "component": {
+      "$ref": "#/$defs/tree"
+    }
   },
   "additionalProperties": false,
   "$defs": {
     "token": {
       "type": "object",
-      "required": ["$value", "$type"],
+      "required": [
+        "$value",
+        "$type"
+      ],
       "properties": {
         "$value": {},
         "$type": {
@@ -51,8 +81,12 @@
       "type": "object",
       "additionalProperties": {
         "oneOf": [
-          { "$ref": "#/$defs/token" },
-          { "$ref": "#/$defs/tree" }
+          {
+            "$ref": "#/$defs/token"
+          },
+          {
+            "$ref": "#/$defs/tree"
+          }
         ]
       }
     }
