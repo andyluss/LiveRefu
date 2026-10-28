@@ -12,6 +12,9 @@
 
 ### 新增
 
+- **严格 schema 试点**：`minimal` / `lrds-sample` / `lrds-real` 已转为 `meta + ref + sys + component + product`；A 档角色映射现有 `sys.color.*`，其余进 `product.<card>.role`，原始色进 `ref.generated`。
+- schema 的 token 允许生命周期字段 `deprecated` / `replacedBy` / `deprecationNote`，支持弃用审计。
+
 - **LRDS 可选 component 层**：schema 与 `tokens/core/component.tokens.json` 增加 button/input/card；只引用 ref/sys，生成物同步。
 - **LiveDSO v2.0 冻结为实验**：tag `livedso-v2.0.0` 保留；main 回到 v1.9.1，避免一次性破坏 LRDS 结构。
 

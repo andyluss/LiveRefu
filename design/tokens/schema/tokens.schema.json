@@ -73,6 +73,15 @@
             "shadow",
             "string"
           ]
+        },
+        "deprecated": {
+          "type": "boolean"
+        },
+        "replacedBy": {
+          "type": "string"
+        },
+        "deprecationNote": {
+          "type": "string"
         }
       },
       "additionalProperties": false
