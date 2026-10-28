@@ -1,5 +1,13 @@
 # LiveDSO Changelog
 
+## [1.0.1] - 2026-10-28 08:42
+
+### Changed
+
+- **正式名确定为 LiveDesigner / 灵动设计师**（代号仍为 LiveDSO）：README、产品定义、决策记录、UI 品牌、NOTICE/TRADEMARKS 同步。
+- 版本 1.0.0 → 1.0.1；许可证仍为 Apache-2.0（核心）+ 商业托管/团队/审计，贡献者政策 DCO 1.1。
+- UI 顶栏显示正式名与 `LAB / 1.0.1`。
+
 ## [1.0.0] - 2026-10-28 07:47
 
 ### Added

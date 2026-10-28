@@ -1,9 +1,9 @@
-LiveDesign (codename: LiveDSO)
-Copyright 2026 LiveDesign contributors
+LiveDesignerer / 灵动设计师师 (codename: LiveDSO)
+Copyright 2026 LiveDesignerer contributors
 
 This product is licensed under the Apache License, Version 2.0.
 See LICENSE for the full text.
 
-LiveDSO / LiveDesign 是暂定名称；名称、Logo 与品牌标识不在 Apache-2.0 的版权许可范围内，见 TRADEMARKS.md。
+LiveDesignerer / 灵动设计师师（代号 LiveDSO）是正式名称；名称、Logo 与品牌标识不在 Apache-2.0 的版权许可范围内，见 TRADEMARKS.md。
 
-v0.2 运行时只使用 Node.js 内置模块，没有第三方运行时依赖。
+运行时只使用 Node.js 内置模块，没有第三方运行时依赖。

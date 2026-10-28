@@ -1,9 +1,9 @@
 {
   "name": "livedso",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
-  "description": "LiveDSO — local-first design system operations workbench",
+  "description": "LiveDesigner / 灵动设计师 (LiveDSO) — local-first design system operations workbench",
   "engines": {
     "node": ">=24"
   },
