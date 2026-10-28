@@ -1,6 +1,12 @@
 # LiveDSO Changelog
 
-## [未发布]
+## [1.19.1] - 2026-10-28 21:06
+
+### Fixed
+
+- **Retro / Paper 预览组件发黑**：预览 CSS 仍使用旧的 `bg-raised` / `bg-sunken` / `line-*` token 名，fallback 落到深色值。统一为 `bg-surface-raised` / `bg-surface-sunken` / `border-*`。
+- 次要按钮、邮箱输入框、面板与徽标边框恢复使用当前风格卡的 surface/border。
+- 回归测试覆盖 `styles.css` 中的旧 token 名。
 
 ### Changed
 

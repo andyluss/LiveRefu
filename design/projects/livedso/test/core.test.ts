@@ -333,6 +333,12 @@ test('skin token names align with generated tokens', () => {
   assert.match(js, /--dso-sys-color-border-strong/)
   assert.doesNotMatch(js, /'--dso-sys-color-bg-sunken'/)
   assert.doesNotMatch(js, /'--dso-sys-color-line-subtle'/)
+  const css = readFileSync(fileURLToPath(new URL('../web/styles.css', import.meta.url)), 'utf8')
+  assert.match(css, /--dso-sys-color-bg-surface-sunken/)
+  assert.match(css, /--dso-sys-color-bg-surface-raised/)
+  assert.match(css, /--dso-sys-color-border-subtle/)
+  assert.doesNotMatch(css, /--dso-sys-color-bg-sunken/)
+  assert.doesNotMatch(css, /--dso-sys-color-line-/)
 })
 
 
