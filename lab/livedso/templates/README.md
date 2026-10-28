@@ -1,6 +1,6 @@
-# LiveDSO CI 模板
+# LiveAtelier CI 模板
 
-> 复制到项目 CI；路径按仓库结构调整。LiveDSO 本身不接云、不上传。
+> 复制到项目 CI；路径按仓库结构调整。LiveAtelier 本身不接云、不上传。
 
 | 文件 | 用途 |
 | --- | --- |

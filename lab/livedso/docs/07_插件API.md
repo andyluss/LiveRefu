@@ -1,4 +1,4 @@
-# LiveDSO · 本地检查插件 API
+# LiveAtelier · 本地检查插件 API
 
 > 状态：v0.9 ｜ 日期：2026-10-27 ｜ 原则：**本地优先，不上传、不执行远程代码**
 > 相关：R05（变更日志）、v0.8 本地 CI
@@ -94,7 +94,7 @@ node src/cli.ts plugin-test --all --plugins examples/plugins --json
 ## 五、安全边界
 
 - **只加载本地可信代码**；不加载远程/第三方 URL。
-- 插件运行在 LiveDSO 进程内，**没有沙箱**；能读当前进程权限内的文件。
+- 插件运行在 LiveAtelier 进程内，**没有沙箱**；能读当前进程权限内的文件。
 - 插件加载失败会产生 `plugin.load` error；运行抛错会产生 `plugin.runtime` error，不会静默吞掉。
 - 不上传 vault、token、代码。
 

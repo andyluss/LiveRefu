@@ -1,6 +1,6 @@
 # vault-lrds · 真实 LRDS 导入样本
 
-> **生成物，不要手改。** 由 LiveDSO `import` 从工作区 `design/tokens/` 导入：
+> **生成物，不要手改。** 由 LiveAtelier `import` 从工作区 `design/tokens/` 导入：
 >
 > ```bash
 > cd lab/livedso

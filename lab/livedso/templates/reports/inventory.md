@@ -1,4 +1,4 @@
-# LiveDSO · Token Inventory
+# LiveAtelier · Token Inventory
 
 > Vault: `{{vault.name}}` ｜ {{counts.tokens}} tokens（deprecated {{counts.deprecated}}）
 

@@ -215,7 +215,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveDSO 1.1.0 · local-first design system operations
+    console.log(`LiveAtelier 1.1.1 · (LiveDSO) local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题

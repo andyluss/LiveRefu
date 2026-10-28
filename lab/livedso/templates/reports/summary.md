@@ -1,4 +1,4 @@
-# LiveDSO · Summary
+# LiveAtelier · Summary
 
 > Vault: `{{vault.name}}` ｜ Generated: {{generatedAt}}
 

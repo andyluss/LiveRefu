@@ -1,4 +1,4 @@
-# LiveDSO · Deprecations
+# LiveAtelier · Deprecations
 
 > Vault: `{{vault.name}}` ｜ deprecated {{counts.deprecated}} / {{counts.tokens}}
 

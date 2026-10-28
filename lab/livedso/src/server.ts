@@ -144,7 +144,7 @@ export async function startServer(options: ServerOptions = {}): Promise<{ port: 
     server.listen(port, '127.0.0.1', () => {
       const address = server.address()
       const actualPort = typeof address === 'object' && address ? address.port : port
-      console.log(`LiveDSO · http://127.0.0.1:${actualPort}`)
+      console.log(`LiveAtelier · http://127.0.0.1:${actualPort}`)
       console.log(`vault · ${vaultRoot}`)
       console.log(`vaults · ${registry.vaults.map(v => v.id).join(', ')}`)
       console.log(`plugins · ${loadedPlugins.plugins.map(p => p.name).join(', ') || 'none'}`)

@@ -1,5 +1,12 @@
 # LiveDSO Changelog
 
+## [1.1.1] - 2026-10-28 12:05
+
+### Changed
+
+- 用户可见处统一使用正式名 **LiveAtelier / 灵动构坊**：工作台文案、CLI banner、服务启动日志、README/文档正文、示例 vault 名称、报告模板标题。
+- 代码目录、包名、`LIVEDSO_*` 配置键与技术文档中的“代号 LiveDSO”保留。
+
 ## [1.1.0] - 2026-10-28 12:05
 
 ### Added

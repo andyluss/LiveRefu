@@ -1,9 +1,9 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "meta": {
-    "name": "LiveDSO · LRDS sample",
+    "name": "LiveAtelier · LRDS sample",
     "version": "0.1.0",
-    "note": "LiveDSO 的示例 vault。与 LRDS 解耦；这里只借用一组语义结构做演示。"
+    "note": "LiveAtelier 的示例 vault。与 LRDS 解耦；这里只借用一组语义结构做演示。"
   },
   "ref": {
     "color": {

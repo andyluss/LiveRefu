@@ -1,4 +1,4 @@
-# LiveDSO · Contracts
+# LiveAtelier · Contracts
 
 > Vault: `{{vault.name}}` ｜ {{counts.contracts}} contracts
 

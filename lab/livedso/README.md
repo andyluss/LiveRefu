@@ -1,6 +1,6 @@
 # LiveAtelier · 灵动构坊（代号 LiveDSO）
 
-> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.1.0 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
+> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.1.1 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -8,7 +8,7 @@
 
 ## 一、它是什么
 
-LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台：
+LiveAtelier 是一个**本地优先、零运行时依赖**的设计系统操作台：
 
 - 读取一个 `vault/`（DTCG 风格 token JSON + 契约 + 风格卡）；
 - 解析别名、计算对比度、检查语义层裸值；
@@ -47,12 +47,12 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 
 **独立但相邻**：
 
-| 维度 | LiveDSO | LRDS |
+| 维度 | LiveAtelier | LRDS |
 | --- | --- | --- |
 | 定位 | 设计系统运维产品 | LiveRefu 的设计系统 |
 | 数据 | 任意 DTCG 风格 vault | 自身 token/组件/风格卡 |
-| 依赖 | 不 import LRDS 代码 | 不依赖 LiveDSO |
-| 关系 | 可用 LRDS 作为示例/首批客户 | 可用 LiveDSO 做运维 |
+| 依赖 | 不 import LRDS 代码 | 不依赖 LiveAtelier |
+| 关系 | 可用 LRDS 作为示例/首批客户 | 可用 LiveAtelier 做运维 |
 
 默认 `vault/` 是“LRDS sample”，用于演示；真实使用时用 `LIVEDSO_VAULT` 指向自己的目录。
 
