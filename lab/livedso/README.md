@@ -1,4 +1,4 @@
-# LiveDSO · 灵动构坊（代号 LiveDSO）
+# LiveAtelier · 灵动构坊（代号 LiveDSO）
 
 > **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.3.1 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)

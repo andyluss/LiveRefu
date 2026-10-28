@@ -60,7 +60,7 @@ if (JSON_OUT) {
   console.log(JSON.stringify(report, null, 2))
   process.exitCode = report.ok ? 0 : 1
 } else {
-  console.log('LiveAtelier · i18n audit')
+  console.log('LiveDSO · i18n audit')
   console.log(`dictionary entries      ${keys.size}`)
   console.log(`static text coverage    ${report.staticText.covered}/${report.staticText.total}`)
   console.log(`attribute coverage      ${report.attributes.covered}/${report.attributes.total}`)

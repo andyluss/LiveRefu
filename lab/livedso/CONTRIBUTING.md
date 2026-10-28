@@ -1,4 +1,4 @@
-# Contributing to LiveAtelier / 灵动构坊
+# Contributing to LiveDSO
 
 > **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **许可**：Apache-2.0（核心）+ 商业托管/团队/审计
 > 贡献者政策：**DCO 1.1**（Developer Certificate of Origin），不使用 CLA。

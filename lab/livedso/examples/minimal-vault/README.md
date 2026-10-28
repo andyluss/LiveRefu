@@ -1,4 +1,4 @@
-# LiveAtelier · 最小 Vault 示例
+# 灵动构坊 · 最小 Vault 示例
 
 一个可运行的最小设计系统 vault：
 
