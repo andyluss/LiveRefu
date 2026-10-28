@@ -15,7 +15,7 @@ import { pluginTestAll } from '../src/plugin-test.ts'
 import { buildReportBundle, listReportTemplates, renderReport } from '../src/reports.ts'
 import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { localizeCheckResult, runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
-import { auditSkin } from '../src/skin.ts'
+import { auditSkin, SKIN_ROLES } from '../src/skin.ts'
 
 const root = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
 const registryFile = fileURLToPath(new URL('../vaults.json', import.meta.url))
@@ -276,6 +276,8 @@ test('frontend exposes routes, i18n, skins and nav groups', () => {
   assert.match(js, /hashchange/)
   assert.match(js, /routeFromHash/)
   assert.match(js, /applySkin/)
+  assert.match(js, /syncSelectionUrl/)
+  assert.match(js, /searchParams\.set\('vault'/)
   assert.match(i18n, /LiveAtelier/)
   assert.match(html, /灵动构坊/)
 })
@@ -305,4 +307,10 @@ test('all registered vaults load and have no blocking errors', () => {
     for (const card of vault.styleCards) assert.ok(auditSkin(vault, card).ok, `${entry.id}/${card.id} passes skin audit`)
     assert.equal(result.errors, 0, `${entry.id} has no errors`)
   }
+})
+
+
+test('skin schema exposes extended roles', () => {
+  assert.ok(SKIN_ROLES.length >= 45)
+  for (const role of ['textLink', 'borderSubtle', 'actionHover', 'onDanger', 'successSubtle', 'chart1']) assert.ok(SKIN_ROLES.includes(role as never), role)
 })

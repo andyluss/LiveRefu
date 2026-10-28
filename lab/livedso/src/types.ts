@@ -46,6 +46,25 @@ export interface Contract {
   [key: string]: unknown
 }
 
+export interface StyleCardRoles {
+  bg?: string; bgSubtle?: string;
+  surface?: string; surfaceRaised?: string; surfaceSunken?: string; surfaceHover?: string;
+  text?: string; textMuted?: string; textSubtle?: string; textInverse?: string;
+  textLink?: string; textVisited?: string; textDisabled?: string;
+  border?: string; borderStrong?: string; borderSubtle?: string; divider?: string;
+  focus?: string;
+  action?: string; actionHover?: string; actionPressed?: string; actionDisabled?: string;
+  onAction?: string; secondaryAction?: string; onSecondaryAction?: string; ghostAction?: string;
+  danger?: string; onDanger?: string; dangerSubtle?: string;
+  success?: string; onSuccess?: string; successSubtle?: string;
+  warning?: string; onWarning?: string; warningSubtle?: string;
+  info?: string; onInfo?: string; infoSubtle?: string;
+  accent?: string; accent2?: string; selection?: string;
+  codeBg?: string; codeText?: string;
+  chart1?: string; chart2?: string; chart3?: string; chart4?: string; chart5?: string; chart6?: string;
+  [key: string]: string | undefined;
+}
+
 export interface StyleCard {
   id: string
   name: string
@@ -53,7 +72,7 @@ export interface StyleCard {
   note?: string
   colors?: string[]
   mode?: 'light' | 'dark'
-  roles?: Record<string, string>
+  roles?: StyleCardRoles
   [key: string]: unknown
 }
 

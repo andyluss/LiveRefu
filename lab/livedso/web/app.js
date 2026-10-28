@@ -101,9 +101,18 @@
     sel.value = state.data.styleCards.some(c => c.id === current) ? current : '';
     state.skin = sel.value;
   }
-  function restoreSkin() {
+  function syncSelectionUrl() {
+    if (!state.data) return;
+    const u = new URL(location.href);
+    const vault = state.data.activeVault?.id || '';
+    if (vault) u.searchParams.set('vault', vault); else u.searchParams.delete('vault');
+    if (state.skin) u.searchParams.set('skin', state.skin); else u.searchParams.delete('skin');
+    // ?lang is an input-only override; never add it here.
+    history.replaceState(null, '', u);
+  }
+  function restoreSkin(allowStored = true) {
     let saved = state.skin || '';
-    if (!saved) { try { saved = localStorage.getItem('livedso-skin') || ''; } catch (e) {} }
+    if (!saved && allowStored) { try { saved = localStorage.getItem('livedso-skin') || ''; } catch (e) {} }
     const card = state.data?.styleCards.find(c => c.id === saved);
     state.skin = card?.id || '';
     if (state.skin) applySkin(state.skin); else applySkin('');
@@ -111,13 +120,14 @@
   }
   function applySkin(id) {
     const root = document.documentElement;
-    const keys = ['--bg','--bg2','--surface','--surface2','--raised','--text','--dim','--muted','--line','--line2','--accent','--accent-on','--accent2','--warn','--danger','--ok','--focus','--glass','--shadow','--backdrop'];
+    const keys = ['--bg','--bg2','--bg-subtle','--surface','--surface2','--raised','--surface-hover','--text','--dim','--muted','--text-inverse','--text-link','--text-visited','--text-disabled','--line','--line2','--border-subtle','--divider','--accent','--accent-on','--accent-hover','--accent-pressed','--accent-disabled','--secondary','--secondary-on','--accent2','--warn','--danger','--danger-soft','--ok','--success','--success-soft','--warning-soft','--info','--info-soft','--focus','--glass','--shadow','--backdrop','--selection','--code-bg','--code-text','--chart-1','--chart-2','--chart-3','--chart-4','--chart-5','--chart-6'];
     for (const key of keys) root.style.removeProperty(key);
-    if (!id) { state.skin = ''; root.style.removeProperty('color-scheme'); delete root.dataset.skinMode; try { localStorage.removeItem('livedso-skin'); } catch (e) {} return; }
+    if (!id) { state.skin = ''; root.style.removeProperty('color-scheme'); delete root.dataset.skinMode; try { localStorage.removeItem('livedso-skin'); } catch (e) {} syncSelectionUrl(); return; }
     const card = state.data?.styleCards.find(c => c.id === id);
     if (!card) {
       state.skin = ''; root.style.removeProperty('color-scheme'); delete root.dataset.skinMode;
       try { localStorage.removeItem('livedso-skin'); } catch (e) {}
+      syncSelectionUrl();
       return;
     }
     const s = previewSkin(card);
@@ -126,11 +136,25 @@
       '--surface2': s['--dso-sys-color-bg-surface-raised'], '--raised': s['--dso-sys-color-bg-surface-raised'],
       '--text': s['--dso-sys-color-text-primary'], '--dim': s['--dso-sys-color-text-secondary'], '--muted': s['--dso-sys-color-text-muted'],
       '--line': s['--dso-sys-color-line-subtle'], '--line2': s['--dso-sys-color-line-strong'],
+      '--bg-subtle': s['--dso-sys-color-bg-subtle'], '--surface-hover': s['--dso-sys-color-bg-surface-hover'],
+      '--text-inverse': s['--dso-sys-color-text-inverse'], '--text-link': s['--dso-sys-color-text-link'],
+      '--text-visited': s['--dso-sys-color-text-visited'], '--text-disabled': s['--dso-sys-color-text-disabled'],
+      '--border-subtle': s['--dso-sys-color-border-muted'], '--divider': s['--dso-sys-color-divider'],
       '--accent': s['--dso-sys-color-action-primary'], '--accent-on': s['--dso-sys-color-action-on-primary'],
+      '--accent-hover': s['--dso-sys-color-action-hover'], '--accent-pressed': s['--dso-sys-color-action-pressed'],
+      '--accent-disabled': s['--dso-sys-color-action-disabled'],
+      '--secondary': s['--dso-sys-color-action-secondary'], '--secondary-on': s['--dso-sys-color-action-on-secondary'],
       '--accent2': s['--dso-sys-color-feedback-danger'],
-      '--warn': s['--dso-sys-color-feedback-warning'], '--danger': s['--dso-sys-color-feedback-danger'], '--ok': s['--dso-sys-color-feedback-success'],
+      '--warn': s['--dso-sys-color-feedback-warning'], '--danger': s['--dso-sys-color-feedback-danger'],
+      '--danger-soft': s['--dso-sys-color-feedback-danger-subtle'],
+      '--ok': s['--dso-sys-color-feedback-success'], '--success': s['--dso-sys-color-feedback-success'],
+      '--success-soft': s['--dso-sys-color-feedback-success-subtle'], '--warning-soft': s['--dso-sys-color-feedback-warning-subtle'],
+      '--info': s['--dso-sys-color-feedback-info'], '--info-soft': s['--dso-sys-color-feedback-info-subtle'],
       '--focus': s['--dso-sys-color-focus-ring'], '--glass': 'color-mix(in srgb, ' + s['--dso-sys-color-bg-surface'] + ' 86%, transparent)',
-      '--shadow': s['--dso-shadow'], '--backdrop': colorLum(s['--dso-sys-color-bg-base']) > 0.45 ? 'rgba(40,30,10,.28)' : 'rgba(0,0,0,.48)'
+      '--shadow': s['--dso-shadow'], '--backdrop': colorLum(s['--dso-sys-color-bg-base']) > 0.45 ? 'rgba(40,30,10,.28)' : 'rgba(0,0,0,.48)',
+      '--selection': s['--dso-sys-color-selection'], '--code-bg': s['--dso-sys-color-code-bg'], '--code-text': s['--dso-sys-color-code-text'],
+      '--chart-1': s['--dso-sys-color-chart-1'], '--chart-2': s['--dso-sys-color-chart-2'], '--chart-3': s['--dso-sys-color-chart-3'],
+      '--chart-4': s['--dso-sys-color-chart-4'], '--chart-5': s['--dso-sys-color-chart-5'], '--chart-6': s['--dso-sys-color-chart-6']
     };
     for (const [k, v] of Object.entries(map)) if (v) root.style.setProperty(k, v);
     const mode = colorLum(s['--dso-sys-color-bg-base']) > 0.45 ? 'light' : 'dark';
@@ -138,6 +162,7 @@
     root.dataset.skinMode = mode;
     state.skin = id;
     try { localStorage.setItem('livedso-skin', id); } catch (e) {}
+    syncSelectionUrl();
   }
   function renderVaultSelect() {
     const select = $('#vault-select');
@@ -153,6 +178,7 @@
       state.skinAudits = null;
       renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
       restoreSkin();
+      syncSelectionUrl();
       loadSkinAudits();
       if (state.view === 'vaults') loadVaultsOverview();
       toast('藏库已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} ${loc('tokens','个 Token')}`);
@@ -294,35 +320,77 @@
     const mode = card?.mode || (colorLum(bg) > 0.45 ? 'light' : 'dark');
     const text = pick('text', textOn(bg));
     const action = pick('action', palette[3] || palette[2] || '#4FD1C5');
-    const focus = pick('focus', palette[4] || action);
+    const focus = ensureContrast(pick('focus', palette[4] || action), surface, 3, text);
     const danger = pick('danger', '#FF6B35');
-    const line = pick('border', mixColor(text, surface, 70));
-    const lineStrong = pick('borderStrong', mixColor(text, surface, 85));
+    const success = pick('success', action);
+    const warning = pick('warning', focus);
+    const info = pick('info', action);
     const muted = pick('textMuted', mixColor(text, bg, 85));
     const subtle = pick('textSubtle', mixColor(text, bg, 70));
+    const border = pick('border', mixColor(text, surface, 70));
+    const borderStrong = pick('borderStrong', mixColor(text, surface, 85));
     const raised = pick('surfaceRaised', mode === 'light' ? mixColor(text, surface, 4) : mixColor(text, surface, 8));
     const sunken = pick('surfaceSunken', mixColor(text, bg, 4));
     const onAction = pick('onAction', textOn(action));
-    const success = pick('success', action);
-    const warning = pick('warning', focus);
-    return {
+    const secondaryAction = pick('secondaryAction', surface);
+    const onSecondaryAction = pick('onSecondaryAction', textOn(secondaryAction));
+    const onDanger = pick('onDanger', textOn(danger));
+    const onSuccess = pick('onSuccess', textOn(success));
+    const onWarning = pick('onWarning', textOn(warning));
+    const onInfo = pick('onInfo', textOn(info));
+    const vars = {
       '--dso-sys-color-bg-base': bg,
+      '--dso-sys-color-bg-subtle': pick('bgSubtle', mixColor(text, bg, 4)),
       '--dso-sys-color-bg-surface': surface,
       '--dso-sys-color-bg-surface-raised': raised,
-      '--dso-sys-color-bg-sunken': sunken,
+      '--dso-sys-color-bg-surface-sunken': sunken,
+      '--dso-sys-color-bg-surface-hover': pick('surfaceHover', mixColor(text, surface, 8)),
       '--dso-sys-color-text-primary': text,
       '--dso-sys-color-text-secondary': muted,
       '--dso-sys-color-text-muted': subtle,
+      '--dso-sys-color-text-inverse': pick('textInverse', textOn(surface)),
+      '--dso-sys-color-text-link': pick('textLink', ensureContrast(action, bg, 4.5, text)),
+      '--dso-sys-color-text-visited': pick('textVisited', mixColor(action, text, 35)),
+      '--dso-sys-color-text-disabled': pick('textDisabled', mixColor(text, bg, 45)),
+      '--dso-sys-color-border-subtle': border,
+      '--dso-sys-color-border-strong': borderStrong,
+      '--dso-sys-color-border-muted': pick('borderSubtle', mixColor(text, surface, 40)),
+      '--dso-sys-color-divider': pick('divider', mixColor(text, surface, 30)),
+      '--dso-sys-color-focus-ring': focus,
       '--dso-sys-color-action-primary': action,
+      '--dso-sys-color-action-hover': pick('actionHover', mixColor(text, action, 12)),
+      '--dso-sys-color-action-pressed': pick('actionPressed', mixColor(bg, action, 20)),
+      '--dso-sys-color-action-disabled': pick('actionDisabled', mixColor(action, bg, 55)),
       '--dso-sys-color-action-on-primary': onAction,
-      '--dso-sys-color-focus-ring': ensureContrast(focus, surface, 3, text),
+      '--dso-sys-color-action-secondary': secondaryAction,
+      '--dso-sys-color-action-on-secondary': onSecondaryAction,
+      '--dso-sys-color-action-ghost': pick('ghostAction', text),
       '--dso-sys-color-feedback-danger': danger,
+      '--dso-sys-color-feedback-on-danger': onDanger,
+      '--dso-sys-color-feedback-danger-subtle': pick('dangerSubtle', mixColor(danger, bg, 12)),
       '--dso-sys-color-feedback-success': success,
+      '--dso-sys-color-feedback-on-success': onSuccess,
+      '--dso-sys-color-feedback-success-subtle': pick('successSubtle', mixColor(success, bg, 12)),
       '--dso-sys-color-feedback-warning': warning,
-      '--dso-sys-color-line-subtle': line,
-      '--dso-sys-color-line-strong': lineStrong,
+      '--dso-sys-color-feedback-on-warning': onWarning,
+      '--dso-sys-color-feedback-warning-subtle': pick('warningSubtle', mixColor(warning, bg, 12)),
+      '--dso-sys-color-feedback-info': info,
+      '--dso-sys-color-feedback-on-info': onInfo,
+      '--dso-sys-color-feedback-info-subtle': pick('infoSubtle', mixColor(info, bg, 12)),
+      '--dso-sys-color-accent': pick('accent', action),
+      '--dso-sys-color-accent-2': pick('accent2', danger),
+      '--dso-sys-color-selection': pick('selection', mixColor(action, bg, 35)),
+      '--dso-sys-color-code-bg': pick('codeBg', mixColor(text, bg, 5)),
+      '--dso-sys-color-code-text': pick('codeText', text),
+      '--dso-sys-color-chart-1': pick('chart1', action),
+      '--dso-sys-color-chart-2': pick('chart2', focus),
+      '--dso-sys-color-chart-3': pick('chart3', danger),
+      '--dso-sys-color-chart-4': pick('chart4', success),
+      '--dso-sys-color-chart-5': pick('chart5', warning),
+      '--dso-sys-color-chart-6': pick('chart6', info),
       '--dso-shadow': mode === 'light' ? '0 24px 70px rgba(60,45,20,.16)' : '0 24px 70px rgba(0,0,0,.38)'
     };
+    return vars;
   }
   function renderPreview() {
     if (!state.data) return;
@@ -555,9 +623,17 @@
     try {
       setStatus('ok', loc('Local vault','本地藏库'));
       state.data = await api('/api/state');
+      const params = new URLSearchParams(location.search);
+      const requestedVault = params.get('vault');
+      if (requestedVault && requestedVault !== state.data.activeVault?.id && state.data.vaults.some(v => v.id === requestedVault)) {
+        const next = await api('/api/vault', { method: 'POST', body: JSON.stringify({ id: requestedVault }) });
+        if (next) state.data = next;
+      }
+      if (params.has('skin')) state.skin = params.get('skin') || '';
       state.error = null;
       renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect();
-      restoreSkin();
+      restoreSkin(!params.has('skin'));
+      syncSelectionUrl();
       if (state.view === 'report') renderReport();
       loadSkinAudits();
     } catch (e) {

@@ -1,5 +1,19 @@
 # LiveDSO Changelog
 
+## [1.6.0] - 2026-10-28 13:56
+
+### Added
+
+- 风格卡角色从 6 个扩展到 **50 个**语义角色：表面/文字/边框/动作/状态/代码/图表，旧卡缺失字段自动派生。
+- 新增 CSS 变量与 Workbench 使用：`--text-link`、`--surface-hover`、`--selection`、`--code-bg`、`--divider`、状态 soft 色、chart 1–6 等。
+- 藏库与皮肤选择写入 URL：`?vault=<id>&skin=<card-id>`；加载 URL 时优先恢复，切换时自动同步；`?lang` 仍不自动写入。
+
+### Changed
+
+- `skin:check` 增加 `text/bg`、`textMuted/sunken`、`textLink/bg`、`focus/bg` 等检查。
+- 文档 `14` 补角色清单与深链示例；`10`/`12` 同步。
+- `node:test` 23 → **24**；版本 1.5.3 → 1.6.0。
+
 ## [1.5.3] - 2026-10-28 13:47
 
 ### Fixed
