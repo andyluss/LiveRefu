@@ -110,6 +110,8 @@
     '：灵动构坊 是独立产品/实验；默认藏库是示例。你可以用': ': LiveAtelier is an independent product/experiment; the default vault is a sample. You can use',
     '指向任何 DTCG 风格 token 目录；LRDS 只是第一个适配样本。': ' to point at any DTCG-style token directory; LRDS is only the first adapted sample.',
     '被使用的 token': 'Tokens in use',
+    '问题': 'Issues', '错误 + 警告': 'Errors + warnings', '源': 'Source',
+    '投影': 'Projection', 'CSS 变量 + 报告': 'CSS variables + report', '浏览 Token': 'Browse tokens',
     '系统观测台': 'System observatory', '最近信号': 'Recent signals', '工作流': 'Workflow',
     '事实源': 'Source of truth', '组件承诺': 'Component promises', '实时组件预览': 'Live component preview',
     '世界皮肤': 'World skins', '采用扫描 / 只读': 'Adoption / read-only', '本地历史': 'Local history',
