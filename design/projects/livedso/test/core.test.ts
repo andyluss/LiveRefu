@@ -17,6 +17,7 @@ import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { localizeCheckResult, runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 import { auditSkin, SKIN_ROLES } from '../src/skin.ts'
 import { checkVaultSchema } from '../tools/check-vault-schema.ts'
+import { adaptVault } from '../src/adapt.ts'
 
 const root = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
 const registryFile = fileURLToPath(new URL('../vaults.json', import.meta.url))
@@ -332,4 +333,34 @@ test('skin token names align with generated tokens', () => {
   assert.match(js, /--dso-sys-color-border-strong/)
   assert.doesNotMatch(js, /'--dso-sys-color-bg-sunken'/)
   assert.doesNotMatch(js, /'--dso-sys-color-line-subtle'/)
+})
+
+
+test('DTCG adapter generates a schema-compatible vault', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/source.tokens.json', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/profile.json', import.meta.url))
+    const result = adaptVault({ source, profile, out: tmp })
+    assert.equal(result.ok, true, result.issues.map(i => i.message).join(' | '))
+    assert.equal(result.mappedRoles, 16)
+    const schema = checkVaultSchema(tmp)
+    assert.equal(schema.ok, true, schema.issues.map(i => i.message).join(' | '))
+    const vault = loadVault(tmp)
+    assert.ok(vault.tokens.has('sys.color.bg'))
+    assert.equal(vault.styleCards.length, 1)
+    assert.equal(Object.keys(vault.styleCards[0]!.roles || {}).length, 16)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+test('DTCG adapter rejects missing mappings', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/source.tokens.json', import.meta.url))
+    const profile = join(tmp, 'profile.json')
+    writeFileSync(profile, JSON.stringify({ theme: { id: 'broken' }, roles: { bg: 'color.background' } }))
+    const result = adaptVault({ source, profile, out: join(tmp, 'out') })
+    assert.equal(result.ok, false)
+    assert.ok(result.issues.some(i => i.path === 'roles.text'))
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
 })

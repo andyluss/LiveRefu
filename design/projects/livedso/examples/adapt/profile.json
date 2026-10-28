@@ -1,0 +1,23 @@
+{
+  "theme": { "id": "paper-brand", "name": "Paper Brand", "mode": "light" },
+  "source": { "format": "dtcg" },
+  "roles": {
+    "bg": "color.background",
+    "surface": "color.surface",
+    "surfaceRaised": "color.surfaceRaised",
+    "surfaceSunken": "color.surfaceSunken",
+    "text": "color.text",
+    "textMuted": "color.textMuted",
+    "textInverse": "color.textInverse",
+    "action": "color.action",
+    "onAction": "color.onAction",
+    "actionHover": "color.actionHover",
+    "focus": "color.focus",
+    "border": "color.border",
+    "borderStrong": "color.borderStrong",
+    "danger": "color.danger",
+    "success": "color.success",
+    "warning": "color.warning"
+  },
+  "missing": "fail"
+}

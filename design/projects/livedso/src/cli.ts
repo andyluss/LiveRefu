@@ -14,11 +14,12 @@ import { allTrends } from './trend.ts'
 import { pluginTestAll } from './plugin-test.ts'
 import { formatCi, markdownCi, runCi } from './ci.ts'
 import { loadPlugins, runPlugins } from './plugins.ts'
+import { adaptVault } from './adapt.ts'
 
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
-const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--lang', '--max-warnings', '--max-raw', '--max-deprecated'])
+const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--lang', '--source', '--profile', '--max-warnings', '--max-raw', '--max-deprecated'])
 const positionals: string[] = []
 for (let i = 1; i < args.length; i++) {
   const a = args[i]!
@@ -210,6 +211,31 @@ switch (cmd) {
     process.exitCode = result.ok ? 0 : 1
     break
   }
+  case 'adapt': {
+    const source = args[args.indexOf('--source') + 1]
+    const profile = args[args.indexOf('--profile') + 1]
+    const out = args[args.indexOf('--out') + 1]
+    if (!source || !profile || !out) {
+      console.error('用法: node src/cli.ts adapt --source <dir> --profile <mapping.json> --out <vault> [--dry-run] [--check] [--json]')
+      process.exitCode = 1
+      break
+    }
+    try {
+      const result = adaptVault({ source, profile, out, check: args.includes('--check'), dryRun: args.includes('--dry-run') })
+      if (args.includes('--json')) console.log(JSON.stringify(result, null, 2))
+      else {
+        console.log(`adapt · ${result.theme} · source tokens ${result.sourceTokens} · mapped roles ${result.mappedRoles}`)
+        console.log(`source hash ${result.sourceHash}`)
+        console.log(`output ${result.out}`)
+        for (const issue of result.issues) console.log(`  [error] ${issue.path} — ${issue.message}`)
+      }
+      process.exitCode = result.ok ? 0 : 1
+    } catch (e) {
+      console.error(`adapt failed: ${(e as Error).message}`)
+      process.exitCode = 1
+    }
+    break
+  }
   case 'serve': {
     const port = Number(positionals[0] || process.env.PORT || 4173)
     await startServer({ port, vault: root, plugins: pluginDir })
@@ -217,7 +243,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveAtelier 1.14.1 · (LiveDSO) local-first design system operations
+    console.log(`LiveAtelier 1.15.0 · (LiveDSO) local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -238,6 +264,8 @@ switch (cmd) {
   node src/cli.ts plugin-test --all [--registry <file>]  跨 vault 插件矩阵
   node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
                                           跨 vault 本地 CI 门禁
+  node src/cli.ts adapt --source <dir> --profile <map.json> --out <vault> [--dry-run] [--check]
+                                          从 DTCG 源生成 LRDS 兼容 vault
   node src/cli.ts serve [port]            启动 Web Workbench
 
 环境:

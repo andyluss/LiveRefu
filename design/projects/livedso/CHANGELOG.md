@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.15.0] - 2026-10-28 20:20
+
+### Added
+
+- **DTCG 适配器 P0**：`node src/cli.ts adapt --source <dir> --profile <map.json> --out <vault>`；显式 16 角色映射、source hash、style card、`--dry-run` / `--check` / `--json`。
+- 适配器只读用户源；生成 `ref.source.external.*` + `sys.color.*` + 单卡；拒绝缺角色、坏别名、对比度不足。
+- 新增 `examples/adapt/` fixture 与 [`docs/17_适配器.md`](docs/17_适配器.md)。
+
+### Changed
+
+- 测试 26 → **28**；版本 1.14.1 → 1.15.0。
+
 ## [1.14.1] - 2026-10-28 20:01
 
 ### Fixed
