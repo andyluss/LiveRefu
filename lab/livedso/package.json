@@ -1,6 +1,6 @@
 {
   "name": "livedso",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "type": "module",
   "description": "LiveDSO — local-first design system operations workbench",

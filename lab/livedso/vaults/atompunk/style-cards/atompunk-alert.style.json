@@ -1,0 +1,20 @@
+{
+  "id": "atompunk-alert",
+  "name": "Atompunk / Alert",
+  "era": "sample",
+  "note": "navy panel with hazard-red action and amber focus",
+  "colors": [
+    "ap.color.bg",
+    "ap.color.text",
+    "ap.color.danger",
+    "ap.color.focus"
+  ],
+  "roles": {
+    "bg": "ap.color.bg",
+    "surface": "ap.color.surface",
+    "text": "ap.color.text",
+    "action": "ap.color.danger",
+    "focus": "ap.color.focus",
+    "danger": "ap.color.danger"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "retro-paper",
+  "name": "Retro / Paper",
+  "era": "sample",
+  "note": "cream paper with ink type and rust action",
+  "colors": [
+    "rf.ref.cream",
+    "rf.ref.ink",
+    "rf.ref.rust",
+    "rf.ref.teal",
+    "rf.color.danger"
+  ],
+  "roles": {
+    "bg": "rf.ref.cream",
+    "surface": "rf.ref.cream",
+    "text": "rf.ref.ink",
+    "action": "rf.ref.rust",
+    "focus": "rf.ref.teal",
+    "danger": "rf.color.danger"
+  }
+}

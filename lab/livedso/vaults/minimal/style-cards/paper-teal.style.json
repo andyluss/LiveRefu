@@ -1,0 +1,20 @@
+{
+  "id": "paper-teal",
+  "name": "Paper / Teal",
+  "era": "sample",
+  "note": "green-black surface with teal action and amber focus",
+  "colors": [
+    "sys.color.action.onPrimary",
+    "sys.color.text.primary",
+    "sys.color.action.primary",
+    "sys.color.focus.ring"
+  ],
+  "roles": {
+    "bg": "sys.color.action.onPrimary",
+    "surface": "sys.color.action.onPrimary",
+    "text": "sys.color.text.primary",
+    "action": "sys.color.action.primary",
+    "focus": "sys.color.focus.ring",
+    "danger": "sys.color.action.primary"
+  }
+}

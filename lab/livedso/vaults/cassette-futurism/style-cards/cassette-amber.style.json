@@ -1,0 +1,20 @@
+{
+  "id": "cassette-amber",
+  "name": "Cassette / Amber",
+  "era": "sample",
+  "note": "charcoal deck with amber readout and cyan focus",
+  "colors": [
+    "cf.color.bg",
+    "cf.ref.amber",
+    "cf.ref.cyan",
+    "cf.color.danger"
+  ],
+  "roles": {
+    "bg": "cf.color.bg",
+    "surface": "cf.color.surface",
+    "text": "cf.ref.amber",
+    "action": "cf.ref.amber",
+    "focus": "cf.ref.cyan",
+    "danger": "cf.color.danger"
+  }
+}

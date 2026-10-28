@@ -1,0 +1,21 @@
+{
+  "id": "ant-dark",
+  "name": "Ant / Dark",
+  "era": "sample",
+  "note": "ink background with primary blue action",
+  "colors": [
+    "ant.colorText",
+    "ant.ref.white",
+    "ant.colorPrimary",
+    "ant.colorFocus",
+    "ant.colorError"
+  ],
+  "roles": {
+    "bg": "ant.colorText",
+    "surface": "ant.colorText",
+    "text": "ant.ref.white",
+    "action": "ant.colorPrimary",
+    "focus": "ant.colorFocus",
+    "danger": "ant.colorError"
+  }
+}

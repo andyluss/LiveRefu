@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.4.1] - 2026-10-28 13:25
+
+### Added
+
+- 每套 vault 扩展到 **3 张风格卡**：新增 18 张变体，覆盖 Material / Carbon / Polaris / Ant / Tailwind / 三种复古未来 / minimal。
+- 每张卡都有完整 `roles`，预览器直接读取当前卡角色，不依赖 `sys.color.*` 命名。
+- 全量回归仍检查 11 套 vault、每套 ≥3 卡、roles 完整。
+
+### Changed
+
+- `node:test` 保持 23 项；版本 1.4.0 → 1.4.1。
+
 ## [1.4.0] - 2026-10-28 13:20
 
 ### Added

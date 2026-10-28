@@ -1,0 +1,21 @@
+{
+  "id": "polaris-mono",
+  "name": "Polaris / Mono",
+  "era": "sample",
+  "note": "white surface, ink action, quiet utility",
+  "colors": [
+    "p.color.surface",
+    "p.color.bg",
+    "p.color.text",
+    "p.color.focus",
+    "p.color.critical"
+  ],
+  "roles": {
+    "bg": "p.color.surface",
+    "surface": "p.color.bg",
+    "text": "p.color.text",
+    "action": "p.color.text",
+    "focus": "p.color.focus",
+    "danger": "p.color.critical"
+  }
+}

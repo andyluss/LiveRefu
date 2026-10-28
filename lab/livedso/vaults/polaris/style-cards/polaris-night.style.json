@@ -1,0 +1,21 @@
+{
+  "id": "polaris-night",
+  "name": "Polaris / Night",
+  "era": "sample",
+  "note": "ink background, blue action, paper text",
+  "colors": [
+    "p.color.text",
+    "p.ref.white",
+    "p.color.interactive",
+    "p.color.focus",
+    "p.color.critical"
+  ],
+  "roles": {
+    "bg": "p.color.text",
+    "surface": "p.color.text",
+    "text": "p.ref.white",
+    "action": "p.color.interactive",
+    "focus": "p.color.focus",
+    "danger": "p.color.critical"
+  }
+}

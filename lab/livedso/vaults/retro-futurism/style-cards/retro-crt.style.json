@@ -1,0 +1,20 @@
+{
+  "id": "retro-crt",
+  "name": "Retro / CRT",
+  "era": "sample",
+  "note": "surface green-black with amber action and teal type",
+  "colors": [
+    "rf.color.surface",
+    "rf.ref.teal",
+    "rf.ref.amber",
+    "rf.color.danger"
+  ],
+  "roles": {
+    "bg": "rf.color.surface",
+    "surface": "rf.color.surface",
+    "text": "rf.ref.teal",
+    "action": "rf.ref.amber",
+    "focus": "rf.ref.amber",
+    "danger": "rf.color.danger"
+  }
+}

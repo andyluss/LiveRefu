@@ -1,0 +1,21 @@
+{
+  "id": "ant-mono",
+  "name": "Ant / Mono",
+  "era": "sample",
+  "note": "white surface, ink action, light primary tint",
+  "colors": [
+    "ant.colorBgContainer",
+    "ant.colorPrimaryBg",
+    "ant.colorText",
+    "ant.colorFocus",
+    "ant.colorError"
+  ],
+  "roles": {
+    "bg": "ant.colorBgContainer",
+    "surface": "ant.colorPrimaryBg",
+    "text": "ant.colorText",
+    "action": "ant.colorText",
+    "focus": "ant.colorFocus",
+    "danger": "ant.colorError"
+  }
+}

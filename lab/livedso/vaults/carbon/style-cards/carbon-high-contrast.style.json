@@ -1,0 +1,21 @@
+{
+  "id": "carbon-high-contrast",
+  "name": "Carbon / High Contrast",
+  "era": "sample",
+  "note": "paper layer, ink action, stronger focus",
+  "colors": [
+    "cds.ref.white",
+    "cds.color.layer",
+    "cds.color.text.primary",
+    "cds.color.focus",
+    "cds.color.support.error"
+  ],
+  "roles": {
+    "bg": "cds.ref.white",
+    "surface": "cds.color.layer",
+    "text": "cds.color.text.primary",
+    "action": "cds.color.text.primary",
+    "focus": "cds.color.focus",
+    "danger": "cds.color.support.error"
+  }
+}

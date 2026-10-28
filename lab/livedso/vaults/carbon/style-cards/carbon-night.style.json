@@ -1,0 +1,21 @@
+{
+  "id": "carbon-night",
+  "name": "Carbon / Night",
+  "era": "sample",
+  "note": "dark layer with blue interactive and white text",
+  "colors": [
+    "cds.color.text.primary",
+    "cds.ref.white",
+    "cds.color.interactive",
+    "cds.color.focus",
+    "cds.color.support.error"
+  ],
+  "roles": {
+    "bg": "cds.color.text.primary",
+    "surface": "cds.color.text.primary",
+    "text": "cds.ref.white",
+    "action": "cds.color.interactive",
+    "focus": "cds.color.focus",
+    "danger": "cds.color.support.error"
+  }
+}

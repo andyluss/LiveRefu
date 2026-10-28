@@ -1,0 +1,20 @@
+{
+  "id": "paper-amber",
+  "name": "Paper / Amber",
+  "era": "sample",
+  "note": "dark paper with amber action and teal focus",
+  "colors": [
+    "sys.color.bg.base",
+    "sys.color.text.primary",
+    "sys.color.focus.ring",
+    "sys.color.action.primary"
+  ],
+  "roles": {
+    "bg": "sys.color.bg.base",
+    "surface": "sys.color.bg.surface",
+    "text": "sys.color.text.primary",
+    "action": "sys.color.focus.ring",
+    "focus": "sys.color.action.primary",
+    "danger": "sys.color.action.primary"
+  }
+}

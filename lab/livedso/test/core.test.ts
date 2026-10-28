@@ -299,7 +299,7 @@ test('all registered vaults load and have no blocking errors', () => {
     const result = runChecks(vault)
     assert.ok(vault.tokens.size > 0, `${entry.id} has tokens`)
     assert.ok(vault.contracts.length > 0, `${entry.id} has contracts`)
-    assert.ok(vault.styleCards.length > 0, `${entry.id} has style cards`)
+    assert.ok(vault.styleCards.length >= 3, `${entry.id} has at least 3 style cards`)
     assert.ok(vault.styleCards.every(c => c.roles?.bg && c.roles?.surface && c.roles?.text && c.roles?.action && c.roles?.focus), `${entry.id} style cards have preview roles`)
     assert.equal(result.errors, 0, `${entry.id} has no errors`)
   }

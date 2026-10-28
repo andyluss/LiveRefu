@@ -1,0 +1,20 @@
+{
+  "id": "tailwind-amber",
+  "name": "Tailwind / Amber",
+  "era": "sample",
+  "note": "dark canvas with amber type and teal focus",
+  "colors": [
+    "tw.color.bg",
+    "tw.ref.amber.400",
+    "tw.ref.teal.400",
+    "tw.ref.rose.500"
+  ],
+  "roles": {
+    "bg": "tw.color.bg",
+    "surface": "tw.ref.slate.950",
+    "text": "tw.ref.amber.400",
+    "action": "tw.ref.amber.400",
+    "focus": "tw.ref.teal.400",
+    "danger": "tw.ref.rose.500"
+  }
+}

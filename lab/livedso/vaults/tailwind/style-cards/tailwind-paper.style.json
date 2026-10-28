@@ -1,0 +1,21 @@
+{
+  "id": "tailwind-paper",
+  "name": "Tailwind / Paper",
+  "era": "sample",
+  "note": "light slate paper with dark teal action",
+  "colors": [
+    "tw.ref.slate.50",
+    "tw.ref.slate.950",
+    "tw.ref.teal.950",
+    "tw.ref.amber.400",
+    "tw.ref.rose.500"
+  ],
+  "roles": {
+    "bg": "tw.ref.slate.50",
+    "surface": "tw.ref.slate.50",
+    "text": "tw.ref.slate.950",
+    "action": "tw.ref.teal.950",
+    "focus": "tw.ref.amber.400",
+    "danger": "tw.ref.rose.500"
+  }
+}

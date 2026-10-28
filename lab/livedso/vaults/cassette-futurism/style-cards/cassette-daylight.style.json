@@ -1,0 +1,21 @@
+{
+  "id": "cassette-daylight",
+  "name": "Cassette / Daylight",
+  "era": "sample",
+  "note": "beige shell with charcoal type and orange action",
+  "colors": [
+    "cf.ref.beige",
+    "cf.ref.charcoal",
+    "cf.ref.orange",
+    "cf.ref.cyan",
+    "cf.color.danger"
+  ],
+  "roles": {
+    "bg": "cf.ref.beige",
+    "surface": "cf.ref.beige",
+    "text": "cf.ref.charcoal",
+    "action": "cf.ref.orange",
+    "focus": "cf.ref.cyan",
+    "danger": "cf.color.danger"
+  }
+}

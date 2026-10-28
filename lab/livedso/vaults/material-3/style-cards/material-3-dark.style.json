@@ -1,0 +1,21 @@
+{
+  "id": "material-3-dark",
+  "name": "Material 3 / Dark",
+  "era": "sample",
+  "note": "deep on-surface background with primary container action",
+  "colors": [
+    "md.sys.color.on-surface",
+    "md.ref.neutral.0",
+    "md.sys.color.primary",
+    "md.ref.primary.100",
+    "md.sys.color.error"
+  ],
+  "roles": {
+    "bg": "md.sys.color.on-surface",
+    "surface": "md.sys.color.primary",
+    "text": "md.ref.neutral.0",
+    "action": "md.ref.primary.100",
+    "focus": "md.ref.blue.40",
+    "danger": "md.sys.color.error"
+  }
+}
