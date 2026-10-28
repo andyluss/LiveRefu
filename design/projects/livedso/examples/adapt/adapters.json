@@ -1,0 +1,6 @@
+{
+  "adapters": [
+    { "id": "paper-brand", "source": "source.tokens.json", "profile": "profile.json", "out": "generated/paper-brand" },
+    { "id": "css-brand", "source": "theme.css", "profile": "css-profile.json", "out": "generated/css-brand" }
+  ]
+}

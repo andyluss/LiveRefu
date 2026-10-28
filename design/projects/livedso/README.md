@@ -1,6 +1,6 @@
 # LiveDSO · 设计系统操作台（正式名 LiveAtelier / 灵动构坊）
 
-> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.17.0 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
+> **正式名**：LiveAtelier / 灵动构坊 ｜ **代号**：LiveDSO ｜ **版本**：1.18.0 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
 > **位置**：`design/projects/livedso/` ｜ **所属**：设计系统正式项目 ｜ **入口**：见 [`../../README.md`](../../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -107,7 +107,7 @@ Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走�
 - 皮肤质量：50 个语义角色全部 token 化到 `theme.<card>.color.*`；33 张卡、`skin:check` 与 `skin:snapshot`。
 - Token 规模：每套增加色阶/字体/间距/圆角/阴影/动效/组件尺寸；11 个 vault 均已通过 LRDS schema。
 - 深链：`?vault=<id>&skin=<card-id>` 保留藏库与皮肤选择；
-- 外部 token：`adapt` 用显式 mapping 把 DTCG 源转成 LRDS 兼容 vault。
+- 外部 token：`adapt` 用显式 mapping 把 DTCG / CSS / Tailwind / SD / Figma 源转成 LRDS 兼容 vault，见 [`docs/17_适配器.md`](docs/17_适配器.md)。
 
 ## 五、Vault 样本集
 

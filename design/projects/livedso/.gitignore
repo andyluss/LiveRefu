@@ -6,3 +6,5 @@ dist/
 **/.history/
 !templates/reports/
 !templates/reports/**
+
+examples/adapt/generated/

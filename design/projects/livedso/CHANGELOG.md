@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.18.0] - 2026-10-28 20:38
+
+### Added
+
+- **适配器 registry**：`adapt --registry <adapters.json>` 批量生成/校验；`--check` 不覆盖生成物。
+- `--report <file>` 输出 source 覆盖率、未使用 token、建议、source hash 与 issues。
+- 覆盖率字段进入 `AdaptResult`；CI 可据此判断映射完整性。
+
+### Changed
+
+- 测试 33 → **34**；版本 1.17.0 → 1.18.0。
+
 ## [1.17.0] - 2026-10-28 20:31
 
 ### Added

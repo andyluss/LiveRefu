@@ -17,7 +17,7 @@ import { loadPlugins, runPlugins } from '../src/plugins.ts'
 import { localizeCheckResult, runChecks, parseColor, contrast, reportMarkdown } from '../src/checks.ts'
 import { auditSkin, SKIN_ROLES } from '../src/skin.ts'
 import { checkVaultSchema } from '../tools/check-vault-schema.ts'
-import { adaptVault } from '../src/adapt.ts'
+import { adaptRegistry, adaptVault } from '../src/adapt.ts'
 
 const root = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
 const registryFile = fileURLToPath(new URL('../vaults.json', import.meta.url))
@@ -441,5 +441,20 @@ test('adapter writes suggestion draft and detects source drift', () => {
     const drift = adaptVault({ source, profile, out, check: true })
     assert.equal(drift.ok, false)
     assert.ok(drift.issues.some(i => i.path === 'tokens/tokens.json'))
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('adapter registry runs all entries and checks drift', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-registry-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/source.tokens.json', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/profile.json', import.meta.url))
+    const registry = join(tmp, 'adapters.json')
+    writeFileSync(registry, JSON.stringify({ adapters: [{ id: 'paper', source, profile, out: 'out' }] }))
+    const first = adaptRegistry({ registry })
+    assert.equal(first.ok, true, first.results[0]?.issues.map(i => i.message).join(' | '))
+    const second = adaptRegistry({ registry, check: true })
+    assert.equal(second.ok, true)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })
