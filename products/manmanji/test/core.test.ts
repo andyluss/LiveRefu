@@ -95,3 +95,11 @@ test('HTTP API handles state, ledger and invoice payment', async () => {
     rmSync(dir, { recursive: true, force: true })
   }
 })
+
+
+test('web navigation wires data-view buttons to hash routes', () => {
+  const js = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8')
+  assert.match(js, /\$\(('#nav'|\"#nav\")\)\.addEventListener/)
+  assert.match(js, /button\[data-view\]/)
+  assert.match(js, /location\.hash = next/)
+})

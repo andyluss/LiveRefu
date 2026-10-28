@@ -330,5 +330,12 @@ document.addEventListener('click', e => {
 })
 $('#quick-add').onclick = () => openTx()
 $('#theme-toggle').onclick = async () => { const next = state.data.settings.theme === 'night' ? 'paper' : 'night'; try { state.data = await api('/settings', 'PATCH', { theme: next }); applyTheme(); toast(next === 'night' ? '夜间模式' : '纸感模式') } catch (err) { toast(err.message) } }
+$('#nav').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-view]')
+  if (!btn || btn.hidden) return
+  const next = `#/${btn.dataset.view}`
+  if (location.hash === next) route()
+  else location.hash = next
+})
 window.addEventListener('hashchange', () => { if (state.data) route() })
 load().catch(err => { console.error(err); document.body.innerHTML = `<div class="empty">启动失败：${esc(err.message)}</div>` })
