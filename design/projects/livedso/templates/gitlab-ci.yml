@@ -3,7 +3,7 @@ livedso:
   image: node:24
   script:
     - cd design/projects/livedso
-    - node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
+    - node src/cli.ts ci --strict --adopt ../.. --out reports/ci.md
   artifacts:
     when: always
     paths:

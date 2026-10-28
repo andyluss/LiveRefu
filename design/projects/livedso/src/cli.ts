@@ -83,7 +83,7 @@ switch (cmd) {
     break
   }
   case 'import': {
-    const src = resolve(positionals[0] || '../../design/tokens')
+    const src = resolve(positionals[0] || '../../tokens')
     const target = resolve(positionals[1] || 'vaults/lrds-real')
     const sample = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
     const r = importTokens(src, target, sample)

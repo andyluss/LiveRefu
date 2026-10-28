@@ -32,7 +32,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 - 报告包：一次生成全部模板 + `index.md`，适合 CI artifact；
 - 模板条件支持嵌套（安全解析器，不执行代码）；
 - hash 路由与深链、中文/English 切换、风格卡自应用、分组导航；
-- 最小示例 vault 与 v1.0 快速开始文档。
+- 最小示例 vault 与 v1.19 快速开始文档。
 - 生成健康报告与 CSS 投影；
 - 在 Web Workbench 里搜索、查看、改值、重跑闸门。
 
@@ -40,7 +40,7 @@ LiveDSO 是一个**本地优先、零运行时依赖**的设计系统操作台�
 
 - 另一个 Figma/组件画布；
 - 另一个静态文档站；
-- 云协作平台（v0.18 没有账号、同步、计费）；
+- 云协作平台（当前没有账号、同步、计费）；
 - 青橙设计的内部工具。它是独立产品，只是把 LRDS 当作**示例 vault**。
 
 ## 二、与青橙设计的关系
@@ -65,18 +65,19 @@ cd design/projects/livedso
 node src/cli.ts check        # 终端检查
 node src/cli.ts report       # 生成 reports/health.md
 node src/cli.ts build        # 生成 dist/tokens.css
-node src/cli.ts import ../../design/tokens vaults/lrds-real  # 真实 LRDS case
-node src/cli.ts adopt ../../design                    # 扫描采用/裸色
+node src/cli.ts import ../../tokens vaults/lrds-real  # 真实 LRDS case
+node src/cli.ts adopt ../..                    # 扫描采用/裸色
 node src/cli.ts snapshot                              # 创建本地快照
 node src/cli.ts history                               # 列出快照
 node src/cli.ts diff <snapshot-id>                    # 对比当前 vault
-node src/cli.ts ci --adopt ../../design --out reports/ci.md  # 本地 CI 门禁
+node src/cli.ts ci --adopt ../.. --out reports/ci.md  # 本地 CI 门禁
 node src/cli.ts trend                                  # 快照趋势
 node src/cli.ts trend --all                            # 跨 vault 趋势
 node src/cli.ts plugin-test --plugins examples/plugins  # 插件自检
 node src/cli.ts plugin-test --all --plugins examples/plugins  # 跨 vault 矩阵
 node src/cli.ts report --template release --out reports/release.md  # 报告模板
 node src/cli.ts report --bundle --out-dir reports/bundle  # 报告包
+node src/cli.ts adapt --registry examples/adapt/adapters.json --check  # 外部源漂移
 node src/cli.ts serve 4173   # 打开 http://127.0.0.1:4173
 LIVEDSO_VAULT="$PWD/vaults/lrds-real" node src/cli.ts serve 4173  # 用真实 case
 ```
@@ -90,9 +91,9 @@ LIVEDSO_VAULT=/path/to/vault node src/cli.ts serve
 
 Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走本地 API；不上传 vault。
 
-## 四、v1.4 已实现
+## 四、当前能力（v1.19）
 
-- Token 解析：`ref` / `sys` / `product` 分层、别名递归、断链检测；
+- Token 解析：`ref` / `sys` / `component` / `product` 四层、`ref.source.<vendor>` 原生源、别名递归、断链检测；
 - 检查：坏别名、语义层裸色、对比度、焦点复用、契约字段/状态/token 引用、风格卡引用；
 - 组件契约：anatomy / states / tokens / keyboard / a11y / do / dont；
 - 风格卡：色板、时代、维护说明；
@@ -101,10 +102,10 @@ Web Workbench 的 `Run checks`、`Tokens` 编辑、`Report & projection` 都走�
 - CSS variables 投影；
 - Web UI：总览、Tokens 搜索/过滤/改值/生命周期、Contracts 编辑、Preview、Style cards + 对比、Checks、Adoption、History、Report；Vault 切换；
 - 三态主题（系统/浅色/深色）；
-- CLI：`check` / `report` / `build` / `serve` / `import` / `adopt`；
-- `vaults/lrds-real/`：从 `design/tokens` 导入的真实 case（229 core + 150 role tokens）；
+- CLI：`check` / `report` / `build` / `serve` / `import` / `adopt` / `snapshot` / `diff` / `trend` / `ci` / `adapt`；
+- `vaults/lrds-real/`：从 `design/tokens` 导入的真实 case；
 - `vaults/*`：11 套 vault（LRDS、minimal、5 套流行系统启发、3 套复古未来），每套 3 张风格卡；
-- 皮肤质量：50 个语义角色全部 token 化到 `theme.<card>.color.*`；33 张卡、`skin:check` 与 `skin:snapshot`。
+- 皮肤质量：50 个语义角色；33 张卡、`skin:check` 与 `skin:snapshot`；角色走 `sys.color.*` / `product.<card>.role.*`。
 - Token 规模：每套增加色阶/字体/间距/圆角/阴影/动效/组件尺寸；11 个 vault 均已通过 LRDS schema。
 - 深链：`?vault=<id>&skin=<card-id>` 保留藏库与皮肤选择；
 - 外部 token：`adapt` 用显式 mapping 把 DTCG / CSS / Tailwind / SD / Figma 源转成 LRDS 兼容 vault，见 [`docs/17_适配器.md`](docs/17_适配器.md)。
@@ -136,14 +137,14 @@ Token 示例：
   "sys": {
     "color": {
       "action": {
-        "primary": { "$value": "{ref.color.teal.400}", "$type": "color" }
+        "$value": "{ref.color.teal.600}", "$type": "color"
       }
     }
   }
 }
 ```
 
-注意：v0.4 的编辑只写回 token/契约源 JSON；不会自动提交 Git。真实项目应先开分支/PR。
+注意：编辑只写回 token/契约源 JSON；不会自动提交 Git。真实项目应先开分支/PR。
 
 ### 风格卡 roles
 
@@ -191,7 +192,7 @@ test/            # node:test
 | # | 决定 | 理由 |
 | --- | --- | --- |
 | D1 | 本地优先、零依赖、Node 24 | 先验证工作流，不引入云/账号/依赖 |
-| D2 | DTCG 风格 token + 语义三层 | 与现有设计系统生态兼容 |
+| D2 | DTCG 风格 token + 四层结构 | 与现有设计系统生态兼容 |
 | D3 | 与 LRDS 代码解耦 | 独立产品；LRDS 只是 sample |
 | D4 | 先只做 token/contract/style-card/checks/report | 先闭合“改一处 → 全端可见”的最小链路 |
 | D5 | 不做 Figma 克隆/文档站 | 差异化在运维，不在画布 |
@@ -226,26 +227,13 @@ test/            # node:test
 | D34 | v1.2.3 UI 标签 | eyebrow/表头/状态本地化 |
 | D35 | v1.2.4 指标/流程标签 | overview 指标与流程本地化 |
 
-## 九、路线图（待验证）
+## 九、路线图（当前）
 
-- **v0.2（已完成）**：LRDS 真实 case 导入。
-- **v0.3（已完成）**：契约编辑、真实 token 组件预览。
-- **v0.4（已完成）**：采用扫描（CLI/API/UI）。
-- **v0.5（已完成）**：多 vault 切换、风格卡并排对比。
-- **v0.6（已完成）**：token 生命周期/弃用。
-- **v0.7（已完成）**：本地快照与差异。
-- **v0.8（已完成）**：跨 vault 本地 CI 门禁。
-- **v0.9（已完成）**：本地检查插件。
-- **v0.10（已完成）**：跨快照趋势。
-- **v0.11（已完成）**：跨 vault 趋势、CI 模板、插件示例。
-- **v0.12（已完成）**：跨 vault Trends UI、`plugin-test`。
-- **v0.13（已完成）**：`plugin-test --all` 插件矩阵。
-- **v0.14（已完成）**：本地报告模板。
-- **v0.15（已完成）**：Vaults 健康总览。
-- **v0.16（已完成）**：报告模板循环/条件。
-- **v0.17（已完成）**：报告包（bundle）。
-- **v0.18（当前）**：模板嵌套条件；云/账号/团队/私有 registry/托管继续搁置。
-- **之后**：托管/CI/审计服务；开源核心 + 企业版。
+- v1.0–v1.4：本地核心、快照、CI、插件、趋势、报告、11 套 vault；
+- v1.5–v1.9：皮肤质量、50 角色、规模层、严格 schema 演进；
+- v1.10–v1.14：逐库严格 schema、迁入 `design/projects/livedso/`；
+- v1.15–v1.19：外部 token 适配器 P0–P4（DTCG / CSS / Tailwind / SD / Figma / Figma Variables、多主题、component、registry、CI）；
+- 当前：适配器功能完成；后续只做文档/示例/质量/真实 case 修复。
 
 ## 十、已裁决
 
@@ -259,10 +247,10 @@ test/            # node:test
 
 ## 十一、边界
 
-- 不读/写 LRDS 的组件 CSS 或产品代码（v0.18）；采用扫描是只读。
+- 不读/写 LRDS 的组件 CSS 或产品代码；采用扫描是只读。
 - 不做自动 Git 提交；
 - 不做云同步/账号/计费；
-- 不做完整的 token 树编辑器（v0.18 只改值/契约/生命周期，不建树）；不做自动改代码；插件无沙箱；报告模板不执行代码。
+- 不做完整的 token 树编辑器（只改值/契约/生命周期，不建树）；不做自动改代码；插件无沙箱；报告模板不执行代码。
 - 快照不自动回滚；只读差异，恢复由人决定。
 
 ## 十二、商品化（未来，未实施）
@@ -287,10 +275,10 @@ test/            # node:test
 本地/任意 CI 运行：
 
 ```bash
-node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
+node src/cli.ts ci --strict --adopt ../.. --out reports/ci.md
 ```
 
-门禁：错误必须为 0；`--strict` 还要求无警告/裸色/未知变量/弃用引用；支持 `--max-warnings`、`--max-raw`、`--max-deprecated`、`--baseline`。详见 [`docs/06_CI集成.md`](docs/06_CI集成.md)。
+门禁：错误必须为 0；`--strict` 还要求无警告/裸色/未知变量/弃用引用；支持 `--max-warnings`、`--max-raw`、`--max-deprecated`、`--baseline`。外部源可加 `--adapt-registry examples/adapt/adapters.json`。详见 [`docs/06_CI集成.md`](docs/06_CI集成.md)。
 
 本地插件：`plugins/*.mjs`，用 `--plugins` 或 `LIVEDSO_PLUGINS` 加载；不是沙箱，只加载可信代码。详见 [`docs/07_插件API.md`](docs/07_插件API.md)。
 
@@ -308,7 +296,7 @@ Vaults 总览：Workbench **Vaults** 页；`GET /api/vaults/overview` 聚合所�
 
 每次发布按 [`docs/05_发布检查清单.md`](docs/05_发布检查清单.md) 执行：旧版本段不可删除，发布提交后立刻打 `livedso-v*` tag。
 
-## 十六、v1.4 案例与文档
+## 十六、v1.19 案例与文档
 
 - [`docs/09_快速开始与案例.md`](docs/09_快速开始与案例.md)；
 - [`vaults/README.md`](vaults/README.md)：全部 11 套 vault 与通用性说明；
@@ -317,4 +305,4 @@ Vaults 总览：Workbench **Vaults** 页；`GET /api/vaults/overview` 聚合所�
 
 ## 工作区规则
 
-> **特别约定：不适用 `lab/` 的实验豁免。** 本项目按工作区根目录通用规则执行：R01 文档体例、R02 Git/提交、R03 相对链接、R05 变更日志、AGENTS 回报；目录/命名按 M1/M2 的 projects 标准准备，迁移到 `projects/` 时接入配置。
+> **特别约定：不适用 `lab/` 的实验豁免。** 本项目已迁入 `design/projects/livedso/`，按工作区根目录通用规则执行：R01 文档体例、R02 Git/提交、R03 相对链接、R05 变更日志、AGENTS 回报；`projects` 的 M1/M2 配置已接入。

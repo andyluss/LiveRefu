@@ -14,7 +14,7 @@ jobs:
           node-version: 24
       - name: LiveDSO CI
         working-directory: design/projects/livedso
-        run: node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md
+        run: node src/cli.ts ci --strict --adopt ../.. --out reports/ci.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:

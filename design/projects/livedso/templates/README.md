@@ -11,7 +11,7 @@
 
 - Node 24；
 - 工作目录 `design/projects/livedso`；
-- 运行 `node src/cli.ts ci --strict --adopt ../../design --out reports/ci.md`；
+- 运行 `node src/cli.ts ci --strict --adopt ../.. --out reports/ci.md`；
 - 报告作为 artifact。
 
 详见 [`../docs/06_CI集成.md`](../docs/06_CI集成.md)。

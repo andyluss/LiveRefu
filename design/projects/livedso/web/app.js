@@ -456,7 +456,7 @@
   }
   async function runAdoption() {
     const root = $('#adoption-root')?.value?.trim();
-    if (!root) { toast('需要目录', '例如 ../../design 或 ../my-app'); return; }
+    if (!root) { toast('需要目录', '例如 ../.. 或 ../my-app'); return; }
     try {
       setStatus('ok', loc('Scanning','扫描中'));
       const a = await api('/api/adopt', { method: 'POST', body: JSON.stringify({ root }) });

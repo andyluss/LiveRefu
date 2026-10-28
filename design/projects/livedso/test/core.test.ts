@@ -62,7 +62,7 @@ test('report and CSS projection are generated', () => {
   assert.ok(css.includes('--dso-sys-color-bg-base'))
 })
 
-test('real LRDS case imports 229 core + 150 role tokens', () => {
+test('real LRDS case imports and loads', () => {
   const vault = loadVault(fileURLToPath(new URL('../vaults/lrds-real', import.meta.url)))
   assert.equal(vault.errors.length, 0)
   assert.equal(vault.tokens.size, 635)

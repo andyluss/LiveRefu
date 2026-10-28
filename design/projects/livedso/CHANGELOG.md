@@ -1,5 +1,12 @@
 # LiveDSO Changelog
 
+## [未发布]
+
+### Changed
+
+- **文档同步 v1.19**：README/产品定义/架构/路线图/Token 规模/CI/发布/快速开始统一到当前 schema 与适配器能力；清理 `theme-roles`、v1.4、旧路径等过时表述。
+- 修正项目内相对路径（`../../tokens`、`adopt ../..`）与最小 vault 计数。
+
 ## [1.19.0] - 2026-10-28 20:41
 
 ### Added

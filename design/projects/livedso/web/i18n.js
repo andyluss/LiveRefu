@@ -116,7 +116,7 @@
     '启动本地藏库后生成。': 'Generated after a local vault starts.', '读取 token 中……': 'Loading tokens…',
     '灵动构坊概览': 'LiveAtelier overview', '主导航': 'Main navigation',
     '按层过滤': 'Filter by tier', '按类型过滤': 'Filter by type', '按生命周期过滤': 'Filter by lifecycle',
-    '预览状态': 'Preview state', '目录，例如 ../../design 或 ../my-app': 'Directory, e.g. ../../design or ../my-app',
+    '预览状态': 'Preview state', '目录，例如 ../.. 或 ../my-app': 'Directory, e.g. ../.. or ../my-app',
     '关闭': 'Close',
     '系统观测台': 'System observatory', '最近信号': 'Recent signals', '工作流': 'Workflow',
     '事实源': 'Source of truth', '组件承诺': 'Component promises', '实时组件预览': 'Live component preview',
