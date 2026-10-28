@@ -1,0 +1,212 @@
+{
+  "product": {
+    "ant-dark": {
+      "role": {
+        "bg": {
+          "$value": "{ant.colorText}",
+          "$type": "color"
+        },
+        "bgSubtle": {
+          "$value": "{ref.generated.ant-dark.role.bgSubtle}",
+          "$type": "color"
+        },
+        "surface": {
+          "$value": "{ant.colorText}",
+          "$type": "color"
+        },
+        "surfaceRaised": {
+          "$value": "{ref.generated.ant-dark.role.surfaceRaised}",
+          "$type": "color"
+        },
+        "surfaceSunken": {
+          "$value": "{ref.generated.ant-dark.role.surfaceSunken}",
+          "$type": "color"
+        },
+        "surfaceHover": {
+          "$value": "{ref.generated.ant-dark.role.surfaceHover}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{ant.ref.white}",
+          "$type": "color"
+        },
+        "textOnSurface": {
+          "$value": "{ref.generated.ant-dark.role.textOnSurface}",
+          "$type": "color"
+        },
+        "textMuted": {
+          "$value": "{ref.generated.ant-dark.role.textMuted}",
+          "$type": "color"
+        },
+        "textSubtle": {
+          "$value": "{ref.generated.ant-dark.role.textSubtle}",
+          "$type": "color"
+        },
+        "textInverse": {
+          "$value": "{ref.generated.ant-dark.role.textInverse}",
+          "$type": "color"
+        },
+        "textLink": {
+          "$value": "{ref.generated.ant-dark.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.ant-dark.role.textVisited}",
+          "$type": "color"
+        },
+        "textDisabled": {
+          "$value": "{ref.generated.ant-dark.role.textDisabled}",
+          "$type": "color"
+        },
+        "border": {
+          "$value": "{ref.generated.ant-dark.role.border}",
+          "$type": "color"
+        },
+        "borderStrong": {
+          "$value": "{ref.generated.ant-dark.role.borderStrong}",
+          "$type": "color"
+        },
+        "borderSubtle": {
+          "$value": "{ref.generated.ant-dark.role.borderSubtle}",
+          "$type": "color"
+        },
+        "divider": {
+          "$value": "{ref.generated.ant-dark.role.divider}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.ant-dark.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.ant-dark.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.ant-dark.role.actionDisabled}",
+          "$type": "color"
+        },
+        "secondaryAction": {
+          "$value": "{ref.generated.ant-dark.role.secondaryAction}",
+          "$type": "color"
+        },
+        "onSecondaryAction": {
+          "$value": "{ref.generated.ant-dark.role.onSecondaryAction}",
+          "$type": "color"
+        },
+        "ghostAction": {
+          "$value": "{ref.generated.ant-dark.role.ghostAction}",
+          "$type": "color"
+        },
+        "dangerSubtle": {
+          "$value": "{ref.generated.ant-dark.role.dangerSubtle}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.ant-dark.role.successSubtle}",
+          "$type": "color"
+        },
+        "warning": {
+          "$value": "{ref.generated.ant-dark.role.warning}",
+          "$type": "color"
+        },
+        "onWarning": {
+          "$value": "{ref.generated.ant-dark.role.onWarning}",
+          "$type": "color"
+        },
+        "warningSubtle": {
+          "$value": "{ref.generated.ant-dark.role.warningSubtle}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.ant-dark.role.infoSubtle}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.ant-dark.role.selection}",
+          "$type": "color"
+        },
+        "codeBg": {
+          "$value": "{ref.generated.ant-dark.role.codeBg}",
+          "$type": "color"
+        },
+        "codeText": {
+          "$value": "{ref.generated.ant-dark.role.codeText}",
+          "$type": "color"
+        },
+        "chart2": {
+          "$value": "{ref.generated.ant-dark.role.chart2}",
+          "$type": "color"
+        },
+        "chart5": {
+          "$value": "{ref.generated.ant-dark.role.chart5}",
+          "$type": "color"
+        }
+      }
+    },
+    "ant-mono": {
+      "role": {
+        "textLink": {
+          "$value": "{ref.generated.ant-mono.role.textLink}",
+          "$type": "color"
+        },
+        "textVisited": {
+          "$value": "{ref.generated.ant-mono.role.textVisited}",
+          "$type": "color"
+        },
+        "action": {
+          "$value": "{ant.colorText}",
+          "$type": "color"
+        },
+        "actionHover": {
+          "$value": "{ref.generated.ant-mono.role.actionHover}",
+          "$type": "color"
+        },
+        "actionPressed": {
+          "$value": "{ref.generated.ant-mono.role.actionPressed}",
+          "$type": "color"
+        },
+        "actionDisabled": {
+          "$value": "{ref.generated.ant-mono.role.actionDisabled}",
+          "$type": "color"
+        },
+        "success": {
+          "$value": "{ref.generated.ant-mono.role.success}",
+          "$type": "color"
+        },
+        "successSubtle": {
+          "$value": "{ref.generated.ant-mono.role.successSubtle}",
+          "$type": "color"
+        },
+        "info": {
+          "$value": "{ref.generated.ant-mono.role.info}",
+          "$type": "color"
+        },
+        "infoSubtle": {
+          "$value": "{ref.generated.ant-mono.role.infoSubtle}",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "{ref.generated.ant-mono.role.accent}",
+          "$type": "color"
+        },
+        "selection": {
+          "$value": "{ref.generated.ant-mono.role.selection}",
+          "$type": "color"
+        },
+        "chart1": {
+          "$value": "{ref.generated.ant-mono.role.chart1}",
+          "$type": "color"
+        },
+        "chart4": {
+          "$value": "{ref.generated.ant-mono.role.chart4}",
+          "$type": "color"
+        },
+        "chart6": {
+          "$value": "{ref.generated.ant-mono.role.chart6}",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

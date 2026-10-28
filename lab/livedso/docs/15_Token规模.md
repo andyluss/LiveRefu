@@ -1,6 +1,6 @@
 # LiveDSO · Token 规模与扩展
 
-> 版本：v1.9 ｜ 日期：2026-10-28
+> 版本：v2.0 ｜ 日期：2026-10-28
 
 ## 一、结论：没有硬上限
 
@@ -19,8 +19,9 @@
 | 层 | 文件 | 作用 |
 | --- | --- | --- |
 | 原生 token | `tokens.json` / `core-*.tokens.json` | 各设计系统自己的命名体系 |
-| 角色 token | `theme-roles.tokens.json` | `theme.<card>.color.<role>`，50 角色/卡 |
-| 规模 token | `tokens.json`（新样本）或 `scales.tokens.json` | 色阶、字体、间距、圆角、阴影、动效、组件尺寸 |
+| 语义角色 | `sys-roles.tokens.json` + `product-roles.tokens.json` | 默认 `sys.role.*`；风格卡差异 `product.<card>.role.*` |
+| 规模 token | `ref`（新样本 tokens.json / scales.tokens.json） | 色阶、字体、间距、圆角、阴影、动效、组件尺寸 |
+| 原始角色色 | `ref-generated.tokens.json` | 角色色值的 `ref` 来源 |
 
 之前只展示了第一层，所以看起来“只有 10 个”。
 
@@ -39,10 +40,10 @@
 
 | 藏库 | Token 总数 |
 | --- | --- |
-| LRDS sample | 331 |
-| LRDS real | 505 |
-| Minimal | 304 |
-| 其余 8 套 | 304–306 |
+| LRDS sample | 459 |
+| LRDS real | 633 |
+| Minimal | 328 |
+| 其余 8 套 | 342–405 |
 
 ## 四、真正的限制
 
@@ -55,7 +56,7 @@
 
 - 新 token 放在对应 vault 的 `tokens/*.json`；
 - 颜色保持 `$type: "color"`；尺寸用 `dimension`；数字用 `number`；
-- 角色层继续通过 `theme.<card>.color.<role>` 引用；
+- 角色层继续通过 `sys.role.*` / `product.<card>.role.*` 引用；
 - 跑：
 
 ```bash

@@ -1,0 +1,206 @@
+{
+  "sys": {
+    "role": {
+      "bg": {
+        "$value": "{ap.color.bg}",
+        "$type": "color"
+      },
+      "bgSubtle": {
+        "$value": "{ref.generated.atompunk.role.bgSubtle}",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "{ap.color.surface}",
+        "$type": "color"
+      },
+      "surfaceRaised": {
+        "$value": "{ref.generated.atompunk.role.surfaceRaised}",
+        "$type": "color"
+      },
+      "surfaceSunken": {
+        "$value": "{ref.generated.atompunk.role.surfaceSunken}",
+        "$type": "color"
+      },
+      "surfaceHover": {
+        "$value": "{ref.generated.atompunk.role.surfaceHover}",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "{ap.color.text}",
+        "$type": "color"
+      },
+      "textOnSurface": {
+        "$value": "{ref.generated.atompunk.role.textOnSurface}",
+        "$type": "color"
+      },
+      "textMuted": {
+        "$value": "{ref.generated.atompunk.role.textMuted}",
+        "$type": "color"
+      },
+      "textSubtle": {
+        "$value": "{ref.generated.atompunk.role.textSubtle}",
+        "$type": "color"
+      },
+      "textInverse": {
+        "$value": "{ref.generated.atompunk.role.textInverse}",
+        "$type": "color"
+      },
+      "textLink": {
+        "$value": "{ref.generated.atompunk.role.textLink}",
+        "$type": "color"
+      },
+      "textVisited": {
+        "$value": "{ref.generated.atompunk.role.textVisited}",
+        "$type": "color"
+      },
+      "textDisabled": {
+        "$value": "{ref.generated.atompunk.role.textDisabled}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{ref.generated.atompunk.role.border}",
+        "$type": "color"
+      },
+      "borderStrong": {
+        "$value": "{ref.generated.atompunk.role.borderStrong}",
+        "$type": "color"
+      },
+      "borderSubtle": {
+        "$value": "{ref.generated.atompunk.role.borderSubtle}",
+        "$type": "color"
+      },
+      "divider": {
+        "$value": "{ref.generated.atompunk.role.divider}",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "{ap.color.focus}",
+        "$type": "color"
+      },
+      "action": {
+        "$value": "{ap.color.action}",
+        "$type": "color"
+      },
+      "actionHover": {
+        "$value": "{ref.generated.atompunk.role.actionHover}",
+        "$type": "color"
+      },
+      "actionPressed": {
+        "$value": "{ref.generated.atompunk.role.actionPressed}",
+        "$type": "color"
+      },
+      "actionDisabled": {
+        "$value": "{ref.generated.atompunk.role.actionDisabled}",
+        "$type": "color"
+      },
+      "onAction": {
+        "$value": "{ref.generated.atompunk.role.onAction}",
+        "$type": "color"
+      },
+      "secondaryAction": {
+        "$value": "{ref.generated.atompunk.role.secondaryAction}",
+        "$type": "color"
+      },
+      "onSecondaryAction": {
+        "$value": "{ref.generated.atompunk.role.onSecondaryAction}",
+        "$type": "color"
+      },
+      "ghostAction": {
+        "$value": "{ref.generated.atompunk.role.ghostAction}",
+        "$type": "color"
+      },
+      "danger": {
+        "$value": "{ap.color.danger}",
+        "$type": "color"
+      },
+      "onDanger": {
+        "$value": "{ref.generated.atompunk.role.onDanger}",
+        "$type": "color"
+      },
+      "dangerSubtle": {
+        "$value": "{ref.generated.atompunk.role.dangerSubtle}",
+        "$type": "color"
+      },
+      "success": {
+        "$value": "{ref.generated.atompunk.role.success}",
+        "$type": "color"
+      },
+      "onSuccess": {
+        "$value": "{ref.generated.atompunk.role.onSuccess}",
+        "$type": "color"
+      },
+      "successSubtle": {
+        "$value": "{ref.generated.atompunk.role.successSubtle}",
+        "$type": "color"
+      },
+      "warning": {
+        "$value": "{ref.generated.atompunk.role.warning}",
+        "$type": "color"
+      },
+      "onWarning": {
+        "$value": "{ref.generated.atompunk.role.onWarning}",
+        "$type": "color"
+      },
+      "warningSubtle": {
+        "$value": "{ref.generated.atompunk.role.warningSubtle}",
+        "$type": "color"
+      },
+      "info": {
+        "$value": "{ref.generated.atompunk.role.info}",
+        "$type": "color"
+      },
+      "onInfo": {
+        "$value": "{ref.generated.atompunk.role.onInfo}",
+        "$type": "color"
+      },
+      "infoSubtle": {
+        "$value": "{ref.generated.atompunk.role.infoSubtle}",
+        "$type": "color"
+      },
+      "accent": {
+        "$value": "{ref.generated.atompunk.role.accent}",
+        "$type": "color"
+      },
+      "accent2": {
+        "$value": "{ref.generated.atompunk.role.accent2}",
+        "$type": "color"
+      },
+      "selection": {
+        "$value": "{ref.generated.atompunk.role.selection}",
+        "$type": "color"
+      },
+      "codeBg": {
+        "$value": "{ref.generated.atompunk.role.codeBg}",
+        "$type": "color"
+      },
+      "codeText": {
+        "$value": "{ref.generated.atompunk.role.codeText}",
+        "$type": "color"
+      },
+      "chart1": {
+        "$value": "{ref.generated.atompunk.role.chart1}",
+        "$type": "color"
+      },
+      "chart2": {
+        "$value": "{ref.generated.atompunk.role.chart2}",
+        "$type": "color"
+      },
+      "chart3": {
+        "$value": "{ref.generated.atompunk.role.chart3}",
+        "$type": "color"
+      },
+      "chart4": {
+        "$value": "{ref.generated.atompunk.role.chart4}",
+        "$type": "color"
+      },
+      "chart5": {
+        "$value": "{ref.generated.atompunk.role.chart5}",
+        "$type": "color"
+      },
+      "chart6": {
+        "$value": "{ref.generated.atompunk.role.chart6}",
+        "$type": "color"
+      }
+    }
+  }
+}

@@ -1,0 +1,462 @@
+{
+  "ref": {
+    "generated": {
+      "cassette-futurism": {
+        "role": {
+          "bgSubtle": {
+            "$value": "#1f1e1d",
+            "$type": "color"
+          },
+          "surfaceRaised": {
+            "$value": "#322d28",
+            "$type": "color"
+          },
+          "surfaceSunken": {
+            "$value": "#1f1e1d",
+            "$type": "color"
+          },
+          "surfaceHover": {
+            "$value": "#322d28",
+            "$type": "color"
+          },
+          "textOnSurface": {
+            "$value": "#d8c3a5",
+            "$type": "color"
+          },
+          "textMuted": {
+            "$value": "#bba990",
+            "$type": "color"
+          },
+          "textSubtle": {
+            "$value": "#9e8f7a",
+            "$type": "color"
+          },
+          "textInverse": {
+            "$value": "#f6f1e7",
+            "$type": "color"
+          },
+          "textLink": {
+            "$value": "#e76f51",
+            "$type": "color"
+          },
+          "textVisited": {
+            "$value": "#dda688",
+            "$type": "color"
+          },
+          "textDisabled": {
+            "$value": "#6e6457",
+            "$type": "color"
+          },
+          "border": {
+            "$value": "#a2927c",
+            "$type": "color"
+          },
+          "borderStrong": {
+            "$value": "#bdab91",
+            "$type": "color"
+          },
+          "borderSubtle": {
+            "$value": "#6c6153",
+            "$type": "color"
+          },
+          "divider": {
+            "$value": "#5a5146",
+            "$type": "color"
+          },
+          "actionHover": {
+            "$value": "#e5795b",
+            "$type": "color"
+          },
+          "actionPressed": {
+            "$value": "#bd5d45",
+            "$type": "color"
+          },
+          "actionDisabled": {
+            "$value": "#894737",
+            "$type": "color"
+          },
+          "onAction": {
+            "$value": "#0b0f14",
+            "$type": "color"
+          },
+          "secondaryAction": {
+            "$value": "#24201d",
+            "$type": "color"
+          },
+          "onSecondaryAction": {
+            "$value": "#f6f1e7",
+            "$type": "color"
+          },
+          "ghostAction": {
+            "$value": "#d8c3a5",
+            "$type": "color"
+          },
+          "onDanger": {
+            "$value": "#f6f1e7",
+            "$type": "color"
+          },
+          "dangerSubtle": {
+            "$value": "#2a1b1d",
+            "$type": "color"
+          },
+          "success": {
+            "$value": "#e76f51",
+            "$type": "color"
+          },
+          "onSuccess": {
+            "$value": "#0b0f14",
+            "$type": "color"
+          },
+          "successSubtle": {
+            "$value": "#30221e",
+            "$type": "color"
+          },
+          "warning": {
+            "$value": "#2a9d8f",
+            "$type": "color"
+          },
+          "onWarning": {
+            "$value": "#0b0f14",
+            "$type": "color"
+          },
+          "warningSubtle": {
+            "$value": "#192725",
+            "$type": "color"
+          },
+          "info": {
+            "$value": "#e76f51",
+            "$type": "color"
+          },
+          "onInfo": {
+            "$value": "#0b0f14",
+            "$type": "color"
+          },
+          "infoSubtle": {
+            "$value": "#30221e",
+            "$type": "color"
+          },
+          "accent": {
+            "$value": "#e76f51",
+            "$type": "color"
+          },
+          "accent2": {
+            "$value": "#b23a48",
+            "$type": "color"
+          },
+          "selection": {
+            "$value": "#60362b",
+            "$type": "color"
+          },
+          "codeBg": {
+            "$value": "#21201e",
+            "$type": "color"
+          },
+          "codeText": {
+            "$value": "#d8c3a5",
+            "$type": "color"
+          },
+          "chart1": {
+            "$value": "#e76f51",
+            "$type": "color"
+          },
+          "chart2": {
+            "$value": "#2a9d8f",
+            "$type": "color"
+          },
+          "chart3": {
+            "$value": "#b23a48",
+            "$type": "color"
+          },
+          "chart4": {
+            "$value": "#e76f51",
+            "$type": "color"
+          },
+          "chart5": {
+            "$value": "#2a9d8f",
+            "$type": "color"
+          },
+          "chart6": {
+            "$value": "#e76f51",
+            "$type": "color"
+          }
+        }
+      },
+      "cassette-amber": {
+        "role": {
+          "bgSubtle": {
+            "$value": "#201d1a",
+            "$type": "color"
+          },
+          "surfaceRaised": {
+            "$value": "#352a22",
+            "$type": "color"
+          },
+          "surfaceSunken": {
+            "$value": "#201d1a",
+            "$type": "color"
+          },
+          "surfaceHover": {
+            "$value": "#352a22",
+            "$type": "color"
+          },
+          "textOnSurface": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "textMuted": {
+            "$value": "#d38d56",
+            "$type": "color"
+          },
+          "textSubtle": {
+            "$value": "#b2784b",
+            "$type": "color"
+          },
+          "textLink": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "textVisited": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "textDisabled": {
+            "$value": "#7a5638",
+            "$type": "color"
+          },
+          "border": {
+            "$value": "#b67b4d",
+            "$type": "color"
+          },
+          "borderStrong": {
+            "$value": "#d58f57",
+            "$type": "color"
+          },
+          "borderSubtle": {
+            "$value": "#775438",
+            "$type": "color"
+          },
+          "divider": {
+            "$value": "#624731",
+            "$type": "color"
+          },
+          "actionHover": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "actionPressed": {
+            "$value": "#c88652",
+            "$type": "color"
+          },
+          "actionDisabled": {
+            "$value": "#916340",
+            "$type": "color"
+          },
+          "ghostAction": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "success": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "successSubtle": {
+            "$value": "#322820",
+            "$type": "color"
+          },
+          "info": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "infoSubtle": {
+            "$value": "#322820",
+            "$type": "color"
+          },
+          "accent": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "selection": {
+            "$value": "#644831",
+            "$type": "color"
+          },
+          "codeBg": {
+            "$value": "#221e1b",
+            "$type": "color"
+          },
+          "codeText": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "chart1": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "chart4": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "chart6": {
+            "$value": "#f4a261",
+            "$type": "color"
+          }
+        }
+      },
+      "cassette-daylight": {
+        "role": {
+          "bgSubtle": {
+            "$value": "#d0bc9f",
+            "$type": "color"
+          },
+          "surfaceRaised": {
+            "$value": "#eb9c5e",
+            "$type": "color"
+          },
+          "surfaceSunken": {
+            "$value": "#d0bc9f",
+            "$type": "color"
+          },
+          "surfaceHover": {
+            "$value": "#e2975b",
+            "$type": "color"
+          },
+          "textOnSurface": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "textSubtle": {
+            "$value": "#514b42",
+            "$type": "color"
+          },
+          "textInverse": {
+            "$value": "#0b0f14",
+            "$type": "color"
+          },
+          "textLink": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "textVisited": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "textDisabled": {
+            "$value": "#817665",
+            "$type": "color"
+          },
+          "borderStrong": {
+            "$value": "#382c22",
+            "$type": "color"
+          },
+          "borderSubtle": {
+            "$value": "#9c6a43",
+            "$type": "color"
+          },
+          "divider": {
+            "$value": "#b2784b",
+            "$type": "color"
+          },
+          "actionHover": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "actionPressed": {
+            "$value": "#3e3933",
+            "$type": "color"
+          },
+          "actionDisabled": {
+            "$value": "#6e6457",
+            "$type": "color"
+          },
+          "secondaryAction": {
+            "$value": "#f4a261",
+            "$type": "color"
+          },
+          "onSecondaryAction": {
+            "$value": "#0b0f14",
+            "$type": "color"
+          },
+          "ghostAction": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "dangerSubtle": {
+            "$value": "#d3b39a",
+            "$type": "color"
+          },
+          "success": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "onSuccess": {
+            "$value": "#f6f1e7",
+            "$type": "color"
+          },
+          "successSubtle": {
+            "$value": "#c1ae94",
+            "$type": "color"
+          },
+          "warning": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "onWarning": {
+            "$value": "#f6f1e7",
+            "$type": "color"
+          },
+          "warningSubtle": {
+            "$value": "#c1ae94",
+            "$type": "color"
+          },
+          "info": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "onInfo": {
+            "$value": "#f6f1e7",
+            "$type": "color"
+          },
+          "infoSubtle": {
+            "$value": "#c1ae94",
+            "$type": "color"
+          },
+          "accent": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "selection": {
+            "$value": "#948773",
+            "$type": "color"
+          },
+          "codeBg": {
+            "$value": "#ceba9e",
+            "$type": "color"
+          },
+          "codeText": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "chart1": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "chart2": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "chart4": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "chart5": {
+            "$value": "#171717",
+            "$type": "color"
+          },
+          "chart6": {
+            "$value": "#171717",
+            "$type": "color"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,20 @@
 # LiveDSO Changelog
 
+## [2.0.0] - 2026-10-28 14:23
+
+### Breaking
+
+- 按 [`design/canon/`](../../design/canon/README.md) 落地四层：`ref`（原始值/尺度）→ `sys.role`（默认 50 角色）→ `component`（组件）→ `product.<card>.role`（风格卡稀疏覆盖）。
+- 删除 `theme-roles.tokens.json` 与 `theme.*`；风格卡不再复制全量角色。
+- 默认卡进 `sys.role`；非默认卡只写差异到 `product.<card>.role`；角色色值的原始来源进 `ref.generated`。
+
+### Changed
+
+- scale 归入 `ref`；组件尺寸归 `component`。
+- Token 总量：sample 459、lrds-real 633、minimal 328，其余 8 套 342–405。
+- 文档 `14`/`15`、vault README 与测试计数同步。
+- `node:test` 保持 24 项；`skin:check` 33/33 通过。
+
 ## [1.9.0] - 2026-10-28 14:07
 
 ### Added

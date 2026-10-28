@@ -1,0 +1,206 @@
+{
+  "sys": {
+    "role": {
+      "bg": {
+        "$value": "{cds.color.layer}",
+        "$type": "color"
+      },
+      "bgSubtle": {
+        "$value": "{ref.generated.carbon.role.bgSubtle}",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "{cds.ref.white}",
+        "$type": "color"
+      },
+      "surfaceRaised": {
+        "$value": "{ref.generated.carbon.role.surfaceRaised}",
+        "$type": "color"
+      },
+      "surfaceSunken": {
+        "$value": "{ref.generated.carbon.role.surfaceSunken}",
+        "$type": "color"
+      },
+      "surfaceHover": {
+        "$value": "{ref.generated.carbon.role.surfaceHover}",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "{cds.color.text.primary}",
+        "$type": "color"
+      },
+      "textOnSurface": {
+        "$value": "{ref.generated.carbon.role.textOnSurface}",
+        "$type": "color"
+      },
+      "textMuted": {
+        "$value": "{ref.generated.carbon.role.textMuted}",
+        "$type": "color"
+      },
+      "textSubtle": {
+        "$value": "{ref.generated.carbon.role.textSubtle}",
+        "$type": "color"
+      },
+      "textInverse": {
+        "$value": "{ref.generated.carbon.role.textInverse}",
+        "$type": "color"
+      },
+      "textLink": {
+        "$value": "{ref.generated.carbon.role.textLink}",
+        "$type": "color"
+      },
+      "textVisited": {
+        "$value": "{ref.generated.carbon.role.textVisited}",
+        "$type": "color"
+      },
+      "textDisabled": {
+        "$value": "{ref.generated.carbon.role.textDisabled}",
+        "$type": "color"
+      },
+      "border": {
+        "$value": "{ref.generated.carbon.role.border}",
+        "$type": "color"
+      },
+      "borderStrong": {
+        "$value": "{ref.generated.carbon.role.borderStrong}",
+        "$type": "color"
+      },
+      "borderSubtle": {
+        "$value": "{ref.generated.carbon.role.borderSubtle}",
+        "$type": "color"
+      },
+      "divider": {
+        "$value": "{ref.generated.carbon.role.divider}",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "{cds.color.focus}",
+        "$type": "color"
+      },
+      "action": {
+        "$value": "{cds.color.focus}",
+        "$type": "color"
+      },
+      "actionHover": {
+        "$value": "{ref.generated.carbon.role.actionHover}",
+        "$type": "color"
+      },
+      "actionPressed": {
+        "$value": "{ref.generated.carbon.role.actionPressed}",
+        "$type": "color"
+      },
+      "actionDisabled": {
+        "$value": "{ref.generated.carbon.role.actionDisabled}",
+        "$type": "color"
+      },
+      "onAction": {
+        "$value": "{ref.generated.carbon.role.onAction}",
+        "$type": "color"
+      },
+      "secondaryAction": {
+        "$value": "{ref.generated.carbon.role.secondaryAction}",
+        "$type": "color"
+      },
+      "onSecondaryAction": {
+        "$value": "{ref.generated.carbon.role.onSecondaryAction}",
+        "$type": "color"
+      },
+      "ghostAction": {
+        "$value": "{ref.generated.carbon.role.ghostAction}",
+        "$type": "color"
+      },
+      "danger": {
+        "$value": "{cds.color.support.error}",
+        "$type": "color"
+      },
+      "onDanger": {
+        "$value": "{ref.generated.carbon.role.onDanger}",
+        "$type": "color"
+      },
+      "dangerSubtle": {
+        "$value": "{ref.generated.carbon.role.dangerSubtle}",
+        "$type": "color"
+      },
+      "success": {
+        "$value": "{ref.generated.carbon.role.success}",
+        "$type": "color"
+      },
+      "onSuccess": {
+        "$value": "{ref.generated.carbon.role.onSuccess}",
+        "$type": "color"
+      },
+      "successSubtle": {
+        "$value": "{ref.generated.carbon.role.successSubtle}",
+        "$type": "color"
+      },
+      "warning": {
+        "$value": "{ref.generated.carbon.role.warning}",
+        "$type": "color"
+      },
+      "onWarning": {
+        "$value": "{ref.generated.carbon.role.onWarning}",
+        "$type": "color"
+      },
+      "warningSubtle": {
+        "$value": "{ref.generated.carbon.role.warningSubtle}",
+        "$type": "color"
+      },
+      "info": {
+        "$value": "{ref.generated.carbon.role.info}",
+        "$type": "color"
+      },
+      "onInfo": {
+        "$value": "{ref.generated.carbon.role.onInfo}",
+        "$type": "color"
+      },
+      "infoSubtle": {
+        "$value": "{ref.generated.carbon.role.infoSubtle}",
+        "$type": "color"
+      },
+      "accent": {
+        "$value": "{ref.generated.carbon.role.accent}",
+        "$type": "color"
+      },
+      "accent2": {
+        "$value": "{ref.generated.carbon.role.accent2}",
+        "$type": "color"
+      },
+      "selection": {
+        "$value": "{ref.generated.carbon.role.selection}",
+        "$type": "color"
+      },
+      "codeBg": {
+        "$value": "{ref.generated.carbon.role.codeBg}",
+        "$type": "color"
+      },
+      "codeText": {
+        "$value": "{ref.generated.carbon.role.codeText}",
+        "$type": "color"
+      },
+      "chart1": {
+        "$value": "{ref.generated.carbon.role.chart1}",
+        "$type": "color"
+      },
+      "chart2": {
+        "$value": "{ref.generated.carbon.role.chart2}",
+        "$type": "color"
+      },
+      "chart3": {
+        "$value": "{ref.generated.carbon.role.chart3}",
+        "$type": "color"
+      },
+      "chart4": {
+        "$value": "{ref.generated.carbon.role.chart4}",
+        "$type": "color"
+      },
+      "chart5": {
+        "$value": "{ref.generated.carbon.role.chart5}",
+        "$type": "color"
+      },
+      "chart6": {
+        "$value": "{ref.generated.carbon.role.chart6}",
+        "$type": "color"
+      }
+    }
+  }
+}
