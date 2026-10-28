@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /* LiveLand · world/era workbench UI. */
 (function () {
   'use strict';

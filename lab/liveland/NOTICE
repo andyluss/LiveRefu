@@ -1,0 +1,10 @@
+LiveLand / 灵动境界
+Copyright 2026 LiveLand contributors
+
+This product is licensed under the Apache License, Version 2.0.
+See LICENSE for the full text.
+
+LiveLand / 灵动境界 是正式名称；名称、Logo 与品牌标识不在 Apache-2.0 的版权许可范围内，见 TRADEMARKS.md。
+
+核心许可是 Apache-2.0；商业托管、团队协作与审计服务可另行授权。
+运行时只使用 Node.js 内置模块，没有第三方运行时依赖。

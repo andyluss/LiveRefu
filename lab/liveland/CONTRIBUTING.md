@@ -1,0 +1,38 @@
+# Contributing to LiveLand / 灵动境界
+
+> **正式名**：LiveLand / 灵动境界 ｜ **许可**：Apache-2.0（核心）+ 商业托管/团队/审计
+> 贡献者政策：**DCO 1.1**，不使用 CLA。
+
+## 开发环境
+
+- Node.js **24+**；
+- 零第三方运行时依赖；
+- 不提交 `node_modules/`、`reports/`、`.DS_Store`。
+
+```bash
+cd lab/liveland
+node src/cli.ts check
+node src/cli.ts check world/glass-coast.world.json
+npm test
+node src/cli.ts serve 4174
+```
+
+## 提交前
+
+- `npm test` 通过；
+- 世界/资产改动后跑 `check`；
+- 更新 `CHANGELOG.md`；
+- 不提交未授权资产/他人私密内容；
+- UI 改动附验证说明。
+
+## DCO（必须）
+
+每个提交带 `Signed-off-by`：
+
+```bash
+git commit -s -m "feat: ..."
+```
+
+## 许可
+
+贡献按 **Apache-2.0** 许可（见 [`LICENSE`](LICENSE)）。不要求 CLA；双许可/重新许可会另开决策。

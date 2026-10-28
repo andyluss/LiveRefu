@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import { createServer } from 'node:http'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, extname, join, normalize, resolve } from 'node:path'

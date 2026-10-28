@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import type { Issue, LintResult, World } from './types.ts'
 
 const VALID_CONFIDENCE = new Set(['canon', 'draft', 'rumor'])
