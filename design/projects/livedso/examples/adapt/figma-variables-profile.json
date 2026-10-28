@@ -1,0 +1,53 @@
+{
+  "source": {
+    "format": "figma-variables"
+  },
+  "themes": [
+    {
+      "id": "figma-light",
+      "name": "Figma Light",
+      "mode": "light",
+      "roles": {
+        "bg": "figma.theme.light.color.background",
+        "surface": "figma.theme.light.color.surface",
+        "surfaceRaised": "figma.theme.light.color.surfaceRaised",
+        "surfaceSunken": "figma.theme.light.color.surfaceSunken",
+        "text": "figma.theme.light.color.text",
+        "textMuted": "figma.theme.light.color.textMuted",
+        "textInverse": "figma.theme.light.color.textInverse",
+        "action": "figma.theme.light.color.action",
+        "onAction": "figma.theme.light.color.onAction",
+        "actionHover": "figma.theme.light.color.actionHover",
+        "focus": "figma.theme.light.color.focus",
+        "border": "figma.theme.light.color.border",
+        "borderStrong": "figma.theme.light.color.borderStrong",
+        "danger": "figma.theme.light.color.danger",
+        "success": "figma.theme.light.color.success",
+        "warning": "figma.theme.light.color.warning"
+      }
+    },
+    {
+      "id": "figma-dark",
+      "name": "Figma Dark",
+      "mode": "dark",
+      "roles": {
+        "bg": "figma.theme.dark.color.background",
+        "surface": "figma.theme.dark.color.surface",
+        "surfaceRaised": "figma.theme.dark.color.surfaceRaised",
+        "surfaceSunken": "figma.theme.dark.color.surfaceSunken",
+        "text": "figma.theme.dark.color.text",
+        "textMuted": "figma.theme.dark.color.textMuted",
+        "textInverse": "figma.theme.dark.color.textInverse",
+        "action": "figma.theme.dark.color.action",
+        "onAction": "figma.theme.dark.color.onAction",
+        "actionHover": "figma.theme.dark.color.actionHover",
+        "focus": "figma.theme.dark.color.focus",
+        "border": "figma.theme.dark.color.border",
+        "borderStrong": "figma.theme.dark.color.borderStrong",
+        "danger": "figma.theme.dark.color.danger",
+        "success": "figma.theme.dark.color.success",
+        "warning": "figma.theme.dark.color.warning"
+      }
+    }
+  ]
+}

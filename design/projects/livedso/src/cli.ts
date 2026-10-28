@@ -19,7 +19,7 @@ import { adaptRegistry, adaptVault } from './adapt.ts'
 const args = process.argv.slice(2)
 const cmd = args[0] || 'help'
 const defaultVault = fileURLToPath(new URL('../vaults/lrds-sample', import.meta.url))
-const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--lang', '--source', '--profile', '--suggest-out', '--report', '--max-warnings', '--max-raw', '--max-deprecated'])
+const FLAGS_WITH_VALUE = new Set(['--plugins', '--registry', '--adopt', '--baseline', '--out', '--out-dir', '--template', '--lang', '--source', '--profile', '--suggest-out', '--report', '--adapt-registry', '--max-warnings', '--max-raw', '--max-deprecated'])
 const positionals: string[] = []
 for (let i = 1; i < args.length; i++) {
   const a = args[i]!
@@ -202,7 +202,8 @@ switch (cmd) {
       maxRaw: num('--max-raw'),
       maxDeprecated: num('--max-deprecated'),
       plugins: loadedPlugins.plugins,
-      pluginErrors: loadedPlugins.errors
+      pluginErrors: loadedPlugins.errors,
+      adaptRegistry: flag('--adapt-registry') ? resolve(flag('--adapt-registry')!) : undefined
     })
     const out = flag('--out')
     if (out) { mkdirSync(dirname(resolve(out)), { recursive: true }); writeFileSync(resolve(out), markdownCi(result), 'utf8'); console.log(`wrote ${resolve(out)}`) }
@@ -256,7 +257,7 @@ switch (cmd) {
   }
   case 'help':
   default:
-    console.log(`LiveAtelier 1.18.0 · (LiveDSO) local-first design system operations
+    console.log(`LiveAtelier 1.19.0 · (LiveDSO) local-first design system operations
 
 用法:
   node src/cli.ts check [vault]           检查并打印问题
@@ -275,7 +276,7 @@ switch (cmd) {
   node src/cli.ts trend --all [--registry <file>]  跨 vault 趋势
   node src/cli.ts plugin-test [--json]     本地插件加载/运行自检
   node src/cli.ts plugin-test --all [--registry <file>]  跨 vault 插件矩阵
-  node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--out <md>]
+  node src/cli.ts ci [--json] [--strict] [--adopt <dir>] [--baseline <id>] [--adapt-registry <file>] [--out <md>]
                                           跨 vault 本地 CI 门禁
   node src/cli.ts adapt --source <dir> --profile <map.json> --out <vault> [--dry-run] [--check] [--suggest] [--suggest-out <file>] [--report <file>]
   node src/cli.ts adapt --registry <adapters.json> [--check] [--dry-run]

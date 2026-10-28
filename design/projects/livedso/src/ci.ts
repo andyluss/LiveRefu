@@ -5,6 +5,7 @@ import { runChecks } from './checks.ts'
 import { scanAdoption } from './adoption.ts'
 import { diffSnapshot } from './history.ts'
 import { runPlugins, type LocalPlugin } from './plugins.ts'
+import { adaptRegistry } from './adapt.ts'
 import type { Issue } from './types.ts'
 
 export interface CiOptions {
@@ -17,6 +18,7 @@ export interface CiOptions {
   maxDeprecated?: number
   plugins?: LocalPlugin[]
   pluginErrors?: Issue[]
+  adaptRegistry?: string
 }
 export interface CiVaultResult {
   id: string
@@ -40,6 +42,7 @@ export interface CiResult {
   totals: { tokens: number; contracts: number; styleCards: number; errors: number; warnings: number; rawColors: number; unknownRefs: number; deprecatedRefs: number }
   reasons: string[]
   registryErrors: string[]
+  adapters?: { ok: boolean; total: number; failed: string[] }
 }
 
 export function runCi(options: CiOptions = {}): CiResult {
@@ -65,6 +68,17 @@ export function runCi(options: CiOptions = {}): CiResult {
       reasons.push(`${entry.id}: ${(e as Error).message}`)
     }
   }
+  let adapters: CiResult['adapters']
+  if (options.adaptRegistry) {
+    try {
+      const result = adaptRegistry({ registry: options.adaptRegistry, check: true })
+      adapters = { ok: result.ok, total: result.results.length, failed: result.results.filter(r => !r.ok).map(r => r.theme) }
+      if (!result.ok) reasons.push(`adapters: ${adapters.failed.join(', ') || 'failed'}`)
+    } catch (e) {
+      adapters = { ok: false, total: 0, failed: [(e as Error).message] }
+      reasons.push(`adapters: ${(e as Error).message}`)
+    }
+  }
   const totals = vaults.reduce((a, v) => ({
     tokens: a.tokens + v.tokens, contracts: a.contracts + v.contracts, styleCards: a.styleCards + v.styleCards,
     errors: a.errors + v.errors, warnings: a.warnings + v.warnings,
@@ -76,7 +90,7 @@ export function runCi(options: CiOptions = {}): CiResult {
   if (totals.unknownRefs > 0) reasons.push(`unknown --dso vars: ${totals.unknownRefs}`)
   if (totals.deprecatedRefs > (options.maxDeprecated ?? Infinity)) reasons.push(`deprecated refs: ${totals.deprecatedRefs} > ${options.maxDeprecated}`)
   if (options.strict && (totals.warnings > 0 || totals.rawColors > 0 || totals.unknownRefs > 0 || totals.deprecatedRefs > 0)) reasons.push('strict mode')
-  return { ok: reasons.length === 0 && registry.errors.length === 0, vaults, totals, reasons, registryErrors: registry.errors }
+  return { ok: reasons.length === 0 && registry.errors.length === 0, vaults, totals, reasons, registryErrors: registry.errors, adapters }
 }
 
 export function formatCi(result: CiResult): string {
@@ -85,6 +99,7 @@ export function formatCi(result: CiResult): string {
     `vaults ${result.vaults.length} · tokens ${result.totals.tokens} · contracts ${result.totals.contracts} · cards ${result.totals.styleCards}`,
     `errors ${result.totals.errors} · warnings ${result.totals.warnings} · raw ${result.totals.rawColors} · unknown ${result.totals.unknownRefs} · deprecated ${result.totals.deprecatedRefs}`
   ]
+  if (result.adapters) lines.push(`adapters ${result.adapters.total} · ${result.adapters.ok ? 'PASS' : `FAIL (${result.adapters.failed.join(', ')})`}`)
   for (const v of result.vaults) lines.push(`  ${v.id.padEnd(10)} score ${String(v.score).padStart(3)} · ${v.errors}e/${v.warnings}w${v.error ? ` · ${v.error}` : ''}${v.diff ? ` · diff +${v.diff.added}/-${v.diff.removed}/~${v.diff.changed}` : ''}`)
   if (result.reasons.length) lines.push(`reasons: ${result.reasons.join('; ')}`)
   return lines.join('\n')
@@ -99,6 +114,6 @@ export function markdownCi(result: CiResult): string {
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 ${result.vaults.map(v => `| ${v.name} | ${v.score} | ${v.errors} | ${v.warnings} | ${v.rawColors} | ${v.unknownRefs} | ${v.deprecatedRefs} | ${v.diff ? `+${v.diff.added}/-${v.diff.removed}/~${v.diff.changed}` : '—'} |`).join('\n')}
 
-${result.reasons.length ? `## Blocking\n\n${result.reasons.map(r => `- ${r}`).join('\n')}` : '## Blocking\n\n- none'}
+${result.adapters ? `## Adapters\n\n- ${result.adapters.ok ? 'PASS' : 'FAIL'} · ${result.adapters.total} checked${result.adapters.failed.length ? ` · failed: ${result.adapters.failed.join(', ')}` : ''}\n\n` : ''}${result.reasons.length ? `## Blocking\n\n${result.reasons.map(r => `- ${r}`).join('\n')}` : '## Blocking\n\n- none'}
 `
 }

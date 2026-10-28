@@ -458,3 +458,32 @@ test('adapter registry runs all entries and checks drift', () => {
     assert.equal(second.ok, true)
   } finally { rmSync(tmp, { recursive: true, force: true }) }
 })
+
+
+test('adapter handles Figma Variables export with modes', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-adapt-fv-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/figma-variables.tokens.json', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/figma-variables-profile.json', import.meta.url))
+    const result = adaptVault({ source, profile, out: tmp })
+    assert.equal(result.ok, true, result.issues.map(i => i.message).join(' | '))
+    assert.equal(result.format, 'figma-variables')
+    assert.equal(result.themes.length, 2)
+    assert.equal(checkVaultSchema(tmp).ok, true)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})
+
+
+test('CI includes adapter registry', () => {
+  const tmp = mkdtempSync(join(tmpdir(), 'livedso-ci-adapt-'))
+  try {
+    const source = fileURLToPath(new URL('../examples/adapt/source.tokens.json', import.meta.url))
+    const profile = fileURLToPath(new URL('../examples/adapt/profile.json', import.meta.url))
+    const registry = join(tmp, 'adapters.json')
+    writeFileSync(registry, JSON.stringify({ adapters: [{ id: 'paper', source, profile, out: 'out' }] }))
+    assert.equal(adaptRegistry({ registry }).ok, true)
+    const result = runCi({ registry: fileURLToPath(new URL('../vaults.json', import.meta.url)), adaptRegistry: registry })
+    assert.equal(result.adapters?.ok, true)
+    assert.equal(result.adapters?.total, 1)
+  } finally { rmSync(tmp, { recursive: true, force: true }) }
+})

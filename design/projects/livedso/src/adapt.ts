@@ -18,7 +18,7 @@ export const B_ROLES = SKIN_ROLES.filter(r => !(CORE_ROLES as readonly string[])
 
 export interface AdaptTheme { id: string; name?: string; mode?: 'light' | 'dark'; roles: Record<string, string> }
 export interface AdaptProfile {
-  source?: { root?: string; format?: 'dtcg' | 'css' | 'tailwind' | 'style-dictionary' | 'figma' }
+  source?: { root?: string; format?: 'dtcg' | 'css' | 'tailwind' | 'style-dictionary' | 'figma' | 'figma-variables' }
   theme?: { id: string; name?: string; mode?: 'light' | 'dark' }
   themes?: AdaptTheme[]
   roles?: Record<string, string>
@@ -106,6 +106,35 @@ function parseTailwind(file: string, raw: string): SourceToken[] {
   walk(colors, '')
   return out
 }
+function figmaHex(value: any): string | null {
+  if (!value || typeof value !== 'object') return null
+  const r = Math.round(Number(value.r) * 255), g = Math.round(Number(value.g) * 255), b = Math.round(Number(value.b) * 255)
+  if ([r, g, b].some(n => !Number.isFinite(n))) return null
+  const a = value.a === undefined ? 1 : Number(value.a)
+  const h = (n: number) => n.toString(16).padStart(2, '0')
+  return a >= 0.999 ? `#${h(r)}${h(g)}${h(b)}` : `#${h(r)}${h(g)}${h(b)}${h(Math.round(a * 255))}`
+}
+function parseFigmaVariables(file: string, raw: string): SourceToken[] {
+  const data = JSON.parse(raw) as any
+  const collections = Array.isArray(data?.collections) ? data.collections : []
+  const out: SourceToken[] = []
+  for (const collection of collections) {
+    const cname = safeId(String(collection.name || 'collection'))
+    const modes: Array<{ id: string; name: string }> = (collection.modes || []).map((m: any) => ({ id: String(m.modeId || m.id || m.name), name: safeId(String(m.name || m.modeId || 'mode')) }))
+    for (const v of collection.variables || []) {
+      const name = String(v.name || '').split('/').filter(Boolean).map((seg: string) => seg.trim().replace(/[^a-zA-Z0-9_-]+/g, '-')).join('.')
+      if (!name) continue
+      for (const mode of modes) {
+        const value = v.valuesByMode?.[mode.id]
+        if (value === undefined) continue
+        const hex = figmaHex(value)
+        const type = String(v.type || (hex ? 'COLOR' : 'STRING')).toLowerCase()
+        out.push({ path: `figma.${cname}.${mode.name}.${name}`, value: hex || String(value), type: type === 'color' ? 'color' : type === 'float' ? 'number' : 'string', file })
+      }
+    }
+  }
+  return out
+}
 function parseLoose(file: string, raw: string): SourceToken[] {
   const data = JSON.parse(raw) as JsonValue
   const out: SourceToken[] = []
@@ -150,6 +179,10 @@ function collectTokens(root: string, format: string): Source {
     }
     if (format === 'tailwind' || file.endsWith('.json') && /tailwind/i.test(file)) {
       for (const t of parseTailwind(file, raw)) tokens.set(t.path, t)
+      continue
+    }
+    if (format === 'figma-variables') {
+      for (const t of parseFigmaVariables(file, raw)) tokens.set(t.path, t)
       continue
     }
     if (format === 'style-dictionary' || format === 'figma') {
@@ -209,6 +242,7 @@ function detectFormat(sourceRoot: string, profile: AdaptProfile): string {
   if (files.some(f => f.endsWith('.css'))) return 'css'
   if (files.some(f => /tailwind/i.test(f))) return 'tailwind'
   if (files.some(f => /style[-_]?dictionary/i.test(f))) return 'style-dictionary'
+  if (files.some(f => /figma.*variables|variables.*figma/i.test(f))) return 'figma-variables'
   if (files.some(f => /figma|tokens[-_]?studio/i.test(f))) return 'figma'
   return 'dtcg'
 }

@@ -1,5 +1,18 @@
 # LiveDSO Changelog
 
+## [1.19.0] - 2026-10-28 20:41
+
+### Added
+
+- **Figma Variables 导出**：collections / modes / valuesByMode，COLOR 自动转 hex；多 mode 可映射多主题。
+- **CI 集成**：`ci --adapt-registry <file>` 把 adapter 失败计入 CI 总结果。
+- 新增 Figma Variables fixture / profile 与 2 项测试（Figma Variables、CI registry）。
+
+### Changed
+
+- 测试 34 → **36**；版本 1.18.0 → 1.19.0。
+- 适配器功能边界冻结：不再做 Figma 实时 API、Tailwind JS 执行、自动组件契约生成。
+
 ## [1.18.0] - 2026-10-28 20:38
 
 ### Added
