@@ -91,10 +91,33 @@
     '打开': 'Open',
     '皮肤': 'Skin', '主题': 'Theme', '应用风格卡到工作台': 'Apply a style card to the workbench',
     '切换语言': 'Switch language', '默认': 'Default',
-    '搜索 path / value / alias': 'Search path / value / alias', '切换语言': 'Switch language',
+    '搜索路径 / 值 / 别名': 'Search path / value / alias', '零依赖': 'Zero deps', '切换语言': 'Switch language',
     '应用风格卡到工作台': 'Apply a style card to the workbench', '主题': 'Theme', '皮肤': 'Skin',
     '当前藏库': 'Current vault', '本地藏库': 'Local vault', '藏库文件': 'Vault files',
     '全部藏库': 'All vaults', '切换藏库': 'Switch vault', '默认藏库是示例': 'The default vault is a sample',
+    '灵动构坊 把设计系统当成一套持续运行的系统：源、契约、风格卡、闸门、投影与报告。不是另一个文档站；先让漂移可见。': 'LiveAtelier treats a design system as a running system: source, contracts, style cards, gates, projection and reports. Not another documentation site; make drift visible first.',
+    '：灵动构坊 是独立产品/实验；默认藏库是示例。': ': LiveAtelier is an independent product/experiment; the default vault is a sample.',
+    '健康': 'Health', '组件契约': 'Contracts', '藏库 Token': 'Vault tokens',
+    'Token 检查器': 'Token inspector', '契约编辑器': 'Contract editor',
+    '看得到源、别名与解析值。语义层写裸色会被标出来；改值会写回藏库文件。': 'See sources, aliases and resolved values. Raw colors in semantic tiers are flagged; edits write back to the vault.',
+    '用藏库里的真实 token 渲染组件，而不是看截图。预览只读取解析值，不写回。': 'Render components with real vault tokens, not screenshots. Preview is read-only.',
+    '这套 token 来自当前藏库，不是截图。': 'These tokens come from the current vault, not a screenshot.',
+    '扫描一个代码目录，看它有没有真的在用 藏库的 token，以及哪里还在写裸色、引用了不存在的 --dso- 变量。只读，不改目标目录。': 'Scan a code directory for real token usage, raw colors, and unknown --dso- variables. Read-only.',
+    '快照只写本地藏库的': 'Snapshots are written only to the local vault’s',
+    '选一个快照查看当前藏库与它的差异。': 'Select a snapshot to compare with the current vault.',
+    '把多个藏库的快照放在一起看。只读本地': 'Compare snapshots across vaults. Reads local only',
+    '一个本地总览：每个藏库的健康分、错误/警告与资产数量。切换只影响当前本地服务。': 'A local overview: health score, errors/warnings and asset counts for every vault. Switching affects only this local service.',
+    '：灵动构坊 是独立产品/实验；默认藏库是示例。你可以用': ': LiveAtelier is an independent product/experiment; the default vault is a sample. You can use',
+    '指向任何 DTCG 风格 token 目录；LRDS 只是第一个适配样本。': ' to point at any DTCG-style token directory; LRDS is only the first adapted sample.',
+    '被使用的 token': 'Tokens in use',
+    '系统观测台': 'System observatory', '最近信号': 'Recent signals', '工作流': 'Workflow',
+    '事实源': 'Source of truth', '组件承诺': 'Component promises', '实时组件预览': 'Live component preview',
+    '世界皮肤': 'World skins', '采用扫描 / 只读': 'Adoption / read-only', '本地历史': 'Local history',
+    '本地趋势': 'Local trends', '本地多藏库': 'Local vaults', '输出': 'Output',
+    '使用中的 Token': 'Tokens in use', '并排对比': 'Side by side', '仅本地': 'Local only',
+    '层级': 'Tier', '值': 'Value', '解析值': 'Resolved', '生命周期': 'Lifecycle',
+    '对比度': 'Contrast', '文件': 'File', '设计系统操作台': 'Design system operations',
+    '实验 /': 'LAB /',
     '全部': 'All', '项目': 'Project', '工作区': 'Workspace'
   };
   const ZH = {};
@@ -159,7 +182,7 @@
     document.documentElement.lang = locale === 'en' ? 'en' : 'zh-CN';
     const btn = document.getElementById('lang-toggle');
     if (btn) { btn.textContent = locale === 'en' ? '中文' : 'EN'; btn.setAttribute('aria-label', locale === 'en' ? '切换到中文' : 'Switch to English'); }
-    document.title = locale === 'en' ? 'LiveAtelier · Design System Operations' : 'LiveAtelier · 设计系统操作台';
+    document.title = locale === 'en' ? 'LiveAtelier · Design System Operations' : '灵动构坊 · 设计系统操作台';
   }
   function set(next) {
     locale = next === 'en' ? 'en' : 'zh';

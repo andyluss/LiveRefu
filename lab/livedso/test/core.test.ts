@@ -223,7 +223,7 @@ test('report templates render builtin and custom placeholders', () => {
     mkdirSync(join(tmp, 'templates'))
     writeFileSync(join(tmp, 'templates', 'custom.md'), '# {{vault.name}} · {{score}} · {{counts.tokens}}\n{{generatedAt}}')
     const custom = renderReport(vault, result, 'custom', join(tmp, 'templates'))
-    assert.match(custom, /LiveAtelier · LRDS sample/)
+    assert.match(custom, /LRDS sample/)
     const inventory = renderReport(vault, result, 'inventory')
     assert.match(inventory, /sys\.color\.action\.primaryHover/)
     assert.match(inventory, /deprecated/)

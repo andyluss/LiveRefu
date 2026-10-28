@@ -4,6 +4,7 @@
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const loc = (en, zh) => (window.LiveDSO_I18N?.locale === 'en' ? en : zh);
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const state = { data: null, view: (location.hash.replace(/^#\/?/, '').split(/[/?]/)[0] || 'overview'), error: null, report: '', css: '', selected: null, previewState: 'default', previewCard: '', adoption: null, compareA: '', compareB: '', history: [], diff: null, historyId: '', trends: null, overview: null, reportTemplate: 'health', skin: '' };
   const THEME_LABEL = { system: '系统', light: '浅色', dark: '深色' };
@@ -136,7 +137,7 @@
       state.skin = state.skin || (() => { try { return localStorage.getItem('livedso-skin') || ''; } catch { return ''; } })();
       if (state.skin) applySkin(state.skin);
       if (state.view === 'vaults') loadVaultsOverview();
-      toast('藏库已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} tokens`);
+      toast('藏库已切换', `${data.activeVault?.name || id} · ${data.counts.tokens} ${loc('tokens','个 Token')}`);
       return data;
     } catch (e) { toast('切换失败', e.message); renderVaultSelect(); return null; }
   }
@@ -159,7 +160,7 @@
     $('#nav-cards').textContent = d.counts.styleCards;
     $('#nav-issues').textContent = d.counts.errors + d.counts.warnings;
     $('#vault-meta').textContent = d.meta.name || 'vault';
-    $('#token-count').textContent = `${d.counts.tokens} tokens`;
+    $('#token-count').textContent = `${d.counts.tokens} ${loc('tokens','个 Token')}`;
     $('#vault-path').textContent = d.root.replace(/^.*\/lab\/livedso\//, 'lab/livedso/');
     $('#node-version').textContent = d.runtime || 'local';
     renderIssues($('#overview-issues'), d.checks.issues.slice(0, 5), true);
@@ -192,7 +193,7 @@
       const color = tokenColor(t.resolved) || tokenColor(t.raw);
       const ratio = t.onBase == null ? '—' : `${t.onBase}:1`;
       const ratioClass = t.onBase != null && t.onBase >= 4.5 ? 'ok' : 'low';
-      return `<tr data-token="${esc(t.path)}"><td>${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}<code>${esc(t.path)}</code></td><td><span class="tier ${esc(t.tier)}">${esc(t.tier)}</span></td><td><code>${esc(t.raw)}</code></td><td><code>${esc(t.resolved)}</code></td><td>${t.deprecated ? `<span class="lifecycle-badge">deprecated</span>` : '<span class="lifecycle-active">active</span>'}</td><td><span class="ratio ${t.onBase == null ? '' : ratioClass}">${ratio}</span></td><td><code>${esc(t.source)}</code></td></tr>`;
+      return `<tr data-token="${esc(t.path)}"><td>${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}<code>${esc(t.path)}</code></td><td><span class="tier ${esc(t.tier)}">${esc(t.tier)}</span></td><td><code>${esc(t.raw)}</code></td><td><code>${esc(t.resolved)}</code></td><td>${t.deprecated ? `<span class="lifecycle-badge">${loc('deprecated','已弃用')}</span>` : `<span class="lifecycle-active">${loc('active','活跃')}</span>`}</td><td><span class="ratio ${t.onBase == null ? '' : ratioClass}">${ratio}</span></td><td><code>${esc(t.source)}</code></td></tr>`;
     }).join('');
   }
 
@@ -200,13 +201,13 @@
   function renderContracts() {
     if (!state.data) return;
     const list = state.data.contracts;
-    $('#contract-filter-count').textContent = `${list.length} contracts`;
+    $('#contract-filter-count').textContent = `${list.length} ${loc('contracts','份契约')}`;
     const grid = $('#contract-grid');
     if (!list.length) { grid.innerHTML = '<div class="empty">没有契约。先加一个 button.contract.json。</div>'; return; }
     grid.innerHTML = list.map(c => {
       const required = requiredFields();
       const badges = required.map(k => `<span class="badge ${c[k] ? 'ok' : 'miss'}">${esc(k)}</span>`).join('');
-      return `<article class="contract-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>${esc(c.title)}</h3><button class="text-btn contract-edit" type="button" data-edit-contract="${esc(c.id)}">编辑 →</button><span class="chip">${esc(c.status || '—')}</span></div><p>${esc(c.summary || '没有说明。')}</p><div class="badges">${badges}</div><div class="contract-meta"><b>id</b><span><code>${esc(c.id)}</code></span><b>states</b><span>${esc((c.states || []).join(' · ') || '—')}</span><b>tokens</b><span>${esc((c.tokens || []).join(' · ') || '—')}</span></div></article>`;
+      return `<article class="contract-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h3>${esc(c.title)}</h3><button class="text-btn contract-edit" type="button" data-edit-contract="${esc(c.id)}">编辑 →</button><span class="chip">${esc(c.status || '—')}</span></div><p>${esc(c.summary || '没有说明。')}</p><div class="badges">${badges}</div><div class="contract-meta"><b>id</b><span><code>${esc(c.id)}</code></span><b>${loc('states','状态')}</b><span>${esc((c.states || []).join(' · ') || '—')}</span><b>tokens</b><span>${esc((c.tokens || []).join(' · ') || '—')}</span></div></article>`;
     }).join('');
     renderCompare();
   }
@@ -222,7 +223,7 @@
     if (!state.data) return;
     const order = { archive: 0, solar: 1, cyber: 2 };
     const cards = [...state.data.styleCards].sort((a, b) => (order[a.id] ?? 9) - (order[b.id] ?? 9) || a.name.localeCompare(b.name));
-    $('#card-filter-count').textContent = `${cards.length} cards`;
+    $('#card-filter-count').textContent = `${cards.length} ${loc('cards','张卡')}`;
     const grid = $('#card-grid');
     if (!cards.length) { grid.innerHTML = '<div class="empty">没有风格卡。</div>'; return; }
     grid.innerHTML = cards.map(c => `<article class="style-card"><div class="style-swatches">${(c.colors || []).map(color => `<i style="background:${esc(styleColor(color))}"></i>`).join('')}</div><div class="style-body"><div class="era">${esc(c.era || '—')}</div><h3>${esc(c.name)}</h3><p>${esc(c.note || '没有写维护/代价。')}</p><div class="badges" style="margin-top:7px">${(c.colors || []).map(x => `<span class="badge">${esc(x)}</span>`).join('')}</div></div></article>`).join('');
@@ -279,9 +280,9 @@
     const canvas = $('#preview-canvas');
     if (canvas) {
       canvas.setAttribute('style', vars);
-      canvas.innerHTML = `<div class="pv-row">${btn('主按钮')}${btn('次要按钮', 'secondary')}${btn('幽灵按钮', 'ghost')}</div><label class="pv-field"><span>邮箱</span><input class="pv-input ${st === 'focus' ? 'focus' : ''}" value="you@example.com" ${st === 'disabled' ? 'disabled' : ''}><small class="pv-error">${st === 'disabled' ? '禁用时仍需说明原因。' : '错误用文本说明，不只靠颜色。'}</small></label><div class="pv-panel"><div><b>面板标题</b><small>这套 token 来自当前藏库，不是截图。</small></div><span class="pv-badge">${esc(st)}</span></div>`;
+      canvas.innerHTML = `<div class="pv-row">${btn('主按钮')}${btn('次要按钮', 'secondary')}${btn('幽灵按钮', 'ghost')}</div><label class="pv-field"><span>邮箱</span><input class="pv-input ${st === 'focus' ? 'focus' : ''}" value="you@example.com" ${st === 'disabled' ? 'disabled' : ''}><small class="pv-error">${st === 'disabled' ? '禁用时仍需说明原因。' : '错误用文本说明，不只靠颜色。'}</small></label><div class="pv-panel"><div><b>面板标题</b><small>这套 token 来自当前藏库，不是截图。</small></div><span class="pv-badge">${esc({ default: loc('default','默认'), hover: loc('hover','悬停'), focus: loc('focus','聚焦'), disabled: loc('disabled','禁用') }[st] || st)}</span></div>`;
     }
-    $('#preview-token-count').textContent = `${d.tokens.filter(t => t.cssVar).length} tokens`;
+    $('#preview-token-count').textContent = `${d.tokens.filter(t => t.cssVar).length} ${loc('tokens','个 Token')}`;
     $('#preview-tokens').innerHTML = ['sys.color.action.primary','sys.color.action.onPrimary','sys.color.focus.ring','sys.color.text.primary','sys.color.feedback.danger'].map(path => `<code>${esc(path)}</code>`).join('');
     $('#preview-palette').innerHTML = (card?.colors || []).map(c => `<i style="background:${esc(styleColor(c))}"></i>`).join('');
     $$('[data-preview-state]').forEach(b => b.classList.toggle('active', b.dataset.previewState === st));
@@ -309,11 +310,11 @@
     if (!a) return;
     const summary = $('#adoption-summary');
     if (summary) {
-      summary.innerHTML = `<div class="adoption-stat ok"><b>${a.filesScanned}</b><span>files scanned</span></div><div class="adoption-stat ok"><b>${a.tokenRefs}</b><span>token refs</span></div><div class="adoption-stat warn"><b>${a.deprecatedRefs}</b><span>deprecated refs</span></div><div class="adoption-stat warn"><b>${a.rawColors}</b><span>raw colors</span></div><div class="adoption-stat warn"><b>${a.unknownRefs}</b><span>unknown vars</span></div><div class="adoption-stat"><b>${a.filesWithTokens}</b><span>files using tokens</span></div>`;
+      summary.innerHTML = `<div class="adoption-stat ok"><b>${a.filesScanned}</b><span>${loc('files scanned','扫描文件')}</span></div><div class="adoption-stat ok"><b>${a.tokenRefs}</b><span>${loc('token refs','Token 引用')}</span></div><div class="adoption-stat warn"><b>${a.deprecatedRefs}</b><span>${loc('deprecated refs','弃用引用')}</span></div><div class="adoption-stat warn"><b>${a.rawColors}</b><span>${loc('raw colors','裸色')}</span></div><div class="adoption-stat warn"><b>${a.unknownRefs}</b><span>${loc('unknown vars','未知变量')}</span></div><div class="adoption-stat"><b>${a.filesWithTokens}</b><span>${loc('files using tokens','使用 Token 的文件')}</span></div>`;
     }
     $('#adoption-status').textContent = a.errors.length ? 'scan error' : 'scanned';
-    $('#adoption-token-count').textContent = `${a.tokens.length} tokens`;
-    $('#adoption-file-count').textContent = `${a.files.length} files`;
+    $('#adoption-token-count').textContent = `${a.tokens.length} ${loc('tokens','个 Token')}`;
+    $('#adoption-file-count').textContent = `${a.files.length} ${loc('files','个文件')}`;
     $('#adoption-tokens').innerHTML = a.tokens.length ? a.tokens.slice(0, 80).map(t => `<div class="adoption-row"><code>${esc(t.path)}</code><b>${t.count}×</b></div>`).join('') : '<div class="empty">没有发现 token 引用。</div>';
     const rows = a.files.slice(0, 100).map(f => `<div class="adoption-row"><code>${esc(f.path)}</code><span><b>${f.tokenRefs}</b> tok · <span class="${f.rawColors ? 'warn' : ''}">${f.rawColors}</span> raw${f.unknownRefs.length ? ` · <span class="bad">${f.unknownRefs.length}</span> unknown` : ''}</span></div>`).join('');
     $('#adoption-files').innerHTML = (a.deprecated.length ? `<div class="adoption-sub">弃用 token 引用</div>${a.deprecated.slice(0, 40).map(d => `<div class="adoption-row"><code>${esc(d.path)}</code><span class="warn">${esc(d.file)}</span></div>`).join('')}` : '') + (a.unknown.length ? `<div class="adoption-sub">未知 --dso- 变量</div>${a.unknown.slice(0, 40).map(u => `<div class="adoption-row"><code>${esc(u.name)}</code><span class="bad">${esc(u.file)}</span></div>`).join('')}` : '') + (rows || '<div class="empty">没有发现引用。</div>');
@@ -322,13 +323,13 @@
     const root = $('#adoption-root')?.value?.trim();
     if (!root) { toast('需要目录', '例如 ../../design 或 ../my-app'); return; }
     try {
-      setStatus('ok', 'scanning');
+      setStatus('ok', loc('Scanning','扫描中'));
       const a = await api('/api/adopt', { method: 'POST', body: JSON.stringify({ root }) });
       state.adoption = a;
       renderAdoption();
-      setStatus('ok', 'local vault');
+      setStatus('ok', loc('Local vault','本地藏库'));
       toast('扫描完成', `${a.filesScanned} files · ${a.tokenRefs} refs · ${a.rawColors} raw`);
-    } catch (e) { setStatus('err', 'scan failed'); toast('扫描失败', e.message); }
+    } catch (e) { setStatus('err', loc('Scan failed','扫描失败')); toast('扫描失败', e.message); }
   }
   function styleCardById(id) { return (state.data?.styleCards || []).find(c => c.id === id); }
   function renderCompare() {
@@ -359,14 +360,14 @@
   function renderHistory() {
     const list = state.history || [];
     const el = $('#history-list');
-    $('#history-count').textContent = `${list.length} snapshots`;
+    $('#history-count').textContent = `${list.length} ${loc('snapshots','份快照')}`;
     $('#history-status').textContent = list.length ? '本地已加载' : '还没有快照';
-    $('#history-summary').innerHTML = `<div class="history-stat"><b>${list.length}</b><span>snapshots</span></div><div class="history-stat"><b>${list[0]?.tokens ?? '—'}</b><span>latest tokens</span></div><div class="history-stat"><b>${list[0]?.deprecated ?? '—'}</b><span>deprecated</span></div><div class="history-stat"><b>${list[0]?.contracts ?? '—'}</b><span>latest contracts</span></div><div class="history-stat"><b>${list[0]?.styleCards ?? '—'}</b><span>latest cards</span></div>`;
+    $('#history-summary').innerHTML = `<div class="history-stat"><b>${list.length}</b><span>${loc('snapshots','快照')}</span></div><div class="history-stat"><b>${list[0]?.tokens ?? '—'}</b><span>${loc('latest tokens','最新 Token')}</span></div><div class="history-stat"><b>${list[0]?.deprecated ?? '—'}</b><span>${loc('deprecated','弃用')}</span></div><div class="history-stat"><b>${list[0]?.contracts ?? '—'}</b><span>${loc('latest contracts','最新契约')}</span></div><div class="history-stat"><b>${list[0]?.styleCards ?? '—'}</b><span>${loc('latest cards','最新卡')}</span></div>`;
     if (!el) return;
     const trend = list.slice().reverse();
     const maxTokens = Math.max(1, ...trend.map(x => x.tokens));
-    $('#history-trend').innerHTML = trend.length ? `<div class="eyebrow">TREND · OLDEST → NEWEST</div><div class="trend-bars">${trend.map(x => `<div class="trend-col" title="${esc(x.createdAt)}"><div class="trend-bar" style="height:${Math.max(4, Math.round(x.tokens / maxTokens * 100))}%"></div><span>${x.tokens}</span></div>`).join('')}</div><div class="trend-meta">${trend.length} 份快照 ｜ 最新 deprecated ${trend[trend.length - 1]?.deprecated ?? 0}` : '';
-    el.innerHTML = list.length ? list.map(x => `<button class="history-item ${state.historyId === x.id ? 'active' : ''}" data-history="${esc(x.id)}" type="button"><code>${esc(x.id)}</code><small>${esc(x.createdAt)} · ${x.tokens} tokens / ${x.contracts} contracts</small></button>`).join('') : '<div class="empty">点击“创建快照”生成第一份。</div>';
+    $('#history-trend').innerHTML = trend.length ? `<div class="eyebrow">${loc('TREND · OLDEST → NEWEST','趋势 · 旧 → 新')}</div><div class="trend-bars">${trend.map(x => `<div class="trend-col" title="${esc(x.createdAt)}"><div class="trend-bar" style="height:${Math.max(4, Math.round(x.tokens / maxTokens * 100))}%"></div><span>${x.tokens}</span></div>`).join('')}</div><div class="trend-meta">${trend.length} ${loc('snapshots','份快照')} ｜ ${loc('latest deprecated','最新弃用')} ${trend[trend.length - 1]?.deprecated ?? 0}` : '';
+    el.innerHTML = list.length ? list.map(x => `<button class="history-item ${state.historyId === x.id ? 'active' : ''}" data-history="${esc(x.id)}" type="button"><code>${esc(x.id)}</code><small>${esc(x.createdAt)} · ${x.tokens} ${loc('tokens','Token')} / ${x.contracts} ${loc('contracts','契约')}</small></button>`).join('') : '<div class="empty">点击“创建快照”生成第一份。</div>';
     if (!state.diff) $('#history-diff').innerHTML = '<div class="empty">选一个快照查看当前藏库与它的差异。</div>';
   }
   async function snapshotNow() {
@@ -389,7 +390,7 @@
     const d = state.diff; if (!d) return;
     $('#diff-status').textContent = `+${d.counts.added} −${d.counts.removed} ~${d.counts.changed}`;
     const row = (cls, sign, text, detail = '') => `<div class="diff-row ${cls}"><span class="sign">${sign}</span><div><code>${esc(text)}</code>${detail ? `<div class="diff-detail">${esc(detail)}</div>` : ''}</div></div>`;
-    const parts = [...d.addedTokens.map(x => row('add', '+', x)), ...d.removedTokens.map(x => row('remove', '−', x)), ...d.changedTokens.map(x => row('change', '~', x.path, `${x.before.raw} → ${x.after.raw}`)), ...d.addedContracts.map(x => row('add', '+', 'contract ' + x)), ...d.removedContracts.map(x => row('remove', '−', 'contract ' + x)), ...d.changedContracts.map(x => row('change', '~', 'contract ' + x)), ...d.addedStyleCards.map(x => row('add', '+', 'style-card ' + x)), ...d.removedStyleCards.map(x => row('remove', '−', 'style-card ' + x)), ...d.changedStyleCards.map(x => row('change', '~', 'style-card ' + x))];
+    const parts = [...d.addedTokens.map(x => row('add', '+', x)), ...d.removedTokens.map(x => row('remove', '−', x)), ...d.changedTokens.map(x => row('change', '~', x.path, `${x.before.raw} → ${x.after.raw}`)), ...d.addedContracts.map(x => row('add', '+', loc('contract ','契约 ') + x)), ...d.removedContracts.map(x => row('remove', '−', loc('contract ','契约 ') + x)), ...d.changedContracts.map(x => row('change', '~', loc('contract ','契约 ') + x)), ...d.addedStyleCards.map(x => row('add', '+', loc('style-card ','风格卡 ') + x)), ...d.removedStyleCards.map(x => row('remove', '−', loc('style-card ','风格卡 ') + x)), ...d.changedStyleCards.map(x => row('change', '~', loc('style-card ','风格卡 ') + x))];
     $('#history-diff').innerHTML = parts.join('') || '<div class="empty">当前藏库与这份快照没有差异。</div>';
   }
   async function loadTrends() {
@@ -401,12 +402,12 @@
   }
   function renderTrends() {
     const r = state.trends;
-    $('#trends-status').textContent = r ? `${r.vaults.length} vaults` : '未加载';
+    $('#trends-status').textContent = r ? `${r.vaults.length} ${loc('vaults','个藏库')}` : loc('Not loaded','未加载');
     if (!r?.vaults?.length) { $('#trends-grid').innerHTML = '<div class="empty">没有注册藏库。</div>'; return; }
     $('#trends-grid').innerHTML = r.vaults.map(v => {
       const max = Math.max(1, ...v.points.map(p => p.tokens));
       const latest = v.points[v.points.length - 1];
-      return `<article class="trend-vault"><h3>${esc(v.name)}</h3><div class="meta">${esc(v.id)} · ${v.points.length} snapshots</div>${v.error ? `<div class="err">${esc(v.error)}</div>` : v.points.length ? `<div class="bars">${v.points.map(p => `<div class="bar" title="${esc(p.createdAt)}" style="height:${Math.max(4, Math.round(p.tokens / max * 100))}%"></div>`).join('')}</div><div class="latest"><span>${latest?.tokens ?? '—'} tokens</span><span>${latest?.deprecated ?? '—'} deprecated</span><span>${latest?.contracts ?? '—'} contracts</span><span>${latest?.styleCards ?? '—'} cards</span></div>` : '<div class="empty">还没有快照。</div>'}</article>`;
+      return `<article class="trend-vault"><h3>${esc(v.name)}</h3><div class="meta">${esc(v.id)} · ${v.points.length} ${loc('snapshots','份快照')}</div>${v.error ? `<div class="err">${esc(v.error)}</div>` : v.points.length ? `<div class="bars">${v.points.map(p => `<div class="bar" title="${esc(p.createdAt)}" style="height:${Math.max(4, Math.round(p.tokens / max * 100))}%"></div>`).join('')}</div><div class="latest"><span>${latest?.tokens ?? '—'} ${loc('tokens','Token')}</span><span>${latest?.deprecated ?? '—'} ${loc('deprecated','弃用')}</span><span>${latest?.contracts ?? '—'} ${loc('contracts','契约')}</span><span>${latest?.styleCards ?? '—'} ${loc('cards','卡')}</span></div>` : '<div class="empty">还没有快照。</div>'}</article>`;
     }).join('') + (r.errors?.length ? `<div class="trend-vault"><div class="err">${r.errors.map(esc).join('<br>')}</div></div>` : '');
   }
   async function loadVaultsOverview() {
@@ -419,22 +420,22 @@
   function renderVaultsOverview() {
     const r = state.overview;
     if (!r) return;
-    $('#vaults-status').textContent = `${r.vaults.length} vaults`;
-    $('#vaults-count').textContent = `${r.totals.tokens} tokens`;
+    $('#vaults-status').textContent = `${r.vaults.length} ${loc('vaults','个藏库')}`;
+    $('#vaults-count').textContent = `${r.totals.tokens} ${loc('tokens','个 Token')}`;
     $('#vaults-grid').innerHTML = r.vaults.map(v => {
       const active = r.activeVault?.id === v.id;
-      return `<article class="vault-card ${active ? 'active' : ''}"><h3>${esc(v.name)}</h3><div class="meta">${esc(v.id)} · ${esc(v.path)}</div><div class="score">${v.error ? '—' : v.score}<small>/100</small></div>${v.error ? `<div class="err">${esc(v.error)}</div>` : ''}<div class="facts"><span><b>${v.tokens}</b>tokens</span><span><b>${v.contracts}</b>contracts</span><span><b>${v.styleCards}</b>cards</span><span><b>${v.warnings}</b>warnings</span></div><div class="actions">${active ? '<span class="chip">当前</span>' : `<button class="text-btn" type="button" data-overview-switch="${esc(v.id)}">切换 →</button>`}<span class="chip">${v.errors} errors</span></div></article>`;
+      return `<article class="vault-card ${active ? 'active' : ''}"><h3>${esc(v.name)}</h3><div class="meta">${esc(v.id)} · ${esc(v.path)}</div><div class="score">${v.error ? '—' : v.score}<small>/100</small></div>${v.error ? `<div class="err">${esc(v.error)}</div>` : ''}<div class="facts"><span><b>${v.tokens}</b>${loc('tokens','Token')}</span><span><b>${v.contracts}</b>${loc('contracts','契约')}</span><span><b>${v.styleCards}</b>${loc('cards','卡')}</span><span><b>${v.warnings}</b>${loc('warnings','警告')}</span></div><div class="actions">${active ? '<span class="chip">当前</span>' : `<button class="text-btn" type="button" data-overview-switch="${esc(v.id)}">切换 →</button>`}<span class="chip">${v.errors} ${loc('errors','错误')}</span></div></article>`;
     }).join('');
   }
   function renderChecks() {
     if (!state.data) return;
     const c = state.data.checks;
     $('#check-score').textContent = `${c.score}/100`;
-    $('#check-summary').innerHTML = `<div class="check-stat ok"><b>${c.score}</b><span>health score</span></div><div class="check-stat error"><b>${c.errors}</b><span>errors · block</span></div><div class="check-stat warn"><b>${c.warnings}</b><span>warnings · record</span></div><div class="check-stat"><b>${c.infos}</b><span>info</span></div>`;
+    $('#check-summary').innerHTML = `<div class="check-stat ok"><b>${c.score}</b><span>${loc('health score','健康分')}</span></div><div class="check-stat error"><b>${c.errors}</b><span>${loc('errors · block','错误 · 阻断')}</span></div><div class="check-stat warn"><b>${c.warnings}</b><span>${loc('warnings · record','警告 · 记录')}</span></div><div class="check-stat"><b>${c.infos}</b><span>${loc('info','信息')}</span></div>`;
     renderIssues($('#check-list'), c.issues, false);
   }
   function renderReport() {
-    $('#report-heading').textContent = state.reportTemplate === 'health' ? 'Health report' : `Report · ${state.reportTemplate || 'health'}`;
+    $('#report-heading').textContent = state.reportTemplate === 'health' ? loc('Health report','健康报告') : `${loc('Report','报告')} · ${state.reportTemplate || 'health'}`;
     $('#report-output').textContent = state.report || '点击“生成健康报告”。';
     $('#css-output').textContent = state.css || '点击“生成 CSS 投影”。';
     $('#report-status').textContent = state.report ? '已生成' : '未生成';
@@ -448,7 +449,7 @@
     state.selected = t;
     $('#drawer-title').textContent = t.path;
     const color = tokenColor(t.resolved) || tokenColor(t.raw);
-    $('#drawer-body').innerHTML = `<div class="field"><label>tier / type</label><div class="value-box">${esc(t.tier)} / ${esc(t.type)}</div></div><div class="field"><label>raw value（vault）</label><div class="value-box">${esc(t.raw)}</div></div><div class="field"><label>resolved</label><div class="value-box">${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}${esc(t.resolved)}</div></div><div class="field"><label>alias</label><div class="value-box">${esc(t.alias || '—')}</div></div><div class="field"><label>contrast vs bg.base</label><div class="value-box">${t.onBase == null ? '—' : t.onBase + ':1'}</div></div><div class="field"><label>lifecycle</label><label class="check-row"><input id="token-deprecated" type="checkbox" ${t.deprecated ? 'checked' : ''}> deprecated</label><input id="token-replaced-by" placeholder="replacedBy token path" value="${esc(t.replacedBy || '')}"><input id="token-note" placeholder="deprecation note" value="${esc(t.deprecationNote || '')}"></div><div class="field"><label>new value</label><input id="token-value" value="${esc(t.raw)}" spellcheck="false"></div><div class="drawer-actions"><button class="btn" type="button" id="save-token">保存到 vault</button><button class="btn ghost" type="button" id="save-lifecycle">保存生命周期</button><button class="btn ghost" type="button" data-close-drawer>取消</button></div><p class="drawer-note">保存会写回源 JSON；LiveAtelier 不自动提交 Git。真实项目中建议先开分支/PR。</p>`;
+    $('#drawer-body').innerHTML = `<div class="field"><label>${loc('Tier / type','层级 / 类型')}</label><div class="value-box">${esc(t.tier)} / ${esc(t.type)}</div></div><div class="field"><label>${loc('Raw value (vault)','原始值（藏库）')}</label><div class="value-box">${esc(t.raw)}</div></div><div class="field"><label>${loc('Resolved','解析值')}</label><div class="value-box">${color ? `<i class="swatch" style="background:${esc(color)}"></i>` : ''}${esc(t.resolved)}</div></div><div class="field"><label>${loc('Alias','别名')}</label><div class="value-box">${esc(t.alias || '—')}</div></div><div class="field"><label>${loc('Contrast vs bg.base','对比度（相对背景）')}</label><div class="value-box">${t.onBase == null ? '—' : t.onBase + ':1'}</div></div><div class="field"><label>${loc('Lifecycle','生命周期')}</label><label class="check-row"><input id="token-deprecated" type="checkbox" ${t.deprecated ? 'checked' : ''}> ${loc('deprecated','已弃用')}</label><input id="token-replaced-by" placeholder="${loc('replacedBy token path','替代 Token 路径')}" value="${esc(t.replacedBy || '')}"><input id="token-note" placeholder="${loc('deprecation note','弃用说明')}" value="${esc(t.deprecationNote || '')}"></div><div class="field"><label>${loc('New value','新值')}</label><input id="token-value" value="${esc(t.raw)}" spellcheck="false"></div><div class="drawer-actions"><button class="btn" type="button" id="save-token">${loc('Save to vault','保存到藏库')}</button><button class="btn ghost" type="button" id="save-lifecycle">${loc('Save lifecycle','保存生命周期')}</button><button class="btn ghost" type="button" data-close-drawer>取消</button></div><p class="drawer-note">保存会写回源 JSON；${loc('LiveAtelier does not auto-commit to Git.','灵动构坊不自动提交 Git。')}真实项目中建议先开分支/PR。</p>`;
     $('#token-drawer').hidden = false;
     setTimeout(() => $('#token-value')?.focus(), 30);
   }
@@ -472,23 +473,23 @@
     const value = $('#token-value')?.value;
     if (value === undefined) return;
     try {
-      setStatus('ok', 'saving');
+      setStatus('ok', loc('Saving','保存中'));
       const selectedPath = state.selected.path;
       const data = await api('/api/token', { method: 'POST', body: JSON.stringify({ path: selectedPath, value }) });
       state.data = data;
       closeDrawer();
       renderOverview(); renderTokens(); renderChecks();
       toast('Token 已保存', `${selectedPath} → ${value}`);
-      setStatus('ok', 'local vault');
+      setStatus('ok', loc('Local vault','本地藏库'));
     } catch (e) {
-      setStatus('err', 'save failed');
+      setStatus('err', loc('Save failed','保存失败'));
       toast('保存失败', e.message);
     }
   }
 
   async function refresh() {
     try {
-      setStatus('ok', 'local vault');
+      setStatus('ok', loc('Local vault','本地藏库'));
       state.data = await api('/api/state');
       state.error = null;
       renderOverview(); renderTokens(); renderContracts(); renderCards(); renderChecks(); renderPreview(); renderVaultSelect(); renderSkinSelect();
@@ -497,7 +498,7 @@
       if (state.view === 'report') renderReport();
     } catch (e) {
       state.error = e.message;
-      setStatus('err', 'offline');
+      setStatus('err', loc('Offline','离线'));
       $('#health-label').textContent = '无法连接本地藏库';
       $('#health-detail').textContent = e.message + ' — 运行 node src/cli.ts serve';
       toast('连接失败', e.message);
@@ -506,12 +507,12 @@
 
   async function runChecks() {
     try {
-      setStatus('ok', 'checking');
+      setStatus('ok', loc('Checking','检查中'));
       await api('/api/check', { method: 'POST', body: '{}' });
       await refresh();
       switchView('checks');
       toast('Checks 完成', `${state.data.checks.errors} errors · ${state.data.checks.warnings} warnings`);
-    } catch (e) { setStatus('err', 'check failed'); toast('检查失败', e.message); }
+    } catch (e) { setStatus('err', loc('Check failed','检查失败')); toast('检查失败', e.message); }
   }
   async function loadReportTemplates() {
     try {
