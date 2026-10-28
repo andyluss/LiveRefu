@@ -1,5 +1,17 @@
 # LiveDSO Changelog
 
+## [1.0.2] - 2026-10-28 08:48
+
+### Fixed
+
+- **预览切换风格卡不生效**：风格卡只更新色板，未覆盖预览 canvas 的 token 变量。现在每张风格卡提供 `roles`（bg/surface/text/action/focus/danger），预览用语义角色覆盖组件颜色，archive/cyber/solar 都有可见差异。
+- 新增风格卡 `roles` 示例与测试，防止再次退化为“只换色板不换组件”。
+
+### Changed
+
+- `node:test` 19 → **20**（风格卡 roles 校验）。
+- 版本 1.0.1 → 1.0.2。
+
 ## [1.0.1] - 2026-10-28 08:42
 
 ### Changed

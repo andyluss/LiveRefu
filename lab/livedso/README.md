@@ -1,6 +1,6 @@
 # LiveDesigner · 灵动设计师（代号 LiveDSO）
 
-> **正式名**：LiveDesigner / 灵动设计师 ｜ **代号**：LiveDSO ｜ **版本**：1.0.1 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
+> **正式名**：LiveDesigner / 灵动设计师 ｜ **代号**：LiveDSO ｜ **版本**：1.0.2 ｜ **状态**：`stable` ｜ **日期**：2026-10-28
 > **位置**：`lab/livedso/` ｜ **实验区规则**：见 [`../README.md`](../README.md)
 > **一句话**：把设计系统当成一套持续运行的系统：Token 源 → 组件契约 → 风格卡 → 闸门 → 投影 → 健康报告。
 > **首批用户**：独立开发者 ｜ **许可**：**Apache-2.0**（核心） + 商业托管/团队/审计 ｜ **贡献者政策**：DCO 1.1
@@ -128,6 +128,23 @@ Token 示例：
 ```
 
 注意：v0.4 的编辑只写回 token/契约源 JSON；不会自动提交 Git。真实项目应先开分支/PR。
+
+### 风格卡 roles
+
+风格卡除 `colors` 外可写语义角色，预览会优先使用：
+
+```json
+"roles": {
+  "bg": "sys.color.bg.base",
+  "surface": "sys.color.bg.surface",
+  "text": "sys.color.text.primary",
+  "action": "sys.color.action.primary",
+  "focus": "sys.color.focus.ring",
+  "danger": "sys.color.feedback.danger"
+}
+```
+
+值可以是 token path 或 hex；缺省时回退到 `colors` 顺序。
 
 ## 六、架构
 

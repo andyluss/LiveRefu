@@ -3,5 +3,19 @@
   "name": "Cyber",
   "era": "诊断",
   "note": "高效率、高密度、远程维护；监控、依赖、退出成本高。",
-  "colors": ["#070B18", "#5CE1E6", "#FF5FA2", "#FFC857", "#0B1724"]
+  "colors": [
+    "#070B18",
+    "#5CE1E6",
+    "#FF5FA2",
+    "#FFC857",
+    "#0B1724"
+  ],
+  "roles": {
+    "bg": "#070B18",
+    "surface": "#0B1724",
+    "text": "#F4F0E8",
+    "action": "#5CE1E6",
+    "focus": "#FFC857",
+    "danger": "#FF5FA2"
+  }
 }

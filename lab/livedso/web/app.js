@@ -174,6 +174,39 @@
     if (!cards.length) { grid.innerHTML = '<div class="empty">没有风格卡。</div>'; return; }
     grid.innerHTML = cards.map(c => `<article class="style-card"><div class="style-swatches">${(c.colors || []).map(color => `<i style="background:${esc(styleColor(color))}"></i>`).join('')}</div><div class="style-body"><div class="era">${esc(c.era || '—')}</div><h3>${esc(c.name)}</h3><p>${esc(c.note || '没有写维护/代价。')}</p><div class="badges" style="margin-top:7px">${(c.colors || []).map(x => `<span class="badge">${esc(x)}</span>`).join('')}</div></div></article>`).join('');
   }
+  function colorLum(hex) {
+    const h = String(hex || '').replace('#', '');
+    if (!/^[0-9a-f]{3,8}$/i.test(h)) return 0;
+    const full = h.length === 3 ? h.split('').map(c => c + c).join('') : h.slice(0, 6);
+    const rgb = [0, 2, 4].map(i => parseInt(full.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+  }
+  function textOn(hex) { return colorLum(hex) > 0.45 ? '#0B0F14' : '#F6F1E7'; }
+  function previewSkin(card) {
+    const palette = (card?.colors || []).map(styleColor).filter(c => c && c !== 'transparent');
+    const role = card?.roles || {};
+    const bg = styleColor(role.bg) || palette[0] || '#0B0F14';
+    const surface = styleColor(role.surface) || palette[1] || bg;
+    const action = styleColor(role.action) || palette[3] || palette[2] || '#4FD1C5';
+    const focus = styleColor(role.focus) || palette[4] || action;
+    const danger = styleColor(role.danger) || '#FF6B35';
+    const text = styleColor(role.text) || textOn(bg);
+    return {
+      '--dso-sys-color-bg-base': bg,
+      '--dso-sys-color-bg-surface': surface,
+      '--dso-sys-color-bg-raised': surface,
+      '--dso-sys-color-bg-sunken': bg,
+      '--dso-sys-color-text-primary': text,
+      '--dso-sys-color-text-secondary': text,
+      '--dso-sys-color-text-muted': text,
+      '--dso-sys-color-action-primary': action,
+      '--dso-sys-color-action-on-primary': textOn(action),
+      '--dso-sys-color-focus-ring': focus,
+      '--dso-sys-color-feedback-danger': danger,
+      '--dso-sys-color-line-subtle': surface,
+      '--dso-sys-color-line-strong': text
+    };
+  }
   function renderPreview() {
     if (!state.data) return;
     const d = state.data;
@@ -186,7 +219,8 @@
       state.previewCard = select.value;
     }
     const card = cards.find(c => c.id === state.previewCard) || cards[0];
-    const vars = d.tokens.filter(t => t.cssVar && t.resolved).map(t => `${t.cssVar}:${t.resolved}`).join(';');
+    const tokenVars = Object.fromEntries(d.tokens.filter(t => t.cssVar && t.resolved).map(t => [t.cssVar, t.resolved]));
+    const vars = Object.entries({ ...tokenVars, ...previewSkin(card) }).map(([k, v]) => `${k}:${v}`).join(';');
     const st = state.previewState;
     const btn = (label, extra = '') => `<button class="pv-btn ${extra} ${st}" type="button" ${st === 'disabled' ? 'disabled' : ''}>${label}</button>`;
     const canvas = $('#preview-canvas');

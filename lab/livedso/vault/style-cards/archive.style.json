@@ -3,5 +3,19 @@
   "name": "Archive",
   "era": "现在",
   "note": "纸、登记、可读的现在；低密度、手工维护。",
-  "colors": ["sys.color.bg.base", "sys.color.bg.surface", "sys.color.text.primary", "sys.color.action.primary", "sys.color.feedback.warning"]
+  "colors": [
+    "sys.color.bg.base",
+    "sys.color.bg.surface",
+    "sys.color.text.primary",
+    "sys.color.action.primary",
+    "sys.color.feedback.warning"
+  ],
+  "roles": {
+    "bg": "sys.color.bg.base",
+    "surface": "sys.color.bg.surface",
+    "text": "sys.color.text.primary",
+    "action": "sys.color.action.primary",
+    "focus": "sys.color.focus.ring",
+    "danger": "sys.color.feedback.danger"
+  }
 }

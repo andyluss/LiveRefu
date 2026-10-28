@@ -252,3 +252,13 @@ test('minimal example vault is valid', () => {
   assert.equal(result.errors, 0)
   assert.equal(result.warnings, 0)
 })
+
+
+test('style cards expose preview roles', () => {
+  const vault = loadVault(fileURLToPath(new URL('../vault', import.meta.url)))
+  assert.equal(vault.styleCards.length, 3)
+  for (const card of vault.styleCards) {
+    assert.ok(card.roles && typeof card.roles === 'object')
+    assert.ok(card.roles.bg)
+  }
+})
