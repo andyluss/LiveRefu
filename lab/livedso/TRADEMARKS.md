@@ -1,13 +1,13 @@
 # Names & Marks
 
-**LiveDesigner / 灵动设计师** is the formal product name; **LiveDSO** remains the code name.
+**LiveAtelier / 灵动构坊** is the formal product name; **LiveDSO** remains the code name.
 
 The Apache-2.0 license covers copyright in the code and documentation. It does **not** grant permission to use the project names, logos, or other brand identifiers as trademarks.
 
 You may:
 
 - refer to the project by name in factual descriptions;
-- say your product is “built with LiveDesigner / LiveDSO” if true;
+- say your product is “built with LiveAtelier / LiveDSO” if true;
 - redistribute the code under Apache-2.0 with the NOTICE.
 
 You may not:
