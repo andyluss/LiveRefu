@@ -1,6 +1,6 @@
 # 09 · API
 
-> 版本：v1.0 ｜ 仅本地 `127.0.0.1`；JSON in / JSON out。
+> 版本：v1.1 ｜ 仅本地 `127.0.0.1`；JSON in / JSON out。
 
 ## 读
 

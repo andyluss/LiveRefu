@@ -103,3 +103,13 @@ test('web navigation wires data-view buttons to hash routes', () => {
   assert.match(js, /button\[data-view\]/)
   assert.match(js, /location\.hash = next/)
 })
+
+
+test('generated themes are complete and parseable', () => {
+  const css = readFileSync(new URL('../web/themes.generated.css', import.meta.url), 'utf8')
+  const js = readFileSync(new URL('../web/themes.generated.js', import.meta.url), 'utf8')
+  assert.match(js, /retro-paper/)
+  assert.match(js, /material-dark/)
+  assert.match(css, /\[data-theme="retro-paper"\]/)
+  assert.doesNotMatch(css, /style-cards \[data-theme/)
+})

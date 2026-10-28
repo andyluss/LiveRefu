@@ -1,3 +1,4 @@
+import { THEMES } from './themes.generated.js'
 // 慢慢记 · 无框架单页应用
 const $ = (s, r = document) => r.querySelector(s)
 const $$ = (s, r = document) => [...r.querySelectorAll(s)]
@@ -26,7 +27,7 @@ function toast(message) {
   const el = $('#toast'); el.textContent = message; el.classList.add('show')
   clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2200)
 }
-function applyTheme() { document.documentElement.dataset.theme = state.data?.settings?.theme === 'night' ? 'night' : 'paper' }
+function applyTheme() { document.documentElement.dataset.theme = state.data?.settings?.theme || 'paper' }
 async function load() {
   state.data = await api('/state')
   if (!location.hash) location.hash = '#/dashboard'
@@ -177,10 +178,10 @@ function renderReports() {
 function renderSettings() {
   const packs = state.data.settings.packs
   return `${pageHead('SETTINGS', '设置', '本地数据、扩展包与主题。所有设置只写在本机。')}
-  <div class="settings-grid"><div class="card"><div class="card-head"><div><small>APPEARANCE</small><h2>外观</h2></div></div><div class="field"><label>主题</label><select id="setting-theme"><option value="paper"${state.data.settings.theme === 'paper' ? ' selected' : ''}>纸感 · Paper</option><option value="night"${state.data.settings.theme === 'night' ? ' selected' : ''}>夜间 · Night</option></select></div><p class="hint">产品皮肤是本地 token；暗色独立设计，不是简单反色。</p></div>
+  <div class="settings-grid"><div class="card"><div class="card-head"><div><small>APPEARANCE</small><h2>外观</h2></div></div><div class="field"><label>主题</label><select id="setting-theme">${THEMES.map(t => `<option value="${t.id}"${state.data.settings.theme === t.id ? ' selected' : ''}>${esc(t.name)}</option>`).join('')}</select></div><p class="hint">产品皮肤是本地 token；暗色独立设计，不是简单反色。</p></div>
   <div class="card"><div class="card-head"><div><small>PACKS</small><h2>扩展包</h2></div></div><label class="list-row"><div><b>自由职业发票</b><small>客户 / 发票 / 收款 / 逾期</small></div><input type="checkbox" id="pack-freelance" ${packs.freelance ? 'checked' : ''}></label><p class="hint">关闭后隐藏导航与接口，但数据保留。</p></div>
   <div class="card"><div class="card-head"><div><small>DATA</small><h2>数据</h2></div></div><div class="summary-line"><span>账户</span><b>${state.data.accounts.length}</b></div><div class="summary-line"><span>流水</span><b>${state.data.transactions.length}</b></div><div class="summary-line"><span>发票</span><b>${state.data.invoices.length}</b></div><div class="page-actions" style="margin-top:12px"><a class="btn" href="/api/backup">下载完整备份</a><button class="btn btn-danger" data-action="reset">重置示例数据</button></div></div>
-  <div class="card"><div class="card-head"><div><small>ABOUT</small><h2>慢慢记 1.0</h2></div></div><p class="hint">本地优先 · 零依赖 · Node 24 + 无框架 Web。数据文件：<code>data/store.json</code>；写入前自动生成 <code>.bak</code>。没有云、没有账号、没有遥测。</p><p class="hint" style="margin-top:8px">设计语义映射 LRDS；产品皮肤在 <code>web/tokens.css</code>。</p></div></div>`
+  <div class="card"><div class="card-head"><div><small>ABOUT</small><h2>慢慢记 1.1</h2></div></div><p class="hint">本地优先 · 零依赖 · Node 24 + 无框架 Web。数据文件：<code>data/store.json</code>；写入前自动生成 <code>.bak</code>。没有云、没有账号、没有遥测。</p><p class="hint" style="margin-top:8px">设计语义映射 LRDS；产品皮肤在 <code>web/tokens.css</code>。</p></div></div>`
 }
 
 function render() {
@@ -329,7 +330,7 @@ document.addEventListener('click', e => {
   if (name) action(name, el)
 })
 $('#quick-add').onclick = () => openTx()
-$('#theme-toggle').onclick = async () => { const next = state.data.settings.theme === 'night' ? 'paper' : 'night'; try { state.data = await api('/settings', 'PATCH', { theme: next }); applyTheme(); toast(next === 'night' ? '夜间模式' : '纸感模式') } catch (err) { toast(err.message) } }
+$('#theme-toggle').onclick = async () => { const index = THEMES.findIndex(t => t.id === state.data.settings.theme); const next = THEMES[(index + 1) % THEMES.length].id; try { state.data = await api('/settings', 'PATCH', { theme: next }); applyTheme(); toast('主题 · ' + (THEMES.find(t => t.id === next)?.name || next)) } catch (err) { toast(err.message) } }
 $('#nav').addEventListener('click', e => {
   const btn = e.target.closest('button[data-view]')
   if (!btn || btn.hidden) return

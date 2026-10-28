@@ -1,5 +1,17 @@
 # 慢慢记 Changelog
 
+## [1.1.0] - 2026-10-28 21:44
+
+### Added
+
+- **9 个主题**：默认 paper/night + 7 个来自 LiveDSO 风格卡（Retro Paper/CRT、Cassette Amber、Atompunk、Material Dark、Tailwind Paper、Carbon Night）。
+- `tools/build-themes.ts` 读取 LiveDSO vault/style-card，生成 `web/themes.generated.css` 与主题列表；`themes` / `themes:check` / `themes:list`。
+- 主题选择器与主题切换按生成列表工作；服务端校验主题白名单。
+
+### Fixed
+
+- 修复主题生成 CSS 注释中 `*/` 提前闭合导致第一条主题选择器失效的问题；新增生成物回归测试。
+
 ## [1.0.1] - 2026-10-28 21:38
 
 ### Fixed

@@ -12,7 +12,7 @@ export interface Client { id: string; name: string; company: string; email: stri
 export interface InvoiceItem { description: string; qty: number; unitPrice: Cents }
 export interface Invoice { id: string; number: string; clientId: string; issueDate: string; dueDate: string; status: InvoiceStatus; items: InvoiceItem[]; taxRate: number; note: string; depositAccountId: string; paidAt?: string; transactionId?: string; createdAt: string }
 export interface Recurring { id: string; type: TxType; amount: Cents; accountId: string; categoryId?: string; note: string; frequency: 'monthly'; day: number; nextDate: string; active: boolean }
-export interface Settings { currency: 'CNY'; theme: 'paper' | 'night'; packs: { freelance: boolean } }
+export interface Settings { currency: 'CNY'; theme: string; packs: { freelance: boolean } }
 export interface Store {
   version: 1
   settings: Settings

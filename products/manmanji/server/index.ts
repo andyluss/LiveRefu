@@ -3,6 +3,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { createStore } from './store.ts'
+import { THEMES } from './themes.ts'
 import {
   accountBalance, budgetUsage, categoryBreakdown, invoiceTotals, invoiceOutstanding,
   isOverdue, monthOf, monthSummary, netWorth, nextInvoiceNumber, now, today, uid,
@@ -100,7 +101,7 @@ export function createHandler(handle = store) {
       if (path === '/api/settings' && req.method === 'PATCH') {
         const input = await body(req)
         const state = handle.read()
-        if (input.theme === 'paper' || input.theme === 'night') state.settings.theme = input.theme
+        if (typeof input.theme === 'string' && THEMES.some(t => t.id === input.theme)) state.settings.theme = input.theme
         if (input.currency !== undefined && input.currency !== 'CNY') return fail(res, 400, 'v1.0 只支持 CNY')
         if (input.packs && typeof input.packs === 'object') {
           const packs = input.packs as Record<string, unknown>
