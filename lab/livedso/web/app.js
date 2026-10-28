@@ -367,7 +367,7 @@
     const maxTokens = Math.max(1, ...trend.map(x => x.tokens));
     $('#history-trend').innerHTML = trend.length ? `<div class="eyebrow">TREND · OLDEST → NEWEST</div><div class="trend-bars">${trend.map(x => `<div class="trend-col" title="${esc(x.createdAt)}"><div class="trend-bar" style="height:${Math.max(4, Math.round(x.tokens / maxTokens * 100))}%"></div><span>${x.tokens}</span></div>`).join('')}</div><div class="trend-meta">${trend.length} 份快照 ｜ 最新 deprecated ${trend[trend.length - 1]?.deprecated ?? 0}` : '';
     el.innerHTML = list.length ? list.map(x => `<button class="history-item ${state.historyId === x.id ? 'active' : ''}" data-history="${esc(x.id)}" type="button"><code>${esc(x.id)}</code><small>${esc(x.createdAt)} · ${x.tokens} tokens / ${x.contracts} contracts</small></button>`).join('') : '<div class="empty">点击“创建快照”生成第一份。</div>';
-    if (!state.diff) $('#history-diff').innerHTML = '<div class="empty">选一个快照查看当前藏库 与它的差异。</div>';
+    if (!state.diff) $('#history-diff').innerHTML = '<div class="empty">选一个快照查看当前藏库与它的差异。</div>';
   }
   async function snapshotNow() {
     try {
@@ -390,7 +390,7 @@
     $('#diff-status').textContent = `+${d.counts.added} −${d.counts.removed} ~${d.counts.changed}`;
     const row = (cls, sign, text, detail = '') => `<div class="diff-row ${cls}"><span class="sign">${sign}</span><div><code>${esc(text)}</code>${detail ? `<div class="diff-detail">${esc(detail)}</div>` : ''}</div></div>`;
     const parts = [...d.addedTokens.map(x => row('add', '+', x)), ...d.removedTokens.map(x => row('remove', '−', x)), ...d.changedTokens.map(x => row('change', '~', x.path, `${x.before.raw} → ${x.after.raw}`)), ...d.addedContracts.map(x => row('add', '+', 'contract ' + x)), ...d.removedContracts.map(x => row('remove', '−', 'contract ' + x)), ...d.changedContracts.map(x => row('change', '~', 'contract ' + x)), ...d.addedStyleCards.map(x => row('add', '+', 'style-card ' + x)), ...d.removedStyleCards.map(x => row('remove', '−', 'style-card ' + x)), ...d.changedStyleCards.map(x => row('change', '~', 'style-card ' + x))];
-    $('#history-diff').innerHTML = parts.join('') || '<div class="empty">当前藏库 与这份快照没有差异。</div>';
+    $('#history-diff').innerHTML = parts.join('') || '<div class="empty">当前藏库与这份快照没有差异。</div>';
   }
   async function loadTrends() {
     try {

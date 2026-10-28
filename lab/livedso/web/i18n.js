@@ -93,6 +93,8 @@
     '切换语言': 'Switch language', '默认': 'Default',
     '搜索 path / value / alias': 'Search path / value / alias', '切换语言': 'Switch language',
     '应用风格卡到工作台': 'Apply a style card to the workbench', '主题': 'Theme', '皮肤': 'Skin',
+    '当前藏库': 'Current vault', '本地藏库': 'Local vault', '藏库文件': 'Vault files',
+    '全部藏库': 'All vaults', '切换藏库': 'Switch vault', '默认藏库是示例': 'The default vault is a sample',
     '全部': 'All', '项目': 'Project', '工作区': 'Workspace'
   };
   const ZH = {};
