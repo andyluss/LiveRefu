@@ -164,7 +164,8 @@
   function set(next) {
     locale = next === 'en' ? 'en' : 'zh';
     localStorage.setItem('livedso-locale', locale);
-    const u = new URL(location.href); u.searchParams.set('lang', locale); history.replaceState(null, '', u);
+    // ?lang 只作为输入 URL 的一次性覆盖；用户主动切换后回到干净 URL。
+    const u = new URL(location.href); u.searchParams.delete('lang'); history.replaceState(null, '', u);
     apply(document.body);
     document.dispatchEvent(new CustomEvent('livedso:locale', { detail: { locale } }));
   }
