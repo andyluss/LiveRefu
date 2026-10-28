@@ -1,0 +1,54 @@
+/* 慢慢记 · 产品皮肤（产品级 token，映射 LRDS 语义角色） */
+:root {
+  --mm-bg: #F4EEDF;
+  --mm-bg-2: #ECE3D1;
+  --mm-surface: #FFFDF7;
+  --mm-raised: #F8F2E4;
+  --mm-paper: #FFFDF7;
+  --mm-text: #1B2A2F;
+  --mm-muted: #66736F;
+  --mm-faint: #8E9992;
+  --mm-line: #D8CDBA;
+  --mm-line-strong: #A99A82;
+  --mm-action: #0F6B63;
+  --mm-on-action: #FFFDF7;
+  --mm-action-hover: #0B554F;
+  --mm-focus: #2F6FA8;
+  --mm-danger: #A83A14;
+  --mm-warning: #8A5A00;
+  --mm-success: #2F6B3A;
+  --mm-amber: #B7791F;
+  --mm-rust: #A94E2B;
+  --mm-shadow: 0 18px 50px rgba(52, 42, 24, .10);
+  --mm-shadow-sm: 0 6px 18px rgba(52, 42, 24, .08);
+  --mm-radius: 10px;
+  --mm-radius-sm: 6px;
+  --mm-font-serif: "Iowan Old Style", "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+  --mm-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  --mm-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  color-scheme: light;
+}
+[data-theme="night"] {
+  --mm-bg: #121A1D;
+  --mm-bg-2: #0C1316;
+  --mm-surface: #1A2529;
+  --mm-raised: #223035;
+  --mm-paper: #1A2529;
+  --mm-text: #F4EEDF;
+  --mm-muted: #A9B6B1;
+  --mm-faint: #7C8C86;
+  --mm-line: #31413F;
+  --mm-line-strong: #53645F;
+  --mm-action: #63C7B8;
+  --mm-on-action: #0B1416;
+  --mm-action-hover: #85D8CB;
+  --mm-focus: #8AB4F8;
+  --mm-danger: #FF8A65;
+  --mm-warning: #FFC857;
+  --mm-success: #7BD389;
+  --mm-amber: #E0A64B;
+  --mm-rust: #E0744D;
+  --mm-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+  --mm-shadow-sm: 0 6px 18px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}

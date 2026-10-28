@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **新增 `products/manmanji/`（慢慢记 v1.0）**：本地优先通用记账 + 自由职业发票扩展包；Node 原生服务、无构建单页、JSON 持久化；产品文档/测试/CHANGELOG 齐全。
 - **R03 整合钩子/CI 技术说明**：[`tech/hooks-readme.md`](tech/hooks-readme.md) 的 pre-commit 启用、暂存校验范围、全部钩子项、例外与 CI 兜底并入 [`rules/R03-link-validation.md`](rules/R03-link-validation.md)；tech 文件只保留指针。
 - **R01 整合文档技术规格**：[`tech/docs-convention.md`](tech/docs-convention.md) 的相对链接深度、校验机制、日期示例并入 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)；tech 文件只保留指针。
 - **R02 整合 Git 技术规格**：[`tech/git-convention.md`](tech/git-convention.md) 的 Conventional Commits 格式/type/scope/subject/body/footer/历史约定并入 [`rules/R02-git-convention.md`](rules/R02-git-convention.md)；tech 文件只保留指针。

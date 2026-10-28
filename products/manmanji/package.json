@@ -1,0 +1,14 @@
+{
+  "name": "manmanji",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "慢慢记 · 本地优先的通用记账与自由职业扩展包",
+  "scripts": {
+    "dev": "node server/index.ts",
+    "start": "node server/index.ts",
+    "test": "node --test test/core.test.ts",
+    "check": "node --test test/core.test.ts",
+    "reset": "node tools/reset.ts"
+  }
+}
