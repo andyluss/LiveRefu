@@ -1,5 +1,11 @@
 # LiveDSO Changelog
 
+## [未发布]
+
+### Added
+
+- **预览 token 引用静态审计**：测试逐项比对 `styles.css` 中所有 `var(--dso-*)` 与 `app.js` 皮肤变量定义；目前 52 个引用全部有定义，旧 `line-*` / `bg-raised` / `bg-sunken` 为 0。
+
 ## [1.19.1] - 2026-10-28 21:06
 
 ### Fixed

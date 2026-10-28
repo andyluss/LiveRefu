@@ -339,6 +339,9 @@ test('skin token names align with generated tokens', () => {
   assert.match(css, /--dso-sys-color-border-subtle/)
   assert.doesNotMatch(css, /--dso-sys-color-bg-sunken/)
   assert.doesNotMatch(css, /--dso-sys-color-line-/)
+  const used = [...css.matchAll(/var\((--dso-[a-zA-Z0-9_-]+)/g)].map(m => m[1]!)
+  const defined = new Set([...js.matchAll(/'((?:--dso-[a-zA-Z0-9_-]+))':/g)].map(m => m[1]!))
+  assert.deepEqual([...new Set(used)].filter(name => !defined.has(name)), [], 'preview CSS references an undefined --dso- variable')
 })
 
 
