@@ -51,7 +51,7 @@ export function createHubServer() {
       })
       return
     }
-    if (path === '/api/health') return send(res, 200, { ok: true, app: 'life-home', version: '3.6.0' })
+    if (path === '/api/health') return send(res, 200, { ok: true, app: 'life-home', version: '3.7.0' })
     if (path.startsWith('/api/')) return send(res, 404, { error: 'API 不存在' })
     const isShared = path.startsWith('/shared/')
     const root = isShared ? SHARED : WEB
@@ -63,5 +63,5 @@ export function createHubServer() {
   })
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  createHubServer().listen(PORT, '127.0.0.1', () => console.log(`Life 统合主页 3.6.0 · http://127.0.0.1:${PORT}\n${APPS.length} apps`))
+  createHubServer().listen(PORT, '127.0.0.1', () => console.log(`Life 融合页 3.7.0 · http://127.0.0.1:${PORT}\n${APPS.length} apps`))
 }

@@ -1,6 +1,6 @@
 # Life Brand Marks
 
-> 17 个徽标：Life 统合 + 16 款应用。  
+> 17 个徽标：Life 融合 + 16 款应用。
 > 源文件：[`brand/logos/`](logos/) ｜ 运行副本：[`packages/web/logos/`](../packages/web/logos/)
 
 ## 设计规则
@@ -36,7 +36,7 @@
 ## 使用
 
 - 应用顶栏：`/shared/logos/<id>.svg`
-- 统合主页与节律页：`/shared/logos/life.svg`
+- 融合主页与节律页：`/shared/logos/life.svg`
 - 修改源文件后运行：
 
 ```bash
