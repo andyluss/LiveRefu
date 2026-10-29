@@ -18,5 +18,13 @@ test('hub serves the app registry', async () => {
   const rhythm = await fetch(`http://127.0.0.1:${port}/rhythm`)
   assert.equal(rhythm.status, 200)
   assert.match(await rhythm.text(), /跨应用节律/)
+  const logo = await fetch(`http://127.0.0.1:${port}/shared/logos/life.svg`)
+  assert.equal(logo.status, 200)
+  assert.match(await logo.text(), /<svg/)
+  for (const app of [...data, { id: 'life' }]) {
+    const asset = await fetch(`http://127.0.0.1:${port}/shared/logos/${app.id}.svg`)
+    assert.equal(asset.status, 200, `${app.id} logo 存在`)
+    assert.match(asset.headers.get('content-type') || '', /image\/svg\+xml/)
+  }
   await new Promise<void>(resolve => server.close(() => resolve()))
 })

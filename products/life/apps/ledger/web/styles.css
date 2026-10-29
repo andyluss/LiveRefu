@@ -9,6 +9,7 @@ h1,h2,h3{font-family:var(--mm-font-serif);font-weight:600;letter-spacing:-.015em
 small{font-size:11px}
 .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:18px;padding:12px 22px;background:color-mix(in srgb,var(--mm-bg) 92%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--mm-line)}
 .brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--mm-text);min-width:190px}
+.brand-logo{width:34px;height:34px;display:block;border-radius:9px;flex:none}
 .brand-mark{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--mm-line-strong);border-radius:50%;font-family:var(--mm-font-serif);font-size:19px;background:var(--mm-surface)}
 .brand b{display:block;font-family:var(--mm-font-serif);font-size:17px;line-height:1.1}
 .brand small{display:block;font:8px var(--mm-font-mono);letter-spacing:.13em;color:var(--mm-faint);margin-top:3px}

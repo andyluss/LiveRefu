@@ -15,7 +15,7 @@ function card(app) {
   const status = state.status[app.id]
   const metric = state.metrics[app.id]
   const online = status === 'online'
-  return `<a class="app-card" href="http://127.0.0.1:${app.port}/" target="_blank" rel="noopener"><div class="card-top"><div><div class="app-name">${esc(app.name)}</div><div class="app-en">${esc(app.english)} · ${esc(app.id)}</div></div><span class="status ${online ? 'online' : 'offline'}">${online ? '在线' : status === 'offline' ? '未启动' : '检查中'}</span></div><div class="desc">${esc(app.description)}</div><div class="metric"><span>${esc(metric?.label || '入口')}</span><b>${esc(metric?.value || '打开 →')}</b></div><div class="port">127.0.0.1:${app.port}</div></a>`
+  return `<a class="app-card" href="http://127.0.0.1:${app.port}/" target="_blank" rel="noopener"><div class="card-top"><div class="app-title"><img class="app-logo" src="/shared/logos/${esc(app.id)}.svg" alt=""><div><div class="app-name">${esc(app.name)}</div><div class="app-en">${esc(app.english)} · ${esc(app.id)}</div></div></div><span class="status ${online ? 'online' : 'offline'}">${online ? '在线' : status === 'offline' ? '未启动' : '检查中'}</span></div><div class="desc">${esc(app.description)}</div><div class="metric"><span>${esc(metric?.label || '入口')}</span><b>${esc(metric?.value || '打开 →')}</b></div><div class="port">127.0.0.1:${app.port}</div></a>`
 }
 
 function render() {

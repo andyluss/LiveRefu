@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="好好吃">
+<rect width="64" height="64" rx="15" fill="#8A5A00"/>
+<rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="#FFFDF7" stroke-opacity=".18"/>
+<g fill="none" stroke="#FFFDF7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 32h32a16 16 0 0 1-32 0z"/><path d="M24 24c0-3 3-3 3-6M33 24c0-3 3-3 3-6M42 24c0-3 3-3 3-6"/></g>
+</svg>

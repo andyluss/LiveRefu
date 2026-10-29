@@ -9,6 +9,7 @@ small{font-size:11px}
 a{color:var(--life-accent)}
 .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;padding:12px 22px;background:color-mix(in srgb,var(--life-bg) 92%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--life-line)}
 .brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--life-text);min-width:180px}
+.brand-logo{width:34px;height:34px;display:block;border-radius:9px;flex:none}
 .brand-mark{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--life-line-strong);border-radius:50%;font-family:var(--life-font-serif);font-size:17px;background:var(--life-surface);color:var(--life-accent)}
 .brand b{display:block;font-family:var(--life-font-serif);font-size:17px;line-height:1.1}
 .brand small{display:block;font:8px var(--life-font-mono);letter-spacing:.12em;color:var(--life-faint);margin-top:3px}

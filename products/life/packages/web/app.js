@@ -32,7 +32,7 @@ function go(view) { location.hash = `#/${view}` }
 function renderTopbar(config) {
   const top = $('#topbar')
   if (!top) return
-  top.innerHTML = `<a class="brand" href="#/core"><span class="brand-mark">${esc(config.name.slice(0, 1))}</span><span><b>${esc(config.name)}</b><small>${esc(config.english)} · LIFE</small></span></a><span class="spacer"></span><div id="theme-controls" class="theme-controls"></div>`
+  top.innerHTML = `<a class="brand" href="#/core"><img class="brand-logo" src="/shared/logos/${esc(config.id)}.svg" alt=""><span><b>${esc(config.name)}</b><small>${esc(config.english)} · LIFE</small></span></a><span class="spacer"></span><div id="theme-controls" class="theme-controls"></div>`
   mountThemeControls($('#theme-controls'), { compact: true })
 }
 function renderNav() {
