@@ -70,18 +70,6 @@ function bucketize(range, dates, period) {
     }
     return out
   }
-  if (days > 31 && period !== 'peng') {
-    const out = []
-    let cur = clone(range.start)
-    while (cur <= range.end) {
-      const end = addDays(cur, 6)
-      let count = 0
-      for (const [d, n] of counts) if (d >= key(cur) && d <= key(end)) count += n
-      out.push({ label: `${cur.getMonth() + 1}/${cur.getDate()}`, count })
-      cur = addDays(cur, 7)
-    }
-    return out
-  }
   const out = []
   let cur = clone(range.start)
   while (cur <= range.end) {
@@ -117,11 +105,18 @@ function renderChart(range, period) {
   const buckets = bucketize(range, dates, period)
   const max = Math.max(1, ...buckets.map(b => b.count))
   const showEvery = buckets.length <= 14 ? 1 : Math.ceil(buckets.length / 8)
-  $('#chart').style.setProperty('--bar-gap', buckets.length > 40 ? '2px' : '5px')
-  $('#chart').innerHTML = buckets.map((b, i) => `<div class="rhythm-col" title="${esc(b.label)}：${b.count} 条"><div class="bar-space"><i style="height:${b.count ? Math.max(3, b.count / max * 100) : 0}%;opacity:${b.count ? '.82' : '.18'}"></i></div><span>${i % showEvery === 0 || i === buckets.length - 1 ? esc(b.label) : ''}</span></div>`).join('')
+  $('#chart').style.setProperty('--bar-gap', buckets.length > 45 ? '2px' : '5px')
+  $('#chart').style.setProperty('--bar-width', buckets.length > 45 ? '48%' : '58%')
+  const weekLines = period !== 'week' && period !== 'year'
+  const cols = buckets.map((b, i) => {
+    const isWeekStart = weekLines && b.date && i > 0 && new Date(`${b.date}T00:00:00`).getDay() === 1
+    return `<div class="rhythm-col ${isWeekStart ? 'week-start' : ''}" title="${esc(b.label)}：${b.count} 条"><div class="bar-space"><i style="height:${b.count ? Math.max(3, b.count / max * 100) : 0}%;opacity:${b.count ? '.82' : '.18'}"></i></div></div>`
+  }).join('')
+  const labels = buckets.map((b, i) => `<div class="rhythm-label">${i % showEvery === 0 || i === buckets.length - 1 ? `<span>${esc(b.label)}</span>` : ''}</div>`).join('')
+  $('#chart').innerHTML = `<div class="rhythm-bars">${cols}</div><div class="rhythm-labels">${labels}</div>`
   $('#range-label').textContent = range.name
   $('#range-meta').textContent = `${key(range.start)} → ${key(range.end)} · ${buckets.length} 个刻度`
-  $('#period-kicker').textContent = period === 'year' ? 'YEAR · MONTHLY' : period === 'peng' || period === 'season' ? 'PERIOD · WEEKLY' : 'PERIOD · DAILY'
+  $('#period-kicker').textContent = period === 'year' ? 'YEAR · MONTHLY' : period === 'season' ? 'SEASON · DAILY' : period === 'peng' ? 'PENG · DAILY' : 'PERIOD · DAILY'
   $('#period-title').textContent = range.name
   $('#empty').hidden = dates.length > 0
   $('#chart').hidden = dates.length === 0
