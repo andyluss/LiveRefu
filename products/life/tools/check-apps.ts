@@ -12,9 +12,10 @@ import { config as journal } from '../apps/journal/config.ts'
 import { config as watch } from '../apps/watch/config.ts'
 import { config as listen } from '../apps/listen/config.ts'
 import { config as learn } from '../apps/learn/config.ts'
+import { config as travel } from '../apps/travel/config.ts'
 import type { AppConfig } from '../packages/core/types.ts'
 
-const configs: AppConfig[] = [sleep, meal, move, read, home, wear, hydrate, journal, watch, listen, learn]
+const configs: AppConfig[] = [sleep, meal, move, read, home, wear, hydrate, journal, watch, listen, learn, travel]
 const ids = new Set<string>(), ports = new Set<number>()
 let failures = 0
 for (const c of configs) {
