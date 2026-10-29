@@ -1,0 +1,30 @@
+{
+  "name": "好好穿",
+  "short_name": "好好穿",
+  "description": "穿搭、衣橱、洗衣、愿望清单",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F5EFE3",
+  "theme_color": "#7A4E6D",
+  "icons": [
+    {
+      "src": "/shared/icons/wear/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/wear/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/wear/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

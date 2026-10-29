@@ -1,0 +1,30 @@
+{
+  "name": "慢慢看",
+  "short_name": "慢慢看",
+  "description": "电影、剧集、片单、影院",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F5EFE3",
+  "theme_color": "#6B4F8A",
+  "icons": [
+    {
+      "src": "/shared/icons/watch/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/watch/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/watch/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

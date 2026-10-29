@@ -10,7 +10,7 @@ const PORT = Number(process.env.PORT || 4200)
 const WEB = resolve(import.meta.dirname, 'web')
 const SHARED = resolve(import.meta.dirname, 'packages/web')
 const DATA_ROOT = resolve(import.meta.dirname, 'data/apps')
-const TYPES: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml' }
+const TYPES: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json' }
 function send(res: any, status: number, data: unknown) {
   res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'access-control-allow-origin': '*' })
   res.end(JSON.stringify(data))
@@ -51,7 +51,7 @@ export function createHubServer() {
       })
       return
     }
-    if (path === '/api/health') return send(res, 200, { ok: true, app: 'life-home', version: '3.5.4' })
+    if (path === '/api/health') return send(res, 200, { ok: true, app: 'life-home', version: '3.6.0' })
     if (path.startsWith('/api/')) return send(res, 404, { error: 'API 不存在' })
     const isShared = path.startsWith('/shared/')
     const root = isShared ? SHARED : WEB
@@ -63,5 +63,5 @@ export function createHubServer() {
   })
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  createHubServer().listen(PORT, '127.0.0.1', () => console.log(`Life 统合主页 3.5.4 · http://127.0.0.1:${PORT}\n${APPS.length} apps`))
+  createHubServer().listen(PORT, '127.0.0.1', () => console.log(`Life 统合主页 3.6.0 · http://127.0.0.1:${PORT}\n${APPS.length} apps`))
 }

@@ -297,7 +297,7 @@ export function createHandler(handle = store) {
       const root = isShared ? SHARED : WEB
       const file = normalize(join(root, isShared ? rel.slice('shared/'.length) : rel))
       if (!file.startsWith(root) || !existsSync(file) || !statSync(file).isFile()) return fail(res, 404, '文件不存在')
-      const types: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json' }
+      const types: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json' }
       res.writeHead(200, { 'content-type': types[extname(file)] || 'application/octet-stream', 'cache-control': 'no-cache' })
       res.end(readFileSync(file))
     } catch (e) {

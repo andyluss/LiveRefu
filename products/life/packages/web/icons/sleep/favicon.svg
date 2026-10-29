@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="好好睡">
+<rect width="64" height="64" rx="15" fill="#0F6B63"/>
+<rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="#FFFDF7" stroke-opacity=".18"/>
+<g fill="none" stroke="#FFFDF7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M40 18a18 18 0 1 0 5 30 15 15 0 0 1-5-30z"/><path d="M43 23l1.5 3 3 .5-2.3 2 .5 3-2.7-1.5-2.7 1.5.5-3-2.3-2 3-.5z" fill="#FFFDF7" stroke="none"/></g>
+</svg>

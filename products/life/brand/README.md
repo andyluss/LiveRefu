@@ -45,3 +45,19 @@ npm run logos
 ```
 
 `tools/build-logos.ts` 会同时更新 `brand/logos/` 与 `packages/web/logos/`。
+
+图标生成依赖 `rsvg-convert`（macOS 可 `brew install librsvg`）；运行 `npm run icons`。
+
+## 平台图标
+
+`npm run icons` 生成：
+
+- `favicon.ico`（16/32/48）
+- `favicon.svg`
+- `favicon-16.png` / `favicon-32.png` / `favicon-48.png`
+- `apple-touch-icon.png`（180）
+- `icon-192.png` / `icon-512.png`
+- `maskable-512.png` / `maskable.svg`
+- `manifest.webmanifest`
+
+运行副本在 [`packages/web/icons/`](../packages/web/icons/)，通过 `/shared/icons/<id>/...` 引用。

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" fill="#5B4A7A"/>
+<g transform="translate(64 64) scale(6)">
+<rect width="64" height="64" fill="#5B4A7A"/>
+<g fill="none" stroke="#FFFDF7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 46l4-12 16-18 8 8-16 18z"/><path d="M38 18l8 8M24 34l8 8"/></g>
+</g>
+</svg>

@@ -22,6 +22,12 @@ test('hub serves the app registry', async () => {
   assert.equal(logo.status, 200)
   assert.match(await logo.text(), /<svg/)
   assert.match(await (await fetch(`http://127.0.0.1:${port}/shared/logos/life.svg`)).text(), /小孩头像/)
+  const ico = await fetch(`http://127.0.0.1:${port}/shared/icons/life/favicon.ico`)
+  assert.equal(ico.status, 200)
+  assert.match(ico.headers.get('content-type') || '', /image\/x-icon/)
+  const manifest = await fetch(`http://127.0.0.1:${port}/shared/icons/life/manifest.webmanifest`)
+  assert.equal(manifest.status, 200)
+  assert.equal((await manifest.json() as any).icons.length, 3)
   for (const app of [...data, { id: 'life' }]) {
     const asset = await fetch(`http://127.0.0.1:${port}/shared/logos/${app.id}.svg`)
     assert.equal(asset.status, 200, `${app.id} logo 存在`)

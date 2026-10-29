@@ -146,7 +146,7 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
     const path = url.pathname
     if (req.method === 'OPTIONS') { res.writeHead(204, CORS); return void res.end() }
     try {
-      if (path === '/api/health') return json(res, 200, { ok: true, app: config.id, version: '3.5.4' })
+      if (path === '/api/health') return json(res, 200, { ok: true, app: config.id, version: '3.6.0' })
       if (path === '/api/state' && req.method === 'GET') return json(res, 200, stateOf(read()))
       if ((path === '/api/export' || path === '/api/backup') && req.method === 'GET') {
         res.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'content-disposition': `attachment; filename="${config.id}-${today()}.json"` })
@@ -202,7 +202,7 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
       const root = isShared ? SHARED_WEB : resolve('web')
       const abs = normalize(join(root, isShared ? rel.slice('shared/'.length) : rel))
       if (!abs.startsWith(normalize(root)) || !existsSync(abs) || !statSync(abs).isFile()) return fail(res, 404, '文件不存在')
-      const types: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json' }
+      const types: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json' }
       res.writeHead(200, { 'content-type': types[extname(abs)] || 'application/octet-stream', 'cache-control': 'no-cache' })
       return void res.end(readFileSync(abs))
     } catch (e) {
@@ -211,7 +211,7 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
   }
   const start = () => {
     const server = createServer(handler)
-    server.listen(config.port, '127.0.0.1', () => console.log(`${config.name} ${config.english} 3.5.4 · http://127.0.0.1:${config.port}\ndata: ${file}`))
+    server.listen(config.port, '127.0.0.1', () => console.log(`${config.name} ${config.english} 3.6.0 · http://127.0.0.1:${config.port}\ndata: ${file}`))
     return server
   }
   return { config, file, start, handler, read, write }

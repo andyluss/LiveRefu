@@ -1,0 +1,30 @@
+{
+  "name": "慢慢聊",
+  "short_name": "慢慢聊",
+  "description": "联系、人物、礼物、重要日期",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F5EFE3",
+  "theme_color": "#8A4B5A",
+  "icons": [
+    {
+      "src": "/shared/icons/connect/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/connect/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/connect/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

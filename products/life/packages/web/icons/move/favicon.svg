@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="慢慢走">
+<rect width="64" height="64" rx="15" fill="#8A3B24"/>
+<rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="#FFFDF7" stroke-opacity=".18"/>
+<g fill="none" stroke="#FFFDF7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 40c9-1 15-6 18-14 2-5 6-8 10-8"/><path d="M20 48c8-1 14-5 17-12"/><circle cx="43" cy="19" r="3" fill="#FFFDF7" stroke="none"/><path d="M14 30l6-2M42 42l6-2"/></g>
+</svg>

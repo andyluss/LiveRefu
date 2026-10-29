@@ -1,0 +1,30 @@
+{
+  "name": "慢慢吃",
+  "short_name": "慢慢吃",
+  "description": "三餐、蔬菜、饮水与饮食感受",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F5EFE3",
+  "theme_color": "#8A5A00",
+  "icons": [
+    {
+      "src": "/shared/icons/meal/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/meal/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/shared/icons/meal/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

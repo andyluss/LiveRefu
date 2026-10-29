@@ -1,5 +1,14 @@
 # Life Changelog
 
+## [3.6.0] - 2026-10-29 12:15
+
+### 新增
+
+- 为 Life + 16 款应用生成平台图标集：`favicon.ico`、`favicon.svg`、16/32/48、Apple Touch 180、PWA 192/512、maskable 512；
+- 每款应用一个 `manifest.webmanifest`（名称、主题色、standalone、maskable）；
+- 各应用与 Life 主页/节律页接入 favicon、Apple Touch、manifest、theme-color；
+- `npm run icons` 重新生成全部图标。
+
 ## [3.5.4] - 2026-10-29 12:07
 
 ### 变更

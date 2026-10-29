@@ -1,6 +1,6 @@
 {
   "name": "life",
-  "version": "3.5.4",
+  "version": "3.6.0",
   "private": true,
   "type": "module",
   "description": "Life · 16 款本地优先个人生活应用",
@@ -13,6 +13,7 @@
     "themes:check": "node tools/build-themes.ts --check",
     "themes:list": "node tools/build-themes.ts --list",
     "home": "node server.ts",
-    "logos": "node tools/build-logos.ts"
+    "logos": "node tools/build-logos.ts",
+    "icons": "node tools/build-icons.ts"
   }
 }
