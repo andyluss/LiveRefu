@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **Life 好好看 v1.0**：观影 + 片单/影院/剧集进度；Life 扩展到 10 款。
 - **Life 好好写 v1.0**：日记 + 提示卡/回顾/感恩；Life 扩展到 9 款。
 - **Life 好好喝 v1.0**：饮水 + 配方/杯具/咖啡因；Life 扩展到 8 款。
 - **Life 好好穿 v1.0**：穿搭 + 衣橱/洗衣/愿望清单；Life 扩展到 7 款。
