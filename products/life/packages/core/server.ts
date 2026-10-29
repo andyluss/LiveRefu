@@ -15,7 +15,8 @@ const now = (): string => new Date().toISOString()
 const today = (): string => new Date().toISOString().slice(0, 10)
 const uid = (): string => `ent_${crypto.randomUUID().slice(0, 8)}`
 const str = (v: unknown): string => typeof v === 'string' ? v.trim() : ''
-function json(res: Res, status: number, data: unknown): void { res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }); res.end(JSON.stringify(data)) }
+const CORS = { 'access-control-allow-origin': 'http://127.0.0.1:4200', 'access-control-allow-methods': 'GET,POST,PATCH,DELETE,OPTIONS', 'access-control-allow-headers': 'content-type' }
+function json(res: Res, status: number, data: unknown): void { res.writeHead(status, { ...CORS, 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }); res.end(JSON.stringify(data)) }
 function fail(res: Res, status: number, message: string): void { json(res, status, { error: message }) }
 function body(req: Req): Promise<Record<string, unknown>> {
   return new Promise((resolveBody, reject) => {
@@ -136,6 +137,7 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
   const handler = async (req: Req, res: Res): Promise<void> => {
     const url = new URL(req.url || '/', `http://${req.headers.host || '127.0.0.1'}`)
     const path = url.pathname
+    if (req.method === 'OPTIONS') { res.writeHead(204, CORS); return void res.end() }
     try {
       if (path === '/api/health') return json(res, 200, { ok: true, app: config.id, version: '2.4.0' })
       if (path === '/api/state' && req.method === 'GET') return json(res, 200, stateOf(read()))

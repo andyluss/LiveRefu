@@ -23,7 +23,7 @@ type Res = ServerResponse
 
 function send(res: Res, status: number, data: unknown): void {
   const body = JSON.stringify(data)
-  res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
+  res.writeHead(status, { 'access-control-allow-origin': 'http://127.0.0.1:4200', 'access-control-allow-methods': 'GET,POST,PATCH,DELETE,OPTIONS', 'access-control-allow-headers': 'content-type', 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
   res.end(body)
 }
 function fail(res: Res, status: number, message: string): void {
@@ -78,6 +78,7 @@ export function createHandler(handle = store) {
   return async (req: Req, res: Res): Promise<void> => {
     const url = new URL(req.url || '/', `http://${req.headers.host || '127.0.0.1'}`)
     const path = url.pathname
+    if (req.method === 'OPTIONS') { res.writeHead(204, { 'access-control-allow-origin': 'http://127.0.0.1:4200', 'access-control-allow-methods': 'GET,POST,PATCH,DELETE,OPTIONS', 'access-control-allow-headers': 'content-type' }); return void res.end() }
     try {
       if (path === '/api/health') return send(res, 200, { ok: true, version: '1.4.0' })
       if (path === '/api/state' && req.method === 'GET') return send(res, 200, handle.read())

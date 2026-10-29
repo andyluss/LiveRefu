@@ -1,14 +1,15 @@
 # Life · 个人生活应用套件
 
-> **版本**：3.0.0 ｜ **状态**：16 款（完整十款新增） ｜ **日期**：2026-10-29
+> **版本**：3.1.0 ｜ **状态**：16 款 + 统合主页 ｜ **日期**：2026-10-29
 > **一句话**：七款各自独立、共享同一套工程与设计语言的生活应用。
 > **成员**：慢慢记、好好睡、好好吃、慢慢走、好好读、好好住。
 > **原则**：本地优先、零依赖、单文件数据、可单独分发，也可未来统合。
 
-## 十六款应用
+## 应用与统合入口
 
 | 应用 | 目录 | 端口 | 解决的问题 |
 | --- | --- | --- | --- |
+| Life 统合主页 | [`web/`](web/) | 4200 | 16 款应用入口与状态聚合 |
 | 慢慢记 Manmanji | [`apps/ledger/`](apps/ledger/README.md) | 4206 | 记账、预算、自由职业发票 |
 | 好好睡 Sleepwell | [`apps/sleep/`](apps/sleep/README.md) | 4201 | 睡眠时长、质量、影响因素 |
 | 好好吃 Mealtime | [`apps/meal/`](apps/meal/README.md) | 4202 | 三餐、蔬菜、饮水、饮食感受 |
@@ -37,7 +38,7 @@ apps/*          只写领域字段与 summary；不复制服务端/前端框架
 - 十三款节律 app 通过 `createLifeApp(config)` 启动；慢慢记是自定义财务 app；
 - 十三款节律 app 共享 `{version, settings, entries, modules}` store；慢慢记保留自己的财务 store；
 - 十四款 app 共享 `--life-*` / `--mm-*` 主题 token 与同一套主题控制；
-- 每个 app 可单独 `npm start`，也可用 `tools/bundle.ts` 打包成独立目录。
+- 每个 app 可单独 `npm start`，也可用 `tools/bundle.ts` 打包成独立目录；统合主页用 `npm run home`。
 
 详见：
 

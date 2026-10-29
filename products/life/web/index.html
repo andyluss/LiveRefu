@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="system" data-appearance="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Life · 统合主页</title>
+  <script src="/shared/boot.js"></script>
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/themes.generated.css">
+  <link rel="stylesheet" href="/shared/theme.css">
+  <link rel="stylesheet" href="/shared/life.css">
+  <link rel="stylesheet" href="/home.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">L</span><span><b>Life</b><small>生活应用套件 · 统合主页</small></span></a><span class="spacer"></span><div id="theme-controls" class="theme-controls"></div></header>
+  <main class="app home">
+    <section class="home-hero">
+      <div>
+        <div class="eyebrow">LIFE SUITE · 16 APPS</div>
+        <h1>所有生活，<br>从一个入口开始。</h1>
+        <p>每款应用仍然独立运行、独立存数据。这里只做入口和状态聚合，不复制你的记录。</p>
+        <div class="home-actions"><button class="btn btn-primary" id="refresh">↻ 刷新状态</button><span id="online" class="hint">检查中…</span></div>
+      </div>
+      <div class="home-note"><b>本地优先</b><p>数据只在本机；每款 app 自己的 <code>data/store.json</code>。这个页面不发任何远程请求。</p><b>同时使用</b><p>卡片会在新标签打开应用；可以并排使用互不干扰。</p></div>
+    </section>
+    <div class="home-toolbar"><input id="search" type="search" placeholder="搜索应用、功能…"><div id="filters" class="filters"></div></div>
+    <div id="groups"></div>
+    <footer class="home-foot">Life 3.1 · 统合入口 · <a href="/api/apps">应用清单</a></footer>
+  </main>
+  <script type="module" src="/home.js"></script>
+</body>
+</html>

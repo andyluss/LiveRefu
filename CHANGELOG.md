@@ -17,23 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
-- **Life 好好聊 v1.0**：联系 + 人物/礼物/日期；十款新增全部交付，Life 16 款。
-- **Life 好好整 v1.0**：整理 + 空间/物品/捐赠；Life 扩展到 15 款。
-- **Life 好好养 v1.0**：照护 + 计划/健康/用品；Life 扩展到 14 款。
-- **Life 好好行 v1.0**：出行 + 地点/行程/纪念物；Life 扩展到 13 款。
-- **Life 好好学 v1.0**：学习 + 课程/技能/笔记；Life 扩展到 12 款。
-- **Life 好好听 v1.0**：收听 + 歌单/现场/设备；Life 扩展到 11 款。
-- **Life 好好看 v1.0**：观影 + 片单/影院/剧集进度；Life 扩展到 10 款。
-- **Life 好好写 v1.0**：日记 + 提示卡/回顾/感恩；Life 扩展到 9 款。
-- **Life 好好喝 v1.0**：饮水 + 配方/杯具/咖啡因；Life 扩展到 8 款。
-- **Life 好好穿 v1.0**：穿搭 + 衣橱/洗衣/愿望清单；Life 扩展到 7 款。
-- **Life 统一决策记录**：`products/life/docs/09_决策记录.md`，合并 Life/五款扩展包/慢慢记 M1–M15。
-- **慢慢记并入 Life**：成为 `products/life/apps/ledger`；6 款 app 共用 LiveDSO 主题系统（7 族 × 浅深）。
-- **新增 `products/life/`**：五款本地优先生活应用（好好睡/好好吃/慢慢走/好好读/好好住），共享 core/web 与统合文档。
-- **慢慢记 v1.2**：风格主题与浅/深外观分离，7 族 × 2 变体；对齐 R-001。
-- **慢慢记 v1.1**：9 个主题，7 个由 LiveDSO 风格卡生成（狗粮）。
-- **慢慢记 v1.0.1**：修复顶部导航按钮无响应；补导航回归测试。
-- **新增 `products/manmanji/`（慢慢记 v1.0）**：本地优先通用记账 + 自由职业发票扩展包；Node 原生服务、无构建单页、JSON 持久化；产品文档/测试/CHANGELOG 齐全。
+- **根日志清理**：移除 Life/慢慢记项目明细；项目变更只写各自 `CHANGELOG.md`，根日志保留工作区级变更。
 - **R03 整合钩子/CI 技术说明**：[`tech/hooks-readme.md`](tech/hooks-readme.md) 的 pre-commit 启用、暂存校验范围、全部钩子项、例外与 CI 兜底并入 [`rules/R03-link-validation.md`](rules/R03-link-validation.md)；tech 文件只保留指针。
 - **R01 整合文档技术规格**：[`tech/docs-convention.md`](tech/docs-convention.md) 的相对链接深度、校验机制、日期示例并入 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)；tech 文件只保留指针。
 - **R02 整合 Git 技术规格**：[`tech/git-convention.md`](tech/git-convention.md) 的 Conventional Commits 格式/type/scope/subject/body/footer/历史约定并入 [`rules/R02-git-convention.md`](rules/R02-git-convention.md)；tech 文件只保留指针。

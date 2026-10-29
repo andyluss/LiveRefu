@@ -1,16 +1,17 @@
 {
   "name": "life",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "type": "module",
   "description": "Life · 五款本地优先个人生活应用",
   "scripts": {
     "dev:all": "node tools/dev-all.ts",
-    "test": "node --test test/life.test.ts apps/ledger/test/core.test.ts",
-    "check": "node --test test/life.test.ts apps/ledger/test/core.test.ts && node tools/check-apps.ts && node tools/build-themes.ts --check",
+    "test": "node --test test/life.test.ts test/home.test.ts apps/ledger/test/core.test.ts",
+    "check": "node --test test/life.test.ts test/home.test.ts apps/ledger/test/core.test.ts && node tools/check-apps.ts && node tools/build-themes.ts --check",
     "bundle": "node tools/bundle.ts",
     "themes": "node tools/build-themes.ts",
     "themes:check": "node tools/build-themes.ts --check",
-    "themes:list": "node tools/build-themes.ts --list"
+    "themes:list": "node tools/build-themes.ts --list",
+    "home": "node server.ts"
   }
 }
