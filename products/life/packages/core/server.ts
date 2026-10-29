@@ -146,7 +146,7 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
     const path = url.pathname
     if (req.method === 'OPTIONS') { res.writeHead(204, CORS); return void res.end() }
     try {
-      if (path === '/api/health') return json(res, 200, { ok: true, app: config.id, version: '3.7.3' })
+      if (path === '/api/health') return json(res, 200, { ok: true, app: config.id, version: '3.7.4' })
       if (path === '/api/state' && req.method === 'GET') return json(res, 200, stateOf(read()))
       if ((path === '/api/export' || path === '/api/backup') && req.method === 'GET') {
         res.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'content-disposition': `attachment; filename="${config.id}-${today()}.json"` })
@@ -211,7 +211,7 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
   }
   const start = () => {
     const server = createServer(handler)
-    server.listen(config.port, '127.0.0.1', () => console.log(`${config.name} ${config.english} 3.7.3 · http://127.0.0.1:${config.port}\ndata: ${file}`))
+    server.listen(config.port, '127.0.0.1', () => console.log(`${config.name} ${config.english} 3.7.4 · http://127.0.0.1:${config.port}\ndata: ${file}`))
     return server
   }
   return { config, file, start, handler, read, write }

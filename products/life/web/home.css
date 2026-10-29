@@ -47,7 +47,10 @@
 .fapp[data-h="1"] .fapp-link{padding:10px 28px 10px 30px;justify-content:center}
 .fapp[data-h="2"] .desc,.fapp[data-w="2"] .desc{display:none}
 .fapp[data-h="2"] .metric,.fapp[data-w="1"] .metric{display:none}
-.fapp[data-w="3"][data-h="2"] .metric{display:flex}
+.fapp[data-w="3"][data-h="2"] .metric,
+.fapp[data-w="4"][data-h="2"] .metric,
+.fapp[data-w="5"][data-h="2"] .metric,
+.fapp[data-w="6"][data-h="2"] .metric{display:flex}
 .fapp[data-w="2"][data-h="2"] .metric{display:none}
 .fapp[data-full="true"] .port{display:block}
 .fapp[data-full="true"] .desc{display:-webkit-box}
