@@ -8,7 +8,7 @@
 | --- | --- | --- | --- |
 | `ref.*` | [`core/ref.tokens.json`](core/ref.tokens.json) | “有哪些值” | `ref.color.neutral.0 = #0B0F14` |
 | `sys.*` | [`core/sys.tokens.json`](core/sys.tokens.json) | “用在哪” | `sys.color.bg.base`、`sys.color.focus.ring` |
-| `product.*` | [`products/`](products/) | “这个产品里叫什么” | `product.future-debris.color.power` |
+| `product.*` | [`products/`](products/) | “这个产品里叫什么” | `product.future-debris.color.power` / `product.life.color.accent` |
 
 **规则**：
 - 业务代码只引用 `sys.*` 或 `product.*`；不得引用 `ref.*`，更不得写裸值。
@@ -17,7 +17,8 @@
 
 ## 二、风格卡
 
-每个产品/纪元一张风格卡；登记表、可变/不变边界与对账方式见 [`../docs/07_风格卡登记.md`](../docs/07_风格卡登记.md)。当前四张：`SC-FUTURE-ARCHIVE-CONSOLE-v1`、`SC-FUTURE-DEBRIS-ATOMIC-v1`、`SC-LIVEFAB-CONSOLE-v1`、`SC-TOMORROWS-CHANNEL-TAPE-v1`。
+每个产品/纪元一张风格卡；登记表、可变/不变边界与对账方式见 [`../docs/07_风格卡登记.md`](../docs/07_风格卡登记.md)。当前四张风格卡：`SC-FUTURE-ARCHIVE-CONSOLE-v1`、`SC-FUTURE-DEBRIS-ATOMIC-v1`、`SC-LIVEFAB-CONSOLE-v1`、`SC-TOMORROWS-CHANNEL-TAPE-v1`。
+Life 的 `product.life` 是产品语义基座，不取代 LiveDSO 风格卡；14 个变体仍由风格卡覆盖。
 
 ## 三、文件
 
@@ -29,6 +30,7 @@ tokens/
 ├── products/
 │   ├── future-archive.tokens.json
 │   ├── future-debris.atomic.tokens.json
+│   ├── life.tokens.json          # Life 产品语义（浅/深）
 │   ├── livefab.tokens.json
 │   └── tomorrows-channel.tape.tokens.json
 ├── schema/

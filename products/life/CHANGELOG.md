@@ -1,5 +1,14 @@
 # Life Changelog
 
+## [3.2.0] - 2026-10-29 08:57
+
+### 变更
+
+- **`--life-*` 提升为 LRDS `product.life`**：`design/tokens/products/life.tokens.json` 固化浅/深色产品语义；
+- Life 的 `packages/web/tokens.css` 改为从该源生成，不再手写颜色；
+- 14 个 LiveDSO 风格变体继续覆盖 `--life-*`；默认浅/深色与变体分层更明确；
+- 更新设计系统说明、统一决策 L15 与统合总纲版本。
+
 ## [3.1.1] - 2026-10-29 08:53
 
 ### 修复

@@ -71,7 +71,7 @@ const ALLOWED_TYPES: TokenType[] = [
 const UI_LEVELS = ['title-1', 'title-2', 'body', 'caption', 'number-lg']
 const EDITORIAL_LEVELS = ['display', 'h1', 'h2', 'h3', 'body', 'caption', 'footnote']
 const SPACING_SCALE = [4, 8, 12, 16, 24, 32]
-const PRODUCTS = ['future-archive', 'future-debris', 'livefab', 'tomorrows-channel']
+const PRODUCTS = ['future-archive', 'future-debris', 'life', 'livefab', 'tomorrows-channel']
 const WEB_PRODUCTS = ['future-archive', 'livefab']
 
 const REQUIRED_SYS = [
@@ -851,6 +851,21 @@ export function buildDocs(tokens: TokenMap): string {
     lines.push('')
     lines.push(table(['token', '值', '来源'], rows))
     lines.push('')
+
+    const darkRows = [...tokens]
+      .filter(([path]) => path.startsWith(`product.${product}.dark.color.`))
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([path, t]) => [
+        `\`${path.replace(`product.${product}.dark.`, '')}\``,
+        `\`${String(t.value)}\``,
+        t.resolvedFrom ? `\`{${t.resolvedFrom}}\`` : '—',
+      ])
+    if (darkRows.length) {
+      lines.push(`## product.${product}.dark.color`)
+      lines.push('')
+      lines.push(table(['token', '值', '来源'], darkRows))
+      lines.push('')
+    }
   }
 
   lines.push('## 尺度')

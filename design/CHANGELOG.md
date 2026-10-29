@@ -11,6 +11,7 @@
 > **青橙全栈已迁出**：P1–P17、可视化、TODO、QC 提案等全栈变更见 [`fullstack/CHANGELOG.md`](fullstack/CHANGELOG.md)。
 
 ### 新增
+- **LRDS `product.life`**：`design/tokens/products/life.tokens.json` 固化 Life 浅/深色产品语义；Life 的 `--life-*` 由该源生成，14 个 LiveDSO 变体继续覆盖。
 
 - **润色设计纲领**：统一角色路径为 `sys.color.*`，删除项目迁移历史/版本状态，`09 落地检查表` 改为通用验收问题；`03` 明确历史全量副本迁移后删除，不再新增。
 

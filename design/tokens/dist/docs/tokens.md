@@ -101,6 +101,48 @@
 | `color.textFaint` | `#9E9889` | `{ref.color.warmgray.200}` |
 | `color.warn` | `#FFC857` | `{sys.color.feedback.warning}` |
 
+## product.life.color
+
+| token | 值 | 来源 |
+| --- | --- | --- |
+| `color.accent` | `#0F6B63` | — |
+| `color.accentSoft` | `#E1EFEA` | — |
+| `color.bg` | `#F5EFE3` | — |
+| `color.bg2` | `#EDE4D4` | — |
+| `color.danger` | `#A83A14` | — |
+| `color.faint` | `#8E9992` | — |
+| `color.focus` | `#0F6B63` | — |
+| `color.line` | `#D8CDBA` | — |
+| `color.lineStrong` | `#A99A82` | — |
+| `color.muted` | `#66736F` | — |
+| `color.onAccent` | `#FFFDF7` | — |
+| `color.raised` | `#F8F1E4` | — |
+| `color.success` | `#2F6B3A` | — |
+| `color.surface` | `#FFFDF8` | — |
+| `color.text` | `#1B2A2F` | — |
+| `color.warning` | `#8A5A00` | — |
+
+## product.life.dark.color
+
+| token | 值 | 来源 |
+| --- | --- | --- |
+| `color.accent` | `#57D8C8` | — |
+| `color.accentSoft` | `#183A36` | — |
+| `color.bg` | `#121A1D` | — |
+| `color.bg2` | `#0C1316` | — |
+| `color.danger` | `#FF8A65` | — |
+| `color.faint` | `#7C8C86` | — |
+| `color.focus` | `#57D8C8` | — |
+| `color.line` | `#31413F` | — |
+| `color.lineStrong` | `#53645F` | — |
+| `color.muted` | `#A9B6B1` | — |
+| `color.onAccent` | `#10201E` | — |
+| `color.raised` | `#223035` | — |
+| `color.success` | `#7BD389` | — |
+| `color.surface` | `#1A2529` | — |
+| `color.text` | `#F4EEDF` | — |
+| `color.warning` | `#FFC857` | — |
+
 ## product.livefab.color
 
 | token | 值 | 来源 |

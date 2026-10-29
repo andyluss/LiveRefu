@@ -1,0 +1,52 @@
+{
+  "$schema": "../schema/tokens.schema.json",
+  "meta": {
+    "name": "Life · 生活应用套件",
+    "product": "life",
+    "mode": "light/dark",
+    "version": "1.0.0",
+    "note": "Life 产品语义：暖纸底色、青绿行动色。product.life.color 是浅色默认，product.life.dark.color 是深色覆盖；14 个风格变体仍由 LiveDSO 风格卡覆盖 --life-*。"
+  },
+  "product": {
+    "life": {
+      "color": {
+        "bg": { "$value": "#F5EFE3", "$type": "color" },
+        "bg2": { "$value": "#EDE4D4", "$type": "color" },
+        "surface": { "$value": "#FFFDF8", "$type": "color" },
+        "raised": { "$value": "#F8F1E4", "$type": "color" },
+        "text": { "$value": "#1B2A2F", "$type": "color" },
+        "muted": { "$value": "#66736F", "$type": "color" },
+        "faint": { "$value": "#8E9992", "$type": "color" },
+        "line": { "$value": "#D8CDBA", "$type": "color" },
+        "lineStrong": { "$value": "#A99A82", "$type": "color" },
+        "accent": { "$value": "#0F6B63", "$type": "color" },
+        "onAccent": { "$value": "#FFFDF7", "$type": "color" },
+        "accentSoft": { "$value": "#E1EFEA", "$type": "color" },
+        "danger": { "$value": "#A83A14", "$type": "color" },
+        "warning": { "$value": "#8A5A00", "$type": "color" },
+        "success": { "$value": "#2F6B3A", "$type": "color" },
+        "focus": { "$value": "#0F6B63", "$type": "color" }
+      },
+      "dark": {
+        "color": {
+          "bg": { "$value": "#121A1D", "$type": "color" },
+          "bg2": { "$value": "#0C1316", "$type": "color" },
+          "surface": { "$value": "#1A2529", "$type": "color" },
+          "raised": { "$value": "#223035", "$type": "color" },
+          "text": { "$value": "#F4EEDF", "$type": "color" },
+          "muted": { "$value": "#A9B6B1", "$type": "color" },
+          "faint": { "$value": "#7C8C86", "$type": "color" },
+          "line": { "$value": "#31413F", "$type": "color" },
+          "lineStrong": { "$value": "#53645F", "$type": "color" },
+          "accent": { "$value": "#57D8C8", "$type": "color" },
+          "onAccent": { "$value": "#10201E", "$type": "color" },
+          "accentSoft": { "$value": "#183A36", "$type": "color" },
+          "danger": { "$value": "#FF8A65", "$type": "color" },
+          "warning": { "$value": "#FFC857", "$type": "color" },
+          "success": { "$value": "#7BD389", "$type": "color" },
+          "focus": { "$value": "#57D8C8", "$type": "color" }
+        }
+      }
+    }
+  }
+}
