@@ -100,20 +100,34 @@ function renderStats(range, dates) {
   const activeApps = state.apps.filter(a => state.selected.has(a.id) && datesOf(state.states[a.id]).some(d => d >= key(range.start) && d <= key(range.end))).length
   $('#rhythm-stats').innerHTML = `<div><b>${dates.length}</b>记录</div><div><b>${uniqueDays}</b>有记录的天</div><div><b>${activeApps}</b>款应用</div>`
 }
+function yScale(maxCount) {
+  if (maxCount <= 5) return { top: Math.max(1, maxCount), step: 1, ticks: Array.from({ length: Math.max(1, maxCount) + 1 }, (_, i) => i) }
+  const raw = maxCount / 5
+  const magnitude = 10 ** Math.floor(Math.log10(raw))
+  const normalized = raw / magnitude
+  const step = (normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10) * magnitude
+  const top = Math.ceil(maxCount / step) * step
+  const ticks = []
+  for (let v = 0; v <= top; v += step) ticks.push(v)
+  return { top, step, ticks }
+}
 function renderChart(range, period) {
   const dates = selectedDates().filter(d => d >= key(range.start) && d <= key(range.end))
   const buckets = bucketize(range, dates, period)
-  const max = Math.max(1, ...buckets.map(b => b.count))
+  const maxCount = Math.max(0, ...buckets.map(b => b.count))
+  const scale = yScale(maxCount)
   const showEvery = buckets.length <= 14 ? 1 : Math.ceil(buckets.length / 8)
   $('#chart').style.setProperty('--bar-gap', buckets.length > 45 ? '2px' : '5px')
   $('#chart').style.setProperty('--bar-width', buckets.length > 45 ? '48%' : '58%')
   const weekLines = period !== 'week' && period !== 'year'
   const cols = buckets.map((b, i) => {
     const isWeekStart = weekLines && b.date && i > 0 && new Date(`${b.date}T00:00:00`).getDay() === 1
-    return `<div class="rhythm-col ${isWeekStart ? 'week-start' : ''}" title="${esc(b.label)}：${b.count} 条"><div class="bar-space"><i style="height:${b.count ? Math.max(3, b.count / max * 100) : 0}%;opacity:${b.count ? '.82' : '.18'}"></i></div></div>`
+    return `<div class="rhythm-col ${isWeekStart ? 'week-start' : ''}" title="${esc(b.label)}：${b.count} 条"><div class="bar-space"><i style="height:${b.count ? Math.max(3, b.count / scale.top * 100) : 0}%;opacity:${b.count ? '.82' : '.18'}"></i></div></div>`
   }).join('')
   const labels = buckets.map((b, i) => `<div class="rhythm-label">${i % showEvery === 0 || i === buckets.length - 1 ? `<span>${esc(b.label)}</span>` : ''}</div>`).join('')
-  $('#chart').innerHTML = `<div class="rhythm-bars">${cols}</div><div class="rhythm-labels">${labels}</div>`
+  const yaxis = [...scale.ticks].reverse().map(v => `<span>${v}</span>`).join('')
+  const grid = scale.ticks.map(v => `<i style="top:${100 - v / scale.top * 100}%"></i>`).join('')
+  $('#chart').innerHTML = `<div class="rhythm-yaxis">${yaxis}</div><div class="rhythm-plot"><div class="rhythm-grid">${grid}</div><div class="rhythm-bars">${cols}</div></div><div class="rhythm-labels">${labels}</div>`
   $('#range-label').textContent = range.name
   $('#range-meta').textContent = `${key(range.start)} → ${key(range.end)} · ${buckets.length} 个刻度`
   $('#period-kicker').textContent = period === 'year' ? 'YEAR · MONTHLY' : period === 'season' ? 'SEASON · DAILY' : period === 'peng' ? 'PENG · DAILY' : 'PERIOD · DAILY'

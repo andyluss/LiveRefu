@@ -32,13 +32,17 @@
 .rhythm-head h2{font-size:22px;margin:2px 0 0}
 .rhythm-stats{display:flex;gap:18px;flex-wrap:wrap;font-size:10px;color:var(--life-muted);text-align:right}
 .rhythm-stats b{display:block;font:18px var(--life-font-mono);color:var(--life-text);line-height:1.15}
-.rhythm-chart{display:flex;flex-direction:column;height:244px;margin:16px 0 0;padding:0 4px;border-bottom:1px solid var(--life-line)}
-.rhythm-bars{display:flex;align-items:stretch;gap:var(--bar-gap,5px);flex:1;min-height:0}
+.rhythm-chart{display:grid;grid-template-columns:42px minmax(0,1fr);grid-template-rows:minmax(0,1fr) 24px;height:244px;margin:16px 0 0;padding:0 4px;border-bottom:1px solid var(--life-line)}
+.rhythm-yaxis{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding:0 7px 0 0;font:8px var(--life-font-mono);color:var(--life-muted);line-height:1}
+.rhythm-plot{grid-column:2;grid-row:1;position:relative;min-width:0;min-height:0}
+.rhythm-grid{position:absolute;inset:0;pointer-events:none}
+.rhythm-grid i{position:absolute;left:0;right:0;border-top:1px dashed var(--life-line);opacity:.55}
+.rhythm-bars{position:relative;display:flex;align-items:stretch;gap:var(--bar-gap,5px);height:100%;min-height:0;z-index:1}
 .rhythm-col{position:relative;flex:1 1 0;width:0;min-width:0;overflow:visible}
 .rhythm-col.week-start::before{content:'';position:absolute;left:-1px;top:0;bottom:0;border-left:1px dashed var(--life-line-strong);opacity:.75;pointer-events:none}
 .bar-space{display:flex;align-items:flex-end;justify-content:center;height:100%;min-height:0}
 .bar-space i{display:block;width:var(--bar-width,58%);max-width:22px;min-width:1px;min-height:2px;background:var(--life-accent);border-radius:2px 2px 0 0;opacity:.82}
-.rhythm-labels{display:flex;gap:var(--bar-gap,5px);height:24px;flex:none;padding-top:6px}
+.rhythm-labels{grid-column:2;grid-row:2;display:flex;gap:var(--bar-gap,5px);height:24px;padding-top:6px}
 .rhythm-label{position:relative;flex:1 1 0;width:0;min-width:0;height:18px}
 .rhythm-label span{position:absolute;left:50%;top:0;transform:translateX(-50%);font:8px/1.2 var(--life-font-mono);color:var(--life-muted);white-space:nowrap}
 .breakdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
