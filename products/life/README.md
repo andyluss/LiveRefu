@@ -1,11 +1,11 @@
 # Life · 个人生活应用套件
 
-> **版本**：2.0.0 ｜ **状态**：6 款（含慢慢记） ｜ **日期**：2026-10-29
-> **一句话**：六款各自独立、共享同一套工程与设计语言的生活应用。
+> **版本**：2.1.0 ｜ **状态**：7 款（含慢慢记与好好穿） ｜ **日期**：2026-10-29
+> **一句话**：七款各自独立、共享同一套工程与设计语言的生活应用。
 > **成员**：慢慢记、好好睡、好好吃、慢慢走、好好读、好好住。
 > **原则**：本地优先、零依赖、单文件数据、可单独分发，也可未来统合。
 
-## 六款应用
+## 七款应用
 
 | 应用 | 目录 | 端口 | 解决的问题 |
 | --- | --- | --- | --- |
@@ -15,6 +15,7 @@
 | 慢慢走 DailyWalk | [`apps/move/`](apps/move/README.md) | 4203 | 步行/运动、强度、心情、连续天数 |
 | 好好读 ReadingLog | [`apps/read/`](apps/read/README.md) | 4204 | 阅读页数/时长、书、摘录 |
 | 好好住 HomeBoard | [`apps/home/`](apps/home/README.md) | 4205 | 家务/维护、区域、到期、完成 |
+| 好好穿 Wearwell | [`apps/wear/`](apps/wear/README.md) | 4207 | 穿搭、衣橱、洗衣、愿望清单 |
 
 ## 统合点
 
@@ -24,9 +25,9 @@ packages/web    同一套 token、组件、表单、列表、图表、空态
 apps/*          只写领域字段与 summary；不复制服务端/前端框架
 ```
 
-- 五款节律 app 通过 `createLifeApp(config)` 启动；慢慢记是自定义财务 app；
-- 五款节律 app 共享 `{version, settings, entries, modules}` store；慢慢记保留自己的财务 store；
-- 六款 app 共享 `--life-*` / `--mm-*` 主题 token 与同一套主题控制；
+- 六款节律 app 通过 `createLifeApp(config)` 启动；慢慢记是自定义财务 app；
+- 六款节律 app 共享 `{version, settings, entries, modules}` store；慢慢记保留自己的财务 store；
+- 七款 app 共享 `--life-*` / `--mm-*` 主题 token 与同一套主题控制；
 - 每个 app 可单独 `npm start`，也可用 `tools/bundle.ts` 打包成独立目录。
 
 详见：
@@ -46,7 +47,7 @@ cd products/life/apps/sleep
 npm start          # http://127.0.0.1:4201
 ```
 
-六款同时跑：
+七款同时跑：
 
 ```bash
 cd products/life
