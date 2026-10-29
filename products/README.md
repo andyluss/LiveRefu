@@ -5,4 +5,4 @@
 | 产品 | 入口 | 状态 |
 | --- | --- | --- |
 | 慢慢记 / Manmanji | [`life/apps/ledger/README.md`](life/apps/ledger/README.md) | v1.3 |
-| Life 生活套件（6 款） | [`life/README.md`](life/README.md) | v1.1 |
+| Life 生活套件（6 款） | [`life/README.md`](life/README.md) | v2.0 |

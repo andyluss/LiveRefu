@@ -22,6 +22,15 @@ test('five apps have unique ids/ports and valid contracts', () => {
     assert.ok(c.columns.every(col => c.fields.some(f => f.key === col)))
     const summary = c.summary([])
     assert.equal(summary.chart.values.length, 14)
+    assert.ok((c.packs || []).length >= 2, `${c.id} 至少两个扩展包`)
+    for (const pack of c.packs || []) {
+      assert.ok(pack.id && pack.name && pack.modules.length, `${c.id}/${pack.id} 契约不完整`)
+      for (const module of pack.modules) {
+        assert.ok(module.fields.some(f => f.key === 'date'))
+        assert.ok(module.columns.every(col => module.fields.some(f => f.key === col)))
+        assert.equal(module.summary([]).chart.values.length, 14)
+      }
+    }
   }
 })
 
@@ -45,6 +54,13 @@ test('shared core validates, creates, patches and deletes entries', async () => 
     assert.ok(!removed.entries.some((e: any) => e.id === entry.id))
     const bad = await fetch(`${base}/api/entries`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ date: '2026-10-29', data: {} }) })
     assert.equal(bad.status, 400)
+    const packId = sleep.packs![0]!.id, moduleId = sleep.packs![0]!.modules[0]!.id
+    const disabled = await fetch(`${base}/api/modules/${moduleId}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ date: '2026-10-29', data: { tempC: 21, comfort: 4 } }) })
+    assert.equal(disabled.status, 403)
+    const enabled = await (await fetch(`${base}/api/settings`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ packs: { [packId]: true } }) })).json() as any
+    assert.equal(enabled.settings.packs[packId], true)
+    const moduleEntry = await (await fetch(`${base}/api/modules/${moduleId}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ date: '2026-10-29', data: { tempC: 21, comfort: 4 } }) })).json() as any
+    assert.ok(moduleEntry.modules[moduleId].entries.some((e: any) => Number(e.data.tempC) === 21))
   } finally {
     await new Promise<void>(resolve => server.close(() => resolve()))
     rmSync(tmp, { recursive: true, force: true })

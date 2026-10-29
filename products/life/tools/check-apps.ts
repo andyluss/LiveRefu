@@ -21,6 +21,12 @@ for (const c of configs) {
   for (const col of c.columns) if (!keys.has(col)) fail(`column ${col} 没有对应字段`)
   const s = c.summary([])
   if (!Array.isArray(s.metrics) || s.chart.values.length !== 14) fail('空数据 summary 必须返回 metrics 与 14 点 chart')
+  if ((c.packs || []).length < 2) fail('至少需要两个扩展包')
+  for (const pack of c.packs || []) for (const m of pack.modules) {
+    if (!m.fields.some(f => f.key === 'date')) fail(`${pack.id}/${m.id} 缺 date`)
+    if (!m.columns.every(col => m.fields.some(f => f.key === col))) fail(`${pack.id}/${m.id} columns 无效`)
+    if (m.summary([]).chart.values.length !== 14) fail(`${pack.id}/${m.id} summary chart 必须 14 点`)
+  }
   if (!existsSync(resolve(import.meta.dirname, '..', 'apps', c.id, 'web/index.html'))) fail('缺 web/index.html')
 }
 for (const f of ['web/index.html', 'server/index.ts', 'package.json']) if (!existsSync(resolve(import.meta.dirname, '..', 'apps', 'ledger', f))) { console.error(`✗ ledger: 缺 ${f}`); failures++ }

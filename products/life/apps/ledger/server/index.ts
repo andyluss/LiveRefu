@@ -79,7 +79,7 @@ export function createHandler(handle = store) {
     const url = new URL(req.url || '/', `http://${req.headers.host || '127.0.0.1'}`)
     const path = url.pathname
     try {
-      if (path === '/api/health') return send(res, 200, { ok: true, version: '1.3.0' })
+      if (path === '/api/health') return send(res, 200, { ok: true, version: '1.4.0' })
       if (path === '/api/state' && req.method === 'GET') return send(res, 200, handle.read())
       if (path === '/api/backup' && req.method === 'GET') {
         res.writeHead(200, {
@@ -293,7 +293,7 @@ export function createHandler(handle = store) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const handler = createHandler(store)
   createServer(handler).listen(PORT, HOST, () => {
-    console.log(`Manmanji 1.3.0 · http://${HOST}:${PORT}`)
+    console.log(`Manmanji 1.4.0 · http://${HOST}:${PORT}`)
     console.log(`data: ${DATA_FILE}`)
   })
 }

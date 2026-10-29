@@ -1,5 +1,12 @@
 # 慢慢记 Changelog
 
+## [1.4.0] - 2026-10-29 08:33
+
+### Changed
+
+- 主题生成/控件完全切到 Life 共享层；慢慢记与五款节律 app 共用同一套主题代码。
+- 主题相关本地生成物从 app 内移除，改为 `/shared/theme.js`、`/shared/themes.generated.css`。
+
 ## [1.3.0] - 2026-10-29 08:26
 
 ### Changed

@@ -26,6 +26,21 @@ export interface Summary {
   streak?: number
   hint?: string
 }
+export interface CollectionConfig {
+  id: string
+  name: string
+  entryLabel: string
+  fields: Field[]
+  columns: string[]
+  seed?: Array<{ date: string; data: Record<string, string | number> }>
+  summary(entries: LifeEntry[]): Summary
+}
+export interface PackConfig {
+  id: string
+  name: string
+  description: string
+  modules: CollectionConfig[]
+}
 export interface AppConfig {
   id: string
   name: string
@@ -40,10 +55,16 @@ export interface AppConfig {
   columns: string[]
   seed?: Array<{ date: string; data: Record<string, string | number> }>
   summary(entries: LifeEntry[]): Summary
+  packs?: PackConfig[]
 }
-export type PublicConfig = Omit<AppConfig, 'summary' | 'seed'>
+export type PublicModule = Omit<CollectionConfig, 'summary' | 'seed'>
+export interface PublicPack { id: string; name: string; description: string; modules: PublicModule[] }
+export type PublicConfig = Omit<AppConfig, 'summary' | 'seed' | 'packs'> & { packs: PublicPack[] }
+export interface ModuleState { entries: LifeEntry[]; summary: Summary }
 export interface StateResponse {
   config: PublicConfig
+  settings: { packs: Record<string, boolean> }
   entries: LifeEntry[]
   summary: Summary
+  modules: Record<string, ModuleState>
 }
