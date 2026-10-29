@@ -5,7 +5,7 @@ import { resolve } from 'node:path'
 const ROOT = resolve(import.meta.dirname, '..')
 const INK = '#FFFDF7'
 const LOGOS: Record<string, { accent: string; label: string; glyph: string }> = {
-  life: { accent: '#0F6B63', label: 'Life 小孩头像', glyph: '<circle cx="32" cy="33" r="16"/><path d="M17 30c1-11 7-18 15-18 9 0 14 7 15 18-2-4-5-6-8-6-3 0-5 1-7 3-3 3-7 3-10 0-1-1-3-1-5 3z" fill="#FFFDF7" stroke="none"/><path d="M32 11c0-3 2-5 5-5" /><circle cx="26" cy="34" r="1.6" fill="#FFFDF7" stroke="none"/><circle cx="38" cy="34" r="1.6" fill="#FFFDF7" stroke="none"/><path d="M28 41c2 2 6 2 8 0"/><path d="M23 26c3-3 6-4 9-4 4 0 7 1 9 4" opacity=".5"/>' },
+  life: { accent: '#0F6B63', label: 'Life 小孩头像', glyph: '<circle cx="32" cy="34" r="15"/><path d="M32 20c0-2 1.5-3 3-3"/><circle cx="27" cy="36" r="1.5" fill="#FFFDF7" stroke="none"/><circle cx="37" cy="36" r="1.5" fill="#FFFDF7" stroke="none"/><path d="M28.5 42c1.5 1.8 5.5 1.8 7 0"/>' },
   ledger: { accent: '#4F6D7A', label: '慢慢记', glyph: '<rect x="18" y="16" width="28" height="32" rx="4"/><path d="M24 24h16M24 31h16M24 38h10"/>' },
   sleep: { accent: '#0F6B63', label: '好好睡', glyph: '<path d="M40 18a18 18 0 1 0 5 30 15 15 0 0 1-5-30z"/><path d="M43 23l1.5 3 3 .5-2.3 2 .5 3-2.7-1.5-2.7 1.5.5-3-2.3-2 3-.5z" fill="#FFFDF7" stroke="none"/>' },
   meal: { accent: '#8A5A00', label: '慢慢吃', glyph: '<path d="M16 32h32a16 16 0 0 1-32 0z"/><path d="M24 24c0-3 3-3 3-6M33 24c0-3 3-3 3-6M42 24c0-3 3-3 3-6"/>' },
