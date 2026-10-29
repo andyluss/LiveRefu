@@ -19,7 +19,7 @@ function visible() {
 }
 function overlap(a, b) { return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h }
 function canPlace(layout, id, x, y, w, h) {
-  if (x < 1 || y < 1 || w < 2 || h < 2 || w > 6 || h > 5 || x + w - 1 > 12) return false
+  if (x < 1 || y < 1 || w < 2 || h < 2 || w > 6 || h > 6 || x + w - 1 > 12) return false
   const next = { x, y, w, h }
   return Object.entries(layout).every(([other, item]) => other === id || !overlap(next, item))
 }
@@ -69,12 +69,19 @@ function card(app) {
     <button class="resize-handle" data-resize="${esc(app.id)}" aria-label="缩放 ${esc(app.name)}" title="拖动缩放">◢</button>
   </article>`
 }
+function setCell() {
+  const board = $('#board')
+  const cell = Math.max(32, Math.floor((board.clientWidth - 16 - 11 * 8) / 12))
+  board.style.setProperty('--cell', `${cell}px`)
+  return cell
+}
 function render() {
   $('#filters').innerHTML = filters()
   const apps = visible()
   const rows = Math.max(3, ...Object.values(state.layout).map(i => i.y + i.h - 1))
   const board = $('#board')
-  board.style.minHeight = `${rows * 80 + 16}px`
+  const cell = setCell()
+  board.style.minHeight = `${rows * (cell + 8) + 16}px`
   board.innerHTML = apps.length ? apps.map(card).join('') : '<div class="fusion-empty">没有匹配的应用。</div>'
   document.querySelectorAll('[data-filter]').forEach(b => b.onclick = () => { state.filter = b.dataset.filter; render() })
   document.querySelectorAll('[data-drag]').forEach(b => {
@@ -95,8 +102,8 @@ function clearGhost() { $('#fusion-ghost')?.remove() }
 function metrics() {
   const board = $('#board')
   const gap = 8
-  const width = (board.clientWidth - 16 - 11 * gap) / 12
-  return { cell: width + gap, row: 72 + gap }
+  const cell = Number.parseFloat(getComputedStyle(board).getPropertyValue('--cell')) || Math.floor((board.clientWidth - 16 - 11 * gap) / 12)
+  return { cell: cell + gap, row: cell + gap }
 }
 function startDrag(e, id, mode) {
   if (e.button !== undefined && e.button !== 0) return
@@ -119,7 +126,7 @@ function onDrag(e) {
     x = Math.min(12 - w + 1, Math.max(1, d.item.x + dx))
     y = Math.max(1, d.item.y + dy)
   } else {
-    w = Math.min(6, Math.max(2, d.item.w + dx)); h = Math.min(5, Math.max(2, d.item.h + dy))
+    w = Math.min(6, Math.max(2, d.item.w + dx)); h = Math.min(6, Math.max(2, d.item.h + dy))
   }
   d.target = { x, y, w, h }
   d.valid = canPlace(state.layout, d.id, x, y, w, h)
@@ -141,7 +148,7 @@ function keyboardMove(e, id, mode) {
   const dx = e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowRight' ? 1 : 0
   const dy = e.key === 'ArrowUp' ? -1 : e.key === 'ArrowDown' ? 1 : 0
   let next
-  if (e.shiftKey) next = { ...item, w: Math.min(6, Math.max(2, item.w + dx)), h: Math.min(5, Math.max(2, item.h + dy)) }
+  if (e.shiftKey) next = { ...item, w: Math.min(6, Math.max(2, item.w + dx)), h: Math.min(6, Math.max(2, item.h + dy)) }
   else next = { ...item, x: Math.min(12 - item.w + 1, Math.max(1, item.x + dx)), y: Math.max(1, item.y + dy) }
   if (!canPlace(state.layout, id, next.x, next.y, next.w, next.h)) return
   state.layout[id] = next; saveLayout(); render()
@@ -175,6 +182,10 @@ async function load() {
   state.apps = await fetch('/api/apps').then(r => r.json())
   state.layout = loadLayout()
   saveLayout()
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => {
+    const cell = setCell(); const rows = Math.max(3, ...Object.values(state.layout).map(i => i.y + i.h - 1))
+    $('#board').style.minHeight = `${rows * (cell + 8) + 16}px`
+  }).observe($('#board'))
   initTheme(); mountThemeControls($('#theme-controls'), { compact: true })
   $('#search').oninput = e => { state.query = e.target.value; render() }
   $('#refresh').onclick = refresh
