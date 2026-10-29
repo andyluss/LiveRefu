@@ -30,16 +30,3 @@
 .home-foot{border-top:1px solid var(--life-line);padding:16px 0;color:var(--life-muted);font:10px var(--life-font-mono)}
 @media(max-width:900px){.home-hero{grid-template-columns:1fr}.home-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.home-grid{grid-template-columns:1fr}}
-.home-rhythm{border:1px solid var(--life-line);background:var(--life-surface);border-radius:10px;padding:16px;margin:0 0 20px}
-.home-rhythm .rhythm-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
-.home-rhythm h2{font-size:20px;margin:2px 0 3px}
-.home-rhythm p{font-size:11px;color:var(--life-muted);line-height:1.6}
-.rhythm-modes{display:flex;gap:4px}
-.rhythm-modes button{border:1px solid var(--life-line);background:transparent;color:var(--life-muted);border-radius:999px;padding:5px 10px;font:10px var(--life-font-mono)}
-.rhythm-modes button.active{background:var(--life-accent);color:var(--life-on-accent);border-color:var(--life-accent)}
-.rhythm-chart{display:flex;align-items:end;gap:5px;height:110px;margin:18px 0 10px;border-bottom:1px solid var(--life-line);padding:0 2px}
-.rhythm-col{flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;height:100%;gap:4px}
-.rhythm-col i{display:block;width:100%;max-width:34px;min-height:2px;background:var(--life-accent);border-radius:3px 3px 0 0;opacity:.82}
-.rhythm-col span{font:9px var(--life-font-mono);color:var(--life-muted);white-space:nowrap;margin-bottom:-17px;position:relative;top:20px}
-.rhythm-stats{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;font-size:11px;color:var(--life-muted)}
-.rhythm-stats b{display:block;font:20px var(--life-font-mono);color:var(--life-text);margin-bottom:2px}

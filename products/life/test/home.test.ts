@@ -15,5 +15,8 @@ test('hub serves the app registry', async () => {
   const port = (server.address() as any).port
   const data = await fetch(`http://127.0.0.1:${port}/api/apps`).then(r => r.json())
   assert.equal(data.length, 16)
+  const rhythm = await fetch(`http://127.0.0.1:${port}/rhythm`)
+  assert.equal(rhythm.status, 200)
+  assert.match(await rhythm.text(), /跨应用节律/)
   await new Promise<void>(resolve => server.close(() => resolve()))
 })

@@ -19,12 +19,11 @@
         <div class="eyebrow">LIFE SUITE · 16 APPS</div>
         <h1>慢好生活，<br>从一个入口开始。</h1>
         <p>每款应用仍然独立运行、独立存数据。这里只做入口和状态聚合，不复制你的记录。</p>
-        <div class="home-actions"><button class="btn btn-primary" id="refresh">↻ 刷新状态</button><a class="btn" href="/api/export">导出全部</a><label class="btn">导入全部<input id="import-all" type="file" accept="application/json" hidden></label><span id="online" class="hint">检查中…</span></div>
+        <div class="home-actions"><button class="btn btn-primary" id="refresh">↻ 刷新状态</button><a class="btn" href="/rhythm">跨应用节律 →</a><a class="btn" href="/api/export">导出全部</a><label class="btn">导入全部<input id="import-all" type="file" accept="application/json" hidden></label><span id="online" class="hint">检查中…</span></div>
       </div>
       <div class="home-note"><b>本地优先</b><p>数据只在本机；每款 app 自己的 <code>data/apps/&lt;id&gt;/store.json</code>。这个页面不发任何远程请求。</p><b>同时使用</b><p>卡片会在新标签打开应用；可以并排使用互不干扰。</p></div>
     </section>
     <div class="home-toolbar"><input id="search" type="search" placeholder="搜索应用、功能…"><div id="filters" class="filters"></div></div>
-    <section id="rhythm" class="home-rhythm"></section>
     <div id="groups"></div>
     <footer class="home-foot">Life 3.1 · 统合入口 · <a href="/api/apps">应用清单</a></footer>
   </main>

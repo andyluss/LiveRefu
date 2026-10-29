@@ -55,7 +55,7 @@ export function createHubServer() {
     if (path.startsWith('/api/')) return send(res, 404, { error: 'API 不存在' })
     const isShared = path.startsWith('/shared/')
     const root = isShared ? SHARED : WEB
-    const rel = path === '/' ? 'index.html' : decodeURIComponent(path.slice(1))
+    const rel = path === '/' ? 'index.html' : path === '/rhythm' || path === '/rhythm/' ? 'rhythm.html' : decodeURIComponent(path.slice(1))
     const file = normalize(join(root, isShared ? rel.slice('shared/'.length) : rel))
     if (!file.startsWith(normalize(root)) || !existsSync(file) || !statSync(file).isFile()) { res.writeHead(404); return void res.end('Not found') }
     res.writeHead(200, { 'content-type': TYPES[extname(file)] || 'application/octet-stream', 'cache-control': 'no-cache' })
