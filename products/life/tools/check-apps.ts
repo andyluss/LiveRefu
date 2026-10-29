@@ -7,9 +7,10 @@ import { config as move } from '../apps/move/config.ts'
 import { config as read } from '../apps/read/config.ts'
 import { config as home } from '../apps/home/config.ts'
 import { config as wear } from '../apps/wear/config.ts'
+import { config as hydrate } from '../apps/hydrate/config.ts'
 import type { AppConfig } from '../packages/core/types.ts'
 
-const configs: AppConfig[] = [sleep, meal, move, read, home, wear]
+const configs: AppConfig[] = [sleep, meal, move, read, home, wear, hydrate]
 const ids = new Set<string>(), ports = new Set<number>()
 let failures = 0
 for (const c of configs) {

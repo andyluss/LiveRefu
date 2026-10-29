@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **Life 好好喝 v1.0**：饮水 + 配方/杯具/咖啡因；Life 扩展到 8 款。
 - **Life 好好穿 v1.0**：穿搭 + 衣橱/洗衣/愿望清单；Life 扩展到 7 款。
 - **Life 统一决策记录**：`products/life/docs/09_决策记录.md`，合并 Life/五款扩展包/慢慢记 M1–M15。
 - **慢慢记并入 Life**：成为 `products/life/apps/ledger`；6 款 app 共用 LiveDSO 主题系统（7 族 × 浅深）。
