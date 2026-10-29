@@ -19,7 +19,7 @@ function visible() {
 }
 function overlap(a, b) { return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h }
 function canPlace(layout, id, x, y, w, h) {
-  if (x < 1 || y < 1 || w < 2 || h < 2 || w > 6 || h > 6 || x + w - 1 > 12) return false
+  if (x < 1 || y < 1 || w < 1 || h < 1 || w > 6 || h > 6 || x + w - 1 > 12) return false
   const next = { x, y, w, h }
   return Object.entries(layout).every(([other, item]) => other === id || !overlap(next, item))
 }
@@ -50,7 +50,6 @@ function loadLayout() {
   return layout
 }
 function saveLayout() { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(state.layout)) } catch {} }
-function sizeClass(w) { return w <= 2 ? 's' : w <= 3 ? 'm' : 'l' }
 function card(app) {
   const status = state.status[app.id]
   const metric = state.metrics[app.id]
@@ -58,7 +57,7 @@ function card(app) {
   const item = state.layout[app.id]
   const link = online ? `<a class="fapp-link" href="http://127.0.0.1:${app.port}/" target="_blank" rel="noopener">` : '<div class="fapp-link" aria-disabled="true">'
   const close = online ? '</a>' : '</div>'
-  return `<article class="fapp ${online ? 'is-online' : 'is-offline'}" data-id="${esc(app.id)}" data-size="${sizeClass(item.w)}" data-h="${item.h}" style="grid-column:${item.x} / span ${item.w};grid-row:${item.y} / span ${item.h}">
+  return `<article class="fapp ${online ? 'is-online' : 'is-offline'}" data-id="${esc(app.id)}" data-w="${item.w}" data-h="${item.h}" data-full="${item.w >= 4 && item.h >= 3}" style="grid-column:${item.x} / span ${item.w};grid-row:${item.y} / span ${item.h}">
     <button class="drag-handle" data-drag="${esc(app.id)}" aria-label="移动 ${esc(app.name)}" title="拖动移动；方向键移动，Shift+方向键缩放">⠿</button>
     ${link}
       <div class="card-top"><div class="app-title"><img class="app-logo" src="/shared/logos/${esc(app.id)}.svg" alt=""><div><div class="app-name">${esc(app.name)}</div><div class="app-en">${esc(app.english)} · ${esc(app.id)}</div></div></div><span class="status ${online ? 'online' : 'offline'}">${online ? '在线' : status === 'offline' ? '未启动' : '检查中'}</span></div>
@@ -125,7 +124,7 @@ function onDrag(e) {
     x = Math.min(12 - w + 1, Math.max(1, d.item.x + dx))
     y = Math.max(1, d.item.y + dy)
   } else {
-    w = Math.min(6, Math.max(2, d.item.w + dx)); h = Math.min(6, Math.max(2, d.item.h + dy))
+    w = Math.min(6, Math.max(1, d.item.w + dx)); h = Math.min(6, Math.max(1, d.item.h + dy))
   }
   d.target = { x, y, w, h }
   d.valid = canPlace(state.layout, d.id, x, y, w, h)
@@ -147,7 +146,7 @@ function keyboardMove(e, id, mode) {
   const dx = e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowRight' ? 1 : 0
   const dy = e.key === 'ArrowUp' ? -1 : e.key === 'ArrowDown' ? 1 : 0
   let next
-  if (e.shiftKey) next = { ...item, w: Math.min(6, Math.max(2, item.w + dx)), h: Math.min(6, Math.max(2, item.h + dy)) }
+  if (e.shiftKey) next = { ...item, w: Math.min(6, Math.max(1, item.w + dx)), h: Math.min(6, Math.max(1, item.h + dy)) }
   else next = { ...item, x: Math.min(12 - item.w + 1, Math.max(1, item.x + dx)), y: Math.max(1, item.y + dy) }
   if (!canPlace(state.layout, id, next.x, next.y, next.w, next.h)) return
   state.layout[id] = next; saveLayout(); render()
