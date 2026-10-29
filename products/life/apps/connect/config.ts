@@ -2,7 +2,7 @@
 import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { chartOf, seedDate, streak, weekEntries } from '../../packages/core/helpers.ts'
 export const config: AppConfig = {
-  id: 'connect', name: '好好聊', english: 'CONNECT', port: 4216,
+  id: 'connect', name: '慢慢聊', english: 'CONNECT', port: 4216,
   tagline: '关系需要被想起，也需要被照顾。',
   description: '记录联系、对话和重要日子；人物、礼物和日期作为可选扩展。',
   accent: '#8A4B5A', accentOn: '#FFFDF7', entryLabel: '联系',

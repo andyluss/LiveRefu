@@ -3,7 +3,7 @@ import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { avg, chartOf, seedDate, streak, weekEntries } from '../../packages/core/helpers.ts'
 
 export const config: AppConfig = {
-  id: 'journal', name: '好好写', english: 'JOURNAL', port: 4209,
+  id: 'journal', name: '慢慢写', english: 'JOURNAL', port: 4209,
   tagline: '写下来，才知道自己在想什么。',
   description: '每天一段日记，记录心情和能量；提示卡、回顾与感恩作为可选扩展。',
   accent: '#5B4A7A', accentOn: '#FFFDF7', entryLabel: '今日日记',

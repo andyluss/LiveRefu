@@ -3,7 +3,7 @@ import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { chartOf, monthEntries, seedDate, streak, sum } from '../../packages/core/helpers.ts'
 
 export const config: AppConfig = {
-  id: 'read', name: '好好读', english: 'READINGLOG', port: 4204,
+  id: 'read', name: '慢慢读', english: 'READINGLOG', port: 4204,
   tagline: '读了多少不重要，留下哪一句更重要。',
   description: '记录书、页数、分钟和摘录。页数是进度，摘录是为什么值得读。',
   accent: '#3B5B8A', accentOn: '#FFFDF7', entryLabel: '阅读',

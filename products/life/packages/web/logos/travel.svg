@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="好好行">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="慢慢行">
 <rect width="64" height="64" rx="15" fill="#3B5B8A"/>
 <rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="#FFFDF7" stroke-opacity=".18"/>
 <g fill="none" stroke="#FFFDF7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="28" r="13"/><path d="M32 15v6M32 35v6M19 28h6M39 28h6"/><path d="M32 41l-5 10h10z" fill="#FFFDF7" stroke="none"/></g>

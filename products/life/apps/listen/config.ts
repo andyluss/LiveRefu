@@ -2,7 +2,7 @@
 import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { avg, chartOf, seedDate, streak, monthEntries } from '../../packages/core/helpers.ts'
 export const config: AppConfig = {
-  id: 'listen', name: '好好听', english: 'LISTENLOG', port: 4211,
+  id: 'listen', name: '慢慢听', english: 'LISTENLOG', port: 4211,
   tagline: '留下听过的声音，而不只是播放次数。',
   description: '记录专辑/单曲/播客、评分和平台；歌单、现场和设备作为可选扩展。',
   accent: '#4F6D7A', accentOn: '#FFFDF7', entryLabel: '听过的',

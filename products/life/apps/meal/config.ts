@@ -3,7 +3,7 @@ import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { avg, chartOf, seedDate, streak, weekEntries } from '../../packages/core/helpers.ts'
 
 export const config: AppConfig = {
-  id: 'meal', name: '好好吃', english: 'MEALTIME', port: 4202,
+  id: 'meal', name: '慢慢吃', english: 'MEALTIME', port: 4202,
   tagline: '不计算卡路里，只看见自己吃了什么。',
   description: '记录餐次、蔬菜和饮水，保留“吃了什么”的上下文。不做饮食审判。',
   accent: '#8A5A00', accentOn: '#FFFDF7', entryLabel: '一餐',

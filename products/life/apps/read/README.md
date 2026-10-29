@@ -1,4 +1,4 @@
-# 好好读 · ReadingLog
+# 慢慢读 · ReadingLog
 
 > 端口 4204 ｜ 阅读记录
 

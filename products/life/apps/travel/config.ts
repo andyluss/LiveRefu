@@ -3,7 +3,7 @@ import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { avg, chartOf, seedDate, streak } from '../../packages/core/helpers.ts'
 function money(n: number) { return '¥' + n.toLocaleString('zh-CN') }
 export const config: AppConfig = {
-  id: 'travel', name: '好好行', english: 'TRAVELLOG', port: 4213,
+  id: 'travel', name: '慢慢行', english: 'TRAVELLOG', port: 4213,
   tagline: '去过哪里，和谁，留下了什么。',
   description: '记录出行和地点；地点清单、行程与纪念物作为可选扩展。',
   accent: '#3B5B8A', accentOn: '#FFFDF7', entryLabel: '出行',

@@ -2,7 +2,7 @@
 import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { avg, chartOf, seedDate, streak, sum, weekEntries } from '../../packages/core/helpers.ts'
 export const config: AppConfig = {
-  id: 'learn', name: '好好学', english: 'LEARNLOG', port: 4212,
+  id: 'learn', name: '慢慢学', english: 'LEARNLOG', port: 4212,
   tagline: '学习不是收藏，是把时间放在具体的事上。',
   description: '记录学习主题、时长和进展；课程、技能地图和笔记作为可选扩展。',
   accent: '#3B6B5A', accentOn: '#FFFDF7', entryLabel: '学习',

@@ -2,7 +2,7 @@
 import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { avg, chartOf, seedDate, streak, monthEntries, weekEntries } from '../../packages/core/helpers.ts'
 export const config: AppConfig = {
-  id: 'watch', name: '好好看', english: 'WATCHLOG', port: 4210,
+  id: 'watch', name: '慢慢看', english: 'WATCHLOG', port: 4210,
   tagline: '看过什么，比看了多少更重要。',
   description: '记录电影/剧集、评分和平台；片单、影院体验和剧集进度作为可选扩展。',
   accent: '#6B4F8A', accentOn: '#FFFDF7', entryLabel: '看过的',

@@ -18,20 +18,20 @@
 | life | 小孩头像 | 人的生活相关；不依赖应用数量 |
 | ledger | 账本 | 慢慢记 |
 | sleep | 月亮 | 好好睡 |
-| meal | 碗与热气 | 好好吃 |
+| meal | 碗与热气 | 慢慢吃 |
 | move | 动线 | 慢慢走 |
-| read | 打开的书 | 好好读 |
+| read | 打开的书 | 慢慢读 |
 | home | 房子 | 好好住 |
 | wear | 衣架 | 好好穿 |
-| hydrate | 水滴 | 好好喝 |
-| journal | 笔尖 | 好好写 |
-| watch | 银幕/播放 | 好好看 |
-| listen | 耳机 | 好好听 |
-| learn | 学士帽 | 好好学 |
-| travel | 指南针/地点 | 好好行 |
+| hydrate | 水滴 | 慢慢喝 |
+| journal | 笔尖 | 慢慢写 |
+| watch | 银幕/播放 | 慢慢看 |
+| listen | 耳机 | 慢慢听 |
+| learn | 学士帽 | 慢慢学 |
+| travel | 指南针/地点 | 慢慢行 |
 | care | 叶与芽 | 好好养 |
 | organize | 方格 | 好好整 |
-| connect | 对话气泡 | 好好聊 |
+| connect | 对话气泡 | 慢慢聊 |
 
 ## 使用
 

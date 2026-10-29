@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="好好聊">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="慢慢聊">
 <rect width="64" height="64" rx="15" fill="#8A4B5A"/>
 <rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="#FFFDF7" stroke-opacity=".18"/>
 <g fill="none" stroke="#FFFDF7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 20h24v16H24l-6 6v-6h-4z"/><path d="M28 32h20v12h-4v5l-5-5h-7"/></g>

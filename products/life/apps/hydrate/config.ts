@@ -3,7 +3,7 @@ import type { AppConfig, LifeEntry } from '../../packages/core/types.ts'
 import { avg, chartOf, seedDate, streak, sum, weekEntries } from '../../packages/core/helpers.ts'
 
 export const config: AppConfig = {
-  id: 'hydrate', name: '好好喝', english: 'HYDRATE', port: 4208,
+  id: 'hydrate', name: '慢慢喝', english: 'HYDRATE', port: 4208,
   tagline: '喝水不是任务，是照顾身体的最小动作。',
   description: '记录喝了什么、多少、咖啡因和感受；配方、杯具与咖啡因作为可选扩展。',
   accent: '#2F6F8A', accentOn: '#FFFDF7', entryLabel: '一杯',
