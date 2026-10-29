@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **新增 `products/life/`**：五款本地优先生活应用（好好睡/好好吃/慢慢走/好好读/好好住），共享 core/web 与统合文档。
 - **慢慢记 v1.2**：风格主题与浅/深外观分离，7 族 × 2 变体；对齐 R-001。
 - **慢慢记 v1.1**：9 个主题，7 个由 LiveDSO 风格卡生成（狗粮）。
 - **慢慢记 v1.0.1**：修复顶部导航按钮无响应；补导航回归测试。

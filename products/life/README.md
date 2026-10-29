@@ -1,0 +1,65 @@
+# Life · 个人生活应用套件
+
+> **版本**：1.0.0 ｜ **状态**：5 款 v1.0 ｜ **日期**：2026-10-29
+> **一句话**：五款各自独立、共享同一套工程与设计语言的生活记录应用。
+> **成员**：好好睡、好好吃、慢慢走、好好读、好好住。
+> **原则**：本地优先、零依赖、单文件数据、可单独分发，也可未来统合。
+
+## 五款应用
+
+| 应用 | 目录 | 端口 | 解决的问题 |
+| --- | --- | --- | --- |
+| 好好睡 Sleepwell | [`apps/sleep/`](apps/sleep/README.md) | 4201 | 睡眠时长、质量、影响因素 |
+| 好好吃 Mealtime | [`apps/meal/`](apps/meal/README.md) | 4202 | 三餐、蔬菜、饮水、饮食感受 |
+| 慢慢走 DailyWalk | [`apps/move/`](apps/move/README.md) | 4203 | 步行/运动、强度、心情、连续天数 |
+| 好好读 ReadingLog | [`apps/read/`](apps/read/README.md) | 4204 | 阅读页数/时长、书、摘录 |
+| 好好住 HomeBoard | [`apps/home/`](apps/home/README.md) | 4205 | 家务/维护、区域、到期、完成 |
+
+## 统合点
+
+```text
+packages/core   同一套 AppConfig / JSON store / HTTP / 校验 / summary
+packages/web    同一套 token、组件、表单、列表、图表、空态
+apps/*          只写领域字段与 summary；不复制服务端/前端框架
+```
+
+- 五款应用都通过 `createLifeApp(config)` 启动；
+- 五款应用共享 `data/store.json` 的形状：`{version, entries}`；
+- 五款应用共享同一套 `--life-*` 设计 token；
+- 每个 app 可单独 `npm start`，也可用 `tools/bundle.ts` 打包成独立目录。
+
+详见：
+
+- [`docs/00_统合总纲.md`](docs/00_统合总纲.md)
+- [`docs/01_工程规范.md`](docs/01_工程规范.md)
+- [`docs/02_设计系统.md`](docs/02_设计系统.md)
+- [`docs/03_系统架构.md`](docs/03_系统架构.md)
+- [`docs/04_数据模型.md`](docs/04_数据模型.md)
+- [`docs/05_应用矩阵.md`](docs/05_应用矩阵.md)
+- [`docs/06_未来统合.md`](docs/06_未来统合.md)
+
+## 快速开始
+
+```bash
+cd products/life/apps/sleep
+npm start          # http://127.0.0.1:4201
+```
+
+五款同时跑：
+
+```bash
+cd products/life
+npm run dev:all
+```
+
+检查：
+
+```bash
+npm test
+npm run check
+```
+
+## 与慢慢记的关系
+
+慢慢记是「财务 + 发票」；Life 是「日常节律」。
+两者共享：本地优先、Node 24、无框架 Web、JSON 持久化、产品皮肤、可独立分发、未来可统合。

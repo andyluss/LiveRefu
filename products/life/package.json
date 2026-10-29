@@ -1,0 +1,13 @@
+{
+  "name": "life",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Life · 五款本地优先个人生活应用",
+  "scripts": {
+    "dev:all": "node tools/dev-all.ts",
+    "test": "node --test test/life.test.ts",
+    "check": "node --test test/life.test.ts && node tools/check-apps.ts",
+    "bundle": "node tools/bundle.ts"
+  }
+}

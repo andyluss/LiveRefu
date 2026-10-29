@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "seed_0",
+      "date": "2026-10-29",
+      "createdAt": "2026-10-29T00:15:18.940Z",
+      "updatedAt": "2026-10-29T00:15:18.940Z",
+      "data": {
+        "activity": "步行",
+        "minutes": 35,
+        "intensity": "轻",
+        "mood": 4,
+        "note": "午饭后"
+      }
+    },
+    {
+      "id": "seed_1",
+      "date": "2026-10-28",
+      "createdAt": "2026-10-29T00:15:18.940Z",
+      "updatedAt": "2026-10-29T00:15:18.940Z",
+      "data": {
+        "activity": "拉伸",
+        "minutes": 15,
+        "intensity": "轻",
+        "mood": 5,
+        "note": "肩颈"
+      }
+    },
+    {
+      "id": "seed_2",
+      "date": "2026-10-27",
+      "createdAt": "2026-10-29T00:15:18.940Z",
+      "updatedAt": "2026-10-29T00:15:18.940Z",
+      "data": {
+        "activity": "步行",
+        "minutes": 50,
+        "intensity": "中",
+        "mood": 5,
+        "note": "河边"
+      }
+    },
+    {
+      "id": "seed_3",
+      "date": "2026-10-25",
+      "createdAt": "2026-10-29T00:15:18.940Z",
+      "updatedAt": "2026-10-29T00:15:18.940Z",
+      "data": {
+        "activity": "力量",
+        "minutes": 30,
+        "intensity": "中",
+        "mood": 3,
+        "note": "深蹲和俯卧撑"
+      }
+    },
+    {
+      "id": "seed_4",
+      "date": "2026-10-23",
+      "createdAt": "2026-10-29T00:15:18.940Z",
+      "updatedAt": "2026-10-29T00:15:18.940Z",
+      "data": {
+        "activity": "骑行",
+        "minutes": 45,
+        "intensity": "中",
+        "mood": 4,
+        "note": "公园"
+      }
+    }
+  ]
+}

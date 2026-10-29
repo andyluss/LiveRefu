@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "seed_0",
+      "date": "2026-10-29",
+      "createdAt": "2026-10-29T00:15:46.933Z",
+      "updatedAt": "2026-10-29T00:15:46.933Z",
+      "data": {
+        "meal": "早餐",
+        "food": "燕麦和咖啡",
+        "vegetables": "没有",
+        "waterMl": 300,
+        "rating": 3,
+        "note": ""
+      }
+    },
+    {
+      "id": "seed_1",
+      "date": "2026-10-29",
+      "createdAt": "2026-10-29T00:15:46.933Z",
+      "updatedAt": "2026-10-29T00:15:46.933Z",
+      "data": {
+        "meal": "午餐",
+        "food": "番茄鸡蛋面",
+        "vegetables": "有",
+        "waterMl": 500,
+        "rating": 4,
+        "note": ""
+      }
+    },
+    {
+      "id": "seed_2",
+      "date": "2026-10-28",
+      "createdAt": "2026-10-29T00:15:46.933Z",
+      "updatedAt": "2026-10-29T00:15:46.933Z",
+      "data": {
+        "meal": "晚餐",
+        "food": "米饭、青菜和鱼",
+        "vegetables": "有",
+        "waterMl": 400,
+        "rating": 5,
+        "note": ""
+      }
+    },
+    {
+      "id": "seed_3",
+      "date": "2026-10-28",
+      "createdAt": "2026-10-29T00:15:46.933Z",
+      "updatedAt": "2026-10-29T00:15:46.933Z",
+      "data": {
+        "meal": "早餐",
+        "food": "包子豆浆",
+        "vegetables": "没有",
+        "waterMl": 250,
+        "rating": 3,
+        "note": ""
+      }
+    },
+    {
+      "id": "seed_4",
+      "date": "2026-10-27",
+      "createdAt": "2026-10-29T00:15:46.933Z",
+      "updatedAt": "2026-10-29T00:15:46.933Z",
+      "data": {
+        "meal": "午餐",
+        "food": "牛肉饭",
+        "vegetables": "有",
+        "waterMl": 600,
+        "rating": 4,
+        "note": ""
+      }
+    },
+    {
+      "id": "seed_5",
+      "date": "2026-10-26",
+      "createdAt": "2026-10-29T00:15:46.933Z",
+      "updatedAt": "2026-10-29T00:15:46.933Z",
+      "data": {
+        "meal": "晚餐",
+        "food": "蔬菜汤和面包",
+        "vegetables": "有",
+        "waterMl": 350,
+        "rating": 4,
+        "note": ""
+      }
+    }
+  ]
+}
