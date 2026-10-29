@@ -3,7 +3,7 @@ import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 const ROOT = resolve(import.meta.dirname, '..')
 const DIST = resolve(ROOT, 'dist')
-const apps = ['sleep', 'meal', 'move', 'read', 'home', 'wear', 'hydrate', 'journal', 'watch', 'ledger']
+const apps = ['sleep', 'meal', 'move', 'read', 'home', 'wear', 'hydrate', 'journal', 'watch', 'listen', 'ledger']
 rmSync(DIST, { recursive: true, force: true })
 for (const id of apps) {
   const out = join(DIST, id)
