@@ -71,7 +71,7 @@ function card(app) {
 }
 function setCell() {
   const board = $('#board')
-  const cell = Math.max(32, Math.floor((board.clientWidth - 16 - 11 * 8) / 12))
+  const cell = Math.max(32, Math.floor(board.clientWidth / 12))
   board.style.setProperty('--cell', `${cell}px`)
   return cell
 }
@@ -81,7 +81,7 @@ function render() {
   const rows = Math.max(3, ...Object.values(state.layout).map(i => i.y + i.h - 1))
   const board = $('#board')
   const cell = setCell()
-  board.style.minHeight = `${rows * (cell + 8) + 16}px`
+  board.style.minHeight = `${rows * cell}px`
   board.innerHTML = apps.length ? apps.map(card).join('') : '<div class="fusion-empty">没有匹配的应用。</div>'
   document.querySelectorAll('[data-filter]').forEach(b => b.onclick = () => { state.filter = b.dataset.filter; render() })
   document.querySelectorAll('[data-drag]').forEach(b => {
@@ -101,9 +101,8 @@ function ghostAt(x, y, w, h, valid) {
 function clearGhost() { $('#fusion-ghost')?.remove() }
 function metrics() {
   const board = $('#board')
-  const gap = 8
-  const cell = Number.parseFloat(getComputedStyle(board).getPropertyValue('--cell')) || Math.floor((board.clientWidth - 16 - 11 * gap) / 12)
-  return { cell: cell + gap, row: cell + gap }
+  const cell = Number.parseFloat(getComputedStyle(board).getPropertyValue('--cell')) || Math.floor(board.clientWidth / 12)
+  return { cell, row: cell }
 }
 function startDrag(e, id, mode) {
   if (e.button !== undefined && e.button !== 0) return
@@ -184,7 +183,7 @@ async function load() {
   saveLayout()
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => {
     const cell = setCell(); const rows = Math.max(3, ...Object.values(state.layout).map(i => i.y + i.h - 1))
-    $('#board').style.minHeight = `${rows * (cell + 8) + 16}px`
+    $('#board').style.minHeight = `${rows * cell}px`
   }).observe($('#board'))
   initTheme(); mountThemeControls($('#theme-controls'), { compact: true })
   $('#search').oninput = e => { state.query = e.target.value; render() }
