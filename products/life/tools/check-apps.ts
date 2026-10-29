@@ -15,9 +15,10 @@ import { config as learn } from '../apps/learn/config.ts'
 import { config as travel } from '../apps/travel/config.ts'
 import { config as care } from '../apps/care/config.ts'
 import { config as organize } from '../apps/organize/config.ts'
+import { config as connect } from '../apps/connect/config.ts'
 import type { AppConfig } from '../packages/core/types.ts'
 
-const configs: AppConfig[] = [sleep, meal, move, read, home, wear, hydrate, journal, watch, listen, learn, travel, care, organize]
+const configs: AppConfig[] = [sleep, meal, move, read, home, wear, hydrate, journal, watch, listen, learn, travel, care, organize, connect]
 const ids = new Set<string>(), ports = new Set<number>()
 let failures = 0
 for (const c of configs) {
