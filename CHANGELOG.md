@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **Life 好好整 v1.0**：整理 + 空间/物品/捐赠；Life 扩展到 15 款。
 - **Life 好好养 v1.0**：照护 + 计划/健康/用品；Life 扩展到 14 款。
 - **Life 好好行 v1.0**：出行 + 地点/行程/纪念物；Life 扩展到 13 款。
 - **Life 好好学 v1.0**：学习 + 课程/技能/笔记；Life 扩展到 12 款。

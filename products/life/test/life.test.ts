@@ -18,13 +18,14 @@ import { config as listen } from '../apps/listen/config.ts'
 import { config as learn } from '../apps/learn/config.ts'
 import { config as travel } from '../apps/travel/config.ts'
 import { config as care } from '../apps/care/config.ts'
+import { config as organize } from '../apps/organize/config.ts'
 import { createLifeApp } from '../packages/core/server.ts'
 
-const configs = [sleep, meal, move, read, home, wear, hydrate, journal, watch, listen, learn, travel, care]
+const configs = [sleep, meal, move, read, home, wear, hydrate, journal, watch, listen, learn, travel, care, organize]
 
 test('five apps have unique ids/ports and valid contracts', () => {
-  assert.equal(new Set(configs.map(c => c.id)).size, 13)
-  assert.equal(new Set(configs.map(c => c.port)).size, 13)
+  assert.equal(new Set(configs.map(c => c.id)).size, 14)
+  assert.equal(new Set(configs.map(c => c.port)).size, 14)
   for (const c of configs) {
     assert.ok(c.fields.some(f => f.key === 'date'))
     assert.ok(c.columns.every(col => c.fields.some(f => f.key === col)))
