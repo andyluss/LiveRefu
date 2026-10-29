@@ -15,7 +15,8 @@
 .home-group h2{font:10px var(--life-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--life-muted);margin:0 0 8px}
 .home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .app-card{position:relative;display:flex;flex-direction:column;min-height:154px;padding:14px;border:1px solid var(--life-line);background:var(--life-surface);border-radius:9px;text-decoration:none;color:var(--life-text);transition:transform .15s,border-color .15s}
-.app-card:hover{transform:translateY(-2px);border-color:var(--life-accent)}
+.app-card.is-online:hover{transform:translateY(-2px);border-color:var(--life-accent)}
+.app-card.is-offline{opacity:.42;filter:grayscale(.85);cursor:default;pointer-events:none;border-style:dashed}
 .app-card .card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .app-title{display:flex;gap:9px;align-items:center;min-width:0}
 .app-logo{width:28px;height:28px;border-radius:7px;display:block;flex:none}
