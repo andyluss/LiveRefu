@@ -21,6 +21,7 @@ test('hub serves the app registry', async () => {
   const logo = await fetch(`http://127.0.0.1:${port}/shared/logos/life.svg`)
   assert.equal(logo.status, 200)
   assert.match(await logo.text(), /<svg/)
+  assert.match(await (await fetch(`http://127.0.0.1:${port}/shared/logos/life.svg`)).text(), /小孩头像/)
   for (const app of [...data, { id: 'life' }]) {
     const asset = await fetch(`http://127.0.0.1:${port}/shared/logos/${app.id}.svg`)
     assert.equal(asset.status, 200, `${app.id} logo 存在`)
