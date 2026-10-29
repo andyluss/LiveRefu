@@ -20,7 +20,7 @@
 .app-filter{padding:14px}
 .app-filter .card-head{align-items:center;margin-bottom:9px}
 .app-filter h2{font-size:17px}
-.app-chips{display:flex;flex-direction:column;gap:4px;max-height:420px;overflow:auto}
+.app-chips{display:flex;flex-direction:column;gap:4px;max-height:249px;overflow:auto}
 .app-chip{display:flex;align-items:center;gap:8px;border:1px solid transparent;background:transparent;color:var(--life-muted);border-radius:6px;padding:6px 7px;text-align:left;font:11px var(--life-font);width:100%}
 .app-chip:hover{background:var(--life-raised);color:var(--life-text)}
 .app-chip.on{background:var(--life-accent-soft);color:var(--life-text)}

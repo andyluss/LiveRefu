@@ -1,5 +1,13 @@
 # Life Changelog
 
+## [3.4.4] - 2026-10-29 11:26
+
+### 修复
+
+- `npm run dev:all` 用固定的 `server.ts` 启动所有 app，导致慢慢记（入口为 `server/index.ts`）启动失败；
+- 现在按目录自动选择入口，补齐 organize/connect 端口日志；
+- 更新 Life 包描述为 16 款应用。
+
 ## [3.4.3] - 2026-10-29 10:44
 
 ### 新增

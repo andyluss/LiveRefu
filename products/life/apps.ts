@@ -15,7 +15,7 @@ export const APPS: LifeAppLink[] = [
   { id: 'read', name: '好好读', english: 'READINGLOG', port: 4204, group: '节律', description: '阅读页数、书、摘录与想法' },
   { id: 'home', name: '好好住', english: 'HOMEBOARD', port: 4205, group: '节律', description: '家务、维护、区域与到期' },
   { id: 'wear', name: '好好穿', english: 'WEARWELL', port: 4207, group: '生活', description: '穿搭、衣橱、洗衣、愿望清单' },
-  { id: 'hydrate', name: '好好喝', english: 'HYDRATE', port: 4208, group: '生活', description: '饮水、配方、杯具、咖啡因' },
+  { id: 'hydrate', name: '好好喝', english: 'HYDRATE', port: 4208, group: '节律', description: '饮水、配方、杯具、咖啡因' },
   { id: 'journal', name: '好好写', english: 'JOURNAL', port: 4209, group: '生活', description: '日记、提示卡、回顾、感恩' },
   { id: 'watch', name: '好好看', english: 'WATCHLOG', port: 4210, group: '生活', description: '电影、剧集、片单、影院' },
   { id: 'listen', name: '好好听', english: 'LISTENLOG', port: 4211, group: '生活', description: '专辑、播客、歌单、现场' },
