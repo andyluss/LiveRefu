@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **慢慢记并入 Life**：成为 `products/life/apps/ledger`；6 款 app 共用 LiveDSO 主题系统（7 族 × 浅深）。
 - **新增 `products/life/`**：五款本地优先生活应用（好好睡/好好吃/慢慢走/好好读/好好住），共享 core/web 与统合文档。
 - **慢慢记 v1.2**：风格主题与浅/深外观分离，7 族 × 2 变体；对齐 R-001。
 - **慢慢记 v1.1**：9 个主题，7 个由 LiveDSO 风格卡生成（狗粮）。

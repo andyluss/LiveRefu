@@ -1,0 +1,13 @@
+.theme-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.theme-picker{display:flex;align-items:center;gap:6px}
+.theme-picker>span{font:8px var(--life-font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--life-faint)}
+.theme-picker select{border:1px solid var(--life-line);border-radius:6px;background:var(--life-surface);color:var(--life-text);font:10px var(--life-font-mono);padding:5px 6px;max-width:150px;outline:none}
+.theme-picker select:focus{border-color:var(--life-focus,var(--life-accent))}
+.theme-controls.compact .theme-picker>span{display:none}
+.theme-controls .mode-switch{display:inline-flex;align-items:center;border:1px solid var(--life-line);border-radius:999px;background:var(--life-raised);padding:2px;gap:1px}
+.theme-controls .mode-switch button{appearance:none;border:0;background:none;color:var(--life-muted);border-radius:999px;padding:3px 7px;font:10px var(--life-font-mono);min-width:26px}
+.theme-controls .mode-switch button:hover{color:var(--life-text)}
+.theme-controls .mode-switch button.active{background:var(--life-accent);color:var(--life-on-accent)}
+.theme-controls[data-mode-control]{display:flex;align-items:stretch;border:1px solid var(--life-line);border-radius:7px;padding:3px;gap:1px;background:var(--life-raised)}
+.theme-controls[data-mode-control] button{flex:1;padding:5px 8px;min-width:0;border-radius:5px}
+@media (max-width:800px){.theme-controls.compact .theme-picker>span{display:none}.theme-controls.compact .theme-picker select{max-width:98px}}

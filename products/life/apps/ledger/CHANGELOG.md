@@ -1,5 +1,14 @@
 # 慢慢记 Changelog
 
+## [1.3.0] - 2026-10-29 08:26
+
+### Changed
+
+- **并入 Life 套件**：`products/manmanji/` → `products/life/apps/ledger/`；端口 4190 → 4206。
+- 主题系统改为 Life 共享层：`packages/theme/themes.ts`、`packages/web/theme.js`、`packages/web/theme.css`、`packages/web/themes.generated.*`。
+- 慢慢记与五款 Life app 共用 7 个风格族 × light/dark 变体；风格/外观分离由共享层实现。
+- 服务端仍保留 `settings.theme` 家族校验；前端通过共享主题回调写回。
+
 ## [1.2.0] - 2026-10-28 21:54
 
 ### Changed

@@ -1,23 +1,8 @@
+import { initTheme, mountThemeControls } from './theme.js'
 const $ = (s, r = document) => r.querySelector(s)
 const $$ = (s, r = document) => [...r.querySelectorAll(s)]
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
-const state = { data: null, mode: localStorage.getItem('lrds-theme') || 'system', query: '' }
-const MODES = ['system', 'light', 'dark']
-const modeLabel = { system: '系统', light: '浅色', dark: '深色' }
-function applyAppearance() {
-  const dark = state.mode === 'dark' || (state.mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
-  document.documentElement.dataset.theme = state.mode
-  document.documentElement.dataset.appearance = dark ? 'dark' : 'light'
-  document.documentElement.style.colorScheme = state.mode === 'system' ? 'light dark' : state.mode
-  $$('[data-mode]').forEach(b => b.classList.toggle('active', b.dataset.mode === state.mode))
-}
-function setMode(mode) {
-  if (!MODES.includes(mode)) return
-  state.mode = mode
-  try { localStorage.setItem('lrds-theme', mode) } catch {}
-  applyAppearance()
-  render()
-}
+const state = { data: null, query: '' }
 async function api(path, method = 'GET', body) {
   const res = await fetch(path, { method, headers: body ? { 'content-type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined })
   const data = await res.json().catch(() => ({}))
@@ -42,12 +27,13 @@ function chartValues() {
 function renderTopbar(config) {
   const top = $('#topbar')
   if (!top) return
-  top.innerHTML = `<a class="brand" href="/"><span class="brand-mark">${esc(config.name.slice(0, 1))}</span><span><b>${esc(config.name)}</b><small>${esc(config.english)} · LIFE</small></span></a><span class="spacer"></span><div class="mode-switch" role="group" aria-label="外观">${MODES.map(m => `<button type="button" data-mode="${m}" class="${state.mode === m ? 'active' : ''}" title="${modeLabel[m]}">${m === 'system' ? '◐' : m === 'light' ? '☀' : '☾'}</button>`).join('')}</div>`
+  top.innerHTML = `<a class="brand" href="/"><span class="brand-mark">${esc(config.name.slice(0, 1))}</span><span><b>${esc(config.name)}</b><small>${esc(config.english)} · LIFE</small></span></a><span class="spacer"></span><div id="theme-controls" class="theme-controls"></div>`
 }
 function render() {
   if (!state.data) return
   const { config, entries, summary } = state.data
   renderTopbar(config)
+  mountThemeControls($('#theme-controls'), { compact: true })
   document.title = `${config.name} · ${config.english}`
   document.documentElement.style.setProperty('--life-accent', config.accent)
   document.documentElement.style.setProperty('--life-on-accent', config.accentOn)
@@ -114,9 +100,7 @@ function editor(entry) {
 }
 async function load() {
   state.data = await api('/api/state')
-  applyAppearance()
+  initTheme()
   render()
 }
-document.addEventListener('click', e => { const btn = e.target.closest('[data-mode]'); if (btn) setMode(btn.dataset.mode) })
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (state.mode === 'system') applyAppearance() })
 load().catch(err => { console.error(err); document.body.innerHTML = `<div class="empty">启动失败：${esc(err.message)}</div>` })

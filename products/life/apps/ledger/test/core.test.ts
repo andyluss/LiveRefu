@@ -105,26 +105,17 @@ test('web navigation wires data-view buttons to hash routes', () => {
 })
 
 
-test('generated themes are complete and parseable', () => {
-  const css = readFileSync(new URL('../web/themes.generated.css', import.meta.url), 'utf8')
-  const js = readFileSync(new URL('../web/themes.generated.js', import.meta.url), 'utf8')
-  assert.match(js, /retro-paper/)
-  assert.match(js, /material-3-dark/)
-  assert.match(css, /\[data-style="retro-paper"\]/)
-  assert.doesNotMatch(css, /style-cards \[data-style/)
-})
 
 
-test('theme mode and style are separate (R-001)', () => {
+test('ledger uses shared Life theme system', () => {
   const js = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8')
   const html = readFileSync(new URL('../web/index.html', import.meta.url), 'utf8')
-  const css = readFileSync(new URL('../web/themes.generated.css', import.meta.url), 'utf8')
-  assert.match(js, /root\.dataset\.theme = state\.mode/)
-  assert.match(js, /root\.dataset\.style = effective/)
-  assert.match(js, /localStorage\.setItem\(MODE_KEY/)
-  assert.match(html, /data-mode="system"/)
-  assert.match(html, /data-mode="light"/)
-  assert.match(html, /data-mode="dark"/)
-  assert.match(css, /\[data-style="retro-paper"\]/)
-  assert.doesNotMatch(css, /\[data-theme="retro-paper"\]/)
+  const theme = readFileSync(new URL('../../../packages/web/theme.js', import.meta.url), 'utf8')
+  assert.match(js, /shared\/theme\.js/)
+  assert.match(js, /initTheme/)
+  assert.match(js, /mountThemeControls/)
+  assert.match(html, /ledger-theme-controls/)
+  assert.match(html, /shared\/themes\.generated\.css/)
+  assert.match(theme, /root\.dataset\.theme = mode/)
+  assert.match(theme, /root\.dataset\.style = dark/)
 })

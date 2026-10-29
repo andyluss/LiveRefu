@@ -9,7 +9,7 @@
       const modes = ['system', 'light', 'dark'];
       const variants = { paper: ['paper', 'night'], retro: ['retro-paper', 'retro-crt'], cassette: ['cassette-daylight', 'cassette-amber'], atompunk: ['atompunk-chrome', 'atompunk-alert'], material: ['material-3', 'material-3-dark'], tailwind: ['tailwind-paper', 'tailwind'], carbon: ['carbon', 'carbon-night'] };
       let mode = 'system', family = 'paper';
-      try { const m = localStorage.getItem('lrds-theme'); if (modes.includes(m)) mode = m; const f = localStorage.getItem('manmanji-family'); if (variants[f]) family = f } catch {}
+      try { const m = localStorage.getItem('lrds-theme'); if (modes.includes(m)) mode = m; const f = localStorage.getItem('life-style') || localStorage.getItem('manmanji-family'); if (variants[f]) family = f } catch {}
       const dark = mode === 'dark' || (mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
       document.documentElement.dataset.theme = mode;
       document.documentElement.dataset.style = variants[family][dark ? 1 : 0];
@@ -17,7 +17,8 @@
     })();
   </script>
   <link rel="stylesheet" href="/tokens.css">
-  <link rel="stylesheet" href="/themes.generated.css">
+  <link rel="stylesheet" href="/shared/themes.generated.css">
+  <link rel="stylesheet" href="/shared/theme.css">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -37,12 +38,7 @@
     </nav>
     <div class="top-actions">
       <span class="sync-note">仅本机 · 自动保存</span>
-      <label class="top-select-wrap"><span>风格</span><select id="theme-select" class="top-select" aria-label="风格主题"></select></label>
-      <div class="mode-switch" id="mode-switch" role="group" aria-label="外观">
-        <button type="button" data-mode="system" title="跟随系统" aria-label="跟随系统">◐</button>
-        <button type="button" data-mode="light" title="浅色" aria-label="浅色">☀</button>
-        <button type="button" data-mode="dark" title="深色" aria-label="深色">☾</button>
-      </div>
+      <div id="ledger-theme-controls" class="theme-controls compact"></div>
       <button class="btn btn-primary" id="quick-add">记一笔</button>
     </div>
   </header>

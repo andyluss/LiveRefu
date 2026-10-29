@@ -3,7 +3,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { extname, join, normalize, resolve } from 'node:path'
 import { createStore } from './store.ts'
-import { THEMES } from './themes.ts'
+import { THEMES } from '../../../packages/theme/themes.ts'
 import {
   accountBalance, budgetUsage, categoryBreakdown, invoiceTotals, invoiceOutstanding,
   isOverdue, monthOf, monthSummary, netWorth, nextInvoiceNumber, now, today, uid,
@@ -11,9 +11,10 @@ import {
 } from './domain.ts'
 
 const HOST = process.env.HOST || '127.0.0.1'
-const PORT = Number(process.env.PORT || 4190)
+const PORT = Number(process.env.PORT || 4206)
 const DATA_FILE = process.env.DATA_FILE || resolve('data/store.json')
 const WEB = resolve('web')
+const SHARED = resolve(import.meta.dirname, '../../../packages/web')
 const store = createStore(DATA_FILE)
 const MAX_BODY = 1_000_000
 
@@ -78,7 +79,7 @@ export function createHandler(handle = store) {
     const url = new URL(req.url || '/', `http://${req.headers.host || '127.0.0.1'}`)
     const path = url.pathname
     try {
-      if (path === '/api/health') return send(res, 200, { ok: true, version: '1.0.0' })
+      if (path === '/api/health') return send(res, 200, { ok: true, version: '1.3.0' })
       if (path === '/api/state' && req.method === 'GET') return send(res, 200, handle.read())
       if (path === '/api/backup' && req.method === 'GET') {
         res.writeHead(200, {
@@ -275,8 +276,10 @@ export function createHandler(handle = store) {
 
       // static
       const rel = path === '/' ? 'index.html' : decodeURIComponent(path.slice(1))
-      const file = normalize(join(WEB, rel))
-      if (!file.startsWith(WEB) || !existsSync(file) || !statSync(file).isFile()) return fail(res, 404, '文件不存在')
+      const isShared = path.startsWith('/shared/')
+      const root = isShared ? SHARED : WEB
+      const file = normalize(join(root, isShared ? rel.slice('shared/'.length) : rel))
+      if (!file.startsWith(root) || !existsSync(file) || !statSync(file).isFile()) return fail(res, 404, '文件不存在')
       const types: Record<string, string> = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json' }
       res.writeHead(200, { 'content-type': types[extname(file)] || 'application/octet-stream', 'cache-control': 'no-cache' })
       res.end(readFileSync(file))
@@ -290,7 +293,7 @@ export function createHandler(handle = store) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const handler = createHandler(store)
   createServer(handler).listen(PORT, HOST, () => {
-    console.log(`Manmanji 1.0.0 · http://${HOST}:${PORT}`)
+    console.log(`Manmanji 1.3.0 · http://${HOST}:${PORT}`)
     console.log(`data: ${DATA_FILE}`)
   })
 }

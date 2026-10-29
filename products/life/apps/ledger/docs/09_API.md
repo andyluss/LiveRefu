@@ -1,6 +1,6 @@
 # 09 · API
 
-> 版本：v1.2 ｜ 仅本地 `127.0.0.1`；JSON in / JSON out。
+> 版本：v1.3 ｜ 仅本地 `127.0.0.1`；JSON in / JSON out。
 
 ## 读
 
@@ -48,11 +48,11 @@
 ## 示例
 
 ```bash
-curl -s http://127.0.0.1:4190/api/state
+curl -s http://127.0.0.1:4206/api/state
 
-curl -s -X POST http://127.0.0.1:4190/api/transactions \
+curl -s -X POST http://127.0.0.1:4206/api/transactions \
   -H 'content-type: application/json' \
   -d '{"type":"expense","amount":2350,"date":"2026-10-28","accountId":"acc_cash","categoryId":"cat_food","note":"午餐","tags":[]}'
 
-curl -s -X POST http://127.0.0.1:4190/api/invoices/inv_sample/pay
+curl -s -X POST http://127.0.0.1:4206/api/invoices/inv_sample/pay
 ```

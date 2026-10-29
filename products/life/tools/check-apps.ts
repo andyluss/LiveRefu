@@ -23,5 +23,6 @@ for (const c of configs) {
   if (!Array.isArray(s.metrics) || s.chart.values.length !== 14) fail('空数据 summary 必须返回 metrics 与 14 点 chart')
   if (!existsSync(resolve(import.meta.dirname, '..', 'apps', c.id, 'web/index.html'))) fail('缺 web/index.html')
 }
-console.log(failures ? `✗ ${failures} 项失败` : `✓ ${configs.length} 个 app 契约通过`)
+for (const f of ['web/index.html', 'server/index.ts', 'package.json']) if (!existsSync(resolve(import.meta.dirname, '..', 'apps', 'ledger', f))) { console.error(`✗ ledger: 缺 ${f}`); failures++ }
+console.log(failures ? `✗ ${failures} 项失败` : `✓ ${configs.length} 个通用 app + ledger 契约通过`)
 process.exitCode = failures ? 1 : 0

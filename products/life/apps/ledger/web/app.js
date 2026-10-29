@@ -1,4 +1,4 @@
-import { THEMES } from './themes.generated.js'
+import { initTheme, mountThemeControls } from '/shared/theme.js'
 // 慢慢记 · 无框架单页应用
 const $ = (s, r = document) => r.querySelector(s)
 const $$ = (s, r = document) => [...r.querySelectorAll(s)]
@@ -14,10 +14,7 @@ const thisMonth = () => today().slice(0, 7)
 const monthLabel = (m) => { const [y, mm] = m.split('-'); return `${y} 年 ${Number(mm)} 月` }
 const typeLabel = { income: '收入', expense: '支出', transfer: '转账' }
 const statusLabel = { draft: '草稿', sent: '待收', paid: '已收', void: '作废' }
-const MODE_KEY = 'lrds-theme'
-const FAMILY_KEY = 'manmanji-family'
-const initialMode = (() => { try { const m = localStorage.getItem(MODE_KEY); return ['system', 'light', 'dark'].includes(m) ? m : 'system' } catch { return 'system' } })()
-const state = { data: null, view: 'dashboard', month: thisMonth(), ledgerType: 'all', query: '', invoiceFilter: 'all', mode: initialMode }
+const state = { data: null, view: 'dashboard', month: thisMonth(), ledgerType: 'all', query: '', invoiceFilter: 'all' }
 
 async function api(path, method = 'GET', body) {
   const res = await fetch(`/api${path}`, { method, headers: body ? { 'content-type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined })
@@ -30,42 +27,12 @@ function toast(message) {
   const el = $('#toast'); el.textContent = message; el.classList.add('show')
   clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2200)
 }
-function familyFor(value) {
-  return THEMES.find(f => f.id === value) || THEMES.find(f => f.light === value || f.dark === value) || THEMES[0]
-}
-function effectiveMode() {
-  return state.mode === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : state.mode
-}
-function applyTheme() {
-  const family = familyFor(state.data?.settings?.theme || 'paper')
-  const effective = effectiveMode()
-  const root = document.documentElement
-  root.dataset.theme = state.mode
-  root.dataset.style = effective === 'dark' ? family.dark : family.light
-  root.style.colorScheme = state.mode === 'system' ? 'light dark' : state.mode
-  $$('[data-mode]').forEach(b => b.classList.toggle('active', b.dataset.mode === state.mode))
-}
-function setMode(mode) {
-  if (!['system', 'light', 'dark'].includes(mode)) return
-  state.mode = mode
-  try { localStorage.setItem(MODE_KEY, mode) } catch {}
-  applyTheme()
-  render()
-}
-async function setFamily(value) {
-  const family = familyFor(value)
-  try {
-    state.data = await api('/settings', 'PATCH', { theme: family.id })
-    try { localStorage.setItem(FAMILY_KEY, family.id) } catch {}
-    applyTheme()
-    render()
-    toast('风格 · ' + family.name)
-  } catch (err) { toast(err.message) }
-}
 async function load() {
   state.data = await api('/state')
   if (!location.hash) location.hash = '#/dashboard'
-  applyTheme()
+  initTheme({ family: state.data.settings.theme, onChange: async family => {
+    try { state.data = await api('/settings', 'PATCH', { theme: family }) } catch (err) { toast(err.message) }
+  } })
   route()
 }
 
@@ -212,21 +179,21 @@ function renderReports() {
 function renderSettings() {
   const packs = state.data.settings.packs
   return `${pageHead('SETTINGS', '设置', '本地数据、扩展包与主题。所有设置只写在本机。')}
-  <div class="settings-grid"><div class="card"><div class="card-head"><div><small>APPEARANCE</small><h2>外观</h2></div></div><div class="field"><label>风格主题</label><select id="setting-theme">${THEMES.map(t => `<option value="${t.id}"${familyFor(state.data.settings.theme).id === t.id ? ' selected' : ''}>${esc(t.name)}</option>`).join('')}</select></div><div class="field"><label>外观</label><div class="mode-switch" data-mode-control role="group" aria-label="外观"><button type="button" data-mode="system" class="${state.mode === 'system' ? 'active' : ''}">系统</button><button type="button" data-mode="light" class="${state.mode === 'light' ? 'active' : ''}">浅色</button><button type="button" data-mode="dark" class="${state.mode === 'dark' ? 'active' : ''}">深色</button></div></div><p class="hint">风格决定品牌皮肤；外观独立跟随系统或固定浅/深，写入 <code>lrds-theme</code>。</p></div>
+  <div class="settings-grid"><div class="card"><div class="card-head"><div><small>APPEARANCE</small><h2>外观</h2></div></div><div id="settings-theme-controls" class="theme-controls" data-mode-control></div><p class="hint">风格决定品牌皮肤；外观独立跟随系统或固定浅/深，写入 <code>lrds-theme</code>。</p></div>
   <div class="card"><div class="card-head"><div><small>PACKS</small><h2>扩展包</h2></div></div><label class="list-row"><div><b>自由职业发票</b><small>客户 / 发票 / 收款 / 逾期</small></div><input type="checkbox" id="pack-freelance" ${packs.freelance ? 'checked' : ''}></label><p class="hint">关闭后隐藏导航与接口，但数据保留。</p></div>
   <div class="card"><div class="card-head"><div><small>DATA</small><h2>数据</h2></div></div><div class="summary-line"><span>账户</span><b>${state.data.accounts.length}</b></div><div class="summary-line"><span>流水</span><b>${state.data.transactions.length}</b></div><div class="summary-line"><span>发票</span><b>${state.data.invoices.length}</b></div><div class="page-actions" style="margin-top:12px"><a class="btn" href="/api/backup">下载完整备份</a><button class="btn btn-danger" data-action="reset">重置示例数据</button></div></div>
   <div class="card"><div class="card-head"><div><small>ABOUT</small><h2>慢慢记 1.2</h2></div></div><p class="hint">本地优先 · 零依赖 · Node 24 + 无框架 Web。数据文件：<code>data/store.json</code>；写入前自动生成 <code>.bak</code>。没有云、没有账号、没有遥测。</p><p class="hint" style="margin-top:8px">设计语义映射 LRDS；产品皮肤在 <code>web/tokens.css</code>。</p></div></div>`
 }
 
 function render() {
-  applyTheme()
   const view = state.view
   $$('#nav button').forEach(b => { b.classList.toggle('active', b.dataset.view === view); b.hidden = b.dataset.pack === 'freelance' && !state.data.settings.packs.freelance })
-  const topTheme = $('#theme-select'); if (topTheme) { const family = familyFor(state.data.settings.theme); topTheme.innerHTML = THEMES.map(t => `<option value="${t.id}"${family.id === t.id ? ' selected' : ''}>${esc(t.name)}</option>`).join('') }
-  applyTheme()
   const app = $('#app')
   app.innerHTML = view === 'dashboard' ? renderDashboard() : view === 'ledger' ? renderLedger() : view === 'accounts' ? renderAccounts() : view === 'budgets' ? renderBudgets() : view === 'invoices' ? renderInvoices() : view === 'reports' ? renderReports() : renderSettings()
   bindView()
+  mountThemeControls($('#ledger-theme-controls'), { compact: true })
+  const settingsControls = $('#settings-theme-controls')
+  if (settingsControls) mountThemeControls(settingsControls)
 }
 function route() {
   const v = (location.hash.replace(/^#\//, '') || 'dashboard').split('?')[0]
@@ -241,8 +208,6 @@ function bindView() {
   const type = $('#ledger-type'); if (type) type.onchange = e => { state.ledgerType = e.target.value; render() }
   const search = $('#ledger-search'); if (search) search.oninput = e => { state.query = e.target.value; render(); const s = $('#ledger-search'); if (s) { s.focus(); s.setSelectionRange(s.value.length, s.value.length) } }
   const inv = $('#invoice-filter'); if (inv) inv.onchange = e => { state.invoiceFilter = e.target.value; render() }
-  const theme = $('#setting-theme'); if (theme) theme.onchange = e => setFamily(e.target.value)
-  const topTheme = $('#theme-select'); if (topTheme) topTheme.onchange = e => setFamily(e.target.value)
   const pack = $('#pack-freelance'); if (pack) pack.onchange = async e => { try { state.data = await api('/settings', 'PATCH', { packs: { freelance: e.target.checked } }); if (!e.target.checked && state.view === 'invoices') location.hash = '#/dashboard'; render(); toast(e.target.checked ? '发票扩展包已开启' : '发票扩展包已关闭') } catch (err) { toast(err.message) } }
 }
 
@@ -374,7 +339,5 @@ $('#nav').addEventListener('click', e => {
   else location.hash = next
 })
 $('#quick-add').onclick = () => openTx()
-document.addEventListener('click', e => { const btn = e.target.closest('[data-mode]'); if (btn) setMode(btn.dataset.mode) })
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (state.mode === 'system') applyTheme() })
 window.addEventListener('hashchange', () => { if (state.data) route() })
 load().catch(err => { console.error(err); document.body.innerHTML = `<div class="empty">启动失败：${esc(err.message)}</div>` })
