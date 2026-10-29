@@ -54,7 +54,7 @@ function renderCollection() {
   const cols = collection.columns.map(k => collection.fields.find(f => f.key === k)).filter(Boolean)
   const filtered = entries.filter(e => !state.query || [e.date, ...Object.values(e.data)].join(' ').toLowerCase().includes(state.query.toLowerCase()))
   const rows = filtered.slice(0, 80).map(entry => `<tr>${cols.map(f => `<td>${f.key === 'date' ? esc(entry.date) : esc(formatValue(f, entry.data[f.key]))}</td>`).join('')}<td class="right"><button class="btn btn-ghost btn-sm" data-edit="${entry.id}">编辑</button><button class="btn btn-ghost btn-sm" data-delete="${entry.id}">删除</button></td></tr>`).join('')
-  return `${pageHead(collection.isModule ? 'PACK · ' + (collection.packId || '') : collection.english || 'CORE', collection.isModule ? collection.name : collection.name, collection.isModule ? collection.entryLabel + '；记录只在本机。' : collection.tagline, `<a class="btn" href="/api/backup">备份</a><button class="btn btn-primary" data-new>＋ ${esc(collection.entryLabel)}</button>`)}
+  return `${pageHead(collection.isModule ? 'PACK · ' + (collection.packId || '') : collection.english || 'CORE', collection.isModule ? collection.name : collection.name, collection.isModule ? collection.entryLabel + '；记录只在本机。' : collection.tagline, `<a class="btn" href="/api/export">导出</a><label class="btn">导入<input id="import-file" type="file" accept="application/json" hidden></label><button class="btn btn-primary" data-new>＋ ${esc(collection.entryLabel)}</button>`)}
   <div class="grid grid-3">${(summary?.metrics || []).map(m => metric(m.label, m.value, m.note || '')).join('')}</div>
   <div class="grid grid-2" style="margin-top:12px"><div class="card"><div class="card-head"><div><small>14 DAYS</small><h2>${esc(summary?.chart?.label || '趋势')}</h2></div></div>${chart(summary?.chart?.values || [])}${summary?.hint ? `<p class="hint" style="margin-top:6px">${esc(summary.hint)}</p>` : ''}</div><div class="card"><div class="card-head"><div><small>ABOUT</small><h2>${collection.isModule ? '扩展模块' : '核心记录'}</h2></div></div><p class="hint">${esc(collection.isModule ? collection.entryLabel + '。关闭扩展包不删除数据。' : collection.description)}</p><p class="hint" style="margin-top:8px">数据只在本机；写入前保留 <code>.bak</code>。</p></div></div>
   <div class="card" style="margin-top:12px"><div class="card-head"><div><small>ENTRIES</small><h2>记录</h2></div><span class="hint">${filtered.length} 条</span></div><div class="toolbar"><input type="search" id="search" placeholder="搜索记录…" value="${esc(state.query)}"></div><div class="table-wrap"><table><thead><tr>${cols.map(f => `<th>${esc(f.label)}</th>`).join('')}<th></th></tr></thead><tbody>${rows || `<tr><td colspan="${cols.length + 1}">${empty()}</td></tr>`}</tbody></table></div></div>`
@@ -63,7 +63,7 @@ function renderSettings() {
   const config = state.data.config
   const packs = config.packs || []
   const rows = packs.map(p => `<div class="pack-row"><div><b>${esc(p.name)}</b><small>${esc(p.description)}</small><div class="hint">${p.modules.map(m => esc(m.name)).join(' · ')}</div></div><label class="switch"><input type="checkbox" data-pack="${p.id}" ${state.data.settings.packs[p.id] ? 'checked' : ''}><span>${state.data.settings.packs[p.id] ? '已开启' : '关闭'}</span></label></div>`).join('')
-  return `${pageHead('SETTINGS', '设置', '扩展包按需开启；关闭后导航隐藏，但数据保留。')}<div class="grid grid-2"><div class="card"><div class="card-head"><div><small>PACKS</small><h2>扩展包</h2></div></div>${rows || empty('这款应用没有扩展包。')}</div><div class="card"><div class="card-head"><div><small>DATA</small><h2>数据</h2></div></div><p class="hint">核心记录与扩展模块都在同一个 <code>data/store.json</code>。</p><p class="hint" style="margin-top:8px"><a href="/api/backup">下载完整备份</a></p><p class="hint" style="margin-top:8px">主题由 Life 共享层提供；外观写入 <code>lrds-theme</code>。</p></div></div>`
+  return `${pageHead('SETTINGS', '设置', '扩展包按需开启；关闭后导航隐藏，但数据保留。')}<div class="grid grid-2"><div class="card"><div class="card-head"><div><small>PACKS</small><h2>扩展包</h2></div></div>${rows || empty('这款应用没有扩展包。')}</div><div class="card"><div class="card-head"><div><small>DATA</small><h2>数据</h2></div></div><p class="hint">核心记录与扩展模块都在同一个 Life 数据目录，路径由套件统一管理。</p><p class="hint" style="margin-top:8px"><a href="/api/export">导出完整数据</a> · <label class="link-label">导入<input id="import-file" type="file" accept="application/json" hidden></label></p><p class="hint" style="margin-top:8px">主题由 Life 共享层提供；外观写入 <code>lrds-theme</code>。</p></div></div>`
 }
 function pageHead(kicker, title, desc, actions = '') { return `<div class="page-head"><div><div class="eyebrow">${esc(kicker)}</div><h1>${esc(title)}</h1>${desc ? `<p>${esc(desc)}</p>` : ''}</div><div class="page-actions">${actions}</div></div>` }
 function formatValue(field, value) {
@@ -92,6 +92,10 @@ function bind() {
     const path = collection.isModule ? `/api/modules/${encodeURIComponent(collection.id)}/${encodeURIComponent(b.dataset.delete)}` : `/api/entries/${encodeURIComponent(b.dataset.delete)}`
     try { state.data = await api(path, 'DELETE'); render(); toast('已删除') } catch (e) { toast(e.message) }
   })
+  const importFile = $('#import-file'); if (importFile) importFile.onchange = async () => {
+    const file = importFile.files?.[0]; if (!file) return
+    try { const data = JSON.parse(await file.text()); state.data = await api('/api/import', 'POST', data); render(); toast('已导入') } catch (e) { toast(e.message) }
+  }
   $$('[data-pack]').forEach(input => input.onchange = async () => {
     try {
       state.data = await api('/api/settings', 'PATCH', { packs: { [input.dataset.pack]: input.checked } })

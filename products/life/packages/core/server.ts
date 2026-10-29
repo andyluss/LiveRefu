@@ -78,8 +78,15 @@ export interface LifeApp {
 }
 
 export function createLifeApp(config: AppConfig, options: { dataFile?: string } = {}): LifeApp {
-  const file = resolve(options.dataFile || process.env.DATA_FILE || 'data/store.json')
+  const suiteRoot = resolve(import.meta.dirname, '../..')
+  const defaultFile = resolve(suiteRoot, 'data/apps', config.id, 'store.json')
+  const file = resolve(options.dataFile || process.env.DATA_FILE || defaultFile)
   mkdirSync(dirname(file), { recursive: true })
+  // 从旧位置（apps/<id>/data/store.json）自动迁移，保留旧文件作为一次性回退。
+  if (!options.dataFile && !process.env.DATA_FILE && !existsSync(file)) {
+    const legacy = resolve(process.cwd(), 'data/store.json')
+    if (existsSync(legacy)) copyFileSync(legacy, file)
+  }
   const modules = modulesOf(config)
   const defaultStore = (): LifeStore => ({
     version: 2,
@@ -139,11 +146,22 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
     const path = url.pathname
     if (req.method === 'OPTIONS') { res.writeHead(204, CORS); return void res.end() }
     try {
-      if (path === '/api/health') return json(res, 200, { ok: true, app: config.id, version: '2.4.0' })
+      if (path === '/api/health') return json(res, 200, { ok: true, app: config.id, version: '3.3.0' })
       if (path === '/api/state' && req.method === 'GET') return json(res, 200, stateOf(read()))
-      if (path === '/api/backup' && req.method === 'GET') {
+      if ((path === '/api/export' || path === '/api/backup') && req.method === 'GET') {
         res.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'content-disposition': `attachment; filename="${config.id}-${today()}.json"` })
         return void res.end(JSON.stringify(read(), null, 2))
+      }
+      if (path === '/api/import' && req.method === 'POST') {
+        const input = await body(req)
+        if (input.version !== 2 || !Array.isArray(input.entries) || typeof input.modules !== 'object' || input.modules === null) return fail(res, 400, '导入文件不是 Life v2 store')
+        const store: LifeStore = {
+          version: 2,
+          settings: { packs: Object.fromEntries((config.packs || []).map(p => [p.id, Boolean((input.settings as any)?.packs?.[p.id])])) },
+          entries: input.entries as LifeEntry[],
+          modules: Object.fromEntries(modules.map(({ module }) => [module.id, Array.isArray((input.modules as any)[module.id]) ? (input.modules as any)[module.id] : []]))
+        }
+        return json(res, 200, stateOf(write(store)))
       }
       if (path === '/api/settings' && req.method === 'PATCH') {
         const input = await body(req)
@@ -193,7 +211,7 @@ export function createLifeApp(config: AppConfig, options: { dataFile?: string } 
   }
   const start = () => {
     const server = createServer(handler)
-    server.listen(config.port, '127.0.0.1', () => console.log(`${config.name} ${config.english} 2.4.0 · http://127.0.0.1:${config.port}\ndata: ${file}`))
+    server.listen(config.port, '127.0.0.1', () => console.log(`${config.name} ${config.english} 3.3.0 · http://127.0.0.1:${config.port}\ndata: ${file}`))
     return server
   }
   return { config, file, start, handler, read, write }

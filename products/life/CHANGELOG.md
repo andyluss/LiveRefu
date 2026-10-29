@@ -1,5 +1,19 @@
 # Life Changelog
 
+## [3.3.0] - 2026-10-29 10:02
+
+### 新增
+
+- **统一数据目录**：`data/apps/<id>/store.json`，在 `apps/` 外并 gitignore；
+- 每款 app 独立 `GET /api/export` / `POST /api/import`；
+- 统合主页 `GET /api/export` / `POST /api/import`，一次导出/恢复全部应用；
+- 统合主页跨应用 **14 天日节律 / 8 周周节律**、总记录、活跃应用、连续天数；
+- `tools/migrate-data.ts` 迁移旧 `apps/<id>/data`。
+
+### 修复
+
+- 慢慢记默认数据路径改到套件 `data/apps/ledger/`；启动端口冲突时输出明确错误并退出。
+
 ## [3.2.0] - 2026-10-29 08:57
 
 ### 变更

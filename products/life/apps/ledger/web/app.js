@@ -181,8 +181,8 @@ function renderSettings() {
   return `${pageHead('SETTINGS', '设置', '本地数据、扩展包与主题。所有设置只写在本机。')}
   <div class="settings-grid"><div class="card"><div class="card-head"><div><small>APPEARANCE</small><h2>外观</h2></div></div><div id="settings-theme-controls" class="theme-controls" data-mode-control></div><p class="hint">风格决定品牌皮肤；外观独立跟随系统或固定浅/深，写入 <code>lrds-theme</code>。</p></div>
   <div class="card"><div class="card-head"><div><small>PACKS</small><h2>扩展包</h2></div></div><label class="list-row"><div><b>自由职业发票</b><small>客户 / 发票 / 收款 / 逾期</small></div><input type="checkbox" id="pack-freelance" ${packs.freelance ? 'checked' : ''}></label><p class="hint">关闭后隐藏导航与接口，但数据保留。</p></div>
-  <div class="card"><div class="card-head"><div><small>DATA</small><h2>数据</h2></div></div><div class="summary-line"><span>账户</span><b>${state.data.accounts.length}</b></div><div class="summary-line"><span>流水</span><b>${state.data.transactions.length}</b></div><div class="summary-line"><span>发票</span><b>${state.data.invoices.length}</b></div><div class="page-actions" style="margin-top:12px"><a class="btn" href="/api/backup">下载完整备份</a><button class="btn btn-danger" data-action="reset">重置示例数据</button></div></div>
-  <div class="card"><div class="card-head"><div><small>ABOUT</small><h2>慢慢记 1.2</h2></div></div><p class="hint">本地优先 · 零依赖 · Node 24 + 无框架 Web。数据文件：<code>data/store.json</code>；写入前自动生成 <code>.bak</code>。没有云、没有账号、没有遥测。</p><p class="hint" style="margin-top:8px">设计语义映射 LRDS；产品皮肤在 <code>web/tokens.css</code>。</p></div></div>`
+  <div class="card"><div class="card-head"><div><small>DATA</small><h2>数据</h2></div></div><div class="summary-line"><span>账户</span><b>${state.data.accounts.length}</b></div><div class="summary-line"><span>流水</span><b>${state.data.transactions.length}</b></div><div class="summary-line"><span>发票</span><b>${state.data.invoices.length}</b></div><div class="page-actions" style="margin-top:12px"><a class="btn" href="/api/export">导出完整数据</a><label class="btn">导入<input id="ledger-import" type="file" accept="application/json" hidden></label><button class="btn btn-danger" data-action="reset">重置示例数据</button></div></div>
+  <div class="card"><div class="card-head"><div><small>ABOUT</small><h2>慢慢记 1.2</h2></div></div><p class="hint">本地优先 · 零依赖 · Node 24 + 无框架 Web。数据文件：Life 套件 <code>data/apps/ledger/store.json</code>；写入前自动生成 <code>.bak</code>。没有云、没有账号、没有遥测。</p><p class="hint" style="margin-top:8px">设计语义映射 LRDS；产品皮肤在 <code>web/tokens.css</code>。</p></div></div>`
 }
 
 function render() {
@@ -208,6 +208,7 @@ function bindView() {
   const type = $('#ledger-type'); if (type) type.onchange = e => { state.ledgerType = e.target.value; render() }
   const search = $('#ledger-search'); if (search) search.oninput = e => { state.query = e.target.value; render(); const s = $('#ledger-search'); if (s) { s.focus(); s.setSelectionRange(s.value.length, s.value.length) } }
   const inv = $('#invoice-filter'); if (inv) inv.onchange = e => { state.invoiceFilter = e.target.value; render() }
+  const importFile = $('#ledger-import'); if (importFile) importFile.onchange = async () => { const file = importFile.files?.[0]; if (!file) return; try { const data = JSON.parse(await file.text()); state.data = await api('/import', 'POST', data); render(); toast('已导入') } catch (err) { toast(err.message) } }
   const pack = $('#pack-freelance'); if (pack) pack.onchange = async e => { try { state.data = await api('/settings', 'PATCH', { packs: { freelance: e.target.checked } }); if (!e.target.checked && state.view === 'invoices') location.hash = '#/dashboard'; render(); toast(e.target.checked ? '发票扩展包已开启' : '发票扩展包已关闭') } catch (err) { toast(err.message) } }
 }
 

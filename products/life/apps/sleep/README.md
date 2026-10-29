@@ -10,7 +10,7 @@ npm start
 记录：醒来日期、入睡/醒来时间、质量、咖啡因、睡前屏幕、备注。  
 摘要：近 14 天平均睡眠、平均质量、连续记录；14 天睡眠时长。
 
-数据：`data/store.json`（首次自动 seed）。
+数据：Life 套件 `data/apps/sleep/store.json`（首次自动 seed）。
 
 ## 文档
 

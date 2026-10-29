@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
-import { existsSync, readFileSync, statSync } from 'node:fs'
-import { extname, join, normalize, resolve } from 'node:path'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync } from 'node:fs'
+import { dirname, extname, join, normalize, resolve } from 'node:path'
 import { createStore } from './store.ts'
 import { THEMES } from '../../../packages/theme/themes.ts'
 import {
@@ -12,7 +12,16 @@ import {
 
 const HOST = process.env.HOST || '127.0.0.1'
 const PORT = Number(process.env.PORT || 4206)
-const DATA_FILE = process.env.DATA_FILE || resolve('data/store.json')
+const SUITE_ROOT = resolve(import.meta.dirname, '../../..')
+const DEFAULT_DATA_FILE = resolve(SUITE_ROOT, 'data/apps/ledger/store.json')
+const DATA_FILE = process.env.DATA_FILE || DEFAULT_DATA_FILE
+if (!process.env.DATA_FILE && !existsSync(DATA_FILE)) {
+  const legacy = resolve('data/store.json')
+  if (existsSync(legacy)) {
+    mkdirSync(dirname(DATA_FILE), { recursive: true })
+    copyFileSync(legacy, DATA_FILE)
+  }
+}
 const WEB = resolve('web')
 const SHARED = resolve(import.meta.dirname, '../../../packages/web')
 const store = createStore(DATA_FILE)
@@ -80,9 +89,9 @@ export function createHandler(handle = store) {
     const path = url.pathname
     if (req.method === 'OPTIONS') { res.writeHead(204, { 'access-control-allow-origin': 'http://127.0.0.1:4200', 'access-control-allow-methods': 'GET,POST,PATCH,DELETE,OPTIONS', 'access-control-allow-headers': 'content-type' }); return void res.end() }
     try {
-      if (path === '/api/health') return send(res, 200, { ok: true, version: '1.4.0' })
+      if (path === '/api/health') return send(res, 200, { ok: true, version: '1.4.1' })
       if (path === '/api/state' && req.method === 'GET') return send(res, 200, handle.read())
-      if (path === '/api/backup' && req.method === 'GET') {
+      if ((path === '/api/export' || path === '/api/backup') && req.method === 'GET') {
         res.writeHead(200, {
           'content-type': 'application/json; charset=utf-8',
           'content-disposition': `attachment; filename="manmanji-${today()}.json"`,
@@ -95,6 +104,13 @@ export function createHandler(handle = store) {
         return void res.end('\ufeff' + csv(handle.read()))
       }
 
+      if (path === '/api/import' && req.method === 'POST') {
+        const input = await body(req)
+        if (input.version !== 1 || !Array.isArray(input.accounts) || !Array.isArray(input.transactions) || !Array.isArray(input.invoices)) {
+          return fail(res, 400, '导入文件不是慢慢记 v1 store')
+        }
+        return send(res, 200, handle.write(input as Store))
+      }
       if (path === '/api/reset' && req.method === 'POST') {
         const state = handle.reset(true)
         return send(res, 200, state)
@@ -293,8 +309,13 @@ export function createHandler(handle = store) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const handler = createHandler(store)
-  createServer(handler).listen(PORT, HOST, () => {
-    console.log(`Manmanji 1.4.0 · http://${HOST}:${PORT}`)
+  const server = createServer(handler)
+  server.on('error', (error: NodeJS.ErrnoException) => {
+    console.error(error.code === 'EADDRINUSE' ? `✗ 慢慢记：端口 ${PORT} 已被占用` : `✗ 慢慢记：${error.message}`)
+    process.exit(1)
+  })
+  server.listen(PORT, HOST, () => {
+    console.log(`Manmanji 1.4.1 · http://${HOST}:${PORT}`)
     console.log(`data: ${DATA_FILE}`)
   })
 }

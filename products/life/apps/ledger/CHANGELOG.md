@@ -1,5 +1,13 @@
 # 慢慢记 Changelog
 
+## [1.4.1] - 2026-10-29 10:02
+
+### 变更
+
+- 默认数据路径迁到 Life 套件 `data/apps/ledger/store.json`；
+- 增加独立 `GET /api/export` / `POST /api/import`；
+- 启动端口冲突时输出明确错误并退出，避免静默挂起。
+
 ## [1.4.0] - 2026-10-29 08:33
 
 ### Changed
