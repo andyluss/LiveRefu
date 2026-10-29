@@ -70,7 +70,7 @@ function bucketize(range, dates, period) {
     }
     return out
   }
-  if (days > 31) {
+  if (days > 31 && period !== 'peng') {
     const out = []
     let cur = clone(range.start)
     while (cur <= range.end) {
@@ -117,7 +117,7 @@ function renderChart(range, period) {
   const buckets = bucketize(range, dates, period)
   const max = Math.max(1, ...buckets.map(b => b.count))
   const showEvery = buckets.length <= 14 ? 1 : Math.ceil(buckets.length / 8)
-  $('#chart').style.setProperty('grid-auto-columns', `minmax(${buckets.length > 45 ? '0' : '2px'}, 1fr)`)
+  $('#chart').style.setProperty('--bar-gap', buckets.length > 40 ? '2px' : '5px')
   $('#chart').innerHTML = buckets.map((b, i) => `<div class="rhythm-col" title="${esc(b.label)}：${b.count} 条"><div class="bar-space"><i style="height:${b.count ? Math.max(3, b.count / max * 100) : 0}%;opacity:${b.count ? '.82' : '.18'}"></i></div><span>${i % showEvery === 0 || i === buckets.length - 1 ? esc(b.label) : ''}</span></div>`).join('')
   $('#range-label').textContent = range.name
   $('#range-meta').textContent = `${key(range.start)} → ${key(range.end)} · ${buckets.length} 个刻度`
