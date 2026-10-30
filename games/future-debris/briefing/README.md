@@ -1,6 +1,6 @@
 # guide · 玩法说明的生成器
 
-> **[`../GUIDE.html`](../GUIDE.html)** 是**给第一次听说这个游戏的人**看的玩法说明
+> **[`./GUIDE.html`](GUIDE.html)** 是**给第一次听说这个游戏的人**看的玩法说明
 > （一局怎么走、电力与残渣的张力、降级区、卡面六段、四势力、规则卡、难度曲线、决策循环、输赢评级、词表）。
 > 本目录只有它的**生成器**：图表里的每个数字都从游戏数据表现读，不手抄。
 
@@ -10,11 +10,24 @@
 `future-debris/game/data/tables/*.json`，**改数据后重跑即同步**。
 
 ```bash
-python3 build_guide.py            # 重新生成 ../GUIDE.html
-python3 build_guide.py --check    # 只校验页面是否与数据一致（过期会报错）
+python3 build_guide.py            # 重新生成 GUIDE.html
+python3 build_guide.py --check    # 校验 GUIDE.html 与数据一致
+python3 check_hub.py              # 校验 HUB.html 与工程数据一致
 ```
 
 ## 什么时候重跑
 
 - 改了卡表 / 关卡 / 规则 / 势力 → 重跑，否则 `GUIDE.html` 里的图与数字会落后于游戏。
 - 以后可以把它接进 pre-commit（改动这些表时自动 `--check`），做法同 `cards/` 的对账。
+
+
+## 目录内容
+
+| 文件 | 作用 |
+| --- | --- |
+| `HUB.html` | 项目状态、决策、截图、内容、商业化、风险与下一步（R-016 三态） |
+| `GUIDE.html` | 给第一次听说本项目的人看的玩法说明（R-016 三态） |
+| `theme.css` / `theme.js` | 两页共享的 system / light / dark 主题 |
+| `build_guide.py` | 从 `game/data/tables/` 生成 GUIDE.html |
+| `check_hub.py` | 核对 HUB 的 `data-fact` 与工程数据 |
+| `README.md` | 本说明 |

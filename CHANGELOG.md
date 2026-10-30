@@ -17,7 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
-- **《未来残片》项目提升**：`games/mainline/future-debris/` → `games/future-debris/`；mainline 保留纲领；HUB/GUIDE 按 R-016 补齐三态；M1 配置拆分。
+- **《未来残片》项目提升**：`games/mainline/future-debris/` → `games/future-debris/`；mainline 保留纲领；HUB/GUIDE 按 R-016 补齐三态；导览层统一到 `briefing/`；M1 配置拆分。
 - **AGENTS 结构重整**：按“适用范围 → 回报 → Git → 发布 → 日志/待办 → HTML → 网络 → 自检”重排，新增硬规范速览、用户未提交改动保护与日志层级说明；所有原硬规则保留。
 - **存量 HTML 三态迁移**：青橙理念 13 页 + 索引、Refu Game 001 HUB/GUIDE 已按 R-016 补齐系统/浅色/深色。
 - **R-016 生成式 HTML 三态硬规范**：新增 `design/rules/R-016-html-theme-modes.md`；所有脚本/模板/AI 生成的 HTML 必须支持 system/light/dark、统一 `lrds-theme` 并预绘制；`AGENTS.md` 引用为硬规范。

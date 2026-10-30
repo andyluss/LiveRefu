@@ -8,14 +8,14 @@
 
 ## 〇、隔久了回来？先看这一页
 
-> **[`GUIDE.html`](../future-debris/GUIDE.html)**（双击用浏览器打开）——**玩法说明（给第一次听说它的人）**：
+> **[`GUIDE.html`](../future-debris/briefing/GUIDE.html)**（双击用浏览器打开）——**玩法说明（给第一次听说它的人）**：
 > 一局怎么走、电力与残渣的张力、降级区、卡面六段、四势力、规则卡、难度曲线、决策循环、输赢与评级、词表。
-> 图表全部从游戏数据表生成（`guide/build_guide.py`），改数据重跑即同步。**想搞懂"这游戏在玩什么"先看这页。**
+> 图表全部从游戏数据表生成（`briefing/build_guide.py`），改数据重跑即同步。**想搞懂"这游戏在玩什么"先看这页。**
 >
-> **[`HUB.html`](../future-debris/HUB.html)**（双击用浏览器打开）——**给人看的一页纸汇总**：
+> **[`HUB.html`](../future-debris/briefing/HUB.html)**（双击用浏览器打开）——**给人看的一页纸汇总**：
 > 一句话是什么、核心循环、四势力、**已决定的事（Q1–Q15）**、截图与预告片、内容现状、怎么卖、**踩过的坑**、下一步。
 > 分 Tab 显示、可 `⌘P` 直接打印成一页纸版。**它只汇总与指路，细节仍在各文档**；其中的数字由
-> [`../future-debris/tools/check_hub.py`](../future-debris/tools/check_hub.py) 与工程对账，过期会报错。
+> [`../future-debris/briefing/check_hub.py`](../future-debris/briefing/check_hub.py) 与工程对账，过期会报错。
 
 ## 〇·分界：什么是"纲领"，什么是"未来残片"
 
@@ -89,8 +89,9 @@
 
   games/future-debris/       ← 当前具体项目（独立目录；未来残片相关的一切都在这里）
   ├── README.md  CHANGELOG.md   ← 项目自己的说明与日志
-  ├── HUB.html                ← 项目一页纸汇总（隔久了先看这个）
-  ├── GUIDE.html              ← 玩法说明（给第一次听说它的人）
+  ├── briefing/
+  │   ├── HUB.html            ← 项目一页纸汇总（隔久了先看这个）
+  │   └── GUIDE.html          ← 玩法说明（给第一次听说它的人）
   ├── cards/                  ← 卡面设计试验台
   ├── docs/  game/  tools/  run.sh
   ```

@@ -17,8 +17,8 @@
       推导不出真实值时**报错而不是跳过**——"查不到"不能等于"没问题"（本项目的静默失效教训）。
 
 用法：
-    python3 tools/check_hub.py              # 检查
-    python3 tools/check_hub.py --self-test  # 自检（喂已知坏数据，确认它会失败）
+    python3 briefing/check_hub.py              # 检查
+    python3 briefing/check_hub.py --self-test  # 自检（喂已知坏数据，确认它会失败）
 """
 
 import json
@@ -28,8 +28,7 @@ import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 FD = HERE.parent                 # future-debris/
-MAINLINE = FD.parent             # mainline/
-HUB = FD / "HUB.html"
+HUB = HERE / "HUB.html"
 TABLES = FD / "game/data/tables"
 RUN_SH = FD / "run.sh"
 CASE_LIST = FD / "game/scenes/tools/cases/case_list.gd"

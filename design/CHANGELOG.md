@@ -11,7 +11,7 @@
 > **青橙全栈已迁出**：P1–P17、可视化、TODO、QC 提案等全栈变更见 [`fullstack/CHANGELOG.md`](fullstack/CHANGELOG.md)。
 
 ### 新增
-- **存量 HTML 三态迁移**：`design/philosophy/html/` 13 篇 + 索引、`games/refu-game-001/HUB.html`、`GUIDE.html` 已补齐 system/light/dark；新增共享主题控制脚本。
+- **存量 HTML 三态迁移**：`design/philosophy/html/` 13 篇 + 索引、`games/refu-game-001/HUB.html`、`GUIDE.html`、`games/future-debris/briefing/HUB.html`、`GUIDE.html` 已补齐 system/light/dark；新增共享主题控制脚本。
 - **R-016 生成式 HTML 三态规则**：所有由脚本/模板/AI 生成的 HTML 强制 system / light / dark，统一 `lrds-theme`、head 预绘制、持久化与双外观验收；`AGENTS.md` 引用为硬规范。
 - **青橙理念新增 12 空间直觉**：补《空间直觉：让界面先被看见，再被读懂》；为 00–12 共 13 篇生成 HTML 可视化，并在索引与 HUB 中接入。
 - **青橙理念新增 10/11 与 HTML 可视化**：新增《设计思维：从问题到可被体验的答案》《设计思维与其它思维：六种镜头》；为 00–11 共 12 篇各生成一页静态 HTML（共用 `philosophy/html/philosophy.css`，可离线打开），并加入系列索引与 HUB。
@@ -53,7 +53,7 @@
 - **状态**：尚无真实 App 消费者；不声称已接入/已验收。
 
 ### 变更
-- **未来残片路径提升**：设计系统引用从 `games/mainline/future-debris/` 同步到 `games/future-debris/`；HUB/GUIDE 已按 R-016 三态。
+- **未来残片路径提升**：设计系统引用从 `games/mainline/future-debris/` 同步到 `games/future-debris/`；HUB/GUIDE 已按 R-016 三态；导览层统一到 `briefing/`。
 
 - **时间与例外表可读性**：`docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段，并追加收口时间/方式；`design/TODO.md` 移除「最近完成」段，完成项改为在总表改状态。
 - **待办收敛**：`design/TODO.md` 成为设计系统唯一明细与状态来源；根 TODO 设计条目迁入，移除“根 TODO”映射列；补充产品发布完成项。

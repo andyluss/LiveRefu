@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build_guide.py —— 生成 `games/mainline/GUIDE.html`：一份**给小白看的玩法说明**。
+"""build_guide.py —— 生成 `briefing/GUIDE.html`：一份**给小白看的玩法说明**。
 
 为什么要生成而不是手写：
   文档里最贵的错是"数字过期"（本项目栽过多次）。难度曲线、卡池构成、势力配额
@@ -18,10 +18,10 @@ import json
 import pathlib
 import sys
 
-HERE = pathlib.Path(__file__).resolve().parent          # mainline/guide/
-MAINLINE = HERE.parent.parent                           # mainline/
-TABLES = HERE.parent / "game/data/tables"
-OUT = HERE.parent / "GUIDE.html"
+HERE = pathlib.Path(__file__).resolve().parent          # briefing/
+FD = HERE.parent                                        # future-debris/
+TABLES = FD / "game/data/tables"
+OUT = HERE / "GUIDE.html"
 
 FACTION_ZH = {"FAC-ATOMIC-AEC": "原子能委员会", "FAC-ATOMIC-SUB": "郊区秩序",
               "FAC-ATOMIC-HAU": "清运承包方", "FAC-ATOMIC-ROA": "辐射漫游者"}
@@ -131,8 +131,8 @@ def build():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>未来残片 · 玩法说明（给第一次听说它的人）</title>
-<!-- 由 guide/build_guide.py 生成：图中数字全部来自游戏数据表，改数据后重跑即同步。
-     python3 guide/build_guide.py --check 会在文件过期时报错。 -->
+<!-- 由 briefing/build_guide.py 生成：图中数字全部来自游戏数据表，改数据后重跑即同步。
+     python3 briefing/build_guide.py --check 会在文件过期时报错。 -->
 <style>
   :root{{--bg:#fbf8f1;--ink:#221d15;--ink2:#4a4335;--dim:#7d7462;--line:#e0d8c6;
         --acc:#1f9e94;--warm:#d9612f;--gold:#c08a13;--card:#fff;--code:#f1ece0}}
@@ -422,9 +422,9 @@ def build():
 <p class="dim">如果你只想知道"这游戏现在值不值得看"——它已经是一个能玩的完整循环，但还没有任何一个人以外的东西被验证。</p>
 
 <footer>
-  本页由 <code>guide/build_guide.py</code> 从游戏数据表生成：图中每个数字都来自
+  本页由 <code>briefing/build_guide.py</code> 从游戏数据表生成：图中每个数字都来自
   <code>cards.json</code> / <code>levels.json</code> / <code>rules.json</code> / <code>factions.json</code>。
-  数据变了请重跑 <code>python3 guide/build_guide.py</code>；<code>--check</code> 会提示页面过期。
+  数据变了请重跑 <code>python3 briefing/build_guide.py</code>；<code>--check</code> 会提示页面过期。
 </footer>
 
 </div>
@@ -458,7 +458,7 @@ def main() -> int:
     check = "--check" in sys.argv
     if check:
         if not OUT.exists():
-            print(f"✗ 缺 {OUT.relative_to(MAINLINE)}，请先运行 build_guide.py")
+            print(f"✗ 缺 {OUT.relative_to(FD)}，请先运行 build_guide.py")
             return 1
         if OUT.read_text(encoding="utf-8") != html:
             print("✗ GUIDE.html 已过期（与数据表不一致），请重跑 build_guide.py")
@@ -466,7 +466,7 @@ def main() -> int:
         print("✓ GUIDE.html 与数据一致")
         return 0
     OUT.write_text(html, encoding="utf-8")
-    print(f"已生成 {OUT.relative_to(MAINLINE)}（{len(html) / 1024:.1f} KB）")
+    print(f"已生成 {OUT.relative_to(FD)}（{len(html) / 1024:.1f} KB）")
     return 0
 
 

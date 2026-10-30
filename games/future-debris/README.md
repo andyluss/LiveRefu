@@ -5,6 +5,7 @@
 > **形态**：复古未来主义 · **时代提案卡组 + 自走式防线**；以"纪元"为单位滚动成长；PC 买断 + 免费 Demo，**不卖数值、不抽卡**。
 > **现在到哪了**：**S4 已完成**——一局闭环（关卡选择 → 战斗 → 结算 + 战役存档）、表现层（HUD / 8 塔位 / 手牌 / 降级区 / 事件行 + 程序生成音效 + 响应式布局）；**八道闸门全绿、43 项玩法断言**；卡池 **T3（120 张）**、**16 关 / 8 章**、4 势力 × 2 套胜利条件、11 条规则卡；商店页素材（5 张 1080p 截图 + 1080p 预告片 + 双语文案标签）已产出。
 > **决策与提案**在同级 [`../mainline/`](../mainline/README.md)（即 `games/mainline/`，**主线纲领 · 决策与讨论空间**）；本目录是独立的**具体项目**，只管工程与执行。
+> **导览**：[`briefing/HUB.html`](briefing/HUB.html)（项目状态与决策汇总）｜ [`briefing/GUIDE.html`](briefing/GUIDE.html)（给第一次听说的人看的玩法说明）。
 
 ## 一、这是什么（以及不是什么）
 
@@ -36,7 +37,7 @@
 **一键验收**：
 
 ```bash
-cd projects/future-debris
+cd games/future-debris
 ./run.sh check       # 7 道闸门（含 16 项玩法行为断言 + 15 项主题断言）
 ./run.sh theme       # 从 token 编译 Godot 主题并断言生效（15 项）
 ./run.sh scene       # 场景与视图验收（界面装载 / 几何 / 命中判定 / 取色）
@@ -57,8 +58,9 @@ python3 tools/gen_cards.py --target 60   # 卡表量产（幂等；改数值请�
 ## 三、目录结构
 
 ```
-projects/future-debris/
+games/future-debris/
 ├── run.sh                  # 统一入口：run / editor / check / boot / lint / data / contrast
+├── briefing/               # HUB / GUIDE / 共享主题 / 生成与校验（R-016 三态）
 ├── game/                   # Godot 工程
 │   ├── project.godot
 │   ├── data/

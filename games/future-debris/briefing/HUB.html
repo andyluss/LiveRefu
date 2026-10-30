@@ -9,7 +9,7 @@
   目的：隔了很久回来时，用最少的滚动量重新接上——"当初为什么这么定、现在到哪了、下一步干什么"。
   规则：
     · 只汇总与指路，**不复制**权威内容（细节一律回文档，避免两处表述分叉）。
-    · 数字用 data-fact 标记，由 tools/check_hub.py 与数据表对账；不一致会报错，防止页面悄悄过期。
+    · 数字用 data-fact 标记，由 check_hub.py 与数据表对账；不一致会报错，防止页面悄悄过期。
     · 调色板直接复用游戏的 design token（已被游戏自己的对比度闸门验证过），页面与游戏同一视觉语言。
     · 打印时所有 Tab 全部展开（见 @media print）——桌面省滚动与打印看全，两个目标不冲突。
 -->
@@ -333,23 +333,23 @@
   <p class="lede">全部为原生 <b>1920×1080</b>（Steam 要求的截图规格），从真实运行画面截取——不是概念图。</p>
 
   <h3>30 秒预告片（1920×1080）</h3>
-  <video controls preload="metadata" poster="docs/shots/battle_mid_1080p.png">
-    <source src="docs/video/demo_30s.mp4" type="video/mp4">
-    你的浏览器不支持内嵌视频；文件在 <code>docs/video/demo_30s.mp4</code>。
+  <video controls preload="metadata" poster="../docs/shots/battle_mid_1080p.png">
+    <source src="../docs/video/demo_30s.mp4" type="video/mp4">
+    你的浏览器不支持内嵌视频；文件在 <code>../docs/video/demo_30s.mp4</code>。
   </video>
-  <p class="print-only">预告片文件：<code>docs/video/demo_30s.mp4</code>（打印版不含视频；下面即其截帧）</p>
+  <p class="print-only">预告片文件：<code>../docs/video/demo_30s.mp4</code>（打印版不含视频；下面即其截帧）</p>
 
   <h3>五张截图</h3>
   <div class="shots">
-    <figure><img src="docs/shots/battle_preview_1080p.png" alt="战斗初始">
+    <figure><img src="../docs/shots/battle_preview_1080p.png" alt="战斗初始">
       <figcaption><b>战斗 · 开局</b>——提案落位，降级区还没长出来</figcaption></figure>
-    <figure><img src="docs/shots/battle_mid_1080p.png" alt="战斗中期">
+    <figure><img src="../docs/shots/battle_mid_1080p.png" alt="战斗中期">
       <figcaption><b>战斗 · 中期</b>——塔已铺开，<b>降级区（橙）在扩张</b>，这就是「代价」看得见的样子</figcaption></figure>
-    <figure><img src="docs/shots/card_gallery_1080p.png" alt="卡牌库">
+    <figure><img src="../docs/shots/card_gallery_1080p.png" alt="卡牌库">
       <figcaption><b>卡牌库</b>——T3 卡池，按势力与费用浏览</figcaption></figure>
-    <figure><img src="docs/shots/level_select_1080p.png" alt="关卡选择">
+    <figure><img src="../docs/shots/level_select_1080p.png" alt="关卡选择">
       <figcaption><b>关卡选择</b>——16 关 / 8 章；每关不同的规则集与配额</figcaption></figure>
-    <figure><img src="docs/shots/settlement_1080p.png" alt="结算">
+    <figure><img src="../docs/shots/settlement_1080p.png" alt="结算">
       <figcaption><b>结算</b>——评级只由事实推导（不注水）；同屏给下一步</figcaption></figure>
   </div>
 
@@ -363,7 +363,7 @@
 <!-- ══════════ 04 内容现状 ══════════ -->
 <section class="panel" id="panel-content" data-title="内容现状">
   <h2>04 · 内容现状（数字）</h2>
-  <p class="lede">下面带标记的数字由 <code>tools/check_hub.py</code> 与数据表<b>逐项对账</b>——不一致会报错，页面不会悄悄过期。</p>
+  <p class="lede">下面带标记的数字由 <code>../check_hub.py</code> 与数据表<b>逐项对账</b>——不一致会报错，页面不会悄悄过期。</p>
 
   <div class="stats">
     <div class="stat p"><div class="v" data-fact="cards">120</div><div class="l">卡牌（手写 12 + 生成 108）</div></div>
@@ -542,16 +542,16 @@
   <h3>要深入时去哪（按问题找，不按目录找）</h3>
   <table>
     <tr><th>我想知道</th><th>去哪</th></tr>
-    <tr><td>所有决策的完整论证与推翻条件</td><td><code>docs/00_决策总表.md</code></td></tr>
-    <tr><td>为什么是这个玩法、纪元契约怎么算的</td><td><code>docs/03_玩法与经济循环.md</code></td></tr>
-    <tr><td>46 作对标数据与结论</td><td><code>docs/research/02_玩法与内容量对标.md</code></td></tr>
-    <tr><td>怎么卖、什么时候露脸</td><td><code>docs/11_Q5平台与发行节奏.md</code>、<code>docs/13_商店页文案与标签.md</code></td></tr>
-    <tr><td>美术预算与产能</td><td><code>docs/12_商店页与美术执行计划.md</code>、<code>docs/05_美术产能与预算.md</code></td></tr>
-    <tr><td>试玩怎么跑</td><td><code>docs/14_人类试玩执行包.md</code></td></tr>
-    <tr><td>工程怎么跑、怎么验收</td><td><code>README.md</code>、<code>docs/02_工程结构与运行.md</code></td></tr>
-    <tr><td>数值怎么标定的</td><td><code>docs/11_卡池均衡与难度标定.md</code></td></tr>
-    <tr><td>规则卡系统</td><td><code>docs/08_规则卡系统.md</code></td></tr>
-    <tr><td>当初是怎么一步步谈过来的（9 轮）</td><td><code>docs/discussions/</code></td></tr>
+    <tr><td>所有决策的完整论证与推翻条件</td><td><code>../docs/00_决策总表.md</code></td></tr>
+    <tr><td>为什么是这个玩法、纪元契约怎么算的</td><td><code>../docs/03_玩法与经济循环.md</code></td></tr>
+    <tr><td>46 作对标数据与结论</td><td><code>../docs/research/02_玩法与内容量对标.md</code></td></tr>
+    <tr><td>怎么卖、什么时候露脸</td><td><code>../docs/11_Q5平台与发行节奏.md</code>、<code>../docs/13_商店页文案与标签.md</code></td></tr>
+    <tr><td>美术预算与产能</td><td><code>../docs/12_商店页与美术执行计划.md</code>、<code>../docs/05_美术产能与预算.md</code></td></tr>
+    <tr><td>试玩怎么跑</td><td><code>../docs/14_人类试玩执行包.md</code></td></tr>
+    <tr><td>工程怎么跑、怎么验收</td><td><code>README.md</code>、<code>../docs/02_工程结构与运行.md</code></td></tr>
+    <tr><td>数值怎么标定的</td><td><code>../docs/11_卡池均衡与难度标定.md</code></td></tr>
+    <tr><td>规则卡系统</td><td><code>../docs/08_规则卡系统.md</code></td></tr>
+    <tr><td>当初是怎么一步步谈过来的（9 轮）</td><td><code>../docs/discussions/</code></td></tr>
   </table>
 
   <div class="note ok">
@@ -564,7 +564,7 @@
 
 <footer class="foot">
   <b>维护约定</b>：本页<b>只汇总与指路</b>，不复制权威内容——细节一律回文档，避免两处表述分叉。
-  带标记的数字由 <code>tools/check_hub.py</code> 与数据表对账，过期会报错。
+  带标记的数字由 <code>../check_hub.py</code> 与数据表对账，过期会报错。
   调色板取自游戏的 design token（已被游戏自己的对比度闸门验证）。
   <span class="noprint"><br>提示：<b>⌘P / Ctrl+P</b> 可直接打印或存 PDF——打印时全部 Tab 会展开成一页纸版。</span>
 </footer>
