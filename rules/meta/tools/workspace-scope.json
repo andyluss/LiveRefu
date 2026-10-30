@@ -26,6 +26,12 @@
       "why": "已按 M1/M2 建成，2026-10-08 实测 0 违规，具备纳入闸门的条件"
     },
     {
+      "path": "games/future-debris",
+      "mode": "block",
+      "config": "rules/meta/tools/config-future-debris.json",
+      "why": "《未来残片》独立项目；2026-10-30 从 mainline 子目录提升，HUB/GUIDE 纳入 R-016 三态"
+    },
+    {
       "path": "tech",
       "mode": "block",
       "config": "rules/meta/tools/config-tech.json",

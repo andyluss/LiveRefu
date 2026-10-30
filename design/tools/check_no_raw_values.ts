@@ -116,12 +116,12 @@ function collectWebsiteFiles(): string[] {
 function collectGameFiles(): string[] {
   const files: string[] = []
   walk(
-    join(WORKSPACE_ROOT, 'games/mainline/future-debris/game'),
+    join(WORKSPACE_ROOT, 'games/future-debris/game'),
     new Set(['.gd', '.tscn', '.tres', '.json']),
     [
-      'games/mainline/future-debris/game/.godot',
-      'games/mainline/future-debris/game/data/tokens.json',
-      'games/mainline/future-debris/game/assets/theme/future_debris.tres',
+      'games/future-debris/game/.godot',
+      'games/future-debris/game/data/tokens.json',
+      'games/future-debris/game/assets/theme/future_debris.tres',
     ],
     files,
   )

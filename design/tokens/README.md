@@ -53,7 +53,7 @@ node design/tools/build_tokens.ts
 bash design/tools/check.sh
 ```
 
-**不要手改** `dist/` 或产品副本（`projects/website/app/assets/tokens.generated.css`、`games/mainline/future-debris/game/data/tokens.json`）。`build_tokens.ts --check` 会在 CI/pre-commit 里发现漂移。
+**不要手改** `dist/` 或产品副本（`projects/website/app/assets/tokens.generated.css`、`games/future-debris/game/data/tokens.json`）。`build_tokens.ts --check` 会在 CI/pre-commit 里发现漂移。
 
 ## 五、当前尺度
 

@@ -13,6 +13,17 @@
     · 调色板直接复用游戏的 design token（已被游戏自己的对比度闸门验证过），页面与游戏同一视觉语言。
     · 打印时所有 Tab 全部展开（见 @media print）——桌面省滚动与打印看全，两个目标不冲突。
 -->
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <style>
   /* ── 调色板：直接取自 game/data/tokens.json（游戏第三道闸门已验证对比度） ── */
   :root{
@@ -183,16 +194,18 @@
   .print-title{display:none}
   .print-only{display:none}
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body data-page="hub">
 
 <header class="topbar">
   <div class="topline">
     <div>
       <div class="brand"><span class="zh">未来残片</span><span class="en">future-debris</span></div>
-      <div class="hint">主线纲领下的当前具体项目 · 本页只汇总与指路，细节回文档</div>
+      <div class="hint">主线纲领对应的当前具体项目（独立目录） · 本页只汇总与指路，细节回文档</div>
     </div>
     <div class="stamp">截至 <b>2026-10-08</b> · 阶段 <b>S4 完成</b> · 八道闸门全绿</div>
+    <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
   </div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>概览</button>
@@ -322,9 +335,9 @@
   <h3>30 秒预告片（1920×1080）</h3>
   <video controls preload="metadata" poster="docs/shots/battle_mid_1080p.png">
     <source src="docs/video/demo_30s.mp4" type="video/mp4">
-    你的浏览器不支持内嵌视频；文件在 <code>future-debris/docs/video/demo_30s.mp4</code>。
+    你的浏览器不支持内嵌视频；文件在 <code>docs/video/demo_30s.mp4</code>。
   </video>
-  <p class="print-only">预告片文件：<code>future-debris/docs/video/demo_30s.mp4</code>（打印版不含视频；下面即其截帧）</p>
+  <p class="print-only">预告片文件：<code>docs/video/demo_30s.mp4</code>（打印版不含视频；下面即其截帧）</p>
 
   <h3>五张截图</h3>
   <div class="shots">
@@ -533,11 +546,11 @@
     <tr><td>为什么是这个玩法、纪元契约怎么算的</td><td><code>docs/03_玩法与经济循环.md</code></td></tr>
     <tr><td>46 作对标数据与结论</td><td><code>docs/research/02_玩法与内容量对标.md</code></td></tr>
     <tr><td>怎么卖、什么时候露脸</td><td><code>docs/11_Q5平台与发行节奏.md</code>、<code>docs/13_商店页文案与标签.md</code></td></tr>
-    <tr><td>美术预算与产能</td><td><code>docs/12_商店页与美术执行计划.md</code>、<code>future-debris/docs/05_美术产能与预算.md</code></td></tr>
+    <tr><td>美术预算与产能</td><td><code>docs/12_商店页与美术执行计划.md</code>、<code>docs/05_美术产能与预算.md</code></td></tr>
     <tr><td>试玩怎么跑</td><td><code>docs/14_人类试玩执行包.md</code></td></tr>
-    <tr><td>工程怎么跑、怎么验收</td><td><code>future-debris/README.md</code>、<code>future-debris/docs/02_工程结构与运行.md</code></td></tr>
-    <tr><td>数值怎么标定的</td><td><code>future-debris/docs/11_卡池均衡与难度标定.md</code></td></tr>
-    <tr><td>规则卡系统</td><td><code>future-debris/docs/08_规则卡系统.md</code></td></tr>
+    <tr><td>工程怎么跑、怎么验收</td><td><code>README.md</code>、<code>docs/02_工程结构与运行.md</code></td></tr>
+    <tr><td>数值怎么标定的</td><td><code>docs/11_卡池均衡与难度标定.md</code></td></tr>
+    <tr><td>规则卡系统</td><td><code>docs/08_规则卡系统.md</code></td></tr>
     <tr><td>当初是怎么一步步谈过来的（9 轮）</td><td><code>docs/discussions/</code></td></tr>
   </table>
 
@@ -551,11 +564,12 @@
 
 <footer class="foot">
   <b>维护约定</b>：本页<b>只汇总与指路</b>，不复制权威内容——细节一律回文档，避免两处表述分叉。
-  带标记的数字由 <code>future-debris/tools/check_hub.py</code> 与数据表对账，过期会报错。
+  带标记的数字由 <code>tools/check_hub.py</code> 与数据表对账，过期会报错。
   调色板取自游戏的 design token（已被游戏自己的对比度闸门验证）。
   <span class="noprint"><br>提示：<b>⌘P / Ctrl+P</b> 可直接打印或存 PDF——打印时全部 Tab 会展开成一页纸版。</span>
 </footer>
 
+<script src="theme.js"></script>
 <script>
 // 渐进增强：无 JS 时所有面板都显示（等于一个长页面，也是打印形态）；有 JS 时才启用 Tab。
 document.body.classList.add('js');

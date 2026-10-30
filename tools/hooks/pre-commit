@@ -50,7 +50,7 @@ fi
 # ---- 1.5) 设计系统四道闸门（token / 对比度 / 裸色值 / 生成物）----
 # 只在暂存涉及设计系统或其两个试点消费面时跑，避免无关提交被拖慢。
 DESIGN_CHECK="$GIT_ROOT/design/tools/check.sh"
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(design/|projects/website/app/assets/(theme\.css|tokens\.generated\.css)|games/mainline/future-debris/game/data/tokens\.json)'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(design/|projects/website/app/assets/(theme\.css|tokens\.generated\.css)|games/future-debris/game/data/tokens\.json)'; then
   if [ -f "$DESIGN_CHECK" ]; then
     echo "[pre-commit:design] 暂存涉及设计系统，跑四道闸门（含自检）..." >&2
     if bash "$DESIGN_CHECK" >&2; then
@@ -226,8 +226,8 @@ fi
 # ---- 5.9) HUB 页面与工程对账（防"给人看的页面"悄悄过期）----
 # HUB.html 里的数字（120 卡 / 16 关 / 43 用例…）一定会过期，而"页面写 120、实际已 150"
 # 这种偏差没有任何东西会发现。只要改动 HUB 或它的数据来源，就重新对账。
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/mainline/future-debris/(HUB\.html|GUIDE\.html|game/data/tables/|run\.sh|game/scenes/tools/cases/)'; then
-  HUB_CHECK="games/mainline/future-debris/tools/check_hub.py"
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/future-debris/(HUB\.html|GUIDE\.html|game/data/tables/|run\.sh|game/scenes/tools/cases/)'; then
+  HUB_CHECK="games/future-debris/tools/check_hub.py"
   if [ -f "$HUB_CHECK" ]; then
     echo "[pre-commit:hub] HUB 页面与工程对账..." >&2
     if python3 "$HUB_CHECK" >&2; then
@@ -277,7 +277,7 @@ for lg in $STAGED_LOGS; do
     projects/livefab/CHANGELOG.md)          prefix="livefab-v" ;;
     projects/website/CHANGELOG.md)          prefix="website-v" ;;
     lab/formal-system/CHANGELOG.md)         prefix="formal-system-v" ;;
-    games/mainline/future-debris/CHANGELOG.md) prefix="future-debris-v" ;;
+    games/future-debris/CHANGELOG.md) prefix="future-debris-v" ;;
     games/mainline/CHANGELOG.md)         prefix="mainline-v" ;;
     games/refu-game-001/CHANGELOG.md)    prefix="refu-game-001-v" ;;
     games/tomorrows-channel/CHANGELOG.md) prefix="tomorrows-channel-v" ;;

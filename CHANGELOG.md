@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **《未来残片》项目提升**：`games/mainline/future-debris/` → `games/future-debris/`；mainline 保留纲领；HUB/GUIDE 按 R-016 补齐三态；M1 配置拆分。
 - **AGENTS 结构重整**：按“适用范围 → 回报 → Git → 发布 → 日志/待办 → HTML → 网络 → 自检”重排，新增硬规范速览、用户未提交改动保护与日志层级说明；所有原硬规则保留。
 - **存量 HTML 三态迁移**：青橙理念 13 页 + 索引、Refu Game 001 HUB/GUIDE 已按 R-016 补齐系统/浅色/深色。
 - **R-016 生成式 HTML 三态硬规范**：新增 `design/rules/R-016-html-theme-modes.md`；所有脚本/模板/AI 生成的 HTML 必须支持 system/light/dark、统一 `lrds-theme` 并预绘制；`AGENTS.md` 引用为硬规范。
@@ -118,7 +119,7 @@
   - 两条 CI 命令**都走项目自己的 `run.sh`**，不在 workflow 里复制任何检查逻辑——否则 CI 与本地会慢慢分叉。
   - `run.sh` 靠**上溯查找 `.git`** 定位工作区根（不数 `..` 层数），因此挂载到 `/app` 后自动把 `HOME` 指到可写目录。
   - **诚实标注**：容器那一步**未在本地验证**（本地 docker 守护进程未运行、无法拉镜像试跑），已在 workflow 注释里写明"首次失败优先查哪两点"。
-- **主线项目目录归位：`projects/future-debris/` → `games/mainline/future-debris/`（工作区结构级）**。原先"主线项目"横跨两个目录——`games/mainline/`（策划与决策空间）与 `projects/future-debris/`（可运行实现），本文件此前也记过这处别扭。本次按用户裁决定为**"纲领 + 具体项目"两层**：
+- **主线项目目录归位：`projects/future-debris/` → `games/future-debris/`（工作区结构级）**。原先"主线项目"横跨两个目录——`games/mainline/`（策划与决策空间）与 `projects/future-debris/`（可运行实现），本文件此前也记过这处别扭。本次按用户裁决定为**"纲领 + 具体项目"两层**：
   - **`games/mainline/` 是纲领**（不是某一款具体游戏）：**决策历史长期留存、可容纳多个具体项目**；**具体项目是它的子目录、按代号命名**——因此 `future-debris/` 作为项目目录仍符合 [`rules/R01`](rules/R01-docs-convention.md)/[08 §三](games/mainline/docs/08_共同语言与命名.md) 的"项目目录 = `projects/<代号>/`"，而 `mainline/` 本身不是项目故不受此约束。
   - **用户给出的理由（决定性）**：*未来有一定可能会换一个其它具体项目作为新主线项目的具体项目，但主线项目的决策历史之类的文档还需要保留*。
   - **规模与校验**：`git mv` 移动 **327 个受跟踪文件**（全部识别为重命名，历史保留）；**改写 147 处相对链接**（源在树内 90、源在树外 57），按"移动前解析 → 映射 → 从新位置重算相对路径"统一处理，改写后目标**零缺失**；全量链接校验 **3519 条内部链接、0 条因本次搬家失效**。

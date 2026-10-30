@@ -6,6 +6,17 @@
 <title>未来残片 · 玩法说明（给第一次听说它的人）</title>
 <!-- 由 guide/build_guide.py 生成：图中数字全部来自游戏数据表，改数据后重跑即同步。
      python3 guide/build_guide.py --check 会在文件过期时报错。 -->
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <style>
   :root{--bg:#fbf8f1;--ink:#221d15;--ink2:#4a4335;--dim:#7d7462;--line:#e0d8c6;
         --acc:#1f9e94;--warm:#d9612f;--gold:#c08a13;--card:#fff;--code:#f1ece0}
@@ -100,9 +111,11 @@
 
   footer{margin-top:70px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body data-page="guide">
 <div class="wrap">
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 
 <h1>未来残片</h1>
 <p class="sub">一份给第一次听说它的人的说明 · 读完你会知道：这游戏在玩什么、为什么这样设计</p>
@@ -307,5 +320,6 @@
 </footer>
 
 </div>
+<script src="theme.js" defer></script>
 </body>
 </html>

@@ -431,6 +431,25 @@ def build():
 </body>
 </html>
 '''
+    # R-016：三态主题由 theme.css / theme.js 提供；模板主体仍由数据生成。
+    pre = """  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
+"""
+    switch = '<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>'
+    html = html.replace('<style>', pre + '<style>', 1)
+    html = html.replace('</style>\n</head>', '</style>\n<link rel="stylesheet" href="theme.css">\n</head>', 1)
+    html = html.replace('<body>', '<body data-page="guide">', 1)
+    html = html.replace('<div class="wrap">', '<div class="wrap">\n' + switch, 1)
+    html = html.replace('</div>\n</body>', '</div>\n<script src="theme.js" defer></script>\n</body>', 1)
     return html
 
 

@@ -53,6 +53,7 @@
 - **状态**：尚无真实 App 消费者；不声称已接入/已验收。
 
 ### 变更
+- **未来残片路径提升**：设计系统引用从 `games/mainline/future-debris/` 同步到 `games/future-debris/`；HUB/GUIDE 已按 R-016 三态。
 
 - **时间与例外表可读性**：`docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段，并追加收口时间/方式；`design/TODO.md` 移除「最近完成」段，完成项改为在总表改状态。
 - **待办收敛**：`design/TODO.md` 成为设计系统唯一明细与状态来源；根 TODO 设计条目迁入，移除“根 TODO”映射列；补充产品发布完成项。
@@ -125,7 +126,7 @@
 
 - **三层 token 源**（186 个）：[`tokens/core/ref.tokens.json`](tokens/core/ref.tokens.json)（61）、[`tokens/core/sys.tokens.json`](tokens/core/sys.tokens.json)（92）、[`tokens/products/future-archive.tokens.json`](tokens/products/future-archive.tokens.json)（15）、[`tokens/products/future-debris.atomic.tokens.json`](tokens/products/future-debris.atomic.tokens.json)（18）；[`tokens/schema/tokens.schema.json`](tokens/schema/tokens.schema.json)。
 - **生成器与闸门**：[`tools/token_lib.ts`](tools/token_lib.ts)、[`tools/build_tokens.ts`](tools/build_tokens.ts)（8/8 自检）、[`tools/check_tokens.ts`](tools/check_tokens.ts)（7/7）、[`tools/check_contrast.ts`](tools/check_contrast.ts)（7/7，68 组对比度 + 7 组层级 + 3 组 focus 分离）、[`tools/check_no_raw_values.ts`](tools/check_no_raw_values.ts)（v0.1 5/5；v0.2 8/8，含 rgba 与 GDScript 注释处理）、[`tools/check.sh`](tools/check.sh)。
-- **生成物**：`tokens/dist/web/tokens.css`、`tokens/dist/godot/tokens.json`、`tokens/dist/docs/tokens.md`；产品副本 `projects/website/app/assets/tokens.generated.css`、`games/mainline/future-debris/game/data/tokens.json`。
+- **生成物**：`tokens/dist/web/tokens.css`、`tokens/dist/godot/tokens.json`、`tokens/dist/docs/tokens.md`；产品副本 `projects/website/app/assets/tokens.generated.css`、`games/future-debris/game/data/tokens.json`。
 - **介质包说明**：[`kits/web/README.md`](kits/web/README.md)、[`kits/godot/README.md`](kits/godot/README.md)。
 - **实现记录与例外**：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/exceptions.md`](docs/exceptions.md)（EX-20261021-01 网站组件裸色值、EX-20261021-02 网站 6px 圆角）。
 
@@ -134,7 +135,7 @@
 - **四道闸门接入根 pre-commit 与 CI**：暂存涉及 `design/`、网站 `theme.css` / `tokens.generated.css` 或游戏 `game/data/tokens.json` 时自动跑 `bash design/tools/check.sh`；CI 另加网站 `verify-contrast.ts`。
 - **D1–D10 全部裁决**（用户：按推荐执行，D2/D5 确认；暂不用设计工具；实体后定；v0.1 外观不变）；[`docs/00_决策总表.md`](docs/00_决策总表.md) 转为 v1.0 并新增裁决记录。
 - **网站试点**：`projects/website/app/assets/theme.css` 删除裸色值，旧变量名由生成物别名提供；`nuxt.config.ts` 在主题前加载 `tokens.generated.css`；`tools/verify-contrast.ts` 改为从生成物解析 token。
-- **游戏试点**：`games/mainline/future-debris/game/data/tokens.json` 改为生成物，schema 与取值不变；`check_tokens.py`、`run.sh contrast`、`run.sh theme` 全部通过。
+- **游戏试点**：`games/future-debris/game/data/tokens.json` 改为生成物，schema 与取值不变；`check_tokens.py`、`run.sh contrast`、`run.sh theme` 全部通过。
 
 ### 修复
 

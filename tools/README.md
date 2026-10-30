@@ -2,7 +2,7 @@
 
 > 本目录存放**面向整个工作区**的检查器与钩子（[M1 §四](../rules/meta/M1-file-organization.md)：通用工具 → `tools/`）。
 > **规则权威在 [`rules/`](../rules/README.md)**（R 系列）；技术详解在 [`tech/`](../tech/README.md)；本文只回答"**有哪些工具、怎么跑**"。
-> 项目内专用的检查器**不放这里**（如 Refu Game 001 的难度模拟器在 [`games/refu-game-001/tools/`](../games/refu-game-001/tools/)，主线项目的闸门在 [`games/mainline/future-debris/tools/`](../games/mainline/future-debris/run.sh)）。
+> 项目内专用的检查器**不放这里**（如 Refu Game 001 的难度模拟器在 [`games/refu-game-001/tools/`](../games/refu-game-001/tools/)，主线项目的闸门在 [`games/future-debris/tools/`](../games/future-debris/run.sh)）。
 
 ## 检查器
 

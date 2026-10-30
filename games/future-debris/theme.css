@@ -1,0 +1,63 @@
+/* 未来残片 HUB / GUIDE 的三态主题覆盖（R-016）。
+   两个页面原本各自是深色 / 浅色单态；这里只覆盖 token 与必要的硬编码组件。 */
+:root{color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+.theme-switch{display:none;border:1px solid var(--line);background:var(--e1,var(--card));margin-left:14px;vertical-align:middle}
+html[data-js] .theme-switch{display:inline-flex}
+.theme-switch button{border:0;border-right:1px solid var(--line);background:transparent;color:var(--dim);font:11px/1 -apple-system,"PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.04em;padding:6px 8px;cursor:pointer}
+.theme-switch button:last-child{border-right:0}
+.theme-switch button[aria-pressed="true"]{background:var(--power,var(--acc));color:var(--bg)}
+.theme-switch button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+body[data-page="guide"] .theme-switch{margin:0 0 18px}
+
+/* HUB：原深色 → 浅色 */
+html[data-theme="light"] body[data-page="hub"]{
+  --bg:#fbf7ec;--e1:#fffdf7;--e2:#f1ebdd;--sunken:#f6f0e3;
+  --text:#17241f;--dim:#4e5b54;--faint:#6f7a70;
+  --line:#d6cdb9;--line-strong:#8c978f;
+  --power:#0f766e;--residue:#b9502c;--accent:#b9502c;
+  --focus:#1d5fa8;--warn:#8a5a00;--ok:#246b3a;
+  background:var(--bg);color:var(--text);
+}
+html[data-theme="light"] body[data-page="hub"] .topbar{background:linear-gradient(180deg,#f7f1e4 0%,#fbf7ec 100%)}
+html[data-theme="light"] body[data-page="hub"] nav.tabs button:hover{background:rgba(15,118,110,.06)}
+html[data-theme="light"] body[data-page="hub"] figure img{background:#e9e2d2}
+html[data-theme="light"] body[data-page="hub"] .theme-switch{background:var(--e1)}
+html[data-theme="light"] body[data-page="hub"] .stamp{color:var(--faint)}
+html[data-theme="light"] body[data-page="hub"] .note{background:var(--sunken)}
+html[data-theme="light"] body[data-page="hub"] .card,html[data-theme="light"] body[data-page="hub"] .stat{background:var(--e1)}
+html[data-theme="light"] body[data-page="hub"] .foot{border-top-color:var(--line)}
+
+/* GUIDE：原浅色 → 深色 */
+html[data-theme="dark"] body[data-page="guide"]{
+  --bg:#0c1412;--ink:#eee7d6;--ink2:#c9d2ca;--dim:#9eada4;--line:#33453e;
+  --acc:#6fe3d1;--warm:#f0a06e;--gold:#d9b66b;--card:#121d1a;--code:#1a2824;
+  background:var(--bg);color:var(--ink);
+}
+html[data-theme="dark"] body[data-page="guide"] .box,
+html[data-theme="dark"] body[data-page="guide"] .step,
+html[data-theme="dark"] body[data-page="guide"] .res,
+html[data-theme="dark"] body[data-page="guide"] .rc{background:var(--card);border-color:var(--line)}
+html[data-theme="dark"] body[data-page="guide"] .mini-face{background:#1a2622}
+html[data-theme="dark"] body[data-page="guide"] .mf-name{color:var(--ink)}
+html[data-theme="dark"] body[data-page="guide"] .mf-dept,
+html[data-theme="dark"] body[data-page="guide"] .mf-stats span,
+html[data-theme="dark"] body[data-page="guide"] .mf-text,
+html[data-theme="dark"] body[data-page="guide"] .mf-flavor{color:var(--ink2)}
+html[data-theme="dark"] body[data-page="guide"] .mf-keys i{background:#2b3a34;color:var(--ink2)}
+html[data-theme="dark"] body[data-page="guide"] .mf-stats div{background:#24332d}
+html[data-theme="dark"] body[data-page="guide"] .slot{background:var(--card);border-color:var(--line);color:var(--ink2)}
+html[data-theme="dark"] body[data-page="guide"] .slot.z1{background:#3a241b;border-color:#6d4734;color:#f0b58d}
+html[data-theme="dark"] body[data-page="guide"] .slot.z2{background:#4a291c;border-color:#8f5737;color:#f5c19e}
+html[data-theme="dark"] body[data-page="guide"] .slot.z3{background:#5a2a1b;border-color:#b95f35;color:#ffd0b0}
+html[data-theme="dark"] body[data-page="guide"] .slot.base{background:#153a35;border-color:#2d736a;color:#8ff0df}
+html[data-theme="dark"] body[data-page="guide"] svg text{fill:var(--ink2)}
+html[data-theme="dark"] body[data-page="guide"] svg rect[fill="#fff"]{fill:var(--card)}
+html[data-theme="dark"] body[data-page="guide"] svg rect[stroke="#e0d8c6"]{stroke:var(--line)}
+html[data-theme="dark"] body[data-page="guide"] .chart text.lbl,
+html[data-theme="dark"] body[data-page="guide"] .chart text.lbl2,
+html[data-theme="dark"] body[data-page="guide"] .chart text.lbl3{fill:var(--dim)}
+html[data-theme="dark"] body[data-page="guide"] .theme-switch{background:var(--card)}
+html[data-theme="dark"] body[data-page="guide"] .box.tip{border-left-color:var(--acc)}
+html[data-theme="dark"] body[data-page="guide"] .box.warn{border-left-color:var(--warm)}

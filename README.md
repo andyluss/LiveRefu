@@ -11,7 +11,7 @@
 | 你是 | 只需看这些 | **可以忽略**（技术面，由维护者/工具管） |
 | --- | --- | --- |
 | **产品 / 策划 / 非技术维护者** | [`docs/`](docs/README.md)（**题材知识库索引**，从这进去）、[`games/mainline/README.md`](games/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`games/.godot-home/` |
-| **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`games/mainline/future-debris/`](games/mainline/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
+| **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`games/future-debris/`](games/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
 | **想知道现在最该做什么** | [`TODO.md`](TODO.md)（跨项目顶级待办、等待拍板、状态） | 各项目内部 `docs/` 与 TODO |
 | **只想快速看设计系统** | [`design/GUIDE.html`](design/GUIDE.html)（设计系统本身）/ [`design/HUB.html`](design/HUB.html)（项目状态） | [`design/README.md`](design/README.md) |
 | **开发 / 维护者 / 与 AI 协作** | [`rules/`](rules/README.md)（**规则的权威**）、[`AGENTS.md`](AGENTS.md)（AI 提交回报硬规范）、[`tech/`](tech/README.md)（技术详解）、[`tools/`](tools/)（检查器）、[`.github/workflows/`](.github/workflows/verify.yml)（CI） | —— |
@@ -50,7 +50,7 @@
 | [`products/`](products/README.md) | 可发布产品区：当前有 [`products/life/apps/ledger/`](products/life/apps/ledger/README.md)（慢慢记 + Life 十六款生活应用） | [`products/README.md`](products/README.md) |
 | [`games/`](games/README.md) | 游戏项目区：未来残片、Refu Game 001、明日频道；Godot 数据在 `games/.godot-home/` | [`games/README.md`](games/README.md) |
 | [`games/mainline/`](games/mainline/README.md) | **主线纲领 · 决策与讨论空间**（不是某个具体游戏）：容纳"下一款主线产品"的长期建议、裁决与讨论历史；**可容纳多个具体项目**——决策历史长期留存，具体项目可按需更替 | [`games/mainline/README.md`](games/mainline/README.md) |
-| [`games/mainline/future-debris/`](games/mainline/future-debris/README.md) | **当前主线具体项目《未来残片》**（代号 `future-debris`，正式立项）：Godot 4.7 四层结构（core/view/app/data）+ **八道验收闸门**（文件预算 / 数据契约 / 视觉 token / 工程导入 / 主题落地 / 无头自检 / 玩法行为 / 场景视图）+ **43 项玩法断言**；卡池 **T3（120 张）**、**16 关 / 8 章**、4 势力 × 2 套胜利条件、11 条规则卡；商店页素材（1080p 截图 + 预告片）已产出 | [`games/mainline/future-debris/README.md`](games/mainline/future-debris/README.md) |
+| [`games/future-debris/`](games/future-debris/README.md) | **当前主线具体项目《未来残片》**（代号 `future-debris`，正式立项）：Godot 4.7 四层结构（core/view/app/data）+ **八道验收闸门**（文件预算 / 数据契约 / 视觉 token / 工程导入 / 主题落地 / 无头自检 / 玩法行为 / 场景视图）+ **43 项玩法断言**；卡池 **T3（120 张）**、**16 关 / 8 章**、4 势力 × 2 套胜利条件、11 条规则卡；商店页素材（1080p 截图 + 预告片）已产出 | [`games/future-debris/README.md`](games/future-debris/README.md) |
 | [`games/tomorrows-channel/`](games/tomorrows-channel/README.md) | 项目《明日频道》：复古未来氛围陪伴应用（Godot 工程 + 按角色的项目文档） | [`games/tomorrows-channel/README.md`](games/tomorrows-channel/README.md) |
 | [`games/refu-game-001/`](games/refu-game-001/README.md) | 项目《Refu Game 001 · 节点防线》：卡片式塔防的**可运行实现**（Godot 4.7 竖屏；数据表与策划卷逐字段对账；无头验收 19 项） | [`games/refu-game-001/README.md`](games/refu-game-001/README.md) |
 | [`projects/website/`](projects/website/README.md) | 项目《未来档案》：复古未来主义**网站**（Bun 1.4 + Nuxt 4 + Vue 3）。**M0+M1 已交付、M2 第一阶段（Giscus）已上线并端到端验证、M3 除部署外完成**：内容适配层把 `docs/` 129 篇自动转成站点页面 + 全文检索（⌘K）+ 博客 + 多媒体画廊（99 件）+ 七纪时间轴 + SEO/OG 分享图 + 性能与无障碍实测 + Giscus 讨论区 + 自托管 SQLite 数据层与可验证备份 | [`projects/website/README.md`](projects/website/README.md) |

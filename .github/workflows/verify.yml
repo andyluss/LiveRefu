@@ -107,7 +107,7 @@ jobs:
       # 两条命令都走项目自己的 `run.sh`——**不在 CI 里复制任何检查逻辑**，
       # 否则 CI 与本地会慢慢分叉（这正是"文档/配置与代码对账"要避免的事）。
       - name: Future Debris gates 1–3 (python: file budget / data contract / visual tokens)
-        run: ./games/mainline/future-debris/run.sh check --python-only
+        run: ./games/future-debris/run.sh check --python-only
 
       - name: Future Debris gates 4–8 (godot: import / theme / boot / gameplay / scene)
         run: |
@@ -120,7 +120,7 @@ jobs:
           #    若首次在 CI 失败，优先看这两点：镜像内 `godot` 是否在 PATH、`bash` 是否存在。
           docker run --rm \
             -v "${{ github.workspace }}:/app" \
-            -w /app/games/mainline/future-debris \
+            -w /app/games/future-debris \
             --entrypoint bash \
             barichello/godot-ci:4.7.2 \
             -c './run.sh check --godot-only'

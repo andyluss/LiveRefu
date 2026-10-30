@@ -6,7 +6,7 @@
 
 | 项目 | 目录 | 说明 |
 | --- | --- | --- |
-| 未来残片 | [`mainline/future-debris/`](mainline/future-debris/README.md) | 主线 Godot 项目 |
+| 未来残片 | [`future-debris/`](future-debris/README.md) | 主线 Godot 项目 |
 | Refu Game 001 | [`refu-game-001/`](refu-game-001/README.md) | 卡片塔防垂直切片 |
 | 明日频道 | [`tomorrows-channel/`](tomorrows-channel/README.md) | 复古未来氛围陪伴应用 |
 
