@@ -2,7 +2,7 @@
 
 > 适用于 **LiveRefu 工作区根仓库的所有对话与所有 AI 代理**。
 > 本文件补充 [`rules/`](rules/README.md) 的操作约定，不替代规则权威；冲突时以用户明确指令为准，其次 [`rules/`](rules/README.md)，本文件补充“怎么回报”。
-> 最后更新：2026-10-23
+> 最后更新：2026-10-30
 
 ## 一、硬规范：有提交，回答最开头必须是提交表
 
@@ -34,6 +34,7 @@
 - 不 force push、不改写已推送历史；发布用 tag（`workspace-v*` / `design-v*` / 项目前缀）。
 - 不提交密钥、`node_modules`、`dist`、`.tmp`、`.DS_Store` 等生成物 / 临时物。
 - 检查失败不静默绕过；必须修复或在回答里报告失败原因。确需 `--no-verify`，先获得用户同意并在备注写明。
+- **生成 HTML 必须三态（硬规范）**：任何由脚本、模板或 AI 生成的 HTML 页面（HUB / GUIDE / 报告 / 看板 / 可视化 / 单页演示）必须遵守 [`R-016`](design/rules/R-016-html-theme-modes.md)：`system` / `light` / `dark` 三态，默认 `system`，顺序固定，统一 `lrds-theme`，`<head>` 预绘制，用户选择持久化，两种外观都过对比度。不得生成暗色或亮色单态页面；存量页面在实质修改或重新生成时补齐。
 
 ## 三、发布与 tag
 
@@ -68,6 +69,7 @@ git tag --points-at HEAD
 3. 有没有漏掉中间提交、tag 或未提交改动？
 4. 推送失败是否只尝试了一次，并在表里标了“推送失败”？
 5. 有没有在表前写“已完成 / 总结”等正文？
+6. 这次是否生成 HTML？生成 → 是否按 [`R-016`](design/rules/R-016-html-theme-modes.md) 做了 system / light / dark 三态、预绘制和持久化？
 
 ## 七、网络与代理（Git / curl / 联网）
 
@@ -121,3 +123,4 @@ git $P push origin main
 ## 八、本文件的变更
 
 - 本文件是硬规范；修改需用户明确同意，并在根 `CHANGELOG.md` 记录。
+- 2026-10-30：新增生成式 HTML 三态硬规范，引用 `design/rules/R-016-html-theme-modes.md`。
