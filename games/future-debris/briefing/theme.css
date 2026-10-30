@@ -61,3 +61,21 @@ html[data-theme="dark"] body[data-page="guide"] .chart text.lbl3{fill:var(--dim)
 html[data-theme="dark"] body[data-page="guide"] .theme-switch{background:var(--card)}
 html[data-theme="dark"] body[data-page="guide"] .box.tip{border-left-color:var(--acc)}
 html[data-theme="dark"] body[data-page="guide"] .box.warn{border-left-color:var(--warm)}
+
+/* GUIDE：与 HUB 同宽的导航与正文容器 */
+body[data-page="guide"] .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 90px}
+body[data-page="guide"] h2{scroll-margin-top:76px}
+.guide-topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.guide-topbar-inner{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:18px}
+.guide-brand{flex:0 0 auto;color:var(--ink);text-decoration:none;font-weight:800;font-size:16px;letter-spacing:.02em}
+.guide-brand span{color:var(--acc);font:10px var(--mono,Menlo,monospace);letter-spacing:.12em;margin-left:6px}
+.guide-links{display:flex;gap:13px;flex:1;overflow-x:auto;padding:2px 0;scrollbar-width:thin}
+.guide-links a{flex:0 0 auto;color:var(--dim);text-decoration:none;font-size:12px;border-bottom:1px solid transparent;padding:3px 0}
+.guide-links a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+body[data-page="guide"] .guide-topbar .theme-switch{margin-left:auto;margin-right:0}
+@media (max-width:720px){
+  .guide-topbar-inner{padding:8px 18px;gap:10px;flex-wrap:wrap}
+  .guide-links{order:3;flex-basis:100%;gap:12px;padding-bottom:4px}
+  .guide-brand{font-size:15px}
+  body[data-page="guide"] .wrap{padding-left:18px;padding-right:18px}
+}

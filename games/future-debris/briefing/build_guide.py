@@ -16,6 +16,7 @@
 """
 import json
 import pathlib
+import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent          # briefing/
@@ -448,7 +449,10 @@ def build():
     html = html.replace('<style>', pre + '<style>', 1)
     html = html.replace('</style>\n</head>', '</style>\n<link rel="stylesheet" href="theme.css">\n</head>', 1)
     html = html.replace('<body>', '<body data-page="guide">', 1)
-    html = html.replace('<div class="wrap">', '<div class="wrap">\n' + switch, 1)
+    nav = '''<header class="guide-topbar"><div class="guide-topbar-inner"><a class="guide-brand" href="#top">未来残片 <span>GUIDE</span></a><nav class="guide-links" aria-label="章节导航"><a href="#s01">一局</a><a href="#s02">电力与残渣</a><a href="#s03">降级区</a><a href="#s04">卡牌</a><a href="#s05">势力</a><a href="#s06">规则卡</a><a href="#s07">难度</a><a href="#s08">决策循环</a><a href="#s09">输赢</a><a href="#s10">词表</a><a href="#s11">现状</a></nav>''' + switch + '</div></header>'
+    html = html.replace('<div class="wrap">', nav + '\n<div class="wrap" id="top">', 1)
+    # 给正文 h2 加稳定的章节锚点，导航才不是死链
+    html = re.sub(r'<h2><span class="n">(\d{2})</span>', lambda m: f'<h2 id="s{m.group(1)}"><span class="n">{m.group(1)}</span>', html)
     html = html.replace('</div>\n</body>', '</div>\n<script src="theme.js" defer></script>\n</body>', 1)
     return html
 

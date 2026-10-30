@@ -43,7 +43,8 @@
 
   /* ── 顶栏与 Tab ── */
   .topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#0d1219 0%,#10161C 100%);
-    border-bottom:1px solid var(--line);padding:12px 22px 0}
+    border-bottom:1px solid var(--line)}
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 22px 0}
   .topline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
   .brand{font-size:19px;font-weight:700;letter-spacing:.5px}
   .brand .zh{color:var(--text)} .brand .en{color:var(--faint);font-weight:400;font-size:13px;margin-left:8px}
@@ -199,6 +200,7 @@
 <body data-page="hub">
 
 <header class="topbar">
+  <div class="topbar-inner">
   <div class="topline">
     <div>
       <div class="brand"><span class="zh">未来残片</span><span class="en">future-debris</span></div>
@@ -216,6 +218,7 @@
     <button role="tab" data-tab="lessons"><span class="n">06</span>踩过的坑</button>
     <button role="tab" data-tab="next"><span class="n">07</span>下一步</button>
   </nav>
+  </div>
 </header>
 
 <main>
