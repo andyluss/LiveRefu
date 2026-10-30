@@ -22,9 +22,9 @@
 
 ## 四、M1 已落地的形式化基础（可直接引用/升级）
 
-- **数据契约校验器**：`tools/check_data.py`（纯标准库）——校验 `projects/tomorrows-channel/data/tables/*.json` 是否符合 `data/schema/*.schema.json`（必填/type/enum/数值范围/嵌套 copyright）。
+- **数据契约校验器**：`tools/check_data.py`（纯标准库）——校验 `games/tomorrows-channel/data/tables/*.json` 是否符合 `data/schema/*.schema.json`（必填/type/enum/数值范围/嵌套 copyright）。
 - **pre-commit + CI**：链接校验 + 数据校验 + Godot 加载检查（见 [`tech/formalization.md`](../../tech/formalization.md)）。
-- **CUE 实验素材**：主项目已有 6 个 JSON Schema（`projects/tomorrows-channel/data/schema/`：channel / content_card / content_card_numerics / meta / mixer_track / timer）——可作 CUE 表达与对照的现成样例。
+- **CUE 实验素材**：主项目已有 6 个 JSON Schema（`games/tomorrows-channel/data/schema/`：channel / content_card / content_card_numerics / meta / mixer_track / timer）——可作 CUE 表达与对照的现成样例。
 
 ## 五、推荐的第一个实验（MVP）
 
@@ -61,6 +61,6 @@
 
 ## 八、不在实验范围（避免蔓延）
 
-- 不动主项目 `projects/tomorrows-channel/` 的现状（除非实验证明应回流）；
+- 不动主项目 `games/tomorrows-channel/` 的现状（除非实验证明应回流）；
 - 不做 Lean/Coq 定理证明（成本过高，层 D 末期再说）；
 - 不追求"完整形式化需求"，MVP 只验证"AI 产出可机器判定"。

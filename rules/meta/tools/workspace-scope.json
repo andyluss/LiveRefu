@@ -20,7 +20,7 @@
       "why": "已写专门配置，2026-10-21 实测 0 违规（82 合规），具备纳入闸门的条件"
     },
     {
-      "path": "projects/mainline",
+      "path": "games/mainline",
       "mode": "block",
       "config": "rules/meta/tools/config-projects-mainline.json",
       "why": "已按 M1/M2 建成，2026-10-08 实测 0 违规，具备纳入闸门的条件"
@@ -43,7 +43,7 @@
       "why": "用户裁决明确豁免：题材知识库自成体系（编号卷 + 各专题卷），以**内容**为目的而非工程结构；强套 M1/M2 类型词表需大规模重构而收益极低"
     },
     {
-      "path": "studio001",
+      "path": "archive/studio001",
       "mode": "exempt",
       "why": "用户裁决明确豁免：已搁置的历史资料，**刻意冻结**——检查它会迫使修改\"当时的记录\"，与工作区\"保留当时的判断\"原则冲突"
     },
@@ -54,13 +54,13 @@
       "why": "已写专门配置，2026-10-08 实测 0 违规（21 合规）"
     },
     {
-      "path": "projects/tomorrows-channel",
+      "path": "games/tomorrows-channel",
       "mode": "block",
       "config": "rules/meta/tools/config-tomorrows-channel.json",
       "why": "已写专门配置，2026-10-08 实测 0 违规（29 合规）"
     },
     {
-      "path": "projects/refu-game-001",
+      "path": "games/refu-game-001",
       "mode": "block",
       "config": "rules/meta/tools/config-refu-game-001.json",
       "why": "已写专门配置，2026-10-08 实测 0 违规（18 合规）"

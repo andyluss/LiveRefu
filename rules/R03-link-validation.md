@@ -50,10 +50,10 @@ git config core.hooksPath tools/hooks
 | 暂存涉及 | 检查 | 脚本 |
 | --- | --- | --- |
 | `*.md` | 内部相对链接（本规则） | [`tools/check_links.ts`](../tools/check_links.ts) |
-| `projects/tomorrows-channel/data/{tables,schema}/` | 数据表 schema 契约（[R04](R04-data-validation.md)） | [`tools/check_data.ts`](../tools/check_data.ts) |
+| `games/tomorrows-channel/data/{tables,schema}/` | 数据表 schema 契约（[R04](R04-data-validation.md)） | [`tools/check_data.ts`](../tools/check_data.ts) |
 | `lab/formal-system/` | 元规则结构 M1+M2 / 演进 M3 / `STRUCTURE.md` M4 | `lab/formal-system/concerns/meta-rules/*.ts` |
 | `rules/` | 规则目录结构 M1+M2 + 规则演进 M3（覆盖 M 与 R） | [`rules/meta/tools/meta_rules_check.ts`](../rules/meta/tools/meta_rules_check.ts)、[`rules/meta/evolution/rule_evolution_check.ts`](../rules/meta/evolution/rule_evolution_check.ts) |
-| `projects/refu-game-001/docs/design/`、`projects/refu-game-001/tools/sim_refu_game_001.ts` | Refu Game 001 难度模型自检/带位 | [`projects/refu-game-001/tools/sim_refu_game_001.ts`](../projects/refu-game-001/tools/sim_refu_game_001.ts) |
+| `games/refu-game-001/docs/design/`、`games/refu-game-001/tools/sim_refu_game_001.ts` | Refu Game 001 难度模型自检/带位 | [`games/refu-game-001/tools/sim_refu_game_001.ts`](../games/refu-game-001/tools/sim_refu_game_001.ts) |
 
 > `rules/` 两项为目录级检查（扫全树），所以触发条件是“暂存是否涉及 `rules/`”。
 

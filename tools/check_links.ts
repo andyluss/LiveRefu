@@ -9,8 +9,8 @@ import * as path from "node:path";
  *
  * 用法：
  *     node tools/check_links.ts              # 扫描全部 md
- *     node tools/check_links.ts --sub studio001 # 只扫描 studio001/
- *     node tools/check_links.ts --files README.md studio001/README.md
+ *     node tools/check_links.ts --sub archive/studio001 # 只扫描 archive/studio001/
+ *     node tools/check_links.ts --files README.md archive/studio001/README.md
  *     node tools/check_links.ts -v           # 连同"有效链接"一起打印
  */
 

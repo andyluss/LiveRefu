@@ -1,6 +1,6 @@
 {
-  "_comment": "M1+M2 判定配置 · projects/mainline（主线纲领 + 其下的具体项目）。实测 0 违规，故纳入 block。",
-  "concern": "projects/mainline",
+  "_comment": "M1+M2 判定配置 · games/mainline（主线纲领 + 其下的具体项目）。实测 0 违规，故纳入 block。",
+  "concern": "games/mainline",
   "root": ".",
   "root_docs": [
     "README.md",

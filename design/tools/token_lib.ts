@@ -931,9 +931,9 @@ export function buildAll(designRoot = DESIGN_ROOT, workspaceRoot = WORKSPACE_ROO
       label: 'projects/livefab/portal/src/assets/tokens.generated.css',
     },
     {
-      path: join(workspaceRoot, 'projects/mainline/future-debris/game/data/tokens.json'),
+      path: join(workspaceRoot, 'games/mainline/future-debris/game/data/tokens.json'),
       content: godot,
-      label: 'projects/mainline/future-debris/game/data/tokens.json',
+      label: 'games/mainline/future-debris/game/data/tokens.json',
     },
   ]
 }

@@ -42,11 +42,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = find_workspace_root()
 DEFAULT_OUT = os.path.join(ROOT, "lab", "formal-system", "concerns", "visual-fallback", "viz", "consistency-heatmap.html")
 
-SCAN_DIRS = ["doc", "projects", "studio001", "tech", "lab", "tools"]
+SCAN_DIRS = ["doc", "projects", "games", "archive", "tech", "lab", "tools"]
 SKIP_DIRS = {".git", "target", "node_modules"}
 
 # 契约项: (显示名, 字段锚, 取值正则, 权威值)
-# 权威值来自 projects/tomorrows-channel/data/tables/*.json 或本表已冻结的映射约定。
+# 权威值来自 games/tomorrows-channel/data/tables/*.json 或本表已冻结的映射约定。
 # 取值之间允许 = : ： | ｜(markdown 表格) 或空白。
 SEP = r"\s*[=:：|｜]?\s*"
 ENTITIES = [

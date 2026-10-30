@@ -10,7 +10,7 @@ __pycache__/
 .godot/
 
 # Godot 用户数据目录（game/run.sh 把 HOME 指到这里，避免写 ~/Library）
-.godot-home/
+games/.godot-home/
 
 # 独立子仓库（各自有自己的 .git 与远程，见 indie/README.md）
 # 忽略而非提交，避免父仓库把它误存成 gitlink（嵌入式仓库）

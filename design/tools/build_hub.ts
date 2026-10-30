@@ -155,9 +155,9 @@ function styleCards(tokens: TokenMap): StyleCard[] {
       meta.styleCard ?? `SC-${name.toUpperCase()}-${era}-v1`
     const projections: Record<string, string> = {
       'future-archive': '../projects/website/app/assets/tokens.generated.css',
-      'future-debris': '../projects/mainline/future-debris/game/data/tokens.json',
+      'future-debris': '../games/mainline/future-debris/game/data/tokens.json',
       livefab: '../projects/livefab/portal/src/assets/tokens.generated.css',
-      'tomorrows-channel': '../projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres',
+      'tomorrows-channel': '../games/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres',
     }
     cards.push({
       name: meta.name ?? name,
@@ -699,8 +699,8 @@ function generate(): string {
       <tbody>
         <tr><td><a href="../projects/website/README.md">未来档案</a></td><td>Web</td><td><span class="chip ok">已发布 0.29.0</span></td><td>Web token + 组件层（button/panel/field）</td></tr>
         <tr><td><a href="../projects/livefab/README.md">LiveFab</a></td><td>Web</td><td><span class="chip ok">已发布 0.4.0</span></td><td>Web token + 组件层（button/panel）</td></tr>
-        <tr><td><a href="../projects/mainline/future-debris/README.md">未来残片</a></td><td>Godot</td><td><span class="chip ok">已发布 0.22.0</span></td><td>Godot token → Theme</td></tr>
-        <tr><td><a href="../projects/tomorrows-channel/README.md">明日频道</a></td><td>Godot</td><td><span class="chip acc">风格卡已登记 0.2.5</span></td><td>ChannelSkin .tres ↔ token 对账</td></tr>
+        <tr><td><a href="../games/mainline/future-debris/README.md">未来残片</a></td><td>Godot</td><td><span class="chip ok">已发布 0.22.0</span></td><td>Godot token → Theme</td></tr>
+        <tr><td><a href="../games/tomorrows-channel/README.md">明日频道</a></td><td>Godot</td><td><span class="chip acc">风格卡已登记 0.2.5</span></td><td>ChannelSkin .tres ↔ token 对账</td></tr>
         <tr><td>App kit</td><td>iOS / Android</td><td><span class="chip warn">起步，无消费者</span></td><td>平台无关 app/tokens.json</td></tr>
         <tr><td>Refu Game 001</td><td>Godot</td><td><span class="chip">冻结</span></td><td>不迁移；若复活按新产品接入</td></tr>
       </tbody>
@@ -794,15 +794,15 @@ function generate(): string {
       <a class="shot" href="docs/shots/website-home.png"><img src="docs/shots/website-home.png" alt="未来档案首页"><p><b>未来档案</b> · Web · 0.29.0 ｜ 4 页 / 53 步 Tab / 0 缺失焦点 · 点击看全图</p></a>
       <a class="shot" href="docs/shots/livefab-home.png"><img src="docs/shots/livefab-home.png" alt="LiveFab 首页"><p><b>LiveFab</b> · Web · 0.4.0 ｜ 服务卡片与 CTA 已使用组件层 · 点击看全图</p></a>
       <a class="shot" href="docs/shots/website-search-search.png"><img src="docs/shots/website-search-search.png" alt="网站搜索弹窗"><p><b>搜索弹窗</b> · Meta+K 打开；输入框焦点使用独立蓝 · 点击看全图</p></a>
-      <a class="shot" href="../projects/mainline/future-debris/docs/shots/theme_preview.png"><img src="../projects/mainline/future-debris/docs/shots/theme_preview.png" alt="未来残片主题预览"><p><b>未来残片</b> · Godot · 0.22.0 ｜ token → Theme，15 项断言 · 点击看全图</p></a>
+      <a class="shot" href="../games/mainline/future-debris/docs/shots/theme_preview.png"><img src="../games/mainline/future-debris/docs/shots/theme_preview.png" alt="未来残片主题预览"><p><b>未来残片</b> · Godot · 0.22.0 ｜ token → Theme，15 项断言 · 点击看全图</p></a>
     </div>
     <table>
       <thead><tr><th>产品</th><th>介质</th><th>版本</th><th>证据</th></tr></thead>
       <tbody>
         <tr><td>未来档案</td><td>Nuxt / Web</td><td>0.29.0</td><td><a href="../projects/website/README.md">README</a> · <a href="docs/09_产品走查_v0.2.md">走查</a></td></tr>
         <tr><td>LiveFab</td><td>Astro / Web</td><td>0.4.0</td><td><a href="../projects/livefab/README.md">README</a> · <a href="docs/09_产品走查_v0.2.md">走查</a></td></tr>
-        <tr><td>未来残片</td><td>Godot</td><td>0.22.0</td><td><a href="../projects/mainline/future-debris/README.md">README</a> · <a href="../projects/mainline/future-debris/docs/shots/README.md">截图</a></td></tr>
-        <tr><td>明日频道</td><td>Godot</td><td>0.2.5</td><td><a href="docs/07_风格卡登记.md">风格卡</a> · <a href="../projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres">.tres</a></td></tr>
+        <tr><td>未来残片</td><td>Godot</td><td>0.22.0</td><td><a href="../games/mainline/future-debris/README.md">README</a> · <a href="../games/mainline/future-debris/docs/shots/README.md">截图</a></td></tr>
+        <tr><td>明日频道</td><td>Godot</td><td>0.2.5</td><td><a href="docs/07_风格卡登记.md">风格卡</a> · <a href="../games/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres">.tres</a></td></tr>
         <tr><td>App kit</td><td>iOS / Android</td><td>未发布</td><td><a href="kits/app/README.md">规范</a> · <a href="tokens/dist/app/tokens.json">tokens.json</a>（无真实消费者）</td></tr>
       </tbody>
     </table>

@@ -29,7 +29,7 @@ import {
 
 const SKIN = join(
   WORKSPACE_ROOT,
-  'projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres',
+  'games/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres',
 )
 const TOKENS_FILE = join(
   DESIGN_ROOT,

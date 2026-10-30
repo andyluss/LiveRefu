@@ -20,8 +20,8 @@ if (!fs.existsSync(path.join(ROOT, ".git"))) {
   ROOT = HERE;
 }
 
-const SCHEMA_DIR = "projects/tomorrows-channel/data/schema";
-const TABLES_DIR = "projects/tomorrows-channel/data/tables";
+const SCHEMA_DIR = "games/tomorrows-channel/data/schema";
+const TABLES_DIR = "games/tomorrows-channel/data/tables";
 
 // os.path.join(ROOT, x) 在 x 为绝对路径时返回 x 本身(而非拼接)
 function joinRoot(p: string): string {

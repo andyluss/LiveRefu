@@ -29,7 +29,7 @@
 示例：
 
 ```text
-docs(studio001): 新增数值策划A初始文档
+docs(archive/studio001): 新增数值策划A初始文档
 feat(livedso)!: 移除旧 token 投影
 ```
 
@@ -51,14 +51,14 @@ feat(livedso)!: 移除旧 token 投影
 
 ### scope（可选，括号内）
 
-本次改动涉及的范围，如 `docs(studio001)`、`docs(retro-futurism)`。scope 也保持英文/既有标识符，不翻译。
+本次改动涉及的范围，如 `docs(archive/studio001)`、`docs(retro-futurism)`。scope 也保持英文/既有标识符，不翻译。
 
 ### subject（必填）
 
 - 简短描述，用祈使句或简洁陈述；
 - **一律简体中文**；
 - 不以句号结尾；
-- 示例：`docs(studio001): 新增数值策划A初始文档`。
+- 示例：`docs(archive/studio001): 新增数值策划A初始文档`。
 
 ### body / footer
 

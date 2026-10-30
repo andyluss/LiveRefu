@@ -7,7 +7,7 @@
 #   3. 元规则结构/演进状态/STRUCTURE.md（暂存涉及 lab/formal-system 时, 交 meta-rules/*.ts）。
 #   4. 规则目录 rules/ 的元规则结构 + 规则演进状态（暂存涉及 rules/ 时, 交 rules/meta/*.ts）。
 #   5. Refu Game 001 难度模型：自检 + 章节带位 + 远征节点带位（暂存涉及 refu-game-001 或模拟脚本时,
-#      交 projects/refu-game-001/tools/sim_refu_game_001.ts；数值一改就会触发）。
+#      交 games/refu-game-001/tools/sim_refu_game_001.ts；数值一改就会触发）。
 #   6. 变更日志格式：版本头/时间单调/标准类目，以及**版本号与 git tag 是否对得上**
 #      （暂存涉及根 CHANGELOG.md 或 projects/livefab/CHANGELOG.md 时，交 tools/check_changelog.ts）。
 #   6. 变更日志格式：版本头/时间单调/标准类目，以及**版本号与 git tag 是否对得上**
@@ -50,7 +50,7 @@ fi
 # ---- 1.5) 设计系统四道闸门（token / 对比度 / 裸色值 / 生成物）----
 # 只在暂存涉及设计系统或其两个试点消费面时跑，避免无关提交被拖慢。
 DESIGN_CHECK="$GIT_ROOT/design/tools/check.sh"
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(design/|projects/website/app/assets/(theme\.css|tokens\.generated\.css)|projects/mainline/future-debris/game/data/tokens\.json)'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(design/|projects/website/app/assets/(theme\.css|tokens\.generated\.css)|games/mainline/future-debris/game/data/tokens\.json)'; then
   if [ -f "$DESIGN_CHECK" ]; then
     echo "[pre-commit:design] 暂存涉及设计系统，跑四道闸门（含自检）..." >&2
     if bash "$DESIGN_CHECK" >&2; then
@@ -72,7 +72,7 @@ if [ ! -f "$DATA_SCRIPT" ]; then
 exit 0
 fi
 # 只要本次暂存涉及 data/ 下任何表(json/schema), 就跑全量数据校验(数据表彼此多依赖)
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^projects/tomorrows-channel/data/(tables|schema)/'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/tomorrows-channel/data/(tables|schema)/'; then
   echo "[pre-commit:check-data] 暂存涉及数据表变更，校验 schema 契约..." >&2
   if run_ts "$DATA_SCRIPT" >&2; then
     echo "[pre-commit:check-data] 通过。" >&2
@@ -155,8 +155,8 @@ if git diff --cached --name-only --diff-filter=ACMR | grep -q '^rules/'; then
 fi
 
 # ---- 5) Refu Game 001 难度模型校验（暂存涉及该卷或模拟脚本时）----
-SIM_SCRIPT="$GIT_ROOT/projects/refu-game-001/tools/sim_refu_game_001.ts"
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(projects/refu-game-001/docs/design/|projects/refu-game-001/tools/sim_refu_game_001\.ts)'; then
+SIM_SCRIPT="$GIT_ROOT/games/refu-game-001/tools/sim_refu_game_001.ts"
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(games/refu-game-001/docs/design/|games/refu-game-001/tools/sim_refu_game_001\.ts)'; then
   if [ ! -f "$SIM_SCRIPT" ]; then
     echo "[pre-commit:refu-sim] 未找到 ${SIM_SCRIPT}，跳过难度模型校验。" >&2
   else
@@ -173,7 +173,7 @@ if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(projects/refu-
       echo "[pre-commit:refu-sim] 通过。" >&2
     else
       echo "[pre-commit:refu-sim] 难度模型自检或带位校验失败，已拦截提交。" >&2
-      echo "  复核: node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-bands --n 20000" >&2
+      echo "  复核: node games/refu-game-001/tools/sim_refu_game_001.ts --verify-bands --n 20000" >&2
       exit 1
     fi
   fi
@@ -226,8 +226,8 @@ fi
 # ---- 5.9) HUB 页面与工程对账（防"给人看的页面"悄悄过期）----
 # HUB.html 里的数字（120 卡 / 16 关 / 43 用例…）一定会过期，而"页面写 120、实际已 150"
 # 这种偏差没有任何东西会发现。只要改动 HUB 或它的数据来源，就重新对账。
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^projects/mainline/future-debris/(HUB\.html|GUIDE\.html|game/data/tables/|run\.sh|game/scenes/tools/cases/)'; then
-  HUB_CHECK="projects/mainline/future-debris/tools/check_hub.py"
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/mainline/future-debris/(HUB\.html|GUIDE\.html|game/data/tables/|run\.sh|game/scenes/tools/cases/)'; then
+  HUB_CHECK="games/mainline/future-debris/tools/check_hub.py"
   if [ -f "$HUB_CHECK" ]; then
     echo "[pre-commit:hub] HUB 页面与工程对账..." >&2
     if python3 "$HUB_CHECK" >&2; then
@@ -277,10 +277,10 @@ for lg in $STAGED_LOGS; do
     projects/livefab/CHANGELOG.md)          prefix="livefab-v" ;;
     projects/website/CHANGELOG.md)          prefix="website-v" ;;
     lab/formal-system/CHANGELOG.md)         prefix="formal-system-v" ;;
-    projects/mainline/future-debris/CHANGELOG.md) prefix="future-debris-v" ;;
-    projects/mainline/CHANGELOG.md)         prefix="mainline-v" ;;
-    projects/refu-game-001/CHANGELOG.md)    prefix="refu-game-001-v" ;;
-    projects/tomorrows-channel/CHANGELOG.md) prefix="tomorrows-channel-v" ;;
+    games/mainline/future-debris/CHANGELOG.md) prefix="future-debris-v" ;;
+    games/mainline/CHANGELOG.md)         prefix="mainline-v" ;;
+    games/refu-game-001/CHANGELOG.md)    prefix="refu-game-001-v" ;;
+    games/tomorrows-channel/CHANGELOG.md) prefix="tomorrows-channel-v" ;;
     design/CHANGELOG.md)                  prefix="design-v" ;;
     *) prefix="" ;;
   esac

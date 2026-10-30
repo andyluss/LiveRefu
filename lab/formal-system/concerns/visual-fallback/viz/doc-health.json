@@ -355,22 +355,22 @@
   "top_open": [
     {
       "title": "回执：GDD《明日频道》频道滤镜可行性切片与性能初估（v0.1）",
-      "rel": "projects/tomorrows-channel/docs/graphics-programmer-a/04_response-gdd.md",
+      "rel": "games/tomorrows-channel/docs/graphics-programmer-a/04_response-gdd.md",
       "open": 23
     },
     {
       "title": "回执 · 《明日频道》M1 原型范围与平台选型回执（回执 v0.1）",
-      "rel": "projects/tomorrows-channel/docs/lead-programmer/04_response-gdd.md",
+      "rel": "games/tomorrows-channel/docs/lead-programmer/04_response-gdd.md",
       "open": 16
     },
     {
       "title": "开发计划会意见 · 主策划（M1 单频道原型 & M2 三频道）",
-      "rel": "projects/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-lead-designer.md",
+      "rel": "games/tomorrows-channel/plans/meetings/20260908-1202-devplan/20260908-1202-devplan-lead-designer.md",
       "open": 15
     },
     {
       "title": "M1 渲染切片：磁带频道「渲染器选择」对照结论 + 磁带滤镜 2D 后处理性能预算（初估 v0.1）",
-      "rel": "projects/tomorrows-channel/docs/graphics-programmer-a/05_m1-render-slice.md",
+      "rel": "games/tomorrows-channel/docs/graphics-programmer-a/05_m1-render-slice.md",
       "open": 10
     },
     {
@@ -380,17 +380,17 @@
     },
     {
       "title": "里程碑与原型计划（M1 基线 v0.2）",
-      "rel": "projects/tomorrows-channel/plans/milestones/20260906-1534-milestone-plan.md",
+      "rel": "games/tomorrows-channel/plans/milestones/20260906-1534-milestone-plan.md",
       "open": 8
     },
     {
       "title": "技术选型与工程规范（M1 基线 v0.2）",
-      "rel": "projects/tomorrows-channel/docs/lead-programmer/01_tech-stack-draft.md",
+      "rel": "games/tomorrows-channel/docs/lead-programmer/01_tech-stack-draft.md",
       "open": 7
     },
     {
       "title": "M1 磁带频道美术基线：最小可辨关键氛围（基线 v0.1）",
-      "rel": "projects/tomorrows-channel/docs/lead-artist/05_m1-tape-baseline.md",
+      "rel": "games/tomorrows-channel/docs/lead-artist/05_m1-tape-baseline.md",
       "open": 6
     },
     {
@@ -400,7 +400,7 @@
     },
     {
       "title": "game · Godot 程序工程",
-      "rel": "projects/tomorrows-channel/game/README.md",
+      "rel": "games/tomorrows-channel/game/README.md",
       "open": 5
     }
   ]

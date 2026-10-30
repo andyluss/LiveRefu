@@ -12,7 +12,7 @@
  *   design/tokens/dist/godot/tokens.json
  *   design/tokens/dist/docs/tokens.md
  *   projects/website/app/assets/tokens.generated.css
- *   projects/mainline/future-debris/game/data/tokens.json
+ *   games/mainline/future-debris/game/data/tokens.json
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'

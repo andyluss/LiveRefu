@@ -108,10 +108,10 @@ design/
 
 | 既有资产 | 本系统继承什么 | 不继承什么 |
 | --- | --- | --- |
-| [《未来残片》视觉 token 契约](../projects/mainline/future-debris/docs/04_视觉语言与设计token.md) | **语法层 / 风格卡**两层结构、语义命名、对比度闸门、检查器自检 | 游戏专属的 `--power` / `--residue`（已下沉为产品语义） |
+| [《未来残片》视觉 token 契约](../games/mainline/future-debris/docs/04_视觉语言与设计token.md) | **语法层 / 风格卡**两层结构、语义命名、对比度闸门、检查器自检 | 游戏专属的 `--power` / `--residue`（已下沉为产品语义） |
 | [《未来档案》主题 CSS](../projects/website/app/assets/theme.css) | 已验证的暗色阅读配色、可关闭 CRT、系统 CJK 字体策略 | 与游戏重复的第二套色值（已改为消费生成 token） |
 | [LiveFab L9 复用纪律](../projects/livefab/docs/01_定位与角色.md) | “复用纪律、不复用内容”、对比度闸门、验收编排器思路 | 内联复制 token 的做法（v0.2 已迁移） |
-| [《明日频道》磁带皮肤](../projects/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres) | 暖色材质与光照作为**风格卡**的合法差异 | 散落在 `.tres` 里、无法对账的裸色值（v0.2 登记） |
+| [《明日频道》磁带皮肤](../games/tomorrows-channel/game/scenes/channel/skins/tape_channel_skin.tres) | 暖色材质与光照作为**风格卡**的合法差异 | 散落在 `.tres` 里、无法对账的裸色值（v0.2 登记） |
 
 ## 七、当前状态与下一步
 
@@ -149,7 +149,7 @@ design/
 bash design/tools/check.sh                                   # 四道闸门 + 自检
 node design/tools/build_tokens.ts # 改完 token 后重新生成
 node design/tools/check_no_raw_values.ts --all  # 未迁移裸值报告
-cd projects/mainline/future-debris && ./run.sh contrast && ./run.sh theme
+cd games/mainline/future-debris && ./run.sh contrast && ./run.sh theme
 cd projects/website && bun run tools/verify-contrast.ts && bun run build
 node design/tools/check_tomorrows_channel_skin.ts
 ```
@@ -167,6 +167,6 @@ node design/tools/check_tomorrows_channel_skin.ts
 ## 八、相关
 
 - 工作区规则：[`rules/`](../rules/README.md) ｜ 变更日志：[`CHANGELOG.md`](../CHANGELOG.md) ｜ 技术详解：[`tech/`](../tech/README.md)
-- 视觉方向的上游决策：[`projects/mainline/docs/05_美术与技术方向.md`](../projects/mainline/docs/05_美术与技术方向.md)（Q6 已裁决：语法层 + 风格卡）
-- 决策体例参考：[`projects/mainline/docs/00_决策总表.md`](../projects/mainline/docs/00_决策总表.md)（推荐 / 代价 / 推翻条件 / 不回删原文）
+- 视觉方向的上游决策：[`games/mainline/docs/05_美术与技术方向.md`](../games/mainline/docs/05_美术与技术方向.md)（Q6 已裁决：语法层 + 风格卡）
+- 决策体例参考：[`games/mainline/docs/00_决策总表.md`](../games/mainline/docs/00_决策总表.md)（推荐 / 代价 / 推翻条件 / 不回删原文）
 - 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md)、[`docs/08_组件落地_v0.2.md`](docs/08_组件落地_v0.2.md)、[`docs/09_产品走查_v0.2.md`](docs/09_产品走查_v0.2.md)、[`docs/10_皮肤收口_v0.2.md`](docs/10_皮肤收口_v0.2.md)、[`docs/11_App_kit_v0.2.md`](docs/11_App_kit_v0.2.md) ｜ 风格卡：[`docs/07_风格卡登记.md`](docs/07_风格卡登记.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)

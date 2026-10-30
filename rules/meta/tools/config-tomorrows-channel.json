@@ -1,6 +1,6 @@
 {
-  "_comment": "M1+M2 判定配置 · projects/tomorrows-channel（《明日频道》，复古未来氛围陪伴应用）。",
-  "concern": "projects/tomorrows-channel",
+  "_comment": "M1+M2 判定配置 · games/tomorrows-channel（《明日频道》，复古未来氛围陪伴应用）。",
+  "concern": "games/tomorrows-channel",
   "root": ".",
   "root_docs": ["README.md", "CHANGELOG.md"],
   "type_vocab": ["art", "assets", "data", "docs", "game", "plans", "references"],

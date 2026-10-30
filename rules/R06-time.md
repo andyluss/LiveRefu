@@ -48,7 +48,7 @@
    该列由 [M3 演进检查器](meta/evolution/rule_evolution_check.ts) 按固定正则解析，加了时分反而会让该行**被静默跳过**。
    变更日志的**版本头**则必须带时分（`## [x.y.z] - YYYY-MM-DD HH:MM`，见 [R05](R05-changelog.md)）。
 6. **版本头与标签**：[R05](R05-changelog.md) 的配套纪律——版本头时间 = 该版本 tag 指向提交的**作者时间**；打 tag 后由检查器核对。
-7. **机器校验**：由 [`tools/check_time_naming.ts`](../tools/check_time_naming.ts) 校验带时间戳的文件名格式（覆盖 `projects/mainline/docs/discussions/` 与 `**/plans/**`），接入 pre-commit 与 CI。**约定靠人记必然退化**。
+7. **机器校验**：由 [`tools/check_time_naming.ts`](../tools/check_time_naming.ts) 校验带时间戳的文件名格式（覆盖 `games/mainline/docs/discussions/` 与 `**/plans/**`），接入 pre-commit 与 CI。**约定靠人记必然退化**。
 
 ## 三、备选（被放弃的选项）
 

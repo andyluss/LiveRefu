@@ -351,5 +351,5 @@
 ### 待推进（下一步）
 
 - 在 `prototypes/data-validator/` 建 Rust crate（`cargo init`），实现等价校验逻辑；`cargo clippy` 零警告；补属性测试（proptest）。
-- 用主项目现成 schema 样例驱动校验（`projects/tomorrows-channel/data/schema/*.schema.json`），验证能拦截 4 类非法数据（越上限 / 低于下限 / 类型错 / 负值）。
+- 用主项目现成 schema 样例驱动校验（`games/tomorrows-channel/data/schema/*.schema.json`），验证能拦截 4 类非法数据（越上限 / 低于下限 / 类型错 / 负值）。
 - 决策与教训同步记入 `notes/`。

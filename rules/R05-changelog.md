@@ -25,7 +25,7 @@
 ## 三、文件与位置
 
 - **工作区根**：`CHANGELOG.md`（工作区级变更）。
-- **项目/实验根**：各自根目录的 `CHANGELOG.md`（如 `projects/tomorrows-channel/CHANGELOG.md`、`lab/formal-system/CHANGELOG.md`）。
+- **项目/实验根**：各自根目录的 `CHANGELOG.md`（如 `games/tomorrows-channel/CHANGELOG.md`、`lab/formal-system/CHANGELOG.md`）。
 - 变更日志是普通 Markdown：内部链接必须按 [R03](R03-link-validation.md) 写正确深度，不享受链接校验豁免。
 
 ## 四、结构模板

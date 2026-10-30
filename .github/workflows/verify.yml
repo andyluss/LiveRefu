@@ -5,7 +5,7 @@ name: Verify
 #   lab/formal-system/tech/rules/T01-default-ts-scripts.md）：
 #   1. Markdown 相对链接是否失效 (tools/check_links.ts)
 #   2. 数据表是否符合 schema 契约 (tools/check_data.ts)
-#   3. Refu Game 001 难度模型自检与章节带位校验 (projects/refu-game-001/tools/sim_refu_game_001.ts --selftest / --verify-bands)
+#   3. Refu Game 001 难度模型自检与章节带位校验 (games/refu-game-001/tools/sim_refu_game_001.ts --selftest / --verify-bands)
 #   4. 元规则结构(M1+M2)/演进状态(M3)/STRUCTURE.md(M4) (lab/formal-system/concerns/meta-rules/*.ts)
 #   5. 规则目录 rules/ 的结构(M1+M2) 与规则演进状态(M3, 覆盖元规则 M 与具体规则 R) (rules/meta/*.ts)
 #   6. 刷新入口页（hub.ts --run 一键重新生成全部可视面）
@@ -53,20 +53,20 @@ jobs:
         run: node tools/check_data.ts -v
 
       - name: Refu Game 001 difficulty model self-test (TS)
-        run: node projects/refu-game-001/tools/sim_refu_game_001.ts --selftest
+        run: node games/refu-game-001/tools/sim_refu_game_001.ts --selftest
 
       - name: Refu Game 001 difficulty band check (TS)
-        run: node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-bands --n 20000
+        run: node games/refu-game-001/tools/sim_refu_game_001.ts --verify-bands --n 20000
 
       - name: Refu Game 001 content checks (TS)
         run: |
-          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-rogue --n 20000
-          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-faction
-          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-seed
-          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-anti-air
-          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-air-matrix
-          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-air-mix
-          node projects/refu-game-001/tools/sim_refu_game_001.ts --verify-pmod
+          node games/refu-game-001/tools/sim_refu_game_001.ts --verify-rogue --n 20000
+          node games/refu-game-001/tools/sim_refu_game_001.ts --verify-faction
+          node games/refu-game-001/tools/sim_refu_game_001.ts --verify-seed
+          node games/refu-game-001/tools/sim_refu_game_001.ts --verify-anti-air
+          node games/refu-game-001/tools/sim_refu_game_001.ts --verify-air-matrix
+          node games/refu-game-001/tools/sim_refu_game_001.ts --verify-air-mix
+          node games/refu-game-001/tools/sim_refu_game_001.ts --verify-pmod
 
       - name: Meta-rules structure check (M1+M2, TS)
         run: node lab/formal-system/concerns/meta-rules/tools/meta_rules_check.ts
@@ -95,7 +95,7 @@ jobs:
           # 直接用 runner 自带的 docker 跑镜像(不依赖第三方 Action)；镜像含 Godot 4.7.2 于 /usr/local/bin/godot。
           docker run --rm \
             -v "${{ github.workspace }}:/app" \
-            -w /app/projects/tomorrows-channel/game \
+            -w /app/games/tomorrows-channel/game \
             -e HOME=/tmp/gdhome \
             barichello/godot-ci:4.7.2 \
             godot --headless --path . --quit-after 5
@@ -107,12 +107,12 @@ jobs:
       # 两条命令都走项目自己的 `run.sh`——**不在 CI 里复制任何检查逻辑**，
       # 否则 CI 与本地会慢慢分叉（这正是"文档/配置与代码对账"要避免的事）。
       - name: Future Debris gates 1–3 (python: file budget / data contract / visual tokens)
-        run: ./projects/mainline/future-debris/run.sh check --python-only
+        run: ./games/mainline/future-debris/run.sh check --python-only
 
       - name: Future Debris gates 4–8 (godot: import / theme / boot / gameplay / scene)
         run: |
           # `run.sh` 靠**上溯查找 .git** 定位工作区根（不是数 `..` 层数），
-          # 因此挂载到 /app 后它会自动把 HOME 指到 /app/.godot-home（可写）。
+          # 因此挂载到 /app 后它会自动把 HOME 指到 /app/games/.godot-home（可写）。
           # `--godot-only` 不触碰 python，故容器无需安装 python3。
           # 显式 `--entrypoint bash`：不依赖镜像默认 entrypoint 的语义
           # （同一 workflow 里另一处直接用 `godot …` 作命令，两种写法混用容易踩坑）。
@@ -120,7 +120,7 @@ jobs:
           #    若首次在 CI 失败，优先看这两点：镜像内 `godot` 是否在 PATH、`bash` 是否存在。
           docker run --rm \
             -v "${{ github.workspace }}:/app" \
-            -w /app/projects/mainline/future-debris \
+            -w /app/games/mainline/future-debris \
             --entrypoint bash \
             barichello/godot-ci:4.7.2 \
             -c './run.sh check --godot-only'

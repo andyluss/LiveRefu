@@ -13,7 +13,7 @@
   - 工作区**具体规则**（R 系列）→ [`../`](../README.md)（即 `rules/`，如 [R01 文档约定](../R01-docs-convention.md)、[R05 变更日志记录约定](../R05-changelog.md)）；
   - **元规则**（M 系列，本目录）→ `rules/meta/`；
   - **技术详解 / 实施说明**（**非规则权威**；具体规则的正文权威在 `rules/R*.md`）→ [`../../tech/`](../../tech/README.md)（docs-convention / git-convention / changelog-convention / formalization / hooks-readme）；
-  - **项目规则** → `projects/<项目>/`（如 `docs/`、项目 [`README.md`](../../projects/tomorrows-channel/README.md)）。
+  - **项目规则** → `projects/<项目>/`（如 `docs/`、项目 [`README.md`](../../games/tomorrows-channel/README.md)）。
 - 每条规则一个**唯一 id**，变更写入其"演进历史"表（见 [M3](M3-rule-evolution.md)）。
 
 **权衡**：成文要花一点时间，但换来"可引用、可核对、可演进"，且 AI/人都能依据同一条规则行事。

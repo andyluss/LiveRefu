@@ -4,12 +4,20 @@
 > 工作区级变更仍记根 [`CHANGELOG.md`](../CHANGELOG.md)；本文件只记知识库内容。
 > 本文件由根日志的 docs 相关条目迁入；原条目保留原文，版本时间见条目说明。
 
+## [0.2.0] - 2026-10-30 13:02
+
+### 变更
+
+- **朋克五卷并入《复古未来主义论文集》附录**：`docs/punks/` 的 atompunk / biopunk / cyberpunk / dieselpunk / steampunk 五卷迁入 `附录_*朋克卷/`；完整正文保留，旧精简原子朋克附录由完整原卷替代，原卷首索引删除并以 [`附录_朋克五卷/README.md`](retro-futurism/附录_朋克五卷/README.md) 说明迁移、去重与差异；
+- 合订本迁入 `docs/retro-futurism/合订本/朋克五卷/`，总索引迁入 `docs/retro-futurism/朋克五卷_总索引与字数统计.md`；
+- 知识库入口与卷首索引同步。
+
 ## [0.1.0] - 2026-10-27 21:13
 
 ### 变更
 
-- **Refu Game 001 策划卷迁入项目文档**：`docs/refu-game-001/` → `projects/refu-game-001/docs/design/`；D9/D10 三条历史日志迁入项目 `0.1.5`，时间取 git 提交：变更记录分层 2026-09-14 12:35、D9 采纳 13:08、D9 更名/D10 13:20。
-- **知识库目录更名 `doc/` → `docs/`**：`git mv` 整体迁移 566 个文件；同步根 README、AGENTS、rules/tech/tools、design/studio001/projects、网站内容层与 Godot 数据脚本中的根路径引用；`indie/` 内部的项目级 `doc/` 保持不动；`workspace-scope` 的豁免路径改为 `docs`。链接校验 0 失效。
+- **Refu Game 001 策划卷迁入项目文档**：`docs/refu-game-001/` → `games/refu-game-001/docs/design/`；D9/D10 三条历史日志迁入项目 `0.1.5`，时间取 git 提交：变更记录分层 2026-09-14 12:35、D9 采纳 13:08、D9 更名/D10 13:20。
+- **知识库目录更名 `doc/` → `docs/`**：`git mv` 整体迁移 566 个文件；同步根 README、AGENTS、rules/tech/tools、design/archive/studio001/projects、网站内容层与 Godot 数据脚本中的根路径引用；`indie/` 内部的项目级 `doc/` 保持不动；`workspace-scope` 的豁免路径改为 `docs`。链接校验 0 失效。
 
 ### 新增
 

@@ -1,6 +1,6 @@
 {
-  "_comment": "M1+M2 判定配置 · projects/refu-game-001（《节点防线》卡片塔防垂直切片）。",
-  "concern": "projects/refu-game-001",
+  "_comment": "M1+M2 判定配置 · games/refu-game-001（《节点防线》卡片塔防垂直切片）。",
+  "concern": "games/refu-game-001",
   "root": ".",
   "root_docs": ["README.md", "CHANGELOG.md"],
   "type_vocab": ["docs", "game", "tools"],

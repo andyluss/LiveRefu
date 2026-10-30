@@ -3,7 +3,7 @@
 > 本文件记录 **LiveRefu · 复古未来知识库与项目开发区** 工作区根级的变更。
 > 遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式与 [SemVer](https://semver.org/) 版本语义；完整书写规格见 [`rules/R05-changelog.md`](rules/R05-changelog.md)；
 > 「每次（非琐碎）变更须记录」规则见 [`rules/R05-changelog.md`](rules/R05-changelog.md)。
-> 各项目/实验的日志在其各自根目录（如 `projects/tomorrows-channel/CHANGELOG.md`、`lab/formal-system/CHANGELOG.md`）。
+> 各项目/实验的日志在其各自根目录（如 `games/tomorrows-channel/CHANGELOG.md`、`lab/formal-system/CHANGELOG.md`）。
 >
 > **版本时间取自 git 提交时间**（不是事后脑补）——每个版本的时间是该版本内最后一个提交的时间。
 > 对应的 git tag 为 `workspace-v<版本>`；格式由 [`tools/check_changelog.ts`](tools/check_changelog.ts) 校验并接入 pre-commit。
@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **工作区结构重组**：`projects/{mainline,refu-game-001,tomorrows-channel}` → `games/`；Godot 用户数据统一到 `games/.godot-home/`；`studio001/` → `archive/studio001/`；`docs/punks/` 五卷并入 `docs/retro-futurism/` 附录并去重。
 - **根日志清理**：移除 Life/慢慢记项目明细；项目变更只写各自 `CHANGELOG.md`，根日志保留工作区级变更。
 - **R03 整合钩子/CI 技术说明**：[`tech/hooks-readme.md`](tech/hooks-readme.md) 的 pre-commit 启用、暂存校验范围、全部钩子项、例外与 CI 兜底并入 [`rules/R03-link-validation.md`](rules/R03-link-validation.md)；tech 文件只保留指针。
 - **R01 整合文档技术规格**：[`tech/docs-convention.md`](tech/docs-convention.md) 的相对链接深度、校验机制、日期示例并入 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)；tech 文件只保留指针。
@@ -25,7 +26,7 @@
 - **变更日志 append-only 闸门**：[`tools/check_changelog.ts`](tools/check_changelog.ts) 增加“旧版本段不可删除”检查；[`rules/R05`](rules/R05-changelog.md) 新增 §十 硬规则；LiveDSO 增加发布检查清单。
 - **AGENTS 网络与代理**：[`AGENTS.md`](AGENTS.md) 新增「七、网络与代理」：联网前先检测代理；走代理只用一次性参数，禁止写进全局配置；代理失败时先去代理再试一次，两次都不行就停下并告知用户；并记录“远端操作可能部分成功，失败后先核对远端真实状态”。
 - **M1/M2 判定配置留出入口**：[`config-projects-mainline.json`](rules/meta/tools/config-projects-mainline.json) 增加 `cards` 子关注点配置，并把点文件纳入命名白名单，避免把合法文件判成“根目录未声明文件”。
-- **Refu Game 001 策划卷与难度模拟器迁入项目**：`docs/refu-game-001/` → `projects/refu-game-001/docs/design/`；`tools/sim_refu_game_001.ts` → `projects/refu-game-001/tools/`；知识库/项目日志已记录，时间取 git 提交。
+- **Refu Game 001 策划卷与难度模拟器迁入项目**：`docs/refu-game-001/` → `games/refu-game-001/docs/design/`；`tools/sim_refu_game_001.ts` → `games/refu-game-001/tools/`；知识库/项目日志已记录，时间取 git 提交。
 - **R06 时间规则 v3**：完成项取完成提交 author time；跨多提交拆条或取最后提交；时间命令显式 `TZ=Asia/Shanghai`；新增时间戳命名闸门。
 
 ### 新增
@@ -37,7 +38,7 @@
 
 ### 变更
 - [`tools/hooks/pre-commit`](tools/hooks/pre-commit) 的 CHANGELOG 校验新增 `design/CHANGELOG.md` → `design-v` 标签前缀，使设计系统版本与 git tag 对齐（与根 `workspace-v`、各项目前缀同一机制）。
-- **[`tools/hooks/pre-commit`](tools/hooks/pre-commit) 新增一步：HUB 页面与工程对账**（触发条件：改动 `projects/mainline/HUB.html` 或它的数据来源——数据表 / `run.sh` / 用例表）。
+- **[`tools/hooks/pre-commit`](tools/hooks/pre-commit) 新增一步：HUB 页面与工程对账**（触发条件：改动 `games/mainline/HUB.html` 或它的数据来源——数据表 / `run.sh` / 用例表）。
   - 动机：给人看的汇总页里的数字**必然过期**，而"页面写 120 卡、实际已 150 卡"这类偏差此前**没有任何检查会发现**；现在它会拦截提交。
   - 实现要点：核对来源**从工程现读**（数据表 `entries`、`run.sh` 的闸门步数、`case_list.gd` 的用例数），**推导不出即判失败**（不静默跳过），同一数字在页面出现多次则**逐个核对**。
 
@@ -45,17 +46,17 @@
 - **设计系统 v0.2 / v0.1**：详细变更已迁入 [`design/CHANGELOG.md`](design/CHANGELOG.md)（v0.1/v0.2 段）；根日志只保留设计闸门接入 pre-commit 的工作区影响。
 ### 变更
 - **元规则覆盖收口：`report` 与 `pending` 双双归零——工作区不再有"没被检查、也没被说明"的关注点**。`block` 由 3 个扩到 **8 个**，另加 **4 个写在明处的豁免**：
-  - 新转正四个：`tools/`（11 合规）、`projects/livefab`（21）、`projects/website`（34）；`docs/` 与 `studio001/` 按用户裁决**明确定为豁免**（理由与推翻条件见 [`rules/README.md`](rules/README.md) §三）。
+  - 新转正四个：`tools/`（11 合规）、`projects/livefab`（21）、`projects/website`（34）；`docs/` 与 `archive/studio001/` 按用户裁决**明确定为豁免**（理由与推翻条件见 [`rules/README.md`](rules/README.md) §三）。
   - **实测结论：这些"欠账"全部是配置精度的产物，不是真结构债**。最典型的是 `projects/website` 的 6 条里有 3 条是**被 gitignore 的生成物目录**（`.data`/`.output`/`backups`）。
   - 写配置时踩到并记录一个易错点：**`skip_prefixes`（点开头）只过滤文件、不过滤目录**——所以 `.output` 这类**点目录必须显式写进 `skip_dirs`**，否则会被判"未知类型目录"。
   - **`tools/` 有一条真缺口并已修**：它按 M1 应有出入口 `README.md` 而没有。新增 [`tools/README.md`](tools/README.md)（工具清单 + 跑法 + "检查器必须自检"的硬要求），并把 [`tech/README.md`](tech/README.md) 里那份重复的工具表**改为指向它**——两处列表必然分叉。
   - **顺带发现（待办）**：`docs/` 缺少顶层 `README.md`（出入口）。按 M1 本应有一个，这是它被豁免后**已知且接受**的缺口；但根 [`README.md`](README.md) 的"你是哪种读者"正把非技术读者指向 `docs/`，**那里没有索引页会让人迷路**——建议后续补一个纯索引的 `docs/README.md`（不改任何卷的内容）。
 
 ### 变更
-- **元规则覆盖首批转正：`block` 由 2 个关注点扩到 5 个**（[`workspace-scope.json`](rules/meta/tools/workspace-scope.json)）：新增 `tech/`（10 合规）、`projects/tomorrows-channel`（29）、`projects/refu-game-001`（18）——各写了**专门判定配置**，实测 **0 违规**。这三个此前只有通用配置，写了忠实配置后一次达标（**"实测 0 违规"是转正的前置条件**，不是转正后的期望）。
+- **元规则覆盖首批转正：`block` 由 2 个关注点扩到 5 个**（[`workspace-scope.json`](rules/meta/tools/workspace-scope.json)）：新增 `tech/`（10 合规）、`games/tomorrows-channel`（29）、`games/refu-game-001`（18）——各写了**专门判定配置**，实测 **0 违规**。这三个此前只有通用配置，写了忠实配置后一次达标（**"实测 0 违规"是转正的前置条件**，不是转正后的期望）。
   - 写配置时发现检查器的一个**易错点并记录**：类型目录**不是完全不透明的叶子**——它会被**再查一层文件命名**。因此 `tech/references/`（放数据与资产，非文档）必须给它**单独的命名规则**（`doc_naming.references`），否则 `gh_meta.jsonl`、`visualization-edf21c0f.html` 这类文件会被误判为"命名不合规"。
   - 另记一条：命名正则匹配的是**含扩展名的完整文件名**，写 `^[a-z0-9-]+$` 会漏掉 `.md`（本次即因此先报 5 条假阳性，已改为 `\.md$`）。
-  - `report` 剩余 5 个：`tools/`（2）、`docs/`（粗估 332）、`studio001/`（2）、`projects/livefab`（2）、`projects/website`（6）——**欠账数字保持可见**。
+  - `report` 剩余 5 个：`tools/`（2）、`docs/`（粗估 332）、`archive/studio001/`（2）、`projects/livefab`（2）、`projects/website`（6）——**欠账数字保持可见**。
 
 ### 变更
 - **修正 `tech/changelog-convention.md` 的模板与示例**（用户直接修改）：结构模板与完整示例里的版本头 `## [1.2.0] - 2026-09-09` / `## [2.0.0] - 2026-09-09` 补上时分（`2026-09-09 10:11`），与 §五 的格式规定一致——**示例若不合规，抄示例的人必然写出不合规的日志**。已核实：纳入范围内的版本头现已**全部**精确到分（残留的只到日期者仅在被豁免的 `indie/dsh-pet-refu/` 与第三方 `node_modules/`）。
@@ -77,7 +78,7 @@
 - **元规则 M1+M2 的机器校验从"只覆盖 `rules/` 与 `lab/`"扩到工作区各关注点**（[`rules/meta/tools/workspace-scope.json`](rules/meta/tools/workspace-scope.json) + [`meta_rules_scope.ts`](rules/meta/tools/meta_rules_scope.ts)，接入 pre-commit 与 CI）：
   - **为什么必须做**：此前 M1/M2 只有两处写了判定配置，于是"**在项目里另立一套命名不会被任何检查发现**"——2026-10-08 的讨论记录命名与 M2 冲突，就是这么漏过去的。
   - **为什么不一次全开**：实测用通用配置跑 `projects/` 会产出上百条**因配置不全而来的假阳性**（如子关注点没给子配置时，其内所有目录都被判"未知类型目录"）。**闸门一旦变成噪声，人就开始绕过它——比不查更糟。** 故分四级：`block`（纳入闸门，必须 0 违规）/ `report`（只报告不拦截，欠账可见）/ `pending`（尚未配置）/ `exempt`（按 rules/README §三 豁免）。
-  - **当前覆盖**：`block` = `rules/`、`projects/mainline/`（后者实测 **44 合规 / 0 违规**，具备纳入条件）；`report` = `tech/`、`tools/`、`docs/`（欠账粗估 332 条，需专门配置）、`studio001/`、`livefab`、`tomorrows-channel`、`refu-game-001`、`website`；`exempt` = `indie/`、`lab/`。
+  - **当前覆盖**：`block` = `rules/`、`games/mainline/`（后者实测 **44 合规 / 0 违规**，具备纳入条件）；`report` = `tech/`、`tools/`、`docs/`（欠账粗估 332 条，需专门配置）、`archive/studio001/`、`livefab`、`tomorrows-channel`、`refu-game-001`、`website`；`exempt` = `indie/`、`lab/`。
   - **执行器的一条防假通过设计**：从检查器输出里**取不到违规数时返回 `null` 而非 `0`**，block 条目取不到数即判失败（自检里有这条负向用例）——否则"检查器崩了"会被当成"没有违规"。
   - 缺口写进 [`rules/README.md`](rules/README.md) **§3.1**（"机器校验的实际覆盖"），并给出推进方式：**一次只开一个关注点，且开之前先确认它是干净的**。
   - 负向自检 **7/7**。
@@ -89,7 +90,7 @@
   - **写明一处已知例外**：规则演进表与变更日志表格的日期列保持 `YYYY-MM-DD`——该列由 [M3 检查器](rules/meta/evolution/rule_evolution_check.ts) 按固定正则解析，加了时分反而会让整行**被静默跳过**。
   - **依据**：用户要求"添加一条关于时间的规则到根，把时间尽量精确到分等等都写进去"；汇总自 [M2 §二.2–3](rules/meta/M2-naming-vocabulary.md) 的既有要求并升级为总规则。**两次实测教训**：① 变更日志版本时间曾"事后脑补"，与标签指向的提交对不上，那条校验形同虚设；② 讨论记录只用日期，同一天 9 次讨论**无法排序**。
 - **新增时间戳命名闸门 [`tools/check_time_naming.ts`](tools/check_time_naming.ts)**（R06 的机器校验，接入 pre-commit + CI）：
-  - **覆盖**：`projects/mainline/docs/discussions/` 与 `**/plans/**`。**只守"看起来像时间戳的文件"**，不要求目录下所有文件都带时间戳——实测 `plans/**` 里**合法地混着** `00-project-plan.md`（编号式）、`_meeting-template.md`（模板）、`000-…-summary.md` 等；要求它们都带时间戳是错的。
+  - **覆盖**：`games/mainline/docs/discussions/` 与 `**/plans/**`。**只守"看起来像时间戳的文件"**，不要求目录下所有文件都带时间戳——实测 `plans/**` 里**合法地混着** `00-project-plan.md`（编号式）、`_meeting-template.md`（模板）、`000-…-summary.md` 等；要求它们都带时间戳是错的。
   - **两类判定**：① 格式必须是 `YYYYMMDD-HHMM-关键词`（能抓住"写成 `2026-09-30_主题.md` 旧形态"这类回归）；② 语义——**文件名时间不得晚于首次提交时间**（不许"向后写"），未提交的新文件只查格式。
   - **刻意不要求"日期相同"**：文件可以先写、稍后提交（实测 `20260906-1534-milestone-plan.md` 在 09-08 才提交）；把合法情形变成假失败比漏报更糟。差距超一天时**提示**而不判失败。
   - 负向自检 **13/13**；另用"临时造一个旧式文件名"实测它能拦下。
@@ -100,8 +101,8 @@
   - 根 `viz/` → 归档其快照进 [`tech/references/visualization-edf21c0f.html`](tech/references/visualization-edf21c0f.html)，**移除根 `viz/` 目录**。
     **核实清楚了一处此前的误判**：根 `viz/` **不是**当前可视化管线的输出目录——活的输出在 `lab/formal-system/concerns/visual-fallback/viz/`，且那里**自带 `.gitignore`（`*.html`）**；根 `viz/` 是**旧布局遗留**，其内容无人引用。因此**没有**给根 `viz/` 加 ignore 规则（那会是一条指向不存在目录的死配置），而是按"M1 跨关注点素材"归档。**归档而非删除**的理由：`gh_meta.jsonl` 可重取，但那份 HTML 快照**不一定能原样重建**。
   - 根 [`README.md`](README.md) 新增「**〇、先看这里：你是哪种读者**」：按"产品/非技术维护者""参与某个项目""开发/维护者"三类给出**该看哪些、可以忽略哪些**。**根目录不追求条目最少，而是每类人都能一眼找到入口并知道哪些与自己无关**——把技术目录藏起来反而让人找不到规则，所以做法是**导览而非隐藏**。
-  - 同步：新增 [`tech/references/README.md`](tech/references/README.md)（说明两份素材的来源与"不承载约定"的定位）、[`tech/README.md`](tech/README.md) 索引与工具表、[`projects/mainline/docs/02_资产盘点与杠杆.md`](projects/mainline/docs/02_资产盘点与杠杆.md) 的资产登记。
-- **合规审计（顺带做，结论记录在案）**：8 份变更日志（9/9 或 8/8）、元规则 M1+M2 / M3 / M4、链接校验**全部通过**。发现并纠正的**唯一一处规则冲突**是讨论记录命名与 M2 不一致（见 `projects/mainline` 日志）。
+  - 同步：新增 [`tech/references/README.md`](tech/references/README.md)（说明两份素材的来源与"不承载约定"的定位）、[`tech/README.md`](tech/README.md) 索引与工具表、[`games/mainline/docs/02_资产盘点与杠杆.md`](games/mainline/docs/02_资产盘点与杠杆.md) 的资产登记。
+- **合规审计（顺带做，结论记录在案）**：8 份变更日志（9/9 或 8/8）、元规则 M1+M2 / M3 / M4、链接校验**全部通过**。发现并纠正的**唯一一处规则冲突**是讨论记录命名与 M2 不一致（见 `games/mainline` 日志）。
 
 ### 修复
 - **补上两个"闸门其实没在守"的漏洞（都来自上一轮搬家的实测）**：
@@ -114,8 +115,8 @@
   - 两条 CI 命令**都走项目自己的 `run.sh`**，不在 workflow 里复制任何检查逻辑——否则 CI 与本地会慢慢分叉。
   - `run.sh` 靠**上溯查找 `.git`** 定位工作区根（不数 `..` 层数），因此挂载到 `/app` 后自动把 `HOME` 指到可写目录。
   - **诚实标注**：容器那一步**未在本地验证**（本地 docker 守护进程未运行、无法拉镜像试跑），已在 workflow 注释里写明"首次失败优先查哪两点"。
-- **主线项目目录归位：`projects/future-debris/` → `projects/mainline/future-debris/`（工作区结构级）**。原先"主线项目"横跨两个目录——`projects/mainline/`（策划与决策空间）与 `projects/future-debris/`（可运行实现），本文件此前也记过这处别扭。本次按用户裁决定为**"纲领 + 具体项目"两层**：
-  - **`projects/mainline/` 是纲领**（不是某一款具体游戏）：**决策历史长期留存、可容纳多个具体项目**；**具体项目是它的子目录、按代号命名**——因此 `future-debris/` 作为项目目录仍符合 [`rules/R01`](rules/R01-docs-convention.md)/[08 §三](projects/mainline/docs/08_共同语言与命名.md) 的"项目目录 = `projects/<代号>/`"，而 `mainline/` 本身不是项目故不受此约束。
+- **主线项目目录归位：`projects/future-debris/` → `games/mainline/future-debris/`（工作区结构级）**。原先"主线项目"横跨两个目录——`games/mainline/`（策划与决策空间）与 `projects/future-debris/`（可运行实现），本文件此前也记过这处别扭。本次按用户裁决定为**"纲领 + 具体项目"两层**：
+  - **`games/mainline/` 是纲领**（不是某一款具体游戏）：**决策历史长期留存、可容纳多个具体项目**；**具体项目是它的子目录、按代号命名**——因此 `future-debris/` 作为项目目录仍符合 [`rules/R01`](rules/R01-docs-convention.md)/[08 §三](games/mainline/docs/08_共同语言与命名.md) 的"项目目录 = `projects/<代号>/`"，而 `mainline/` 本身不是项目故不受此约束。
   - **用户给出的理由（决定性）**：*未来有一定可能会换一个其它具体项目作为新主线项目的具体项目，但主线项目的决策历史之类的文档还需要保留*。
   - **规模与校验**：`git mv` 移动 **327 个受跟踪文件**（全部识别为重命名，历史保留）；**改写 147 处相对链接**（源在树内 90、源在树外 57），按"移动前解析 → 映射 → 从新位置重算相对路径"统一处理，改写后目标**零缺失**；全量链接校验 **3519 条内部链接、0 条因本次搬家失效**。
   - **顺带**：`tools/hooks/pre-commit` 的 CHANGELOG 路径映射同步到新路径；根 [`README.md`](README.md) 项目表两行（路径 + 早已过期的描述）；`mainline/README.md` 修正两处自相矛盾陈述（"这里现在没有代码"/"仍未写代码"——实现早已到 S4）；修掉 `board_system.gd` 注释里一条**此前就是坏的**链接；删除 `future-debris/.build`（231 MB 可重建缓存，目录由 236 MB 回到 4.5 MB）。
@@ -131,7 +132,7 @@
 
 ### 变更
 - **子项目变更日志统一到方案甲，并给没版本号的补了版本**。原先全工作区有**两套格式**：子项目用 `## [0.1.0] · 2026-09-16 · 描述`（中点分隔、只有日期），而根与 LiveFab 已用方案甲 `## [X.Y.Z] - YYYY-MM-DD HH:mm`。本次统一 **7 份**：
-  - `projects/website`（28 个版本）、`lab/formal-system`（18）、`projects/refu-game-001`（5）、`projects/tomorrows-channel`（6）、另加迁移新建的 `projects/future-debris`（19）、`projects/mainline`（9）、`projects/livefab`（原有版本头补上时分）。
+  - `projects/website`（28 个版本）、`lab/formal-system`（18）、`games/refu-game-001`（5）、`games/tomorrows-channel`（6）、另加迁移新建的 `projects/future-debris`（19）、`games/mainline`（9）、`projects/livefab`（原有版本头补上时分）。
   - **没版本号的按真实提交时间补号**：原先挤在 `[Unreleased]` 里的内容，逐节用 `git log -S` 定位引入提交、按时间正序编版本（无既有版本时从 `0.1.0` 起、按 MINOR 递增）。原 `[Unreleased]` 里若有叙述性子块（`已知限制`、`设计取舍`），保留原样不强行归类。
   - 版本头保留原有的 `· 描述`（如 `## [0.1.0] - 2026-09-16 12:51 · M1 垂直切片可玩`），校验器相应放宽。
 - **pre-commit 把关扩到全部被跟踪的 CHANGELOG**（动态发现，新项目自动纳入），不再只覆盖根与 LiveFab。校验器为此做了三处**有记录的放宽**：类目接受中英两种写法；时间允许并列（同一提交写多节是常态）；"每个 `###` 都得是类目"降为"**每个版本至少一个类目小节**"，再降为"**文件至少一个类目小节**"——因为那批老日志普遍夹着叙述性子标题，层层放宽的过程已写进代码注释，免得以后被误当成强约束。
@@ -143,8 +144,8 @@
 > 下一轮的改动写在这里；发布时并入新版本号并补上时间。
 
 ### 变更
-- **把根日志里属于子项目的条目迁入各自的项目日志，并建立把关**。根日志此前混着大量单项目内容（`projects/future-debris`、`projects/mainline`、《明日档案》、`refu-game-001`、LiveFab……），同一件事在根与项目日志两处出现，两边都可能过期。本次按**主导路径引用**判定归属，迁出 **33** 节：
-  - `projects/future-debris` 19 节、`projects/mainline` 9 节（后者是**新建**——"主线项目"横跨"策划与决策空间"与"游戏本身"两个目录）、`projects/website` 3 节、`projects/livefab` 1 节、`projects/refu-game-001` 1 节；
+- **把根日志里属于子项目的条目迁入各自的项目日志，并建立把关**。根日志此前混着大量单项目内容（`projects/future-debris`、`games/mainline`、《明日档案》、`refu-game-001`、LiveFab……），同一件事在根与项目日志两处出现，两边都可能过期。本次按**主导路径引用**判定归属，迁出 **33** 节：
+  - `projects/future-debris` 19 节、`games/mainline` 9 节（后者是**新建**——"主线项目"横跨"策划与决策空间"与"游戏本身"两个目录）、`projects/website` 3 节、`projects/livefab` 1 节、`games/refu-game-001` 1 节；
   - 迁入内容**一字未改**，只在每节标题后补上**原提交时间**，统一放在各项目日志的 `## [从工作区根日志迁入]` 段里；
   - 根日志只保留 5 节工作区级变更。`0.2.0` 的内容全部迁出而成为空版本，已删除，随之成为孤儿的 `workspace-v0.2.0` 标签也一并删除。
   - **⚠️ 迁移引入并修掉了一个真问题**：内容换目录后**相对链接深度变了**，一次性产生 **247 处失效链接**（原来相对仓库根写的链接，搬到 `projects/<x>/` 下就多错两级）。已统一补 `../../` 修正，校验归零。
@@ -177,7 +178,7 @@
 
 ### 变更
 
-- **`studio/` 更名 `studio001/` 并搁置（开发策略转向）**：原"模拟人类组织 / 虚拟角色"的 AI 开发工作室更名为 [`studio001/`](studio001/README.md)，**保留作历史资料、不再使用/更新**；工作区开发策略调整为**由项目方直接结合 AI 开发**（不依赖虚拟角色分工）。同步更新全工作区引用（根 `README.md`、`rules/`（R01/R02/README/meta-M1）、`tech/`、`projects/tomorrows-channel/`、`indie/`、`lab/`、`projects/refu-game-001/docs/design/` 及工具脚本 `tools/check_links.*`、lab 的 visual-fallback 扫描目录），[`studio001/README.md`](studio001/README.md) 增搁置标注；链接校验 0 失效、规则/元规则检查 0 违规。
+- **`studio/` 更名 `archive/studio001/` 并搁置（开发策略转向）**：原"模拟人类组织 / 虚拟角色"的 AI 开发工作室更名为 [`archive/studio001/`](archive/studio001/README.md)，**保留作历史资料、不再使用/更新**；工作区开发策略调整为**由项目方直接结合 AI 开发**（不依赖虚拟角色分工）。同步更新全工作区引用（根 `README.md`、`rules/`（R01/R02/README/meta-M1）、`tech/`、`games/tomorrows-channel/`、`indie/`、`lab/`、`games/refu-game-001/docs/design/` 及工具脚本 `tools/check_links.*`、lab 的 visual-fallback 扫描目录），[`archive/studio001/README.md`](archive/studio001/README.md) 增搁置标注；链接校验 0 失效、规则/元规则检查 0 违规。
 - 根 [`README.md`](README.md) 增加 `indie/`、`lab/`、`rules/` 的目录说明与导览行；`lab/` 入口改为指向其自身的 README。
 - 根 `README.md` 改写「约定豁免」说明：明确列出被豁免的具体规则（R01–R05）。
 - [`tech/README.md`](tech/README.md) 更新：实验性技术规则成熟后的回流目标由 `tech/` 改为根 `rules/`。

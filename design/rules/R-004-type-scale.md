@@ -2,7 +2,7 @@
 
 > **状态**：`active` ｜ **级别**：MUST ｜ **生效**：2026-10-21
 > **范围**：Web/App UI、编辑内容、卡面 ｜ **Owner**：设计主控
-> **关联**：[02 §3.3](../docs/02_系统架构.md)、[04 视觉契约](../../projects/mainline/future-debris/docs/04_视觉语言与设计token.md)
+> **关联**：[02 §3.3](../docs/02_系统架构.md)、[04 视觉契约](../../games/mainline/future-debris/docs/04_视觉语言与设计token.md)
 
 ## 一、规则
 

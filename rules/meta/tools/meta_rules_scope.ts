@@ -9,7 +9,7 @@
 //   但反过来"一次全开"也不行：实测用通用配置跑 `projects/` 会产出上百条**因配置不全而来的假阳性**，
 //   闸门一旦变成噪声，人就开始绕过它。所以采用**分级**：
 //
-//     block   → 纳入闸门（必须 0 违规；需专门配置）        —— 目前：rules/、projects/mainline/
+//     block   → 纳入闸门（必须 0 违规；需专门配置）        —— 目前：rules/、games/mainline/
 //     report  → 只报告不拦截（用通用配置估欠账规模）      —— 其余在研/文档关注点
 //     pending → 尚未配置（只登记在案，不跑）              —— 尚无
 //     exempt  → 按 rules/README.md §三 豁免               —— indie/、lab/

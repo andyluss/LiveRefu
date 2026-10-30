@@ -30,8 +30,8 @@ ROOT = os.path.dirname(HERE)
 if not os.path.isdir(os.path.join(ROOT, ".git")):
     ROOT = HERE
 
-SCHEMA_DIR = "projects/tomorrows-channel/data/schema"
-TABLES_DIR = "projects/tomorrows-channel/data/tables"
+SCHEMA_DIR = "games/tomorrows-channel/data/schema"
+TABLES_DIR = "games/tomorrows-channel/data/tables"
 
 
 def load(path):
