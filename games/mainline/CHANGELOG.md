@@ -7,6 +7,14 @@
 > [`../future-debris/CHANGELOG.md`](../future-debris/CHANGELOG.md)）。历史上有 17 段产品内容记在这里，
 > 已于 0.18.0 迁走。
 
+## [0.19.0] - 2026-10-30 21:44
+
+### 变更
+
+- README 收缩为纲领说明与“未来残片是当前也是第一个候选具体项目”的一句话指针；
+- HUB/GUIDE 入口、Q1–Q15 裁决摘要与项目执行文档索引移入 [`../future-debris/README.md`](../future-debris/README.md)；
+- 删除 README 内重复的项目状态、路线与目录细节，具体内容以项目 README 为准。
+
 ## [0.18.0] - 2026-10-23 13:57
 
 ### 变更
