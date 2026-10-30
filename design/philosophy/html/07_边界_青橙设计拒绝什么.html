@@ -5,10 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>07 · 边界｜青橙设计</title>
 <meta name="description" content="理念的力量不只来自它主张什么，也来自它拒绝什么；没有边界的“未来”很容易变成新的包装。">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <link rel="stylesheet" href="./philosophy.css">
 </head>
 <body>
-<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><span>PAPER 07 / 13</span></header>
+<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">PAPER 07 / 13</span></div></header>
 <main class="shell">
   <section class="hero">
     <div>
@@ -41,5 +53,6 @@
   <div class="nav"><a href="./index.html">全部可视化</a><a href="../README.md">系列索引</a><a href="../07_边界_青橙设计拒绝什么.md">读原文</a><a href="./06_多世界语法_共享问题不共享答案.html">← 06 多世界语法</a><a href="./08_青橙十问.html">08 青橙十问 →</a></div>
   <footer class="footer"><span>青橙设计 · philosophy/07_边界_青橙设计拒绝什么.md</span><span>可视化生成：node design/philosophy/tools/build-pages.mjs</span></footer>
 </main>
+<script src="./philosophy-theme.js" defer></script>
 </body>
 </html>

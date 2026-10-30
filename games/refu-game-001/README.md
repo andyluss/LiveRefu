@@ -43,6 +43,7 @@ games/refu-game-001/
 ├── HUB.html             # 项目开发总览（状态/分层/管线/闸门/路线图）
 ├── GUIDE.html           # 游戏设计导览（单局/卡牌/种族/战斗/内容）
 ├── project.css          # 两份导览共用样式
+├── project-theme.js     # 三态主题控制（R-016）
 ├── CHANGELOG.md         # 项目日志（对外视角）
 ├── design/              # 策划卷（设计源，33 个入口）
 ├── docs/                # 实现/验收文档

@@ -5,10 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>04 · 适当的未来｜青橙设计</title>
 <meta name="description" content="赛博朋克是诊断，太阳朋克是提案；青橙保留两者之间的中间地带，不把未来做成两个审美阵营。">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <link rel="stylesheet" href="./philosophy.css">
 </head>
 <body>
-<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><span>PAPER 04 / 13</span></header>
+<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">PAPER 04 / 13</span></div></header>
 <main class="shell">
   <section class="hero">
     <div>
@@ -43,5 +55,6 @@
   <div class="nav"><a href="./index.html">全部可视化</a><a href="../README.md">系列索引</a><a href="../04_适当的未来_赛博朋克太阳朋克与中间地带.md">读原文</a><a href="./03_可参与_技术如何保留人的位置.html">← 03 可参与</a><a href="./05_游戏作为未来实验室.html">05 游戏作为未来实验室 →</a></div>
   <footer class="footer"><span>青橙设计 · philosophy/04_适当的未来_赛博朋克太阳朋克与中间地带.md</span><span>可视化生成：node design/philosophy/tools/build-pages.mjs</span></footer>
 </main>
+<script src="./philosophy-theme.js" defer></script>
 </body>
 </html>

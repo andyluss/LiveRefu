@@ -435,10 +435,22 @@ function pageHTML(page, i) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(page.n)} · ${esc(page.title)}｜青橙设计</title>
 <meta name="description" content="${esc(page.thesis)}">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <link rel="stylesheet" href="./philosophy.css">
 </head>
 <body>
-<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><span>PAPER ${page.n} / ${String(total).padStart(2, '0')}</span></header>
+<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">PAPER ${page.n} / ${String(total).padStart(2, '0')}</span></div></header>
 <main class="shell">
   <section class="hero">
     <div>
@@ -467,6 +479,7 @@ function pageHTML(page, i) {
   <div class="nav">${nav}</div>
   <footer class="footer"><span>青橙设计 · philosophy/${page.slug}.md</span><span>可视化生成：node design/philosophy/tools/build-pages.mjs</span></footer>
 </main>
+<script src="./philosophy-theme.js" defer></script>
 </body>
 </html>`
 }
@@ -483,20 +496,33 @@ const index = `<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>青橙设计 · 理念可视化索引</title>
 <meta name="description" content="青橙设计理念系列 00–11 的可视化索引。">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <link rel="stylesheet" href="./philosophy.css">
 </head>
 <body>
-<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><span>INDEX / ${String(total).padStart(2, '0')}</span></header>
+<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">INDEX / ${String(total).padStart(2, '0')}</span></div></header>
 <main class="shell">
   <section class="hero">
     <div><div class="eyebrow">Orange Design · Philosophy Index</div><h1>把理念<br><span class="thin">先看成一张图。</span></h1><p class="thesis">00–12 共 13 篇。每篇一页可视化：先看关系，再回到原文读论证。所有页面共用一份 CSS，不依赖外部字体、脚本或网络。</p></div>
-    <aside class="hero-aside"><b>READ</b>从 00 总纲开始<br><b>USE</b>评审时先看图<br><b>SOURCE</b>design/philosophy/</aside>
+    <aside class="hero-aside"><b>READ</b>从 00 总纲开始<br><br><b>USE</b>评审时先看图<br><br><b>SOURCE</b>design/philosophy/</aside>
   </section>
   <div class="rule"></div>
   <section class="block"><p class="kicker">Twelve papers · twelve images</p><h2>可视化目录</h2><div class="grid3">${cards}</div></section>
   <div class="nav"><a href="../README.md">系列索引</a><a href="../00_总纲_青橙设计.md">00 总纲原文</a><a href="../10_设计思维_从问题到可被体验的答案.md">10 设计思维原文</a></div>
   <footer class="footer"><span>青橙设计 · philosophy/html/</span><span>静态 HTML · 可离线打开</span></footer>
 </main>
+<script src="./philosophy-theme.js" defer></script>
 </body>
 </html>`
 writeFileSync(join(OUT, 'index.html'), index)

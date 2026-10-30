@@ -156,7 +156,8 @@ grep -L 'prefers-color-scheme' <generated>.html
 ## 六、存量迁移
 
 - 本规则生效前生成的 HTML 不要求一次性回填；**任何实质修改、重新生成或复制为新页面时，必须同时补齐三态**。
-- 已知需要在下一次修改时迁移的生成物：`design/philosophy/html/`、`games/refu-game-001/HUB.html`、`games/refu-game-001/GUIDE.html`、各项目 `可视化/` 生成页。
+- **2026-10-30 已完成**：`design/philosophy/html/`（13 篇 + 索引）、`games/refu-game-001/HUB.html`、`games/refu-game-001/GUIDE.html`。
+- **仍待迁移**：各项目 `可视化/` 生成页、历史报告/单页；修改时按本规则补齐，不要求一次性重做。
 - 迁移顺序：先把生成器/模板改成三态，再重新生成；不要逐页手改后留下模板分叉。
 - 旧 key（如 `*-theme`）读取后写入 `lrds-theme`，再删除旧 key；不得保留两套 key。
 

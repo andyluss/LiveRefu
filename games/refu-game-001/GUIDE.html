@@ -5,12 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Refu Game 001 · 节点防线 · Design GUIDE</title>
 <meta name="description" content="Refu Game 001《节点防线》游戏设计导览：卡片即规则、单局循环、卡牌契约、三族、战斗、内容与阅读路径。">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <link rel="stylesheet" href="project.css">
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="HUB.html"><i></i>REFU GAME 001 / NODE DEFENSE</a>
-  <nav><a href="HUB.html">HUB</a><a class="on" href="GUIDE.html">GUIDE</a><a href="README.md">README</a><a href="design/README.md">策划卷</a><a href="docs/README.md">实现文档</a></nav>
+  <div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><nav><a href="HUB.html">HUB</a><a class="on" href="GUIDE.html">GUIDE</a><a href="README.md">README</a><a href="design/README.md">策划卷</a><a href="docs/README.md">实现文档</a></nav></div>
 </header>
 <main class="wrap">
   <section class="hero">
@@ -169,5 +180,6 @@
 
   <footer class="footer"><span>Refu Game 001 · Design GUIDE · M1</span><span>卡片就是规则 · <a href="HUB.html">回到 HUB</a></span></footer>
 </main>
+<script src="project-theme.js" defer></script>
 </body>
 </html>

@@ -5,10 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>09 · 清澄｜青橙设计</title>
 <meta name="description" content="青橙是颜色，清澄是颜色下面的水；来源、代价、权限、退路必须可见，但透明不等于全部曝光。">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
 <link rel="stylesheet" href="./philosophy.css">
 </head>
 <body>
-<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><span>PAPER 09 / 13</span></header>
+<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">PAPER 09 / 13</span></div></header>
 <main class="shell">
   <section class="hero">
     <div>
@@ -43,5 +55,6 @@
   <div class="nav"><a href="./index.html">全部可视化</a><a href="../README.md">系列索引</a><a href="../09_清澄_透明作为方法.md">读原文</a><a href="./08_青橙十问.html">← 08 青橙十问</a><a href="./10_设计思维_从问题到可被体验的答案.html">10 设计思维 →</a></div>
   <footer class="footer"><span>青橙设计 · philosophy/09_清澄_透明作为方法.md</span><span>可视化生成：node design/philosophy/tools/build-pages.mjs</span></footer>
 </main>
+<script src="./philosophy-theme.js" defer></script>
 </body>
 </html>
