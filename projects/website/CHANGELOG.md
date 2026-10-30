@@ -1,7 +1,7 @@
 # 《明日档案》· 复古未来主义网站 · 项目日志（CHANGELOG）
 
 > 记录本项目的里程碑、关键决策与工程变更。遵循 Keep a Changelog 风格：`新增` / `变更` / `修复` / `移除`。
-> 项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/)。内容源（唯一权威）在 [`docs/retro-futurism/`](../../docs/retro-futurism/README.md) 与 [`docs/retro-futurism/附录_朋克五卷/`](../../docs/retro-futurism/附录_朋克五卷/README.md)。
+> 项目结构见 [`README.md`](README.md)；文档入口 [`docs/`](docs/)。内容源（唯一权威）在 [`docs/retro-futurism/`](../../docs/retro-futurism/README.md) 与 [`docs/retro-futurism/原朋克五卷残留/`](../../docs/retro-futurism/原朋克五卷残留/README.md)。
 
 ## [0.29.0] - 2026-10-21 13:50
 

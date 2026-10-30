@@ -3,7 +3,7 @@ import os, re, html as H
 os.environ.setdefault('XDG_CACHE_HOME','/tmp/fc')
 import markdown
 
-ROOT='/Users/lu/work/fab/LiveRefu/docs/retro-futurism/附录_朋克五卷'
+ROOT='/Users/lu/work/fab/LiveRefu/docs/retro-futurism/原朋克五卷残留/合订本/朋克五卷'
 OUTDIR=os.path.join(ROOT,'合订本')
 os.makedirs(OUTDIR, exist_ok=True)
 

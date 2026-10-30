@@ -44,7 +44,7 @@
 | [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、状态；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
 | [`docs/`](docs/README.md) | **复古未来主义知识库（索引）**：四卷的知识库入口——主卷论文集 + 朋克专题五卷 + 塔防研究 + 软件生态与产品机会。**只指路、不重述卷内内容**（卷内清单见各卷卷首） | [`docs/README.md`](docs/README.md) |
 | [`docs/retro-futurism/`](docs/retro-futurism/README.md) | 复古未来主义总卷：00—20 篇 + 千禧美学/原子朋克/太阳朋克/柴油朋克/生物朋克/蒸汽朋克/赛博朋克附录卷 + 合订本 | [`README.md`](docs/retro-futurism/README.md) |
-| [`docs/retro-futurism/附录_朋克五卷/`](docs/retro-futurism/附录_朋克五卷/README.md) | 原 `docs/retro-futurism/附录_朋克五卷/` 五卷并入后的整合说明；正文见五个朋克附录 | [`附录_朋克五卷/README.md`](docs/retro-futurism/附录_朋克五卷/README.md) |
+| [`docs/retro-futurism/原朋克五卷残留/`](docs/retro-futurism/原朋克五卷残留/README.md) | 原 `docs/punks/` 五卷并入后的整合说明、合订本与总索引；正文见五个朋克附录 | [`原朋克五卷残留/README.md`](docs/retro-futurism/原朋克五卷残留/README.md) |
 | [`games/refu-game-001/docs/design/`](games/refu-game-001/docs/design/README.md) | 卡片式塔防游戏策划卷（Refu Game 001）：决策记录 + 卡片规则系统 + 种族/战斗/关卡/移动端/成长/路线图 + 卡表与数值 + 故事 + 可视化 + 美术设定；其**可运行实现**见 [`games/refu-game-001/`](games/refu-game-001/README.md) | [`games/refu-game-001/docs/design/README.md`](games/refu-game-001/docs/design/README.md) |
 | [`docs/software/`](docs/software/README.md) | 软件生态与产品机会：青橙/清澄适配的非游戏产品 + 13 篇软件生态文集 | [`docs/software/README.md`](docs/software/README.md) |
 | [`products/`](products/README.md) | 可发布产品区：当前有 [`products/life/apps/ledger/`](products/life/apps/ledger/README.md)（慢慢记 + Life 十六款生活应用） | [`products/README.md`](products/README.md) |

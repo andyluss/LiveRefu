@@ -1,6 +1,6 @@
 # 《未来档案》· 复古未来主义网站
 
-> 卡面：用途＝项目入口 ｜ 依赖：内容源 [`docs/retro-futurism/`](../../docs/retro-futurism/README.md) + [`docs/retro-futurism/附录_朋克五卷/`](../../docs/retro-futurism/附录_朋克五卷/README.md) ｜ 状态：**M0+M1 已交付、M2 第一阶段（Giscus）已上线并端到端验证、M3 除部署外完成** · 2026-10-03
+> 卡面：用途＝项目入口 ｜ 依赖：内容源 [`docs/retro-futurism/`](../../docs/retro-futurism/README.md) + [`docs/retro-futurism/原朋克五卷残留/`](../../docs/retro-futurism/原朋克五卷残留/README.md) ｜ 状态：**M0+M1 已交付、M2 第一阶段（Giscus）已上线并端到端验证、M3 除部署外完成** · 2026-10-03
 > 一句话：把工作区已有的 14 万字复古未来主义知识库，做成一个**可读、可逛、可讨论**的站点——Wiki 承载知识体系、博客承载编辑部写作、画廊承载视觉素材、论坛承载读者讨论。
 
 > **改名记录（2026-10-03）**：项目名由《明日档案》改为 **《未来档案》**，

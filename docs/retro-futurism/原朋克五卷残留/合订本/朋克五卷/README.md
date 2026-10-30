@@ -9,7 +9,7 @@
 ## 再生方法
 
 ```bash
-/tmp/rfenv/bin/python gen_binder.py   # 在本目录（docs/retro-futurism/合订本/朋克五卷）运行（需 venv 含 markdown/pypdf/weasyprint）
+/tmp/rfenv/bin/python gen_binder.py   # 在本目录（docs/retro-futurism/原朋克五卷残留/合订本/朋克五卷）运行（需 venv 含 markdown/pypdf/weasyprint）
 ```
 
 脚本生成两个成品后，会再跑一次页码回填逻辑（见脚本尾部）。

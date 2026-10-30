@@ -4,11 +4,19 @@
 > 工作区级变更仍记根 [`CHANGELOG.md`](../CHANGELOG.md)；本文件只记知识库内容。
 > 本文件由根日志的 docs 相关条目迁入；原条目保留原文，版本时间见条目说明。
 
+## [0.2.1] - 2026-10-30 13:17
+
+### 变更
+
+- 原五卷的合订本、总索引与整合说明移入 `docs/retro-futurism/原朋克五卷残留/`；
+- 整合说明的“原目录”修正为 `docs/punks/...`，不再使用迁移后的附录路径；
+- 五个朋克附录正文保持原位，入口从残留说明指向附录。
+
 ## [0.2.0] - 2026-10-30 13:02
 
 ### 变更
 
-- **朋克五卷并入《复古未来主义论文集》附录**：`docs/punks/` 的 atompunk / biopunk / cyberpunk / dieselpunk / steampunk 五卷迁入 `附录_*朋克卷/`；完整正文保留，旧精简原子朋克附录由完整原卷替代，原卷首索引删除并以 [`附录_朋克五卷/README.md`](retro-futurism/附录_朋克五卷/README.md) 说明迁移、去重与差异；
+- **朋克五卷并入《复古未来主义论文集》附录**：`docs/punks/` 的 atompunk / biopunk / cyberpunk / dieselpunk / steampunk 五卷迁入 `附录_*朋克卷/`；完整正文保留，旧精简原子朋克附录由完整原卷替代，原卷首索引删除并以 [`原朋克五卷残留/README.md`](retro-futurism/原朋克五卷残留/README.md) 说明迁移、去重与差异；
 - 合订本迁入 `docs/retro-futurism/合订本/朋克五卷/`，总索引迁入 `docs/retro-futurism/朋克五卷_总索引与字数统计.md`；
 - 知识库入口与卷首索引同步。
 
