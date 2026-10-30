@@ -11,6 +11,7 @@
 > **青橙全栈已迁出**：P1–P17、可视化、TODO、QC 提案等全栈变更见 [`fullstack/CHANGELOG.md`](fullstack/CHANGELOG.md)。
 
 ### 新增
+- **青橙理念新增 10/11 与 HTML 可视化**：新增《设计思维：从问题到可被体验的答案》《设计思维与其它思维：六种镜头》；为 00–11 共 12 篇各生成一页静态 HTML（共用 `philosophy/html/philosophy.css`，可离线打开），并加入系列索引与 HUB。
 - **LRDS `product.life`**：`design/tokens/products/life.tokens.json` 固化 Life 浅/深色产品语义；Life 的 `--life-*` 由该源生成，14 个 LiveDSO 变体继续覆盖。
 
 - **润色设计纲领**：统一角色路径为 `sys.color.*`，删除项目迁移历史/版本状态，`09 落地检查表` 改为通用验收问题；`03` 明确历史全量副本迁移后删除，不再新增。
