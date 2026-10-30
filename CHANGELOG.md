@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **AGENTS 结构重整**：按“适用范围 → 回报 → Git → 发布 → 日志/待办 → HTML → 网络 → 自检”重排，新增硬规范速览、用户未提交改动保护与日志层级说明；所有原硬规则保留。
 - **存量 HTML 三态迁移**：青橙理念 13 页 + 索引、Refu Game 001 HUB/GUIDE 已按 R-016 补齐系统/浅色/深色。
 - **R-016 生成式 HTML 三态硬规范**：新增 `design/rules/R-016-html-theme-modes.md`；所有脚本/模板/AI 生成的 HTML 必须支持 system/light/dark、统一 `lrds-theme` 并预绘制；`AGENTS.md` 引用为硬规范。
 - **工作区结构重组**：`projects/{mainline,refu-game-001,tomorrows-channel}` → `games/`；Godot 用户数据统一到 `games/.godot-home/`；`studio001/` → `archive/studio001/`；`docs/punks/` 五卷并入 `docs/retro-futurism/` 附录并去重；五卷旧精简版归档到各附录的 `精简内容/`，原合订本/总索引/整合说明归入 `原朋克五卷残留/`。
