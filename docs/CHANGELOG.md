@@ -57,7 +57,7 @@
 
 ### 变更
 
-- **Refu Game 001 策划卷迁入项目文档**：`docs/refu-game-001/` → `games/refu-game-001/docs/design/`；D9/D10 三条历史日志迁入项目 `0.1.5`，时间取 git 提交：变更记录分层 2026-09-14 12:35、D9 采纳 13:08、D9 更名/D10 13:20。
+- **Refu Game 001 策划卷迁入项目文档**：`docs/refu-game-001/` → `games/refu-game-001/design/`；D9/D10 三条历史日志迁入项目 `0.1.5`，时间取 git 提交：变更记录分层 2026-09-14 12:35、D9 采纳 13:08、D9 更名/D10 13:20。
 - **知识库目录更名 `doc/` → `docs/`**：`git mv` 整体迁移 566 个文件；同步根 README、AGENTS、rules/tech/tools、design/archive/studio001/projects、网站内容层与 Godot 数据脚本中的根路径引用；`indie/` 内部的项目级 `doc/` 保持不动；`workspace-scope` 的豁免路径改为 `docs`。链接校验 0 失效。
 
 ### 新增

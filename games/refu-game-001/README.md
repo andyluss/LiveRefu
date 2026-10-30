@@ -1,10 +1,12 @@
 # Refu Game 001 · 节点防线（可运行工程）
 
-> 卡面：用途＝项目入口 ｜ 依赖：[`games/refu-game-001/docs/design/`](docs/design/README.md) 策划卷 ｜ 状态：M1 垂直切片可玩 · 2026-09-16
+> 卡面：用途＝项目入口 ｜ 依赖：[`design/`](design/README.md) 策划卷 ｜ 状态：M1 垂直切片可玩 · 2026-09-16
 > 一句话：把策划卷的"卡片即规则"落成一个**真能玩、能验收**的 Godot 4.7 竖屏塔防——铁砧联邦 12 卡 + 峡谷哨站 6 波 + 挑战卡 + 评级结算。
 
 | 我要…… | 去哪 |
 | --- | --- |
+| **看项目开发总览** | [`HUB.html`](HUB.html)（M1 状态、分层、管线、闸门、路线图、风险） |
+| **看游戏设计导览** | [`GUIDE.html`](GUIDE.html)（单局、卡牌、种族、战斗、内容与阅读路径） |
 | 立刻玩一局 | [`game/`](game/) 用 Godot 4.7 打开，或跑 `game/run.sh run` |
 | 看它算得对不对 | `game/run.sh check`（无头验收 19 项，见 [验收文档](docs/05_验收与测试.md)） |
 | **看完整流程** | [`docs/video/demo_gameplay.mp4`](docs/video/demo_gameplay.mp4)（92 秒一镜到底，含分镜字幕） |
@@ -38,9 +40,12 @@
 ```
 games/refu-game-001/
 ├── README.md            # 本文件
+├── HUB.html             # 项目开发总览（状态/分层/管线/闸门/路线图）
+├── GUIDE.html           # 游戏设计导览（单局/卡牌/种族/战斗/内容）
+├── project.css          # 两份导览共用样式
 ├── CHANGELOG.md         # 项目日志（对外视角）
+├── design/              # 策划卷（设计源，33 个入口）
 ├── docs/                # 实现/验收文档
-│   ├── design/          # 策划卷（设计源）
 │   ├── 00_实现范围与里程碑.md
 │   ├── 01_实现裁决记录.md      # ★ 文档没说清、我拍的板（含理由与代价）
 │   ├── 02_工程结构与运行.md
@@ -52,7 +57,7 @@ games/refu-game-001/
 ├── game/                # ★ Godot 4.7 工程
 │   ├── project.godot
 │   ├── run.sh           # 统一入口：run / editor / check / import / shot
-│   ├── assets/          # 从 docs/ 美术出图同步来的 PNG（cards/maps/units）
+│   ├── assets/          # 从 design/ 美术出图同步来的 PNG（cards/maps/units）
 │   ├── data/            # ★ 数据表（JSON）：cards/enemies/maps/waves/challenges/rules/balance
 │   ├── scripts/
 │   │   ├── core/        # ★ 纯逻辑：battle.gd（域对象）+ battle/（41 个子系统）+ 单位/路径/卡组
@@ -113,6 +118,6 @@ python3 tools/verify_data.py          # 数据表 ↔ 策划文档 逐字段对�
 
 ## 六、与策划卷的关系
 
-- 本工程是 [`games/refu-game-001/docs/design/`](docs/design/README.md) 的**实现物**，不是新的设计源：
+- 本工程是 [`games/refu-game-001/design/`](design/README.md) 的**实现物**，不是新的设计源：
   规则冲突以策划文档为准，实测反馈写进 [04_调参与实测发现](docs/04_调参与实测发现.md) 供策划裁决；
 - 实现过程中发现的 **2 处文档/出图不一致** 已逐条记录（未擅改文档），见同文件 F5、F6。

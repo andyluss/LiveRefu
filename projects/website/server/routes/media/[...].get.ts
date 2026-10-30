@@ -4,7 +4,7 @@ import { join, normalize, resolve } from 'node:path'
 /**
  * 媒体服务路由：`/media/**` → 工作区 `docs/` 或策划卷 `design/` 下的视觉素材。
  *
- * 为什么需要它：画廊要展示的来源素材位于 `games/refu-game-001/docs/design/美术/`，
+ * 为什么需要它：画廊要展示的来源素材位于 `games/refu-game-001/design/美术/`，
  * 在 Nuxt 工程目录**之外**。按 D2「docs/ 是唯一内容权威、站点不改写它」，
  * 我们既不复制这些文件进 `public/`，也不去动它们——
  * 而是在**路由层只读地**把它们暴露出来（见 docs/01 §二 的资产盘点）。
@@ -15,7 +15,7 @@ import { join, normalize, resolve } from 'node:path'
 
 const WORKSPACE_ROOT = resolve(process.cwd(), '../..')
 const DOC_ROOT = resolve(WORKSPACE_ROOT, 'docs')
-const DESIGN_ROOT = resolve(WORKSPACE_ROOT, 'games/refu-game-001/docs/design')
+const DESIGN_ROOT = resolve(WORKSPACE_ROOT, 'games/refu-game-001/design')
 
 const MIME: Record<string, string> = {
   '.png': 'image/png',

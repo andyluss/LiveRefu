@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Refu Game 001 · 节点防线 · Design GUIDE</title>
+<meta name="description" content="Refu Game 001《节点防线》游戏设计导览：卡片即规则、单局循环、卡牌契约、三族、战斗、内容与阅读路径。">
+<link rel="stylesheet" href="project.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="HUB.html"><i></i>REFU GAME 001 / NODE DEFENSE</a>
+  <nav><a href="HUB.html">HUB</a><a class="on" href="GUIDE.html">GUIDE</a><a href="README.md">README</a><a href="design/README.md">策划卷</a><a href="docs/README.md">实现文档</a></nav>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="status"><i></i>DESIGN GUIDE · 从一句话到一局</div>
+      <p class="kicker">Game design guide · cards as rules</p>
+      <h1>卡片就是规则，<br><span class="thin">规则就是世界。</span></h1>
+      <p class="lede">《节点防线》是一款星际式三族对抗的卡片塔防。它最核心的设计不是“卡面好看”，而是：<b>塔、单位、技能、地图、事件、规则，全部用同一套卡规范表达</b>。玩家组的是卡组，打的是一套被卡组织起来的世界。</p>
+      <div class="badge-row"><span class="tag ok">固定路径</span><span class="tag ok">固定塔位</span><span class="tag ok">手机竖屏</span><span class="tag">卡片即规则</span><span class="tag">3–5 分钟一局</span></div>
+    </div>
+    <aside class="hero-side">
+      <b>ONE LINE</b>一款“像一堆卡片完美融合”的星际式塔防手游。<br><br>
+      <b>PILLARS</b>卡片即规则<br>三主族 × 三从族<br>手机优先的深度<br><br>
+      <b>READ</b>先看循环，再看卡，再看族。
+    </aside>
+  </section>
+  <div class="rule"></div>
+
+  <section>
+    <p class="kicker">The loop</p>
+    <h2>一局，五分钟</h2>
+    <p class="sub">日常碎片关 3–5 分钟；周常长局 20+ 波。玩家不操作单位走位，只做“放卡与调度”。</p>
+    <div class="loop">
+      <div class="node"><div class="n">01 / CHOOSE</div><b>选关</b><span>地图、波次、挑战卡；选难度代价与额外奖励。</span></div>
+      <div class="node"><div class="n">02 / BUILD</div><b>组卡</b><span>主族骨架 + 从族支援 + 中立卡；受人口与中立比例限制。</span></div>
+      <div class="node"><div class="n">03 / DEPLOY</div><b>布防</b><span>15 秒布防期；把塔卡放进塔位，准备首波。</span></div>
+      <div class="node"><div class="n">04 / DEFEND</div><b>交战</b><span>6–8 波；能量增长、击杀返还、波间三选一调度。</span></div>
+      <div class="node"><div class="n">05 / SETTLE</div><b>结算</b><span>评级三维：基地生命、能量效率、组合触发次数。</span></div>
+    </div>
+    <div class="grid3" style="margin-top:16px">
+      <div class="panel"><h3>不是“点技能打赢”</h3><p>没有英雄微操；胜负来自放什么、放哪里、什么时候换、如何组合。</p></div>
+      <div class="panel"><h3>不是“数值堆塔”</h3><p>评级鼓励组合触发，挑战卡把难度变成自选代价，而不是单纯加血。</p></div>
+      <div class="panel"><h3>不是“只有 UI 是卡”</h3><p>地图、波次、事件、规则都是卡；玩法扩展靠换规则卡组。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">The contract</p>
+    <h2>一张卡的三层九字段</h2>
+    <p class="sub">任何一张卡都必须同时满足：玩家读得懂、引擎读得懂、美术/文案可以整块替换。</p>
+    <div class="card-anatomy">
+      <div class="mock-card">
+        <div class="cost">20</div>
+        <div class="slot">SLOT / TOWER · KEYWORD / 弹药</div>
+        <div class="name">模块炮塔</div>
+        <div class="type">铁砧联邦 · 塔卡 · 标准塔位</div>
+        <div class="art">CARD ART / 36 张真出图之一</div>
+        <div class="desc"><b>关键词：</b>弹药 · 可拆装<br>伤害 12 / 攻速 1.0/s / 射程中；可对空；击杀返还 1 能量。</div>
+        <div class="stats"><div><b>12</b><span>DMG</span></div><div><b>1.0</b><span>RATE</span></div><div><b>中</b><span>RANGE</span></div></div>
+      </div>
+      <div>
+        <table class="table field-table">
+          <thead><tr><th>层</th><th>字段</th><th>谁在读</th></tr></thead>
+          <tbody>
+            <tr><td>卡面层</td><td>名称 / 图标 / 费用 / 关键词 / 一句话效果</td><td>玩家：小屏只显示前三个数字与一个关键词</td></tr>
+            <tr><td>规则层</td><td>类型 / 槽位 / 数值块 / 事件钩子</td><td>引擎：只认这四项，杜绝隐式依赖</td></tr>
+            <tr><td>叙事层</td><td>归属 / 风味文本 / 视觉标签</td><td>美术与文案：可整块替换而不影响规则</td></tr>
+          </tbody>
+        </table>
+        <div class="grid2" style="margin-top:14px">
+          <div class="panel"><span class="tag ok">READ</span><h3>卡面层</h3><p>让玩家在两秒内知道“这张卡值多少、做什么”。</p></div>
+          <div class="panel"><span class="tag ok">RULE</span><h3>规则层</h3><p>让引擎不需要猜；删除任意一张卡，其余卡仍能自洽运行。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Seven kinds</p>
+    <h2>七类卡，一套槽位</h2>
+    <div class="grid3">
+      <div class="panel"><span class="tag">CONTENT</span><h3>地图卡</h3><p>出生点、固定路径、基地、塔位、地形。地图不是背景，是规则。</p></div>
+      <div class="panel"><span class="tag">CONTENT</span><h3>波次卡</h3><p>敌人出场顺序、间隔、路线与预算；WAV-ANV-A 的 B=158 是基准。</p></div>
+      <div class="panel"><span class="tag">CONTENT</span><h3>事件卡</h3><p>沙暴、断电等战场条件；可以由规则卡禁用。</p></div>
+      <div class="panel"><span class="tag ok">BATTLE</span><h3>塔卡</h3><p>放入塔位即生效；升级是替换为高阶卡，拆除返还部分能量。</p></div>
+      <div class="panel"><span class="tag ok">BATTLE</span><h3>单位卡</h3><p>召唤到路径或支援槽，负责拦截、输出或辅助。</p></div>
+      <div class="panel"><span class="tag ok">BATTLE</span><h3>技能卡</h3><p>一次性或持续，消耗能量，用于救场与节奏调整。</p></div>
+      <div class="panel hot"><span class="tag warn">META</span><h3>规则卡</h3><p>定义“这局按什么玩法进行”：资源、胜利条件、禁用卡类。融合玩法的唯一接口。</p></div>
+      <div class="panel"><span class="tag">SOCKET</span><h3>槽位 = 接口</h3><p>塔位、支援槽、修饰槽、事件槽。卡不能做它槽位没声明的事；扩展靠加槽位，不靠给旧卡打补丁。</p></div>
+      <div class="panel"><span class="tag">COMBO</span><h3>组合四法则</h3><p>叠加、替换、连锁、羁绊；同标签达到阈值触发套装效果。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Three main · three kin</p>
+    <h2>三主族，各带一个小跟班</h2>
+    <p class="sub">主族是骨架，从族是只以支援/召唤卡进入该族卡池的特色插件；互克通过机制，不靠单纯数值。</p>
+    <div class="factions">
+      <div class="faction"><div class="en">ANVIL COMPACT / 铁砧联邦</div><h3>人系 · 工事与后勤</h3><p>模块化工事、机动换位、火力网、弹药切换。</p><div class="mech"><b>专属：模块换装</b><br>局内替换修饰卡，改变同一座塔的职能。</div><div class="pet">从族 · 齿轮帮 / 维修、搬运、临时路障</div></div>
+      <div class="faction tide"><div class="en">TIDE SWARM / 涌潮虫群</div><h3>虫系 · 数量与进化</h3><p>铺场、孵化、腐蚀地带、廉价海量。</p><div class="mech"><b>专属：进化枝</b><br>满足条件后，单位卡“替换”为高阶变体。</div><div class="pet">从族 · 孢子侍从 / 菌毯、孵化加速、腐蚀附着</div></div>
+      <div class="faction astral"><div class="en">ASTRAL CONCLAVE / 星辉议会</div><h3>星灵系 · 护盾与共鸣</h3><p>护盾充能、精准打击、能量导引、少而强。</p><div class="mech"><b>专属：共鸣</b><br>相邻塔位形成共鸣区，共享部分增益。</div><div class="pet">从族 · 光尘侍从 / 护盾、视野、能量导引</div></div>
+    </div>
+    <p class="sub" style="margin-top:12px">M1 只实装铁砧联邦 12 卡；涌潮与星辉在策划卷中完整设计，尚未进入可玩版本。</p>
+  </section>
+
+  <section>
+    <p class="kicker">Battle grammar</p>
+    <h2>局内只做三件事</h2>
+    <div class="grid3">
+      <div class="panel"><h3>放卡</h3><p>能量来自自动增长与击杀返还；人口限制同时存在的单位；塔位决定射程与路径关系。</p></div>
+      <div class="panel"><h3>换卡</h3><p>升级替换、修饰挂载、技能救场；组合触发比单卡强度更重要。</p></div>
+      <div class="panel"><h3>调度</h3><p>每波结束 +1 调度点，三选一；决定下一波是补输出、补控制还是补经济。</p></div>
+    </div>
+    <table class="table" style="margin-top:16px">
+      <thead><tr><th>状态 / 规则</th><th>作用</th><th>设计意图</th></tr></thead>
+      <tbody>
+        <tr><td><b>对空</b></td><td>部分塔只能打地面，部分可对空</td><td>让“放哪里”与“放什么”同时成为问题</td></tr>
+        <tr><td><b>腐蚀 / 减速 / 护盾</b></td><td>持续伤害、移动控制、吸收伤害</td><td>用状态而不是纯数值制造组合空间</td></tr>
+        <tr><td><b>羁绊</b></td><td>同标签达到阈值触发套装</td><td>“卡片融合感”的主要来源</td></tr>
+        <tr><td><b>挑战卡</b></td><td>局前 1–3 张自选难度修饰</td><td>难度轴与玩法轴正交；高分靠自选代价</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <p class="kicker">Content map</p>
+    <h2>已经有什么，准备做什么</h2>
+    <div class="metrics">
+      <div class="metric"><b>33</b><span>design documents</span><em>卡表 / 数值 / 地图 / 故事 / 美术</em></div>
+      <div class="metric"><b>36</b><span>designed cards</span><em>三主族各 12 卡</em></div>
+      <div class="metric"><b>6</b><span>designed maps</span><em>含双入口图</em></div>
+      <div class="metric"><b>40</b><span>novel chapters</span><em>《节点之海》约 10 万字</em></div>
+      <div class="metric"><b>1</b><span>playable slice</span><em>铁砧 12 卡 / 1 图 / 6 波</em></div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="panel ok"><span class="tag ok">PLAYABLE M1</span><h3>可玩内容</h3><ul><li>铁砧联邦 12 卡（含齿轮帮 3 张支援）</li><li>敌方 6 原型 / 1 张地图 / 6 波 / 5 挑战卡</li><li>一套完整卡组、布防、交战、评级与结算</li></ul></div>
+      <div class="panel"><span class="tag">DESIGNED / NOT SHIPPED</span><h3>已设计、未实装</h3><ul><li>涌潮 12 卡与进化枝；星辉 12 卡与共鸣</li><li>其余 5 张地图、第 2–5 章、事件卡</li><li>Roguelike 远征、异步 PvP、编辑器与 UGC</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">World & art</p>
+    <h2>两套美术，一个世界</h2>
+    <div class="grid2">
+      <div class="panel"><span class="tag warn">001 / RETRO-FUTURE</span><h3>复古未来</h3><p>按 D7 基调展开：模块化工事、沙尘、CRT、旧工业与星际拼贴。11 篇设定：总纲、三主族、三从族、卡牌、场景、UI、动效、敌人、载体、管线。</p><p><a href="design/美术/美术设定001/README.md">进入 001 →</a></p></div>
+      <div class="panel"><span class="tag ok">002 / MILLENNIAL CLEAR</span><h3>千禧透明美学</h3><p>平行提案：六族透明化——亚克力工事、凝胶卵膜、晶体棱镜、透明玩具壳。14 篇细案，含 bling、光耀场景、冲突清单与键色配方。</p><p><a href="design/美术/美术设定002/README.md">进入 002 →</a></p></div>
+    </div>
+    <div class="panel" style="margin-top:16px"><span class="tag">STORY</span><h3>《节点之海》</h3><p>单一主角调度官谢临，五卷 40 章、约 10 万字；短篇 ×3 + 中篇《第八节点》+ 人物术语对照卡。故事不是设定附录，而是把“节点防线”里的调度、漏怪、远征写成人的处境。</p><p><a href="design/故事/README.md">进入故事集 →</a></p></div>
+  </section>
+
+  <section>
+    <p class="kicker">Read this</p>
+    <h2>按你的问题进入</h2>
+    <div class="cards">
+      <a class="navcard" href="design/00_决策记录.md"><div class="n">00</div><b>先看裁决</b><span>D1–D11：固定路径、全要素卡化、不卖数值、Roguelike 远征。</span></a>
+      <a class="navcard" href="design/01_游戏概述.md"><div class="n">01</div><b>一页读懂</b><span>定位、三根支柱、体验目标、平台与不做什么。</span></a>
+      <a class="navcard" href="design/02_卡片规则系统.md"><div class="n">02</div><b>全卷核心</b><span>三层九字段、七类卡、槽位、组合四法则、内聚五律。</span></a>
+      <a class="navcard" href="design/03_种族总览.md"><div class="n">03</div><b>三主族 + 三从族</b><span>铁砧 / 涌潮 / 星辉，以及各自的小跟班。</span></a>
+      <a class="navcard" href="design/04_塔防核心战斗.md"><div class="n">04</div><b>战斗</b><span>棋盘、能量、人口、调度、评级与操作约束。</span></a>
+      <a class="navcard" href="design/06_关卡与地图卡.md"><div class="n">06</div><b>关卡即卡组</b><span>地图、波次、事件、规则卡如何组装一局。</span></a>
+      <a class="navcard" href="design/07_移动端与界面.md"><div class="n">07</div><b>小屏</b><span>单指、竖屏、信息分层与触控目标。</span></a>
+      <a class="navcard" href="design/09_路线图与融合玩法.md"><div class="n">09</div><b>玩法扩展</b><span>规则卡组、挑战卡、远征、异步 PvP 与版本路线。</span></a>
+      <a class="navcard" href="design/可视化/00_总图_可视化索引.html"><div class="n">VIZ</div><b>17 张数据图</b><span>难度、PMOD、对空、卡牌、地图、能量、远征与路线图。</span></a>
+    </div>
+  </section>
+
+  <footer class="footer"><span>Refu Game 001 · Design GUIDE · M1</span><span>卡片就是规则 · <a href="HUB.html">回到 HUB</a></span></footer>
+</main>
+</body>
+</html>

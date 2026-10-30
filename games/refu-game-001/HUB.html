@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Refu Game 001 · 节点防线 · Project HUB</title>
+<meta name="description" content="Refu Game 001《节点防线》开发总览：M1 垂直切片、工程分层、数据管线、验收闸门、路线图与风险。">
+<link rel="stylesheet" href="project.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="HUB.html"><i></i>REFU GAME 001 / NODE DEFENSE</a>
+  <nav><a class="on" href="HUB.html">HUB</a><a href="GUIDE.html">GUIDE</a><a href="README.md">README</a><a href="design/README.md">策划卷</a><a href="docs/README.md">实现文档</a></nav>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="status"><i></i>M1 · VERTICAL SLICE · PLAYABLE</div>
+      <p class="kicker">Project HUB · development overview</p>
+      <h1>把卡片<br><span class="thin">摆成一条防线。</span></h1>
+      <p class="lede">《节点防线》把策划卷的“卡片即规则”落成一个真能玩、能验收的 Godot 4.7 竖屏塔防。这里看的是 <b>项目怎么被做出来</b>：分层、数据管线、验收闸门、里程碑与风险；游戏本身怎么玩，见 <a href="GUIDE.html">GUIDE</a>。</p>
+      <div class="badge-row"><span class="tag ok">Godot 4.7</span><span class="tag ok">竖屏 540×960</span><span class="tag">本地优先</span><span class="tag warn">M1 范围</span><span class="tag no">未发布</span></div>
+    </div>
+    <aside class="hero-side">
+      <b>PROJECT</b>Refu Game 001<br>节点防线 / Node Defense<br><br>
+      <b>STATUS</b>M1 垂直切片 · 可玩 / 可验收<br><br>
+      <b>SOURCE</b>design/ 策划卷 33 个入口<br>docs/ 实现与验收 8 篇<br><br>
+      <b>ENTRY</b><a href="game/run.sh">game/run.sh run</a>
+    </aside>
+  </section>
+  <div class="rule"></div>
+
+  <section>
+    <p class="kicker">At a glance</p>
+    <h2>这一版，先证明什么</h2>
+    <p class="sub">不是证明“内容很多”，而是证明一条完整闭环：策划文档 → 数据 → 引擎 → 无头验收。</p>
+    <div class="metrics">
+      <div class="metric"><b>12</b><span>implemented cards</span><em>铁砧联邦 · 含齿轮帮支援</em></div>
+      <div class="metric"><b>6</b><span>waves · WAV-ANV-A</span><em>B = 158 = B_ref</em></div>
+      <div class="metric"><b>5</b><span>challenge cards</span><em>含双入口白名单拦截</em></div>
+      <div class="metric"><b>19</b><span>headless assertions</span><em>含自动玩家通关 L1-1</em></div>
+      <div class="metric"><b>1</b><span>playable map</span><em>MAP-ANV-01 峡谷哨站</em></div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="panel ok"><span class="tag ok">DONE</span><h3>M1 已实现</h3><ul><li>主菜单 → 关卡 → 组卡 → 布防 → 6 波 → 结算 → 再来一局</li><li>槽位、费用、能量、修饰挂载、技能、羁绊、事件钩子</li><li>人口、路径阻挡、对空、腐蚀/减速/护盾、回收返还</li><li>铁砧 12 卡 + 6 敌方原型 + 1 地图 + 5 挑战卡</li><li>19 条无头验收 + 92 秒完整流程录像</li></ul></div>
+      <div class="panel hot"><span class="tag warn">NOT YET</span><h3>M1 没做什么</h3><ul><li>涌潮 / 星辉的 24 张卡与其余 5 张地图</li><li>第 2–5 章、事件卡、进化枝、共鸣计数</li><li>Roguelike 远征、异步 PvP、编辑器与 UGC</li><li>音效 / BGM / 粒子 / 正式 UI 美术</li><li>战斗单位仍为程序化几何体，卡面与地图用真出图</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Delivery pipeline</p>
+    <h2>从文档到可玩，只有一条管线</h2>
+    <p class="sub">策划文档是唯一真相，游戏数据是派生物；任何一边改动，脚本都应该立刻发现不一致。</p>
+    <div class="pipeline">
+      <div class="stage"><div class="n">01 / SOURCE</div><b>策划卷</b><span>33 篇设计文档：卡表、数值、地图、故事、美术。</span></div>
+      <div class="stage"><div class="n">02 / EXTRACT</div><b>数据表</b><span>cards / enemies / maps / waves / challenges / rules / levels。</span></div>
+      <div class="stage"><div class="n">03 / VERIFY</div><b>逐字段对账</b><span>verify_data.py 把 JSON 拉回文档表格，发现漂移。</span></div>
+      <div class="stage"><div class="n">04 / ENGINE</div><b>Godot 工程</b><span>core 纯逻辑 → view 只画 → app 界面 → autoload 门面。</span></div>
+      <div class="stage"><div class="n">05 / GATE</div><b>无头验收</b><span>19 条用例 + 难度模拟器九项 --verify-*。</span></div>
+    </div>
+    <div class="grid3" style="margin-top:16px">
+      <div class="panel"><h3>可复现</h3><p>所有地图几何、卡表数值、波次预算都能追回源文档；不靠“我记得当时是这样”。</p></div>
+      <div class="panel"><h3>可无头运行</h3><p>core 不依赖渲染，因此整局可以在 CI 里跑完；截屏、录像、自动玩家共用同一套逻辑。</p></div>
+      <div class="panel"><h3>可回归</h3><p>改一张卡或一条数值，<code>run.sh check</code> 会同时撞数据对账与玩法断言。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Architecture</p>
+    <h2>四层，不让界面污染规则</h2>
+    <div class="layers">
+      <div class="layer"><b>core/</b><span>纯逻辑：战斗域对象、路径、卡组、41 个子系统；不依赖渲染。</span></div>
+      <div class="layer"><b>data/ · autoload/</b><span>装载 / 校验 / 查询 / 存档；GameData、AppState、UiFont 作为门面。</span></div>
+      <div class="layer"><b>view/</b><span>只画：六个 painter、卡牌控件、色板与控件工厂。</span></div>
+      <div class="layer"><b>app/</b><span>界面控制：菜单、关卡、卡组、图鉴、战斗面板与弹窗。</span></div>
+    </div>
+    <p class="sub" style="margin-top:12px">配套约束：核心脚本 ≤50 代码行、界面脚本 ≤100；文件预算由脚本强制，避免“一个大文件长成整个游戏”。</p>
+  </section>
+
+  <section>
+    <p class="kicker">Gates</p>
+    <h2>什么算“做完了”</h2>
+    <table class="table">
+      <thead><tr><th>闸门</th><th>检查</th><th>当前证据</th><th>入口</th></tr></thead>
+      <tbody>
+        <tr><td><b>玩法</b></td><td>主循环、卡牌原子性、波次、评级、确定性</td><td>19 条无头断言 PASS；自动玩家 L1-1：漏怪 1 / 基地 19/20 / 评级 S</td><td><a href="docs/05_验收与测试.md">05 验收</a></td></tr>
+        <tr><td><b>数据</b></td><td>JSON ↔ 策划文档逐字段对账</td><td>7 项 PASS + 1 项已知偏差 WARN</td><td><a href="docs/03_数据表与校验.md">03 数据</a></td></tr>
+        <tr><td><b>难度</b></td><td>章节 / 远征 / 对空 / PMOD 等九项模型校验</td><td><code>sim_refu_game_001.ts --verify-*</code> 已接入 CI 与 pre-commit</td><td><a href="tools/sim_refu_game_001.ts">模拟器</a></td></tr>
+        <tr><td><b>工程</b></td><td>文件预算、导入、主题 / 场景装载</td><td>核心 ≤50 行、界面 ≤100 行；Godot 4.7 工程可导入</td><td><a href="docs/06_文件预算与拆分约定.md">06 约定</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <p class="kicker">Roadmap</p>
+    <h2>从垂直切片到融合玩法</h2>
+    <div class="timeline">
+      <div class="tl done"><div class="v">M1 / NOW</div><b>垂直切片</b><span>一张图、一族、一条完整闭环；先证明可玩、可验收。</span></div>
+      <div class="tl"><div class="v">M2</div><b>三族战役</b><span>涌潮 / 星辉 24 卡、前 3 章、事件卡与更多地图。</span></div>
+      <div class="tl"><div class="v">M3</div><b>赛季与异步</b><span>周常长局、挑战卡总分、异步 PvP。 </span></div>
+      <div class="tl"><div class="v">v1.0</div><b>远征包</b><span>Roguelike 远征 + 编辑器内测；验证 remove-safe 扩展。</span></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Risk register</p>
+    <h2>还没解决的，不藏起来</h2>
+    <div class="grid3">
+      <div class="panel hot"><span class="tag warn">F5 / F6</span><h3>文档与出图有 2 处不一致</h3><p>MAP-AST-01 标准塔位 8 vs 10；基地生命口径 20 vs 漏怪上限 3。实现记录已标注，未擅改策划卷。</p><p><a href="docs/04_调参与实测发现.md">看实测发现 →</a></p></div>
+      <div class="panel"><span class="tag warn">SCOPE</span><h3>“卡片即规则”只验了一族</h3><p>M1 只落地铁砧 12 卡；涌潮进化枝、星辉共鸣仍未经过真实对局压力测试。</p><p><a href="design/09_路线图与融合玩法.md">看路线图 →</a></p></div>
+      <div class="panel"><span class="tag no">ASSET</span><h3>表现层还是“能读能点”</h3><p>无音效、无正式 UI 美术，战场单位是几何体。卡面与地图已有真出图，战斗表现待补。</p><p><a href="design/美术/README.md">看美术两案 →</a></p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Enter</p>
+    <h2>从哪继续</h2>
+    <div class="cards">
+      <a class="navcard" href="GUIDE.html"><div class="n">GUIDE</div><b>游戏设计导览</b><span>单局、卡牌、种族、战斗、内容与阅读路径。</span></a>
+      <a class="navcard" href="design/README.md"><div class="n">DESIGN</div><b>策划卷 33 篇</b><span>从决策记录到卡表、数值、地图与故事。</span></a>
+      <a class="navcard" href="docs/README.md"><div class="n">DOCS</div><b>实现文档</b><span>裁决、数据、工程、调参、验收与代码地图。</span></a>
+      <a class="navcard" href="README.md"><div class="n">README</div><b>项目入口</b><span>怎么跑、怎么验收、怎么改数据。</span></a>
+      <a class="navcard" href="docs/video/demo_gameplay.mp4"><div class="n">VIDEO</div><b>92 秒完整流程</b><span>主菜单 → 图鉴 → 组卡 → 6 波 → 结算。</span></a>
+      <a class="navcard" href="game/run.sh"><div class="n">RUN</div><b>game/run.sh run</b><span>Godot 4.7 竖屏 540×960；或 <code>run.sh check</code>。</span></a>
+    </div>
+  </section>
+
+  <footer class="footer"><span>Refu Game 001 · Project HUB · M1</span><span>把卡片摆成防线 · 2026</span></footer>
+</main>
+</body>
+</html>
