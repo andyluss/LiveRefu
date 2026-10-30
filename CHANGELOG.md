@@ -17,7 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
-- **工作区结构重组**：`projects/{mainline,refu-game-001,tomorrows-channel}` → `games/`；Godot 用户数据统一到 `games/.godot-home/`；`studio001/` → `archive/studio001/`；`docs/punks/` 五卷并入 `docs/retro-futurism/` 附录并去重；原五卷合订本/总索引/整合说明归入 `原朋克五卷残留/`。
+- **工作区结构重组**：`projects/{mainline,refu-game-001,tomorrows-channel}` → `games/`；Godot 用户数据统一到 `games/.godot-home/`；`studio001/` → `archive/studio001/`；`docs/punks/` 五卷并入 `docs/retro-futurism/` 附录并去重；五卷旧精简版归档到各附录的 `精简内容/`，原合订本/总索引/整合说明归入 `原朋克五卷残留/`。
 - **根日志清理**：移除 Life/慢慢记项目明细；项目变更只写各自 `CHANGELOG.md`，根日志保留工作区级变更。
 - **R03 整合钩子/CI 技术说明**：[`tech/hooks-readme.md`](tech/hooks-readme.md) 的 pre-commit 启用、暂存校验范围、全部钩子项、例外与 CI 兜底并入 [`rules/R03-link-validation.md`](rules/R03-link-validation.md)；tech 文件只保留指针。
 - **R01 整合文档技术规格**：[`tech/docs-convention.md`](tech/docs-convention.md) 的相对链接深度、校验机制、日期示例并入 [`rules/R01-docs-convention.md`](rules/R01-docs-convention.md)；tech 文件只保留指针。
