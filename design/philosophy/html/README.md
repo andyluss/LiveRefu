@@ -1,6 +1,6 @@
 # 青橙理念 · HTML 可视化
 
-12 篇理念文章各一页静态可视化，另有一页索引。
+13 篇理念文章各一页静态可视化，另有一页索引。
 
 - 入口：[`index.html`](index.html)
 - 样式：[`philosophy.css`](philosophy.css)

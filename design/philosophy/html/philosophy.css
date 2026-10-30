@@ -32,10 +32,11 @@ a:hover{color:var(--orange)}
 .hero{padding:64px 0 36px;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:40px;align-items:end}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--teal);text-transform:uppercase;margin-bottom:18px}
 h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,8.6vw,74px);overflow-wrap:anywhere;line-height:1.15;letter-spacing:-.02em;margin:0 0 20px}
-h1 .thin{font-weight:400;color:var(--muted)}
+h1 .thin{font-size: smaller;font-weight:400;color:var(--muted)}
 .thesis{font-size:18px;line-height:1.9;max-width:760px;overflow-wrap:anywhere;color:#2f3b35;margin:0}
 .hero-aside{border-left:1px solid var(--line);padding-left:20px;font-family:var(--mono);font-size:11px;line-height:1.9;color:var(--muted)}
-.hero-aside b{display:block;color:var(--ink);font-size:12px;margin-bottom:8px}
+.hero-aside b{display:block;color:var(--ink);font-size:12px}
+.hero-aside b:not(:first-child){margin-top:8px}
 .rule{height:1px;background:var(--line);margin:26px 0 32px}
 section.block{margin:42px 0}
 .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin:0 0 13px}

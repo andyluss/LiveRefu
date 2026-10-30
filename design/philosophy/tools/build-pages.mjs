@@ -381,6 +381,36 @@ const pages = [
     quote: '设计思维不是六种思维里的国王；它更像一张桌子，让六种思维先争论“我们在解决谁的问题”。',
     quoteBy: '11 · 六种镜头',
   },
+  {
+    slug: '12_空间直觉_让界面先被看见再被读懂',
+    n: '12',
+    title: '空间直觉',
+    subtitle: '让界面先被看见，再被读懂',
+    thesis: '人不是先读界面，人先读空间；位置、方向、距离、边界与深度，能替工作记忆承载关系。',
+    visual: `
+      <div class="matrix">
+        <div class="quad"><div class="tag">ATTEND</div><b>预注意</b><span>颜色、大小、方向、位置先于解释被注意到。</span></div>
+        <div class="quad solar"><div class="tag">LOCATE</div><b>心理地图</b><span>地标、区域、路径，让人记住“东西大致在哪”。</span></div>
+        <div class="quad mid"><div class="tag">ACT</div><b>可供性</b><span>形状与位置暗示可推、可拉、可打开、可放下。</span></div>
+        <div class="quad"><div class="tag">EMBODY</div><b>身体尺度</b><span>远近、轻重、阻挡、容纳，和身体经验直接相关。</span></div>
+      </div>`,
+    caption: '空间直觉不是 3D 或大留白，而是让关系先被看见，再让标签负责确认。',
+    points: [
+      ['位置即关系', '相近、同容器、上下、左右、中心、边缘，都在暗示关系。'],
+      ['地图要诚实', '位置不能伪造优先级，不能隐藏代价，不能把不确定画成确定。'],
+      ['保留退路', '可以迷路，但必须能回到地标、切换列表、搜索、撤销、退出。'],
+    ],
+    map: [
+      ['01', '先读空间', '人还没读标签，就已经知道门在哪、哪里是中心、哪里可以走。'],
+      ['02', '五种能力', '预注意、格式塔、可供性、心理地图、身体尺度。'],
+      ['03', '转译成界面', '位置、方向、尺度、边界、深度、动势。'],
+      ['04', '边界', '隐喻错位、文化差异、无障碍、小屏、数据映射失真、3D 过度。'],
+      ['05', '验证', '五秒测试、盲图测试、找路测试、回忆测试、破坏测试。'],
+      ['06', '青橙原则', '先可感再可读、先关系再装饰、地图诚实、保留退路。'],
+    ],
+    quote: '先让界面像一个可以理解的空间，再让它像一个可以阅读的文档。',
+    quoteBy: '12 · 空间直觉',
+  },
 ]
 
 const total = pages.length
@@ -459,7 +489,7 @@ const index = `<!doctype html>
 <header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><span>INDEX / ${String(total).padStart(2, '0')}</span></header>
 <main class="shell">
   <section class="hero">
-    <div><div class="eyebrow">Orange Design · Philosophy Index</div><h1>把理念<br><span class="thin">先看成一张图。</span></h1><p class="thesis">00–11 共 12 篇。每篇一页可视化：先看关系，再回到原文读论证。所有页面共用一份 CSS，不依赖外部字体、脚本或网络。</p></div>
+    <div><div class="eyebrow">Orange Design · Philosophy Index</div><h1>把理念<br><span class="thin">先看成一张图。</span></h1><p class="thesis">00–12 共 13 篇。每篇一页可视化：先看关系，再回到原文读论证。所有页面共用一份 CSS，不依赖外部字体、脚本或网络。</p></div>
     <aside class="hero-aside"><b>READ</b>从 00 总纲开始<br><b>USE</b>评审时先看图<br><b>SOURCE</b>design/philosophy/</aside>
   </section>
   <div class="rule"></div>
