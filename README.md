@@ -10,6 +10,7 @@
 
 | 你是 | 只需看这些 | **可以忽略**（技术面，由维护者/工具管） |
 | --- | --- | --- |
+| **只想先看整个工作区** | [`HUB.html`](HUB.html)（地图：知识库、游戏、产品、设计、规则、概念） | 各目录内部细节 |
 | **产品 / 策划 / 非技术维护者** | [`docs/`](docs/README.md)（**题材知识库索引**，从这进去）、[`games/mainline/README.md`](games/mainline/README.md)（主线纲领：决策与讨论）、各项目自己的 `README.md`、根 [`CHANGELOG.md`](CHANGELOG.md)（改了什么） | `rules/`、`tech/`、`tools/`、`lab/`、`.github/`、`games/.godot-home/` |
 | **参与某个具体项目** | 该项目的 `README.md` + `docs/`（如 [`games/future-debris/`](games/future-debris/README.md)） | 同上（除非该项目文档直接引用某条规则） |
 | **想知道现在最该做什么** | [`TODO.md`](TODO.md)（跨项目顶级待办、等待拍板、状态） | 各项目内部 `docs/` 与 TODO |
@@ -39,6 +40,7 @@
 
 | 路径 | 内容 | 入口 |
 | --- | --- | --- |
+| [`HUB.html`](HUB.html) | **工作区总览**：六块地图、当前项目、知识库、概念原型与工作流 | [`HUB.html`](HUB.html) |
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
 | [`design/`](design/README.md) | **项目设计系统（LRDS）**：**清澄为核**；GUIDE（设计系统）/ HUB（项目）/ lab（实验区）、三层 token、风格卡、组件契约、Web/Godot/App 介质包、验收闸门 | [`design/GUIDE.html`](design/GUIDE.html) ｜ [Lab](design/lab/README.md) |
 | [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、状态；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
@@ -75,7 +77,7 @@
 
 ## 五、快速上手
 
-- 想读题材理论 → 从 [`docs/retro-futurism/00_总论_未来的考古学与全卷地图.md`](docs/retro-futurism/00_总论_未来的考古学与全卷地图.md) 开始。
+- 想先看整个工作区 → 打开 [`HUB.html`](HUB.html)；想读题材理论 → 从 [`docs/retro-futurism/00_总论_未来的考古学与全卷地图.md`](docs/retro-futurism/00_总论_未来的考古学与全卷地图.md) 开始。
 - 想开发游戏 → 从 [`games/`](games/README.md)（现行游戏项目）或 [`projects/`](projects/website/README.md)（网站/LiveFab）入手；**直接用 AI 协作**，不必套用虚拟角色。
 - 想了解工作区规则 / 校验 → [`rules/`](rules/README.md)；想做形式化协作实验 → [`lab/formal-system/`](lab/formal-system/README.md)。
 - **运行环境**：Node.js **22.18+**（TS strip types 默认开启，无需额外 flag）；青橙全栈以 Node 24 为主。

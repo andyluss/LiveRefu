@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **工作区 HUB + 概念原型**：根 `HUB.html` 提供知识库/游戏/产品/设计/治理/概念地图；新增 `docs/concepts/`（磷环、人生缓冲带）并接管旧 `docs/phosphorus-loop/`。
 - **《未来残片》项目提升**：`games/mainline/future-debris/` → `games/future-debris/`；mainline 保留纲领；HUB/GUIDE 按 R-016 补齐三态；导览层统一到 `briefing/`；M1 配置拆分。
 - **AGENTS 结构重整**：按“适用范围 → 回报 → Git → 发布 → 日志/待办 → HTML → 网络 → 自检”重排，新增硬规范速览、用户未提交改动保护与日志层级说明；所有原硬规则保留。
 - **存量 HTML 三态迁移**：青橙理念 13 页 + 索引、Refu Game 001 HUB/GUIDE 已按 R-016 补齐系统/浅色/深色。

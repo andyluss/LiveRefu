@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>磷矿危机 · 准封闭社区代谢设计</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #030a09;
+    --txt: #e8f6f1;
+    --muted: #8fb3a9;
+    --phos: #3ee0c4;
+    --phos2: #5bc8ff;
+    --leaf: #c4e06a;
+    --warn: #ff9b7a;
+    --line: rgba(180, 255, 235, 0.13);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
+      "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ---------- 背景 ---------- */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(circle at 50% -8%, #0b2f29 0%, #04100e 52%, #020807 100%);
+  }
+  .bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at 50% 20%, black 0%, transparent 72%);
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 80px 0; position: relative; }
+
+  .section-head { margin-bottom: 38px; }
+  .section-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.34em;
+    color: var(--phos);
+    opacity: 0.85;
+    display: block;
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: clamp(1.4rem, 2.8vw, 1.95rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  h2 em { font-style: normal; color: var(--phos2); }
+  .section-desc {
+    margin-top: 12px;
+    color: var(--muted);
+    max-width: 740px;
+    font-size: 0.94rem;
+    line-height: 1.9;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 78vh;
+    display: flex;
+    align-items: center;
+    padding: 118px 0 56px;
+  }
+  .hero-inner { max-width: 900px; }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--phos);
+    border: 1px solid rgba(62, 224, 196, 0.32);
+    border-radius: 99px;
+    padding: 7px 18px;
+    margin-bottom: 26px;
+    background: rgba(62, 224, 196, 0.06);
+    backdrop-filter: blur(10px);
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 4.8vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.26;
+    letter-spacing: -0.015em;
+    margin-bottom: 24px;
+  }
+  h1 .hl {
+    background: linear-gradient(100deg, var(--phos), var(--phos2) 45%, var(--leaf));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lede {
+    max-width: 720px;
+    color: #b9dbd1;
+    font-size: 0.96rem;
+    line-height: 1.95;
+    border-left: 2px solid rgba(62, 224, 196, 0.4);
+    padding-left: 20px;
+  }
+  .lede b { color: var(--txt); font-weight: 600; }
+
+  /* ---------- 数据卡 ---------- */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+  .stat {
+    padding: 24px 20px 22px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.014));
+    border: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+    opacity: 0.5;
+  }
+  .stat:hover { transform: translateY(-4px); border-color: rgba(62, 224, 196, 0.35); }
+
+  .stat .num {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--phos);
+    text-shadow: 0 0 24px rgba(62, 224, 196, 0.25);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .stat .num small { font-size: 0.55em; font-weight: 700; color: var(--muted); margin-left: 2px; }
+  .stat .lbl { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+  /* ---------- 磷流条形图 ---------- */
+  .flow-bars {
+    margin-top: 22px;
+    padding: 24px 26px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid var(--line);
+  }
+  .flow-title {
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .bar-row { margin-bottom: 18px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    margin-bottom: 7px;
+    color: #c8e4da;
+  }
+  .bar-meta b { color: var(--phos); font-weight: 700; }
+  .bar-track {
+    height: 16px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    animation: grow 1.6s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .fill-food { width: 7.5%; background: linear-gradient(90deg, var(--phos), var(--leaf)); box-shadow: 0 0 18px rgba(62,224,196,0.45); }
+  .fill-loss { width: 92.5%; background: linear-gradient(90deg, rgba(255,155,122,0.9), rgba(255,155,122,0.5)); box-shadow: 0 0 18px rgba(255,155,122,0.2); }
+
+  @keyframes grow { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); transform-origin: left; } }
+
+  .flow-note {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.9;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+  }
+  .flow-note b { color: var(--txt); font-weight: 600; }
+
+  /* ---------- 社区参数 ---------- */
+  .params { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 8px; }
+
+  .param {
+    padding: 22px 20px;
+    border-radius: 16px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--phos2);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .param:hover { transform: translateY(-3px); border-color: rgba(91, 200, 255, 0.4); }
+
+  .param .pk {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--phos2);
+    margin-bottom: 8px;
+  }
+  .param .pv {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--txt);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .param .pd { font-size: 0.8rem; color: var(--muted); line-height: 1.75; }
+
+  /* ---------- 循环图 ---------- */
+  .cycle-wrap {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .cycle-svg {
+    width: 100%;
+    height: auto;
+    max-width: 480px;
+    margin: 0 auto;
+    display: block;
+    filter: drop-shadow(0 0 40px rgba(62, 224, 196, 0.08));
+  }
+
+  .cycle-node circle {
+    fill: rgba(10, 32, 28, 0.9);
+    stroke: rgba(62, 224, 196, 0.55);
+    stroke-width: 1.6;
+    transition: stroke 0.3s ease, fill 0.3s ease;
+  }
+  .cycle-node:hover circle {
+    stroke: var(--phos);
+    fill: rgba(62, 224, 196, 0.14);
+  }
+  .cycle-node text {
+    fill: #d8f3eb;
+    font-size: 12px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+    font-family: inherit;
+  }
+  .cycle-node .sub {
+    fill: var(--muted);
+    font-size: 9px;
+    font-weight: 400;
+  }
+
+  .cycle-path {
+    fill: none;
+    stroke: rgba(62, 224, 196, 0.32);
+    stroke-width: 1.8;
+    stroke-dasharray: 5 7;
+    animation: flow 2.4s linear infinite;
+  }
+  @keyframes flow { to { stroke-dashoffset: -24; } }
+
+  .cycle-center {
+    fill: rgba(62, 224, 196, 0.05);
+    stroke: rgba(62, 224, 196, 0.2);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+  }
+  .cycle-center-txt {
+    fill: var(--phos);
+    font-size: 11px;
+    font-weight: 700;
+    text-anchor: middle;
+    letter-spacing: 0.22em;
+    font-family: inherit;
+  }
+  .cycle-center-sub {
+    fill: var(--muted);
+    font-size: 8.5px;
+    text-anchor: middle;
+    letter-spacing: 0.12em;
+    font-family: inherit;
+  }
+
+  .cycle-legend { display: flex; flex-direction: column; gap: 14px; }
+
+  .leg {
+    display: flex;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid var(--line);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .leg:hover { border-color: rgba(62, 224, 196, 0.3); transform: translateX(4px); }
+
+  .leg-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px currentColor;
+  }
+  .leg h4 { font-size: 0.92rem; margin-bottom: 3px; font-weight: 700; }
+  .leg p { font-size: 0.82rem; color: var(--muted); line-height: 1.8; }
+
+  /* ---------- 时间线 ---------- */
+  .timeline { position: relative; padding-left: 8px; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 26px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--phos), var(--phos2) 50%, var(--leaf));
+    opacity: 0.35;
+    border-radius: 2px;
+  }
+
+  .tl-item {
+    position: relative;
+    padding-left: 62px;
+    margin-bottom: 30px;
+  }
+  .tl-item:last-child { margin-bottom: 0; }
+
+  .tl-dot {
+    position: absolute;
+    left: 17px;
+    top: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--phos);
+    box-shadow: 0 0 18px rgba(62, 224, 196, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .tl-dot::after {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--phos);
+  }
+  .tl-item:nth-child(3) .tl-dot { border-color: var(--phos2); }
+  .tl-item:nth-child(3) .tl-dot::after { background: var(--phos2); }
+  .tl-item:nth-child(5) .tl-dot { border-color: var(--leaf); }
+  .tl-item:nth-child(5) .tl-dot::after { background: var(--leaf); }
+
+  .tl-age {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--phos);
+    margin-bottom: 6px;
+  }
+  .tl-card {
+    padding: 18px 22px;
+    border-radius: 16px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012));
+    border: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .tl-card:hover { border-color: rgba(62, 224, 196, 0.3); transform: translateX(4px); }
+  .tl-card h4 { font-size: 0.98rem; margin-bottom: 6px; font-weight: 700; }
+  .tl-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.9; }
+  .tl-card p b { color: #c8e4da; font-weight: 600; }
+
+  /* ---------- 三层方案 ---------- */
+  .layers-plan { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  .plan-card {
+    padding: 24px 22px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--c);
+    backdrop-filter: blur(12px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .plan-card:hover { transform: translateY(-4px); border-color: var(--c); }
+
+  .plan-top {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .plan-ic {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--c);
+    line-height: 1;
+  }
+  .plan-name { font-size: 1rem; font-weight: 700; }
+  .plan-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .plan-card li {
+    font-size: 0.85rem;
+    color: #b6d8ce;
+    line-height: 1.85;
+    padding-left: 16px;
+    position: relative;
+  }
+  .plan-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--c);
+    opacity: 0.8;
+  }
+  .plan-card li b { color: var(--txt); font-weight: 600; }
+
+  /* ---------- 判据 ---------- */
+  .criteria { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  .crit {
+    padding: 24px 22px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .crit:hover { border-color: rgba(62, 224, 196, 0.38); transform: translateY(-3px); }
+  .crit::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--phos), transparent);
+    opacity: 0.6;
+  }
+  .crit-q {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--phos);
+    margin-bottom: 8px;
+  }
+  .crit h4 { font-size: 1rem; margin-bottom: 8px; font-weight: 700; }
+  .crit p { font-size: 0.86rem; color: var(--muted); line-height: 1.9; }
+  .crit p b { color: #c8e4da; font-weight: 600; }
+
+  /* ---------- 脆弱点 ---------- */
+  .fragile {
+    padding: 34px 32px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgba(255,155,122,0.07), rgba(255,155,122,0.015));
+    border: 1px solid rgba(255, 155, 122, 0.22);
+    position: relative;
+  }
+  .fragile::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--warn), transparent);
+    border-radius: 22px 0 0 22px;
+  }
+  .fragile .fk {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    color: var(--warn);
+    margin-bottom: 12px;
+  }
+  .fragile h3 {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    margin-bottom: 14px;
+    line-height: 1.6;
+    font-weight: 700;
+  }
+  .fragile p {
+    font-size: 0.92rem;
+    color: #d8c3bb;
+    line-height: 2;
+    margin-bottom: 12px;
+  }
+  .fragile p:last-child { margin-bottom: 0; }
+  .fragile p b { color: #ffe0d6; font-weight: 600; }
+
+  /* ---------- 收束 ---------- */
+  .final {
+    text-align: center;
+    padding: 96px 24px 108px;
+  }
+  .final blockquote {
+    font-size: clamp(1.15rem, 2.8vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.75;
+    max-width: 820px;
+    margin: 0 auto;
+    background: linear-gradient(100deg, #d9fff5, var(--phos) 40%, var(--phos2) 68%, var(--leaf));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .final .tail {
+    margin-top: 30px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 2;
+  }
+
+  footer {
+    text-align: center;
+    padding: 36px 24px 56px;
+    font-size: 0.72rem;
+    color: rgba(143, 179, 169, 0.5);
+    letter-spacing: 0.18em;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 960px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .params { grid-template-columns: repeat(2, 1fr); }
+    .cycle-wrap { grid-template-columns: 1fr; }
+    .cycle-svg { max-width: 400px; }
+    .criteria { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .layers-plan { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr; }
+    .params { grid-template-columns: 1fr; }
+    section { padding: 58px 0; }
+    .hero { min-height: auto; padding: 96px 0 48px; }
+    .tl-item { padding-left: 50px; }
+    .timeline::before { left: 20px; }
+    .tl-dot { left: 11px; }
+    .fragile { padding: 26px 22px; }
+  }
+
+  /* 滚动淡入 */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="eyebrow">代谢设计 · 磷矿危机 · 准封闭社区</div>
+      <h1>一场<span class="hl">不能作弊</span>的考试</h1>
+      <p class="lede">
+        磷没有替代品，没有大气库，地理上高度集中。它不是"未来某天"的问题，是<b>这一代人</b>会看到价格与地缘政治剧烈波动的问题。
+        一个准封闭社区的任务，不是等磷矿耗尽再回收，而是在磷还买得到的时候，<b>把回收变成默认的基础设施，把"不流失"变成空间的形状。</b>
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 危机数据 ================= -->
+<section id="crisis">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">01 / 危机到底有多硬</span>
+      <h2>几个<em>不能绕开</em>的数据</h2>
+      <p class="section-desc">
+        静态储量年限看起来还有292年，但这是按今天的速度。在需求增长条件下，情况完全不同。
+      </p>
+    </div>
+
+    <div class="stats">
+      <article class="stat reveal">
+        <div class="num">7.5<small>%</small></div>
+        <div class="lbl">只有 7.5% 的开采磷真正进入人的食物，其余 92.5% 在加工、径流、土壤固定和污水中散失</div>
+      </article>
+      <article class="stat reveal">
+        <div class="num">54<small>年</small></div>
+        <div class="lbl">非摩洛哥储量的动态年限。摩洛哥及西撒哈拉控制约 68.5% 的全球储量</div>
+      </article>
+      <article class="stat reveal">
+        <div class="num">25<small>年</small></div>
+        <div class="lbl">中国约 25 年耗尽国内供给，美国约 33 年。中国从 2021 年开始限制磷出口</div>
+      </article>
+      <article class="stat reveal">
+        <div class="num">90<small>%+</small></div>
+        <div class="lbl">德国 Reinighof 案例证明，分散式系统可从尿液中回收超过 90% 的磷，以鸟粪石形式产出</div>
+      </article>
+    </div>
+
+    <div class="flow-bars reveal">
+      <div class="flow-title">全球磷流 · 一次开采的去向</div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>真正进入人类食物</span><b>7.5%</b></div>
+        <div class="bar-track"><div class="bar-fill fill-food"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>加工、径流、土壤固定、污水散失</span><b>92.5%</b></div>
+        <div class="bar-track"><div class="bar-fill fill-loss"></div></div>
+      </div>
+      <p class="flow-note">
+        <b>但危机也是设计的入口：</b>人类排泄物中可回收的磷，理论上足以替代目前开采的绝大部分。
+        问题不是"有没有磷"，是"有没有把回收变成默认的基础设施"。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 社区参数 ================= -->
+<section id="params">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">02 / 社区基本参数</span>
+      <h2>不是越小越好，<em>不是越大越好</em></h2>
+      <p class="section-desc">
+        规模、密度、磷流基线、技术基线——四个参数决定了代谢节点能否被长期维护。
+      </p>
+    </div>
+
+    <div class="params">
+      <article class="param reveal">
+        <div class="pk">规模</div>
+        <div class="pv">150—200 人<br>约 40 公顷</div>
+        <div class="pd">来自邓巴数——人能维持稳定社会关系的认知上限。超过这个规模，"谁维护什么"就开始模糊。</div>
+      </article>
+      <article class="param reveal">
+        <div class="pk">密度</div>
+        <div class="pv">50—70 人/公顷</div>
+        <div class="pd">居住、生产、处理设施在步行和自行车可达范围内，减少运输带来的物质泄漏和能源消耗。</div>
+      </article>
+      <article class="param reveal">
+        <div class="pk">磷流基线</div>
+        <div class="pv">每人每年<br>0.3—0.7 kg 磷</div>
+        <div class="pd">200 人社区每年人体排泄磷约 60—140 kg 纯磷量级。数量不大，但每年稳定产生、位置固定、可以设计。</div>
+      </article>
+      <article class="param reveal">
+        <div class="pk">技术基线</div>
+        <div class="pv">能被居民<br>自己维护</div>
+        <div class="pd">不是"哪个最先进"，而是"哪个能在没有外部专家的情况下被居民自己维护"。这是 Q8 的直接约束。</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 循环图 ================= -->
+<section id="cycle">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">03 / 空间形状</span>
+      <h2>让磷"流不出去"<em>成为默认</em></h2>
+      <p class="section-desc">
+        准封闭不是围墙，是代谢边界的空间化。水系统分三线不混流，农业区紧贴居住区，处理设施放在人们看得见、经过的地方。
+      </p>
+    </div>
+
+    <div class="cycle-wrap">
+      <svg class="cycle-svg" viewBox="0 0 560 560" role="img" aria-label="社区磷代谢循环示意图">
+        <!-- 中心 -->
+        <circle cx="280" cy="280" r="86" class="cycle-center" />
+        <text x="280" y="268" class="cycle-center-txt">准封闭社区</text>
+        <text x="280" y="288" class="cycle-center-sub">PHOSPHORUS LOOP</text>
+        <text x="280" y="306" class="cycle-center-sub">边界 · 节奏 · 改写权</text>
+
+        <!-- 流动弧线 -->
+        <path class="cycle-path" d="M 400,280 A 120,120 0 0,1 340,384" />
+        <path class="cycle-path" d="M 340,384 A 120,120 0 0,1 220,384" />
+        <path class="cycle-path" d="M 220,384 A 120,120 0 0,1 160,280" />
+        <path class="cycle-path" d="M 160,280 A 120,120 0 0,1 220,176" />
+        <path class="cycle-path" d="M 220,176 A 120,120 0 0,1 340,176" />
+        <path class="cycle-path" d="M 340,176 A 120,120 0 0,1 400,280" />
+
+        <!-- 节点 -->
+        <g class="cycle-node">
+          <circle cx="400" cy="280" r="44" />
+          <text x="400" y="272">人体</text>
+          <text x="400" y="288" class="sub">摄取与排泄</text>
+        </g>
+        <g class="cycle-node">
+          <circle cx="340" cy="384" r="44" />
+          <text x="340" y="376">源分离</text>
+          <text x="340" y="392" class="sub">黄水 / 黑水</text>
+        </g>
+        <g class="cycle-node">
+          <circle cx="220" cy="384" r="44" />
+          <text x="220" y="376">回收</text>
+          <text x="220" y="392" class="sub">鸟粪石 / 堆肥</text>
+        </g>
+        <g class="cycle-node">
+          <circle cx="160" cy="280" r="44" />
+          <text x="160" y="272">土壤</text>
+          <text x="160" y="288" class="sub">保磷与缓冲</text>
+        </g>
+        <g class="cycle-node">
+          <circle cx="220" cy="176" r="44" />
+          <text x="220" y="168">作物</text>
+          <text x="220" y="184" class="sub">生长与带走</text>
+        </g>
+        <g class="cycle-node">
+          <circle cx="340" cy="176" r="44" />
+          <text x="340" y="168">食物</text>
+          <text x="340" y="184" class="sub">加工与烹饪</text>
+        </g>
+      </svg>
+
+      <div class="cycle-legend">
+        <div class="leg">
+          <span class="leg-dot" style="color: var(--phos); background: var(--phos);"></span>
+          <div>
+            <h4>水系统分三线，不混流</h4>
+            <p>尿液单独收集（黄水线），粪便单独收集（黑水线），灰水单独收集。混流是磷回收最大的敌人——磷被稀释到巨大体积里，回收成本急剧上升。</p>
+          </div>
+        </div>
+        <div class="leg">
+          <span class="leg-dot" style="color: var(--phos2); background: var(--phos2);"></span>
+          <div>
+            <h4>农业区紧贴居住区</h4>
+            <p>肥料运输距离以米计，不是公里计。回收的鸟粪石和堆肥直接进入菜园和温室，中间不需要包装、运输、分销。</p>
+          </div>
+        </div>
+        <div class="leg">
+          <span class="leg-dot" style="color: var(--leaf); background: var(--leaf);"></span>
+          <div>
+            <h4>土壤是磷的银行</h4>
+            <p>少耕、免耕、地表覆盖减少侵蚀流失；有机质提升土壤保磷能力；生物炭和堆肥不是"施肥"，是把磷固定在社区边界内的结构材料。</p>
+          </div>
+        </div>
+        <div class="leg">
+          <span class="leg-dot" style="color: var(--warn); background: var(--warn);"></span>
+          <div>
+            <h4>处理设施放在日常路径上</h4>
+            <p>鸟粪石反应器、堆肥区、芦苇床不是藏在社区边缘的"脏区"，而是和工具房、种子库、维修工坊放在一起的日常基础设施。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 男孩的一生 ================= -->
+<section id="life">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">04 / 一个爱好科技的小男孩的一生</span>
+      <h2>代谢设计如何<em>穿过一个人的时间</em></h2>
+      <p class="section-desc">
+        从七岁蹲在鸟粪石池边，到七十岁看孙子接手同一个节点——代谢设计的最终产品不是回收率，是一种把代谢过程当作日常生活来经验的文化。
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-age">七岁</div>
+        <div class="tl-card">
+          <h4>第一次看见"尿变成石头"</h4>
+          <p>他蹲在社区的鸟粪石结晶池旁边，看黄色的尿液从管道流入反应器，出来的是白色颗粒。他问维护员："这是尿变的？"他不觉得恶心，他觉得这像魔法。他回家用塑料瓶和盐水试着自己做结晶，失败了三次，第四次在瓶底看到一层薄薄的白色。<b>这是他第一次知道：废物不是终点，是一个可以被设计的中间状态。</b></p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-age">十二岁</div>
+        <div class="tl-card">
+          <h4>第一次真正维护一个代谢节点</h4>
+          <p>他开始帮维护员测 pH 和镁的投加量。他学会了简单的滴定，知道 Mg:P 摩尔比要高于 1.3，反应要等一个半小时。他用社区旧手机的传感器做了一套简易的数据记录——pH、温度、反应时间。系统很简单，但他的参与不是"被教育"，是<b>真正在维护一个代谢节点</b>。Q6 的参与门槛被设计成"十二岁可以学会"，这是故意的。</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-age">十八岁</div>
+        <div class="tl-card">
+          <h4>第一次看见城市还没做的事</h4>
+          <p>他去外面的城市读书。他第一次看到城市污水处理厂——巨大的集中式系统，磷在污泥里，污泥被焚烧或填埋，磷的回收率取决于后端灰分处理，而且大多数城市没有建。他意识到，他长大的社区不是"落后的"，是<b>在磷的问题上提前做了城市还没做的事</b>。他开始研究分散式回收的技术比较，发现社区那套"低技术"系统在维护成本和社会嵌入性上，比很多高集成方案更可持续。</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-age">三十岁</div>
+        <div class="tl-card">
+          <h4>第一次把代谢过程变成公开账本</h4>
+          <p>他回到社区，不是出于乡愁，是因为他算了一笔账：如果磷矿的非摩洛哥储量在 54 年内耗尽，他孩子那一代将面对一个完全不同价格结构的世界。他接手了代谢系统的维护轮值，同时做了一件他小时候做不到的事：<b>把社区的磷流做成年度审计</b>。每年春天，社区开一次"磷账会议"：人体排泄磷多少、食物加工废弃物磷多少、作物带走磷多少、回收磷多少、流失磷多少。数字不是完美的闭环，但每一个缺口都有名字和责任人。</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-age">四十五岁</div>
+        <div class="tl-card">
+          <h4>第一次把"改写权"交给下一代</h4>
+          <p>他的孩子十二岁，蹲在同一个池子旁边问同样的问题。他像当年的维护员一样回答，但他加了一句："这个系统不是完美的。每年我们还是有一小部分磷从堆肥的氨挥发和土壤侵蚀里走掉。你的任务不是崇拜它，是<b>找到那一小部分，然后改它</b>。"这是 Q9：系统必须被允许被下一代改写。</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-age">七十岁</div>
+        <div class="tl-card">
+          <h4>第一次看见系统在别人手里继续活着</h4>
+          <p>社区已经运行了六十多年。磷矿的价格经历了多次冲击，但社区的粮食生产没有因为磷肥断供而崩溃。他的孙子用无人机巡检农田的磷流失热点，用机器学习优化堆肥的碳氮比。技术变了，但<b>代谢节点的边界、节奏和改写权仍然在社区手里</b>。他坐在鸟粪石反应器旁边的长椅上，看一个小孩往瓶子里装白色颗粒。他知道这个系统会继续被改，因为他从七岁起就被允许改它。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 三层方案 ================= -->
+<section id="plan">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">05 / 生存 · 生活 · 生产 · 环境</span>
+      <h2>四层方案，<em>落到具体形态</em></h2>
+      <p class="section-desc">
+        每一层都对应代谢设计的一个判据，不是抽象原则，是可执行的空间与制度安排。
+      </p>
+    </div>
+
+    <div class="layers-plan">
+      <article class="plan-card reveal" style="--c: var(--warn)">
+        <div class="plan-top">
+          <span class="plan-ic">生</span>
+          <span class="plan-name">生存层</span>
+        </div>
+        <ul>
+          <li><b>72 小时可中断，但磷不中断。</b>断水、断电、断网条件下维持基本维生：重力供水、非电烹饪、基础急救。</li>
+          <li>社区保留至少一个季度的应急磷储备（回收鸟粪石 + 堆肥），不依赖外部化肥。储备不是仓库里的袋子，是<b>土壤中已经固定的磷和正在循环的磷</b>。</li>
+          <li>应急状态下，高磷效率的水培模块可以优先保障叶菜和基础热量作物。</li>
+        </ul>
+      </article>
+
+      <article class="plan-card reveal" style="--c: var(--phos2)">
+        <div class="plan-top">
+          <span class="plan-ic">活</span>
+          <span class="plan-name">生活层</span>
+        </div>
+        <ul>
+          <li><b>代谢可见，但不成为负担。</b>厨房直接连接堆肥和菜园；尿液分离厕所在每户或每栋楼内，维护动作被设计成"两小时能学会"的单元。</li>
+          <li>Frutiger Aero 的感知语言不是装饰：透明的过滤层级、鸟粪石颗粒的颜色变化、堆肥温度的机械指示，都是真实代谢过程的可见化装置。</li>
+          <li>参与不是"环保活动"，是日常操持的一部分，门槛低到小孩和老人都能加入。</li>
+        </ul>
+      </article>
+
+      <article class="plan-card reveal" style="--c: var(--phos)">
+        <div class="plan-top">
+          <span class="plan-ic">产</span>
+          <span class="plan-name">生产层</span>
+        </div>
+        <ul>
+          <li><b>节点化循环，而不是一个大系统。</b>社区不建一个"集中式回收厂"，而是建一组可以独立运行、互为备份的节点。</li>
+          <li>黄水鸟粪石节点、黑水堆肥节点、厨房废弃物 bokashi 节点、水培营养液再生节点、土壤保磷管理节点。每个节点有明确的责任人和交叉培训的替补。</li>
+          <li>节点之间通过年度磷账连接，而不是通过管道全部捆在一起。一个节点失效，其他节点仍然运转。</li>
+        </ul>
+      </article>
+
+      <article class="plan-card reveal" style="--c: var(--leaf)">
+        <div class="plan-top">
+          <span class="plan-ic">境</span>
+          <span class="plan-name">环境层</span>
+        </div>
+        <ul>
+          <li><b>土壤和湿地是基础设施，不是景观。</b>芦苇床、湿地、堆肥区、农田边缘的缓冲带，都是磷的拦截和转化界面。</li>
+          <li>社区的审美标准不是"完工时的整洁"，而是十年后土壤有机质是否上升、侵蚀是否减少、湿地是否在不需要外部能量输入的情况下持续运行。</li>
+          <li>这是演替测试在磷代谢上的版本。</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 判据 ================= -->
+<section id="criteria">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">06 / 用代谢设计判据检验</span>
+      <h2>四个问题，<em>缺一个就不算</em></h2>
+      <p class="section-desc">
+        边界、节奏、废物去向、改写权——四个判据在这个案例中如何被具体回答。
+      </p>
+    </div>
+
+    <div class="criteria">
+      <article class="crit reveal">
+        <div class="crit-q">判据 01 · 边界在哪</div>
+        <h4>代谢边界的空间化</h4>
+        <p>社区的磷边界是"人体排泄—食物加工废弃物—农业土壤—回收产物—作物"这个回路。边界外的磷输入被降到最低，但不追求零输入（种子、饲料、不可避免的材料带入仍然存在）。<b>边界的选择是公开的，每年审计。</b></p>
+      </article>
+
+      <article class="crit reveal">
+        <div class="crit-q">判据 02 · 节奏是什么</div>
+        <h4>节奏由接收端决定</h4>
+        <p>尿液的收集节奏是日/周，鸟粪石反应是小时级，堆肥是月级，土壤磷的积累和释放是年级。节奏由<b>物质特性和维护者的可承担频率</b>决定，不由"处理效率最大化"决定。慢生活在这里不是风格，是代谢节奏与人的感知和生态承载力匹配。</p>
+      </article>
+
+      <article class="crit reveal">
+        <div class="crit-q">判据 03 · 废物去哪</div>
+        <h4>接收端的承载力必须被验证</h4>
+        <p>鸟粪石去农田，堆肥去土壤，处理后的水去灌溉或湿地。接收端的承载力通过年度磷账和土壤监测来验证。<b>没有"回收了但没人用"的节点</b>，因为使用者和维护者是同一批人。</p>
+      </article>
+
+      <article class="crit reveal">
+        <div class="crit-q">判据 04 · 谁有权改写</div>
+        <h4>维护责任的对等物</h4>
+        <p>社区成员。维护轮值、磷账会议、技术选择都是可参与的。一个十二岁的孩子可以提出改进结晶条件的方案，一个七十岁的老人可以否决一个需要专业外包的"升级"。<b>改写权不是抽象权利，是维护责任的对等物</b>：你承担这个节点的维护，你就有权改它的规则。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 脆弱点 ================= -->
+<section id="fragile">
+  <div class="wrap">
+    <div class="fragile reveal">
+      <div class="fk">07 / 这个设计最脆弱的地方</div>
+      <h3>不是技术，是社会接受度与治理连续性</h3>
+      <p>
+        技术已经存在：Reinighof 证明了 90% 以上的尿液磷回收可以稳定运行，GEORGIA 证明了低技术闭环可以不需要人工化肥。
+        <b>最脆弱的是社会接受度和治理连续性。</b>尿液回收肥料在全球的接受度平均约 59%，欧盟农民约 50%。
+        一个准封闭社区如果不能在文化上让"用自己回收的磷种出的食物"变得正常，技术系统就会在代际更替中失去维护者。
+      </p>
+      <p>
+        所以这个设计的真正核心不是鸟粪石反应器，是<b>那个七岁男孩蹲在池子旁边时，没有人告诉他这是脏的</b>。
+        代谢设计的最终产品不是磷回收率，是一种把代谢过程当作日常生活来经验、而不是当作道德负担来承受的文化。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 收束 ================= -->
+<section class="final">
+  <blockquote>磷矿危机给出的最严苛的检验，<br>不是"你能不能回收磷"，<br>是"你能不能让人愿意长期维护一个不完美的回收系统，并且允许下一代改它"。</blockquote>
+  <p class="tail">
+    小男孩的一生，就是对这个问题的回答。
+  </p>
+</section>
+
+<footer>
+  PHOSPHORUS CRISIS · QUASI-CLOSED COMMUNITY · METABOLIC DESIGN
+</footer>
+
+<script>
+  // ---------- 滚动淡入 ----------
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.08 }
+  );
+
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+</script>
+
+</body>
+</html>

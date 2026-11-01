@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人生缓冲带 · 设计文档可视化</title>
+<style>
+  :root{
+    --bg:#0b1020; --panel:#141b33; --panel2:#111a33; --line:#2a3557;
+    --text:#dde4f5; --muted:#8794b8; --dim:#5c688c;
+    --body:#5b8dee; --mind:#9b6dd6; --relation:#3fb98f; --finance:#e0a43c;
+    --red:#e05555; --blue:#5b8dee; --yellow:#f0c040;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; scroll-padding-top:72px}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 700px at 50% -18%, #1a2450 0%, #0b1020 60%),
+      #0b1020;
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:14px; line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ 顶部导航 ============ */
+  .topbar{
+    position:sticky; top:0; z-index:60;
+    background:rgba(11,16,32,.82);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1000px; margin:0 auto; padding:0 18px;
+    display:flex; align-items:center; gap:14px; height:52px;
+  }
+  .brand{
+    font-size:13px; font-weight:600; letter-spacing:1.5px; white-space:nowrap;
+    color:#cfe0ff;
+  }
+  .brand span{color:var(--dim); font-weight:400; margin-left:6px; letter-spacing:0; font-size:11px}
+  nav{
+    display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; margin-left:auto;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    color:var(--muted); text-decoration:none; font-size:12px;
+    padding:6px 10px; border-radius:7px; white-space:nowrap; transition:.15s;
+  }
+  nav a:hover{color:var(--text); background:rgba(120,150,255,.1)}
+
+  /* ============ 容器 ============ */
+  .wrap{max-width:1000px; margin:0 auto; padding:0 18px 70px}
+
+  /* ============ Hero ============ */
+  .hero{padding:56px 0 34px}
+  .hero h1{
+    font-size:clamp(25px,5vw,36px); line-height:1.28; margin:0 0 10px;
+    letter-spacing:1px; font-weight:700;
+    background:linear-gradient(120deg,#ffffff 20%,#8fb6ff 60%,#9b6dd6 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero .lead{color:var(--muted); font-size:14px; max-width:660px; margin:0 0 22px}
+  .hero .lead b{color:#cfe0ff; font-weight:600}
+
+  .concept{
+    position:relative; padding:18px 20px 18px 24px;
+    background:linear-gradient(120deg, rgba(59,98,217,.16), rgba(155,109,214,.10));
+    border:1px solid rgba(120,150,255,.28); border-radius:14px;
+    font-size:15px; line-height:1.85;
+  }
+  .concept::before{
+    content:''; position:absolute; left:0; top:14px; bottom:14px; width:3px;
+    border-radius:3px;
+    background:linear-gradient(180deg,var(--body),var(--mind),var(--yellow));
+  }
+  .concept .hl{color:#fff; font-weight:600}
+  .concept .em{color:var(--yellow); font-weight:600}
+
+  /* ============ 区块 ============ */
+  .sec{margin-top:58px}
+  .sec-head{margin-bottom:20px}
+  .tag{
+    display:inline-block; font-size:11px; letter-spacing:2px; color:var(--dim);
+    font-family:ui-monospace,Menlo,Consolas,monospace; margin-bottom:6px;
+  }
+  .sec-head h2{
+    font-size:21px; margin:0 0 6px; font-weight:600; letter-spacing:.5px;
+  }
+  .sec-head p{margin:0; color:var(--muted); font-size:13px}
+
+  /* ============ 通用卡片 ============ */
+  .panel{
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); border-radius:14px;
+  }
+
+  /* ============ 映射表 ============ */
+  .map{display:flex; flex-direction:column; gap:8px}
+  .map-row{
+    display:grid; grid-template-columns:minmax(130px,.75fr) 36px 2fr;
+    align-items:center; gap:8px;
+  }
+  .map-cell{
+    padding:11px 14px; border-radius:11px; font-size:13px; line-height:1.6;
+  }
+  .map-cell.a{
+    background:rgba(120,150,255,.06); border:1px solid var(--line);
+    color:var(--muted); font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:12px; letter-spacing:.5px;
+  }
+  .map-cell.b{
+    background:linear-gradient(90deg, rgba(59,98,217,.14), rgba(59,98,217,.04));
+    border:1px solid rgba(120,150,255,.22); color:#dbe6ff;
+  }
+  .map-cell.b b{color:#fff; font-weight:600}
+  .map-arrow{text-align:center; color:#4a5c92; font-size:16px}
+  @media(max-width:640px){
+    .map-row{grid-template-columns:1fr; gap:3px}
+    .map-arrow{transform:rotate(90deg); margin-left:16px; justify-self:start; line-height:1}
+  }
+
+  /* ============ 核心循环 ============ */
+  .cycle{
+    list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
+    counter-reset:c;
+  }
+  .cycle li{
+    counter-increment:c; position:relative;
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); border-radius:13px;
+    padding:16px 13px 14px; font-size:12.5px; line-height:1.65;
+    transition:.2s;
+  }
+  .cycle li:hover{border-color:rgba(120,150,255,.45); transform:translateY(-3px)}
+  .cycle li::before{
+    content:counter(c);
+    display:flex; align-items:center; justify-content:center;
+    width:22px; height:22px; border-radius:50%;
+    background:rgba(91,141,238,.16); border:1px solid rgba(91,141,238,.5);
+    color:#9dc4ff; font-size:11px; font-weight:700;
+    margin-bottom:9px;
+  }
+  .cycle li b{display:block; color:#fff; font-size:13.5px; margin-bottom:3px; font-weight:600}
+  .cycle li span{color:var(--muted)}
+  @media(max-width:820px){ .cycle{grid-template-columns:repeat(3,1fr)} }
+  @media(max-width:560px){ .cycle{grid-template-columns:1fr} }
+
+  /* ============ 三种压力 ============ */
+  .pressure{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  @media(max-width:760px){ .pressure{grid-template-columns:1fr} }
+  .pcard{
+    position:relative; padding:18px 16px 16px; border-radius:14px;
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); overflow:hidden;
+  }
+  .pcard::after{
+    content:''; position:absolute; left:0; right:0; top:0; height:3px;
+    background:var(--pc);
+  }
+  .pcard .ptitle{
+    display:flex; align-items:center; gap:8px; font-size:15px; font-weight:600;
+    color:#fff; margin-bottom:8px;
+  }
+  .dot{width:11px; height:11px; border-radius:50%; background:var(--pc); flex:none;
+       box-shadow:0 0 12px var(--pc)}
+  .pcard .pdesc{font-size:12.5px; color:var(--muted); line-height:1.75; margin-bottom:10px}
+  .pcard .pmeta{
+    font-size:11.5px; color:#c9d5f5; padding-top:10px;
+    border-top:1px dashed rgba(120,150,255,.18); line-height:1.7;
+  }
+  .pcard .pmeta b{color:var(--pc); font-weight:600}
+
+  /* ============ 四维核心 ============ */
+  .cores{display:grid; grid-template-columns:repeat(4,1fr); gap:11px}
+  @media(max-width:820px){ .cores{grid-template-columns:repeat(2,1fr)} }
+  .ccard{
+    padding:15px 15px 14px; border-radius:13px;
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); transition:.2s;
+  }
+  .ccard:hover{transform:translateY(-3px); border-color:var(--cc)}
+  .ccard .cname{
+    font-size:14px; font-weight:600; color:var(--cc); margin-bottom:8px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .ccard .cbar{height:4px; border-radius:2px; background:#0a0f22; overflow:hidden; margin-bottom:10px}
+  .ccard .cbar i{display:block; height:100%; width:100%; background:var(--cc); border-radius:2px; opacity:.85}
+  .ccard .cdesc{font-size:12px; color:var(--muted); line-height:1.7}
+  .core-note{
+    margin-top:12px; padding:13px 16px; border-radius:12px; font-size:12.5px;
+    background:rgba(224,85,85,.07); border:1px solid rgba(224,85,85,.25);
+    color:#f0b8b8; line-height:1.75;
+  }
+  .core-note b{color:#ff9a9a}
+
+  /* ============ 塔 ============ */
+  .towers{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:11px}
+  .tcard{
+    padding:14px 15px; border-radius:13px;
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); transition:.2s;
+  }
+  .tcard:hover{transform:translateY(-3px); border-color:rgba(120,150,255,.4)}
+  .tcard .thead{display:flex; align-items:center; gap:9px; margin-bottom:8px}
+  .tcard .ticon{
+    width:32px; height:32px; border-radius:9px; flex:none;
+    display:flex; align-items:center; justify-content:center; font-size:16px;
+    background:var(--tbg); border:1px solid var(--tbd);
+  }
+  .tcard .tname{font-size:13.5px; font-weight:600; color:#fff; line-height:1.3}
+  .tcard .tcost{font-size:10.5px; color:var(--dim); margin-top:2px; letter-spacing:.3px}
+  .tcard .tdesc{font-size:12px; color:var(--muted); line-height:1.7; margin-bottom:9px}
+  .tcard .ttag{
+    display:inline-block; font-size:10.5px; padding:2px 8px; border-radius:20px;
+    background:rgba(120,150,255,.1); color:#a8bdf0; border:1px solid rgba(120,150,255,.2);
+  }
+
+  /* 升级路线 */
+  .upgrade{
+    margin-top:14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    padding:14px 16px; border-radius:13px;
+    background:rgba(120,150,255,.05); border:1px dashed rgba(120,150,255,.25);
+  }
+  .upgrade .ulabel{font-size:11.5px; color:var(--dim); letter-spacing:1px; margin-right:4px}
+  .pill{
+    font-size:12px; padding:5px 14px; border-radius:20px;
+    background:rgba(91,141,238,.12); border:1px solid rgba(91,141,238,.35);
+    color:#b9d0ff; font-weight:500;
+  }
+  .upgrade .uarr{color:#4a5c92; font-size:14px}
+
+  /* ============ 波次时间线 ============ */
+  .waves{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:11px}
+  .wcard{
+    position:relative; padding:15px 15px 14px 17px; border-radius:13px;
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); overflow:hidden;
+  }
+  .wcard::before{
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--wc); opacity:.8;
+  }
+  .wcard .wnum{
+    font-size:10.5px; letter-spacing:2px; color:var(--wc);
+    font-family:ui-monospace,Menlo,Consolas,monospace; margin-bottom:5px;
+  }
+  .wcard .wname{font-size:14px; font-weight:600; color:#fff; margin-bottom:7px}
+  .wcard .wdesc{font-size:12px; color:var(--muted); line-height:1.7; margin-bottom:10px}
+  .wbar{display:flex; gap:3px; align-items:center}
+  .wbar i{width:14px; height:4px; border-radius:2px; background:#232d4d}
+  .wbar i.on{background:var(--wc)}
+  .wbar span{font-size:10.5px; color:var(--dim); margin-left:6px}
+  .wcard.peak{border-color:rgba(224,85,85,.5); box-shadow:0 0 0 1px rgba(224,85,85,.15) inset}
+  .wcard .peakbadge{
+    position:absolute; top:11px; right:11px; font-size:9.5px; padding:2px 7px;
+    border-radius:20px; background:rgba(224,85,85,.18); border:1px solid rgba(224,85,85,.5);
+    color:#ff9a9a; letter-spacing:.5px;
+  }
+
+  /* ============ 设计张力 ============ */
+  .tension{display:grid; grid-template-columns:repeat(2,1fr); gap:11px}
+  @media(max-width:680px){ .tension{grid-template-columns:1fr} }
+  .titem{
+    padding:16px 17px; border-radius:13px;
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); border-left:3px solid var(--tc);
+  }
+  .titem .tt{font-size:13.5px; font-weight:600; color:#fff; margin-bottom:6px}
+  .titem .td{font-size:12.5px; color:var(--muted); line-height:1.75}
+  .titem .td b{color:#cfe0ff; font-weight:600}
+
+  /* ============ 一局示例 ============ */
+  .steps{list-style:none; margin:0; padding:0; position:relative}
+  .steps::before{
+    content:''; position:absolute; left:11px; top:14px; bottom:14px; width:2px;
+    background:linear-gradient(180deg,rgba(120,150,255,.4),rgba(120,150,255,.06));
+    border-radius:2px;
+  }
+  .steps li{
+    position:relative; padding:0 0 18px 36px; font-size:13px; line-height:1.8;
+  }
+  .steps li:last-child{padding-bottom:0}
+  .steps li::before{
+    content:''; position:absolute; left:6px; top:7px;
+    width:12px; height:12px; border-radius:50%;
+    background:#0b1020; border:2px solid rgba(120,150,255,.7);
+    box-shadow:0 0 0 4px rgba(11,16,32,.9);
+  }
+  .steps li.done::before{background:var(--relation); border-color:var(--relation)}
+  .steps li b{color:#fff; font-weight:600; display:block; margin-bottom:2px; font-size:13.5px}
+  .steps li span{color:var(--muted)}
+  .steps li .tagline{
+    display:inline-block; font-size:11px; padding:1px 8px; border-radius:20px;
+    margin-right:6px; vertical-align:1px;
+  }
+  .tag-r{background:rgba(224,85,85,.16); color:#ff9a9a; border:1px solid rgba(224,85,85,.35)}
+  .tag-b{background:rgba(91,141,238,.16); color:#9dc4ff; border:1px solid rgba(91,141,238,.35)}
+  .tag-y{background:rgba(240,192,64,.16); color:#f5d76e; border:1px solid rgba(240,192,64,.35)}
+
+  /* ============ 胜负 ============ */
+  .endings{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  @media(max-width:760px){ .endings{grid-template-columns:1fr} }
+  .ecard{
+    padding:18px 17px; border-radius:14px; text-align:left;
+    background:linear-gradient(180deg,#161e39,#121931);
+    border:1px solid var(--line); position:relative; overflow:hidden;
+  }
+  .ecard::before{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(140px 90px at 100% 0%, var(--eglow), transparent 70%);
+  }
+  .ecard .elabel{
+    font-size:11px; letter-spacing:2px; color:var(--ec); font-weight:600;
+    margin-bottom:8px; font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .ecard .ename{font-size:15px; font-weight:600; color:#fff; margin-bottom:8px}
+  .ecard .edesc{font-size:12.5px; color:var(--muted); line-height:1.8}
+  .ecard .edesc b{color:#dbe6ff; font-weight:600}
+
+  /* ============ 页脚 ============ */
+  footer{
+    max-width:1000px; margin:0 auto; padding:34px 18px 50px;
+    border-top:1px solid var(--line); text-align:center;
+    color:var(--dim); font-size:11.5px; line-height:1.9;
+  }
+  footer b{color:var(--muted); font-weight:500}
+
+  /* ============ 入场动画 ============ */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .65s ease, transform .65s cubic-bezier(.2,.8,.3,1)}
+  .reveal.in{opacity:1; transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1; transform:none; transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 顶部导航 ================= -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">人生缓冲带<span>设计可视化</span></div>
+    <nav>
+      <a href="#map">机制映射</a>
+      <a href="#loop">核心循环</a>
+      <a href="#pressure">压力</a>
+      <a href="#core">四维</a>
+      <a href="#towers">缓冲塔</a>
+      <a href="#waves">波次</a>
+      <a href="#tension">张力</a>
+      <a href="#play">一局</a>
+      <a href="#ending">判定</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ================= Hero ================= -->
+  <section class="hero reveal">
+    <h1>人生缓冲带</h1>
+    <p class="lead">
+      一款 <b>非战斗、非杀敌</b> 的人生塔防。
+      保留塔防的路径、波次、放置与经济，把「击杀」换成<b>缓冲、分流、转化与系统维护</b>。
+    </p>
+    <div class="concept">
+      你无法阻止压力到来，但可以决定它<span class="hl">经过什么、被什么吸收、在哪里转化</span>。<br>
+      玩家在人生路径旁放置习惯、关系、制度与求助策略，目标是<span class="em">带着韧性走到人生终点</span>，而不是把压力杀光。
+    </div>
+  </section>
+
+  <!-- ================= 01 机制映射 ================= -->
+  <section class="sec reveal" id="map">
+    <div class="sec-head">
+      <div class="tag">01 / MAPPING</div>
+      <h2>塔防的骨架不变，只换叙事外衣</h2>
+      <p>只要路径、波次、放置、经济这四个支柱还在，杀敌可以被替换为任何「阻止 / 延缓 / 转化 / 管理」的目标。</p>
+    </div>
+
+    <div class="map">
+      <div class="map-row">
+        <div class="map-cell a">路径</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>人生时间线</b>：青年 — 职场 — 家庭 — 中年 — 晚年</div>
+      </div>
+      <div class="map-row">
+        <div class="map-cell a">敌人波次</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>外界压力波次</b>：急性事件、慢性消耗、机会性挑战</div>
+      </div>
+      <div class="map-row">
+        <div class="map-cell a">炮塔</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>应对策略</b>：睡眠、运动、边界、储蓄、朋友、专业求助、家庭协作、爱好</div>
+      </div>
+      <div class="map-row">
+        <div class="map-cell a">核心</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>多维生活系统</b>：身体、心理、关系、财务</div>
+      </div>
+      <div class="map-row">
+        <div class="map-cell a">击杀</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>缓冲、减速、分流、转化、恢复</b>——不消灭压力</div>
+      </div>
+      <div class="map-row">
+        <div class="map-cell a">经济</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>时间、精力、金钱、社会资本</b></div>
+      </div>
+      <div class="map-row">
+        <div class="map-cell a">升级</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>临时应对 → 稳定习惯 → 制度保障</b></div>
+      </div>
+      <div class="map-row">
+        <div class="map-cell a">漏怪</div>
+        <div class="map-arrow">→</div>
+        <div class="map-cell b"><b>压力进入核心</b>，扣减对应维度状态</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 02 核心循环 ================= -->
+  <section class="sec reveal" id="loop">
+    <div class="sec-head">
+      <div class="tag">02 / CORE LOOP</div>
+      <h2>一回合是怎么转起来的</h2>
+      <p>预警 → 部署 → 波次 → 结算 → 复盘，五个阶段构成一个完整压力周期。</p>
+    </div>
+
+    <ol class="cycle">
+      <li><b>预警期</b><span>下一波压力提前显示类型与强度，玩家有少量喘息回合。</span></li>
+      <li><b>部署期</b><span>用时间、精力、金钱在路径旁放置或升级缓冲塔。</span></li>
+      <li><b>波次期</b><span>压力沿人生路径推进，经过塔的范围被减速、吸收、转化或分流。</span></li>
+      <li><b>结算期</b><span>漏过的压力扣减核心维度；成功转化的压力产出成长资源或意义值。</span></li>
+      <li><b>复盘期</b><span>保留有效策略、拆除高维护负担、投资关系或恢复。</span></li>
+    </ol>
+  </section>
+
+  <!-- ================= 03 三种压力 ================= -->
+  <section class="sec reveal" id="pressure">
+    <div class="sec-head">
+      <div class="tag">03 / PRESSURE</div>
+      <h2>压力不是一种东西</h2>
+      <p>三类压力形态不同、应对方式不同——玩家必须判断：哪些缓冲、哪些接纳、哪些转化。</p>
+    </div>
+
+    <div class="pressure">
+      <div class="pcard" style="--pc:var(--red)">
+        <div class="ptitle"><i class="dot"></i>红色 · 急性压力</div>
+        <div class="pdesc">面试失败、裁员、家人生病、突发账单。</div>
+        <div class="pmeta">
+          <b>特征</b>：速度快、单次负荷高<br>
+          <b>应对</b>：需要应急资源快速吸收
+        </div>
+      </div>
+
+      <div class="pcard" style="--pc:var(--blue)">
+        <div class="ptitle"><i class="dot"></i>蓝色 · 慢性压力</div>
+        <div class="pdesc">加班、通勤、催婚、照护、房贷。</div>
+        <div class="pmeta">
+          <b>特征</b>：速度慢但持续，能穿透部分防御<br>
+          <b>应对</b>：需要边界、制度与关系支持
+        </div>
+      </div>
+
+      <div class="pcard" style="--pc:var(--yellow)">
+        <div class="ptitle"><i class="dot"></i>黄色 · 机会压力</div>
+        <div class="pdesc">新岗位、进修、关系深化、搬迁、创业。</div>
+        <div class="pmeta">
+          <b>特征</b>：全部挡住会缺少成长资源与意义值<br>
+          <b>应对</b>：选择接纳并转化，而不是一律拦截
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 四维核心 ================= -->
+  <section class="sec reveal" id="core">
+    <div class="sec-head">
+      <div class="tag">04 / CORE STATUS</div>
+      <h2>核心不是一条血条，而是四个维度</h2>
+      <p>避免「只要堆一种塔就无敌」——玩家必须同时照顾四个方向。</p>
+    </div>
+
+    <div class="cores">
+      <div class="ccard" style="--cc:var(--body)">
+        <div class="cname">身体</div>
+        <div class="cbar"><i></i></div>
+        <div class="cdesc">睡眠、运动、疾病负荷</div>
+      </div>
+      <div class="ccard" style="--cc:var(--mind)">
+        <div class="cname">心理</div>
+        <div class="cbar"><i></i></div>
+        <div class="cdesc">耗竭、焦虑、恢复力</div>
+      </div>
+      <div class="ccard" style="--cc:var(--relation)">
+        <div class="cname">关系</div>
+        <div class="cbar"><i></i></div>
+        <div class="cdesc">亲密关系、朋友网络、家庭协作</div>
+      </div>
+      <div class="ccard" style="--cc:var(--finance)">
+        <div class="cname">财务</div>
+        <div class="cbar"><i></i></div>
+        <div class="cdesc">现金流、应急金、保险与负债</div>
+      </div>
+    </div>
+
+    <div class="core-note">
+      <b>失败条件</b>：任一维度归零进入「危机状态」，若两回合内未恢复则失败。<br>
+      <b>通关条件</b>：四维都维持到终点，并达到意义值阈值。
+    </div>
+  </section>
+
+  <!-- ================= 05 缓冲塔 ================= -->
+  <section class="sec reveal" id="towers">
+    <div class="sec-head">
+      <div class="tag">05 / TOWERS</div>
+      <h2>八种缓冲塔</h2>
+      <p>每座塔都有维护成本——放太多会导致「防御过载」，玩家必须取舍。</p>
+    </div>
+
+    <div class="towers">
+      <div class="tcard" style="--tbg:rgba(91,141,238,.15); --tbd:rgba(91,141,238,.4)">
+        <div class="thead">
+          <div class="ticon">🌙</div>
+          <div><div class="tname">睡眠规律</div><div class="tcost">维护成本 · 时间</div></div>
+        </div>
+        <div class="tdesc">恢复身体、提升核心上限。</div>
+        <span class="ttag">低维护 · 范围小</span>
+      </div>
+
+      <div class="tcard" style="--tbg:rgba(63,185,143,.15); --tbd:rgba(63,185,143,.4)">
+        <div class="thead">
+          <div class="ticon">🏃</div>
+          <div><div class="tname">运动习惯</div><div class="tcost">维护成本 · 精力</div></div>
+        </div>
+        <div class="tdesc">增强抗压、减少慢性压力穿透。</div>
+        <span class="ttag">邻接睡眠有协同</span>
+      </div>
+
+      <div class="tcard" style="--tbg:rgba(155,109,214,.15); --tbd:rgba(155,109,214,.4)">
+        <div class="thead">
+          <div class="ticon">🚧</div>
+          <div><div class="tname">边界设定</div><div class="tcost">维护成本 · 社会资本</div></div>
+        </div>
+        <div class="tdesc">减速慢性压力、减少心理穿透。</div>
+        <span class="ttag">对职场 / 关系压力有效</span>
+      </div>
+
+      <div class="tcard" style="--tbg:rgba(224,164,60,.15); --tbd:rgba(224,164,60,.4)">
+        <div class="thead">
+          <div class="ticon">🛟</div>
+          <div><div class="tname">应急金 / 保险</div><div class="tcost">维护成本 · 金钱</div></div>
+        </div>
+        <div class="tdesc">吸收财务急性压力。</div>
+        <span class="ttag">冷却长 · 关键时刻保命</span>
+      </div>
+
+      <div class="tcard" style="--tbg:rgba(63,185,143,.15); --tbd:rgba(63,185,143,.4)">
+        <div class="thead">
+          <div class="ticon">🤝</div>
+          <div><div class="tname">朋友网络</div><div class="tcost">维护成本 · 时间 / 情感</div></div>
+        </div>
+        <div class="tdesc">恢复心理、分流孤独压力。</div>
+        <span class="ttag">邻接爱好有加成</span>
+      </div>
+
+      <div class="tcard" style="--tbg:rgba(224,96,126,.15); --tbd:rgba(224,96,126,.4)">
+        <div class="thead">
+          <div class="ticon">🧭</div>
+          <div><div class="tname">专业求助</div><div class="tcost">维护成本 · 金钱 / 勇气</div></div>
+        </div>
+        <div class="tdesc">处理高负荷与创伤。</div>
+        <span class="ttag">冷却长 · 清除积压负荷</span>
+      </div>
+
+      <div class="tcard" style="--tbg:rgba(155,109,214,.15); --tbd:rgba(155,109,214,.4)">
+        <div class="thead">
+          <div class="ticon">🏠</div>
+          <div><div class="tname">家庭协作</div><div class="tcost">维护成本 · 沟通成本</div></div>
+        </div>
+        <div class="tdesc">分担照护、分流家庭压力。</div>
+        <span class="ttag">邻接边界效果增强</span>
+      </div>
+
+      <div class="tcard" style="--tbg:rgba(240,192,64,.15); --tbd:rgba(240,192,64,.4)">
+        <div class="thead">
+          <div class="ticon">🎨</div>
+          <div><div class="tname">爱好与意义</div><div class="tcost">维护成本 · 时间</div></div>
+        </div>
+        <div class="tdesc">恢复意义值、转化机会压力。</div>
+        <span class="ttag">不直接防御 · 决定通关质量</span>
+      </div>
+    </div>
+
+    <div class="upgrade">
+      <span class="ulabel">升级路线</span>
+      <span class="pill">临时应对</span>
+      <span class="uarr">→</span>
+      <span class="pill">稳定习惯</span>
+      <span class="uarr">→</span>
+      <span class="pill">制度保障</span>
+      <span style="font-size:11.5px;color:var(--dim);margin-left:4px">例：偶尔请假 → 固定边界 → 家庭分工制度</span>
+    </div>
+  </section>
+
+  <!-- ================= 06 波次 ================= -->
+  <section class="sec reveal" id="waves">
+    <div class="sec-head">
+      <div class="tag">06 / WAVES</div>
+      <h2>示例波次：一生六波</h2>
+      <p>每波前有预警，玩家不能临时无限建塔，必须在喘息期投资。</p>
+    </div>
+
+    <div class="waves">
+      <div class="wcard" style="--wc:var(--body)">
+        <div class="wnum">WAVE 01</div>
+        <div class="wname">青年求职波</div>
+        <div class="wdesc">面试失败、房租、同辈比较；机会压力「实习」。</div>
+        <div class="wbar">
+          <i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><span>难度 2/6</span>
+        </div>
+      </div>
+
+      <div class="wcard" style="--wc:var(--blue)">
+        <div class="wnum">WAVE 02</div>
+        <div class="wname">职场初期波</div>
+        <div class="wdesc">加班、绩效、通勤；慢性压力开始穿透。</div>
+        <div class="wbar">
+          <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><span>难度 3/6</span>
+        </div>
+      </div>
+
+      <div class="wcard" style="--wc:var(--mind)">
+        <div class="wnum">WAVE 03</div>
+        <div class="wname">关系与家庭波</div>
+        <div class="wdesc">催婚、亲密冲突、育儿；多路径压力出现。</div>
+        <div class="wbar">
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><span>难度 4/6</span>
+        </div>
+      </div>
+
+      <div class="wcard peak" style="--wc:var(--red)">
+        <div class="peakbadge">难度峰值</div>
+        <div class="wnum">WAVE 04</div>
+        <div class="wname">中年夹心波</div>
+        <div class="wdesc">房贷、裁员风险、父母健康、孩子教育同时袭来。</div>
+        <div class="wbar">
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><span>难度 6/6</span>
+        </div>
+      </div>
+
+      <div class="wcard" style="--wc:var(--finance)">
+        <div class="wnum">WAVE 05</div>
+        <div class="wname">健康危机波</div>
+        <div class="wdesc">体检异常、康复、照护责任；需要专业求助与家庭协作。</div>
+        <div class="wbar">
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><span>难度 5/6</span>
+        </div>
+      </div>
+
+      <div class="wcard" style="--wc:var(--yellow)">
+        <div class="wnum">WAVE 06</div>
+        <div class="wname">退休空巢波</div>
+        <div class="wdesc">身份失落、孤独、传承机会；机会压力占比升高。</div>
+        <div class="wbar">
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><span>难度 4/6</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 07 设计张力 ================= -->
+  <section class="sec reveal" id="tension">
+    <div class="sec-head">
+      <div class="tag">07 / TENSION</div>
+      <h2>关键设计张力</h2>
+      <p>让玩家在「挡」与「不挡」之间反复权衡，这四点决定了游戏是否成立。</p>
+    </div>
+
+    <div class="tension">
+      <div class="titem" style="--tc:var(--yellow)">
+        <div class="tt">不是所有压力都该挡</div>
+        <div class="td">全拦截会失去成长资源与意义值，甚至导致关系孤立。玩家要判断哪些压力<b>缓冲</b>、哪些<b>接纳</b>、哪些<b>转化</b>。</div>
+      </div>
+
+      <div class="titem" style="--tc:var(--finance)">
+        <div class="tt">塔有维护成本</div>
+        <div class="td">放太多塔会消耗时间精力，导致<b>「防御过载」</b>——角色看起来什么都在防，却陷入倦怠。玩家必须拆除低效策略。</div>
+      </div>
+
+      <div class="titem" style="--tc:var(--relation)">
+        <div class="tt">漏压力不等于失败</div>
+        <div class="td">少量压力进入核心会扣状态，但也能触发<b>复盘与求助</b>，转化为韧性。失败是系统崩溃，不是被压力杀死。</div>
+      </div>
+
+      <div class="titem" style="--tc:var(--body)">
+        <div class="tt">反馈必须可见</div>
+        <div class="td">压力经过缓冲带后，负荷条下降、速度变慢、颜色从红转黄；机会压力被转化后产出意义值。玩家要<b>直观看到自己的部署在改变压力的命运</b>。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 08 一局示例 ================= -->
+  <section class="sec reveal" id="play">
+    <div class="sec-head">
+      <div class="tag">08 / PLAYTHROUGH</div>
+      <h2>一局示例：中年夹心波</h2>
+      <p>玩家没有杀任何东西，但成功让这一波压力没有击穿生活系统。</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <b>喘息期 · 预警</b>
+        <span>
+          <span class="tagline tag-r">红</span>财务急性压力
+          <span class="tagline tag-b">蓝</span>照护慢性压力
+          <span class="tagline tag-y">黄</span>职业转型机会
+          同时到来，而时间资源不足。
+        </span>
+      </li>
+      <li>
+        <b>部署 · 取舍</b>
+        <span>升级「应急金」吸收财务冲击；路径旁放「家庭协作」分流照护压力；用「边界设定」减速加班慢性压力；<b style="color:#ff9a9a">放弃升级「爱好」</b>，导致意义值偏低。</span>
+      </li>
+      <li>
+        <b>波次 · 压力推进</b>
+        <span>财务压力被应急金吸收；照护压力被家庭协作分流，但仍有少量漏过扣关系；加班压力穿过边界，扣心理。</span>
+      </li>
+      <li class="done">
+        <b>结算 · 复盘</b>
+        <span>玩家触发复盘，把「无效加班」转化为「边界强化」，并决定下一轮投资朋友网络恢复心理。</span>
+      </li>
+      <li class="done">
+        <b>结果</b>
+        <span>四维没有崩溃，但意义值偏低——玩家守住了生活，却错过了一些本可以拥抱的机会。</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ================= 09 胜负判定 ================= -->
+  <section class="sec reveal" id="ending">
+    <div class="sec-head">
+      <div class="tag">09 / OUTCOME</div>
+      <h2>三种结局</h2>
+      <p>失败是系统崩溃，不是被压力杀死；高分取决于你转化了多少机会。</p>
+    </div>
+
+    <div class="endings">
+      <div class="ecard" style="--ec:#e05555; --eglow:rgba(224,85,85,.16)">
+        <div class="elabel">FAIL</div>
+        <div class="ename">生活系统崩溃</div>
+        <div class="edesc">任一核心维度归零且两回合内未恢复，或总负荷爆表进入<b>「全面耗竭」</b>。</div>
+      </div>
+
+      <div class="ecard" style="--ec:#3fb98f; --eglow:rgba(63,185,143,.16)">
+        <div class="elabel">CLEAR</div>
+        <div class="ename">走到终点</div>
+        <div class="edesc">走完人生时间线，四维未崩溃，且<b>意义值达到阈值</b>。</div>
+      </div>
+
+      <div class="ecard" style="--ec:#f0c040; --eglow:rgba(240,192,64,.16)">
+        <div class="elabel">HIGH SCORE</div>
+        <div class="ename">高韧性人生</div>
+        <div class="edesc">在维持稳定的同时，<b>转化足够多机会压力</b>，形成高韧性人生路径。</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <b>人生缓冲带</b> · 非战斗塔防概念设计<br>
+  保留路径、波次、放置、经济与升级，把「杀敌」换成缓冲、转化与系统维护。<br>
+  玩家感受到的不是「我消灭了多少压力」，而是「我让哪些压力经过了我的生活，却没有击穿我」。
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // 滚动入场
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // 导航高亮
+  const links = Array.prototype.slice.call(document.querySelectorAll('nav a'));
+  const sections = links.map(function(a){
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+
+  const navObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        const id = '#' + e.target.id;
+        links.forEach(function(a){
+          a.style.color = (a.getAttribute('href') === id) ? '#dde4f5' : '';
+          a.style.background = (a.getAttribute('href') === id) ? 'rgba(120,150,255,.12)' : '';
+        });
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+
+  sections.forEach(function(s){ navObs.observe(s); });
+
+})();
+</script>
+</body>
+</html>

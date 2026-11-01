@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LiveRefu · 工作区 HUB</title>
+<meta name="description" content="LiveRefu 工作区总览：复古未来知识库、游戏、产品、设计系统、规则与概念原型。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<style>
+:root{
+  --paper:#f4f0e4;--paper2:#e9e1cf;--ink:#12211e;--body:#33423b;--muted:#617068;
+  --line:#c9c0ab;--line2:#a79d87;--white:#fffdf6;--teal:#0f766e;--teal-soft:#d8eee8;
+  --orange:#c85c32;--orange-soft:#f2ded0;--gold:#9b7125;
+  --serif:"Noto Serif SC","Songti SC","STSong",Georgia,serif;
+  --sans:"Noto Sans SC","PingFang SC","Hiragino Sans GB",system-ui,sans-serif;
+  --mono:"SFMono-Regular",Menlo,Consolas,monospace;color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --paper:#0c1412;--paper2:#16231f;--ink:#eee7d6;--body:#cfd8d1;--muted:#9daca3;
+  --line:#34463f;--line2:#53655d;--white:#121d19;--teal:#6fe3d1;--teal-soft:#153b35;
+  --orange:#f0a06e;--orange-soft:#3a241b;--gold:#d9b66b;color-scheme:dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme]){
+    --paper:#0c1412;--paper2:#16231f;--ink:#eee7d6;--body:#cfd8d1;--muted:#9daca3;
+    --line:#34463f;--line2:#53655d;--white:#121d19;--teal:#6fe3d1;--teal-soft:#153b35;
+    --orange:#f0a06e;--orange-soft:#3a241b;--gold:#d9b66b;color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
+body{
+  margin:0;color:var(--ink);background:var(--paper);
+  font:16px/1.75 var(--sans);
+  background-image:linear-gradient(rgba(18,33,30,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(18,33,30,.035) 1px,transparent 1px);
+  background-size:30px 30px;
+}
+a{color:var(--teal);text-underline-offset:3px}
+a:hover{color:var(--orange)}
+.topbar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font-weight:800;letter-spacing:.02em}
+.brand i{width:9px;height:9px;background:var(--teal);border-radius:50%;box-shadow:0 0 10px var(--teal)}
+.brand small{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.12em;font-weight:400}
+.topnav{display:flex;gap:15px;flex-wrap:wrap;margin-left:auto;font-family:var(--mono);font-size:11px}
+.topnav a{color:var(--muted);text-decoration:none}
+.topnav a:hover{color:var(--teal)}
+.theme-switch{display:none;border:1px solid var(--line);background:var(--white)}
+html[data-js] .theme-switch{display:inline-flex}
+.theme-switch button{border:0;border-right:1px solid var(--line);background:transparent;color:var(--muted);font:9px var(--mono);padding:5px 7px;cursor:pointer}
+.theme-switch button:last-child{border-right:0}
+.theme-switch button[aria-pressed="true"]{background:var(--teal);color:var(--paper)}
+.theme-switch button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 80px}
+.hero{padding:62px 0 34px;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:44px;align-items:end}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin:0 0 15px}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(40px,5vw,68px);line-height:1.08;letter-spacing:-.035em;margin:0 0 18px}
+h1 .thin{display:block;font-weight:400;color:var(--muted);font-size:.72em;letter-spacing:-.02em}
+.lede{font-size:17px;color:var(--body);max-width:770px;margin:0}
+.hero-side{border-left:1px solid var(--line2);padding-left:20px;font:10px/1.95 var(--mono);color:var(--muted)}
+.hero-side b{display:block;color:var(--ink);font-size:10px;letter-spacing:.1em;margin:10px 0 3px}
+.hero-side b:first-child{margin-top:0}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:30px 0 0}
+.stat{background:var(--paper);padding:16px}
+.stat b{display:block;font:32px/1 var(--serif);color:var(--teal)}
+.stat span{display:block;margin-top:7px;font:9px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stat em{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px}
+.rule{height:1px;background:linear-gradient(90deg,var(--line2),var(--line),transparent);margin:34px 0}
+section{margin:46px 0}
+h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,38px);line-height:1.25;margin:0 0 8px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{border:1px solid var(--line);background:var(--white);padding:18px;text-decoration:none;color:var(--ink);display:block;transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--teal);transform:translateY(-2px);color:var(--ink)}
+.card .n{font:10px var(--mono);color:var(--orange);letter-spacing:.1em}
+.card h3{font-family:var(--serif);font-size:19px;line-height:1.35;margin:7px 0 5px}
+.card p{font-size:12.5px;color:var(--body);margin:0}
+.card .more{display:block;margin-top:10px;font:10px var(--mono);color:var(--teal)}
+.panel{border:1px solid var(--line);background:var(--white);padding:20px}
+.panel h3{font-family:var(--serif);font-size:20px;margin:0 0 7px}
+.panel p,.panel li{color:var(--body);font-size:13px;line-height:1.7}
+.panel ul{margin:8px 0 0;padding-left:18px}
+.badge{display:inline-block;border:1px solid var(--line);padding:2px 6px;font:9px var(--mono);color:var(--muted);margin:0 3px 4px 0}
+.badge.ok{color:var(--teal);border-color:var(--teal)}
+.badge.warn{color:var(--orange);border-color:var(--orange)}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line2);background:var(--white)}
+.flow .node{padding:15px;border-right:1px solid var(--line)}
+.flow .node:last-child{border-right:0}
+.flow .n{font:9px var(--mono);color:var(--orange)}
+.flow b{display:block;font:17px var(--serif);margin:5px 0}
+.flow span{font:11px/1.6 var(--sans);color:var(--muted)}
+.quote{border-left:4px solid var(--orange);background:var(--orange-soft);padding:18px 22px;margin:28px 0;font:22px/1.6 var(--serif)}
+.quote small{display:block;font:10px var(--mono);color:var(--muted);margin-top:7px}
+.concept{border:1px solid var(--line);background:var(--white);padding:20px}
+.concept .tag{font:9px var(--mono);letter-spacing:.1em;color:var(--orange)}
+.concept h3{font:22px var(--serif);margin:5px 0}
+.concept p{font-size:13px;color:var(--body);margin:0 0 10px}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.links a{border:1px solid var(--line);padding:4px 7px;font:10px var(--mono);color:var(--ink);text-decoration:none;background:var(--paper)}
+.links a:hover{border-color:var(--teal);color:var(--teal)}
+.footer{border-top:1px solid var(--line);margin-top:58px;padding-top:16px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font:10px var(--mono);color:var(--muted)}
+.footer a{color:var(--muted);text-decoration:none}
+.footer a:hover{color:var(--teal)}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:42px}.hero-side{border-left:0;border-top:1px solid var(--line);padding:14px 0 0}
+  .stats{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr}.flow .node{border-right:0;border-bottom:1px solid var(--line)}
+}
+@media(max-width:560px){
+  .wrap,.topbar-inner{padding-left:17px;padding-right:17px}h1{font-size:43px}
+  .stats,.grid3{grid-template-columns:1fr}.topnav{gap:10px;font-size:10px}
+}
+@media print{
+  body{background:#fff;color:#111}.topbar,.theme-switch,.footer{display:none}.wrap{max-width:none}
+  .card,.panel,.concept,.flow,.stat{background:#fff;border-color:#bbb;break-inside:avoid}.card{transform:none}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="HUB.html"><i></i>LiveRefu <small>WORKSPACE HUB</small></a>
+    <nav class="topnav" aria-label="工作区导航">
+      <a href="#map">工作区地图</a><a href="#projects">项目</a><a href="#knowledge">知识库</a><a href="#concepts">概念</a><a href="#governance">治理</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="主题">
+      <button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <p class="kicker">LiveRefu · field atlas / 2026</p>
+      <h1>把知识、产品与未来，<span class="thin">放在同一张地图上。</span></h1>
+      <p class="lede">这是一个以复古未来为长期主题的工作区：一边研究“过去的人如何想象未来”，一边把这些想象做成游戏、产品、设计系统与可验收的工程。这个页面只做入口与关系，不复制各处的细节。</p>
+    </div>
+    <aside class="hero-side">
+      <b>WORKSPACE</b>LiveRefu<br>
+      <b>THEME</b>Retro-futurism<br>
+      <b>MODE</b>Knowledge → concepts → projects → products<br>
+      <b>START</b>先看地图，再选一条路径
+    </aside>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><b>212</b><span>docs / Markdown</span><em>知识库 · 212 篇</em></div>
+    <div class="stat"><b>3</b><span>game projects</span><em>未来残片 / Refu / 明日频道（+ mainline 纲领）</em></div>
+    <div class="stat"><b>16</b><span>Life apps</span><em>慢慢记与 15 个生活应用</em></div>
+    <div class="stat"><b>16</b><span>design rules</span><em>LRDS 可执行规则</em></div>
+    <div class="stat"><b>2</b><span>concept prototypes</span><em>磷环 / 人生缓冲带</em></div>
+  </div>
+
+  <div class="rule"></div>
+
+  <section id="map">
+    <p class="kicker">The map</p>
+    <h2>六块地，一张工作区</h2>
+    <p class="sub">按“我为什么来”选入口，而不是按目录名字硬逛。</p>
+    <div class="grid3">
+      <a class="card" href="docs/README.md"><div class="n">01 / KNOWLEDGE</div><h3>知识库</h3><p>复古未来主义 21 篇主卷 + 7 个附录卷；塔防研究、软件生态、概念原型。</p><span class="more">从总索引进入 →</span></a>
+      <a class="card" href="games/README.md"><div class="n">02 / GAMES</div><h3>游戏</h3><p>未来残片（主线候选）、Refu Game 001、明日频道，以及决策纲领。</p><span class="more">进入游戏区 →</span></a>
+      <a class="card" href="products/README.md"><div class="n">03 / PRODUCTS</div><h3>产品</h3><p>Life 套件：记账、睡眠、饮食、阅读、饮水、写作、学习、出行等 16 款本地优先应用。</p><span class="more">进入产品区 →</span></a>
+      <a class="card" href="design/GUIDE.html"><div class="n">04 / DESIGN</div><h3>设计系统</h3><p>LRDS：清澄为核心，token、风格卡、组件契约、三态主题与验收闸门。</p><span class="more">打开设计 GUIDE →</span></a>
+      <a class="card" href="rules/README.md"><div class="n">05 / GOVERNANCE</div><h3>规则与协作</h3><p>16 条设计规则、文档/提交/链接/变更日志约定，以及 AI 协作硬规范。</p><span class="more">读规则 →</span></a>
+      <a class="card" href="lab/README.md"><div class="n">06 / LAB &amp; INDIE</div><h3>实验与独立项目</h3><p>形式化协作、独立游戏、LiveFab / 未来档案等尚未归入主线的探索。</p><span class="more">进入实验区 →</span></a>
+    </div>
+  </section>
+
+  <section id="projects">
+    <p class="kicker">Current work</p>
+    <h2>现在正在发生的事</h2>
+    <p class="sub">项目各有自己的 README、HUB 与 GUIDE；这里只给“先看哪一眼”。</p>
+    <div class="grid2">
+      <div class="panel">
+        <span class="badge ok">MAINLINE CANDIDATE</span>
+        <h3>《未来残片》future-debris</h3>
+        <p>主线纲领的当前也是第一个候选具体项目。卡片塔防 + 自走式防线；120 张卡、16 关、4 势力，八道验收闸门。</p>
+        <div class="links"><a href="games/future-debris/README.md">项目 README</a><a href="games/future-debris/briefing/HUB.html">HUB</a><a href="games/future-debris/briefing/GUIDE.html">GUIDE</a></div>
+      </div>
+      <div class="panel">
+        <span class="badge">SHIPPED-LIKE SLICE</span>
+        <h3>《节点防线》refu-game-001</h3>
+        <p>卡片塔防的可运行垂直切片：铁砧 12 卡、6 波、5 挑战卡；策划文档与数据表逐字段对账，19 条无头断言。</p>
+        <div class="links"><a href="games/refu-game-001/README.md">项目 README</a><a href="games/refu-game-001/HUB.html">HUB</a><a href="games/refu-game-001/GUIDE.html">GUIDE</a></div>
+      </div>
+      <div class="panel">
+        <span class="badge">PRODUCT SUITE</span>
+        <h3>Life · 慢慢生活</h3>
+        <p>16 款独立生活应用共享一套 AppConfig、数据层与设计语言；融合页把入口摆成可拖拽的空间。</p>
+        <div class="links"><a href="products/life/README.md">Life README</a><a href="products/life/web/index.html">融合页</a></div>
+      </div>
+      <div class="panel">
+        <span class="badge warn">ONLINE / PAUSED</span>
+        <h3>未来档案 &amp; LiveFab</h3>
+        <p>网站《未来档案》把知识库做成可读、可逛、可讨论的站点；LiveFab 是“前店后厂”的公共底座，仍在提案阶段。</p>
+        <div class="links"><a href="projects/website/README.md">未来档案</a><a href="projects/livefab/README.md">LiveFab</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="knowledge">
+    <p class="kicker">Knowledge base</p>
+    <h2>从“未来如何过时”开始</h2>
+    <div class="grid3">
+      <a class="card" href="docs/retro-futurism/README.md"><div class="n">RETRO-FUTURISM</div><h3>复古未来主义论文集</h3><p>21 篇主卷，从远古神话到 Y2K、Frutiger Aero；7 个朋克/美学附录卷。</p><span class="more">读总卷 →</span></a>
+      <a class="card" href="docs/tower-defense/README.md"><div class="n">TOWER DEFENSE</div><h3>塔防游戏研究</h3><p>论文、案例、数值、美学、AI 五卷；把塔防拆成可验算的设计空间。</p><span class="more">读研究卷 →</span></a>
+      <a class="card" href="docs/software/README.md"><div class="n">SOFTWARE</div><h3>软件生态与产品机会</h3><p>从青橙/清澄适配的非游戏产品，到软件生态、开源协议与产品机会。</p><span class="more">读软件卷 →</span></a>
+    </div>
+  </section>
+
+  <section id="concepts">
+    <p class="kicker">Concept lab</p>
+    <h2>还没立项，但值得被做出来的两个概念</h2>
+    <p class="sub">概念是提案，不是承诺；它们的价值在于把“机制”先做成可讨论的东西。</p>
+    <div class="grid2">
+      <div class="concept">
+        <div class="tag">TOWER DEFENSE / CARDS</div>
+        <h3>磷环 · Phosphorus Loop</h3>
+        <p>磷不是敌人，流失才是。玩家在个人、社区、社会三个时间尺度上，把磷留在代谢循环里；输的方式有两种，赢只有一种。</p>
+        <div class="links"><a href="docs/concepts/磷环/概念设计.md">概念设计</a><a href="docs/concepts/磷环/概念设计可视化.html">可视化</a><a href="docs/concepts/磷环/磷矿危机.md">磷矿危机</a></div>
+      </div>
+      <div class="concept">
+        <div class="tag">TOWER DEFENSE / LIFE</div>
+        <h3>人生缓冲带</h3>
+        <p>非战斗、非杀敌的人生塔防。压力不会被消灭，只会被缓冲、转化、分流；目标不是杀光压力，而是带着韧性走到终点。</p>
+        <div class="links"><a href="docs/concepts/人生缓冲带/概念设计.md">概念设计</a><a href="docs/concepts/人生缓冲带/概念设计可视化.html">可视化</a><a href="docs/concepts/人生缓冲带/游戏演示.html">游戏演示</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="governance">
+    <p class="kicker">How it runs</p>
+    <h2>不是一堆文件夹，是一条工作流</h2>
+    <div class="flow">
+      <div class="node"><div class="n">01</div><b>知识</b><span>先建立判断：未来考古、朋克谱系、塔防与软件研究。</span></div>
+      <div class="node"><div class="n">02</div><b>概念</b><span>把判断压缩成可玩的机制、失败方式与代价。</span></div>
+      <div class="node"><div class="n">03</div><b>项目</b><span>进入 games/ 或 products/，用真实约束做可运行物。</span></div>
+      <div class="node"><div class="n">04</div><b>设计系统</b><span>token、组件、三态主题与验收，把“好看”变成可复制。</span></div>
+      <div class="node"><div class="n">05</div><b>规则</b><span>链接、提交、变更日志、AI 协作硬规范，防止知识分叉。</span></div>
+    </div>
+    <div class="grid3" style="margin-top:16px">
+      <div class="panel"><h3>清澄</h3><p>来源、代价、权限、退路可见；透明不是全部曝光，开源不是自动清澄。</p><div class="links"><a href="design/philosophy/09_清澄_透明作为方法.md">读 09</a></div></div>
+      <div class="panel"><h3>三态</h3><p>所有生成式 HTML 支持 system / light / dark；本页也遵循 R-016。</p><div class="links"><a href="design/rules/R-016-html-theme-modes.md">读 R-016</a></div></div>
+      <div class="panel"><h3>本地优先</h3><p>能离线就离线；能不依赖云就不依赖；每个产品先能独立运行。</p><div class="links"><a href="products/life/README.md">看 Life</a></div></div>
+    </div>
+  </section>
+
+  <blockquote class="quote">青橙不是颜色，清澄是颜色下面的水。<small>LRDS · 设计系统的核心判断</small></blockquote>
+
+  <section>
+    <p class="kicker">Start here</p>
+    <h2>按你的目的选一条路</h2>
+    <div class="grid3">
+      <a class="card" href="docs/README.md"><div class="n">READ</div><h3>我想读题材</h3><p>从知识库索引进入，先读总论，再按卷读。</p><span class="more">进入 docs →</span></a>
+      <a class="card" href="games/README.md"><div class="n">PLAY</div><h3>我想看游戏</h3><p>从 games/ 进入项目；未来残片与 Refu 各有 HUB/GUIDE。</p><span class="more">进入 games →</span></a>
+      <a class="card" href="AGENTS.md"><div class="n">BUILD</div><h3>我想参与开发</h3><p>先读 AGENTS 与 rules；再进 TODO 和对应项目。</p><span class="more">读协作规范 →</span></a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>LiveRefu · Workspace HUB · 2026</span>
+    <span><a href="README.md">README</a> · <a href="CHANGELOG.md">CHANGELOG</a> · <a href="TODO.md">TODO</a> · <a href="AGENTS.md">AGENTS</a></span>
+  </footer>
+</main>
+<script>
+(function () {
+  var KEY = 'lrds-theme', root = document.documentElement;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-choice]'));
+  function choice() { var v = root.dataset.themeChoice || 'system'; return (v === 'system' || v === 'light' || v === 'dark') ? v : 'system'; }
+  function apply() {
+    var c = choice();
+    root.dataset.theme = c === 'system' ? (mql.matches ? 'dark' : 'light') : c;
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoice === c)); });
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      root.dataset.themeChoice = b.dataset.themeChoice;
+      try { localStorage.setItem(KEY, b.dataset.themeChoice); } catch (e) {}
+      apply();
+    });
+  });
+  try { mql.addEventListener('change', function () { if (choice() === 'system') apply(); }); } catch (e) {}
+  apply();
+})();
+</script>
+</body>
+</html>

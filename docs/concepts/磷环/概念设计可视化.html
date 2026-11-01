@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>磷环 Phosphorus Loop · 塔防卡牌游戏设计</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #030a09;
+    --txt: #e8f6f1;
+    --muted: #8fb3a9;
+    --phos: #3ee0c4;
+    --phos2: #5bc8ff;
+    --leaf: #c4e06a;
+    --warn: #ff9b7a;
+    --gold: #ffcf6b;
+    --line: rgba(180, 255, 235, 0.13);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
+      "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ---------- 背景 ---------- */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(circle at 50% -8%, #0b2f29 0%, #04100e 52%, #020807 100%);
+  }
+  .bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at 50% 20%, black 0%, transparent 72%);
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 80px 0; position: relative; }
+
+  .section-head { margin-bottom: 38px; }
+  .section-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.34em;
+    color: var(--phos);
+    opacity: 0.85;
+    display: block;
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: clamp(1.4rem, 2.8vw, 1.95rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  h2 em { font-style: normal; color: var(--phos2); }
+  .section-desc {
+    margin-top: 12px;
+    color: var(--muted);
+    max-width: 760px;
+    font-size: 0.94rem;
+    line-height: 1.9;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 82vh;
+    display: flex;
+    align-items: center;
+    padding: 118px 0 56px;
+  }
+  .hero-inner { max-width: 920px; }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--phos);
+    border: 1px solid rgba(62, 224, 196, 0.32);
+    border-radius: 99px;
+    padding: 7px 18px;
+    margin-bottom: 26px;
+    background: rgba(62, 224, 196, 0.06);
+    backdrop-filter: blur(10px);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5.2vw, 3.7rem);
+    font-weight: 800;
+    line-height: 1.24;
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+  }
+  h1 .hl {
+    background: linear-gradient(100deg, var(--phos), var(--phos2) 45%, var(--leaf));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .sub {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #bfe6dc;
+    font-weight: 500;
+    margin-bottom: 26px;
+    letter-spacing: 0.04em;
+  }
+
+  .lede {
+    max-width: 760px;
+    color: #b9dbd1;
+    font-size: 0.96rem;
+    line-height: 1.95;
+    border-left: 2px solid rgba(62, 224, 196, 0.4);
+    padding-left: 20px;
+  }
+  .lede b { color: var(--txt); font-weight: 600; }
+
+  /* ---------- 核心隐喻 ---------- */
+  .metaphor {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 16px;
+  }
+
+  .mt-card {
+    padding: 28px 26px;
+    border-radius: 20px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.014));
+    border: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    position: relative;
+    overflow: hidden;
+  }
+  .mt-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--c), transparent);
+    opacity: 0.7;
+  }
+  .mt-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    color: var(--c);
+    margin-bottom: 12px;
+  }
+  .mt-card h3 { font-size: 1.1rem; margin-bottom: 10px; font-weight: 700; }
+  .mt-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.9; }
+  .mt-card p b { color: #c8e4da; font-weight: 600; }
+
+  .mt-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--muted);
+    opacity: 0.6;
+    letter-spacing: 0.1em;
+    padding: 0 4px;
+    writing-mode: vertical-rl;
+  }
+
+  .mt-note {
+    padding: 20px 24px;
+    border-radius: 14px;
+    background: rgba(62, 224, 196, 0.05);
+    border: 1px solid rgba(62, 224, 196, 0.2);
+    font-size: 0.88rem;
+    color: #b9dbd1;
+    line-height: 1.95;
+  }
+  .mt-note b { color: var(--phos); font-weight: 600; }
+
+  /* ---------- 时代时间线 ---------- */
+  .eras {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    position: relative;
+  }
+
+  .era {
+    position: relative;
+    padding: 26px 22px 24px;
+    border-radius: 20px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--c);
+    backdrop-filter: blur(12px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .era:hover { transform: translateY(-5px); border-color: var(--c); }
+
+  .era-top {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .era-idx {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--c);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 20px rgba(255,255,255,0.12);
+  }
+  .era-name { font-size: 1.02rem; font-weight: 700; }
+  .era-range {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .era-scale {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 10px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--c);
+    color: var(--c);
+    margin-bottom: 12px;
+    letter-spacing: 0.06em;
+  }
+  .era p { font-size: 0.86rem; color: var(--muted); line-height: 1.85; margin-bottom: 14px; }
+  .era p b { color: #c8e4da; font-weight: 600; }
+  .era-core {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid var(--c);
+    font-size: 0.82rem;
+    color: #b6d8ce;
+    line-height: 1.8;
+  }
+  .era-core b { color: var(--c); font-weight: 600; }
+
+  /* ---------- 卡牌系统 ---------- */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .deck {
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.008));
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .deck:hover { transform: translateY(-5px); border-color: var(--c); }
+
+  .deck-head {
+    padding: 20px 22px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: relative;
+  }
+  .deck-head::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--c);
+  }
+  .deck-cat {
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    color: var(--c);
+    margin-bottom: 6px;
+  }
+  .deck-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+  .deck-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    font-size: 0.66rem;
+    padding: 2px 9px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .deck-body { padding: 16px 22px 22px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+  .game-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: linear-gradient(150deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid var(--cc);
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .game-card:hover { background: rgba(255,255,255,0.09); transform: translateX(3px); }
+
+  .gc-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; color: var(--txt); }
+  .gc-type {
+    display: inline-block;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .gc-effect { font-size: 0.79rem; color: var(--muted); line-height: 1.75; }
+  .gc-effect b { color: var(--cc); font-weight: 600; }
+
+  .deck-foot {
+    padding: 14px 22px 18px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    font-size: 0.8rem;
+    color: #b6d8ce;
+    line-height: 1.85;
+    background: rgba(255,255,255,0.02);
+  }
+  .deck-foot b { color: var(--c); font-weight: 600; }
+
+  /* ---------- 资源系统 ---------- */
+  .resources {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .res {
+    padding: 24px 22px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--rc);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .res:hover { transform: translateY(-4px); border-color: var(--rc); }
+
+  .res-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--rc);
+    color: var(--rc);
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: 0;
+  }
+  .res h4 { font-size: 1rem; margin-bottom: 6px; font-weight: 700; }
+  .res p { font-size: 0.84rem; color: var(--muted); line-height: 1.85; }
+  .res p b { color: #c8e4da; font-weight: 600; }
+
+  .spiral {
+    padding: 22px 26px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255,155,122,0.08), rgba(255,155,122,0.015));
+    border: 1px solid rgba(255,155,122,0.22);
+    font-size: 0.88rem;
+    color: #d8c3bb;
+    line-height: 1.95;
+  }
+  .spiral b { color: #ffe0d6; font-weight: 600; }
+
+  /* ---------- 节奏机制 ---------- */
+  .rhythm {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .rhythm-item {
+    padding: 18px 16px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    text-align: center;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .rhythm-item:hover { border-color: var(--phos); transform: translateY(-3px); }
+  .rhythm-turns {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--phos);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .rhythm-turns small { font-size: 0.5em; color: var(--muted); margin-left: 2px; }
+  .rhythm-name { font-size: 0.82rem; color: #c8e4da; font-weight: 600; }
+
+  .rhythm-note {
+    margin-top: 16px;
+    padding: 16px 22px;
+    border-radius: 12px;
+    background: rgba(196, 224, 106, 0.05);
+    border: 1px solid rgba(196, 224, 106, 0.2);
+    font-size: 0.86rem;
+    color: #d4e4b6;
+    line-height: 1.9;
+  }
+  .rhythm-note b { color: var(--leaf); font-weight: 600; }
+
+  /* ---------- 事件系统 ---------- */
+  .events { display: flex; flex-direction: column; gap: 12px; }
+
+  .event {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 18px;
+    align-items: start;
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: linear-gradient(120deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
+    border: 1px solid var(--line);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .event:hover { border-color: rgba(91, 200, 255, 0.35); transform: translateX(4px); }
+  .event::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--phos2), transparent);
+    opacity: 0.7;
+  }
+  .event.soul::before { background: linear-gradient(to bottom, var(--gold), transparent); }
+  .event.soul { border-color: rgba(255, 207, 107, 0.22); }
+  .event.soul:hover { border-color: rgba(255, 207, 107, 0.5); }
+
+  .ev-icon {
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 1;
+    padding-top: 4px;
+    color: var(--phos2);
+    font-weight: 800;
+  }
+  .event.soul .ev-icon { color: var(--gold); }
+
+  .ev-name { font-size: 0.98rem; font-weight: 700; margin-bottom: 6px; }
+  .ev-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.85; }
+  .ev-desc b { color: #c8e4da; font-weight: 600; }
+
+  .ev-choice {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .choice {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    border: 1px solid rgba(255, 207, 107, 0.35);
+    background: rgba(255, 207, 107, 0.08);
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    cursor: default;
+  }
+
+  /* ---------- 胜负 ---------- */
+  .outcomes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .outcome {
+    padding: 28px 26px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012));
+    transition: transform 0.3s ease;
+  }
+  .outcome:hover { transform: translateY(-4px); }
+
+  .outcome.lose { border-color: rgba(255,155,122,0.28); background: linear-gradient(160deg, rgba(255,155,122,0.07), rgba(255,155,122,0.01)); }
+  .outcome.win { border-color: rgba(62,224,196,0.28); background: linear-gradient(160deg, rgba(62,224,196,0.07), rgba(62,224,196,0.01)); }
+
+  .oc-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .oc-tag {
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .lose .oc-tag { color: var(--warn); }
+  .win .oc-tag { color: var(--phos); }
+  .oc-title { font-size: 1.05rem; font-weight: 700; }
+
+  .oc-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .oc-list li {
+    font-size: 0.86rem;
+    color: #c2ddd4;
+    line-height: 1.85;
+    padding-left: 16px;
+    position: relative;
+  }
+  .oc-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+  }
+  .lose .oc-list li::before { background: var(--warn); }
+  .win .oc-list li::before { background: var(--phos); }
+  .oc-list li b { color: var(--txt); font-weight: 600; }
+
+  .hidden-end {
+    margin-top: 16px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: rgba(255, 207, 107, 0.06);
+    border: 1px dashed rgba(255, 207, 107, 0.35);
+    font-size: 0.83rem;
+    color: #e0d5b8;
+    line-height: 1.85;
+  }
+  .hidden-end b { color: var(--gold); font-weight: 600; }
+
+  /* ---------- 叙事框架 ---------- */
+  .narr {
+    position: relative;
+    padding-left: 8px;
+  }
+  .narr::before {
+    content: "";
+    position: absolute;
+    left: 26px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--phos), var(--phos2) 50%, var(--leaf));
+    opacity: 0.35;
+    border-radius: 2px;
+  }
+
+  .narr-item {
+    position: relative;
+    padding-left: 62px;
+    margin-bottom: 26px;
+  }
+  .narr-item:last-child { margin-bottom: 0; }
+
+  .narr-dot {
+    position: absolute;
+    left: 17px;
+    top: 6px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--phos);
+    box-shadow: 0 0 18px rgba(62, 224, 196, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .narr-dot::after {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--phos);
+  }
+  .narr-item:nth-child(2) .narr-dot { border-color: var(--phos2); }
+  .narr-item:nth-child(2) .narr-dot::after { background: var(--phos2); }
+  .narr-item:nth-child(3) .narr-dot { border-color: var(--leaf); }
+  .narr-item:nth-child(3) .narr-dot::after { background: var(--leaf); }
+
+  .narr-age {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--phos);
+    margin-bottom: 6px;
+  }
+  .narr-card {
+    padding: 16px 20px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012));
+    border: 1px solid var(--line);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .narr-card:hover { border-color: rgba(62, 224, 196, 0.3); transform: translateX(4px); }
+  .narr-card h4 { font-size: 0.94rem; margin-bottom: 5px; font-weight: 700; }
+  .narr-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.85; }
+  .narr-card p b { color: #c8e4da; font-weight: 600; }
+
+  /* ---------- 映射表 ---------- */
+  .map-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .map-table thead th {
+    text-align: left;
+    padding: 14px 18px;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--phos);
+    border-bottom: 1px solid rgba(62, 224, 196, 0.25);
+    font-weight: 600;
+  }
+  .map-table tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.055);
+    transition: background 0.25s ease;
+  }
+  .map-table tbody tr:hover { background: rgba(62, 224, 196, 0.04); }
+  .map-table td {
+    padding: 14px 18px;
+    vertical-align: top;
+    line-height: 1.8;
+  }
+  .map-table td:first-child {
+    color: var(--txt);
+    font-weight: 600;
+    width: 44%;
+  }
+  .map-table td:last-child {
+    color: var(--muted);
+  }
+  .map-table td:last-child b { color: #c8e4da; font-weight: 600; }
+
+  /* ---------- 收束 ---------- */
+  .final {
+    text-align: center;
+    padding: 96px 24px 108px;
+  }
+  .final blockquote {
+    font-size: clamp(1.15rem, 2.8vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.75;
+    max-width: 860px;
+    margin: 0 auto;
+    background: linear-gradient(100deg, #d9fff5, var(--phos) 40%, var(--phos2) 68%, var(--leaf));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .final .tail {
+    margin-top: 30px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 2;
+  }
+
+  footer {
+    text-align: center;
+    padding: 36px 24px 56px;
+    font-size: 0.72rem;
+    color: rgba(143, 179, 169, 0.5);
+    letter-spacing: 0.18em;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 980px) {
+    .eras { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .resources { grid-template-columns: 1fr; }
+    .rhythm { grid-template-columns: repeat(2, 1fr); }
+    .outcomes { grid-template-columns: 1fr; }
+    .metaphor { grid-template-columns: 1fr; }
+    .mt-vs { writing-mode: horizontal-tb; padding: 4px 0; }
+  }
+  @media (max-width: 720px) {
+    section { padding: 58px 0; }
+    .hero { min-height: auto; padding: 96px 0 48px; }
+    .narr-item { padding-left: 50px; }
+    .narr::before { left: 20px; }
+    .narr-dot { left: 11px; }
+    .event { grid-template-columns: 44px 1fr; gap: 12px; padding: 16px 16px; }
+    .rhythm { grid-template-columns: 1fr; }
+    .map-table { font-size: 0.8rem; }
+    .map-table thead th, .map-table td { padding: 12px 12px; }
+    .map-table td:first-child { width: 50%; }
+  }
+
+  /* 滚动淡入 */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="eyebrow">磷矿危机 · 代谢设计 · 塔防卡牌</div>
+      <h1>《磷环》<span class="hl">Phosphorus Loop</span></h1>
+      <p class="sub">你不是在阻止敌人，你是在阻止熵</p>
+      <p class="lede">
+        磷不是敌人，磷是你唯一要保住的东西。敌人是"流失"——径流、淋溶、污水排放、焚烧、土壤固定。
+        塔不是武器，是回收节点；卡牌不是技能，是<b>干预</b>。
+        你要做的，是在磷滑出系统之前把它捞回来。
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 核心隐喻 ================= -->
+<section id="metaphor">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">01 / 核心隐喻</span>
+      <h2>一场<span style="color:var(--phos2)">方向反转</span>的塔防</h2>
+      <p class="section-desc">
+        传统塔防里，敌人沿路径走向你的基地，你要挡住它。这个游戏做了一个关键翻转。
+      </p>
+    </div>
+
+    <div class="metaphor reveal">
+      <div class="mt-card" style="--c: var(--warn)">
+        <div class="mt-label">传统塔防</div>
+        <h3>敌人是威胁，你要消灭它</h3>
+        <p>怪物沿路径走向基地，塔是武器，卡牌是技能。目标是<b>不让任何东西到达终点</b>。赢的方式是清空敌人。</p>
+      </div>
+
+      <div class="mt-vs">→ 翻转 →</div>
+
+      <div class="mt-card" style="--c: var(--phos)">
+        <div class="mt-label">磷环</div>
+        <h3>磷是资源，流失才是威胁</h3>
+        <p>磷沿代谢路径流动，塔是回收节点，卡牌是干预。目标是<b>不让磷滑出系统</b>。赢的方式是让循环在三个时间尺度上同时成立。</p>
+      </div>
+    </div>
+
+    <div class="mt-note reveal">
+      <b>输的方式有两种：</b>磷池枯竭（食物生产崩溃）或流失率过高（系统入不敷出）。
+      <b>赢的方式只有一种：</b>让循环在日/周的个人操持、季/年的社区代谢、十年/代际的社会制度上同时运转。
+    </div>
+  </div>
+</section>
+
+<!-- ================= 三个时代 ================= -->
+<section id="eras">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">02 / 三层结构</span>
+      <h2>三个时代，<em>三种时间尺度</em></h2>
+      <p class="section-desc">
+        地图会缩小，你能看到更宏观的节点，但底层机制不变。这不是三个关卡，是同一套代谢系统的不同观察尺度。
+      </p>
+    </div>
+
+    <div class="eras">
+      <article class="era reveal" style="--c: var(--phos2)">
+        <div class="era-top">
+          <span class="era-idx">I</span>
+          <span class="era-name">个体</span>
+        </div>
+        <div class="era-range">回合 1 — 12 · 家庭尺度</div>
+        <span class="era-scale">日 / 周</span>
+        <p>你扮演一个刚搬进准封闭社区的家庭。地图很小：厨房、厕所、阳台、小菜园。磷流只有几条：食物进来、排泄物出去、菜园吸收一点。</p>
+        <div class="era-core">
+          核心体验：<b>摩擦</b>。每一个回收动作都需要额外的注意力、时间、家庭协商。磷不是自动回来的，是你弯腰、分类、翻堆、等待换来的。
+        </div>
+      </article>
+
+      <article class="era reveal" style="--c: var(--phos)">
+        <div class="era-top">
+          <span class="era-idx">II</span>
+          <span class="era-name">组织</span>
+        </div>
+        <div class="era-range">回合 13 — 28 · 社区尺度</div>
+        <span class="era-scale">季 / 年</span>
+        <p>地图扩展到整个社区：居住区、共治厨房、堆肥区、鸟粪石反应器、农田、湿地。磷流变成网络：多户人家的黄水流向集中反应器，堆肥去农田，农田径流经过湿地。</p>
+        <div class="era-core">
+          核心体验：<b>协调</b>。技术已经有了，难的是谁维护、谁出钱、谁承担失败。一张卡牌可以建一个反应器，但维护它需要制度，不是另一张卡。
+        </div>
+      </article>
+
+      <article class="era reveal" style="--c: var(--leaf)">
+        <div class="era-top">
+          <span class="era-idx">III</span>
+          <span class="era-name">社会</span>
+        </div>
+        <div class="era-range">回合 29 — 40 · 区域尺度</div>
+        <span class="era-scale">十年 / 代际</span>
+        <p>地图变成区域网络：多个社区、一个区域污水系统、一条河流、一个农资市场。磷流跨越社区边界，你的决策开始有外部性。</p>
+        <div class="era-core">
+          核心体验：<b>延迟与反噬</b>。政策卡的效果往往要等 3—5 回合才显现，但流失是即时的。每一张政策卡都有一句隐藏文本：<b>谁承担代价。</b>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 卡牌系统 ================= -->
+<section id="cards">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">03 / 卡牌系统</span>
+      <h2>三类卡牌，<em>混在一副牌库里</em></h2>
+      <p class="section-desc">
+        你永远不知道下一张抽到的是个人行动还是社会政策。这模拟了真实设计处境：三个层面的干预同时存在，但它们的生效速度和代价完全不同。
+      </p>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- 个人卡 -->
+      <article class="deck reveal" style="--c: var(--phos2)">
+        <div class="deck-head">
+          <div class="deck-cat">PERSONAL</div>
+          <div class="deck-name">个人卡</div>
+          <div class="deck-meta">
+            <span class="meta-pill">快</span>
+            <span class="meta-pill">低门槛</span>
+            <span class="meta-pill">低上限</span>
+          </div>
+        </div>
+        <div class="deck-body">
+          <div class="game-card" style="--cc: var(--phos2)">
+            <div class="gc-name">「今天分开尿」</div>
+            <span class="gc-type">行动</span>
+            <div class="gc-effect">即时，黄水线磷回收 <b>+1</b>，但连续使用 3 回合后"家庭摩擦" <b>+1</b>（需要休息一回合）。</div>
+          </div>
+          <div class="game-card" style="--cc: var(--phos2)">
+            <div class="gc-name">「修好那个滴水龙头」</div>
+            <span class="gc-type">行动</span>
+            <div class="gc-effect">即时，灰水流失 <b>-1</b>。低技术，任何人都能打。</div>
+          </div>
+          <div class="game-card" style="--cc: var(--phos2)">
+            <div class="gc-name">「阳台种一箱菜」</div>
+            <span class="gc-type">建造</span>
+            <div class="gc-effect">3 回合后，家庭食物磷输入 <b>+1</b>，但需要每回合 1 点注意力维护。</div>
+          </div>
+        </div>
+        <div class="deck-foot">
+          抽到就能用，不依赖制度，但天花板很低。<b>一个人再努力，回收率也到不了集中设施的零头。</b>
+        </div>
+      </article>
+
+      <!-- 组织卡 -->
+      <article class="deck reveal" style="--c: var(--phos)">
+        <div class="deck-head">
+          <div class="deck-cat">ORGANIZATIONAL</div>
+          <div class="deck-name">组织卡</div>
+          <div class="deck-meta">
+            <span class="meta-pill">中速</span>
+            <span class="meta-pill">需要协调</span>
+            <span class="meta-pill">中上限</span>
+          </div>
+        </div>
+        <div class="deck-body">
+          <div class="game-card" style="--cc: var(--phos)">
+            <div class="gc-name">「建社区堆肥区」</div>
+            <span class="gc-type">建造</span>
+            <div class="gc-effect">2 回合建成，黑水磷捕获率 <b>50%</b>，需要 1 M/回合。</div>
+          </div>
+          <div class="game-card" style="--cc: var(--phos)">
+            <div class="gc-name">「轮值维护制」</div>
+            <span class="gc-type">政策</span>
+            <div class="gc-effect">所有节点失效概率 <b>-30%</b>，但每回合消耗 1 T。</div>
+          </div>
+          <div class="game-card" style="--cc: var(--phos)">
+            <div class="gc-name">「磷账公开会」</div>
+            <span class="gc-type">制度</span>
+            <div class="gc-effect">每 4 回合触发，暴露流失缺口。若缺口被修补，T <b>+1</b>；若连续两期未修补，T <b>-2</b>。</div>
+          </div>
+        </div>
+        <div class="deck-foot">
+          效果取决于已有节点数量和 T 的余额。<b>一张好卡在 T 高时是加速器，在 T 低时是废纸。</b>
+        </div>
+      </article>
+
+      <!-- 社会卡 -->
+      <article class="deck reveal" style="--c: var(--leaf)">
+        <div class="deck-head">
+          <div class="deck-cat">SOCIETAL</div>
+          <div class="deck-name">社会卡</div>
+          <div class="deck-meta">
+            <span class="meta-pill">慢</span>
+            <span class="meta-pill">高上限</span>
+            <span class="meta-pill">有反作用力</span>
+          </div>
+        </div>
+        <div class="deck-body">
+          <div class="game-card" style="--cc: var(--leaf)">
+            <div class="gc-name">「区域磷回收强制令」</div>
+            <span class="gc-type">政策</span>
+            <div class="gc-effect">3 回合后生效，所有污水厂磷回收 <b>+40%</b>。前 3 回合每回合 T <b>-1</b>（合规抵抗）。</div>
+          </div>
+          <div class="game-card" style="--cc: var(--leaf)">
+            <div class="gc-name">「跨社区磷储备池」</div>
+            <span class="gc-type">制度</span>
+            <div class="gc-effect">建立共享储备。任一社区遭遇冲击时可借磷，但借了不还的社区会被标记，后续所有协议卡费用 <b>+50%</b>。</div>
+          </div>
+          <div class="game-card" style="--cc: var(--leaf)">
+            <div class="gc-name">「土壤保磷补贴」</div>
+            <span class="gc-type">政策</span>
+            <div class="gc-effect">农田径流 <b>-2/回合</b>，但每回合消耗 1 点财政资源。卡面小字：<b>"转型代价由谁承担？"</b></div>
+          </div>
+        </div>
+        <div class="deck-foot">
+          效果最大，但延迟最长。<b>你不能既要现在的结果，又要未来的制度。</b>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= 资源系统 ================= -->
+<section id="resources">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">04 / 核心机制</span>
+      <h2>三种资源，<em>一个正反馈螺旋</em></h2>
+      <p class="section-desc">
+        三种资源的张力是游戏的核心。它们互相牵制，形成死亡螺旋——你要做的是在螺旋启动前建立冗余。
+      </p>
+    </div>
+
+    <div class="resources">
+      <article class="res reveal" style="--rc: var(--phos)">
+        <div class="res-icon">P</div>
+        <h4>磷 · Phosphorus</h4>
+        <p>你的总储量。决定食物生产能力和人口承载力。磷池低于阈值 → 食物短缺 → 人口流失 → <b>输</b>。</p>
+      </article>
+
+      <article class="res reveal" style="--rc: var(--phos2)">
+        <div class="res-icon">M</div>
+        <h4>维护力 · Maintenance</h4>
+        <p>每回合可用于维护节点的劳动力/注意力。节点越多，M 越紧张。M 耗尽时节点开始失效。</p>
+      </article>
+
+      <article class="res reveal" style="--rc: var(--leaf)">
+        <div class="res-icon">T</div>
+        <h4>信任 · Trust</h4>
+        <p>社区/社会的合作意愿。政策卡消耗 T，节点失效消耗 T，磷账缺口暴露消耗 T。T 归零时，所有政策卡失效。</p>
+      </article>
+    </div>
+
+    <div class="spiral reveal">
+      <b>螺旋逻辑：</b>建更多节点需要更多 M → M 不够时节点失效，磷流失加速 → 流失加速后你更需要政策卡，但政策卡消耗 T → T 不够时你只能靠个体行动硬撑，而个体行动的磷回收率远低于集中设施。
+      <b>这是一个正反馈的死亡螺旋，你要做的是在螺旋启动前建立冗余。</b>
+    </div>
+
+    <div class="rhythm reveal">
+      <div class="rhythm-item">
+        <div class="rhythm-turns">1<small>回合</small></div>
+        <div class="rhythm-name">鸟粪石反应</div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-turns">3<small>回合</small></div>
+        <div class="rhythm-name">堆肥熟成</div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-turns">5<small>回合</small></div>
+        <div class="rhythm-name">湿地净化</div>
+      </div>
+      <div class="rhythm-item">
+        <div class="rhythm-turns">10<small>回合</small></div>
+        <div class="rhythm-name">土壤保磷</div>
+      </div>
+    </div>
+
+    <div class="rhythm-note reveal">
+      <b>节奏机制：慢就是快。</b>你不能"加速"熟成周期，只能提前布局。
+      如果你用"工业催化"卡强行缩短周期，捕获率会下降，而且土壤微生物活性 -1（影响后续所有堆肥节点效率）。
+      这对应代谢设计的核心约束：<b>你不能把代谢周期压缩到接收端转化不了的程度。</b>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 事件系统 ================= -->
+<section id="events">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">05 / 事件系统</span>
+      <h2>每 5 回合一次，<em>结构性冲击</em></h2>
+      <p class="section-desc">
+        事件不针对你个人，它针对整个系统——磷矿危机的价格波动、地缘政治、供应链中断，不是任何单个社区能控制的。
+      </p>
+    </div>
+
+    <div class="events">
+      <div class="event reveal">
+        <div class="ev-icon">↑</div>
+        <div>
+          <div class="ev-name">「磷价飙升」</div>
+          <div class="ev-desc">进口磷成本翻倍。所有依赖外部磷输入的节点效率 <b>-30%</b>，持续 3 回合。<b>触发条件：</b>磷池低于 50% 时自动触发（价格随稀缺上涨）。</div>
+        </div>
+      </div>
+
+      <div class="event reveal">
+        <div class="ev-icon">☀</div>
+        <div>
+          <div class="ev-name">「干旱」</div>
+          <div class="ev-desc">径流减少，湿地效率 <b>-50%</b>，农田需要额外灌溉。土壤保磷节点捕获率暂时归零，但土壤磷储备消耗减半（少淋溶）。</div>
+        </div>
+      </div>
+
+      <div class="event reveal">
+        <div class="ev-icon">⚙</div>
+        <div>
+          <div class="ev-name">「污水厂升级」</div>
+          <div class="ev-desc">区域污水厂加装回收设施。集中式磷回收 <b>+20%</b>，但你的社区需支付接入费（T -1/回合，持续 5 回合）。</div>
+        </div>
+      </div>
+
+      <div class="event soul reveal">
+        <div class="ev-icon">★</div>
+        <div>
+          <div class="ev-name">「下一代接手」</div>
+          <div class="ev-desc">一个年轻人提出改进方案。你可以选择——</div>
+          <div class="ev-choice">
+            <span class="choice">「允许他改」：随机一个节点效率 +20%，但该节点归他维护</span>
+            <span class="choice">「按原方案来」：节点不变，T -1</span>
+          </div>
+          <div class="ev-desc" style="margin-top:10px;">
+            这张卡把"改写权"从抽象概念变成具体选择：<b>你是要效率，还是要系统的可演化性？</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 胜负 ================= -->
+<section id="outcomes">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">06 / 胜负条件</span>
+      <h2>不是"回收 100%"，<em>是"系统入不敷出"</em></h2>
+      <p class="section-desc">
+        胜利条件不是完美闭环——那在游戏里做不到，也不真实。胜利是系统在可接受的流失水平上维持了三个时代的运转。
+      </p>
+    </div>
+
+    <div class="outcomes">
+      <article class="outcome lose reveal">
+        <div class="oc-head">
+          <span class="oc-tag">✕</span>
+          <span class="oc-title">失败条件</span>
+        </div>
+        <ul class="oc-list">
+          <li><b>磷池枯竭：</b>连续 3 回合无法生产足够食物，人口流失。</li>
+          <li><b>信任归零：</b>所有政策卡失效，系统退回个体硬撑模式，流失率超过回收率。</li>
+          <li><b>维护力崩溃：</b>M 连续 2 回合为负，节点大规模失效。</li>
+        </ul>
+      </article>
+
+      <article class="outcome win reveal">
+        <div class="oc-head">
+          <span class="oc-tag">✓</span>
+          <span class="oc-title">胜利条件</span>
+        </div>
+        <ul class="oc-list">
+          <li>40 回合结束时，<b>磷流失率低于 10%</b>。</li>
+          <li><b>人口未减少</b>。</li>
+          <li>留下至少一个<b>"可被下一代改写"</b>的节点。</li>
+        </ul>
+        <div class="hidden-end">
+          <b>隐藏结局：</b>如果你在第三时代打出过至少 3 张"允许改写"类卡牌，结局画面会不同——你看到那个七岁男孩蹲在池子旁边，旁边一行字：<b>"这个系统会继续被改，因为他从七岁起就被允许改它。"</b>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 叙事框架 ================= -->
+<section id="narrative">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">07 / 叙事框架</span>
+      <h2>小男孩的一生，<em>就是教程</em></h2>
+      <p class="section-desc">
+        游戏的开场教程不是文字说明，是一个人的时间。每一代玩家的终点，是下一代玩家的起点。
+      </p>
+    </div>
+
+    <div class="narr">
+      <div class="narr-item reveal">
+        <div class="narr-dot"></div>
+        <div class="narr-age">七岁 · 第一时代开场</div>
+        <div class="narr-card">
+          <h4>蹲在鸟粪石反应器旁边</h4>
+          <p>你以他的视角看黄色液体变成白色颗粒。教程只教一件事：<b>点一下那个池子，磷就回来了。</b>然后你回家，妈妈让你洗手。</p>
+        </div>
+      </div>
+
+      <div class="narr-item reveal">
+        <div class="narr-dot"></div>
+        <div class="narr-age">十二岁 · 第二时代开场</div>
+        <div class="narr-card">
+          <h4>第一次帮维护员测 pH</h4>
+          <p>教程教你如何平衡 M 和节点数量——<b>你不能建太多节点，因为维护力不够，节点会失效。</b>你学会了：建东西容易，养东西难。</p>
+        </div>
+      </div>
+
+      <div class="narr-item reveal">
+        <div class="narr-dot"></div>
+        <div class="narr-age">三十岁 · 第三时代开场</div>
+        <div class="narr-card">
+          <h4>磷账会议上发现一个缺口</h4>
+          <p>没人负责。教程教你如何用政策卡和事件卡处理"制度性缺口"——<b>不是技术问题，是谁该管这件事的问题。</b></p>
+        </div>
+      </div>
+
+      <div class="narr-item reveal">
+        <div class="narr-dot"></div>
+        <div class="narr-age">七十岁 · 游戏结束</div>
+        <div class="narr-card">
+          <h4>坐在长椅上看一个小孩</h4>
+          <p>无论胜负，画面切到他坐在长椅上，看一个小孩往瓶子里装白色颗粒。没有文字，只有一个按钮：<b>「再玩一次」</b>。点了之后，新游戏从七岁开始，但地图上会保留上一局你建的节点——它们已经在那里了，<b>下一代的起点是你这一局的终点。</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 映射表 ================= -->
+<section id="mapping">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">08 / 主题映射</span>
+      <h2>每个机制，<em>对应一个设计概念</em></h2>
+      <p class="section-desc">
+        这不是一个套了磷矿外衣的普通塔防。每一个机制都在回答代谢设计的一个问题。
+      </p>
+    </div>
+
+    <div class="reveal" style="border-radius:18px; border:1px solid var(--line); background:rgba(255,255,255,0.025); overflow:hidden;">
+      <table class="map-table">
+        <thead>
+          <tr>
+            <th>游戏机制</th>
+            <th>对应的设计概念</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>磷是唯一要保住的资源，流失是敌人</td>
+            <td>代谢设计的本体论承诺：<b>设计是代谢节点的布置</b>，不是消灭敌人</td>
+          </tr>
+          <tr>
+            <td>三种资源（P/M/T）的张力</td>
+            <td>九问的 Q1—Q3：<b>为谁、谁承担失败、谁能退出</b>——资源分配就是伦理分配</td>
+          </tr>
+          <tr>
+            <td>节点熟成周期不可加速</td>
+            <td><b>节奏由接收端决定</b>；慢生活的物质基础</td>
+          </tr>
+          <tr>
+            <td>个人卡天花板低，社会卡延迟长</td>
+            <td>三层尺度不可互相替代；<b>善定向、美翻译、真奠基</b></td>
+          </tr>
+          <tr>
+            <td>事件卡「下一代接手」的二选一</td>
+            <td>Q9"什么会改写它"；<b>被接管权</b>；改写权的具体化</td>
+          </tr>
+          <tr>
+            <td>磷账会议暴露缺口</td>
+            <td>Q7—Q8：<b>物质去哪了、谁维护</b>；可见化测试</td>
+          </tr>
+          <tr>
+            <td>隐藏结局保留上一局节点</td>
+            <td>演替测试：<b>系统必须为下一代保留改写空间</b></td>
+          </tr>
+          <tr>
+            <td>失败条件不是"流失 100%"而是"系统入不敷出"</td>
+            <td>韧性测试：<b>关键输入中断时是否仍能运转</b></td>
+          </tr>
+          <tr>
+            <td>政策卡的隐藏文本"谁承担代价"</td>
+            <td>代谢设计的内置约束：<b>任何代谢描述都必须同时是政治描述</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 收束 ================= -->
+<section class="final">
+  <blockquote>《磷环》不是"打怪升级"的塔防，<br>是"在熵增之前把磷捞回来"的代谢管理。</blockquote>
+  <p class="tail">
+    你打的每一张牌都是一次干预，每一个节点都是一份维护责任，每一次失败都是因为你把节奏压到了接收端转化不了的程度。
+    而最终，你赢的方式不是把系统锁死，是<b style="color:var(--phos)">让它活到下一代愿意接手的那一天</b>。
+  </p>
+</section>
+
+<footer>
+  PHOSPHORUS LOOP · TOWER DEFENSE CARD GAME · METABOLIC DESIGN
+</footer>
+
+<script>
+  // ---------- 滚动淡入 ----------
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.06 }
+  );
+
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+</script>
+
+</body>
+</html>
