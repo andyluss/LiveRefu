@@ -1,6 +1,6 @@
 # Future Debris（未来残片）· 主线纲领的当前也是第一个候选具体项目
 
-> **代号**：`future-debris`（中文正式名待 P2 后定，见 [`../docs/08_共同语言与命名.md`](../mainline/docs/08_共同语言与命名.md)）
+> **代号**：`future-debris`（中文正式名待 P2 后定，见 [`../docs/08_共同语言与命名.md`](docs/planning/08_共同语言与命名.md)）
 > **一句话**：你向一个相信清洁能源的明天提交改造提案；每一次供电都更快，也把一点代价留在了地图上。
 > **形态**：复古未来主义 · **时代提案卡组 + 自走式防线**；以"纪元"为单位滚动成长；PC 买断 + 免费 Demo，**不卖数值、不抽卡**。
 > **现在到哪了**：**S4 已完成**——一局闭环（关卡选择 → 战斗 → 结算 + 战役存档）、表现层（HUD / 8 塔位 / 手牌 / 降级区 / 事件行 + 程序生成音效 + 响应式布局）；**八道闸门全绿、43 项玩法断言**；卡池 **T3（120 张）**、**16 关 / 8 章**、4 势力 × 2 套胜利条件、11 条规则卡；商店页素材（5 张 1080p 截图 + 1080p 预告片 + 双语文案标签）已产出。
@@ -38,9 +38,15 @@
 | [`docs/spec/12_商店页与美术执行计划.md`](docs/spec/12_商店页与美术执行计划.md) | 商店页素材与美术执行 |
 | [`docs/spec/13_商店页文案与标签.md`](docs/spec/13_商店页文案与标签.md) | 双语文案与标签 |
 | [`docs/spec/14_人类试玩执行包.md`](docs/spec/14_人类试玩执行包.md) | 人类试玩执行包 |
-| [`../mainline/docs/10_推进计划与并入清单.md`](../mainline/docs/10_推进计划与并入清单.md) | 纲领级推进计划与并入清单 |
+| [`docs/planning/10_推进计划与并入清单.md`](docs/planning/10_推进计划与并入清单.md) | 推进计划与并入清单 |
+| [`docs/planning/01_定位与目标.md`](docs/planning/01_定位与目标.md) | 项目定位、目标与成功度量 |
+| [`docs/planning/05_美术与技术方向.md`](docs/planning/05_美术与技术方向.md) | 美术/技术方向与 AI 产能边界 |
+| [`docs/planning/07_路线图与风险.md`](docs/planning/07_路线图与风险.md) | 路线图、指标与风险 |
+| [`docs/planning/08_共同语言与命名.md`](docs/planning/08_共同语言与命名.md) | 术语与命名 |
+| [`docs/planning/09_竞品与市场调研计划.md`](docs/planning/09_竞品与市场调研计划.md) | 竞品/市场调研方法与证据分级 |
+| [`docs/planning/research/README.md`](docs/planning/research/README.md) | 调研证据位 |
 
-> 纲领级入口：[决策总表](../mainline/docs/00_决策总表.md) ｜ 路线与风险：[07](../mainline/docs/07_路线图与风险.md) ｜ 共同语言：[08](../mainline/docs/08_共同语言与命名.md)。
+> 纲领级入口：[决策总表](../mainline/docs/00_决策总表.md) ｜ 项目规划：[planning/](docs/planning/README.md) ｜ 路线与风险：[07](docs/planning/07_路线图与风险.md) ｜ 共同语言：[08](docs/planning/08_共同语言与命名.md)。
 
 ## 一、这是什么（以及不是什么）
 
@@ -134,7 +140,7 @@ games/future-debris/
 
 ## 五、路线（六冲刺，可随时暂停）
 
-来自 [`../mainline/docs/10_推进计划与并入清单.md`](../mainline/docs/10_推进计划与并入清单.md)：
+来自 [`docs/planning/10_推进计划与并入清单.md`](docs/planning/10_推进计划与并入清单.md)：
 
 | 冲刺 | 目标 | 状态 |
 | --- | --- | --- |

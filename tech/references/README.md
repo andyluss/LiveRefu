@@ -25,4 +25,4 @@
 
 - 这两个文件目前**无人引用**。若确认后续不再需要，可直接删除（`gh_meta.jsonl` 可用同一抓取脚本重取；
   `visualization-edf21c0f.html` 是旧管线的快照，**不一定能原样重建**——故先归档而非删除）。
-- **不要**把它们当作约定或事实来源：调研结论应写进 `games/mainline/docs/research/`，产物应写进各关注点自己的目录。
+- **不要**把它们当作约定或事实来源：调研结论应写进 `games/future-debris/docs/planning/research/`，产物应写进各关注点自己的目录。

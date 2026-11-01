@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "atomic__factions",
-  "note": "原子纪元四势力（[mainline 10 §3](../../../mainline/docs/10_推进计划与并入清单.md) 的骨架落地）。S1 仅为占位，机制细节在 S3 由原型验证。",
+  "note": "原子纪元四势力（[mainline 10 §3](../../../docs/planning/10_推进计划与并入清单.md) 的骨架落地）。S1 仅为占位，机制细节在 S3 由原型验证。",
   "entries": [
     {
       "id": "FAC-ATOMIC-AEC",

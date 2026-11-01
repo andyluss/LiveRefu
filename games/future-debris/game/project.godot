@@ -1,7 +1,7 @@
 ; Engine configuration file.
 ; Future Debris（未来残片）· 主线项目 —— S1 工程地基
 ; 形态：PC 买断 + 免费 Demo（Q5 裁决前的默认推荐）；GL Compatibility 与工作区既有 Godot 工程一致。
-; 决议依据：games/mainline/docs/10_推进计划与并入清单.md（Q7 = Godot 4.x + 表驱动管线）。
+; 决议依据：games/future-debris/docs/planning/10_推进计划与并入清单.md（Q7 = Godot 4.x + 表驱动管线）。
 
 config_version=5
 
