@@ -1,7 +1,7 @@
 # 3D 04 · 折叠时间 / Folded Time
 
 > **LAB / EXPERIMENTAL** ｜ 状态：`prototype` ｜ 2026-11-02
-> 入口：[index.html](index.html) ｜ 3D 实验台：[../index.html](../index.html) ｜ 系列：[../../README.md](../../README.md)
+> 入口：[index.html](index.html) ｜ 3D 时空实验室：[../index.html](../index.html) ｜ 系列：[../../README.md](../../README.md)
 
 ## 一句话
 
