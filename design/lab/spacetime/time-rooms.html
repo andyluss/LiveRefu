@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>时间房间 · Spacetime Lab</title>
+<meta name="description" content="时间房间：日、季、十年是不同房间；换房间应该换问题，不只是换单位。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="shared.css">
+<style>
+.rooms-stage{background:radial-gradient(ellipse at 50% 55%,color-mix(in srgb,var(--gold) 12%,transparent),transparent 65%),var(--panel)}
+.rooms-stage svg{height:520px}
+.floor{fill:var(--bg2);stroke:var(--line2);stroke-width:1.3;transition:.15s}
+.floor:hover{fill:var(--teal2);stroke:var(--teal)}
+.floor.active{fill:var(--teal2);stroke:var(--teal);stroke-width:2.4}
+.floor-label{fill:var(--ink);font:600 18px var(--serif);pointer-events:none}
+.floor-meta{fill:var(--muted);font:9px var(--mono);letter-spacing:.08em;pointer-events:none}
+.wall{stroke:var(--line2);stroke-width:1;fill:none}
+.door{stroke:var(--orange);stroke-width:2;stroke-dasharray:4 4}
+.clock-face{fill:var(--panel);stroke:var(--teal);stroke-width:2}
+.tick{stroke:var(--line2);stroke-width:1}
+.hand{stroke:var(--orange);stroke-width:2.5;stroke-linecap:round}
+.hand.thin{stroke-width:1.5;stroke:var(--teal)}
+.clock-label{fill:var(--muted);font:9px var(--mono)}
+.room-chips{display:flex;gap:6px;flex-wrap:wrap}
+.room-chips button{font:10px var(--mono);border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:5px 8px;cursor:pointer}
+.room-chips button[aria-pressed="true"]{border-color:var(--teal);color:var(--teal);background:var(--teal2)}
+.room-question{font:600 24px/1.35 var(--serif);color:var(--ink);margin:5px 0 8px}
+.room-copy{font-size:13px;color:var(--body);min-height:85px}
+.speed{font:700 36px/1 var(--serif);color:var(--orange)}
+.speed small{font:10px var(--mono);color:var(--muted)}
+.dilation{height:6px;background:var(--bg2);border:1px solid var(--line);margin-top:10px;overflow:hidden}
+.dilation i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--orange));width:20%;transition:width .4s}
+</style>
+</head>
+<body data-page="spacetime-rooms">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / SPACE × TIME</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="index.html">实验台</a><a href="causal-loom.html">← 因果织网</a><a href="folded-time.html">下一个：折叠时间</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="index.html">spacetime</a> / <span>04 时间房间</span></div>
+  <section class="hero" style="padding-bottom:16px">
+    <div><p class="eyebrow">case 04 / rooms of time</p><h1>换一个房间，<br><em>换一个问题。</em><span>日、季、十年不是缩放级别，是四种时间流速。</span></h1><p class="lede">同一个事件，在“现在”的房间里是待办；在“十年”的房间里是痕迹。走进不同房间，时钟会改变速度，问题也会改变。</p></div>
+    <aside class="hero-card"><b>HYPOTHESIS</b>尺度是建筑<br><b>ROOMS</b>now / day / season / decade<br><b>WATCH</b>长期问题是否被短期流速吞掉</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage rooms-stage">
+        <svg id="rooms" viewBox="0 0 900 560" role="application" aria-label="时间房间：点击房间">
+          <path class="wall" d="M90 300 L310 180 L570 290 L340 420Z"/><path class="wall" d="M570 290 L740 190 L870 290 L700 400Z"/>
+          <path class="wall" d="M310 180 L480 90 L650 180 L480 285Z"/><path class="wall" d="M650 180 L790 90 L900 180 L760 280Z"/>
+          <path class="door" d="M340 420 L700 400"/><path class="door" d="M480 285 L570 290"/>
+          <g class="room" data-room="now" tabindex="0" role="button" aria-label="现在房间"><path class="floor active" d="M90 300 L310 180 L570 290 L340 420Z"/><text x="205" y="290" class="floor-label">现在</text><text x="205" y="310" class="floor-meta">NOW / 1×</text></g>
+          <g class="room" data-room="day" tabindex="0" role="button" aria-label="日房间"><path class="floor" d="M570 290 L740 190 L870 290 L700 400Z"/><text x="668" y="292" class="floor-label">日</text><text x="650" y="312" class="floor-meta">DAY / 24×</text></g>
+          <g class="room" data-room="season" tabindex="0" role="button" aria-label="季房间"><path class="floor" d="M310 180 L480 90 L650 180 L480 285Z"/><text x="406" y="178" class="floor-label">季</text><text x="388" y="198" class="floor-meta">SEASON / 365×</text></g>
+          <g class="room" data-room="decade" tabindex="0" role="button" aria-label="十年房间"><path class="floor" d="M650 180 L790 90 L900 180 L760 280Z"/><text x="744" y="176" class="floor-label">十年</text><text x="716" y="196" class="floor-meta">DECADE / 3650×</text></g>
+          <g transform="translate(480,390)" id="clock">
+            <circle class="clock-face" r="52"/><circle r="58" fill="none" stroke="var(--line)" stroke-dasharray="2 6"/>
+            <line class="tick" x1="0" y1="-44" x2="0" y2="-38"/><line class="tick" x1="44" y1="0" x2="38" y2="0"/><line class="tick" x1="0" y1="44" x2="0" y2="38"/><line class="tick" x1="-44" y1="0" x2="-38" y2="0"/>
+            <line id="hour" class="hand" x1="0" y1="0" x2="0" y2="-24"/><line id="minute" class="hand thin" x1="0" y1="0" x2="0" y2="-36"/><circle r="3" fill="var(--orange)"/>
+            <text x="-24" y="82" class="clock-label" id="clockLabel">1× / 现在</text>
+          </g>
+        </svg>
+      </div>
+      <div class="toolbar"><div class="room-chips" id="chips" role="group" aria-label="选择房间"><button type="button" data-room="now" aria-pressed="true">现在</button><button type="button" data-room="day" aria-pressed="false">日</button><button type="button" data-room="season" aria-pressed="false">季</button><button type="button" data-room="decade" aria-pressed="false">十年</button></div><span class="small">← / → 换房间 · 时钟随尺度变快</span></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">ROOM / NOW</div>
+      <div class="room-question" id="question">我现在要做什么？</div>
+      <p class="room-copy" id="copy">现在房间只放得下一个动作。它的清晰来自狭窄：你看不见长期，但你知道下一步。</p>
+      <div class="speed" id="speed">1× <small>time</small></div>
+      <div class="dilation"><i id="bar" style="width:12%"></i></div>
+      <dl class="kv" style="margin-top:14px"><dt>房间</dt><dd id="roomName">现在 / NOW</dd><dt>看见</dt><dd id="see">下一步</dd><dt>看不见</dt><dd id="blind">长期代价</dd></dl>
+      <div class="note" style="margin-top:16px"><strong>时间的建筑学：</strong>换尺度不是把同一张图放大，而是换一个房间、换一个问题。危险在于：短期的流速会吞掉长期的证据。</div>
+      <div class="hr" style="margin:18px 0"></div>
+      <div class="small">ROOM INDEX</div>
+      <p style="font-size:12px;color:var(--body)">现在 → 日 → 季 → 十年：每进一道门，时间变快，问题变慢。</p>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>把时间尺度做成房间，而不是缩放按钮；换房间是否真的换问题？</p></div>
+    <div class="panel"><h3>危险</h3><p>长期房间容易被短期房间挤到角落；必须让“十年”始终有一扇可见的门。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>“换尺度 = 换问题”的导航语法；时钟流速作为尺度反馈；长期问题的固定入口。</p></div>
+  </div>
+  <footer class="footer"><span>Case 04 · Rooms of Time · simulated data</span><span><a href="causal-loom.html">← 因果织网</a> · <a href="folded-time.html">下一个：折叠时间 →</a></span></footer>
+</main>
+<script src="theme.js"></script>
+<script>
+(function(){
+  var rooms={
+    now:{name:'现在 / NOW',q:'我现在要做什么？',copy:'现在房间只放得下一个动作。它的清晰来自狭窄：你看不见长期，但你知道下一步。',speed:1,see:'下一步',blind:'长期代价'},
+    day:{name:'日 / DAY',q:'今天什么被推进了？',copy:'日房间把动作排成节奏。它让你看见重复，也容易把“忙”误当成“进展”。',speed:24,see:'节奏与消耗',blind:'季节性的变化'},
+    season:{name:'季 / SEASON',q:'什么在变好，什么在变坏？',copy:'季房间让趋势显形。单日看不见的积累，在这里变成坡度；但它仍可能看不见结构。',speed:365,see:'趋势与坡度',blind:'十年尺度的结构'},
+    decade:{name:'十年 / DECADE',q:'什么值得留下？',copy:'十年房间只保留痕迹。它不适合做决定，但适合判断：哪些东西值得被维护，哪些只是噪音。',speed:3650,see:'结构、遗产、代价',blind:'当下的具体行动'}
+  };
+  var cur='now', hand=0;
+  var hour=document.getElementById('hour'), minute=document.getElementById('minute'), label=document.getElementById('clockLabel');
+  function render(){
+    var r=rooms[cur];
+    document.querySelectorAll('.floor').forEach(function(p){p.classList.toggle('active',p.parentNode.dataset.room===cur)});
+    document.querySelectorAll('.room-chips button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.room===cur))});
+    document.getElementById('kicker').textContent='ROOM / '+cur.toUpperCase();
+    document.getElementById('question').textContent=r.q;document.getElementById('copy').textContent=r.copy;
+    document.getElementById('speed').innerHTML=r.speed+'× <small>time</small>';
+    document.getElementById('roomName').textContent=r.name;document.getElementById('see').textContent=r.see;document.getElementById('blind').textContent=r.blind;
+    document.getElementById('bar').style.width=Math.min(100,12+Math.log10(r.speed+1)*38)+'%';
+    label.textContent=r.speed+'× / '+r.name.split(' / ')[0];
+    location.hash=cur;
+  }
+  function go(id){if(rooms[id]){cur=id;render()}}
+  document.querySelectorAll('.room').forEach(function(g){g.addEventListener('click',function(){go(g.dataset.room)});g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go(g.dataset.room)}})});
+  document.querySelectorAll('.room-chips button').forEach(function(b){b.onclick=function(){go(b.dataset.room)}});
+  document.addEventListener('keydown',function(e){if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;var order=['now','day','season','decade'];var i=order.indexOf(cur);go(order[(i+(e.key==='ArrowRight'?1:3))%4])});
+  (function tick(){
+    var r=rooms[cur];hand+=r.speed*0.0009;
+    hour.setAttribute('transform','rotate('+(hand%360)+')');
+    minute.setAttribute('transform','rotate('+((hand*12)%360)+')');
+    requestAnimationFrame(tick);
+  })();
+  var initial=location.hash.slice(1);if(rooms[initial])cur=initial;render();
+})();
+</script>
+</body>
+</html>

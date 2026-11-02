@@ -38,11 +38,20 @@
 ```
 design/lab/
 ├── README.md       # 本文件：实验区规则
-└── os/             # 实验 01：青橙 OS · Web 模拟操作系统
+├── os/             # 实验 01：青橙 OS · Web 模拟操作系统
+│   ├── README.md
+│   ├── index.html
+│   └── styles.css
+└── spacetime/      # 实验 02：空间直觉与时间的空间化
     ├── README.md
     ├── index.html
-    ├── styles.css
-    └── js/
+    ├── shared.css
+    ├── theme.js
+    ├── memory-palace.html
+    ├── temporal-terrain.html
+    ├── causal-loom.html
+    ├── time-rooms.html
+    └── folded-time.html
 ```
 
 ## 五、实验索引
@@ -50,6 +59,7 @@ design/lab/
 | 实验 | 状态 | 一句话 | 入口 |
 | --- | --- | --- | --- |
 | **青橙 OS** | prototype | 用 9 个应用与未来转盘，把当前 LRDS 与三种未来放进同一个桌面 | [打开](os/index.html) |
+| **Spacetime** | prototype | 五个空间/时间实验：记忆星图、时间地形、因果织网、时间房间、折叠时间 | [打开](spacetime/index.html) |
 
 ## 六、毕业路径
 

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>记忆星图 · Spacetime Lab</title>
+<meta name="description" content="空间记忆实验：用房间、邻居与路径代替目录树。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="shared.css">
+<style>
+.map-stage{min-height:520px;background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--teal2) 45%,transparent),transparent 62%),var(--panel)}
+.map-stage svg{height:520px;width:100%;cursor:grab}
+.map-stage svg.drag{cursor:grabbing}
+.contour{fill:none;stroke:var(--line);stroke-width:1;opacity:.7}
+.route{fill:none;stroke:var(--line2);stroke-width:1.5;stroke-dasharray:3 7}
+.room{cursor:pointer;outline:none}
+.room rect{fill:var(--panel);stroke:var(--line2);stroke-width:1.5;transition:.15s}
+.room text{fill:var(--muted);font:10px var(--mono);letter-spacing:.08em;pointer-events:none}
+.room .zh{fill:var(--ink);font:600 17px var(--serif);letter-spacing:0}
+.room:hover rect,.room:focus-visible rect{stroke:var(--teal);fill:var(--teal2)}
+.room.active rect{fill:var(--teal2);stroke:var(--teal);stroke-width:2}
+.room.active text{fill:var(--teal)}
+.room.active .zh{fill:var(--ink)}
+.here{filter:drop-shadow(0 0 7px var(--orange))}
+.compass{position:absolute;left:14px;bottom:14px;width:30px;height:30px;opacity:.7}
+.compass:before{content:"";position:absolute;left:14px;top:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:22px solid var(--orange)}
+.compass:after{content:"N";position:absolute;left:11px;bottom:-10px;font:8px var(--mono);color:var(--muted)}
+.room-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.room-list button{width:100%;text-align:left;border:0;border-left:2px solid var(--line);background:transparent;color:var(--body);font:11px var(--sans);padding:5px 8px;cursor:pointer}
+.room-list button:hover{border-color:var(--teal);color:var(--teal)}
+.room-list button.on{border-color:var(--orange);color:var(--ink);background:var(--orange2)}
+.trail{display:flex;gap:4px;flex-wrap:wrap;margin:9px 0 0}
+.trail span{font:9px var(--mono);border:1px solid var(--line);padding:2px 5px;color:var(--muted)}
+.trail span:last-child{border-color:var(--orange);color:var(--orange)}
+.heart{font:9px var(--mono);color:var(--muted);margin-top:12px}
+</style>
+</head>
+<body data-page="spacetime-memory">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / SPACE × TIME</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="index.html">实验台</a><a href="temporal-terrain.html">下一个：时间地形</a><a href="README.md">README</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="index.html">spacetime</a> / <span>01 记忆星图</span></div>
+  <section class="hero" style="padding-bottom:18px">
+    <div><p class="eyebrow">case 01 / spatial memory</p><h1>先记住它在哪，<br><em>再记住它叫什么。</em><span>把目录树拆成房间、邻居与路径。</span></h1><p class="lede">这个案例把“知识”摆成一个可走的空间：没有侧边栏层级，只有位置、距离和回到起点的路。点击房间，或按方向键移动。</p></div>
+    <aside class="hero-card"><b>HYPOTHESIS</b>位置先于标签<br><b>SPACE</b>room / neighbor / path<br><b>WATCH</b>你是否先看邻居，再看标题</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage map-stage" id="stage">
+        <svg id="map" viewBox="0 0 900 600" role="application" aria-label="记忆星图：点击房间查看">
+          <path class="contour" d="M-40 170 C120 90 200 220 320 160 S560 60 700 150 S940 220 960 140"/>
+          <path class="contour" d="M-30 430 C120 350 230 480 360 410 S600 330 740 420 S900 490 950 430"/>
+          <path class="contour" d="M120 -20 C70 120 180 210 100 330 S120 520 60 640"/>
+          <path class="route" d="M450 300 L250 190 M450 300 L650 190 M450 300 L690 330 M450 300 L300 430 M250 190 L110 300 M650 190 L790 270 M300 430 L450 510"/>
+          <g class="room active" data-id="hub" tabindex="0" role="button" aria-label="中央工作室">
+            <rect x="370" y="250" width="160" height="100" rx="2"/><text x="386" y="278">00 / CENTER</text><text x="386" y="306" class="zh">工作室</text><text x="386" y="330">所有路径的起点</text>
+          </g>
+          <g class="room" data-id="knowledge" tabindex="0" role="button" aria-label="知识库">
+            <rect x="160" y="135" width="180" height="110" rx="2"/><text x="176" y="162">01 / NORTH-WEST</text><text x="176" y="190" class="zh">知识库</text><text x="176" y="214">原理、参考、旧判断</text>
+          </g>
+          <g class="room" data-id="projects" tabindex="0" role="button" aria-label="项目现场">
+            <rect x="560" y="135" width="180" height="110" rx="2"/><text x="576" y="162">02 / NORTH-EAST</text><text x="576" y="190" class="zh">项目现场</text><text x="576" y="214">正在发生的事</text>
+          </g>
+          <g class="room" data-id="materials" tabindex="0" role="button" aria-label="材料间">
+            <rect x="600" y="275" width="180" height="110" rx="2"/><text x="616" y="302">03 / EAST</text><text x="616" y="330" class="zh">材料间</text><text x="616" y="354">图、字、声音、样张</text>
+          </g>
+          <g class="room" data-id="archive" tabindex="0" role="button" aria-label="归档层">
+            <rect x="205" y="390" width="180" height="110" rx="2"/><text x="221" y="417">04 / SOUTH-WEST</text><text x="221" y="445" class="zh">归档层</text><text x="221" y="469">已结束，但可回访</text>
+          </g>
+          <g class="room" data-id="future" tabindex="0" role="button" aria-label="未来室">
+            <rect x="370" y="490" width="170" height="90" rx="2"/><text x="386" y="516">05 / SOUTH</text><text x="386" y="544" class="zh">未来室</text><text x="386" y="568">假设、未发生</text>
+          </g>
+          <g class="room" data-id="exit" tabindex="0" role="button" aria-label="出口">
+            <rect x="40" y="250" width="130" height="90" rx="2"/><text x="56" y="276">06 / WEST</text><text x="56" y="304" class="zh">出口</text><text x="56" y="328">回到平面</text>
+          </g>
+          <g id="here" class="here" transform="translate(450,300)"><circle r="9" fill="var(--orange)"/><circle r="18" fill="none" stroke="var(--orange)" stroke-opacity=".45"/></g>
+        </svg>
+        <div class="compass" aria-hidden="true"></div>
+      </div>
+      <div class="toolbar">
+        <button class="btn" type="button" id="zin">＋ 放大</button><button class="btn" type="button" id="zout">－ 缩小</button><button class="btn ghost" type="button" id="reset">回到工作室</button>
+        <span class="small">拖拽平移 · 滚轮缩放 · ←/→ 换房间</span>
+      </div>
+    </div>
+    <aside class="panel">
+      <div class="small">CURRENT LOCATION</div>
+      <div class="big" id="pos">00 / 工作室</div>
+      <p id="desc" style="font-size:13px;color:var(--body);min-height:72px">所有路径的起点。这里不存内容，只决定你从哪进入。</p>
+      <dl class="kv"><dt>邻居</dt><dd id="neighbors">知识库 · 项目现场 · 材料间 · 归档层 · 未来室 · 出口</dd><dt>坐标</dt><dd id="coords">450, 300</dd><dt>路径</dt><dd id="path">工作室</dd></dl>
+      <div class="trail" id="trail"><span>工作室</span></div>
+      <div class="hr" style="margin:20px 0"></div>
+      <div class="small">ALL ROOMS</div>
+      <ul class="room-list" id="list"></ul>
+      <p class="heart">空间记忆的危险：位置一旦失去稳定，导航就会退化成猜谜。这里用固定的七宫格和始终可见的“我在哪”来对冲。</p>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>当对象有稳定位置和邻居关系，人是否会更少依赖文字层级？</p></div>
+    <div class="panel"><h3>危险</h3><p>空间一旦变大，方向感会丢失；需要“当前位置 + 路径 + 回到起点”三件套。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>空间导航的“三件套”检查：我在哪、我怎么来的、我怎么回去。</p></div>
+  </div>
+  <footer class="footer"><span>Case 01 · Memory Palace · simulated data</span><span><a href="index.html">← 实验台</a> · <a href="temporal-terrain.html">下一个：时间地形 →</a></span></footer>
+</main>
+<script src="theme.js"></script>
+<script>
+(function(){
+  var rooms={
+    hub:{name:'00 / 工作室',desc:'所有路径的起点。这里不存内容，只决定你从哪进入。',neighbors:['知识库','项目现场','材料间','归档层','未来室','出口'],x:450,y:300},
+    knowledge:{name:'01 / 知识库',desc:'原理、参考、旧判断。这里的邻居不是“上级目录”，而是你上一次从哪个问题走进来。',neighbors:['工作室','出口'],x:250,y:190},
+    projects:{name:'02 / 项目现场',desc:'正在发生的事。它离知识库不远，但离材料间更近——因为项目总是先被材料拖住。',neighbors:['工作室','材料间'],x:650,y:190},
+    materials:{name:'03 / 材料间',desc:'图、字、声音、样张。这里没有“分类”，只有可被拿起来比较的东西。',neighbors:['项目现场','工作室'],x:690,y:330},
+    archive:{name:'04 / 归档层',desc:'已结束，但可回访。归档不是删除；它保留位置，让你知道“这件事曾在这里发生”。',neighbors:['工作室','出口'],x:300,y:430},
+    future:{name:'05 / 未来室',desc:'假设、未发生。进入这里需要标记“这是假设”，否则空间会伪装成事实。',neighbors:['工作室'],x:455,y:535},
+    exit:{name:'06 / 出口',desc:'回到平面。空间不是牢笼；任何时刻都应该有一条不依赖记忆的退出路径。',neighbors:['工作室','知识库','归档层'],x:105,y:295}
+  };
+  var order=['hub','knowledge','projects','materials','archive','future','exit'];
+  var cur='hub', trail=['工作室'];
+  var svg=document.getElementById('map'), vb={x:0,y:0,w:900,h:600};
+  var pos=document.getElementById('pos'), desc=document.getElementById('desc'), neigh=document.getElementById('neighbors'), coord=document.getElementById('coords'), path=document.getElementById('path'), trailEl=document.getElementById('trail');
+  function render(){
+    var r=rooms[cur];
+    pos.textContent=r.name; desc.textContent=r.desc; neigh.textContent=r.neighbors.join(' · '); coord.textContent=r.x+', '+r.y; path.textContent=trail.join(' → ');
+    trailEl.innerHTML=trail.map(function(t){return '<span>'+t+'</span>'}).join('');
+    document.querySelectorAll('.room').forEach(function(g){g.classList.toggle('active',g.dataset.id===cur)});
+    document.querySelectorAll('#list button').forEach(function(b){b.classList.toggle('on',b.dataset.id===cur)});
+    document.getElementById('here').setAttribute('transform','translate('+r.x+','+r.y+')');
+    location.hash=cur;
+  }
+  function go(id,push){
+    if(!rooms[id]||id===cur)return;
+    cur=id;
+    if(push!==false){trail.push(rooms[id].name.split(' / ')[1]); if(trail.length>4)trail.shift();}
+    render();
+  }
+  function list(){
+    var ul=document.getElementById('list');
+    order.forEach(function(id){var b=document.createElement('button');b.type='button';b.dataset.id=id;b.textContent=rooms[id].name;b.onclick=function(){go(id)};ul.appendChild(b)});
+  }
+  list();
+  document.querySelectorAll('.room').forEach(function(g){
+    g.addEventListener('click',function(){go(g.dataset.id)});
+    g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go(g.dataset.id)}});
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+    var i=order.indexOf(cur); go(order[(i+(e.key==='ArrowRight'?1:order.length-1))%order.length]);
+  });
+  var drag=null;
+  svg.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY,vx:vb.x,vy:vb.y};svg.classList.add('drag');svg.setPointerCapture(e.pointerId)});
+  svg.addEventListener('pointermove',function(e){if(!drag)return;var dx=(e.clientX-drag.x)*vb.w/svg.clientWidth;var dy=(e.clientY-drag.y)*vb.h/svg.clientHeight;setView(drag.vx-dx,drag.vy-dy,vb.w,vb.h)});
+  svg.addEventListener('pointerup',function(){drag=null;svg.classList.remove('drag')});
+  svg.addEventListener('wheel',function(e){e.preventDefault();var k=e.deltaY>0?1.12:.89;var w=Math.max(380,Math.min(1500,vb.w*k));var h=w*600/900;setView(vb.x+(vb.w-w)/2,vb.y+(vb.h-h)/2,w,h)},{passive:false});
+  function setView(x,y,w,h){vb={x:x,y:y,w:w,h:h};svg.setAttribute('viewBox',x+' '+y+' '+w+' '+h)}
+  document.getElementById('zin').onclick=function(){setView(vb.x+vb.w*.1,vb.y+vb.h*.1,vb.w*.8,vb.h*.8)};
+  document.getElementById('zout').onclick=function(){setView(vb.x-vb.w*.12,vb.y-vb.h*.12,vb.w*1.24,vb.h*1.24)};
+  document.getElementById('reset').onclick=function(){setView(0,0,900,600);go('hub')};
+  var initial=location.hash.slice(1); if(rooms[initial]){cur=initial;trail=[rooms[initial].name.split(' / ')[1]]}
+  render();
+})();
+</script>
+</body>
+</html>

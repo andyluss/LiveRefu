@@ -34,7 +34,16 @@ const MANAGED = [
   'games/refu-game-001/GUIDE.html',
   'games/future-debris/briefing/HUB.html',
   'games/future-debris/briefing/GUIDE.html',
+  ...spacetimePages(),
 ]
+
+function spacetimePages(): string[] {
+  const dir = join(ROOT, 'design/lab/spacetime')
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.html'))
+    .sort()
+    .map((f) => `design/lab/spacetime/${f}`)
+}
 
 function philosophyPages(): string[] {
   const dir = join(ROOT, 'design/philosophy/html')

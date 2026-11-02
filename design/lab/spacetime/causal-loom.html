@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>因果织网 · Spacetime Lab</title>
+<meta name="description" content="因果织网：时间不是单线，而是多股过程交织、分叉、回响的织物。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="shared.css">
+<style>
+.loom-wrap{background:linear-gradient(180deg,var(--panel),color-mix(in srgb,var(--teal2) 25%,var(--panel)))}
+.loom-wrap svg{height:540px}
+.lane{stroke:var(--line);stroke-width:1;stroke-dasharray:2 8}
+.lane-label{fill:var(--muted);font:9px var(--mono);letter-spacing:.08em}
+.edge{fill:none;stroke-width:1.5;opacity:.6;transition:.15s}
+.edge.causal{stroke:var(--teal)}
+.edge.chrono{stroke:var(--line2);stroke-dasharray:2 5}
+.edge.dim{opacity:.12}
+.edge.hot{opacity:1;stroke-width:2.5;stroke:var(--orange)}
+.edge.cut{stroke:var(--orange);stroke-dasharray:7 5;opacity:.55}
+.node{cursor:pointer;outline:none}
+.node rect{fill:var(--panel);stroke:var(--line2);stroke-width:1.3;transition:.15s}
+.node:hover rect,.node:focus-visible rect{stroke:var(--teal)}
+.node .title{fill:var(--ink);font:600 13px var(--serif)}
+.node .meta{fill:var(--muted);font:8px var(--mono);letter-spacing:.06em}
+.node .kind{fill:var(--orange);font:8px var(--mono);letter-spacing:.1em}
+.node.up rect{stroke:var(--teal);fill:var(--teal2)}
+.node.down rect{stroke:var(--orange);fill:var(--orange2)}
+.node.active rect{stroke-width:2.5;stroke:var(--orange)}
+.node.cut rect{opacity:.38;stroke-dasharray:4 4}
+.node.cut .title{opacity:.38}
+.loom-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.loom-detail{border-left:2px solid var(--teal);padding-left:14px;margin:13px 0}
+.loom-detail h3{font-size:20px;margin:0 0 3px}
+.loom-detail p{font-size:12px;color:var(--body);margin:0}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 0}
+.chips span{font:9px var(--mono);border:1px solid var(--line);padding:2px 5px;color:var(--muted)}
+.lane-legend{display:flex;gap:14px;font:9px var(--mono);color:var(--muted);flex-wrap:wrap;margin-top:10px}
+.lane-legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:4px}
+</style>
+</head>
+<body data-page="spacetime-loom">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / SPACE × TIME</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="index.html">实验台</a><a href="temporal-terrain.html">← 时间地形</a><a href="time-rooms.html">下一个：时间房间</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="index.html">spacetime</a> / <span>03 因果织网</span></div>
+  <section class="hero" style="padding-bottom:16px">
+    <div><p class="eyebrow">case 03 / causal loom</p><h1>时间不是一条线，<br><em>是一匹被拉开的布。</em><span>每一股线有自己的速度；它们交叉的地方，才叫“事件”。</span></h1><p class="lede">单条时间线会把“同时发生”压成同一个点。这里把知识、设计、工程拆成三股线；点一个结，看看它由什么织成、又改变了什么。</p></div>
+    <aside class="hero-card"><b>HYPOTHESIS</b>因果需要多股<br><b>LANES</b>knowledge / design / build<br><b>WATCH</b>不要把相关误读成因果</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage loom-wrap"><svg id="loom" viewBox="0 0 1000 620" role="application" aria-label="因果织网：点击节点查看因果"><g id="edges"></g><g id="nodes"></g></svg></div>
+      <div class="toolbar loom-tools">
+        <div class="seg" id="mode" role="group" aria-label="连线模式"><button type="button" data-mode="causal" aria-pressed="true">因果</button><button type="button" data-mode="chrono" aria-pressed="false">时间</button></div>
+        <button class="btn" type="button" id="cut">剪断一条未来</button>
+        <button class="btn ghost" type="button" id="reset">重置</button>
+        <span class="small" id="hint">点击节点，查看上游/下游</span>
+      </div>
+      <div class="lane-legend"><span><i style="background:var(--teal)"></i>知识 / 研究</span><span><i style="background:var(--orange)"></i>设计 / 判断</span><span><i style="background:var(--gold)"></i>工程 / 交付</span></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">SELECTED / INTENT</div>
+      <div class="loom-detail"><h3 id="title">意图</h3><p id="copy">所有线的起点。它不决定路径，但决定哪些线值得被拉出来。</p></div>
+      <dl class="kv"><dt>时间</dt><dd id="when">2024.09</dd><dt>上游</dt><dd id="up">—</dd><dt>下游</dt><dd id="down">研究 · 概念 · 技术</dd></dl>
+      <div class="chips" id="chips"></div>
+      <div class="note" style="margin-top:16px"><strong>织网的错觉：</strong>两条线交叉，不代表一条导致另一条。这个实验用“因果 / 时间”切换提醒：空间邻接 ≠ 因果。</div>
+      <div class="hr" style="margin:18px 0"></div>
+      <div class="small">READING</div>
+      <p style="font-size:12px;color:var(--body)">上游 = 它由什么织成；下游 = 它改变了什么。剪断一个未来，不是删除过去。</p>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>把项目拆成多股时间线，是否比单一甘特/时间轴更能看见“谁在等谁”？</p></div>
+    <div class="panel"><h3>危险</h3><p>连线会制造因果幻觉；必须允许切到“时间”模式，看见只是相邻、不是导致。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>上游/下游高亮、分叉剪断、因果与时间双模式——可作为复杂项目仪表的基础语法。</p></div>
+  </div>
+  <footer class="footer"><span>Case 03 · Causal Loom · simulated data</span><span><a href="temporal-terrain.html">← 时间地形</a> · <a href="time-rooms.html">下一个：时间房间 →</a></span></footer>
+</main>
+<script src="theme.js"></script>
+<script>
+(function(){
+  var W=1000,H=620,pad=70;
+  var lanes=[{id:'knowledge',label:'KNOWLEDGE / 研究',y:155,color:'var(--teal)'},{id:'design',label:'DESIGN / 判断',y:335,color:'var(--orange)'},{id:'build',label:'BUILD / 交付',y:515,color:'var(--gold)'}];
+  var nodes=[
+    {id:'intent',x:90,lane:1,title:'意图',kind:'ORIGIN',when:'2024.09',copy:'所有线的起点。它不决定路径，但决定哪些线值得被拉出来。'},
+    {id:'research',x:230,lane:0,title:'46 作对标',kind:'EVIDENCE',when:'2025.02',copy:'市场证据拉出一根新线：内容量决定差评下限，不决定销量上限。'},
+    {id:'concept',x:230,lane:1,title:'残渣机制',kind:'CONCEPT',when:'2025.03',copy:'把“代价”做成第二种资源。设计线第一次压过研究线。'},
+    {id:'tech',x:230,lane:2,title:'Godot 管线',kind:'STACK',when:'2025.04',copy:'技术选型不是审美选择，而是把验证管线保住。'},
+    {id:'prototype',x:420,lane:1,title:'一局闭环',kind:'PROTOTYPE',when:'2025.08',copy:'第一个可跑的局。设计线开始需要工程线承重。'},
+    {id:'tokens',x:420,lane:2,title:'主题 token',kind:'SYSTEM',when:'2025.09',copy:'视觉不是皮肤，是可被断言的状态。'},
+    {id:'playtest',x:610,lane:1,title:'真人试玩',kind:'EVIDENCE',when:'2026.02',copy:'第一次把“好不好玩”放到人身上。之前的所有线都要在这里接受审判。'},
+    {id:'build',x:610,lane:2,title:'120 卡 / 16 关',kind:'BUILD',when:'2026.04',copy:'内容量把交付线拉长；也把“同质化”的风险拉进来。'},
+    {id:'decision',x:790,lane:1,title:'继续 / 收缩',kind:'DECISION',when:'2026.11',copy:'人在这里决定哪根线继续，哪根线剪断。AI 不能替这个结打结。'},
+    {id:'launch',x:900,lane:0,title:'面向玩家',kind:'FUTURE',when:'2027?',copy:'一个尚未发生的未来。它由决策线牵出，但还没有被现实织紧。'}
+  ];
+  var edges=[
+    ['intent','research','causal'],['intent','concept','causal'],['intent','tech','causal'],
+    ['research','concept','causal'],['concept','prototype','causal'],['tech','prototype','causal'],
+    ['prototype','tokens','causal'],['prototype','playtest','causal'],['tokens','build','causal'],
+    ['playtest','decision','causal'],['build','decision','causal'],['decision','launch','causal'],
+    ['research','tech','chrono'],['concept','tokens','chrono'],['prototype','build','chrono']
+  ];
+  var byId=Object.fromEntries(nodes.map(function(n){return[n.id,n]}));
+  var svg=document.getElementById('loom'), edgesG=document.getElementById('edges'), nodesG=document.getElementById('nodes');
+  var mode='causal', selected='intent', cut=false;
+  function y(n){return lanes[n.lane].y}
+  function path(a,b){var mx=(a.x+b.x)/2;return 'M'+a.x+' '+y(a)+' C'+mx+' '+y(a)+' '+mx+' '+y(b)+' '+b.x+' '+y(b)}
+  function draw(){
+    edgesG.innerHTML=''; nodesG.innerHTML='';
+    edges.forEach(function(e,i){
+      var a=byId[e[0]],b=byId[e[1]],p=document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('d',path(a,b));p.setAttribute('class','edge '+(e[2]==='causal'?'causal':'chrono'));p.dataset.i=i;
+      if(mode==='chrono'&&e[2]==='causal')p.classList.add('dim');
+      if(mode==='causal'&&e[2]==='chrono')p.classList.add('dim');
+      if(cut&&(e[0]==='decision'||e[1]==='launch'))p.classList.add('cut');
+      edgesG.appendChild(p);
+    });
+    lanes.forEach(function(l){var t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',24);t.setAttribute('y',l.y-42);t.setAttribute('class','lane-label');t.textContent=l.label;nodesG.appendChild(t);var line=document.createElementNS('http://www.w3.org/2000/svg','line');line.setAttribute('x1',pad);line.setAttribute('x2',940);line.setAttribute('y1',l.y);line.setAttribute('y2',l.y);line.setAttribute('class','lane');nodesG.appendChild(line)});
+    nodes.forEach(function(n){
+      var g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','node');g.dataset.id=n.id;g.setAttribute('tabindex','0');g.setAttribute('role','button');
+      var r=document.createElementNS('http://www.w3.org/2000/svg','rect');r.setAttribute('x',n.x-66);r.setAttribute('y',y(n)-24);r.setAttribute('width',132);r.setAttribute('height',52);r.setAttribute('rx',2);g.appendChild(r);
+      var t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',n.x-54);t.setAttribute('y',y(n)-3);t.setAttribute('class','kind');t.textContent=n.kind;g.appendChild(t);
+      var ti=document.createElementNS('http://www.w3.org/2000/svg','text');ti.setAttribute('x',n.x-54);ti.setAttribute('y',y(n)+17);ti.setAttribute('class','title');ti.textContent=n.title;g.appendChild(ti);
+      var m=document.createElementNS('http://www.w3.org/2000/svg','text');m.setAttribute('x',n.x-54);m.setAttribute('y',y(n)+34);m.setAttribute('class','meta');m.textContent=n.when;g.appendChild(m);
+      g.addEventListener('click',function(){selected=n.id;render()});
+      g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();selected=n.id;render()}});
+      nodesG.appendChild(g);
+    });
+    render();
+  }
+  function related(){
+    var up=new Set(),down=new Set(),q=[selected];
+    while(q.length){var cur=q.pop();edges.forEach(function(e){if(e[1]===cur&&!up.has(e[0])){up.add(e[0]);q.push(e[0])}})}
+    q=[selected];while(q.length){var c=q.pop();edges.forEach(function(e){if(e[0]===c&&!down.has(e[1])){down.add(e[1]);q.push(e[1])}})}
+    return {up:up,down:down};
+  }
+  function render(){
+    var rel=related();var n=byId[selected];
+    document.getElementById('kicker').textContent='SELECTED / '+n.kind;
+    document.getElementById('title').textContent=n.title;document.getElementById('copy').textContent=n.copy;document.getElementById('when').textContent=n.when;
+    document.getElementById('up').textContent=rel.up.size?[...rel.up].map(function(id){return byId[id].title}).join(' · '):'—';
+    document.getElementById('down').textContent=rel.down.size?[...rel.down].map(function(id){return byId[id].title}).join(' · '):'—';
+    document.getElementById('chips').innerHTML='<span>'+(cut&&selected==='launch'?'未来已剪断':'当前路径')+'</span><span>'+mode+'</span>';
+    document.querySelectorAll('.node').forEach(function(g){var id=g.dataset.id;g.classList.toggle('active',id===selected);g.classList.toggle('up',rel.up.has(id));g.classList.toggle('down',rel.down.has(id));g.classList.toggle('cut',cut&&id==='launch')});
+    document.querySelectorAll('.edge').forEach(function(p,i){var e=edges[i];p.classList.toggle('hot',e[0]===selected||e[1]===selected)});
+  }
+  document.getElementById('mode').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;mode=b.dataset.mode;document.querySelectorAll('#mode button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});draw()});
+  document.getElementById('cut').onclick=function(){cut=!cut;document.getElementById('cut').textContent=cut?'恢复这条未来':'剪断一条未来';draw();document.getElementById('hint').textContent=cut?'未来被剪断：决策仍在，结果未发生':'点击节点，查看上游/下游'};
+  document.getElementById('reset').onclick=function(){selected='intent';cut=false;mode='causal';document.querySelectorAll('#mode button').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.mode==='causal'))});document.getElementById('cut').textContent='剪断一条未来';document.getElementById('hint').textContent='点击节点，查看上游/下游';draw()};
+  draw();
+})();
+</script>
+</body>
+</html>
