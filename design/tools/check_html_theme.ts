@@ -40,18 +40,24 @@ const MANAGED = [
 
 function spacetimePages(): string[] {
   const dir = join(ROOT, 'design/lab/spacetime')
-  return readdirSync(dir)
-    .filter((f) => f.endsWith('.html'))
-    .sort()
-    .map((f) => `design/lab/spacetime/${f}`)
+  const pages = ['design/lab/spacetime/index.html']
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.isDirectory() && e.name !== '3d' && existsSync(join(dir, e.name, 'index.html'))) {
+      pages.push(`design/lab/spacetime/${e.name}/index.html`)
+    }
+  }
+  return pages
 }
 
 function threeDPages(): string[] {
   const dir = join(ROOT, 'design/lab/spacetime/3d')
-  return readdirSync(dir)
-    .filter((f) => f.endsWith('.html'))
-    .sort()
-    .map((f) => `design/lab/spacetime/3d/${f}`)
+  const pages = ['design/lab/spacetime/3d/index.html']
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.isDirectory() && existsSync(join(dir, e.name, 'index.html'))) {
+      pages.push(`design/lab/spacetime/3d/${e.name}/index.html`)
+    }
+  }
+  return pages
 }
 
 function philosophyPages(): string[] {

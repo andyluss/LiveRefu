@@ -8,7 +8,7 @@
 <script>
 (function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
 </script>
-<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="../../shared.css">
 <style>
 .stage canvas{display:block;width:100%;height:540px;outline:none}
 .canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
@@ -23,12 +23,12 @@
 </head>
 <body data-page="spacetime-3d-memory">
 <header class="topbar"><div class="topbar-inner">
-  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
-  <nav class="topnav"><a href="index.html">3D 实验台</a><a href="../memory-palace.html">平面版</a><a href="loom.html">下一个：因果织网</a></nav>
+  <a class="brand" href="../index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="../index.html">3D 实验台</a><a href="../../01-memory-palace/index.html">平面版</a><a href="../03-loom/index.html">下一个：因果织网</a></nav>
   <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </div></header>
 <main class="shell">
-  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">3d</a> / <span>02 空间记忆</span></div>
+  <div class="crumbs"><a href="../../index.html">spacetime</a> / <a href="../index.html">3d</a> / <span>02 空间记忆</span></div>
   <section class="hero" style="padding-bottom:12px">
     <div><p class="eyebrow">3d case 02 / floating rooms</p><h1>房间浮起来，<br><em>路径变成细线。</em><span>旋转之后，你还知道自己在哪个盒子吗？</span></h1><p class="lede">平面星图用位置记内容；3D 星图把位置放进纵深。代价是：一旋转，方向感就可能消失。所以“我在哪”必须比“盒子在哪”更显眼。</p></div>
     <aside class="hero-card"><b>SPACE</b>boxes / paths / depth<br><b>READ</b>先看邻居，再看标题<br><b>WATCH</b>旋转后是否还能回到已知视角</aside>
@@ -55,10 +55,10 @@
     <div class="panel"><h3>危险</h3><p>盒子会互相遮挡；旋转后“上/下/左/右”都变了。必须固定一个可找回的中心。</p></div>
     <div class="panel"><h3>可能沉淀</h3><p>“中心 + 邻居 + 回退”三件套；3D 场景中的当前位置常驻提示。</p></div>
   </div>
-  <footer class="footer"><span>3D Case 02 · Memory Palace · simulated</span><span><a href="terrain.html">← 时间地形</a> · <a href="loom.html">下一个 →</a></span></footer>
+  <footer class="footer"><span>3D Case 02 · Memory Palace · simulated</span><span><a href="../01-terrain/index.html">← 时间地形</a> · <a href="../03-loom/index.html">下一个 →</a></span></footer>
 </main>
-<script src="../theme.js"></script>
-<script src="engine3d.js"></script>
+<script src="../../theme.js"></script>
+<script src="../engine3d.js"></script>
 <script>
 (function(){
   var canvas=document.getElementById('scene');

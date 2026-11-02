@@ -16,10 +16,10 @@
 
 | 案例 | 3D 编码 | 入口 |
 | --- | --- | --- |
-| **时间地形 3D** | 高度 = 确定性；纵深 = 时间；现在是一道光平面 | [terrain.html](terrain.html) |
-| **空间记忆 3D** | 房间是浮在空间里的盒子；路径是线 | [memory.html](memory.html) |
-| **因果织网 3D** | 三条不同深度的股线；事件是空间中的结 | [loom.html](loom.html) |
-| **折叠时间 3D** | 时间折成多层蛇形带；折叠不压缩距离 | [fold.html](fold.html) |
+| **时间地形 3D** | 高度 = 确定性；纵深 = 时间；现在是一道光平面 | [案例说明](01-terrain/README.md) · [打开](01-terrain/index.html) |
+| **空间记忆 3D** | 房间是浮在空间里的盒子；路径是线 | [案例说明](02-memory/README.md) · [打开](02-memory/index.html) |
+| **因果织网 3D** | 三条不同深度的股线；事件是空间中的结 | [案例说明](03-loom/README.md) · [打开](03-loom/index.html) |
+| **折叠时间 3D** | 时间折成多层蛇形带；折叠不压缩距离 | [案例说明](04-fold/README.md) · [打开](04-fold/index.html) |
 
 入口：[index.html](index.html)
 

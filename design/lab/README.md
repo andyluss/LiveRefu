@@ -47,18 +47,18 @@ design/lab/
     ├── index.html
     ├── shared.css
     ├── theme.js
-    ├── memory-palace.html
-    ├── temporal-terrain.html
-    ├── causal-loom.html
-    ├── time-rooms.html
-    ├── folded-time.html
+    ├── 01-memory-palace/
+    ├── 02-temporal-terrain/
+    ├── 03-causal-loom/
+    ├── 04-time-rooms/
+    ├── 05-folded-time/
     └── 3d/
         ├── index.html
         ├── engine3d.js
-        ├── terrain.html
-        ├── memory.html
-        ├── loom.html
-        └── fold.html
+        ├── 01-terrain/
+        ├── 02-memory/
+        ├── 03-loom/
+        └── 04-fold/
 ```
 
 ## 五、实验索引

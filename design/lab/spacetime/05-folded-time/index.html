@@ -8,7 +8,7 @@
 <script>
 (function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
 </script>
-<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="../shared.css">
 <style>
 .fold-wrap{background:linear-gradient(180deg,var(--panel),color-mix(in srgb,var(--gold) 10%,var(--panel)))}
 .fold-wrap svg{height:520px}
@@ -36,12 +36,12 @@
 </head>
 <body data-page="spacetime-fold">
 <header class="topbar"><div class="topbar-inner">
-  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / SPACE × TIME</small></a><span class="lab-badge">EXPERIMENTAL</span>
-  <nav class="topnav"><a href="index.html">实验台</a><a href="time-rooms.html">← 时间房间</a><a href="README.md">README</a></nav>
+  <a class="brand" href="../index.html"><i></i>Spacetime <small>LAB / SPACE × TIME</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="../index.html">实验台</a><a href="../04-time-rooms/index.html">← 时间房间</a><a href="../README.md">README</a></nav>
   <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </div></header>
 <main class="shell">
-  <div class="crumbs"><a href="index.html">spacetime</a> / <span>05 折叠时间</span></div>
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <span>05 折叠时间</span></div>
   <section class="hero" style="padding-bottom:16px">
     <div><p class="eyebrow">case 05 / folded time</p><h1>把二十七年，<br><em>折成一页。</em><span>折叠让远距离年代并置；但它不缩短因果距离。</span></h1><p class="lede">书页可以折，时间也可以。拖动折叠度，把 1999 到 2026 压进同一视野；注意：它们看起来更近，不代表它们真的更近。</p></div>
     <aside class="hero-card"><b>HYPOTHESIS</b>折叠产生比较<br><b>FOLD</b>accordion / 1999—2026<br><b>WATCH</b>并置是否被误读成因果</aside>
@@ -78,9 +78,9 @@
     <div class="panel"><h3>危险</h3><p>折叠会制造“近”的错觉；必须保留年份、折痕与“距离未消失”的提示。</p></div>
     <div class="panel"><h3>可能沉淀</h3><p>“折叠—并置—比较”的时间视图；折痕作为导航节点；并置时的差异标注。</p></div>
   </div>
-  <footer class="footer"><span>Case 05 · Folded Time · simulated data</span><span><a href="time-rooms.html">← 时间房间</a> · <a href="index.html">回实验台 →</a></span></footer>
+  <footer class="footer"><span>Case 05 · Folded Time · simulated data</span><span><a href="../04-time-rooms/index.html">← 时间房间</a> · <a href="../index.html">回实验台 →</a></span></footer>
 </main>
-<script src="theme.js"></script>
+<script src="../theme.js"></script>
 <script>
 (function(){
   var years=[];for(var y=1999;y<=2026;y++)years.push(y);

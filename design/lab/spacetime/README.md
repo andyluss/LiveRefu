@@ -14,11 +14,11 @@
 
 | # | 案例 | 空间直觉 | 时间的空间化 | 入口 |
 | --- | --- | --- | --- | --- |
-| 01 | **记忆星图** | 用房间/邻居/路径代替目录树 | —— | [memory-palace.html](memory-palace.html) |
-| 02 | **时间地形** | 时间是一条可以行走的地形 | 过去是地形，未来是天气；高度表示确定性 | [temporal-terrain.html](temporal-terrain.html) |
-| 03 | **因果织网** | 时间是多股线交织的织物 | 因果链、分叉、剪断与回声 | [causal-loom.html](causal-loom.html) |
-| 04 | **时间房间** | 不同时间尺度是不同房间 | 走进“日 / 季 / 十年”会改变时间流速 | [time-rooms.html](time-rooms.html) |
-| 05 | **折叠时间** | 把长时段折成可比较的形状 | 折叠让远距离年代并置，但不改变因果距离 | [folded-time.html](folded-time.html) |
+| 01 | **记忆星图** | 用房间/邻居/路径代替目录树 | —— | [案例说明](01-memory-palace/README.md) · [打开](01-memory-palace/index.html) |
+| 02 | **时间地形** | 时间是一条可以行走的地形 | 过去是地形，未来是天气；高度表示确定性 | [案例说明](02-temporal-terrain/README.md) · [打开](02-temporal-terrain/index.html) |
+| 03 | **因果织网** | 时间是多股线交织的织物 | 因果链、分叉、剪断与回声 | [案例说明](03-causal-loom/README.md) · [打开](03-causal-loom/index.html) |
+| 04 | **时间房间** | 不同时间尺度是不同房间 | 走进“日 / 季 / 十年”会改变时间流速 | [案例说明](04-time-rooms/README.md) · [打开](04-time-rooms/index.html) |
+| 05 | **折叠时间** | 把长时段折成可比较的形状 | 折叠让远距离年代并置，但不改变因果距离 | [案例说明](05-folded-time/README.md) · [打开](05-folded-time/index.html) |
 
 入口页：[index.html](index.html)。
 
@@ -29,10 +29,10 @@
 
 | 案例 | 3D 编码 | 入口 |
 | --- | --- | --- |
-| 时间地形 3D | 高度 = 确定性；纵深 = 时间 | [terrain.html](3d/terrain.html) |
-| 空间记忆 3D | 房间 = 空间里的盒子 | [memory.html](3d/memory.html) |
-| 因果织网 3D | 三股线各占一个深度 | [loom.html](3d/loom.html) |
-| 折叠时间 3D | 时间折成多层蛇形带 | [fold.html](3d/fold.html) |
+| 时间地形 3D | 高度 = 确定性；纵深 = 时间 | [案例说明](3d/01-terrain/README.md) · [打开](3d/01-terrain/index.html) |
+| 空间记忆 3D | 房间 = 空间里的盒子 | [案例说明](3d/02-memory/README.md) · [打开](3d/02-memory/index.html) |
+| 因果织网 3D | 三股线各占一个深度 | [案例说明](3d/03-loom/README.md) · [打开](3d/03-loom/index.html) |
+| 折叠时间 3D | 时间折成多层蛇形带 | [案例说明](3d/04-fold/README.md) · [打开](3d/04-fold/index.html) |
 
 3D 入口：[3d/index.html](3d/index.html) ｜ 规则：[3d/README.md](3d/README.md)
 

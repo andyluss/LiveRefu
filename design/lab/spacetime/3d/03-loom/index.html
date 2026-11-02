@@ -8,7 +8,7 @@
 <script>
 (function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
 </script>
-<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="../../shared.css">
 <style>
 .stage canvas{display:block;width:100%;height:540px;outline:none}
 .canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
@@ -22,12 +22,12 @@
 </head>
 <body data-page="spacetime-3d-loom">
 <header class="topbar"><div class="topbar-inner">
-  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
-  <nav class="topnav"><a href="index.html">3D 实验台</a><a href="../causal-loom.html">平面版</a><a href="fold.html">下一个：折叠时间</a></nav>
+  <a class="brand" href="../index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="../index.html">3D 实验台</a><a href="../../03-causal-loom/index.html">平面版</a><a href="../04-fold/index.html">下一个：折叠时间</a></nav>
   <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </div></header>
 <main class="shell">
-  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">3d</a> / <span>03 因果织网</span></div>
+  <div class="crumbs"><a href="../../index.html">spacetime</a> / <a href="../index.html">3d</a> / <span>03 因果织网</span></div>
   <section class="hero" style="padding-bottom:12px">
     <div><p class="eyebrow">3d case 03 / braided threads</p><h1>三股线，<br><em>在不同的深度里交织。</em><span>事件不是线上的点，是空间里的结。</span></h1><p class="lede">2D 织网把知识、设计、工程压在同一平面；3D 让它们各占一个深度。旋转时，你会看见“同时发生”其实不在同一个位置。</p></div>
     <aside class="hero-card"><b>X</b>时间<br><b>Z</b>股线 / 深度<br><b>Y</b>因果重量<br><b>WATCH</b>旋转后连线是否仍可追踪</aside>
@@ -53,10 +53,10 @@
     <div class="panel"><h3>危险</h3><p>旋转会改变“前后”，容易把深度误读成因果；必须保留“因果/时间”双模式。</p></div>
     <div class="panel"><h3>可能沉淀</h3><p>三维股线的上下游高亮、剪断分叉、因果/时间双模式。</p></div>
   </div>
-  <footer class="footer"><span>3D Case 03 · Causal Loom · simulated</span><span><a href="memory.html">← 空间记忆</a> · <a href="fold.html">下一个 →</a></span></footer>
+  <footer class="footer"><span>3D Case 03 · Causal Loom · simulated</span><span><a href="../02-memory/index.html">← 空间记忆</a> · <a href="../04-fold/index.html">下一个 →</a></span></footer>
 </main>
-<script src="../theme.js"></script>
-<script src="engine3d.js"></script>
+<script src="../../theme.js"></script>
+<script src="../engine3d.js"></script>
 <script>
 (function(){
   var canvas=document.getElementById('scene');
