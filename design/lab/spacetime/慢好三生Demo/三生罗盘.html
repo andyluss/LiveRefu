@@ -88,9 +88,9 @@
     {name:'社会 / 生态',short:'社会',period:'年 / 代际',radius:'长期与外部性',ringR:310}
   ];
   var domains=[
-    {id:'survival',name:'生存',sub:'SAFETY / RESILIENCE',color:'var(--survival)',start:-85,end:30},
+    {id:'survival',name:'生存',sub:'SAFETY / RESILIENCE',color:'var(--survival)',start:-90,end:30},
     {id:'life',name:'生活',sub:'LIFE / MEANING',color:'var(--life)',start:30,end:150},
-    {id:'production',name:'生产',sub:'WORK / VALUE',color:'var(--production)',start:150,end:265}
+    {id:'production',name:'生产',sub:'WORK / VALUE',color:'var(--production)',start:150,end:270}
   ];
   var cells={
     '0-survival':{copy:'个人生存是底线：睡眠、体力、应急金与基本技能。它不需要宏大，只需要可靠。',question:'我今天能稳住什么？',risk:'把透支当努力；短期效率吃掉长期韧性。',res:'睡眠 / 体力 / 应急金',meth:'规律 / 边界 / 体检',val:'安全与韧性',fb:'每日状态'},
@@ -128,8 +128,8 @@
         if(r.ringR>=170){var mid=(d.start+d.end)/2;var rr=(r.ringR+r.ringR-64)/2;var q=pt(cx,cy,rr+10,mid);var t=el('text',{x:q[0],y:q[1],'text-anchor':'middle',class:'domain-sub',fill:d.color},svg);t.textContent=d.name; }
       });
       var rmid=(Math.max(44,r.ringR-64)+r.ringR)/2;
-      var n=el('text',{x:cx-rmid,y:cy-5,class:'ring-name','text-anchor':'middle'},svg);n.textContent=r.short;el('title',{},n).textContent=r.name;
-      var t=el('text',{x:cx-rmid,y:cy+9,class:'ring-label','text-anchor':'middle'},svg);t.textContent=r.period;
+      var n=el('text',{x:cx-rmid,y:cy-30,class:'ring-name','text-anchor':'middle'},svg);n.textContent=r.short;el('title',{},n).textContent=r.name;
+      var t=el('text',{x:cx-rmid,y:cy-16,class:'ring-label','text-anchor':'middle'},svg);t.textContent=r.period;
     });
     // domain labels outside
     domains.forEach(function(d){var mid=(d.start+d.end)/2;var q=pt(cx,cy,365,mid);var t=el('text',{x:q[0],y:q[1],class:'domain-label','text-anchor':'middle'},svg);t.textContent=d.name;var s=el('text',{x:q[0],y:q[1]+14,class:'domain-sub','text-anchor':'middle',fill:d.color},svg);s.textContent=d.sub;});
