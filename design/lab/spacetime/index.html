@@ -25,6 +25,12 @@
 .card.wide .thumb{height:120px}
 .index-note{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 0}
 .index-note .panel{flex:1;min-width:220px}
+.three-banner{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:15px;border:1px solid var(--orange);background:var(--orange2);padding:15px 18px;text-decoration:none;color:var(--ink)}
+.three-banner:hover{color:var(--ink);border-color:var(--teal)}
+.three-banner .mono{font:9px var(--mono);letter-spacing:.12em;color:var(--orange);display:block;margin-bottom:5px}
+.three-banner b{display:block;font:600 20px/1.35 var(--serif)}
+.three-banner small{display:block;font-size:11px;color:var(--body);margin-top:3px}
+.three-banner .go{font:9px var(--mono);color:var(--teal);white-space:nowrap}
 .index-note p{font-size:12px;margin:0;color:var(--body)}
 .orbit{position:relative;height:270px;border:1px solid var(--line2);background:var(--panel);overflow:hidden}
 .orbit .ring{position:absolute;inset:30px;border:1px solid var(--line);border-radius:50%}
@@ -41,7 +47,7 @@
 <header class="topbar"><div class="topbar-inner">
   <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / SPACE × TIME</small></a>
   <span class="lab-badge">EXPERIMENTAL</span>
-  <nav class="topnav"><a href="#cases">案例</a><a href="README.md">README</a><a href="../../HUB.html">设计 HUB</a></nav>
+  <nav class="topnav"><a href="#cases">案例</a><a href="3d/index.html">3D 案例</a><a href="README.md">README</a><a href="../../HUB.html">设计 HUB</a></nav>
   <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </div></header>
 <main class="shell">
@@ -90,6 +96,10 @@
         <div class="body"><div class="n">05 / FOLD</div><h2>折叠时间</h2><p>把长时段折成可比较的形状：让 1999 与 2026 并置，但不要假装它们的距离消失了。</p><span class="go">折起来看 →</span></div>
       </a>
     </div>
+    <a class="three-banner" href="3d/index.html">
+      <div><span class="mono">3D / DEPTH</span><b>多一个维度，是帮助，还是眩晕？</b><small>四个 Canvas 3D 模型：时间地形、空间记忆、因果织网、折叠时间。</small></div>
+      <span class="go">进入 3D 实验台 →</span>
+    </a>
   </section>
 
   <div class="hr"></div>
