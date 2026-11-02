@@ -42,31 +42,34 @@ design/lab/
 │   ├── README.md
 │   ├── index.html
 │   └── styles.css
-└── spacetime/      # 实验 02：空间直觉与时间的空间化
+└── spacetime/      # 实验 02：空间直觉与时间的空间化（时空实验室）
     ├── README.md
     ├── index.html
     ├── shared.css
     ├── theme.js
-    ├── 01-memory-palace/
-    ├── 02-temporal-terrain/
-    ├── 03-causal-loom/
-    ├── 04-time-rooms/
-    ├── 05-folded-time/
-    ├── 慢好三生Demo/
-    │   ├── README.md
+    ├── 2d/
     │   ├── index.html
-    │   ├── 三生罗盘.html
-    │   ├── 时空织机.html
-    │   ├── 四环螺旋.html
-    │   ├── 树网星丛.html
-    │   └── 时空立方.html
-    └── 3d/
+    │   ├── README.md
+    │   ├── 01-memory-palace/
+    │   ├── 02-temporal-terrain/
+    │   ├── 03-causal-loom/
+    │   ├── 04-time-rooms/
+    │   └── 05-folded-time/
+    ├── 3d/
+    │   ├── index.html
+    │   ├── engine3d.js
+    │   ├── 01-terrain/
+    │   ├── 02-memory/
+    │   ├── 03-loom/
+    │   └── 04-fold/
+    └── 慢好三生Demo/
         ├── index.html
-        ├── engine3d.js
-        ├── 01-terrain/
-        ├── 02-memory/
-        ├── 03-loom/
-        └── 04-fold/
+        ├── README.md
+        ├── 三生罗盘.html
+        ├── 时空织机.html
+        ├── 四环螺旋.html
+        ├── 树网星丛.html
+        └── 时空立方.html
 ```
 
 ## 五、实验索引

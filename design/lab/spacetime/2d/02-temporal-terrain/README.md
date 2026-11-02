@@ -1,7 +1,7 @@
 # 02 · 时间地形 / Temporal Terrain
 
 > **LAB / EXPERIMENTAL** ｜ 状态：`prototype` ｜ 2026-11-02
-> 入口：[index.html](index.html) ｜ 时空实验室：[../index.html](../index.html) ｜ 系列：[../README.md](../README.md)
+> 入口：[index.html](index.html) ｜ 时空实验室：[../../index.html](../../index.html) ｜ 系列：[../README.md](../README.md)
 
 ## 一句话
 
@@ -40,7 +40,7 @@
 - “高度 = 确定性，天气 = 未知”的时间编码；
 - 未来节点的不可信视觉规则；
 - 时间尺度的切换不改变事实，只改变问题；
-- 3D 版对照：[../3d/01-terrain/README.md](../3d/01-terrain/README.md)。
+- 3D 版对照：[../3d/01-terrain/README.md](../../3d/01-terrain/README.md)。
 
 ## 边界
 

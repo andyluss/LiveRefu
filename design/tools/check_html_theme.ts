@@ -36,15 +36,20 @@ const MANAGED = [
   'games/future-debris/briefing/GUIDE.html',
   ...spacetimePages(),
   ...threeDPages(),
+  ...twoDPages(),
   ...slowGoodPages(),
 ]
 
 function spacetimePages(): string[] {
-  const dir = join(ROOT, 'design/lab/spacetime')
-  const pages = ['design/lab/spacetime/index.html']
+  return ['design/lab/spacetime/index.html']
+}
+
+function twoDPages(): string[] {
+  const dir = join(ROOT, 'design/lab/spacetime/2d')
+  const pages = ['design/lab/spacetime/2d/index.html']
   for (const e of readdirSync(dir, { withFileTypes: true })) {
-    if (e.isDirectory() && e.name !== '3d' && e.name !== '慢好三生Demo' && existsSync(join(dir, e.name, 'index.html'))) {
-      pages.push(`design/lab/spacetime/${e.name}/index.html`)
+    if (e.isDirectory() && existsSync(join(dir, e.name, 'index.html'))) {
+      pages.push(`design/lab/spacetime/2d/${e.name}/index.html`)
     }
   }
   return pages

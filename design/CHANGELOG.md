@@ -12,10 +12,10 @@
 
 ### 新增
 - **正式命名「时空实验室」**：`design/lab/spacetime/` 的用户面名称由 `Spacetime` 统一改为「时空实验室」；目录路径保留 `spacetime` 作为技术标识。
-- **R-016 机器检查器**：新增 `design/tools/check_html_theme.ts`（6 条自检），检查受管 38 个页面；接入 `check.sh` 与 pre-commit；补齐 `future-debris/briefing/GUIDE.html` 的打印浅色。
+- **R-016 机器检查器**：新增 `design/tools/check_html_theme.ts`（6 条自检），检查受管 39 个页面；接入 `check.sh` 与 pre-commit；补齐 `future-debris/briefing/GUIDE.html` 的打印浅色。
 - **理念阅读地图**：`design/philosophy/README.md` 增加一页地图、五条按任务路径、三个检查点与读后动作。
 - **慢好三生 Demo**：`design/lab/spacetime/慢好三生Demo/` 新增五个应用演示（三生罗盘、时空织机、四环螺旋、树网星丛、时空立方）与索引。
-- **时空实验室**：新增 `design/lab/spacetime/` 入口 + 五个平面案例 + 四个 Canvas 3D 案例（时间地形、空间记忆、因果织网、折叠时间），全部三态、离线可开；每个案例独立文件夹 + README；纳入 R-016 受管页面与 pre-commit。
+- **时空实验室**：新增 `design/lab/spacetime/` 入口 + 五个平面案例 + 四个 Canvas 3D 案例（时间地形、空间记忆、因果织网、折叠时间），全部三态、离线可开；每个案例独立文件夹 + README；2D 五案归入 `2d/`，顶层改为 2D / 3D / 应用总入口；纳入 R-016 受管页面与 pre-commit。
 - **存量 HTML 三态迁移**：`design/philosophy/html/` 13 篇 + 索引、`games/refu-game-001/HUB.html`、`GUIDE.html`、`games/future-debris/briefing/HUB.html`、`GUIDE.html` 已补齐 system/light/dark；新增共享主题控制脚本。
 - **R-016 生成式 HTML 三态规则**：所有由脚本/模板/AI 生成的 HTML 强制 system / light / dark，统一 `lrds-theme`、head 预绘制、持久化与双外观验收；`AGENTS.md` 引用为硬规范。
 - **青橙理念新增 12 空间直觉**：补《空间直觉：让界面先被看见，再被读懂》；为 00–12 共 13 篇生成 HTML 可视化，并在索引与 HUB 中接入。

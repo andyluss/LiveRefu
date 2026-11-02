@@ -1,7 +1,7 @@
 # 01 · 记忆星图 / Memory Palace
 
 > **LAB / EXPERIMENTAL** ｜ 状态：`prototype` ｜ 2026-11-02
-> 入口：[index.html](index.html) ｜ 时空实验室：[../index.html](../index.html) ｜ 系列：[../README.md](../README.md)
+> 入口：[index.html](index.html) ｜ 时空实验室：[../../index.html](../../index.html) ｜ 系列：[../README.md](../README.md)
 
 ## 一句话
 
@@ -44,7 +44,7 @@
 - “中心 + 邻居 + 回退”三件套；
 - 空间导航的当前位置常驻提示；
 - 用位置而不是层级组织内容的评审问题；
-- 3D 版对照：[../3d/02-memory/README.md](../3d/02-memory/README.md)。
+- 3D 版对照：[../3d/02-memory/README.md](../../3d/02-memory/README.md)。
 
 ## 边界
 

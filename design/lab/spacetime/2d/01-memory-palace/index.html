@@ -8,7 +8,7 @@
 <script>
 (function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
 </script>
-<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="../../shared.css">
 <style>
 .map-stage{min-height:520px;background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--teal2) 45%,transparent),transparent 62%),var(--panel)}
 .map-stage svg{height:520px;width:100%;cursor:grab}
@@ -39,12 +39,12 @@
 </head>
 <body data-page="spacetime-memory">
 <header class="topbar"><div class="topbar-inner">
-  <a class="brand" href="../index.html"><i></i>时空实验室 <small>LAB / SPACE × TIME</small></a><span class="lab-badge">EXPERIMENTAL</span>
-  <nav class="topnav"><a href="../index.html">时空实验室</a><a href="../02-temporal-terrain/index.html">下一个：时间地形</a><a href="../README.md">README</a></nav>
+  <a class="brand" href="../../index.html"><i></i>时空实验室 <small>LAB / SPACE × TIME</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="../../index.html">时空实验室</a><a href="../02-temporal-terrain/index.html">下一个：时间地形</a><a href="../README.md">README</a></nav>
   <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </div></header>
 <main class="shell">
-  <div class="crumbs"><a href="../index.html">spacetime</a> / <span>01 记忆星图</span></div>
+  <div class="crumbs"><a href="../../index.html">时空实验室</a> / <a href="../index.html">2D</a> / <span>01 记忆星图</span></div>
   <section class="hero" style="padding-bottom:18px">
     <div><p class="eyebrow">case 01 / spatial memory</p><h1>先记住它在哪，<br><em>再记住它叫什么。</em><span>把目录树拆成房间、邻居与路径。</span></h1><p class="lede">这个案例把“知识”摆成一个可走的空间：没有侧边栏层级，只有位置、距离和回到起点的路。点击房间，或按方向键移动。</p></div>
     <aside class="hero-card"><b>HYPOTHESIS</b>位置先于标签<br><b>SPACE</b>room / neighbor / path<br><b>WATCH</b>你是否先看邻居，再看标题</aside>
@@ -105,9 +105,9 @@
     <div class="panel"><h3>危险</h3><p>空间一旦变大，方向感会丢失；需要“当前位置 + 路径 + 回到起点”三件套。</p></div>
     <div class="panel"><h3>可能沉淀</h3><p>空间导航的“三件套”检查：我在哪、我怎么来的、我怎么回去。</p></div>
   </div>
-  <footer class="footer"><span>Case 01 · Memory Palace · simulated data</span><span><a href="../index.html">← 时空实验室</a> · <a href="../02-temporal-terrain/index.html">下一个：时间地形 →</a></span></footer>
+  <footer class="footer"><span>Case 01 · Memory Palace · simulated data</span><span><a href="../../index.html">← 时空实验室</a> · <a href="../02-temporal-terrain/index.html">下一个：时间地形 →</a></span></footer>
 </main>
-<script src="../theme.js"></script>
+<script src="../../theme.js"></script>
 <script>
 (function(){
   var rooms={

@@ -1,7 +1,7 @@
 # 03 · 因果织网 / Causal Loom
 
 > **LAB / EXPERIMENTAL** ｜ 状态：`prototype` ｜ 2026-11-02
-> 入口：[index.html](index.html) ｜ 时空实验室：[../index.html](../index.html) ｜ 系列：[../README.md](../README.md)
+> 入口：[index.html](index.html) ｜ 时空实验室：[../../index.html](../../index.html) ｜ 系列：[../README.md](../README.md)
 
 ## 一句话
 
@@ -38,7 +38,7 @@
 - 上游/下游高亮；
 - 分叉剪断；
 - 因果与时间双模式；
-- 3D 版对照：[../3d/03-loom/README.md](../3d/03-loom/README.md)。
+- 3D 版对照：[../3d/03-loom/README.md](../../3d/03-loom/README.md)。
 
 ## 边界
 

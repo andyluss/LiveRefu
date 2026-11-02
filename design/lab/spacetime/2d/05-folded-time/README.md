@@ -1,7 +1,7 @@
 # 05 · 折叠时间 / Folded Time
 
 > **LAB / EXPERIMENTAL** ｜ 状态：`prototype` ｜ 2026-11-02
-> 入口：[index.html](index.html) ｜ 时空实验室：[../index.html](../index.html) ｜ 系列：[../README.md](../README.md)
+> 入口：[index.html](index.html) ｜ 时空实验室：[../../index.html](../../index.html) ｜ 系列：[../README.md](../README.md)
 
 ## 一句话
 
@@ -38,7 +38,7 @@
 - “折叠—并置—比较”的时间视图；
 - 折痕作为导航节点；
 - 并置时的差异标注；
-- 3D 版对照：[../3d/04-fold/README.md](../3d/04-fold/README.md)。
+- 3D 版对照：[../3d/04-fold/README.md](../../3d/04-fold/README.md)。
 
 ## 边界
 
