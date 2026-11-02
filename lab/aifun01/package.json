@@ -1,0 +1,14 @@
+{
+  "name": "aifun01",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "函数式协作实验 01：把 AI 当纯函数、把人当运行时",
+  "scripts": {
+    "test": "node --test test/*.test.ts",
+    "demo": "node src/demo.ts"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
