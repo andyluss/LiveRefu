@@ -10,7 +10,7 @@
 | 你想做的事 | 看哪 |
 | --- | --- |
 | 快速知道"要决定哪几件事、现状如何" | [00_决策总表](docs/00_决策总表.md) |
-| 读某条建议的完整论证 | 纲领级见 `docs/00`、`02`、`11`、`12`；项目级见 [`../future-debris/docs/planning/`](../future-debris/docs/planning/) |
+| 读某条建议的完整论证 | 纲领级见 `docs/00`、`02`、`11`；项目级见 [`../future-debris/docs/planning/`](../future-debris/docs/planning/) |
 | 直接回我的问题 | 各篇末「待裁决问题」；或一次回答 [决策总表](docs/00_决策总表.md) 的 Q1–Q15 |
 | 记录一次讨论 | 在 `docs/discussions/` 下新建 `YYYYMMDD-HHMM-关键词.md`（模板见第三节；时间规则见 [R06](../../rules/R06-time.md)） |
 | 查询某个词什么意思 | [08_共同语言与命名](../future-debris/docs/planning/08_共同语言与命名.md) |
@@ -24,9 +24,11 @@
 | 00 | [决策总表](docs/00_决策总表.md) | Q1–Q15 的裁决、待裁决项、依据与影响范围（项目决策历史索引） |
 | 02 | [资产盘点与杠杆](docs/02_资产盘点与杠杆.md) | 工作区存量清单（按可用程度分级）+ 五条核心矛盾 |
 | 11 | [主线项目评估：未来残片 vs Refu 001](docs/11_主线项目评估_未来残片与Refu001.md) | 两条已有路线的对比、主线建议、资源分配与改判门槛 |
-| 12 | [人类控制权：在 AI 协作中把握主题](docs/12_人类控制权_AI协作中的主题把握.md) | 防止 AI 带着项目漂移的意图、边界、体验证据与决定权机制 |
+
 
 > **项目级文档已归位**：定位、美术/技术、路线/风险、共同语言、竞品调研、推进计划与 research 均已迁入 [`../future-debris/docs/planning/`](../future-debris/docs/planning/)；本目录只保留跨项目判断与决策索引。
+>
+> **AI 协作方法参考**：[`ideas/AI/`](../../ideas/AI/README.md)（人类控制权、函数式协作）；参考不是项目决定。
 
 > 具体项目的玩法、商业化、发行等执行文档已随项目迁移，入口见 [`../future-debris/README.md`](../future-debris/README.md)。
 

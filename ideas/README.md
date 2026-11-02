@@ -136,7 +136,7 @@ YYYYMMDD-短标题.md
 
 ## 八、与其它文档的关系
 
-- 设计方法：[`../games/mainline/docs/12_人类控制权_AI协作中的主题把握.md`](../games/mainline/docs/12_人类控制权_AI协作中的主题把握.md)
+- 设计方法：[`AI/20261101-人类控制权_AI协作中的主题把握.md`](AI/20261101-人类控制权_AI协作中的主题把握.md)
 - 协作硬规范：[`../AGENTS.md`](../AGENTS.md)
 - 规则权威：[`../rules/README.md`](../rules/README.md)
 - 项目实现与验收：各项目的 `README.md` / `docs/`
