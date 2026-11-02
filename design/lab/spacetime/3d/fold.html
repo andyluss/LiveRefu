@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>折叠时间 3D · Spacetime 3D</title>
+<meta name="description" content="3D 折叠时间：时间折成多层蛇形带；折叠让年代并置，但不压缩因果距离。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.stage canvas{display:block;width:100%;height:540px;outline:none}
+.canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
+.stage.no3d .canvas-fallback{display:grid}
+.year-list{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.year-list button{border:0;border-left:2px solid var(--line);background:transparent;color:var(--body);font:10px var(--mono);padding:4px 6px;text-align:left;cursor:pointer}
+.year-list button:hover{border-color:var(--teal);color:var(--teal)}
+.year-list button.on{border-color:var(--orange);color:var(--ink);background:var(--orange2)}
+.fold-copy{font-size:13px;color:var(--body);min-height:92px}
+.fold-danger{border:1px dashed var(--orange);padding:9px 11px;font-size:11px;color:var(--body);margin-top:12px}
+.fold-danger b{color:var(--orange)}
+</style>
+</head>
+<body data-page="spacetime-3d-fold">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="index.html">3D 实验台</a><a href="../folded-time.html">平面版</a><a href="../index.html">回实验台</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">3d</a> / <span>04 折叠时间</span></div>
+  <section class="hero" style="padding-bottom:12px">
+    <div><p class="eyebrow">3d case 04 / accordion</p><h1>把时间折成<br><em>一条有厚度的带子。</em><span>折叠让年代并置；3D 让“并置但不等价”变得可见。</span></h1><p class="lede">平面折叠把时间折成蛇形；3D 折叠让它进入纵深。你可以绕到侧面，看见每一折其实是一层独立的时间切片。</p></div>
+    <aside class="hero-card"><b>FOLD</b>accordion / 1999—2026<br><b>DEPTH</b>每一折 = 一层切片<br><b>WATCH</b>并置是否被误读成因果</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage" id="stage"><canvas id="scene" aria-label="3D 折叠时间：可拖拽旋转、滚轮缩放"></canvas><div class="canvas-fallback">当前浏览器无法初始化 3D 画布；请使用右侧年份列表。</div></div>
+      <div class="toolbar"><label class="field" style="flex:1;margin:0"><span>折叠度</span><input id="foldInput" type="range" min="0" max="4" step="1" value="2" aria-label="折叠度"><b id="foldValue" class="mono">2 折</b></label><button class="btn" type="button" id="flat">展开</button><button class="btn" type="button" id="three">折三折</button><button class="btn ghost" type="button" id="reset">复位视角</button></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">SELECTED / 2026</div>
+      <div class="big" id="year">2026</div>
+      <h3 id="title" style="margin-top:8px">现在</h3>
+      <p class="fold-copy" id="copy">折叠的终点。它和 1999 之间隔着 27 年；3D 让它们并置在同一视野，但因果链没有变短。</p>
+      <dl class="kv"><dt>折叠</dt><dd id="foldState">2 折</dd><dt>与 1999</dt><dd>27 年 / 不可压缩</dd><dt>看见</dt><dd>同构与回声</dd></dl>
+      <div class="fold-danger"><b>并置不是等价。</b> 3D 纵深可能让两条折线看起来更近；请同时读年份与提示。</div>
+      <div class="hr" style="margin:16px 0"></div>
+      <div class="small">YEARS</div>
+      <ul class="year-list" id="list"></ul>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>把折叠放进纵深，是否让“每一折是独立切片”更可感？</p></div>
+    <div class="panel"><h3>危险</h3><p>3D 透视会让远折更小、近折更大；这会强化“距离变短”的错觉。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>折叠带 + 年份刻度 + “并置但不等价”提示；3D 时间切片的导航。</p></div>
+  </div>
+  <footer class="footer"><span>3D Case 04 · Folded Time · simulated</span><span><a href="loom.html">← 因果织网</a> · <a href="index.html">3D 实验台 →</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+<script src="engine3d.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('scene');
+  if(!window.Space3D){document.getElementById('stage').classList.add('no3d');return}
+  var r=new Space3D.Renderer(canvas);r.camera.pitch=.34;r.camera.distance=23;r.camera.target=[0,0,-3];r.camera.auto=false;
+  var years=[];for(var y=1999;y<=2026;y++)years.push(y);
+  var marks=[1999,2004,2009,2014,2019,2026];
+  var data={
+    1999:{title:'起点',copy:'一个还没有名字的时代。它和 2026 之间不是一条直线，而是一层层被折叠的选择。'},
+    2004:{title:'第一次转向',copy:'一个当时看起来很小的决定，后来变成整条线的坡度。折叠让这次转向重新可见。'},
+    2009:{title:'分叉',copy:'不是所有分叉都通向现在；有些只是留在折痕里，提醒你曾经可以走另一条路。'},
+    2014:{title:'加速',copy:'积累开始显形。折叠后，它和 2026 的距离看起来很短，但中间的维护没有被折叠。'},
+    2019:{title:'回望',copy:'一段被压缩的记忆。它和 2004 可能共享同一种结构——这就是折叠的价值。'},
+    2026:{title:'现在',copy:'折叠的终点。它和 1999 之间隔着 27 年；3D 让它们并置在同一视野，但因果链没有变短。'}
+  };
+  var fold=2,selected=2026;
+  var left=-9,right=9;
+  function pos(year){
+    if(fold===0){var u0=(year-1999)/27;return[left+u0*(right-left),0,0]}
+    var u=(year-1999)/27,n=fold,scaled=u*n,row=Math.min(n-1,Math.floor(scaled)),local=scaled-row;
+    var x=row%2===0?left+local*(right-left):right-local*(right-left);
+    return[x,.15*Math.sin(local*Math.PI),-row*4];
+  }
+  function ribbon(){
+    for(var i=0;i<years.length-1;i++){
+      var a=pos(years[i]),b=pos(years[i+1]);
+      var q=[[a[0],a[1]-.45,a[2]],[b[0],b[1]-.45,b[2]],[b[0],b[1]+.45,b[2]],[a[0],a[1]+.45,a[2]]];
+      r.poly(q,{fill:r.colors.teal,alpha:.06,stroke:r.colors.teal,lineWidth:1});
+    }
+    for(var j=0;j<years.length-1;j++){r.line(pos(years[j]),pos(years[j+1]),{stroke:r.colors.teal,alpha:.8,lineWidth:2})}
+  }
+  function markers(){
+    marks.forEach(function(y){var p=pos(y);r.line([p[0],p[1]-.7,p[2]],[p[0],p[1]+.7,p[2]],{stroke:r.colors.orange,alpha:.8,lineWidth:1.4});r.dot([p[0],p[1],p[2]],{fill:y===selected?r.colors.orange:r.colors.panel,stroke:r.colors.orange,r:y===selected?6:4,lineWidth:1.6});if(y===selected||y===1999||y===2026)r.text([p[0],p[1]+1.2,p[2]],String(y),{fill:y===selected?r.colors.ink:r.colors.muted,font:y===selected?'600 12px Menlo, monospace':'9px Menlo, monospace'})});
+    var a=pos(1999),b=pos(2026);r.line([a[0],a[1]+.9,a[2]],[b[0],b[1]+.9,b[2]],{stroke:r.colors.orange,alpha:.3,lineWidth:1,dash:[4,6]});
+    r.text([0,4.4,0],'折 '+fold+' 层 / 1999 ↔ 2026 / 27 年',{fill:r.colors.orange,font:'10px Menlo, monospace',align:'center'});
+  }
+  function render(){Space3D.grid(r,-2.8,11,2.2,r.colors.line,.09);ribbon();markers()}
+  function panel(){
+    var d=data[selected];document.getElementById('kicker').textContent='SELECTED / '+selected;document.getElementById('year').textContent=selected;document.getElementById('title').textContent=d.title;document.getElementById('copy').textContent=d.copy;document.getElementById('foldState').textContent=fold+' 折';document.getElementById('foldValue').textContent=fold+' 折';
+    document.querySelectorAll('#list button').forEach(function(b){b.classList.toggle('on',b.dataset.year==String(selected))});location.hash=selected;
+  }
+  marks.forEach(function(y){var b=document.createElement('button');b.type='button';b.dataset.year=y;b.textContent=y;b.onclick=function(){selected=y;panel()};document.getElementById('list').appendChild(b)});
+  document.getElementById('foldInput').addEventListener('input',function(e){fold=Number(e.target.value);panel()});
+  document.getElementById('flat').onclick=function(){fold=0;document.getElementById('foldInput').value='0';panel()};
+  document.getElementById('three').onclick=function(){fold=3;document.getElementById('foldInput').value='3';panel()};
+  document.getElementById('reset').onclick=function(){r.camera.reset();r.camera.auto=false};
+  var initial=Number(location.hash.slice(1));if(data[initial])selected=initial;
+  panel();r.loop(render);
+})();
+</script>
+</body>
+</html>

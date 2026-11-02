@@ -22,6 +22,20 @@
 
 入口页：[index.html](index.html)。
 
+### 3D 加演
+
+`3d/` 再用 Canvas 投影做四个有纵深的模型：时间地形、空间记忆、因果织网、折叠时间。
+它们不是“更高级”，而是用来测试多出来的高度/纵深/遮挡是否真的帮助理解。
+
+| 案例 | 3D 编码 | 入口 |
+| --- | --- | --- |
+| 时间地形 3D | 高度 = 确定性；纵深 = 时间 | [terrain.html](3d/terrain.html) |
+| 空间记忆 3D | 房间 = 空间里的盒子 | [memory.html](3d/memory.html) |
+| 因果织网 3D | 三股线各占一个深度 | [loom.html](3d/loom.html) |
+| 折叠时间 3D | 时间折成多层蛇形带 | [fold.html](3d/fold.html) |
+
+3D 入口：[3d/index.html](3d/index.html) ｜ 规则：[3d/README.md](3d/README.md)
+
 ## 三、实验假设
 
 - **H1 位置先于标签**：当对象有稳定空间位置与邻居关系时，人更少依赖文字层级。

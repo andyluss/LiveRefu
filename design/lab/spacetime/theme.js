@@ -13,6 +13,7 @@
     buttons.forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.themeChoice === c));
     });
+    try { document.dispatchEvent(new CustomEvent('themechange', { detail: c })); } catch (e) {}
   }
   buttons.forEach(function (b) {
     b.addEventListener('click', function () {

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>因果织网 3D · Spacetime 3D</title>
+<meta name="description" content="3D 因果织网：三条不同深度的股线，事件是空间中的结。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.stage canvas{display:block;width:100%;height:540px;outline:none}
+.canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
+.stage.no3d .canvas-fallback{display:grid}
+.node-list3{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.node-list3 button{border:0;border-left:2px solid var(--line);background:transparent;color:var(--body);font:10px var(--sans);padding:4px 6px;text-align:left;cursor:pointer}
+.node-list3 button:hover{border-color:var(--teal);color:var(--teal)}
+.node-list3 button.on{border-color:var(--orange);color:var(--ink);background:var(--orange2)}
+.loom-copy{font-size:13px;color:var(--body);min-height:90px}
+</style>
+</head>
+<body data-page="spacetime-3d-loom">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="index.html">3D 实验台</a><a href="../causal-loom.html">平面版</a><a href="fold.html">下一个：折叠时间</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">3d</a> / <span>03 因果织网</span></div>
+  <section class="hero" style="padding-bottom:12px">
+    <div><p class="eyebrow">3d case 03 / braided threads</p><h1>三股线，<br><em>在不同的深度里交织。</em><span>事件不是线上的点，是空间里的结。</span></h1><p class="lede">2D 织网把知识、设计、工程压在同一平面；3D 让它们各占一个深度。旋转时，你会看见“同时发生”其实不在同一个位置。</p></div>
+    <aside class="hero-card"><b>X</b>时间<br><b>Z</b>股线 / 深度<br><b>Y</b>因果重量<br><b>WATCH</b>旋转后连线是否仍可追踪</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage" id="stage"><canvas id="scene" aria-label="3D 因果织网：可拖拽旋转、滚轮缩放"></canvas><div class="canvas-fallback">当前浏览器无法初始化 3D 画布；请使用右侧节点列表。</div></div>
+      <div class="toolbar"><div class="seg" id="mode" role="group" aria-label="连线模式"><button type="button" data-mode="causal" aria-pressed="true">因果</button><button type="button" data-mode="chrono" aria-pressed="false">时间</button></div><button class="btn" type="button" id="cut">剪断未来</button><button class="btn ghost" type="button" id="reset">复位</button><span class="small">拖拽旋转 · 滚轮缩放</span></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">SELECTED / INTENT</div>
+      <div class="big" id="title" style="font-size:30px">意图</div>
+      <p class="loom-copy" id="copy">所有线的起点。3D 里它在设计层的深处；其他线从它出发，却不在同一深度。</p>
+      <dl class="kv"><dt>时间</dt><dd id="when">2024.09</dd><dt>上游</dt><dd id="up">—</dd><dt>下游</dt><dd id="down">研究 · 概念 · 技术</dd></dl>
+      <div class="hr" style="margin:16px 0"></div>
+      <div class="small">NODES</div>
+      <ul class="node-list3" id="list"></ul>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>3D 深度是否让“不同过程并行”更可感，而不是把时间压成一条线？</p></div>
+    <div class="panel"><h3>危险</h3><p>旋转会改变“前后”，容易把深度误读成因果；必须保留“因果/时间”双模式。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>三维股线的上下游高亮、剪断分叉、因果/时间双模式。</p></div>
+  </div>
+  <footer class="footer"><span>3D Case 03 · Causal Loom · simulated</span><span><a href="memory.html">← 空间记忆</a> · <a href="fold.html">下一个 →</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+<script src="engine3d.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('scene');
+  if(!window.Space3D){document.getElementById('stage').classList.add('no3d');return}
+  var r=new Space3D.Renderer(canvas);r.camera.pitch=.36;r.camera.distance=21;r.camera.target=[0,.3,0];r.camera.auto=false;
+  var lanes=[{id:'knowledge',z:-5,label:'KNOWLEDGE / 研究',color:'teal'},{id:'design',z:0,label:'DESIGN / 判断',color:'orange'},{id:'build',z:5,label:'BUILD / 交付',color:'gold'}];
+  var nodes=[
+    {id:'intent',x:-9,lane:1,title:'意图',when:'2024.09',y:0,copy:'所有线的起点。3D 里它在设计层的深处；其他线从它出发，却不在同一深度。'},
+    {id:'research',x:-6,lane:0,title:'46 作对标',when:'2025.02',y:.8,copy:'市场证据拉出一根新线：内容量决定差评下限，不决定销量上限。'},
+    {id:'concept',x:-6,lane:1,title:'残渣机制',when:'2025.03',y:-.2,copy:'把“代价”做成第二种资源。设计线第一次压过研究线。'},
+    {id:'tech',x:-6,lane:2,title:'Godot 管线',when:'2025.04',y:.4,copy:'技术选型不是审美选择，而是把验证管线保住。'},
+    {id:'prototype',x:-2,lane:1,title:'一局闭环',when:'2025.08',y:.3,copy:'第一个可跑的局。设计线开始需要工程线承重。'},
+    {id:'tokens',x:-2,lane:2,title:'主题 token',when:'2025.09',y:-.5,copy:'视觉不是皮肤，是可被断言的状态。'},
+    {id:'playtest',x:2,lane:1,title:'真人试玩',when:'2026.02',y:.5,copy:'第一次把“好不好玩”放到人身上。之前的所有线都要在这里接受审判。'},
+    {id:'build',x:2,lane:2,title:'120 卡 / 16 关',when:'2026.04',y:.1,copy:'内容量把交付线拉长；也把“同质化”的风险拉进来。'},
+    {id:'decision',x:6,lane:1,title:'继续 / 收缩',when:'2026.11',y:-.3,copy:'人在这里决定哪根线继续，哪根线剪断。AI 不能替这个结打结。'},
+    {id:'launch',x:9,lane:0,title:'面向玩家',when:'2027?',y:.4,copy:'一个尚未发生的未来。它由决策线牵出，但还没有被现实织紧。'}
+  ];
+  var edges=[
+    ['intent','research','causal'],['intent','concept','causal'],['intent','tech','causal'],
+    ['research','concept','causal'],['concept','prototype','causal'],['tech','prototype','causal'],
+    ['prototype','tokens','causal'],['prototype','playtest','causal'],['tokens','build','causal'],
+    ['playtest','decision','causal'],['build','decision','causal'],['decision','launch','causal'],
+    ['research','tech','chrono'],['concept','tokens','chrono'],['prototype','build','chrono']
+  ];
+  var byId=Object.fromEntries(nodes.map(function(n){return[n.id,n]}));
+  var selected='intent',mode='causal',cut=false;
+  function p(n){return[n.x,n.y,lanes[n.lane].z]}
+  function curve(a,b){
+    var A=p(a),B=p(b);var mid=[(A[0]+B[0])/2,Math.max(A[1],B[1])+1.1,(A[2]+B[2])/2];
+    var out=[];for(var i=0;i<=14;i++){var t=i/14;var l1=Space3D.vecLerp(A,mid,t),l2=Space3D.vecLerp(mid,B,t);out.push(Space3D.vecLerp(l1,l2,t))}return out;
+  }
+  function related(){
+    var up=new Set(),down=new Set(),q=[selected];
+    while(q.length){var c=q.pop();edges.forEach(function(e){if(e[1]===c&&!up.has(e[0])){up.add(e[0]);q.push(e[0])}})}
+    q=[selected];while(q.length){var c2=q.pop();edges.forEach(function(e){if(e[0]===c2&&!down.has(e[1])){down.add(e[1]);q.push(e[1])}})}
+    return {up:up,down:down};
+  }
+  function render(){
+    Space3D.grid(r,-3.3,11,2.5,r.colors.line,.09);
+    lanes.forEach(function(l){r.line([-10,-3.3,l.z],[10,-3.3,l.z],{stroke:r.colors.line2,alpha:.25,lineWidth:1,dash:[2,7]});r.text([-10,2.2,l.z],l.label,{fill:l.color==='teal'?r.colors.teal:l.color==='orange'?r.colors.orange:r.colors.gold,font:'9px Menlo, monospace'})});
+    var rel=related();
+    edges.forEach(function(e){
+      var a=byId[e[0]],b=byId[e[1]];var pts=curve(a,b);var hot=e[0]===selected||e[1]===selected;
+      var dim=(mode==='chrono'&&e[2]==='causal')||(mode==='causal'&&e[2]==='chrono');
+      var isCut=cut&&(e[0]==='decision'||e[1]==='launch');
+      var color=e[2]==='causal'?r.colors.teal:r.colors.line2;
+      for(var i=0;i<pts.length-1;i++)r.line(pts[i],pts[i+1],{stroke:isCut?r.colors.orange:hot?r.colors.orange:color,alpha:dim?.08:hot?.9:isCut?.5:.38,lineWidth:hot?2:1,dash:isCut?[5,5]:[]});
+    });
+    nodes.forEach(function(n){
+      var col=n.id===selected?r.colors.orange:rel.up.has(n.id)?r.colors.teal:rel.down.has(n.id)?r.colors.orange:r.colors.gold;
+      r.dot(p(n),{fill:r.colors.panel,stroke:col,r:n.id===selected?7:4.5,lineWidth:n.id===selected?2.5:1.5});
+      if(n.id===selected)r.text([n.x,n.y+.8,lanes[n.lane].z],n.title,{fill:r.colors.ink,font:'600 12px Menlo, monospace'});
+    });
+    r.text([-10,2.9,0],'X = 时间 →',{fill:r.colors.muted,font:'9px Menlo, monospace'});
+  }
+  function renderPanel(){
+    var n=byId[selected],rel=related();
+    document.getElementById('kicker').textContent='SELECTED / '+n.id.toUpperCase();document.getElementById('title').textContent=n.title;document.getElementById('copy').textContent=n.copy;document.getElementById('when').textContent=n.when;
+    document.getElementById('up').textContent=rel.up.size?[...rel.up].map(function(id){return byId[id].title}).join(' · '):'—';
+    document.getElementById('down').textContent=rel.down.size?[...rel.down].map(function(id){return byId[id].title}).join(' · '):'—';
+    document.querySelectorAll('#list button').forEach(function(b){b.classList.toggle('on',b.dataset.id===selected)});location.hash=selected;
+  }
+  nodes.forEach(function(n){var b=document.createElement('button');b.type='button';b.dataset.id=n.id;b.textContent=n.title;b.onclick=function(){selected=n.id;renderPanel()};document.getElementById('list').appendChild(b)});
+  document.getElementById('mode').onclick=function(e){var b=e.target.closest('button');if(!b)return;mode=b.dataset.mode;document.querySelectorAll('#mode button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))})};
+  document.getElementById('cut').onclick=function(){cut=!cut;this.textContent=cut?'恢复未来':'剪断未来'};
+  document.getElementById('reset').onclick=function(){r.camera.reset();r.camera.auto=false;selected='intent';cut=false;document.getElementById('cut').textContent='剪断未来';renderPanel()};
+  renderPanel();r.loop(render);
+})();
+</script>
+</body>
+</html>

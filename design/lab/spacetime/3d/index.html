@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spacetime 3D · 有纵深的时空模型</title>
+<meta name="description" content="四个 Canvas 3D 时空案例：时间地形、空间记忆、因果织网、折叠时间。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.three-hero{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:34px;align-items:end;padding:44px 0 22px}
+.stage3d-mini{height:230px;border:1px solid var(--line2);background:radial-gradient(circle at 55% 40%,var(--teal2),var(--panel) 68%);position:relative;overflow:hidden;perspective:500px}
+.stage3d-mini .plane{position:absolute;left:50%;top:51%;width:170px;height:110px;border:1px solid var(--teal);background:color-mix(in srgb,var(--teal) 14%,transparent);transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-35deg)}
+.stage3d-mini .plane:nth-child(2){width:130px;height:80px;border-color:var(--orange);background:color-mix(in srgb,var(--orange) 12%,transparent);transform:translate(-50%,-56%) rotateX(58deg) rotateZ(-35deg)}
+.stage3d-mini .plane:nth-child(3){width:90px;height:54px;border-color:var(--gold);background:transparent;transform:translate(-50%,-62%) rotateX(58deg) rotateZ(-35deg)}
+.stage3d-mini .bar{position:absolute;left:50%;top:52%;width:1px;height:130px;background:linear-gradient(var(--orange),transparent);transform:translate(-50%,-50%) rotate(32deg)}
+.cards3{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.card3{border:1px solid var(--line);background:var(--panel);text-decoration:none;color:var(--ink);padding:18px;transition:.16s}
+.card3:hover{border-color:var(--teal);transform:translateY(-2px);color:var(--ink)}
+.card3 .n{font:9px var(--mono);color:var(--orange);letter-spacing:.12em}
+.card3 h2{font-size:24px;margin:5px 0 5px}
+.card3 p{font-size:12px;color:var(--body);margin:0}
+.card3 .go{display:block;margin-top:11px;font:9px var(--mono);color:var(--teal)}
+.axis-note{display:flex;gap:14px;flex-wrap:wrap;font:9px var(--mono);color:var(--muted);margin-top:14px}
+.axis-note b{color:var(--ink)}
+@media(max-width:900px){.three-hero{grid-template-columns:1fr}.cards3{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="spacetime-3d-index">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="../index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="../index.html">← 实验台</a><a href="#cases">案例</a><a href="README.md">README</a><a href="../../HUB.html">设计 HUB</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <span>3d</span></div>
+  <section class="three-hero">
+    <div><p class="eyebrow">spacetime / depth</p><h1>多一个维度，<br><em>是帮助，还是眩晕？</em><span>四个有纵深的时空模型；都能旋转、缩放、退出。</span></h1><p class="lede">平面里的空间化已经足够抽象；3D 又加上了高度、遮挡、透视与相机。这里不追求“炫技”，而是测试：多出来的维度到底让什么变清楚了。</p></div>
+    <div class="stage3d-mini" aria-hidden="true"><div class="plane"></div><div class="plane"></div><div class="plane"></div><div class="bar"></div></div>
+  </section>
+  <div class="axis-note"><span><b>X</b> 时间 / 距离</span><span><b>Y</b> 确定性 / 重量</span><span><b>Z</b> 关系 / 深度</span><span><b>CAMERA</b> 人始终要能回到已知视角</span></div>
+  <section id="cases" style="margin-top:30px">
+    <p class="eyebrow">Cases 01—04</p>
+    <h2>四个纵深模型</h2>
+    <p class="sub">每个页面都有文字退路与复位按钮；3D 不是唯一通道。</p>
+    <div class="cards3">
+      <a class="card3" href="terrain.html"><div class="n">01 / HEIGHTFIELD</div><h2>时间地形 3D</h2><p>高度是确定性，纵深是时间；现在是一道橙色光平面。</p><span class="go">进入地形 →</span></a>
+      <a class="card3" href="memory.html"><div class="n">02 / BOXES</div><h2>空间记忆 3D</h2><p>房间是浮在空间里的盒子，路径是细线；旋转后仍要知道“我在哪”。</p><span class="go">进入星图 →</span></a>
+      <a class="card3" href="loom.html"><div class="n">03 / THREADS</div><h2>因果织网 3D</h2><p>三条不同深度的股线；事件是空间中的结，上下游会被点亮。</p><span class="go">拉一根线 →</span></a>
+      <a class="card3" href="fold.html"><div class="n">04 / ACCORDION</div><h2>折叠时间 3D</h2><p>时间折成多层蛇形带；折叠让年代并置，但不压缩因果距离。</p><span class="go">折叠一页 →</span></a>
+    </div>
+  </section>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>3D 的代价</h3><p>遮挡、眩晕、相机迷失、深度误读；每个都要有退路。</p></div>
+    <div class="panel"><h3>3D 的价值</h3><p>让“高度/深度/层次”成为可感编码，而不只是装饰阴影。</p></div>
+    <div class="panel"><h3>实验规则</h3><p>不接真实数据；不进入生产组件；先判断它是否比平面更清楚。</p></div>
+  </div>
+  <footer class="footer"><span>Spacetime 3D · LAB / EXPERIMENTAL</span><span><a href="../index.html">← 平面实验台</a> · <a href="README.md">README</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>空间记忆 3D · Spacetime 3D</title>
+<meta name="description" content="3D 空间记忆：房间是浮在空间里的盒子，路径是细线。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.stage canvas{display:block;width:100%;height:540px;outline:none}
+.canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
+.stage.no3d .canvas-fallback{display:grid}
+.room-list3{list-style:none;margin:8px 0 0;padding:0}
+.room-list3 button{width:100%;text-align:left;border:0;border-left:2px solid var(--line);background:transparent;color:var(--body);font:11px var(--sans);padding:5px 8px;cursor:pointer}
+.room-list3 button:hover{border-color:var(--teal);color:var(--teal)}
+.room-list3 button.on{border-color:var(--orange);color:var(--ink);background:var(--orange2)}
+.current-box{border:1px solid var(--line);padding:11px 12px;margin:12px 0 0;font-size:11px;color:var(--body)}
+.current-box b{color:var(--ink)}
+</style>
+</head>
+<body data-page="spacetime-3d-memory">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 3D</small></a><span class="lab-badge">EXPERIMENTAL</span>
+  <nav class="topnav"><a href="index.html">3D 实验台</a><a href="../memory-palace.html">平面版</a><a href="loom.html">下一个：因果织网</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">3d</a> / <span>02 空间记忆</span></div>
+  <section class="hero" style="padding-bottom:12px">
+    <div><p class="eyebrow">3d case 02 / floating rooms</p><h1>房间浮起来，<br><em>路径变成细线。</em><span>旋转之后，你还知道自己在哪个盒子吗？</span></h1><p class="lede">平面星图用位置记内容；3D 星图把位置放进纵深。代价是：一旋转，方向感就可能消失。所以“我在哪”必须比“盒子在哪”更显眼。</p></div>
+    <aside class="hero-card"><b>SPACE</b>boxes / paths / depth<br><b>READ</b>先看邻居，再看标题<br><b>WATCH</b>旋转后是否还能回到已知视角</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage" id="stage"><canvas id="scene" aria-label="3D 空间记忆：可拖拽旋转、滚轮缩放"></canvas><div class="canvas-fallback">当前浏览器无法初始化 3D 画布；请使用右侧房间列表。</div></div>
+      <div class="toolbar"><button class="btn" type="button" id="reset">复位视角</button><button class="btn" type="button" id="auto">自动旋转：开</button><button class="btn ghost" type="button" id="hub">回到工作室</button><span class="small">拖拽旋转 · 滚轮缩放</span></div>
+    </div>
+    <aside class="panel">
+      <div class="small">CURRENT ROOM</div>
+      <div class="big" id="name">00 / 工作室</div>
+      <p id="desc" style="font-size:13px;color:var(--body);min-height:72px">所有路径的起点。3D 里它位于中心；旋转时它始终是一个可被找回的参照。</p>
+      <div class="current-box"><b>你怎么来的：</b><span id="route">—</span><br><b>怎么回去：</b><span id="back">复位视角 / 回到工作室</span></div>
+      <dl class="kv" style="margin-top:12px"><dt>邻居</dt><dd id="nei">知识库 · 项目现场 · 材料间 · 归档层 · 未来室 · 出口</dd><dt>坐标</dt><dd id="coords">0, 0, 0</dd></dl>
+      <div class="hr" style="margin:16px 0"></div>
+      <div class="small">ROOMS</div>
+      <ul class="room-list3" id="list"></ul>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>3D 纵深是否让“房间的邻居关系”更可感，还是只增加迷失？</p></div>
+    <div class="panel"><h3>危险</h3><p>盒子会互相遮挡；旋转后“上/下/左/右”都变了。必须固定一个可找回的中心。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>“中心 + 邻居 + 回退”三件套；3D 场景中的当前位置常驻提示。</p></div>
+  </div>
+  <footer class="footer"><span>3D Case 02 · Memory Palace · simulated</span><span><a href="terrain.html">← 时间地形</a> · <a href="loom.html">下一个 →</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+<script src="engine3d.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('scene');
+  if(!window.Space3D){document.getElementById('stage').classList.add('no3d');return}
+  var r=new Space3D.Renderer(canvas);
+  r.camera.pitch=.36;r.camera.distance=27;r.camera.target=[0,0,0];r.camera.auto=true;
+  var rooms={
+    hub:{name:'00 / 工作室',pos:[0,-.6,0],size:[3,2.4,3],color:'orange',desc:'所有路径的起点。3D 里它位于中心；旋转时它始终是一个可被找回的参照。',nei:['知识库','项目现场','材料间','归档层','未来室','出口'],route:'—'},
+    knowledge:{name:'01 / 知识库',pos:[-6.5,-.6,-5],size:[3,2.4,3],color:'teal',desc:'原理、参考、旧判断。它在左后方；离工作室最远，但离“出口”很近。',nei:['工作室','出口'],route:'工作室 → 知识库'},
+    projects:{name:'02 / 项目现场',pos:[6.5,-.6,-5],size:[3,2.4,3],color:'teal',desc:'正在发生的事。它和工作室之间有一条直接的线，但材料间总在拉它。',nei:['工作室','材料间'],route:'工作室 → 项目现场'},
+    materials:{name:'03 / 材料间',pos:[7.2,-.6,2],size:[2.8,2.4,2.8],color:'gold',desc:'图、字、声音、样张。它不在中心，却总被项目现场借走。',nei:['项目现场','工作室'],route:'项目现场 → 材料间'},
+    archive:{name:'04 / 归档层',pos:[-7,-.6,3],size:[3,2.4,3],color:'teal',desc:'已结束，但可回访。它在左前方，和出口之间有一条不显眼的细线。',nei:['工作室','出口'],route:'工作室 → 归档层'},
+    future:{name:'05 / 未来室',pos:[0,-.6,7],size:[3.2,2.4,3],color:'orange',desc:'假设、未发生。它在纵深最远处；不标记“假设”，3D 会把它伪装成事实。',nei:['工作室'],route:'工作室 → 未来室'},
+    exit:{name:'06 / 出口',pos:[-8.5,-.6,-.8],size:[2,2.4,2],color:'orange',desc:'回到平面。3D 不是牢笼；任何时刻都应该有一条不依赖记忆的退出路径。',nei:['工作室','知识库','归档层'],route:'任意房间 → 出口'}
+  };
+  var order=['hub','knowledge','projects','materials','archive','future','exit'];
+  var selected='hub';var roomList=document.getElementById('list');
+  function corners(c,s){
+    var x=c[0],y=c[1],z=c[2],a=s[0]/2,b=s[1]/2,d=s[2]/2;
+    return [[x-a,y-b,z-d],[x+a,y-b,z-d],[x+a,y-b,z+d],[x-a,y-b,z+d],[x-a,y+b,z-d],[x+a,y+b,z-d],[x+a,y+b,z+d],[x-a,y+b,z+d]];
+  }
+  function box(id){
+    var room=rooms[id],c=room.pos,s=room.size,p=corners(c,s),col=room.color==='orange'?r.colors.orange:room.color==='gold'?r.colors.gold:r.colors.teal;
+    var faces=[[0,1,2,3],[4,5,6,7],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]];
+    faces.forEach(function(f){r.poly(f.map(function(i){return p[i]}),{fill:col,alpha:id===selected?.16:.045,stroke:col,lineWidth:id===selected?2:1})});
+  }
+  function paths(){
+    var edges=[['hub','knowledge'],['hub','projects'],['hub','materials'],['hub','archive'],['hub','future'],['hub','exit'],['knowledge','exit'],['archive','exit'],['projects','materials']];
+    edges.forEach(function(e){var a=rooms[e[0]].pos,b=rooms[e[1]].pos;r.line([a[0],-2.2,a[2]],[b[0],-2.2,b[2]],{stroke:r.colors.line2,alpha:.4,lineWidth:1,dash:[3,6]})});
+  }
+  function labels(){
+    var off={hub:[8,14],knowledge:[0,-16],projects:[8,-10],materials:[8,12],archive:[-36,0],future:[0,18],exit:[-34,-10]};
+    order.forEach(function(id){var ro=rooms[id],o=off[id]||[0,0];r.text([ro.pos[0],ro.pos[1]+2,ro.pos[2]],ro.name,{fill:id===selected?r.colors.ink:r.colors.muted,font:id===selected?'600 11px Menlo, monospace':'10px Menlo, monospace',alpha:.95,dx:o[0],dy:o[1]})});
+  }
+  function render(){
+    Space3D.grid(r,-2.4,11,2.2,r.colors.line,.12);paths();order.forEach(box);labels();
+  }
+  function select(id){
+    if(!rooms[id])return;selected=id;var ro=rooms[id];
+    document.getElementById('name').textContent=ro.name;document.getElementById('desc').textContent=ro.desc;document.getElementById('nei').textContent=ro.nei.join(' · ');document.getElementById('coords').textContent=ro.pos.join(', ');document.getElementById('route').textContent=ro.route;
+    document.querySelectorAll('#list button').forEach(function(b){b.classList.toggle('on',b.dataset.id===id)});
+  }
+  order.forEach(function(id){var b=document.createElement('button');b.type='button';b.dataset.id=id;b.textContent=rooms[id].name;b.onclick=function(){select(id)};roomList.appendChild(b)});
+  document.getElementById('reset').onclick=function(){r.camera.reset();r.camera.auto=false;document.getElementById('auto').textContent='自动旋转：关';select('hub')};
+  document.getElementById('auto').onclick=function(){r.camera.auto=!r.camera.auto;this.textContent='自动旋转：'+(r.camera.auto?'开':'关')};
+  document.getElementById('hub').onclick=function(){select('hub')};
+  select(selected);
+  r.loop(render);
+})();
+</script>
+</body>
+</html>
