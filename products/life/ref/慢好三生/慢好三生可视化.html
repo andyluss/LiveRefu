@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生存 · 生活 · 生产 · 慢好 —— 时空树网体系</title>
+<style>
+  :root{
+    --bg:#0a0e17;
+    --panel:#101827;
+    --panel2:#0d1420;
+    --line:rgba(148,163,184,.18);
+    --line2:rgba(148,163,184,.30);
+    --text:#e6edf7;
+    --muted:#8b9bb4;
+    --survival:#f87171;
+    --life:#60a5fa;
+    --prod:#34d399;
+    --res:#a78bfa;
+    --method:#fbbf24;
+    --value:#34d399;
+    --fb:#f472b6;
+    --slow:#f0abfc;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1400px 800px at 15% -10%, #16233b 0%, transparent 55%),
+      radial-gradient(1000px 700px at 90% 8%, #1b1730 0%, transparent 50%),
+      radial-gradient(900px 600px at 50% 100%, #1a1230 0%, transparent 50%),
+      var(--bg);
+    color:var(--text);
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 60px;
+    line-height:1.6;
+  }
+
+  /* ========== 头部 ========== */
+  header{text-align:center;padding:52px 20px 28px;}
+  header h1{
+    margin:0 0 8px;
+    font-size:clamp(24px,4vw,40px);
+    letter-spacing:6px;
+    background:linear-gradient(90deg,#f87171,#fbbf24,#34d399,#60a5fa,#f0abfc);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-weight:800;
+  }
+  header .sub{margin:0;color:var(--muted);font-size:14px;letter-spacing:3px;}
+  .formula{
+    margin:22px auto 0;
+    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+    gap:6px 8px;max-width:880px;font-size:14px;color:var(--muted);
+  }
+  .formula b{
+    display:inline-block;padding:5px 14px;border-radius:999px;
+    border:1px solid var(--line);background:rgba(255,255,255,.03);
+    color:var(--text);font-weight:600;font-size:13px;letter-spacing:1px;
+  }
+  .formula b.c1{color:#fca5a5;border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.06);}
+  .formula b.c2{color:#93c5fd;border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.06);}
+  .formula b.c3{color:#6ee7b7;border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.06);}
+  .formula b.c4{color:#fcd34d;border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.06);}
+  .formula b.c5{color:#c4b5fd;border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.06);}
+  .formula b.c6{color:#f0abfc;border-color:rgba(240,171,252,.35);background:rgba(240,171,252,.06);}
+
+  /* ========== 导航 ========== */
+  .tabs{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+    max-width:980px;margin:28px auto 32px;padding:0 18px;
+  }
+  .tab-btn{
+    padding:9px 20px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.025);color:var(--muted);
+    font-size:13.5px;font-weight:600;letter-spacing:1px;cursor:pointer;
+    transition:all .22s ease;font-family:inherit;
+  }
+  .tab-btn:hover{color:var(--text);border-color:var(--line2);background:rgba(255,255,255,.05);}
+  .tab-btn.active{
+    color:#0a0e17;
+    background:linear-gradient(135deg,#60a5fa,#34d399);
+    border-color:transparent;
+    box-shadow:0 4px 18px rgba(52,211,153,.25);
+  }
+  .tab-btn.slow-btn.active{
+    background:linear-gradient(135deg,#f0abfc,#f472b6);
+    box-shadow:0 4px 18px rgba(240,171,252,.25);
+  }
+
+  /* ========== 面板 ========== */
+  main{max-width:1040px;margin:0 auto;padding:0 18px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .panel{
+    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.008));
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px 24px;margin-bottom:26px;
+  }
+  .panel h2{
+    margin:0 0 20px;font-size:16px;letter-spacing:2px;font-weight:700;
+    display:flex;align-items:center;gap:10px;
+  }
+  .panel h2::before{
+    content:'';width:4px;height:16px;border-radius:2px;
+    background:linear-gradient(180deg,#60a5fa,#34d399);flex-shrink:0;
+  }
+  .panel h2 small{font-size:12px;font-weight:400;color:var(--muted);letter-spacing:1px;margin-left:4px;}
+  .note{margin:14px 0 0;text-align:center;font-size:12.5px;color:var(--muted);letter-spacing:1px;}
+
+  /* ========== 同心圆布局 ========== */
+  .rings-layout{display:flex;gap:24px;align-items:flex-start;}
+  .rings-svg-wrap{flex:1 1 60%;min-width:0;}
+  .rings-svg-wrap svg{width:100%;height:auto;display:block;}
+  .detail-card{
+    flex:0 0 280px;background:rgba(255,255,255,.025);
+    border:1px solid var(--line);border-radius:12px;
+    padding:18px 16px;min-height:260px;transition:border-color .25s;
+  }
+  .detail-card .dc-tag{
+    display:inline-block;padding:3px 12px;border-radius:999px;
+    font-size:11.5px;font-weight:700;letter-spacing:1px;
+    border:1px solid;margin-bottom:12px;
+  }
+  .detail-card h3{margin:0 0 12px;font-size:15px;font-weight:700;letter-spacing:1px;}
+  .detail-card ul{margin:0;padding:0;list-style:none;}
+  .detail-card li{
+    padding:6px 0 6px 16px;position:relative;font-size:13px;
+    color:#c3d0e4;border-bottom:1px solid rgba(148,163,184,.08);
+  }
+  .detail-card li:last-child{border-bottom:none;}
+  .detail-card li::before{
+    content:'';position:absolute;left:0;top:14px;
+    width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7;
+  }
+  .detail-empty{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    height:240px;color:var(--muted);font-size:13px;letter-spacing:1px;
+    text-align:center;gap:10px;
+  }
+  .detail-empty .icon{font-size:28px;opacity:.45;}
+
+  /* ========== 图例 ========== */
+  .legend{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:18px;
+    margin-top:6px;font-size:12.5px;color:var(--muted);
+  }
+  .legend span{display:flex;align-items:center;gap:6px;}
+  .legend i{width:10px;height:10px;border-radius:3px;display:inline-block;}
+  .slow-legend i{background:var(--slow);}
+
+  /* ========== 闭环 ========== */
+  .loop-wrap{display:flex;justify-content:center;}
+  .loop-wrap svg{width:100%;max-width:680px;height:auto;}
+
+  /* ========== 表格 ========== */
+  .table-wrap{overflow-x:auto;border-radius:10px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px;}
+  th,td{
+    border:1px solid var(--line);padding:11px 13px;text-align:left;
+    vertical-align:top;line-height:1.55;transition:background .2s;
+  }
+  th{
+    background:rgba(148,163,184,.07);color:var(--muted);font-weight:600;
+    font-size:12px;letter-spacing:1.2px;white-space:nowrap;
+    position:sticky;top:0;
+  }
+  td.rowhead{
+    font-weight:700;font-size:13px;white-space:nowrap;
+    background:rgba(148,163,184,.045);
+  }
+  td small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px;}
+  tbody tr:hover td{background:rgba(96,165,250,.06);}
+  .r1{border-left:3px solid var(--survival);}
+  .r2{border-left:3px solid var(--life);}
+  .r3{border-left:3px solid var(--prod);}
+  .r4{border-left:3px solid var(--res);}
+  .cell-click{cursor:pointer;}
+  .cell-click:hover{background:rgba(52,211,153,.09)!important;}
+  .matrix-detail{
+    margin-top:16px;padding:16px 18px;border-radius:12px;
+    border:1px solid var(--line);background:rgba(255,255,255,.025);
+    min-height:72px;font-size:13px;color:#c3d0e4;transition:border-color .25s;
+  }
+  .matrix-detail strong{color:#fff;font-weight:700;}
+  .matrix-detail .md-tag{
+    display:inline-block;padding:2px 10px;border-radius:999px;
+    font-size:11px;font-weight:700;letter-spacing:1px;
+    margin-right:8px;border:1px solid;
+  }
+
+  /* ========== 树 ========== */
+  .tree{font-size:13.5px;}
+  .tree ul{list-style:none;margin:0;padding-left:26px;}
+  .tree > ul{padding-left:0;}
+  .tree li{position:relative;padding:3px 0 3px 22px;line-height:2;}
+  .tree li::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;
+    border-left:1px solid var(--line);
+  }
+  .tree li:last-child::before{height:17px;bottom:auto;}
+  .tree li::after{
+    content:'';position:absolute;left:0;top:17px;width:16px;
+    border-top:1px solid var(--line);
+  }
+  .tree > ul > li{padding-left:0;}
+  .tree > ul > li::before,
+  .tree > ul > li::after{display:none;}
+
+  .node{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:3px 13px;border-radius:8px;border:1px solid var(--line);
+    background:rgba(255,255,255,.03);color:var(--text);
+    font-size:13px;transition:all .2s;cursor:default;
+  }
+  .node:hover{border-color:var(--line2);background:rgba(255,255,255,.06);}
+  .node.root{
+    border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.09);
+    color:#fcd34d;font-weight:700;font-size:13.5px;
+  }
+  .node.s{border-color:rgba(248,113,113,.4);color:#fca5a5;background:rgba(248,113,113,.07);}
+  .node.l{border-color:rgba(96,165,250,.4);color:#93c5fd;background:rgba(96,165,250,.07);}
+  .node.p{border-color:rgba(52,211,153,.4);color:#6ee7b7;background:rgba(52,211,153,.07);}
+  .node.dim{color:var(--muted);font-size:12.5px;}
+  .node .tag{
+    font-size:10px;padding:1px 6px;border-radius:4px;
+    background:rgba(255,255,255,.08);color:var(--muted);font-weight:400;
+  }
+
+  /* ========== 节点卡片 ========== */
+  .card-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:16px;
+  }
+  .node-card{
+    border:1px solid var(--line);border-radius:14px;
+    padding:18px 18px 14px;background:rgba(255,255,255,.025);
+    transition:all .25s;
+  }
+  .node-card:hover{
+    border-color:var(--line2);background:rgba(255,255,255,.045);
+    transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);
+  }
+  .nc-header{
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:700;letter-spacing:1px;
+    margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line);
+  }
+  .nc-header .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .nc-row{
+    display:flex;justify-content:space-between;gap:10px;
+    padding:7px 0;font-size:12.5px;
+    border-bottom:1px dashed rgba(148,163,184,.1);
+  }
+  .nc-row:last-of-type{border-bottom:none;}
+  .nc-row .k{color:var(--muted);font-weight:600;flex-shrink:0;letter-spacing:.5px;}
+  .nc-row .v{color:#c3d0e4;text-align:right;}
+  .nc-footer{
+    margin-top:10px;padding-top:10px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;font-size:11.5px;
+    color:var(--muted);letter-spacing:.5px;
+  }
+
+  /* ========== 网络图 ========== */
+  .network-wrap svg{width:100%;height:auto;display:block;}
+
+  /* ========== 慢好模块 ========== */
+  .slow-hint{
+    margin-top:14px;padding:10px 12px;border-radius:10px;
+    background:rgba(240,171,252,.07);border:1px solid rgba(240,171,252,.25);
+    font-size:12.5px;color:#f0abfc;line-height:1.7;letter-spacing:.5px;
+  }
+  .slow-tag{
+    display:inline-block;padding:2px 10px;border-radius:999px;
+    font-size:11px;font-weight:700;letter-spacing:1px;
+    background:rgba(240,171,252,.12);color:#f0abfc;
+    border:1px solid rgba(240,171,252,.3);margin-bottom:10px;
+  }
+  .slow-card{border-color:rgba(240,171,252,.2);}
+  .slow-card:hover{
+    border-color:rgba(240,171,252,.45);
+    box-shadow:0 8px 24px rgba(240,171,252,.12);
+  }
+  .slow-card .nc-header{color:#f0abfc;}
+  .slow-card .nc-header .dot{background:#f0abfc;}
+  .slow-quote{
+    text-align:center;font-size:15px;letter-spacing:2px;
+    color:#f0abfc;padding:20px 16px;line-height:2;
+    border-top:1px dashed rgba(240,171,252,.2);margin-top:20px;
+  }
+  .slow-quote small{
+    display:block;font-size:12px;color:var(--muted);
+    letter-spacing:1px;margin-top:8px;
+  }
+  @keyframes breathe{
+    0%,100%{transform:scale(1);opacity:.45;}
+    50%{transform:scale(1.10);opacity:.9;}
+  }
+  .slow-pulse{
+    animation:breathe 4s ease-in-out infinite;
+    transform-origin:center;transform-box:fill-box;
+  }
+
+  /* ========== 响应式 ========== */
+  @media(max-width:860px){
+    .rings-layout{flex-direction:column;}
+    .detail-card{flex:1 1 auto;width:100%;min-height:auto;}
+    .detail-empty{height:120px;}
+  }
+  @media(max-width:560px){
+    .panel{padding:18px 14px 18px;}
+    .tab-btn{padding:7px 14px;font-size:12.5px;}
+    header{padding:36px 16px 20px;}
+    .formula b{padding:4px 10px;font-size:12px;}
+  }
+
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:rgba(148,163,184,.25);border-radius:4px;}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.4);}
+</style>
+</head>
+<body>
+
+<!-- ==================== 头部 ==================== -->
+<header>
+  <h1>生存 · 生活 · 生产 · 慢好</h1>
+  <p class="sub">三生 × 三圈 × 四环 × 慢好 × 时空 —— 树形网状结构体系</p>
+  <div class="formula">
+    <b>体系</b><span>=</span>
+    <b class="c1">三生</b><span>×</span>
+    <b class="c2">三圈</b><span>×</span>
+    <b class="c3">四环</b><span>×</span>
+    <b class="c6">慢好</b><span>×</span>
+    <b class="c4">时间 T</b><span>×</span>
+    <b class="c5">空间 S</b>
+  </div>
+</header>
+
+<!-- ==================== 标签导航 ==================== -->
+<nav class="tabs" id="tabs">
+  <button class="tab-btn active" data-tab="rings">三生三圈</button>
+  <button class="tab-btn" data-tab="loop">事务闭环</button>
+  <button class="tab-btn" data-tab="matrix">时空矩阵</button>
+  <button class="tab-btn" data-tab="tree">树形骨架</button>
+  <button class="tab-btn" data-tab="network">网状连接</button>
+  <button class="tab-btn" data-tab="cards">节点卡片</button>
+  <button class="tab-btn slow-btn" data-tab="slow">慢好要素</button>
+</nav>
+
+<main>
+
+  <!-- ==================== ① 三生三圈 ==================== -->
+  <section class="tab-panel active" id="panel-rings">
+    <div class="panel">
+      <h2>三生 × 三圈 · 同心圆 <small>点击扇区查看详情</small></h2>
+      <div class="rings-layout">
+        <div class="rings-svg-wrap">
+          <svg id="ringChart" viewBox="0 0 800 800" role="img" aria-label="三生三圈同心圆"></svg>
+        </div>
+        <aside class="detail-card" id="ringDetail">
+          <div class="detail-empty">
+            <div class="icon">◈</div>
+            <div>点击任意扇区<br>查看该圈层的三生详情</div>
+          </div>
+        </aside>
+      </div>
+      <div class="legend">
+        <span><i style="background:#f87171"></i>生存</span>
+        <span><i style="background:#60a5fa"></i>生活</span>
+        <span><i style="background:#34d399"></i>生产</span>
+        <span style="margin-left:8px;color:var(--muted)">|</span>
+        <span>内圈：个人</span>
+        <span>中圈：组织</span>
+        <span>外圈：社会</span>
+      </div>
+      <p class="note">半径 = 空间圈层（个人 → 组织 → 社会） &nbsp;·&nbsp; 扇区 = 三生（生存 / 生活 / 生产）</p>
+    </div>
+  </section>
+
+  <!-- ==================== ② 事务闭环 ==================== -->
+  <section class="tab-panel" id="panel-loop">
+    <div class="panel">
+      <h2>事务闭环 · 资源 → 方法 → 价值 → 反馈</h2>
+      <div class="loop-wrap">
+        <svg viewBox="0 0 800 620" role="img" aria-label="事务闭环">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7c8ba1"/>
+            </marker>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <circle cx="400" cy="310" r="74" fill="none"
+                  stroke="rgba(148,163,184,.22)" stroke-width="1" stroke-dasharray="4 7"/>
+          <text x="400" y="304" text-anchor="middle" font-size="16" font-weight="700"
+                fill="#cbd5e1" letter-spacing="3">闭环</text>
+          <text x="400" y="326" text-anchor="middle" font-size="12"
+                fill="#7c8ba1" letter-spacing="2">螺旋上升</text>
+
+          <path d="M400,150 A160,160 0 0 1 560,310" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrow)" opacity=".8"/>
+          <path d="M560,310 A160,160 0 0 1 400,470" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrow)" opacity=".8"/>
+          <path d="M400,470 A160,160 0 0 1 240,310" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrow)" opacity=".8"/>
+          <path d="M240,310 A160,160 0 0 1 400,150" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrow)"
+                stroke-dasharray="6 5" opacity=".8"/>
+
+          <circle r="5" fill="#a78bfa" filter="url(#glow)">
+            <animateMotion dur="3.2s" repeatCount="indefinite"
+              path="M400,150 A160,160 0 0 1 560,310"/>
+          </circle>
+          <circle r="5" fill="#fbbf24" filter="url(#glow)">
+            <animateMotion dur="3.2s" repeatCount="indefinite" begin="0.8s"
+              path="M560,310 A160,160 0 0 1 400,470"/>
+          </circle>
+          <circle r="5" fill="#34d399" filter="url(#glow)">
+            <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.6s"
+              path="M400,470 A160,160 0 0 1 240,310"/>
+          </circle>
+          <circle r="5" fill="#f472b6" filter="url(#glow)">
+            <animateMotion dur="3.2s" repeatCount="indefinite" begin="2.4s"
+              path="M240,310 A160,160 0 0 1 400,150"/>
+          </circle>
+
+          <circle cx="400" cy="150" r="52" fill="#a78bfa" fill-opacity="0.12"
+                  stroke="#a78bfa" stroke-width="1.8"/>
+          <text x="400" y="143" text-anchor="middle" font-size="18" font-weight="700"
+                fill="#c4b5fd" letter-spacing="2">资源</text>
+          <text x="400" y="164" text-anchor="middle" font-size="10"
+                fill="rgba(196,181,253,.6)">人 · 财 · 物 · 时间</text>
+
+          <circle cx="560" cy="310" r="52" fill="#fbbf24" fill-opacity="0.12"
+                  stroke="#fbbf24" stroke-width="1.8"/>
+          <text x="560" y="303" text-anchor="middle" font-size="18" font-weight="700"
+                fill="#fcd34d" letter-spacing="2">方法</text>
+          <text x="560" y="324" text-anchor="middle" font-size="10"
+                fill="rgba(252,211,77,.6)">流程 · 工具 · 制度</text>
+
+          <circle cx="400" cy="470" r="52" fill="#34d399" fill-opacity="0.12"
+                  stroke="#34d399" stroke-width="1.8"/>
+          <text x="400" y="463" text-anchor="middle" font-size="18" font-weight="700"
+                fill="#6ee7b7" letter-spacing="2">价值</text>
+          <text x="400" y="484" text-anchor="middle" font-size="10"
+                fill="rgba(110,231,183,.6)">产品 · 收入 · 影响</text>
+
+          <circle cx="240" cy="310" r="52" fill="#f472b6" fill-opacity="0.12"
+                  stroke="#f472b6" stroke-width="1.8"/>
+          <text x="240" y="303" text-anchor="middle" font-size="18" font-weight="700"
+                fill="#f9a8d4" letter-spacing="2">反馈</text>
+          <text x="240" y="324" text-anchor="middle" font-size="10"
+                fill="rgba(249,168,212,.6)">复盘 · 分配 · 迭代</text>
+
+          <text x="400" y="590" text-anchor="middle" font-size="12.5"
+                fill="#7c8ba1" letter-spacing="2">反馈重新变回资源，进入下一轮 —— 每一圈都比上一圈高一层</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ③ 时空矩阵 ==================== -->
+  <section class="tab-panel" id="panel-matrix">
+    <div class="panel">
+      <h2>时空矩阵 · 每个节点都有坐标 <small>点击单元格查看详情</small></h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>空间 ＼ 时间</th>
+              <th>日 · 周</th>
+              <th>月 · 季</th>
+              <th>年 · 多年</th>
+              <th>代际 · 世纪</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rowhead r1">个人</td>
+              <td class="cell-click" data-space="个人" data-time="日·周"
+                  data-detail="健康习惯、情绪记录、每日复盘、睡眠管理。快速反馈循环，建立身体与精力的底线。">
+                健康习惯<small>情绪记录</small>
+              </td>
+              <td class="cell-click" data-space="个人" data-time="月·季"
+                  data-detail="财务复盘、技能迭代、季度目标检视、关系维护。中期节奏，调整方向与资源分配。">
+                财务复盘<small>技能迭代</small>
+              </td>
+              <td class="cell-click" data-space="个人" data-time="年·多年"
+                  data-detail="职业规划、资产配置、重大关系决策、深度学习。长期布局，构建复利效应。">
+                职业规划<small>资产配置</small>
+              </td>
+              <td class="cell-click" data-space="个人" data-time="代际·世纪"
+                  data-detail="家族传承、生命意义、代际价值观、遗产规划。超越个体生命周期的责任与影响。">
+                家族传承<small>生命意义</small>
+              </td>
+            </tr>
+            <tr>
+              <td class="rowhead r2">组织</td>
+              <td class="cell-click" data-space="组织" data-time="日·周"
+                  data-detail="运营调度、每日站会、即时客服、供应链监控。高频反馈，保障日常运转。">
+                运营调度<small>每日站会</small>
+              </td>
+              <td class="cell-click" data-space="组织" data-time="月·季"
+                  data-detail="季度 OKR、现金流监控、产品迭代、人才盘点。中周期管理，平衡效率与创新。">
+                季度 OKR<small>现金流监控</small>
+              </td>
+              <td class="cell-click" data-space="组织" data-time="年·多年"
+                  data-detail="战略规划、组织变革、市场扩张、技术路线。长周期决策，塑造竞争壁垒。">
+                战略规划<small>组织变革</small>
+              </td>
+              <td class="cell-click" data-space="组织" data-time="代际·世纪"
+                  data-detail="企业文化、创始人精神、基业长青、行业生态。超越创始人生命周期的组织延续。">
+                企业文化<small>基业长青</small>
+              </td>
+            </tr>
+            <tr>
+              <td class="rowhead r3">社会</td>
+              <td class="cell-click" data-space="社会" data-time="日·周"
+                  data-detail="应急响应、舆情监测、公共服务调度、治安巡逻。快速反应，保障社会安全底线。">
+                应急响应<small>舆情监测</small>
+              </td>
+              <td class="cell-click" data-space="社会" data-time="月·季"
+                  data-detail="政策评估、项目调度、经济数据监测、社会反馈收集。中周期治理与调整。">
+                政策评估<small>项目调度</small>
+              </td>
+              <td class="cell-click" data-space="社会" data-time="年·多年"
+                  data-detail="五年规划、制度改革、教育医疗投入、基础设施建设。长周期公共投资与制度演进。">
+                五年规划<small>制度改革</small>
+              </td>
+              <td class="cell-click" data-space="社会" data-time="代际·世纪"
+                  data-detail="文明演进、制度传承、文化认同、社会契约。跨越代际的社会形态演变。">
+                文明演进<small>制度传承</small>
+              </td>
+            </tr>
+            <tr>
+              <td class="rowhead r4">全球 · 生态</td>
+              <td class="cell-click" data-space="全球·生态" data-time="日·周"
+                  data-detail="灾害响应、疫情监测、气候异常预警、粮食价格波动。全球尺度的快速反应机制。">
+                灾害响应<small>疫情监测</small>
+              </td>
+              <td class="cell-click" data-space="全球·生态" data-time="月·季"
+                  data-detail="市场协调、供应链调度、国际援助、碳市场交易。中周期的全球协作与资源调配。">
+                市场协调<small>供应链调度</small>
+              </td>
+              <td class="cell-click" data-space="全球·生态" data-time="年·多年"
+                  data-detail="气候协议、可持续发展目标、生物多样性保护、全球治理改革。长周期全球公共品供给。">
+                气候协议<small>可持续发展</small>
+              </td>
+              <td class="cell-click" data-space="全球·生态" data-time="代际·世纪"
+                  data-detail="生态代际公平、文明存续、行星边界、未来世代权利。超越人类世代的生态责任。">
+                生态代际公平<small>文明存续</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="matrix-detail" id="matrixDetail">
+        <span style="color:var(--muted)">点击上方任意单元格，查看该时空坐标的详细说明。</span>
+      </div>
+      <p class="note">空间越大，反馈越慢；时间越长，越需要愿景、制度与代际责任</p>
+    </div>
+  </section>
+
+  <!-- ==================== ④ 树形骨架 ==================== -->
+  <section class="tab-panel" id="panel-tree">
+    <div class="panel">
+      <h2>树形网状骨架 · 根 → 干 → 枝 → 叶</h2>
+      <div class="tree">
+        <ul>
+          <li>
+            <span class="node root">◎ 北极星 · 可持续的生存 · 有质量的生活 · 有意义的生产 · 有呼吸的慢好</span>
+            <ul>
+              <li>
+                <span class="node s">生存 · 安全 / 健康 / 韧性</span>
+                <ul>
+                  <li><span class="node dim">个人：健康 · 应急金 · 基本技能 <span class="tag">日/周</span></span></li>
+                  <li><span class="node dim">组织：现金流 · 合规 · 供应链 <span class="tag">月/季</span></span></li>
+                  <li><span class="node dim">社会：公共安全 · 医疗 · 粮食能源 <span class="tag">年/多年</span></span></li>
+                  <li><span class="node dim">全球：气候 · 生态 · 和平 <span class="tag">代际</span></span></li>
+                </ul>
+              </li>
+              <li>
+                <span class="node l">生活 · 幸福 / 关系 / 意义</span>
+                <ul>
+                  <li><span class="node dim">个人：家庭 · 朋友 · 心理 · 爱好 <span class="tag">日/周</span></span></li>
+                  <li><span class="node dim">组织：文化 · 福利 · 归属感 <span class="tag">月/季</span></span></li>
+                  <li><span class="node dim">社会：教育 · 社保 · 社区文化 <span class="tag">年/多年</span></span></li>
+                  <li><span class="node dim">全球：人权 · 文化多样 · 全球认同 <span class="tag">代际</span></span></li>
+                </ul>
+              </li>
+              <li>
+                <span class="node p">生产 · 效率 / 创造 / 交换</span>
+                <ul>
+                  <li><span class="node dim">个人：职业 · 创作 · 理财 · 学习 <span class="tag">日/周</span></span></li>
+                  <li><span class="node dim">组织：产品 · 运营 · 增长 · 创新 <span class="tag">月/季</span></span></li>
+                  <li><span class="node dim">社会：产业 · 基建 · 治理 · 科技 <span class="tag">年/多年</span></span></li>
+                  <li><span class="node dim">全球：贸易 · 科技合作 · 可持续发展 <span class="tag">代际</span></span></li>
+                </ul>
+              </li>
+              <li>
+                <span class="node" style="border-color:rgba(240,171,252,.4);color:#f0abfc;background:rgba(240,171,252,.07);">慢好 · 呼吸 / 留白 / 质感</span>
+                <ul>
+                  <li><span class="node dim">个人：慢呼吸 · 慢食 · 慢读 · 慢工 <span class="tag">日/周</span></span></li>
+                  <li><span class="node dim">组织：慢现金 · 慢文化 · 慢迭代 <span class="tag">月/季</span></span></li>
+                  <li><span class="node dim">社会：慢医疗 · 慢城市 · 慢产业 <span class="tag">年/多年</span></span></li>
+                  <li><span class="node dim">全球：慢气候 · 慢文化 · 慢科技 <span class="tag">代际</span></span></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <p class="note">树为骨 · 网为血 · 闭环为心 · 同心圆为责任半径 · 慢好为呼吸</p>
+    </div>
+  </section>
+
+  <!-- ==================== ⑤ 网状连接 ==================== -->
+  <section class="tab-panel" id="panel-network">
+    <div class="panel">
+      <h2>网状连接 · 跨圈层的资源流与价值流</h2>
+      <div class="network-wrap">
+        <svg id="networkChart" viewBox="0 0 800 620" role="img" aria-label="跨圈层网络图"></svg>
+      </div>
+      <div class="legend" style="margin-top:14px;">
+        <span><i style="background:#34d399"></i>价值流（正向）</span>
+        <span><i style="background:#f472b6"></i>反馈流（反向）</span>
+        <span><i style="background:#a78bfa"></i>个人节点</span>
+        <span><i style="background:#fbbf24"></i>组织节点</span>
+        <span><i style="background:#60a5fa"></i>社会节点</span>
+      </div>
+      <p class="note">节点 = 事务单元 &nbsp;·&nbsp; 边 = 资源 / 价值 / 信息 / 信任的流动</p>
+    </div>
+  </section>
+
+  <!-- ==================== ⑥ 节点卡片 ==================== -->
+  <section class="tab-panel" id="panel-cards">
+    <div class="panel">
+      <h2>节点卡片模板 · 每个节点都可以填写</h2>
+      <div class="card-grid">
+
+        <div class="node-card">
+          <div class="nc-header">
+            <span class="dot" style="background:#f87171"></span>
+            个人 · 生存 · 健康
+          </div>
+          <div class="nc-row"><span class="k">资源</span><span class="v">身体、时间、精力</span></div>
+          <div class="nc-row"><span class="k">方法</span><span class="v">睡眠、运动、饮食</span></div>
+          <div class="nc-row"><span class="k">价值</span><span class="v">精力充沛、少生病</span></div>
+          <div class="nc-row"><span class="k">反馈</span><span class="v">日复盘、体检</span></div>
+          <div class="nc-footer"><span>周期：日 / 周</span><span>责任人：自己</span></div>
+        </div>
+
+        <div class="node-card">
+          <div class="nc-header">
+            <span class="dot" style="background:#60a5fa"></span>
+            组织 · 生产 · 产品
+          </div>
+          <div class="nc-row"><span class="k">资源</span><span class="v">团队、资金、数据</span></div>
+          <div class="nc-row"><span class="k">方法</span><span class="v">敏捷迭代、用户调研</span></div>
+          <div class="nc-row"><span class="k">价值</span><span class="v">产品、收入、口碑</span></div>
+          <div class="nc-row"><span class="k">反馈</span><span class="v">数据看板、用户反馈</span></div>
+          <div class="nc-footer"><span>周期：月 / 季</span><span>责任人：产品团队</span></div>
+        </div>
+
+        <div class="node-card">
+          <div class="nc-header">
+            <span class="dot" style="background:#34d399"></span>
+            社会 · 生活 · 教育
+          </div>
+          <div class="nc-row"><span class="k">资源</span><span class="v">财政、师资、设施</span></div>
+          <div class="nc-row"><span class="k">方法</span><span class="v">课程标准、师资培训</span></div>
+          <div class="nc-row"><span class="k">价值</span><span class="v">人才、公平、文化</span></div>
+          <div class="nc-row"><span class="k">反馈</span><span class="v">评估、就业率、满意度</span></div>
+          <div class="nc-footer"><span>周期：年 / 多年</span><span>责任人：教育部门</span></div>
+        </div>
+
+        <div class="node-card">
+          <div class="nc-header">
+            <span class="dot" style="background:#a78bfa"></span>
+            全球 · 生存 · 气候
+          </div>
+          <div class="nc-row"><span class="k">资源</span><span class="v">科技、资金、共识</span></div>
+          <div class="nc-row"><span class="k">方法</span><span class="v">国际协议、碳市场</span></div>
+          <div class="nc-row"><span class="k">价值</span><span class="v">减排、适应、公平</span></div>
+          <div class="nc-row"><span class="k">反馈</span><span class="v">温升监测、履约评估</span></div>
+          <div class="nc-footer"><span>周期：多年 / 代际</span><span>责任人：全球共同体</span></div>
+        </div>
+
+      </div>
+      <p class="note" style="margin-top:22px;">
+        节点卡 =（范围，三生域，四环环节，对象）+ 资源 / 方法 / 价值 / 指标 / 周期 / 责任人
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== ⑦ 慢好要素 ==================== -->
+  <section class="tab-panel" id="panel-slow">
+
+    <!-- 慢好同心圆 -->
+    <div class="panel">
+      <h2>慢好同心圆 · 三生 × 三圈 <small>点击扇区查看慢好要素</small></h2>
+      <div class="rings-layout">
+        <div class="rings-svg-wrap">
+          <svg id="slowRingChart" viewBox="0 0 800 800" role="img" aria-label="慢好同心圆"></svg>
+        </div>
+        <aside class="detail-card" id="slowDetail">
+          <div class="detail-empty">
+            <div class="icon">🍃</div>
+            <div>点击任意扇区<br>查看该圈层的慢好要素</div>
+          </div>
+        </aside>
+      </div>
+      <div class="legend slow-legend">
+        <span><i></i>慢好要素</span>
+        <span style="color:var(--muted)">|</span>
+        <span>内圈：个人</span>
+        <span>中圈：组织</span>
+        <span>外圈：社会</span>
+      </div>
+      <p class="note">慢不是慢下来，而是把节奏还给自己</p>
+    </div>
+
+    <!-- 五环闭环 -->
+    <div class="panel">
+      <h2>五环闭环 · 加一环「留白」</h2>
+      <div class="loop-wrap">
+        <svg viewBox="0 0 800 620" role="img" aria-label="五环慢好闭环">
+          <defs>
+            <marker id="slowArrow" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7c8ba1"/>
+            </marker>
+            <marker id="slowArrowFb" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#f0abfc"/>
+            </marker>
+          </defs>
+
+          <circle cx="400" cy="310" r="80" fill="rgba(240,171,252,.04)"
+                  stroke="rgba(240,171,252,.22)" stroke-dasharray="4 7"
+                  class="slow-pulse"/>
+          <text x="400" y="304" text-anchor="middle" font-size="16" font-weight="700"
+                fill="#f0abfc" letter-spacing="3">留白</text>
+          <text x="400" y="326" text-anchor="middle" font-size="11"
+                fill="rgba(240,171,252,.6)">呼吸 · 停顿 · 存在</text>
+
+          <path d="M400,150 A160,160 0 0 1 552.2,260.6" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#slowArrow)"/>
+          <path d="M552.2,260.6 A160,160 0 0 1 494.1,439.4" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#slowArrow)"/>
+          <path d="M494.1,439.4 A160,160 0 0 1 305.9,439.4" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#slowArrow)"/>
+          <path d="M305.9,439.4 A160,160 0 0 1 247.8,260.6" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#slowArrow)"/>
+
+          <path d="M247.8,260.6 A160,160 0 0 1 400,150" fill="none"
+                stroke="#f0abfc" stroke-width="1.8" stroke-dasharray="6 6"
+                marker-end="url(#slowArrowFb)"/>
+
+          <circle cx="400" cy="150" r="48" fill="#a78bfa" fill-opacity=".12" stroke="#a78bfa" stroke-width="1.8"/>
+          <text x="400" y="146" text-anchor="middle" font-size="17" font-weight="700" fill="#c4b5fd">资源</text>
+          <text x="400" y="166" text-anchor="middle" font-size="10" fill="rgba(196,181,253,.6)">慢取 · 惜物</text>
+
+          <circle cx="552.2" cy="260.6" r="48" fill="#fbbf24" fill-opacity=".12" stroke="#fbbf24" stroke-width="1.8"/>
+          <text x="552.2" y="257" text-anchor="middle" font-size="17" font-weight="700" fill="#fcd34d">方法</text>
+          <text x="552.2" y="277" text-anchor="middle" font-size="10" fill="rgba(252,211,77,.6)">慢工 · 深度</text>
+
+          <circle cx="494.1" cy="439.4" r="48" fill="#34d399" fill-opacity=".12" stroke="#34d399" stroke-width="1.8"/>
+          <text x="494.1" y="436" text-anchor="middle" font-size="17" font-weight="700" fill="#6ee7b7">价值</text>
+          <text x="494.1" y="456" text-anchor="middle" font-size="10" fill="rgba(110,231,183,.6)">质感 · 长期</text>
+
+          <circle cx="305.9" cy="439.4" r="48" fill="#f472b6" fill-opacity=".12" stroke="#f472b6" stroke-width="1.8"/>
+          <text x="305.9" y="436" text-anchor="middle" font-size="17" font-weight="700" fill="#f9a8d4">反馈</text>
+          <text x="305.9" y="456" text-anchor="middle" font-size="10" fill="rgba(249,168,212,.6)">慢评 · 复盘</text>
+
+          <circle cx="247.8" cy="260.6" r="48" fill="#f0abfc" fill-opacity=".14" stroke="#f0abfc" stroke-width="1.8"/>
+          <text x="247.8" y="257" text-anchor="middle" font-size="17" font-weight="700" fill="#f5d0fe">留白</text>
+          <text x="247.8" y="277" text-anchor="middle" font-size="10" fill="rgba(245,208,254,.7)">停顿 · 呼吸</text>
+
+          <text x="400" y="590" text-anchor="middle" font-size="12.5"
+                fill="#7c8ba1" letter-spacing="2">资源 → 方法 → 价值 → 反馈 → 留白 → 新资源 · 留白是慢好的心脏</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 慢好矩阵 -->
+    <div class="panel">
+      <h2>慢好矩阵 · 三生 × 三圈</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>空间 ＼ 三生</th>
+              <th style="color:#fca5a5">生存慢好</th>
+              <th style="color:#93c5fd">生活慢好</th>
+              <th style="color:#6ee7b7">生产慢好</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rowhead r1">个人</td>
+              <td>慢呼吸 · 慢养生<small>4-7-8 呼吸、早睡、细嚼慢咽</small></td>
+              <td>慢食 · 慢读 · 慢聊<small>无手机晚餐、一本书读一个月</small></td>
+              <td>慢工 · 深度工作<small>每天 2 小时专注、单任务</small></td>
+            </tr>
+            <tr>
+              <td class="rowhead r2">组织</td>
+              <td>慢现金 · 稳健<small>留足缓冲、不盲目扩张</small></td>
+              <td>慢文化 · 归属<small>深度团建、员工福祉、不鼓励加班</small></td>
+              <td>慢迭代 · 质量<small>小步慢跑、长期研发、客户深关系</small></td>
+            </tr>
+            <tr>
+              <td class="rowhead r3">社会</td>
+              <td>慢医疗 · 预防<small>慢病管理、康养社区</small></td>
+              <td>慢城市 · 慢教育<small>步行城市、社区营造、留白课程</small></td>
+              <td>慢产业 · 可持续<small>长期基建、生态优先、慢金融</small></td>
+            </tr>
+            <tr>
+              <td class="rowhead r4">全球 · 生态</td>
+              <td>慢气候 · 适应<small>生态修复、气候韧性</small></td>
+              <td>慢文化 · 多样性<small>全球认同、文化保育</small></td>
+              <td>慢贸易 · 慢科技<small>长期合作、技术伦理</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">慢好不是全面减速，而是把「快」留给效率，把「慢」留给质量、关系与意义</p>
+    </div>
+
+    <!-- 慢好原则 -->
+    <div class="panel">
+      <h2>慢好原则 · 五慢五好</h2>
+      <div class="card-grid">
+        <div class="node-card slow-card">
+          <div class="nc-header"><span class="dot"></span>慢呼吸 · 好睡眠</div>
+          <div class="nc-row"><span class="k">练习</span><span class="v">4-7-8 呼吸，每天 3 次</span></div>
+          <div class="nc-row"><span class="k">目标</span><span class="v">入睡快、深睡足</span></div>
+        </div>
+        <div class="node-card slow-card">
+          <div class="nc-header"><span class="dot"></span>慢进食 · 好身体</div>
+          <div class="nc-row"><span class="k">练习</span><span class="v">一餐 20 分钟，不看屏幕</span></div>
+          <div class="nc-row"><span class="k">目标</span><span class="v">消化好、体重稳</span></div>
+        </div>
+        <div class="node-card slow-card">
+          <div class="nc-header"><span class="dot"></span>慢行走 · 好心情</div>
+          <div class="nc-row"><span class="k">练习</span><span class="v">每日散步 30 分钟</span></div>
+          <div class="nc-row"><span class="k">目标</span><span class="v">减压、灵感</span></div>
+        </div>
+        <div class="node-card slow-card">
+          <div class="nc-header"><span class="dot"></span>慢说话 · 好关系</div>
+          <div class="nc-row"><span class="k">练习</span><span class="v">先听后说，停 3 秒</span></div>
+          <div class="nc-row"><span class="k">目标</span><span class="v">深度连接、少冲突</span></div>
+        </div>
+        <div class="node-card slow-card">
+          <div class="nc-header"><span class="dot"></span>慢决策 · 好结果</div>
+          <div class="nc-row"><span class="k">练习</span><span class="v">重要决定隔夜再定</span></div>
+          <div class="nc-row"><span class="k">目标</span><span class="v">少后悔、长期对</span></div>
+        </div>
+      </div>
+
+      <div class="slow-quote">
+        「该快则快，该慢则慢」<br>
+        <small>快是生存的效率，慢是生活的质量；快是生产，慢是意义。留白不是浪费，是呼吸。</small>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer style="text-align:center;color:var(--muted);font-size:12px;letter-spacing:2px;margin-top:40px;padding:0 18px;">
+  先建个人最小闭环，再接入组织与社会网络，最终形成可生长、可反馈、可迭代、可呼吸的体系
+</footer>
+
+<script>
+/* ================================================================
+   工具函数
+   ================================================================ */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(SVG_NS, tag);
+  if (attrs) for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+
+function txt(parent, x, y, str, attrs) {
+  const t = el('text', Object.assign({
+    x, y,
+    'text-anchor': 'middle',
+    'dominant-baseline': 'middle'
+  }, attrs), parent);
+  t.textContent = str;
+  return t;
+}
+
+/* ================================================================
+   通用数据：扇区
+   ================================================================ */
+const SECTORS = [
+  { name: '生存', a1: -150, a2: -30, mid: -90, color: '#f87171' },
+  { name: '生活', a1: -30,  a2: 90,  mid: 30,  color: '#60a5fa' },
+  { name: '生产', a1: 90,   a2: 210, mid: 150, color: '#34d399' }
+];
+
+/* ================================================================
+   ① 三生三圈 · 同心圆
+   ================================================================ */
+const RINGS = [
+  {
+    name: '个人',
+    rIn: 40, rOut: 130, rMid: 85,
+    cells: {
+      '生存': { title: '健康·安全', sub: '睡眠 运动', items: [
+        '睡眠 7-8 小时', '均衡饮食', '每周运动 3 次', '应急金 6 个月', '基础急救技能'
+      ]},
+      '生活': { title: '家庭·意义', sub: '关系 爱好', items: [
+        '深度关系 3-5 人', '情绪日记', '定期家庭时间', '1-2 项长期爱好', '年度旅行'
+      ]},
+      '生产': { title: '职业·理财', sub: '技能 收入', items: [
+        '核心技能深耕', '第二曲线探索', '收入多元化', '时间管理', '持续学习'
+      ]}
+    }
+  },
+  {
+    name: '组织',
+    rIn: 130, rOut: 230, rMid: 180,
+    cells: {
+      '生存': { title: '现金流·合规', sub: '供应链 人才', items: [
+        '现金流监控', '合规体系', '供应链韧性', '人才储备', '风险预案'
+      ]},
+      '生活': { title: '文化·归属', sub: '福利 信任', items: [
+        '团队文化', '福利体系', '成长通道', '信任建设', '工作意义感'
+      ]},
+      '生产': { title: '产品·增长', sub: '运营 创新', items: [
+        '产品迭代', '运营效率', '增长引擎', '创新机制', '客户价值'
+      ]}
+    }
+  },
+  {
+    name: '社会',
+    rIn: 230, rOut: 340, rMid: 285,
+    cells: {
+      '生存': { title: '医疗·粮食', sub: '应急 能源', items: [
+        '应急响应', '医疗保障', '粮食安全', '能源安全', '基础设施'
+      ]},
+      '生活': { title: '教育·社保', sub: '社区 文化', items: [
+        '教育公平', '社会保障', '文化繁荣', '社区治理', '公共空间'
+      ]},
+      '生产': { title: '产业·科技', sub: '基建 金融', items: [
+        '产业政策', '基础设施', '科技创新', '金融体系', '营商环境'
+      ]}
+    }
+  }
+];
+
+function renderRings() {
+  const svg = document.getElementById('ringChart');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const CX = 400, CY = 400;
+  const polar = (r, deg) => {
+    const rad = deg * Math.PI / 180;
+    return [CX + r * Math.cos(rad), CY + r * Math.sin(rad)];
+  };
+
+  /* 1. 扇形 */
+  RINGS.forEach(ring => {
+    SECTORS.forEach(sec => {
+      const [x1, y1] = polar(ring.rIn, sec.a1);
+      const [x2, y2] = polar(ring.rIn, sec.a2);
+      const [x3, y3] = polar(ring.rOut, sec.a2);
+      const [x4, y4] = polar(ring.rOut, sec.a1);
+      const largeArc = (sec.a2 - sec.a1) > 180 ? 1 : 0;
+      const d = `M${x1},${y1} A${ring.rIn},${ring.rIn} 0 ${largeArc} 1 ${x2},${y2} `
+              + `L${x3},${y3} A${ring.rOut},${ring.rOut} 0 ${largeArc} 0 ${x4},${y4} Z`;
+
+      const path = el('path', {
+        d,
+        fill: sec.color,
+        'fill-opacity': 0.08,
+        stroke: 'rgba(148,163,184,.12)',
+        'stroke-width': 1,
+        style: 'cursor:pointer;transition:fill-opacity .2s,stroke .2s;'
+      }, svg);
+
+      path.addEventListener('mouseenter', () => {
+        path.setAttribute('fill-opacity', 0.24);
+        path.setAttribute('stroke', sec.color);
+        path.setAttribute('stroke-width', 2);
+      });
+      path.addEventListener('mouseleave', () => {
+        path.setAttribute('fill-opacity', 0.08);
+        path.setAttribute('stroke', 'rgba(148,163,184,.12)');
+        path.setAttribute('stroke-width', 1);
+      });
+      path.addEventListener('click', () => {
+        showRingDetail(ring.name, sec.name, ring.cells[sec.name], sec.color);
+      });
+    });
+  });
+
+  /* 2. 同心圆 */
+  [40, 130, 230, 340].forEach(r => {
+    el('circle', {
+      cx: CX, cy: CY, r,
+      fill: 'none',
+      stroke: 'rgba(148,163,184,.22)',
+      'stroke-width': r === 340 ? 1.5 : 1
+    }, svg);
+  });
+
+  /* 3. 径向分隔线 */
+  [-30, 90, 210].forEach(a => {
+    const [x1, y1] = polar(40, a);
+    const [x2, y2] = polar(340, a);
+    el('line', {
+      x1, y1, x2, y2,
+      stroke: 'rgba(148,163,184,.18)',
+      'stroke-width': 1,
+      'stroke-dasharray': '3 5'
+    }, svg);
+  });
+
+  /* 4. 环层标签 */
+  RINGS.forEach(ring => {
+    const [lx, ly] = polar(ring.rMid, 90);
+    el('circle', {
+      cx: lx, cy: ly, r: 13,
+      fill: '#0a0e17',
+      stroke: 'rgba(148,163,184,.3)',
+      'stroke-width': 1
+    }, svg);
+    txt(svg, lx, ly + 1, ring.name, {
+      'font-size': 9.5, 'font-weight': 700,
+      fill: '#8b9bb4', 'letter-spacing': 1
+    });
+  });
+
+  /* 5. 单元格文字 */
+  RINGS.forEach(ring => {
+    SECTORS.forEach(sec => {
+      const cell = ring.cells[sec.name];
+      const [x, y] = polar(ring.rMid, sec.mid);
+      txt(svg, x, y - 11, cell.title, {
+        'font-size': 14, 'font-weight': 700,
+        fill: '#e8eef8', 'letter-spacing': 1
+      });
+      txt(svg, x, y + 11, cell.sub, {
+        'font-size': 11,
+        fill: 'rgba(230,237,247,.55)', 'letter-spacing': .5
+      });
+    });
+  });
+
+  /* 6. 扇区名 */
+  SECTORS.forEach(sec => {
+    const [x, y] = polar(370, sec.mid);
+    txt(svg, x, y, sec.name, {
+      'font-size': 20, 'font-weight': 800,
+      fill: sec.color, 'letter-spacing': 4
+    });
+  });
+
+  /* 7. 中心 */
+  el('circle', {
+    cx: CX, cy: CY, r: 24,
+    fill: 'rgba(255,255,255,.03)',
+    stroke: 'rgba(148,163,184,.2)',
+    'stroke-width': 1
+  }, svg);
+  txt(svg, CX, CY + 1, '三生', {
+    'font-size': 11, 'font-weight': 700,
+    fill: '#8b9bb4', 'letter-spacing': 2
+  });
+}
+
+/* ================================================================
+   慢好提示映射（供 showRingDetail 使用）
+   ================================================================ */
+const SLOW_HINTS = {
+  '个人|生存': '🍃 慢呼吸：每天 3 次 4-7-8 呼吸，让身体先慢下来。',
+  '个人|生活': '🍃 慢陪伴：每周一次无手机晚餐，把时间还给关系。',
+  '个人|生产': '🍃 慢专注：每天 2 小时深度工作，单任务，不并行。',
+  '组织|生存': '🍃 慢现金：留足 6-12 个月缓冲，不盲目扩张。',
+  '组织|生活': '🍃 慢文化：不鼓励无效加班，把人当目的而非工具。',
+  '组织|生产': '🍃 慢迭代：小步慢跑，质量优先于速度。',
+  '社会|生存': '🍃 慢医疗：预防优于治疗，康养先于救治。',
+  '社会|生活': '🍃 慢城市：步行、社区、留白，让生活有呼吸。',
+  '社会|生产': '🍃 慢产业：长期基建、生态优先、慢金融。'
+};
+
+function showRingDetail(ringName, sectorName, cell, color) {
+  const panel = document.getElementById('ringDetail');
+  if (!panel) return;
+  panel.style.borderColor = color + '55';
+
+  let html = `
+    <div class="dc-tag" style="background:${color}18;color:${color};border-color:${color}44;">
+      ${ringName} · ${sectorName}
+    </div>
+    <h3 style="color:${color};">${cell.title}</h3>
+    <ul>${cell.items.map(i => `<li>${i}</li>`).join('')}</ul>
+  `;
+
+  const hint = SLOW_HINTS[ringName + '|' + sectorName];
+  if (hint) html += `<div class="slow-hint">${hint}</div>`;
+
+  panel.innerHTML = html;
+}
+
+/* ================================================================
+   ② 时空矩阵详情
+   ================================================================ */
+function initMatrix() {
+  const detail = document.getElementById('matrixDetail');
+  const cells = document.querySelectorAll('.cell-click');
+  if (!detail) return;
+
+  cells.forEach(cell => {
+    cell.addEventListener('click', () => {
+      const space = cell.dataset.space;
+      const time = cell.dataset.time;
+      const text = cell.dataset.detail;
+      const firstLine = cell.childNodes[0]?.textContent?.trim() || '';
+
+      let color = '#60a5fa';
+      if (space === '个人') color = '#f87171';
+      else if (space === '组织') color = '#fbbf24';
+      else if (space === '社会') color = '#34d399';
+      else if (space === '全球·生态') color = '#a78bfa';
+
+      detail.style.borderColor = color + '44';
+      detail.innerHTML = `
+        <span class="md-tag" style="background:${color}18;color:${color};border-color:${color}44;">
+          ${space} · ${time}
+        </span>
+        <strong>${firstLine}</strong> —— ${text}
+      `;
+    });
+  });
+}
+
+/* ================================================================
+   ③ 网状连接图
+   ================================================================ */
+function renderNetwork() {
+  const svg = document.getElementById('networkChart');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  const nodes = {
+    '健康':   { x: 130, y: 150, color: '#a78bfa' },
+    '技能':   { x: 130, y: 310, color: '#a78bfa' },
+    '关系':   { x: 130, y: 470, color: '#a78bfa' },
+    '现金流': { x: 400, y: 150, color: '#fbbf24' },
+    '产品':   { x: 400, y: 310, color: '#fbbf24' },
+    '团队':   { x: 400, y: 470, color: '#fbbf24' },
+    '制度':   { x: 670, y: 150, color: '#60a5fa' },
+    '产业':   { x: 670, y: 310, color: '#60a5fa' },
+    '医疗':   { x: 670, y: 470, color: '#60a5fa' }
+  };
+
+  const edges = [
+    { from: '健康', to: '现金流', type: 'value' },
+    { from: '健康', to: '团队',   type: 'value' },
+    { from: '技能', to: '产品',   type: 'value' },
+    { from: '技能', to: '现金流', type: 'value' },
+    { from: '关系', to: '团队',   type: 'value' },
+    { from: '现金流', to: '制度', type: 'value' },
+    { from: '产品',   to: '产业', type: 'value' },
+    { from: '团队',   to: '医疗', type: 'value' },
+    { from: '制度', to: '健康', type: 'feedback' },
+    { from: '产业', to: '技能', type: 'feedback' }
+  ];
+
+  function curvePath(x1, y1, x2, y2, curve) {
+    const mx = (x1 + x2) / 2;
+    const my = (y1 + y2) / 2;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    const px = -dy / len;
+    const py = dx / len;
+    const cx = mx + px * curve;
+    const cy = my + py * curve;
+    return `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;
+  }
+
+  /* 箭头定义 */
+  const defs = el('defs', {}, svg);
+  const markerVal = el('marker', {
+    id: 'arrowVal', viewBox: '0 0 10 10',
+    refX: '18', refY: '5',
+    markerWidth: '5', markerHeight: '5',
+    orient: 'auto-start-reverse'
+  }, defs);
+  el('path', { d: 'M0,0 L10,5 L0,10 z', fill: '#34d399' }, markerVal);
+
+  const markerFb = el('marker', {
+    id: 'arrowFb', viewBox: '0 0 10 10',
+    refX: '18', refY: '5',
+    markerWidth: '5', markerHeight: '5',
+    orient: 'auto-start-reverse'
+  }, defs);
+  el('path', { d: 'M0,0 L10,5 L0,10 z', fill: '#f472b6' }, markerFb);
+
+  /* 绘制边 */
+  edges.forEach(e => {
+    const a = nodes[e.from];
+    const b = nodes[e.to];
+    if (!a || !b) return;
+    const isFeedback = e.type === 'feedback';
+    const color = isFeedback ? '#f472b6' : '#34d399';
+    const curve = isFeedback ? -45 : 40;
+    const d = curvePath(a.x, a.y, b.x, b.y, curve);
+
+    el('path', {
+      d,
+      fill: 'none',
+      stroke: color,
+      'stroke-width': isFeedback ? 1.6 : 1.8,
+      'stroke-dasharray': isFeedback ? '6 5' : 'none',
+      'marker-end': isFeedback ? 'url(#arrowFb)' : 'url(#arrowVal)',
+      opacity: 0.55
+    }, svg);
+  });
+
+  /* 绘制节点 */
+  Object.entries(nodes).forEach(([name, n]) => {
+    el('circle', {
+      cx: n.x, cy: n.y, r: 40,
+      fill: n.color, 'fill-opacity': 0.06,
+      stroke: n.color, 'stroke-opacity': 0.15,
+      'stroke-width': 1
+    }, svg);
+
+    el('circle', {
+      cx: n.x, cy: n.y, r: 33,
+      fill: '#0d1420',
+      stroke: n.color,
+      'stroke-width': 1.6,
+      'stroke-opacity': 0.7
+    }, svg);
+
+    txt(svg, n.x, n.y + 1, name, {
+      'font-size': 13, 'font-weight': 700,
+      fill: '#e6edf7', 'letter-spacing': 1
+    });
+  });
+
+  /* 列标题 */
+  txt(svg, 130, 80, '个人', { 'font-size': 14, 'font-weight': 800, fill: '#a78bfa', 'letter-spacing': 4 });
+  txt(svg, 400, 80, '组织', { 'font-size': 14, 'font-weight': 800, fill: '#fbbf24', 'letter-spacing': 4 });
+  txt(svg, 670, 80, '社会', { 'font-size': 14, 'font-weight': 800, fill: '#60a5fa', 'letter-spacing': 4 });
+}
+
+/* ================================================================
+   ④ 慢好同心圆
+   ================================================================ */
+const SLOW_RINGS = [
+  {
+    name: '个人', rIn: 40, rOut: 130, rMid: 85,
+    cells: {
+      '生存': { title: '慢养生', sub: '呼吸 睡眠', items: [
+        '慢呼吸 4-7-8，每天 3 次',
+        '23 点前入睡，睡够 7-8 小时',
+        '细嚼慢咽，一餐 20 分钟',
+        '每日散步 30 分钟',
+        '每周留半天完全放空'
+      ]},
+      '生活': { title: '慢关系', sub: '深度 陪伴', items: [
+        '每周一次无手机晚餐',
+        '深度对话 1 小时，不打断',
+        '一本书慢慢读，不追数量',
+        '手写日记 10 分钟',
+        '定期独处，与自己相处'
+      ]},
+      '生产': { title: '慢工', sub: '专注 深度', items: [
+        '每天 2 小时深度工作',
+        '单任务处理，不并行',
+        '重要决定隔夜再定',
+        '长期主义，看 3 年',
+        '拒绝无效忙碌'
+      ]}
+    }
+  },
+  {
+    name: '组织', rIn: 130, rOut: 230, rMid: 180,
+    cells: {
+      '生存': { title: '慢现金', sub: '稳健 韧性', items: [
+        '留足 6-12 个月现金缓冲',
+        '不盲目扩张',
+        '风险留白，不押满',
+        '稳步增长，不追风口'
+      ]},
+      '生活': { title: '慢文化', sub: '信任 归属', items: [
+        '深度团建，而非走形式',
+        '员工福祉优先',
+        '不鼓励无效加班',
+        '长期雇佣，培养人'
+      ]},
+      '生产': { title: '慢迭代', sub: '质量 长期', items: [
+        '小步慢跑，快速验证',
+        '质量优先于速度',
+        '长期研发投入',
+        '与客户建立深度关系'
+      ]}
+    }
+  },
+  {
+    name: '社会', rIn: 230, rOut: 340, rMid: 285,
+    cells: {
+      '生存': { title: '慢医疗', sub: '预防 康养', items: [
+        '预防优于治疗',
+        '慢病长期管理',
+        '康养社区建设',
+        '公共健康教育'
+      ]},
+      '生活': { title: '慢城市', sub: '步行 社区', items: [
+        '步行友好城市',
+        '社区营造与公共空间',
+        '慢教育：留白与兴趣',
+        '文化滋养与慢生活'
+      ]},
+      '生产': { title: '慢产业', sub: '可持续', items: [
+        '可持续产业政策',
+        '长期基础设施',
+        '生态优先',
+        '慢金融，服务实体'
+      ]}
+    }
+  }
+];
+
+function renderSlowRings() {
+  const svg = document.getElementById('slowRingChart');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const CX = 400, CY = 400;
+  const polar = (r, deg) => {
+    const rad = deg * Math.PI / 180;
+    return [CX + r * Math.cos(rad), CY + r * Math.sin(rad)];
+  };
+
+  /* 扇形 */
+  SLOW_RINGS.forEach(ring => {
+    SECTORS.forEach(sec => {
+      const [x1, y1] = polar(ring.rIn, sec.a1);
+      const [x2, y2] = polar(ring.rIn, sec.a2);
+      const [x3, y3] = polar(ring.rOut, sec.a2);
+      const [x4, y4] = polar(ring.rOut, sec.a1);
+      const largeArc = (sec.a2 - sec.a1) > 180 ? 1 : 0;
+      const d = `M${x1},${y1} A${ring.rIn},${ring.rIn} 0 ${largeArc} 1 ${x2},${y2} `
+              + `L${x3},${y3} A${ring.rOut},${ring.rOut} 0 ${largeArc} 0 ${x4},${y4} Z`;
+
+      const path = el('path', {
+        d,
+        fill: '#f0abfc',
+        'fill-opacity': 0.06,
+        stroke: 'rgba(240,171,252,.10)',
+        'stroke-width': 1,
+        style: 'cursor:pointer;transition:fill-opacity .2s,stroke .2s;'
+      }, svg);
+
+      path.addEventListener('mouseenter', () => {
+        path.setAttribute('fill-opacity', 0.20);
+        path.setAttribute('stroke', 'rgba(240,171,252,.55)');
+        path.setAttribute('stroke-width', 2);
+      });
+      path.addEventListener('mouseleave', () => {
+        path.setAttribute('fill-opacity', 0.06);
+        path.setAttribute('stroke', 'rgba(240,171,252,.10)');
+        path.setAttribute('stroke-width', 1);
+      });
+      path.addEventListener('click', () => {
+        showSlowDetail(ring.name, sec.name, ring.cells[sec.name]);
+      });
+    });
+  });
+
+  /* 同心圆 */
+  [40, 130, 230, 340].forEach(r => {
+    el('circle', {
+      cx: CX, cy: CY, r,
+      fill: 'none',
+      stroke: 'rgba(240,171,252,.18)',
+      'stroke-width': r === 340 ? 1.5 : 1
+    }, svg);
+  });
+
+  /* 径向线 */
+  [-30, 90, 210].forEach(a => {
+    const [x1, y1] = polar(40, a);
+    const [x2, y2] = polar(340, a);
+    el('line', {
+      x1, y1, x2, y2,
+      stroke: 'rgba(240,171,252,.14)',
+      'stroke-width': 1,
+      'stroke-dasharray': '3 5'
+    }, svg);
+  });
+
+  /* 环层标签 */
+  SLOW_RINGS.forEach(ring => {
+    const [lx, ly] = polar(ring.rMid, 90);
+    el('circle', {
+      cx: lx, cy: ly, r: 13,
+      fill: '#0a0e17',
+      stroke: 'rgba(240,171,252,.3)',
+      'stroke-width': 1
+    }, svg);
+    txt(svg, lx, ly + 1, ring.name, {
+      'font-size': 9.5, 'font-weight': 700,
+      fill: '#c9a8d4', 'letter-spacing': 1
+    });
+  });
+
+  /* 单元格文字 */
+  SLOW_RINGS.forEach(ring => {
+    SECTORS.forEach(sec => {
+      const cell = ring.cells[sec.name];
+      const [x, y] = polar(ring.rMid, sec.mid);
+      txt(svg, x, y - 11, cell.title, {
+        'font-size': 14, 'font-weight': 700,
+        fill: '#f5d0fe', 'letter-spacing': 1
+      });
+      txt(svg, x, y + 11, cell.sub, {
+        'font-size': 11, fill: 'rgba(245,208,254,.5)', 'letter-spacing': .5
+      });
+    });
+  });
+
+  /* 扇区名 */
+  SECTORS.forEach(sec => {
+    const [x, y] = polar(370, sec.mid);
+    txt(svg, x, y, sec.name, {
+      'font-size': 20, 'font-weight': 800,
+      fill: '#f0abfc', 'letter-spacing': 4
+    });
+  });
+
+  /* 中心 */
+  el('circle', {
+    cx: CX, cy: CY, r: 24,
+    fill: 'rgba(240,171,252,.06)',
+    stroke: 'rgba(240,171,252,.25)',
+    'stroke-width': 1
+  }, svg);
+  txt(svg, CX, CY + 1, '慢好', {
+    'font-size': 11, 'font-weight': 700,
+    fill: '#f0abfc', 'letter-spacing': 2
+  });
+}
+
+function showSlowDetail(ringName, sectorName, cell) {
+  const panel = document.getElementById('slowDetail');
+  if (!panel) return;
+  panel.style.borderColor = 'rgba(240,171,252,.45)';
+  panel.innerHTML = `
+    <div class="slow-tag">${ringName} · ${sectorName}</div>
+    <h3 style="color:#f0abfc;">${cell.title}</h3>
+    <ul>${cell.items.map(i => `<li>${i}</li>`).join('')}</ul>
+  `;
+}
+
+/* ================================================================
+   标签切换
+   ================================================================ */
+function initTabs() {
+  const btns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const target = document.getElementById('panel-' + btn.dataset.tab);
+      if (target) target.classList.add('active');
+
+      if (btn.dataset.tab === 'rings') renderRings();
+      if (btn.dataset.tab === 'network') renderNetwork();
+      if (btn.dataset.tab === 'slow') renderSlowRings();
+    });
+  });
+}
+
+/* ================================================================
+   初始化
+   ================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderRings();
+  renderSlowRings();
+  renderNetwork();
+  initMatrix();
+  initTabs();
+});
+
+/* 窗口尺寸变化时重新渲染 */
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    const active = document.querySelector('.tab-panel.active');
+    if (!active) return;
+    if (active.id === 'panel-rings') renderRings();
+    if (active.id === 'panel-network') renderNetwork();
+    if (active.id === 'panel-slow') renderSlowRings();
+  }, 200);
+});
+</script>
+
+</body>
+</html>
