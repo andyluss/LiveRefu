@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四环螺旋 · 慢好三生</title>
+<meta name="description" content="四环螺旋：资源、方法、价值、反馈沿时间轴盘旋。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.stage canvas{display:block;width:100%;height:560px;outline:none}
+.canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
+.stage.no3d .canvas-fallback{display:grid}
+.chip-row{display:flex;gap:5px;flex-wrap:wrap}
+.chip-row button{font:9px var(--mono);border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:5px 7px;cursor:pointer}
+.chip-row button[aria-pressed="true"]{border-color:var(--teal);color:var(--teal);background:var(--teal2)}
+.phase-list{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.phase-list button{border:0;border-left:2px solid var(--line);background:transparent;color:var(--body);font:10px var(--sans);padding:4px 6px;text-align:left;cursor:pointer}
+.phase-list button:hover{border-color:var(--teal);color:var(--teal)}
+.phase-list button.on{border-color:var(--orange);color:var(--ink);background:var(--orange2)}
+.helix-copy{font-size:13px;color:var(--body);min-height:84px}
+.four{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px}
+.four div{border:1px solid var(--line);padding:6px;font-size:10px;color:var(--body)}
+.four b{display:block;font:8px var(--mono);color:var(--muted);letter-spacing:.08em}
+</style>
+</head>
+<body data-page="slowgood-helix">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 慢好三生</small></a><span class="lab-badge">APPLICATION STUDY</span>
+  <nav class="topnav"><a href="../index.html">实验台</a><a href="时空织机.html">← 时空织机</a><a href="树网星丛.html">下一个：树网星丛</a><a href="README.md">README</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">慢好三生</a> / <span>四环螺旋</span></div>
+  <section class="hero" style="padding-bottom:14px">
+    <div><p class="eyebrow">slow good / four-loop helix</p><h1>闭环不是圆圈，<br><em>是沿时间盘旋的螺旋。</em><span>资源 → 方法 → 价值 → 反馈，每一圈都比上一圈多一层时间。</span></h1><p class="lede">四环闭环在平面里容易被画成四个箭头；3D 螺旋把“下一轮从哪里开始”变成空间问题：反馈回到资源时，已经不在原来的高度了。</p></div>
+    <aside class="hero-card"><b>Y</b>时间层 / 日 · 月 · 季 · 年<br><b>HELIX</b>3 条生命线 × 4 个闭环阶段<br><b>WATCH</b>反馈是否真的回到资源</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage" id="stage"><canvas id="scene" aria-label="3D 四环螺旋：可拖拽旋转、滚轮缩放"></canvas><div class="canvas-fallback">当前浏览器无法初始化 3D 画布；请使用右侧阶段列表。</div></div>
+      <div class="toolbar"><div class="chip-row" id="times" role="group" aria-label="时间层"><button type="button" data-time="0" aria-pressed="true">日</button><button type="button" data-time="1" aria-pressed="false">月</button><button type="button" data-time="2" aria-pressed="false">季</button><button type="button" data-time="3" aria-pressed="false">年</button></div><div class="chip-row" id="domains" role="group" aria-label="三生"><button type="button" data-domain="survival" aria-pressed="true">生存</button><button type="button" data-domain="life" aria-pressed="false">生活</button><button type="button" data-domain="production" aria-pressed="false">生产</button></div><button class="btn" type="button" id="auto">自动旋转：开</button><button class="btn ghost" type="button" id="reset">复位</button></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">COORD / 日 · 生存 · 资源</div>
+      <div class="big" id="phase" style="color:var(--resource)">资源</div>
+      <p class="helix-copy" id="copy">个人生存的起点：睡眠、体力、应急金与基本技能。它不是“投入”，而是下一轮能否开始的地基。</p>
+      <dl class="kv"><dt>时间</dt><dd id="timeName">日 / 个人</dd><dt>三生</dt><dd id="domainName">生存</dd><dt>阶段</dt><dd id="phaseName">资源</dd></dl>
+      <div class="four" id="four"></div>
+      <div class="hr" style="margin:14px 0"></div>
+      <div class="small">PHASES</div>
+      <ul class="phase-list" id="phases"></ul>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>把四环闭环沿时间轴盘旋，是否能让“反馈回到资源时已换了一层”变成可感的空间事实？</p></div>
+    <div class="panel"><h3>危险</h3><p>螺旋会让不同轮的同一阶段看起来相邻；必须保留时间层与阶段标签。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>四环螺旋；反馈回流；时间层与闭环阶段的联合导航。</p></div>
+  </div>
+  <footer class="footer"><span>Slow Good · Four-Loop Helix · simulated</span><span><a href="index.html">← 模型索引</a> · <a href="树网星丛.html">下一个 →</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+<script src="../3d/engine3d.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('scene');
+  if(!window.Space3D){document.getElementById('stage').classList.add('no3d');return}
+  var r=new Space3D.Renderer(canvas);r.camera.pitch=.4;r.camera.distance=25;r.camera.auto=true;r.camera.target=[0,0,0];
+  var times=[{name:'日',sub:'个人',y:-6,r:5.5},{name:'月',sub:'团队',y:-2,r:6.5},{name:'季',sub:'组织',y:2,r:7.5},{name:'年',sub:'社会',y:6,r:8.5}];
+  var domains=[{id:'survival',name:'生存',color:'survival',base:0},{id:'life',name:'生活',color:'life',base:2.09},{id:'production',name:'生产',color:'production',base:4.18}];
+  var phases=[{id:'res',name:'资源',color:'resource'},{id:'method',name:'方法',color:'method'},{id:'value',name:'价值',color:'value'},{id:'feedback',name:'反馈',color:'feedback'}];
+  var cells={
+    '0-survival':{copy:'个人生存的起点：睡眠、体力、应急金与基本技能。它不是“投入”，而是下一轮能否开始的地基。',res:'睡眠 / 体力 / 应急金',meth:'规律 / 边界 / 体检',val:'安全与韧性',fb:'每日状态'},
+    '0-life':{copy:'个人生活的资源是时间、关系与注意力；它们比钱更难看见，也更容易被挤掉。',res:'时间 / 关系 / 注意力',meth:'留白 / 表达 / 求助',val:'幸福感与意义',fb:'每周感受'},
+    '0-production':{copy:'个人生产的资源是技能、时间与作品；方法决定它们是否能复利。',res:'技能 / 时间 / 作品',meth:'学习 / 创作 / 理财',val:'收入与成长',fb:'每周产出'},
+    '1-survival':{copy:'家庭/团队的生存资源是应急金、照护与基本信任；方法必须让风险被共同看见。',res:'家庭应急金 / 照护',meth:'共同规则 / 分工',val:'安全感与信任',fb:'月度复盘'},
+    '1-life':{copy:'共同生活的资源是共同时间与空间；方法需要对话、仪式与冲突处理。',res:'共同时间 / 空间',meth:'对话 / 仪式 / 分工',val:'归属与亲密',fb:'月度对话'},
+    '1-production':{copy:'团队生产的资源是共同资源与技能；方法决定协作是放大还是内耗。',res:'共同资源 / 技能',meth:'协商 / 协作 / 复盘',val:'共同价值与收入',fb:'项目复盘'},
+    '2-survival':{copy:'组织/社区的生存资源是现金流、供应链与人才；方法必须包含演练与预警。',res:'现金流 / 供应链 / 人才',meth:'风险清单 / 演练',val:'组织韧性',fb:'季度审计'},
+    '2-life':{copy:'组织生活的资源是文化、福利与关系；方法要让心理安全成为制度。',res:'文化 / 福利 / 关系',meth:'倾听 / 认可 / 参与',val:'归属与心理安全',fb:'季度脉搏'},
+    '2-production':{copy:'组织生产的资源是产品、运营与创新；方法决定价值是否能被公共地交换。',res:'产品 / 运营 / 创新',meth:'流程 / 实验 / 治理',val:'价值与增长',fb:'季度评审'},
+    '3-survival':{copy:'社会/生态的生存资源是医疗、粮食、能源与气候；方法必须处理代际外部性。',res:'医疗 / 粮食 / 能源',meth:'公共制度 / 预警',val:'底线保障',fb:'年度评估'},
+    '3-life':{copy:'社会生活的资源是教育、社保、文化与社区；方法要让多数人有能力过值得过的生活。',res:'教育 / 社保 / 文化',meth:'公共空间 / 参与',val:'信任与多样',fb:'年度 / 代际'},
+    '3-production':{copy:'社会生产的资源是产业、基建、科技与治理；方法决定长期能力是否被维护。',res:'产业 / 基建 / 科技',meth:'政策 / 协作 / 投资',val:'公共价值',fb:'年度 / 代际'}
+  };
+  var selected={time:0,domain:'survival',phase:'res'};
+  function color(id){return id==='survival'?r.colors.orange:id==='life'?r.colors.blue:r.colors.teal}
+  function phaseColor(id){return id==='res'?r.colors.blue:id==='method'?r.colors.gold:id==='value'?r.colors.teal:r.colors.orange}
+  function pos(t,d,p){
+    var T=times[t],D=domains[d];
+    var a=D.base+p*.62+t*.28;
+    var rad=T.r+p*.24;
+    return [Math.cos(a)*rad,T.y+p*.32,Math.sin(a)*rad];
+  }
+  function render(){
+    times.forEach(function(T,ti){
+      var pts=[];for(var i=0;i<=64;i++){var a=i/64*Math.PI*2;pts.push([Math.cos(a)*T.r,T.y,Math.sin(a)*T.r])}
+      for(var j=0;j<pts.length-1;j++)r.line(pts[j],pts[j+1],{stroke:r.colors.line2,alpha:.16,lineWidth:1});
+      r.text([-T.r-1,T.y+.4,0],T.name+' / '+T.sub,{fill:r.colors.muted,font:'9px Menlo, monospace'});
+    });
+    domains.forEach(function(D,di){
+      var pts=[];for(var ti=0;ti<times.length;ti++)for(var k=0;k<=12;k++)pts.push(pos(ti,di,k/4));
+      var active=D.id===selected.domain;
+      for(var i=0;i<pts.length-1;i++)r.line(pts[i],pts[i+1],{stroke:color(D.id),alpha:active?.85:.10,lineWidth:active?2.1:1});
+    });
+    // feedback to resource per time/domain
+    times.forEach(function(T,ti){domains.forEach(function(D,di){
+      var a=pos(ti,di,3),b=pos(ti,di,0);
+      if(ti===selected.time&&D.id===selected.domain)r.line(a,b,{stroke:r.colors.orange,alpha:.7,lineWidth:1.4,dash:[4,5]});
+    })});
+    times.forEach(function(T,ti){domains.forEach(function(D,di){phases.forEach(function(P,pi){
+      var p=pos(ti,di,pi);var sel=ti===selected.time&&D.id===selected.domain&&P.id===selected.phase;
+      r.dot(p,{fill:sel?phaseColor(P.id):r.colors.panel,stroke:phaseColor(P.id),r:sel?7:3.6,lineWidth:sel?2.5:1.2});
+      if(sel)r.text([p[0],p[1]+1.1,p[2]],T.name+' · '+D.name+' · '+P.name,{fill:r.colors.ink,font:'600 10px Menlo, monospace'});
+    })})});
+    r.text([0,times[3].y+2.2,0],'Y = 时间 → 反馈回到资源时，已经换了高度',{fill:r.colors.muted,font:'9px Menlo, monospace',align:'center'});
+  }
+  function panel(){
+    var T=times[selected.time],D=domains.find(function(x){return x.id===selected.domain}),P=phases.find(function(x){return x.id===selected.phase}),c=cells[selected.time+'-'+selected.domain];
+    document.getElementById('kicker').textContent='COORD / '+T.name+' · '+D.name+' · '+P.name;document.getElementById('phase').textContent=P.name;document.getElementById('phase').style.color=phaseColor(P.id);
+    document.getElementById('copy').textContent=c.copy;document.getElementById('timeName').textContent=T.name+' / '+T.sub;document.getElementById('domainName').textContent=D.name;document.getElementById('phaseName').textContent=P.name;
+    document.getElementById('four').innerHTML=[['资源',c.res],['方法',c.meth],['价值',c.val],['反馈',c.fb]].map(function(x){return '<div><b>'+x[0]+'</b>'+x[1]+'</div>'}).join('');
+    document.querySelectorAll('#times button').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.time)===selected.time))});
+    document.querySelectorAll('#domains button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.domain===selected.domain))});
+    document.querySelectorAll('#phases button').forEach(function(b){b.classList.toggle('on',b.dataset.phase===selected.phase)});location.hash=selected.time+'-'+selected.domain+'-'+selected.phase;
+  }
+  document.querySelectorAll('#times button').forEach(function(b){b.onclick=function(){selected.time=Number(b.dataset.time);panel()}});
+  document.querySelectorAll('#domains button').forEach(function(b){b.onclick=function(){selected.domain=b.dataset.domain;panel()}});
+  phases.forEach(function(P,pi){var b=document.createElement('button');b.type='button';b.dataset.phase=P.id;b.textContent=P.name;b.onclick=function(){selected.phase=P.id;panel()};document.getElementById('phases').appendChild(b)});
+  document.getElementById('auto').onclick=function(){r.camera.auto=!r.camera.auto;this.textContent='自动旋转：'+(r.camera.auto?'开':'关')};
+  document.getElementById('reset').onclick=function(){r.camera.reset();r.camera.auto=false;this.textContent='自动旋转：关'};
+  panel();r.loop(render);
+})();
+</script>
+</body>
+</html>

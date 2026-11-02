@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>树网星丛 · 慢好三生</title>
+<meta name="description" content="树形骨架 + 网状血流：根、干、枝、叶在 3D 中展开。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.stage canvas{display:block;width:100%;height:560px;outline:none}
+.canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
+.stage.no3d .canvas-fallback{display:grid}
+.node-list5{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.node-list5 button{border:0;border-left:2px solid var(--line);background:transparent;color:var(--body);font:10px var(--sans);padding:4px 6px;text-align:left;cursor:pointer}
+.node-list5 button:hover{border-color:var(--teal);color:var(--teal)}
+.node-list5 button.on{border-color:var(--orange);color:var(--ink);background:var(--orange2)}
+.tree-copy{font-size:13px;color:var(--body);min-height:80px}
+</style>
+</head>
+<body data-page="slowgood-tree">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 慢好三生</small></a><span class="lab-badge">APPLICATION STUDY</span>
+  <nav class="topnav"><a href="../index.html">实验台</a><a href="四环螺旋.html">← 四环螺旋</a><a href="时空立方.html">下一个：时空立方</a><a href="README.md">README</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">慢好三生</a> / <span>树网星丛</span></div>
+  <section class="hero" style="padding-bottom:14px">
+    <div><p class="eyebrow">slow good / tree + network</p><h1>树是骨架，<br><em>网是血流。</em><span>根 → 干 → 枝 → 叶；跨圈、跨生的连接让树变成活的。</span></h1><p class="lede">三生三圈不是三个抽屉，而是一棵有经脉的树：树形给你分解与责任，网状给你资源流、价值流、信任流。3D 纵深让“跨生连接”不再被压成同一层。</p></div>
+    <aside class="hero-card"><b>TREE</b>根 / 干 / 枝 / 叶<br><b>NET</b>跨生与跨圈连接<br><b>WATCH</b>网线是否被树形遮住</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage" id="stage"><canvas id="scene" aria-label="3D 树网星丛：可拖拽旋转、滚轮缩放"></canvas><div class="canvas-fallback">当前浏览器无法初始化 3D 画布；请使用右侧节点列表。</div></div>
+      <div class="toolbar"><button class="btn" type="button" id="net">网线：开</button><button class="btn" type="button" id="auto">自动旋转：开</button><button class="btn ghost" type="button" id="reset">复位</button><span class="small">拖拽旋转 · 滚轮缩放</span></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">NODE / 个人 · 生存</div>
+      <div class="big" id="title" style="font-size:30px;color:var(--survival)">生存</div>
+      <p class="tree-copy" id="copy">树根是底线：健康、安全、现金流。没有根，枝叶只是悬空的项目。</p>
+      <dl class="kv"><dt>圈层</dt><dd id="ring">个人</dd><dt>三生</dt><dd id="domain">生存</dd><dt>位置</dt><dd id="where">枝 · 内圈</dd></dl>
+      <div class="hr" style="margin:14px 0"></div>
+      <div class="small">NODES</div>
+      <ul class="node-list5" id="list"></ul>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>树形与网状同时存在时，3D 纵深是否能让“骨架”和“血流”同时可读，而不是互相遮挡？</p></div>
+    <div class="panel"><h3>危险</h3><p>树形天然有中心，容易把根/干读成权力；网线太多会变成毛线团。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>树网双编码；跨生连接；根/干/枝/叶的层级退路。</p></div>
+  </div>
+  <footer class="footer"><span>Slow Good · Tree-Net Constellation · simulated</span><span><a href="index.html">← 模型索引</a> · <a href="时空立方.html">下一个 →</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+<script src="../3d/engine3d.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('scene');
+  if(!window.Space3D){document.getElementById('stage').classList.add('no3d');return}
+  var r=new Space3D.Renderer(canvas);r.camera.pitch=.36;r.camera.distance=24;r.camera.auto=true;r.camera.target=[0,1,0];
+  var rings=[{name:'个人',r:4.5,y:1.8},{name:'团队',r:6.2,y:2.6},{name:'组织',r:8,y:3.4},{name:'社会',r:9.8,y:4.2}];
+  var domains=[{id:'survival',name:'生存',color:'survival',base:0},{id:'life',name:'生活',color:'life',base:2.09},{id:'production',name:'生产',color:'production',base:4.18}];
+  var cells={
+    '0-survival':{copy:'树根是底线：健康、安全、现金流。没有根，枝叶只是悬空的项目。',res:'睡眠 / 体力 / 应急金',meth:'规律 / 边界 / 体检',val:'安全与韧性',fb:'每日状态',where:'根 · 内圈'},
+    '0-life':{copy:'关系与意义是树的汁液：它们不直接结果，但决定树是否愿意继续长。',res:'时间 / 关系 / 注意力',meth:'留白 / 表达 / 求助',val:'幸福感与意义',fb:'每周感受',where:'枝 · 内圈'},
+    '0-production':{copy:'个人作品是最小的果：它需要技能，也需要被生活供养。',res:'技能 / 时间 / 作品',meth:'学习 / 创作 / 理财',val:'收入与成长',fb:'每周产出',where:'叶 · 内圈'},
+    '1-survival':{copy:'家庭/团队的根是共同底线：现金流、照护、安全与信任。',res:'家庭应急金 / 照护',meth:'共同规则 / 分工',val:'安全感与信任',fb:'月度复盘',where:'根 · 团队'},
+    '1-life':{copy:'共同生活是树的年轮：仪式、对话与冲突处理让它有记忆。',res:'共同时间 / 空间',meth:'对话 / 仪式 / 分工',val:'归属与亲密',fb:'月度对话',where:'枝 · 团队'},
+    '1-production':{copy:'团队生产是共生的枝：共同项目、收入、学习与声誉。',res:'共同资源 / 技能',meth:'协商 / 协作 / 复盘',val:'共同价值与收入',fb:'项目复盘',where:'叶 · 团队'},
+    '2-survival':{copy:'组织的根是制度韧性：现金流、合规、供应链与危机响应。',res:'现金流 / 供应链 / 人才',meth:'风险清单 / 演练',val:'组织韧性',fb:'季度审计',where:'根 · 组织'},
+    '2-life':{copy:'组织生活是树荫：文化、福利、关系与心理安全。',res:'文化 / 福利 / 关系',meth:'倾听 / 认可 / 参与',val:'归属与心理安全',fb:'季度脉搏',where:'枝 · 组织'},
+    '2-production':{copy:'组织生产是树干上的大枝：产品、运营与创新。',res:'产品 / 运营 / 创新',meth:'流程 / 实验 / 治理',val:'价值与增长',fb:'季度评审',where:'叶 · 组织'},
+    '3-survival':{copy:'社会/生态的根是底线保障：医疗、粮食、能源、气候与公共安全。',res:'医疗 / 粮食 / 能源',meth:'公共制度 / 预警',val:'底线保障',fb:'年度评估',where:'根 · 社会'},
+    '3-life':{copy:'社会生活是森林的气候：教育、社保、文化与社区。',res:'教育 / 社保 / 文化',meth:'公共空间 / 参与',val:'信任与多样',fb:'年度 / 代际',where:'枝 · 社会'},
+    '3-production':{copy:'社会生产是整片林的果实：产业、基建、科技与治理。',res:'产业 / 基建 / 科技',meth:'政策 / 协作 / 投资',val:'公共价值',fb:'年度 / 代际',where:'叶 · 社会'}
+  };
+  var selected='0-survival',showNet=true;
+  function color(id){return id==='survival'?r.colors.orange:id==='life'?r.colors.blue:r.colors.teal}
+  function node(ri,di){var a=domains[di].base+ri*.28;var R=rings[ri];return[Math.cos(a)*R.r,R.y,Math.sin(a)*R.r]}
+  function root(){return[0,-4.8,0]}
+  function trunk(di){var a=domains[di].base;return[Math.cos(a)*1.6,-1.0,Math.sin(a)*1.6]}
+  function render(){
+    var rt=root();
+    rings.forEach(function(R,ri){var pts=[];for(var i=0;i<=64;i++){var a=i/64*Math.PI*2;pts.push([Math.cos(a)*R.r,R.y,Math.sin(a)*R.r])}for(var j=0;j<pts.length-1;j++)r.line(pts[j],pts[j+1],{stroke:r.colors.line2,alpha:.1,lineWidth:1});r.text([-R.r-1,R.y+.3,0],R.name,{fill:r.colors.muted,font:'8px Menlo, monospace'})});
+    domains.forEach(function(d,di){
+      var t=trunk(di);r.line(rt,t,{stroke:r.colors.gold,alpha:.7,lineWidth:2});r.dot(t,{fill:r.colors.panel,stroke:color(d.id),r:5,lineWidth:2});r.text([t[0],t[1]+.9,t[2]],d.name,{fill:r.colors.ink,font:'10px Menlo, monospace'});
+      rings.forEach(function(R,ri){var n=node(ri,di);r.line(t,n,{stroke:color(d.id),alpha:.4,lineWidth:1.2});
+        var key=ri+'-'+d.id,sel=key===selected;
+        r.dot(n,{fill:sel?color(d.id):r.colors.panel,stroke:color(d.id),r:sel?7:4,lineWidth:sel?2.4:1.4});
+        if(sel)r.text([n[0],n[1]+1,n[2]],R.name+' · '+d.name,{fill:r.colors.ink,font:'600 11px Menlo, monospace'});
+      });
+    });
+    if(showNet){
+      var edges=[[[2,0],[1,1]],[[3,0],[2,1]],[[1,1],[0,2]],[[3,1],[2,2]],[[0,2],[1,0]],[[2,2],[3,0]],[[1,0],[3,2]],[[0,1],[2,0]]];
+      edges.forEach(function(e){var a=node(e[0][0],e[0][1]),b=node(e[1][0],e[1][1]);r.line(a,b,{stroke:r.colors.orange,alpha:.22,lineWidth:1,dash:[3,6]})});
+    }
+    r.text([0,6.3,0],'根 → 干 → 枝 → 叶 / 虚线 = 跨生网络',{fill:r.colors.muted,font:'9px Menlo, monospace',align:'center'});
+  }
+  function panel(){
+    var p=selected.split('-'),ri=Number(p[0]),di=domains.findIndex(function(x){return x.id===p[1]}),c=cells[selected],d=domains[di],R=rings[ri];
+    document.getElementById('kicker').textContent='NODE / '+R.name+' · '+d.name;document.getElementById('title').textContent=d.name;document.getElementById('title').style.color=color(d.id);document.getElementById('copy').textContent=c.copy;
+    document.getElementById('ring').textContent=R.name;document.getElementById('domain').textContent=d.name;document.getElementById('where').textContent=c.where;
+    document.querySelectorAll('#list button').forEach(function(b){b.classList.toggle('on',b.dataset.key===selected)});location.hash=selected;
+  }
+  rings.forEach(function(R,ri){domains.forEach(function(d,di){var b=document.createElement('button');b.type='button';b.dataset.key=ri+'-'+d.id;b.textContent=R.name+' · '+d.name;b.onclick=function(){selected=ri+'-'+d.id;panel()};document.getElementById('list').appendChild(b)})});
+  document.getElementById('net').onclick=function(){showNet=!showNet;this.textContent='网线：'+(showNet?'开':'关')};
+  document.getElementById('auto').onclick=function(){r.camera.auto=!r.camera.auto;this.textContent='自动旋转：'+(r.camera.auto?'开':'关')};
+  document.getElementById('reset').onclick=function(){r.camera.reset();r.camera.auto=false;this.textContent='自动旋转：关';selected='0-survival';panel()};
+  var init=location.hash.slice(1);if(cells[init])selected=init;
+  panel();r.loop(render);
+})();
+</script>
+</body>
+</html>

@@ -43,7 +43,7 @@ function spacetimePages(): string[] {
   const dir = join(ROOT, 'design/lab/spacetime')
   const pages = ['design/lab/spacetime/index.html']
   for (const e of readdirSync(dir, { withFileTypes: true })) {
-    if (e.isDirectory() && e.name !== '3d' && existsSync(join(dir, e.name, 'index.html'))) {
+    if (e.isDirectory() && e.name !== '3d' && e.name !== '慢好三生Demo' && existsSync(join(dir, e.name, 'index.html'))) {
       pages.push(`design/lab/spacetime/${e.name}/index.html`)
     }
   }

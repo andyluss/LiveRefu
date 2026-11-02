@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>时空立方 · 慢好三生</title>
+<meta name="description" content="时空立方：三生平面 × 时间轴 × 空间圈层的 3D 坐标格。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.stage canvas{display:block;width:100%;height:560px;outline:none}
+.canvas-fallback{position:absolute;inset:0;display:none;place-items:center;font:10px var(--mono);color:var(--muted)}
+.stage.no3d .canvas-fallback{display:grid}
+.cube-controls{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.cube-controls button{font:9px var(--mono);border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:5px 7px;cursor:pointer}
+.cube-controls button[aria-pressed="true"]{border-color:var(--teal);color:var(--teal);background:var(--teal2)}
+.cube-copy{font-size:13px;color:var(--body);min-height:80px}
+.cube-list{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.cube-list button{border:0;border-left:2px solid var(--line);background:transparent;color:var(--body);font:10px var(--sans);padding:4px 6px;text-align:left;cursor:pointer}
+.cube-list button:hover{border-color:var(--teal);color:var(--teal)}
+.cube-list button.on{border-color:var(--orange);color:var(--ink);background:var(--orange2)}
+</style>
+</head>
+<body data-page="slowgood-cube">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><i></i>Spacetime <small>LAB / 慢好三生</small></a><span class="lab-badge">APPLICATION STUDY</span>
+  <nav class="topnav"><a href="../index.html">实验台</a><a href="树网星丛.html">← 树网星丛</a><a href="index.html">模型索引</a><a href="README.md">README</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <a href="index.html">慢好三生</a> / <span>时空立方</span></div>
+  <section class="hero" style="padding-bottom:14px">
+    <div><p class="eyebrow">slow good / spacetime cube</p><h1>三生不是三列，<br><em>是三个高度上的平面。</em><span>X = 空间圈层；Z = 时间尺度；Y = 生存 / 生活 / 生产。</span></h1><p class="lede">把三生三圈 × 四环 × 时间放进一个 3D 立方：每个格子是一个坐标，三个高度是三种生命域。你可以只读一个平面，也可以看同一格在三个平面上的关系。</p></div>
+    <aside class="hero-card"><b>X</b>个人 / 团队 / 组织 / 社会<br><b>Z</b>日 / 月 / 季 / 年<br><b>Y</b>生存 / 生活 / 生产<br><b>WATCH</b>三个平面的同一格是否真的一致</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage" id="stage"><canvas id="scene" aria-label="3D 时空立方：可拖拽旋转、滚轮缩放"></canvas><div class="canvas-fallback">当前浏览器无法初始化 3D 画布；请使用右侧格子列表。</div></div>
+      <div class="cube-controls" id="domains" role="group" aria-label="三生平面"><button type="button" data-domain="survival" aria-pressed="true">生存平面</button><button type="button" data-domain="life" aria-pressed="false">生活平面</button><button type="button" data-domain="production" aria-pressed="false">生产平面</button></div>
+      <div class="toolbar" style="margin-top:4px"><div class="cube-controls" id="spaces" role="group" aria-label="空间圈层"><button type="button" data-space="0" aria-pressed="true">个人</button><button type="button" data-space="1" aria-pressed="false">团队</button><button type="button" data-space="2" aria-pressed="false">组织</button><button type="button" data-space="3" aria-pressed="false">社会</button></div><div class="cube-controls" id="times" role="group" aria-label="时间"><button type="button" data-time="0" aria-pressed="true">日</button><button type="button" data-time="1" aria-pressed="false">月</button><button type="button" data-time="2" aria-pressed="false">季</button><button type="button" data-time="3" aria-pressed="false">年</button></div><button class="btn" type="button" id="auto">自动旋转：开</button><button class="btn ghost" type="button" id="reset">复位</button></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">COORD / 生存 · 个人 · 日</div>
+      <div class="big" id="title" style="font-size:30px;color:var(--survival)">生存</div>
+      <p class="cube-copy" id="copy">生存平面的内圈、日尺度：健康、安全、现金流。三个平面共享同一个空间/时间坐标，但问题不同。</p>
+      <dl class="kv"><dt>平面</dt><dd id="domain">生存</dd><dt>空间</dt><dd id="space">个人</dd><dt>时间</dt><dd id="timeName">日</dd></dl>
+      <div class="hr" style="margin:14px 0"></div>
+      <div class="small">SAME CELL / THREE PLANES</div>
+      <p id="triad" style="font-size:11px;color:var(--body);margin:5px 0 0">生存问“底线是否稳”，生活问“是否值得”，生产问“是否可交换”。</p>
+      <div class="hr" style="margin:14px 0"></div>
+      <div class="small">CELLS</div>
+      <ul class="cube-list" id="list"></ul>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>3D 立方能否让“同一格在三个平面上有不同含义”被看见，而不是把三生压成一张表？</p></div>
+    <div class="panel"><h3>危险</h3><p>三个平面会遮挡；Y 轴会被误读成“等级”。必须标明这是三个生命域，不是高低。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>时空立方；同一坐标的三平面联动；切片阅读。</p></div>
+  </div>
+  <footer class="footer"><span>Slow Good · Spacetime Cube · simulated</span><span><a href="index.html">← 模型索引</a> · <a href="README.md">README</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+<script src="../3d/engine3d.js"></script>
+<script>
+(function(){
+  var canvas=document.getElementById('scene');
+  if(!window.Space3D){document.getElementById('stage').classList.add('no3d');return}
+  var r=new Space3D.Renderer(canvas);r.camera.pitch=.5;r.camera.distance=26;r.camera.auto=true;r.camera.target=[0,0,0];
+  var spaces=[{name:'个人',r:0},{name:'团队',r:1},{name:'组织',r:2},{name:'社会',r:3}];
+  var times=[{name:'日',z:-4.5},{name:'月',z:-1.5},{name:'季',z:1.5},{name:'年',z:4.5}];
+  var domains=[{id:'survival',name:'生存',y:-4,color:'survival'},{id:'life',name:'生活',y:0,color:'life'},{id:'production',name:'生产',y:4,color:'production'}];
+  var cells={
+    '0-survival':{copy:'生存平面的内圈、日尺度：健康、安全、现金流。三个平面共享同一个空间/时间坐标，但问题不同。',res:'睡眠 / 体力 / 应急金',meth:'规律 / 边界 / 体检',val:'安全与韧性',fb:'每日状态'},
+    '0-life':{copy:'生活平面的内圈、日尺度：关系、注意力与意义。它不直接产生收入，但决定你是否愿意继续。',res:'时间 / 关系 / 注意力',meth:'留白 / 表达 / 求助',val:'幸福感与意义',fb:'每周感受'},
+    '0-production':{copy:'生产平面的内圈、日尺度：技能、作品与收入。它需要生活的供养，也需要被交换。',res:'技能 / 时间 / 作品',meth:'学习 / 创作 / 理财',val:'收入与成长',fb:'每周产出'},
+    '1-survival':{copy:'团队尺度的生存：共同现金流、照护与基本信任。',res:'家庭应急金 / 照护',meth:'共同规则 / 分工',val:'安全感与信任',fb:'月度复盘'},
+    '1-life':{copy:'团队尺度的生活：共同时间、仪式与冲突处理。',res:'共同时间 / 空间',meth:'对话 / 仪式 / 分工',val:'归属与亲密',fb:'月度对话'},
+    '1-production':{copy:'团队尺度的生产：共同项目、收入、学习与声誉。',res:'共同资源 / 技能',meth:'协商 / 协作 / 复盘',val:'共同价值与收入',fb:'项目复盘'},
+    '2-survival':{copy:'组织尺度的生存：现金流、合规、供应链与危机响应。',res:'现金流 / 供应链 / 人才',meth:'风险清单 / 演练',val:'组织韧性',fb:'季度审计'},
+    '2-life':{copy:'组织尺度的生活：文化、福利、关系与心理安全。',res:'文化 / 福利 / 关系',meth:'倾听 / 认可 / 参与',val:'归属与心理安全',fb:'季度脉搏'},
+    '2-production':{copy:'组织尺度的生产：产品、运营与创新。',res:'产品 / 运营 / 创新',meth:'流程 / 实验 / 治理',val:'价值与增长',fb:'季度评审'},
+    '3-survival':{copy:'社会尺度的生存：医疗、粮食、能源、气候与公共安全。',res:'医疗 / 粮食 / 能源',meth:'公共制度 / 预警',val:'底线保障',fb:'年度评估'},
+    '3-life':{copy:'社会尺度的生活：教育、社保、文化与社区。',res:'教育 / 社保 / 文化',meth:'公共空间 / 参与',val:'信任与多样',fb:'年度 / 代际'},
+    '3-production':{copy:'社会尺度的生产：产业、基建、科技与治理。',res:'产业 / 基建 / 科技',meth:'政策 / 协作 / 投资',val:'公共价值',fb:'年度 / 代际'}
+  };
+  var selected={domain:'survival',space:0,time:0};
+  function color(id){return id==='survival'?r.colors.orange:id==='life'?r.colors.blue:r.colors.teal}
+  function pos(domain,sp,ti){return [(sp-1.5)*3,domain.y,(ti-1.5)*3]}
+  function plane(domain){
+    var c=color(domain.id);
+    for(var i=0;i<=4;i++){var p=(i-1.5)*3;r.line([-4.5,domain.y,p],[4.5,domain.y,p],{stroke:c,alpha:.24,lineWidth:1});r.line([p,domain.y,-4.5],[p,domain.y,4.5],{stroke:c,alpha:.24,lineWidth:1})}
+    r.poly([[-4.5,domain.y,-4.5],[4.5,domain.y,-4.5],[4.5,domain.y,4.5],[-4.5,domain.y,4.5]],{fill:c,alpha:.035});
+    r.text([-5,domain.y+.5,0],domain.name,{fill:c,font:'10px Menlo, monospace'});
+  }
+  function render(){
+    domains.forEach(plane);
+    // vertical triad for selected cell
+    var a=domains[0],b=domains[1],c=domains[2];
+    var p0=pos(a,selected.space,selected.time),p1=pos(b,selected.space,selected.time),p2=pos(c,selected.space,selected.time);
+    r.line(p0,p1,{stroke:r.colors.orange,alpha:.6,lineWidth:1.5,dash:[4,4]});r.line(p1,p2,{stroke:r.colors.orange,alpha:.6,lineWidth:1.5,dash:[4,4]});
+    domains.forEach(function(D){
+      spaces.forEach(function(S,si){times.forEach(function(T,ti){
+        var p=pos(D,si,ti);var sel=D.id===selected.domain&&si===selected.space&&ti===selected.time;
+        r.dot(p,{fill:sel?color(D.id):r.colors.panel,stroke:color(D.id),r:sel?6:3.2,lineWidth:sel?2.3:1.2});
+      })});
+    });
+    r.text([0,6.3,0],'X = 空间圈层 · Z = 时间 · Y = 三生平面',{fill:r.colors.muted,font:'9px Menlo, monospace',align:'center'});
+  }
+  function panel(){
+    var D=domains.find(function(x){return x.id===selected.domain}),c=cells[selected.space+'-'+selected.domain];
+    document.getElementById('kicker').textContent='COORD / '+D.name+' · '+spaces[selected.space].name+' · '+times[selected.time].name;
+    document.getElementById('title').textContent=D.name;document.getElementById('title').style.color=color(D.id);document.getElementById('copy').textContent=c.copy;
+    document.getElementById('domain').textContent=D.name;document.getElementById('space').textContent=spaces[selected.space].name;document.getElementById('timeName').textContent=times[selected.time].name;
+    document.getElementById('triad').textContent={survival:'生存问“底线是否稳”；生活问“是否值得”；生产问“是否可交换”。',life:'生活问“是否值得”；生存问“是否稳”；生产问“是否可持续”。',production:'生产问“是否可交换”；生存问“是否付得起代价”；生活问“是否值得”。'}[D.id];
+    document.querySelectorAll('#domains button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.domain===selected.domain))});
+    document.querySelectorAll('#spaces button').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.space)===selected.space))});
+    document.querySelectorAll('#times button').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.time)===selected.time))});
+    document.querySelectorAll('#list button').forEach(function(b){b.classList.toggle('on',b.dataset.key===selected.space+'-'+selected.domain)});location.hash=selected.space+'-'+selected.domain+'-'+selected.time;
+  }
+  document.querySelectorAll('#domains button').forEach(function(b){b.onclick=function(){selected.domain=b.dataset.domain;panel()}});
+  document.querySelectorAll('#spaces button').forEach(function(b){b.onclick=function(){selected.space=Number(b.dataset.space);panel()}});
+  document.querySelectorAll('#times button').forEach(function(b){b.onclick=function(){selected.time=Number(b.dataset.time);panel()}});
+  spaces.forEach(function(S,si){domains.forEach(function(D){var b=document.createElement('button');b.type='button';b.dataset.key=si+'-'+D.id;b.textContent=S.name+' · '+D.name;b.onclick=function(){selected.space=si;selected.domain=D.id;panel()};document.getElementById('list').appendChild(b)})});
+  document.getElementById('auto').onclick=function(){r.camera.auto=!r.camera.auto;this.textContent='自动旋转：'+(r.camera.auto?'开':'关')};
+  document.getElementById('reset').onclick=function(){r.camera.reset();r.camera.auto=false;this.textContent='自动旋转：关';selected={domain:'survival',space:0,time:0};panel()};
+  panel();r.loop(render);
+})();
+</script>
+</body>
+</html>

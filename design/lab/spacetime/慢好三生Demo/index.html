@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>慢好三生 · 空间模型索引</title>
+<meta name="description" content="慢好三生的五个空间直觉演示：三生罗盘、时空织机、四环螺旋、树网星丛、时空立方。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+.intro{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:34px;align-items:end;padding:44px 0 20px}
+.intro h1{font-size:clamp(38px,4.8vw,62px)}
+.index-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+.card{border:1px solid var(--line);background:var(--panel);text-decoration:none;color:var(--ink);display:block;transition:.16s}
+.card:hover{border-color:var(--teal);transform:translateY(-2px);color:var(--ink)}
+.card .top{height:100px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;background:var(--bg2)}
+.card .top svg{width:100%;height:100%;display:block}
+.card .body{padding:14px 16px 16px}
+.card .n{font:9px var(--mono);color:var(--orange);letter-spacing:.12em}
+.card h2{font-size:22px;margin:5px 0 4px}
+.card p{font-size:12px;color:var(--body);margin:0}
+.card .go{display:block;margin-top:9px;font:9px var(--mono);color:var(--teal)}
+.card.wide{grid-column:1/-1}.card.wide .top{height:88px}
+.orbit{height:250px;position:relative;border:1px solid var(--line2);background:var(--panel);overflow:hidden}
+.orbit .ring{position:absolute;left:50%;top:50%;border:1px solid var(--line);border-radius:50%;transform:translate(-50%,-50%)}
+.orbit .r1{width:80px;height:80px;border-color:var(--teal)}.orbit .r2{width:160px;height:160px;border-color:var(--orange);border-style:dashed}.orbit .r3{width:230px;height:230px}
+.orbit .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;background:var(--teal);box-shadow:0 0 24px color-mix(in srgb,var(--teal) 40%,transparent)}
+.orbit .tag{position:absolute;left:12px;bottom:12px;font:9px var(--mono);color:var(--muted)}
+@media(max-width:900px){.intro{grid-template-columns:1fr}.index-grid{grid-template-columns:1fr}.card.wide{grid-column:auto}}
+</style>
+</head>
+<body data-page="slowgood-index">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="../index.html"><i></i>Spacetime <small>LAB / 慢好三生</small></a><span class="lab-badge">APPLICATION STUDY</span>
+  <nav class="topnav"><a href="../index.html">实验台</a><a href="#cases">五个模型</a><a href="README.md">README</a><a href="../../HUB.html">设计 HUB</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../index.html">spacetime</a> / <span>慢好三生</span></div>
+  <section class="intro">
+    <div><p class="eyebrow">slow good / five spatial models</p><h1>三生不是三列，<br><em>是五个可以走进去的空间。</em><span>同心圆、时间层、闭环螺旋、树网星丛、时空立方。</span></h1><p class="lede">从「三生三圈四环」的文档出发，把责任半径、事务闭环与时间尺度做成可操作的空间模型。两个平面、三个 3D；每个都保留文字退路。</p></div>
+    <div class="orbit" aria-hidden="true"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core"></div><span class="tag">space × time × loop</span></div>
+  </section>
+  <section id="cases">
+    <p class="eyebrow">five instruments</p>
+    <h2>五个慢好三生模型</h2>
+    <p class="sub">先看平面，再进入纵深；3D 不是更高级，而是多一个需要被读懂的维度。</p>
+    <div class="index-grid">
+      <a class="card" href="三生罗盘.html"><div class="top"><svg viewBox="0 0 500 100" aria-hidden="true"><circle cx="250" cy="50" r="42" fill="none" stroke="var(--teal)" stroke-dasharray="2 5"/><circle cx="250" cy="50" r="27" fill="none" stroke="var(--orange)"/><circle cx="250" cy="50" r="12" fill="var(--teal)" opacity=".6"/><path d="M250 8 V92 M208 50 H292" stroke="var(--line2)" stroke-dasharray="2 5"/></svg></div><div class="body"><div class="n">01 / PLANE</div><h2>三生罗盘</h2><p>同心圆 = 责任半径；扇区 = 三生；中心 = 四环闭环。</p><span class="go">打开罗盘 →</span></div></a>
+      <a class="card" href="时空织机.html"><div class="top"><svg viewBox="0 0 500 100" aria-hidden="true"><g fill="none" stroke-width="1.5"><ellipse cx="250" cy="35" rx="120" ry="16" stroke="var(--line2)"/><ellipse cx="250" cy="55" rx="90" ry="13" stroke="var(--teal)"/><ellipse cx="250" cy="75" rx="60" ry="9" stroke="var(--orange)"/></g><path d="M130 35 L160 75 M370 35 L340 75" stroke="var(--gold)" stroke-dasharray="2 4"/></svg></div><div class="body"><div class="n">02 / 3D</div><h2>时空织机</h2><p>时间层 × 空间环 × 三生节点，看见反馈的延迟。</p><span class="go">进入织机 →</span></div></a>
+      <a class="card" href="四环螺旋.html"><div class="top"><svg viewBox="0 0 500 100" aria-hidden="true"><path d="M80 75 C150 5 190 95 260 25 S390 80 440 20" fill="none" stroke="var(--teal)" stroke-width="2"/><path d="M80 55 C150 -10 190 75 260 10 S390 60 440 0" fill="none" stroke="var(--orange)" stroke-dasharray="3 5"/><g fill="var(--gold)"><circle cx="140" cy="40" r="3"/><circle cx="260" cy="25" r="3"/><circle cx="380" cy="45" r="3"/></g></svg></div><div class="body"><div class="n">03 / 3D</div><h2>四环螺旋</h2><p>资源 → 方法 → 价值 → 反馈，沿时间轴盘旋。</p><span class="go">进入螺旋 →</span></div></a>
+      <a class="card" href="树网星丛.html"><div class="top"><svg viewBox="0 0 500 100" aria-hidden="true"><path d="M250 90 L250 65 M250 65 L120 30 M250 65 L250 20 M250 65 L380 30" stroke="var(--teal)" fill="none" stroke-width="2"/><path d="M120 30 L60 12 M120 30 L180 12 M380 30 L320 12 M380 30 L440 12" stroke="var(--line2)" fill="none"/><g fill="var(--orange)"><circle cx="250" cy="65" r="4"/><circle cx="120" cy="30" r="3"/><circle cx="380" cy="30" r="3"/></g></svg></div><div class="body"><div class="n">04 / 3D</div><h2>树网星丛</h2><p>树形骨架 + 网状血流：根 → 干 → 枝 → 叶。</p><span class="go">进入星丛 →</span></div></a>
+      <a class="card wide" href="时空立方.html"><div class="top"><svg viewBox="0 0 1000 88" aria-hidden="true"><g stroke="var(--line2)" fill="none"><path d="M220 70 L500 45 L780 70 L500 88Z"/><path d="M220 45 L500 20 L780 45 L500 70Z"/><path d="M220 20 L500 -5 L780 20 L500 45Z"/></g><g stroke="var(--teal)" fill="none"><path d="M220 70 L220 20 M500 88 L500 38 M780 70 L780 20"/></g><g fill="var(--orange)"><circle cx="500" cy="45" r="4"/></g></svg></div><div class="body"><div class="n">05 / 3D</div><h2>时空立方</h2><p>三生平面 × 时间轴 × 空间圈层：复杂多维关系的坐标格。</p><span class="go">进入立方 →</span></div></a>
+    </div>
+  </section>
+  <div class="hr"></div>
+  <div class="grid3"><div class="panel"><h3>空间</h3><p>圈层是责任半径，不是等级；位置先于标签。</p></div><div class="panel"><h3>时间</h3><p>日 / 月 / 季 / 年；时间层决定反馈延迟。</p></div><div class="panel"><h3>闭环</h3><p>资源 → 方法 → 价值 → 反馈；闭环不是直线。</p></div></div>
+  <footer class="footer"><span>Slow Good · Application Study · 2026</span><span><a href="README.md">README</a> · <a href="../index.html">← spacetime</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+</body>
+</html>
