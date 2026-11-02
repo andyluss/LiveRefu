@@ -17,8 +17,8 @@
 .sector{transition:.16s;cursor:pointer;outline:none}
 .sector:hover{filter:brightness(1.06)}
 .sector:focus-visible{stroke:var(--ink);stroke-width:3}
-.ring-label{fill:var(--muted);font:9px var(--mono);letter-spacing:.06em}
-.ring-name{fill:var(--ink);font:600 11px var(--serif)}
+.ring-label{fill:var(--muted);font:7.5px var(--mono);letter-spacing:.03em}
+.ring-name{fill:var(--ink);font:600 9.5px var(--serif)}
 .domain-label{fill:var(--ink);font:600 18px var(--serif);pointer-events:none}
 .domain-sub{fill:var(--muted);font:8px var(--mono);letter-spacing:.1em;pointer-events:none}
 .center-disc{fill:var(--panel);stroke:var(--line2);stroke-width:1.5}
@@ -82,10 +82,10 @@
 <script>
 (function(){
   var rings=[
-    {name:'个人',period:'日 / 周',radius:'身体与日常',ringR:100},
-    {name:'家庭 / 团队',period:'月',radius:'共同生活与协作',ringR:170},
-    {name:'组织 / 社区',period:'季',radius:'制度与公共',ringR:240},
-    {name:'社会 / 生态',period:'年 / 代际',radius:'长期与外部性',ringR:310}
+    {name:'个人',short:'个人',period:'日 / 周',radius:'身体与日常',ringR:100},
+    {name:'家庭 / 团队',short:'团队',period:'月',radius:'共同生活与协作',ringR:170},
+    {name:'组织 / 社区',short:'组织',period:'季',radius:'制度与公共',ringR:240},
+    {name:'社会 / 生态',short:'社会',period:'年 / 代际',radius:'长期与外部性',ringR:310}
   ];
   var domains=[
     {id:'survival',name:'生存',sub:'SAFETY / RESILIENCE',color:'var(--survival)',start:-90,end:30},
@@ -127,7 +127,9 @@
         p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();selected={ring:i,domain:d.id};draw();panel()}});
         if(r.ringR>=170){var mid=(d.start+d.end)/2;var rr=(r.ringR+r.ringR-64)/2;var q=pt(cx,cy,rr+10,mid);var t=el('text',{x:q[0],y:q[1],'text-anchor':'middle',class:'domain-sub',fill:d.color},svg);t.textContent=d.name; }
       });
-      var lp=pt(cx,cy,r.ringR+20,270);var n=el('text',{x:lp[0]-14,y:lp[1]-2,class:'ring-name','text-anchor':'end'},svg);n.textContent=r.name;var t=el('text',{x:lp[0]-14,y:lp[1]+12,class:'ring-label','text-anchor':'end'},svg);t.textContent=r.period;
+      var rmid=(Math.max(44,r.ringR-64)+r.ringR)/2;
+      var n=el('text',{x:cx-rmid,y:cy-5,class:'ring-name','text-anchor':'middle'},svg);n.textContent=r.short;el('title',{},n).textContent=r.name;
+      var t=el('text',{x:cx-rmid,y:cy+9,class:'ring-label','text-anchor':'middle'},svg);t.textContent=r.period;
     });
     // domain labels outside
     domains.forEach(function(d){var mid=(d.start+d.end)/2;var q=pt(cx,cy,365,mid);var t=el('text',{x:q[0],y:q[1],class:'domain-label','text-anchor':'middle'},svg);t.textContent=d.name;var s=el('text',{x:q[0],y:q[1]+14,class:'domain-sub','text-anchor':'middle',fill:d.color},svg);s.textContent=d.sub;});
