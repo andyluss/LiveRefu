@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三生罗盘 · 慢好三生</title>
+<meta name="description" content="用同心圆、扇区与事务闭环，把三生三圈变成可感知的责任半径。">
+<script>
+(function(){var K='lrds-theme',c='system';try{var s=localStorage.getItem(K);if(s==='system'||s==='light'||s==='dark')c=s}catch(e){}var m=matchMedia('(prefers-color-scheme: dark)');document.documentElement.dataset.theme=c==='system'?(m.matches?'dark':'light'):c;document.documentElement.dataset.themeChoice=c})();
+</script>
+<link rel="stylesheet" href="../shared.css">
+<style>
+:root{--survival:#b44b3f;--life:#3c6b9b;--production:#34735a;--resource:#72569e;--method:#a8792a;--value:#34735a;--feedback:#a34c78;--slow:#89689a}
+:root[data-theme="dark"]{--survival:#f08b7d;--life:#8db6dd;--production:#76c4a2;--resource:#b9a0e0;--method:#ddb56e;--value:#76c4a2;--feedback:#e09ab8;--slow:#c6a6d4}
+.compass-stage{background:radial-gradient(ellipse at 50% 48%,color-mix(in srgb,var(--teal2) 28%,transparent),transparent 60%),var(--panel)}
+.compass-stage svg{height:650px;cursor:pointer}
+.sector{transition:.16s;cursor:pointer;outline:none}
+.sector:hover{filter:brightness(1.06)}
+.sector:focus-visible{stroke:var(--ink);stroke-width:3}
+.ring-label{fill:var(--muted);font:9px var(--mono);letter-spacing:.06em}
+.ring-name{fill:var(--ink);font:600 11px var(--serif)}
+.domain-label{fill:var(--ink);font:600 18px var(--serif);pointer-events:none}
+.domain-sub{fill:var(--muted);font:8px var(--mono);letter-spacing:.1em;pointer-events:none}
+.center-disc{fill:var(--panel);stroke:var(--line2);stroke-width:1.5}
+.loop-path{fill:none;stroke:var(--line2);stroke-width:1;stroke-dasharray:2 6}
+.loop-dot{fill:var(--orange)}
+.loop-node{fill:var(--panel);stroke:var(--teal);stroke-width:1.5}
+.loop-text{fill:var(--muted);font:8px var(--mono);letter-spacing:.06em}
+.center-title{fill:var(--ink);font:600 16px var(--serif)}
+.center-sub{fill:var(--muted);font:8px var(--mono);letter-spacing:.1em}
+.legend-dot{display:inline-block;width:8px;height:8px;margin-right:4px;border-radius:50%}
+.scale-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.scale-row button{font:10px var(--mono);border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:5px 8px;cursor:pointer}
+.scale-row button[aria-pressed="true"]{border-color:var(--teal);color:var(--teal);background:var(--teal2)}
+.compass-copy{font-size:13px;color:var(--body);min-height:80px}
+.loop-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.loop-grid div{border:1px solid var(--line);padding:7px 8px;font-size:10px;color:var(--body)}
+.loop-grid b{display:block;font:8px var(--mono);letter-spacing:.08em;color:var(--muted);margin-bottom:2px}
+.risk{border-left:3px solid var(--orange);background:var(--orange2);padding:8px 10px;font-size:11px;color:var(--body);margin-top:10px}
+.risk b{color:var(--orange)}
+</style>
+</head>
+<body data-page="slowgood-compass">
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="../../index.html"><i></i>Spacetime <small>LAB / 慢好三生</small></a><span class="lab-badge">APPLICATION STUDY</span>
+  <nav class="topnav"><a href="../../index.html">实验台</a><a href="时空织机.html">下一个：时空织机</a><a href="README.md">README</a></nav>
+  <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</div></header>
+<main class="shell">
+  <div class="crumbs"><a href="../../index.html">spacetime</a> / <span>慢好三生 / 三生罗盘</span></div>
+  <section class="hero" style="padding-bottom:14px">
+    <div><p class="eyebrow">slow good / three lives compass</p><h1>先找到它在哪一圈，<br><em>再问它在跑哪个闭环。</em><span>同心圆是责任半径；扇区是三生；中心是资源 → 方法 → 价值 → 反馈。</span></h1><p class="lede">把「三生三圈四环」从矩阵变成可停留的空间：每一圈有自己的时间尺度，每个扇区有自己的问题；点一个格子，看看它需要什么、产出什么、多久才能收到反馈。</p></div>
+    <aside class="hero-card"><b>SPACE</b>4 圈责任半径<br><b>DOMAIN</b>生存 / 生活 / 生产<br><b>TIME</b>日 / 月 / 季 / 年<br><b>WATCH</b>外圈反馈是否被内圈看见</aside>
+  </section>
+  <div class="grid2">
+    <div>
+      <div class="stage compass-stage"><svg id="compass" viewBox="0 0 900 760" role="application" aria-label="三生罗盘：点击扇区查看三生三圈节点"></svg></div>
+      <div class="toolbar"><div class="scale-row" id="scales" role="group" aria-label="时间尺度"><button type="button" data-ring="0" aria-pressed="true">日 / 个人</button><button type="button" data-ring="1" aria-pressed="false">月 / 团队</button><button type="button" data-ring="2" aria-pressed="false">季 / 组织</button><button type="button" data-ring="3" aria-pressed="false">年 / 社会</button></div><span class="small">点击扇区 · 或 ←/→ 换一生，↑/↓ 换一圈</span></div>
+      <div class="legend" style="margin-top:4px"><span><i class="legend-dot" style="background:var(--survival)"></i>生存</span><span><i class="legend-dot" style="background:var(--life)"></i>生活</span><span><i class="legend-dot" style="background:var(--production)"></i>生产</span><span>半径 = 责任 / 影响范围，不是等级</span></div>
+    </div>
+    <aside class="panel">
+      <div class="small" id="kicker">COORD / PERSONAL · SURVIVAL</div>
+      <div class="big" id="title" style="color:var(--survival)">生存</div>
+      <p class="compass-copy" id="copy">个人生存是底线：睡眠、体力、应急金与基本技能。它不需要宏大，只需要可靠。</p>
+      <dl class="kv"><dt>圈层</dt><dd id="ring">个人</dd><dt>时间</dt><dd id="period">日 / 周</dd><dt>坐标</dt><dd id="coord">个人 · 生存 · 资源</dd></dl>
+      <div class="loop-grid" id="loop"></div>
+      <div class="risk"><b>最容易被忽略：</b><span id="risk">把透支当努力；短期效率吃掉长期韧性。</span></div>
+      <div class="hr" style="margin:16px 0"></div>
+      <div class="small">问题</div>
+      <p id="question" style="font-size:12px;color:var(--body);margin:4px 0 0">我今天能稳住什么？</p>
+    </aside>
+  </div>
+  <div class="hr"></div>
+  <div class="grid3">
+    <div class="panel"><h3>在试什么</h3><p>同心圆能否让人先感知责任半径，再读文字？把时间尺度绑定到圈层，是否让“反馈要多久”变成空间问题？</p></div>
+    <div class="panel"><h3>危险</h3><p>同心圆容易被读成等级；外圈反馈慢，容易被内圈忽略。必须明确“半径 = 责任/影响，不是地位”。</p></div>
+    <div class="panel"><h3>可能沉淀</h3><p>三生三圈坐标卡；四环闭环；责任半径 + 时间尺度的双编码。</p></div>
+  </div>
+  <footer class="footer"><span>Slow Good · Three Lives Compass · simulated</span><span><a href="README.md">README</a> · <a href="时空织机.html">下一个：时空织机 →</a></span></footer>
+</main>
+<script src="../theme.js"></script>
+<script>
+(function(){
+  var rings=[
+    {name:'个人',period:'日 / 周',radius:'身体与日常',ringR:100},
+    {name:'家庭 / 团队',period:'月',radius:'共同生活与协作',ringR:170},
+    {name:'组织 / 社区',period:'季',radius:'制度与公共',ringR:240},
+    {name:'社会 / 生态',period:'年 / 代际',radius:'长期与外部性',ringR:310}
+  ];
+  var domains=[
+    {id:'survival',name:'生存',sub:'SAFETY / RESILIENCE',color:'var(--survival)',start:-90,end:30},
+    {id:'life',name:'生活',sub:'LIFE / MEANING',color:'var(--life)',start:30,end:150},
+    {id:'production',name:'生产',sub:'WORK / VALUE',color:'var(--production)',start:150,end:270}
+  ];
+  var cells={
+    '0-survival':{copy:'个人生存是底线：睡眠、体力、应急金与基本技能。它不需要宏大，只需要可靠。',question:'我今天能稳住什么？',risk:'把透支当努力；短期效率吃掉长期韧性。',res:'睡眠 / 体力 / 应急金',meth:'规律 / 边界 / 体检',val:'安全与韧性',fb:'每日状态'},
+    '0-life':{copy:'个人生活不是生产的剩余；关系、爱好、心理与意义需要被安排进时间里。',question:'什么让我觉得这一天值得过？',risk:'把“有空再说”变成永远不说。',res:'时间 / 关系 / 注意力',meth:'留白 / 表达 / 求助',val:'幸福感与意义',fb:'每周感受'},
+    '0-production':{copy:'个人生产是能力与作品的累积；它需要学习，也需要被生活供养。',question:'我本周产出了什么可复用的东西？',risk:'只忙输出，不升级方法。',res:'技能 / 时间 / 作品',meth:'学习 / 创作 / 理财',val:'收入与成长',fb:'每周产出'},
+    '1-survival':{copy:'家庭/团队的生存是共同底线：现金流、照护、安全与基本信任。',question:'如果明天出问题，我们撑得住吗？',risk:'把风险留给最安静的那个人。',res:'家庭应急金 / 照护',meth:'共同规则 / 分工',val:'安全感与信任',fb:'月度复盘'},
+    '1-life':{copy:'共同生活需要被设计：时间、仪式、对话与冲突处理都不是自动发生的。',question:'我们上一次真正一起吃饭是什么时候？',risk:'用“都在忙”替代关系维护。',res:'共同时间 / 空间',meth:'对话 / 仪式 / 分工',val:'归属与亲密',fb:'月度对话'},
+    '1-production':{copy:'团队生产是协作与交换：共同项目、收入、学习与声誉。',question:'我们在一起能做出一个人做不出的东西吗？',risk:'协作成本吃掉协作收益。',res:'共同资源 / 技能',meth:'协商 / 协作 / 复盘',val:'共同价值与收入',fb:'项目复盘'},
+    '2-survival':{copy:'组织/社区的生存是制度韧性：现金流、合规、供应链与危机响应。',question:'系统最薄的那一环在哪里？',risk:'用增长掩盖结构脆弱。',res:'现金流 / 供应链 / 人才',meth:'风险清单 / 演练',val:'组织韧性',fb:'季度审计'},
+    '2-life':{copy:'组织生活是文化与归属：福利、关系、心理安全与被看见。',question:'这里的人愿意长期留下吗？',risk:'把文化写成墙上的字。',res:'文化 / 福利 / 关系',meth:'倾听 / 认可 / 参与',val:'归属与心理安全',fb:'季度脉搏'},
+    '2-production':{copy:'组织生产是产品、运营与创新：把资源变成可交换的公共价值。',question:'我们创造的价值被谁使用、被谁承担？',risk:'只优化可测量指标。',res:'产品 / 运营 / 创新',meth:'流程 / 实验 / 治理',val:'价值与增长',fb:'季度评审'},
+    '3-survival':{copy:'社会/生态的生存是底线保障：医疗、粮食、能源、气候与公共安全。',question:'谁在为系统的下一次冲击做准备？',risk:'把外部性留给下一代。',res:'医疗 / 粮食 / 能源',meth:'公共制度 / 预警',val:'底线保障',fb:'年度评估'},
+    '3-life':{copy:'社会生活是教育、社保、文化与社区：让多数人有能力过值得过的生活。',question:'谁被留在了这张地图之外？',risk:'用平均幸福掩盖分布不均。',res:'教育 / 社保 / 文化',meth:'公共空间 / 参与',val:'信任与多样',fb:'年度 / 代际'},
+    '3-production':{copy:'社会生产是产业、基建、科技与治理：把长期资源变成公共能力。',question:'这套生产在十年后还成立吗？',risk:'把短期增长当成长期能力。',res:'产业 / 基建 / 科技',meth:'政策 / 协作 / 投资',val:'公共价值',fb:'年度 / 代际'}
+  };
+  var selected={ring:0,domain:'survival'};
+  var svg=document.getElementById('compass');
+  var NS='http://www.w3.org/2000/svg';
+  function pt(cx,cy,r,a){var rad=(a-90)*Math.PI/180;return[cx+r*Math.cos(rad),cy+r*Math.sin(rad)]}
+  function sector(cx,cy,r1,r2,start,end){
+    var a=pt(cx,cy,r2,start),b=pt(cx,cy,r2,end),c=pt(cx,cy,r1,end),d=pt(cx,cy,r1,start);
+    var large=end-start>180?1:0;
+    return `M${a[0]} ${a[1]} A${r2} ${r2} 0 ${large} 1 ${b[0]} ${b[1]} L${c[0]} ${c[1]} A${r1} ${r1} 0 ${large} 0 ${d[0]} ${d[1]} Z`;
+  }
+  function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);(parent||svg).appendChild(e);return e}
+  function draw(){
+    svg.innerHTML='';
+    var cx=450,cy=375;
+    rings.forEach(function(r,i){
+      domains.forEach(function(d){
+        var isSel=selected.ring===i&&selected.domain===d.id;
+        var p=el('path',{d:sector(cx,cy,Math.max(44,r.ringR-64),r.ringR,d.start+2,d.end-2),class:'sector',tabindex:'0',role:'button','aria-label':r.name+' · '+d.name,fill:d.color,'fill-opacity':isSel?.26:.10,stroke:isSel?d.color:'var(--line)', 'stroke-width':isSel?2.4:1});
+        p.addEventListener('click',function(){selected={ring:i,domain:d.id};draw();panel()});
+        p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();selected={ring:i,domain:d.id};draw();panel()}});
+        if(r.ringR>=170){var mid=(d.start+d.end)/2;var rr=(r.ringR+r.ringR-64)/2;var q=pt(cx,cy,rr+10,mid);var t=el('text',{x:q[0],y:q[1],'text-anchor':'middle',class:'domain-sub',fill:d.color},svg);t.textContent=d.name; }
+      });
+      var lp=pt(cx,cy,r.ringR+20,270);var n=el('text',{x:lp[0]-14,y:lp[1]-2,class:'ring-name','text-anchor':'end'},svg);n.textContent=r.name;var t=el('text',{x:lp[0]-14,y:lp[1]+12,class:'ring-label','text-anchor':'end'},svg);t.textContent=r.period;
+    });
+    // domain labels outside
+    domains.forEach(function(d){var mid=(d.start+d.end)/2;var q=pt(cx,cy,365,mid);var t=el('text',{x:q[0],y:q[1],class:'domain-label','text-anchor':'middle'},svg);t.textContent=d.name;var s=el('text',{x:q[0],y:q[1]+14,class:'domain-sub','text-anchor':'middle',fill:d.color},svg);s.textContent=d.sub;});
+    // center loop
+    el('circle',{cx:cx,cy:cy,r:58,class:'center-disc'});
+    var loop=el('path',{d:`M${cx} ${cy-38} C${cx+44} ${cy-38} ${cx+44} ${cy+38} ${cx} ${cy+38} C${cx-44} ${cy+38} ${cx-44} ${cy-38} ${cx} ${cy-38}`,class:'loop-path'});
+    var labels=['资源','方法','价值','反馈'];var pos=[[cx,cy-67],[cx+67,cy],[cx,cy+67],[cx-67,cy]];
+    pos.forEach(function(p,i){el('circle',{cx:p[0],cy:p[1],r:11,class:'loop-node'});var t=el('text',{x:p[0],y:p[1]+3,'text-anchor':'middle',class:'loop-text'},svg);t.textContent=labels[i]});
+    var ct=el('text',{x:cx,y:cy-4,'text-anchor':'middle',class:'center-title'},svg);ct.textContent='慢好';
+    var cs=el('text',{x:cx,y:cy+12,'text-anchor':'middle',class:'center-sub'},svg);cs.textContent='SLOW / GOOD';
+    var dot=el('circle',{r:4,class:'loop-dot'});var len=loop.getTotalLength();var t0=performance.now();
+    function anim(now){var u=((now-t0)%6000)/6000;var p=loop.getPointAtLength(u*len);dot.setAttribute('cx',p.x);dot.setAttribute('cy',p.y);requestAnimationFrame(anim)}requestAnimationFrame(anim);
+  }
+  function panel(){
+    var r=rings[selected.ring],d=domains.find(function(x){return x.id===selected.domain});var c=cells[selected.ring+'-'+selected.domain];
+    document.getElementById('kicker').textContent='COORD / '+r.name+' · '+d.name;
+    document.getElementById('title').textContent=d.name;document.getElementById('title').style.color=d.color;
+    document.getElementById('copy').textContent=c.copy;document.getElementById('ring').textContent=r.name;document.getElementById('period').textContent=r.period;document.getElementById('coord').textContent=r.name+' · '+d.name+' · 四环';document.getElementById('question').textContent=c.question;document.getElementById('risk').textContent=c.risk;
+    document.getElementById('loop').innerHTML=[['资源',c.res],['方法',c.meth],['价值',c.val],['反馈',c.fb]].map(function(x){return '<div><b>'+x[0]+'</b>'+x[1]+'</div>'}).join('');
+    document.querySelectorAll('#scales button').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.ring)===selected.ring))});
+    location.hash=selected.ring+'-'+selected.domain;
+  }
+  document.querySelectorAll('#scales button').forEach(function(b){b.onclick=function(){selected.ring=Number(b.dataset.ring);draw();panel()}});
+  document.addEventListener('keydown',function(e){
+    var d=domains.map(function(x){return x.id});var i=d.indexOf(selected.domain);
+    if(e.key==='ArrowRight'){selected.domain=d[(i+1)%3];draw();panel()}
+    if(e.key==='ArrowLeft'){selected.domain=d[(i+2)%3];draw();panel()}
+    if(e.key==='ArrowDown'){selected.ring=(selected.ring+1)%4;draw();panel()}
+    if(e.key==='ArrowUp'){selected.ring=(selected.ring+3)%4;draw();panel()}
+  });
+  var init=location.hash.slice(1).split('-');if(init.length===2&&cells[init[0]+'-'+init[1]]){selected={ring:Number(init[0]),domain:init[1]}}
+  draw();panel();
+})();
+</script>
+</body>
+</html>

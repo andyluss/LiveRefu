@@ -52,6 +52,10 @@ design/lab/
     ├── 03-causal-loom/
     ├── 04-time-rooms/
     ├── 05-folded-time/
+    ├── 慢好三生Demo/
+    │   ├── README.md
+    │   ├── 三生罗盘.html
+    │   └── 时空织机.html
     └── 3d/
         ├── index.html
         ├── engine3d.js

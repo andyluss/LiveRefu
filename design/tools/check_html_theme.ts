@@ -36,6 +36,7 @@ const MANAGED = [
   'games/future-debris/briefing/GUIDE.html',
   ...spacetimePages(),
   ...threeDPages(),
+  ...slowGoodPages(),
 ]
 
 function spacetimePages(): string[] {
@@ -58,6 +59,14 @@ function threeDPages(): string[] {
     }
   }
   return pages
+}
+
+function slowGoodPages(): string[] {
+  const dir = join(ROOT, 'design/lab/spacetime/慢好三生Demo')
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.html'))
+    .sort()
+    .map((f) => `design/lab/spacetime/慢好三生Demo/${f}`)
 }
 
 function philosophyPages(): string[] {
