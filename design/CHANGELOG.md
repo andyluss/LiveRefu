@@ -11,6 +11,8 @@
 > **青橙全栈已迁出**：P1–P17、可视化、TODO、QC 提案等全栈变更见 [`fullstack/CHANGELOG.md`](fullstack/CHANGELOG.md)。
 
 ### 新增
+- **R-016 机器检查器**：新增 `design/tools/check_html_theme.ts`（6 条自检），检查受管 21 个页面；接入 `check.sh` 与 pre-commit；补齐 `future-debris/briefing/GUIDE.html` 的打印浅色。
+- **理念阅读地图**：`design/philosophy/README.md` 增加一页地图、五条按任务路径、三个检查点与读后动作。
 - **存量 HTML 三态迁移**：`design/philosophy/html/` 13 篇 + 索引、`games/refu-game-001/HUB.html`、`GUIDE.html`、`games/future-debris/briefing/HUB.html`、`GUIDE.html` 已补齐 system/light/dark；新增共享主题控制脚本。
 - **R-016 生成式 HTML 三态规则**：所有由脚本/模板/AI 生成的 HTML 强制 system / light / dark，统一 `lrds-theme`、head 预绘制、持久化与双外观验收；`AGENTS.md` 引用为硬规范。
 - **青橙理念新增 12 空间直觉**：补《空间直觉：让界面先被看见，再被读懂》；为 00–12 共 13 篇生成 HTML 可视化，并在索引与 HUB 中接入。

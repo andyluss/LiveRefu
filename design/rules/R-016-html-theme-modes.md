@@ -133,12 +133,15 @@
 ### 机器 / 评审
 
 ```bash
-# 所有新生成 HTML 必须有统一 key、三态控件与预绘制脚本
-grep -L "lrds-theme" <generated>.html
-grep -L 'data-theme-choice="system"' <generated>.html
-grep -L 'data-theme-choice="light"' <generated>.html
-grep -L 'data-theme-choice="dark"' <generated>.html
-grep -L 'prefers-color-scheme' <generated>.html
+# 所有受管生成式 HTML 的机器检查（优先用检查器，不要只 grep）
+node design/tools/check_html_theme.ts --self-test
+node design/tools/check_html_theme.ts
+# 指定页面
+node design/tools/check_html_theme.ts path/to/page.html
+
+# 兼容说明：检查器接受新页面的 data-theme-choice，也接受
+# design/HUB.html 与 design/GUIDE.html 既有的 data-theme-set；
+# 新页面一律使用 data-theme-choice。
 ```
 
 - 两套外观各跑一次对比度闸门；

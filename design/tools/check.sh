@@ -30,6 +30,8 @@ run design/tools/check_component_usage.ts --self-test
 run design/tools/check_component_usage.ts
 run design/tools/build_hub.ts --self-test
 run design/tools/build_hub.ts --check
+run design/tools/check_html_theme.ts --self-test
+run design/tools/check_html_theme.ts
 
 echo ""
 echo "✓ LRDS 设计系统闸门全部通过（含风格卡对账）"
