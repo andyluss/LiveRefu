@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>慢好三生 · 保障体系</title>
+<style>
+  :root{
+    --bg:#0a0e17;
+    --panel:#101827;
+    --line:rgba(148,163,184,.18);
+    --line2:rgba(148,163,184,.30);
+    --text:#e6edf7;
+    --muted:#8b9bb4;
+    --survival:#f87171;
+    --life:#60a5fa;
+    --prod:#34d399;
+    --fast:#fbbf24;
+    --slow:#f0abfc;
+    --res:#a78bfa;
+    --method:#fbbf24;
+    --value:#34d399;
+    --fb:#f472b6;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1400px 800px at 15% -10%, #16233b 0%, transparent 55%),
+      radial-gradient(1000px 700px at 90% 8%, #1b1730 0%, transparent 50%),
+      radial-gradient(900px 600px at 50% 100%, #1a1230 0%, transparent 50%),
+      var(--bg);
+    color:var(--text);
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 60px;
+    line-height:1.6;
+  }
+
+  /* ========== 头部 ========== */
+  header{text-align:center;padding:52px 20px 28px;}
+  header h1{
+    margin:0 0 8px;
+    font-size:clamp(24px,4vw,40px);
+    letter-spacing:6px;
+    background:linear-gradient(90deg,#f87171,#fbbf24,#34d399,#60a5fa,#f0abfc);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-weight:800;
+  }
+  header .sub{margin:0;color:var(--muted);font-size:14px;letter-spacing:3px;}
+  .formula{
+    margin:22px auto 0;
+    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+    gap:6px 8px;max-width:920px;font-size:14px;color:var(--muted);
+  }
+  .formula b{
+    display:inline-block;padding:5px 14px;border-radius:999px;
+    border:1px solid var(--line);background:rgba(255,255,255,.03);
+    color:var(--text);font-weight:600;font-size:13px;letter-spacing:1px;
+  }
+  .formula b.c1{color:#fca5a5;border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.06);}
+  .formula b.c2{color:#93c5fd;border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.06);}
+  .formula b.c3{color:#6ee7b7;border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.06);}
+  .formula b.c4{color:#fcd34d;border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.06);}
+  .formula b.c5{color:#f0abfc;border-color:rgba(240,171,252,.35);background:rgba(240,171,252,.06);}
+  .formula b.c6{color:#c4b5fd;border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.06);}
+
+  /* ========== 导航 ========== */
+  .tabs{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+    max-width:980px;margin:28px auto 32px;padding:0 18px;
+  }
+  .tab-btn{
+    padding:9px 20px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.025);color:var(--muted);
+    font-size:13.5px;font-weight:600;letter-spacing:1px;cursor:pointer;
+    transition:all .22s ease;font-family:inherit;
+  }
+  .tab-btn:hover{color:var(--text);border-color:var(--line2);background:rgba(255,255,255,.05);}
+  .tab-btn.active{
+    color:#0a0e17;
+    background:linear-gradient(135deg,#fbbf24,#f0abfc);
+    border-color:transparent;
+    box-shadow:0 4px 18px rgba(240,171,252,.25);
+  }
+
+  /* ========== 面板 ========== */
+  main{max-width:1040px;margin:0 auto;padding:0 18px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .panel{
+    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.008));
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px 24px;margin-bottom:26px;
+  }
+  .panel h2{
+    margin:0 0 20px;font-size:16px;letter-spacing:2px;font-weight:700;
+    display:flex;align-items:center;gap:10px;
+  }
+  .panel h2::before{
+    content:'';width:4px;height:16px;border-radius:2px;
+    background:linear-gradient(180deg,#fbbf24,#f0abfc);flex-shrink:0;
+  }
+  .panel h2 small{font-size:12px;font-weight:400;color:var(--muted);letter-spacing:1px;margin-left:4px;}
+  .note{margin:14px 0 0;text-align:center;font-size:12.5px;color:var(--muted);letter-spacing:1px;}
+
+  /* ========== 对比双列 ========== */
+  .compare{
+    display:grid;grid-template-columns:1fr 1fr;gap:18px;
+  }
+  .compare-col{
+    border:1px solid var(--line);border-radius:14px;
+    padding:20px 18px 16px;background:rgba(255,255,255,.02);
+  }
+  .compare-col.trad{border-color:rgba(148,163,184,.2);}
+  .compare-col.slow{border-color:rgba(240,171,252,.3);background:rgba(240,171,252,.03);}
+  .cc-title{
+    font-size:14px;font-weight:700;letter-spacing:2px;
+    margin-bottom:16px;padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:8px;
+  }
+  .compare-col.trad .cc-title{color:var(--muted);}
+  .compare-col.slow .cc-title{color:#f0abfc;}
+  .cc-title .badge{
+    font-size:10px;padding:2px 8px;border-radius:999px;
+    background:rgba(255,255,255,.06);color:var(--muted);
+    font-weight:400;letter-spacing:1px;
+  }
+  .compare-col.slow .cc-title .badge{
+    background:rgba(240,171,252,.12);color:#f0abfc;
+  }
+  .cc-row{
+    display:flex;justify-content:space-between;gap:12px;
+    padding:9px 0;font-size:13px;
+    border-bottom:1px dashed rgba(148,163,184,.1);
+  }
+  .cc-row:last-child{border-bottom:none;}
+  .cc-row .k{color:var(--muted);flex-shrink:0;}
+  .compare-col.slow .cc-row .v{color:#f5d0fe;}
+  .cc-row .v{color:#c3d0e4;text-align:right;}
+
+  /* ========== 三生卡片 ========== */
+  .tri-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px;
+  }
+  .tri-card{
+    border:1px solid var(--line);border-radius:14px;
+    padding:20px 18px 16px;background:rgba(255,255,255,.02);
+    transition:all .25s;
+  }
+  .tri-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .tri-card.s{border-color:rgba(248,113,113,.3);}
+  .tri-card.l{border-color:rgba(96,165,250,.3);}
+  .tri-card.p{border-color:rgba(52,211,153,.3);}
+  .tri-head{
+    display:flex;align-items:center;gap:8px;
+    font-size:15px;font-weight:700;letter-spacing:2px;
+    margin-bottom:14px;padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+  .tri-head .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .tri-card.s .tri-head{color:#fca5a5;} .tri-card.s .dot{background:#f87171;}
+  .tri-card.l .tri-head{color:#93c5fd;} .tri-card.l .dot{background:#60a5fa;}
+  .tri-card.p .tri-head{color:#6ee7b7;} .tri-card.p .dot{background:#34d399;}
+
+  .tri-section{margin-bottom:14px;}
+  .tri-section:last-child{margin-bottom:0;}
+  .tri-label{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;
+    padding:2px 10px;border-radius:999px;margin-bottom:8px;
+  }
+  .tri-label.fast{background:rgba(251,191,36,.12);color:#fcd34d;border:1px solid rgba(251,191,36,.3);}
+  .tri-label.slow{background:rgba(240,171,252,.12);color:#f0abfc;border:1px solid rgba(240,171,252,.3);}
+  .tri-label.tip{background:rgba(167,139,250,.12);color:#c4b5fd;border:1px solid rgba(167,139,250,.3);}
+  .tri-list{margin:0;padding:0;list-style:none;}
+  .tri-list li{
+    position:relative;padding:4px 0 4px 16px;
+    font-size:12.5px;color:#c3d0e4;line-height:1.65;
+  }
+  .tri-list li::before{
+    content:'';position:absolute;left:0;top:11px;
+    width:5px;height:5px;border-radius:50%;
+    background:currentColor;opacity:.6;
+  }
+
+  /* ========== 表格 ========== */
+  .table-wrap{overflow-x:auto;border-radius:10px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px;}
+  th,td{
+    border:1px solid var(--line);padding:12px 14px;text-align:left;
+    vertical-align:top;line-height:1.6;transition:background .2s;
+  }
+  th{
+    background:rgba(148,163,184,.07);color:var(--muted);font-weight:600;
+    font-size:12px;letter-spacing:1.2px;white-space:nowrap;
+    position:sticky;top:0;
+  }
+  td.rowhead{
+    font-weight:700;font-size:13px;white-space:nowrap;
+    background:rgba(148,163,184,.045);
+  }
+  td small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px;}
+  tbody tr:hover td{background:rgba(240,171,252,.05);}
+  .r1{border-left:3px solid var(--survival);}
+  .r2{border-left:3px solid var(--life);}
+  .r3{border-left:3px solid var(--prod);}
+  .r4{border-left:3px solid var(--res);}
+  .th-fast{color:#fcd34d!important;}
+  .th-slow{color:#f0abfc!important;}
+  .th-blank{color:#c4b5fd!important;}
+
+  /* ========== 闭环 ========== */
+  .loop-wrap{display:flex;justify-content:center;}
+  .loop-wrap svg{width:100%;max-width:680px;height:auto;}
+  @keyframes breathe{
+    0%,100%{transform:scale(1);opacity:.45;}
+    50%{transform:scale(1.10);opacity:.9;}
+  }
+  .slow-pulse{
+    animation:breathe 4s ease-in-out infinite;
+    transform-origin:center;transform-box:fill-box;
+  }
+
+  /* ========== 清单卡片 ========== */
+  .card-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px;
+  }
+  .list-card{
+    border:1px solid var(--line);border-radius:14px;
+    padding:20px 18px 14px;background:rgba(255,255,255,.02);
+    transition:all .25s;
+  }
+  .list-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .list-card.personal{border-color:rgba(167,139,250,.3);}
+  .list-card.org{border-color:rgba(251,191,36,.3);}
+  .list-card.social{border-color:rgba(96,165,250,.3);}
+  .lc-head{
+    display:flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:700;letter-spacing:2px;
+    margin-bottom:14px;padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+  .lc-head .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .list-card.personal .lc-head{color:#c4b5fd;} .list-card.personal .dot{background:#a78bfa;}
+  .list-card.org .lc-head{color:#fcd34d;} .list-card.org .dot{background:#fbbf24;}
+  .list-card.social .lc-head{color:#93c5fd;} .list-card.social .dot{background:#60a5fa;}
+
+  .lc-list{margin:0;padding:0;list-style:none;}
+  .lc-list li{
+    position:relative;padding:7px 0 7px 22px;
+    font-size:12.5px;color:#c3d0e4;line-height:1.7;
+    border-bottom:1px dashed rgba(148,163,184,.08);
+  }
+  .lc-list li:last-child{border-bottom:none;}
+  .lc-list li::before{
+    content:'✓';position:absolute;left:0;top:7px;
+    font-size:11px;color:currentColor;opacity:.5;
+    width:16px;text-align:center;
+  }
+  .lc-list li b{color:#e6edf7;font-weight:600;}
+
+  /* ========== 金句 ========== */
+  .quote{
+    text-align:center;font-size:15px;letter-spacing:2px;
+    color:#f0abfc;padding:24px 16px;line-height:2.1;
+    border-top:1px dashed rgba(240,171,252,.2);margin-top:8px;
+  }
+  .quote small{
+    display:block;font-size:12px;color:var(--muted);
+    letter-spacing:1px;margin-top:10px;
+  }
+
+  /* ========== 响应式 ========== */
+  @media(max-width:720px){
+    .compare{grid-template-columns:1fr;}
+  }
+  @media(max-width:560px){
+    .panel{padding:18px 14px 18px;}
+    .tab-btn{padding:7px 14px;font-size:12.5px;}
+    header{padding:36px 16px 20px;}
+    .formula b{padding:4px 10px;font-size:12px;}
+    table{font-size:12px;min-width:620px;}
+    th,td{padding:9px 10px;}
+  }
+
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:rgba(148,163,184,.25);border-radius:4px;}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.4);}
+</style>
+</head>
+<body>
+
+<!-- ==================== 头部 ==================== -->
+<header>
+  <h1>慢好三生 · 保障体系</h1>
+  <p class="sub">快保障兜底 · 慢保障养韧 · 处处有留白</p>
+  <div class="formula">
+    <b>保障体系</b><span>=</span>
+    <b class="c1">三生</b><span>×</span>
+    <b class="c2">三圈</b><span>×</span>
+    <b class="c4">快慢双轨</b><span>×</span>
+    <b class="c6">五环闭环</b><span>×</span>
+    <b class="c5">留白</b>
+  </div>
+</header>
+
+<!-- ==================== 导航 ==================== -->
+<nav class="tabs" id="tabs">
+  <button class="tab-btn active" data-tab="compare">快慢双轨</button>
+  <button class="tab-btn" data-tab="tri">三生保障</button>
+  <button class="tab-btn" data-tab="circle">三圈保障</button>
+  <button class="tab-btn" data-tab="loop">五环闭环</button>
+  <button class="tab-btn" data-tab="time">时间设计</button>
+  <button class="tab-btn" data-tab="list">反脆弱清单</button>
+</nav>
+
+<main>
+
+  <!-- ==================== ① 快慢双轨对比 ==================== -->
+  <section class="tab-panel active" id="panel-compare">
+    <div class="panel">
+      <h2>快慢双轨 · 传统保障 vs 慢好保障 <small>同一件事，两种思路</small></h2>
+      <div class="compare">
+        <div class="compare-col trad">
+          <div class="cc-title">传统保障 <span class="badge">救急</span></div>
+          <div class="cc-row"><span class="k">启动时机</span><span class="v">出事才启动</span></div>
+          <div class="cc-row"><span class="k">核心目标</span><span class="v">不出事</span></div>
+          <div class="cc-row"><span class="k">资源用法</span><span class="v">用满、效率优先</span></div>
+          <div class="cc-row"><span class="k">结构</span><span class="v">单点兜底</span></div>
+          <div class="cc-row"><span class="k">考核周期</span><span class="v">短周期</span></div>
+          <div class="cc-row"><span class="k">定位</span><span class="v">成本</span></div>
+        </div>
+        <div class="compare-col slow">
+          <div class="cc-title">慢好保障 <span class="badge">养韧</span></div>
+          <div class="cc-row"><span class="k">启动时机</span><span class="v">平时就在运行</span></div>
+          <div class="cc-row"><span class="k">核心目标</span><span class="v">出事能恢复</span></div>
+          <div class="cc-row"><span class="k">资源用法</span><span class="v">留冗余、留缓冲</span></div>
+          <div class="cc-row"><span class="k">结构</span><span class="v">多层冗余、网状互备</span></div>
+          <div class="cc-row"><span class="k">考核周期</span><span class="v">长周期看韧性</span></div>
+          <div class="cc-row"><span class="k">定位</span><span class="v">投资</span></div>
+        </div>
+      </div>
+      <p class="note">快保障是保险丝，慢保障是免疫系统；快保障救急，慢保障防病</p>
+    </div>
+
+    <div class="panel">
+      <h2>慢好保障 · 三条底层原则</h2>
+      <div class="tri-grid">
+        <div class="tri-card" style="border-color:rgba(240,171,252,.3);">
+          <div class="tri-head" style="color:#f0abfc;"><span class="dot" style="background:#f0abfc;"></span>留白原则</div>
+          <ul class="tri-list">
+            <li>任何关键资源都不押满</li>
+            <li>保留 10%–30% 的缓冲</li>
+            <li>备用方案、心理空间、空转能力</li>
+          </ul>
+        </div>
+        <div class="tri-card" style="border-color:rgba(52,211,153,.3);">
+          <div class="tri-head" style="color:#6ee7b7;"><span class="dot" style="background:#34d399;"></span>预防原则</div>
+          <ul class="tri-list">
+            <li>资源前移到“事前”</li>
+            <li>预防成本远低于救治成本</li>
+            <li>健康、教育、生态，都是慢投资</li>
+          </ul>
+        </div>
+        <div class="tri-card" style="border-color:rgba(251,191,36,.3);">
+          <div class="tri-head" style="color:#fcd34d;"><span class="dot" style="background:#fbbf24;"></span>节奏原则</div>
+          <ul class="tri-list">
+            <li>快轨应急，慢轨养能力</li>
+            <li>双轨并行，不互相挤压</li>
+            <li>快轨不能长期化</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ② 三生保障 ==================== -->
+  <section class="tab-panel" id="panel-tri">
+    <div class="panel">
+      <h2>三生保障 · 生存 / 生活 / 生产</h2>
+      <div class="tri-grid">
+
+        <!-- 生存 -->
+        <div class="tri-card s">
+          <div class="tri-head"><span class="dot"></span>生存保障 · 底线与韧性</div>
+          <div class="tri-section">
+            <span class="tri-label fast">快轨 · 应急</span>
+            <ul class="tri-list">
+              <li>应急响应、急救、安全底线</li>
+              <li>基本收入兜底</li>
+            </ul>
+          </div>
+          <div class="tri-section">
+            <span class="tri-label slow">慢轨 · 养韧</span>
+            <ul class="tri-list">
+              <li>健康预防、体能储备</li>
+              <li>应急金 6–12 个月</li>
+              <li>基本技能、风险意识</li>
+            </ul>
+          </div>
+          <div class="tri-section">
+            <span class="tri-label tip">慢好要点</span>
+            <ul class="tri-list">
+              <li>不追求绝对安全，追求有缓冲的安全</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 生活 -->
+        <div class="tri-card l">
+          <div class="tri-head"><span class="dot"></span>生活保障 · 关系与意义</div>
+          <div class="tri-section">
+            <span class="tri-label fast">快轨 · 应急</span>
+            <ul class="tri-list">
+              <li>危机时的情感支持</li>
+              <li>临时照护、社区互助</li>
+            </ul>
+          </div>
+          <div class="tri-section">
+            <span class="tri-label slow">慢轨 · 养韧</span>
+            <ul class="tri-list">
+              <li>深度关系、心理韧性</li>
+              <li>归属感、文化认同</li>
+              <li>日常陪伴</li>
+            </ul>
+          </div>
+          <div class="tri-section">
+            <span class="tri-label tip">慢好要点</span>
+            <ul class="tri-list">
+              <li>关系不能临时抱佛脚，每周一次无手机晚餐就是“慢储蓄”</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 生产 -->
+        <div class="tri-card p">
+          <div class="tri-head"><span class="dot"></span>生产保障 · 能力与收入</div>
+          <div class="tri-section">
+            <span class="tri-label fast">快轨 · 应急</span>
+            <ul class="tri-list">
+              <li>失业保险、应急订单</li>
+              <li>现金流过桥、快速再就业</li>
+            </ul>
+          </div>
+          <div class="tri-section">
+            <span class="tri-label slow">慢轨 · 养韧</span>
+            <ul class="tri-list">
+              <li>技能冗余、第二曲线</li>
+              <li>客户深关系、长期研发</li>
+              <li>产业韧性</li>
+            </ul>
+          </div>
+          <div class="tri-section">
+            <span class="tri-label tip">慢好要点</span>
+            <ul class="tri-list">
+              <li>不把收入押在单一来源上，技能冗余不是低效，是反脆弱</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <p class="note">生存保底线，生活保关系，生产保能力 —— 三生各有一条快轨、一条慢轨</p>
+    </div>
+  </section>
+
+  <!-- ==================== ③ 三圈保障 ==================== -->
+  <section class="tab-panel" id="panel-circle">
+    <div class="panel">
+      <h2>三圈保障 · 个人 / 组织 / 社会</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>圈层</th>
+              <th class="th-fast">快保障 · 兜底</th>
+              <th class="th-slow">慢保障 · 养韧</th>
+              <th class="th-blank">慢好留白</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rowhead r1">个人</td>
+              <td>应急金、急救技能、保险</td>
+              <td>健康习惯、深度关系、技能冗余、心理韧性</td>
+              <td>时间留白、财务缓冲、独处空间</td>
+            </tr>
+            <tr>
+              <td class="rowhead r2">组织</td>
+              <td>现金流过桥、合规底线、应急预案</td>
+              <td>人才梯队、供应链冗余、文化信任、长期研发</td>
+              <td>现金缓冲 6–12 个月、不押满产能、不鼓励无效加班</td>
+            </tr>
+            <tr>
+              <td class="rowhead r3">社会</td>
+              <td>医疗救治、失业救济、灾害响应、粮食能源安全</td>
+              <td>预防医疗、教育公平、养老多支柱、社区营造、生态修复</td>
+              <td>公共空间、慢城市、慢教育、战略储备</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">三圈不是各管各的，而是网状互备：个人有缓冲，组织少一次危机；组织有冗余，社会少一次救助；社会有预防，个人少一次崩溃</p>
+    </div>
+
+    <div class="panel">
+      <h2>网状互备 · 三圈之间的保障传导</h2>
+      <div class="loop-wrap">
+        <svg viewBox="0 0 800 340" role="img" aria-label="三圈保障传导">
+          <defs>
+            <marker id="arrV" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#34d399"/>
+            </marker>
+            <marker id="arrF" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/>
+            </marker>
+          </defs>
+
+          <!-- 三个圈 -->
+          <circle cx="160" cy="170" r="72" fill="rgba(167,139,250,.08)" stroke="#a78bfa" stroke-width="1.6"/>
+          <text x="160" y="162" text-anchor="middle" font-size="15" font-weight="700" fill="#c4b5fd">个人</text>
+          <text x="160" y="182" text-anchor="middle" font-size="10.5" fill="rgba(196,181,253,.6)">缓冲 · 韧性</text>
+
+          <circle cx="400" cy="170" r="72" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1.6"/>
+          <text x="400" y="162" text-anchor="middle" font-size="15" font-weight="700" fill="#fcd34d">组织</text>
+          <text x="400" y="182" text-anchor="middle" font-size="10.5" fill="rgba(252,211,77,.6)">冗余 · 信任</text>
+
+          <circle cx="640" cy="170" r="72" fill="rgba(96,165,250,.08)" stroke="#60a5fa" stroke-width="1.6"/>
+          <text x="640" y="162" text-anchor="middle" font-size="15" font-weight="700" fill="#93c5fd">社会</text>
+          <text x="640" y="182" text-anchor="middle" font-size="10.5" fill="rgba(147,197,253,.6)">预防 · 储备</text>
+
+          <!-- 个人 → 组织 -->
+          <path d="M232,140 Q316,100 328,140" fill="none" stroke="#34d399" stroke-width="1.8" marker-end="url(#arrV)" opacity=".7"/>
+          <text x="280" y="92" text-anchor="middle" font-size="10.5" fill="#6ee7b7">缓冲支撑</text>
+
+          <!-- 组织 → 社会 -->
+          <path d="M472,140 Q556,100 568,140" fill="none" stroke="#34d399" stroke-width="1.8" marker-end="url(#arrV)" opacity=".7"/>
+          <text x="520" y="92" text-anchor="middle" font-size="10.5" fill="#6ee7b7">税收 · 就业</text>
+
+          <!-- 社会 → 个人（反馈） -->
+          <path d="M640,242 Q400,300 160,242" fill="none" stroke="#f472b6" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#arrF)" opacity=".6"/>
+          <text x="400" y="296" text-anchor="middle" font-size="10.5" fill="#f9a8d4">医疗 · 教育 · 安全 → 个人保障</text>
+
+          <!-- 个人 → 社会（反馈） -->
+          <path d="M160,98 Q400,40 640,98" fill="none" stroke="#f472b6" stroke-width="1.4" stroke-dasharray="4 6" marker-end="url(#arrF)" opacity=".4"/>
+          <text x="400" y="44" text-anchor="middle" font-size="10" fill="rgba(249,168,212,.6)">个人健康 · 技能 → 社会韧性</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ④ 五环闭环 ==================== -->
+  <section class="tab-panel" id="panel-loop">
+    <div class="panel">
+      <h2>五环闭环 · 资源 → 方法 → 价值 → 反馈 → 留白</h2>
+      <div class="loop-wrap">
+        <svg viewBox="0 0 800 620" role="img" aria-label="保障五环闭环">
+          <defs>
+            <marker id="arrLoop" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7c8ba1"/>
+            </marker>
+            <marker id="arrLoopFb" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#f0abfc"/>
+            </marker>
+          </defs>
+
+          <!-- 中心呼吸圈 -->
+          <circle cx="400" cy="310" r="84" fill="rgba(240,171,252,.04)"
+                  stroke="rgba(240,171,252,.22)" stroke-dasharray="4 7"
+                  class="slow-pulse"/>
+          <text x="400" y="302" text-anchor="middle" font-size="17" font-weight="700"
+                fill="#f0abfc" letter-spacing="3">留白</text>
+          <text x="400" y="324" text-anchor="middle" font-size="11"
+                fill="rgba(240,171,252,.65)">冗余 · 呼吸 · 空转</text>
+          <text x="400" y="342" text-anchor="middle" font-size="10"
+                fill="rgba(240,171,252,.4)">保障体系的心脏</text>
+
+          <!-- 五段弧线 -->
+          <path d="M400,150 A160,160 0 0 1 552.2,260.6" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrLoop)" opacity=".75"/>
+          <path d="M552.2,260.6 A160,160 0 0 1 494.1,439.4" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrLoop)" opacity=".75"/>
+          <path d="M494.1,439.4 A160,160 0 0 1 305.9,439.4" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrLoop)" opacity=".75"/>
+          <path d="M305.9,439.4 A160,160 0 0 1 247.8,260.6" fill="none"
+                stroke="#7c8ba1" stroke-width="1.6" marker-end="url(#arrLoop)" opacity=".75"/>
+          <path d="M247.8,260.6 A160,160 0 0 1 400,150" fill="none"
+                stroke="#f0abfc" stroke-width="1.8" stroke-dasharray="6 6"
+                marker-end="url(#arrLoopFb)" opacity=".85"/>
+
+          <!-- 节点：资源 -->
+          <circle cx="400" cy="150" r="52" fill="#a78bfa" fill-opacity=".13" stroke="#a78bfa" stroke-width="1.8"/>
+          <text x="400" y="144" text-anchor="middle" font-size="17" font-weight="700" fill="#c4b5fd">资源</text>
+          <text x="400" y="164" text-anchor="middle" font-size="9.5" fill="rgba(196,181,253,.6)">储备 · 钱 · 时间</text>
+
+          <!-- 节点：方法 -->
+          <circle cx="552.2" cy="260.6" r="52" fill="#fbbf24" fill-opacity=".13" stroke="#fbbf24" stroke-width="1.8"/>
+          <text x="552.2" y="255" text-anchor="middle" font-size="17" font-weight="700" fill="#fcd34d">方法</text>
+          <text x="552.2" y="275" text-anchor="middle" font-size="9.5" fill="rgba(252,211,77,.6)">机制 · 预防 · 响应</text>
+
+          <!-- 节点：价值 -->
+          <circle cx="494.1" cy="439.4" r="52" fill="#34d399" fill-opacity=".13" stroke="#34d399" stroke-width="1.8"/>
+          <text x="494.1" y="434" text-anchor="middle" font-size="17" font-weight="700" fill="#6ee7b7">价值</text>
+          <text x="494.1" y="454" text-anchor="middle" font-size="9.5" fill="rgba(110,231,183,.6)">安全感 · 韧性</text>
+
+          <!-- 节点：反馈 -->
+          <circle cx="305.9" cy="439.4" r="52" fill="#f472b6" fill-opacity=".13" stroke="#f472b6" stroke-width="1.8"/>
+          <text x="305.9" y="434" text-anchor="middle" font-size="17" font-weight="700" fill="#f9a8d4">反馈</text>
+          <text x="305.9" y="454" text-anchor="middle" font-size="9.5" fill="rgba(249,168,212,.6)">监测 · 复盘 · 压测</text>
+
+          <!-- 节点：留白 -->
+          <circle cx="247.8" cy="260.6" r="52" fill="#f0abfc" fill-opacity=".15" stroke="#f0abfc" stroke-width="1.8"/>
+          <text x="247.8" y="255" text-anchor="middle" font-size="17" font-weight="700" fill="#f5d0fe">留白</text>
+          <text x="247.8" y="275" text-anchor="middle" font-size="9.5" fill="rgba(245,208,254,.7)">冗余 · 备用 · 缓冲</text>
+
+          <!-- 底部说明 -->
+          <text x="400" y="590" text-anchor="middle" font-size="12.5"
+                fill="#7c8ba1" letter-spacing="2">留白不是不干活，是让系统有“呼吸”的能力 —— 没有冗余的系统，看起来高效，实际脆弱</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>五环在保障体系中的含义</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:120px;">环节</th>
+              <th>保障含义</th>
+              <th>具体内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rowhead r4">资源 · 储备</td>
+              <td>把什么存起来</td>
+              <td>钱、时间、健康、关系、技能、信任、制度</td>
+            </tr>
+            <tr>
+              <td class="rowhead" style="border-left:3px solid #fbbf24;">方法 · 机制</td>
+              <td>怎么运转</td>
+              <td>预防、预警、响应、恢复、学习</td>
+            </tr>
+            <tr>
+              <td class="rowhead r3">价值 · 产出</td>
+              <td>保障了什么</td>
+              <td>安全感、韧性、可持续、信任、公平</td>
+            </tr>
+            <tr>
+              <td class="rowhead r2">反馈 · 评估</td>
+              <td>怎么知道有效</td>
+              <td>监测指标、复盘、压力测试、迭代</td>
+            </tr>
+            <tr>
+              <td class="rowhead r1" style="border-left-color:#f0abfc;">留白 · 冗余</td>
+              <td>给系统留什么</td>
+              <td>备用方案、缓冲资源、心理空间、空转能力</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ⑤ 时间设计 ==================== -->
+  <section class="tab-panel" id="panel-time">
+    <div class="panel">
+      <h2>快慢双轨 · 时间设计</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>时间尺度</th>
+              <th class="th-fast">快轨 · 应急</th>
+              <th class="th-slow">慢轨 · 养韧</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rowhead r1">日 / 周</td>
+              <td>急救、报警、临时调度</td>
+              <td>健康习惯、情绪记录、日常巡检</td>
+            </tr>
+            <tr>
+              <td class="rowhead r2">月 / 季</td>
+              <td>现金流过桥、临时救助</td>
+              <td>技能学习、关系维护、缓冲积累</td>
+            </tr>
+            <tr>
+              <td class="rowhead r3">年 / 多年</td>
+              <td>灾后重建、失业再培训</td>
+              <td>预防医疗、教育投入、产业升级</td>
+            </tr>
+            <tr>
+              <td class="rowhead r4">代际</td>
+              <td>危机应对制度</td>
+              <td>生态修复、文化传承、制度韧性</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">快轨不能长期化 —— 长期靠快轨运转的系统，一定会耗尽；慢轨才是保障体系的底座</p>
+    </div>
+
+    <div class="panel">
+      <h2>时间轴 · 保障的前置与后置</h2>
+      <div class="loop-wrap">
+        <svg viewBox="0 0 800 260" role="img" aria-label="保障时间轴">
+          <defs>
+            <marker id="arrTime" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#8b9bb4"/>
+            </marker>
+          </defs>
+
+          <!-- 主轴线 -->
+          <line x1="80" y1="150" x2="720" y2="150" stroke="rgba(148,163,184,.3)" stroke-width="2" marker-end="url(#arrTime)"/>
+
+          <!-- 时间节点 -->
+          <circle cx="160" cy="150" r="6" fill="#34d399"/>
+          <text x="160" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#6ee7b7">事前</text>
+          <text x="160" y="180" text-anchor="middle" font-size="10.5" fill="var(--muted)">预防 · 储备</text>
+          <text x="160" y="198" text-anchor="middle" font-size="9.5" fill="rgba(110,231,183,.6)">慢轨主战场</text>
+
+          <circle cx="340" cy="150" r="6" fill="#fbbf24"/>
+          <text x="340" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#fcd34d">预警</text>
+          <text x="340" y="180" text-anchor="middle" font-size="10.5" fill="var(--muted)">监测 · 识别</text>
+          <text x="340" y="198" text-anchor="middle" font-size="9.5" fill="rgba(252,211,77,.6)">快慢交接</text>
+
+          <circle cx="520" cy="150" r="6" fill="#f87171"/>
+          <text x="520" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#fca5a5">事中</text>
+          <text x="520" y="180" text-anchor="middle" font-size="10.5" fill="var(--muted)">响应 · 兜底</text>
+          <text x="520" y="198" text-anchor="middle" font-size="9.5" fill="rgba(248,113,113,.6)">快轨主战场</text>
+
+          <circle cx="680" cy="150" r="6" fill="#a78bfa"/>
+          <text x="680" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#c4b5fd">事后</text>
+          <text x="680" y="180" text-anchor="middle" font-size="10.5" fill="var(--muted)">恢复 · 学习</text>
+          <text x="680" y="198" text-anchor="middle" font-size="9.5" fill="rgba(196,181,253,.6)">回到慢轨</text>
+
+          <!-- 弧线标注 -->
+          <path d="M160,90 Q340,50 520,90" fill="none" stroke="rgba(251,191,36,.4)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <text x="340" y="52" text-anchor="middle" font-size="10.5" fill="rgba(252,211,77,.7)">慢轨向前延伸，把“事中”变成“少有事”</text>
+
+          <path d="M520,220 Q680,240 680,160" fill="none" stroke="rgba(167,139,250,.4)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <text x="620" y="240" text-anchor="middle" font-size="10.5" fill="rgba(196,181,253,.7)">事后复盘，回到慢轨</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ⑥ 反脆弱清单 ==================== -->
+  <section class="tab-panel" id="panel-list">
+    <div class="panel">
+      <h2>反脆弱清单 · 个人 / 组织 / 社会</h2>
+      <div class="card-grid">
+
+        <!-- 个人 -->
+        <div class="list-card personal">
+          <div class="lc-head"><span class="dot"></span>个人保障清单</div>
+          <ul class="lc-list">
+            <li><b>应急金</b>：6–12 个月生活开支</li>
+            <li><b>健康储备</b>：睡眠、运动、饮食、体检</li>
+            <li><b>技能冗余</b>：至少两项可迁移能力</li>
+            <li><b>关系网络</b>：3–5 个深度关系</li>
+            <li><b>心理韧性</b>：独处能力、复盘习惯、求助意识</li>
+            <li><b>时间留白</b>：每周至少半天完全放空</li>
+          </ul>
+        </div>
+
+        <!-- 组织 -->
+        <div class="list-card org">
+          <div class="lc-head"><span class="dot"></span>组织保障清单</div>
+          <ul class="lc-list">
+            <li><b>现金缓冲</b>：6–12 个月运营成本</li>
+            <li><b>供应链冗余</b>：关键环节至少两个备选</li>
+            <li><b>人才梯队</b>：关键岗位有接班计划</li>
+            <li><b>文化信任</b>：不鼓励无效加班，员工有安全感</li>
+            <li><b>合规底线</b>：不踩红线，不押满风险</li>
+            <li><b>长期研发</b>：每年固定比例投入未来</li>
+          </ul>
+        </div>
+
+        <!-- 社会 -->
+        <div class="list-card social">
+          <div class="lc-head"><span class="dot"></span>社会保障清单</div>
+          <ul class="lc-list">
+            <li><b>预防医疗</b>：体检、慢病管理、健康教育</li>
+            <li><b>养老多支柱</b>：基础养老 + 企业年金 + 个人储蓄</li>
+            <li><b>失业保障</b>：救济 + 再培训 + 就业对接</li>
+            <li><b>粮食能源安全</b>：战略储备 + 多元来源</li>
+            <li><b>社区韧性</b>：公共空间、互助网络、应急演练</li>
+            <li><b>生态缓冲</b>：不透支自然资本</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="quote">
+        「快保障是保险丝，慢保障是免疫系统」<br>
+        <small>快保障救急，慢保障防病；快保障兜底，慢保障养韧。保障不是把资源用满，而是让系统在任何时候都有呼吸的余地。</small>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer style="text-align:center;color:var(--muted);font-size:12px;letter-spacing:2px;margin-top:40px;padding:0 18px;">
+  底线有兜底 · 中间有缓冲 · 长期有预防 · 处处有留白
+</footer>
+
+<script>
+(function(){
+  const btns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const target = document.getElementById('panel-' + btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
