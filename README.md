@@ -41,7 +41,7 @@
 | 路径 | 内容 | 入口 |
 | --- | --- | --- |
 | [`HUB.html`](HUB.html) | **工作区总览**：六块地图、当前项目、知识库、概念原型与工作流 | [`HUB.html`](HUB.html) |
-| [`ideas/`](ideas/README.md) | **人类手写的设计源**：原始想法、非目标、审美与方向判断；AI 默认只读 | [`ideas/README.md`](ideas/README.md) |
+| [`ideas/`](ideas/README.md) | **人类手写的设计源**：原始想法、非目标、审美与方向判断；AI 默认只读；[`ideas/AI/`](ideas/AI/README.md) 为 AI 参考区 | [`ideas/README.md`](ideas/README.md) |
 | [`rules/`](rules/README.md) | 规则目录：具体规则 R01–R05（**已转正**，权威）+ 元规则 M0–M3（`rules/meta/`，整合自 lab）；`tech/` 为技术详解 | [`rules/README.md`](rules/README.md) |
 | [`design/`](design/README.md) | **项目设计系统（LRDS）**：**清澄为核**；GUIDE（设计系统）/ HUB（项目）/ lab（实验区）、三层 token、风格卡、组件契约、Web/Godot/App 介质包、验收闸门 | [`design/GUIDE.html`](design/GUIDE.html) ｜ [Lab](design/lab/README.md) |
 | [`TODO.md`](TODO.md) | **工作区顶级待办**：P0/P1/P2、等待拍板、状态；只收跨项目/阻塞发布/需裁决项 | [`TODO.md`](TODO.md) |
