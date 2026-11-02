@@ -1,4 +1,4 @@
-/* Spacetime 3D — 无依赖 Canvas 3D 投影引擎（经典 script，file:// 可用）。 */
+/* 时空实验室 3D — 无依赖 Canvas 3D 投影引擎（经典 script，file:// 可用）。 */
 (function () {
   'use strict';
   const RAD = Math.PI / 180;
