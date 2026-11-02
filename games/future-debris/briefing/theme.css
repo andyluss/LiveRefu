@@ -79,3 +79,10 @@ body[data-page="guide"] .guide-topbar .theme-switch{margin-left:auto;margin-righ
   .guide-brand{font-size:15px}
   body[data-page="guide"] .wrap{padding-left:18px;padding-right:18px}
 }
+
+@media print {
+  body { background:#fff !important; color:#111 !important; }
+  .topbar, .guide-topbar, .theme-switch, .tabs { display:none !important; }
+  .wrap { max-width:none; padding:0; }
+  a { color:#111 !important; text-decoration:none; }
+}
