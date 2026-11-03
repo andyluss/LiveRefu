@@ -1,0 +1,326 @@
+<!-- 由 tools/build_design_html.py 从 ../01_项目北极星.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>项目北极星 · LiveBay design01</title>
+<meta name="description" content="一句话、三支柱、非目标与停止条件。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html" aria-current="page">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../01_项目北极星.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">项目北极星</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#〇当前已裁决2026-11-03">〇、当前已裁决（2026-11-03）</a></li><li class=""><a href="#一北极星卡当前版本">一、北极星卡（当前版本）</a></li><li class=""><a href="#二三个候选一句话">二、三个候选「一句话」</a></li><li class=""><a href="#三三个支柱的解释">三、三个支柱的解释</a></li><li class="sub"><a href="#31-岗位视角">3.1 岗位视角</a></li><li class="sub"><a href="#32-可维修的世界">3.2 可维修的世界</a></li><li class="sub"><a href="#33-长线陪伴">3.3 长线陪伴</a></li><li class=""><a href="#四停止条件待人类填写">四、停止条件（待人类填写）</a></li><li class=""><a href="#五这一页怎么用">五、这一页怎么用</a></li><li class=""><a href="#六与概念设定的关系">六、与概念设定的关系</a></li></ul></details>
+<article class="prose">
+<h1 id="01--项目北极星">01 · 项目北极星</h1>
+<blockquote>
+<p><strong>文档类型</strong>：项目定位参考｜<strong>状态</strong>：草案 v0.4（P0+P1 已裁决；P2 待定） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 起草，人类拍板｜<strong>决策权</strong>：人类 <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：<a href="11_待人类裁决清单.html">待裁决清单</a></p>
+</blockquote>
+<blockquote>
+<p>这页纸是项目的「方向盘」。如果只能留一页，留这页；如果这页写不出来，说明还不该开工。</p>
+</blockquote>
+<h2 id="〇当前已裁决2026-11-03">〇、当前已裁决（2026-11-03）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>裁决</th>
+<th>对北极星的含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D01</td>
+<td>基调 B：有裂缝的善意</td>
+<td>「逍遥」不是无忧无虑，而是被安排出来的安稳；冲突来自体系内部的代价</td>
+</tr>
+<tr>
+<td>D02</td>
+<td>敌人 D：混合；首版 A+C</td>
+<td>塔防要同时处理外部碎片与内部故障；人类冲突后置</td>
+</tr>
+<tr>
+<td>D03</td>
+<td>三生 = 生存/生活/生产；慢好 = 慢+好</td>
+<td>三种玩法对应三种保障对象；不逼玩家上线，不卖数值</td>
+</tr>
+<tr>
+<td>D05</td>
+<td>护卫兵 v0.1，护理师 v0.2</td>
+<td>先验证手感，再验证主题；职业是内容主线</td>
+</tr>
+<tr>
+<td>D16</td>
+<td>垂直切片</td>
+<td>现在只对「10 分钟闭环」负责，不对完整游戏负责</td>
+</tr>
+<tr>
+<td>D04</td>
+<td>主角 C：无名岗位人</td>
+<td>每个职业都是「你」；情感由湾民档案与交接记录建立，不做固定身世</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>P1 已裁决（2026-11-03）</strong>：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>裁决</th>
+<th>对北极星的含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D06</td>
+<td>200 年（第七代）</td>
+<td>湾民是独立身份，地球是传说</td>
+</tr>
+<tr>
+<td>D07</td>
+<td>双轨：日常算法 / 危机议会</td>
+<td>「没人负责」成为制度性冲突</td>
+</tr>
+<tr>
+<td>D08</td>
+<td>低报事故（只埋线索）</td>
+<td>广播与结算数字对不上，是裂缝的入口</td>
+</tr>
+<tr>
+<td>D09</td>
+<td>弧形路径</td>
+<td>第一版只守一段弧，不贪多</td>
+</tr>
+<tr>
+<td>D10</td>
+<td>重试 + 可跳过复盘</td>
+<td>失败是事故报告，不是惩罚</td>
+</tr>
+<tr>
+<td>D11</td>
+<td>v0.1 L0；v0.2 L1</td>
+<td>先各自成立，再共享世界</td>
+</tr>
+<tr>
+<td>D12</td>
+<td>买断 + 内购（仅外观/扩展）</td>
+<td>收入不逼设计变形，不卖数值</td>
+</tr>
+<tr>
+<td>D13</td>
+<td>2D 矢量 / 程序化</td>
+<td>产能可控，保持工程感</td>
+</tr>
+<tr>
+<td>D15</td>
+<td>叙事量中</td>
+<td>支撑岗位叙事，不拖垮工期</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>完整记录与理由见 <a href="11_待人类裁决清单.html">11_待人类裁决清单</a>。P0/P1 已清空，只剩 P2。</p>
+</blockquote>
+<h2 id="一北极星卡当前版本">一、北极星卡（当前版本）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>内容</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>项目名</strong></td>
+<td>LiveBay · 逍遥湾（暂定中文名/英文名）</td>
+<td>【人类已定】</td>
+</tr>
+<tr>
+<td><strong>一句话</strong></td>
+<td>在一座月牙形的移动太空城里，你换过很多份工作，守过很多次夜班。</td>
+<td>【AI 候选 A】</td>
+</tr>
+<tr>
+<td><strong>目标玩家 / 场景</strong></td>
+<td>喜欢策略与经营、但想要「人味」的玩家；每天 20–40 分钟，愿意长期回来值班，而不是一次通关。</td>
+<td>【AI 候选】</td>
+</tr>
+<tr>
+<td><strong>核心循环（10 秒）</strong></td>
+<td>选一个职业 → 在月牙弧上布防 → 扛过一班 → 看事故报告 → 换岗或升级。</td>
+<td>【AI 候选】</td>
+</tr>
+<tr>
+<td><strong>三个支柱</strong></td>
+<td>1. 岗位视角：玩家是普通人，不是天选者。<br>2. 可维修的世界：一切都有标签、接口与备份。<br>3. 长线陪伴：城会变，人会换班，但湾还在。</td>
+<td>【AI 候选】</td>
+</tr>
+<tr>
+<td><strong>三个非目标</strong></td>
+<td>1. 不做抽卡卖数值。<br>2. 不做纯竞技 PvP。<br>3. 不做开放世界。</td>
+<td>【AI 候选】</td>
+</tr>
+<tr>
+<td><strong>只有这个项目才有的瞬间</strong></td>
+<td>交接班：上一班的人把没做完的事交给你，你必须在下一班结束前决定先救哪一个。</td>
+<td>【AI 候选】</td>
+</tr>
+<tr>
+<td><strong>什么会让我们杀死它</strong></td>
+<td>见第四节（待人类填写）。</td>
+<td>【待裁决】</td>
+</tr>
+<tr>
+<td><strong>人类负责人</strong></td>
+<td>人类（项目负责人）</td>
+<td>【人类已定】</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="二三个候选一句话">二、三个候选「一句话」</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>候选</th>
+<th>文案</th>
+<th>优点</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A（推荐）</strong></td>
+<td>在一座月牙形的移动太空城里，你换过很多份工作，守过很多次夜班。</td>
+<td>画面感强，直接点出「职业 + 轮班 + 城市」，与塔防/放置/沉浸三种玩法都兼容</td>
+<td>没有点出冲突，听起来偏温和</td>
+</tr>
+<tr>
+<td>B</td>
+<td>你是一个普通人，在一座会照顾你的城里，学着照顾它。</td>
+<td>有温度，点出「保障体系」与「互相照顾」</td>
+<td>偏文艺，玩家不知道玩什么</td>
+</tr>
+<tr>
+<td>C</td>
+<td>逍遥湾不问你成为谁，只问你今天值哪一班。</td>
+<td>有态度，适合做宣传语</td>
+<td>略像标语，不适合作为设计总纲</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>【AI 建议】A 作为设计总纲，C 作为宣传语备选。理由：A 同时包含「空间（月牙城）」「身份（换工作的人）」「时间（夜班）」，三者正好对应三种玩法。</p>
+</blockquote>
+<h2 id="三三个支柱的解释">三、三个支柱的解释</h2>
+<h3 id="31-岗位视角">3.1 岗位视角</h3>
+<p>玩家不是舰长、不是救世主，而是一个会被排班、会被轮岗、会退休的人。塔防的「塔」不是魔法塔，而是岗位上的设备与流程；「敌人」不是恶魔，而是这份工作要处理的风险。</p>
+<p>这条支柱决定了：<strong>叙事要往下写，不要往上写</strong>。写食堂、值班室、交接班记录，比写议会阴谋更接近这个项目。</p>
+<h3 id="32-可维修的世界">3.2 可维修的世界</h3>
+<p>一切都有标签、接口、备份与检查单。美术上拒绝「无缝全息」，玩法上拒绝「不可解释的魔法」；每个系统都应该能被玩家看懂、拆开、替换。</p>
+<p>这条支柱决定了：<strong>UI 是世界观的一部分</strong>，不是盖在玩法上的皮。</p>
+<h3 id="33-长线陪伴">3.3 长线陪伴</h3>
+<p>玩家会离开，也会回来。游戏不惩罚离开，不制造 FOMO；城市在玩家不在时仍然运转，回来时有一封「这段时间发生的事」的报告。</p>
+<p>这条支柱决定了：<strong>放置玩法不是附属品</strong>，而是「你不在时城市怎么活」的叙事装置。</p>
+<h2 id="四停止条件待人类填写">四、停止条件（待人类填写）</h2>
+<p>AI 不能替人决定「什么时候放弃」。以下只是候选，供参考：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>候选</th>
+<th>条件</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>三个月内做不出 10 分钟可玩切片</td>
+<td>范围过大，或核心循环不成立</td>
+</tr>
+<tr>
+<td>B</td>
+<td>连续 5 位试玩者说不清「我在干什么」</td>
+<td>教学/界面/主题失败</td>
+</tr>
+<tr>
+<td>C</td>
+<td>人类自己连续两周不想打开它</td>
+<td>最诚实的信号</td>
+</tr>
+<tr>
+<td>D</td>
+<td>美术/内容成本超过可承受范围</td>
+<td>需要缩范围或换表现方式</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>【待裁决】请人类选一条或自己写一条。没有停止条件的项目，会被「再加一个系统」拖死。</p>
+</blockquote>
+<h2 id="五这一页怎么用">五、这一页怎么用</h2>
+<ol type="1">
+<li><strong>每次新任务前重述一遍</strong>：AI 先复述北极星，再开始工作；</li>
+<li><strong>每个新功能过三问</strong>：它服务哪个支柱？它违反哪个非目标？它让「交接班瞬间」更成立还是更模糊？</li>
+<li><strong>每季度复核一次</strong>：如果一句话变了，说明项目变了，要记录原因。</li>
+</ol>
+<h2 id="六与概念设定的关系">六、与概念设定的关系</h2>
+<ul>
+<li>概念设定给出的是「世界与玩法的骨架」：月牙城、三环、保障体系、三种玩法；</li>
+<li>北极星给出的是「取舍标准」：当两个都合理的方向冲突时，用哪三个支柱裁决；</li>
+<li>两者冲突时，以概念设定为准；北极星只是把概念翻译成可执行的选择标准。</li>
+</ul>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="00_阅读指南与裁决规则.html"><span class="dir">prev</span><span class="label">阅读指南与裁决规则</span></a><a class="next" href="11_待人类裁决清单.html"><span class="dir">next</span><span class="label">待人类裁决清单</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../01_项目北极星.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

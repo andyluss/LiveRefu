@@ -3,6 +3,21 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.7] - 2026-11-03 20:13
+
+### 新增
+
+- **design01 HTML 阅读版**：`docs-ai/design01/html/`，共 16 页（14 篇文档 + README + 索引），含左侧文档目录、本页目录、上一篇/下一篇、源 Markdown 入口；
+- **共享样式与主题**：`assets/style.css` + `assets/theme.js`，系统 / 浅色 / 深色三态，默认系统，统一 `lrds-theme`；支持打印浅色、无 JS 阅读与移动端目录折叠；
+- **生成器**：`tools/build_design_html.py` 从 Markdown 经 pandoc 生成 HTML；样式/脚本源在 `tools/design_html/`，生成物不要手改；
+- 项目 README 与 design01 README 增加 HTML 阅读版入口。
+
+### 验证
+
+- `node design/tools/check_html_theme.ts docs-ai/design01/html/*.html`：16 个页面全部通过 R-016；
+- 生成页面本地链接 520 个，0 失效；
+- 浅色 / 深色 / 桌面 / 移动端截图检查通过。
+
 ## [0.1.6] - 2026-11-03 16:24
 
 ### 新增

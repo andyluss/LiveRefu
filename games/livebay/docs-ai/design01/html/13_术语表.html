@@ -1,0 +1,427 @@
+<!-- 由 tools/build_design_html.py 从 ../13_术语表.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>术语表 · LiveBay design01</title>
+<meta name="description" content="统一用词，避免文档、代码、UI 三种叫法。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html" aria-current="page">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../13_术语表.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">术语表</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一世界与空间">一、世界与空间</a></li><li class=""><a href="#二社会与制度">二、社会与制度</a></li><li class=""><a href="#三玩法">三、玩法</a></li><li class=""><a href="#四协作与工程">四、协作与工程</a></li><li class=""><a href="#五易混淆">五、易混淆</a></li></ul></details>
+<article class="prose">
+<h1 id="13--术语表">13 · 术语表</h1>
+<blockquote>
+<p><strong>文档类型</strong>：术语参考｜<strong>状态</strong>：草案 v0.2（D03 已裁决） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 整理，人类确认｜<strong>决策权</strong>：人类 <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：<a href="02_世界观_逍遥湾.html">世界观</a> · <a href="05_社会系统_慢好三生保障体系.html">社会系统</a></p>
+</blockquote>
+<blockquote>
+<p>统一用词，避免同一概念在文档、代码、UI 里出现三种叫法。<strong>状态</strong>列：已定 / 候选 / 工程占位。</p>
+</blockquote>
+<h2 id="一世界与空间">一、世界与空间</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>英文/别名</th>
+<th>定义</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LiveBay</strong></td>
+<td>逍遥湾 / Live Bay</td>
+<td>项目代号；也指这座月牙形移动太空城</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>逍遥湾</strong></td>
+<td>Live Bay</td>
+<td>游戏暂定中文名</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>月牙城</strong></td>
+<td>湾 / Bay</td>
+<td>城的形状与别称；凹面为港湾，凸面为外环</td>
+<td>已定（形状）</td>
+</tr>
+<tr>
+<td><strong>外环</strong></td>
+<td>outer ring</td>
+<td>护卫、采集、能源；任务时间</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>中环</strong></td>
+<td>middle ring</td>
+<td>居住、养生、娱乐、教育；人的时间</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>内环</strong></td>
+<td>inner ring</td>
+<td>政治、经济、文化；机构时间</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>舰队集群</strong></td>
+<td>fleet cluster</td>
+<td>主城 + 外围舰队的集合</td>
+<td>候选</td>
+</tr>
+<tr>
+<td><strong>湾口</strong></td>
+<td>bay mouth</td>
+<td>月牙凹面的港湾；塔防的「基地」所在</td>
+<td>候选</td>
+</tr>
+<tr>
+<td><strong>舱室</strong></td>
+<td>cabin / pod</td>
+<td>中环的功能单元：养生舱、娱乐舱、教育舱等</td>
+<td>已定（存在）</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="二社会与制度">二、社会与制度</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>英文/别名</th>
+<th>定义</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>慢好三生保障体系</strong></td>
+<td>保障体系 / 三生</td>
+<td>维持大多数人生活的规划体系；三生 = 生存/生活/生产；慢好 = 慢 + 好</td>
+<td>已定（D03）</td>
+</tr>
+<tr>
+<td><strong>生存</strong></td>
+<td>survival</td>
+<td>空气、水、食物、医疗、安全、应急；保障底线</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>生活</strong></td>
+<td>life</td>
+<td>居住、娱乐、教育、社交、心理、养老、尊严</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>生产</strong></td>
+<td>production</td>
+<td>工作、能源、资源、维护、照护劳动</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>慢</strong></td>
+<td>slow</td>
+<td>不追求效率最大化；给发呆、闲聊、走神留余量</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>好</strong></td>
+<td>good</td>
+<td>保障质量与尊严，而不是单纯给得多</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>保障度</strong></td>
+<td>integrity</td>
+<td>城的生命值；塔防中漏怪扣除，归零失败</td>
+<td>工程占位</td>
+</tr>
+<tr>
+<td><strong>供能</strong></td>
+<td>energy</td>
+<td>塔防的建造货币；也指城的能源</td>
+<td>工程占位</td>
+</tr>
+<tr>
+<td><strong>贡献点</strong></td>
+<td>contribution</td>
+<td>按工时/难度/风险发放的配给货币</td>
+<td>候选</td>
+</tr>
+<tr>
+<td><strong>选拔</strong></td>
+<td>selection</td>
+<td>从居民中选出工作人员的制度</td>
+<td>已定（存在）</td>
+</tr>
+<tr>
+<td><strong>轮岗</strong></td>
+<td>rotation</td>
+<td>同环换岗或跨环支援</td>
+<td>已定（存在）</td>
+</tr>
+<tr>
+<td><strong>退役</strong></td>
+<td>retirement</td>
+<td>离开岗位转为居民/顾问，不是惩罚</td>
+<td>已定（存在）</td>
+</tr>
+<tr>
+<td><strong>工作人员</strong></td>
+<td>staff</td>
+<td>被选拔、在三环工作的人；少数</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>湾民</strong></td>
+<td>bay resident</td>
+<td>城里的居民；也用作「人」的统称</td>
+<td>候选</td>
+</tr>
+<tr>
+<td><strong>无名岗位人</strong></td>
+<td>unnamed worker</td>
+<td>玩家身份的裁决（D04=C）：没有固定姓名与外观，每个职业都是「你」</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>值班</strong></td>
+<td>shift</td>
+<td>一个工作班次；塔防一局的时间单位</td>
+<td>候选</td>
+</tr>
+<tr>
+<td><strong>交接班</strong></td>
+<td>handover</td>
+<td>上一班把未完成的事交给下一班；本项目的核心瞬间</td>
+<td>候选</td>
+</tr>
+<tr>
+<td><strong>事故报告</strong></td>
+<td>incident report</td>
+<td>塔防失败后的简报；可跳过</td>
+<td>工程占位</td>
+</tr>
+<tr>
+<td><strong>湾民档案</strong></td>
+<td>resident file</td>
+<td>每个 NPC 的资料页；三种玩法共享</td>
+<td>候选</td>
+</tr>
+<tr>
+<td><strong>双轨制</strong></td>
+<td>dual-track</td>
+<td>日常算法配给，危机议会接管（D07）</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>低报事故</strong></td>
+<td>underreported incident</td>
+<td>外环事故被系统性少报；只埋线索、不揭开（D08）</td>
+<td>已定</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="三玩法">三、玩法</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>英文/别名</th>
+<th>定义</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>岗位防线</strong></td>
+<td>塔防 / tower defense</td>
+<td>主干玩法：在月牙外弧布防，扛过一班</td>
+<td>已定（塔防）</td>
+</tr>
+<tr>
+<td><strong>塔位</strong></td>
+<td>slot</td>
+<td>地图上可建造的固定位置</td>
+<td>工程占位</td>
+</tr>
+<tr>
+<td><strong>塔</strong></td>
+<td>tower / unit</td>
+<td>玩家建造的防御单元；不同职业有不同「塔」</td>
+<td>工程占位</td>
+</tr>
+<tr>
+<td><strong>故障</strong></td>
+<td>fault</td>
+<td>内部故障敌人（C）：从湾口反向扩散，经过塔位使该塔短暂离线；不直接扣保障度</td>
+<td>工程占位</td>
+</tr>
+<tr>
+<td><strong>波次</strong></td>
+<td>wave</td>
+<td>一波敌人；第一版 5 波</td>
+<td>工程占位</td>
+</tr>
+<tr>
+<td><strong>买断+内购</strong></td>
+<td>premium + IAP</td>
+<td>基础买断，内购仅外观/扩展内容，不卖数值（D12）</td>
+<td>已定</td>
+</tr>
+<tr>
+<td><strong>沉浸体验玩法</strong></td>
+<td>immersive mode</td>
+<td>分支玩法一：舱室日常、对话、事件</td>
+<td>已定（存在）</td>
+</tr>
+<tr>
+<td><strong>放置养成玩法</strong></td>
+<td>idle mode</td>
+<td>分支玩法二：舱室、湾民、离线产出</td>
+<td>已定（存在）</td>
+</tr>
+<tr>
+<td><strong>耦合</strong></td>
+<td>coupling</td>
+<td>三种玩法共享资源/进度的程度（L0–L3）</td>
+<td>候选</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="四协作与工程">四、协作与工程</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>定义</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>裁决</strong></td>
+<td>人类对某个设计问题的最终选择；记录在 <a href="11_待人类裁决清单.html">11</a></td>
+<td>现行</td>
+</tr>
+<tr>
+<td><strong>工程占位</strong></td>
+<td>为了让工程能跑而做的临时选择；不是设计定案</td>
+<td>现行</td>
+</tr>
+<tr>
+<td><strong>AI 候选</strong></td>
+<td>AI 提出的可选方向；不自动成为设定</td>
+<td>现行</td>
+</tr>
+<tr>
+<td><strong>AI 建议</strong></td>
+<td>AI 的倾向与理由；可被推翻</td>
+<td>现行</td>
+</tr>
+<tr>
+<td><strong>可逆</strong></td>
+<td>改设定时不需要重写代码，只改数据</td>
+<td>现行</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="五易混淆">五、易混淆</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>不要用</th>
+<th>用什么</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>关卡</td>
+<td>班 / 一局</td>
+<td>「关卡」偏游戏化；「班」更贴岗位感（可保留「关卡」作为工程词）</td>
+</tr>
+<tr>
+<td>血量</td>
+<td>保障度</td>
+<td>「血量」是工程词，UI 用「保障度」</td>
+</tr>
+<tr>
+<td>金币</td>
+<td>供能 / 贡献点</td>
+<td>两种资源不要混用</td>
+</tr>
+<tr>
+<td>怪物</td>
+<td>敌人 / 威胁</td>
+<td>第一版是碎片/乱流/重壳，不是怪物</td>
+</tr>
+<tr>
+<td>主城</td>
+<td>湾 / 月牙城</td>
+<td>避免「主城」的奇幻味</td>
+</tr>
+<tr>
+<td>NASA 风格</td>
+<td>NASA朋克</td>
+<td>后者是美学谱系，不是「NASA 的周边」</td>
+</tr>
+</tbody>
+</table></div>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="03_职业体系.html"><span class="dir">prev</span><span class="label">职业体系</span></a><a class="next" href="04_塔防玩法.html"><span class="dir">next</span><span class="label">塔防：岗位防线</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../13_术语表.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

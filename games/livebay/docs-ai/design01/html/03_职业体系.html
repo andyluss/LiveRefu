@@ -1,0 +1,511 @@
+<!-- 由 tools/build_design_html.py 从 ../03_职业体系.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>职业体系 · LiveBay design01</title>
+<meta name="description" content="16 个职业候选，第一职业护卫兵、第二护理师。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html" aria-current="page">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../03_职业体系.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">职业体系</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一已定的框架">一、已定的框架</a></li><li class=""><a href="#二设计原则一个引擎多种岗位">二、设计原则：一个引擎，多种岗位</a></li><li class=""><a href="#三职业候选总表16-个">三、职业候选总表（16 个）</a></li><li class="sub"><a href="#31-中环居民区--生活">3.1 中环（居民区 / 生活）</a></li><li class="sub"><a href="#32-外环护卫--采集--能源">3.2 外环（护卫 / 采集 / 能源）</a></li><li class="sub"><a href="#33-内环政治--经济--文化">3.3 内环（政治 / 经济 / 文化）</a></li><li class=""><a href="#四六个职业的展开示例">四、六个职业的展开示例</a></li><li class="sub"><a href="#41-养生舱护理师中环最具项目特色">4.1 养生舱护理师（中环，最具项目特色）</a></li><li class="sub"><a href="#42-护卫兵外环最稳的教学职业">4.2 护卫兵（外环，最稳的教学职业）</a></li><li class="sub"><a href="#43-采集兵外环时间压力">4.3 采集兵（外环，时间压力）</a></li><li class="sub"><a href="#44-能源调度员外环内环交界系统玩法">4.4 能源调度员（外环/内环交界，系统玩法）</a></li><li class="sub"><a href="#45-工程师内环故障链">4.5 工程师（内环，故障链）</a></li><li class="sub"><a href="#46-执政官内环非传统塔防">4.6 执政官（内环，非传统塔防）</a></li><li class=""><a href="#五成长路径">五、成长路径</a></li><li class=""><a href="#六第一职业护卫兵d05-已裁决">六、第一职业：护卫兵（D05 已裁决）</a></li><li class="sub"><a href="#61-v01护卫兵">6.1 v0.1：护卫兵</a></li><li class="sub"><a href="#62-v02护理师">6.2 v0.2：护理师</a></li><li class="sub"><a href="#63-为什么暂不做-cd">6.3 为什么暂不做 C/D</a></li><li class=""><a href="#七内容量估算">七、内容量估算</a></li></ul></details>
+<article class="prose">
+<h1 id="03--职业体系">03 · 职业体系</h1>
+<blockquote>
+<p><strong>文档类型</strong>：职业设计参考｜<strong>状态</strong>：草案 v0.2（第一职业已裁决，其余候选） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 参考，人类拍板｜<strong>决策权</strong>：人类 <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：<a href="04_塔防玩法.html">塔防玩法</a> · <a href="05_社会系统_慢好三生保障体系.html">社会系统</a> · <a href="11_待人类裁决清单.html">待裁决清单</a></p>
+</blockquote>
+<blockquote>
+<p>概念设定明确说：「职业列表未定，需要 AI 帮忙提供一些文字作为参考。每种职业，都有自己的塔防玩法。」本文就是这份参考。<strong>以下职业全部是候选，不是设定。</strong></p>
+</blockquote>
+<h2 id="一已定的框架">一、已定的框架</h2>
+<p>【人类已定】</p>
+<ul>
+<li>玩家扮演一个普通人，职业历程大致是：中环普通居民 / 护理师 → 外环卫兵 / 采集兵 → 内环工程师 / 执政官；</li>
+<li>每种职业都有自己的塔防玩法；</li>
+<li>工作人员是少数，被选拔，奖励不多，压力大时可退役或轮岗。</li>
+</ul>
+<h2 id="二设计原则一个引擎多种岗位">二、设计原则：一个引擎，多种岗位</h2>
+<p>【AI 建议】不要把「每个职业」做成「每个新游戏」。更稳的做法是：<strong>同一套塔防引擎，换五件事</strong>。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>换什么</th>
+<th>说明</th>
+<th>例子（护卫兵）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>防线目标</td>
+<td>你在保护什么</td>
+<td>外环第 7 段舱壁</td>
+</tr>
+<tr>
+<td>塔的类型</td>
+<td>3 种功能位</td>
+<td>拦截炮 / 脉冲环 / 补给塔</td>
+</tr>
+<tr>
+<td>敌人类型</td>
+<td>3 种威胁</td>
+<td>碎片 / 乱流 / 重壳</td>
+</tr>
+<tr>
+<td>资源</td>
+<td>1 主 + 1 副</td>
+<td>供能 + 保障度</td>
+</tr>
+<tr>
+<td>失败叙事</td>
+<td>失败后发生什么</td>
+<td>舱壁破裂，事故报告</td>
+</tr>
+</tbody>
+</table></div>
+<p>这样做的好处：</p>
+<ul>
+<li>工程只需要一套战斗系统（见 <a href="12_技术方案_Godot工程.html">12</a>）；</li>
+<li>每个职业的差异是「数据 + 叙事 + 美术皮」，不是「新代码」；</li>
+<li>玩家学会一次操作，就能体验多个职业；</li>
+<li>人类改职业设定时，不需要重写玩法。</li>
+</ul>
+<h2 id="三职业候选总表16-个">三、职业候选总表（16 个）</h2>
+<p>【AI 候选】按环分组。每个职业给出「岗位日常 → 塔防映射」。<strong>第一版只做 1 个</strong>，其余是内容储备。</p>
+<h3 id="31-中环居民区--生活">3.1 中环（居民区 / 生活）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>职业</th>
+<th>日常</th>
+<th>塔防里保护什么</th>
+<th>三种「塔」</th>
+<th>三种「敌人」</th>
+<th>主资源</th>
+<th>核心张力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>养生舱护理师</td>
+<td>监测、安抚、巡舱</td>
+<td>一班湾民的身心状态</td>
+<td>护理站 / 缓冲舱 / 巡检无人机</td>
+<td>压力波 / 疲劳峰值 / 交叉感染</td>
+<td>心力</td>
+<td>照顾别人 vs 照顾自己</td>
+</tr>
+<tr>
+<td>2</td>
+<td>娱乐舱主持人</td>
+<td>策划节目、维持气氛</td>
+<td>一整晚的情绪曲线</td>
+<td>节目台 / 灯光 / 休息区</td>
+<td>冷场 / 争吵 / 谣言</td>
+<td>氛围</td>
+<td>热闹 vs 真实</td>
+</tr>
+<tr>
+<td>3</td>
+<td>教育舱教员</td>
+<td>上课、辅导、家访</td>
+<td>一个班的学习进度</td>
+<td>课程 / 辅导 / 兴趣小组</td>
+<td>厌学 / 信息过载 / 霸凌</td>
+<td>注意力</td>
+<td>标准化 vs 个体</td>
+</tr>
+<tr>
+<td>4</td>
+<td>食堂后勤</td>
+<td>备餐、配给、清洁</td>
+<td>全城的饭点</td>
+<td>灶台 / 配给线 / 保温柜</td>
+<td>短缺 / 排队 / 投诉</td>
+<td>食材</td>
+<td>公平 vs 效率</td>
+</tr>
+<tr>
+<td>5</td>
+<td>维修工</td>
+<td>巡检、报修、抢修</td>
+<td>一段管线的正常</td>
+<td>工具箱 / 备件架 / 巡检路线</td>
+<td>故障链 / 老化 / 误操作</td>
+<td>备件</td>
+<td>修得快 vs 修得对</td>
+</tr>
+<tr>
+<td>6</td>
+<td>档案员</td>
+<td>归档、检索、审计</td>
+<td>一份档案的完整性</td>
+<td>索引 / 副本 / 审计台</td>
+<td>信息腐烂 / 篡改 / 缺失</td>
+<td>可信度</td>
+<td>记录 vs 遗忘</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="32-外环护卫--采集--能源">3.2 外环（护卫 / 采集 / 能源）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>职业</th>
+<th>日常</th>
+<th>塔防里保护什么</th>
+<th>三种「塔」</th>
+<th>三种「敌人」</th>
+<th>主资源</th>
+<th>核心张力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>护卫兵</td>
+<td>巡逻、拦截、救援</td>
+<td>外环一段舱壁</td>
+<td>拦截炮 / 脉冲环 / 补给塔</td>
+<td>碎片 / 乱流 / 入侵者</td>
+<td>供能</td>
+<td>开火 vs 避免误伤</td>
+</tr>
+<tr>
+<td>8</td>
+<td>采集兵</td>
+<td>出舱、采矿、返航</td>
+<td>一次采集窗口</td>
+<td>采集臂 / 牵引索 / 储罐</td>
+<td>乱流 / 矿脉枯竭 / 竞争船</td>
+<td>时间</td>
+<td>采够 vs 安全返航</td>
+</tr>
+<tr>
+<td>9</td>
+<td>能源调度员</td>
+<td>监控负载、切换电路</td>
+<td>全城不断电</td>
+<td>配电 / 储能 / 隔离阀</td>
+<td>峰值负载 / 连锁跳闸 / 偷电</td>
+<td>瓦时</td>
+<td>保核心 vs 保全城</td>
+</tr>
+<tr>
+<td>10</td>
+<td>船坞技师</td>
+<td>检修、焊接、试航</td>
+<td>一艘船的交付</td>
+<td>吊臂 / 焊接台 / 检测仪</td>
+<td>结构疲劳 / 工期 / 返工</td>
+<td>工时</td>
+<td>快 vs 稳</td>
+</tr>
+<tr>
+<td>11</td>
+<td>救援队员</td>
+<td>搜救、医疗、撤离</td>
+<td>被困人员的生命</td>
+<td>信标 / 绳索 / 医疗包</td>
+<td>缺氧 / 失温 / 二次坍塌</td>
+<td>氧气</td>
+<td>救谁先</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="33-内环政治--经济--文化">3.3 内环（政治 / 经济 / 文化）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>职业</th>
+<th>日常</th>
+<th>塔防里保护什么</th>
+<th>三种「塔」</th>
+<th>三种「敌人」</th>
+<th>主资源</th>
+<th>核心张力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12</td>
+<td>工程师</td>
+<td>设计、加固、排障</td>
+<td>一套系统的冗余</td>
+<td>结构加固 / 泵站 / 冗余回路</td>
+<td>连锁失效 / 超载 / 设计缺陷</td>
+<td>备件</td>
+<td>最优 vs 最稳</td>
+</tr>
+<tr>
+<td>13</td>
+<td>执政官</td>
+<td>预算、听证、广播</td>
+<td>一届政府的信任</td>
+<td>政策 / 预算 / 广播</td>
+<td>危机事件 / 信任流失 / 反对派</td>
+<td>政治资本</td>
+<td>正确 vs 可接受</td>
+</tr>
+<tr>
+<td>14</td>
+<td>仲裁官</td>
+<td>调解、取证、判决</td>
+<td>一次纠纷的公正</td>
+<td>证据 / 调解 / 判决</td>
+<td>谣言 / 伪证 / 群体情绪</td>
+<td>公信力</td>
+<td>程序 vs 结果</td>
+</tr>
+<tr>
+<td>15</td>
+<td>广播员</td>
+<td>播报、辟谣、动员</td>
+<td>全城的知情</td>
+<td>节目 / 辟谣 / 动员</td>
+<td>恐慌 / 假消息 / 沉默</td>
+<td>信任</td>
+<td>安抚 vs 诚实</td>
+</tr>
+<tr>
+<td>16</td>
+<td>经济规划师</td>
+<td>配给、储备、投资</td>
+<td>一个季度的供需</td>
+<td>配给 / 储备 / 投资</td>
+<td>短缺 / 通胀 / 囤积</td>
+<td>贡献点</td>
+<td>公平 vs 增长</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="四六个职业的展开示例">四、六个职业的展开示例</h2>
+<h3 id="41-养生舱护理师中环最具项目特色">4.1 养生舱护理师（中环，最具项目特色）</h3>
+<ul>
+<li><strong>一班</strong>：巡舱 → 发现异常 → 调配护理站 → 处理突发 → 写交接记录。</li>
+<li><strong>塔防化</strong>：地图是养生舱的俯视图；「塔」是护理站、缓冲舱、巡检无人机；「敌人」不是怪物，而是<strong>压力波</strong>——沿着舱室蔓延，碰到湾民就降低状态。</li>
+<li><strong>资源</strong>：「心力」有限，用一次少一次；「保障度」是这一班所有湾民的平均状态。</li>
+<li><strong>失败</strong>：不是「死人」，而是「有人崩溃，被送进深度恢复」；结算是一份护理报告。</li>
+<li><strong>核心张力</strong>：你可以把资源集中在一个人身上，也可以平均分配；两种都合理，代价不同。</li>
+</ul>
+<blockquote>
+<p>这是最能体现「塔防 = 岗位」的职业，也是最难做的：敌人抽象、反馈不直观。建议作为<strong>第二职业</strong>或<strong>旗舰职业</strong>，不建议作为教学职业。</p>
+</blockquote>
+<h3 id="42-护卫兵外环最稳的教学职业">4.2 护卫兵（外环，最稳的教学职业）</h3>
+<ul>
+<li><strong>一班</strong>：接警戒 → 布防 → 拦截 → 修复 → 交接。</li>
+<li><strong>塔防化</strong>：传统弧形路径；敌人沿外环弧线推进；塔位在弧内侧。</li>
+<li><strong>资源</strong>：供能（建造/升级）+ 保障度（漏怪扣）。</li>
+<li><strong>失败</strong>：舱壁破裂，进入事故报告；可以重试。</li>
+<li><strong>核心张力</strong>：火力覆盖 vs 误伤民用舱段（可选的第二资源）。</li>
+</ul>
+<blockquote>
+<p>教学成本最低，玩家一看就懂。缺点是「像别的塔防」，项目特色要靠叙事与美术补。</p>
+</blockquote>
+<h3 id="43-采集兵外环时间压力">4.3 采集兵（外环，时间压力）</h3>
+<ul>
+<li><strong>一班</strong>：出舱 → 选矿脉 → 布采集臂 → 应对乱流 → 返航。</li>
+<li><strong>塔防化</strong>：不是「守家」，而是「守采集窗口」；敌人是乱流与时间，不是敌人。</li>
+<li><strong>资源</strong>：时间（窗口倒计时）+ 氧气。</li>
+<li><strong>失败</strong>：空手返航，或被迫提前撤离。</li>
+<li><strong>核心张力</strong>：多采一筐 vs 安全回家。</li>
+</ul>
+<h3 id="44-能源调度员外环内环交界系统玩法">4.4 能源调度员（外环/内环交界，系统玩法）</h3>
+<ul>
+<li><strong>一班</strong>：监控负载 → 切换电路 → 隔离故障 → 恢复供电。</li>
+<li><strong>塔防化</strong>：电网图，节点是舱段，边是线路；「敌人」是峰值负载与连锁跳闸。</li>
+<li><strong>资源</strong>：瓦时 + 备用容量。</li>
+<li><strong>失败</strong>：全城停电，进入应急状态。</li>
+<li><strong>核心张力</strong>：保核心舱段（医院、养生舱）还是保全城。</li>
+</ul>
+<h3 id="45-工程师内环故障链">4.5 工程师（内环，故障链）</h3>
+<ul>
+<li><strong>一班</strong>：接报 → 诊断 → 加固 → 验证 → 交付。</li>
+<li><strong>塔防化</strong>：系统图，故障像波一样沿连接传播；「塔」是泵、阀、冗余回路。</li>
+<li><strong>资源</strong>：备件 + 预算。</li>
+<li><strong>失败</strong>：连锁失效，事故报告。</li>
+<li><strong>核心张力</strong>：修得快 vs 修得对；临时补丁 vs 彻底更换。</li>
+</ul>
+<h3 id="46-执政官内环非传统塔防">4.6 执政官（内环，非传统塔防）</h3>
+<ul>
+<li><strong>一班</strong>：开会 → 听汇报 → 分配预算 → 应对危机 → 广播。</li>
+<li><strong>塔防化</strong>：地图是「议题/派系/资源」的关系图；「塔」是政策、预算、广播；「敌人」是危机事件与信任流失。</li>
+<li><strong>资源</strong>：政治资本 + 公信力。</li>
+<li><strong>失败</strong>：不信任案，提前下台。</li>
+<li><strong>核心张力</strong>：正确 vs 可接受；短期 vs 长期。</li>
+</ul>
+<blockquote>
+<p>这是最冒险的职业：它可能不再是塔防，而是政治模拟。建议作为后期内容，且明确「它是不是塔防」由人类决定。</p>
+</blockquote>
+<h2 id="五成长路径">五、成长路径</h2>
+<p>【AI 候选】每个职业三阶，跨职业可迁移：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>阶</th>
+<th>名称</th>
+<th>玩法变化</th>
+<th>叙事</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>见习</td>
+<td>教学关，塔种类少，敌人单一</td>
+<td>刚被选拔</td>
+</tr>
+<tr>
+<td>2</td>
+<td>正式</td>
+<td>完整塔种、资源压力、随机事件</td>
+<td>独立值班</td>
+</tr>
+<tr>
+<td>3</td>
+<td>带班</td>
+<td>多目标、手下 NPC、交接责任</td>
+<td>要为别人的班负责</td>
+</tr>
+</tbody>
+</table></div>
+<p>跨职业：</p>
+<ul>
+<li><strong>转岗</strong>：完成一个职业的「带班」后，可申请转岗；保留部分「湾民档案」加成；</li>
+<li><strong>退役</strong>：不是失败，转为「顾问」，提供被动加成与剧情；</li>
+<li><strong>回任</strong>：退役后可回任，但需要重新见习。</li>
+</ul>
+<blockquote>
+<p>这套路径的好处是：它把「换工作」变成了玩法循环，而不是重开档。是否采用，按 <a href="11_待人类裁决清单.html">11</a> 的 D04（主角已裁决为无名岗位人）与 D05（第一职业护卫兵）执行。</p>
+</blockquote>
+<h2 id="六第一职业护卫兵d05-已裁决">六、第一职业：护卫兵（D05 已裁决）</h2>
+<p><strong>裁决（2026-11-03）</strong>：<strong>A 护卫兵做 v0.1；B 护理师做 v0.2。</strong></p>
+<p>理由：先用最稳的壳验证「塔防手感 + 岗位叙事」是否成立，再用最有项目特色的护理师验证「主题能不能撑起来」。两个职业共用同一套引擎与数据契约，切换成本低。</p>
+<h3 id="61-v01护卫兵">6.1 v0.1：护卫兵</h3>
+<ul>
+<li>外环第七段，夜班；</li>
+<li>3 种塔、3 种自然敌人、5 波；</li>
+<li>验证：建造/升级/出售是否顺手，8–12 分钟一局是否成立，失败是否让人想再来一次。</li>
+</ul>
+<h3 id="62-v02护理师">6.2 v0.2：护理师</h3>
+<ul>
+<li>中环养生舱，夜班；</li>
+<li>「塔」是护理站/缓冲舱/巡检无人机；「敌人」是压力波/疲劳/感染；</li>
+<li>验证：非传统「敌人」是否能被玩家理解，岗位叙事是否能产生情绪。</li>
+</ul>
+<h3 id="63-为什么暂不做-cd">6.3 为什么暂不做 C/D</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>候选</th>
+<th>暂不做的原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C 采集兵</td>
+<td>时间压力很新鲜，但不是传统「守家」，首版容易让玩家困惑；适合作为第三职业</td>
+</tr>
+<tr>
+<td>D 工程师</td>
+<td>故障链有深度，但系统复杂，适合在 D02 的内部故障（C）成熟后再做</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>第一职业已定，不等于职业列表已定。其余 15 个职业仍是候选，按 <a href="10_内容节奏与长期留存.html">10</a> 的节奏逐个验证。</p>
+</blockquote>
+<h2 id="七内容量估算">七、内容量估算</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>职业数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0.1 垂直切片</td>
+<td>1</td>
+<td>验证手感</td>
+</tr>
+<tr>
+<td>v0.2</td>
+<td>2</td>
+<td>加一个特色职业，验证「同引擎换皮」</td>
+</tr>
+<tr>
+<td>v0.5</td>
+<td>4</td>
+<td>覆盖三环，验证内容产能</td>
+</tr>
+<tr>
+<td>v1.0</td>
+<td>6–8</td>
+<td>每个环 2–3 个，含 1 个非传统职业</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>每增加一个职业，成本约等于「一套数据 + 一套美术 + 一段叙事 + 一轮平衡」，不是「一个新游戏」。具体产能见 <a href="10_内容节奏与长期留存.html">10</a>。</p>
+</blockquote>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="05_社会系统_慢好三生保障体系.html"><span class="dir">prev</span><span class="label">慢好三生保障体系</span></a><a class="next" href="13_术语表.html"><span class="dir">next</span><span class="label">术语表</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../03_职业体系.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

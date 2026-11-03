@@ -49,6 +49,7 @@
 | --- | --- |
 | 看人类原始设定 | [`docs-human/概念设定.md`](docs-human/概念设定.md) |
 | 看策划文档集总览 | [`docs-ai/design01/README.md`](docs-ai/design01/README.md) |
+| 看 HTML 阅读版 | [`docs-ai/design01/html/index.html`](docs-ai/design01/html/index.html)（支持系统 / 浅色 / 深色） |
 | 看还需要你拍板什么 | [`docs-ai/design01/11_待人类裁决清单.md`](docs-ai/design01/11_待人类裁决清单.md) |
 | 看 NASA朋克美学 | [`docs/retro-futurism/附录_NASA朋克卷/`](../../docs/retro-futurism/附录_NASA朋克卷/README.md) |
 | 看工程结构 | [`docs-ai/design01/12_技术方案_Godot工程.md`](docs-ai/design01/12_技术方案_Godot工程.md) |

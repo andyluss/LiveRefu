@@ -1,0 +1,401 @@
+<!-- 由 tools/build_design_html.py 从 ../05_社会系统_慢好三生保障体系.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>慢好三生保障体系 · LiveBay design01</title>
+<meta name="description" content="生存 / 生活 / 生产；慢 + 好。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html" aria-current="page">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../05_社会系统_慢好三生保障体系.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">慢好三生保障体系</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一已裁决的定义">一、已裁决的定义</a></li><li class="sub"><a href="#11-三生">1.1 三生</a></li><li class="sub"><a href="#12-慢好">1.2 慢好</a></li><li class="sub"><a href="#13-三者的关系">1.3 三者的关系</a></li><li class="sub"><a href="#14-被否决的读法保留为叙事素材">1.4 被否决的读法（保留为叙事素材）</a></li><li class=""><a href="#二保障体系的日常运作">二、保障体系的日常运作</a></li><li class="sub"><a href="#21-配给">2.1 配给</a></li><li class="sub"><a href="#22-保障等级">2.2 保障等级</a></li><li class="sub"><a href="#23-选拔">2.3 选拔</a></li><li class="sub"><a href="#24-轮岗与退役">2.4 轮岗与退役</a></li><li class=""><a href="#三分层与代价">三、分层与代价</a></li><li class=""><a href="#四治理与数据d07-已裁决">四、治理与数据（D07 已裁决）</a></li><li class=""><a href="#五玩法接口">五、玩法接口</a></li><li class=""><a href="#六体系的裂缝d01b--d08-已裁决">六、体系的裂缝（D01=B / D08 已裁决）</a></li><li class=""><a href="#七基调有裂缝的善意d01-已裁决-b">七、基调：有裂缝的善意（D01 已裁决 B）</a></li><li class=""><a href="#八相关裁决已齐">八、相关裁决已齐</a></li></ul></details>
+<article class="prose">
+<h1 id="05--社会系统慢好三生保障体系">05 · 社会系统：慢好三生保障体系</h1>
+<blockquote>
+<p><strong>文档类型</strong>：社会系统参考｜<strong>状态</strong>：草案 v0.3（D01/D03/D07/D08/D12 已裁决） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 展开，人类拍板｜<strong>决策权</strong>：人类 <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：<a href="02_世界观_逍遥湾.html">世界观</a> · <a href="03_职业体系.html">职业体系</a> · <a href="11_待人类裁决清单.html">待裁决清单</a></p>
+</blockquote>
+<blockquote>
+<p>概念设定给了名字与一句话功能：「为了节约能源与资源，大多数人类大多数时间都在中环消磨时间，在稳定的规划体系下生存生活生产，这个体系叫『慢好三生保障体系』。」 <strong>2026-11-03 人类裁决（D03）</strong>：三生 = <strong>生存 / 生活 / 生产</strong>；慢好 = <strong>慢 + 好</strong>。本文按此定义重写。</p>
+</blockquote>
+<h2 id="一已裁决的定义">一、已裁决的定义</h2>
+<h3 id="11-三生">1.1 三生</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>保障什么</th>
+<th>主要空间</th>
+<th>游戏接口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>生存</strong></td>
+<td>空气、水、食物、医疗、安全、应急</td>
+<td>全城（跨三环）</td>
+<td>保障度（HP）、失败条件</td>
+</tr>
+<tr>
+<td><strong>生活</strong></td>
+<td>居住、娱乐、教育、社交、心理、养老、尊严</td>
+<td>中环为主</td>
+<td>贡献点、关系、沉浸/放置</td>
+</tr>
+<tr>
+<td><strong>生产</strong></td>
+<td>工作、能源、资源、维护、照护劳动</td>
+<td>外环为主，内环负责分配</td>
+<td>供能、岗位、塔防/采集</td>
+</tr>
+</tbody>
+</table></div>
+<p>三个词不是并列的部门，而是三种<strong>保障对象</strong>：</p>
+<ul>
+<li><strong>生存是底线</strong>：任何情况下不能拿它做交易；</li>
+<li><strong>生活是温度</strong>：决定居民愿不愿意把这座城当家；</li>
+<li><strong>生产是代价</strong>：维持前两者所需要的劳动与资源，由少数工作人员承担。</li>
+</ul>
+<h3 id="12-慢好">1.2 慢好</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>字</th>
+<th>含义</th>
+<th>设计约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>慢</strong></td>
+<td>不追求效率最大化；允许发呆、闲聊、走神；制度为人的节奏留余量</td>
+<td>不做每日签到/体力/FOMO；轮岗与退役是正常路径；离线不惩罚</td>
+</tr>
+<tr>
+<td><strong>好</strong></td>
+<td>保障质量与尊严，而不是单纯给得多</td>
+<td>不卖数值、不抽卡；规则透明；服务有温度；宁可少而可靠</td>
+</tr>
+</tbody>
+</table></div>
+<p>「慢好」不是「低效」，而是<strong>把可持续性放在短期产出之前</strong>。它同时约束玩法（不逼玩家上线）与世界观（制度承认人不是机器）。</p>
+<h3 id="13-三者的关系">1.3 三者的关系</h3>
+<pre class="text"><code>        生存（底线）
+          ↑
+生活 ←—— 人 ——→ 生产
+          ↓
+        分配（内环）</code></pre>
+<ul>
+<li><strong>生产挤占生活</strong> → 倦怠、意义感下降、轮岗率上升；</li>
+<li><strong>生活挤占生产</strong> → 维护欠账、故障累积、保障度下降；</li>
+<li><strong>生存被击穿</strong> → 直接进入事故状态，其他两层暂停。</li>
+</ul>
+<p>内环不直接生产，也不直接生活；它负责<strong>分配</strong>：预算、配给、选拔、优先级。这也是政治冲突的源头。</p>
+<h3 id="14-被否决的读法保留为叙事素材">1.4 被否决的读法（保留为叙事素材）</h3>
+<ul>
+<li><strong>生存/生活/生命</strong>：把「生命」单列，容易变成心理/意义的抽象层，和「生活」重叠；不采用为主结构。</li>
+<li><strong>生产/生活/生态</strong>：生态适合做长期经营，但会额外增加一套循环系统；暂不采用。</li>
+<li><strong>生/长/老</strong>：适合做长线叙事，不适合做核心系统；保留为角色人生阶段的素材。</li>
+<li><strong>慢/好/三段人生</strong>：其中「三段人生」不占用「三生」的定义；「转岗/退役/回任」仍是职业循环的一部分。</li>
+</ul>
+<blockquote>
+<p>裁决不等于删除讨论。以上读法仍可在具体剧情、舱室或角色身上局部使用，只是不再作为「三生」的主定义。</p>
+</blockquote>
+<h2 id="二保障体系的日常运作">二、保障体系的日常运作</h2>
+<h3 id="21-配给">2.1 配给</h3>
+<ul>
+<li><strong>生存配额</strong>：空气、水、食物、基础医疗、居住，无条件提供；</li>
+<li><strong>生活配额</strong>：娱乐舱预约、加餐、教育课程、私人空间，用贡献点兑换；</li>
+<li><strong>生产配额</strong>：工具、备件、能源、培训，按岗位与项目分配；</li>
+<li><strong>贡献点</strong>：按工时、岗位难度、风险系数发放；</li>
+<li><strong>上限</strong>：不能购买生产资料、不能雇佣他人、不能转让生存配额（防止阶层固化）。</li>
+</ul>
+<h3 id="22-保障等级">2.2 保障等级</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>等级</th>
+<th>覆盖</th>
+<th>获取</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基础</td>
+<td>生存必需</td>
+<td>所有居民</td>
+</tr>
+<tr>
+<td>标准</td>
+<td>生活（娱乐/教育/心理）</td>
+<td>正常贡献</td>
+</tr>
+<tr>
+<td>优先</td>
+<td>医疗/养老/育儿/高风险岗位</td>
+<td>特殊贡献或实际需要</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>「优先」是最容易出问题的地方：谁有资格优先？按贡献、按年龄，还是按需要？这是叙事的富矿。</p>
+</blockquote>
+<h3 id="23-选拔">2.3 选拔</h3>
+<p>【AI 候选】三种机制，可组合：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>机制</th>
+<th>说明</th>
+<th>优点</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>考试</td>
+<td>标准化测试 + 实操</td>
+<td>公平、可预期</td>
+<td>应试化，忽略软技能</td>
+</tr>
+<tr>
+<td>推荐</td>
+<td>现有工作人员推荐</td>
+<td>有人情味</td>
+<td>容易裙带</td>
+</tr>
+<tr>
+<td>抽签</td>
+<td>随机抽取</td>
+<td>绝对公平</td>
+<td>不专业，风险高</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>【AI 建议】考试为主 + 推荐为辅；抽签只用于「稀有岗位」的叙事事件。</p>
+</blockquote>
+<h3 id="24-轮岗与退役">2.4 轮岗与退役</h3>
+<ul>
+<li><strong>轮岗</strong>：同一环内换岗，或跨环短期支援；目的是防止 burnout；</li>
+<li><strong>退役</strong>：不是惩罚，而是「转为顾问/居民」；保留部分福利；</li>
+<li><strong>回任</strong>：退役后可申请回任，需重新见习。</li>
+</ul>
+<p>这套机制的世界观意义：<strong>它承认「人不是机器」</strong>。这也是「慢」的核心：效率让位于可持续。</p>
+<h2 id="三分层与代价">三、分层与代价</h2>
+<p>【AI 候选】任何保障体系都会产生分层。不要假装没有：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>群体</th>
+<th>位置</th>
+<th>得到什么</th>
+<th>失去什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中环居民</td>
+<td>大多数</td>
+<td>稳定、安全、基本保障</td>
+<td>意义感、选择权</td>
+</tr>
+<tr>
+<td>三环工作人员</td>
+<td>少数</td>
+<td>少量奖励、成就感、上升通道</td>
+<td>压力、风险、被轮岗</td>
+</tr>
+<tr>
+<td>内环精英</td>
+<td>更少数</td>
+<td>决策权、优先保障</td>
+<td>被问责、被孤立</td>
+</tr>
+<tr>
+<td>无法工作者</td>
+<td>边缘</td>
+<td>基础保障</td>
+<td>社会参与、尊严</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>这张表是叙事与玩法的关键。如果游戏只展示前两行，它就是「体制内爽文」；如果它敢展示后两行，它才有资格谈「保障」。D01 已裁决为 B（有裂缝的善意），所以后两行必须被写进内容，而不是只做背景。</p>
+</blockquote>
+<h2 id="四治理与数据d07-已裁决">四、治理与数据（D07 已裁决）</h2>
+<p><strong>裁决（2026-11-03）</strong>：<strong>双轨制</strong>——日常算法配给，危机议会接管。</p>
+<ul>
+<li><strong>健康监测</strong>：养生舱记录身体与心理数据，用于配给与预警；</li>
+<li><strong>日常</strong>：算法分配资源，规则透明、效率高、处理不了例外；</li>
+<li><strong>危机</strong>：议会开特别会议，决定优先级、征用与例外；</li>
+<li><strong>甩锅</strong>：算法说「这是议会批准的例外」，议会说「这是算法给出的建议」；</li>
+<li><strong>隐私</strong>：数据归机构，个人可申请查看，但不能删除；这是内环政治的核心议题；</li>
+<li><strong>申诉</strong>：居民可以申诉，流程漫长，常常在两条轨道之间被踢回。</li>
+</ul>
+<blockquote>
+<p>这套结构的戏剧性不在「谁对」，而在「没有人负责」——它让 D01=B 的「有裂缝的善意」有了制度载体。</p>
+</blockquote>
+<h2 id="五玩法接口">五、玩法接口</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>三生</th>
+<th>塔防</th>
+<th>沉浸</th>
+<th>放置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生存</td>
+<td>保障度（城 HP）</td>
+<td>角色健康/安全</td>
+<td>舱室稳定度</td>
+</tr>
+<tr>
+<td>生活</td>
+<td>建造资源（间接）</td>
+<td>关系、对话、心理</td>
+<td>贡献点、幸福感</td>
+</tr>
+<tr>
+<td>生产</td>
+<td>供能、岗位、波次</td>
+<td>工作流程、交接</td>
+<td>舱室产出、岗位分配</td>
+</tr>
+</tbody>
+</table></div>
+<p>【AI 建议】三种玩法共享一套「保障度/配给/档案」数据，但<strong>不强制</strong>互相依赖（见 <a href="09_三玩法联动.html">09</a>）。</p>
+<h2 id="六体系的裂缝d01b--d08-已裁决">六、体系的裂缝（D01=B / D08 已裁决）</h2>
+<p><strong>裁决（2026-11-03）</strong>：先埋 <strong>低报事故</strong>，只埋线索、不揭开。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>裂缝</th>
+<th>状态</th>
+<th>表现</th>
+<th>玩法含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据偏差</td>
+<td>未采用</td>
+<td>算法对某类人评分偏低</td>
+<td>玩家可以选择修正或无视</td>
+</tr>
+<tr>
+<td><strong>低报事故</strong></td>
+<td><strong>采用</strong></td>
+<td>广播数字与实际不符</td>
+<td>塔防结算与新闻不一致</td>
+</tr>
+<tr>
+<td>轮岗黑箱</td>
+<td>未采用</td>
+<td>谁被轮岗由内环决定</td>
+<td>玩家被调去「送死」岗位</td>
+</tr>
+<tr>
+<td>退役污名</td>
+<td>未采用</td>
+<td>退役者被视为「不够坚强」</td>
+<td>角色关系冲突</td>
+</tr>
+<tr>
+<td>代际断层</td>
+<td>未采用</td>
+<td>新湾民不认同旧制度</td>
+<td>教育/广播玩法</td>
+</tr>
+</tbody>
+</table></div>
+<p>低报事故在游戏里的三个落点：</p>
+<ol type="1">
+<li>广播说「外环事故 0 起」，塔防结算却显示漏过；</li>
+<li>交接记录出现「已按惯例处理」；</li>
+<li>第 4 波故障出现时，广播仍说「系统运行正常」。</li>
+</ol>
+<blockquote>
+<p>第一版不解释谁在低报、为什么低报；留白比揭秘更适合长线。</p>
+</blockquote>
+<h2 id="七基调有裂缝的善意d01-已裁决-b">七、基调：有裂缝的善意（D01 已裁决 B）</h2>
+<p>这不是「坏制度」，也不是「完美乌托邦」，而是：</p>
+<ul>
+<li>它真的救了很多人；</li>
+<li>它真的排除了少数人；</li>
+<li>里面的人既想守护它，也想改变它。</li>
+</ul>
+<p>设计上的三个要求：</p>
+<ol type="1">
+<li><strong>不把机构写成反派</strong>：机构由具体的人组成，有善意也有惰性；</li>
+<li><strong>不把玩家写成救世主</strong>：玩家只能改变一小块，代价要可见；</li>
+<li><strong>不把「逍遥」写成躺平</strong>：它是被安排出来的安稳，安稳本身值得怀疑。</li>
+</ol>
+<h2 id="八相关裁决已齐">八、相关裁决已齐</h2>
+<p>D01（基调）、D03（三生）、D07（双轨）、D08（低报事故）、D12（买断+内购）均已裁决：</p>
+<ul>
+<li>内购只卖外观/扩展内容，不卖数值、不抽卡；</li>
+<li>社会系统的冲突不靠「坏人大阴谋」，而靠「制度惯性 + 没人负责」；</li>
+<li>下一步是把这些写进广播、交接记录与舱室事件，而不是继续加设定。</li>
+</ul>
+<blockquote>
+<p>完整记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+</blockquote>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="02_世界观_逍遥湾.html"><span class="dir">prev</span><span class="label">世界观：逍遥湾</span></a><a class="next" href="03_职业体系.html"><span class="dir">next</span><span class="label">职业体系</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../05_社会系统_慢好三生保障体系.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

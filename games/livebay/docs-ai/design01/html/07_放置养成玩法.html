@@ -1,0 +1,330 @@
+<!-- 由 tools/build_design_html.py 从 ../07_放置养成玩法.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>放置养成玩法 · LiveBay design01</title>
+<meta name="description" content="舱室、湾民、离线产出，不逼玩家回来。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html" aria-current="page">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../07_放置养成玩法.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">放置养成玩法</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一放置什么">一、放置什么</a></li><li class=""><a href="#二核心循环">二、核心循环</a></li><li class=""><a href="#三资源">三、资源</a></li><li class=""><a href="#四舱室">四、舱室</a></li><li class=""><a href="#五湾民">五、湾民</a></li><li class=""><a href="#六离线产出">六、离线产出</a></li><li class=""><a href="#七与塔防的接口">七、与塔防的接口</a></li><li class=""><a href="#八反设计放置玩法最容易犯的错">八、反设计：放置玩法最容易犯的错</a></li><li class=""><a href="#九第一版范围">九、第一版范围</a></li><li class=""><a href="#十相关裁决与后续">十、相关裁决与后续</a></li></ul></details>
+<article class="prose">
+<h1 id="07--放置养成玩法">07 · 放置养成玩法</h1>
+<blockquote>
+<p><strong>文档类型</strong>：分支玩法参考｜<strong>状态</strong>：草案 v0.3（D03/D11 已裁决） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 设计，人类拍板｜<strong>决策权</strong>：人类 <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：<a href="09_三玩法联动.html">三玩法联动</a> · <a href="11_待人类裁决清单.html">待裁决清单</a></p>
+</blockquote>
+<blockquote>
+<p>概念设定：【人类已定】分支玩法二是放置养成玩法；当前玩法之间联系较弱。 本文给出放置玩法的四种形态、一个最小版本，以及「不逼玩家回来」的设计原则。<strong>D11 已裁决：v0.1 L0（独立），v0.2 L1（共享世界）。</strong> 按 D03 裁决，放置玩法主要服务「生活」与「生产」两层：舱室是生活，产出与岗位是生产。</p>
+</blockquote>
+<h2 id="一放置什么">一、放置什么</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>候选</th>
+<th>对象</th>
+<th>玩家在做什么</th>
+<th>优点</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A 舱室经营</strong></td>
+<td>养生舱/食堂/维修站</td>
+<td>升级、分配、处理事件</td>
+<td>与世界观贴合；可视化强</td>
+<td>需要舱室美术</td>
+</tr>
+<tr>
+<td><strong>B 湾民养成</strong></td>
+<td>具体的人</td>
+<td>安排岗位、关心、看成长</td>
+<td>情感强；与沉浸玩法共享角色</td>
+<td>需要角色内容</td>
+</tr>
+<tr>
+<td><strong>C 城市经营</strong></td>
+<td>整座月牙城</td>
+<td>三环平衡、预算、政策</td>
+<td>宏大；与内环政治结合</td>
+<td>范围大，容易失控</td>
+</tr>
+<tr>
+<td><strong>D 档案收集</strong></td>
+<td>资料/历史</td>
+<td>解锁、拼图、阅读</td>
+<td>成本最低</td>
+<td>玩法弱，像图鉴</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>【AI 建议】第一版做 <strong>A 的极简版 + B 的雏形</strong>：一个舱室、三个湾民、两种资源、离线 8 小时。理由：它能验证「你不在时城市怎么活」这一叙事，而不需要城市级模拟。</p>
+</blockquote>
+<h2 id="二核心循环">二、核心循环</h2>
+<pre class="text"><code>离开（下线/去玩塔防）
+   ↓
+时间流逝（离线产出，上限 8 小时）
+   ↓
+回来（收菜：供能/素材/事件）
+   ↓
+升级舱室 / 调整湾民岗位 / 处理事件
+   ↓
+更强的离线产出 &amp; 塔防加成 → 再离开</code></pre>
+<p>一轮 2–3 分钟，不要求每天登录。</p>
+<h2 id="三资源">三、资源</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>资源</th>
+<th>来源</th>
+<th>用途</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>供能</td>
+<td>舱室产出、塔防结算</td>
+<td>升级舱室、塔防初始加成</td>
+<td>与塔防共享</td>
+</tr>
+<tr>
+<td>素材</td>
+<td>舱室产出、事件</td>
+<td>建造/维修</td>
+<td>第一版可并入供能</td>
+</tr>
+<tr>
+<td>贡献点</td>
+<td>岗位分配、事件</td>
+<td>解锁、购买</td>
+<td>与沉浸玩法共享</td>
+</tr>
+<tr>
+<td>保障度</td>
+<td>舱室状态</td>
+<td>影响产出效率</td>
+<td>不设「归零惩罚」</td>
+</tr>
+</tbody>
+</table></div>
+<p>【AI 建议】第一版只做「供能 + 贡献点」，素材后置。两种资源足够产生「先升级哪个舱室」的选择。</p>
+<h2 id="四舱室">四、舱室</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>舱室</th>
+<th>产出</th>
+<th>升级效果</th>
+<th>叙事</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>养生舱</td>
+<td>保障度恢复</td>
+<td>恢复更快、容量更大</td>
+<td>湾民的身心</td>
+</tr>
+<tr>
+<td>食堂</td>
+<td>贡献点</td>
+<td>配给更丰富、满意度上升</td>
+<td>阶层观察</td>
+</tr>
+<tr>
+<td>维修站</td>
+<td>供能效率</td>
+<td>减少故障、提升产出</td>
+<td>岗位劳动</td>
+</tr>
+<tr>
+<td>娱乐舱</td>
+<td>心情/关系</td>
+<td>解锁事件、提升幸福感</td>
+<td>社交</td>
+</tr>
+</tbody>
+</table></div>
+<p>【工程占位】第一版只做「养生舱 + 食堂」两个，验证「产出—升级—再产出」循环。</p>
+<h2 id="五湾民">五、湾民</h2>
+<p>【AI 候选】每个湾民有：</p>
+<ul>
+<li>岗位（护理师/厨师/维修工/教员）；</li>
+<li>状态（体力/心情/技能）；</li>
+<li>关系（与玩家、与其他湾民）；</li>
+<li>小故事（通过事件解锁）。</li>
+</ul>
+<p>分配规则：</p>
+<ul>
+<li>每个舱室 1–3 个岗位；</li>
+<li>岗位匹配 → 效率 +20%；不匹配 → 效率 −20%，但可以培养；</li>
+<li>湾民会疲劳，需要休息；不休息会降低保障度（但不死亡）。</li>
+</ul>
+<blockquote>
+<p>【AI 建议】第一版 3 个湾民，不做「抽卡获取」；角色通过剧情/职业解锁获得。这符合「不卖数值」的基调。</p>
+</blockquote>
+<h2 id="六离线产出">六、离线产出</h2>
+<p>【AI 候选】公式：</p>
+<pre class="text"><code>产出 = 基础产出 × 舱室等级系数 × 湾民效率 × 时间（小时，上限 8）</code></pre>
+<ul>
+<li>上限 8 小时：鼓励「一天看一次」，而不是「每小时上线」；</li>
+<li>不设「离线惩罚」：离开不是错误；</li>
+<li>回归报告：一封「这段时间发生的事」，包含产出、事件、湾民状态变化；</li>
+<li>事件：离线期间可能发生 0–2 件小事（设备故障、湾民争执），回来处理。</li>
+</ul>
+<h2 id="七与塔防的接口">七、与塔防的接口</h2>
+<p>D11 已裁决：<strong>v0.1 L0（独立），v0.2 L1（共享世界）</strong>。所以接口按阶段开放：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>接口</th>
+<th>说明</th>
+<th>强度</th>
+<th>阶段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>共享 NPC / 档案</td>
+<td>同一个人出现在放置与塔防的简报里</td>
+<td>弱</td>
+<td>v0.2（L1）</td>
+</tr>
+<tr>
+<td>初始供能</td>
+<td>舱室等级提供塔防开局额外供能</td>
+<td>弱</td>
+<td>v0.5（L2）</td>
+</tr>
+<tr>
+<td>被动加成</td>
+<td>特定湾民提供塔防增益（射程/伤害/折扣）</td>
+<td>中</td>
+<td>v0.5（L2）</td>
+</tr>
+<tr>
+<td>解锁塔</td>
+<td>舱室升级解锁新塔</td>
+<td>中</td>
+<td>v0.5（L2）</td>
+</tr>
+<tr>
+<td>事件联动</td>
+<td>塔防失败 → 舱室事件（伤员/维修）</td>
+<td>强</td>
+<td>v1.0 以后</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>v0.1 的放置玩法<strong>不接塔防</strong>，单独验证「离线产出 + 回归报告」是否成立；v0.2 只做人物与档案复用，不做资源互通。理由：先证明每个模式自己好玩，再谈联动。</p>
+</blockquote>
+<h2 id="八反设计放置玩法最容易犯的错">八、反设计：放置玩法最容易犯的错</h2>
+<ol type="1">
+<li><strong>数值膨胀</strong>：每级 +100%，很快失去意义；应该做「效率提升 + 新选择」，而不是纯数值。</li>
+<li><strong>逼登录</strong>：体力上限、限时活动、连续登录奖励——与「不惩罚离开」冲突，不做。</li>
+<li><strong>收菜疲劳</strong>：一次收菜超过 3 分钟，就会变成负担；第一版控制在 2 分钟内。</li>
+<li><strong>离线无叙事</strong>：纯数字增长很无聊；回归报告要有「人」的变化。</li>
+<li><strong>与塔防互相绑架</strong>：如果打塔防必须收菜，或收菜必须打塔防，两个模式都会失去自由。</li>
+</ol>
+<h2 id="九第一版范围">九、第一版范围</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>舱室</td>
+<td>2（养生舱、食堂）</td>
+</tr>
+<tr>
+<td>湾民</td>
+<td>3</td>
+</tr>
+<tr>
+<td>资源</td>
+<td>2（供能、贡献点）</td>
+</tr>
+<tr>
+<td>离线上限</td>
+<td>8 小时</td>
+</tr>
+<tr>
+<td>事件</td>
+<td>5 个</td>
+</tr>
+<tr>
+<td>升级层级</td>
+<td>3 级</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="十相关裁决与后续">十、相关裁决与后续</h2>
+<ul>
+<li>D11 已裁决：v0.1 L0，v0.2 L1；</li>
+<li>D17 更新节奏仍属 P2，可以等试玩后再定；</li>
+<li>第一版放置玩法按 D11 的 L0 独立验证，不接塔防。</li>
+<li>是否做「城市经营」的长期方向</li>
+</ul>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="06_沉浸体验玩法.html"><span class="dir">prev</span><span class="label">沉浸体验玩法</span></a><a class="next" href="09_三玩法联动.html"><span class="dir">next</span><span class="label">三玩法联动</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../07_放置养成玩法.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

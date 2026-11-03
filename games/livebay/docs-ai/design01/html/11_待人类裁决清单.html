@@ -1,0 +1,429 @@
+<!-- 由 tools/build_design_html.py 从 ../11_待人类裁决清单.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>待人类裁决清单 · LiveBay design01</title>
+<meta name="description" content="P0/P1 已裁决，P2 待定；附完整裁决记录。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html" aria-current="page">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../11_待人类裁决清单.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">待人类裁决清单</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一怎么用">一、怎么用</a></li><li class=""><a href="#二已裁决2026-11-03">二、已裁决（2026-11-03）</a></li><li class="sub"><a href="#d03-的补充说明">D03 的补充说明</a></li><li class=""><a href="#三p0已清空">三、P0：已清空</a></li><li class=""><a href="#四p1已裁决2026-11-03">四、P1：已裁决（2026-11-03）</a></li><li class=""><a href="#五p2可以后置">五、P2：可以后置</a></li><li class=""><a href="#六裁决记录">六、裁决记录</a></li><li class=""><a href="#七当前工程的占位对照">七、当前工程的占位对照</a></li><li class=""><a href="#八下一步">八、下一步</a></li></ul></details>
+<article class="prose">
+<h1 id="11--待人类裁决清单">11 · 待人类裁决清单</h1>
+<blockquote>
+<p><strong>文档类型</strong>：决策队列｜<strong>状态</strong>：现行 v0.5（2026-11-03 P0 + P1 已裁决；P2 待定；记录含原有选项） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 整理，人类拍板｜<strong>决策权</strong>：人类 <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：全部策划文档 · <a href="../../../game/">工程</a></p>
+</blockquote>
+<blockquote>
+<p><strong>这是整套文档里最重要的一篇。</strong> 所有需要人拍板的问题都集中在这里；正文里的【待裁决】都指向这里的 ID。 <strong>2026-11-03 裁决</strong>：D01–D13、D15、D16 已定；P0、P1 已清空，只剩 P2。</p>
+</blockquote>
+<h2 id="一怎么用">一、怎么用</h2>
+<ol type="1">
+<li>先看「已裁决」，避免重复讨论；</li>
+<li>再看「仍待裁决」，按 P0 → P1 → P2 回答；</li>
+<li>裁决后 AI 更新正文、同步工程数据，并在这里追加记录；</li>
+<li>不确定的写「再想想」，不要为了推进而随便选。</li>
+</ol>
+<h2 id="二已裁决2026-11-03">二、已裁决（2026-11-03）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>问题</th>
+<th>裁决</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>D01</strong></td>
+<td>逍遥湾的基调</td>
+<td><strong>B 有裂缝的善意</strong></td>
+<td>允许「既想守护又想改变」，最适合长线叙事与多职业；A 太轻，C 与「长期陪伴」冲突</td>
+</tr>
+<tr>
+<td><strong>D02</strong></td>
+<td>塔防的敌人</td>
+<td><strong>D 混合；v0.1 只做 A（自然）+ C（内部）</strong></td>
+<td>混合最丰富；首版用自然+内部控制范围，人类冲突（B）留作后期事件</td>
+</tr>
+<tr>
+<td><strong>D03</strong></td>
+<td>「慢好三生」怎么读</td>
+<td><strong>三生 = 生存 / 生活 / 生产；慢好 = 慢 + 好</strong></td>
+<td>与概念设定的「生存生活生产」一致；「慢」是不追求效率最大化，「好」是保障质量而非数量</td>
+</tr>
+<tr>
+<td><strong>D05</strong></td>
+<td>第一职业</td>
+<td><strong>A 护卫兵做 v0.1；B 护理师做 v0.2</strong></td>
+<td>先用最稳的壳验证手感，再用最有特色的职业验证主题</td>
+</tr>
+<tr>
+<td><strong>D16</strong></td>
+<td>先做多大</td>
+<td><strong>A 垂直切片</strong></td>
+<td>先验证 10 分钟可玩闭环，再决定是否扩成完整游戏</td>
+</tr>
+<tr>
+<td><strong>D04</strong></td>
+<td>玩家是谁</td>
+<td><strong>C 无名岗位人</strong></td>
+<td>最灵活，适配多职业；固定角色会限制「换过很多份工作」的主线；情感由「湾民档案」补</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="d03-的补充说明">D03 的补充说明</h3>
+<ul>
+<li><strong>三生</strong>：生存（空气、水、食物、医疗、安全）、生活（居住、娱乐、教育、社交、心理、养老）、生产（工作、能源、资源、维护）。</li>
+<li><strong>慢好</strong>：慢 = 制度为人的节奏留余量，不追求效率最大化；好 = 保障质量与尊严，而不是单纯给得多。</li>
+<li><strong>不采用</strong>：把「生命」「生态」「生/长/老」作为「三生」的主结构。其中「生/长/老」的人生阶段仍可作为叙事素材，「转岗/退役/回任」仍是职业循环的一部分，但不占用「三生」的定义。</li>
+<li><strong>落点</strong>：社会系统、术语表、玩法接口按此重写；<a href="05_社会系统_慢好三生保障体系.html">05 社会系统</a> 是主文档。</li>
+</ul>
+<h2 id="三p0已清空">三、P0：已清空</h2>
+<p>D04 已裁决为 <strong>C 无名岗位人</strong>：每个职业都是「你」，没有固定姓名与外观；玩家与角色的连接通过「湾民档案」、交接记录与关系值建立，而不是通过一段预设身世。</p>
+<blockquote>
+<p>这意味着：工程不需要角色创建器，也不需要固定主角立绘；需要的是一套「档案 + 关系」的轻量接口。</p>
+</blockquote>
+<h2 id="四p1已裁决2026-11-03">四、P1：已裁决（2026-11-03）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>问题</th>
+<th>裁决</th>
+<th>影响 / 备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D06</td>
+<td>航行第几代</td>
+<td><strong>200 年（第七代）</strong></td>
+<td>保留地球记忆，又允许「湾民」成为独立身份</td>
+</tr>
+<tr>
+<td>D07</td>
+<td>治理模式</td>
+<td><strong>双轨：日常算法，危机议会</strong></td>
+<td>两者互相甩锅，天然产生「谁负责」的戏剧</td>
+</tr>
+<tr>
+<td>D08</td>
+<td>埋哪条裂缝</td>
+<td><strong>低报事故（只埋线索，不揭开）</strong></td>
+<td>广播里的事故数字对不上；最贴「机构疲惫」</td>
+</tr>
+<tr>
+<td>D09</td>
+<td>塔防形态</td>
+<td><strong>弧形路径</strong></td>
+<td>最贴合月牙外弧；工程已按此实现</td>
+</tr>
+<tr>
+<td>D10</td>
+<td>失败处理</td>
+<td><strong>重试 + 可跳过复盘</strong></td>
+<td>失败不是惩罚，是事故报告；工程已实现</td>
+</tr>
+<tr>
+<td>D11</td>
+<td>三玩法耦合</td>
+<td><strong>v0.1 L0（独立）；v0.2 L1（共享世界）</strong></td>
+<td>先分别验证，再共享 NPC/档案，不逼玩</td>
+</tr>
+<tr>
+<td>D12</td>
+<td>商业模式</td>
+<td><strong>买断 + 内购</strong></td>
+<td>基础买断保底；内购限于外观/扩展内容，受「不卖数值」非目标约束；具体品类后续再定</td>
+</tr>
+<tr>
+<td>D13</td>
+<td>美术风格</td>
+<td><strong>2D 矢量 / 程序化</strong></td>
+<td>产能可控；当前工程用程序化绘制占位</td>
+</tr>
+<tr>
+<td>D15</td>
+<td>叙事量</td>
+<td><strong>中</strong></td>
+<td>足够支撑岗位叙事，不拖垮工期</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>D01 已定 B，所以 D08 不是「埋不埋」，而是「埋低报事故」；D02 已定 D，所以 D09 只影响空间形态，不影响敌人来源。</p>
+</blockquote>
+<h2 id="五p2可以后置">五、P2：可以后置</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>问题</th>
+<th>选项</th>
+<th>AI 建议</th>
+<th>影响</th>
+<th>裁决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D14</td>
+<td>平台？</td>
+<td>PC / 移动 / 双端</td>
+<td>PC 优先</td>
+<td>操作、性能</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>D17</td>
+<td>更新节奏？</td>
+<td>每月 / 每季 / 不定期</td>
+<td>不定期</td>
+<td>运营、产能</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>D18</td>
+<td>语言？</td>
+<td>中文 / 中英</td>
+<td>中文优先</td>
+<td>文本、字体</td>
+<td>☐</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="六裁决记录">六、裁决记录</h2>
+<blockquote>
+<p>格式：<code>Dxx｜问题/原有选项｜选择｜理由｜日期</code>。只追加，不回删。 「问题 / 原有选项」列保留当时的<strong>全部候选</strong>（含未采用项），供回顾；最终选择见第三列。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>问题 / 原有选项</th>
+<th>最终选择</th>
+<th>理由</th>
+<th>日期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D01</td>
+<td><strong>基调</strong>：A 基本善意 / B 有裂缝的善意 / C 温柔的牢笼</td>
+<td>B 有裂缝的善意</td>
+<td>允许既守护又改变；A 太轻，C 太冷</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D02</td>
+<td><strong>敌人来源</strong>：A 自然风险 / B 人类冲突 / C 内部故障 / D 混合（建议首版 A+C）</td>
+<td>D 混合；v0.1 A+C</td>
+<td>首版控制范围，人类冲突后置</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D03</td>
+<td><strong>「慢好三生」读法</strong>：A 生存/生活/生命 / B 生产/生活/生态 / C 生/长/老 / D 慢/好/三段人生；人类补充：三生=生存/生活/生产，慢好=慢+好</td>
+<td>三生=生存/生活/生产；慢好=慢+好</td>
+<td>与概念设定一致；慢好作为交付原则</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D05</td>
+<td><strong>第一职业</strong>：A 护卫兵 / B 护理师 / C 采集兵 / D 工程师</td>
+<td>A 护卫兵 v0.1；B 护理师 v0.2</td>
+<td>先验证手感，再验证主题</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D16</td>
+<td><strong>范围</strong>：A 垂直切片（10 分钟，1 职业 1 图）/ B 小完整版（3 职业、3 章、10 事件）/ C 完整游戏（6–8 职业、多章）</td>
+<td>A 垂直切片</td>
+<td>先验证 10 分钟闭环</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D04</td>
+<td><strong>玩家身份</strong>：A 固定角色 / B 自建角色 / C 无名岗位人</td>
+<td>C 无名岗位人</td>
+<td>最灵活，适配多职业；情感由档案补</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D06</td>
+<td><strong>航行代际</strong>：A 80 年（第三代）/ B 200 年（第七代）/ C 不可考</td>
+<td>200 年（第七代）</td>
+<td>保留地球记忆，又允许湾民身份</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D07</td>
+<td><strong>治理模式</strong>：A 议会 / B 算法 / C 双轨</td>
+<td>双轨：日常算法 / 危机议会</td>
+<td>互相甩锅，有政治戏</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D08</td>
+<td><strong>裂缝</strong>：A 埋 / B 不埋 / C 只埋线索；细化：A 数据偏差 / B 低报事故 / C 轮岗黑箱 / D 退役污名</td>
+<td>低报事故（只埋线索）</td>
+<td>最贴机构疲惫，留白</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D09</td>
+<td><strong>塔防形态</strong>：A 弧形路径 / B 环形 / C 节点 / D 混合</td>
+<td>弧形路径</td>
+<td>最贴月牙，工程已实现</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D10</td>
+<td><strong>失败处理</strong>：A 立即重试 / B 事故复盘 / C 永久损失</td>
+<td>重试 + 可跳过复盘</td>
+<td>失败不是惩罚</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D11</td>
+<td><strong>耦合强度</strong>：L0 独立 / L1 共享世界 / L2 共享资源 / L3 共享进度</td>
+<td>v0.1 L0；v0.2 L1</td>
+<td>先独立验证，再共享世界</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D12</td>
+<td><strong>商业模式</strong>：A 买断 / B 免费+内购 / C 订阅；人类改为：买断+内购</td>
+<td>买断 + 内购</td>
+<td>人类指定；内购限外观/扩展，不卖数值</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D13</td>
+<td><strong>美术风格</strong>：A 2D 矢量 / B 像素 / C 2.5D</td>
+<td>2D 矢量 / 程序化</td>
+<td>产能可控，已用程序化占位</td>
+<td>2026-11-03</td>
+</tr>
+<tr>
+<td>D15</td>
+<td><strong>叙事量</strong>：A 轻 / B 中 / C 重</td>
+<td>中</td>
+<td>支撑岗位叙事，不拖垮工期</td>
+<td>2026-11-03</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="七当前工程的占位对照">七、当前工程的占位对照</h2>
+<p>以下为工程<strong>已经实现</strong>或<strong>尚未实现</strong>的状态，供下一步排期：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>工程状态</th>
+<th>对应裁决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>职业</td>
+<td>已实现护卫兵</td>
+<td>D05 已裁决 A</td>
+</tr>
+<tr>
+<td>敌人</td>
+<td>已实现自然风险（碎片/乱流/重壳）+ 内部故障（故障，反向扩散、使塔离线）</td>
+<td>D02 已裁决 D，首版 A+C 已落地</td>
+</tr>
+<tr>
+<td>关卡</td>
+<td>1 张月牙弧、5 波</td>
+<td>D09 已裁决 弧形 / D16 已裁决 A</td>
+</tr>
+<tr>
+<td>失败</td>
+<td>事故报告 + 一键重试</td>
+<td>D10 已裁决「重试 + 可跳过复盘」</td>
+</tr>
+<tr>
+<td>基调</td>
+<td>温和、有少量裂缝暗示</td>
+<td>D01 已裁决 B</td>
+</tr>
+<tr>
+<td>主角</td>
+<td>无名岗位人</td>
+<td>D04 已裁决 C</td>
+</tr>
+<tr>
+<td>范围</td>
+<td>垂直切片</td>
+<td>D16 已裁决 A</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="八下一步">八、下一步</h2>
+<ol type="1">
+<li>只剩 P2：D14 平台、D17 更新节奏、D18 语言；可以等试玩后再定；</li>
+<li>按 D05 做 v0.2 护理师，验证「同引擎换职业」；</li>
+<li>按 D06/D07/D08 补世界观文本，按 D15 控制叙事量，按 D12 设计内购边界；</li>
+<li>P0/P1 已清空，D02 内部故障已落地，下一轮直接进入内容、平衡与试玩。</li>
+</ol>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="01_项目北极星.html"><span class="dir">prev</span><span class="label">项目北极星</span></a><a class="next" href="02_世界观_逍遥湾.html"><span class="dir">next</span><span class="label">世界观：逍遥湾</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../11_待人类裁决清单.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

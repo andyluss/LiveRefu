@@ -1,0 +1,405 @@
+<!-- 由 tools/build_design_html.py 从 ../12_技术方案_Godot工程.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>技术方案：Godot 工程 · LiveBay design01</title>
+<meta name="description" content="架构、数据契约、测试与扩展点。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html" aria-current="page">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../12_技术方案_Godot工程.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">技术方案：Godot 工程</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一目标与非目标">一、目标与非目标</a></li><li class="sub"><a href="#11-v01-目标">1.1 v0.1 目标</a></li><li class="sub"><a href="#12-非目标">1.2 非目标</a></li><li class=""><a href="#二环境与运行">二、环境与运行</a></li><li class=""><a href="#三目录结构">三、目录结构</a></li><li class=""><a href="#四架构模拟与视图分离">四、架构：模拟与视图分离</a></li><li class="sub"><a href="#41-sim-的职责">4.1 Sim 的职责</a></li><li class="sub"><a href="#42-main-的职责">4.2 main 的职责</a></li><li class=""><a href="#五数据契约">五、数据契约</a></li><li class="sub"><a href="#51-profession_guardjson">5.1 profession_guard.json</a></li><li class="sub"><a href="#52-towersjson">5.2 towers.json</a></li><li class="sub"><a href="#53-enemiesjson">5.3 enemies.json</a></li><li class="sub"><a href="#54-wavesjson">5.4 waves.json</a></li><li class="sub"><a href="#55-map_bay01json">5.5 map_bay01.json</a></li><li class="sub"><a href="#56-balancejson">5.6 balance.json</a></li><li class=""><a href="#六sim-的关键规则">六、Sim 的关键规则</a></li><li class=""><a href="#七测试">七、测试</a></li><li class=""><a href="#八存档">八、存档</a></li><li class=""><a href="#九扩展点">九、扩展点</a></li><li class=""><a href="#十已知限制">十、已知限制</a></li><li class=""><a href="#十一待裁决">十一、待裁决</a></li></ul></details>
+<article class="prose">
+<h1 id="12--技术方案godot-工程">12 · 技术方案：Godot 工程</h1>
+<blockquote>
+<p><strong>文档类型</strong>：工程参考（非设计决定）｜<strong>状态</strong>：草案 v0.2（D16 已裁决） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 起草，人类确认｜<strong>决策权</strong>：人类（范围）/ 工程（实现） <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：<a href="04_塔防玩法.html">塔防玩法</a> · <a href="../../../game/">工程目录</a> · <a href="11_待人类裁决清单.html">待裁决清单</a></p>
+</blockquote>
+<blockquote>
+<p>本文说明工程「做到哪、怎么跑、怎么验收、怎么扩展」。<strong>所有数值与名词都是占位</strong>，人类改设定时只改 <code>data/*.json</code>，不改代码。</p>
+</blockquote>
+<h2 id="一目标与非目标">一、目标与非目标</h2>
+<h3 id="11-v01-目标">1.1 v0.1 目标</h3>
+<p>在 Godot 4.7 上跑通一个<strong>可玩最小闭环</strong>：</p>
+<ul>
+<li>1 张月牙外弧地图，7 个塔位（D16=A 垂直切片）；</li>
+<li>1 个示例职业：护湾卫兵（D05=A）；</li>
+<li>3 种塔、4 种敌人（3 自然 + 1 内部故障）、5 波；D02 首版 A+C 已落地；</li>
+<li>建造、升级、出售、加速、暂停；</li>
+<li>胜负判定、结算、最高记录存档；</li>
+<li>无头测试可在 10 秒内跑完。</li>
+</ul>
+<h3 id="12-非目标">1.2 非目标</h3>
+<ul>
+<li>不做正式美术、音频、动画；</li>
+<li>不做移动端适配、手柄、本地化；</li>
+<li>不做多职业、多地图、剧情；</li>
+<li>不做联网、排行榜、内购；</li>
+<li>不做复杂寻路、随机地图。</li>
+</ul>
+<h2 id="二环境与运行">二、环境与运行</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>引擎</td>
+<td>Godot 4.7 stable</td>
+</tr>
+<tr>
+<td>渲染</td>
+<td>GL Compatibility</td>
+</tr>
+<tr>
+<td>分辨率</td>
+<td>1280×720，<code>canvas_items</code> 拉伸</td>
+</tr>
+<tr>
+<td>语言</td>
+<td>GDScript</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>JSON（<code>game/data/</code>）</td>
+</tr>
+<tr>
+<td>用户数据</td>
+<td><code>user://save.json</code>（HOME 指向 <code>games/.godot-home/</code>）</td>
+</tr>
+</tbody>
+</table></div>
+<p>命令（在 <code>games/livebay/</code> 下）：</p>
+<pre class="bash"><code>./run.sh          # 启动游戏
+./run.sh editor   # 打开编辑器
+./run.sh test     # 无头模拟测试
+./run.sh check    # 无头启动 180 帧，抓脚本错误</code></pre>
+<h2 id="三目录结构">三、目录结构</h2>
+<pre class="text"><code>game/
+├── project.godot
+├── scenes/
+│   └── main.tscn              # 唯一场景，根节点 Node2D
+├── scripts/
+│   ├── main.gd                # 视图 + 输入 + UI
+│   ├── core/
+│   │   ├── data_loader.gd     # JSON 读取与校验
+│   │   └── sim.gd             # 纯逻辑模拟（无渲染）
+│   └── autoload/
+│       └── save_store.gd      # 最高记录 / 设置
+├── data/
+│   ├── profession_guard.json  # 职业参数
+│   ├── towers.json            # 塔
+│   ├── enemies.json           # 敌人
+│   ├── waves.json             # 波次
+│   ├── map_bay01.json         # 路径、塔位、基地
+│   └── balance.json           # 全局平衡
+├── tests/
+│   └── run_sim.gd             # 无头测试
+└── run.sh</code></pre>
+<h2 id="四架构模拟与视图分离">四、架构：模拟与视图分离</h2>
+<pre class="text"><code>data/*.json
+   ↓ DataLoader
+LiveBaySim (RefCounted)  ←— 无渲染、可测试、固定步长
+   ↑ step(dt) / build / upgrade / sell / start_wave
+   │ signals: wave_started, wave_cleared, enemy_killed,
+   │          enemy_leaked, fault_escaped, tower_disabled,
+   │          game_won, game_lost, tower_fired
+   ↓
+main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</code></pre>
+<p><strong>为什么分离</strong>：</p>
+<ul>
+<li>无头测试可以直接跑 Sim，不需要窗口；</li>
+<li>未来换 2D/2.5D 表现，逻辑不变；</li>
+<li>数值调整只改 JSON；</li>
+<li>职业/关卡扩展只加数据。</li>
+</ul>
+<h3 id="41-sim-的职责">4.1 Sim 的职责</h3>
+<ul>
+<li>路径推进、距离计算；</li>
+<li>敌人生成、受伤、死亡、漏过；故障反向移动与停塔；</li>
+<li>塔的索敌、冷却、伤害、减速；</li>
+<li>资源、波次、胜负；</li>
+<li>发送信号给视图。</li>
+</ul>
+<h3 id="42-main-的职责">4.2 main 的职责</h3>
+<ul>
+<li>读取输入，调用 Sim；</li>
+<li>绘制；</li>
+<li>HUD 与结算界面；</li>
+<li>存档读写。</li>
+</ul>
+<h2 id="五数据契约">五、数据契约</h2>
+<h3 id="51-profession_guardjson">5.1 <code>profession_guard.json</code></h3>
+<pre class="json"><code>{
+  &quot;id&quot;: &quot;guard&quot;,
+  &quot;name&quot;: &quot;护湾卫兵&quot;,
+  &quot;ring&quot;: &quot;outer&quot;,
+  &quot;description&quot;: &quot;外环第七段的当班卫兵。&quot;,
+  &quot;start_energy&quot;: 90,
+  &quot;start_integrity&quot;: 100,
+  &quot;tower_cost_mult&quot;: 1.0
+}</code></pre>
+<h3 id="52-towersjson">5.2 <code>towers.json</code></h3>
+<pre class="json"><code>[
+  {
+    &quot;id&quot;: &quot;interceptor&quot;,
+    &quot;name&quot;: &quot;拦截炮&quot;,
+    &quot;cost&quot;: 30,
+    &quot;range&quot;: 120,
+    &quot;damage&quot;: 10,
+    &quot;fire_rate&quot;: 1.2,
+    &quot;kind&quot;: &quot;single&quot;,
+    &quot;color&quot;: &quot;#D9622B&quot;,
+    &quot;description&quot;: &quot;单体，优先最前的敌人。&quot;
+  }
+]</code></pre>
+<p><code>kind</code> 支持：<code>single</code>（单体）、<code>aoe</code>（范围 + 减速）、<code>supply</code>（产出/维修）。</p>
+<h3 id="53-enemiesjson">5.3 <code>enemies.json</code></h3>
+<pre class="json"><code>[
+  {
+    &quot;id&quot;: &quot;debris&quot;,
+    &quot;name&quot;: &quot;碎片&quot;,
+    &quot;hp&quot;: 30,
+    &quot;speed&quot;: 45,
+    &quot;reward&quot;: 6,
+    &quot;leak_damage&quot;: 8,
+    &quot;radius&quot;: 9,
+    &quot;shape&quot;: &quot;triangle&quot;,
+    &quot;color&quot;: &quot;#8C4A32&quot;
+  },
+  {
+    &quot;id&quot;: &quot;fault&quot;,
+    &quot;name&quot;: &quot;故障&quot;,
+    &quot;hp&quot;: 36,
+    &quot;speed&quot;: 58,
+    &quot;reward&quot;: 4,
+    &quot;leak_damage&quot;: 0,
+    &quot;radius&quot;: 8,
+    &quot;shape&quot;: &quot;square&quot;,
+    &quot;color&quot;: &quot;#3E6F6B&quot;,
+    &quot;behavior&quot;: &quot;reverse&quot;,
+    &quot;disable_duration&quot;: 2.5,
+    &quot;disable_radius&quot;: 100,
+    &quot;disable_targets&quot;: 2
+  }
+]</code></pre>
+<p><code>behavior</code> 默认 <code>forward</code>；<code>reverse</code> 表示从路径终点反向移动。<code>disable_duration</code> / <code>disable_radius</code> / <code>disable_targets</code> 只对反向故障生效：经过塔位时让该塔离线，最多影响 <code>disable_targets</code> 座塔。</p>
+<h3 id="54-wavesjson">5.4 <code>waves.json</code></h3>
+<pre class="json"><code>[
+  {
+    &quot;index&quot;: 1,
+    &quot;prep&quot;: 30.0,
+    &quot;groups&quot;: [
+      { &quot;enemy&quot;: &quot;debris&quot;, &quot;count&quot;: 6, &quot;interval&quot;: 0.9, &quot;delay&quot;: 0.0 }
+    ]
+  }
+]</code></pre>
+<h3 id="55-map_bay01json">5.5 <code>map_bay01.json</code></h3>
+<pre class="json"><code>{
+  &quot;id&quot;: &quot;bay01&quot;,
+  &quot;name&quot;: &quot;外环第七段&quot;,
+  &quot;path&quot;: [[-60, 540], [110, 505]],
+  &quot;slots&quot;: [[260, 590], [390, 530]],
+  &quot;base&quot;: { &quot;pos&quot;: [1180, 505], &quot;radius&quot;: 26 }
+}</code></pre>
+<h3 id="56-balancejson">5.6 <code>balance.json</code></h3>
+<pre class="json"><code>{
+  &quot;starting_energy&quot;: 90,
+  &quot;starting_integrity&quot;: 100,
+  &quot;sell_refund&quot;: 0.7,
+  &quot;max_tower_level&quot;: 3,
+  &quot;upgrade_cost_factor&quot;: 0.8,
+  &quot;upgrade_damage_factor&quot;: 0.25,
+  &quot;upgrade_range_factor&quot;: 0.05,
+  &quot;prepare_time&quot;: 30.0,
+  &quot;between_wave_time&quot;: 20.0
+}</code></pre>
+<h2 id="六sim-的关键规则">六、Sim 的关键规则</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>规则</th>
+<th>实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>固定步长</td>
+<td><code>step(dt)</code> 内按 1/60 切片，最多 8 片/帧</td>
+</tr>
+<tr>
+<td>敌人移动</td>
+<td>沿折线累计距离，按 <code>speed * dt</code> 推进</td>
+</tr>
+<tr>
+<td>索敌</td>
+<td>射程内「距基地最近」的敌人</td>
+</tr>
+<tr>
+<td>伤害</td>
+<td>即时结算；视图播放 0.08s 光束</td>
+</tr>
+<tr>
+<td>减速</td>
+<td>取最强的一次，不叠乘</td>
+</tr>
+<tr>
+<td>供给</td>
+<td>每 <code>income_interval</code> 秒 +<code>income</code> 供能</td>
+</tr>
+<tr>
+<td>波次</td>
+<td>准备 → 生成 → 清空 → 波间 → 下一波</td>
+</tr>
+<tr>
+<td>漏过</td>
+<td>抵达终点扣 <code>leak_damage</code>，扣完判负</td>
+</tr>
+<tr>
+<td>胜利</td>
+<td>最后一波清空且保障度 &gt; 0</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="七测试">七、测试</h2>
+<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口：</p>
+<ol type="1">
+<li><strong>数据完整性</strong>：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1。</li>
+<li><strong>胜利路径</strong>：在 3 个塔位建塔，跑完 5 波，断言 <code>WON</code> 且保障度 &gt; 0。</li>
+<li><strong>失败路径</strong>：不建塔，跑完 5 波，断言 <code>LOST</code>。</li>
+<li><strong>经济</strong>：建塔扣费；出售返还 70%。</li>
+<li><strong>升级</strong>：升级后伤害提高、费用扣除。</li>
+</ol>
+<p>运行：</p>
+<pre class="bash"><code>./run.sh test</code></pre>
+<p>期望输出：每条 <code>PASS</code>，最后 <code>ALL TESTS PASSED</code>，退出码 0。</p>
+<h2 id="八存档">八、存档</h2>
+<ul>
+<li>路径：<code>user://save.json</code>；</li>
+<li>内容：最高评级、最高保障度、通关次数、设置（速度/静音）；</li>
+<li>写入时机：结算、退出；</li>
+<li>损坏处理：解析失败则重置，不崩溃；</li>
+<li>不存「不可恢复的进度」：第一版没有剧情锁。</li>
+</ul>
+<h2 id="九扩展点">九、扩展点</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>想加</th>
+<th>改哪里</th>
+<th>是否改代码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新塔</td>
+<td><code>towers.json</code></td>
+<td>否</td>
+</tr>
+<tr>
+<td>新敌人</td>
+<td><code>enemies.json</code></td>
+<td>否</td>
+</tr>
+<tr>
+<td>新波次</td>
+<td><code>waves.json</code></td>
+<td>否</td>
+</tr>
+<tr>
+<td>新地图</td>
+<td>新 <code>map_*.json</code> + 选关</td>
+<td>少量</td>
+</tr>
+<tr>
+<td>新职业</td>
+<td>新 <code>profession_*.json</code> + 塔/敌人映射</td>
+<td>少量</td>
+</tr>
+<tr>
+<td>新玩法</td>
+<td>新场景 + 共享 SaveStore</td>
+<td>是</td>
+</tr>
+<tr>
+<td>新语言</td>
+<td>文本表</td>
+<td>是（第一版不做）</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="十已知限制">十、已知限制</h2>
+<ul>
+<li>敌人不寻路、不绕行；</li>
+<li>没有元素/护甲/暴击等深度系统；</li>
+<li>没有对象池，敌人数量大时可能卡（第一版 ≤ 60）；</li>
+<li>视图与 Sim 用信号解耦，但 Sim 仍直接读数据字典；</li>
+<li>中文依赖系统字体回退，未内置字体；</li>
+<li>内部故障只实现「反向移动 + 经过塔位停塔」，没有故障链扩散、维修小游戏或永久损坏；这些留到后续版本。</li>
+</ul>
+<h2 id="十一待裁决">十一、待裁决</h2>
+<ul>
+<li>D14 平台：PC / 移动 / 双端（影响输入与性能）</li>
+<li>D18 语言：中文 / 中英（影响文本表）</li>
+</ul>
+<blockquote>
+<p>D16 已裁决为垂直切片；D02/D05/D04 已裁决。内部故障（C）已实现，下一步是 v0.2 护理师。</p>
+</blockquote>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="08_美术与音频方向.html"><span class="dir">prev</span><span class="label">美术与音频方向</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../12_技术方案_Godot工程.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

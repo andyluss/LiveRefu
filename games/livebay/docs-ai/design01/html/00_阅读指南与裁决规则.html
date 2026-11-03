@@ -1,0 +1,270 @@
+<!-- 由 tools/build_design_html.py 从 ../00_阅读指南与裁决规则.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>阅读指南与裁决规则 · LiveBay design01</title>
+<meta name="description" content="决策卡、AI 边界、没有裁决时的默认规则。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html" aria-current="page">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../00_阅读指南与裁决规则.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">阅读指南与裁决规则</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一为什么先读这篇">一、为什么先读这篇</a></li><li class=""><a href="#二一条创意怎么变成决定">二、一条创意怎么变成决定</a></li><li class=""><a href="#三当前裁决状态">三、当前裁决状态</a></li><li class=""><a href="#四ai-在什么情况下必须停">四、AI 在什么情况下必须停</a></li><li class=""><a href="#五没有裁决时的默认规则">五、没有裁决时的默认规则</a></li><li class=""><a href="#六文档维护规则">六、文档维护规则</a></li><li class=""><a href="#七这套文档的失败条件">七、这套文档的失败条件</a></li></ul></details>
+<article class="prose">
+<h1 id="00--阅读指南与裁决规则">00 · 阅读指南与裁决规则</h1>
+<blockquote>
+<p><strong>文档类型</strong>：协作规则｜<strong>状态</strong>：草案 v0.4（2026-11-03 P0+P1 已裁决；P2 待定） <strong>日期</strong>：2026-11-03｜<strong>来源</strong>：AI 起草，人类确认｜<strong>决策权</strong>：人类 <strong>上游</strong>：<a href="../../../docs-human/概念设定.md">概念设定</a>｜<strong>关联</strong>：<a href="README.html">README</a> · <a href="11_待人类裁决清单.html">待裁决清单</a></p>
+</blockquote>
+<h2 id="一为什么先读这篇">一、为什么先读这篇</h2>
+<p>上一版主线项目的问题是「AI 越做越顺，项目越走越偏」：每个下一步都合理，连起来却离开了最初想做的游戏。根源不是 AI 能力不足，而是<strong>人的意图没有被外化成可执行的边界</strong>。</p>
+<p>这套文档用三条规则对抗这种漂移：</p>
+<ol type="1">
+<li><strong>所有创意以候选形式出现</strong>，AI 不把「我觉得好」写成「设定如此」；</li>
+<li><strong>所有待定问题集中登记</strong>，不散落在正文里，避免「读起来像定了」；</li>
+<li><strong>所有工程选择可逆</strong>，人类改主意时不需要重写代码。</li>
+</ol>
+<h2 id="二一条创意怎么变成决定">二、一条创意怎么变成决定</h2>
+<p>建议用「决策卡」走完五步。每张卡只回答一个问题。</p>
+<pre class="text"><code>【问题】一句话，必须是可选择的问句。
+【选项】A / B / C，各附一句代价。
+【AI 建议】选哪个、为什么；必须写明「可被推翻」。
+【人的裁决】人类选择一个，或写「再想想」。
+【影响】会改动哪些文档、哪些工程数据。</code></pre>
+<p>流程：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>步</th>
+<th>谁做</th>
+<th>产出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 提案</td>
+<td>AI</td>
+<td>在对应文档写候选与代价</td>
+</tr>
+<tr>
+<td>2. 登记</td>
+<td>AI</td>
+<td>在 <a href="11_待人类裁决清单.html">11</a> 加一行 Dxx</td>
+</tr>
+<tr>
+<td>3. 裁决</td>
+<td>人类</td>
+<td>在 <a href="11_待人类裁决清单.html">11</a> 的「裁决记录」写选择与理由</td>
+</tr>
+<tr>
+<td>4. 回写</td>
+<td>AI</td>
+<td>更新正文、删掉落选选项或标注「已否决」、同步工程数据</td>
+</tr>
+<tr>
+<td>5. 复核</td>
+<td>人类</td>
+<td>试玩/试读，确认新决定没有破坏原有体验</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>关键：<strong>裁决记录只追加，不回删</strong>。将来复盘时，「当时为什么这么选」比「现在是什么」更有价值。</p>
+</blockquote>
+<h2 id="三当前裁决状态">三、当前裁决状态</h2>
+<p>截至 2026-11-03，P0 与 P1 已全部裁决。</p>
+<p><strong>P0（创意与范围）</strong>：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>裁决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基调 D01</td>
+<td>B 有裂缝的善意</td>
+</tr>
+<tr>
+<td>敌人 D02</td>
+<td>D 混合；首版 A+C</td>
+</tr>
+<tr>
+<td>三生 D03</td>
+<td>生存 / 生活 / 生产；慢好 = 慢 + 好</td>
+</tr>
+<tr>
+<td>第一职业 D05</td>
+<td>护卫兵 v0.1；护理师 v0.2</td>
+</tr>
+<tr>
+<td>范围 D16</td>
+<td>垂直切片</td>
+</tr>
+<tr>
+<td>主角 D04</td>
+<td>C 无名岗位人</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>P1（体验与商业）</strong>：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>裁决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D06 航行代际</td>
+<td>200 年（第七代）</td>
+</tr>
+<tr>
+<td>D07 治理</td>
+<td>双轨：日常算法 / 危机议会</td>
+</tr>
+<tr>
+<td>D08 裂缝</td>
+<td>低报事故（只埋线索）</td>
+</tr>
+<tr>
+<td>D09 塔防形态</td>
+<td>弧形路径</td>
+</tr>
+<tr>
+<td>D10 失败处理</td>
+<td>重试 + 可跳过复盘</td>
+</tr>
+<tr>
+<td>D11 三玩法耦合</td>
+<td>v0.1 L0；v0.2 L1</td>
+</tr>
+<tr>
+<td>D12 商业模式</td>
+<td>买断 + 内购（仅外观/扩展）</td>
+</tr>
+<tr>
+<td>D13 美术</td>
+<td>2D 矢量 / 程序化</td>
+</tr>
+<tr>
+<td>D15 叙事量</td>
+<td>中</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>只剩 P2</strong>：D14 平台、D17 更新节奏、D18 语言，可以等试玩后再定。完整记录见 <a href="11_待人类裁决清单.html">11</a>。</p>
+<h2 id="四ai-在什么情况下必须停">四、AI 在什么情况下必须停</h2>
+<p>出现以下任一情况，AI 不应继续扩写，而应把问题交回人类：</p>
+<ul>
+<li>需要决定<strong>主题/体验/审美</strong>（例如「这座城市到底好不好」）；</li>
+<li>需要决定<strong>范围/预算/时间</strong>（例如「做几个职业」）；</li>
+<li>需要决定<strong>商业模式/平台/发行</strong>；</li>
+<li>两个候选都自洽，但会导向不同的游戏；</li>
+<li>现有文档之间出现冲突，且冲突不能靠「以人类原文为准」解决。</li>
+</ul>
+<p>停下时，AI 的输出应该是一张决策卡，而不是一篇更长的文档。</p>
+<h2 id="五没有裁决时的默认规则">五、没有裁决时的默认规则</h2>
+<p>在人类回答之前，AI 可以继续做<strong>不产生创意承诺</strong>的工作：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>可以做</th>
+<th>不可以做</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工程占位数据、可逆的 UI 骨架</td>
+<td>写死剧情、角色名、阵营立场</td>
+</tr>
+<tr>
+<td>数值原型与平衡表</td>
+<td>把某个候选写成「官方设定」</td>
+</tr>
+<tr>
+<td>竞品/资料调研（标注来源）</td>
+<td>编造玩家数据或市场结论</td>
+</tr>
+<tr>
+<td>把问题整理得更清楚</td>
+<td>用「为了完整性」为由替人选一个</td>
+</tr>
+</tbody>
+</table></div>
+<p>工程侧的默认值是「<strong>能跑、能改、能删</strong>」：所有内容走 JSON，职业与关卡是数据，不是代码。</p>
+<h2 id="六文档维护规则">六、文档维护规则</h2>
+<ol type="1">
+<li><strong>一篇文档一个主题</strong>；超过 4000 字就拆，不把世界观、玩法、工程混在一篇。</li>
+<li><strong>链接用相对路径</strong>，遵循工作区 <a href="../../../../../rules/R01-docs-convention.md">R01</a> 与 <a href="../../../../../rules/R03-link-validation.md">R03</a>。</li>
+<li><strong>日期取系统时间</strong>（东八区），不手写。</li>
+<li><strong>裁决后不回删原文</strong>：落选选项保留并标注「已否决（日期）」，保留判断痕迹。</li>
+<li><strong>AI 生成的内容必须可识别</strong>：每篇头部有「文档类型 / 来源 / 决策权」元数据。</li>
+</ol>
+<h2 id="七这套文档的失败条件">七、这套文档的失败条件</h2>
+<p>如果出现以下情况，说明这套文档没有起到作用，应停下来重构，而不是继续写：</p>
+<ul>
+<li>文档越写越多，但人类仍然说不清「这游戏是什么」；</li>
+<li>每个问题都有「推荐方案」，但没有人真正选过；</li>
+<li>工程实现了大量内容，但没有一个能被人类试玩判断；</li>
+<li>人类每次反馈都被 AI 解释成「再加一个系统」。</li>
+</ul>
+<blockquote>
+<p>文档的目的是<strong>减少不确定性</strong>，不是<strong>增加产出量</strong>。如果它没有让你更快做决定，它就是失败的。</p>
+</blockquote>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="README.html"><span class="dir">prev</span><span class="label">策划文档集 · 总览</span></a><a class="next" href="01_项目北极星.html"><span class="dir">next</span><span class="label">项目北极星</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-03</span>
+<span><a href="index.html">索引</a> · <a href="../00_阅读指南与裁决规则.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>
