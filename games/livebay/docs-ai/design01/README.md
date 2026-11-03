@@ -1,11 +1,21 @@
-# LiveBay 策划文档集 · design01
+---
+title: "LiveBay 策划文档集 · design01"
+doc_type: "AI 策划参考（非决定）"
+status: "草案 v0.4（2026-11-03 P0+P1 已裁决；P2 待定）"
+date: "2026-11-03"
+source: "AI 生成，人类拍板"
+authority: "人类"
+scope: "LiveBay（逍遥湾）概念、玩法、美术与工程的第一版策划参考"
+html: "html/index.html"
+upstream:
+  - "../../docs-human/概念设定.md"
+related:
+  - "../../../../docs/retro-futurism/附录_NASA朋克卷/README.md"
+  - "../../game/"
+  - "../../README.md"
+---
 
-> **文档类型**：AI 策划参考（非决定）｜**状态**：草案 v0.4（2026-11-03 P0+P1 已裁决；P2 待定）
-> **日期**：2026-11-03｜**来源**：AI 生成，人类拍板
-> **决策权**：人类｜**上游**：[概念设定](../../docs-human/概念设定.md)
-> **HTML 阅读版**：[`html/index.html`](html/index.html)（系统 / 浅色 / 深色，可离线打开）
-> **适用范围**：LiveBay（逍遥湾）概念、玩法、美术与工程的第一版策划参考
-> **关联**：[NASApunk 附录卷](../../../../docs/retro-futurism/附录_NASA朋克卷/README.md) · [Godot 工程](../../game/) · [项目 README](../../README.md)
+# LiveBay 策划文档集 · design01
 
 ## 一、这套文档是什么
 

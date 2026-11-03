@@ -3,6 +3,20 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.8] - 2026-11-03 20:27
+
+### 变更
+
+- **Markdown 元数据改为 YAML frontmatter**：LiveBay 的 17 篇带元数据文档（项目 `README.md`、`docs-human/概念设定.md`、design01 的 14 篇 + README）统一使用 `title / doc_type / status / version / date / author / source / authority / scope / html / upstream / related` 字段；原先的引用块元数据已移除，避免预览时多行被合并；
+- **HTML 生成器适配 YAML**：`tools/build_design_html.py` 读取 frontmatter，并把元数据渲染成页面顶部的结构化面板；HTML 阅读版 16 页已重新生成；
+- 生成器与样式仍遵循 R-016 三态主题。
+
+### 验证
+
+- 17 个 YAML frontmatter 均通过 Ruby `YAML.safe_load` 解析；
+- HTML 生成 16 页，R-016 检查 16/16 通过；
+- 生成页面本地链接 520 个，0 失效。
+
 ## [0.1.7] - 2026-11-03 20:13
 
 ### 新增

@@ -323,6 +323,33 @@ html:not(.js) .theme-switch { display: none; }
 .prose blockquote p { margin: 0.4em 0; }
 .prose blockquote strong { color: var(--ink); }
 
+.doc-meta {
+  margin: 0 0 30px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--surface);
+}
+.doc-meta dl {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr);
+  gap: 6px 12px;
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.doc-meta dt {
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 3px;
+}
+.doc-meta dd { margin: 0; color: var(--muted); }
+.doc-meta a { color: var(--accent); }
+
 .prose code {
   padding: 0.12em 0.38em;
   border-radius: 4px;

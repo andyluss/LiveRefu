@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import html
+import json
 import re
 import shutil
 import subprocess
@@ -58,6 +59,121 @@ HTML_BY_MD = {md: to_html_name(md) for md in MD_SET}
 DOC_BY_MD = {md: {"md": md, "html": to_html_name(md), "group": group, "title": title, "desc": desc}
              for md, group, title, desc in DOCS}
 DOC_BY_HTML = {v["html"]: v for v in DOC_BY_MD.values()}
+
+
+def split_frontmatter(text: str) -> tuple[dict, str]:
+    """读取 YAML frontmatter；只支持本项目的扁平键 + 列表。"""
+    if not text.startswith("---\n"):
+        return {}, text
+    end = text.find("\n---", 4)
+    if end < 0:
+        return {}, text
+    yaml_text = text[4:end]
+    body = text[end + 4:].lstrip("\n")
+    meta: dict = {}
+    current: str | None = None
+    for line in yaml_text.splitlines():
+        if not line.strip():
+            continue
+        if line.startswith("  - "):
+            if current is None:
+                continue
+            meta.setdefault(current, []).append(unquote_yaml(line[4:].strip()))
+            continue
+        key, sep, rest = line.partition(":")
+        if not sep:
+            continue
+        key = key.strip()
+        rest = rest.strip()
+        if rest == "":
+            current = key
+            meta[key] = []
+        else:
+            current = None
+            meta[key] = unquote_yaml(rest)
+    return meta, body
+
+
+def unquote_yaml(value: str) -> str:
+    if value.startswith('"') and value.endswith('"'):
+        try:
+            return json.loads(value)
+        except Exception:
+            return value[1:-1]
+    if value.startswith("'") and value.endswith("'"):
+        return value[1:-1]
+    return value
+
+
+def link_label(value: str) -> str:
+    raw = value.rstrip("/")
+    base = raw.rsplit("/", 1)[-1]
+    if base == "README.md":
+        parent = raw.rsplit("/", 1)[-2] if "/" in raw else ""
+        if parent == "附录_NASA朋克卷":
+            return "NASApunk 附录卷"
+        if parent == "livebay":
+            return "项目 README"
+        if parent == "design01":
+            return "策划文档集"
+        return parent or "README"
+    if base == "概念设定.md":
+        return "概念设定"
+    if base == "game":
+        return "Godot 工程"
+    if base.endswith(".md"):
+        return base[:-3]
+    if base.endswith(".html"):
+        return base[:-5]
+    return base
+
+
+def is_path(value: str) -> bool:
+    # 只把真正的路径当链接；状态/决策权里的 "/" 不是路径。
+    return (
+        value.startswith(("./", "../", "/"))
+        or value.endswith((".md", ".html"))
+        or (value.endswith("/") and " " not in value)
+    )
+
+
+def meta_value_html(value: str, is_html_field: bool = False) -> str:
+    if is_html_field:
+        return f'<a href="{html.escape(rewrite_href(value), quote=True)}">HTML 阅读版</a>'
+    if is_path(value):
+        href = rewrite_href(value)
+        return f'<a href="{html.escape(href, quote=True)}">{html.escape(link_label(value))}</a>'
+    return html.escape(value)
+
+
+def render_meta(meta: dict) -> str:
+    labels = [
+        ("doc_type", "文档类型"),
+        ("status", "状态"),
+        ("version", "版本"),
+        ("date", "日期"),
+        ("author", "作者"),
+        ("source", "来源"),
+        ("authority", "决策权"),
+        ("scope", "适用范围"),
+        ("html", "HTML 阅读版"),
+        ("upstream", "上游"),
+        ("related", "关联"),
+    ]
+    rows: list[str] = []
+    for key, label in labels:
+        if key not in meta:
+            continue
+        value = meta[key]
+        if isinstance(value, list):
+            parts = [meta_value_html(item, is_html_field=(key == "html")) for item in value]
+            rendered = " · ".join(parts)
+        else:
+            rendered = meta_value_html(value, is_html_field=(key == "html"))
+        rows.append(f"<dt>{label}</dt><dd>{rendered}</dd>")
+    if not rows:
+        return ""
+    return f'<div class="doc-meta" aria-label="文档元数据"><dl>{"".join(rows)}</dl></div>'
 
 
 def rewrite_href(href: str) -> str:
@@ -377,13 +493,18 @@ def build_index() -> None:
 def build_docs() -> None:
     for md, group, title, desc in DOCS:
         md_path = DESIGN / md
+        meta, body_md = split_frontmatter(md_path.read_text(encoding="utf-8"))
         body = subprocess.run(
-            ["pandoc", "-f", "gfm", "-t", "html", "--wrap=none", "--no-highlight", str(md_path)],
+            ["pandoc", "-f", "gfm", "-t", "html", "--wrap=none", "--no-highlight"],
+            input=body_md,
             check=True,
             capture_output=True,
             text=True,
         ).stdout
         body = wrap_tables(rewrite_links(body))
+        meta_html = render_meta(meta)
+        if meta_html:
+            body = re.sub(r"(</h1>)", r"\1\n" + meta_html, body, count=1)
         toc = toc_from(body)
         html_name = to_html_name(md)
         text = page_shell(

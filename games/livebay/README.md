@@ -1,8 +1,13 @@
-# LiveBay（逍遥湾）
+---
+title: "LiveBay（逍遥湾）"
+tagline: "在一座月牙形的移动太空城里，你换过很多份工作，守过很多次夜班。"
+form: "NASApunk · 岗位塔防 + 沉浸体验 + 放置养成"
+status: "v0.1 可玩垂直切片（1 职业 / 1 图 / 5 波）"
+engine: "Godot 4.7（GL Compatibility）"
+platform: "PC 优先（D14 待定）"
+---
 
-> **一句话**：在一座月牙形的移动太空城里，你换过很多份工作，守过很多次夜班。
-> **形态**：NASA朋克 · 岗位塔防 + 沉浸体验 + 放置养成｜**当前**：v0.1 可玩垂直切片（1 职业 / 1 图 / 5 波）
-> **引擎**：Godot 4.7（GL Compatibility）｜**平台**：PC 优先（待裁决）
+# LiveBay（逍遥湾）
 
 ![v0.1 战斗画面](docs-ai/design01/shots/v0.1_combat.png)
 
