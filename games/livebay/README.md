@@ -6,6 +6,10 @@
 
 ![v0.1 战斗画面](docs-ai/design01/shots/v0.1_combat.png)
 
+[![v0.1 实机演示](docs-ai/design01/shots/v0.1_gameplay_poster.png)](docs-ai/design01/shots/v0.1_gameplay.mp4)
+
+> **50 秒实机演示**（1280×720，H.264，无音频）：从第 1 波到第 5 波，包含建造、故障停塔、结算。点击画面播放。
+
 ## 目录
 
 | 路径 | 是什么 | 谁维护 |

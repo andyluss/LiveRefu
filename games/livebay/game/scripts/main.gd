@@ -84,6 +84,21 @@ func _ready() -> void:
 	queue_redraw()
 
 
+func _process(delta: float) -> void:
+	if sim == null:
+		return
+	if not paused:
+		sim.step(delta * speed)
+	for i: int in range(beams.size() - 1, -1, -1):
+		beams[i].life -= delta
+		if beams[i].life <= 0.0:
+			beams.remove_at(i)
+	leak_flash = max(0.0, leak_flash - delta)
+	toast_timer = max(0.0, toast_timer - delta)
+	_update_ui()
+	queue_redraw()
+
+
 func _new_sim() -> void:
 	sim = SimScript.new(data)
 	sim.tower_fired.connect(_on_tower_fired)

@@ -3,6 +3,22 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.6] - 2026-11-03 16:24
+
+### 新增
+
+- 实机演示视频 [`docs-ai/design01/shots/v0.1_gameplay.mp4`](docs-ai/design01/shots/v0.1_gameplay.mp4)：1280×720、30 FPS、H.264、约 50 秒、无音频；从第 1 波打到第 5 波，包含建造、故障停塔与结算；
+- 视频封面 [`docs-ai/design01/shots/v0.1_gameplay_poster.png`](docs-ai/design01/shots/v0.1_gameplay_poster.png)，项目 README 增加可点击的演示入口。
+
+### 修复
+
+- **恢复 `main.gd` 的 `_process` 循环**：此前重构时被误删，导致场景能打开但模拟不推进；录制视频时发现，已修复并重新验证。
+
+### 备注
+
+- 视频由 Godot Movie Maker 录制 PNG 序列，再用本地 AVFoundation 编码为 H.264；没有加入音频；
+- 录制用的临时 `--demo` 自动游玩代码已移除，仓库里只保留视频与封面。
+
 ## [0.1.5] - 2026-11-03 16:16
 
 ### 变更
