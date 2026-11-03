@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **LiveBay（逍遥湾）立项**：`games/livebay/` 建立人类设定 `docs-human/`、AI 策划文档集 `docs-ai/design01/` 与 Godot 4.7 可玩塔防切片；NasaPunk 文集在 `docs/retro-futurism/附录_Nasa朋克卷/` 建卷；工程内名词与数值均为占位，待人类裁决 D01–D05。
 - **初始化 `lab/aifun01/`**：函数式协作实验 01（AI 纯函数 / 人运行时 / 效果边界），含 6 条边界测试、demo、实验协议与 `aifun01-v0.1.0`。
 - **AI 协作参考扩容**：人类控制权文章迁入 `ideas/AI/`；新增函数式协作方法（AI 纯函数 / 人运行时 / 副作用边界）；mainline 只保留纲领级文档。
 - **开放 `ideas/AI/` 参考区**：允许 AI 生成方案对比、反方论证与验证参考；根 `ideas/` 仍为人类手写源，AI 参考不得自动升级为决定。
