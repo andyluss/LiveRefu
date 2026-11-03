@@ -20,6 +20,7 @@ func _initialize() -> void:
 	_test_data(data)
 	_test_economy(data)
 	_test_upgrade(data)
+	_test_fault(data)
 	_test_loss(data)
 	_test_win(data)
 	_finish()
@@ -27,7 +28,9 @@ func _initialize() -> void:
 
 func _test_data(data: Dictionary) -> void:
 	_check(data.towers.size() == 3, "3 towers")
-	_check(data.enemies.size() == 3, "3 enemies")
+	_check(data.enemies.size() == 4, "4 enemies")
+	_check(data.enemies_by_id.has("fault"), "fault enemy exists")
+	_check(String(data.enemies_by_id["fault"].get("behavior", "")) == "reverse", "fault moves in reverse")
 	_check(data.waves.size() == 5, "5 waves")
 	var sim := SimScript.new(data)
 	_check(sim.path.size() >= 2, "path has points")
@@ -57,6 +60,27 @@ func _test_upgrade(data: Dictionary) -> void:
 	var damage_after: float = sim._tower_damage(tower)
 	_check(damage_after > damage_before, "upgrade increases damage")
 	_check(int(tower.level) == 2, "level is 2")
+
+
+func _test_fault(data: Dictionary) -> void:
+	var custom: Dictionary = data.duplicate(true)
+	custom.waves = [{
+		"index": 1,
+		"prep": 0.0,
+		"groups": [{"enemy": "fault", "count": 1, "interval": 1.0, "delay": 0.0}],
+	}]
+	var sim := SimScript.new(custom)
+	_check(sim.build(6, "supply"), "fault test: build supply at slot 7")
+	sim.start_wave()
+	var frames: int = 0
+	while float(sim.get_tower_at(6).disabled_timer) <= 0.0 and frames < 60 * 15:
+		sim.step(1.0 / 60.0)
+		frames += 1
+	_check(float(sim.get_tower_at(6).disabled_timer) > 0.0, "fault disables tower")
+	while sim.enemies.size() > 0 and frames < 60 * 30:
+		sim.step(1.0 / 60.0)
+		frames += 1
+	_check(sim.integrity == 100.0, "fault escape does not damage integrity")
 
 
 func _test_loss(data: Dictionary) -> void:

@@ -90,6 +90,8 @@ func _new_sim() -> void:
 	sim.game_won.connect(_on_game_won)
 	sim.game_lost.connect(_on_game_lost)
 	sim.enemy_leaked.connect(_on_enemy_leaked)
+	sim.fault_escaped.connect(_on_fault_escaped)
+	sim.tower_disabled.connect(_on_tower_disabled)
 	sim.wave_started.connect(_on_wave_started)
 	selected_slot = -1
 	beams.clear()
@@ -517,8 +519,23 @@ func _on_enemy_leaked(_enemy: Dictionary) -> void:
 
 
 func _on_wave_started(index: int) -> void:
-	toast_text = "第 %d 波 · 交战中" % index
+	if index == 4:
+		toast_text = "第 4 波 · 内部故障"
+	elif index == 5:
+		toast_text = "第 5 波 · 故障链"
+	else:
+		toast_text = "第 %d 波 · 交战中" % index
 	toast_timer = 1.8
+
+
+func _on_tower_disabled(slot: int, duration: float) -> void:
+	toast_text = "第 %d 号塔故障 · %.0f 秒" % [slot + 1, duration]
+	toast_timer = 2.0
+
+
+func _on_fault_escaped(_enemy: Dictionary) -> void:
+	toast_text = "故障已扩散出外环"
+	toast_timer = 1.6
 
 
 func _on_game_won(result: Dictionary) -> void:
@@ -649,9 +666,13 @@ func _draw_towers() -> void:
 	for tower: Dictionary in sim.towers:
 		var pos: Vector2 = sim.slots[tower.slot]
 		var color: Color = Color(String(tower.def.color))
+		var disabled: bool = float(tower.get("disabled_timer", 0.0)) > 0.0
 		draw_circle(pos, 16.0, PALETTE.slate)
-		draw_circle(pos, 13.0, color)
+		draw_circle(pos, 13.0, Color(color, 0.45) if disabled else color)
 		draw_arc(pos, 13.0, 0, TAU, 28, PALETTE.ink, 1.5, true)
+		if disabled:
+			draw_arc(pos, 19.0, 0, TAU, 32, PALETTE.rust, 2.5, true)
+			draw_string(font, pos + Vector2(-6, 6), "!", HORIZONTAL_ALIGNMENT_CENTER, 12, 16, PALETTE.rust)
 		if String(tower.def.kind) == "supply":
 			draw_rect(Rect2(pos - Vector2(6, 6), Vector2(12, 12)), PALETTE.ink, false, 2.0)
 		else:
@@ -729,6 +750,13 @@ func _shape_points(shape: String, pos: Vector2, radius: float) -> PackedVector2A
 				pos + Vector2(radius, 0),
 				pos + Vector2(0, radius),
 				pos + Vector2(-radius, 0),
+			])
+		"square":
+			return PackedVector2Array([
+				pos + Vector2(-radius, -radius),
+				pos + Vector2(radius, -radius),
+				pos + Vector2(radius, radius),
+				pos + Vector2(-radius, radius),
 			])
 		"hexagon":
 			var points := PackedVector2Array()

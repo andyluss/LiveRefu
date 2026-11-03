@@ -28,7 +28,8 @@
     "groups": [
       { "enemy": "debris", "count": 10, "interval": 0.6, "delay": 0.0 },
       { "enemy": "turbulence", "count": 6, "interval": 0.8, "delay": 3.5 },
-      { "enemy": "hulk", "count": 2, "interval": 2.0, "delay": 8.0 }
+      { "enemy": "hulk", "count": 2, "interval": 2.0, "delay": 8.0 },
+      { "enemy": "fault", "count": 1, "interval": 1.0, "delay": 6.0 }
     ]
   },
   {
@@ -37,7 +38,8 @@
     "groups": [
       { "enemy": "debris", "count": 12, "interval": 0.5, "delay": 0.0 },
       { "enemy": "turbulence", "count": 8, "interval": 0.7, "delay": 2.5 },
-      { "enemy": "hulk", "count": 4, "interval": 1.6, "delay": 6.0 }
+      { "enemy": "hulk", "count": 4, "interval": 1.6, "delay": 6.0 },
+      { "enemy": "fault", "count": 1, "interval": 5.0, "delay": 4.0 }
     ]
   }
 ]

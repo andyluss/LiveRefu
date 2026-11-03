@@ -8,6 +8,8 @@ signal wave_started(index: int)
 signal wave_cleared(index: int)
 signal enemy_killed(enemy: Dictionary)
 signal enemy_leaked(enemy: Dictionary)
+signal fault_escaped(enemy: Dictionary)
+signal tower_disabled(slot: int, duration: float)
 signal tower_fired(from: Vector2, to: Vector2, kind: String)
 signal energy_changed(value: float)
 signal integrity_changed(value: float)
@@ -142,11 +144,16 @@ func _tick(dt: float) -> void:
 		var speed: float = float(enemy.def.speed)
 		if enemy.slow_timer > 0.0:
 			speed *= 1.0 - float(enemy.slow_factor)
-		enemy.dist += speed * dt
-		if enemy.dist >= path_total:
+		var direction: int = int(enemy.get("direction", 1))
+		enemy.dist += speed * dt * direction
+		if direction > 0 and enemy.dist >= path_total:
 			_leak_enemy(i)
 			if state == State.LOST:
 				return
+		elif direction < 0 and enemy.dist <= 0.0:
+			_escape_fault(i)
+		else:
+			_apply_fault_effect(enemy)
 
 	_update_towers(dt)
 	_cleanup_dead()
@@ -185,11 +192,14 @@ func _spawn_due() -> void:
 		if not enemies_by_id.has(enemy_id):
 			continue
 		var def: Dictionary = enemies_by_id[enemy_id]
+		var reverse: bool = String(def.get("behavior", "forward")) == "reverse"
 		enemies.append({
 			"def": def,
 			"hp": float(def.hp),
 			"max_hp": float(def.hp),
-			"dist": 0.0,
+			"dist": path_total if reverse else 0.0,
+			"direction": -1 if reverse else 1,
+			"hit_towers": {},
 			"slow_factor": 0.0,
 			"slow_timer": 0.0,
 			"dead": false,
@@ -199,6 +209,9 @@ func _spawn_due() -> void:
 func _update_towers(dt: float) -> void:
 	for tower: Dictionary in towers:
 		var def: Dictionary = tower.def
+		if float(tower.get("disabled_timer", 0.0)) > 0.0:
+			tower.disabled_timer -= dt
+			continue
 		if def.kind == "supply":
 			tower.income_timer -= dt
 			if tower.income_timer <= 0.0:
@@ -258,6 +271,31 @@ func _cleanup_dead() -> void:
 			enemies.remove_at(i)
 			enemy_killed.emit(enemy)
 			energy_changed.emit(energy)
+
+
+func _apply_fault_effect(enemy: Dictionary) -> void:
+	var duration: float = float(enemy.def.get("disable_duration", 0.0))
+	var radius: float = float(enemy.def.get("disable_radius", 0.0))
+	var max_targets: int = int(enemy.def.get("disable_targets", 99))
+	if duration <= 0.0 or radius <= 0.0:
+		return
+	if enemy.hit_towers.size() >= max_targets:
+		return
+	var pos: Vector2 = _enemy_pos(enemy)
+	for tower: Dictionary in towers:
+		var slot: int = int(tower.slot)
+		if enemy.hit_towers.has(slot):
+			continue
+		if pos.distance_to(slots[slot]) <= radius:
+			enemy.hit_towers[slot] = true
+			tower.disabled_timer = max(float(tower.get("disabled_timer", 0.0)), duration)
+			tower_disabled.emit(slot, duration)
+
+
+func _escape_fault(index: int) -> void:
+	var enemy: Dictionary = enemies[index]
+	enemies.remove_at(index)
+	fault_escaped.emit(enemy)
 
 
 func _leak_enemy(index: int) -> void:
@@ -343,6 +381,7 @@ func build(slot_index: int, tower_id: String) -> bool:
 		"cooldown": 0.0,
 		"income_timer": 0.0,
 		"invested": cost,
+		"disabled_timer": 0.0,
 	})
 	stats.built += 1
 	stats.spent += cost

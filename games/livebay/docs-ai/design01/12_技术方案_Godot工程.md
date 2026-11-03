@@ -14,7 +14,7 @@
 
 - 1 张月牙外弧地图，7 个塔位（D16=A 垂直切片）；
 - 1 个示例职业：护湾卫兵（D05=A）；
-- 3 种塔、3 种自然敌人、5 波；D02 首版目标为 A+C，当前仅 A，C（内部故障）待补；
+- 3 种塔、4 种敌人（3 自然 + 1 内部故障）、5 波；D02 首版 A+C 已落地；
 - 建造、升级、出售、加速、暂停；
 - 胜负判定、结算、最高记录存档；
 - 无头测试可在 10 秒内跑完。
@@ -81,7 +81,8 @@ data/*.json
 LiveBaySim (RefCounted)  ←— 无渲染、可测试、固定步长
    ↑ step(dt) / build / upgrade / sell / start_wave
    │ signals: wave_started, wave_cleared, enemy_killed,
-   │          enemy_leaked, game_won, game_lost, tower_fired
+   │          enemy_leaked, fault_escaped, tower_disabled,
+   │          game_won, game_lost, tower_fired
    ↓
 main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 ```
@@ -96,7 +97,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 ### 4.1 Sim 的职责
 
 - 路径推进、距离计算；
-- 敌人生成、受伤、死亡、漏过；
+- 敌人生成、受伤、死亡、漏过；故障反向移动与停塔；
 - 塔的索敌、冷却、伤害、减速；
 - 资源、波次、胜负；
 - 发送信号给视图。
@@ -158,9 +159,26 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
     "radius": 9,
     "shape": "triangle",
     "color": "#8C4A32"
+  },
+  {
+    "id": "fault",
+    "name": "故障",
+    "hp": 36,
+    "speed": 58,
+    "reward": 4,
+    "leak_damage": 0,
+    "radius": 8,
+    "shape": "square",
+    "color": "#3E6F6B",
+    "behavior": "reverse",
+    "disable_duration": 2.5,
+    "disable_radius": 100,
+    "disable_targets": 2
   }
 ]
 ```
+
+`behavior` 默认 `forward`；`reverse` 表示从路径终点反向移动。`disable_duration` / `disable_radius` / `disable_targets` 只对反向故障生效：经过塔位时让该塔离线，最多影响 `disable_targets` 座塔。
 
 ### 5.4 `waves.json`
 
@@ -263,14 +281,13 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 - 没有对象池，敌人数量大时可能卡（第一版 ≤ 60）；
 - 视图与 Sim 用信号解耦，但 Sim 仍直接读数据字典；
 - 中文依赖系统字体回退，未内置字体；
-- D02 的 C（内部故障）尚未实现，当前敌人全部是自然风险。
+- 内部故障只实现「反向移动 + 经过塔位停塔」，没有故障链扩散、维修小游戏或永久损坏；这些留到后续版本。
 
 ## 十一、待裁决
 
 - D14 平台：PC / 移动 / 双端（影响输入与性能）
 - D18 语言：中文 / 中英（影响文本表）
-- D04 主角形态（P0，影响叙事接口而非核心架构）
 
-> D16 已裁决为垂直切片；D02/D05 已裁决。C（内部故障）是下一步工程任务，见 [11](11_待人类裁决清单.md)。
+> D16 已裁决为垂直切片；D02/D05/D04 已裁决。内部故障（C）已实现，下一步是 v0.2 护理师。
 
 （本篇完）

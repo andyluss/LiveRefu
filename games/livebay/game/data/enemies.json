@@ -34,5 +34,21 @@
     "shape": "hexagon",
     "color": "#2F3A3E",
     "description": "致密残骸，血厚速度慢，漏过伤害高。"
+  },
+  {
+    "id": "fault",
+    "name": "故障",
+    "hp": 36,
+    "speed": 58,
+    "reward": 4,
+    "leak_damage": 0,
+    "radius": 8,
+    "shape": "square",
+    "color": "#3E6F6B",
+    "behavior": "reverse",
+    "disable_duration": 2.5,
+    "disable_radius": 100,
+    "description": "内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。",
+    "disable_targets": 2
   }
 ]
