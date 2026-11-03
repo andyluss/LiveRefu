@@ -1,0 +1,11 @@
+{
+  "starting_energy": 90,
+  "starting_integrity": 100,
+  "sell_refund": 0.7,
+  "max_tower_level": 3,
+  "upgrade_cost_factor": 0.8,
+  "upgrade_damage_factor": 0.25,
+  "upgrade_range_factor": 0.05,
+  "prepare_time": 30.0,
+  "between_wave_time": 20.0
+}

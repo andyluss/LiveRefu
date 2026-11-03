@@ -1,0 +1,38 @@
+[
+  {
+    "id": "debris",
+    "name": "碎片",
+    "hp": 30,
+    "speed": 45,
+    "reward": 6,
+    "leak_damage": 8,
+    "radius": 9,
+    "shape": "triangle",
+    "color": "#8C4A32",
+    "description": "星际尘埃结块，缓慢但数量多。"
+  },
+  {
+    "id": "turbulence",
+    "name": "乱流",
+    "hp": 20,
+    "speed": 85,
+    "reward": 5,
+    "leak_damage": 6,
+    "radius": 7,
+    "shape": "diamond",
+    "color": "#E0A22E",
+    "description": "局部湍流，速度很快，容易漏过。"
+  },
+  {
+    "id": "hulk",
+    "name": "重壳",
+    "hp": 90,
+    "speed": 30,
+    "reward": 14,
+    "leak_damage": 18,
+    "radius": 12,
+    "shape": "hexagon",
+    "color": "#2F3A3E",
+    "description": "致密残骸，血厚速度慢，漏过伤害高。"
+  }
+]

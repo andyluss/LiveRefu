@@ -1,0 +1,40 @@
+[
+  {
+    "id": "interceptor",
+    "name": "拦截炮",
+    "cost": 30,
+    "range": 120,
+    "damage": 10,
+    "fire_rate": 1.2,
+    "kind": "single",
+    "color": "#D9622B",
+    "description": "单体射击，优先攻击最靠近湾口的敌人。"
+  },
+  {
+    "id": "pulse",
+    "name": "脉冲环",
+    "cost": 45,
+    "range": 105,
+    "damage": 5,
+    "fire_rate": 0.8,
+    "kind": "aoe",
+    "slow": 0.35,
+    "slow_duration": 1.5,
+    "color": "#E0A22E",
+    "description": "范围脉冲，造成伤害并减速。适合处理密集的小型目标。"
+  },
+  {
+    "id": "supply",
+    "name": "补给塔",
+    "cost": 40,
+    "range": 0,
+    "damage": 0,
+    "fire_rate": 0,
+    "kind": "supply",
+    "income": 6,
+    "income_interval": 5.0,
+    "repair": 3,
+    "color": "#7C8F6B",
+    "description": "每 5 秒产出供能，每波结束修复少量保障度。"
+  }
+]

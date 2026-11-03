@@ -1,0 +1,9 @@
+{
+  "id": "guard",
+  "name": "护湾卫兵",
+  "ring": "outer",
+  "description": "外环第七段的当班卫兵。你的班次从交接开始，到舱壁安全为止。",
+  "start_energy": 90,
+  "start_integrity": 100,
+  "tower_cost_mult": 1.0
+}
