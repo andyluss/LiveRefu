@@ -1,7 +1,7 @@
 # LiveBay（逍遥湾）
 
 > **一句话**：在一座月牙形的移动太空城里，你换过很多份工作，守过很多次夜班。
-> **形态**：NASA 朋克 · 岗位塔防 + 沉浸体验 + 放置养成｜**当前**：v0.1 可玩垂直切片（1 职业 / 1 图 / 5 波）
+> **形态**：NASA朋克 · 岗位塔防 + 沉浸体验 + 放置养成｜**当前**：v0.1 可玩垂直切片（1 职业 / 1 图 / 5 波）
 > **引擎**：Godot 4.7（GL Compatibility）｜**平台**：PC 优先（待裁决）
 
 ![v0.1 战斗画面](docs-ai/design01/shots/v0.1_combat.png)
@@ -46,7 +46,7 @@
 | 看人类原始设定 | [`docs-human/概念设定.md`](docs-human/概念设定.md) |
 | 看策划文档集总览 | [`docs-ai/design01/README.md`](docs-ai/design01/README.md) |
 | 看还需要你拍板什么 | [`docs-ai/design01/11_待人类裁决清单.md`](docs-ai/design01/11_待人类裁决清单.md) |
-| 看 NASA 朋克美学 | [`docs/retro-futurism/附录_Nasa朋克卷/`](../../docs/retro-futurism/附录_Nasa朋克卷/README.md) |
+| 看 NASA朋克美学 | [`docs/retro-futurism/附录_NASA朋克卷/`](../../docs/retro-futurism/附录_NASA朋克卷/README.md) |
 | 看工程结构 | [`docs-ai/design01/12_技术方案_Godot工程.md`](docs-ai/design01/12_技术方案_Godot工程.md) |
 | 看改了什么 | [`CHANGELOG.md`](CHANGELOG.md) |
 

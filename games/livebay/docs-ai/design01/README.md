@@ -4,7 +4,7 @@
 > **日期**：2026-11-03｜**来源**：AI 生成，人类拍板
 > **决策权**：人类｜**上游**：[概念设定](../../docs-human/概念设定.md)
 > **适用范围**：LiveBay（逍遥湾）概念、玩法、美术与工程的第一版策划参考
-> **关联**：[NASApunk 附录卷](../../../../docs/retro-futurism/附录_Nasa朋克卷/README.md) · [Godot 工程](../../game/) · [项目 README](../../README.md)
+> **关联**：[NASApunk 附录卷](../../../../docs/retro-futurism/附录_NASA朋克卷/README.md) · [Godot 工程](../../game/) · [项目 README](../../README.md)
 
 ## 一、这套文档是什么
 

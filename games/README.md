@@ -9,7 +9,7 @@
 | 未来残片 | [`future-debris/`](future-debris/README.md) | 主线 Godot 项目 |
 | Refu Game 001 | [`refu-game-001/`](refu-game-001/README.md) | 卡片塔防垂直切片 |
 | 明日频道 | [`tomorrows-channel/`](tomorrows-channel/README.md) | 复古未来氛围陪伴应用 |
-| 逍遥湾 · LiveBay | [`livebay/`](livebay/README.md) | NASA 朋克 · 岗位塔防 + 沉浸 + 放置；v0.1 可玩切片 |
+| 逍遥湾 · LiveBay | [`livebay/`](livebay/README.md) | NASA朋克 · 岗位塔防 + 沉浸 + 放置；v0.1 可玩切片 |
 
 ## Godot 数据
 
