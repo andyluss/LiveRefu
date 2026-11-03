@@ -18,7 +18,7 @@ CMD="${1:-run}"
 
 case "$CMD" in
   run)
-    exec "$GODOT" --path "$GAME" "$@"
+    exec "$GODOT" --path "$GAME" "${@:2}"
     ;;
   editor)
     exec "$GODOT" -e --path "$GAME" "${@:2}"
