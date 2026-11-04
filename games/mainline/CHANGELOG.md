@@ -7,6 +7,17 @@
 > [`../future-debris/CHANGELOG.md`](../future-debris/CHANGELOG.md)）。历史上有 17 段产品内容记在这里，
 > 已于 0.18.0 迁走。
 
+## [0.24.3] - 2026-11-04 20:19
+
+### 变更
+
+- mainline README 与 `01_LiveBay主线状态` 收敛为「当前主线是 LiveBay」的指针；
+- LiveBay 的具体状态、裁决与开发日志统一留在 `games/livebay/`，mainline 不再复制或追记；
+
+### 备注
+
+- 本条只记录 mainline 的收敛，不记录 LiveBay 项目事务。
+
 ## [0.24.2] - 2026-11-04 17:08
 
 ### 变更
