@@ -6,6 +6,11 @@
   "upgrade_cost_factor": 0.8,
   "upgrade_damage_factor": 0.25,
   "upgrade_range_factor": 0.05,
+  "upgrade_income_factor": 0.5,
+  "upgrade_repair_factor": 0.5,
   "prepare_time": 30.0,
-  "between_wave_time": 20.0
+  "between_wave_time": 20.0,
+  "grade_s_ratio": 0.9,
+  "grade_a_ratio": 0.7,
+  "grade_b_ratio": 0.4
 }

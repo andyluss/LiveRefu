@@ -254,8 +254,13 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
   &quot;upgrade_cost_factor&quot;: 0.8,
   &quot;upgrade_damage_factor&quot;: 0.25,
   &quot;upgrade_range_factor&quot;: 0.05,
+  &quot;upgrade_income_factor&quot;: 0.5,
+  &quot;upgrade_repair_factor&quot;: 0.5,
   &quot;prepare_time&quot;: 30.0,
-  &quot;between_wave_time&quot;: 20.0
+  &quot;between_wave_time&quot;: 20.0,
+  &quot;grade_s_ratio&quot;: 0.9,
+  &quot;grade_a_ratio&quot;: 0.7,
+  &quot;grade_b_ratio&quot;: 0.4
 }</code></pre>
 <h2 id="六sim-的关键规则">六、Sim 的关键规则</h2>
 <div class="table-wrap"><table>
@@ -288,11 +293,11 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 </tr>
 <tr>
 <td>供给</td>
-<td>每 <code>income_interval</code> 秒 +<code>income</code> 供能</td>
+<td>每 <code>income_interval</code> 秒 +<code>income × (1 + upgrade_income_factor × (level-1))</code> 供能</td>
 </tr>
 <tr>
 <td>波次</td>
-<td>准备 → 生成 → 清空 → 波间 → 下一波</td>
+<td>准备 → 生成 → 清空 → 波间 → 下一波；<code>prep</code> 读波次表，缺省用 balance</td>
 </tr>
 <tr>
 <td>漏过</td>
@@ -305,13 +310,14 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 </tbody>
 </table></div>
 <h2 id="七测试">七、测试</h2>
-<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口：</p>
+<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口，当前 37 项断言：</p>
 <ol type="1">
-<li><strong>数据完整性</strong>：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1。</li>
-<li><strong>胜利路径</strong>：在 3 个塔位建塔，跑完 5 波，断言 <code>WON</code> 且保障度 &gt; 0。</li>
+<li><strong>数据完整性</strong>：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1；评级阈值、波次 <code>prep</code> 数据驱动。</li>
+<li><strong>胜利路径</strong>：在 2 个塔位建塔，跑完 5 波，断言 <code>WON</code> 且保障度 &gt; 0。</li>
 <li><strong>失败路径</strong>：不建塔，跑完 5 波，断言 <code>LOST</code>。</li>
 <li><strong>经济</strong>：建塔扣费；出售返还 70%。</li>
-<li><strong>升级</strong>：升级后伤害提高、费用扣除。</li>
+<li><strong>升级</strong>：升级后伤害提高、费用扣除；补给塔升级后产出/维修提高。</li>
+<li><strong>故障</strong>：反向移动、停塔、逃逸不扣保障度。</li>
 </ol>
 <p>运行：</p>
 <pre class="bash"><code>./run.sh test</code></pre>

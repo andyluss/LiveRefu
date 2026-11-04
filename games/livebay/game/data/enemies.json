@@ -48,7 +48,7 @@
     "behavior": "reverse",
     "disable_duration": 2.5,
     "disable_radius": 100,
-    "description": "内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。",
-    "disable_targets": 2
+    "disable_targets": 2,
+    "description": "内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。"
   }
 ]

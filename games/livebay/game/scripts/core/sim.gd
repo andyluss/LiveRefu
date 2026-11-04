@@ -85,7 +85,7 @@ func reset() -> void:
 	energy = float(profession.get("start_energy", balance.get("starting_energy", 90.0)))
 	wave_index = -1
 	wave_time = 0.0
-	timer = float(balance.get("prepare_time", 30.0))
+	timer = float(waves[0].get("prep", balance.get("prepare_time", 30.0))) if not waves.is_empty() else 30.0
 	enemies.clear()
 	towers.clear()
 	spawn_queue.clear()
@@ -216,7 +216,7 @@ func _update_towers(dt: float) -> void:
 			tower.income_timer -= dt
 			if tower.income_timer <= 0.0:
 				tower.income_timer += float(def.get("income_interval", 5.0))
-				energy += float(def.get("income", 6))
+				energy += _supply_income(tower)
 				energy_changed.emit(energy)
 			continue
 
@@ -315,7 +315,7 @@ func _on_wave_cleared() -> void:
 	var repair: float = 0.0
 	for tower: Dictionary in towers:
 		if tower.def.kind == "supply":
-			repair += float(tower.def.get("repair", 0.0))
+			repair += _supply_repair(tower)
 	if repair > 0.0:
 		integrity = min(max_integrity, integrity + repair)
 		integrity_changed.emit(integrity)
@@ -324,7 +324,7 @@ func _on_wave_cleared() -> void:
 		_finish(true)
 	else:
 		state = State.BETWEEN
-		timer = float(balance.get("between_wave_time", 20.0))
+		timer = float(waves[wave_index + 1].get("prep", balance.get("between_wave_time", 20.0)))
 
 
 func _finish(won: bool) -> void:
@@ -351,11 +351,11 @@ func _finish(won: bool) -> void:
 func _grade(won: bool) -> String:
 	if not won:
 		return "F"
-	if integrity >= max_integrity * 0.9:
+	if integrity >= max_integrity * float(balance.get("grade_s_ratio", 0.9)):
 		return "S"
-	if integrity >= max_integrity * 0.7:
+	if integrity >= max_integrity * float(balance.get("grade_a_ratio", 0.7)):
 		return "A"
-	if integrity >= max_integrity * 0.4:
+	if integrity >= max_integrity * float(balance.get("grade_b_ratio", 0.4)):
 		return "B"
 	return "C"
 
@@ -435,6 +435,14 @@ func _tower_damage(tower: Dictionary) -> float:
 
 func _tower_range(tower: Dictionary) -> float:
 	return float(tower.def.range) * (1.0 + float(balance.get("upgrade_range_factor", 0.05)) * (int(tower.level) - 1))
+
+
+func _supply_income(tower: Dictionary) -> float:
+	return float(tower.def.get("income", 0.0)) * (1.0 + float(balance.get("upgrade_income_factor", 0.5)) * (int(tower.level) - 1))
+
+
+func _supply_repair(tower: Dictionary) -> float:
+	return float(tower.def.get("repair", 0.0)) * (1.0 + float(balance.get("upgrade_repair_factor", 0.5)) * (int(tower.level) - 1))
 
 
 func _enemy_pos(enemy: Dictionary) -> Vector2:

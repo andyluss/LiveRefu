@@ -20,6 +20,7 @@ func _initialize() -> void:
 	_test_data(data)
 	_test_economy(data)
 	_test_upgrade(data)
+	_test_supply_upgrade(data)
 	_test_fault(data)
 	_test_loss(data)
 	_test_win(data)
@@ -38,6 +39,9 @@ func _test_data(data: Dictionary) -> void:
 	_check(sim.slots.size() == 7, "7 build slots")
 	_check(sim.energy == 90.0, "starting energy 90")
 	_check(sim.integrity == 100.0, "starting integrity 100")
+	_check(data.balance.has("grade_s_ratio"), "grade thresholds are data-driven")
+	_check(is_equal_approx(float(data.waves[0].prep), 30.0), "wave 1 prep 30")
+	_check(is_equal_approx(float(data.waves[1].prep), 20.0), "wave 2 prep 20")
 
 
 func _test_economy(data: Dictionary) -> void:
@@ -60,6 +64,16 @@ func _test_upgrade(data: Dictionary) -> void:
 	var damage_after: float = sim._tower_damage(tower)
 	_check(damage_after > damage_before, "upgrade increases damage")
 	_check(int(tower.level) == 2, "level is 2")
+
+
+func _test_supply_upgrade(data: Dictionary) -> void:
+	var sim := SimScript.new(data)
+	_check(sim.build(0, "supply"), "supply test: build")
+	var tower: Variant = sim.get_tower_at(0)
+	_check(is_equal_approx(sim._supply_income(tower), 6.0), "supply L1 income 6")
+	_check(sim.upgrade(0), "supply test: upgrade")
+	_check(is_equal_approx(sim._supply_income(tower), 9.0), "supply L2 income 9")
+	_check(is_equal_approx(sim._supply_repair(tower), 4.5), "supply L2 repair 4.5")
 
 
 func _test_fault(data: Dictionary) -> void:

@@ -228,8 +228,13 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
   "upgrade_cost_factor": 0.8,
   "upgrade_damage_factor": 0.25,
   "upgrade_range_factor": 0.05,
+  "upgrade_income_factor": 0.5,
+  "upgrade_repair_factor": 0.5,
   "prepare_time": 30.0,
-  "between_wave_time": 20.0
+  "between_wave_time": 20.0,
+  "grade_s_ratio": 0.9,
+  "grade_a_ratio": 0.7,
+  "grade_b_ratio": 0.4
 }
 ```
 
@@ -242,20 +247,21 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 | 索敌 | 射程内「距基地最近」的敌人 |
 | 伤害 | 即时结算；视图播放 0.08s 光束 |
 | 减速 | 取最强的一次，不叠乘 |
-| 供给 | 每 `income_interval` 秒 +`income` 供能 |
-| 波次 | 准备 → 生成 → 清空 → 波间 → 下一波 |
+| 供给 | 每 `income_interval` 秒 +`income × (1 + upgrade_income_factor × (level-1))` 供能 |
+| 波次 | 准备 → 生成 → 清空 → 波间 → 下一波；`prep` 读波次表，缺省用 balance |
 | 漏过 | 抵达终点扣 `leak_damage`，扣完判负 |
 | 胜利 | 最后一波清空且保障度 > 0 |
 
 ## 七、测试
 
-`tests/run_sim.gd` 是 SceneTree 脚本，不依赖窗口：
+`tests/run_sim.gd` 是 SceneTree 脚本，不依赖窗口，当前 37 项断言：
 
-1. **数据完整性**：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1。
-2. **胜利路径**：在 3 个塔位建塔，跑完 5 波，断言 `WON` 且保障度 > 0。
+1. **数据完整性**：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1；评级阈值、波次 `prep` 数据驱动。
+2. **胜利路径**：在 2 个塔位建塔，跑完 5 波，断言 `WON` 且保障度 > 0。
 3. **失败路径**：不建塔，跑完 5 波，断言 `LOST`。
 4. **经济**：建塔扣费；出售返还 70%。
-5. **升级**：升级后伤害提高、费用扣除。
+5. **升级**：升级后伤害提高、费用扣除；补给塔升级后产出/维修提高。
+6. **故障**：反向移动、停塔、逃逸不扣保障度。
 
 运行：
 

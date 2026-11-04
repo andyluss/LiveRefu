@@ -29,7 +29,7 @@ platform: "PC 优先（D14 待定）"
 ```bash
 ./run.sh          # 启动游戏
 ./run.sh editor   # 打开 Godot 编辑器
-./run.sh test     # 无头模拟测试（29 项断言）
+./run.sh test     # 无头模拟测试（37 项断言）
 ./run.sh check    # 无头启动 180 帧，抓脚本错误
 ./run.sh import   # 首次导入资源
 ```
@@ -58,6 +58,7 @@ platform: "PC 优先（D14 待定）"
 | 看还需要你拍板什么 | [`docs-ai/design01/11_待人类裁决清单.md`](docs-ai/design01/11_待人类裁决清单.md) |
 | 看 NASA朋克美学 | [`docs/retro-futurism/附录_NASA朋克卷/`](../../docs/retro-futurism/附录_NASA朋克卷/README.md) |
 | 看工程结构 | [`docs-ai/design01/12_技术方案_Godot工程.md`](docs-ai/design01/12_技术方案_Godot工程.md) |
+| 看数值体系 | [`docs-ai/design01/numbers/README.md`](docs-ai/design01/numbers/README.md) |
 | 看改了什么 | [`CHANGELOG.md`](CHANGELOG.md) |
 
 ## 设计状态

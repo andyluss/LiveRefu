@@ -18,6 +18,11 @@ const REQUIRED_BALANCE_FIELDS := [
 	"upgrade_range_factor",
 	"prepare_time",
 	"between_wave_time",
+	"upgrade_income_factor",
+	"upgrade_repair_factor",
+	"grade_s_ratio",
+	"grade_a_ratio",
+	"grade_b_ratio",
 ]
 
 

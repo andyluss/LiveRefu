@@ -32,13 +32,21 @@ case "$CMD" in
   check)
     exec "$GODOT" --headless --path "$GAME" --quit-after 180
     ;;
+  numbers)
+    exec python3 "$HERE/tools/export_numbers.py"
+    ;;
+  numbers-check)
+    exec python3 "$HERE/tools/export_numbers.py" --check
+    ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check]" >&2
+    echo "用法: ./run.sh [run|editor|import|test|check|numbers|numbers-check]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2
     echo "  test    无头模拟测试" >&2
     echo "  check   无头启动 180 帧，抓脚本错误" >&2
+    echo "  numbers        从 numbers/ 表格导出 game/data" >&2
+    echo "  numbers-check  校验表格与 game/data 是否一致" >&2
     exit 1
     ;;
 esac
