@@ -680,6 +680,9 @@ a.button:not(.ghost) { color: #fff; }
 .rule-map .node-title { fill: var(--muted); font-size: 11px; }
 .rule-map .node-layer { fill: var(--faint); font-family: var(--mono); font-size: 10px; }
 .rule-map .rule-map-legend text { fill: var(--muted); font-size: 11px; }
+.rule-map rect.chip-a { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.rule-map rect.chip-b { fill: var(--surface-2); stroke: var(--teal); stroke-width: 1.5; }
+.rule-map rect.chip-c { fill: var(--surface); stroke: var(--amber); stroke-width: 1.5; }
 .rule-map a:focus-visible rect { stroke: var(--accent); stroke-width: 3; }
 .rule-map a:hover .rule-node rect { stroke: var(--accent); }
 
