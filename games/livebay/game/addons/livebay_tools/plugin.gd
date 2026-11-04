@@ -22,7 +22,12 @@ var status: Label
 var selection: Label
 var tower_picker: OptionButton
 var overlay_check: CheckButton
+var save_button: Button
 var map_data: Dictionary = {}
+var undo_stack: Array = []
+var redo_stack: Array = []
+var last_mouse_world := Vector2.ZERO
+var dirty := false
 var towers: Array = []
 var overlay_enabled := true
 var selected_kind := ""
@@ -65,7 +70,7 @@ func _build_dock() -> void:
 	reload_button.text = "重载"
 	reload_button.pressed.connect(func(): _reload(true))
 	actions.add_child(reload_button)
-	var save_button := Button.new()
+	save_button = Button.new()
 	save_button.text = "保存"
 	save_button.pressed.connect(_save)
 	actions.add_child(save_button)
@@ -78,6 +83,35 @@ func _build_dock() -> void:
 	run_button.text = "运行游戏"
 	run_button.pressed.connect(_run_game)
 	dock.add_child(run_button)
+
+	var edit_row := HBoxContainer.new()
+	dock.add_child(edit_row)
+	var undo_button := Button.new()
+	undo_button.text = "撤销"
+	undo_button.tooltip_text = "Cmd/Ctrl+Z"
+	undo_button.pressed.connect(_undo)
+	edit_row.add_child(undo_button)
+	var redo_button := Button.new()
+	redo_button.text = "重做"
+	redo_button.tooltip_text = "Cmd/Ctrl+Shift+Z"
+	redo_button.pressed.connect(_redo)
+	edit_row.add_child(redo_button)
+	var del_button := Button.new()
+	del_button.text = "删除选中"
+	del_button.tooltip_text = "Delete"
+	del_button.pressed.connect(_delete_selected)
+	edit_row.add_child(del_button)
+
+	var add_row := HBoxContainer.new()
+	dock.add_child(add_row)
+	var add_path_button := Button.new()
+	add_path_button.text = "插入路径点"
+	add_path_button.pressed.connect(_insert_path_point)
+	add_row.add_child(add_path_button)
+	var add_slot_button := Button.new()
+	add_slot_button.text = "插入塔位"
+	add_slot_button.pressed.connect(_insert_slot)
+	add_row.add_child(add_slot_button)
 
 	overlay_check = CheckButton.new()
 	overlay_check.text = "显示叠加层"
@@ -121,6 +155,11 @@ func _reload(announce: bool) -> void:
 		return
 	map_data = result.get("map", {})
 	towers = result.get("towers", [])
+	undo_stack.clear()
+	redo_stack.clear()
+	dirty = false
+	if save_button:
+		save_button.text = "保存"
 	selected_kind = ""
 	selected_index = -1
 	_refresh_tower_picker()
@@ -143,6 +182,9 @@ func _save() -> void:
 	if not bool(result.get("ok", false)):
 		_set_status("保存失败：" + str(result.get("error", "未知错误")), true)
 		return
+	dirty = false
+	if save_button:
+		save_button.text = "保存"
 	_set_status(str(result.get("message", "已保存。")))
 	_reload(false)
 
@@ -158,6 +200,127 @@ func _check() -> void:
 func _run_game() -> void:
 	if get_editor_interface() and get_editor_interface().has_method("play_main_scene"):
 		get_editor_interface().play_main_scene()
+
+
+func _begin_edit() -> void:
+	undo_stack.append(map_data.duplicate(true))
+	if undo_stack.size() > 40:
+		undo_stack.pop_front()
+	redo_stack.clear()
+	dirty = true
+	if save_button:
+		save_button.text = "保存 *"
+
+
+func _undo() -> void:
+	if undo_stack.is_empty():
+		_set_status("没有可撤销的操作。", true)
+		return
+	redo_stack.append(map_data.duplicate(true))
+	map_data = undo_stack.pop_back().duplicate(true)
+	_clamp_selection()
+	dirty = true
+	if save_button:
+		save_button.text = "保存 *"
+	_set_status("已撤销。")
+	_update_status()
+
+
+func _redo() -> void:
+	if redo_stack.is_empty():
+		_set_status("没有可重做的操作。", true)
+		return
+	undo_stack.append(map_data.duplicate(true))
+	map_data = redo_stack.pop_back().duplicate(true)
+	_clamp_selection()
+	dirty = true
+	if save_button:
+		save_button.text = "保存 *"
+	_set_status("已重做。")
+	_update_status()
+
+
+func _clamp_selection() -> void:
+	if selected_kind == "path":
+		var path: Array = map_data.get("path", [])
+		if path.is_empty():
+			selected_kind = ""
+			selected_index = -1
+		else:
+			selected_index = clampi(selected_index, 0, path.size() - 1)
+	elif selected_kind == "slot":
+		var slots: Array = map_data.get("slots", [])
+		if slots.is_empty():
+			selected_kind = ""
+			selected_index = -1
+		else:
+			selected_index = clampi(selected_index, 0, slots.size() - 1)
+	elif selected_kind == "base":
+		selected_index = 0
+
+
+func _insert_path_point() -> void:
+	if map_data.is_empty():
+		return
+	var path: Array = map_data.get("path", [])
+	if path.is_empty():
+		return
+	_begin_edit()
+	var idx: int = selected_index + 1 if selected_kind == "path" else path.size()
+	var p := _snap(last_mouse_world)
+	if p == Vector2.ZERO:
+		var last := _vec(path[path.size() - 1])
+		p = last + Vector2(80, 0)
+	path.insert(idx, [int(p.x), int(p.y)])
+	selected_kind = "path"
+	selected_index = idx
+	_set_status("已插入路径点；保存后生效。")
+	_update_status()
+
+
+func _insert_slot() -> void:
+	if map_data.is_empty():
+		return
+	var slots: Array = map_data.get("slots", [])
+	_begin_edit()
+	var idx: int = selected_index + 1 if selected_kind == "slot" else slots.size()
+	var p := _snap(last_mouse_world)
+	if p == Vector2.ZERO:
+		p = Vector2(640, 400)
+	slots.insert(idx, [int(p.x), int(p.y)])
+	selected_kind = "slot"
+	selected_index = idx
+	_set_status("已插入塔位；保存后生效。")
+	_update_status()
+
+
+func _delete_selected() -> void:
+	if map_data.is_empty():
+		return
+	if selected_kind == "path":
+		var path: Array = map_data.get("path", [])
+		if path.size() <= 2:
+			_set_status("路径至少保留 2 个点。", true)
+			return
+		_begin_edit()
+		path.remove_at(selected_index)
+		selected_index = clampi(selected_index - 1, 0, path.size() - 1)
+	elif selected_kind == "slot":
+		var slots: Array = map_data.get("slots", [])
+		if slots.size() <= 1:
+			_set_status("至少保留 1 个塔位。", true)
+			return
+		_begin_edit()
+		slots.remove_at(selected_index)
+		selected_index = clampi(selected_index - 1, 0, slots.size() - 1)
+	elif selected_kind == "base":
+		_set_status("基地不能删除；可直接拖动。", true)
+		return
+	else:
+		_set_status("先选中路径点或塔位。", true)
+		return
+	_set_status("已删除；保存后生效。")
+	_update_status()
 
 
 func _set_status(text: String, warn := false) -> void:
@@ -240,6 +403,26 @@ func _move_handle(p: Vector2) -> void:
 func _forward_canvas_gui_input(event: InputEvent) -> bool:
 	if not overlay_enabled or map_data.is_empty():
 		return false
+	if event is InputEventKey and event.pressed and not event.echo:
+		var mod: bool = event.ctrl_pressed or event.meta_pressed
+		if event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
+			_delete_selected()
+			return true
+		if mod and event.keycode == KEY_Z:
+			if event.shift_pressed:
+				_redo()
+			else:
+				_undo()
+			return true
+		if mod and event.keycode == KEY_Y:
+			_redo()
+			return true
+	if event is InputEventMouseMotion:
+		last_mouse_world = _world_from_event(event)
+		if dragging:
+			_move_handle(last_mouse_world)
+			return true
+		return false
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			var hit := _find_handle(_world_from_event(event))
@@ -251,15 +434,13 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 				return false
 			selected_kind = str(hit["kind"])
 			selected_index = int(hit["index"])
+			_begin_edit()
 			dragging = true
 			_update_status()
 			return true
 		if dragging:
 			dragging = false
 			return true
-	if event is InputEventMouseMotion and dragging:
-		_move_handle(_world_from_event(event))
-		return true
 	return false
 
 
