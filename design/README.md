@@ -168,5 +168,5 @@ node design/tools/check_tomorrows_channel_skin.ts
 
 - 工作区规则：[`rules/`](../rules/README.md) ｜ 变更日志：[`CHANGELOG.md`](../CHANGELOG.md) ｜ 技术详解：[`tech/`](../tech/README.md)
 - 视觉方向的上游决策：[`games/future-debris/docs/planning/05_美术与技术方向.md`](../games/future-debris/docs/planning/05_美术与技术方向.md)（Q6 已裁决：语法层 + 风格卡）
-- 决策体例参考：[`games/mainline/docs/00_决策总表.md`](../games/mainline/docs/00_决策总表.md)（推荐 / 代价 / 推翻条件 / 不回删原文）
+- 决策体例参考：[`games/future-debris/docs/planning/00_决策总表.md`](../games/future-debris/docs/planning/00_决策总表.md)（推荐 / 代价 / 推翻条件 / 不回删原文）
 - 实现记录：[`docs/05_实现记录_v0.1.md`](docs/05_实现记录_v0.1.md)、[`docs/06_实现记录_v0.2.md`](docs/06_实现记录_v0.2.md)、[`docs/08_组件落地_v0.2.md`](docs/08_组件落地_v0.2.md)、[`docs/09_产品走查_v0.2.md`](docs/09_产品走查_v0.2.md)、[`docs/10_皮肤收口_v0.2.md`](docs/10_皮肤收口_v0.2.md)、[`docs/11_App_kit_v0.2.md`](docs/11_App_kit_v0.2.md) ｜ 风格卡：[`docs/07_风格卡登记.md`](docs/07_风格卡登记.md) ｜ 例外：[`docs/exceptions.md`](docs/exceptions.md)

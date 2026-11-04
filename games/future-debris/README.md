@@ -25,7 +25,7 @@
 | Q15 | “纲领 + 具体项目”分层；具体项目提升为 `games/future-debris/` |
 | A2–A5 | 旧三族/关卡归档；《明日频道》并入构想；《未来档案》官网延后；允许先发 15 秒机制动图 |
 
-待裁决：Q5、Q6、Q8–Q12；完整表格与理由见 [`../mainline/docs/00_决策总表.md`](../mainline/docs/00_决策总表.md)。
+待裁决：Q5、Q6、Q8–Q12；完整表格与理由见 [`00_决策总表.md`](docs/planning/00_决策总表.md)。
 
 ### 0.2 本项目执行文档
 
@@ -39,6 +39,7 @@
 | [`docs/spec/13_商店页文案与标签.md`](docs/spec/13_商店页文案与标签.md) | 双语文案与标签 |
 | [`docs/spec/14_人类试玩执行包.md`](docs/spec/14_人类试玩执行包.md) | 人类试玩执行包 |
 | [`docs/planning/10_推进计划与并入清单.md`](docs/planning/10_推进计划与并入清单.md) | 推进计划与并入清单 |
+| [`docs/planning/00_决策总表.md`](docs/planning/00_决策总表.md) | Q1–Q15 决策、待裁决项与修订记录 |
 | [`docs/planning/01_定位与目标.md`](docs/planning/01_定位与目标.md) | 项目定位、目标与成功度量 |
 | [`docs/planning/02_资产盘点与杠杆.md`](docs/planning/02_资产盘点与杠杆.md) | 资产盘点、五条核心矛盾与复用边界 |
 | [`docs/planning/05_美术与技术方向.md`](docs/planning/05_美术与技术方向.md) | 美术/技术方向与 AI 产能边界 |
@@ -47,12 +48,12 @@
 | [`docs/planning/09_竞品与市场调研计划.md`](docs/planning/09_竞品与市场调研计划.md) | 竞品/市场调研方法与证据分级 |
 | [`docs/planning/research/README.md`](docs/planning/research/README.md) | 调研证据位 |
 
-> 纲领级入口：[决策总表](../mainline/docs/00_决策总表.md) ｜ 项目规划：[planning/](docs/planning/README.md) ｜ 路线与风险：[07](docs/planning/07_路线图与风险.md) ｜ 共同语言：[08](docs/planning/08_共同语言与命名.md)。
+> 纲领级入口：[决策总表](docs/planning/00_决策总表.md) ｜ 项目规划：[planning/](docs/planning/README.md) ｜ 路线与风险：[07](docs/planning/07_路线图与风险.md) ｜ 共同语言：[08](docs/planning/08_共同语言与命名.md)。
 
 ## 一、这是什么（以及不是什么）
 
 - 这是**执行目录**：代码、数据表、工具、验收都在这里。
-- 这**不是**决策目录：为什么这样做、被否决的方案、代价与推翻条件，都在同级主线纲领的 [`../mainline/docs/`](../mainline/docs/00_决策总表.md)。
+- 这**不是**决策目录：为什么这样做、被否决的方案、代价与推翻条件，都在同级主线纲领的 [`docs/planning/00_决策总表.md`](docs/planning/00_决策总表.md)。
 
 ## 二、当前状态（S4 完成）
 
@@ -156,13 +157,13 @@ games/future-debris/
 
 1. **核心逻辑不依赖渲染**（否则无法无头验收，AI 也无法高效改玩法）。
 2. **数据表是唯一真相**：数值不得硬编码在脚本里；改动必须过数据闸门。
-3. **不卖数值、不抽卡**（[`../mainline/docs/04_商业化与收入结构.md`](docs/spec/04_商业化与收入结构.md) 的四条红线）。
+3. **不卖数值、不抽卡**（[`04 商业化与收入结构`](docs/spec/04_商业化与收入结构.md) 的四条红线）。
 4. **第一版必须自洽完整**（Q14 裁决）：纪元包是增量内容，不是补齐手段。
 5. **文件预算不放松**：超限时拆分，而不是调高上限。
 
 ## 七、相关
 
-- 决策与提案：[`../mainline/`](../mainline/README.md) ｜ 决策总表：[`00_决策总表`](../mainline/docs/00_决策总表.md)
+- 历史主线纲领：[`../mainline/`](../mainline/README.md) ｜ 决策总表：[`00_决策总表`](docs/planning/00_决策总表.md)
 - 题材知识库（世界观与纪元划分的权威）：[`../../docs/retro-futurism/`](../../docs/retro-futurism/README.md)
 - 被并入/参考的既有工程：[`../refu-game-001/`](../refu-game-001/README.md)（工程分层与验收方式的来源）
 - 工作区变更日志：[`../../CHANGELOG.md`](../../CHANGELOG.md)

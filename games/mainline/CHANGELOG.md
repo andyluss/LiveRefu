@@ -7,6 +7,19 @@
 > [`../future-debris/CHANGELOG.md`](../future-debris/CHANGELOG.md)）。历史上有 17 段产品内容记在这里，
 > 已于 0.18.0 迁走。
 
+## [0.24.2] - 2026-11-04 17:08
+
+### 变更
+
+- `docs/00_决策总表.md` 移入 [`../future-debris/docs/planning/00_决策总表.md`](../future-debris/docs/planning/00_决策总表.md)，归属未来残片项目；
+- 恢复该文在 2026-11-04 主线切换前的原文：移除“历史文档”提示与改写标题，Q1–Q15 结论保持不变；
+- 移动后按新路径重算相对链接；mainline README、11 与 design 的决策体例引用同步；
+- mainline 的纲领级文档表现在只保留 `01 LiveBay 主线状态` 与 `11 历史项目评估`；`00/02` 均由 future-debris 维护。
+
+### 验证
+
+- 相关 Markdown 内部链接 271 个，0 失效。
+
 ## [0.24.1] - 2026-11-04 17:02
 
 ### 变更
