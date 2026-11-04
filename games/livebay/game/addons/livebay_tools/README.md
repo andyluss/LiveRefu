@@ -84,7 +84,13 @@ export_numbers.py → game/data/*.json
 | `bridge_client.gd` | 调用 Python bridge |
 | `bridge.py` | 读写 `numbers/05`、导出、校验 |
 
-## 五、注意
+## 五、演示
+
+- 视频：[`../../../docs-ai/design01/shots/editor_usage.mp4`](../../../docs-ai/design01/shots/editor_usage.mp4)
+- 程序化演示源：[`../../demo/editor_demo.gd`](../../demo/editor_demo.gd)
+- 说明：[`../../demo/README.md`](../../demo/README.md)
+
+## 六、注意
 
 - 插件保存会直接改 `numbers/05_地图与塔位.md`；建议先提交或备份；
 - 保存后 `game/data/map_bay01.json` 会由导出器重写，不要手改；
