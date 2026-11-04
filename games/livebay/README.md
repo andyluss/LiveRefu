@@ -62,6 +62,7 @@ platform: "PC 优先（D14 待定）"
 | 看艺术设定图 | [`docs-ai/design01/art/README.md`](docs-ai/design01/art/README.md) |
 | 看小说集 | [`docs-ai/design01/fictions/README.md`](docs-ai/design01/fictions/README.md) |
 | 看规则体系 | [`docs-ai/design01/rules/README.md`](docs-ai/design01/rules/README.md) |
+| 看规则总览（HTML） | [`docs-ai/design01/html/rules/index.html`](docs-ai/design01/html/rules/index.html) |
 | 看改了什么 | [`CHANGELOG.md`](CHANGELOG.md) |
 
 ## 设计状态

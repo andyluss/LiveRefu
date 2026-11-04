@@ -1,0 +1,136 @@
+<!-- 由 tools/build_design_html.py 从 ../../../rules/art/a01_NASA朋克四件套.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>ART-A1 · NASApunk 四件套 · LiveBay design01</title>
+<meta name="description" content="NASApunk 不是“复古贴纸”，是白盒工程、检查单、模拟界面、机构色四件套。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../assets/style.css">
+<script defer src="../../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../../README.html">策划文档集 · 总览</a><a href="../../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../../01_项目北极星.html">项目北极星</a><a href="../../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../../03_职业体系.html">职业体系</a><a href="../../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../../04_塔防玩法.html">塔防：岗位防线</a><a href="../../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../../07_放置养成玩法.html">放置养成玩法</a><a href="../../09_三玩法联动.html">三玩法联动</a><a href="../../10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../../08_美术与音频方向.html">美术与音频方向</a><a href="../../12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div><div class="nav-group"><h2>规则</h2><a href="../../rules/index.html" aria-current="page">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../../rules/art/a01_NASA朋克四件套.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">规则 · ART-A1</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一形式化表述">一、形式化表述</a></li><li class=""><a href="#二通俗解释">二、通俗解释</a></li><li class=""><a href="#三条款">三、条款</a></li><li class="sub"><a href="#must">MUST</a></li><li class="sub"><a href="#should">SHOULD</a></li><li class="sub"><a href="#may">MAY</a></li><li class=""><a href="#四判定与验收">四、判定与验收</a></li><li class=""><a href="#五反例">五、反例</a></li><li class=""><a href="#六引用与变更">六、引用与变更</a></li></ul></details>
+<article class="prose">
+<h1 id="art-a1--nasapunk-四件套">ART-A1 · NASApunk 四件套</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>规则 ID</dt><dd>ART-A1</dd><dt>层级</dt><dd>a · 底层</dd><dt>类别</dt><dd>艺术</dd><dt>状态</dt><dd>active</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 起草，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>上游</dt><dd><a href="../../08_美术与音频方向.html">08_美术与音频方向</a></dd><dt>关联</dt><dd><a href="../../../../../../../docs/retro-futurism/附录_NASA朋克卷/README.md">../../../../../../docs/retro-futurism/附录_NASA朋克卷</a> · <a href="b01_三环三套语法.html">三环三套视觉语法</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：NASApunk 不是“复古贴纸”，是白盒工程、检查单、模拟界面、机构色四件套。 <strong>形式化</strong>：<code>Visual = WhiteBox ∧ Checklist ∧ AnalogUI ∧ InstitutionalPalette</code>，且 <code>¬Hologram ∧ ¬SleekConsumer</code>。</p>
+</blockquote>
+<h2 id="一形式化表述">一、形式化表述</h2>
+<pre class="text"><code>Visual = WhiteBox ∧ Checklist ∧ AnalogUI ∧ InstitutionalPalette
+WhiteBox = exposedStructure ∧ repairable ∧ labeled
+Checklist = visibleProcedure ∧ checkboxes ∧ signatures
+AnalogUI = physicalControls ∧ lamps ∧ paper
+InstitutionalPalette = neutral + safetyOrange + mutedTeal
+
+¬Hologram ∧ ¬SleekConsumer ∧ ¬NeonCyberpunk</code></pre>
+<h2 id="二通俗解释">二、通俗解释</h2>
+<p>NASApunk 的“朋克”不在霓虹，而在<strong>人要在不完美的系统里把事做完</strong>：</p>
+<ul>
+<li>白盒：结构露出来，管线、支架、接缝都能看见；</li>
+<li>检查单：有流程、有签字、有“待复查”；</li>
+<li>模拟界面：按钮、拨杆、指示灯、纸张，不是悬浮光屏；</li>
+<li>机构色：暖白、石墨、安全橙、灰绿，像被用过的设备，不像广告。</li>
+</ul>
+<p>反过来说：<strong>不要全息投影、不要无边框玻璃、不要赛博霓虹、不要“高级感”到没有人味。</strong></p>
+<h2 id="三条款">三、条款</h2>
+<h3 id="must">MUST</h3>
+<ol type="1">
+<li><strong>M1</strong>：所有关键资产至少体现四件套中的两件；UI 必须体现检查单/模拟界面。</li>
+<li><strong>M2</strong>：不得用全息投影、无边框透明屏、霓虹赛博朋克作为主视觉。</li>
+<li><strong>M3</strong>：不得把设备画成“全新未使用”；必须有使用痕迹、标签、维修痕迹。</li>
+<li><strong>M4</strong>：色彩必须来自 <a href="c01_色板字体与比例.html">ART-C1</a> 的 token；不得随意加高饱和色。</li>
+<li><strong>M5</strong>：任何“未来感”必须能回答：它怎么修？谁签字？坏了怎么办？</li>
+</ol>
+<h3 id="should">SHOULD</h3>
+<ol type="1">
+<li><strong>S1</strong>：每个场景至少有一个“检查单/记录”元素。</li>
+<li><strong>S2</strong>：每个设备至少有一个可见接缝或检修口。</li>
+<li><strong>S3</strong>：用机构编号、警示条、手写批注增加“被使用过”的感觉。</li>
+</ol>
+<h3 id="may">MAY</h3>
+<ol type="1">
+<li><strong>Y1</strong>：可以局部使用柔和光晕，但不得替代结构。</li>
+<li><strong>Y2</strong>：可以引用真实航天工业的图形语言，但不做具体国家/机构的仿制。</li>
+</ol>
+<h2 id="四判定与验收">四、判定与验收</h2>
+<pre class="text"><code>valid(asset) ⇔
+  count(WhiteBox, Checklist, AnalogUI, Palette) ≥ 2 ∧
+  hologram = false ∧
+  neon = false ∧
+  hasWear = true</code></pre>
+<p>检查：</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />这张图/这个 UI 是否像“能修的东西”？</label></li>
+<li><label><input type="checkbox" />是否有流程/记录/签字？</label></li>
+<li><label><input type="checkbox" />是否用了至少两个四件套元素？</label></li>
+<li><label><input type="checkbox" />是否出现了“光屏一划”的廉价未来感？</label></li>
+</ul>
+<h2 id="五反例">五、反例</h2>
+<ul>
+<li>全息星图，手指一划，城市变形；</li>
+<li>纯黑背景 + 青色霓虹线条；</li>
+<li>设备光滑无接缝，像刚拆封；</li>
+<li>UI 全是悬浮圆环，没有按钮和标签；</li>
+<li>为了“高级”把安全橙全去掉。</li>
+</ul>
+<h2 id="六引用与变更">六、引用与变更</h2>
+<ul>
+<li>被引用处：<a href="../../08_美术与音频方向.html">08_美术与音频方向</a>、<a href="../../../art/README.md">艺术设定图</a>；</li>
+<li>变更：a 层，需人类裁决 + 版本升级；</li>
+<li>关联：<a href="b01_三环三套语法.html">ART-B1</a>、<a href="c01_色板字体与比例.html">ART-C1</a>。</li>
+</ul>
+
+</article>
+<nav class="pager" aria-label="上一条 / 下一条规则"><a class="prev" href="../design/c01_数值与场景引用.html"><span class="dir">prev</span><span class="label">DES-C1 · 数值与场景引用</span></a><a class="next" href="b01_三环三套语法.html"><span class="dir">next</span><span class="label">ART-B1 · 三环三套视觉语法</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../../index.html">索引</a> · <a href="../../../rules/art/a01_NASA朋克四件套.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

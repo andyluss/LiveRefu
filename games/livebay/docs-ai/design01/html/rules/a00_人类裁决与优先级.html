@@ -1,0 +1,142 @@
+<!-- 由 tools/build_design_html.py 从 ../../rules/a00_人类裁决与优先级.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>ROOT-A0 · 人类裁决与优先级 · LiveBay design01</title>
+<meta name="description" content="AI 可以提方案，但不能替人拍板；人类原始设定高于一切文档与代码。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../08_美术与音频方向.html">美术与音频方向</a><a href="../12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html" aria-current="page">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../rules/a00_人类裁决与优先级.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">规则 · ROOT-A0</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一形式化表述">一、形式化表述</a></li><li class=""><a href="#二通俗解释">二、通俗解释</a></li><li class=""><a href="#三条款">三、条款</a></li><li class="sub"><a href="#must">MUST</a></li><li class="sub"><a href="#should">SHOULD</a></li><li class="sub"><a href="#may">MAY</a></li><li class=""><a href="#四判定与验收">四、判定与验收</a></li><li class=""><a href="#五反例">五、反例</a></li><li class=""><a href="#六引用与变更">六、引用与变更</a></li></ul></details>
+<article class="prose">
+<h1 id="root-a0--人类裁决与优先级">ROOT-A0 · 人类裁决与优先级</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>规则 ID</dt><dd>ROOT-A0</dd><dt>层级</dt><dd>a · 底层</dd><dt>类别</dt><dd>根</dd><dt>状态</dt><dd>active</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 起草，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>上游</dt><dd><a href="../../../../docs-human/概念设定.md">概念设定</a></dd><dt>关联</dt><dd><a href="../11_待人类裁决清单.html">11_待人类裁决清单</a> · <a href="b00_规则分层与冲突.html">规则分层与冲突</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：AI 可以提方案，但不能替人拍板；人类原始设定高于一切文档与代码。 <strong>形式化</strong>：<code>∀d ∈ Decision: author(d) ∈ Human</code>，且 <code>Concept ≻ Decision ≻ RootRule ≻ CategoryRule ≻ Doc ≻ Code</code>。</p>
+</blockquote>
+<h2 id="一形式化表述">一、形式化表述</h2>
+<p>设：</p>
+<ul>
+<li><code>H</code> = 人类（项目负责人）</li>
+<li><code>A</code> = AI</li>
+<li><code>P</code> = 提案集合</li>
+<li><code>D</code> = 裁决集合</li>
+<li><code>C</code> = 概念设定（人类原始文本）</li>
+<li><code>R₀</code> = 根规则</li>
+<li><code>R₁</code> = 类别规则</li>
+<li><code>Doc</code> = 其他文档</li>
+<li><code>Code</code> = 实现</li>
+</ul>
+<p>公理：</p>
+<pre class="text"><code>1. D ⊆ H × P            （裁决只能由人类做出）
+2. A: P → P             （AI 只能把提案变成提案）
+3. ∀d ∈ D: author(d) = H
+4. C ≻ D ≻ R₀ ≻ R₁ ≻ Doc ≻ Code
+5. ¬∃x ∈ Canon: author(x) = A</code></pre>
+<p>其中 <code>≻</code> 表示“冲突时优先”。</p>
+<h2 id="二通俗解释">二、通俗解释</h2>
+<p>AI 很擅长把“下一步”做得看起来很合理：加一个系统、补一段设定、扩一章内容。每一步都对，连起来却可能离开最初想做的游戏。</p>
+<p>这条规则的意思是：<strong>方向盘必须固定在人的手里</strong>。AI 可以画地图、列选项、算代价、写反方论证，但不能把“我觉得好”写成“项目就是这样”。</p>
+<p>当文档、规则、代码和人的想法冲突时，不是“代码已经这样了所以算数”，而是<strong>按优先级往上找</strong>：概念设定最大，其次是人类裁决，再是规则，再是文档，最后才是代码。</p>
+<h2 id="三条款">三、条款</h2>
+<h3 id="must">MUST</h3>
+<ol type="1">
+<li><strong>M1</strong>：所有主题、范围、商业模式、核心体验的决定，必须能追溯到人类；AI 不得自行升级为 canon。</li>
+<li><strong>M2</strong>：<code>docs-human/</code> 是人类原始文本；AI 默认只读，只有人类明确要求时才可改，且只改被要求的部分。</li>
+<li><strong>M3</strong>：每个已裁决问题必须有 D-ID，记录在 <a href="../11_待人类裁决清单.html">11_待人类裁决清单</a>。</li>
+<li><strong>M4</strong>：概念、裁决、规则与代码冲突时，按 <code>C ≻ D ≻ R₀ ≻ R₁ ≻ Doc ≻ Code</code> 处理；代码是最后一位。</li>
+<li><strong>M5</strong>：AI 生成的文档必须在元数据里标 <code>source</code>、<code>authority</code>，不得伪装成人类原文。</li>
+</ol>
+<h3 id="should">SHOULD</h3>
+<ol type="1">
+<li><strong>S1</strong>：AI 的每次建议都给出至少两个选项与代价，不只给一个“最佳答案”。</li>
+<li><strong>S2</strong>：当 AI 不确定人类意图时，停下来问，不要用“为了完整性”替人选。</li>
+<li><strong>S3</strong>：裁决记录只追加，不回删；落选方案保留并标注「已否决」。</li>
+</ol>
+<h3 id="may">MAY</h3>
+<ol type="1">
+<li><strong>Y1</strong>：AI 可以写虚构、参考、反方论证与原型；只要标明「非决定」。</li>
+<li><strong>Y2</strong>：AI 可以在 <code>docs-ai/</code> 里提出新规则草案；生效仍需人类确认。</li>
+</ol>
+<h2 id="四判定与验收">四、判定与验收</h2>
+<p>一条内容是否合规，依次问：</p>
+<pre class="text"><code>1. 它是否声称了某个 canon？        → 是：必须有人类裁决或人类原文
+2. 它是否改了 docs-human/？        → 是：必须有人类明确指令
+3. 它与更高优先级冲突吗？          → 是：以更高优先级为准
+4. 它的元数据是否标明来源与决策权？ → 否：不合规</code></pre>
+<p>机器可查的部分：</p>
+<ul>
+<li>文档 YAML 是否有 <code>source</code> / <code>authority</code>；</li>
+<li>裁决是否有 D-ID；</li>
+<li><code>docs-human/</code> 的 diff 是否只包含人类要求的内容；</li>
+<li>规则索引中的 ID 是否唯一。</li>
+</ul>
+<h2 id="五反例">五、反例</h2>
+<ul>
+<li>AI 在文档里写「项目决定采用 X」，但没有任何人类裁决记录；</li>
+<li>代码里已经实现了 X，于是文档把 X 写成「既定设定」；</li>
+<li>AI 以「整理」为名改写 <code>docs-human/概念设定.md</code> 的正文；</li>
+<li>把「AI 建议」当成「人类已定」，跳过 D-ID。</li>
+</ul>
+<h2 id="六引用与变更">六、引用与变更</h2>
+<ul>
+<li>被引用处：<a href="../11_待人类裁决清单.html">11_待人类裁决清单</a>、<a href="../README.html">README</a>、<a href="../../../../README.md">项目 README</a>；</li>
+<li>变更：只有人类可以修改本规则；修改需提升规则版本，并说明代价；</li>
+<li>关联：<a href="b00_规则分层与冲突.html">ROOT-B0</a>、<a href="c00_文档与引用契约.html">ROOT-C0</a>。</li>
+</ul>
+
+</article>
+<nav class="pager" aria-label="上一条 / 下一条规则"><a class="prev" href="index.html"><span class="dir">prev</span><span class="label">规则总览</span></a><a class="next" href="b00_规则分层与冲突.html"><span class="dir">next</span><span class="label">ROOT-B0 · 规则分层与冲突</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../rules/a00_人类裁决与优先级.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

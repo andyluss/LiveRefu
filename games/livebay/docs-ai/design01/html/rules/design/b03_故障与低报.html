@@ -1,0 +1,140 @@
+<!-- 由 tools/build_design_html.py 从 ../../../rules/design/b03_故障与低报.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>DES-B3 · 故障与低报 · LiveBay design01</title>
+<meta name="description" content="威胁不只来自外面，也来自系统内部；低报事故只埋线索，不替玩家揭晓。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../assets/style.css">
+<script defer src="../../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../../README.html">策划文档集 · 总览</a><a href="../../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../../01_项目北极星.html">项目北极星</a><a href="../../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../../03_职业体系.html">职业体系</a><a href="../../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../../04_塔防玩法.html">塔防：岗位防线</a><a href="../../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../../07_放置养成玩法.html">放置养成玩法</a><a href="../../09_三玩法联动.html">三玩法联动</a><a href="../../10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../../08_美术与音频方向.html">美术与音频方向</a><a href="../../12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div><div class="nav-group"><h2>规则</h2><a href="../../rules/index.html" aria-current="page">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../../rules/design/b03_故障与低报.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">规则 · DES-B3</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一形式化表述">一、形式化表述</a></li><li class=""><a href="#二通俗解释">二、通俗解释</a></li><li class=""><a href="#三条款">三、条款</a></li><li class="sub"><a href="#must">MUST</a></li><li class="sub"><a href="#should">SHOULD</a></li><li class="sub"><a href="#may">MAY</a></li><li class=""><a href="#四判定与验收">四、判定与验收</a></li><li class=""><a href="#五反例">五、反例</a></li><li class=""><a href="#六引用与变更">六、引用与变更</a></li></ul></details>
+<article class="prose">
+<h1 id="des-b3--故障与低报">DES-B3 · 故障与低报</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>规则 ID</dt><dd>DES-B3</dd><dt>层级</dt><dd>b · 中层</dd><dt>类别</dt><dd>设计</dd><dt>状态</dt><dd>active</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 起草，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>上游</dt><dd><a href="a01_岗位与无名主角.html">岗位与无名主角</a></dd><dt>关联</dt><dd><a href="../../03_职业体系.html">03_职业体系</a> · <a href="../../04_塔防玩法.html">04_塔防玩法</a> · <a href="../../../numbers/03_敌人数值.md">03_敌人数值</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：威胁不只来自外面，也来自系统内部；低报事故只埋线索，不替玩家揭晓。 <strong>形式化</strong>：<code>Threat = External ∪ Internal</code>；<code>LowReport = clue ∧ ¬reveal</code>。</p>
+</blockquote>
+<h2 id="一形式化表述">一、形式化表述</h2>
+<pre class="text"><code>Threat = External ∪ Internal
+Fault ∈ Internal
+Fault.effect = disable(Tower, d) ∧ |targets| ≤ 2
+d = 2.5s（v0.1）
+LowReport = (clue ≠ ∅) ∧ (reveal = false)
+NarrativeAuthority = Human</code></pre>
+<h2 id="二通俗解释">二、通俗解释</h2>
+<p>外敌是“碎片、乱流、重壳”；内部威胁是“故障、低报、维护欠账、流程漏洞”。后者更接近这个项目的核心：<strong>城不是被一拳打穿的，是被很多“不碍事”磨穿的。</strong></p>
+<p>故障的玩法表达要克制：</p>
+<ul>
+<li>它不直接扣保障度；</li>
+<li>它只让最多 2 座塔离线 2.5 秒；</li>
+<li>它从湾口反向来，打乱“只守入口”的布局；</li>
+<li>它给玩家一个“要不要为小异常多做一步”的选择。</li>
+</ul>
+<p>低报事故不是“反派隐瞒真相”的阴谋剧，而是<strong>制度性的轻描淡写</strong>：广播说 0 起，记录里有一行“待复查”，玩家可以看见，但游戏不替他下结论。</p>
+<h2 id="三条款">三、条款</h2>
+<h3 id="must">MUST</h3>
+<ol type="1">
+<li><strong>M1</strong>：内部威胁必须与外部威胁有不同的玩法效果，不能只是换皮怪。</li>
+<li><strong>M2</strong>：故障不得直接扣保障度；它通过停塔间接造成漏过。</li>
+<li><strong>M3</strong>：故障同时影响塔数 ≤ 2，时长在 v0.1 为 2.5s；提高需人类裁决。</li>
+<li><strong>M4</strong>：低报事故只能通过记录、广播、NPC 的“按惯例”等线索表达，不得用旁白直接揭晓。</li>
+<li><strong>M5</strong>：失败结算必须有一份“事故报告”，不能只弹失败。</li>
+</ol>
+<h3 id="should">SHOULD</h3>
+<ol type="1">
+<li><strong>S1</strong>：故障从湾口反向来，迫使玩家在中段留冗余。</li>
+<li><strong>S2</strong>：广播的“0 起”与记录里的“待复查”形成对照。</li>
+<li><strong>S3</strong>：玩家可以做“多写一句”的动作；系统提示“超出模板长度”是奖励，不是惩罚。</li>
+</ol>
+<h3 id="may">MAY</h3>
+<ol type="1">
+<li><strong>Y1</strong>：后续可以加“维护欠账”“预算冻结”等内部威胁，但一次只加一种。</li>
+<li><strong>Y2</strong>：可以让低报在多个班次后才产生后果，但不能永远不兑现。</li>
+</ol>
+<h2 id="四判定与验收">四、判定与验收</h2>
+<pre class="text"><code>valid(fault) ⇔
+  fault.type = internal ∧
+  fault.directDamage = 0 ∧
+  fault.targets ≤ 2 ∧
+  fault.duration ≤ 2.5s
+
+valid(lowReport) ⇔
+  clues ≥ 2 ∧
+  explicitReveal = false</code></pre>
+<p>检查：</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />故障是否改变了玩家的布防，而不只是增加血量？</label></li>
+<li><label><input type="checkbox" />玩家是否能通过记录/广播自己拼出“低报”？</label></li>
+<li><label><input type="checkbox" />故障是否可能让标准班必败？（不应）</label></li>
+<li><label><input type="checkbox" />失败后是否有一份可读的报告？</label></li>
+</ul>
+<h2 id="五反例">五、反例</h2>
+<ul>
+<li>故障直接扣 20 保障度，变成另一个重壳；</li>
+<li>故障一次停 7 座塔，玩家只能重开；</li>
+<li>旁白直接说“政府在隐瞒事故”；</li>
+<li>广播说 0 起，但没有任何可查的记录；</li>
+<li>玩家写了备注，系统没有任何反馈。</li>
+</ul>
+<h2 id="六引用与变更">六、引用与变更</h2>
+<ul>
+<li>被引用处：<a href="../../03_职业体系.html">03_职业体系</a>、<a href="../../04_塔防玩法.html">04_塔防玩法</a>、<a href="../../../numbers/03_敌人数值.md">数值-敌人</a>；</li>
+<li>变更：b 层，规则评审 + 数值表同步；</li>
+<li>关联：<a href="b02_选择必须有代价.html">DES-B2</a>、<a href="b01_班次循环.html">DES-B1</a>。</li>
+</ul>
+
+</article>
+<nav class="pager" aria-label="上一条 / 下一条规则"><a class="prev" href="b02_选择必须有代价.html"><span class="dir">prev</span><span class="label">DES-B2 · 选择必须有代价</span></a><a class="next" href="c01_数值与场景引用.html"><span class="dir">next</span><span class="label">DES-C1 · 数值与场景引用</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../../index.html">索引</a> · <a href="../../../rules/design/b03_故障与低报.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

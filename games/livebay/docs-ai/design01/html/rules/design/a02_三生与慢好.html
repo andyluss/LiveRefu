@@ -1,0 +1,134 @@
+<!-- 由 tools/build_design_html.py 从 ../../../rules/design/a02_三生与慢好.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>DES-A2 · 三生与慢好 · LiveBay design01</title>
+<meta name="description" content="每个系统都必须落在「生存 / 生活 / 生产」之一；「慢」是不逼人，「好」是质量与尊严。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../assets/style.css">
+<script defer src="../../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../../README.html">策划文档集 · 总览</a><a href="../../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../../01_项目北极星.html">项目北极星</a><a href="../../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../../03_职业体系.html">职业体系</a><a href="../../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../../04_塔防玩法.html">塔防：岗位防线</a><a href="../../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../../07_放置养成玩法.html">放置养成玩法</a><a href="../../09_三玩法联动.html">三玩法联动</a><a href="../../10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../../08_美术与音频方向.html">美术与音频方向</a><a href="../../12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div><div class="nav-group"><h2>规则</h2><a href="../../rules/index.html" aria-current="page">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../../rules/design/a02_三生与慢好.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">规则 · DES-A2</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一形式化表述">一、形式化表述</a></li><li class=""><a href="#二通俗解释">二、通俗解释</a></li><li class=""><a href="#三条款">三、条款</a></li><li class="sub"><a href="#must">MUST</a></li><li class="sub"><a href="#should">SHOULD</a></li><li class="sub"><a href="#may">MAY</a></li><li class=""><a href="#四判定与验收">四、判定与验收</a></li><li class=""><a href="#五反例">五、反例</a></li><li class=""><a href="#六引用与变更">六、引用与变更</a></li></ul></details>
+<article class="prose">
+<h1 id="des-a2--三生与慢好">DES-A2 · 三生与慢好</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>规则 ID</dt><dd>DES-A2</dd><dt>层级</dt><dd>a · 底层</dd><dt>类别</dt><dd>设计</dd><dt>状态</dt><dd>active</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 起草，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>上游</dt><dd><a href="../../11_待人类裁决清单.html">11_待人类裁决清单</a></dd><dt>关联</dt><dd><a href="../../05_社会系统_慢好三生保障体系.html">05_社会系统_慢好三生保障体系</a> · <a href="../../10_内容节奏与长期留存.html">10_内容节奏与长期留存</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：每个系统都必须落在「生存 / 生活 / 生产」之一；「慢」是不逼人，「好」是质量与尊严。 <strong>形式化</strong>：<code>∀s ∈ Systems: layer(s) ∈ {Survival, Life, Production}</code>；<code>SlowGood = Slow ∧ Good</code>。</p>
+</blockquote>
+<h2 id="一形式化表述">一、形式化表述</h2>
+<pre class="text"><code>Layers = {Survival, Life, Production}
+∀s ∈ Systems: layer(s) ∈ Layers
+
+Slow ⇔ ¬FOMO ∧ ¬dailyEnergy ∧ hasBuffer
+Good ⇔ quality &gt; quantity ∧ dignity ∧ transparentRules
+SlowGood = Slow ∧ Good</code></pre>
+<h2 id="二通俗解释">二、通俗解释</h2>
+<p>「慢好三生」不是一句口号，是三层检查：</p>
+<ul>
+<li><strong>生存</strong>：空气、水、食物、医疗、安全。不能拿它做交易。</li>
+<li><strong>生活</strong>：居住、娱乐、教育、社交、心理、养老、尊严。决定人愿不愿意把城当家。</li>
+<li><strong>生产</strong>：工作、能源、资源、维护、照护劳动。维持前两者的代价。</li>
+</ul>
+<p>「慢」不是低效，是不把效率放到人前面：不做每日签到、不做体力、不做限时逼上线、允许发呆。 「好」不是给得多，是给得可靠、有尊严：不卖数值、不抽卡、规则透明、服务有温度。</p>
+<h2 id="三条款">三、条款</h2>
+<h3 id="must">MUST</h3>
+<ol type="1">
+<li><strong>M1</strong>：每个玩法系统必须标明它服务哪一层（生存/生活/生产）。</li>
+<li><strong>M2</strong>：不得用 FOMO、每日签到、体力、限时数值礼包驱动留存。</li>
+<li><strong>M3</strong>：不得把生存配额做成付费/随机内容。</li>
+<li><strong>M4</strong>：玩家离线不应受到惩罚；回归应有“这段时间发生的事”。</li>
+<li><strong>M5</strong>：内购不得破坏“好”的底线（见 <a href="../biz/a01_买断与内购边界.html">BIZ-A1</a>）。</li>
+</ol>
+<h3 id="should">SHOULD</h3>
+<ol type="1">
+<li><strong>S1</strong>：三种玩法分别对应三层：塔防偏生产，沉浸偏生活，放置偏生活/生产。</li>
+<li><strong>S2</strong>：每个版本至少有一个“慢”的设计：允许跳过、允许暂停、允许不完美。</li>
+<li><strong>S3</strong>：每个版本至少有一个“好”的设计：更清楚的规则、更体面的服务、更可靠的手感。</li>
+</ol>
+<h3 id="may">MAY</h3>
+<ol type="1">
+<li><strong>Y1</strong>：可以有“效率优化”，但不能以牺牲照护/尊严为代价。</li>
+<li><strong>Y2</strong>：可以有“忙碌的一天”，但玩家可以选择不参与。</li>
+</ol>
+<h2 id="四判定与验收">四、判定与验收</h2>
+<pre class="text"><code>valid(system) ⇔
+  system.layer ∈ Layers ∧
+  system.fomo = false ∧
+  system.offlinePenalty = false ∧
+  system.payForPower = false</code></pre>
+<p>检查：</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />这个系统能让玩家“随时离开”吗？</label></li>
+<li><label><input type="checkbox" />它是否把“多回来几次”当成目标？</label></li>
+<li><label><input type="checkbox" />它是否给玩家留了不完美的空间？</label></li>
+<li><label><input type="checkbox" />它是否让某个群体被排除，而玩家能看见？</label></li>
+</ul>
+<h2 id="五反例">五、反例</h2>
+<ul>
+<li>每日登录奖励、连续签到；</li>
+<li>体力上限，逼玩家定时上线；</li>
+<li>限时卡池/限时礼包；</li>
+<li>离线收益归零；</li>
+<li>“不买就过不去”的关卡。</li>
+</ul>
+<h2 id="六引用与变更">六、引用与变更</h2>
+<ul>
+<li>被引用处：<a href="../../05_社会系统_慢好三生保障体系.html">05_社会系统</a>、<a href="../../10_内容节奏与长期留存.html">10_内容节奏</a>、<a href="../../README.html">README</a>；</li>
+<li>变更：a 层，需人类裁决 + 版本升级；</li>
+<li>关联：<a href="a01_岗位与无名主角.html">DES-A1</a>、<a href="../biz/a01_买断与内购边界.html">BIZ-A1</a>。</li>
+</ul>
+
+</article>
+<nav class="pager" aria-label="上一条 / 下一条规则"><a class="prev" href="a01_岗位与无名主角.html"><span class="dir">prev</span><span class="label">DES-A1 · 岗位与无名主角</span></a><a class="next" href="b01_班次循环.html"><span class="dir">next</span><span class="label">DES-B1 · 班次循环</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../../index.html">索引</a> · <a href="../../../rules/design/a02_三生与慢好.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

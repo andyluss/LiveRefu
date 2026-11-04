@@ -1,0 +1,119 @@
+<!-- 由 tools/build_design_html.py 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>规则总览 · LiveBay design01</title>
+<meta name="description" content="LiveBay 规则体系：20 条规则，a/b/c 三层，商业/设计/艺术/技术四类；含分类矩阵与关系图。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../08_美术与音频方向.html">美术与音频方向</a><a href="../12_技术方案_Godot工程.html">技术方案：Godot 工程</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html" aria-current="page">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../rules/README.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">规则总览</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+
+<article class="prose">
+<section class="hero">
+<p class="eyebrow">LiveBay · design01 · rules</p>
+<h1>规则体系</h1>
+<p class="lede">20 条规则，3 层，4 类 + 根规则。它们不是建议，而是项目在压力下仍然不跑偏的约束：a 层是公理，b 层是结构，c 层是表达。</p>
+<div class="badges">
+<span class="badge ok">20 条规则</span>
+<span class="badge">a / b / c 三层</span>
+<span class="badge">商业 · 设计 · 艺术 · 技术</span>
+<span class="badge">2026-11-04</span>
+</div>
+<div class="hero-actions">
+<a class="button" href="../index.html">返回文档索引</a>
+<a class="button ghost" href="../README.html">策划总览</a>
+<a class="button ghost" href="#matrix">直接看矩阵</a>
+</div>
+</section>
+
+<section class="section" id="layers">
+<h2>三层：a / b / c</h2>
+<p class="section-note">层级不是重要性排序，而是“改动代价”的排序。越靠底层，越不能随手改。</p>
+<div class="layer-grid"><article class="layer-card layer-card-a"><div class="layer-card-head"><span class="layer-badge layer-a">a · 底层</span><span class="layer-count">7 条</span></div><h3>底层 / 公理</h3><p>项目为什么存在；改它等于换项目。</p></article><article class="layer-card layer-card-b"><div class="layer-card-head"><span class="layer-badge layer-b">b · 中层</span><span class="layer-count">9 条</span></div><h3>中层 / 结构</h3><p>项目怎么运转；可调，但要评审。</p></article><article class="layer-card layer-card-c"><div class="layer-card-head"><span class="layer-badge layer-c">c · 表层</span><span class="layer-count">4 条</span></div><h3>表层 / 表达</h3><p>项目长什么样、怎么写；可快速调整。</p></article></div>
+</section>
+
+<section class="section" id="matrix">
+<h2>分类 × 层级</h2>
+<p class="section-note">横轴是 a / b / c，纵轴是根 / 商业 / 设计 / 艺术 / 技术。点规则 ID 进入单页。</p>
+<div class="table-wrap rule-matrix-wrap"><table class="rule-matrix"><thead><tr><th>类别</th><th>a · 底层</th><th>b · 中层</th><th>c · 表层</th></tr></thead><tbody><tr><th scope="row">根<span class="rule-cat-en">ROOT</span></th><td><a class="rule-chip layer-a" href="a00_人类裁决与优先级.html" title="人类裁决与优先级">ROOT-A0</a></td><td><a class="rule-chip layer-b" href="b00_规则分层与冲突.html" title="规则分层与冲突">ROOT-B0</a></td><td><a class="rule-chip layer-c" href="c00_文档与引用契约.html" title="文档与引用契约">ROOT-C0</a></td></tr><tr><th scope="row">商业<span class="rule-cat-en">BIZ</span></th><td><a class="rule-chip layer-a" href="biz/a01_买断与内购边界.html" title="买断与内购边界">BIZ-A1</a></td><td><a class="rule-chip layer-b" href="biz/b01_切片与范围门槛.html" title="切片与范围门槛">BIZ-B1</a></td><td><a class="rule-chip layer-c" href="biz/c01_对外表达与证据.html" title="对外表达与证据">BIZ-C1</a></td></tr><tr><th scope="row">设计<span class="rule-cat-en">DES</span></th><td><a class="rule-chip layer-a" href="design/a01_岗位与无名主角.html" title="岗位与无名主角">DES-A1</a><br><a class="rule-chip layer-a" href="design/a02_三生与慢好.html" title="三生与慢好">DES-A2</a></td><td><a class="rule-chip layer-b" href="design/b01_班次循环.html" title="班次循环">DES-B1</a><br><a class="rule-chip layer-b" href="design/b02_选择必须有代价.html" title="选择必须有代价">DES-B2</a><br><a class="rule-chip layer-b" href="design/b03_故障与低报.html" title="故障与低报">DES-B3</a></td><td><a class="rule-chip layer-c" href="design/c01_数值与场景引用.html" title="数值与场景引用">DES-C1</a></td></tr><tr><th scope="row">艺术<span class="rule-cat-en">ART</span></th><td><a class="rule-chip layer-a" href="art/a01_NASA朋克四件套.html" title="NASApunk 四件套">ART-A1</a></td><td><a class="rule-chip layer-b" href="art/b01_三环三套语法.html" title="三环三套视觉语法">ART-B1</a><br><a class="rule-chip layer-b" href="art/b02_可维修性.html" title="可维修性">ART-B2</a></td><td><a class="rule-chip layer-c" href="art/c01_色板字体与比例.html" title="色板、字体与比例">ART-C1</a></td></tr><tr><th scope="row">技术<span class="rule-cat-en">TECH</span></th><td><a class="rule-chip layer-a" href="tech/a01_单一数据源.html" title="单一数据源">TECH-A1</a><br><a class="rule-chip layer-a" href="tech/a02_模拟与视图分离.html" title="模拟与视图分离">TECH-A2</a></td><td><a class="rule-chip layer-b" href="tech/b01_可逆工程.html" title="可逆工程">TECH-B1</a><br><a class="rule-chip layer-b" href="tech/b02_验收与不回归.html" title="验收与不回归">TECH-B2</a></td><td><span class="rule-empty">—</span></td></tr></tbody></table></div>
+</section>
+
+<section class="section" id="map">
+<h2>关系图</h2>
+<p class="section-note">根规则在最上方；四大类别向下展开为具体规则。颜色只表示层级。</p>
+<div class="rule-map-wrap"><svg class="rule-map" viewBox="0 0 1200 600" role="img" aria-label="规则分类与层级关系图"><g class="rule-map-edges"><path class="edge" d="M 600 86 C 600 118, 155 116, 155 150"/><path class="edge" d="M 600 86 C 600 118, 445 116, 445 150"/><path class="edge" d="M 600 86 C 600 118, 735 116, 735 150"/><path class="edge" d="M 600 86 C 600 118, 1025 116, 1025 150"/></g><a href="#cat-root"><rect class="root-box" x="400" y="10" width="400" height="76" rx="10"/><text class="root-title" x="600" y="42" text-anchor="middle">ROOT / 根规则</text><text class="root-sub" x="600" y="66" text-anchor="middle">人类裁决 · 分层冲突 · 文档契约</text></a><a href="#cat-biz"><rect class="cat-box cat-biz" x="30" y="150" width="250" height="50" rx="8"/><text class="cat-title" x="44" y="181">BIZ · 商业</text><text class="cat-count" x="266" y="181" text-anchor="end">3 条</text></a><a href="biz/a01_买断与内购边界.html"><g class="rule-node chip-a"><rect x="38" y="222" width="234" height="42" rx="6"/><text class="node-id" x="50" y="240">BIZ-A1</text><text class="node-title" x="50" y="256">买断与内购边界</text><text class="node-layer" x="258" y="248" text-anchor="end">a</text></g></a><a href="biz/b01_切片与范围门槛.html"><g class="rule-node chip-b"><rect x="38" y="276" width="234" height="42" rx="6"/><text class="node-id" x="50" y="294">BIZ-B1</text><text class="node-title" x="50" y="310">切片与范围门槛</text><text class="node-layer" x="258" y="302" text-anchor="end">b</text></g></a><a href="biz/c01_对外表达与证据.html"><g class="rule-node chip-c"><rect x="38" y="330" width="234" height="42" rx="6"/><text class="node-id" x="50" y="348">BIZ-C1</text><text class="node-title" x="50" y="364">对外表达与证据</text><text class="node-layer" x="258" y="356" text-anchor="end">c</text></g></a><a href="#cat-design"><rect class="cat-box cat-design" x="320" y="150" width="250" height="50" rx="8"/><text class="cat-title" x="334" y="181">DES · 设计</text><text class="cat-count" x="556" y="181" text-anchor="end">6 条</text></a><a href="design/a01_岗位与无名主角.html"><g class="rule-node chip-a"><rect x="328" y="222" width="234" height="42" rx="6"/><text class="node-id" x="340" y="240">DES-A1</text><text class="node-title" x="340" y="256">岗位与无名主角</text><text class="node-layer" x="548" y="248" text-anchor="end">a</text></g></a><a href="design/a02_三生与慢好.html"><g class="rule-node chip-a"><rect x="328" y="276" width="234" height="42" rx="6"/><text class="node-id" x="340" y="294">DES-A2</text><text class="node-title" x="340" y="310">三生与慢好</text><text class="node-layer" x="548" y="302" text-anchor="end">a</text></g></a><a href="design/b01_班次循环.html"><g class="rule-node chip-b"><rect x="328" y="330" width="234" height="42" rx="6"/><text class="node-id" x="340" y="348">DES-B1</text><text class="node-title" x="340" y="364">班次循环</text><text class="node-layer" x="548" y="356" text-anchor="end">b</text></g></a><a href="design/b02_选择必须有代价.html"><g class="rule-node chip-b"><rect x="328" y="384" width="234" height="42" rx="6"/><text class="node-id" x="340" y="402">DES-B2</text><text class="node-title" x="340" y="418">选择必须有代价</text><text class="node-layer" x="548" y="410" text-anchor="end">b</text></g></a><a href="design/b03_故障与低报.html"><g class="rule-node chip-b"><rect x="328" y="438" width="234" height="42" rx="6"/><text class="node-id" x="340" y="456">DES-B3</text><text class="node-title" x="340" y="472">故障与低报</text><text class="node-layer" x="548" y="464" text-anchor="end">b</text></g></a><a href="design/c01_数值与场景引用.html"><g class="rule-node chip-c"><rect x="328" y="492" width="234" height="42" rx="6"/><text class="node-id" x="340" y="510">DES-C1</text><text class="node-title" x="340" y="526">数值与场景引用</text><text class="node-layer" x="548" y="518" text-anchor="end">c</text></g></a><a href="#cat-art"><rect class="cat-box cat-art" x="610" y="150" width="250" height="50" rx="8"/><text class="cat-title" x="624" y="181">ART · 艺术</text><text class="cat-count" x="846" y="181" text-anchor="end">4 条</text></a><a href="art/a01_NASA朋克四件套.html"><g class="rule-node chip-a"><rect x="618" y="222" width="234" height="42" rx="6"/><text class="node-id" x="630" y="240">ART-A1</text><text class="node-title" x="630" y="256">NASApunk 四件套</text><text class="node-layer" x="838" y="248" text-anchor="end">a</text></g></a><a href="art/b01_三环三套语法.html"><g class="rule-node chip-b"><rect x="618" y="276" width="234" height="42" rx="6"/><text class="node-id" x="630" y="294">ART-B1</text><text class="node-title" x="630" y="310">三环三套视觉语法</text><text class="node-layer" x="838" y="302" text-anchor="end">b</text></g></a><a href="art/b02_可维修性.html"><g class="rule-node chip-b"><rect x="618" y="330" width="234" height="42" rx="6"/><text class="node-id" x="630" y="348">ART-B2</text><text class="node-title" x="630" y="364">可维修性</text><text class="node-layer" x="838" y="356" text-anchor="end">b</text></g></a><a href="art/c01_色板字体与比例.html"><g class="rule-node chip-c"><rect x="618" y="384" width="234" height="42" rx="6"/><text class="node-id" x="630" y="402">ART-C1</text><text class="node-title" x="630" y="418">色板、字体与比例</text><text class="node-layer" x="838" y="410" text-anchor="end">c</text></g></a><a href="#cat-tech"><rect class="cat-box cat-tech" x="900" y="150" width="250" height="50" rx="8"/><text class="cat-title" x="914" y="181">TECH · 技术</text><text class="cat-count" x="1136" y="181" text-anchor="end">4 条</text></a><a href="tech/a01_单一数据源.html"><g class="rule-node chip-a"><rect x="908" y="222" width="234" height="42" rx="6"/><text class="node-id" x="920" y="240">TECH-A1</text><text class="node-title" x="920" y="256">单一数据源</text><text class="node-layer" x="1128" y="248" text-anchor="end">a</text></g></a><a href="tech/a02_模拟与视图分离.html"><g class="rule-node chip-a"><rect x="908" y="276" width="234" height="42" rx="6"/><text class="node-id" x="920" y="294">TECH-A2</text><text class="node-title" x="920" y="310">模拟与视图分离</text><text class="node-layer" x="1128" y="302" text-anchor="end">a</text></g></a><a href="tech/b01_可逆工程.html"><g class="rule-node chip-b"><rect x="908" y="330" width="234" height="42" rx="6"/><text class="node-id" x="920" y="348">TECH-B1</text><text class="node-title" x="920" y="364">可逆工程</text><text class="node-layer" x="1128" y="356" text-anchor="end">b</text></g></a><a href="tech/b02_验收与不回归.html"><g class="rule-node chip-b"><rect x="908" y="384" width="234" height="42" rx="6"/><text class="node-id" x="920" y="402">TECH-B2</text><text class="node-title" x="920" y="418">验收与不回归</text><text class="node-layer" x="1128" y="410" text-anchor="end">b</text></g></a><g class="rule-map-legend"><rect class="chip-a" x="30" y="570" width="16" height="16" rx="3"/><text x="54" y="583">a 底层 / 公理</text><rect class="chip-b" x="240" y="570" width="16" height="16" rx="3"/><text x="264" y="583">b 中层 / 结构</text><rect class="chip-c" x="450" y="570" width="16" height="16" rx="3"/><text x="474" y="583">c 表层 / 表达</text></g></svg></div>
+<h3>关键依赖</h3>
+<ul class="rule-edges-list"><li><span class="edge-from"><code>ROOT-A0</code></span><span class="edge-arrow" aria-hidden="true">→</span><span class="edge-to"><code>ROOT-B0</code></span><span class="edge-note">人类裁决决定规则如何分层与修订</span></li><li><span class="edge-from"><code>ROOT-B0</code></span><span class="edge-arrow" aria-hidden="true">→</span><span class="edge-to"><code>ROOT-C0</code></span><span class="edge-note">分层规则要求文档可引用、可验收</span></li><li><span class="edge-from"><code>BIZ-A1</code></span><span class="edge-arrow" aria-hidden="true">→</span><span class="edge-to"><code>DES-A2</code></span><span class="edge-note">不卖数值，保护“慢好”</span></li><li><span class="edge-from"><code>DES-C1</code></span><span class="edge-arrow" aria-hidden="true">→</span><span class="edge-to"><code>TECH-A1</code></span><span class="edge-note">数值引用必须落到单一数据源</span></li><li><span class="edge-from"><code>DES-B3</code></span><span class="edge-arrow" aria-hidden="true">→</span><span class="edge-to"><code>DES-B2</code></span><span class="edge-note">故障把“没有完美答案”变成可玩选择</span></li><li><span class="edge-from"><code>ART-A1</code></span><span class="edge-arrow" aria-hidden="true">→</span><span class="edge-to"><code>ART-B1 / B2 / C1</code></span><span class="edge-note">四件套向下展开为空间、维修与色板</span></li><li><span class="edge-from"><code>TECH-A1</code></span><span class="edge-arrow" aria-hidden="true">→</span><span class="edge-to"><code>TECH-B1 / B2</code></span><span class="edge-note">单一数据源让改动可逆、验收可重复</span></li></ul>
+</section>
+
+<section class="section" id="rules">
+<h2>全部规则</h2>
+<p class="section-note">按类别分组；每张卡片都可以直接打开。规则正文含形式化、通俗解释、条款、验收与反例。</p>
+<section class="rule-category" id="cat-root"><div class="rule-category-head"><h3>根 <span>ROOT</span></h3><span class="rule-count">3 条</span></div><div class="rule-grid"><a class="rule-card" href="a00_人类裁决与优先级.html"><span class="rule-card-top"><span class="rule-id">ROOT-A0</span><span class="layer-badge layer-a">a · 底层</span></span><h4>人类裁决与优先级</h4><p>AI 可以提方案，但不能替人拍板；人类原始设定高于一切文档与代码。</p></a><a class="rule-card" href="b00_规则分层与冲突.html"><span class="rule-card-top"><span class="rule-id">ROOT-B0</span><span class="layer-badge layer-b">b · 中层</span></span><h4>规则分层与冲突</h4><p>规则分三层：a 层是不可轻易改的公理，b 层是结构约束，c 层是表达约束；冲突时 a  b  c。</p></a><a class="rule-card" href="c00_文档与引用契约.html"><span class="rule-card-top"><span class="rule-id">ROOT-C0</span><span class="layer-badge layer-c">c · 表层</span></span><h4>文档与引用契约</h4><p>文档有统一的元数据、命名与引用方式；生成物从源生成，不手改。</p></a></div></section><section class="rule-category" id="cat-biz"><div class="rule-category-head"><h3>商业 <span>BIZ</span></h3><span class="rule-count">3 条</span></div><div class="rule-grid"><a class="rule-card" href="biz/a01_买断与内购边界.html"><span class="rule-card-top"><span class="rule-id">BIZ-A1</span><span class="layer-badge layer-a">a · 底层</span></span><h4>买断与内购边界</h4><p>基础游戏买断；内购只卖外观与扩展内容，不卖数值、不抽卡、不订阅。</p></a><a class="rule-card" href="biz/b01_切片与范围门槛.html"><span class="rule-card-top"><span class="rule-id">BIZ-B1</span><span class="layer-badge layer-b">b · 中层</span></span><h4>切片与范围门槛</h4><p>先做 10 分钟垂直切片；任何新功能都要先证明它服务这个切片，否则不做。</p></a><a class="rule-card" href="biz/c01_对外表达与证据.html"><span class="rule-card-top"><span class="rule-id">BIZ-C1</span><span class="layer-badge layer-c">c · 表层</span></span><h4>对外表达与证据</h4><p>商店页、预告、截图、访谈里的每个具体承诺，都要能在当前构建里找到证据。</p></a></div></section><section class="rule-category" id="cat-design"><div class="rule-category-head"><h3>设计 <span>DES</span></h3><span class="rule-count">6 条</span></div><div class="rule-grid"><a class="rule-card" href="design/a01_岗位与无名主角.html"><span class="rule-card-top"><span class="rule-id">DES-A1</span><span class="layer-badge layer-a">a · 底层</span></span><h4>岗位与无名主角</h4><p>玩家不是天选者，是一个会被排班、轮岗、退休的普通人；每个职业都是「你」。</p></a><a class="rule-card" href="design/a02_三生与慢好.html"><span class="rule-card-top"><span class="rule-id">DES-A2</span><span class="layer-badge layer-a">a · 底层</span></span><h4>三生与慢好</h4><p>每个系统都必须落在「生存 / 生活 / 生产」之一；「慢」是不逼人，「好」是质量与尊严。</p></a><a class="rule-card" href="design/b01_班次循环.html"><span class="rule-card-top"><span class="rule-id">DES-B1</span><span class="layer-badge layer-b">b · 中层</span></span><h4>班次循环</h4><p>一局就是一个班次：准备 → 波次 → 结算 → 交接；三种玩法都必须落在这个循环里。</p></a><a class="rule-card" href="design/b02_选择必须有代价.html"><span class="rule-card-top"><span class="rule-id">DES-B2</span><span class="layer-badge layer-b">b · 中层</span></span><h4>选择必须有代价</h4><p>有意义的选择至少有两个选项，每个选项都有代价，且不存在“永远正确”的选项。</p></a><a class="rule-card" href="design/b03_故障与低报.html"><span class="rule-card-top"><span class="rule-id">DES-B3</span><span class="layer-badge layer-b">b · 中层</span></span><h4>故障与低报</h4><p>威胁不只来自外面，也来自系统内部；低报事故只埋线索，不替玩家揭晓。</p></a><a class="rule-card" href="design/c01_数值与场景引用.html"><span class="rule-card-top"><span class="rule-id">DES-C1</span><span class="layer-badge layer-c">c · 表层</span></span><h4>数值与场景引用</h4><p>数值只从 numbers/ 来；文档、UI、场景里出现的数值必须能追溯到表格，不能凭手感写。</p></a></div></section><section class="rule-category" id="cat-art"><div class="rule-category-head"><h3>艺术 <span>ART</span></h3><span class="rule-count">4 条</span></div><div class="rule-grid"><a class="rule-card" href="art/a01_NASA朋克四件套.html"><span class="rule-card-top"><span class="rule-id">ART-A1</span><span class="layer-badge layer-a">a · 底层</span></span><h4>NASApunk 四件套</h4><p>NASApunk 不是“复古贴纸”，是白盒工程、检查单、模拟界面、机构色四件套。</p></a><a class="rule-card" href="art/b01_三环三套语法.html"><span class="rule-card-top"><span class="rule-id">ART-B1</span><span class="layer-badge layer-b">b · 中层</span></span><h4>三环三套视觉语法</h4><p>外环、中环、内环不是三种颜色，是三套“材质 + 光 + 密度 + 声音”的语法。</p></a><a class="rule-card" href="art/b02_可维修性.html"><span class="rule-card-top"><span class="rule-id">ART-B2</span><span class="layer-badge layer-b">b · 中层</span></span><h4>可维修性</h4><p>每个设备都要让人相信“它能被打开、被修、被替换”；看不见接缝的东西不属于这个世界。</p></a><a class="rule-card" href="art/c01_色板字体与比例.html"><span class="rule-card-top"><span class="rule-id">ART-C1</span><span class="layer-badge layer-c">c · 表层</span></span><h4>色板、字体与比例</h4><p>颜色是有限的 token，比例是 70/20/10；数据用等宽，标题用无衬线，正文用可读的宋/黑。</p></a></div></section><section class="rule-category" id="cat-tech"><div class="rule-category-head"><h3>技术 <span>TECH</span></h3><span class="rule-count">4 条</span></div><div class="rule-grid"><a class="rule-card" href="tech/a01_单一数据源.html"><span class="rule-card-top"><span class="rule-id">TECH-A1</span><span class="layer-badge layer-a">a · 底层</span></span><h4>单一数据源</h4><p>数值只在 numbers/ 写一次，game/data/.json 是导出物；手改 JSON 无效。</p></a><a class="rule-card" href="tech/a02_模拟与视图分离.html"><span class="rule-card-top"><span class="rule-id">TECH-A2</span><span class="layer-badge layer-a">a · 底层</span></span><h4>模拟与视图分离</h4><p>sim.gd 只算规则，不画东西；main.gd 只画东西，不算规则；两者用信号通信。</p></a><a class="rule-card" href="tech/b01_可逆工程.html"><span class="rule-card-top"><span class="rule-id">TECH-B1</span><span class="layer-badge layer-b">b · 中层</span></span><h4>可逆工程</h4><p>能改数据就不改结构；每个改动都要能回退，半成品不进主线。</p></a><a class="rule-card" href="tech/b02_验收与不回归.html"><span class="rule-card-top"><span class="rule-id">TECH-B2</span><span class="layer-badge layer-b">b · 中层</span></span><h4>验收与不回归</h4><p>每次非琐碎改动都要跑对应检查；检查失败不静默绕过。</p></a></div></section>
+</section>
+
+<section class="section" id="reading">
+<h2>怎么读</h2>
+<ol class="rule-reading">
+<li><strong>先看三层</strong>：a 层决定什么不能做，b 层决定怎么运转，c 层决定怎么表达。</li>
+<li><strong>再看矩阵</strong>：找自己关心的类别与层级，不必从头读 20 条。</li>
+<li><strong>最后看关系</strong>：根规则 → 类别规则 → 具体条款；冲突时按 <code>ROOT-B0</code> 判定。</li>
+<li><strong>写文档/代码时</strong>：用规则 ID 引用，如 <code>DES-B3</code>，不要只写“按设计规则”。</li>
+</ol>
+</section>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../rules/README.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>
