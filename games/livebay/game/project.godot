@@ -29,3 +29,7 @@ window/handheld/orientation=1
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.91, 0.89, 0.84, 1)
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/livebay_tools/plugin.cfg")

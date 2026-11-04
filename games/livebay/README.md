@@ -22,6 +22,7 @@ platform: "PC 优先（D14 待定）"
 | [`docs-human/`](docs-human/) | **人类原始设定**（项目宪法）；AI 只读，不改写 | 人类 |
 | [`docs-ai/`](docs-ai/) | AI 生成的概念与策划参考；含 [design01 策划文档集](docs-ai/design01/README.md) | AI 起草，人类裁决 |
 | [`game/`](game/) | Godot 工程与可运行切片 | 工程 |
+| [`game/addons/livebay_tools/`](game/addons/livebay_tools/README.md) | **LiveBay Tools 编辑器插件**：地图/塔位拖动、射程预览、写回 numbers | 工程 |
 | [`run.sh`](run.sh) | 统一入口（运行 / 编辑器 / 测试 / 检查） | 工程 |
 
 ## 快速开始
@@ -31,6 +32,7 @@ platform: "PC 优先（D14 待定）"
 ./run.sh editor   # 打开 Godot 编辑器
 ./run.sh test     # 无头模拟测试（37 项断言）
 ./run.sh check    # 无头启动 180 帧，抓脚本错误
+./run.sh editor-test # 编辑器数据桥冒烟测试
 ./run.sh import   # 首次导入资源
 ```
 
@@ -47,6 +49,10 @@ platform: "PC 优先（D14 待定）"
 - 无头测试可复现胜利与失败路径。
 
 **操作**：鼠标点击塔位建造；点已有塔选中（U 升级 / X 出售）；`1/2/3` 选塔；空格开波；`P` 暂停；`Tab` 加速；`R` 重开。
+
+## 开发工具
+
+Godot 编辑器内置 **LiveBay Tools** 插件（`game/addons/livebay_tools/`）：在 2D 视口拖动路径点、塔位、基地，预览射程，保存时写回 `numbers/05` 并导出。用法见 [`game/addons/livebay_tools/README.md`](game/addons/livebay_tools/README.md)。
 
 ## 文档入口
 

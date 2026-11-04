@@ -54,9 +54,9 @@
 <details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一怎么用">一、怎么用</a></li><li class=""><a href="#二已裁决2026-11-03">二、已裁决（2026-11-03）</a></li><li class="sub"><a href="#d03-的补充说明">D03 的补充说明</a></li><li class=""><a href="#三p0已清空">三、P0：已清空</a></li><li class=""><a href="#四p1已裁决2026-11-03">四、P1：已裁决（2026-11-03）</a></li><li class=""><a href="#五p2可以后置">五、P2：可以后置</a></li><li class=""><a href="#六p3nasapunk-轻量包2026-11-04">六、P3：NASApunk 轻量包（2026-11-04）</a></li><li class=""><a href="#七p4专用游戏编辑器2026-11-04待裁决">七、P4：专用游戏编辑器（2026-11-04，待裁决）</a></li><li class=""><a href="#八裁决记录">八、裁决记录</a></li><li class=""><a href="#九当前工程的占位对照">九、当前工程的占位对照</a></li><li class=""><a href="#十下一步">十、下一步</a></li></ul></details>
 <article class="prose">
 <h1 id="11--待人类裁决清单">11 · 待人类裁决清单</h1>
-<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>决策队列</dd><dt>状态</dt><dd>现行 v0.7（2026-11-04 P0/P1 已裁决；P2 待定；N1–N3 已裁决；E1–E4 待裁决）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 整理，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="rules/a00_人类裁决与优先级.html">ROOT-A0</a> · <a href="rules/b00_规则分层与冲突.html">ROOT-B0</a></dd><dt>上游</dt><dd><a href="../../../docs-human/概念设定.md">概念设定</a></dd><dt>关联</dt><dd>全部策划文档 · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="15_专用游戏编辑器方案.html">15_专用游戏编辑器方案</a> · <a href="../../../game">Godot 工程</a></dd></dl></div>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>决策队列</dd><dt>状态</dt><dd>现行 v0.8（2026-11-04 P0/P1 已裁决；P2 待定；N1–N3/E1–E4 已裁决）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 整理，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="rules/a00_人类裁决与优先级.html">ROOT-A0</a> · <a href="rules/b00_规则分层与冲突.html">ROOT-B0</a></dd><dt>上游</dt><dd><a href="../../../docs-human/概念设定.md">概念设定</a></dd><dt>关联</dt><dd>全部策划文档 · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="15_专用游戏编辑器方案.html">15_专用游戏编辑器方案</a> · <a href="../../../game">Godot 工程</a></dd></dl></div>
 <blockquote>
-<p><strong>这是整套文档里最重要的一篇。</strong> 所有需要人拍板的问题都集中在这里；正文里的【待裁决】都指向这里的 ID。 <strong>2026-11-03 裁决</strong>：D01–D13、D15、D16 已定；P0、P1 已清空。 <strong>2026-11-04 追加</strong>：NASApunk 轻量包 N1–N3 已定；N4/N5 为执行默认；P2 仍可后置。 <strong>2026-11-04 新增</strong>：专用游戏编辑器 E1–E4 待裁决；分析见 <a href="15_专用游戏编辑器方案.html">15</a>。</p>
+<p><strong>这是整套文档里最重要的一篇。</strong> 所有需要人拍板的问题都集中在这里；正文里的【待裁决】都指向这里的 ID。 <strong>2026-11-03 裁决</strong>：D01–D13、D15、D16 已定；P0、P1 已清空。 <strong>2026-11-04 追加</strong>：NASApunk 轻量包 N1–N3 已定；N4/N5 为执行默认；P2 仍可后置。 <strong>2026-11-04 新增</strong>：专用游戏编辑器 E1–E4 已按推荐通过（A/A/A/A），Phase 1 MVP 已实现；见 <a href="15_专用游戏编辑器方案.html">15</a>。</p>
 </blockquote>
 <h2 id="一怎么用">一、怎么用</h2>
 <ol type="1">
@@ -312,7 +312,7 @@
 <td>A Godot 插件 / B 独立 Web / C 嵌入运行时 / D 先不做</td>
 <td>A</td>
 <td>开发量、维护、真实预览</td>
-<td>☐</td>
+<td><strong>✅ A</strong></td>
 </tr>
 <tr>
 <td>E2</td>
@@ -320,7 +320,7 @@
 <td>A Markdown 仍是源 + bridge / B 改为 JSON 源 / C 双源</td>
 <td>A</td>
 <td>是否修订 TECH-A1</td>
-<td>☐</td>
+<td><strong>✅ A</strong></td>
 </tr>
 <tr>
 <td>E3</td>
@@ -328,7 +328,7 @@
 <td>A 地图+塔位+预览 / B 全数据表 / C 只做校验</td>
 <td>A</td>
 <td>2–3 周 vs 2–4 月</td>
-<td>☐</td>
+<td><strong>✅ A</strong></td>
 </tr>
 <tr>
 <td>E4</td>
@@ -336,12 +336,12 @@
 <td>A 现在 Phase 0+1 / B v0.2 后 / C 暂缓</td>
 <td>A（先 Phase 0）</td>
 <td>是否先服务 v0.2</td>
-<td>☐</td>
+<td><strong>✅ A</strong></td>
 </tr>
 </tbody>
 </table></div>
 <blockquote>
-<p>详细分析见 <a href="15_专用游戏编辑器方案.html">15_专用游戏编辑器方案</a>。E1–E4 尚未裁决，不进入实现。</p>
+<p>详细分析见 <a href="15_专用游戏编辑器方案.html">15_专用游戏编辑器方案</a>。E1–E4 已于 2026-11-04 按推荐通过；Phase 1 MVP 已实现。</p>
 </blockquote>
 <h2 id="八裁决记录">八、裁决记录</h2>
 <blockquote>
@@ -484,6 +484,34 @@
 <td>先验证决策感，再动塔座结构</td>
 <td>2026-11-04</td>
 </tr>
+<tr>
+<td>E1</td>
+<td><strong>编辑器形态</strong>：A Godot 插件 / B 独立 Web / C 嵌入运行时 / D 先不做</td>
+<td>A Godot 插件</td>
+<td>复用同一运行时，开发量最小</td>
+<td>2026-11-04</td>
+</tr>
+<tr>
+<td>E2</td>
+<td><strong>数据主权</strong>：A Markdown + bridge / B JSON 源 / C 双源</td>
+<td>A Markdown + bridge</td>
+<td>守住单一源，不修订 TECH-A1</td>
+<td>2026-11-04</td>
+</tr>
+<tr>
+<td>E3</td>
+<td><strong>MVP 范围</strong>：A 地图+塔位+预览 / B 全数据表 / C 只做校验</td>
+<td>A 地图+塔位+预览</td>
+<td>先验证 WYSIWYG，再扩数据表</td>
+<td>2026-11-04</td>
+</tr>
+<tr>
+<td>E4</td>
+<td><strong>时机</strong>：A 现在 Phase 0+1 / B v0.2 后 / C 暂缓</td>
+<td>A 现在</td>
+<td>先服务 v0.2 内容制作</td>
+<td>2026-11-04</td>
+</tr>
 </tbody>
 </table></div>
 <h2 id="九当前工程的占位对照">九、当前工程的占位对照</h2>
@@ -541,7 +569,7 @@
 <li>v0.2 再评估模块化塔座与备件；N4 的独立备件到那时再裁决；</li>
 <li>P2（D14 平台 / D17 更新节奏 / D18 语言）可以等试玩后再定；</li>
 <li>按 D05 做 v0.2 护理师，验证「同引擎换职业」；</li>
-<li>编辑器 E1–E4 待裁决；若选 A，先做 Phase 0（数据 bridge / live reload），不先做视口编辑器。</li>
+<li>编辑器 Phase 1 MVP 已实现：继续补添加/删除点、波次时间轴、撤销/重做与内嵌预览。</li>
 </ol>
 <p>（本篇完）</p>
 

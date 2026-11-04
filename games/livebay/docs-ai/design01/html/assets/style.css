@@ -67,7 +67,7 @@ html:not([data-theme]) { color-scheme: light dark; }
 html {
   scroll-behavior: smooth;
   /* 顶栏 sticky 高度 + 呼吸位；锚点跳转时避免标题被遮住 */
-  /* scroll-padding-top: 72px; */
+  scroll-padding-top: 72px;
 }
 .prose :is(h1, h2, h3, h4, h5) { scroll-margin-top: 72px; }
 body {
@@ -570,6 +570,8 @@ a.button:not(.ghost) { color: #fff; }
   .nav-group { margin-top: 14px; }
   .nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 2px 10px; }
   .nav a { padding: 6px 8px; }
+  html { scroll-padding-top: 16px; }
+  .prose :is(h1, h2, h3, h4, h5) { scroll-margin-top: 16px; }
   .topbar { position: static; padding: 12px 16px; flex-wrap: wrap; }
   .content { width: min(100% - 32px, 920px); padding-top: 24px; }
   .prose { font-size: 16px; }

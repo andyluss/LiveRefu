@@ -3,6 +3,34 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.18] - 2026-11-04 20:00
+
+### 新增
+
+- **LiveBay Tools 编辑器插件 MVP**：`game/addons/livebay_tools/`，在 Godot 2D 视口拖动路径点 / 塔位 / 基地，5px 吸附，塔射程预览；
+- **Python 数据桥**：`bridge.py` 读写 `numbers/05_地图与塔位.md`，调用 `export_numbers.py` 导出并校验；编辑器不成为第二数据源；
+- 插件 Dock：重载 / 保存 / 校验 / 运行游戏 / 塔预览选择 / 叠加层开关；
+- `./run.sh editor-test`：数据桥冒烟测试（读取 7 个塔位 + numbers 校验）。
+- 编辑器方案 E1–E4 按推荐通过：Godot 插件 / Markdown + bridge / 地图+塔位+预览 / 现在做 Phase 0+1。
+
+### 变更
+
+- `15_专用游戏编辑器方案` 状态升到 v0.2，记录 E1–E4 与 Phase 1 MVP；
+- `11_待人类裁决清单` 升到 v0.8，P4 四项已裁决并追加记录；
+- LiveBay README 增加编辑器插件入口；mainline 的 LiveBay 状态页同步。
+
+### 验证
+
+- `bridge.py read/write/check`：可读、可幂等写回、导出校验通过；
+- `BridgeClient` 在 Godot 无头环境读取 7 个塔位并通过 `numbers` 校验；
+- Godot 编辑器无头加载插件，无脚本解析错误；
+- `./run.sh test` 37/37；HTML R-016 39/39。
+
+### 备注
+
+- 这是 Phase 1 MVP：添加/删除点、波次时间轴、撤销/重做、内嵌预览尚未做；
+- 保存会直接改 `numbers/05`，建议先提交或备份。
+
 ## [0.1.17] - 2026-11-04 16:35
 
 ### 新增
