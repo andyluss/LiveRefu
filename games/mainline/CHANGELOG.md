@@ -7,6 +7,19 @@
 > [`../future-debris/CHANGELOG.md`](../future-debris/CHANGELOG.md)）。历史上有 17 段产品内容记在这里，
 > 已于 0.18.0 迁走。
 
+## [0.24.1] - 2026-11-04 17:02
+
+### 变更
+
+- `docs/02_资产盘点与杠杆.md` 移入 [`../future-debris/docs/planning/02_资产盘点与杠杆.md`](../future-debris/docs/planning/02_资产盘点与杠杆.md)，归属未来残片项目；
+- 恢复该文在 2026-11-04 主线切换前的原文：移除“历史文档”提示与改写的标题，正文结论保持不变；
+- 移动后按新路径重算相对链接；mainline README、00 决策总表与 future-debris 的 planning / spec 引用同步；
+- mainline README 的纲领级文档表不再列 02，只在历史说明中指向新位置。
+
+### 验证
+
+- 相关 Markdown 内部链接 166 个，0 失效。
+
 ## [0.24.0] - 2026-11-04 16:54
 
 ### 变更

@@ -40,6 +40,7 @@
 | [`docs/spec/14_人类试玩执行包.md`](docs/spec/14_人类试玩执行包.md) | 人类试玩执行包 |
 | [`docs/planning/10_推进计划与并入清单.md`](docs/planning/10_推进计划与并入清单.md) | 推进计划与并入清单 |
 | [`docs/planning/01_定位与目标.md`](docs/planning/01_定位与目标.md) | 项目定位、目标与成功度量 |
+| [`docs/planning/02_资产盘点与杠杆.md`](docs/planning/02_资产盘点与杠杆.md) | 资产盘点、五条核心矛盾与复用边界 |
 | [`docs/planning/05_美术与技术方向.md`](docs/planning/05_美术与技术方向.md) | 美术/技术方向与 AI 产能边界 |
 | [`docs/planning/07_路线图与风险.md`](docs/planning/07_路线图与风险.md) | 路线图、指标与风险 |
 | [`docs/planning/08_共同语言与命名.md`](docs/planning/08_共同语言与命名.md) | 术语与命名 |

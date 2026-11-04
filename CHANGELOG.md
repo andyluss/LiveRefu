@@ -111,7 +111,7 @@
   - 根 `viz/` → 归档其快照进 [`tech/references/visualization-edf21c0f.html`](tech/references/visualization-edf21c0f.html)，**移除根 `viz/` 目录**。
     **核实清楚了一处此前的误判**：根 `viz/` **不是**当前可视化管线的输出目录——活的输出在 `lab/formal-system/concerns/visual-fallback/viz/`，且那里**自带 `.gitignore`（`*.html`）**；根 `viz/` 是**旧布局遗留**，其内容无人引用。因此**没有**给根 `viz/` 加 ignore 规则（那会是一条指向不存在目录的死配置），而是按"M1 跨关注点素材"归档。**归档而非删除**的理由：`gh_meta.jsonl` 可重取，但那份 HTML 快照**不一定能原样重建**。
   - 根 [`README.md`](README.md) 新增「**〇、先看这里：你是哪种读者**」：按"产品/非技术维护者""参与某个项目""开发/维护者"三类给出**该看哪些、可以忽略哪些**。**根目录不追求条目最少，而是每类人都能一眼找到入口并知道哪些与自己无关**——把技术目录藏起来反而让人找不到规则，所以做法是**导览而非隐藏**。
-  - 同步：新增 [`tech/references/README.md`](tech/references/README.md)（说明两份素材的来源与"不承载约定"的定位）、[`tech/README.md`](tech/README.md) 索引与工具表、[`games/mainline/docs/02_资产盘点与杠杆.md`](games/mainline/docs/02_资产盘点与杠杆.md) 的资产登记。
+  - 同步：新增 [`tech/references/README.md`](tech/references/README.md)（说明两份素材的来源与"不承载约定"的定位）、[`tech/README.md`](tech/README.md) 索引与工具表、[`games/future-debris/docs/planning/02_资产盘点与杠杆.md`](games/future-debris/docs/planning/02_资产盘点与杠杆.md) 的资产登记。
 - **合规审计（顺带做，结论记录在案）**：8 份变更日志（9/9 或 8/8）、元规则 M1+M2 / M3 / M4、链接校验**全部通过**。发现并纠正的**唯一一处规则冲突**是讨论记录命名与 M2 不一致（见 `games/mainline` 日志）。
 
 ### 修复
