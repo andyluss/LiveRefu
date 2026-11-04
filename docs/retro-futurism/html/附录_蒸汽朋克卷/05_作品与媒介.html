@@ -1,0 +1,79 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_蒸汽朋克卷/05_作品与媒介.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>蒸汽朋克卷·05 作品与媒介</title>
+<meta name="description" content="">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>蒸汽朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_蒸汽朋克与复古未来主义.html">00 对读篇</a><a href="01_定义与谱系.html">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html">03 美学与视觉</a><a href="04_思想政治与批评.html">04 思想政治与批评</a><a href="05_作品与媒介.html" aria-current="page">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_蒸汽朋克卷/05_作品与媒介.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">05 作品与媒介</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#文学">文学</a></li><li class=""><a href="#动画与真人电影">动画与真人电影</a></li><li class=""><a href="#电子游戏">电子游戏</a></li><li class=""><a href="#亚文化泛化">亚文化（泛化）</a></li></ul></details>
+<article class="prose">
+<h1 id="蒸汽朋克卷05-作品与媒介">蒸汽朋克卷·05 作品与媒介</h1>
+<p>关键词：分媒介清单、文学、动画电影、真人电影、电子游戏、亚文化、存目</p>
+<p>摘要：本文件按媒介著录蒸汽朋克（Steampunk）的代表作品：文学自一九八〇年代奠基之作延续至二〇〇〇年后的复兴期文本；动画与真人电影以日本、英语世界两条线索为主；电子游戏贡献了蒸汽世界最完整的可进入建构；亚文化层面的集会、乐队与市集则将风格从文本推向生活方式。凡作者译名、书目对应或类型归类存在出入者，一律降档标注存疑，著录以原文为准。</p>
+<h2 id="文学">文学</h2>
+<p>蒸汽朋克的命名与第一波文学几乎同步。**鲍尔斯（Tim Powers）**的《阿努比斯之门》（The Anubis Gates，1983）以时间旅行串联十九世纪伦敦与埃及学素材，被后世追认为奠基之作；**杰特（K. W. Jeter）**的《地狱装置》（Infernal Devices，1987）写维多利亚伦敦的发条奇械，同年杰特在《轨迹》（Locus）杂志通信栏提议以"蒸汽朋克"概括鲍尔斯、布莱洛克与他本人一类作品。**吉布森与斯特林（William Gibson &amp; Bruce Sterling）**合著的《差分机》（The Difference Engine，1990）让巴贝奇分析机在架空的历史中运转起来，通常被视为蒸汽朋克正典。二〇〇〇年后：凯里格（Gail Carriger）《无魂》（Soulless，2009）以"无魂"女主角串起维多利亚伦敦的超自然喜剧；普利斯特（Cherie Priest）《邦希克》（Boneshaker，2009，中译与著录存疑）常被列入本类型复兴期的代表作；瑞夫（Philip Reeve）《致命引擎》（Mortal Engines，2001）描绘"城市吃城"的牵引都市，归类存疑——其末世格局更近后启示录寓言，常与蒸汽朋克并置讨论。各书作者姓名的中译出入较多，著录以英文名为准。</p>
+<h2 id="动画与真人电影">动画与真人电影</h2>
+<p>日本动画构成重要一支：宫崎骏《天空之城》（1986）的飞行器、巨型机械与空中帝国残骸，常被追认为蒸汽机械幻想的早期入口；大友克洋《蒸汽男孩》（Steamboy，2004）以维多利亚时代英国的博览会与蒸汽动力装置为舞台，是自觉的蒸汽机械宣言；宫崎骏《哈尔的移动城堡》（2004）的移动城堡则是蒸汽与魔法杂交的造物。真人电影方面：《回到未来III》（1990）借西部与蒸汽机车，把时间旅行收束于"前电力"时代；《飙风战警》（Wild Wild West，1999）以蒸汽动力巨型机械为反派装备；《天降奇兵》（The League of Extraordinary Gentlemen，2003）改编自摩尔（Alan Moore）漫画，集结维多利亚时代的文学人物。需说明的是，多数影片并非自觉的蒸汽朋克宣言，而是被类型标签事后"追认"的谱系成员。</p>
+<h2 id="电子游戏">电子游戏</h2>
+<p>电子游戏提供了蒸汽世界最完整的"可进入"建构：《奥秘》（Arcanum: Of Steamworks and Magick Obscura，2001）让工业魔法与旧魔法正面冲突，是类型早期的标杆性角色扮演游戏；《羞辱》（Dishonored，2012）以鲸油驱动的群岛都市为舞台，其"鲸油朋克"归类存疑；《生化奇兵：无限》（BioShock Infinite，2013）的浮空城哥伦比亚，把蒸汽时代的进步神话推向政治寓言；《机械迷城》（Machinarium，2009年前后）以锈蚀机器人的解谜冒险延续手绘机械美学；《蒸汽世界》（SteamWorld）系列自《蒸汽世界：掘进》（SteamWorld Dig，2013）起陆续扩充，近年另有回合制策略分支。游戏的媒介优势在于把"齿轮可见"的机械观转译为玩家亲手检修与建造的体验。</p>
+<h2 id="亚文化泛化">亚文化（泛化）</h2>
+<p>文本之外，蒸汽朋克更以生活方式扩散：主题集会与市集提供扮装与手作（黄铜饰品、护目镜、钟表拆件）的交换场合；乐队以蒸汽扮装与时代叙事演出，把舞台本身变成故事；爱好者社群以手工、服饰与器物为纽带聚合，风格由此溢出作品，成为可参与的日常。各地亚文化的组织形态与规模差异极大，此处仅作泛化描述，不作个案列举。</p>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="04_思想政治与批评.html"><span class="dir">prev</span><span class="label">蒸汽朋克卷·04 思想政治与批评</span></a><a class="next" href="06_中文语境.html"><span class="dir">next</span><span class="label">蒸汽朋克卷·06 中文语境</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_蒸汽朋克卷/05_作品与媒介.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_太阳朋克卷/03_美学与视觉.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>太阳朋克 · 美学与视觉</title>
+<meta name="description" content="关键词：太阳朋克；美学；视觉语法；新艺术；适切技术；视觉对照">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>太阳朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_太阳朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">定义与谱系</a><a href="02_历史年表.html">历史年表（2008</a><a href="03_美学与视觉.html" aria-current="page">美学与视觉</a><a href="04_政治与哲学.html">政治与哲学</a><a href="05_作品与媒介.html">作品与媒介</a><a href="06_批评与争议.html">批评与争议</a><a href="07_中文语境.html">中文语境</a><a href="08_资料库.html">资料库（链接与文献）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_太阳朋克卷/03_美学与视觉.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">美学与视觉</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一宣言自带的美学清单">一、宣言自带的美学清单</a></li><li class=""><a href="#二视觉语法拆解">二、视觉语法拆解</a></li><li class=""><a href="#三三向对照表">三、三向对照表</a></li><li class=""><a href="#四媒介中的视觉范本">四、媒介中的视觉范本</a></li><li class=""><a href="#五美学陷阱预告">五、美学陷阱预告</a></li></ul></details>
+<article class="prose">
+<h1 id="太阳朋克--美学与视觉">太阳朋克 · 美学与视觉</h1>
+<blockquote>
+<p>关键词：太阳朋克；美学；视觉语法；新艺术；适切技术；视觉对照</p>
+<p>摘要：太阳朋克的美学常被误解为"绿色滤镜版的科幻插图"。本篇以 2019 年《太阳朋克宣言》自带的"美学拼贴清单"为骨架，拆解其色彩、材料、建筑、城市与时尚语法，给出与赛博朋克、蒸汽朋克、田园风（cottagecore）的系统对照，盘点吉卜力、瓦坎达等常被举证的视觉范本，并预告"假太阳朋克都市主义"这一美学陷阱（详见 06 批评篇）。</p>
+</blockquote>
+<hr />
+<h2 id="一宣言自带的美学清单">一、宣言自带的美学清单</h2>
+<p>《太阳朋克宣言》罕见地给运动自带了一份开放的美学配方——"目前看来，太阳朋克的视觉美学是以下元素的混合"：</p>
+<blockquote>
+<p>1800 年代风帆时代/边疆生活（但自行车更多）；对既有基础设施的创造性再利用（有时是末日后式的，有时是"现在就很怪"式的）；<strong>适切技术（appropriate technology）</strong>；<strong>新艺术（Art Nouveau）</strong>；<strong>宫崎骏</strong>；来自非西方世界的 Jugaad 式创新（印度式"凑合创新"）；高科技后端 + 简洁优雅的输出端。 太阳朋克设定在一个按新都市主义（New Urbanism）或新步行主义（New Pedestrianism）原则建造的未来……建成环境为太阳能增益（solar gain）而创造性改造……我们不再是统治者，我们是照看者（caretakers），是园丁（gardeners）。</p>
+</blockquote>
+<p>这份清单值得逐条读：它把"复古的浪漫（帆船、边疆）"与"未来的技术（光伏、智能网格）"缝在一起，把"西方新艺术"与"南方国家的凑合创新"并置——太阳朋克美学的核心语法不是某一材质，而是**"为阳光与共好而重组的混合技术景观"**。</p>
+<h2 id="二视觉语法拆解">二、视觉语法拆解</h2>
+<p><strong>色彩</strong>：自然色系为主——明亮的绿与蓝（维基百科），阳光白、陶土、原木；"光"本身是母题（对比赛博朋克的霓虹与人造光，太阳朋克偏爱日光、晨昏与通透玻璃中的自然光）。整体传达：清洁、丰裕、平等。</p>
+<p><strong>材料</strong>：竹、木、土、石等在地材料 + 回收再造材料（瓶砖、旧轮胎、土团 cob）；光伏板、风机等"干净能源硬件"外露而非隐藏（它承接复古未来主义"技术应可被理解、拒绝黑箱"的偏好，见 01 定义篇）；e-flux 建筑批评曾以《给太阳能板装上装饰是犯罪吗？》（Elivia Wilk）为题讨论其"功能与装饰"张力。</p>
+<p><strong>建筑</strong>：藤蔓覆盖的立面与屋顶农场、玻璃温室与中庭、太阳能檐、自然通风烟囱、垂直农业塔；可被举证的现实原型包括<strong>土团生态屋（Earthship）</strong>、<strong>Arcosanti</strong>（亚利桑那的"实验城镇"）、朴门永续农庄与"改造"式住宅（维基百科在词条开头即以 Earthship 为例）。宣言强调"建成环境为太阳能增益而改造"，即建筑首先是一台收集阳光的机器。</p>
+<p><strong>城市</strong>：可步行/自行车优先（"更多自行车"是宣言对 1800 年代的修正项）、社区尺度、本地能源网格与本地食物系统、公共空间再野化（河道清污、城中林地）、"智慧公民"取代"智慧城市"（宣言原文调侃"把'智慧城市'扔进垃圾堆，换智慧市民"）。</p>
+<p><strong>时尚与物</strong>：工装、自然纤维、拼布与修补（mending）、升级再造（upcycling）、宽檐帽与围裙式"园丁美学"；面向大众的指南类文章（如 Impose Magazine 2021 年《太阳朋克终极指南：时尚、电影、美学》）把这种风格概括为"干净、耐磨、可修"。</p>
+<h2 id="三三向对照表">三、三向对照表</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>赛博朋克</th>
+<th>蒸汽朋克</th>
+<th><strong>太阳朋克</strong></th>
+<th>田园风（cottagecore）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>光</td>
+<td>霓虹、潮湿、夜景</td>
+<td>煤气灯、烟雾</td>
+<td><strong>日光、通透</strong></td>
+<td>柔和乡野光</td>
+</tr>
+<tr>
+<td>色</td>
+<td>品红/青/黑</td>
+<td>黄铜、棕褐</td>
+<td><strong>绿/蓝/白/陶土</strong></td>
+<td>奶油、碎花</td>
+</tr>
+<tr>
+<td>技术</td>
+<td>义体、巨型企业、黑箱</td>
+<td>齿轮、蒸汽、可见机械</td>
+<td><strong>光伏+在地材料+开源，适切且可见</strong></td>
+<td>基本回避技术</td>
+</tr>
+<tr>
+<td>城市</td>
+<td>垂直压迫的巨型都会</td>
+<td>维多利亚雾都</td>
+<td><strong>水平蔓延的社区、垂直农场</strong></td>
+<td>乡村/田园</td>
+</tr>
+<tr>
+<td>身体</td>
+<td>义体化、异化</td>
+<td>发明家绅士</td>
+<td><strong>园丁-工匠（maker-gardener）</strong></td>
+<td>田园生活者</td>
+</tr>
+<tr>
+<td>时间方向</td>
+<td>近未来的预警</td>
+<td>回望维多利亚</td>
+<td><strong>看向可实现的未来</strong></td>
+<td>怀旧（无未来维度）</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="四媒介中的视觉范本">四、媒介中的视觉范本</h2>
+<ul>
+<li><strong>吉卜力工作室</strong>：《风之谷》（1984）与《天空之城》（1986）是宣言点名引用的影像范本（前者的腐海生态观、后者的天空城+飞行器浪漫），也是中文观众理解太阳朋克气质最方便的入口；</li>
+<li><strong>《黑豹》的瓦坎达</strong>（2018）：维基百科列为"太阳朋克美学的流行例证"之一（高科技与非洲在地美学融合）；批评者同时指出瓦坎达的孤立主义/例外论问题（详见 06）；</li>
+<li><strong>游戏场景</strong>：维基百科另举《幽灵行动：断点》中的奥罗亚（Auroa）岛；独立游戏《太阳朋克：浮岛家园》（2023 抢先体验）则把"浮岛+合作建设"做成可玩的太阳朋克日常；</li>
+<li><strong>当代长篇小说封面与内页想象</strong>：钱伯斯"修士与机器人"系列的茶室机器人与山径寺院，常被读者当作"书页里的太阳朋克"标本。</li>
+</ul>
+<h2 id="五美学陷阱预告">五、美学陷阱预告</h2>
+<p>太阳朋克美学极易被简化成"绿植+玻璃+阳光"的表面配方。研究者弗林（Adam Flynn）本人警告过"<strong>假太阳朋克都市主义（fake solarpunk urbanism）</strong>"：例如给豪华公寓加绿屋顶，但把原住民社区挤出城——表面可持续、实则加剧不公与更大环境损害（Vice 2021 年报道）。"好看的太阳朋克"与"真太阳朋克"的判别，不在画面而在<strong>谁住在里面</strong>（此问题的政治与批评展开见 04 与 06）。</p>
+<hr />
+<p><strong>出处</strong>：《A Solarpunk Manifesto》（re-des.org，2019）；维基百科 "Solarpunk"（美学与范本段落）；e-flux Architecture（Elivia Wilk）；Impose Magazine 2021 年指南；Vice 2021 年报道；链接见 08 资料库。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="02_历史年表.html"><span class="dir">prev</span><span class="label">太阳朋克 · 历史年表（2008—今）</span></a><a class="next" href="04_政治与哲学.html"><span class="dir">next</span><span class="label">太阳朋克 · 政治与哲学</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_太阳朋克卷/03_美学与视觉.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

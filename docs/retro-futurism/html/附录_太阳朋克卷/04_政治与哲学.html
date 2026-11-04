@@ -1,0 +1,136 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_太阳朋克卷/04_政治与哲学.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>太阳朋克 · 政治与哲学</title>
+<meta name="description" content="关键词：太阳朋克；前置政治；能源民主；去增长；DIY；开源；社会生态学；去殖民；社会正义">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>太阳朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_太阳朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">定义与谱系</a><a href="02_历史年表.html">历史年表（2008</a><a href="03_美学与视觉.html">美学与视觉</a><a href="04_政治与哲学.html" aria-current="page">政治与哲学</a><a href="05_作品与媒介.html">作品与媒介</a><a href="06_批评与争议.html">批评与争议</a><a href="07_中文语境.html">中文语境</a><a href="08_资料库.html">资料库（链接与文献）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_太阳朋克卷/04_政治与哲学.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">政治与哲学</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一总纲太阳朋克宣言的政治命题">一、总纲：《太阳朋克宣言》的政治命题</a></li><li class=""><a href="#二理念拆解">二、理念拆解</a></li><li class=""><a href="#三哲学亲缘与思想谱系">三、哲学亲缘与思想谱系</a></li><li class=""><a href="#四它算不算某种主义">四、它&quot;算不算&quot;某种主义？</a></li></ul></details>
+<article class="prose">
+<h1 id="太阳朋克--政治与哲学">太阳朋克 · 政治与哲学</h1>
+<blockquote>
+<p>关键词：太阳朋克；前置政治；能源民主；去增长；DIY；开源；社会生态学；去殖民；社会正义</p>
+<p>摘要：太阳朋克并非"有政治观点的美学"，而常被表述为"以美学和叙事为手段的政治行动"：它主张可再生与去增长、践行前置政治（先把理想社会做出来）、拥抱 DIY/开源/在地共同体，并把能源民主与去殖民置于核心。本篇逐条拆解这些理念的来源与表述，并以"它算不算无政府主义/社会主义"的讨论收束。</p>
+</blockquote>
+<hr />
+<h2 id="一总纲太阳朋克宣言的政治命题">一、总纲：《太阳朋克宣言》的政治命题</h2>
+<p>宣言最常被引用的三句话，构成太阳朋克的政治总纲：</p>
+<ol type="1">
+<li>"我们之所以是太阳朋克，是因为<strong>乐观被人从我们这里夺走了，我们正在试着把它夺回来</strong>。"</li>
+<li>"太阳朋克核心是一种对未来的愿景：<strong>后匮乏、后层级、后资本主义</strong>的世界——人类把自己看作自然的一部分，清洁能源取代化石燃料。"</li>
+<li>"太阳朋克里的 'punk' 关乎反叛、反文化、后资本主义、去殖民与热忱……它不只是故事，也关乎<strong>我们如何抵达</strong>。"</li>
+</ol>
+<p>注意其自我定位：太阳朋克"是运动，正如它是文类"；它承认"战术的多样性：没有唯一正确的太阳朋克做法"，各社群"在旧世界的裂缝里搭建自给自足革命的小巢"（2019 年宣言原话的意译）。</p>
+<h2 id="二理念拆解">二、理念拆解</h2>
+<p><strong>1. 可再生与去化石（底线共识）</strong> 维基百科与学术综述都指出：太阳朋克没有统一的具体政纲，但默认接纳一条底线——集体告别污染性化石能源。"solar" 名义上指太阳能，实际涵盖一切可再生与在地能源（SFE 词条亦如此强调）。</p>
+<p><strong>2. 前置政治（prefigurative politics）</strong> 太阳朋克把"想要的社会"先当作方法实践：生态村（ecovillage）、社区菜园、本地能源网格、工具图书馆、创客空间——"在旧系统里先长出新系统的雏形"（维基百科引 Rewire 2018 年报道）。这是它与纯文学运动的最大区别：它的作品集与它的社区营造互相印证。</p>
+<p><strong>3. DIY、开源与适切技术</strong> 宣言把"青年创客文化、本地解决方案、本地能源网格、自主运转系统的路径"写进纲领；维基百科列出其低技术面向：园艺、朴门永续（permaculture）、再生设计（regenerative design）、工具图书馆、创客空间、开源与"自己动手"伦理；哲学资源包括<strong>亮绿色环保主义（bright green environmentalism）<strong>与</strong>布克钦的社会生态学（Bookchin's social ecology）</strong>。</p>
+<p><strong>4. 能源民主与去殖民</strong> 学术文章（Reina-Rozo 2021；Queens 大学 IJESJP）强调：太阳朋克以未来想象对抗"气候宿命论"，主张<strong>能源去殖民</strong>——批判"生态资本主义/绿色面纱（green veils）"式的大规模可再生能源项目对原住民与在地社区的伤害；代之以能源民主、非层级治理，把人-生态系统的关系从"商品化"拨回"共同体取向的环境乐观"。</p>
+<p><strong>5. 社会正义</strong> 宣言明言"太阳朋克文化包含所有文化、宗教、能力、性别与性向"；维基百科指出其种族与性别平等主题承自早期乌托邦传统（勒古恩《黑暗的左手》1969 的性别流动、《一无所有》对强制一夫一妻制的取消）；SFE 指出 2022 年创办的 <em>Solarpunk Magazine</em> 在种族主义与性别歧视问题上立场鲜明，连同公司主义与消费主义一并批判。</p>
+<p><strong>6. 拒绝悲观（认识论位置）</strong> 太阳朋克不假装灾难已被避免，它提供的是"<strong>反反乌托邦（counter-dystopian）</strong>"视角：世界不必是乌托邦，但也不必滑向必然的黑暗结局；它比赛博朋克更彻底地继承了朋克意识形态（反消费、平等主义、去中心化），因为赛博朋克的主角虽怀朋克信念，其世界却是"警示"用的——太阳朋克要求世界观本身就是出路（维基百科引 Johnson 2020 与 Singularity Hub 2020）。</p>
+<h2 id="三哲学亲缘与思想谱系">三、哲学亲缘与思想谱系</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>思想资源</th>
+<th>关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>布克钦社会生态学</td>
+<td>层级制→生态危机的因果链；被维基百科列为直接哲学资源</td>
+</tr>
+<tr>
+<td>绿色无政府主义 / 无政府-原始主义</td>
+<td>SFE 指出太阳朋克哲学"常与主张放慢技术节奏的无政府-原始主义重叠"（但太阳朋克并不反技术，是反"黑箱/失控技术"）</td>
+</tr>
+<tr>
+<td>社会主义 / 生态社会主义</td>
+<td>"后资本主义"宣言与去增长话语常与生态社会主义合流（B-SFA 2025 年文章甚至讨论"太阳朋克与行会社会主义"）</td>
+</tr>
+<tr>
+<td>朴门永续 / 再生设计 / 亮绿色环保主义</td>
+<td>操作层的设计哲学</td>
+</tr>
+<tr>
+<td>非洲未来主义</td>
+<td>对同质化的反击、用技术矫正权力失衡（见 01 定义篇）；"非洲太阳朋克（Afro-Solarpunk）"是当代细分讨论（Tor.com 2019 年连载）</td>
+</tr>
+<tr>
+<td>乐观主义研究 / 正向心理学</td>
+<td>维基百科罗列的心理学面向（positive psychology, metacognition）</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="四它算不算某种主义">四、它"算不算"某种主义？</h2>
+<p>围绕太阳朋克的政治定性，有几组常见问题与通行答法：</p>
+<ul>
+<li><strong>它是无政府主义吗？</strong> 部分社群倾向如此（宣言的"非层级治理""本地自主"与之亲近），但运动明确拒绝单一标签——宣言说"战术多样"。</li>
+<li><strong>它是社会主义吗？</strong> 后资本主义/反消费的表述与社会主义家族有大量交集；学界的工程社会正义派（Reina-Rozo）把它读作反资本主义工程文化。</li>
+<li><strong>它是改良主义吗？</strong> 批评者（见 06）担心它滑向"在地小确幸"而放过资本与国家的结构权力；支持者（Current Affairs 2024）则辩护：乐观的具体蓝图本身就是对"别无选择"叙事的政治反击。</li>
+<li><strong>它是运动还是文类？</strong> 宣言的回答是"两者皆是"；2015 年记者 Heer 的"一声号召而非作品库"之评与 2020 年代选集/刊物的产出形成对照——2020 年代它已同时拥有作品库、刊物与在地运动三重身份（见 02 年表）。</li>
+</ul>
+<p>一句话总结本篇：<strong>太阳朋克的政治核心是"把未来当作可以预先练习的现在"</strong>——它的乌托邦不是等待抵达的远方，而是此刻正在社区菜园、开源硬件与邻里能源网里试运行的草图。</p>
+<hr />
+<p><strong>出处</strong>：《A Solarpunk Manifesto》（re-des.org，2019）；维基百科 "Solarpunk"（Themes and philosophy 节）；SFE "Solarpunk"；Reina-Rozo 2021（IJESJP）；Tor.com 2019（Afro-Solarpunk）；链接见 08 资料库。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="03_美学与视觉.html"><span class="dir">prev</span><span class="label">太阳朋克 · 美学与视觉</span></a><a class="next" href="05_作品与媒介.html"><span class="dir">next</span><span class="label">太阳朋克 · 作品与媒介</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_太阳朋克卷/04_政治与哲学.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

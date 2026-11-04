@@ -1,0 +1,321 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_NASA朋克卷/05_作品与媒介.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>05 · 作品与媒介</title>
+<meta name="description" content="关键词：先声作品；能力展示；游戏；维修玩法；机构叙事">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>NASA朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_NASA朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html">03 美学与视觉</a><a href="04_思想政治与批评.html">04 思想政治与批评</a><a href="05_作品与媒介.html" aria-current="page">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a><a href="09_软与硬_生物可塑性与机械模块化.html">09 软与硬</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_NASA朋克卷/05_作品与媒介.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">作品与媒介</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一文学工程作为情节">一、文学：工程作为情节</a></li><li class=""><a href="#二影像从白盒到控制室">二、影像：从白盒到控制室</a></li><li class=""><a href="#三游戏维修供能排班">三、游戏：维修、供能、排班</a></li><li class="sub"><a href="#31-深拆hardspace-shipbreaker最接近核心判据">3.1 深拆：《Hardspace: Shipbreaker》——最接近核心判据</a></li><li class="sub"><a href="#32-深拆星空命名的代价">3.2 深拆：《星空》——命名的代价</a></li><li class="sub"><a href="#33-深拆observation界面即叙事">3.3 深拆：《Observation》——界面即叙事</a></li><li class="sub"><a href="#34-深拆无敌号复古未来的另一种配方">3.4 深拆：《无敌号》——复古未来的另一种配方</a></li><li class=""><a href="#四设计档案被当作艺术品的工程文件">四、设计档案：被当作艺术品的工程文件</a></li><li class=""><a href="#五对照表六部样本的四条判据">五、对照表：六部样本的四条判据</a></li><li class=""><a href="#六给创作者的三个提示">六、给创作者的三个提示</a></li></ul></details>
+<article class="prose">
+<h1 id="05--作品与媒介">05 · 作品与媒介</h1>
+<blockquote>
+<p>关键词：先声作品；能力展示；游戏；维修玩法；机构叙事</p>
+<p>摘要：本篇按「文学—影像—游戏—设计档案」四条媒介线整理可归入 NASA朋克谱系的作品，并对六部关键样本做拆解：它们分别示范了「机构叙事」「用过的未来」「能力展示」「维修劳动」「命名后的主题公园化」「叙事模拟」六种路径。文末给出一张按四条判据打分的对照表，供创作者定位自己的项目。</p>
+</blockquote>
+<h2 id="一文学工程作为情节">一、文学：工程作为情节</h2>
+<p>NASA朋克的文学源头不是太空歌剧，而是<strong>工程叙事</strong>：问题有明确成因，解决靠知识、资源与程序。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>作品</th>
+<th>年份</th>
+<th>与 NASA朋克的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>汤姆·沃尔夫《太空先锋》（<em>The Right Stuff</em>）</td>
+<td>1979</td>
+<td>纪实文学，把宇航员还原成有缺陷的岗位人；奠定「机构里的人格」这一主题</td>
+</tr>
+<tr>
+<td>安迪·威尔《火星救援》（<em>The Martian</em>）</td>
+<td>2011</td>
+<td>极致的「用工程解决问题」；NASA 作为远程机构在场；能力展示的原型</td>
+</tr>
+<tr>
+<td>玛丽·罗比内特·科瓦尔《计算之星》（<em>The Calculating Stars</em>）</td>
+<td>2018</td>
+<td>另类航天史，把性别与种族政治放进 NASA 机构内部；对「谁被允许上天」的直接回应</td>
+</tr>
+<tr>
+<td>玛格特·李·谢特利《隐藏人物》（<em>Hidden Figures</em>）</td>
+<td>2016</td>
+<td>纪实，揭示计算员、后勤与被排除者的劳动；NASA朋克「隐形劳动」主题的基石</td>
+</tr>
+<tr>
+<td>安迪·威尔《挽救计划》（<em>Project Hail Mary</em>）</td>
+<td>2021</td>
+<td>工程乐观 + 孤独岗位；更偏太空冒险，但保留了「用检查单活命」的语法</td>
+</tr>
+</tbody>
+</table></div>
+<p>文学线的一个共同点：<strong>冲突不是「人类 vs 外星人」，而是「人 vs 问题」</strong>。这也是 NASA朋克改编成游戏时最自然的接口——问题可以被拆成资源、时间与流程。</p>
+<h2 id="二影像从白盒到控制室">二、影像：从白盒到控制室</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>作品</th>
+<th>年份</th>
+<th>定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>《2001 太空漫游》</td>
+<td>1968</td>
+<td>先声：白盒空间、清晰标识、极简装饰；NASA朋克视觉的祖型</td>
+</tr>
+<tr>
+<td>《静默奔跑》</td>
+<td>1972</td>
+<td>先声：生态舱与孤独岗位；「一个人的工作」</td>
+</tr>
+<tr>
+<td>《异形》</td>
+<td>1979</td>
+<td>先声/反面：用过的未来、工业管线、船员劳动；机构被替换成公司</td>
+</tr>
+<tr>
+<td>《太空先锋》</td>
+<td>1983</td>
+<td>把「选拔」与「表演」写进航天叙事</td>
+</tr>
+<tr>
+<td>《阿波罗 13 号》</td>
+<td>1995</td>
+<td>地面团队成为主角；检查单救人的经典样本</td>
+</tr>
+<tr>
+<td>《火星救援》</td>
+<td>2015</td>
+<td>能力展示的流行巅峰；NASA 作为「远程同事」</td>
+</tr>
+<tr>
+<td>《隐藏人物》</td>
+<td>2016</td>
+<td>把镜头转向被省略的劳动与排除</td>
+</tr>
+<tr>
+<td>《登月第一人》</td>
+<td>2018</td>
+<td>把任务还原成个人代价；更阴郁、更身体性</td>
+</tr>
+<tr>
+<td>《阿波罗 11 号》</td>
+<td>2019</td>
+<td>纯档案纪录片；NASA朋克「档案权威」的直接展示</td>
+</tr>
+<tr>
+<td>《For All Mankind》</td>
+<td>2019—</td>
+<td>剧集；另类航天史，机构、预算、性别与政治长期在场；目前最完整的「机构叙事」样本</td>
+</tr>
+</tbody>
+</table></div>
+<p>影像线的关键分化在于<strong>镜头对谁</strong>：对英雄（《登月第一人》）、对团队（《阿波罗 13 号》）、对机构（《For All Mankind》）、对隐形劳动（《隐藏人物》）。NASA朋克越往后走，镜头越往下、往旁边。</p>
+<h2 id="三游戏维修供能排班">三、游戏：维修、供能、排班</h2>
+<p>游戏是 NASA朋克在 2020 年代最重要的媒介，因为它天然要求<strong>系统可操作</strong>。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>作品</th>
+<th>年份</th>
+<th>玩法</th>
+<th>与 NASA朋克的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>《Kerbal Space Program》</td>
+<td>2015</td>
+<td>航天器建造与轨道模拟</td>
+<td>把「工程试错」做成乐趣；卡通化，但精神接近</td>
+</tr>
+<tr>
+<td>《Deliver Us the Moon》</td>
+<td>2018</td>
+<td>解谜/叙事</td>
+<td>近未来月球供能任务；维修与供能是核心动作</td>
+</tr>
+<tr>
+<td>《Observation》</td>
+<td>2019</td>
+<td>叙事解谜</td>
+<td>空间站 AI 视角；模拟界面与机构程序高度在场</td>
+</tr>
+<tr>
+<td>《Hardspace: Shipbreaker》</td>
+<td>2022</td>
+<td>拆船模拟</td>
+<td>最接近「劳动」核心：按规程拆解、债务、公司；视觉 NASA朋克、政治赛博朋克</td>
+</tr>
+<tr>
+<td>《星空》</td>
+<td>2023</td>
+<td>开放世界 RPG</td>
+<td>命名的来源；视觉与器物到位，但劳动与机构较薄，常被批评为「主题公园」</td>
+</tr>
+<tr>
+<td>《无敌号》</td>
+<td>2023</td>
+<td>叙事模拟</td>
+<td>改编自莱姆 1964 年小说；1970 年代复古未来，偏太空时代/原子朋克，但常被归入邻近谱系</td>
+</tr>
+<tr>
+<td>《Stationeers》</td>
+<td>2019</td>
+<td>工程模拟</td>
+<td>气压、电力、温控；硬核维修，视觉朴素</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="31-深拆hardspace-shipbreaker最接近核心判据">3.1 深拆：《Hardspace: Shipbreaker》——最接近核心判据</h3>
+<p>玩家是拆船公司的合同工，在零重力下按规程切割一艘艘飞船：先扫描、再断电、再泄压、再切割。它的动作全是<strong>维护/拆解</strong>，它的界面全是<strong>模拟仪表</strong>，它的叙事全是<strong>债务与合同</strong>。</p>
+<p>它同时暴露了 NASA朋克的一个政治缺口：最像 NASA朋克的玩法，往往发生在<strong>公司</strong>而不是<strong>公共机构</strong>里。玩家感受到的不是「公共责任」，而是「被债务绑定的劳动」。这是一次成功的混血：NASA朋克的器物 + 赛博朋克的政治。</p>
+<h3 id="32-深拆星空命名的代价">3.2 深拆：《星空》——命名的代价</h3>
+<p>《星空》是「NASApunk」这个词的出生地，也是它被质疑的样本。它的飞船内饰、宇航服、控制台、殖民地模块都高度符合四件套；但它的世界更接近「太空主题公园」：劳动被压缩成对话选项，机构被压缩成阵营任务，维护被压缩成资源条。</p>
+<p>这不是说它「不 NASA朋克」，而是说它示范了<strong>判据 3（劳动可见）与判据 4（机构在场）可以被视觉绕过</strong>。一个作品可以长得非常 NASA朋克，却在叙事上仍然是英雄冒险。这个案例提醒创作者：<strong>风格不是判据，制度才是</strong>。</p>
+<h3 id="33-深拆observation界面即叙事">3.3 深拆：《Observation》——界面即叙事</h3>
+<p>玩家扮演空间站的 AI，通过切换摄像头、操作面板、读取文档来推进。它的界面不是 HUD，而是<strong>世界的一部分</strong>：玩家必须学会这套系统的语法，才能理解发生了什么。</p>
+<p>这是 NASA朋克游戏设计最有价值的一课：<strong>把 UI 做成机构</strong>。当玩家读一份检查单、按一个物理按钮、看一盏警报灯时，他同时在学习这个组织的规则。</p>
+<h3 id="34-深拆无敌号复古未来的另一种配方">3.4 深拆：《无敌号》——复古未来的另一种配方</h3>
+<p>《无敌号》改编自斯坦尼斯瓦夫·莱姆 1964 年的同名小说，视觉上更接近 1970 年代的太空时代/原子朋克：橙色宇航服、模拟设备、荒凉星球。它不属于核心 NASA朋克（缺少公共机构与任务控制），但它是<strong>邻近样本</strong>：同样相信「设备有重量、按钮有手感、任务有程序」。</p>
+<p>它提醒我们：NASA朋克不是唯一的「模拟未来」。在它周围，还有原子朋克、太空时代、磁带未来主义三个近邻（见 <a href="01_定义与谱系.html">01 定义与谱系</a>）。</p>
+<h2 id="四设计档案被当作艺术品的工程文件">四、设计档案：被当作艺术品的工程文件</h2>
+<p>NASA朋克有一个其他复古类型少见的材料库：<strong>真实的设计档案本身就可以出版、展览、被消费</strong>。</p>
+<ul>
+<li>《NASA 图形标准手册》（1975，Danne &amp; Blackburn 设计）：网格、无衬线、蠕虫标志、编号系统；2010 年代被重新出版，成为平面设计界的经典；</li>
+<li>阿波罗任务照片（哈苏相机）：高对比、大景深、真实光影；今天仍是「可信太空」的视觉基准；</li>
+<li>任务控制室、发射台、航天器内饰的工程照片：管线、标签、席位、指示灯；</li>
+<li>航天服与工具的设计图：功能决定形态，几乎没有装饰。</li>
+</ul>
+<p>这类档案的价值在于：它们<strong>不需要被「设计」得像 NASA朋克，因为它们就是</strong>。创作者可以直接从中提取图形语言，而不是从二手科幻插画里提取。</p>
+<h2 id="五对照表六部样本的四条判据">五、对照表：六部样本的四条判据</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>作品</th>
+<th>真实档案</th>
+<th>可外推</th>
+<th>劳动可见</th>
+<th>机构在场</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>《2001 太空漫游》</td>
+<td>强</td>
+<td>中</td>
+<td>弱</td>
+<td>弱</td>
+<td>先声/视觉核心</td>
+</tr>
+<tr>
+<td>《阿波罗 13 号》</td>
+<td>强</td>
+<td>—（史实）</td>
+<td>强</td>
+<td>强</td>
+<td>核心</td>
+</tr>
+<tr>
+<td>《火星救援》</td>
+<td>强</td>
+<td>中</td>
+<td>中</td>
+<td>强</td>
+<td>核心（能力展示型）</td>
+</tr>
+<tr>
+<td>《For All Mankind》</td>
+<td>强</td>
+<td>强</td>
+<td>中</td>
+<td>强</td>
+<td>核心（机构叙事型）</td>
+</tr>
+<tr>
+<td>《Hardspace: Shipbreaker》</td>
+<td>强</td>
+<td>强</td>
+<td>强</td>
+<td>弱（公司）</td>
+<td>混血（NASA 视觉 + 赛博政治）</td>
+</tr>
+<tr>
+<td>《星空》</td>
+<td>强</td>
+<td>强</td>
+<td>弱</td>
+<td>弱</td>
+<td>视觉核心、叙事邻近</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="六给创作者的三个提示">六、给创作者的三个提示</h2>
+<ol type="1">
+<li><strong>先选镜头，再选风格</strong>：你拍的是英雄、团队、机构，还是隐形劳动？这决定你的美术该往哪一边偏。</li>
+<li><strong>先选动词，再选界面</strong>：维修、供能、排班、检查——选两个动词，界面自然长出来。</li>
+<li><strong>先选制度，再选敌人</strong>：敌人是外部碎片、内部故障，还是制度本身？这决定你的游戏是爽游、恐怖，还是讽刺。</li>
+</ol>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="04_思想政治与批评.html"><span class="dir">prev</span><span class="label">04 · 思想政治与批评</span></a><a class="next" href="06_中文语境.html"><span class="dir">next</span><span class="label">06 · 中文语境</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_NASA朋克卷/05_作品与媒介.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_生物朋克卷/04_思想政治与批评.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>生物朋克 · 思想政治与批评</title>
+<meta name="description" content="关键词：生物朋克；生命伦理；优生学；生物政治；DIYbio；生物决定论；标签通胀；硅碳边界">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>生物朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_生物朋克与复古未来主义.html">00 对读篇</a><a href="01_定义与谱系.html">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html">03 美学与视觉</a><a href="04_思想政治与批评.html" aria-current="page">思想政治与批评</a><a href="05_作品与媒介.html">作品与媒介</a><a href="06_中文语境.html">中文语境</a><a href="07_批评与争议.html">批评与争议</a><a href="08_资料库.html">资料库（分组存目）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_生物朋克卷/04_思想政治与批评.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">思想政治与批评</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一生命伦理与优生学阴影">一、生命伦理与优生学阴影</a></li><li class=""><a href="#二后人类与生物政治存目">二、后人类与生物政治（存目）</a></li><li class=""><a href="#三diybio-的朋克属性与门槛问题">三、DIYbio 的&quot;朋克&quot;属性与门槛问题</a></li><li class=""><a href="#四生物决定论批评">四、生物决定论批评</a></li><li class=""><a href="#五标签通胀什么都是生物朋克">五、标签通胀：&quot;什么都是生物朋克&quot;</a></li><li class=""><a href="#六恐惧的两极浪漫化与现实脱节">六、恐惧的两极浪漫化与现实脱节</a></li><li class=""><a href="#七划界建议超越硅碳一刀切">七、划界建议：超越&quot;硅/碳&quot;一刀切</a></li></ul></details>
+<article class="prose">
+<h1 id="生物朋克--思想政治与批评">生物朋克 · 思想政治与批评</h1>
+<blockquote>
+<p>关键词：生物朋克；生命伦理；优生学；生物政治；DIYbio；生物决定论；标签通胀；硅碳边界</p>
+<p>摘要：本篇先处理生物朋克的思想地层：生命伦理与优生学阴影、后人类与生物政治的存目式辨析、DIYbio 的"朋克"属性与现实门槛的悖论、生物决定论批评；再转入对标签自身的批评——标签通胀（"什么都是生物朋克"）、对生物技术恐惧的两极浪漫化、与现实脱节之讥；末节给出超越"硅/碳"一刀切的划界建议。</p>
+</blockquote>
+<hr />
+<h2 id="一生命伦理与优生学阴影">一、生命伦理与优生学阴影</h2>
+<p>**生物朋克（biopunk）<strong>以基因工程改写身体、经济与权力，因而几乎必然踩上</strong>生命伦理（bioethics）<strong>的现场：基因编辑、克隆、增强与"设计婴儿"既充当叙事寓言，也牵动现实伦理争论。正因如此，它同时背着</strong>优生学（eugenics）**的阴影——二十世纪的优生学曾以"择优改造"之名行歧视与强制之实，留下强制绝育乃至种族清洗的历史污点；生物朋克凡写"基因筛选社会"，都是在与这段历史对话（《千钧一发》即其范例，见 05）。判别作品是否严肃，看它把优生学摆上审判台，还是当作不言自明的前提复述。</p>
+<h2 id="二后人类与生物政治存目">二、后人类与生物政治（存目）</h2>
+<p>生物朋克常被纳入**后人类（posthuman）**议题：身体可被序列改写时，"人"的边界随之松动，作品追问增强之后还剩下什么。<strong>生物政治（biopolitics）</strong>（福柯〔Michel Foucault〕一系以人口与身体为治理对象的概念）与生物朋克高度相关：两者都关心"生命本身"如何成为权力与资本的战场。本节按存目处理，只记录对话方向，不展开术语史，福柯式辨析见专门的政治哲学文献。</p>
+<h2 id="三diybio-的朋克属性与门槛问题">三、DIYbio 的"朋克"属性与门槛问题</h2>
+<p><strong>DIYbio（自己动手做生物学，Do-It-Yourself Biology）<strong>运动自称继承黑客伦理与朋克的 DIY 精神，把基因工具从机构实验室带向车库与社区实验室（即</strong>车库生物学（garage biology）</strong>，常与**生物骇客（biohacking）**混称）；iGEM 等竞赛与社区网络（存目，见 08）为其建制化一翼。门槛问题随之而来：与软件不同，湿实验需要设备、试剂、经费与生物安全规范，"车库"在多数地区难以真正低成本运转；监管既防滥用、也压普及。因此，其"草根对抗大机构"的朋克属性姿态多于现实（判断性陈述），落差类似赛博朋克里黑客之于公司（见主卷 15）。</p>
+<h2 id="四生物决定论批评">四、生物决定论批评</h2>
+<p>**生物决定论（biological determinism）**把行为、智力与健康还原为基因序列的必然输出，历史上长期充当性别与种族歧视的论证工具。生物朋克题材若只写"序列决定命运"，会不自觉复制这套逻辑；批评者主张：基因是倾向而非宿命，表观、环境与选择都参与塑造。文本的价值正在于拆穿决定论——《千钧一发》结局"意志穿过序列"，控诉的恰是把序列当宿命的社会，而非赞美生物本身。</p>
+<h2 id="五标签通胀什么都是生物朋克">五、标签通胀："什么都是生物朋克"</h2>
+<p>批评者常见的抱怨是<strong>标签通胀</strong>：从基因编辑寓言到丧尸病毒，从异形怪物到环保突变，"什么都是生物朋克，于是什么都不是生物朋克"。通胀的机制有三：近未来生物科技新闻密度高、词条化盘点工业乐于贴标签（见主卷 12 谱系篇）、媒体清单互相转引。收缩判据可参考本篇末节的"叙事语法"说：只有以基因与细胞为句法的作品计入；丧尸病毒一类更近<strong>生物恐怖（bio-horror）</strong>，另列于 05 边界案例。至于"无正典、无命名史"的元批评，见 07。</p>
+<h2 id="六恐惧的两极浪漫化与现实脱节">六、恐惧的两极浪漫化与现实脱节</h2>
+<p>另一组批评指向<strong>两极浪漫化</strong>：一边把生物技术浪漫化为万能（永生、超人、完美婴儿），一边把其恐怖浪漫化为末世寓言（超级病毒、失控变异、优生暴政）。两极共享同一错误：脱离生物技术现实的时间与节奏——真实的基因技术缓慢而充满不确定，受临床、成本、伦理审查与资本结构约束，既不会一夜救世，也不会一夜灭世。生物朋克也因此被讥为最与现实<strong>脱节</strong>的近未来想象（判断性陈述）：其"后生物社会"常跳过免疫排斥、伦理委员会与漫长转化周期。现实判断见 06 提示。</p>
+<h2 id="七划界建议超越硅碳一刀切">七、划界建议：超越"硅/碳"一刀切</h2>
+<p>流行的划分把**硅基（silicon-based）**归赛博朋克、**碳基（carbon-based）**归生物朋克，简洁但武断：义体、神经接口与纳米机械都游走在硅碳之间，神经网络芯片又在重写媒介本身。本卷建议以"叙事的改写语法"为判据：改造发生在基因与细胞层面、以序列为句法者归生物朋克；以信息与机械义体为句法者归赛博朋克；两者混写者标注为交叉案例、不强迫归队——05 各边界案例即按此处理。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="03_美学与视觉.html"><span class="dir">prev</span><span class="label">03 美学与视觉</span></a><a class="next" href="05_作品与媒介.html"><span class="dir">next</span><span class="label">生物朋克 · 作品与媒介</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_生物朋克卷/04_思想政治与批评.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

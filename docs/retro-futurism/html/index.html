@@ -1,0 +1,88 @@
+<!-- 由 docs/html/build_knowledge_html.py 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>复古未来主义论文集 · 总览</title>
+<meta name="description" content="一部关于“过去如何想象未来”的纵向考古，以及八卷专题附录。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../html/assets/style.css">
+<script defer src="../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="index.html" aria-current="page">文集总览</a><a href="README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="00_总论_未来的考古学与全卷地图.html">总论</a><a href="01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="附录_NASA朋克卷/index.html">NASA朋克</a><a href="附录_千禧美学卷/index.html">千禧美学</a><a href="附录_原子朋克卷/index.html">原子朋克</a><a href="附录_太阳朋克卷/index.html">太阳朋克</a><a href="附录_柴油朋克卷/index.html">柴油朋克</a><a href="附录_生物朋克卷/index.html">生物朋克</a><a href="附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>参考</h2><a href="全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../README.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">文集总览</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+
+<article class="prose">
+<section class="hero">
+<p class="eyebrow">LiveRefu · retro-futurism</p>
+<h1>复古未来主义论文集</h1>
+<p class="lede">一部关于“过去如何想象未来”的纵向考古，以及八卷专题附录。</p>
+<div class="badges">
+<span class="badge ok">21 篇主卷</span>
+<span class="badge">8 卷附录</span>
+<span class="badge">104 篇文档</span>
+<span class="badge">约 20 万字</span>
+</div>
+<div class="hero-actions">
+<a class="button" href="README.html">从卷首开始</a>
+<a class="button ghost" href="全卷总索引与字数统计.html">看全卷统计</a>
+</div>
+</section>
+<section class="section"><h2>主卷</h2><p class="section-note">从 00 总论到 20 结语，按考古顺序阅读。</p><div class="card-grid"><a class="doc-card" href="00_总论_未来的考古学与全卷地图.html"><span class="kicker">主卷</span><h3>复古未来主义论文集 · 总论：未来的考古学</h3><p>副题：导论、作者体系与全卷地图</p></a><a class="doc-card" href="01_理论篇_怀旧乡愁与未来的遗产化.html"><span class="kicker">主卷</span><h3>理论篇：怀旧、乡愁与&quot;未来的遗产化&quot;</h3><p>关键词：怀旧；乡愁机制；时代错置；幽灵学；未来感；遗产化；anemoia</p></a><a class="doc-card" href="02_远古篇_飞天永生与自动人偶_神话中的原初未来.html"><span class="kicker">主卷</span><h3>远古篇：飞天、永生与自动人偶——神话中的原初&quot;未来&quot;</h3><p>关键词：神话纪；母题库；飞天；永生；自动人偶；末世论</p></a><a class="doc-card" href="03_古典篇_异地乌托邦_从理想国到太阳城与大同.html"><span class="kicker">主卷</span><h3>古典篇：异地乌托邦——从《理想国》到《太阳城》与大同</h3><p>副题：完美社会如何从“另一处”被搬运到“另一时”</p></a><a class="doc-card" href="04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html"><span class="kicker">主卷</span><h3>近代篇：进步的世纪——启蒙与工业时代的未来雏形</h3><p>副题：从月球游记到进步史观——蒸汽、玻璃与理想社会</p></a><a class="doc-card" href="05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html"><span class="kicker">主卷</span><h3>奠基篇：凡尔纳与威尔斯——未来小说的制度化与世纪末奇迹</h3><p>关键词：凡尔纳；威尔斯；奇异旅行；科学传奇；未来战争叙事；&quot;睡到未来&quot;；图像化未来</p></a><a class="doc-card" href="06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html"><span class="kicker">主卷</span><h3>机器篇：速度与钢骨——未来主义、构成主义与装饰艺术的机器乌托邦</h3><p>关键词：机器纪；未来主义；构成主义；装饰艺术；流线型；垂直都市；人造人</p></a><a class="doc-card" href="07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html"><span class="kicker">主卷</span><h3>战间篇：柴油朋克——天空舰队、冒险家与&quot;明日世界&quot;</h3><p>关键词：战间期；天空舰队；连环画英雄；装饰艺术；世界博览会；极权建筑；柴油朋克</p></a><a class="doc-card" href="08_原子篇_原子朋克_幸福原子与镀铬郊区.html"><span class="kicker">主卷</span><h3>原子篇：原子朋克——幸福原子与镀铬郊区</h3><p>关键词：原子纪；原子朋克；幸福原子；按钮生活；Populuxe；镀铬郊区</p></a><a class="doc-card" href="09_太空篇_太空时代_Googie射线枪哥特与明日世界.html"><span class="kicker">主卷</span><h3>太空篇：太空时代——Googie、射线枪哥特与明日世界</h3><p>关键词：太空时代；Googie 建筑；射线枪哥特；明日世界；世界博览会；复古未来主义</p></a><a class="doc-card" href="10_红旗篇_红星照耀的未来_社会主义复古未来主义.html"><span class="kicker">主卷</span><h3>红旗篇：红星照耀的未来——社会主义复古未来主义</h3><p>关键词：社会主义复古未来主义；苏联与东欧；太空时代；社会主义现实主义；构成主义；补偿机制；反乌托邦</p></a><a class="doc-card" href="11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html"><span class="kicker">主卷</span><h3>中国篇：新中国未来——晚清到千禧年的中国未来想象</h3><p>关键词：追赶型未来；未来小说；科学小说；国家宣传；科学的春天；信息高速公路；复古未来主义</p></a><a class="doc-card" href="12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html"><span class="kicker">主卷</span><h3>谱系篇：朋克宇宙学——从时钟朋克到磁带未来主义的地图</h3><p>关键词：××朋克；命名法；四元素配方；目标年代；追溯命名；朋克宇宙学；复古未来主义地图</p></a><a class="doc-card" href="13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html"><span class="kicker">主卷</span><h3>蒸汽篇：蒸汽朋克——铜与汽的维多利亚回望</h3><p>关键词：蒸汽朋克；维多利亚时代；差分机；时代错置；黄铜美学；××朋克命名法</p></a><a class="doc-card" href="14_磁带篇_磁带未来主义_模拟接口的暖未来.html"><span class="kicker">主卷</span><h3>磁带篇：磁带未来主义——模拟接口的暖未来</h3><p>关键词：磁带未来主义；CRT 终端；模拟—数字过渡；操作员未来；界面考古；暖未来</p></a><a class="doc-card" href="15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html"><span class="kicker">主卷</span><h3>赛博篇：赛博朋克——近未来的腐坏与它自己的乡愁</h3><p>关键词：赛博朋克；高科技低生活；赛博空间；义体；跨国企业；过期未来；乡愁</p></a><a class="doc-card" href="16_末日篇_被取消的未来_复古末日与废墟乡愁.html"><span class="kicker">主卷</span><h3>末日篇：被取消的未来——复古末日与废墟乡愁</h3><p>关键词：被取消的未来；未来断裂；复古末日；后末日；废墟乡愁</p></a><a class="doc-card" href="17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html"><span class="kicker">主卷</span><h3>蒸汽波篇：蒸汽波与合成波——时代错置的听觉乡愁</h3><p>关键词：蒸汽波；合成波；听觉乡愁；时代错置；商场音乐；Outrun 美学；anemoia</p></a><a class="doc-card" href="18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html"><span class="kicker">主卷</span><h3>千禧篇：Y2K、Frutiger Aero 与 Webcore——千禧互联网美学</h3><p>关键词：千禧年；千年虫；Y2K 美学；Frutiger Aero；Webcore；网页 1.0；词条化；中国千禧记忆；未来感的半衰期</p></a><a class="doc-card" href="19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html"><span class="kicker">主卷</span><h3>多元篇：谁有权想象未来——非洲未来主义、丝绸朋克与太阳朋克</h3><p>关键词：非洲未来主义；原住民未来主义；丝绸朋克；太阳朋克；文化星丛；未来定义权</p></a><a class="doc-card" href="20_结语与附录_未来年表与术语对照.html"><span class="kicker">主卷</span><h3>结语与附录：把未来还回时间</h3><p>关键词：结语；未来年表；术语对照；延伸阅读</p></a></div></section>
+<section class="section"><h2>附录卷</h2><p class="section-note">八个专题附录：从千禧美学到 NASA朋克。</p><div class="card-grid"><a class="doc-card" href="附录_NASA朋克卷/index.html"><span class="kicker">附录</span><h3>NASA朋克卷（NASApunk）· 附录卷</h3><p>docs/retro-futurism/附录NASA朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a><a class="doc-card" href="附录_千禧美学卷/index.html"><span class="kicker">附录</span><h3>千禧互联网美学卷（Y2K / Frutiger Aero / Webcore）· 附录卷</h3><p>docs/retro-futurism/附录千禧美学卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a><a class="doc-card" href="附录_原子朋克卷/index.html"><span class="kicker">附录</span><h3>原子朋克卷（Atompunk）· 附录卷</h3><p>docs/retro-futurism/附录原子朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a><a class="doc-card" href="附录_太阳朋克卷/index.html"><span class="kicker">附录</span><h3>太阳朋克卷（Solarpunk）· 附录卷</h3><p>docs/retro-futurism/附录太阳朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a><a class="doc-card" href="附录_柴油朋克卷/index.html"><span class="kicker">附录</span><h3>柴油朋克卷（Dieselpunk）· 附录卷</h3><p>docs/retro-futurism/附录柴油朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a><a class="doc-card" href="附录_生物朋克卷/index.html"><span class="kicker">附录</span><h3>生物朋克卷（Biopunk）· 附录卷</h3><p>docs/retro-futurism/附录生物朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a><a class="doc-card" href="附录_蒸汽朋克卷/index.html"><span class="kicker">附录</span><h3>蒸汽朋克卷（Steampunk）· 附录卷</h3><p>docs/retro-futurism/附录蒸汽朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a><a class="doc-card" href="附录_赛博朋克卷/index.html"><span class="kicker">附录</span><h3>赛博朋克卷（Cyberpunk）· 附录卷</h3><p>docs/retro-futurism/附录赛博朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文</p></a></div></section>
+<section class="section"><h2>参考</h2><div class="card-grid"><a class="doc-card" href="全卷总索引与字数统计.html"><span class="kicker">参考</span><h3>《复古未来主义论文集》全卷总索引与字数统计</h3><p>卷内含 21 篇正文、主卷 README 与八个外编附录卷；本索引逐文件列出汉字数与字符数（统计于 2026-10-30，2026-11-03 增补 NASA朋克卷，2026-11-04 增补 NASA朋克 09 专题…</p></a></div></section>
+<section class="section"><h2>怎么读</h2>
+<p>第一次读：先看卷首 README，再从 00 总论开始；想查数据，直接看全卷统计；想钻一个专题，从附录卷的 README 进入。</p>
+<p>每一页都可以用左侧目录跳转；主卷与附录各自有上一篇/下一篇。所有页面支持系统 / 浅色 / 深色，可离线打开。</p>
+</section>
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="index.html">总览</a> · <a href="../README.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

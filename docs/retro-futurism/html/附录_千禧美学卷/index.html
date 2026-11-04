@@ -1,0 +1,135 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_千禧美学卷/README.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>千禧互联网美学卷（Y2K / Frutiger Aero / Webcore）· 附录卷</title>
+<meta name="description" content="docs/retro-futurism/附录千禧美学卷/ · 《复古未来主义论文集》外编附录 · 简体中文">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="index.html" aria-current="page">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>千禧美学</h2><a href="index.html" aria-current="page">附录卷</a><a href="00_对读篇_千禧互联网美学与复古未来主义.html">对读篇</a><a href="01_总览与定义_什么是千禧互联网美学.html">总览与定义</a><a href="02_历史年表_1995至2025.html">历史年表（1995</a><a href="03_美学家族详解.html">美学家族详解</a><a href="04_机制与理论.html">机制与理论</a><a href="05_媒介考古与作品.html">媒介考古与作品</a><a href="06_批评与争议.html">批评与争议</a><a href="07_中文语境.html">中文语境</a><a href="08_资料库.html">资料库（链接与文献）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_千禧美学卷/README.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">附录卷</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一与主卷的关系">一、与主卷的关系</a></li><li class=""><a href="#二目录结构">二、目录结构</a></li><li class="sub"><a href="#完整卷正文入口">完整卷（正文入口）</a></li><li class=""><a href="#三体例">三、体例</a></li><li class=""><a href="#四版本">四、版本</a></li></ul></details>
+<article class="prose">
+<h1 id="千禧互联网美学卷y2k--frutiger-aero--webcore-附录卷">千禧互联网美学卷（Y2K / Frutiger Aero / Webcore）· 附录卷</h1>
+<blockquote>
+<p><code>docs/retro-futurism/附录_千禧美学卷/</code> · 《复古未来主义论文集》外编附录 · 简体中文</p>
+<p>约 1995—2010 年数字生活乐观主义的视觉谱系，以及它在 2010 年代末以来的复兴与词条化。</p>
+</blockquote>
+<h2 id="一与主卷的关系">一、与主卷的关系</h2>
+<ul>
+<li>关联主卷：主卷 17 蒸汽波篇、18 千禧篇、20 结语与附录；</li>
+<li>主卷提供纵向叙事与判断，本附录提供单一朋克/美学的横向资料、定义、年表、作品与批评；</li>
+<li>本卷卷首 <code>00_对读篇</code> 是把本卷接回主卷框架的入口；两者不是逐字副本。</li>
+</ul>
+<h2 id="二目录结构">二、目录结构</h2>
+<h3 id="完整卷正文入口">完整卷（正文入口）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="index.html"><code>README.md</code></a></td>
+<td>本索引</td>
+</tr>
+<tr>
+<td><a href="00_对读篇_千禧互联网美学与复古未来主义.html"><code>00_对读篇_千禧互联网美学与复古未来主义.md</code></a></td>
+<td>对读篇：把本卷放回主卷的三层时间、遗产化与谱系框架</td>
+</tr>
+<tr>
+<td><a href="01_总览与定义_什么是千禧互联网美学.html"><code>01_总览与定义_什么是千禧互联网美学.md</code></a></td>
+<td>定义与谱系：定义、命名史、相邻概念边界</td>
+</tr>
+<tr>
+<td><a href="02_历史年表_1995至2025.html"><code>02_历史年表_1995至2025.md</code></a></td>
+<td>历史年表：真实档案与虚构回望的时间线</td>
+</tr>
+<tr>
+<td><a href="03_美学家族详解.html"><code>03_美学家族详解.md</code></a></td>
+<td>美学与视觉：母题、材质、色彩与载体语法</td>
+</tr>
+<tr>
+<td><a href="04_机制与理论.html"><code>04_机制与理论.md</code></a></td>
+<td>机制与理论：nowstalgia、半衰期与词条化</td>
+</tr>
+<tr>
+<td><a href="05_媒介考古与作品.html"><code>05_媒介考古与作品.md</code></a></td>
+<td>媒介考古与作品：硬件、网站、Flash、影视音乐</td>
+</tr>
+<tr>
+<td><a href="06_批评与争议.html"><code>06_批评与争议.md</code></a></td>
+<td>批评与争议：怀旧商品化、标签通胀与平台叙事</td>
+</tr>
+<tr>
+<td><a href="07_中文语境.html"><code>07_中文语境.md</code></a></td>
+<td>中文语境：译名、QQ 空间/网吧/4399 记忆</td>
+</tr>
+<tr>
+<td><a href="08_资料库.html"><code>08_资料库.md</code></a></td>
+<td>资料库：链接、文献与存目</td>
+</tr>
+</tbody>
+</table></div>
+<p>共 9 篇正文 + 本 README。</p>
+<h2 id="三体例">三、体例</h2>
+<p>简体中文 Markdown；篇首关键词+摘要；<code>##</code> 分节；术语首现加粗附英文；禁用 emoji；年份与归属不确定时按“约/一般认为/存疑”降档；不编造；正文以（本篇完）收尾（本索引除外）。</p>
+<h2 id="四版本">四、版本</h2>
+<p>2026-09 建卷；2026-10 并入《复古未来主义论文集》附录并补全目录；历史见 <code>git log</code>。</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="next" href="00_对读篇_千禧互联网美学与复古未来主义.html"><span class="dir">next</span><span class="label">对读篇：千禧互联网美学与复古未来主义——半衰期最短的&quot;复古未来&quot;</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_千禧美学卷/README.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

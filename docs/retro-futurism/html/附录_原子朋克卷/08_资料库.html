@@ -1,0 +1,103 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_原子朋克卷/08_资料库.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>原子朋克 · 资料库（存目）</title>
+<meta name="description" content="关键词：资料库；存目；Atompunk；Raygun Gothic；Fallout；原子用于和平；链接">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>原子朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_原子朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">定义与谱系</a><a href="02_历史年表.html">历史年表（1945</a><a href="03_美学与视觉.html">美学与视觉</a><a href="04_思想政治与批评.html">思想政治与批评</a><a href="05_作品与媒介.html">作品与媒介</a><a href="06_中文语境.html">中文语境</a><a href="07_批评与争议.html">批评与争议</a><a href="08_资料库.html" aria-current="page">资料库（存目）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_原子朋克卷/08_资料库.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">资料库（存目）</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一维基词条">一、维基词条</a></li><li class=""><a href="#二原子用于和平与民防史料">二、原子用于和平与民防史料</a></li><li class=""><a href="#三主卷线索docsretro-futurism">三、主卷线索（docs/retro-futurism/）</a></li><li class=""><a href="#四备注">四、备注</a></li></ul></details>
+<article class="prose">
+<h1 id="原子朋克--资料库存目">原子朋克 · 资料库（存目）</h1>
+<blockquote>
+<p>关键词：资料库；存目；Atompunk；Raygun Gothic；Fallout；原子用于和平；链接</p>
+<p>摘要：本篇为原子朋克调研的"货架"：按 维基词条 / 原子用于和平与民防史料 / 主卷对照 分组存目。所有条目仅记录名称与定位，未逐一给出稳定 URL；无法确认者一律标"存目"。词条与史料以英文维基"Cyberpunk derivatives"及美国国务院、联合国档案的现行页面为复核入口，中文侧平台条目仅作背景存目。</p>
+</blockquote>
+<hr />
+<h2 id="一维基词条">一、维基词条</h2>
+<ul>
+<li><strong>Atompunk</strong>：位于英文维基 <strong>"Cyberpunk derivatives"</strong>（赛博朋克衍生体裁）条目内的分节词条（无独立主词条地位，本卷检索所见如此），是"原子朋克"定义的英文主锚点；</li>
+<li><strong>Raygun Gothic</strong>：英文维基词条（存目），指 1950 年代"射线枪式"未来设计风格，与原子时代视觉高度重叠，常被混用于原子朋克讨论；</li>
+<li><strong>Fallout（辐射）</strong>：英文维基 "Fallout (franchise)" 词条（存目），含系列年表与设定源流；</li>
+<li>可旁参的相邻词条：Atomic Age、Doomsday Clock、Atoms for Peace、Duck and Cover (film)、Monsanto House of the Future、Atomium、Expo 58、Dr. Strangelove、Godzilla (1954)、On the Beach (1959 film)（以上均存目）。</li>
+</ul>
+<h2 id="二原子用于和平与民防史料">二、原子用于和平与民防史料</h2>
+<ul>
+<li><strong>"原子用于和平"（Atoms for Peace）</strong>：艾森豪威尔 1953 年 12 月 8 日联合国大会演说（通行记载），演说全文收录于美国国务院与联合国档案（存目）；</li>
+<li><strong>国际原子能机构（IAEA）</strong>：通行记载 1957 年成立，机构官网与历史档案（存目）；</li>
+<li><strong>民防影像</strong>：《卧倒掩护》（约 1951 前后）及同代民防影片——Prelinger Archives 与互联网档案馆（Internet Archive）均有收藏（存目）；</li>
+<li><strong>孟山都未来之家宣传资料</strong>（1957）：迪斯尼乐园历史档案与企业宣传片（存目）。</li>
+</ul>
+<h2 id="三主卷线索docsretro-futurism">三、主卷线索（docs/retro-futurism/）</h2>
+<ul>
+<li>主卷 08 原子篇：《幸福原子与镀铬郊区》——本主题在主卷的正面概述；</li>
+<li>主卷 09 太空篇：Googie、射线枪哥特与明日世界——原子乐观的太空延伸；</li>
+<li>主卷 10 红旗篇：《红星照耀的未来》——苏联侧"共产主义明天"，与 04/07 篇对称批评并读；</li>
+<li>主卷 16 末日篇：《被取消的未来》——《辐射》式混血与废墟乡愁详论；</li>
+<li>主卷 12 谱系篇：××朋克词条化与标签膨胀的机制分析。</li>
+</ul>
+<h2 id="四备注">四、备注</h2>
+<ul>
+<li>本库以"存目"为主：多数条目未附稳定 URL，因网络档案易失效且本卷未逐一复核；引用前请以英文维基现行页面为准；</li>
+<li>中文侧资料（百度百科、萌娘百科等平台的"原子朋克""辐射"词条）仅作背景存目，深度有限，不作定义依据；</li>
+<li>图片与影像类收藏建议从 Wikimedia Commons、Internet Archive 的 "Atomic Age/retrofuturism" 分类与检索词入手（存目）。</li>
+</ul>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="07_批评与争议.html"><span class="dir">prev</span><span class="label">原子朋克 · 批评与争议</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_原子朋克卷/08_资料库.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

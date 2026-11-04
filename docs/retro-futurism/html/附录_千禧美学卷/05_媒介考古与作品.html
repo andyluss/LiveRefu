@@ -1,0 +1,116 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_千禧美学卷/05_媒介考古与作品.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>千禧互联网美学 · 媒介考古与作品</title>
+<meta name="description" content="关键词：媒介考古；操作系统；个人主页；Flash；千禧流行文化；档案项目">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>千禧美学</h2><a href="index.html">附录卷</a><a href="00_对读篇_千禧互联网美学与复古未来主义.html">对读篇</a><a href="01_总览与定义_什么是千禧互联网美学.html">总览与定义</a><a href="02_历史年表_1995至2025.html">历史年表（1995</a><a href="03_美学家族详解.html">美学家族详解</a><a href="04_机制与理论.html">机制与理论</a><a href="05_媒介考古与作品.html" aria-current="page">媒介考古与作品</a><a href="06_批评与争议.html">批评与争议</a><a href="07_中文语境.html">中文语境</a><a href="08_资料库.html">资料库（链接与文献）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_千禧美学卷/05_媒介考古与作品.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">媒介考古与作品</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一操作系统与硬件界面的遗骨">一、操作系统与硬件（&quot;界面的遗骨&quot;）</a></li><li class=""><a href="#二网页与软件数字街区的遗存">二、网页与软件（&quot;数字街区&quot;的遗存）</a></li><li class=""><a href="#三flash-一代约-19962020">三、Flash 一代（约 1996—2020）</a></li><li class=""><a href="#四影视音乐与游戏氛围层">四、影视音乐与游戏（氛围层）</a></li><li class=""><a href="#五档案抢救与再创作出土现场">五、档案、抢救与再创作（&quot;出土&quot;现场）</a></li><li class=""><a href="#六阅读提示">六、阅读提示</a></li></ul></details>
+<article class="prose">
+<h1 id="千禧互联网美学--媒介考古与作品">千禧互联网美学 · 媒介考古与作品</h1>
+<blockquote>
+<p>关键词：媒介考古；操作系统；个人主页；Flash；千禧流行文化；档案项目</p>
+<p>摘要：本篇以"考古现场"的方式分媒介盘点千禧互联网美学的物质遗存：操作系统与硬件、网页与软件、Flash 一代、影视音乐与游戏、档案与抢救项目。中文侧细节（QQ 空间、网吧、4399 等）详见 07 中文语境篇，本篇仅作衔接。</p>
+</blockquote>
+<hr />
+<h2 id="一操作系统与硬件界面的遗骨">一、操作系统与硬件（"界面的遗骨"）</h2>
+<ul>
+<li><strong>Mac OS X Aqua（2000 公测 / 2001 正式）</strong>：玻璃滚动条、水漾 Dock——Frutiger Aero 的源头界面；</li>
+<li><strong>Windows XP（2001-10）</strong>：默认壁纸 Bliss（草原蓝天，摄影者 Charles O'Rear，约 1996 年拍摄）与"水银"质感——一代人的"默认桌面"；</li>
+<li><strong>Windows Vista（2007）/ Windows 7（2009）</strong>：Aero 半透明玻璃窗框与 Aurora 壁纸——Frutiger Aero 的软件总装；</li>
+<li>**iMac G3（1998）**与 iBook 果冻色系：Y2K 半透明塑料（blobject）的家用图腾；</li>
+<li><strong>初代 iPhone（2007）</strong>：拟物图标（日历、便签、罗盘）——拟物哲学的巅峰物；</li>
+<li><strong>游戏机与数码</strong>：PS2（2000）、Wii（2006）客厅界面、2000 年代数码相机普及（维基百科 Y2K 词条特地点名"数码相机成为主流"）、诺基亚/索尼爱立信彩屏机（约 2001—2005）与 MP3 播放器。</li>
+</ul>
+<h2 id="二网页与软件数字街区的遗存">二、网页与软件（"数字街区"的遗存）</h2>
+<ul>
+<li><strong>GeoCities</strong>（1994/1995—2009）：个人主页时代的地层——星空/火焰背景、跑马灯、计数器、留言板、"under construction"GIF、"最佳浏览 800×600"徽章；其"街区（Neighborhoods）"分类（Area51＝科幻等）是 Web 1.0 的民俗学样本（Archive Team 档案）；</li>
+<li><strong>中文侧</strong>：网易个人空间/ChinaRen 校友录（1999 前后）与 QQ 空间（2005）构成中文"个人主页第二春"（详见 07）；</li>
+<li><strong>软件生态</strong>：2000s 常见"全 Flash 官网"与 JS 特效站；工具类软件（Winamp 皮肤、屏幕保护程序）是低风险的美学实验场——皮肤文化（换肤）值得单列：它是普通用户最早的"界面 DIY"。</li>
+</ul>
+<h2 id="三flash-一代约-19962020">三、Flash 一代（约 1996—2020）</h2>
+<ul>
+<li>起源：FutureSplash（1996）→ Macromedia Flash；2000s 成为网页动画与游戏的默认格式；</li>
+<li>站点：Newgrounds（1995 起）、Kongregate（2006）等英文平台；中文的 4399/7k7k 等（详见 07）；</li>
+<li>日常形态：开场动画、"Loading…"进度条、鼠标跟随小游戏、贺卡站——Flash 是千禧网页美学的"会动的那一半"；</li>
+<li>终点与抢救：Adobe 于 2020-12-31 终止支持；社区抢救项目（如 Flashpoint 存档计划）在 2020 年代持续保存 Flash 游戏——与 GeoCities 抢救同属"数字公共考古"（见 04 篇）。</li>
+</ul>
+<h2 id="四影视音乐与游戏氛围层">四、影视音乐与游戏（氛围层）</h2>
+<ul>
+<li><strong>千禧流行乐视觉</strong>：1998—2003 年间的镀铬舞台与银色宇航服式造型（如布兰妮、超级男孩等千禧流行 MV，泛化点名）；"2000 年人"造型是 Y2K 词条的时尚母本；</li>
+<li><strong>电影</strong>：《黑客帝国》（1999）的数码雨与绿色终端常被误收进 Y2K 讨论——它更接近赛博朋克（主卷 15），但共享同一时期的电脑美学；广告与片头（约 1998—2005 的"数字未来"CG 风格）是更典型的 Y2K 影像；</li>
+<li><strong>游戏</strong>：PS2 世代界面（2000—2005）；《第二人生》（2003）式的虚拟世界乌托邦是"数字未来"的叙事面；中文网游（《传奇》《泡泡堂》等）详见 07；</li>
+<li><strong>音景</strong>：启动音与系统音（XP 的启动音、Vista 的"水银"音效、Wii 的开机音）构成"听得见的界面"——声音考古是千禧美学的冷门但高回报方向（本卷存目，未展开）。</li>
+</ul>
+<h2 id="五档案抢救与再创作出土现场">五、档案、抢救与再创作（"出土"现场）</h2>
+<ul>
+<li><strong>Archive Team</strong>：GeoCities 抢救（2009-04—2009-10-26）；此后持续抢救各类濒死平台；</li>
+<li><strong>Internet Archive / Wayback Machine</strong>：GeoCities 深爬（2009）与日常网页存档；"回到过去"的公共入口；</li>
+<li><strong>Neocities（2013）</strong>：允许今天的人重建"1996 年的家"——网页 1.0 美学的活体实践；</li>
+<li><strong>Flashpoint</strong>：Flash 游戏与动画的社区存档计划（2020 年代活跃）；</li>
+<li><strong>词条库作为活档案</strong>：CARI（cari.institute）、Aesthetics Wiki 本身即是"分类—展示—消费"三合一的博物馆；Reddit 等平台的考古帖（"what was this website"）构成大众版网页考古。</li>
+</ul>
+<h2 id="六阅读提示">六、阅读提示</h2>
+<p>本篇凡涉及精确年份（尤其中文平台）处均以"约/一般认为"标注；操作系统与主流游戏的年份为高置信常识。各"档案/抢救"项目链接与用法见 08 资料库。</p>
+<hr />
+<p><strong>出处</strong>：维基百科 "Y2K aesthetic"、"Frutiger Aero"；Archive Team（GeoCities/Flashpoint 相关文档）；Adobe Flash 终止支持公告；主卷 14（磁带接口）/15（赛博）/18（千禧）各篇；链接见 08 资料库。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="04_机制与理论.html"><span class="dir">prev</span><span class="label">千禧互联网美学 · 机制与理论</span></a><a class="next" href="06_批评与争议.html"><span class="dir">next</span><span class="label">千禧互联网美学 · 批评与争议</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_千禧美学卷/05_媒介考古与作品.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

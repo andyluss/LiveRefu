@@ -1,0 +1,303 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_NASA朋克卷/03_美学与视觉.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>03 · 美学与视觉</title>
+<meta name="description" content="关键词：白盒硬件；可维修性；检查单；模拟界面；机构色；标签系统">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>NASA朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_NASA朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html" aria-current="page">03 美学与视觉</a><a href="04_思想政治与批评.html">04 思想政治与批评</a><a href="05_作品与媒介.html">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a><a href="09_软与硬_生物可塑性与机械模块化.html">09 软与硬</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_NASA朋克卷/03_美学与视觉.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">美学与视觉</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一总原则美感来自坏了能修">一、总原则：美感来自「坏了能修」</a></li><li class=""><a href="#二四件套本卷框架">二、四件套（本卷框架）</a></li><li class="sub"><a href="#21-白盒硬件white-box-hardware">2.1 白盒硬件（white-box hardware）</a></li><li class="sub"><a href="#22-检查单checklist">2.2 检查单（checklist）</a></li><li class="sub"><a href="#23-模拟界面analog-interface">2.3 模拟界面（analog interface）</a></li><li class="sub"><a href="#24-机构色institutional-palette">2.4 机构色（institutional palette）</a></li><li class=""><a href="#三材质与光">三、材质与光</a></li><li class=""><a href="#四字体与图形">四、字体与图形</a></li><li class=""><a href="#五空间语法">五、空间语法</a></li><li class=""><a href="#六声音">六、声音</a></li><li class=""><a href="#七落到-livebay三环三套语法">七、落到 LiveBay：三环三套语法</a></li><li class=""><a href="#八反例清单">八、反例清单</a></li><li class=""><a href="#九一句话验收">九、一句话验收</a></li></ul></details>
+<article class="prose">
+<h1 id="03--美学与视觉">03 · 美学与视觉</h1>
+<blockquote>
+<p>关键词：白盒硬件；可维修性；检查单；模拟界面；机构色；标签系统</p>
+<p>摘要：NASA朋克的视觉不是「白色 + 橙色」的配色表，而是一套关于<strong>可信度</strong>的语法：外露的结构、可替换的模块、可读的标签、可操作的控件。本篇把它拆成四件套（白盒硬件、检查单、模拟界面、机构色），给出材质、色彩、字体、图形、光与声音的具体规则，并说明这套语法如何落到 LiveBay 的三环空间。</p>
+</blockquote>
+<h2 id="一总原则美感来自坏了能修">一、总原则：美感来自「坏了能修」</h2>
+<p>大多数科幻美术追求「不会坏」：无缝外壳、全息投影、自修复材料。NASA朋克反过来，追求「坏了能修」：</p>
+<ul>
+<li>接缝可见，因为面板要能拆；</li>
+<li>管线外露，因为要能查漏；</li>
+<li>标签手写或打印，因为要能改；</li>
+<li>控件是物理的，因为戴手套也要能按；</li>
+<li>备份是双份的，因为单点会失效。</li>
+</ul>
+<p>这条原则有一个直接推论：<strong>做旧不是脏，而是使用痕迹</strong>。NASA朋克的磨损应该像工具而不像废墟——边角发亮、把手掉漆、标签翘起，但结构完好、随时可用。它与「废墟乡愁」（主卷 <a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">16 末日篇</a>）的区别在于：废墟是「没人维护了」，NASA朋克是「一直有人在维护」。</p>
+<h2 id="二四件套本卷框架">二、四件套（本卷框架）</h2>
+<h3 id="21-白盒硬件white-box-hardware">2.1 白盒硬件（white-box hardware）</h3>
+<p>指把设备的内部逻辑暴露在外的设计：机架、线束、接口、指示灯、备份开关。它的视觉特征是<strong>分层</strong>：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>内容</th>
+<th>视觉处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结构层</td>
+<td>骨架、桁架、舱壁</td>
+<td>哑光金属、可见铆接/螺栓</td>
+</tr>
+<tr>
+<td>功能层</td>
+<td>设备、管路、线束</td>
+<td>模块化、颜色编码、快拆接头</td>
+</tr>
+<tr>
+<td>信息层</td>
+<td>标签、编号、状态灯</td>
+<td>高对比、等宽字、贴纸质感</td>
+</tr>
+<tr>
+<td>消耗层</td>
+<td>滤芯、电池、胶带、扎带</td>
+<td>可替换、略有不齐</td>
+</tr>
+</tbody>
+</table></div>
+<p>白盒硬件不等于「乱」。它的秩序来自<strong>编码</strong>：颜色、编号、方向箭头、区域划分。看得懂的人一眼知道哪根管子通向哪里——这就是 NASA朋克的专业感来源。</p>
+<h3 id="22-检查单checklist">2.2 检查单（checklist）</h3>
+<p>检查单是 NASA朋克最有辨识度的<strong>平面设计</strong>：一列项目、方框、缩写、签字栏、页脚编号。它把「冒险」拆成可复核的步骤，也把「人」固定在流程里。</p>
+<p>视觉上可以直接使用：</p>
+<ul>
+<li>方格纸或工程表格底纹；</li>
+<li>等宽字体与手写批注混排；</li>
+<li>红色「Remove Before Flight」飘带；</li>
+<li>夹板、活页环、油墨印章；</li>
+<li>「第 X 页 / 共 Y 页」与修订号。</li>
+</ul>
+<p>检查单还是叙事装置：一张被划掉一半的检查单，比一段独白更能说明「这里出过事」。</p>
+<h3 id="23-模拟界面analog-interface">2.3 模拟界面（analog interface）</h3>
+<p>拨杆、旋钮、按钮、CRT、七段数码管、DSKY 式的动词-名词键盘。它们的功能不是复古，而是<strong>可操作</strong>：每个控件对应一个明确动作，状态可以被肉眼读出。</p>
+<p>设计规则：</p>
+<ol type="1">
+<li><strong>一控件一功能</strong>，不做隐藏菜单；</li>
+<li><strong>状态可见</strong>：灯、表、纸带，至少有一种冗余反馈；</li>
+<li><strong>层级靠物理分区</strong>，不靠弹窗；</li>
+<li><strong>故障可读</strong>：警报色、闪烁频率、蜂鸣音区分严重度；</li>
+<li><strong>戴手套可用</strong>：控件尺寸大于指尖，间距足够。</li>
+</ol>
+<h3 id="24-机构色institutional-palette">2.4 机构色（institutional palette）</h3>
+<p>NASA朋克的色彩不是「复古滤镜」，而是<strong>机构识别系统</strong>的延伸：一枚徽标、一条色带、一种编号规则，让所有东西看起来属于同一个组织。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>色</th>
+<th>用法</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>暖白 / 米白</td>
+<td>舱壁、面板、纸张</td>
+<td>不要纯白，加一点黄灰</td>
+</tr>
+<tr>
+<td>安全橙</td>
+<td>警示、救生、活动部件</td>
+<td>面积小、饱和高，作为视觉锚点</td>
+</tr>
+<tr>
+<td>深青 / 灰绿</td>
+<td>机柜、控制台、地面</td>
+<td>压低整体明度，衬托橙色</td>
+</tr>
+<tr>
+<td>琥珀</td>
+<td>警报、背光、CRT 荧光</td>
+<td>与橙色区分：琥珀偏黄，橙偏红</td>
+</tr>
+<tr>
+<td>深灰 / 石墨</td>
+<td>结构件、文字、边框</td>
+<td>提供对比，不要纯黑</td>
+</tr>
+</tbody>
+</table></div>
+<p>配色比例建议：<strong>70% 中性（白/灰/米）+ 20% 深色结构 + 10% 高饱和强调</strong>。高饱和色只出现在「需要被看见」的地方——按钮、警示、状态灯——这样界面才有呼吸。</p>
+<h2 id="三材质与光">三、材质与光</h2>
+<ul>
+<li><strong>金属</strong>：阳极氧化铝、拉丝不锈钢、喷砂面板；高光弱、反射模糊。</li>
+<li><strong>塑料</strong>：米色 ABS、灰色 PVC、半透明亚克力；允许发黄（老化痕迹）。</li>
+<li><strong>织物</strong>：尼龙织带、Velcro、帆布；用于束缚、标识、临时修补。</li>
+<li><strong>纸</strong>：标签纸、检查单、胶带；边缘可翘、可有手写。</li>
+<li><strong>玻璃</strong>：CRT 弧面、厚边框、轻微反光；避免无边框全息。</li>
+</ul>
+<p>光的设计比材质更重要：</p>
+<ul>
+<li>主光：冷白工作灯（约 5000—6000K），均匀、无戏剧阴影；</li>
+<li>辅光：琥珀色警报/背光，局部；</li>
+<li>环境：设备指示灯的点状光、CRT 的屏幕光；</li>
+<li><strong>禁用</strong>：霓虹、紫蓝渐变、体积光滥用——这些是赛博朋克的语法。</li>
+</ul>
+<h2 id="四字体与图形">四、字体与图形</h2>
+<ul>
+<li><strong>标题/标识</strong>：几何无衬线（Helvetica 系）或机构定制字；字距紧、字号克制。</li>
+<li><strong>数据/编号</strong>：等宽字体；用于坐标、序列号、倒计时。</li>
+<li><strong>手写</strong>：只用于批注、临时标签；不要整段手写体。</li>
+<li><strong>图形</strong>：网格、分区线、箭头、警告三角、条码、检查框、修订章。</li>
+<li><strong>图标</strong>：功能优先，线条粗细一致；避免拟物插画。</li>
+</ul>
+<p>一个实用技巧：<strong>给所有东西编号</strong>。舱段号、管线号、岗位号、班次号。编号本身就是世界观——它暗示有一个更大的系统在管理这些编号。</p>
+<h2 id="五空间语法">五、空间语法</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>空间</th>
+<th>特征</th>
+<th>情绪</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>控制室</td>
+<td>阶梯座位、大屏、电话、纸质记录</td>
+<td>集体、紧张、有序</td>
+</tr>
+<tr>
+<td>机舱/走廊</td>
+<td>管线、格栅地板、应急灯、舱门</td>
+<td>封闭、可维修、略带压迫</td>
+</tr>
+<tr>
+<td>居住舱</td>
+<td>折叠家具、织物、个人物品、暖光</td>
+<td>临时但有人味</td>
+</tr>
+<tr>
+<td>工作台</td>
+<td>工具墙、零件盒、台灯、检查单</td>
+<td>专注、手感、时间感</td>
+</tr>
+<tr>
+<td>过渡区</td>
+<td>气闸、更衣、消毒、标识</td>
+<td>仪式感、边界感</td>
+</tr>
+</tbody>
+</table></div>
+<p>NASA朋克的空间几乎总是<strong>模块化</strong>的：舱段可以拼接、房间可以改用途、墙面可以拆。这为关卡设计与叙事都提供了便利——同一套模块，换标签就是另一个岗位。</p>
+<h2 id="六声音">六、声音</h2>
+<ul>
+<li>底噪：风扇、变压器、继电器、远处金属应力声；</li>
+<li>信号：无线电静电、摩尔斯、打印机的机械声、CRT 的电流声；</li>
+<li>警报：分层的蜂鸣（注意/警告/危急），不要用电影式大音墙；</li>
+<li>人声：被无线电滤波的短句、呼叫代号、重复确认；</li>
+<li>静默：NASA朋克需要静默，因为「没声音」意味着系统正常。</li>
+</ul>
+<h2 id="七落到-livebay三环三套语法">七、落到 LiveBay：三环三套语法</h2>
+<p>LiveBay 的月牙形太空城可以按环分配视觉语法，让玩家一眼知道自己在哪：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>环</th>
+<th>功能</th>
+<th>主色</th>
+<th>材质</th>
+<th>光</th>
+<th>关键词</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>外环</td>
+<td>护卫、采集、能源</td>
+<td>冷灰 + 安全橙</td>
+<td>金属、装甲、外露桁架</td>
+<td>冷白 + 警示琥珀</td>
+<td>暴露、强度、任务</td>
+</tr>
+<tr>
+<td>中环</td>
+<td>居住、养生、娱乐、教育</td>
+<td>暖白 + 木色 + 柔绿</td>
+<td>织物、塑料、植物</td>
+<td>暖白 + 局部彩色</td>
+<td>安稳、重复、生活</td>
+</tr>
+<tr>
+<td>内环</td>
+<td>政治、经济、文化</td>
+<td>米白 + 深青 + 黄铜</td>
+<td>石材、玻璃、抛光金属</td>
+<td>均匀、无影</td>
+<td>秩序、仪式、距离</td>
+</tr>
+</tbody>
+</table></div>
+<p>三环之间的过渡区（气闸、电梯、检查站）是视觉上最有趣的地方：外环的橙色警示带会在这里变成中环的柔色导视，金属格栅变成地毯，警报声变成广播——<strong>一条走廊就是一次阶级转换</strong>。</p>
+<p>这套分配也直接服务于玩法：外环塔防的界面应该像战情室，中环的界面应该像家居面板，内环的界面应该像档案系统。具体见 <a href="../../../../games/livebay/docs-ai/design01/08_美术与音频方向.md"><code>games/livebay/docs-ai/design01/08_美术与音频方向.md</code></a>。</p>
+<h2 id="八反例清单">八、反例清单</h2>
+<ul>
+<li>全息投影 + 透明蓝屏（这是 2010 年代科幻，不是 NASA朋克）；</li>
+<li>无缝白色 + 苹果式极简（没有维修入口）；</li>
+<li>过度做旧 + 锈迹斑斑（这是废墟，不是在用）；</li>
+<li>霓虹紫蓝 + 雨夜（这是赛博朋克）；</li>
+<li>无标签的管线与无编号的舱门（失去了机构感）；</li>
+<li>纯装饰性的检查单（没有真实流程）。</li>
+</ul>
+<h2 id="九一句话验收">九、一句话验收</h2>
+<blockquote>
+<p>随手截一张图，问三个问题：<strong>这东西坏了怎么修？谁在值班？它属于哪个编号系统？</strong> 三个都能答上来，才是 NASA朋克。</p>
+</blockquote>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="02_历史年表.html"><span class="dir">prev</span><span class="label">02 · 历史年表</span></a><a class="next" href="04_思想政治与批评.html"><span class="dir">next</span><span class="label">04 · 思想政治与批评</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_NASA朋克卷/03_美学与视觉.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

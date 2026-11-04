@@ -1,0 +1,158 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_千禧美学卷/01_总览与定义_什么是千禧互联网美学.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>千禧互联网美学 · 总览与定义</title>
+<meta name="description" content="关键词：千禧互联网美学；Y2K 美学；Frutiger Aero；Webcore；McBling；术语族">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>千禧美学</h2><a href="index.html">附录卷</a><a href="00_对读篇_千禧互联网美学与复古未来主义.html">对读篇</a><a href="01_总览与定义_什么是千禧互联网美学.html" aria-current="page">总览与定义</a><a href="02_历史年表_1995至2025.html">历史年表（1995</a><a href="03_美学家族详解.html">美学家族详解</a><a href="04_机制与理论.html">机制与理论</a><a href="05_媒介考古与作品.html">媒介考古与作品</a><a href="06_批评与争议.html">批评与争议</a><a href="07_中文语境.html">中文语境</a><a href="08_资料库.html">资料库（链接与文献）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_千禧美学卷/01_总览与定义_什么是千禧互联网美学.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">总览与定义</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一伞形概念与边界">一、伞形概念与边界</a></li><li class=""><a href="#二成员谱系树">二、成员谱系树</a></li><li class=""><a href="#三核心成员一句话定位">三、核心成员一句话定位</a></li><li class=""><a href="#四术语辨析容易混的四组概念">四、术语辨析：容易混的四组概念</a></li><li class=""><a href="#五译名说明详见-07-中文语境篇">五、译名说明（详见 07 中文语境篇）</a></li></ul></details>
+<article class="prose">
+<h1 id="千禧互联网美学--总览与定义">千禧互联网美学 · 总览与定义</h1>
+<blockquote>
+<p>关键词：千禧互联网美学；Y2K 美学；Frutiger Aero；Webcore；McBling；术语族</p>
+<p>摘要：本篇界定"千禧互联网美学"这个伞形概念：它不是单一风格，而是约 1995—2010 年间"数字生活乐观主义"视觉系谱的总称——核心成员为 Y2K 美学、Frutiger Aero、Webcore（网页 1.0 美学），外围含 McBling 与拟物界面哲学；这些标签几乎全部是 2010 年代末以降的词条化命名。本篇给出成员谱系树、命名年代对照与辨析口径，作为全卷地图。</p>
+</blockquote>
+<hr />
+<h2 id="一伞形概念与边界">一、伞形概念与边界</h2>
+<p>**千禧互联网美学（Millennial / Y2K-era Internet Aesthetics）**是本卷自用的伞形概念，指以"数字生活即将全面到来"为底色的、约 1995—2010 年间产生并集体过时的视觉文化系谱。三点边界说明：</p>
+<ol type="1">
+<li><strong>它不等于"2000 年代的全部时尚"</strong>：本卷聚焦与<strong>互联网/个人计算/数字消费</strong>相关的美学（界面、网页、数码产品、数字生活方式），时尚（如低腰裤、亮片）只在作为同一时代情绪证据时旁及；</li>
+<li><strong>它既是"当年的现在"，也是"今天的遗产"</strong>：当年这些风格并不自称为"Y2K 美学"——它们就叫"现在"；今天我们看到的是被词条化后的回望版本（主卷 18 千禧篇的核心论点，本卷展开）；</li>
+<li><strong>它与复古未来主义的关系</strong>：见卷首 00 对读篇——它是"半衰期最短的复古未来"。</li>
+</ol>
+<h2 id="二成员谱系树">二、成员谱系树</h2>
+<p>按时间与血缘排布（详见 03 美学家族详解篇）：</p>
+<pre><code>Memphis Design（1980s 中期—1990s 中期，祖先）
+        │
+        ├──→ Y2K 美学（约 1998—2003）＝镀铬/半透明/果冻/充气家具
+        │        其后继：Frutiger Aero（约 2004—2013）＝玻璃/水滴/绿叶/拟物
+        │                  （N 世代把两者合称&quot;千禧数字美学&quot;）
+        │
+        ├──→ Webcore / 网页 1.0 美学（约 1995—2003 的对象；2010s 起命名）
+        │         ＝个人主页/跑马灯/计数器/星空背景/施工中 GIF
+        │
+        └──→ McBling（约 2004—2008）＝bling-bling/粉彩亮片（时尚侧的旁支）
+                 （常被并入广义 &quot;Y2K&quot; 讨论；界定分歧见下）</code></pre>
+<p>另有两条重要的<strong>相邻而不属</strong>的线：</p>
+<ul>
+<li><strong>蒸汽波（vaporwave，2010s）</strong>：千禧美学遗产的"消费者"——它采样 80—90 年代商场与电脑素材，见主卷 17；</li>
+<li><strong>拟物设计（skeuomorphism，约 2007—2013 苹果生态）</strong>：是 Frutiger Aero 的界面哲学底座，作为"哲学/技术"维度并入 03 篇论述而非独立家族。</li>
+</ul>
+<h2 id="三核心成员一句话定位">三、核心成员一句话定位</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>家族</th>
+<th>大致年代</th>
+<th>一句话</th>
+<th>命名来源</th>
+<th>命名年代（存疑标注）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Y2K 美学</td>
+<td>1998—2003</td>
+<td>镀铬与半透明果冻壳的"2000 年未来"</td>
+<td>Y2K＝"千年虫问题"的缩写（程序员 David Eddy 造）；美学词条为后世命名</td>
+<td>词条化约 2010s 末—2020s</td>
+</tr>
+<tr>
+<td>Frutiger Aero</td>
+<td>2004—2013</td>
+<td>玻璃水滴绿叶的"清爽数字生活"</td>
+<td>得名于弗鲁提格字体的清透观感；一般认为 CARI 成员 Sofi Xian 于 2018 年命名（年份与机构归属诸说不一，存疑）</td>
+<td>2018 前后</td>
+</tr>
+<tr>
+<td>Webcore / 网页 1.0 美学</td>
+<td>对象 1995—2003；命名 2010s</td>
+<td>个人主页时代的低保真网页视觉</td>
+<td>网络词条（webcore / 90s web）</td>
+<td>存疑（2010s 中后期）</td>
+</tr>
+<tr>
+<td>McBling</td>
+<td>2004—2008</td>
+<td>bling-bling 流行与 Y2K 的"放纵版"</td>
+<td>网络词条（McBling＝Mc+bling）</td>
+<td>存疑</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="四术语辨析容易混的四组概念">四、术语辨析：容易混的四组概念</h2>
+<ol type="1">
+<li><strong>Y2K 美学 vs 千年虫（Y2K bug）</strong>：千年虫是 1999—2000 年的真实技术恐慌（日期回绕 bug）；Y2K 美学是以"2000 年"为符号的视觉风格。命名同源（都是 "Year 2000"），指向不同。中文偶尔把 Y2K 美学写作"千年虫美学"，不准确，本卷不用。</li>
+<li><strong>Y2K 美学 vs Cybercore</strong>：维基百科指出，2020 年代 Y2K 一词泛化后，原义（镀铬式复古未来主义）偶以 Cybercore 称呼——即"窄义 Y2K"与"广义 Y2K（含 2000s 时尚）"之争。</li>
+<li><strong>Frutiger Aero vs Y2K 美学</strong>：常被混为一谈。粗分：Y2K 是"即将到来的 2000 年"的锐利金属与半透明；Frutiger Aero 是"已经到来的数字生活"的圆润清透（玻璃、水滴、拟物）。主卷 18 已辨析，本卷 03 篇再给对照表。</li>
+<li><strong>Webcore vs "复古网页"复兴</strong>：Webcore 指对 1995—2003 个人网页美学的词条化与再创作（Neocities 运动是其当代实践）；它与"网页考古"（archive 视角）不同——前者造新网页，后者存旧网页，本卷两者都收。</li>
+</ol>
+<h2 id="五译名说明详见-07-中文语境篇">五、译名说明（详见 07 中文语境篇）</h2>
+<ul>
+<li>Y2K 美学：中文普遍<strong>保留英文 "Y2K"</strong>（小红书/知乎/B 站标签），少用"千年虫美学"；</li>
+<li>Frutiger Aero：中文直接使用英文原名或"玻璃拟物美学"等描述性说法，无统一译名；</li>
+<li>Webcore/网页 1.0：中文常用"网页 1.0 美学/复古网页"；</li>
+<li>伞形词"千禧互联网美学"为本卷工作词，非通行术语。</li>
+</ul>
+<hr />
+<p><strong>出处</strong>：维基百科 "Y2K aesthetic" 与 "Frutiger Aero"；CARI FAQ；Aesthetics Wiki（McBling 等词条）；主卷 18 千禧篇；链接见 08 资料库。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="00_对读篇_千禧互联网美学与复古未来主义.html"><span class="dir">prev</span><span class="label">对读篇：千禧互联网美学与复古未来主义——半衰期最短的&quot;复古未来&quot;</span></a><a class="next" href="02_历史年表_1995至2025.html"><span class="dir">next</span><span class="label">千禧互联网美学 · 历史年表（1995—2025）</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_千禧美学卷/01_总览与定义_什么是千禧互联网美学.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

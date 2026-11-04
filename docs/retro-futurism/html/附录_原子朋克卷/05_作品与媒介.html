@@ -1,0 +1,101 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_原子朋克卷/05_作品与媒介.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>原子朋克 · 作品与媒介</title>
+<meta name="description" content="关键词：原子广告；孟山都未来之家；卧倒掩护；大众机械；海滨；奇爱博士；哥斯拉；原子球；明日世界；辐射">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>原子朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_原子朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">定义与谱系</a><a href="02_历史年表.html">历史年表（1945</a><a href="03_美学与视觉.html">美学与视觉</a><a href="04_思想政治与批评.html">思想政治与批评</a><a href="05_作品与媒介.html" aria-current="page">作品与媒介</a><a href="06_中文语境.html">中文语境</a><a href="07_批评与争议.html">批评与争议</a><a href="08_资料库.html">资料库（存目）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_原子朋克卷/05_作品与媒介.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">作品与媒介</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一第一序档案原子广告与孟山都未来之家宣传">一、第一序档案：原子广告与孟山都未来之家宣传</a></li><li class=""><a href="#二影视海滨1959奇爱博士1964哥斯拉-1954">二、影视：《海滨》1959、《奇爱博士》1964、哥斯拉 1954</a></li><li class=""><a href="#三建筑与展陈原子球-1958迪斯尼明日世界-1955-起">三、建筑与展陈：原子球 1958、迪斯尼明日世界 1955 起</a></li><li class=""><a href="#四游戏辐射系列-1997-起混血巅峰">四、游戏：《辐射》系列 1997 起——混血巅峰</a></li><li class=""><a href="#五阅读提示">五、阅读提示</a></li></ul></details>
+<article class="prose">
+<h1 id="原子朋克--作品与媒介">原子朋克 · 作品与媒介</h1>
+<blockquote>
+<p>关键词：原子广告；孟山都未来之家；卧倒掩护；大众机械；海滨；奇爱博士；哥斯拉；原子球；明日世界；辐射</p>
+<p>摘要：本篇按媒介盘点原子朋克的"原始语料"与代表作品：作为第一序档案的原子广告、《大众机械》插图、孟山都未来之家宣传与民防影像；影视侧取《海滨》《奇爱博士》与日本侧《哥斯拉》三锚点；建筑展陈取原子球与迪斯尼明日世界；游戏以《辐射》系列为"混血巅峰"。凡年份不确定者一律降档标注。</p>
+</blockquote>
+<hr />
+<h2 id="一第一序档案原子广告与孟山都未来之家宣传">一、第一序档案：原子广告与孟山都未来之家宣传</h2>
+<p><strong>第一序档案</strong>指原子时代自产的宣传、广告与展览影像——它们是后世原子朋克美学的"原件库"，其图像语法（镀铬、按钮、分子轨道、蘑菇云剪影）直接来自这批材料，而非复古者的发明。代表物包括：</p>
+<ul>
+<li><strong>原子广告</strong>：1950 年代家电、汽车与能源广告反复许诺"原子能带来的美好生活"，把核能描绘成无烟、无味的家用仆人；这类广告是"幸福原子"图像最密集的产地（泛述，不逐条引证具体刊期）；</li>
+<li><strong>《大众机械》插图</strong>（Popular Mechanics）：美国大众科技杂志，1950 年代前后以"原子汽车/原子飞机/原子厨房/原子城"为题反复绘制想象图（存目，泛指其 1950s 插图传统），是"原子乐观民间版"的重要图源，常被后来的复古合集重新收录；</li>
+<li><strong>孟山都未来之家</strong>（Monsanto House of the Future）：迪斯尼乐园明日世界内的全塑胶住宅展项，1957 年开放（通行记载），展示"塑胶居所+微波烹饪"的家庭未来，是<strong>企业宣传与展陈宣传一体</strong>的样本——既是建筑，也是广告与宣传片主角；</li>
+<li><strong>民防影像《卧倒掩护》</strong>（Duck and Cover）：乌龟伯特（Bert the Turtle）主演的民防动画短片，通行记载约 1951 年前后发行，教儿童"闪光即卧倒"——恐惧侧的原子日常被做成可操作的课堂仪式（年份在档案间有出入，降档）。</li>
+</ul>
+<h2 id="二影视海滨1959奇爱博士1964哥斯拉-1954">二、影视：《海滨》1959、《奇爱博士》1964、哥斯拉 1954</h2>
+<p>原子朋克影视侧不是单一"乐观"，而是乐观与恐惧的三副面孔：</p>
+<ul>
+<li><strong>《海滨》</strong>（<em>On the Beach</em>）：电影 1959 年（据内维尔·舒特 1957 年同名小说改编，通行记载）。核战后的南半球等待辐射尘降临，"严肃末日"范本——无赢家、无怪兽，只有缓慢熄灭的日常；</li>
+<li><strong>《奇爱博士》</strong>（<em>Dr. Strangelove</em>）：斯坦利·库布里克 1964 年讽刺片（通行记载），把威慑逻辑推演至荒诞（作战室、末日机器），是核题材<strong>黑色幽默</strong>的奠基文本——笑的是按钮体制而非灾变本身；</li>
+<li><strong>《哥斯拉》</strong>（<em>Godzilla</em>，日文 ゴジラ）：东宝 1954 年、本多猪四郎导演（通行记载）。氢弹试验唤醒的巨兽，普遍被读作广岛核记忆与 1954 年"第五福龙丸"事件的隐喻（通行解读）——日本侧的原子恐惧，是原子朋克谱系里来自"被炸一侧"的锚点。</li>
+</ul>
+<h2 id="三建筑与展陈原子球-1958迪斯尼明日世界-1955-起">三、建筑与展陈：原子球 1958、迪斯尼明日世界 1955 起</h2>
+<ul>
+<li><strong>原子球</strong>（Atomium）：1958 年布鲁塞尔世界博览会（Expo 58）地标，将铁晶胞结构放大为"和平原子"纪念碑——"原子=秩序与进步"的建筑化表达（通行记载，1958 年世博会年份确切）；</li>
+<li><strong>迪斯尼明日世界</strong>（Tomorrowland）：迪斯尼乐园 1955 年开幕即设（通行记载），此后成为"原子乐观游乐场化"的样板：原子、太空、自动化被做成可乘坐的"明日"；孟山都未来之家即 1957 年立于其中。迪斯尼把"明日"变成家庭消费品，是原子乐观商业化的标志性机制（与主卷 09 太空篇相邻论述）。</li>
+</ul>
+<h2 id="四游戏辐射系列-1997-起混血巅峰">四、游戏：《辐射》系列 1997 起——混血巅峰</h2>
+<p><strong>《辐射》</strong>（<em>Fallout</em>）系列 1997 年首作发行（Interplay，通行记载），把 1950 年代原子乐观图像（避难所招贴、核子可乐式广告、镀铬机械）成建制回收进核战后的废土，形成"<strong>原子乐观档案 × 末日废墟</strong>"的<strong>混血</strong>（hybrid）巅峰——玩家在乐观图像内部目睹其破产。其后 Bethesda 重启诸作（2008 年《辐射 3》起，通行记载）把避难所小子等符号推向全球，原子朋克由此获得当代最大出口。其混血机制（为何是"复古+末日"而非单纯怀旧）详论见主卷 16 末日篇；图像语料源头见主卷 08 原子篇。</p>
+<h2 id="五阅读提示">五、阅读提示</h2>
+<p>以上按"第一序档案优先、再造作品其后"排序；年份凡通行记载之外皆有出入者一律降档；具体刊期、片目与版次信息以正式档案复核为准。</p>
+<hr />
+<p><strong>出处与降档说明</strong>：本篇年份（1951 前后/1954/1955/1957/1958/1959/1964/1997/2008）为公共通行记载，个别（《卧倒掩护》发行年）降档；《海滨》小说-电影关系、哥斯拉隐喻为通行说法；广告与大众机械插图未逐期引证。链接存目见 08 资料库。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="04_思想政治与批评.html"><span class="dir">prev</span><span class="label">原子朋克 · 思想政治与批评</span></a><a class="next" href="06_中文语境.html"><span class="dir">next</span><span class="label">原子朋克 · 中文语境</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_原子朋克卷/05_作品与媒介.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

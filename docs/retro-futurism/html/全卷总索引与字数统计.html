@@ -1,0 +1,918 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../全卷总索引与字数统计.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>《复古未来主义论文集》全卷总索引与字数统计</title>
+<meta name="description" content="卷内含 21 篇正文、主卷 README 与八个外编附录卷；本索引逐文件列出汉字数与字符数（统计于 2026-10-30，2026-11-03 增补 NASA朋克卷，2026-11-04 增补 NASA朋克 09 专题，本索引文件自身不计入）。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../html/assets/style.css">
+<script defer src="../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="index.html">文集总览</a><a href="README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="00_总论_未来的考古学与全卷地图.html">总论</a><a href="01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="附录_NASA朋克卷/index.html">NASA朋克</a><a href="附录_千禧美学卷/index.html">千禧美学</a><a href="附录_原子朋克卷/index.html">原子朋克</a><a href="附录_太阳朋克卷/index.html">太阳朋克</a><a href="附录_柴油朋克卷/index.html">柴油朋克</a><a href="附录_生物朋克卷/index.html">生物朋克</a><a href="附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>参考</h2><a href="全卷总索引与字数统计.html" aria-current="page">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../全卷总索引与字数统计.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">《复古未来主义论文集》全卷总索引与字数统计</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一卷构成总览">一、卷构成总览</a></li><li class=""><a href="#二附录卷一览">二、附录卷一览</a></li><li class=""><a href="#三主卷-0020-逐篇统计">三、主卷 00—20 逐篇统计</a></li><li class=""><a href="#四主卷-readme">四、主卷 README</a></li><li class=""><a href="#五附录卷附录_千禧美学卷-逐文件统计">五、附录卷：附录千禧美学卷/ 逐文件统计</a></li><li class=""><a href="#六附录卷附录_原子朋克卷-逐文件统计">六、附录卷：附录原子朋克卷/ 逐文件统计</a></li><li class=""><a href="#七附录卷附录_太阳朋克卷-逐文件统计">七、附录卷：附录太阳朋克卷/ 逐文件统计</a></li><li class=""><a href="#八附录卷附录_柴油朋克卷-逐文件统计">八、附录卷：附录柴油朋克卷/ 逐文件统计</a></li><li class=""><a href="#九附录卷附录_生物朋克卷-逐文件统计">九、附录卷：附录生物朋克卷/ 逐文件统计</a></li><li class=""><a href="#十附录卷附录_蒸汽朋克卷-逐文件统计">十、附录卷：附录蒸汽朋克卷/ 逐文件统计</a></li><li class=""><a href="#十一附录卷附录_赛博朋克卷-逐文件统计">十一、附录卷：附录赛博朋克卷/ 逐文件统计</a></li><li class=""><a href="#十二附录卷附录_nasa朋克卷-逐文件统计">十二、附录卷：附录NASA朋克卷/ 逐文件统计</a></li><li class=""><a href="#十三朋克附录的精简内容">十三、朋克附录的「精简内容」</a></li><li class=""><a href="#备注">备注</a></li></ul></details>
+<article class="prose">
+<h1 id="复古未来主义论文集全卷总索引与字数统计">《复古未来主义论文集》全卷总索引与字数统计</h1>
+<blockquote>
+<p>卷内含 21 篇正文、主卷 README 与八个外编附录卷；本索引逐文件列出汉字数与字符数（统计于 2026-10-30，2026-11-03 增补 NASA朋克卷，2026-11-04 增补 NASA朋克 09 专题，本索引文件自身不计入）。</p>
+</blockquote>
+<p><strong>计数口径</strong>：汉字数＝汉字/CJK 字符（不含标点、字母、数字、空白）；字符数＝全文非空白字符（含中文标点、英文、数字）。</p>
+<hr />
+<h2 id="一卷构成总览">一、卷构成总览</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>卷</th>
+<th>目录/文件</th>
+<th style="text-align: right;">文件数</th>
+<th style="text-align: right;">汉字合计</th>
+<th style="text-align: right;">字符合计</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主卷正文</td>
+<td>00—20</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">92,858</td>
+<td style="text-align: right;">135,741</td>
+</tr>
+<tr>
+<td>主卷 README</td>
+<td><code>README.md</code></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2,306</td>
+<td style="text-align: right;">4,191</td>
+</tr>
+<tr>
+<td>八个附录卷</td>
+<td><code>附录_*卷/</code></td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">108,197</td>
+<td style="text-align: right;">177,874</td>
+</tr>
+<tr>
+<td><strong>全卷总计</strong></td>
+<td>主卷 + 八个附录</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;"><strong>203,361</strong></td>
+<td style="text-align: right;"><strong>317,806</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>注：主卷 21 篇 + 主卷 README + 八个附录卷（NASA朋克卷 11 文件，其余各 10 文件）。五个朋克附录的旧<strong>精简内容</strong>另列且不计入正卷合计；旧 <code>docs/punks/</code> 的合订本、总索引与整合说明在 <code>原朋克五卷残留/</code>。</p>
+</blockquote>
+<h2 id="二附录卷一览">二、附录卷一览</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>附录卷</th>
+<th style="text-align: right;">文件数</th>
+<th style="text-align: right;">汉字合计</th>
+<th style="text-align: right;">字符合计</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>附录_千禧美学卷/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11,197</td>
+<td style="text-align: right;">22,855</td>
+</tr>
+<tr>
+<td><code>附录_原子朋克卷/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">14,095</td>
+<td style="text-align: right;">21,146</td>
+</tr>
+<tr>
+<td><code>附录_太阳朋克卷/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13,121</td>
+<td style="text-align: right;">29,873</td>
+</tr>
+<tr>
+<td><code>附录_柴油朋克卷/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13,034</td>
+<td style="text-align: right;">18,620</td>
+</tr>
+<tr>
+<td><code>附录_生物朋克卷/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10,749</td>
+<td style="text-align: right;">16,351</td>
+</tr>
+<tr>
+<td><code>附录_蒸汽朋克卷/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11,070</td>
+<td style="text-align: right;">15,206</td>
+</tr>
+<tr>
+<td><code>附录_赛博朋克卷/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13,104</td>
+<td style="text-align: right;">19,768</td>
+</tr>
+<tr>
+<td><code>附录_NASA朋克卷/</code></td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">21,827</td>
+<td style="text-align: right;">34,055</td>
+</tr>
+<tr>
+<td><strong>附录合计</strong></td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;"><strong>108,197</strong></td>
+<td style="text-align: right;"><strong>177,874</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="三主卷-0020-逐篇统计">三、主卷 00—20 逐篇统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>篇</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00_总论_未来的考古学与全卷地图</td>
+<td style="text-align: right;">4,684</td>
+<td style="text-align: right;">7,399</td>
+</tr>
+<tr>
+<td>01_理论篇_怀旧乡愁与未来的遗产化</td>
+<td style="text-align: right;">2,930</td>
+<td style="text-align: right;">4,530</td>
+</tr>
+<tr>
+<td>02_远古篇_飞天永生与自动人偶_神话中的原初未来</td>
+<td style="text-align: right;">5,250</td>
+<td style="text-align: right;">6,792</td>
+</tr>
+<tr>
+<td>03_古典篇_异地乌托邦_从理想国到太阳城与大同</td>
+<td style="text-align: right;">4,122</td>
+<td style="text-align: right;">5,693</td>
+</tr>
+<tr>
+<td>04_近代篇_进步的世纪_启蒙与工业时代的未来雏形</td>
+<td style="text-align: right;">4,601</td>
+<td style="text-align: right;">6,247</td>
+</tr>
+<tr>
+<td>05_奠基篇_凡尔纳与威尔斯_未来小说的制度化</td>
+<td style="text-align: right;">4,131</td>
+<td style="text-align: right;">6,093</td>
+</tr>
+<tr>
+<td>06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦</td>
+<td style="text-align: right;">3,972</td>
+<td style="text-align: right;">5,594</td>
+</tr>
+<tr>
+<td>07_战间篇_柴油朋克_天空舰队冒险家与明日世界</td>
+<td style="text-align: right;">4,001</td>
+<td style="text-align: right;">6,155</td>
+</tr>
+<tr>
+<td>08_原子篇_原子朋克_幸福原子与镀铬郊区</td>
+<td style="text-align: right;">4,983</td>
+<td style="text-align: right;">7,258</td>
+</tr>
+<tr>
+<td>09_太空篇_太空时代_Googie射线枪哥特与明日世界</td>
+<td style="text-align: right;">4,248</td>
+<td style="text-align: right;">6,337</td>
+</tr>
+<tr>
+<td>10_红旗篇_红星照耀的未来_社会主义复古未来主义</td>
+<td style="text-align: right;">5,036</td>
+<td style="text-align: right;">6,707</td>
+</tr>
+<tr>
+<td>11_中国篇_新中国未来_晚清到千禧年的中国未来想象</td>
+<td style="text-align: right;">5,270</td>
+<td style="text-align: right;">6,871</td>
+</tr>
+<tr>
+<td>12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义</td>
+<td style="text-align: right;">5,302</td>
+<td style="text-align: right;">8,225</td>
+</tr>
+<tr>
+<td>13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望</td>
+<td style="text-align: right;">4,337</td>
+<td style="text-align: right;">6,686</td>
+</tr>
+<tr>
+<td>14_磁带篇_磁带未来主义_模拟接口的暖未来</td>
+<td style="text-align: right;">4,346</td>
+<td style="text-align: right;">6,127</td>
+</tr>
+<tr>
+<td>15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁</td>
+<td style="text-align: right;">4,581</td>
+<td style="text-align: right;">6,776</td>
+</tr>
+<tr>
+<td>16_末日篇_被取消的未来_复古末日与废墟乡愁</td>
+<td style="text-align: right;">4,620</td>
+<td style="text-align: right;">6,764</td>
+</tr>
+<tr>
+<td>17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁</td>
+<td style="text-align: right;">4,280</td>
+<td style="text-align: right;">6,425</td>
+</tr>
+<tr>
+<td>18_千禧篇_Y2K与FrutigerAero_千禧互联网美学</td>
+<td style="text-align: right;">4,919</td>
+<td style="text-align: right;">7,551</td>
+</tr>
+<tr>
+<td>19_多元篇_非洲未来主义与丝绸朋克_文化星丛</td>
+<td style="text-align: right;">4,338</td>
+<td style="text-align: right;">6,398</td>
+</tr>
+<tr>
+<td>20_结语与附录_未来年表与术语对照</td>
+<td style="text-align: right;">2,907</td>
+<td style="text-align: right;">5,113</td>
+</tr>
+<tr>
+<td><strong>主卷正文合计</strong></td>
+<td style="text-align: right;"><strong>92,858</strong></td>
+<td style="text-align: right;"><strong>135,741</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="四主卷-readme">四、主卷 README</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">2,306</td>
+<td style="text-align: right;">4,191</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="五附录卷附录_千禧美学卷-逐文件统计">五、附录卷：<code>附录_千禧美学卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">541</td>
+<td style="text-align: right;">1,022</td>
+</tr>
+<tr>
+<td>00_对读篇_千禧互联网美学与复古未来主义.md</td>
+<td style="text-align: right;">1,806</td>
+<td style="text-align: right;">2,852</td>
+</tr>
+<tr>
+<td>01_总览与定义_什么是千禧互联网美学.md</td>
+<td style="text-align: right;">1,096</td>
+<td style="text-align: right;">2,269</td>
+</tr>
+<tr>
+<td>02_历史年表_1995至2025.md</td>
+<td style="text-align: right;">1,255</td>
+<td style="text-align: right;">2,727</td>
+</tr>
+<tr>
+<td>03_美学家族详解.md</td>
+<td style="text-align: right;">1,248</td>
+<td style="text-align: right;">2,739</td>
+</tr>
+<tr>
+<td>04_机制与理论.md</td>
+<td style="text-align: right;">1,301</td>
+<td style="text-align: right;">2,228</td>
+</tr>
+<tr>
+<td>05_媒介考古与作品.md</td>
+<td style="text-align: right;">982</td>
+<td style="text-align: right;">2,236</td>
+</tr>
+<tr>
+<td>06_批评与争议.md</td>
+<td style="text-align: right;">1,251</td>
+<td style="text-align: right;">1,899</td>
+</tr>
+<tr>
+<td>07_中文语境.md</td>
+<td style="text-align: right;">1,122</td>
+<td style="text-align: right;">1,990</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">595</td>
+<td style="text-align: right;">2,893</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>11,197</strong></td>
+<td style="text-align: right;"><strong>22,855</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="六附录卷附录_原子朋克卷-逐文件统计">六、附录卷：<code>附录_原子朋克卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">706</td>
+<td style="text-align: right;">1,380</td>
+</tr>
+<tr>
+<td>00_对读篇_原子朋克与复古未来主义.md</td>
+<td style="text-align: right;">2,003</td>
+<td style="text-align: right;">2,873</td>
+</tr>
+<tr>
+<td>01_定义与谱系.md</td>
+<td style="text-align: right;">1,658</td>
+<td style="text-align: right;">2,569</td>
+</tr>
+<tr>
+<td>02_历史年表.md</td>
+<td style="text-align: right;">1,348</td>
+<td style="text-align: right;">2,297</td>
+</tr>
+<tr>
+<td>03_美学与视觉.md</td>
+<td style="text-align: right;">1,968</td>
+<td style="text-align: right;">2,695</td>
+</tr>
+<tr>
+<td>04_思想政治与批评.md</td>
+<td style="text-align: right;">2,111</td>
+<td style="text-align: right;">2,882</td>
+</tr>
+<tr>
+<td>05_作品与媒介.md</td>
+<td style="text-align: right;">1,273</td>
+<td style="text-align: right;">1,967</td>
+</tr>
+<tr>
+<td>06_中文语境.md</td>
+<td style="text-align: right;">1,047</td>
+<td style="text-align: right;">1,432</td>
+</tr>
+<tr>
+<td>07_批评与争议.md</td>
+<td style="text-align: right;">1,331</td>
+<td style="text-align: right;">1,744</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">650</td>
+<td style="text-align: right;">1,307</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>14,095</strong></td>
+<td style="text-align: right;"><strong>21,146</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="七附录卷附录_太阳朋克卷-逐文件统计">七、附录卷：<code>附录_太阳朋克卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">504</td>
+<td style="text-align: right;">918</td>
+</tr>
+<tr>
+<td>00_对读篇_太阳朋克与复古未来主义.md</td>
+<td style="text-align: right;">2,155</td>
+<td style="text-align: right;">3,028</td>
+</tr>
+<tr>
+<td>01_定义与谱系.md</td>
+<td style="text-align: right;">1,517</td>
+<td style="text-align: right;">2,542</td>
+</tr>
+<tr>
+<td>02_历史年表.md</td>
+<td style="text-align: right;">1,838</td>
+<td style="text-align: right;">4,167</td>
+</tr>
+<tr>
+<td>03_美学与视觉.md</td>
+<td style="text-align: right;">1,489</td>
+<td style="text-align: right;">2,423</td>
+</tr>
+<tr>
+<td>04_政治与哲学.md</td>
+<td style="text-align: right;">1,651</td>
+<td style="text-align: right;">2,611</td>
+</tr>
+<tr>
+<td>05_作品与媒介.md</td>
+<td style="text-align: right;">1,060</td>
+<td style="text-align: right;">2,612</td>
+</tr>
+<tr>
+<td>06_批评与争议.md</td>
+<td style="text-align: right;">1,362</td>
+<td style="text-align: right;">2,098</td>
+</tr>
+<tr>
+<td>07_中文语境.md</td>
+<td style="text-align: right;">985</td>
+<td style="text-align: right;">1,565</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">560</td>
+<td style="text-align: right;">7,909</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>13,121</strong></td>
+<td style="text-align: right;"><strong>29,873</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="八附录卷附录_柴油朋克卷-逐文件统计">八、附录卷：<code>附录_柴油朋克卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">698</td>
+<td style="text-align: right;">1,351</td>
+</tr>
+<tr>
+<td>00_对读篇_柴油朋克与复古未来主义.md</td>
+<td style="text-align: right;">1,916</td>
+<td style="text-align: right;">2,561</td>
+</tr>
+<tr>
+<td>01_定义与谱系.md</td>
+<td style="text-align: right;">1,455</td>
+<td style="text-align: right;">2,161</td>
+</tr>
+<tr>
+<td>02_历史年表.md</td>
+<td style="text-align: right;">1,297</td>
+<td style="text-align: right;">2,118</td>
+</tr>
+<tr>
+<td>03_美学与视觉.md</td>
+<td style="text-align: right;">1,339</td>
+<td style="text-align: right;">1,738</td>
+</tr>
+<tr>
+<td>04_思想政治与批评.md</td>
+<td style="text-align: right;">1,551</td>
+<td style="text-align: right;">2,073</td>
+</tr>
+<tr>
+<td>05_作品与媒介.md</td>
+<td style="text-align: right;">1,439</td>
+<td style="text-align: right;">2,007</td>
+</tr>
+<tr>
+<td>06_中文语境.md</td>
+<td style="text-align: right;">1,312</td>
+<td style="text-align: right;">1,737</td>
+</tr>
+<tr>
+<td>07_批评与争议.md</td>
+<td style="text-align: right;">1,349</td>
+<td style="text-align: right;">1,727</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">678</td>
+<td style="text-align: right;">1,147</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>13,034</strong></td>
+<td style="text-align: right;"><strong>18,620</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="九附录卷附录_生物朋克卷-逐文件统计">九、附录卷：<code>附录_生物朋克卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">703</td>
+<td style="text-align: right;">1,361</td>
+</tr>
+<tr>
+<td>00_对读篇_生物朋克与复古未来主义.md</td>
+<td style="text-align: right;">1,671</td>
+<td style="text-align: right;">2,205</td>
+</tr>
+<tr>
+<td>01_定义与谱系.md</td>
+<td style="text-align: right;">1,194</td>
+<td style="text-align: right;">1,760</td>
+</tr>
+<tr>
+<td>02_历史年表.md</td>
+<td style="text-align: right;">1,102</td>
+<td style="text-align: right;">1,768</td>
+</tr>
+<tr>
+<td>03_美学与视觉.md</td>
+<td style="text-align: right;">1,178</td>
+<td style="text-align: right;">1,656</td>
+</tr>
+<tr>
+<td>04_思想政治与批评.md</td>
+<td style="text-align: right;">1,366</td>
+<td style="text-align: right;">1,892</td>
+</tr>
+<tr>
+<td>05_作品与媒介.md</td>
+<td style="text-align: right;">1,033</td>
+<td style="text-align: right;">1,883</td>
+</tr>
+<tr>
+<td>06_中文语境.md</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">1,308</td>
+</tr>
+<tr>
+<td>07_批评与争议.md</td>
+<td style="text-align: right;">1,029</td>
+<td style="text-align: right;">1,330</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">473</td>
+<td style="text-align: right;">1,188</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>10,749</strong></td>
+<td style="text-align: right;"><strong>16,351</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="十附录卷附录_蒸汽朋克卷-逐文件统计">十、附录卷：<code>附录_蒸汽朋克卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">691</td>
+<td style="text-align: right;">1,346</td>
+</tr>
+<tr>
+<td>00_对读篇_蒸汽朋克与复古未来主义.md</td>
+<td style="text-align: right;">1,671</td>
+<td style="text-align: right;">2,069</td>
+</tr>
+<tr>
+<td>01_定义与谱系.md</td>
+<td style="text-align: right;">1,231</td>
+<td style="text-align: right;">1,988</td>
+</tr>
+<tr>
+<td>02_历史年表.md</td>
+<td style="text-align: right;">1,269</td>
+<td style="text-align: right;">1,793</td>
+</tr>
+<tr>
+<td>03_美学与视觉.md</td>
+<td style="text-align: right;">1,388</td>
+<td style="text-align: right;">1,816</td>
+</tr>
+<tr>
+<td>04_思想政治与批评.md</td>
+<td style="text-align: right;">1,268</td>
+<td style="text-align: right;">1,491</td>
+</tr>
+<tr>
+<td>05_作品与媒介.md</td>
+<td style="text-align: right;">1,026</td>
+<td style="text-align: right;">1,668</td>
+</tr>
+<tr>
+<td>06_中文语境.md</td>
+<td style="text-align: right;">889</td>
+<td style="text-align: right;">1,028</td>
+</tr>
+<tr>
+<td>07_批评与争议.md</td>
+<td style="text-align: right;">1,162</td>
+<td style="text-align: right;">1,318</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">475</td>
+<td style="text-align: right;">689</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>11,070</strong></td>
+<td style="text-align: right;"><strong>15,206</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="十一附录卷附录_赛博朋克卷-逐文件统计">十一、附录卷：<code>附录_赛博朋克卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">698</td>
+<td style="text-align: right;">1,359</td>
+</tr>
+<tr>
+<td>00_对读篇_赛博朋克与复古未来主义.md</td>
+<td style="text-align: right;">2,297</td>
+<td style="text-align: right;">3,248</td>
+</tr>
+<tr>
+<td>01_定义与谱系.md</td>
+<td style="text-align: right;">1,628</td>
+<td style="text-align: right;">2,583</td>
+</tr>
+<tr>
+<td>02_历史年表.md</td>
+<td style="text-align: right;">1,263</td>
+<td style="text-align: right;">2,015</td>
+</tr>
+<tr>
+<td>03_美学与视觉.md</td>
+<td style="text-align: right;">1,896</td>
+<td style="text-align: right;">2,474</td>
+</tr>
+<tr>
+<td>04_思想政治与批评.md</td>
+<td style="text-align: right;">1,668</td>
+<td style="text-align: right;">2,295</td>
+</tr>
+<tr>
+<td>05_作品与媒介.md</td>
+<td style="text-align: right;">1,244</td>
+<td style="text-align: right;">2,129</td>
+</tr>
+<tr>
+<td>06_中文语境.md</td>
+<td style="text-align: right;">878</td>
+<td style="text-align: right;">1,097</td>
+</tr>
+<tr>
+<td>07_批评与争议.md</td>
+<td style="text-align: right;">1,203</td>
+<td style="text-align: right;">1,461</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">329</td>
+<td style="text-align: right;">1,107</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>13,104</strong></td>
+<td style="text-align: right;"><strong>19,768</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="十二附录卷附录_nasa朋克卷-逐文件统计">十二、附录卷：<code>附录_NASA朋克卷/</code> 逐文件统计</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">汉字</th>
+<th style="text-align: right;">字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.md</td>
+<td style="text-align: right;">1,504</td>
+<td style="text-align: right;">2,575</td>
+</tr>
+<tr>
+<td>00_对读篇_NASA朋克与复古未来主义.md</td>
+<td style="text-align: right;">2,046</td>
+<td style="text-align: right;">2,967</td>
+</tr>
+<tr>
+<td>01_定义与谱系.md</td>
+<td style="text-align: right;">1,936</td>
+<td style="text-align: right;">3,125</td>
+</tr>
+<tr>
+<td>02_历史年表.md</td>
+<td style="text-align: right;">1,526</td>
+<td style="text-align: right;">2,497</td>
+</tr>
+<tr>
+<td>03_美学与视觉.md</td>
+<td style="text-align: right;">2,084</td>
+<td style="text-align: right;">3,218</td>
+</tr>
+<tr>
+<td>04_思想政治与批评.md</td>
+<td style="text-align: right;">2,071</td>
+<td style="text-align: right;">2,850</td>
+</tr>
+<tr>
+<td>05_作品与媒介.md</td>
+<td style="text-align: right;">2,047</td>
+<td style="text-align: right;">3,373</td>
+</tr>
+<tr>
+<td>06_中文语境.md</td>
+<td style="text-align: right;">1,668</td>
+<td style="text-align: right;">2,371</td>
+</tr>
+<tr>
+<td>07_批评与争议.md</td>
+<td style="text-align: right;">1,641</td>
+<td style="text-align: right;">2,282</td>
+</tr>
+<tr>
+<td>08_资料库.md</td>
+<td style="text-align: right;">1,137</td>
+<td style="text-align: right;">2,836</td>
+</tr>
+<tr>
+<td>09_软与硬_生物可塑性与机械模块化.md</td>
+<td style="text-align: right;">4,167</td>
+<td style="text-align: right;">5,961</td>
+</tr>
+<tr>
+<td><strong>小计</strong></td>
+<td style="text-align: right;"><strong>21,827</strong></td>
+<td style="text-align: right;"><strong>34,055</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="十三朋克附录的精简内容">十三、朋克附录的「精简内容」</h2>
+<blockquote>
+<p>原五卷精简版归档，不计入正卷合计。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>附录卷</th>
+<th style="text-align: right;">文件数</th>
+<th style="text-align: right;">汉字合计</th>
+<th style="text-align: right;">字符合计</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>附录_千禧美学卷/精简内容/</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>附录_原子朋克卷/精简内容/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">4,307</td>
+<td style="text-align: right;">6,995</td>
+</tr>
+<tr>
+<td><code>附录_太阳朋克卷/精简内容/</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td><code>附录_柴油朋克卷/精简内容/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">4,200</td>
+<td style="text-align: right;">6,786</td>
+</tr>
+<tr>
+<td><code>附录_生物朋克卷/精简内容/</code></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">4,364</td>
+<td style="text-align: right;">6,793</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="备注">备注</h2>
+<ul>
+<li>原子朋克卷以完整原卷统计；其旧精简版与其它四卷精简版保存在各卷 <code>精简内容/</code>。</li>
+<li>五卷的 <code>00_对读篇</code> 是进入主卷框架的入口；主卷 07/08/13/15/19 与附录是纵向叙事/横向资料的关系，不是逐字副本。</li>
+<li>统计脚本口径与旧版一致；数字按当前文件重新计算。</li>
+<li>NASA朋克卷于 2026-11-03 增补，2026-11-04 增补 09 专题，口径同前（CJK 字符 + 非空白字符）。</li>
+</ul>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="index.html">总览</a> · <a href="../全卷总索引与字数统计.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

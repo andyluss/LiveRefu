@@ -1,0 +1,414 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../README.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>复古未来主义论文集（Retro-futurism Papers）</title>
+<meta name="description" content="docs/retro-futurism/ 卷首导读 · 21 篇全卷目录">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../html/assets/style.css">
+<script defer src="../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="index.html">文集总览</a><a href="README.html" aria-current="page">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="00_总论_未来的考古学与全卷地图.html">总论</a><a href="01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="附录_NASA朋克卷/index.html">NASA朋克</a><a href="附录_千禧美学卷/index.html">千禧美学</a><a href="附录_原子朋克卷/index.html">原子朋克</a><a href="附录_太阳朋克卷/index.html">太阳朋克</a><a href="附录_柴油朋克卷/index.html">柴油朋克</a><a href="附录_生物朋克卷/index.html">生物朋克</a><a href="附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>参考</h2><a href="全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../README.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">复古未来主义论文集（Retro-futurism Papers）</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一卷内结构四段">一、卷内结构（四段）</a></li><li class=""><a href="#二全卷目录">二、全卷目录</a></li><li class=""><a href="#三写作说明">三、写作说明</a></li><li class=""><a href="#四篇幅统计">四、篇幅统计</a></li><li class=""><a href="#五外编附录八个调研卷--朋克整合说明">五、外编附录：八个调研卷 + 朋克整合说明</a></li></ul></details>
+<article class="prose">
+<h1 id="复古未来主义论文集retro-futurism-papers">复古未来主义论文集（Retro-futurism Papers）</h1>
+<blockquote>
+<p><strong>docs/retro-futurism/</strong> 卷首导读 · 21 篇全卷目录</p>
+<p>本卷是一套多篇目协作写成的论文集合（简体中文，Markdown），主题为<strong>复古未来主义（retro-futurism）</strong>——对"过去时代所想象的未来"的回收、消费与再创造。覆盖从远古神话（飞天、永生、自动人偶）到 19 世纪凡尔纳与威尔斯，从蒸汽朋克、柴油朋克、原子朋克等"××朋克"诸系，到当代蒸汽波、合成波、Y2K、Frutiger Aero 与网络"美学词条化"，并收入非洲未来主义、丝绸朋克、Solarpunk 等多元未来叙事，以及"未来如何过时、如何被考古、如何被二次消费"的完整机制。</p>
+</blockquote>
+<hr />
+<h2 id="一卷内结构四段">一、卷内结构（四段）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>段</th>
+<th>篇目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>理论地基</td>
+<td>00—01</td>
+<td>定义、作者体系（七纪/四元素/七机制）与怀旧/遗产化理论</td>
+</tr>
+<tr>
+<td>未来的考古</td>
+<td>02—11</td>
+<td>按年代发掘"当时的未来"：神话纪→乌托邦纪→蒸汽纪→机器纪→原子与太空纪→红旗纪→中国线索</td>
+</tr>
+<tr>
+<td>回收的未来</td>
+<td>12—16</td>
+<td>"××朋克"全谱系地图与各专篇（蒸汽/磁带/赛博/末日）</td>
+</tr>
+<tr>
+<td>当代乡愁与多元</td>
+<td>17—19</td>
+<td>蒸汽波与合成波、千禧互联网美学、多元未来文化星丛</td>
+</tr>
+<tr>
+<td>收束</td>
+<td>20</td>
+<td>结语、未来年表、术语对照、延伸阅读</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>阅读建议</strong>：顺序通读（考古流最顺）；或先读 00 总论，再跳读 12 谱系篇与 17、18 当代两篇，最后回头读 02—11 的历史篇——当代诸篇本就是对历史篇的消费与回收。</p>
+<h2 id="二全卷目录">二、全卷目录</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>文件</th>
+<th>内容提要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>总论_未来的考古学与全卷地图</td>
+<td>定义与三层时间模型；七纪分期、四元素、七机制；篇目地图；全卷写作凡例</td>
+</tr>
+<tr>
+<td>01</td>
+<td>理论篇_怀旧乡愁与未来的遗产化</td>
+<td>博伊姆怀旧二分、詹姆逊复古逻辑、费舍"被取消的未来"；"未来遗产化四步"模型</td>
+</tr>
+<tr>
+<td>02</td>
+<td>远古篇_飞天永生与自动人偶</td>
+<td>神话与宗教作为"母题库"：四大母题（飞天/永生/自动人偶/末世）及后世技术转写表</td>
+</tr>
+<tr>
+<td>03</td>
+<td>古典篇_异地乌托邦</td>
+<td>从《理想国》到莫尔《乌托邦》、培根《新大西岛》、康帕内拉《太阳城》，旁及中国"大同"与桃花源；乌托邦如何从"异乡"移入"异时"</td>
+</tr>
+<tr>
+<td>04</td>
+<td>近代篇_进步的世纪</td>
+<td>月球旅行文学、进步观念制度化、水晶宫与工业革命、空想社会主义蓝图、弗兰肯斯坦</td>
+</tr>
+<tr>
+<td>05</td>
+<td>奠基篇_凡尔纳与威尔斯</td>
+<td>未来小说的制度化：凡尔纳的"奇迹现在时"、威尔斯的"社会未来"、世纪末未来工业（回顾/乌托邦、罗比达、未来明信片）</td>
+</tr>
+<tr>
+<td>06</td>
+<td>机器篇_速度与钢骨</td>
+<td>未来主义（圣埃利亚"新城"）、构成主义（塔特林塔）、包豪斯与柯布西耶、《大都会》与 robot 词源、装饰艺术与流线型</td>
+</tr>
+<tr>
+<td>07</td>
+<td>战间篇_柴油朋克</td>
+<td>战间期未来图像：航空与飞艇、巴克·罗杰斯/飞侠哥顿、极权纪念碑、1939 纽约世博会"明日世界"</td>
+</tr>
+<tr>
+<td>08</td>
+<td>原子篇_原子朋克</td>
+<td>"幸福原子"（Atoms for Peace）时代的家用未来：按钮生活、镀铬郊区、双面原子；atompunk 命名（2008）</td>
+</tr>
+<tr>
+<td>09</td>
+<td>太空篇_太空时代</td>
+<td>Sputnik 到阿波罗：Googie 建筑、射线枪哥特（吉布森 1981 造词）、明日世界乐园、世博会、"被取消的太空未来"</td>
+</tr>
+<tr>
+<td>10</td>
+<td>红旗篇_社会主义复古未来主义</td>
+<td>苏联与东欧的官方未来：苏维埃宫、地铁、太空海报、科幻暗线；后苏联的再消费（原子之心等）</td>
+</tr>
+<tr>
+<td>11</td>
+<td>中国篇_新中国未来</td>
+<td>晚清"新中国"科幻到《小灵通漫游未来》到神舟/三体：国家与民间交替的"追赶型未来"</td>
+</tr>
+<tr>
+<td>12</td>
+<td>谱系篇_朋克宇宙学</td>
+<td>"××朋克"命名三定律与全系谱地图：时钟/蒸汽/柴油/原子/磁带/赛博及各边缘变体总表</td>
+</tr>
+<tr>
+<td>13</td>
+<td>蒸汽篇_蒸汽朋克</td>
+<td>维多利亚回望专论：杰特 1987 命名、差分机语法、影像/游戏/亚文化、帝国复魅的批判</td>
+</tr>
+<tr>
+<td>14</td>
+<td>磁带篇_磁带未来主义</td>
+<td>70—80 年代"模拟接口的暖未来"：CRT 终端美学、与赛博朋克对照、当代回望</td>
+</tr>
+<tr>
+<td>15</td>
+<td>赛博篇_赛博朋克</td>
+<td>"没来得及当未来，就当上了遗产"：设定年份过期、80—90 年代技术底座的怀旧化</td>
+</tr>
+<tr>
+<td>16</td>
+<td>末日篇_被取消的未来</td>
+<td>1970 年代未来断裂；反乌托邦过期、核末日、Fallout 式复古末日、废墟乡愁</td>
+</tr>
+<tr>
+<td>17</td>
+<td>蒸汽波篇_蒸汽波与合成波</td>
+<td>双生子辨析与时代错置的听觉乡愁：悼念"80—90 年代许诺的消费未来"</td>
+</tr>
+<tr>
+<td>18</td>
+<td>千禧篇_Y2K与FrutigerAero</td>
+<td>千禧互联网美学：Y2K（1998—2003）、Frutiger Aero（2004—2013，2018 年命名）、Webcore 与中国千禧记忆</td>
+</tr>
+<tr>
+<td>19</td>
+<td>多元篇_文化星丛</td>
+<td>谁有权想象未来：非洲未来主义（1993）、原住民未来主义、丝绸朋克（刘宇昆）、Solarpunk（2008）</td>
+</tr>
+<tr>
+<td>20</td>
+<td>结语与附录_未来年表与术语对照</td>
+<td>结语（未来定义权流动）；未来年表、术语对照表、延伸阅读</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="三写作说明">三、写作说明</h2>
+<ul>
+<li><strong>体例</strong>：全卷遵守 <code>00_总论</code> 第四节「写作凡例」（简体中文、关键词+摘要、术语首现加粗附原文、交叉引用以"（见 NN 篇名）"标注、文末分类「核心作品清单」、事实不确定时按"约/一般认为/存疑"降档且严禁编造）。</li>
+<li><strong>术语体系</strong>：卷内自用的"七纪分期—四元素—七机制"框架系主编设计，见于 00 总论；术语总表见 20 附录二。</li>
+<li><strong>事实核验</strong>：关键命名源流（retro-futurist 最早用例 1981、射线枪哥特 1981、蒸汽朋克 1987、柴油朋克约 2001、Frutiger Aero 2018 命名、anemoia 2012、丝绸朋克/太阳朋克等）已依英语维基百科等公开资料核验，细节与在线词条清单见 20 附录三。</li>
+<li><strong>版本</strong>：本卷自 <code>git init</code> 起逐篇分批提交，完整历史见仓库 <code>git log</code>（共 16 次提交：建卷总论 → 理论篇/结语附录 → 各批次篇目 → 核验修正 → 收尾润色 → 篇幅统计）。</li>
+</ul>
+<h2 id="四篇幅统计">四、篇幅统计</h2>
+<p><strong>计数口径</strong>：下表"汉字数"按汉字/CJK 字符统计（不含标点、字母、数字与空白）；"字符数"统计含中文标点、字母与数字的全文非空白字符。"汉字数"与各篇正文自报口径（正文小节汉字）不同，为**全文（含篇首元信息、表格与文末清单）**口径，可用于卷内比较与总量核算。统计时间：定稿时（本次修订）。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>篇目</th>
+<th style="text-align: right;">汉字数</th>
+<th style="text-align: right;">字符数（含标点等）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00 总论</td>
+<td style="text-align: right;">4,275</td>
+<td style="text-align: right;">6,698</td>
+</tr>
+<tr>
+<td>01 理论</td>
+<td style="text-align: right;">2,930</td>
+<td style="text-align: right;">4,530</td>
+</tr>
+<tr>
+<td>02 远古</td>
+<td style="text-align: right;">5,250</td>
+<td style="text-align: right;">6,792</td>
+</tr>
+<tr>
+<td>03 古典</td>
+<td style="text-align: right;">4,122</td>
+<td style="text-align: right;">5,693</td>
+</tr>
+<tr>
+<td>04 近代</td>
+<td style="text-align: right;">4,601</td>
+<td style="text-align: right;">6,247</td>
+</tr>
+<tr>
+<td>05 奠基</td>
+<td style="text-align: right;">4,131</td>
+<td style="text-align: right;">6,093</td>
+</tr>
+<tr>
+<td>06 机器</td>
+<td style="text-align: right;">3,972</td>
+<td style="text-align: right;">5,594</td>
+</tr>
+<tr>
+<td>07 战间</td>
+<td style="text-align: right;">4,001</td>
+<td style="text-align: right;">6,155</td>
+</tr>
+<tr>
+<td>08 原子</td>
+<td style="text-align: right;">4,983</td>
+<td style="text-align: right;">7,258</td>
+</tr>
+<tr>
+<td>09 太空</td>
+<td style="text-align: right;">4,248</td>
+<td style="text-align: right;">6,337</td>
+</tr>
+<tr>
+<td>10 红旗</td>
+<td style="text-align: right;">5,036</td>
+<td style="text-align: right;">6,707</td>
+</tr>
+<tr>
+<td>11 中国</td>
+<td style="text-align: right;">5,270</td>
+<td style="text-align: right;">6,871</td>
+</tr>
+<tr>
+<td>12 谱系</td>
+<td style="text-align: right;">5,302</td>
+<td style="text-align: right;">8,225</td>
+</tr>
+<tr>
+<td>13 蒸汽</td>
+<td style="text-align: right;">4,337</td>
+<td style="text-align: right;">6,686</td>
+</tr>
+<tr>
+<td>14 磁带</td>
+<td style="text-align: right;">4,346</td>
+<td style="text-align: right;">6,127</td>
+</tr>
+<tr>
+<td>15 赛博</td>
+<td style="text-align: right;">4,581</td>
+<td style="text-align: right;">6,776</td>
+</tr>
+<tr>
+<td>16 末日</td>
+<td style="text-align: right;">4,620</td>
+<td style="text-align: right;">6,764</td>
+</tr>
+<tr>
+<td>17 蒸汽波</td>
+<td style="text-align: right;">4,280</td>
+<td style="text-align: right;">6,425</td>
+</tr>
+<tr>
+<td>18 千禧</td>
+<td style="text-align: right;">4,919</td>
+<td style="text-align: right;">7,551</td>
+</tr>
+<tr>
+<td>19 多元</td>
+<td style="text-align: right;">4,332</td>
+<td style="text-align: right;">6,391</td>
+</tr>
+<tr>
+<td>20 结语附录</td>
+<td style="text-align: right;">2,901</td>
+<td style="text-align: right;">5,105</td>
+</tr>
+<tr>
+<td><strong>21 篇正文合计</strong></td>
+<td style="text-align: right;"><strong>92,437</strong></td>
+<td style="text-align: right;"><strong>135,025</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>注：① 本导读 README 未计入合计（其篇幅随修订变动，另约 1.5 千字）；② "汉字数"为全文口径（含篇首元信息、表格与文末清单），与各篇写作时自报的"正文小节汉字"口径不同；③ 篇幅最重者依次为 12 谱系（地图篇，5,302 汉字）、11 中国（5,270）、02 远古（5,250）；最短为 01 理论（2,930）与 20 结语附录（2,901）——理论篇与附录以密度见长，正文篇幅按各篇任务规格（3000—5000 字）执行。</p>
+</blockquote>
+<h2 id="五外编附录八个调研卷--朋克整合说明">五、外编附录：八个调研卷 + 朋克整合说明</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>附录_太阳朋克卷/</code></td>
+<td>太阳朋克（Solarpunk）调研卷（2026-09 并入）：卷首 <code>00_对读篇_太阳朋克与复古未来主义</code> + 01 定义与谱系、02 历史年表、03 美学与视觉、04 政治与哲学、05 作品与媒介、06 批评与争议、07 中文语境、08 资料库</td>
+</tr>
+<tr>
+<td><code>附录_千禧美学卷/</code></td>
+<td>千禧互联网美学（Y2K/Frutiger Aero/Webcore 等）调研卷（2026-09 并入）：卷首 <code>00_对读篇_千禧互联网美学与复古未来主义</code> + 01 总览与定义、02 历史年表、03 美学家族详解、04 机制与理论、05 媒介考古与作品、06 批评与争议、07 中文语境、08 资料库</td>
+</tr>
+<tr>
+<td><code>附录_赛博朋克卷/</code></td>
+<td>赛博朋克资料卷（2026-09 建入）：00 对读 + 01 定义与谱系、02 历史年表、03 美学与视觉、04 思想政治、05 批评与争议、06 作品与媒介、07 中文语境、08 资料库</td>
+</tr>
+<tr>
+<td><code>附录_蒸汽朋克卷/</code></td>
+<td>蒸汽朋克资料卷（2026-09 建入）：同上 10 文件结构，与主卷 13 错位互补</td>
+</tr>
+<tr>
+<td><code>附录_原子朋克卷/</code></td>
+<td>原子朋克资料卷（2026-09 建入）：同上 10 文件结构，与主卷 08/09/16 错位互补</td>
+</tr>
+<tr>
+<td><code>附录_生物朋克卷/</code></td>
+<td>生物朋克资料卷（2026-09 建入）：同上 10 文件结构，命名史多存疑</td>
+</tr>
+<tr>
+<td><code>附录_柴油朋克卷/</code></td>
+<td>柴油朋克资料卷（2026-09 建入）：同上 10 文件结构，与主卷 07/12 错位互补</td>
+</tr>
+<tr>
+<td><a href="附录_NASA朋克卷/index.html"><code>附录_NASA朋克卷/</code></a></td>
+<td>NASA朋克（NASApunk）资料卷（2026-11 建入）：00 对读 + 01 定义与谱系、02 历史年表、03 美学与视觉、04 思想政治与批评、05 作品与媒介、06 中文语境、07 批评与争议、08 资料库、09 软与硬专题；与主卷 09/12/14/15 互补</td>
+</tr>
+<tr>
+<td><code>原朋克五卷残留/</code></td>
+<td>原 <code>docs/punks/</code> 五卷的整合说明、去重口径与差异对比；不是正文卷</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>太阳朋克卷与千禧美学卷原分别独立成卷于 docs/solarpunk/ 与 docs/y2k-aesthetics/ 后并入（git 历史保留）；五个朋克卷原为 <code>docs/punks/</code> 独立专题，2026-10 并入本卷附录；迁移与去重见 <a href="../原朋克五卷残留/README.md"><code>原朋克五卷残留/README.md</code></a>，各卷卷首 <code>00_对读篇</code> 衔接主卷。</li>
+<li>主卷"四、篇幅统计"仅计 00—20 正文；<strong>全卷（21 篇 + 7 附录卷）的统一字数统计与逐文件合订索引见《全卷总索引与字数统计》</strong>（同目录下文件）。</li>
+</ul>
+<hr />
+<p><em>本卷完成于一次多代理协作写作任务；欢迎补正各文化区域与媒介的遗漏。凡引用本卷框架（七纪/四元素/七机制、未来遗产化四步等）请注明出处。</em></p>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="index.html">总览</a> · <a href="../README.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

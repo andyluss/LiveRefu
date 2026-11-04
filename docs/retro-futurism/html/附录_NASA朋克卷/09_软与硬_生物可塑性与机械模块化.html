@@ -1,0 +1,352 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>09 · 软与硬：生物可塑性与机械模块化</title>
+<meta name="description" content="关键词：生物可塑性；机械模块化；接口；双时钟；冗余；人因工程">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>NASA朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_NASA朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html">03 美学与视觉</a><a href="04_思想政治与批评.html">04 思想政治与批评</a><a href="05_作品与媒介.html">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a><a href="09_软与硬_生物可塑性与机械模块化.html" aria-current="page">09 软与硬</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">软与硬：生物可塑性与机械模块化</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一一只手套里的矛盾">一、一只手套里的矛盾</a></li><li class=""><a href="#二两套逻辑">二、两套逻辑</a></li><li class=""><a href="#三两种纯粹方案为什么都失败">三、两种纯粹方案为什么都失败</a></li><li class="sub"><a href="#31-让人像机器">3.1 让人像机器</a></li><li class="sub"><a href="#32-让机器像人">3.2 让机器像人</a></li><li class="sub"><a href="#33-把人也做成模块">3.3 把人也做成模块</a></li><li class="sub"><a href="#34-让机器绝对刚性">3.4 让机器绝对刚性</a></li><li class=""><a href="#四三重调解本卷框架">四、三重调解（本卷框架）</a></li><li class="sub"><a href="#41-接口把模块化放在边界把可塑性留在身体">4.1 接口：把模块化放在边界，把可塑性留在身体</a></li><li class="sub"><a href="#42-双时钟身体时间与机器时间">4.2 双时钟：身体时间与机器时间</a></li><li class="sub"><a href="#43-冗余让故障成为模式而不是重置">4.3 冗余：让故障成为模式，而不是重置</a></li><li class=""><a href="#五美学交界处的痕迹">五、美学：交界处的痕迹</a></li><li class=""><a href="#六livebay-的落地">六、LiveBay 的落地</a></li><li class="sub"><a href="#61-职业是岗位不是模块">6.1 职业是岗位，不是模块</a></li><li class="sub"><a href="#62-三个可玩的调解场景">6.2 三个可玩的「调解」场景</a></li><li class="sub"><a href="#63-不要把人做成资源条">6.3 不要把「人」做成资源条</a></li><li class=""><a href="#七结论不是融合是谈判">七、结论：不是融合，是谈判</a></li><li class=""><a href="#延伸阅读">延伸阅读</a></li></ul></details>
+<article class="prose">
+<h1 id="09--软与硬生物可塑性与机械模块化">09 · 软与硬：生物可塑性与机械模块化</h1>
+<blockquote>
+<p>关键词：生物可塑性；机械模块化；接口；双时钟；冗余；人因工程</p>
+<p>摘要：NASApunk 的核心矛盾不只是「人 vs 机器」，而是两套组织原则的冲突：生物体靠<strong>可塑性</strong>适应世界，机械系统靠<strong>模块化</strong>组合世界。本篇提出「三重调解」框架——接口、双时钟、冗余——说明 NASApunk 如何不把人也做成模块，也不把机器做成器官，而是在两者交界处设计翻译层，让柔性留在身体、标准留在接口、备份留给故障。</p>
+</blockquote>
+<h2 id="一一只手套里的矛盾">一、一只手套里的矛盾</h2>
+<p>想象一只舱外活动手套。</p>
+<p>手掌部分是硬的：要抓工具、要拧螺栓、要抵住舱壁。手指关节部分是软的：要弯曲、要捏合、要感知螺母有没有对上螺纹。手套不能太紧，否则半小时后手指发麻；也不能太松，否则一用力就打滑。它必须适配一个具体的人手，又必须接上一个标准的工具接口。</p>
+<p>这只手套就是 NASApunk 的缩影。</p>
+<p>它既不是「人穿上机器」这么简单，也不是「机器延伸人」这么浪漫。它把两种完全不同的东西缝在一起：</p>
+<ul>
+<li>一边是<strong>生物的身体</strong>：会肿、会累、会出汗、会长茧，今天的状态和昨天不一样；</li>
+<li>一边是<strong>机械的系统</strong>：有标准接口、有扭矩规格、有更换周期，坏了要能拆下来换。</li>
+</ul>
+<p>NASApunk 的许多经典图像——白盒机架、检查单、拨杆、舱外服、轨道替换单元——都在处理这条缝。它真正要回答的问题不是「人能不能变成机器」，而是：</p>
+<blockquote>
+<p><strong>当人会变、机器可换时，两者怎样合作，而不是互相拖累？</strong></p>
+</blockquote>
+<h2 id="二两套逻辑">二、两套逻辑</h2>
+<p>先把两种逻辑并置，才看得清矛盾在哪里。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>生物性：可塑性</th>
+<th>机械性：模块化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>变化方式</td>
+<td>生长、学习、愈合、代偿</td>
+<td>替换、重组、升级、旁路</td>
+</tr>
+<tr>
+<td>标准来源</td>
+<td>个体差异，靠适应</td>
+<td>标准接口，靠规格</td>
+</tr>
+<tr>
+<td>时间尺度</td>
+<td>周、月、年；慢</td>
+<td>分、小时；快</td>
+</tr>
+<tr>
+<td>故障形态</td>
+<td>退化、疲劳、代偿</td>
+<td>失效、卡死、断连</td>
+</tr>
+<tr>
+<td>优势</td>
+<td>处理模糊、例外、语境</td>
+<td>处理重复、精度、可预测</td>
+</tr>
+<tr>
+<td>弱点</td>
+<td>不可互换、会累、会忘</td>
+<td>不会学习、僵化、单点失效</td>
+</tr>
+<tr>
+<td>知识形态</td>
+<td>默会知识、手感</td>
+<td>显式规格、图纸</td>
+</tr>
+</tbody>
+</table></div>
+<p>这不是说「人=软，机器=硬」。人也会长骨痂、也会形成习惯，习惯一旦形成就相当硬；机器也可以有柔性材料、自适应控制、学习算法。这里说的是两种<strong>理想类型</strong>：一端是「靠可塑性适应」，另一端是「靠模块化组合」。真实的系统总在两端之间。</p>
+<p>用一点形式语言说：</p>
+<pre class="text"><code>H(t+1) = A(H(t), E(t))       生物状态：连续、路径依赖、有边界
+M = {m₁, m₂, …, mₙ}          机械系统：模块与接口的集合
+C = F(H, M, I)               能力：人、机、接口的函数</code></pre>
+<p>其中 <code>I</code> 是接口。<code>A</code> 不是任意函数：人不能无限适应，也不能无限学习；它有生理上限、注意力上限、恢复时间。<code>M</code> 也不是任意集合：模块之间要有可连接的接口，否则只是一堆零件。</p>
+<p>NASApunk 的工程感，恰恰来自它不假装 <code>A</code> 是万能的，也不假装 <code>M</code> 是无限的。</p>
+<h2 id="三两种纯粹方案为什么都失败">三、两种纯粹方案为什么都失败</h2>
+<h3 id="31-让人像机器">3.1 让人像机器</h3>
+<p>这是最古老的工业冲动：把人的不确定性压缩掉。</p>
+<ul>
+<li>用流程消灭判断；</li>
+<li>用检查单消灭记忆；</li>
+<li>用训练消灭差异；</li>
+<li>用「标准化操作」把每个人都变成同一个岗位模型。</li>
+</ul>
+<p>这些手段有效，而且必要。检查单确实能减少遗漏，训练确实能减少失误。但把它们推到极端，就会得到反效果：</p>
+<ul>
+<li>人的身体被当成不会疲劳的零件，结果是劳损、失眠、注意力下降；</li>
+<li>人的判断被当成错误来源，结果是遇到检查单没覆盖的异常时，没人敢做决定；</li>
+<li>人的差异被当成缺陷，结果是设备只适配「平均人」，而平均人并不存在。</li>
+</ul>
+<p>NASApunk 的检查单之所以动人，不是因为它把人变成了机器，而是因为它<strong>承认人会忘</strong>，所以把记忆外化成纸；它承认人会看错，所以用勾选框和复诵；它承认人会累，所以有轮班和交接。检查单不是「人形机器」的说明书，而是「人会犯错」的补丁。</p>
+<h3 id="32-让机器像人">3.2 让机器像人</h3>
+<p>另一种冲动是反过来：既然人擅长适应，那就让机器也学会适应。</p>
+<p>柔性机器人、自适应控制、学习型界面，都是真实的方向。但它们解决不了所有问题：</p>
+<ul>
+<li>自适应系统更难验证：它今天这样，明天可能那样；</li>
+<li>学习型系统更难追责：出错时，是数据、模型，还是操作者？</li>
+<li>「像人」不等于「懂人」：机器可以模仿语气，但不一定理解疲惫、恐惧和尊严。</li>
+</ul>
+<p>在航天这类高风险系统里，可预测性本身就是一种安全。机器不需要像人一样灵活；它需要在该灵活的地方灵活，在该确定的地方确定。</p>
+<h3 id="33-把人也做成模块">3.3 把人也做成模块</h3>
+<p>这是最隐蔽、也最危险的一种方案：既然机器可以换零件，人也换零件不就行了？</p>
+<p>义肢、植入物、外骨骼、药物增强，本身不是问题。问题在于把「可替换」当成人的本质：</p>
+<ul>
+<li>如果身体只是模块，那么老化、疲劳、生病都可以被当成「性能下降」；</li>
+<li>如果情绪只是 bug，那么照护、休息、尊严都可以被优化掉；</li>
+<li>如果人可以无限升级，那么「不可替换的个体」就失去了位置。</li>
+</ul>
+<p>NASApunk 对这个问题最清醒的地方，是它仍然画<strong>普通人的身体</strong>：会出汗，会手抖，会在手套里贴胶布。它不否认增强技术，但它拒绝把「人」简化成一张可热插拔的零件表。</p>
+<h3 id="34-让机器绝对刚性">3.4 让机器绝对刚性</h3>
+<p>还有一种失败：为了可预测，把机器做成完全刚性的系统。</p>
+<ul>
+<li>一个接口只对应一个模块；</li>
+<li>一个模块只对应一个位置；</li>
+<li>一个故障只对应一个停机。</li>
+</ul>
+<p>这种系统在标准工况下非常可靠，但遇到「没预料到的情况」时，它没有降级空间。NASA 的轨道替换单元（ORU）之所以重要，不只是因为「能换」，而是因为它允许系统在<strong>不完美</strong>的状态下继续运行：旁路、降级、人工接管。</p>
+<p>模块化的目的不是让系统永远正确，而是让系统<strong>坏得起</strong>。</p>
+<h2 id="四三重调解本卷框架">四、三重调解（本卷框架）</h2>
+<p>NASApunk 给出的不是一种「融合」，而是一种「调解」。我把它拆成三个层面：接口、双时钟、冗余。它们是本卷的分析框架，不是 NASA 的官方术语。</p>
+<h3 id="41-接口把模块化放在边界把可塑性留在身体">4.1 接口：把模块化放在边界，把可塑性留在身体</h3>
+<p>第一层调解是<strong>接口</strong>。</p>
+<pre class="text"><code>I = (I_M, I_H)
+I_M：机器侧的标准接口
+I_H：人体侧的可调接口
+fit(H, I_H) ≥ fit_min</code></pre>
+<p>机器侧要标准：同一个工具接口、同一个电源规格、同一个数据协议。这样模块才能互换，备件才能通用。</p>
+<p>人体侧要可调：肩带、腰扣、手套尺寸、座椅行程、脚踏位置、界面亮度、字体大小。这样不同的人才能用同一套设备。</p>
+<p>关键在于：<strong>不要让人去适配硬接口，而是让接口去适配人。</strong></p>
+<p>这也是 NASApunk 视觉语言里那些「软东西」的意义：</p>
+<ul>
+<li>舱外服的软关节，不是装饰，是让手能弯；</li>
+<li>座椅上的织带和衬垫，不是复古，是让身体不被硬边硌伤；</li>
+<li>控制台上的大按钮和拨杆，不是怀旧，是让戴手套的手也能操作；</li>
+<li>检查单上的手写批注，不是做旧，是让标准流程留下人的判断。</li>
+</ul>
+<p>接口是翻译层。它把「人的连续状态」翻译成「机器的离散信号」，再把「机器的离散状态」翻译成「人能感知的光、声、力」。</p>
+<p>好的接口有两个特征：</p>
+<ol type="1">
+<li><strong>机器侧足够标准</strong>，所以能换、能修、能备件；</li>
+<li><strong>人体侧足够顺应</strong>，所以能戴、能动、能长时间使用。</li>
+</ol>
+<p>这就是「模块化放在边界，可塑性留在身体」：不是把人做成模块，而是把人和模块之间的连接做成可调的。</p>
+<h3 id="42-双时钟身体时间与机器时间">4.2 双时钟：身体时间与机器时间</h3>
+<p>第二层调解是<strong>时间</strong>。</p>
+<pre class="text"><code>τ_H：生物适应时间（周、月、年）
+τ_M：机械更换时间（分、小时）
+τ_H &gt;&gt; τ_M</code></pre>
+<p>机器可以在一小时内换掉一个泵；人不能用同样的速度换掉一段记忆、一项技能、一次疲劳。</p>
+<p>这不是效率问题，而是设计前提。很多系统失败，不是因为人不够努力，而是因为<strong>用机器的时间表去要求身体</strong>：</p>
+<ul>
+<li>连续夜班，认为人「适应一下就好」；</li>
+<li>训练周期压缩，认为「流程写了就应该会」；</li>
+<li>设备升级频繁，认为「人跟着学就行」；</li>
+<li>故障后立刻要求恢复，认为「休息是浪费」。</li>
+</ul>
+<p>NASApunk 的检查单、交接班、轮岗、复训，都是把两种时间重新对齐的装置。</p>
+<p>检查单是「把机器时间翻译成人的工作记忆」：它把复杂的顺序压缩成可勾选的步骤，让一个疲惫的人在凌晨三点也能按顺序做完。但检查单不能太长，太长就没人读；不能太抽象，太抽象就无法执行。它是纸做的接口，必须符合人的注意力。</p>
+<p>交接班是「把生物记忆翻译成机械记录」：上一班的人记得「T-07 有点响」，下一班的人只能读到「异响，待复查」。写下来的过程，就是把默会知识转成可传递的信号。写得不好，知识就丢了；写得太满，下一班就不读。</p>
+<p>「双时钟」的结论很朴素：</p>
+<blockquote>
+<p><strong>机器可以快，但人不能被催到和机器一样快。</strong></p>
+</blockquote>
+<p>在 LiveBay 里，这就是「慢好」的工程含义：不是降低效率，而是承认身体有自己的时钟，并把维护、休息、交接算进系统，而不是当成系统之外的浪费。</p>
+<h3 id="43-冗余让故障成为模式而不是重置">4.3 冗余：让故障成为模式，而不是重置</h3>
+<p>第三层调解是<strong>冗余</strong>。</p>
+<pre class="text"><code>R = R_H ⊕ R_M
+R_H：生物冗余（感官、代偿、判断、同伴）
+R_M：机械冗余（备份模块、旁路、降级模式）</code></pre>
+<p>机械冗余很容易理解：双回路、备件、旁路、降落伞、备用计算机。</p>
+<p>生物冗余也真实存在：人有两只肾、两只眼、两套半脑；人能靠经验补全缺失的信息，能靠同伴提醒，能靠疲惫前的最后一点注意力撑住一次着陆。但生物冗余不是无限的：它会耗尽，会被压力吃掉，会被「你应该能行」这句话透支。</p>
+<p>所以「冗余」不是「让人当备份」的借口。它要求两边都留余量：</p>
+<ul>
+<li>机器侧：关键模块有旁路，故障时能降级，不是一坏就全停；</li>
+<li>人体侧：有轮班、有同伴、有复训，不是一个人扛到底；</li>
+<li>接口侧：有手动接管，有清楚的故障提示，不是让人猜。</li>
+</ul>
+<p>NASApunk 最迷人的戏剧性，往往不在「系统完美运行」，而在「系统坏了一半，人还在想办法」。故障不是 reset，而是一种<strong>模式</strong>：灯变红、蜂鸣器响、检查单翻到应急页、有人拿起手电筒去舱壁后面看。</p>
+<p>这也是为什么 NASApunk 的反派很少是「邪恶 AI」。它更常见的对手是：预算、疲劳、接口不匹配、维护欠账，以及「这次应该没事」的侥幸。</p>
+<h2 id="五美学交界处的痕迹">五、美学：交界处的痕迹</h2>
+<p>三重调解落到画面上，会形成一种很具体的视觉语言：<strong>硬模块 + 软界面 + 使用痕迹</strong>。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>硬的一面</th>
+<th>软的一面</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机架、桁架、标准件</td>
+<td>织带、衬垫、手套、软管</td>
+</tr>
+<tr>
+<td>快拆接头、编号、铭牌</td>
+<td>手写标签、胶带、补丁</td>
+</tr>
+<tr>
+<td>拨杆、CRT、七段管</td>
+<td>座椅、扶手、脚踏、靠垫</td>
+</tr>
+<tr>
+<td>检查单、图纸、扭矩表</td>
+<td>批注、折角、咖啡渍</td>
+</tr>
+</tbody>
+</table></div>
+<p>NASApunk 不把「软」当成「低技术」。相反，软的部分往往是技术最难的地方：舱外服的关节、手套的触觉、座椅的冲击吸收、界面的可读性。它们不显眼，但决定了人能不能在里面待八小时。</p>
+<p>这也是它与「赛博朋克」的一个区别：赛博朋克常用「身体改造」制造奇观，NASApunk 更关心「身体能不能舒服地完成这一班」。前者的问题是「人能不能超越身体」，后者的问题是「身体能不能被好好接住」。</p>
+<p>在 LiveBay 的美术里，这个原则可以落成三条：</p>
+<ol type="1">
+<li><strong>设备硬，接触面软</strong>：塔架、机柜、舱壁是硬的；座椅、扶手、手套、靠垫是软的；</li>
+<li><strong>标准硬，记录软</strong>：接口、编号、规格是硬的；交接记录、手写批注、贴纸是软的；</li>
+<li><strong>结构硬，使用痕迹软</strong>：骨架是硬的；磨损、掉漆、胶带、汗渍是软的。</li>
+</ol>
+<p>这三条不是风格装饰，而是「人在系统里存在过」的证据。</p>
+<h2 id="六livebay-的落地">六、LiveBay 的落地</h2>
+<p>LiveBay 把 NASApunk 的「岗位」当作核心，而不是把「人机融合」当作核心。这带来几个具体的设计选择。</p>
+<h3 id="61-职业是岗位不是模块">6.1 职业是岗位，不是模块</h3>
+<p>玩家可以换职业、换班次、换设备，但不可以把身体拆成可购买的模块。</p>
+<ul>
+<li>装备可以模块化：工具、塔、舱室、界面；</li>
+<li>人不能模块化：疲劳、注意力、关系、记忆是连续的；</li>
+<li>成长是「履历与关系」，不是「零件升级」。</li>
+</ul>
+<p>这条规则对应 <a href="../../../../games/livebay/docs-ai/design01/rules/design/a01_岗位与无名主角.md">DES-A1</a> 与 <a href="../../../../games/livebay/docs-ai/design01/rules/design/a02_三生与慢好.md">DES-A2</a>：玩家是无名岗位人，不是可无限升级的超级士兵。</p>
+<h3 id="62-三个可玩的调解场景">6.2 三个可玩的「调解」场景</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>玩什么</th>
+<th>对应调解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>装备适配</td>
+<td>同一套设备，不同人用起来手感不同；调整背带、手套、界面</td>
+<td>接口</td>
+</tr>
+<tr>
+<td>双时钟事件</td>
+<td>机器维护窗口与交接班撞车；先修机器还是先让人休息</td>
+<td>双时钟</td>
+</tr>
+<tr>
+<td>故障降级</td>
+<td>塔离线后，手动旁路、借邻居的射程、放弃一段防线</td>
+<td>冗余</td>
+</tr>
+</tbody>
+</table></div>
+<p>这些场景不需要新的「人体改造」系统，只需要把现有的塔防、沉浸、放置玩法接到「人—机—接口」的冲突上。</p>
+<h3 id="63-不要把人做成资源条">6.3 不要把「人」做成资源条</h3>
+<p>最容易犯的错误，是把疲劳、注意力、关系也做成可消耗的资源条，然后卖给玩家「恢复道具」。</p>
+<p>这会把「照护」变成「优化」，把「人」变成「机器」。</p>
+<p>更好的做法是：</p>
+<ul>
+<li>疲劳不是一条会归零的血条，而是影响手感、判断和对话的<strong>状态</strong>；</li>
+<li>休息不是「回血」，而是让某些选项重新变得可用；</li>
+<li>关系不是「好感度」，而是「这个人愿不愿意在故障时替你顶一班」。</li>
+</ul>
+<p>这样，人的可塑性才是<strong>叙事与玩法的空间</strong>，而不是一张可购买的升级表。</p>
+<h2 id="七结论不是融合是谈判">七、结论：不是融合，是谈判</h2>
+<p>回到那只手套。</p>
+<p>它没有解决「人 vs 机器」的矛盾。它只是让这个矛盾变得可以工作：手掌硬，手指软；机器侧标准，人体侧可调；坏了能换，累了能歇。</p>
+<p>NASApunk 的答案不是「人机融合」，而是「人机谈判」：</p>
+<ul>
+<li><strong>接口</strong>上，机器让一步，做成可调；人让一步，学会标准操作；</li>
+<li><strong>时间</strong>上，机器等一等人的适应，人尊重机器的维护周期；</li>
+<li><strong>冗余</strong>上，机器给人留手动接管，人给机器留备份和检查。</li>
+</ul>
+<p>这三件事都不浪漫，但它们是「把未来降格为岗位」之后，仍然能让人待下去的原因。</p>
+<p>所以，好的 NASApunk 不展示「人变得像机器一样强」，也不展示「机器变得像人一样聪明」。它展示的是：</p>
+<blockquote>
+<p><strong>人还是人，机器还是机器；但在交接处，它们彼此让出了一条能走的路。</strong></p>
+</blockquote>
+<hr />
+<h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="03_美学与视觉.html">03 美学与视觉</a>：白盒硬件、检查单、模拟界面与机构色；</li>
+<li><a href="04_思想政治与批评.html">04 思想政治与批评</a>：公共机构、官僚制与被省略的劳动；</li>
+<li><a href="05_作品与媒介.html">05 作品与媒介</a>：NASApunk 在不同媒介里的表现形式；</li>
+<li><a href="08_资料库.html">08 资料库</a>：一手档案、设计手册与访谈存目；</li>
+<li>LiveBay 项目侧：<a href="../../../../games/livebay/docs-ai/design01/08_美术与音频方向.md">美术与音频方向</a>、<a href="../../../../games/livebay/docs-ai/design01/rules/art/a01_NASA朋克四件套.md">规则 ART-A1</a>。</li>
+</ul>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="08_资料库.html"><span class="dir">prev</span><span class="label">08 · 资料库</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

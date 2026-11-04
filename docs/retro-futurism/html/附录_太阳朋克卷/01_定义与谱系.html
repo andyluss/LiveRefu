@@ -1,0 +1,203 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_太阳朋克卷/01_定义与谱系.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>太阳朋克 · 定义与谱系</title>
+<meta name="description" content="关键词：太阳朋克；Solarpunk；定义；朋克谱系；hopepunk；气候小说；译名">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>太阳朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_太阳朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html" aria-current="page">定义与谱系</a><a href="02_历史年表.html">历史年表（2008</a><a href="03_美学与视觉.html">美学与视觉</a><a href="04_政治与哲学.html">政治与哲学</a><a href="05_作品与媒介.html">作品与媒介</a><a href="06_批评与争议.html">批评与争议</a><a href="07_中文语境.html">中文语境</a><a href="08_资料库.html">资料库（链接与文献）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_太阳朋克卷/01_定义与谱系.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">定义与谱系</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一三种来源的定义">一、三种来源的定义</a></li><li class=""><a href="#二词源拆解solar--punk">二、词源拆解：solar + punk</a></li><li class=""><a href="#三在朋克谱系中的坐标">三、在&quot;××朋克&quot;谱系中的坐标</a></li><li class=""><a href="#四与相邻概念的边界">四、与相邻概念的边界</a></li><li class=""><a href="#五中文译名谱系详见-07-中文语境篇">五、中文译名谱系（详见 07 中文语境篇）</a></li></ul></details>
+<article class="prose">
+<h1 id="太阳朋克--定义与谱系">太阳朋克 · 定义与谱系</h1>
+<blockquote>
+<p>关键词：太阳朋克；Solarpunk；定义；朋克谱系；hopepunk；气候小说；译名</p>
+<p>摘要：本篇给出太阳朋克的可操作定义（取维基百科、2019 年《太阳朋克宣言》、学术论文三种来源），拆解 "solar" 与 "punk" 的双层含义，定位它在"××朋克"谱系中的坐标（蒸汽朋克的姊妹、赛博朋克的对立面、hopepunk 的近亲），划清它与气候小说、生态乌托邦等相邻概念的边界，并交代中文译名现状。本卷统一采用主译名「太阳朋克」。</p>
+</blockquote>
+<hr />
+<h2 id="一三种来源的定义">一、三种来源的定义</h2>
+<p><strong>太阳朋克（Solarpunk）<strong>是 2010 年代以来成型的一种思辨艺术与文学文类，并兼为一种社会运动，核心是描绘</strong>生态可持续的未来</strong>。三个权威来源的说法：</p>
+<ol type="1">
+<li><strong>维基百科（英文）</strong>：太阳朋克是一种"以生态可持续未来为描绘中心的思辨艺术与虚构文类"，被描述为与 <strong>hopepunk</strong> 相近、与 <strong>赛博朋克（cyberpunk）</strong> 相对；"solar" 既指太阳能，也指一种拒绝环境悲观主义的乐观未来观。</li>
+<li><strong>《太阳朋克宣言》（A Solarpunk Manifesto, 2019，由太阳朋克社群创作、署名 The Solarpunk Community）</strong>：太阳朋克是"思辨小说、艺术、时尚与行动主义中的一场运动，它试图回答并身体力行一个问题：<strong>可持续的文明长什么样，我们如何抵达？</strong>"</li>
+<li><strong>学术定义（Reina-Rozo, 2021，<em>Art, Energy and Technology: the Solarpunk Movement</em>）</strong>：太阳朋克是"一场在思辨小说、艺术、时尚与行动主义中的运动，试图回答并体现'可持续的文明长什么样、我们怎么到达那里'"——与宣言互为印证，并强调它把"想象"当作工程与社会正义议题。</li>
+</ol>
+<p>三者的公约数：太阳朋克不是对未来某一技术指标的预言，而是<strong>一套关于"好未来"的想象协议</strong>——它同时规定了内容（可持续、可再生、社会正义）与态度（乐观、可达成、拒绝末日宿命论）。</p>
+<h2 id="二词源拆解solar--punk">二、词源拆解：solar + punk</h2>
+<ul>
+<li><strong>Solar（太阳）</strong>：表层指<strong>太阳能</strong>这一可再生能源；深层是一种"反环境悲观"的<strong>光明意象</strong>——清洁、丰裕、平等。维基百科指出，与赛博朋克以人造、压抑的建成环境为背景相对，太阳朋克以"光"为母题，传达清洁、丰裕与平等的感受。</li>
+<li><strong>Punk（朋克）</strong>：《太阳朋克宣言》给出一段常被引用的定义——"太阳朋克里的'朋克'关乎反叛、反文化、后资本主义、去殖民与热忱（enthusiasm）；它意味着走上与主流（正在走向可怕方向的主流）不同的路。" 这与赛博朋克挪用的"朋克=反叛姿态"同源，但方向相反：赛博朋克的反叛是<strong>在系统内挣扎</strong>，太阳朋克的反叛是<strong>在系统外另起炉灶</strong>（建造替代性基础设施与社群）。</li>
+</ul>
+<h2 id="三在朋克谱系中的坐标">三、在"××朋克"谱系中的坐标</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>支系</th>
+<th>目标</th>
+<th>能源</th>
+<th>基调</th>
+<th>与太阳朋克的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>赛博朋克</td>
+<td>近未来大都会</td>
+<td>信息/微电子</td>
+<td>黑暗、异化、反乌托邦预警</td>
+<td><strong>对立面</strong>（常被表述为其 inverse）</td>
+</tr>
+<tr>
+<td>蒸汽朋克</td>
+<td>维多利亚（回望）</td>
+<td>蒸汽</td>
+<td>黄铜、帝国、复魅过去</td>
+<td><strong>姊妹</strong>：同以"能源"为世界语法，但一回头一向前；宣言明言要避开蒸汽朋克"准反动"的倾向</td>
+</tr>
+<tr>
+<td>磁带未来主义</td>
+<td>70—80 年代近未来</td>
+<td>微电子+磁带</td>
+<td>暖、操作员</td>
+<td>无直接亲缘，同属复古未来家族（见 docs/retro-futurism/12）</td>
+</tr>
+<tr>
+<td><strong>太阳朋克</strong></td>
+<td><strong>可持续的未来</strong></td>
+<td><strong>太阳能+在地能源</strong></td>
+<td><strong>明亮、可达成、反末日</strong></td>
+<td>自身</td>
+</tr>
+<tr>
+<td>hopepunk</td>
+<td>不特定</td>
+<td>—</td>
+<td>温和乐观、互助</td>
+<td><strong>近亲</strong>：hopepunk 词（约 2017 年由小说家 Alexandra Rowland 造）指以善良与互助对抗绝望的叙事态度，太阳朋克常被并入其讨论（如 2019 年 lithub 合论文章）</td>
+</tr>
+</tbody>
+</table></div>
+<p>维基百科还指出：太阳朋克与蒸汽朋克相似度高于与赛博朋克的相似度——两者都想象新世界，区别在主能源（蒸汽机 vs 可再生能源）与时间方向（蒸汽朋克用维多利亚美学回望历史，太阳朋克用更多新艺术（Art Nouveau）式样<strong>看向未来</strong>）。太阳朋克同时借用<strong>复古未来主义</strong>对"技术应可理解、拒绝黑箱"的偏好（恰当事项技术 appropriate technology）、<strong>非洲未来主义</strong>对同质化的反击与用技术矫正权力失衡的思路，以及仿生学与工艺美术（Arts and Crafts）传统。</p>
+<h2 id="四与相邻概念的边界">四、与相邻概念的边界</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>与太阳朋克的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>气候小说（cli-fi）</td>
+<td>交集大但不等同：cli-fi 以气候变化为主题，可黑暗可光明；太阳朋克承诺一个可持续世界并回答"如何抵达"</td>
+</tr>
+<tr>
+<td>生态乌托邦（ecotopia）</td>
+<td>太阳朋克是"可实现的生态乌托邦"，但宣言强调它"可以是乌托邦的，也可以只是乐观的，或是通往更好世界途中的挣扎——但绝不是反乌托邦的"</td>
+</tr>
+<tr>
+<td>末日/废土叙事</td>
+<td>明确对立：太阳朋克诞生部分即是对铺天盖地末日叙事的反弹（详见 02 历史篇）</td>
+</tr>
+<tr>
+<td>复古未来主义</td>
+<td>宣言刻意划界："<strong>不拥抱复古未来主义，太阳朋克完全看向未来</strong>——不是另一种未来，而是一种可能的未来"（此句对理解本卷与 retro-futurism 卷的关系很关键）</td>
+</tr>
+<tr>
+<td>阳光现实主义</td>
+<td>电视批评语境中的"阳光现实主义"（明亮滤镜下的当代都市剧）与太阳朋克无直接关联，仅视觉上有相似联想</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="五中文译名谱系详见-07-中文语境篇">五、中文译名谱系（详见 07 中文语境篇）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>译名</th>
+<th>使用者/语境</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>太阳朋克</td>
+<td>主流（游戏官方中文名《太阳朋克：浮岛家园》、百科与媒体）</td>
+<td><strong>本卷主译名</strong></td>
+</tr>
+<tr>
+<td>索拉朋克</td>
+<td>部分网络音译文本</td>
+<td>又译注记</td>
+</tr>
+<tr>
+<td>阳光朋克</td>
+<td>百度百科词条名</td>
+<td>意译强调"阳光/乐观"一侧</td>
+</tr>
+<tr>
+<td>太阳能朋克</td>
+<td>早期译名讨论</td>
+<td>强调能源一侧，较少用</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><strong>出处</strong>：维基百科 "Solarpunk" 词条；《A Solarpunk Manifesto》（<a href="http://www.re-des.org/a-solarpunk-manifesto/">re-des.org</a>，2019）；Reina-Rozo (2021) IJESJP；完整链接清单见 08 资料库。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="00_对读篇_太阳朋克与复古未来主义.html"><span class="dir">prev</span><span class="label">对读篇：太阳朋克与复古未来主义——相向而行的两兄弟</span></a><a class="next" href="02_历史年表.html"><span class="dir">next</span><span class="label">太阳朋克 · 历史年表（2008—今）</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_太阳朋克卷/01_定义与谱系.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

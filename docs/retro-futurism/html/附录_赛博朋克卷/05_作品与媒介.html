@@ -1,0 +1,101 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_赛博朋克卷/05_作品与媒介.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>05 作品与媒介</title>
+<meta name="description" content="">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="index.html">赛博朋克</a></div><div class="nav-group"><h2>赛博朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_赛博朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">定义与谱系</a><a href="02_历史年表.html">历史年表</a><a href="03_美学与视觉.html">美学与视觉</a><a href="04_思想政治与批评.html">04 思想政治与批评</a><a href="05_作品与媒介.html" aria-current="page">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_赛博朋克卷/05_作品与媒介.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">05 作品与媒介</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#文学从蔓延三部曲到华语赛博朋克">文学：从蔓延三部曲到华语赛博朋克</a></li><li class=""><a href="#电影银翼杀手与黑客帝国">电影：《银翼杀手》与《黑客帝国》</a></li><li class=""><a href="#动画与漫画日式赛博朋克">动画与漫画：日式赛博朋克</a></li><li class=""><a href="#游戏与桌面角色扮演">游戏与桌面角色扮演</a></li><li class=""><a href="#跨媒介的回流">跨媒介的回流</a></li></ul></details>
+<article class="prose">
+<h1 id="05-作品与媒介">05 作品与媒介</h1>
+<p><strong>关键词</strong>：蔓延三部曲；神经漫游者；雪崩；荒潮；银翼杀手；黑客帝国；阿基拉；攻壳机动队；赛博朋克2077</p>
+<p><strong>摘要</strong>：本文件按媒介整理赛博朋克的代表作品谱系：文学自吉布森"蔓延三部曲"起步，经《雪崩》延伸到华语《荒潮》；电影以《银翼杀手》确立视觉语法，《黑客帝国》将其推向大众；日式动画与漫画以《阿基拉》《攻壳机动队》自成一路；游戏与桌面规则则把夜之城交还给玩家。各项均标注年份，不确定者按"约""一般认为""存疑"降档。</p>
+<h2 id="文学从蔓延三部曲到华语赛博朋克">文学：从蔓延三部曲到华语赛博朋克</h2>
+<p>**赛博朋克（cyberpunk）<strong>这一名称的归属虽有争议，但类型的叙事公认以文学为发端。威廉·吉布森（William Gibson）的</strong>蔓延三部曲（Sprawl trilogy）**是最早的坐标，三部曲共享同一近未来世界，其经纬是跨国企业、黑客、义体与人工智能：</p>
+<ul>
+<li>《神经漫游者》（Neuromancer，1984），一般认为**赛博空间（cyberspace）**一词由此进入大众语汇；</li>
+<li>《零伯爵》（Count Zero，1986）；</li>
+<li>《重启蒙娜丽莎》（Mona Lisa Overdrive，1988）。</li>
+</ul>
+<p>尼尔·斯蒂芬森（Neal Stephenson）的《雪崩》（Snow Crash，1992）以戏谑笔调写网络、语言与宗教的纠缠，常被追认为"元宇宙（metaverse）"一词的出处，与吉布森并列为文学谱系的两极。一般认为《神经漫游者》同时获得雨果奖与星云奖，使这一以边缘刊物为阵地的流派迅速获得文学体制的承认。华语方面，陈楸帆《荒潮》（2013）以电子垃圾与全球化分工为背景，常被视为华语赛博朋克的一个坐标（详见《06 中文语境》）。</p>
+<h2 id="电影银翼杀手与黑客帝国">电影：《银翼杀手》与《黑客帝国》</h2>
+<ul>
+<li>《银翼杀手》（Blade Runner，1982）：雷德利·斯科特（Ridley Scott）导演，改编自菲利普·迪克（Philip K. Dick）1968年出版的小说《仿生人会梦见电子羊吗？》（Do Androids Dream of Electric Sheep?）。雨夜、巨型广告与拥挤街市，确立了赛博朋克的电影视觉语法。</li>
+<li>《银翼杀手2049》（Blade Runner 2049，2017）：丹尼斯·维伦纽瓦（Denis Villeneuve）导演，延续并修正前作的世界观。</li>
+<li>《黑客帝国》（The Matrix，1999）：沃卓斯基姐妹（Lana 与 Lilly Wachowski）编导，以"矩阵即模拟"的设定把赛博朋克的核心问题推向大众，并因视觉奇观与哲学化台词成为世纪之交的流行文化事件；该系列于2003年推出续集《重装上阵》（The Matrix Reloaded）与《矩阵革命》（The Matrix Revolutions），补全三部曲。</li>
+</ul>
+<p>一般认为《银翼杀手》初映时口碑与票房均不理想，经录像带流通与约1992年的导演剪辑版（Director's Cut）重估，才被追认为类型经典。</p>
+<h2 id="动画与漫画日式赛博朋克">动画与漫画：日式赛博朋克</h2>
+<ul>
+<li>《阿基拉》（Akira）：大友克洋（Katsuhiro Otomo）执导的剧场版动画上映于1988年，以东京的废墟与失控的超能力书写技术文明的溃败；同名漫画一般认为自1982年起连载、约1990年完结。</li>
+<li>《攻壳机动队》（Ghost in the Shell）：士郎正宗（Shirow Masamune）的原作漫画一般认为自1989年起连载；押井守（Oshii Mamoru）执导的剧场版于1995年上映，围绕义体化警察与"灵魂是否独立于身体"的主题展开，深刻影响后来的西方科幻影像；该作常与《阿基拉》并列，被视为日式赛博朋克动画的两座高峰。</li>
+</ul>
+<h2 id="游戏与桌面角色扮演">游戏与桌面角色扮演</h2>
+<p>电子游戏与桌面规则把赛博朋克的"可居住世界"落到实处：玩家不是旁观城市，而是穿行其中、做出选择。</p>
+<ul>
+<li>《网络奇兵》（System Shock，1994）：Looking Glass 工作室出品，以空间站与失控人工智能确立"潜入加骇入"的第一人称玩法模板。</li>
+<li>《杀出重围》（Deus Ex，2000）：Ion Storm 出品，以多路线叙事讨论基因改造、纳米技术与社会控制。</li>
+<li>《赛博朋克2020》（Cyberpunk 2020）：迈克·庞德史密斯（Mike Pondsmith）主持的桌面角色扮演规则书，通行记法为1990年出版；因其规则线更早的版本约1988年问世，坊间也常见"约1988—1990年间"的笼统说法，具体年份存在出入时可取"约"并按存疑降档。</li>
+<li>《赛博朋克2077》（Cyberpunk 2077，2020）：CD Projekt 开发，世界观授权自庞德史密斯的桌面系列，是赛博朋克题材迄今投入最大、传播最广的商业游戏之一；该作上市初期因主机版本的技术问题引发广泛争议，其后经多次更新修复。</li>
+</ul>
+<h2 id="跨媒介的回流">跨媒介的回流</h2>
+<p>这一谱系的特征在于不断回流：文学提出概念，电影确立图像，动画与游戏又反过来成为新文本的语法来源——《黑客帝国》常被评论者置于《攻壳机动队》的影响链上，《银翼杀手2049》则是对1982年影像遗产的再开发。赛博朋克因此是少数"先有小说、后有风格、再有工业"的类型。进入2010年代后，经典IP多以续作、重启与跨媒介改编维持运转，这种"遗产经营"本身也已成为批评讨论的对象。</p>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="04_思想政治与批评.html"><span class="dir">prev</span><span class="label">04 思想政治与批评</span></a><a class="next" href="06_中文语境.html"><span class="dir">next</span><span class="label">06 中文语境</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_赛博朋克卷/05_作品与媒介.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

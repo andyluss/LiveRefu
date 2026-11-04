@@ -1,0 +1,138 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_生物朋克卷/01_定义与谱系.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>01 定义与谱系</title>
+<meta name="description" content="关键词：生物朋克；湿件；基因工程；ribofunk；硅与碳；朋克谱系">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>生物朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_生物朋克与复古未来主义.html">00 对读篇</a><a href="01_定义与谱系.html" aria-current="page">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html">03 美学与视觉</a><a href="04_思想政治与批评.html">思想政治与批评</a><a href="05_作品与媒介.html">作品与媒介</a><a href="06_中文语境.html">中文语境</a><a href="07_批评与争议.html">批评与争议</a><a href="08_资料库.html">资料库（分组存目）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_生物朋克卷/01_定义与谱系.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">01 定义与谱系</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一定义碳基的高科技低生活">一、定义：碳基的&quot;高科技低生活&quot;</a></li><li class=""><a href="#二命名史ribofunk-与-biopunk存疑为主">二、命名史：ribofunk 与 biopunk（存疑为主）</a></li><li class=""><a href="#三谱系坐标与边界表">三、谱系坐标与边界表</a></li></ul></details>
+<article class="prose">
+<h1 id="01-定义与谱系">01 定义与谱系</h1>
+<blockquote>
+<p>关键词：生物朋克；湿件；基因工程；ribofunk；硅与碳；朋克谱系</p>
+<p>摘要：本篇给出本卷自用的生物朋克定义——以基因工程、湿件等生物技术为技术底座、延续赛博朋克"高科技低生活"基调的碳基思辨文类，并把它放回朋克谱系：核验 ribofunk 与 biopunk 两个词源（均存疑降档），再以边界表厘清它与赛博朋克、纳米朋克、太阳朋克的关系。</p>
+</blockquote>
+<hr />
+<h2 id="一定义碳基的高科技低生活">一、定义：碳基的"高科技低生活"</h2>
+<p>本卷采用的工作定义：<strong>生物朋克（Biopunk）<strong>是以</strong>基因工程（genetic engineering）<strong>与</strong>湿件（wetware）</strong>——以活体组织充当"硬件"的想象——为技术底座，延续赛博朋克"高科技低生活（high tech, low life）"基调的思辨文类与设定家族。判别器有二：技术符码必须是生物学的（基因、细胞、器官，而非芯片与电路）；生物改造必须构成社会经济权力结构的中轴——基因专利、基因分层、生育与身份的商品化——而不只是点缀，后者仅算"带生物设定的科幻"。</p>
+<p>硅与碳的对立是它的出生证明：赛博朋克想象硅基的机器如何改写人（义体、神经接口、上传），生物朋克想象碳基的生命如何被改写（编辑、嵌合、杂交、器官培植）。"高科技低生活"在这里通常落实为：技术掌握在少数垄断者手里，身体成为可被读取、定价与回收的材料。</p>
+<h2 id="二命名史ribofunk-与-biopunk存疑为主">二、命名史：ribofunk 与 biopunk（存疑为主）</h2>
+<p><strong>ribofunk</strong>一词一般归于美国作家<strong>保罗·迪菲利波（Paul Di Filippo）</strong>——"ribo"取核糖（RNA）之根——其同名短篇集一般认为于 1990 年代出版（常标 1996 年，存疑）。该词常被中文资料译介为生物朋克的"文学先行标签"；但把它与后来的 biopunk 视为同义是简化——ribofunk 更多是作者个人的创作主张，而非对一族作品的归纳。</p>
+<p><strong>biopunk</strong>一词的流通约在 1990 年代末至 2000 年代：先见零星用例于科幻读者圈与网络讨论，2000 年代后期随"十几种科幻朋克"式的盘点清单进入大众词表。主卷 12 谱系篇对它的全部记述亦仅一行："基因工程主导的近未来……1990 年代科幻圈已见用例，词源存疑"——两词都缺蒸汽朋克那种公认的命名原点（一般认为 1987 年可考的信件用例），本卷一律按存疑降档。另需留意一词两义：2010 年代真实世界"生物黑客（biohacking）"运动的参与者有时也自称 biopunk——那是现实线（见 02），与本卷的文类义并行不悖。</p>
+<h2 id="三谱系坐标与边界表">三、谱系坐标与边界表</h2>
+<p>生物朋克在谱系里属赛博朋克的衍生系：1980 年代赛博朋克把"公司资本主义+边缘人+近未来"焊成配方，生物朋克接过配方、把计算换成生命。布鲁斯·斯特林《分裂矩阵》（Schismatrix, 1985）中基因改造的"塑形师"与机械改造的"机械师"分流，常被视为两系同源分岔的早期标本（见 02）。下表与四邻划界，口径参考主卷 12 谱系篇、另补"基材"与"时间姿态"两栏：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>生物朋克</th>
+<th>赛博朋克</th>
+<th>纳米朋克</th>
+<th>太阳朋克</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>技术底座</td>
+<td>基因工程、湿件</td>
+<td>信息、神经接口</td>
+<td>纳米机器</td>
+<td>生态与再生技术</td>
+</tr>
+<tr>
+<td>基材</td>
+<td>碳（细胞、器官）</td>
+<td>硅（芯片、金属义体）</td>
+<td>分子尺度</td>
+<td>光合、共生</td>
+</tr>
+<tr>
+<td>时间姿态</td>
+<td>外推当下（近未来）</td>
+<td>信息纪近未来</td>
+<td>近未来</td>
+<td>面向可续的明天，非回望</td>
+</tr>
+<tr>
+<td>身体想象</td>
+<td>变异、杂交、器官培植</td>
+<td>义体、上传</td>
+<td>分子级重组</td>
+<td>与生态共生的身体</td>
+</tr>
+<tr>
+<td>主导情绪</td>
+<td>惊惧与好奇</td>
+<td>冷、腐坏</td>
+<td>疏离</td>
+<td>明亮、修复</td>
+</tr>
+<tr>
+<td>命名现状</td>
+<td>约 1990s 末—2000s 社群化（存疑）</td>
+<td>1980 年代</td>
+<td>是否独立成类，存疑</td>
+<td>一般认为 2008 前后（存疑）</td>
+</tr>
+</tbody>
+</table></div>
+<p>三点边界说明。其一，纳米朋克常被视为赛博朋克的"纳米转向"，是否值得独立成类本就存疑（主卷 12 原表即如此标注）；它与生物朋克同写"分子尺度改写身体"，但基材设定不同。其二，太阳朋克是"非回望"的生态未来主义，也想象绿色技术，底色却是修复与希望，与生物朋克的警世底色相反——不宜因"都谈生命与生态"而混为一谈。其三，本定义属自用口径：生物朋克介于"类型史命名"与"词条化命名"之间——作品库确实存在（巴特勒、斯特林与电影《千钧一发》等，见 02），命名史却模糊；这正解释了本卷对多数年份与词源保留"存疑"的必要。</p>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="00_对读篇_生物朋克与复古未来主义.html"><span class="dir">prev</span><span class="label">00 对读篇：生物朋克与复古未来主义</span></a><a class="next" href="02_历史年表.html"><span class="dir">next</span><span class="label">02 历史年表</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_生物朋克卷/01_定义与谱系.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

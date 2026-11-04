@@ -4,6 +4,25 @@
 > 工作区级变更仍记根 [`CHANGELOG.md`](../CHANGELOG.md)；本文件只记知识库内容。
 > 本文件由根日志的 docs 相关条目迁入；原条目保留原文，版本时间见条目说明。
 
+## [0.3.0] - 2026-11-04 13:20
+
+### 新增
+
+- **知识库 HTML 生成器**：`docs/html/`，含通用脚本 `build_knowledge_html.py`、复用 LiveBay design01 的 `assets/style.css` 与 `assets/theme.js`；支持任意 Markdown 树、嵌套附录、自动目录、上下篇、链接重写与三态主题；
+- **复古未来主义文集 HTML 阅读版**：`docs/retro-futurism/html/`，1 个总览 + 104 个页面（21 篇主卷、卷首、全卷统计、8 卷附录）；
+- `docs/html/README.md` 记录用法、输出约定、R-016 验收与复用到其他知识库的方式。
+
+### 变更
+
+- `docs/retro-futurism/README.md` 顶部增加 HTML 阅读版入口；
+- 生成器样式复用 LiveBay 的 `system / light / dark` 三态与打印浅色规则。
+
+### 验证
+
+- R-016：**105/105** 页通过；
+- HTML 本地链接 **5,206** 个，0 失效；
+- 生成 104 个 Markdown 页面 + 1 个首页。
+
 ## [0.2.9] - 2026-11-04 12:50
 
 ### 新增

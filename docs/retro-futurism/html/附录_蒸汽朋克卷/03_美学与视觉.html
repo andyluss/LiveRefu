@@ -1,0 +1,129 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_蒸汽朋克卷/03_美学与视觉.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>蒸汽朋克卷 · 03 美学与视觉</title>
+<meta name="description" content="关键词：蒸汽朋克；美学；黄铜与齿轮；护目镜与礼帽；飞艇；蒸汽都市；巴贝奇分析机；可见机械；暖技术；视觉对照">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>蒸汽朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_蒸汽朋克与复古未来主义.html">00 对读篇</a><a href="01_定义与谱系.html">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html" aria-current="page">03 美学与视觉</a><a href="04_思想政治与批评.html">04 思想政治与批评</a><a href="05_作品与媒介.html">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_蒸汽朋克卷/03_美学与视觉.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">03 美学与视觉</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一材料与色彩黄铜煤烟与雾都">一、材料与色彩：黄铜、煤烟与雾都</a></li><li class=""><a href="#二符号装置库一身行头即世界观">二、符号装置库：一身行头即世界观</a></li><li class=""><a href="#三巴贝奇分析机作为前数字计算机的符号">三、巴贝奇分析机：作为&quot;前数字计算机&quot;的符号</a></li><li class=""><a href="#四可见机械为何迷人暖技术的先声">四、&quot;可见机械&quot;为何迷人：暖技术的先声</a></li><li class=""><a href="#五与相邻朋克的视觉对照">五、与相邻朋克的视觉对照</a></li><li class=""><a href="#六结语">六、结语</a></li></ul></details>
+<article class="prose">
+<h1 id="蒸汽朋克卷--03-美学与视觉">蒸汽朋克卷 · 03 美学与视觉</h1>
+<blockquote>
+<p>关键词：蒸汽朋克；美学；黄铜与齿轮；护目镜与礼帽；飞艇；蒸汽都市；巴贝奇分析机；可见机械；暖技术；视觉对照</p>
+<p>摘要：本篇解剖蒸汽朋克的视觉语法：黄铜、齿轮、煤烟与雾都构成材料与色彩系统，护目镜、礼帽、蕾丝与飞艇构成高度可穿戴的符号装置库；巴贝奇分析机作为"前数字计算机"，是把信息界面翻译回机械纪的枢纽意象。末节解释"可见机械"为何迷人——它呼应主卷 14 磁带篇的"暖技术"逻辑——并与柴油、原子、太阳朋克做视觉对照。</p>
+</blockquote>
+<h2 id="一材料与色彩黄铜煤烟与雾都">一、材料与色彩：黄铜、煤烟与雾都</h2>
+<p>蒸汽朋克的色彩系统以**黄铜（brass）**为中心：它导热导电、可精密加工，氧化后沉淀出温润的旧色，与皮革、木材搭成"有温度的工业"。暖棕之外是煤烟的灰与铅色——维多利亚伦敦的雾都色调。齿轮、活塞与连杆不藏进外壳，结构件即装饰：机械裸露在外，是可读的立面。</p>
+<p>**蒸汽都市（steam city）**是这套语法的空间容器：烟囱林立的雾都伦敦、煤气灯下的拱廊车站、高架铁道与巨型钟楼，天空中泊着飞艇。城市被写成一台缓慢呼吸的机器——建筑是它的机壳，街道是它的管道。</p>
+<h2 id="二符号装置库一身行头即世界观">二、符号装置库：一身行头即世界观</h2>
+<p>蒸汽朋克的视觉符号高度稳定、可以穿戴：**护目镜（goggles）**是观察者的眼睛与身份徽章；礼帽与怀表链标记绅士发明家身份；蕾丝、束身衣与皮手套构成维多利亚式的身体语法；**飞艇（airship）**与气球承载天空梦想；仪表与刻度盘是"看得见的界面"；自动人偶、机械甲虫与巨型蜘蛛则来自凡尔纳—威尔斯母题仓库的机械侧（见 05 奠基篇）。角色不必开口，一身行头就宣告自己来自某个"蒸汽维多利亚"——这正是蒸汽朋克成为最早"可穿戴世界观"品类的原因（见 00 对读篇）。</p>
+<h2 id="三巴贝奇分析机作为前数字计算机的符号">三、巴贝奇分析机：作为"前数字计算机"的符号</h2>
+<p>蒸汽朋克最核心的符号是<strong>查尔斯·巴贝奇（Charles Babbage）</strong>。他在十九世纪上半叶设计的**差分机（difference engine）与分析机（analytical engine）**是"蒸汽计算机"的原型：分析机以穿孔卡驱动、可编程、可存储，却始终未建成，差分机也只留下可运转的局部样机。正因从未完成，"蒸汽计算机"才成为可以反复入梦的"可能的机器"——一个把信息纪的界面（键盘、存储、程序）整体翻译回机械纪能源的枢纽意象。《差分机》（1990）即以"若分析机建成"为题做思想实验（见 01 定义篇）。在这个意义上，巴贝奇的机器是蒸汽朋克的图腾：它证明"前数字"并不等于"前计算"。</p>
+<h2 id="四可见机械为何迷人暖技术的先声">四、"可见机械"为何迷人：暖技术的先声</h2>
+<p>蒸汽朋克的技术观核心是<strong>可见性</strong>。齿轮的咬合、活塞的往复、阀门与仪表的摆动，构成前数字时代"看得懂的技术"：因果链摊开在眼前，故障可以被诊断，机器可以被拆开、上油、亲手修好——几乎没有黑箱。修理因此成为叙事里的英雄行为：能动手修好一台机器，就是理解并驯服了一个世界。</p>
+<p>这正呼应主卷 14 磁带篇归纳的<strong>暖技术</strong>逻辑：越无法亲手保养的科技越冷，越能拆开再装回去的科技越暖（见 14 磁带篇）。数字黑箱是冷的，磁带机是暖的，而蒸汽朋克把"暖"推到极致——它的界面全部可见、可修、可把玩，是一件可以拆卸的玩具，也是一套可以据为己有的世界观。</p>
+<h2 id="五与相邻朋克的视觉对照">五、与相邻朋克的视觉对照</h2>
+<p>在"能源决定色板"的语法下（见 00 总论四元素），各支朋克的视觉差异一目了然。下表为常见特征的对照（取通行说法，不构成严格定义）：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>支系</th>
+<th>主色与材质</th>
+<th>代表界面</th>
+<th>城市</th>
+<th>氛围词</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>蒸汽朋克</td>
+<td>黄铜暖棕、煤烟灰、皮革</td>
+<td>齿轮仪表、指针刻度盘</td>
+<td>雾都式维多利亚都市</td>
+<td>煤烟、精密、冒险</td>
+</tr>
+<tr>
+<td>柴油朋克</td>
+<td>铬灰、流线镀铬、哑光金属</td>
+<td>驾驶舱仪表、方向盘</td>
+<td>垂直都会与天空舰队</td>
+<td>速度、英雄主义</td>
+</tr>
+<tr>
+<td>原子朋克</td>
+<td>粉彩镀铬、米白与薄荷色调</td>
+<td>按钮与旋钮</td>
+<td>镀铬郊区、未来之家</td>
+<td>乐观、可怖</td>
+</tr>
+<tr>
+<td>太阳朋克</td>
+<td>绿、藤蔓植物、木与再生材料</td>
+<td>绿植立面、透明界面</td>
+<td>阳光花园城市</td>
+<td>明亮、修复</td>
+</tr>
+</tbody>
+</table></div>
+<p>纵向读这张表：从黄铜的暖，到铬灰的冷亮，到粉彩的塑料感，再到植物的绿——颜色本身就是各支"未来味"最直接的速写。</p>
+<h2 id="六结语">六、结语</h2>
+<p>蒸汽朋克的美学所以耐久，是因为它提供了一套看得懂、穿得上、修得了的"暖"未来：黄铜与齿轮让机器回到可理解、可把玩的尺度，雾都与飞艇让城市保持浪漫的可见性，巴贝奇的幽灵则提醒我们——未来不必是黑箱，它也可以是一台上了发条、等着被人拆开修好的机器。</p>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="02_历史年表.html"><span class="dir">prev</span><span class="label">蒸汽朋克卷 · 02 历史年表</span></a><a class="next" href="04_思想政治与批评.html"><span class="dir">next</span><span class="label">蒸汽朋克卷·04 思想政治与批评</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_蒸汽朋克卷/03_美学与视觉.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

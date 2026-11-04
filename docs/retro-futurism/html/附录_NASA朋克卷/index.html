@@ -1,0 +1,182 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_NASA朋克卷/README.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>NASA朋克卷（NASApunk）· 附录卷</title>
+<meta name="description" content="docs/retro-futurism/附录NASA朋克卷/ · 《复古未来主义论文集》外编附录 · 简体中文">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="index.html" aria-current="page">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>NASA朋克</h2><a href="index.html" aria-current="page">附录卷</a><a href="00_对读篇_NASA朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">01 定义与谱系</a><a href="02_历史年表.html">02 历史年表</a><a href="03_美学与视觉.html">03 美学与视觉</a><a href="04_思想政治与批评.html">04 思想政治与批评</a><a href="05_作品与媒介.html">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a><a href="09_软与硬_生物可塑性与机械模块化.html">09 软与硬</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_NASA朋克卷/README.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">附录卷</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一与主卷的关系">一、与主卷的关系</a></li><li class=""><a href="#二目录结构">二、目录结构</a></li><li class=""><a href="#三卷内核心判断先看这五条">三、卷内核心判断（先看这五条）</a></li><li class=""><a href="#四三种读法">四、三种读法</a></li><li class=""><a href="#五写作凡例与事实核验">五、写作凡例与事实核验</a></li><li class=""><a href="#六与-livebay-的关系">六、与 LiveBay 的关系</a></li></ul></details>
+<article class="prose">
+<h1 id="nasa朋克卷nasapunk-附录卷">NASA朋克卷（NASApunk）· 附录卷</h1>
+<blockquote>
+<p><code>docs/retro-futurism/附录_NASA朋克卷/</code> · 《复古未来主义论文集》外编附录 · 简体中文</p>
+<p>一卷关于「把未来降格为岗位」的美学：真实的航天机构、可维修的白盒硬件、检查单与模拟仪表，如何被 2020 年代的游戏工业重新命名为一种「朋克」。</p>
+</blockquote>
+<h2 id="一与主卷的关系">一、与主卷的关系</h2>
+<ul>
+<li>关联主卷：<a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">09 太空篇</a>、<a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">08 原子篇</a>、<a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">12 谱系篇</a>、<a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">14 磁带篇</a>、<a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">15 赛博篇</a>；</li>
+<li>主卷按「过去时代所想象的未来」做纵向考古；本卷处理一个<strong>晚近的逆流</strong>：不是回望某个年代的未来想象，而是回望<strong>真实存在过的航天工程</strong>，并把它 extrapolate（外推）成未来；</li>
+<li>本卷卷首 <a href="00_对读篇_NASA朋克与复古未来主义.html"><code>00_对读篇</code></a> 负责把这条逆流接回主卷的三层时间与「朋克」谱系；两者不是逐字副本。</li>
+</ul>
+<h2 id="二目录结构">二、目录结构</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="index.html"><code>README.md</code></a></td>
+<td>本索引</td>
+</tr>
+<tr>
+<td><a href="00_对读篇_NASA朋克与复古未来主义.html"><code>00_对读篇_NASA朋克与复古未来主义.md</code></a></td>
+<td>对读篇：把本卷放回主卷框架，提出「把未来降格为岗位」的核心判断</td>
+</tr>
+<tr>
+<td><a href="01_定义与谱系.html"><code>01_定义与谱系.md</code></a></td>
+<td>定义与谱系：命名史、与原子朋克/太空时代/磁带未来主义/赛博朋克的边界</td>
+</tr>
+<tr>
+<td><a href="02_历史年表.html"><code>02_历史年表.md</code></a></td>
+<td>历史年表：真实航天档案、先声作品与 2020 年代命名的双线时间表</td>
+</tr>
+<tr>
+<td><a href="03_美学与视觉.html"><code>03_美学与视觉.md</code></a></td>
+<td>美学与视觉：白盒硬件、检查单、模拟界面、机构色与「可维修的未来」</td>
+</tr>
+<tr>
+<td><a href="04_思想政治与批评.html"><code>04_思想政治与批评.md</code></a></td>
+<td>思想政治与批评：公共机构、冷战阴影、官僚制与被省略的劳动</td>
+</tr>
+<tr>
+<td><a href="05_作品与媒介.html"><code>05_作品与媒介.md</code></a></td>
+<td>作品与媒介：文学、影像、游戏的分媒介清单与代表作拆解</td>
+</tr>
+<tr>
+<td><a href="06_中文语境.html"><code>06_中文语境.md</code></a></td>
+<td>中文语境：译名、中国航天经验与「重工业美学」的近邻</td>
+</tr>
+<tr>
+<td><a href="07_批评与争议.html"><code>07_批评与争议.md</code></a></td>
+<td>批评与争议：「朋克」是否名不副实、怀旧的去政治化、商品化</td>
+</tr>
+<tr>
+<td><a href="08_资料库.html"><code>08_资料库.md</code></a></td>
+<td>资料库：一手档案、设计手册、访谈与存目</td>
+</tr>
+<tr>
+<td><a href="09_软与硬_生物可塑性与机械模块化.html"><code>09_软与硬_生物可塑性与机械模块化.md</code></a></td>
+<td>专题：生物可塑性与机械模块化的矛盾，提出接口 / 双时钟 / 冗余「三重调解」</td>
+</tr>
+</tbody>
+</table></div>
+<p>共 10 篇正文 + 本 README。</p>
+<h2 id="三卷内核心判断先看这五条">三、卷内核心判断（先看这五条）</h2>
+<ol type="1">
+<li><strong>NASApunk 不是「NASA 风格的科幻」，而是「以真实航天工程为档案的复古未来主义」</strong>：它的权威来源是任务报告、设计手册与发射照片，不是 1950 年代的插画。</li>
+<li><strong>它的定义性动作是「把未来降格为岗位」</strong>：未来不再是奇观，而是一份有排班、有检查单、有预算、有退休制度的工作。英雄不是舰长，是地面团队。</li>
+<li><strong>它的视觉语法是「可维修」</strong>：外露管线、标签、拨杆、CRT、标准件、备份系统。美感来自「这套东西坏了能修」，而不是「这套东西不会坏」。</li>
+<li><strong>它的情感是「机构乐观」与「机构疲惫」的并存</strong>：相信集体能完成长期任务，同时知道预算、政治与官僚会消耗人。这种双重性是它比原子朋克更成年、比赛博朋克更温和的地方。</li>
+<li><strong>它的「朋克」是产业命名，不是政治宣言</strong>：2022 年由 Bethesda 为《星空》造词，先有美术方向、后有文化讨论；把它当学术分类会过度解释，把它当纯营销又会漏掉它真实的表达力。</li>
+</ol>
+<h2 id="四三种读法">四、三种读法</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>你想</th>
+<th>怎么读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>快速判断「这算不算 NASApunk」</td>
+<td>先读 <a href="01_定义与谱系.html">01 定义与谱系</a> 的四条判据，再对照 <a href="05_作品与媒介.html">05 作品与媒介</a></td>
+</tr>
+<tr>
+<td>做美术/世界观</td>
+<td>直接读 <a href="03_美学与视觉.html">03 美学与视觉</a>，再看 <a href="02_历史年表.html">02 历史年表</a> 找真实参照</td>
+</tr>
+<tr>
+<td>关心它为什么在 2020 年代流行</td>
+<td>读 <a href="00_对读篇_NASA朋克与复古未来主义.html">00 对读篇</a> 与 <a href="07_批评与争议.html">07 批评与争议</a></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="五写作凡例与事实核验">五、写作凡例与事实核验</h2>
+<ul>
+<li>体例沿用主卷 <a href="../00_总论_未来的考古学与全卷地图.html">00 总论</a> 第四节「写作凡例」：关键词 + 摘要、术语首现加粗附原文、交叉引用、文末清单、事实不确定时按「约 / 一般认为 / 存疑」降档，<strong>不编造引文与数据</strong>。</li>
+<li>本卷的特殊困难：<strong>NASApunk 是一个 2020 年代才被命名的词，学术文献极少</strong>。因此本卷把材料分三级：
+<ol type="1">
+<li><strong>一手档案</strong>：NASA 公开的设计标准、任务报告、照片与口述史；</li>
+<li><strong>创作者自述</strong>：开发者访谈、美术指导（如《星空》团队 2022 年的命名自述）；</li>
+<li><strong>社群归纳</strong>：玩家、设计师与媒体对「NASApunk」的用法——这类材料只作为「用法证据」，不当作定义权威。</li>
+</ol></li>
+<li>凡属于本卷自建的分析框架（如「四件套」「三张时间表」），均在首次出现处标明「本卷框架」，避免与既有术语混淆。</li>
+<li>关键事实的出处见 <a href="08_资料库.html">08 资料库</a>。</li>
+</ul>
+<h2 id="六与-livebay-的关系">六、与 LiveBay 的关系</h2>
+<p>LiveBay（《逍遥湾》）把本卷的美学当作<strong>总体风格</strong>，但不是照搬 NASA：它把「真实航天机构」替换成一座移动太空城的三环保障体系，把「任务」替换成「轮班与生活」。本卷因此也是 LiveBay 美术与世界观的上游参考之一，项目侧落地见 <a href="../../../../games/livebay/docs-ai/design01/08_美术与音频方向.md"><code>games/livebay/docs-ai/design01/08_美术与音频方向.md</code></a>。</p>
+<blockquote>
+<p>一句话：NASApunk 的未来不是「我们终将抵达群星」，而是「今天这班岗，谁来接」。</p>
+</blockquote>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="next" href="00_对读篇_NASA朋克与复古未来主义.html"><span class="dir">next</span><span class="label">对读篇：NASA朋克与复古未来主义——把未来降格为岗位</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_NASA朋克卷/README.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

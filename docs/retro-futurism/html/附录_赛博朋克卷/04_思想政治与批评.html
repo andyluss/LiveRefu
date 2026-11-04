@@ -1,0 +1,90 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_赛博朋克卷/04_思想政治与批评.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>04 思想政治与批评</title>
+<meta name="description" content="">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="../附录_原子朋克卷/index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="index.html">赛博朋克</a></div><div class="nav-group"><h2>赛博朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_赛博朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">定义与谱系</a><a href="02_历史年表.html">历史年表</a><a href="03_美学与视觉.html">美学与视觉</a><a href="04_思想政治与批评.html" aria-current="page">04 思想政治与批评</a><a href="05_作品与媒介.html">05 作品与媒介</a><a href="06_中文语境.html">06 中文语境</a><a href="07_批评与争议.html">07 批评与争议</a><a href="08_资料库.html">08 资料库</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_赛博朋克卷/04_思想政治与批评.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">04 思想政治与批评</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#后人类从控制论到赛博格">后人类：从控制论到赛博格</a></li><li class=""><a href="#企业国家与监控资本主义">企业国家与监控资本主义</a></li><li class=""><a href="#反未来主义还是当下预警">反未来主义，还是当下预警</a></li><li class=""><a href="#警示还是犬儒">警示，还是犬儒</a></li><li class=""><a href="#批评之一设定年代过期">批评之一：设定年代过期</a></li><li class=""><a href="#批评之二图像挪用与东方主义">批评之二：图像挪用与东方主义</a></li><li class=""><a href="#批评之三多样性的缺席与修正">批评之三：多样性的缺席与修正</a></li><li class=""><a href="#批评之四技术悲观与现实脱节">批评之四：技术悲观与现实脱节</a></li></ul></details>
+<article class="prose">
+<h1 id="04-思想政治与批评">04 思想政治与批评</h1>
+<p><strong>关键词</strong>：后人类；赛博格；控制论；企业国家；监控资本主义；反未来主义；犬儒；东方主义</p>
+<p><strong>摘要</strong>：本文件梳理赛博朋克的思想前提与政治想象：控制论与赛博格如何打开"后人类"问题，巨型企业与监控逻辑如何构成其政治底色；再辨析它究竟是"反未来主义"，还是对当下的提前预警，以及警示与犬儒之间的张力。随后转入批评维度，检讨设定年代过期、图像挪用的东方主义倾向、人物多样性的缺席，以及技术悲观同现实经验的脱节。</p>
+<h2 id="后人类从控制论到赛博格">后人类：从控制论到赛博格</h2>
+<p>后人类（posthuman）并非指"人之后的物种"，而是指人的边界——身心、性别、有机与无机——被技术重新打开之后的状况。**控制论（cybernetics）**兴起于1940年代：诺伯特·维纳（Norbert Wiener）1948年出版《控制论》（Cybernetics: Or Control and Communication in the Animal and the Machine），把信息与反馈确立为理解生命与机器的共同语言，人与机器的界限第一次成为原则上可重设的问题。</p>
+<p>唐娜·哈拉维（Donna Haraway）1985年发表《赛博格宣言》（"A Cyborg Manifesto"），把**赛博格（cyborg）**界定为机器与有机体的杂合体，认为这种身份可以绕开本质主义的身心、性别与物种区分，日后成为后人类论述最常被引用的起点之一。赛博朋克对义体、神经接入与上传意识的想象，正是这组问题的延长线：人不再是封闭的整体，而是可被维护、升级与重写的接口。</p>
+<h2 id="企业国家与监控资本主义">企业国家与监控资本主义</h2>
+<p>赛博朋克政治想象的基座是<strong>企业国家（corporate state）</strong>：巨型企业握有比民族国家更多的资本与数据，国家退化为看门人——这一设定在1980年代读来像夸张，今天读来更像写实。肖莎娜·祖博夫（Shoshana Zuboff）2019年出版的《监控资本主义时代》（The Age of Surveillance Capitalism），系统描述了平台企业把用户行为数据当作原料开采、用以预测乃至塑造行为的逻辑：小说里阴谋企业执行的监控，在她笔下已是日常经济的基础设施。</p>
+<p>对照之下，赛博朋克的监控想象诉诸黑幕，**监控资本主义（surveillance capitalism）**式的现实监控则依赖同意与便利，需要警惕的是渗透进日常界面与合约条款的采集结构——赛博朋克的政治寓言需要一次"从阴谋论到体制论"的转译，才能继续指认现实。</p>
+<h2 id="反未来主义还是当下预警">反未来主义，还是当下预警</h2>
+<p>赛博朋克被反复批评为<strong>反未来主义（anti-futurism）</strong>：它几乎不提供值得向往的明天，未来只是被放大的坏当下。另一种常见辩护把它读作<strong>当下预警</strong>：1980年代的赛博朋克写的是当时已可辨认的趋势——跨国资本、终端媒体、街头失业——近未来设定只是把趋势再拧紧一格；它否定的不是未来，而是"技术自动带来进步"的信仰。</p>
+<p>两种读法共享一个判断：赛博朋克是诊断文体而非预言文体——它擅长的不是说出"将要发生什么"，而是把正在发生的结构显影到夸张的程度，价值随现实逼近反而上升，这也引出"批判是否失效"的争论。</p>
+<h2 id="警示还是犬儒">警示，还是犬儒</h2>
+<p>赛博朋克普遍采取"看穿一切、却难以行动"的叙述位置，使它同时被读作清醒的<strong>警示</strong>与被动的<strong>犬儒（cynicism）</strong>：警示之读强调其冷峻，拒绝安慰性结尾，把异化推到无可回避之处；犬儒之读则指出，当反叛者只是更大系统的一部分、反抗被写成徒劳，文本传递的便不再是愤怒而是麻木——"知道一切却不再指望改变"。批评者还注意到风格化的副作用：反乌托邦视觉一旦成为时尚商品，警示便被审美消费吸收，只剩"很酷的绝望"。张力在于：它究竟让人看清系统，还是让人习惯系统。</p>
+<h2 id="批评之一设定年代过期">批评之一：设定年代过期</h2>
+<p>早期赛博朋克多把故事置于距今不远的未来，如2020年代；现实年份跨过设定之后，其"未来性"便告失效，文本滑向批评者所说的**"遗产化"**——作为历史档案仍有价值，作为当下判断则显得过时：例如赛博空间常被预设为一个需要专门设备进入的异度空间，而今天的网络已是日常空气。批评者由此追问：预言集体过期之后，批判锋芒是否还能指向现在？</p>
+<h2 id="批评之二图像挪用与东方主义">批评之二：图像挪用与东方主义</h2>
+<p>西方赛博朋克影像大量以东亚城市——香港、东京与拼贴的"未来之城"——充当霓虹背景，渐成类型语法，也招致**东方主义（orientalism）**批评：亚洲在此类图像里往往只提供密集楼宇、雨夜招牌与拥挤街市的异域质感，很少占据叙事主体。问题在于"借景"常同时是"去主体化"：城市被剪影化，城市里的人被隐去。</p>
+<h2 id="批评之三多样性的缺席与修正">批评之三：多样性的缺席与修正</h2>
+<p>早期赛博朋克的主人公与作者群像高度同质，批评者指出其中**种族与性别（race and gender）**的缺席：街头反抗者多为欧美男性，东亚角色多以符号或背景出现，女性常被安置在"终端女孩"一类功能位。类型内部随后出现修正——以女性或非西方人物为主角的作品增多；2017年真人版《攻壳机动队》以白人演员饰演日裔主角引发的洗白（whitewashing）争议，也促使行业重新检讨选角与改编的政治。</p>
+<h2 id="批评之四技术悲观与现实脱节">批评之四：技术悲观与现实脱节</h2>
+<p>批评者认为赛博朋克的技术想象偏向<strong>技术悲观（techno-pessimism）</strong>，而现实互联网并未兑现其最黑暗的版本：网络没有变成少数企业独占的密窟，反而成为底层公共设施与集体书写的现场；监控确实普遍化，"被监视的恐惧"与"被看见的渴望"却在同一张网上并存。赛博朋克式的全黑画面与现实经验之间存在落差：它擅长放大危险，却不擅长解释危险如何与日常便利、公共参与缠绕生长。</p>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="03_美学与视觉.html"><span class="dir">prev</span><span class="label">赛博朋克 · 美学与视觉</span></a><a class="next" href="05_作品与媒介.html"><span class="dir">next</span><span class="label">05 作品与媒介</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_赛博朋克卷/04_思想政治与批评.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../../附录_原子朋克卷/06_中文语境.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>原子朋克 · 中文语境</title>
+<meta name="description" content="关键词：译名；原子朋克；辐射玩家圈；苏联美学；标签混用；避难所；核子可乐；通用符号">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../../html/assets/style.css">
+<script defer src="../../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="../index.html">文集总览</a><a href="../README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="../00_总论_未来的考古学与全卷地图.html">总论</a><a href="../01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="../02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="../03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="../04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="../05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="../06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="../07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="../08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="../09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="../10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="../11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="../12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="../13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="../14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="../15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="../16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="../17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="../18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="../19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="../20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="../附录_NASA朋克卷/index.html">NASA朋克</a><a href="../附录_千禧美学卷/index.html">千禧美学</a><a href="index.html">原子朋克</a><a href="../附录_太阳朋克卷/index.html">太阳朋克</a><a href="../附录_柴油朋克卷/index.html">柴油朋克</a><a href="../附录_生物朋克卷/index.html">生物朋克</a><a href="../附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="../附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>原子朋克</h2><a href="index.html">附录卷</a><a href="00_对读篇_原子朋克与复古未来主义.html">对读篇</a><a href="01_定义与谱系.html">定义与谱系</a><a href="02_历史年表.html">历史年表（1945</a><a href="03_美学与视觉.html">美学与视觉</a><a href="04_思想政治与批评.html">思想政治与批评</a><a href="05_作品与媒介.html">作品与媒介</a><a href="06_中文语境.html" aria-current="page">中文语境</a><a href="07_批评与争议.html">批评与争议</a><a href="08_资料库.html">资料库（存目）</a></div><div class="nav-group"><h2>参考</h2><a href="../全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../../附录_原子朋克卷/06_中文语境.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">中文语境</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一译名与扩散路径">一、译名与扩散路径</a></li><li class=""><a href="#二与苏联美学标签的混用辨析">二、与&quot;苏联美学&quot;标签的混用辨析</a></li><li class=""><a href="#三避难所与核子可乐梗的通用化">三、避难所与核子可乐：梗的通用化</a></li><li class=""><a href="#四小结">四、小结</a></li></ul></details>
+<article class="prose">
+<h1 id="原子朋克--中文语境">原子朋克 · 中文语境</h1>
+<blockquote>
+<p>关键词：译名；原子朋克；辐射玩家圈；苏联美学；标签混用；避难所；核子可乐；通用符号</p>
+<p>摘要：中文语境的"原子朋克"译名一般认为约 2010 年代随《辐射》玩家圈扩散，其语义从"复古科幻文类"滑向"冷战原子视觉风格"；该词与"苏联美学"标签在中文网络常被混用，本卷给出辨析；避难所、避难所小子、核子可乐等《辐射》符号则脱离原作成为通用废土符号，本文简述其泛化路径。</p>
+</blockquote>
+<hr />
+<h2 id="一译名与扩散路径">一、译名与扩散路径</h2>
+<p><strong>原子朋克</strong>作为 atompunk 的对译，约 2010 年代起随《辐射》玩家圈扩散（一般认为；具体节点无权威断代，降档）。扩散路径大致是：<strong>辐射系列玩家社区 → 游戏汉化与攻略语境 → 网络美学/设定集话题 → 泛科幻写作圈</strong>。中文语境里的"原子朋克"主要指<strong>冷战美国原子乐观的视觉风格</strong>（镀铬、蘑菇云、原子符号、火箭与电视天线），比英文词条更偏"视觉"、更少"文类"含义——这与中文网络把各种"××朋克"读成"画面风格"的习惯一致（呼应主卷 12 谱系篇的观察）。</p>
+<h2 id="二与苏联美学标签的混用辨析">二、与"苏联美学"标签的混用辨析</h2>
+<p>中文网络（短视频、图片社区、设定讨论）常把<strong>原子朋克</strong>与<strong>苏联美学</strong>（Soviet aesthetics，泛指社会主义阵营宣传画、粗野主义与太空纪念物风格，详见主卷 10 红旗篇）混用。混用的表层原因是图像亲缘：两侧共享<strong>宣传画语法、纪念碑尺度、火箭与未来工程</strong>；深层原因是中文语境多把"冷战未来图像"当成一个整体氛围消费，不细辨阵营。辨析要点：</p>
+<ul>
+<li><strong>阵营与语法不同</strong>：原子朋克的典型语法是"美式消费未来"（家庭、广告、郊区的幸福原子）；苏联美学是"国家动员的未来"（集体远景、五年计划、红星与太空荣耀）；</li>
+<li><strong>交叠区真实存在</strong>：太空竞赛与"和平原子"宣传使两侧共享大量图像（纪念物、模型、宣传片），混用并非全错；</li>
+<li><strong>代价是削平批评</strong>：若两者混为一谈，"谁在宣传、对谁宣传、掩盖什么"的政治差别被抹掉，读者便无法用 04 篇的对称批评去读图。</li>
+</ul>
+<h2 id="三避难所与核子可乐梗的通用化">三、避难所与核子可乐：梗的通用化</h2>
+<p>《辐射》系列在中文网络贡献了一组溢出原作的通用符号：<strong>避难所</strong>（Vault，含避难所小子 Vault Boy 的黄蓝形象）、<strong>核子可乐</strong>（Nuka-Cola）。这些符号的扩散分三层：</p>
+<ol type="1">
+<li><strong>游戏内</strong>：作为世界观道具（避难所的门牌、核子可乐的瓶盖）被玩家熟悉；</li>
+<li><strong>梗层</strong>：离开游戏语境，成为"废土/冷战/美式复古"的快捷标签（表情包、文创、海报改图）；</li>
+<li><strong>通用符号层</strong>：进入不玩游戏的网民的日常指涉（"核子可乐"成为"复古美式汽水"的代称，避难所小子成为"避难/末日风"标志）。</li>
+</ol>
+<p>这一泛化路径印证主卷 12 谱系篇的判断：<strong>××朋克的图像一旦梗化，就会脱离其历史所指，成为可自由调用的风格库存</strong>——原子朋克的中文接受，很大程度上是"先有梗、后补文类史"的。</p>
+<h2 id="四小结">四、小结</h2>
+<p>中文语境的原子朋克：译名已稳、词义偏视觉、与苏联美学界限模糊、靠《辐射》梗完成大众化。若要严肃使用该词，建议：①区分"美式原子乐观"与"苏联美学"两侧图像；②以英文词条（见 08 资料库）为准绳补文类史；③用 04/07 篇的批评框架处理其政治负担，避免把宣传档案当纯装饰。</p>
+<hr />
+<p><strong>出处与降档说明</strong>：本篇为中文网络接受的一般性观察，无权威调查支撑；"约 2010 年代""一般认为"均属降档表述。辐射系列、避难所、核子可乐等为公共游戏知识；中文网络具体样本（帖子、词条）存目见 08 资料库。</p>
+<hr />
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="05_作品与媒介.html"><span class="dir">prev</span><span class="label">原子朋克 · 作品与媒介</span></a><a class="next" href="07_批评与争议.html"><span class="dir">next</span><span class="label">原子朋克 · 批评与争议</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="../index.html">总览</a> · <a href="../../附录_原子朋克卷/06_中文语境.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

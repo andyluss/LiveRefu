@@ -1,0 +1,332 @@
+<!-- 由 docs/html/build_knowledge_html.py 从 ../00_总论_未来的考古学与全卷地图.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>复古未来主义论文集 · 总论：未来的考古学</title>
+<meta name="description" content="副题：导论、作者体系与全卷地图">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../../html/assets/style.css">
+<script defer src="../../html/assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveRefu · knowledge</span><span class="brand-title">复古未来主义论文集</span><span class="brand-sub">知识库 · HTML 阅读版</span></a><nav class="nav"><div class="nav-group"><h2>总览</h2><a href="index.html">文集总览</a><a href="README.html">卷首 README</a></div><div class="nav-group"><h2>主卷</h2><a href="00_总论_未来的考古学与全卷地图.html" aria-current="page">总论</a><a href="01_理论篇_怀旧乡愁与未来的遗产化.html">理论篇</a><a href="02_远古篇_飞天永生与自动人偶_神话中的原初未来.html">远古篇</a><a href="03_古典篇_异地乌托邦_从理想国到太阳城与大同.html">古典篇</a><a href="04_近代篇_进步的世纪_启蒙与工业时代的未来雏形.html">近代篇</a><a href="05_奠基篇_凡尔纳与威尔斯_未来小说的制度化.html">奠基篇</a><a href="06_机器篇_速度与钢骨_未来主义与装饰艺术的机器乌托邦.html">机器篇</a><a href="07_战间篇_柴油朋克_天空舰队冒险家与明日世界.html">战间篇</a><a href="08_原子篇_原子朋克_幸福原子与镀铬郊区.html">原子篇</a><a href="09_太空篇_太空时代_Googie射线枪哥特与明日世界.html">太空篇</a><a href="10_红旗篇_红星照耀的未来_社会主义复古未来主义.html">红旗篇</a><a href="11_中国篇_新中国未来_晚清到千禧年的中国未来想象.html">中国篇</a><a href="12_谱系篇_朋克宇宙学_从时钟朋克到磁带未来主义.html">谱系篇</a><a href="13_蒸汽篇_蒸汽朋克_铜与汽的维多利亚回望.html">蒸汽篇</a><a href="14_磁带篇_磁带未来主义_模拟接口的暖未来.html">磁带篇</a><a href="15_赛博篇_赛博朋克_近未来的腐坏与它自己的乡愁.html">赛博篇</a><a href="16_末日篇_被取消的未来_复古末日与废墟乡愁.html">末日篇</a><a href="17_蒸汽波篇_蒸汽波与合成波_时代错置的听觉乡愁.html">蒸汽波篇</a><a href="18_千禧篇_Y2K与FrutigerAero_千禧互联网美学.html">千禧篇</a><a href="19_多元篇_非洲未来主义与丝绸朋克_文化星丛.html">多元篇</a><a href="20_结语与附录_未来年表与术语对照.html">结语与附录</a></div><div class="nav-group"><h2>附录</h2><a href="附录_NASA朋克卷/index.html">NASA朋克</a><a href="附录_千禧美学卷/index.html">千禧美学</a><a href="附录_原子朋克卷/index.html">原子朋克</a><a href="附录_太阳朋克卷/index.html">太阳朋克</a><a href="附录_柴油朋克卷/index.html">柴油朋克</a><a href="附录_生物朋克卷/index.html">生物朋克</a><a href="附录_蒸汽朋克卷/index.html">蒸汽朋克</a><a href="附录_赛博朋克卷/index.html">赛博朋克</a></div><div class="nav-group"><h2>参考</h2><a href="全卷总索引与字数统计.html">《复古未来主义论文集》全卷总索引与…</a></div></nav>
+<div class="sidebar-foot">
+<p>知识库 HTML 阅读版。<br>样式与脚本复用 <code>docs/html/</code>。</p>
+<p><a href="../00_总论_未来的考古学与全卷地图.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">retro-futurism</span><span class="topbar-title">总论：未来的考古学</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#〇开场未来已经死过很多次">〇、开场：未来已经死过很多次</a></li><li class=""><a href="#一定义三个时刻与三种文本">一、定义：三个时刻与三种文本</a></li><li class="sub"><a href="#11-三层时间模型">1.1 三层时间模型</a></li><li class="sub"><a href="#12-三种文本秩序">1.2 三种文本秩序</a></li><li class="sub"><a href="#13-术语小史考据从略采通行说法">1.3 术语小史（考据从略，采通行说法）</a></li><li class="sub"><a href="#14-与近亲概念的边界">1.4 与近亲概念的边界</a></li><li class=""><a href="#二作者体系如何给想象出来的未来分期">二、作者体系：如何给&quot;想象出来的未来&quot;分期</a></li><li class="sub"><a href="#21-七纪分期">2.1 七纪分期</a></li><li class="sub"><a href="#22-四元素未来的构成件">2.2 四元素：未来的构成件</a></li><li class="sub"><a href="#23-七机制人们为何如何想象未来">2.3 七机制：人们为何、如何想象未来</a></li><li class="sub"><a href="#24-一条贯穿全卷的主线未来感的半衰期">2.4 一条贯穿全卷的主线：未来感的半衰期</a></li><li class=""><a href="#三全卷地图篇目总览">三、全卷地图：篇目总览</a></li><li class=""><a href="#四写作凡例全卷共同遵守的规格">四、写作凡例（全卷共同遵守的规格）</a></li><li class=""><a href="#五本卷的边界与自我说明">五、本卷的边界与自我说明</a></li></ul></details>
+<article class="prose">
+<h1 id="复古未来主义论文集--总论未来的考古学">复古未来主义论文集 · 总论：未来的考古学</h1>
+<blockquote>
+<p>副题：导论、作者体系与全卷地图</p>
+<p>关键词：复古未来主义；未来考古；时间分层；想象的技术；朋克谱系</p>
+<p>摘要：本篇是整套论文集的纲领。先给出"复古未来主义"的可操作定义与三层时间模型，交代术语来源并辨析其与未来主义、怀旧、历史主义等近亲概念的区别；随后提出作者自用的分析体系——"七纪分期"、"四元素"与"七机制"；最后公布全卷篇目地图与写作凡例，作为其余各篇共同遵守的规格。</p>
+</blockquote>
+<hr />
+<h2 id="〇开场未来已经死过很多次">〇、开场：未来已经死过很多次</h2>
+<p>"未来"是一种会死亡、也会被反复复活的东西。</p>
+<p>1957 年，美国小学生相信二十年后人人开核动力汽车、穿银箔睡衣，机器人管家会接管一切家务；1969 年，全世界相信十年内我们将住在月球酒店里度假。这些未来没有到来。真正到来的是传真机、电子邮件与后来被扫进故纸堆的传真纸，是折叠屏手机和短视频——它们几乎从不以"未来"的面貌出场，出场时就已经是日常。而每当一个时代许诺的未来落空，总有一个更晚的时代回过头去，把那个落空的未来捡起来，擦拭、装裱、改造成新的审美、新的音乐、新的游戏世界观与新的伤感。这个动作，就是我们这本论文集的总题目：</p>
+<p><strong>复古未来主义（Retro-futurism）</strong>——对"过去时代所想象的未来"的想象、回收与再消费。</p>
+<p>本书并不打算把复古未来主义当作一种"风格"来介绍（尽管它会大量介绍风格），而是把它当作一种<strong>文化机制</strong>来解剖：人类为什么反复想象未来？这些想象如何按时代形成各自的"未来味"？它们如何死亡、埋藏、被考古出土、被改写成新的商品与乡愁？从神话里的飞天与永生，到凡尔纳的黄铜潜艇，到冷战郊区的镀铬原子梦，到 21 世纪互联网上的蒸汽波与 Frutiger Aero——我们试图穷尽地走一遍"过去的人们想象未来"的遗址。</p>
+<hr />
+<h2 id="一定义三个时刻与三种文本">一、定义：三个时刻与三种文本</h2>
+<h3 id="11-三层时间模型">1.1 三层时间模型</h3>
+<p>任何一段"过去对未来的想象"，都至少涉及三个时刻：</p>
+<ul>
+<li><strong>T₀</strong>：想象发生的年代（作者的时代）；</li>
+<li><strong>T₁</strong>：想象所指向的年代（"未来"，可以很遥远，也可以是明天）；</li>
+<li><strong>T₂</strong>：观看、消费、回收这段想象的年代（我们的时代）。</li>
+</ul>
+<p>三者之间的关系，决定了这段材料的性质：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>关系</th>
+<th>名称</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T₂ ≈ T₀ &lt; T₁</td>
+<td><strong>当时当地的未来主义</strong></td>
+<td>1950 年代美国"原子能家用化"广告，在当年就是"未来"本身</td>
+</tr>
+<tr>
+<td>T₂ &gt; T₀，T₁ ≈ T₀</td>
+<td><strong>一般怀旧</strong></td>
+<td>今天的人怀念 2000 年的网吧与 Windows XP 桌面</td>
+</tr>
+<tr>
+<td>T₂ &gt; T₀，且 T₁ &gt; T₀</td>
+<td><strong>复古未来主义</strong>（狭义）</td>
+<td>今天的人怀念 1950 年代广告里"想象的 1985 年"</td>
+</tr>
+<tr>
+<td>T₂ &gt; T₁ &gt; T₀</td>
+<td><strong>过期未来（复古的复古）</strong></td>
+<td>1939 年纽约世博会想象的 1960 年，在 2020 年代被再度打捞</td>
+</tr>
+</tbody>
+</table></div>
+<p>复古未来主义的独特之处在于：它的乡愁对象是<strong>双重缺席</strong>的——既不在场于 T₂（所以缺席），也从未在 T₁ 真正实现过（所以从未在场）。人们想念的不是某一段真实生活，而是一段<strong>从未发生的可能性</strong>。英语网络文化为此造过一个词：<strong>anemoia（对从未经历过的时代的乡愁）</strong>，约在 2012 年前后由约翰·柯尼希（John Koenig）的《晦暗悲伤词典》（<em>The Dictionary of Obscure Sorrows</em>）项目普及。复古未来主义可以说是 anemoia 的工业化生产版本。</p>
+<h3 id="12-三种文本秩序">1.2 三种文本秩序</h3>
+<p>按"谁在什么时候生产这段未来"，复古未来主义材料可分为三序：</p>
+<ol type="1">
+<li><strong>第一序 · 档案</strong>（T₀ 时代的原生作品，被 T₂ 收藏、策展、修复）：1950 年代的原子主题明信片、苏联太空海报、《大众机械》（<em>Popular Mechanics</em>）杂志的未来插图。T₂ 只做发现与陈列，不改造内容。</li>
+<li><strong>第二序 · 仿作</strong>（T₂ 的作者刻意模仿 T₀ 的"未来味"创作新文本）：电影《天空上尉与明日世界》（<em>Sky Captain and the World of Tomorrow</em>, 2004）模仿 1930 年代连环画式的飞行未来；当代"磁带未来主义"艺术家复刻 1980 年代 CRT 终端。</li>
+<li><strong>第三序 · 混血建构</strong>（把多个 T₀ 的素材自由重组为自洽的新世界）：游戏《辐射》（<em>Fallout</em>, 1997 起）把 1950 年代原子美学、1970 年代磁带终端与核末日后叙事焊接成一个"2077 年"——这是复古未来主义最成熟、也最能说明其本质的形态：<strong>未来不再是被预言的，而是被拼装的</strong>。</li>
+</ol>
+<p>三序不是价值高下，而是复古程度与创作自主性的梯度。本论文集对三序同等收录。</p>
+<h3 id="13-术语小史考据从略采通行说法">1.3 术语小史（考据从略，采通行说法）</h3>
+<p>据《科幻历史词典》（Historical Dictionary of Science Fiction）的考据，"retro-futurist"（形容词形式）迄今可考的最早书面用例出现在 <strong>1981 年</strong>：一家音乐杂志在乐评中形容某乐队主唱"既像星际舞者，又带着 Flash Gordon 电影与摇摆伦敦的坎普味"。名词形式 "retro-futurism" 的出处争议更大，常见说法将其归于美国独立出版人劳埃德·邓恩（Lloyd Dunn）1980 年代的自办刊物《RetroFuturism》（存疑）；可以确定的是，该词在 1980 年代"未来开始缩水"的文化气候中开始流通（见 16 末日篇），1990 年代随威廉·吉布森（William Gibson）评新加坡"人工未来"的随笔《迪士尼乐园与死刑》（<em>Disneyland with the Death Penalty</em>, 1993）等文本进入大众媒体视野，21 世纪后又经网络美学分类运动（如 Aesthetics Wiki 一系的词条生产）急剧细分繁衍。顺带更正一个常见讹传：常被当作复古未来主义标签之一的"射线枪哥特（raygun gothic）"并非吉布森随笔时代的发明，而是他在 1981 年短篇《Gernsback 连续统》（<em>The Gernsback Continuum</em>）中早已使用的说法（细节见 09 太空篇）。凡涉及精确命名年代处，各篇一律按"一般认为 / 据考证 / 存疑"三档标注，不追求伪精确。</p>
+<h3 id="14-与近亲概念的边界">1.4 与近亲概念的边界</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>与复古未来主义的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>未来主义（Futurism）</strong></td>
+<td>20 世纪初意大利艺术运动，把"现在"高速推向未来；复古未来主义是把"过去推出去的未来"拉回现在，方向相反（见 06 机器篇）</td>
+</tr>
+<tr>
+<td><strong>未来学 / futurology</strong></td>
+<td>严肃预测学科；复古未来主义消费的是预测的"遗迹"而非预测本身（见 05、20）</td>
+</tr>
+<tr>
+<td><strong>怀旧（nostalgia）</strong></td>
+<td>对象是真实过去；复古未来的对象是"过去的虚构未来"，见 01 理论篇</td>
+</tr>
+<tr>
+<td><strong>历史主义（historicism）</strong></td>
+<td>相信历史有规律可循；复古未来主义大多不信规律，只信"味"</td>
+</tr>
+<tr>
+<td><strong>反乌托邦 / 末日叙事</strong></td>
+<td>同为"未来叙事"，但指向警示；当其设定年代过期或风格化后，会自动滑入复古未来主义（见 15、16）</td>
+</tr>
+<tr>
+<td><strong>"××朋克"诸系</strong></td>
+<td>复古未来主义最著名的子类型命名法，见 12 谱系篇</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="二作者体系如何给想象出来的未来分期">二、作者体系：如何给"想象出来的未来"分期</h2>
+<h3 id="21-七纪分期">2.1 七纪分期</h3>
+<p>过去的未来想象史，可按"想象者用以搭建未来的最强媒介"分成七纪。注意：分期的是<strong>想象的技术</strong>，不是真实历史：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>纪</th>
+<th>大致时段</th>
+<th>未来（彼岸）的形态</th>
+<th>代表材料</th>
+<th>对应篇目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>神话纪</strong></td>
+<td>远古—16 世纪</td>
+<td>彼岸/来世/黄金时代，尚无"未来"概念</td>
+<td>飞天神话、永生传说、自动人偶、千禧年主义</td>
+<td>02</td>
+</tr>
+<tr>
+<td><strong>乌托邦纪</strong></td>
+<td>16—18 世纪</td>
+<td>制度性"异地"；乌托邦从空间移入时间</td>
+<td>莫尔、康帕内拉、培根</td>
+<td>03</td>
+</tr>
+<tr>
+<td><strong>蒸汽与电力纪</strong></td>
+<td>19 世纪</td>
+<td>进步论确立，"未来"成为可见的技术延伸</td>
+<td>凡尔纳、威尔斯、世纪之交明信片</td>
+<td>04、05</td>
+</tr>
+<tr>
+<td><strong>机器纪</strong></td>
+<td>1900—1945</td>
+<td>速度、垂直城市、战争工业化的崇高</td>
+<td>未来主义、装饰艺术、《大都会》、1939 世博会</td>
+<td>06、07</td>
+</tr>
+<tr>
+<td><strong>原子与太空纪</strong></td>
+<td>1945—1972</td>
+<td>绝对能量与宇宙尺度；未来=更好的现在</td>
+<td>原子广告、Googie 建筑、阿波罗时代</td>
+<td>08、09、10</td>
+</tr>
+<tr>
+<td><strong>信息纪</strong></td>
+<td>1970 年代—2000</td>
+<td>计算机与网络接管"近未来"叙事</td>
+<td>磁带终端、赛博朋克、个人电脑革命</td>
+<td>14、15</td>
+</tr>
+<tr>
+<td><strong>碎片纪</strong></td>
+<td>2000—今</td>
+<td>未来产品化；复古本身成为工业</td>
+<td>蒸汽波、Y2K、Frutiger Aero、各种回收</td>
+<td>17、18、19</td>
+</tr>
+</tbody>
+</table></div>
+<p>神话纪里的人们并不拥有"未来"这个时间概念——他们拥有的只是"彼岸"。但正因为后世一切未来想象（飞、永生、自动化、丰裕、完美社会）都能在神话里找到母题原型，我们才把神话纪收入这套"未来考古学"：它是所有未来的<strong>母题库</strong>（见 02 远古篇的"四大母题"归纳）。</p>
+<h3 id="22-四元素未来的构成件">2.2 四元素：未来的构成件</h3>
+<p>任何一幅未来图景，无论出自哪个时代，都可以拆成四种"原料"，而各时代的差异主要在于它们把哪种元素推到前台：</p>
+<ol type="1">
+<li><strong>能源</strong>——未来的物理浪漫所在：蒸汽、电力、原子、太阳能、反物质、芯片算力。</li>
+<li><strong>界面</strong>——人如何触碰未来：仪表盘、按钮、键盘、CRT、玻璃触屏、神经接口。</li>
+<li><strong>城市</strong>——未来的空间容器：垂直都市、地下城、轨道站、漂浮岛、赛博大都会。</li>
+<li><strong>身体</strong>——未来对人的改写：义体、克隆、上传、人机合体、新人类。</li>
+</ol>
+<p>一个时代"未来感"的配方，可以写作：<strong>（该时代最新的能源 × 最新奇的界面）外推到（城市 × 身体）</strong>。例如 1950 年代 =（原子能 × 按钮）→（郊区家庭 × 机器人管家）；1980 年代 =（微电子 × 键盘与 CRT）→（巨型都会 × 义体）。这套配方在 12 谱系篇与 20 附录的"未来年表"中被反复使用。</p>
+<h3 id="23-七机制人们为何如何想象未来">2.3 七机制：人们为何、如何想象未来</h3>
+<p>跨越七纪，过去的人们想象未来，可归纳为七种机制。它们很少单独出现，但每件材料总有一种主导：</p>
+<ol type="1">
+<li><strong>进步叙事</strong>：未来=更好的现在（世博会、进步广告、启蒙史学）。主导篇目：04、05、08。</li>
+<li><strong>千禧/弥赛亚叙事</strong>：未来=时间终点与审判/救赎（宗教末日论世俗化的远亲）。主导篇目：02、16。</li>
+<li><strong>乡愁机制</strong>：把未来当作失乐园来怀念（复古未来主义的主引擎）。主导篇目：01、17。</li>
+<li><strong>反讽与戏仿</strong>：先拆穿"过去的未来"，再消费它（后现代复古）。主导篇目：12、18。</li>
+<li><strong>补偿机制</strong>：用官方想象的未来补偿现实匮乏（社会主义阵营宣传画）。主导篇目：10、11。</li>
+<li><strong>批判与警示</strong>：借未来审判当下（反乌托邦、灾难科幻）。主导篇目：15、16。</li>
+<li><strong>世界建构与游戏</strong>：未来作为可进入的、可消费的世界观本身（主题公园、开放世界游戏、设定集）。主导篇目：07、09、13。</li>
+</ol>
+<h3 id="24-一条贯穿全卷的主线未来感的半衰期">2.4 一条贯穿全卷的主线：未来感的半衰期</h3>
+<p>把这套体系合起来看，本卷想论证的最重要命题是：</p>
+<blockquote>
+<p><strong>未来感是有保质期的，而且保质期越来越短。</strong></p>
+</blockquote>
+<p>神话纪的未来感以"世"为单位存续；蒸汽纪的未来感以"代"为单位；原子纪的以"十年"为单位；进入信息纪与碎片纪后，未来感的保质期缩短到五年乃至两三年——2007 年的 Windows Vista 玻璃界面，2015 年就成了被怀念的"Frutiger Aero 时代"（见 18 千禧篇）。<strong>未来越快过时，复古未来的原料就越丰富</strong>；复古未来主义不是未来的敌人，而是"未来过时"这一现代现象的影子产业。这正是为什么我们这个时代——一个未来感不断加速贬值的时代——会成为复古未来主义最大的生产车间。</p>
+<hr />
+<h2 id="三全卷地图篇目总览">三、全卷地图：篇目总览</h2>
+<p>本卷共 21 篇（00—20）+ 导读 README，按"理论—考古—回收—当代"四段编排：</p>
+<p><strong>第一段 · 理论地基（00—01）</strong></p>
+<ul>
+<li>00 总论（本篇）：定义、体系、凡例。</li>
+<li>01 理论篇：怀旧、乡愁与"未来的遗产化"——复古未来主义的精神分析与社会学（博伊姆、詹姆逊、马克·费舍等谱系）。</li>
+</ul>
+<p><strong>第二段 · 未来的考古：按年代发掘"当时的未来"（02—11）</strong></p>
+<ul>
+<li>02 远古篇：飞天、永生与自动人偶——神话中的原初"未来"（四大母题）。</li>
+<li>03 古典篇：异地乌托邦——从《理想国》到《太阳城》与大同。</li>
+<li>04 近代篇：进步的世纪——启蒙、工业革命与 19 世纪中叶的未来雏形。</li>
+<li>05 奠基篇：凡尔纳与威尔斯——未来小说的制度化与世纪末奇迹。</li>
+<li>06 机器篇：速度与钢骨——未来主义、构成主义、装饰艺术与垂直都市。</li>
+<li>07 战间篇：柴油朋克——天空舰队、冒险家与"明日世界"世博会。</li>
+<li>08 原子篇：原子朋克——幸福原子、按钮生活与镀铬郊区。</li>
+<li>09 太空篇：太空时代——Sputnik、Googie、射线枪哥特与阿波罗的黎明与黄昏。</li>
+<li>10 红旗篇：红星照耀的未来——苏联、东欧与社会主义阵营的未来形象。</li>
+<li>11 中国篇：新中国未来——晚清到千禧年的中国未来想象。</li>
+</ul>
+<p><strong>第三段 · 回收的未来：朋克诸系与它们的目标年代（12—16）</strong></p>
+<ul>
+<li>12 谱系篇：朋克宇宙学——从时钟朋克到磁带未来主义（"××朋克"命名法全图）。</li>
+<li>13 蒸汽篇：蒸汽朋克——铜与汽的维多利亚回望。</li>
+<li>14 磁带篇：磁带未来主义——模拟接口的暖未来（附：与赛博朋克对照）。</li>
+<li>15 赛博篇：赛博朋克——近未来的腐坏与它自己的乡愁（未来如何变成遗产）。</li>
+<li>16 末日篇：被取消的未来——复古末日与废墟乡愁（1970 年代"未来断裂"前后）。</li>
+</ul>
+<p><strong>第四段 · 当代的乡愁与多元（17—19）</strong></p>
+<ul>
+<li>17 蒸汽波篇：蒸汽波与合成波——时代错置的听觉与视觉乡愁。</li>
+<li>18 千禧篇：Y2K、Frutiger Aero 与 Webcore——千禧互联网美学（含中国网吧/QQ 空间记忆）。</li>
+<li>19 多元篇：非洲未来主义、丝绸朋克、Solarpunk 与文化星丛——谁有权想象未来。</li>
+</ul>
+<p><strong>收束（20）</strong></p>
+<ul>
+<li>20 结语与附录：把未来还回时间——未来年表、术语对照与延伸阅读。</li>
+</ul>
+<p><strong>外编附录（2026 增补）</strong></p>
+<ul>
+<li>附录_太阳朋克卷/：太阳朋克（Solarpunk）独立调研卷，含卷首《00 对读篇：太阳朋克与复古未来主义》与定义/历史/美学/政治哲学/作品媒介/批评争议/中文语境/资料库 8 篇——按主编决定并入本卷作为外编附录（原独立于 docs/solarpunk/），详见该目录 README。</li>
+<li>附录_千禧美学卷/：千禧互联网美学（Y2K/Frutiger Aero/Webcore 等）独立调研卷，含卷首《00 对读篇：千禧互联网美学与复古未来主义》与总览定义/历史年表/家族详解/机制理论/媒介考古/批评争议/中文语境/资料库 8 篇——按主编决定并入本卷作为外编附录（原独立于 docs/y2k-aesthetics/），详见该目录 README。</li>
+<li>附录_赛博朋克卷/：赛博朋克深度资料卷（README+00 对读+01 定义谱系/02 历史年表/03 美学视觉/04 思想政治/05 批评与争议/06 作品与媒介/07 中文语境/08 资料库，共 10 文件）——与主卷 15 错位互补，2026-09 主编亲写直接建入主卷目录。</li>
+<li>附录_蒸汽朋克卷/：蒸汽朋克深度资料卷（同上 10 文件结构）——与主卷 13 错位互补，2026-09 主编亲写。</li>
+<li>附录_原子朋克卷/：原子朋克深度资料卷（同上 10 文件结构）——与主卷 08/09/16 错位互补，2026-09 主编亲写。</li>
+<li>附录_生物朋克卷/：生物朋克深度资料卷（同上 10 文件结构，命名史多存疑）——主卷仅 12 谱系篇一行提及，本卷为首次系统化，2026-09 主编亲写。</li>
+<li>附录_柴油朋克卷/：柴油朋克深度资料卷（同上 10 文件结构）——与主卷 07/12 错位互补，2026-09 主编亲写。</li>
+</ul>
+<p><strong>阅读建议</strong>：从头读（考古顺序最顺）；亦可从 12 谱系篇与 17、18 两篇"当代美学"入手，再回头读 02—11 的考古篇——当代诸篇是对历史篇的消费与回收，先看消费者再看货源，别有风味。</p>
+<hr />
+<h2 id="四写作凡例全卷共同遵守的规格">四、写作凡例（全卷共同遵守的规格）</h2>
+<p>本卷是多人协作写成的论文集，为保持整体感，各篇（含本总论）统一遵守以下规格；后续篇目由受托撰写者据此执行：</p>
+<ol type="1">
+<li><strong>语言与格式</strong>：简体中文，Markdown；章内小节用 <code>##</code>，次级用 <code>###</code>；可用有序/无序列表与表格；<strong>禁用 emoji</strong>；不使用 HTML。</li>
+<li><strong>篇首元信息</strong>：标题下依次给出"关键词"与"摘要"（摘要 100—180 字），格式如本篇开头。</li>
+<li><strong>术语规范</strong>：重要术语首次出现时<strong>加粗</strong>并附英文或原文括注，如 <strong>蒸汽朋克（Steampunk）</strong>；定义须与 00 总论、12 谱系篇的定位一致，如有分歧应加注。</li>
+<li><strong>篇幅</strong>：正文（不含文末清单）3000—4500 汉字；个别大题目可至 5000 字。</li>
+<li><strong>事实纪律</strong>：只写有把握的事实；年份不确定时按"约 / 一般认为 / 存疑"降档措辞，<strong>宁缺毋滥，严禁编造作品名、人名与年份</strong>；拿不准的个案可省略或泛化（如"1950 年代多本科普杂志都刊载过核动力汽车概念图"）。受托撰写者可用 web 检索核验少量关键事实，但不得依赖 AI 生成式补全。</li>
+<li><strong>交叉引用</strong>：提及别篇内容时用括号注明，如（见 00 总论）（见 13 蒸汽篇）；不得整段复制别篇内容，涉及别篇主场的作品点到即止并指向该篇。</li>
+<li><strong>文末清单</strong>：每篇正文后附「核心作品清单」，按 文学 / 电影与剧集 / 动画与漫画 / 游戏 / 建筑与设计 / 音乐 / 学术与文献 等适用类别以列表列出，每项含作者与年份（不确定则省略年份）。</li>
+<li><strong>落款与修订</strong>：每篇文末附一行 <code>（本篇完）</code>；本卷所有文件随写作进程纳入 git 版本控制，修订记录见各文件所在仓库的提交历史。</li>
+</ol>
+<hr />
+<h2 id="五本卷的边界与自我说明">五、本卷的边界与自我说明</h2>
+<p>三句实话，写在前头：</p>
+<ol type="1">
+<li><strong>"穷尽"是修辞，不是事实。</strong> 人类对未来的想象无法穷尽；本卷追求的是<strong>类型学上的穷尽</strong>——尽量覆盖每一种已被命名的"未来味"及其代表作品，但在国别（伊斯兰世界、南亚、拉美当代叙事着墨有限）、媒介（视觉艺术、文学、影像、游戏为主）上必有遗漏，欢迎读者补正。</li>
+<li><strong>材料是别人的，框架是我的。</strong> 本卷所有分期、四元素、七机制的提法，均为作者自用的分析工具，并非学界定论；引用请注明本卷。</li>
+<li><strong>写它，也是消费它。</strong> 这套论文集本身就是碎片纪复古未来主义的产物——我们一边解剖乡愁，一边生产着未来的乡愁。这一自反性，正是全卷想请读者一同保持的清醒。</li>
+</ol>
+<hr />
+<p>（本篇完 · 修订历史见 git 提交记录）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="next" href="01_理论篇_怀旧乡愁与未来的遗产化.html"><span class="dir">next</span><span class="label">理论篇：怀旧、乡愁与&quot;未来的遗产化&quot;</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveRefu · 复古未来主义文集 · 生成于 2026-11-04</span>
+<span><a href="index.html">总览</a> · <a href="../00_总论_未来的考古学与全卷地图.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>
