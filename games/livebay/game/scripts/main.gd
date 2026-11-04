@@ -1,5 +1,6 @@
 # LiveBay · 视图与输入
 # 只负责画、点、显示；规则全在 core/sim.gd。
+# 规则：TECH-A2（模拟与视图分离）、ART-C1（色板字体与比例）
 extends Node2D
 
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")

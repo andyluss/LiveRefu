@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""生成 LiveBay 的 SVG 概念设定图。PNG 由 tools/render_art.sh 调用 rsvg-convert 导出。"""
+"""生成 LiveBay 的 SVG 概念设定图。PNG 由 tools/render_art.sh 调用 rsvg-convert 导出。
+
+规则：ART-A1（NASApunk 四件套）、ART-C1（色板字体与比例）。
+"""
 from __future__ import annotations
 
 import math

@@ -1,5 +1,6 @@
 # LiveBay · 无头测试
 # 运行：godot --headless --path game --script tests/run_sim.gd
+# 规则：TECH-B2（验收与不回归）
 extends SceneTree
 
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")

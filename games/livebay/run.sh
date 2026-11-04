@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # LiveBay（逍遥湾）· 统一入口
+# 规则：TECH-B2（验收与不回归）
 # 与工作区其它 Godot 项目一致：把 HOME 指到 games/.godot-home，避免写用户目录。
 set -euo pipefail
 

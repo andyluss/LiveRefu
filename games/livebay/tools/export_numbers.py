@@ -8,6 +8,8 @@
 表格约定：每张要导出的表前面有一行
     <!-- export: key -->
 脚本只读取带标记的表格；表格内容不要用半角 | 作为正文分隔。
+
+规则：TECH-A1（单一数据源）、DES-C1（数值与场景引用）。
 """
 
 from __future__ import annotations

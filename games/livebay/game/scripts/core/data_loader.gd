@@ -1,6 +1,7 @@
 # LiveBay · 数据读取与校验
 # 职责：读取 data/*.json，做最小完整性校验，返回 Sim 可直接使用的字典。
 # 所有内容都是【工程占位】，改设定优先改 JSON，不要改这里。
+# 规则：TECH-A1（单一数据源）、DES-C1（数值与场景引用）
 class_name DataLoader
 extends RefCounted
 

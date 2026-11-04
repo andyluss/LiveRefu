@@ -5,6 +5,9 @@ status: "现行 v0.1（v0.1 切片锁定）"
 date: "2026-11-04"
 source: "AI 设计，人类拍板"
 authority: "人类"
+rules:
+  - "DES-C1"
+  - "TECH-A1"
 upstream:
   - "../04_塔防玩法.md"
 related:

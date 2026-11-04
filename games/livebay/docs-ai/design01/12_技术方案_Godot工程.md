@@ -5,6 +5,11 @@ status: "草案 v0.2（D16 已裁决）"
 date: "2026-11-03"
 source: "AI 起草，人类确认"
 authority: "人类（范围）/ 工程（实现）"
+rules:
+  - "TECH-A1"
+  - "TECH-A2"
+  - "TECH-B1"
+  - "TECH-B2"
 upstream:
   - "../../docs-human/概念设定.md"
 related:

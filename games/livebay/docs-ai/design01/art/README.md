@@ -5,6 +5,11 @@ status: "草案 v0.1（概念提案）"
 date: "2026-11-04"
 source: "AI 绘制，人类拍板"
 authority: "人类"
+rules:
+  - "ART-A1"
+  - "ART-B1"
+  - "ART-B2"
+  - "ART-C1"
 upstream:
   - "../08_美术与音频方向.md"
   - "../02_世界观_逍遥湾.md"

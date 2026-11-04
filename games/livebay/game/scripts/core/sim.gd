@@ -1,5 +1,6 @@
 # LiveBay · 核心模拟
 # 纯逻辑，不依赖渲染；可被无头测试直接驱动。
+# 规则：TECH-A2（模拟与视图分离）、DES-B1（班次循环）、DES-B3（故障与低报）
 # 固定步长 1/60，所有随机性暂不引入（便于复现）。
 class_name LiveBaySim
 extends RefCounted

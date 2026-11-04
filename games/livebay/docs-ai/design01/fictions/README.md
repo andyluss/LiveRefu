@@ -5,6 +5,9 @@ status: "草案 v0.1（非 canon）"
 date: "2026-11-04"
 source: "AI 虚构，人类拍板"
 authority: "人类"
+rules:
+  - "DES-A1"
+  - "DES-B2"
 upstream:
   - "../README.md"
   - "../../../docs-human/概念设定.md"
