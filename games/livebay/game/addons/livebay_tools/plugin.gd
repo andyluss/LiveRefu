@@ -9,6 +9,7 @@ extends EditorPlugin
 
 const BridgeClient = preload("res://addons/livebay_tools/bridge_client.gd")
 const WaveTimeline = preload("res://addons/livebay_tools/wave_timeline.gd")
+const PreviewViewport = preload("res://addons/livebay_tools/preview_viewport.gd")
 const COLOR_PATH := Color("#E0A22E")
 const COLOR_SLOT := Color("#D9622B")
 const COLOR_BASE := Color("#3E6F6B")
@@ -38,8 +39,12 @@ var selected_wave := -1
 var selected_group := -1
 var history_list: ItemList
 var history_log: Array = []
+var history_restoring := false
 var preview_button: Button
 var preview_stop_button: Button
+var embedded_preview: Control
+var embedded_button: Button
+var embedded_stop_button: Button
 var preview_playing := false
 var preview_time := 0.0
 var preview_wave_index := -1
@@ -64,6 +69,8 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	set_process(false)
+	if embedded_preview:
+		embedded_preview.stop_preview()
 	if dock:
 		remove_control_from_docks(dock)
 		dock.queue_free()
@@ -163,6 +170,7 @@ func _build_dock() -> void:
 	wave_timeline.custom_minimum_size = Vector2(260, 190)
 	wave_timeline.group_selected.connect(_on_wave_group_selected)
 	wave_timeline.group_delay_changed.connect(_on_wave_delay_changed)
+	wave_timeline.group_interval_changed.connect(_on_wave_interval_changed)
 	wave_timeline.group_delay_finished.connect(func(): wave_drag_active = false)
 	dock.add_child(wave_timeline)
 
@@ -211,13 +219,27 @@ func _build_dock() -> void:
 	var preview_row := HBoxContainer.new()
 	dock.add_child(preview_row)
 	preview_button = Button.new()
-	preview_button.text = "预览本波"
+	preview_button.text = "视口预览"
 	preview_button.pressed.connect(_start_preview)
 	preview_row.add_child(preview_button)
 	preview_stop_button = Button.new()
 	preview_stop_button.text = "停止"
 	preview_stop_button.pressed.connect(_stop_preview)
 	preview_row.add_child(preview_stop_button)
+
+	embedded_preview = PreviewViewport.new()
+	embedded_preview.custom_minimum_size = Vector2(260, 146)
+	dock.add_child(embedded_preview)
+	var embedded_row := HBoxContainer.new()
+	dock.add_child(embedded_row)
+	embedded_button = Button.new()
+	embedded_button.text = "内嵌预览"
+	embedded_button.pressed.connect(_start_embedded)
+	embedded_row.add_child(embedded_button)
+	embedded_stop_button = Button.new()
+	embedded_stop_button.text = "停止内嵌"
+	embedded_stop_button.pressed.connect(_stop_embedded)
+	embedded_row.add_child(embedded_stop_button)
 
 	var history_title := Label.new()
 	history_title.text = "操作历史"
@@ -226,6 +248,7 @@ func _build_dock() -> void:
 	history_list = ItemList.new()
 	history_list.custom_minimum_size = Vector2(260, 90)
 	history_list.select_mode = ItemList.SELECT_SINGLE
+	history_list.item_selected.connect(_on_history_selected)
 	dock.add_child(history_list)
 
 	var sep := HSeparator.new()
@@ -249,6 +272,8 @@ func _reload(announce: bool) -> void:
 	if not bool(result.get("ok", false)):
 		_set_status("读取失败：" + str(result.get("error", "未知错误")), true)
 		return
+	if embedded_preview:
+		embedded_preview.stop_preview()
 	map_data = result.get("map", {})
 	towers = result.get("towers", [])
 	wave_data = result.get("waves", [])
@@ -438,6 +463,22 @@ func _on_wave_delay_changed(wave_index: int, group_index: int, delay: float) -> 
 	_refresh_wave_ui()
 
 
+func _on_wave_interval_changed(wave_index: int, group_index: int, interval: float) -> void:
+	if wave_index < 0 or wave_index >= wave_data.size():
+		return
+	var groups: Array = wave_data[wave_index].get("groups", [])
+	if group_index < 0 or group_index >= groups.size():
+		return
+	if not wave_drag_active:
+		_begin_edit("调整 W%d 组%d 间隔" % [int(wave_data[wave_index].get("index", 0)), group_index + 1])
+		wave_drag_active = true
+	groups[group_index]["interval"] = interval
+	selected_wave = wave_index
+	selected_group = group_index
+	interval_spin.set_value_no_signal(interval)
+	_refresh_wave_ui()
+
+
 func _apply_wave_values() -> void:
 	var wave := _current_wave()
 	var group := _current_group()
@@ -532,11 +573,31 @@ func _begin_edit(label: String = "编辑") -> void:
 func _refresh_history() -> void:
 	if history_list == null:
 		return
+	history_restoring = true
 	history_list.clear()
 	for label in history_log:
 		history_list.add_item(str(label))
 	if history_list.item_count > 0:
 		history_list.select(history_list.item_count - 1)
+	history_restoring = false
+
+
+func _on_history_selected(index: int) -> void:
+	if history_restoring or index < 0 or index >= undo_stack.size():
+		return
+	var entry: Dictionary = undo_stack[index]
+	_restore_snapshot(entry.get("state", {}))
+	undo_stack = undo_stack.slice(0, index)
+	history_log = history_log.slice(0, index)
+	redo_stack.clear()
+	_refresh_history()
+	_clamp_selection()
+	_refresh_wave_ui()
+	dirty = true
+	if save_button:
+		save_button.text = "保存 *"
+	_set_status("已回到「%s」之前。" % str(entry.get("label", "编辑")))
+	_update_status()
 
 
 func _undo() -> void:
@@ -758,6 +819,22 @@ func _draw_preview(overlay: Control, font: Font) -> void:
 			overlay.draw_circle(p, radius, color)
 			overlay.draw_arc(p, radius + 2.0, 0, TAU, 16, Color("#232B2F"), 1.0)
 	overlay.draw_string(font, Vector2(18, 42), "PREVIEW W%d  t=%.1fs" % [int(wave.get("index", 0)), preview_time], HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("#3E6F6B"))
+
+
+func _start_embedded() -> void:
+	if selected_wave < 0 or selected_wave >= wave_data.size():
+		_set_status("先选一个波次。", true)
+		return
+	if embedded_preview == null:
+		_set_status("内嵌预览未初始化。", true)
+		return
+	_set_status(embedded_preview.start_preview(map_data, wave_data, selected_wave))
+
+
+func _stop_embedded() -> void:
+	if embedded_preview:
+		embedded_preview.stop_preview()
+	_set_status("内嵌预览已停止。")
 
 
 func _set_status(text: String, warn := false) -> void:

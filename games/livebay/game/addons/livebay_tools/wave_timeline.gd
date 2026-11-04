@@ -6,6 +6,7 @@ extends Control
 
 signal group_selected(wave_index: int, group_index: int)
 signal group_delay_changed(wave_index: int, group_index: int, delay: float)
+signal group_interval_changed(wave_index: int, group_index: int, interval: float)
 signal group_delay_finished
 
 const ROW_H := 30.0
@@ -22,6 +23,9 @@ var _drag_wave := -1
 var _drag_group := -1
 var _drag_start_x := 0.0
 var _drag_start_delay := 0.0
+var _drag_start_interval := 1.0
+var _drag_mode := "delay"
+var _drag_count := 1
 var _dragging := false
 
 
@@ -91,7 +95,9 @@ func _draw() -> void:
 			draw_rect(rect, Color("#232B2F"), false, 1.0)
 			if wi == selected_wave and gi == selected_group:
 				draw_rect(rect.grow(2.0), Color("#232B2F"), false, 2.0)
-			_hits.append({"wave": wi, "group": gi, "rect": rect.grow(3.0), "start": start})
+				# 右缘把手：拖动改 interval
+				draw_line(Vector2(x2, y), Vector2(x2, y + BAR_H), Color("#232B2F"), 2.0)
+			_hits.append({"wave": wi, "group": gi, "rect": rect.grow(3.0), "start": start, "end_x": x2, "count": count, "interval": interval})
 	draw_line(Vector2(LEFT, size.y - 12), Vector2(LEFT + plot_w, size.y - 12), Color("#566264"), 1.0)
 	draw_string(font, Vector2(LEFT, size.y - 2), "0s", HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Color("#7B8683"))
 	draw_string(font, Vector2(LEFT + plot_w - 30, size.y - 2), "%.0fs" % tmax, HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Color("#7B8683"))
@@ -107,6 +113,9 @@ func _gui_input(event: InputEvent) -> void:
 					_drag_group = int(hit["group"])
 					_drag_start_x = event.position.x
 					_drag_start_delay = float(hit["start"])
+					_drag_start_interval = float(hit["interval"])
+					_drag_count = int(hit["count"])
+					_drag_mode = "interval" if abs(event.position.x - float(hit["end_x"])) <= 7.0 and _drag_count > 1 else "delay"
 					group_selected.emit(_drag_wave, _drag_group)
 					accept_event()
 					return
@@ -119,6 +128,10 @@ func _gui_input(event: InputEvent) -> void:
 		var tmax := _max_time()
 		var plot_w: float = maxf(40.0, size.x - LEFT - 10.0)
 		var delta: float = (event.position.x - _drag_start_x) / plot_w * tmax
-		var new_delay: float = maxf(0.0, snappedf(_drag_start_delay + delta, 0.1))
-		group_delay_changed.emit(_drag_wave, _drag_group, new_delay)
+		if _drag_mode == "interval":
+			var new_interval: float = maxf(0.1, snappedf(_drag_start_interval + delta / maxf(1.0, float(_drag_count - 1)), 0.1))
+			group_interval_changed.emit(_drag_wave, _drag_group, new_interval)
+		else:
+			var new_delay: float = maxf(0.0, snappedf(_drag_start_delay + delta, 0.1))
+			group_delay_changed.emit(_drag_wave, _drag_group, new_delay)
 		accept_event()
