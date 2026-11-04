@@ -178,6 +178,15 @@ def theme_switch() -> str:
     )
 
 
+def nav_group(title: str, links: list[str], count: int | None = None, open_group: bool = False) -> str:
+    open_attr = " open" if open_group else ""
+    count_html = f'<span class="nav-count">{count}</span>' if count is not None else ""
+    return (
+        f'<details class="nav-group"{open_attr}><summary><span>{html.escape(title)}</span>{count_html}</summary>'
+        f'<div class="nav-links">{"".join(links)}</div></details>'
+    )
+
+
 class Site:
     def __init__(self, source: Path, output: Path, title: str, subtitle: str):
         self.source = source
@@ -251,22 +260,17 @@ class Site:
         out.append(f'<a href="{html.escape(rel_url(self.output / "index.html", current_page.parent), quote=True)}">文集总览</a>')
         out.append(link(self.readme, "卷首 README"))
         out.append("</div>")
-        out.append('<div class="nav-group"><h2>主卷</h2>')
-        out.extend(link(p, nav_label(self.page_title(p))) for p in self.main)
-        out.append("</div>")
-        out.append('<div class="nav-group"><h2>附录</h2>')
-        for name, docs in self.appendices:
-            out.append(link(docs[0], appendix_label(name)))
-        out.append("</div>")
+        out.append(nav_group("主卷", [link(p, nav_label(self.page_title(p))) for p in self.main], len(self.main)))
+        out.append(nav_group("附录", [link(docs[0], appendix_label(name)) for name, docs in self.appendices], len(self.appendices)))
         if active_appendix:
             docs = next(docs for name, docs in self.appendices if name == active_appendix)
-            out.append(f'<div class="nav-group"><h2>{html.escape(appendix_label(active_appendix))}</h2>')
-            out.extend(link(p, nav_label(self.page_title(p))) for p in docs)
-            out.append("</div>")
-        out.append('<div class="nav-group"><h2>参考</h2>')
-        for p in self.reference:
-            out.append(link(p, short_title(self.page_title(p), 18)))
-        out.append("</div>")
+            out.append(nav_group(
+                appendix_label(active_appendix),
+                [link(p, nav_label(self.page_title(p))) for p in docs],
+                len(docs),
+                open_group=True,
+            ))
+        out.append(nav_group("参考", [link(p, short_title(self.page_title(p), 18)) for p in self.reference], len(self.reference)))
         out.append("</nav>")
         return "".join(out)
 
@@ -351,17 +355,23 @@ def _index_nav(site: Site, page: Path) -> str:
         '<nav class="nav"><div class="nav-group"><h2>总览</h2>'
         f'<a href="{html.escape(rel_url(site.output / "index.html", page.parent), quote=True)}" aria-current="page">文集总览</a>'
         f'<a href="{html.escape(rel_url(site.out_path(site.readme), page.parent), quote=True)}">卷首 README</a></div>',
-        '<div class="nav-group"><h2>主卷</h2>',
     ]
-    for p in site.main:
-        out.append(f'<a href="{html.escape(rel_url(site.out_path(p), page.parent), quote=True)}">{html.escape(nav_label(site.page_title(p)))}</a>')
-    out.append('</div><div class="nav-group"><h2>附录</h2>')
-    for name, docs in site.appendices:
-        out.append(f'<a href="{html.escape(rel_url(site.out_path(docs[0]), page.parent), quote=True)}">{html.escape(appendix_label(name))}</a>')
-    out.append('</div><div class="nav-group"><h2>参考</h2>')
-    for p in site.reference:
-        out.append(f'<a href="{html.escape(rel_url(site.out_path(p), page.parent), quote=True)}">{html.escape(nav_label(site.page_title(p)))}</a>')
-    out.append("</div></nav>")
+    main_links = [
+        f'<a href="{html.escape(rel_url(site.out_path(p), page.parent), quote=True)}">{html.escape(nav_label(site.page_title(p)))}</a>'
+        for p in site.main
+    ]
+    app_links = [
+        f'<a href="{html.escape(rel_url(site.out_path(docs[0]), page.parent), quote=True)}">{html.escape(appendix_label(name))}</a>'
+        for name, docs in site.appendices
+    ]
+    ref_links = [
+        f'<a href="{html.escape(rel_url(site.out_path(p), page.parent), quote=True)}">{html.escape(nav_label(site.page_title(p)))}</a>'
+        for p in site.reference
+    ]
+    out.append(nav_group("主卷", main_links, len(main_links)))
+    out.append(nav_group("附录", app_links, len(app_links)))
+    out.append(nav_group("参考", ref_links, len(ref_links)))
+    out.append("</nav>")
     return "".join(out)
 
 
