@@ -1,0 +1,471 @@
+<!-- 由 tools/build_design_html.py 从 ../15_专用游戏编辑器方案.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>专用游戏编辑器方案 · LiveBay design01</title>
+<meta name="description" content="Godot 插件、Python 数据桥、分阶段 WYSIWYG。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="./assets/style.css">
+<script defer src="./assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="15_专用游戏编辑器方案.html" aria-current="page">专用游戏编辑器方案</a></div><div class="nav-group"><h2>规则</h2><a href="rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="./11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../15_专用游戏编辑器方案.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">专用游戏编辑器方案</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一现在的编辑体验">一、现在的编辑体验</a></li><li class=""><a href="#二对-livebay-来说wysiwyg-是什么">二、对 LiveBay 来说，WYSIWYG 是什么</a></li><li class=""><a href="#三四种方案">三、四种方案</a></li><li class="sub"><a href="#方案-agodot-editorplugin推荐">方案 A：Godot EditorPlugin（推荐）</a></li><li class="sub"><a href="#方案-b独立-web-编辑器">方案 B：独立 Web 编辑器</a></li><li class="sub"><a href="#方案-c独立桌面应用--嵌入-godot-运行时">方案 C：独立桌面应用 + 嵌入 Godot 运行时</a></li><li class="sub"><a href="#方案-d不做编辑器只做数据工具">方案 D：不做编辑器，只做数据工具</a></li><li class="sub"><a href="#方案-e混合长期">方案 E：混合（长期）</a></li><li class=""><a href="#四对比">四、对比</a></li><li class=""><a href="#五推荐路线">五、推荐路线</a></li><li class="sub"><a href="#51-形态">5.1 形态</a></li><li class="sub"><a href="#52-数据桥">5.2 数据桥</a></li><li class="sub"><a href="#53-数据流">5.3 数据流</a></li><li class=""><a href="#六mvp-功能">六、MVP 功能</a></li><li class="sub"><a href="#61-必做">6.1 必做</a></li><li class="sub"><a href="#62-不做">6.2 不做</a></li><li class=""><a href="#七分阶段">七、分阶段</a></li><li class=""><a href="#八风险">八、风险</a></li><li class=""><a href="#九验收指标">九、验收指标</a></li><li class=""><a href="#十需要裁决">十、需要裁决</a></li><li class=""><a href="#十一结论">十一、结论</a></li></ul></details>
+<article class="prose">
+<h1 id="15--专用游戏编辑器方案">15 · 专用游戏编辑器方案</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程与工具方案</dd><dt>状态</dt><dd>草案 v0.1（E1–E4 待裁决）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 设计，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a> · <a href="rules/biz/b01_切片与范围门槛.html">BIZ-B1</a> · <a href="rules/design/b01_班次循环.html">DES-B1</a></dd><dt>上游</dt><dd><a href="12_技术方案_Godot工程.html">12_技术方案_Godot工程</a> · <a href="../numbers/README.md">numbers</a> · <a href="11_待人类裁决清单.html">11_待人类裁决清单</a></dd><dt>关联</dt><dd><a href="04_塔防玩法.html">04_塔防玩法</a> · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="rules/tech/a01_单一数据源.html">单一数据源</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：可以开发，但第一版不应是独立游戏编辑器，而应是 <strong>Godot 编辑器里的 LiveBay Tools 插件</strong>：在真实场景上拖塔位、看射程、调波次、即时预览；数据仍走 <code>numbers/ → game/data/</code> 的单一源。</p>
+<p><strong>结论</strong>：先做插件 + Python 数据桥（2–3 周 MVP），独立 Web 编辑器作为 v0.3+ 的可选分支，不在现在做。</p>
+</blockquote>
+<h2 id="一现在的编辑体验">一、现在的编辑体验</h2>
+<p>当前做一次「塔位/波次」调整，实际要走：</p>
+<pre class="text"><code>改 numbers/*.md 表格
+  → python3 tools/export_numbers.py
+  → ./run.sh test
+  → ./run.sh run
+  → 看画面 / 试玩
+  → 发现问题，回到第一步</code></pre>
+<p>问题不是“不能改”，而是：</p>
+<ul>
+<li>空间关系靠脑补：塔位坐标、路径距离、射程覆盖，要改完运行才知道；</li>
+<li>波次节奏靠读表：count / interval / delay 的叠加效果不直观；</li>
+<li>数值与画面分离：表格里改一个数，画面要重启才看到；</li>
+<li>试错成本高：每次调整都要跨 Markdown、JSON、Godot 三个界面；</li>
+<li>非工程人员门槛高：策划/美术很难独立完成一次“摆一摆看效果”。</li>
+</ul>
+<p>这正好是「所见即所得」要解决的问题。</p>
+<h2 id="二对-livebay-来说wysiwyg-是什么">二、对 LiveBay 来说，WYSIWYG 是什么</h2>
+<p>不是“做一个能造整款游戏的编辑器”，而是：</p>
+<pre class="text"><code>WYSIWYG ⇔
+  编辑的对象 = 运行时真正读取的数据
+  ∧ 从编辑到看到结果 ≤ 5 秒
+  ∧ 不需要手改 JSON
+  ∧ 保存前就能发现非法数据</code></pre>
+<p>具体到 v0.1，最有价值的 WYSIWYG 是四件事：</p>
+<ol type="1">
+<li><strong>地图</strong>：拖路径点、塔位、基地，实时看弧线、距离、覆盖；</li>
+<li><strong>塔位</strong>：把塔拖到槽里，看射程圈、造价、DPS、覆盖到的路径段；</li>
+<li><strong>波次</strong>：拖时间轴，看每一组敌人的生成窗口、总 HP、奖励、漏过伤害；</li>
+<li><strong>预览</strong>：在当前地图上直接跑 1–5 波，暂停/单步/加速，不用切窗口。</li>
+</ol>
+<p>不包含：剧情编辑器、UI 编辑器、动画编辑器、美术资源编辑器、完整关卡生成器。</p>
+<h2 id="三四种方案">三、四种方案</h2>
+<h3 id="方案-agodot-editorplugin推荐">方案 A：Godot EditorPlugin（推荐）</h3>
+<p>在 Godot 编辑器里做一个 <code>LiveBay Tools</code> 插件：</p>
+<ul>
+<li>Dock：地图、塔、波次、校验；</li>
+<li>2D 视口叠加层：路径、塔位、射程、敌人生成点；</li>
+<li>选中塔位/路径点后直接拖；</li>
+<li>右侧 Inspector 显示数值；</li>
+<li>「预览」按钮运行当前场景，或内嵌一个 <code>SubViewport</code> 跑模拟；</li>
+<li>保存时写回 <code>numbers/</code> 表格，调用导出脚本，再重载。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li><strong>只有一个渲染器/运行时</strong>，不会出现“编辑器里好看、游戏里不一样”；</li>
+<li>直接复用 <code>sim.gd</code>、地图数据、塔数据、现有 UI；</li>
+<li>Godot 自带撤销/重做、场景选择、检查器、快捷键；</li>
+<li>开发量最小，2–3 周可做 MVP；</li>
+<li>对工程/策划都够用。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>界面是 Godot 编辑器，非工程人员仍会觉得“像 IDE”；</li>
+<li>插件 API 有学习成本，视口叠加的交互要自己写；</li>
+<li>移动端/远程协作不友好；</li>
+<li>不适合未来“非技术创作者”大规模使用。</li>
+</ul>
+<h3 id="方案-b独立-web-编辑器">方案 B：独立 Web 编辑器</h3>
+<p>Tauri/Electron + React + Canvas/WebGL，自己做一套编辑界面：</p>
+<ul>
+<li>地图/塔位/波次可视化；</li>
+<li>通过本地服务调用 Godot headless 或 Python 导出；</li>
+<li>预览用 Web 端重画的 2D 渲染器，或嵌 Godot Web export。</li>
+</ul>
+<p>优点：界面友好、可远程、易做协作/权限/模板。</p>
+<p>缺点：</p>
+<ul>
+<li><strong>渲染重复</strong>：要么重写一套 2D 渲染，要么嵌 Godot Web，二者都贵；</li>
+<li>需要维护第二套 schema、第二套输入、第二套预览；</li>
+<li>导出/预览链路长，真正的 WYSIWYG 反而更难保证；</li>
+<li>2–4 个月起步，且会持续吃维护成本。</li>
+</ul>
+<h3 id="方案-c独立桌面应用--嵌入-godot-运行时">方案 C：独立桌面应用 + 嵌入 Godot 运行时</h3>
+<p>用 GDExtension / Godot as a library 把运行时嵌进自己的应用：</p>
+<ul>
+<li>界面自由，预览真实；</li>
+<li>但 Godot 的嵌入能力并不成熟，跨平台打包、输入、调试都复杂；</li>
+<li>3–6 个月起步，风险最高；</li>
+<li>对当前团队规模不划算。</li>
+</ul>
+<h3 id="方案-d不做编辑器只做数据工具">方案 D：不做编辑器，只做数据工具</h3>
+<ul>
+<li>改进 Markdown/CSV 编辑体验；</li>
+<li>加 live reload、校验、快捷键、表头提示；</li>
+<li>3–5 天可做；</li>
+<li>但空间关系仍然靠脑补，不是真正的 WYSIWYG。</li>
+</ul>
+<h3 id="方案-e混合长期">方案 E：混合（长期）</h3>
+<ul>
+<li>Godot 插件负责地图/塔位/预览；</li>
+<li>Web 端负责数据表/批量编辑/协作；</li>
+<li>共享同一套 schema 与 Python bridge；</li>
+<li>适合团队扩大到 3 人以上、内容量明显增加之后。</li>
+</ul>
+<h2 id="四对比">四、对比</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>A Godot 插件</th>
+<th>B 独立 Web</th>
+<th>C 嵌入运行时</th>
+<th>D 数据工具</th>
+<th>E 混合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>真实预览</td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>开发量</td>
+<td>小（2–3 周 MVP）</td>
+<td>大（2–4 月）</td>
+<td>很大（3–6 月）</td>
+<td>很小（3–5 天）</td>
+<td>中（6–10 周）</td>
+</tr>
+<tr>
+<td>维护成本</td>
+<td>低–中</td>
+<td>高</td>
+<td>很高</td>
+<td>低</td>
+<td>中</td>
+</tr>
+<tr>
+<td>非工程人员友好</td>
+<td>中</td>
+<td>高</td>
+<td>高</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>与现有架构冲突</td>
+<td>低</td>
+<td>中</td>
+<td>高</td>
+<td>低</td>
+<td>中</td>
+</tr>
+<tr>
+<td>适合现在</td>
+<td><strong>是</strong></td>
+<td>否</td>
+<td>否</td>
+<td>过渡</td>
+<td>以后</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="五推荐路线">五、推荐路线</h2>
+<h3 id="51-形态">5.1 形态</h3>
+<p><strong>Godot EditorPlugin</strong>，名字 <code>LiveBay Tools</code>，放在：</p>
+<pre class="text"><code>game/addons/livebay_tools/
+  plugin.cfg
+  plugin.gd
+  dock.tscn / dock.gd
+  viewport_overlay.gd
+  data_bridge.gd
+  commands/…</code></pre>
+<h3 id="52-数据桥">5.2 数据桥</h3>
+<p>不要在 GDScript 里重写 Markdown 表格解析器。做一个 Python bridge：</p>
+<pre class="text"><code>game/addons/livebay_tools/bridge.py
+  read   → numbers/*.md → JSON（给编辑器）
+  write  → 编辑后的 JSON → numbers/*.md
+  export → 调 tools/export_numbers.py
+  check  → 调 ./run.sh numbers-check</code></pre>
+<p>插件通过 <code>OS.execute("python3", ["…/bridge.py", …])</code> 调用；Windows/macOS 都可用。这样：</p>
+<ul>
+<li>编辑器不拥有第二套 schema；</li>
+<li>Markdown 仍是唯一源（<a href="rules/tech/a01_单一数据源.html">TECH-A1</a>）；</li>
+<li>现有 <code>export_numbers.py</code> 继续做导出；</li>
+<li>未来 Web 编辑器也能复用同一个 bridge。</li>
+</ul>
+<h3 id="53-数据流">5.3 数据流</h3>
+<pre class="text"><code>numbers/*.md（唯一源）
+   ⇅  bridge.py（读写表格）
+LiveBay Tools（Godot 插件）
+   ↓ 保存
+bridge.py write → numbers/*.md
+   ↓
+export_numbers.py → game/data/*.json
+   ↓
+Sim / 场景重载 / 内嵌预览</code></pre>
+<p>关键约束：<strong>编辑器只能通过 bridge 写 Markdown，不能直接写 <code>game/data/*.json</code></strong>；否则会破坏单一源。</p>
+<h2 id="六mvp-功能">六、MVP 功能</h2>
+<h3 id="61-必做">6.1 必做</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>交互</th>
+<th>验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>地图叠加</td>
+<td>在 2D 视口显示路径、塔位、基地</td>
+<td>与运行时坐标一致</td>
+</tr>
+<tr>
+<td>路径点编辑</td>
+<td>拖动点、增删点、5px 吸附</td>
+<td>路径 ≥ 2 点，导出通过</td>
+</tr>
+<tr>
+<td>塔位编辑</td>
+<td>拖动/增删塔位</td>
+<td>塔位 ≥ 1，覆盖圈实时更新</td>
+</tr>
+<tr>
+<td>塔位预览</td>
+<td>拖塔到槽，显示射程/造价/DPS</td>
+<td>数值来自 <code>game/data</code>，不写死</td>
+</tr>
+<tr>
+<td>波次时间轴</td>
+<td>拖 count/interval/delay，显示生成窗口</td>
+<td>总 HP/奖励/漏过实时计算</td>
+</tr>
+<tr>
+<td>校验面板</td>
+<td>路径、ID、引用、导出检查</td>
+<td>错误阻止保存</td>
+</tr>
+<tr>
+<td>保存/重载</td>
+<td>写回 Markdown + 导出 + 重载</td>
+<td>保存后运行结果一致</td>
+</tr>
+<tr>
+<td>预览</td>
+<td>运行当前场景或内嵌模拟</td>
+<td>≤ 5 秒看到结果</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="62-不做">6.2 不做</h3>
+<ul>
+<li>剧情/对话编辑器；</li>
+<li>UI 布局编辑器；</li>
+<li>动画/骨骼/特效编辑器；</li>
+<li>美术资源导入器；</li>
+<li>多人协作/云端；</li>
+<li>完整游戏生成器。</li>
+</ul>
+<h2 id="七分阶段">七、分阶段</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>内容</th>
+<th>估算</th>
+<th>门槛</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase 0</td>
+<td>数据 bridge、live reload、校验按钮</td>
+<td>2–3 天</td>
+<td>现有数据可读写</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>地图/塔位叠加编辑 + 预览</td>
+<td>2–3 周</td>
+<td>能独立摆一张图</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>波次时间轴 + 数值面板</td>
+<td>1–2 周</td>
+<td>能独立调一波</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>内嵌 SubViewport 预览、撤销/重做完善</td>
+<td>2–4 周</td>
+<td>不切窗口看到运行</td>
+</tr>
+<tr>
+<td>Phase 4</td>
+<td>独立 Web 编辑器评估</td>
+<td>另立方案</td>
+<td>内容量/协作需求证明</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>估算按 1 名熟悉 Godot 的开发者计，不含美术与测试；是量级，不是承诺。</p>
+</blockquote>
+<h2 id="八风险">八、风险</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>风险</th>
+<th>表现</th>
+<th>缓解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>编辑器变成第二套运行时</td>
+<td>预览与游戏不一致</td>
+<td>只用 <code>sim.gd</code> 与 <code>game/data</code>，不重写规则</td>
+</tr>
+<tr>
+<td>数据双源</td>
+<td>Markdown 与 JSON 冲突</td>
+<td>bridge 单向写 Markdown；禁止手改 JSON</td>
+</tr>
+<tr>
+<td>插件 API 复杂</td>
+<td>视口拖拽难做</td>
+<td>先做 Dock 列表 + 数值编辑，再上视口</td>
+</tr>
+<tr>
+<td>非工程人员不会用</td>
+<td>只有开发者用</td>
+<td>先服务团队内部；Web 版另评估</td>
+</tr>
+<tr>
+<td>范围膨胀</td>
+<td>想加剧情/UI/动画</td>
+<td>MVP 明确“四件事”</td>
+</tr>
+<tr>
+<td>过早投入</td>
+<td>玩法还没稳定，编辑器先改</td>
+<td>先 Phase 0；Phase 1 在 v0.2 数据模型稳定后</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="九验收指标">九、验收指标</h2>
+<pre class="text"><code>1. 摆一座塔并看到射程：≤ 30 秒
+2. 改一波数量并看到预览：≤ 60 秒
+3. 保存后运行结果与预览一致：100%
+4. 非法数据被保存前拦截：100%
+5. 不手改 JSON 完成一次地图调整：是
+6. 现有 37 项测试保持通过：是</code></pre>
+<h2 id="十需要裁决">十、需要裁决</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>问题</th>
+<th>选项</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1</td>
+<td>编辑器形态</td>
+<td>A Godot 插件 / B 独立 Web / C 嵌入运行时 / D 先不做</td>
+<td><strong>A</strong></td>
+</tr>
+<tr>
+<td>E2</td>
+<td>数据主权</td>
+<td>A Markdown 仍是源 + bridge / B 改为 JSON 源 / C 双源</td>
+<td><strong>A</strong></td>
+</tr>
+<tr>
+<td>E3</td>
+<td>MVP 范围</td>
+<td>A 地图+塔位+预览 / B 全数据表 / C 只做校验</td>
+<td><strong>A</strong></td>
+</tr>
+<tr>
+<td>E4</td>
+<td>时机</td>
+<td>A 现在 Phase 0+1 / B v0.2 后 / C 暂缓</td>
+<td><strong>A（先 Phase 0）</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>E1/E2 是架构决定；E3/E4 是范围决定。四项都不改变现有规则；如果选 B（JSON 源），需要先修订 <a href="rules/tech/a01_单一数据源.html">TECH-A1</a>。</p>
+</blockquote>
+<h2 id="十一结论">十一、结论</h2>
+<ul>
+<li><strong>可开发</strong>，但第一版应是 <strong>Godot 插件</strong>，不是独立编辑器；</li>
+<li>真正的 WYSIWYG 来自「同一套数据 + 同一个运行时 + 短反馈环」，不是来自“自己画一个界面”；</li>
+<li>先用 Python bridge 守住 <code>numbers/</code> 单一源，再逐步加视口编辑、波次时间轴、内嵌预览；</li>
+<li>独立 Web 编辑器是 Phase 4 的选项，不是现在的起点。</li>
+</ul>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="12_技术方案_Godot工程.html"><span class="dir">prev</span><span class="label">技术方案：Godot 工程</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="./index.html">索引</a> · <a href="../15_专用游戏编辑器方案.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

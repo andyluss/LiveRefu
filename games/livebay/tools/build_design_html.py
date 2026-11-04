@@ -48,6 +48,7 @@ DOCS = [
     ("14_塔防NASApunk深化.md", "玩法", "塔防 NASApunk 深化", "检查单、第 5 波降级故障、事故记录；轻量包。"),
     ("08_美术与音频方向.md", "表现与工程", "美术与音频方向", "NASApunk 落地、2D 矢量与声音层次。"),
     ("12_技术方案_Godot工程.md", "表现与工程", "技术方案：Godot 工程", "架构、数据契约、测试与扩展点。"),
+    ("15_专用游戏编辑器方案.md", "表现与工程", "专用游戏编辑器方案", "Godot 插件、Python 数据桥、分阶段 WYSIWYG。"),
 ]
 MD_SET = {md for md, *_ in DOCS}
 GROUPS = ["开始", "世界与职业", "玩法", "表现与工程"]
@@ -467,7 +468,7 @@ INDEX_BODY = """<section class="hero">
 <div class="badges">
 <span class="badge ok">P0 / P1 已裁决</span>
 <span class="badge warn">P2 待定</span>
-<span class="badge">15 篇 + README</span>
+<span class="badge">16 篇 + README</span>
 <span class="badge">20 条规则</span>
 <span class="badge">2026-11-04</span>
 </div>
