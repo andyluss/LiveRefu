@@ -19,7 +19,7 @@ platform: "PC 优先（D14 待定）"
 
 [![编辑器使用演示](docs-ai/design01/shots/editor_usage_poster.png)](docs-ai/design01/shots/editor_usage.mp4)
 
-> **25 秒编辑器演示**（1280×720，H.264，无音频）：地图拖动、插入路径点、波次时间轴、内嵌预览、保存与历史。  
+> **32 秒编辑器演示**（1280×720，H.264，无音频）：地图拖动、插入路径点、波次时间轴、内嵌预览、数值表、保存与历史分支。  
 > 这是程序化演示场景（[`game/demo/`](game/demo/README.md)），不是桌面录屏。
 
 ## 目录

@@ -48,13 +48,18 @@ var keys := [
 	{"t": 11.8, "p": Vector2(1170, 330)},
 	{"t": 13.0, "p": Vector2(1040, 445)},
 	{"t": 14.2, "p": Vector2(1040, 445)},
-	{"t": 18.0, "p": Vector2(1180, 130)},
-	{"t": 19.0, "p": Vector2(1180, 130)},
-	{"t": 21.0, "p": Vector2(1040, 590)},
-	{"t": 22.0, "p": Vector2(1040, 590)},
-	{"t": 25.0, "p": Vector2(1120, 470)},
+	{"t": 16.0, "p": Vector2(1040, 505)},
+	{"t": 17.0, "p": Vector2(1110, 505)},
+	{"t": 18.2, "p": Vector2(1180, 105)},
+	{"t": 19.2, "p": Vector2(600, 280)},
+	{"t": 20.6, "p": Vector2(800, 540)},
+	{"t": 21.8, "p": Vector2(900, 500)},
+	{"t": 24.0, "p": Vector2(1040, 590)},
+	{"t": 25.0, "p": Vector2(1040, 590)},
+	{"t": 28.0, "p": Vector2(900, 620)},
+	{"t": 32.0, "p": Vector2(900, 620)},
 ]
-var clicks := [2.7, 6.1, 9.3, 14.1, 19.0, 22.0]
+var clicks := [2.7, 6.1, 9.3, 14.1, 16.0, 17.0, 19.8, 24.0, 27.0]
 
 
 func _ready() -> void:
@@ -76,10 +81,15 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	if t > 27.5:
+		_draw_summary()
+		return
 	_draw_editor_shell()
 	_draw_scene_tree()
 	_draw_viewport()
+	_draw_result()
 	_draw_dock()
+	_draw_numeric_window()
 	_draw_caption()
 	_draw_cursor()
 	_draw_status()
@@ -182,12 +192,13 @@ func _draw_dock() -> void:
 	_button(Rect2(954, 86, 88, 30), "重载", t > 18.8)
 	_button(Rect2(1048, 86, 88, 30), "保存", t > 18.8, ORANGE)
 	_button(Rect2(1142, 86, 88, 30), "校验", false, TEAL)
-	_text(Vector2(954, 140), "塔位 / TOWER", 10, MUTED, true)
-	_text(Vector2(954, 160), "拦截炮 · 30        射程 120", 11, CREAM)
+	_button(Rect2(954, 122, 100, 24), "数值表", t > 18.4, TEAL)
+	_text(Vector2(954, 160), "塔位 / TOWER", 10, MUTED, true)
+	_text(Vector2(954, 178), "拦截炮 · 30        射程 120", 11, CREAM)
 	# 时间轴
-	_text(Vector2(954, 195), "波次时间轴 / WAVES", 10, MUTED, true)
+	_text(Vector2(954, 200), "波次时间轴 / WAVES", 10, MUTED, true)
 	var tx := 960.0
-	var ty := 214.0
+	var ty := 218.0
 	var tw := 280.0
 	var waves := [30, 20, 20, 20, 20]
 	for wi in range(5):
@@ -228,14 +239,19 @@ func _draw_dock() -> void:
 			var p: Vector2 = (map_path[idx] as Vector2).lerp(map_path[mini(idx + 1, map_path.size() - 1)] as Vector2, frac)
 			draw_circle(origin + p * scale, 2.2, Color("#E0A22E"))
 		_text(Vector2(966, 506), "PREVIEW W4  t=%.1fs" % maxf(0.0, t - 14.2), 9, TEAL, true)
+	# 预览控制
+	_button(Rect2(954, 526, 60, 19), "暂停", t > 15.8, TEAL)
+	_button(Rect2(1020, 526, 66, 19), "下一波", t > 16.8, TEAL)
+	_button(Rect2(1092, 526, 60, 19), "出售", t > 15.0, ORANGE)
 	# 历史
-	_text(Vector2(954, 545), "历史 / HISTORY", 10, MUTED, true)
-	var hist := ["拖动塔位 #4", "插入路径点", "应用 W4", "内嵌预览 W4"]
+	_text(Vector2(954, 562), "历史 / HISTORY", 10, MUTED, true)
+	var hist := ["拖动塔位 #4", "插入路径点", "应用 W4", "内嵌预览 W4", "改塔数值 cost 32", "保存 02–05"]
 	for i in range(hist.size()):
-		var y := 562 + i * 18
-		if t > 19.0 and i == 3:
-			draw_rect(Rect2(954, y - 12, 280, 17), Color(ORANGE, 0.16), true)
-		_text(Vector2(960, y), hist[i], 10, CREAM if t > 19.0 and i == 3 else MUTED)
+		var y := 580 + i * 17
+		var prefix := "↳ " if t > 24.0 and i >= 2 else ""
+		if t > 24.0 and i == 2:
+			draw_rect(Rect2(954, y - 12, 286, 16), Color(ORANGE, 0.16), true)
+		_text(Vector2(960, y), prefix + hist[i], 9, CREAM if t > 24.0 and i == 2 else MUTED)
 
 
 func mini(a: int, b: int) -> int:
@@ -252,14 +268,86 @@ func _draw_caption() -> void:
 	if t > 8.2:
 		step = "波次时间轴：选中 W4，拖动敌人组调整延迟。"
 	if t > 13.0:
-		step = "内嵌预览：用真实 Sim 跑 W4，塔会开火，敌人会掉血。"
+		step = "内嵌预览：左键建造/升级，右键出售，暂停 / 下一波。"
+	if t > 16.4:
+		step = "结算：评级、保障度、击杀、漏过、建造与消耗。"
 	if t > 18.5:
-		step = "保存：写回 numbers/05 + 04，并导出 game/data。"
-	if t > 21.0:
-		step = "命名历史：撤销 / 重做 / 回到某个动作之前。"
+		step = "数值表：改塔 / 敌人字段，应用并写回 numbers/02–03。"
+	if t > 22.0:
+		step = "保存：一次写回 02–05，并导出 game/data。"
+	if t > 24.0:
+		step = "历史：回到「应用 W4」之前，后续以 ↳ 分支保留。"
 	draw_rect(Rect2(210, 668, 700, 34), Color("#171B1D", 0.92), true)
 	draw_rect(Rect2(210, 668, 4, 34), ORANGE, true)
 	_text(Vector2(228, 690), step, 12, color)
+
+
+func _draw_result() -> void:
+	if t < 16.4 or t > 18.4:
+		return
+	draw_rect(Rect2(210, 70, 700, 580), Color(0.09, 0.11, 0.12, 0.45), true)
+	draw_rect(Rect2(320, 190, 560, 300), Color("#171B1D"), true)
+	draw_rect(Rect2(320, 190, 560, 300), AMBER, false, 2)
+	_text(Vector2(350, 232), "本班结算 / SHIFT REPORT", 20, CREAM)
+	_text(Vector2(350, 282), "B", 54, AMBER)
+	_text(Vector2(410, 270), "评级", 14, MUTED)
+	_text(Vector2(350, 330), "保障度  40 / 100", 16, CREAM)
+	_text(Vector2(350, 358), "击杀  59      漏过  9", 16, CREAM)
+	_text(Vector2(350, 386), "建造  5       消耗  175", 16, CREAM)
+	_text(Vector2(350, 414), "清波  5 / 5", 16, CREAM)
+	_text(Vector2(650, 414), "W4 · 内嵌 Sim", 12, TEAL, true)
+
+
+func _draw_numeric_window() -> void:
+	if t < 18.5 or t > 22.0:
+		return
+	draw_rect(Rect2(0, 0, W, H), Color(0.05, 0.06, 0.07, 0.52), true)
+	draw_rect(Rect2(300, 125, 660, 470), PAPER, true)
+	draw_rect(Rect2(300, 125, 660, 470), INK, false, 2)
+	draw_rect(Rect2(300, 125, 660, 36), Color("#171B1D"), true)
+	_text(Vector2(318, 150), "LiveBay · 数值表（numbers/02–03）", 14, CREAM)
+	draw_rect(Rect2(318, 178, 80, 28), Color(TEAL, 0.22), true)
+	_text(Vector2(334, 197), "塔 / towers", 12, INK)
+	_text(Vector2(420, 197), "敌人 / enemies", 12, Color(INK, 0.45))
+	_text(Vector2(320, 240), "ID", 11, Color(INK, 0.55))
+	_text(Vector2(430, 240), "interceptor", 12, INK, true)
+	_text(Vector2(320, 280), "名称", 11, Color(INK, 0.55))
+	_text(Vector2(430, 280), "拦截炮", 12, INK)
+	_text(Vector2(320, 320), "造价 cost", 11, Color(INK, 0.55))
+	draw_rect(Rect2(420, 300, 180, 26), Color(ORANGE, 0.12), true)
+	draw_rect(Rect2(420, 300, 180, 26), ORANGE, false, 1)
+	_text(Vector2(430, 319), "32" if t > 20.6 else "30", 12, INK, true)
+	_text(Vector2(320, 360), "射程 range", 11, Color(INK, 0.55))
+	_text(Vector2(430, 360), "120", 12, INK)
+	_text(Vector2(320, 400), "伤害 damage", 11, Color(INK, 0.55))
+	_text(Vector2(430, 400), "10", 12, INK)
+	_text(Vector2(320, 440), "射速 fire_rate", 11, Color(INK, 0.55))
+	_text(Vector2(430, 440), "1.2", 12, INK)
+	_text(Vector2(320, 480), "说明", 11, Color(INK, 0.55))
+	_text(Vector2(430, 480), "单体射击，优先攻击最靠近湾口的敌人。", 10, INK)
+	_button(Rect2(700, 520, 150, 30), "应用并保存", t > 20.3, TEAL)
+	_text(Vector2(318, 555), "写回 02 塔 / 03 敌人 → export_numbers.py", 10, Color(INK, 0.55), true)
+	if t > 20.8:
+		_text(Vector2(318, 578), "✓ 已写回 numbers/02–03，game/data 已同步", 11, TEAL)
+
+
+func _draw_summary() -> void:
+	draw_rect(Rect2(0, 0, W, H), Color("#171B1D"), true)
+	draw_rect(Rect2(0, 0, 10, H), ORANGE, true)
+	_text(Vector2(70, 120), "LiveBay Tools", 30, CREAM)
+	_text(Vector2(70, 158), "编辑器 Phase 3 · 完成", 18, AMBER)
+	var items := [
+		"地图 / 塔位 / 基地拖动 + 路径点增删",
+		"波次时间轴：delay / interval 拖动",
+		"内嵌 SubViewport：建造 / 升级 / 出售 / 暂停 / 下一波",
+		"数值表：塔 / 敌人字段写回 numbers/",
+		"命名历史：撤销 / 重做 / 分支保留",
+	]
+	for i in range(items.size()):
+		draw_circle(Vector2(74, 220 + i * 34), 4, ORANGE if i < 3 else TEAL)
+		_text(Vector2(92, 226 + i * 34), items[i], 14, CREAM)
+	_text(Vector2(70, 610), "LiveBay · 外环第七段  |  7 塔位 · 5 波 · 3 塔 · 4 敌", 11, MUTED, true)
+	_text(Vector2(920, 680), "程序化演示 · 2026-11-04", 10, MUTED, true)
 
 
 func _draw_cursor() -> void:
@@ -292,8 +380,12 @@ func _draw_status() -> void:
 	draw_rect(Rect2(0, H - 24, W, 24), Color("#171B1D"), true)
 	var msg := "就绪 · numbers/ 与 game/data 一致"
 	if t > 18.8:
-		msg = "已保存 · numbers/05 + 04 → export_numbers.py → game/data"
-	if t > 21.8:
-		msg = "已回到「应用 W4」之前 · 历史跳转"
+		msg = "数值表 · towers / enemies · 修改未保存"
+	if t > 20.8:
+		msg = "已写回 numbers/02–03 · 待保存地图/波次"
+	if t > 22.2:
+		msg = "已保存 · numbers/02–05 → export_numbers.py → game/data"
+	if t > 24.2:
+		msg = "已回到「应用 W4」之前 · 后续历史 ↳ 分支保留"
 	_text(Vector2(12, H - 8), msg, 10, MUTED if t < 18.8 else Color("#8FBF9B"), true)
 	_text(Vector2(1080, H - 8), "LiveBay Tools 0.1 · Phase 3", 10, MUTED, true)

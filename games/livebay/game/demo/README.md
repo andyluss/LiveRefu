@@ -11,7 +11,7 @@ cd games/livebay
 mkdir -p /tmp/editor_frames
 HOME=../.godot-home godot --path game \
   --write-movie /tmp/editor_frames/frame.png \
-  --fixed-fps 30 --quit-after 750 \
+  --fixed-fps 30 --quit-after 960 \
   res://demo/editor_demo.tscn
 
 swiftc -module-cache-path /tmp/swift-modules \
@@ -22,8 +22,8 @@ swiftc -module-cache-path /tmp/swift-modules \
   docs-ai/design01/shots/editor_usage.mp4 30
 ```
 
-- 1280×720 / 30fps / 25s / H.264；
-- 750 帧；
+- 1280×720 / 30fps / 32s / H.264；
+- 960 帧；
 - 字体使用 macOS `STHeiti Light`（路径在 `editor_demo.gd`）；其他系统若无该字体，中文可能回退为方块。
 
 ## 场景
@@ -34,9 +34,11 @@ swiftc -module-cache-path /tmp/swift-modules \
 | 3–5s | 拖动塔位、射程预览 |
 | 5–8s | 插入路径点 |
 | 8–13s | 波次时间轴、W4 选中、拖动延迟 |
-| 13–18s | 内嵌 SubViewport 预览 |
-| 18–21s | 保存写回 `numbers/` |
-| 21–25s | 命名历史与回到动作之前 |
+| 13–16s | 内嵌 SubViewport 预览、建造/升级/出售 |
+| 16–18s | 暂停/下一波与详细结算 |
+| 18–22s | 数值表写回 `numbers/02–03` |
+| 22–25s | 保存与历史分支 |
+| 25–32s | Phase 3 完成总结 |
 
 ## 边界
 
