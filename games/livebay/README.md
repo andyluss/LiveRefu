@@ -60,6 +60,7 @@ platform: "PC 优先（D14 待定）"
 | 看工程结构 | [`docs-ai/design01/12_技术方案_Godot工程.md`](docs-ai/design01/12_技术方案_Godot工程.md) |
 | 看数值体系 | [`docs-ai/design01/numbers/README.md`](docs-ai/design01/numbers/README.md) |
 | 看艺术设定图 | [`docs-ai/design01/art/README.md`](docs-ai/design01/art/README.md) |
+| 看小说集 | [`docs-ai/design01/fictions/README.md`](docs-ai/design01/fictions/README.md) |
 | 看改了什么 | [`CHANGELOG.md`](CHANGELOG.md) |
 
 ## 设计状态
