@@ -36,6 +36,14 @@ var interval_spin: SpinBox
 var delay_spin: SpinBox
 var selected_wave := -1
 var selected_group := -1
+var history_list: ItemList
+var history_log: Array = []
+var preview_button: Button
+var preview_stop_button: Button
+var preview_playing := false
+var preview_time := 0.0
+var preview_wave_index := -1
+var wave_drag_active := false
 var undo_stack: Array = []
 var redo_stack: Array = []
 var last_mouse_world := Vector2.ZERO
@@ -50,10 +58,12 @@ var dragging := false
 func _enter_tree() -> void:
 	bridge = BridgeClient.new()
 	_build_dock()
+	set_process(true)
 	_reload(false)
 
 
 func _exit_tree() -> void:
+	set_process(false)
 	if dock:
 		remove_control_from_docks(dock)
 		dock.queue_free()
@@ -152,6 +162,8 @@ func _build_dock() -> void:
 	wave_timeline = WaveTimeline.new()
 	wave_timeline.custom_minimum_size = Vector2(260, 190)
 	wave_timeline.group_selected.connect(_on_wave_group_selected)
+	wave_timeline.group_delay_changed.connect(_on_wave_delay_changed)
+	wave_timeline.group_delay_finished.connect(func(): wave_drag_active = false)
 	dock.add_child(wave_timeline)
 
 	wave_stats = Label.new()
@@ -196,6 +208,26 @@ func _build_dock() -> void:
 	del_wave_button.pressed.connect(_remove_wave)
 	wave_actions2.add_child(del_wave_button)
 
+	var preview_row := HBoxContainer.new()
+	dock.add_child(preview_row)
+	preview_button = Button.new()
+	preview_button.text = "预览本波"
+	preview_button.pressed.connect(_start_preview)
+	preview_row.add_child(preview_button)
+	preview_stop_button = Button.new()
+	preview_stop_button.text = "停止"
+	preview_stop_button.pressed.connect(_stop_preview)
+	preview_row.add_child(preview_stop_button)
+
+	var history_title := Label.new()
+	history_title.text = "操作历史"
+	history_title.add_theme_font_size_override("font_size", 13)
+	dock.add_child(history_title)
+	history_list = ItemList.new()
+	history_list.custom_minimum_size = Vector2(260, 90)
+	history_list.select_mode = ItemList.SELECT_SINGLE
+	dock.add_child(history_list)
+
 	var sep := HSeparator.new()
 	dock.add_child(sep)
 	selection = Label.new()
@@ -223,6 +255,8 @@ func _reload(announce: bool) -> void:
 	enemies = result.get("enemies", [])
 	undo_stack.clear()
 	redo_stack.clear()
+	history_log.clear()
+	_refresh_history()
 	dirty = false
 	if save_button:
 		save_button.text = "保存"
@@ -384,6 +418,23 @@ func _refresh_wave_ui() -> void:
 func _on_wave_group_selected(wave_index: int, group_index: int) -> void:
 	selected_wave = wave_index
 	selected_group = group_index
+	wave_drag_active = false
+	_refresh_wave_ui()
+
+
+func _on_wave_delay_changed(wave_index: int, group_index: int, delay: float) -> void:
+	if wave_index < 0 or wave_index >= wave_data.size():
+		return
+	var groups: Array = wave_data[wave_index].get("groups", [])
+	if group_index < 0 or group_index >= groups.size():
+		return
+	if not wave_drag_active:
+		_begin_edit("拖动 W%d 组%d 延迟" % [int(wave_data[wave_index].get("index", 0)), group_index + 1])
+		wave_drag_active = true
+	groups[group_index]["delay"] = delay
+	selected_wave = wave_index
+	selected_group = group_index
+	delay_spin.set_value_no_signal(delay)
 	_refresh_wave_ui()
 
 
@@ -393,7 +444,7 @@ func _apply_wave_values() -> void:
 	if wave.is_empty() or group.is_empty():
 		_set_status("先选一个波次组。", true)
 		return
-	_begin_edit()
+	_begin_edit("应用 W%d" % int(wave.get("index", 0)))
 	wave["prep"] = max(0.0, prep_spin.value)
 	group["count"] = max(1, int(count_spin.value))
 	group["interval"] = max(0.1, interval_spin.value)
@@ -409,7 +460,7 @@ func _add_group() -> void:
 	if wave.is_empty():
 		_set_status("先选一个波次。", true)
 		return
-	_begin_edit()
+	_begin_edit("W%d 加组" % int(wave.get("index", 0)))
 	var groups: Array = wave.get("groups", [])
 	groups.append({"enemy": "debris", "count": 1, "interval": 1.0, "delay": 0.0})
 	selected_group = groups.size() - 1
@@ -425,7 +476,7 @@ func _remove_group() -> void:
 	if groups.size() <= 1:
 		_set_status("每波至少保留 1 组。", true)
 		return
-	_begin_edit()
+	_begin_edit("W%d 删组" % int(wave.get("index", 0)))
 	groups.remove_at(selected_group)
 	selected_group = clampi(selected_group - 1, 0, groups.size() - 1)
 	_set_status("已删一组；保存后生效。")
@@ -440,7 +491,7 @@ func _reindex_waves() -> void:
 func _add_wave() -> void:
 	if wave_data.is_empty():
 		return
-	_begin_edit()
+	_begin_edit("加波")
 	wave_data.append({"index": wave_data.size() + 1, "prep": 20.0, "groups": [{"enemy": "debris", "count": 1, "interval": 1.0, "delay": 0.0}]})
 	selected_wave = wave_data.size() - 1
 	selected_group = 0
@@ -455,7 +506,7 @@ func _remove_wave() -> void:
 		return
 	if selected_wave < 0:
 		return
-	_begin_edit()
+	_begin_edit("删波 W%d" % int(wave_data[selected_wave].get("index", 0)))
 	wave_data.remove_at(selected_wave)
 	_reindex_waves()
 	selected_wave = clampi(selected_wave - 1, 0, wave_data.size() - 1)
@@ -464,27 +515,46 @@ func _remove_wave() -> void:
 	_refresh_wave_ui()
 
 
-func _begin_edit() -> void:
-	undo_stack.append(_snapshot())
+func _begin_edit(label: String = "编辑") -> void:
+	undo_stack.append({"label": label, "state": _snapshot()})
 	if undo_stack.size() > 40:
 		undo_stack.pop_front()
+		if not history_log.is_empty():
+			history_log.pop_front()
 	redo_stack.clear()
+	history_log.append(label)
+	_refresh_history()
 	dirty = true
 	if save_button:
 		save_button.text = "保存 *"
+
+
+func _refresh_history() -> void:
+	if history_list == null:
+		return
+	history_list.clear()
+	for label in history_log:
+		history_list.add_item(str(label))
+	if history_list.item_count > 0:
+		history_list.select(history_list.item_count - 1)
 
 
 func _undo() -> void:
 	if undo_stack.is_empty():
 		_set_status("没有可撤销的操作。", true)
 		return
-	redo_stack.append(_snapshot())
-	_restore_snapshot(undo_stack.pop_back())
+	var entry: Dictionary = undo_stack.pop_back()
+	redo_stack.append({"label": entry.get("label", "编辑"), "state": _snapshot()})
+	_restore_snapshot(entry.get("state", {}))
+	if not history_log.is_empty():
+		history_log.pop_back()
+	_refresh_history()
 	_clamp_selection()
 	dirty = true
 	if save_button:
 		save_button.text = "保存 *"
-	_set_status("已撤销。")
+	_set_status("已撤销：" + str(entry.get("label", "编辑")))
+	_refresh_wave_ui()
 	_update_status()
 
 
@@ -492,13 +562,17 @@ func _redo() -> void:
 	if redo_stack.is_empty():
 		_set_status("没有可重做的操作。", true)
 		return
-	undo_stack.append(_snapshot())
-	_restore_snapshot(redo_stack.pop_back())
+	var entry: Dictionary = redo_stack.pop_back()
+	undo_stack.append({"label": entry.get("label", "编辑"), "state": _snapshot()})
+	_restore_snapshot(entry.get("state", {}))
+	history_log.append(str(entry.get("label", "编辑")))
+	_refresh_history()
 	_clamp_selection()
 	dirty = true
 	if save_button:
 		save_button.text = "保存 *"
-	_set_status("已重做。")
+	_set_status("已重做：" + str(entry.get("label", "编辑")))
+	_refresh_wave_ui()
 	_update_status()
 
 
@@ -532,7 +606,7 @@ func _insert_path_point() -> void:
 	var path: Array = map_data.get("path", [])
 	if path.is_empty():
 		return
-	_begin_edit()
+	_begin_edit("插入路径点")
 	var idx: int = selected_index + 1 if selected_kind == "path" else path.size()
 	var p := _snap(last_mouse_world)
 	if p == Vector2.ZERO:
@@ -549,7 +623,7 @@ func _insert_slot() -> void:
 	if map_data.is_empty():
 		return
 	var slots: Array = map_data.get("slots", [])
-	_begin_edit()
+	_begin_edit("插入塔位")
 	var idx: int = selected_index + 1 if selected_kind == "slot" else slots.size()
 	var p := _snap(last_mouse_world)
 	if p == Vector2.ZERO:
@@ -569,7 +643,7 @@ func _delete_selected() -> void:
 		if path.size() <= 2:
 			_set_status("路径至少保留 2 个点。", true)
 			return
-		_begin_edit()
+		_begin_edit("删除路径点")
 		path.remove_at(selected_index)
 		selected_index = clampi(selected_index - 1, 0, path.size() - 1)
 	elif selected_kind == "slot":
@@ -577,7 +651,7 @@ func _delete_selected() -> void:
 		if slots.size() <= 1:
 			_set_status("至少保留 1 个塔位。", true)
 			return
-		_begin_edit()
+		_begin_edit("删除塔位")
 		slots.remove_at(selected_index)
 		selected_index = clampi(selected_index - 1, 0, slots.size() - 1)
 	elif selected_kind == "base":
@@ -588,6 +662,102 @@ func _delete_selected() -> void:
 		return
 	_set_status("已删除；保存后生效。")
 	_update_status()
+
+
+func _start_preview() -> void:
+	if wave_data.is_empty():
+		_set_status("没有波次可预览。", true)
+		return
+	preview_wave_index = selected_wave if selected_wave >= 0 else 0
+	preview_time = 0.0
+	preview_playing = true
+	_set_status("预览 W%d；点「停止」结束。" % int(wave_data[preview_wave_index].get("index", 0)))
+	update_overlays()
+
+
+func _stop_preview() -> void:
+	if preview_playing:
+		preview_playing = false
+		_set_status("预览已停止。")
+		update_overlays()
+
+
+func _process(delta: float) -> void:
+	if not preview_playing:
+		return
+	preview_time += delta
+	if preview_time > _preview_duration():
+		_stop_preview()
+		return
+	update_overlays()
+
+
+func _path_length() -> float:
+	var path: Array = map_data.get("path", [])
+	var total := 0.0
+	for i in range(path.size() - 1):
+		total += _vec(path[i]).distance_to(_vec(path[i + 1]))
+	return total
+
+
+func _point_at_distance(distance: float) -> Vector2:
+	var path: Array = map_data.get("path", [])
+	if path.is_empty():
+		return Vector2.ZERO
+	var remaining := distance
+	for i in range(path.size() - 1):
+		var a := _vec(path[i])
+		var b := _vec(path[i + 1])
+		var seg := a.distance_to(b)
+		if seg <= 0.001:
+			continue
+		if remaining <= seg:
+			return a.lerp(b, remaining / seg)
+		remaining -= seg
+	return _vec(path[path.size() - 1])
+
+
+func _preview_duration() -> float:
+	if preview_wave_index < 0 or preview_wave_index >= wave_data.size():
+		return 0.0
+	var end_time := 0.0
+	var path_len := _path_length()
+	var wave: Dictionary = wave_data[preview_wave_index]
+	for g in wave.get("groups", []):
+		var e := _enemy_by_id(str(g.get("enemy", "")))
+		var spawn_end := float(g.get("delay", 0.0)) + maxf(0.0, float(int(g.get("count", 1)) - 1)) * float(g.get("interval", 1.0))
+		var speed := maxf(1.0, float(e.get("speed", 45.0)))
+		end_time = maxf(end_time, spawn_end + path_len / speed + 1.0)
+	return end_time + 0.5
+
+
+func _draw_preview(overlay: Control, font: Font) -> void:
+	if not preview_playing or preview_wave_index < 0 or preview_wave_index >= wave_data.size():
+		return
+	var wave: Dictionary = wave_data[preview_wave_index]
+	var path_len := _path_length()
+	for g in wave.get("groups", []):
+		var e := _enemy_by_id(str(g.get("enemy", "")))
+		if e.is_empty():
+			continue
+		var color := Color.from_string(str(e.get("color", "#8C4A32")), Color("#8C4A32"))
+		var reverse := str(e.get("behavior", "forward")) == "reverse"
+		var speed := maxf(1.0, float(e.get("speed", 45.0)))
+		var radius := maxf(4.0, float(e.get("radius", 8.0)) * 0.55)
+		var count := int(g.get("count", 1))
+		var interval := maxf(0.01, float(g.get("interval", 1.0)))
+		var delay := float(g.get("delay", 0.0))
+		for i in range(count):
+			var age := preview_time - (delay + i * interval)
+			if age < 0.0:
+				continue
+			var dist := age * speed
+			if dist > path_len:
+				continue
+			var p := _point_at_distance(path_len - dist if reverse else dist)
+			overlay.draw_circle(p, radius, color)
+			overlay.draw_arc(p, radius + 2.0, 0, TAU, 16, Color("#232B2F"), 1.0)
+	overlay.draw_string(font, Vector2(18, 42), "PREVIEW W%d  t=%.1fs" % [int(wave.get("index", 0)), preview_time], HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("#3E6F6B"))
 
 
 func _set_status(text: String, warn := false) -> void:
@@ -701,7 +871,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 				return false
 			selected_kind = str(hit["kind"])
 			selected_index = int(hit["index"])
-			_begin_edit()
+			_begin_edit("拖动 " + str(hit["kind"]))
 			dragging = true
 			_update_status()
 			return true
@@ -751,5 +921,6 @@ func _forward_canvas_draw_over_viewport(overlay: Control) -> void:
 			overlay.draw_circle(sp, tower_range, Color("#3E6F6B", 0.18), true)
 			overlay.draw_arc(sp, tower_range, 0, TAU, 64, Color("#3E6F6B", 0.8), 1.5)
 
+	_draw_preview(overlay, font)
 	overlay.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	overlay.draw_string(font, Vector2(18, 22), "LiveBay Tools · 拖路径点/塔位/基地 · 保存写回 numbers", HORIZONTAL_ALIGNMENT_LEFT, -1, 12, COLOR_TEXT)

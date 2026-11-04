@@ -5,6 +5,8 @@ extends Control
 # 只负责画与点击；编辑逻辑在 plugin.gd。
 
 signal group_selected(wave_index: int, group_index: int)
+signal group_delay_changed(wave_index: int, group_index: int, delay: float)
+signal group_delay_finished
 
 const ROW_H := 30.0
 const TOP := 18.0
@@ -16,6 +18,11 @@ var enemies: Array = []
 var selected_wave := -1
 var selected_group := -1
 var _hits: Array = []
+var _drag_wave := -1
+var _drag_group := -1
+var _drag_start_x := 0.0
+var _drag_start_delay := 0.0
+var _dragging := false
 
 
 func _ready() -> void:
@@ -84,16 +91,34 @@ func _draw() -> void:
 			draw_rect(rect, Color("#232B2F"), false, 1.0)
 			if wi == selected_wave and gi == selected_group:
 				draw_rect(rect.grow(2.0), Color("#232B2F"), false, 2.0)
-			_hits.append({"wave": wi, "group": gi, "rect": rect.grow(3.0)})
+			_hits.append({"wave": wi, "group": gi, "rect": rect.grow(3.0), "start": start})
 	draw_line(Vector2(LEFT, size.y - 12), Vector2(LEFT + plot_w, size.y - 12), Color("#566264"), 1.0)
 	draw_string(font, Vector2(LEFT, size.y - 2), "0s", HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Color("#7B8683"))
 	draw_string(font, Vector2(LEFT + plot_w - 30, size.y - 2), "%.0fs" % tmax, HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Color("#7B8683"))
 
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		for hit in _hits:
-			if hit["rect"].has_point(event.position):
-				group_selected.emit(int(hit["wave"]), int(hit["group"]))
-				accept_event()
-				return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			for hit in _hits:
+				if hit["rect"].has_point(event.position):
+					_dragging = true
+					_drag_wave = int(hit["wave"])
+					_drag_group = int(hit["group"])
+					_drag_start_x = event.position.x
+					_drag_start_delay = float(hit["start"])
+					group_selected.emit(_drag_wave, _drag_group)
+					accept_event()
+					return
+		elif _dragging:
+			_dragging = false
+			group_delay_finished.emit()
+			accept_event()
+			return
+	if event is InputEventMouseMotion and _dragging:
+		var tmax := _max_time()
+		var plot_w: float = maxf(40.0, size.x - LEFT - 10.0)
+		var delta: float = (event.position.x - _drag_start_x) / plot_w * tmax
+		var new_delay: float = maxf(0.0, snappedf(_drag_start_delay + delta, 0.1))
+		group_delay_changed.emit(_drag_wave, _drag_group, new_delay)
+		accept_event()
