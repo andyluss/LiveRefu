@@ -8,6 +8,7 @@ extends EditorPlugin
 # 数据真正来源仍是 numbers/，插件不是第二套数据源。
 
 const BridgeClient = preload("res://addons/livebay_tools/bridge_client.gd")
+const WaveTimeline = preload("res://addons/livebay_tools/wave_timeline.gd")
 const COLOR_PATH := Color("#E0A22E")
 const COLOR_SLOT := Color("#D9622B")
 const COLOR_BASE := Color("#3E6F6B")
@@ -24,6 +25,17 @@ var tower_picker: OptionButton
 var overlay_check: CheckButton
 var save_button: Button
 var map_data: Dictionary = {}
+var wave_data: Array = []
+var enemies: Array = []
+var wave_timeline: Control
+var wave_stats: Label
+var prep_spin: SpinBox
+var enemy_picker: OptionButton
+var count_spin: SpinBox
+var interval_spin: SpinBox
+var delay_spin: SpinBox
+var selected_wave := -1
+var selected_group := -1
 var undo_stack: Array = []
 var redo_stack: Array = []
 var last_mouse_world := Vector2.ZERO
@@ -132,6 +144,58 @@ func _build_dock() -> void:
 	tower_picker.item_selected.connect(func(_i: int): _update_status())
 	tower_row.add_child(tower_picker)
 
+	var wave_title := Label.new()
+	wave_title.text = "波次时间轴"
+	wave_title.add_theme_font_size_override("font_size", 14)
+	dock.add_child(wave_title)
+
+	wave_timeline = WaveTimeline.new()
+	wave_timeline.custom_minimum_size = Vector2(260, 190)
+	wave_timeline.group_selected.connect(_on_wave_group_selected)
+	dock.add_child(wave_timeline)
+
+	wave_stats = Label.new()
+	wave_stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	wave_stats.custom_minimum_size = Vector2(250, 0)
+	dock.add_child(wave_stats)
+
+	var wave_grid := GridContainer.new()
+	wave_grid.columns = 2
+	dock.add_child(wave_grid)
+	_add_spin_row(wave_grid, "准备 prep", "prep_spin")
+	enemy_picker = OptionButton.new()
+	wave_grid.add_child(_label("敌人"))
+	wave_grid.add_child(enemy_picker)
+	_add_spin_row(wave_grid, "数量", "count_spin")
+	_add_spin_row(wave_grid, "间隔 s", "interval_spin")
+	_add_spin_row(wave_grid, "延迟 s", "delay_spin")
+
+	var wave_actions := HBoxContainer.new()
+	dock.add_child(wave_actions)
+	var apply_button := Button.new()
+	apply_button.text = "应用"
+	apply_button.pressed.connect(_apply_wave_values)
+	wave_actions.add_child(apply_button)
+	var add_group_button := Button.new()
+	add_group_button.text = "加组"
+	add_group_button.pressed.connect(_add_group)
+	wave_actions.add_child(add_group_button)
+	var del_group_button := Button.new()
+	del_group_button.text = "删组"
+	del_group_button.pressed.connect(_remove_group)
+	wave_actions.add_child(del_group_button)
+
+	var wave_actions2 := HBoxContainer.new()
+	dock.add_child(wave_actions2)
+	var add_wave_button := Button.new()
+	add_wave_button.text = "加波"
+	add_wave_button.pressed.connect(_add_wave)
+	wave_actions2.add_child(add_wave_button)
+	var del_wave_button := Button.new()
+	del_wave_button.text = "删波"
+	del_wave_button.pressed.connect(_remove_wave)
+	wave_actions2.add_child(del_wave_button)
+
 	var sep := HSeparator.new()
 	dock.add_child(sep)
 	selection = Label.new()
@@ -155,6 +219,8 @@ func _reload(announce: bool) -> void:
 		return
 	map_data = result.get("map", {})
 	towers = result.get("towers", [])
+	wave_data = result.get("waves", [])
+	enemies = result.get("enemies", [])
 	undo_stack.clear()
 	redo_stack.clear()
 	dirty = false
@@ -162,10 +228,14 @@ func _reload(announce: bool) -> void:
 		save_button.text = "保存"
 	selected_kind = ""
 	selected_index = -1
+	selected_wave = 0 if not wave_data.is_empty() else -1
+	selected_group = 0 if selected_wave >= 0 and not wave_data[0].get("groups", []).is_empty() else -1
 	_refresh_tower_picker()
+	_refresh_enemy_picker()
+	_refresh_wave_ui()
 	_update_status()
 	if announce:
-		_set_status("已从 numbers/05 重载。")
+		_set_status("已从 numbers/ 重载。")
 	update_overlays()
 
 
@@ -178,7 +248,7 @@ func _refresh_tower_picker() -> void:
 
 
 func _save() -> void:
-	var result: Dictionary = bridge.write_map(map_data)
+	var result: Dictionary = bridge.write_map(map_data, wave_data)
 	if not bool(result.get("ok", false)):
 		_set_status("保存失败：" + str(result.get("error", "未知错误")), true)
 		return
@@ -202,8 +272,200 @@ func _run_game() -> void:
 		get_editor_interface().play_main_scene()
 
 
+func _snapshot() -> Dictionary:
+	return {"map": map_data.duplicate(true), "waves": wave_data.duplicate(true)}
+
+
+func _restore_snapshot(snapshot: Dictionary) -> void:
+	map_data = snapshot.get("map", {}).duplicate(true)
+	wave_data = snapshot.get("waves", []).duplicate(true)
+
+
+func _label(text: String) -> Label:
+	var label := Label.new()
+	label.text = text
+	return label
+
+
+func _add_spin_row(grid: GridContainer, text: String, field: String) -> void:
+	grid.add_child(_label(text))
+	var spin := SpinBox.new()
+	spin.step = 0.1 if field in ["interval_spin", "delay_spin"] else 1.0
+	spin.min_value = 0.0 if field == "prep_spin" or field == "delay_spin" else (1.0 if field == "count_spin" else 0.1)
+	spin.max_value = 120.0 if field == "prep_spin" else (100.0 if field == "count_spin" else 60.0)
+	spin.allow_greater = true
+	grid.add_child(spin)
+	if field == "prep_spin":
+		prep_spin = spin
+	elif field == "count_spin":
+		count_spin = spin
+	elif field == "interval_spin":
+		interval_spin = spin
+	elif field == "delay_spin":
+		delay_spin = spin
+
+
+func _enemy_by_id(id: String) -> Dictionary:
+	for e in enemies:
+		if str(e.get("id", "")) == id:
+			return e
+	return {}
+
+
+func _refresh_enemy_picker() -> void:
+	if enemy_picker == null:
+		return
+	enemy_picker.clear()
+	for e in enemies:
+		enemy_picker.add_item(str(e.get("name", e.get("id", "?"))))
+	var g := _current_group()
+	if not g.is_empty():
+		for i in range(enemies.size()):
+			if str(enemies[i].get("id", "")) == str(g.get("enemy", "")):
+				enemy_picker.select(i)
+				break
+
+
+func _current_wave() -> Dictionary:
+	if selected_wave >= 0 and selected_wave < wave_data.size():
+		return wave_data[selected_wave]
+	return {}
+
+
+func _current_group() -> Dictionary:
+	var wave := _current_wave()
+	if wave.is_empty():
+		return {}
+	var groups: Array = wave.get("groups", [])
+	if selected_group >= 0 and selected_group < groups.size():
+		return groups[selected_group]
+	return {}
+
+
+func _wave_summary() -> void:
+	if wave_stats == null:
+		return
+	var wave := _current_wave()
+	if wave.is_empty():
+		wave_stats.text = "没有选中的波次。"
+		return
+	var total_hp := 0
+	var reward := 0
+	var leak := 0
+	var groups: Array = wave.get("groups", [])
+	for g in groups:
+		var e := _enemy_by_id(str(g.get("enemy", "")))
+		var n := int(g.get("count", 0))
+		total_hp += int(e.get("hp", 0)) * n
+		reward += int(e.get("reward", 0)) * n
+		leak += int(e.get("leak_damage", 0)) * n
+	wave_stats.text = "W%d · %d 组 · HP %d · 奖励 %d · 全漏 %d" % [int(wave.get("index", 0)), groups.size(), total_hp, reward, leak]
+
+
+func _refresh_wave_ui() -> void:
+	if wave_timeline == null:
+		return
+	wave_timeline.set_data(wave_data, enemies, selected_wave, selected_group)
+	_wave_summary()
+	var wave := _current_wave()
+	var group := _current_group()
+	if wave.is_empty() or group.is_empty():
+		return
+	prep_spin.set_value_no_signal(float(wave.get("prep", 20.0)))
+	count_spin.set_value_no_signal(float(group.get("count", 1)))
+	interval_spin.set_value_no_signal(float(group.get("interval", 1.0)))
+	delay_spin.set_value_no_signal(float(group.get("delay", 0.0)))
+	for i in range(enemies.size()):
+		if str(enemies[i].get("id", "")) == str(group.get("enemy", "")):
+			enemy_picker.select(i)
+			break
+
+
+func _on_wave_group_selected(wave_index: int, group_index: int) -> void:
+	selected_wave = wave_index
+	selected_group = group_index
+	_refresh_wave_ui()
+
+
+func _apply_wave_values() -> void:
+	var wave := _current_wave()
+	var group := _current_group()
+	if wave.is_empty() or group.is_empty():
+		_set_status("先选一个波次组。", true)
+		return
+	_begin_edit()
+	wave["prep"] = max(0.0, prep_spin.value)
+	group["count"] = max(1, int(count_spin.value))
+	group["interval"] = max(0.1, interval_spin.value)
+	group["delay"] = max(0.0, delay_spin.value)
+	if enemy_picker.selected >= 0 and enemy_picker.selected < enemies.size():
+		group["enemy"] = str(enemies[enemy_picker.selected].get("id", "debris"))
+	_set_status("波次已修改；保存后生效。")
+	_refresh_wave_ui()
+
+
+func _add_group() -> void:
+	var wave := _current_wave()
+	if wave.is_empty():
+		_set_status("先选一个波次。", true)
+		return
+	_begin_edit()
+	var groups: Array = wave.get("groups", [])
+	groups.append({"enemy": "debris", "count": 1, "interval": 1.0, "delay": 0.0})
+	selected_group = groups.size() - 1
+	_set_status("已加一组；保存后生效。")
+	_refresh_wave_ui()
+
+
+func _remove_group() -> void:
+	var wave := _current_wave()
+	if wave.is_empty() or selected_group < 0:
+		return
+	var groups: Array = wave.get("groups", [])
+	if groups.size() <= 1:
+		_set_status("每波至少保留 1 组。", true)
+		return
+	_begin_edit()
+	groups.remove_at(selected_group)
+	selected_group = clampi(selected_group - 1, 0, groups.size() - 1)
+	_set_status("已删一组；保存后生效。")
+	_refresh_wave_ui()
+
+
+func _reindex_waves() -> void:
+	for i in range(wave_data.size()):
+		wave_data[i]["index"] = i + 1
+
+
+func _add_wave() -> void:
+	if wave_data.is_empty():
+		return
+	_begin_edit()
+	wave_data.append({"index": wave_data.size() + 1, "prep": 20.0, "groups": [{"enemy": "debris", "count": 1, "interval": 1.0, "delay": 0.0}]})
+	selected_wave = wave_data.size() - 1
+	selected_group = 0
+	_reindex_waves()
+	_set_status("已加一波；保存后生效。")
+	_refresh_wave_ui()
+
+
+func _remove_wave() -> void:
+	if wave_data.size() <= 1:
+		_set_status("至少保留 1 波。", true)
+		return
+	if selected_wave < 0:
+		return
+	_begin_edit()
+	wave_data.remove_at(selected_wave)
+	_reindex_waves()
+	selected_wave = clampi(selected_wave - 1, 0, wave_data.size() - 1)
+	selected_group = 0
+	_set_status("已删一波；保存后生效。")
+	_refresh_wave_ui()
+
+
 func _begin_edit() -> void:
-	undo_stack.append(map_data.duplicate(true))
+	undo_stack.append(_snapshot())
 	if undo_stack.size() > 40:
 		undo_stack.pop_front()
 	redo_stack.clear()
@@ -216,8 +478,8 @@ func _undo() -> void:
 	if undo_stack.is_empty():
 		_set_status("没有可撤销的操作。", true)
 		return
-	redo_stack.append(map_data.duplicate(true))
-	map_data = undo_stack.pop_back().duplicate(true)
+	redo_stack.append(_snapshot())
+	_restore_snapshot(undo_stack.pop_back())
 	_clamp_selection()
 	dirty = true
 	if save_button:
@@ -230,8 +492,8 @@ func _redo() -> void:
 	if redo_stack.is_empty():
 		_set_status("没有可重做的操作。", true)
 		return
-	undo_stack.append(map_data.duplicate(true))
-	map_data = redo_stack.pop_back().duplicate(true)
+	undo_stack.append(_snapshot())
+	_restore_snapshot(redo_stack.pop_back())
 	_clamp_selection()
 	dirty = true
 	if save_button:
@@ -257,6 +519,11 @@ func _clamp_selection() -> void:
 			selected_index = clampi(selected_index, 0, slots.size() - 1)
 	elif selected_kind == "base":
 		selected_index = 0
+	if selected_wave >= wave_data.size():
+		selected_wave = wave_data.size() - 1
+	if selected_wave >= 0 and selected_wave < wave_data.size():
+		var groups: Array = wave_data[selected_wave].get("groups", [])
+		selected_group = clampi(selected_group, 0, max(0, groups.size() - 1))
 
 
 func _insert_path_point() -> void:

@@ -52,7 +52,7 @@ platform: "PC 优先（D14 待定）"
 
 ## 开发工具
 
-Godot 编辑器内置 **LiveBay Tools** 插件（`game/addons/livebay_tools/`）：在 2D 视口拖动路径点、塔位、基地，预览射程，保存时写回 `numbers/05` 并导出。用法见 [`game/addons/livebay_tools/README.md`](game/addons/livebay_tools/README.md)。
+Godot 编辑器内置 **LiveBay Tools** 插件（`game/addons/livebay_tools/`）：在 2D 视口拖动路径点、塔位、基地，预览射程；用波次时间轴调组/波次；保存时写回 `numbers/` 并导出。用法见 [`game/addons/livebay_tools/README.md`](game/addons/livebay_tools/README.md)。
 
 ## 文档入口
 

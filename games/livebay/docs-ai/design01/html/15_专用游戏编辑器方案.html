@@ -54,7 +54,7 @@
 <details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一现在的编辑体验">一、现在的编辑体验</a></li><li class=""><a href="#二对-livebay-来说wysiwyg-是什么">二、对 LiveBay 来说，WYSIWYG 是什么</a></li><li class=""><a href="#三四种方案">三、四种方案</a></li><li class="sub"><a href="#方案-agodot-editorplugin推荐">方案 A：Godot EditorPlugin（推荐）</a></li><li class="sub"><a href="#方案-b独立-web-编辑器">方案 B：独立 Web 编辑器</a></li><li class="sub"><a href="#方案-c独立桌面应用--嵌入-godot-运行时">方案 C：独立桌面应用 + 嵌入 Godot 运行时</a></li><li class="sub"><a href="#方案-d不做编辑器只做数据工具">方案 D：不做编辑器，只做数据工具</a></li><li class="sub"><a href="#方案-e混合长期">方案 E：混合（长期）</a></li><li class=""><a href="#四对比">四、对比</a></li><li class=""><a href="#五推荐路线">五、推荐路线</a></li><li class="sub"><a href="#51-形态">5.1 形态</a></li><li class="sub"><a href="#52-数据桥">5.2 数据桥</a></li><li class="sub"><a href="#53-数据流">5.3 数据流</a></li><li class=""><a href="#六mvp-功能">六、MVP 功能</a></li><li class="sub"><a href="#61-必做">6.1 必做</a></li><li class="sub"><a href="#62-不做">6.2 不做</a></li><li class=""><a href="#七分阶段">七、分阶段</a></li><li class=""><a href="#八风险">八、风险</a></li><li class=""><a href="#九验收指标">九、验收指标</a></li><li class=""><a href="#十需要裁决">十、需要裁决</a></li><li class=""><a href="#十一结论">十一、结论</a></li></ul></details>
 <article class="prose">
 <h1 id="15--专用游戏编辑器方案">15 · 专用游戏编辑器方案</h1>
-<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程与工具方案</dd><dt>状态</dt><dd>草案 v0.2（E1–E4 已按推荐通过；Phase 1 MVP 已实现）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 设计，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a> · <a href="rules/biz/b01_切片与范围门槛.html">BIZ-B1</a> · <a href="rules/design/b01_班次循环.html">DES-B1</a></dd><dt>上游</dt><dd><a href="12_技术方案_Godot工程.html">12_技术方案_Godot工程</a> · <a href="../numbers/README.md">numbers</a> · <a href="11_待人类裁决清单.html">11_待人类裁决清单</a></dd><dt>关联</dt><dd><a href="04_塔防玩法.html">04_塔防玩法</a> · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="rules/tech/a01_单一数据源.html">单一数据源</a></dd></dl></div>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程与工具方案</dd><dt>状态</dt><dd>草案 v0.3（E1–E4 已通过；Phase 1 + Phase 2 MVP 已实现）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 设计，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a> · <a href="rules/biz/b01_切片与范围门槛.html">BIZ-B1</a> · <a href="rules/design/b01_班次循环.html">DES-B1</a></dd><dt>上游</dt><dd><a href="12_技术方案_Godot工程.html">12_技术方案_Godot工程</a> · <a href="../numbers/README.md">numbers</a> · <a href="11_待人类裁决清单.html">11_待人类裁决清单</a></dd><dt>关联</dt><dd><a href="04_塔防玩法.html">04_塔防玩法</a> · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="rules/tech/a01_单一数据源.html">单一数据源</a></dd></dl></div>
 <blockquote>
 <p><strong>一句话</strong>：可以开发，但第一版不应是独立游戏编辑器，而应是 <strong>Godot 编辑器里的 LiveBay Tools 插件</strong>：在真实场景上拖塔位、看射程、调波次、即时预览；数据仍走 <code>numbers/ → game/data/</code> 的单一源。</p>
 <p><strong>结论</strong>：先做插件 + Python 数据桥（2–3 周 MVP），独立 Web 编辑器作为 v0.3+ 的可选分支，不在现在做。</p>
@@ -447,14 +447,14 @@ Sim / 场景重载 / 内嵌预览</code></pre>
 </tbody>
 </table></div>
 <blockquote>
-<p>2026-11-04 人类选择「全按推荐」：E1–E4 均按 A。实现入口：<a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>。</p>
+<p>2026-11-04 人类选择「全按推荐」：E1–E4 均按 A。Phase 1（地图/塔位）与 Phase 2（波次时间轴/数值面板）MVP 已实现。实现入口：<a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>。</p>
 </blockquote>
 <h2 id="十一结论">十一、结论</h2>
 <ul>
 <li><strong>可开发</strong>，但第一版应是 <strong>Godot 插件</strong>，不是独立编辑器；</li>
 <li>真正的 WYSIWYG 来自「同一套数据 + 同一个运行时 + 短反馈环」，不是来自“自己画一个界面”；</li>
 <li>先用 Python bridge 守住 <code>numbers/</code> 单一源，再逐步加视口编辑、波次时间轴、内嵌预览；</li>
-<li><strong>Phase 1 MVP 已实现</strong>：路径点 / 塔位 / 基地拖动、射程预览、保存写回、校验、运行游戏；见 <a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>；</li>
+<li><strong>Phase 1 MVP 已实现</strong>：路径点 / 塔位 / 基地拖动、射程预览、保存写回、校验、运行游戏；<strong>Phase 2 MVP 已实现</strong>：波次时间轴、波次数值面板、组/波次增删；见 <a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>；</li>
 <li>独立 Web 编辑器是 Phase 4 的选项，不是现在的起点。</li>
 </ul>
 <p>（本篇完）</p>
