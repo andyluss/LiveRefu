@@ -1,0 +1,1108 @@
+<!-- 由 tools/build_design_html.py 从 ../16_模块化技术架构_NASApunk.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>模块化技术架构：NASApunk · LiveBay design01</title>
+<meta name="description" content="ORU 模块、端口、总线、黑匣子；参考方案，未裁决。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="./assets/style.css">
+<script defer src="./assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="README.html">策划文档集 · 总览</a><a href="00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="01_项目北极星.html">项目北极星</a><a href="11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="03_职业体系.html">职业体系</a><a href="13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="04_塔防玩法.html">塔防：岗位防线</a><a href="06_沉浸体验玩法.html">沉浸体验玩法</a><a href="07_放置养成玩法.html">放置养成玩法</a><a href="09_三玩法联动.html">三玩法联动</a><a href="10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>表现与工程</h2><a href="08_美术与音频方向.html">美术与音频方向</a><a href="12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="16_模块化技术架构_NASApunk.html" aria-current="page">模块化技术架构：NASApunk</a></div><div class="nav-group"><h2>规则</h2><a href="rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="./11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../16_模块化技术架构_NASApunk.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">模块化技术架构：NASApunk</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一为什么现在还不够">一、为什么现在还不够</a></li><li class=""><a href="#二nasapunk-的工程类比">二、NASApunk 的工程类比</a></li><li class="sub"><a href="#21-硬接口软表面">2.1 硬接口，软表面</a></li><li class=""><a href="#三目标与非目标">三、目标与非目标</a></li><li class="sub"><a href="#31-目标">3.1 目标</a></li><li class="sub"><a href="#32-非目标">3.2 非目标</a></li><li class=""><a href="#四目标架构总览">四、目标架构总览</a></li><li class=""><a href="#五模块目录建议的-oru-清单">五、模块目录（建议的 ORU 清单）</a></li><li class="sub"><a href="#51-内核kernel">5.1 内核（Kernel）</a></li><li class="sub"><a href="#52-领域模块domain">5.2 领域模块（Domain）</a></li><li class="sub"><a href="#53-表现与适配器">5.3 表现与适配器</a></li><li class=""><a href="#六模块契约">六、模块契约</a></li><li class="sub"><a href="#61-生命周期">6.1 生命周期</a></li><li class="sub"><a href="#62-端口">6.2 端口</a></li><li class="sub"><a href="#63-命令">6.3 命令</a></li><li class="sub"><a href="#64-事件">6.4 事件</a></li><li class="sub"><a href="#65-依赖规则">6.5 依赖规则</a></li><li class=""><a href="#七任务编排与阶段">七、任务编排与阶段</a></li><li class="sub"><a href="#71-阶段状态机">7.1 阶段状态机</a></li><li class="sub"><a href="#72-tick-顺序">7.2 Tick 顺序</a></li><li class="sub"><a href="#73-两个时钟">7.3 两个时钟</a></li><li class=""><a href="#八数据与内容包">八、数据与内容包</a></li><li class="sub"><a href="#81-为什么需要-pack">8.1 为什么需要 Pack</a></li><li class="sub"><a href="#82-内容契约">8.2 内容契约</a></li><li class=""><a href="#九故障冗余与降级">九、故障、冗余与降级</a></li><li class="sub"><a href="#91-失败分类">9.1 失败分类</a></li><li class="sub"><a href="#92-降级模式">9.2 降级模式</a></li><li class="sub"><a href="#93-熔断与预算">9.3 熔断与预算</a></li><li class=""><a href="#十黑匣子回放与验收">十、黑匣子、回放与验收</a></li><li class="sub"><a href="#101-黑匣子">10.1 黑匣子</a></li><li class="sub"><a href="#102-测试金字塔">10.2 测试金字塔</a></li><li class=""><a href="#十一视图与编辑器">十一、视图与编辑器</a></li><li class="sub"><a href="#111-视图拆分">11.1 视图拆分</a></li><li class="sub"><a href="#112-编辑器">11.2 编辑器</a></li><li class=""><a href="#十二建议目录">十二、建议目录</a></li><li class=""><a href="#十三迁移路线每步可回退">十三、迁移路线（每步可回退）</a></li><li class=""><a href="#十四风险与取舍">十四、风险与取舍</a></li><li class="sub"><a href="#不推荐现在做">不推荐现在做</a></li><li class=""><a href="#十五需要人类拍板的问题">十五、需要人类拍板的问题</a></li><li class=""><a href="#十六模块准入检查单pre-flight-checklist">十六、模块准入检查单（Pre-flight Checklist）</a></li><li class=""><a href="#十七与现有文档的关系">十七、与现有文档的关系</a></li><li class=""><a href="#十八一句话总结">十八、一句话总结</a></li></ul></details>
+<article class="prose">
+<h1 id="16--模块化技术架构nasapunk-系统方案">16 · 模块化技术架构：NASApunk 系统方案</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（非设计决定）</dd><dt>状态</dt><dd>参考 v0.1（供人类裁决；未实现）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a></dd><dt>上游</dt><dd><a href="12_技术方案_Godot工程.html">12_技术方案_Godot工程</a> · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a></dd><dt>关联</dt><dd><a href="../../../../../docs/retro-futurism/附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md">09_软与硬_生物可塑性与机械模块化</a> · <a href="../../../game">Godot 工程</a> · <a href="11_待人类裁决清单.html">11_待人类裁决清单</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：把现在的「Sim / View 两层」推进成「<strong>任务编排器 + 可替换模块 + 标准接口 + 总线 + 黑匣子</strong>」的模块化单体。</p>
+<p><strong>不是</strong> ECS，<strong>不是</strong>微服务，<strong>不是</strong>重写；是把现有规则拆成能单独测试、替换、降级的 ORU（轨道替换单元），让 NASApunk 的工程感进入代码结构，而不只停在界面。</p>
+</blockquote>
+<blockquote>
+<p><strong>状态</strong>：参考方案，未裁决、未实现。本文不改变 <a href="12_技术方案_Godot工程.html">12</a> 的现行工程事实，也不把任何「AI 建议」写成决定。人类确认后，才进入迁移。</p>
+</blockquote>
+<h2 id="一为什么现在还不够">一、为什么现在还不够</h2>
+<p>现行架构已经做对了最重要的一件事：<strong>模拟与视图分离</strong>（<a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a>）。<code>sim.gd</code> 不依赖窗口，<code>main.gd</code> 只负责画和输入，<code>run_sim.gd</code> 可以无头跑完 5 波。这是继续模块化的地基，不是要推翻的东西。</p>
+<p>但按 2026-11-04 的实际代码量看：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th style="text-align: right;">行数</th>
+<th>当前职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>game/scripts/core/sim.gd</code></td>
+<td style="text-align: right;">473</td>
+<td>路径、波次、敌人生成/移动、塔索敌/伤害、经济、故障、胜负、评级、信号</td>
+</tr>
+<tr>
+<td><code>game/scripts/main.gd</code></td>
+<td style="text-align: right;">790</td>
+<td>输入、绘制、HUD、按钮、结算、提示、存档调用</td>
+</tr>
+<tr>
+<td><code>game/addons/livebay_tools/plugin.gd</code></td>
+<td style="text-align: right;">1264</td>
+<td>编辑器 Dock、地图编辑、波次编辑、数值表、预览、历史、bridge 调用</td>
+</tr>
+<tr>
+<td><code>game/scripts/core/data_loader.gd</code></td>
+<td style="text-align: right;">130</td>
+<td>一次加载全部 JSON、做最小校验</td>
+</tr>
+<tr>
+<td><code>game/scripts/autoload/save_store.gd</code></td>
+<td style="text-align: right;">65</td>
+<td>最高记录与设置，全局单例</td>
+</tr>
+</tbody>
+</table></div>
+<p>问题不在「文件有多大」，而在<strong>变化会横穿多少边界</strong>：</p>
+<ul>
+<li>加一条「旁路降级」规则，要改 <code>sim.gd</code> 的敌人、塔、经济、信号，再改 <code>main.gd</code> 的面板；</li>
+<li>改一次「检查单」时机，要把波次、准备时间、UI、结算都碰一遍；</li>
+<li>编辑器预览直接重建了一套 <code>PreviewViewport</code>，和 <code>main.gd</code> 的视图逻辑平行生长；</li>
+<li><code>DataLoader</code> 返回一个大字典，模块之间靠「都认识这个字典」协作，而不是靠契约；</li>
+<li>测试只有一个 <code>run_sim.gd</code>，无法单独验证「地图」「经济」「故障」；</li>
+<li>没有黑匣子：出现「为什么这波漏了」只能复现，不能回放。</li>
+</ul>
+<p>所以下一步不是「再加一层抽象」，而是把<strong>变化点</strong>做成模块，把<strong>模块之间</strong>做成标准接口。</p>
+<h2 id="二nasapunk-的工程类比">二、NASApunk 的工程类比</h2>
+<p>NASApunk 的模块化不是「把东西拆小」，而是「让系统坏得起、换得动、查得清」。对应到代码：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>NASApunk 概念</th>
+<th>架构落点</th>
+<th>在 LiveBay 里是什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ORU（轨道替换单元）</td>
+<td>可替换模块</td>
+<td>地图、波次、敌人、塔、经济、故障、检查单</td>
+</tr>
+<tr>
+<td>对接接口</td>
+<td>稳定契约</td>
+<td><code>MapPort</code>、<code>EnemyPort</code>、<code>TowerPort</code>、<code>EconomyPort</code></td>
+</tr>
+<tr>
+<td>数据总线</td>
+<td>事件总线</td>
+<td><code>EnemySpawned</code>、<code>TowerFired</code>、<code>FaultHit</code>、<code>ResultReady</code></td>
+</tr>
+<tr>
+<td>飞行规则</td>
+<td>阶段状态机 + 规则数据</td>
+<td><code>PREP → WAVE → BETWEEN → REPORT → DEBRIEF</code></td>
+</tr>
+<tr>
+<td>检查单</td>
+<td>模块准入 + 任务流程</td>
+<td>模块上线检查单；第 4/5 波班前检查单</td>
+</tr>
+<tr>
+<td>遥测 / 黑匣子</td>
+<td>事件日志与回放</td>
+<td>每个 tick 的序号、命令、事件、哈希</td>
+</tr>
+<tr>
+<td>冗余 / 降级</td>
+<td>失败隔离与 fallback</td>
+<td>音频/特效可关；核心规则不可静默绕过</td>
+</tr>
+<tr>
+<td>双时钟</td>
+<td>模拟 tick / 表现帧 / 编辑时间</td>
+<td>60Hz 固定步长；表现插值；编辑器撤销栈</td>
+</tr>
+<tr>
+<td>配置控制</td>
+<td>数据包清单与迁移</td>
+<td><code>manifest + schema_version + hash</code></td>
+</tr>
+<tr>
+<td>平铺测试台（flat-sat）</td>
+<td>无头组合根</td>
+<td>不启动场景即可组装任务并跑 5 波</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="21-硬接口软表面">2.1 硬接口，软表面</h3>
+<p>这是本文最重要的一条设计约束：</p>
+<pre class="text"><code>硬：ID、命令、端口、事件、数据 schema、阶段、tick、失败语义
+软：布局、动画、文案、颜色、输入映射、编辑器面板、预览表现</code></pre>
+<p>「硬接口」让模块能换、能测、能回放；「软表面」让美术、UI、编辑器可以快速试错。<strong>不要把 UI 的柔软性带进规则契约，也不要把规则的刚性带进界面。</strong></p>
+<h2 id="三目标与非目标">三、目标与非目标</h2>
+<h3 id="31-目标">3.1 目标</h3>
+<ol type="1">
+<li><strong>可替换</strong>：任何一个领域模块可以在不改其他模块的情况下替换实现（例如把 <code>Tower</code> 的索敌从「最前」换成「最高血」）。</li>
+<li><strong>可测试</strong>：每个模块有独立契约测试；任务有 golden run；故障可注入。</li>
+<li><strong>可降级</strong>：可选模块失败时，任务能进入明确的降级模式；核心模块失败时，启动即失败，不带着坏规则跑。</li>
+<li><strong>可观测</strong>：每局有黑匣子，能回答「第 137 tick 为什么漏了」。</li>
+<li><strong>可复用</strong>：游戏视图、编辑器预览、未来回放/测试台共用同一套任务组装与读模型。</li>
+<li><strong>可迁移</strong>：从现行架构分阶段走，不要求一次性重写，不改变现有 37 项验收的行为。</li>
+</ol>
+<h3 id="32-非目标">3.2 非目标</h3>
+<ul>
+<li>不做 ECS；塔防实体数量 ≤ 60，ECS 的复杂度不划算。</li>
+<li>不做微服务/多进程；仍是 Godot 单进程模块化单体。</li>
+<li>不做完整事件溯源（event sourcing）；只做<strong>事件日志 + 快照</strong>，够回放即可。</li>
+<li>不做通用插件热插拔；模块在编译期注册，运行期按清单启用/停用。</li>
+<li>不把 <code>main.gd</code> 拆成几十个只有一行的文件；拆到「职责边界」为止。</li>
+<li>不为了「看起来架构」而引入第三方框架。</li>
+</ul>
+<h2 id="四目标架构总览">四、目标架构总览</h2>
+<pre class="text"><code>┌─────────────────────────────────────────────────────────────┐
+│ K0 Composition Root / Boot                                  │
+│  读取 MissionPack、校验、注册模块、创建 MissionContext       │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│ MissionOrchestrator（任务编排器）                            │
+│  阶段状态机、命令校验、tick 顺序、暂停/倍速、结算            │
+└───────┬───────────────┬───────────────┬─────────────────────┘
+        │ CommandBus    │ EventBus      │ ReadModel
+        ▼               ▼               ▼
+┌───────────────┐ ┌───────────────┐ ┌─────────────────────────┐
+│ 领域模块       │ │ 领域模块       │ │ 表现适配器               │
+│ Map           │ │ Wave          │ │ GameView / HUD          │
+│ Enemy         │ │ Tower         │ │ EditorPreview           │
+│ Economy       │ │ Mission       │ │ ReplayView              │
+│ Fault         │ │ Procedure     │ │ TelemetryOverlay        │
+└───────────────┘ └───────────────┘ └─────────────────────────┘
+        │               │               │
+        └───────────────┴───────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────────────┐
+│ 平台适配器：ContentPack / Save / Telemetry / EditorBridge    │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>控制流</strong>：视图只发命令，不直接改状态；模块只通过端口/事件协作；编排器决定顺序；读模型只读。</p>
+<p><strong>数据流</strong>：<code>numbers/*.md → 编译器 → MissionPack → 模块</code>；<code>MissionPack</code> 是唯一运行时内容入口。</p>
+<h2 id="五模块目录建议的-oru-清单">五、模块目录（建议的 ORU 清单）</h2>
+<h3 id="51-内核kernel">5.1 内核（Kernel）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>模块</th>
+<th>职责</th>
+<th>不做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K0</td>
+<td><code>CompositionRoot</code></td>
+<td>启动、组装、注册、生命周期</td>
+<td>不写玩法规则</td>
+</tr>
+<tr>
+<td>K1</td>
+<td><code>MissionClock</code></td>
+<td>固定 tick、暂停、倍速、模拟时间</td>
+<td>不画动画</td>
+</tr>
+<tr>
+<td>K2</td>
+<td><code>EventBus</code></td>
+<td>事件信封、序号、订阅、调试追踪</td>
+<td>不做业务判断</td>
+</tr>
+<tr>
+<td>K3</td>
+<td><code>CommandBus</code></td>
+<td>命令校验、排队、派发、拒绝原因</td>
+<td>不直接改模块字段</td>
+</tr>
+<tr>
+<td>K4</td>
+<td><code>Diagnostics</code></td>
+<td>黑匣子、计数器、tick 预算、调试 overlay</td>
+<td>不参与胜负</td>
+</tr>
+<tr>
+<td>K5</td>
+<td><code>MissionPack</code></td>
+<td>内容清单、schema 校验、版本、迁移</td>
+<td>不做运行时规则</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="52-领域模块domain">5.2 领域模块（Domain）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>模块</th>
+<th>核心状态</th>
+<th>公开端口</th>
+<th>主要事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td><code>MapModule</code></td>
+<td>路径点、累计距离、塔位、基地</td>
+<td><code>MapPort</code></td>
+<td><code>MapLoaded</code></td>
+</tr>
+<tr>
+<td>D2</td>
+<td><code>WaveModule</code></td>
+<td>当前波、准备计时、生成队列、清波</td>
+<td><code>WavePort</code></td>
+<td><code>WaveStarted</code>、<code>WaveCleared</code></td>
+</tr>
+<tr>
+<td>D3</td>
+<td><code>EnemyModule</code></td>
+<td>敌人列表、血量、距离、状态</td>
+<td><code>EnemyPort</code></td>
+<td><code>EnemySpawned</code>、<code>EnemyKilled</code>、<code>EnemyLeaked</code></td>
+</tr>
+<tr>
+<td>D4</td>
+<td><code>TowerModule</code></td>
+<td>塔列表、等级、冷却、索敌</td>
+<td><code>TowerPort</code></td>
+<td><code>TowerBuilt</code>、<code>TowerFired</code>、<code>TowerSold</code></td>
+</tr>
+<tr>
+<td>D5</td>
+<td><code>EconomyModule</code></td>
+<td>供能、收入、维修、花费</td>
+<td><code>EconomyPort</code></td>
+<td><code>EnergyChanged</code></td>
+</tr>
+<tr>
+<td>D6</td>
+<td><code>MissionModule</code></td>
+<td>阶段、保障度、胜负、评级</td>
+<td><code>MissionPort</code></td>
+<td><code>PhaseChanged</code>、<code>ResultReady</code></td>
+</tr>
+<tr>
+<td>D7</td>
+<td><code>FaultModule</code></td>
+<td>故障注入、目标、隔离/旁路、降级</td>
+<td><code>FaultPort</code></td>
+<td><code>FaultHit</code>、<code>FaultResolved</code></td>
+</tr>
+<tr>
+<td>D8</td>
+<td><code>ProcedureModule</code></td>
+<td>检查单、记录、低报标记</td>
+<td><code>ProcedurePort</code></td>
+<td><code>ChecklistRequested</code>、<code>ReportSubmitted</code></td>
+</tr>
+<tr>
+<td>D9</td>
+<td><code>ModifierModule</code></td>
+<td>职业/关卡修正器（可选）</td>
+<td><code>ModifierPort</code></td>
+<td><code>ModifiersChanged</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>D9 先保留为「空模块 + 接口」；没有多职业前不要把它做成复杂系统。</p>
+</blockquote>
+<h3 id="53-表现与适配器">5.3 表现与适配器</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>模块</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td><code>MissionReadModel</code></td>
+<td>从模块状态生成只读快照（UI 需要的字段）</td>
+</tr>
+<tr>
+<td>P2</td>
+<td><code>MissionPresenter</code></td>
+<td>把快照翻译成 HUD/结算/提示所需的显示数据</td>
+</tr>
+<tr>
+<td>P3</td>
+<td><code>Renderers</code></td>
+<td>地图、塔、敌人、光束、特效；只读快照</td>
+</tr>
+<tr>
+<td>P4</td>
+<td><code>InputController</code></td>
+<td>键鼠/触屏 → 命令；不直接改状态</td>
+</tr>
+<tr>
+<td>P5</td>
+<td><code>Theme/Audio</code></td>
+<td>色板、字体、音效；可降级</td>
+</tr>
+<tr>
+<td>A1</td>
+<td><code>SaveAdapter</code></td>
+<td>profile / settings / records 分离、原子写、迁移</td>
+</tr>
+<tr>
+<td>A2</td>
+<td><code>ContentCompiler</code></td>
+<td>Markdown → MissionPack；校验/哈希</td>
+</tr>
+<tr>
+<td>A3</td>
+<td><code>EditorBridge</code></td>
+<td>编辑器读写 numbers；不复制规则</td>
+</tr>
+<tr>
+<td>A4</td>
+<td><code>PreviewHarness</code></td>
+<td>用真实编排器 + 内存 Pack 跑预览</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="六模块契约">六、模块契约</h2>
+<h3 id="61-生命周期">6.1 生命周期</h3>
+<p>每个领域模块实现同一组方法；内核只认这组方法：</p>
+<pre class="gdscript"><code>class_name MissionModule
+extends RefCounted
+
+func configure(ctx: MissionContext) -&gt; Result:
+    return Result.ok()
+
+func on_start() -&gt; Result:
+    return Result.ok()
+
+func step(tick: Tick) -&gt; void:
+    pass
+
+func snapshot() -&gt; Dictionary:
+    return {}
+
+func restore(state: Dictionary) -&gt; void:
+    pass
+
+func diagnostics() -&gt; Dictionary:
+    return {}</code></pre>
+<p>约束：</p>
+<ul>
+<li><code>configure</code> 只接收 <code>MissionContext</code>（端口、事件、时钟、随机流、数据包），不接收别的模块实例。</li>
+<li><code>step</code> 必须是确定性的；不得读 <code>Time.get_ticks_msec()</code>、不得用全局随机。</li>
+<li><code>snapshot/restore</code> 用于回放、测试、预览重置；不是存档格式承诺。</li>
+<li><code>dispose</code> 可选；模块不得依赖全局单例。</li>
+</ul>
+<h3 id="62-端口">6.2 端口</h3>
+<p>端口是「插座」，不是「另一个模块」：</p>
+<pre class="gdscript"><code># 只读查询
+class_name MapPort:
+    func path_point(distance: float) -&gt; Vector2: ...
+    func path_length() -&gt; float: ...
+    func slot_position(slot: int) -&gt; Vector2: ...
+    func base_position() -&gt; Vector2: ...
+
+class_name EnemyPort:
+    func enemies_in_range(center: Vector2, radius: float) -&gt; Array: ...
+    func damage(enemy_id: int, amount: float, source: String) -&gt; void: ...
+    func front_enemy() -&gt; Variant: ...
+
+class_name EconomyPort:
+    func can_afford(cost: int) -&gt; bool: ...
+    func spend(cost: int, reason: String) -&gt; bool: ...
+    func earn(amount: int, reason: String) -&gt; void: ...</code></pre>
+<p>约束：</p>
+<ul>
+<li><code>TowerModule</code> 不得 <code>preload("res://domain/enemy/enemy_module.gd")</code>；它只依赖 <code>EnemyPort</code>。</li>
+<li><code>EnemyModule</code> 不得认识 <code>TowerModule</code>；伤害由端口进入，击杀事件由总线出去。</li>
+<li>端口由编排器在组装时注入，模块不自己 <code>new</code> 别的模块。</li>
+</ul>
+<h3 id="63-命令">6.3 命令</h3>
+<p>所有玩家/编辑器动作都变成命令；命令先校验，再执行：</p>
+<pre class="gdscript"><code>BuildTower { slot: int, tower_id: String, request_id: int }
+UpgradeTower { slot: int, request_id: int }
+SellTower { slot: int, request_id: int }
+StartWave { request_id: int }
+RespondFault { fault_id: int, choice: &quot;isolate&quot; | &quot;bypass&quot;, request_id: int }
+SubmitChecklist { card_id: String, choice: &quot;sign&quot; | &quot;review&quot; | &quot;custom&quot;, request_id: int }
+SetPause { paused: bool }
+SetSpeed { multiplier: float }</code></pre>
+<ul>
+<li>视图发命令，不读内部字段做「预判」；是否可建造由 <code>TowerModule</code> 返回 <code>Result</code>。</li>
+<li>命令带 <code>request_id</code>，用于 UI 去重和黑匣子关联。</li>
+<li>拒绝也要有明确原因：<code>insufficient_energy</code>、<code>slot_occupied</code>、<code>wrong_phase</code>、<code>max_level</code>。</li>
+</ul>
+<h3 id="64-事件">6.4 事件</h3>
+<p>事件是「已经发生的事实」，不是「请求别人做事」：</p>
+<pre class="text"><code>EventEnvelope {
+  seq: int,
+  tick: int,
+  type: StringName,
+  source: StringName,
+  payload: Dictionary,
+  trace_id: int
+}</code></pre>
+<p>首批事件：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>事件</th>
+<th>载荷</th>
+<th>主要消费者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MissionPhaseChanged</code></td>
+<td><code>from/to</code></td>
+<td>HUD、输入、音频</td>
+</tr>
+<tr>
+<td><code>WaveStarted</code></td>
+<td><code>index</code></td>
+<td>HUD、检查单</td>
+</tr>
+<tr>
+<td><code>EnemySpawned</code></td>
+<td><code>id, enemy_id, distance</code></td>
+<td>渲染、黑匣子</td>
+</tr>
+<tr>
+<td><code>TowerFired</code></td>
+<td><code>from, to, kind, tower_id</code></td>
+<td>渲染、音频</td>
+</tr>
+<tr>
+<td><code>EnemyKilled</code></td>
+<td><code>id, reward</code></td>
+<td>经济、HUD、飘字</td>
+</tr>
+<tr>
+<td><code>EnemyLeaked</code></td>
+<td><code>id, damage</code></td>
+<td>任务、HUD、震动</td>
+</tr>
+<tr>
+<td><code>FaultHit</code></td>
+<td><code>fault_id, slot, targets</code></td>
+<td>面板、检查单</td>
+</tr>
+<tr>
+<td><code>ChecklistRequested</code></td>
+<td><code>card_id, wave</code></td>
+<td>面板、暂停</td>
+</tr>
+<tr>
+<td><code>ResultReady</code></td>
+<td><code>result</code></td>
+<td>结算、存档、黑匣子</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="65-依赖规则">6.5 依赖规则</h3>
+<pre class="text"><code>imports(M) ⊆ Kernel ∪ Contracts
+sibling_import(Mi, Mj) = false
+cycle(modules) = false</code></pre>
+<ul>
+<li>允许：<code>D4 Tower → EnemyPort</code>、<code>D4 Tower → EconomyPort</code>、<code>D4 Tower → MapPort</code>。</li>
+<li>禁止：<code>D4 Tower → D3 EnemyModule</code> 的具体类，或 <code>D3 → D4</code> 的反向引用。</li>
+<li>编排器是唯一知道「谁先 tick」的地方；模块不知道彼此的顺序。</li>
+</ul>
+<h2 id="七任务编排与阶段">七、任务编排与阶段</h2>
+<h3 id="71-阶段状态机">7.1 阶段状态机</h3>
+<pre class="text"><code>BOOT
+ → VALIDATE
+ → BRIEFING
+ → PREP ⇄ CHECKLIST
+ → WAVE
+ → BETWEEN ⇄ CHECKLIST
+ → REPORT
+ → DEBRIEF
+ → DONE</code></pre>
+<ul>
+<li><code>PAUSED</code> / <code>SPEED</code> 不是阶段，是 <code>MissionClock</code> 的修饰；暂停不改变阶段。</li>
+<li>检查单打开时暂停 prep 计时（对应 <a href="14_塔防NASApunk深化.html">14</a>）。</li>
+<li><code>REPORT</code> 阶段只接收记录选择，不推进波次。</li>
+<li><code>LOST/WON</code> 是 <code>MissionModule</code> 的结果，不是视图判断。</li>
+</ul>
+<h3 id="72-tick-顺序">7.2 Tick 顺序</h3>
+<p>固定顺序，先输入后规则，先移除后生成：</p>
+<pre class="text"><code>1. CommandBus 清空本 tick 命令
+2. WaveModule   推进准备/生成
+3. EnemyModule  移动、状态、漏过
+4. TowerModule  索敌、开火、伤害（通过 EnemyPort）
+5. EconomyModule 收入/维修结算
+6. MissionModule 检查胜负/阶段
+7. FaultModule  故障命中/降级计时
+8. ProcedureModule 检查单/记录
+9. 生成 MissionReadModel
+10. 发布本 tick 事件摘要</code></pre>
+<blockquote>
+<p>具体顺序可以调整，但必须<strong>写死在一个地方</strong>，并用 golden run 锁住；不要让模块自己在 <code>_process</code> 里互相抢。</p>
+</blockquote>
+<h3 id="73-两个时钟">7.3 两个时钟</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>时钟</th>
+<th>频率/单位</th>
+<th>用途</th>
+<th>禁止</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模拟 tick</td>
+<td>60Hz 固定</td>
+<td>规则、伤害、波次</td>
+<td>读真实时间</td>
+</tr>
+<tr>
+<td>表现帧</td>
+<td>渲染帧率</td>
+<td>插值、动画、粒子</td>
+<td>改规则</td>
+</tr>
+<tr>
+<td>编辑时间</td>
+<td>用户操作</td>
+<td>撤销/重做、预览播放</td>
+<td>写回规则</td>
+</tr>
+</tbody>
+</table></div>
+<p>视图用快照做插值；模拟不等待动画。预览可以用 <code>sim.step(1/60)</code> 快进，但不能把预览的暂停状态写回任务。</p>
+<h2 id="八数据与内容包">八、数据与内容包</h2>
+<h3 id="81-为什么需要-pack">8.1 为什么需要 Pack</h3>
+<p>现在 <code>DataLoader</code> 一次读 6 个 JSON，模块共享同一个大字典；加一个字段，所有模块都可能受影响。建议引入<strong>任务包</strong>（MissionPack）作为运行时唯一内容入口：</p>
+<pre class="json"><code>{
+  &quot;schema_version&quot;: 1,
+  &quot;pack_id&quot;: &quot;livebay.bay01&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;hash&quot;: &quot;sha256:...&quot;,
+  &quot;mission&quot;: {
+    &quot;map&quot;: &quot;maps/bay01.json&quot;,
+    &quot;waves&quot;: &quot;waves/bay01_standard.json&quot;,
+    &quot;profession&quot;: &quot;professions/guard.json&quot;,
+    &quot;tower_roster&quot;: [&quot;interceptor&quot;, &quot;pulse&quot;, &quot;supply&quot;],
+    &quot;modifiers&quot;: [],
+    &quot;procedures&quot;: [&quot;checklist_w4&quot;, &quot;checklist_w5&quot;, &quot;report_default&quot;]
+  }
+}</code></pre>
+<ul>
+<li><code>MissionPack</code> 由 <code>ContentCompiler</code> 从 <code>numbers/</code> 生成；编辑器写源表，编译器产出 Pack。</li>
+<li><code>schema_version</code> 与迁移函数绑定；旧 Pack 必须能 <code>migrate</code> 或明确拒绝。</li>
+<li><code>hash</code> 用于黑匣子/回放校验：同 seed + 同 pack hash ⇒ 同结果。</li>
+<li>模块只接收自己需要的子契约（<code>MapDef</code>、<code>WaveDef</code>），不接收整个 Pack 字典。</li>
+</ul>
+<h3 id="82-内容契约">8.2 内容契约</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>契约</th>
+<th>字段</th>
+<th>校验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MapDef</code></td>
+<td>path、slots、base</td>
+<td>≥2 点、≥1 塔位、路径长度 &gt;0</td>
+</tr>
+<tr>
+<td><code>WaveDef</code></td>
+<td>index、prep、groups</td>
+<td>引用敌人存在、count&gt;0、interval&gt;0</td>
+</tr>
+<tr>
+<td><code>TowerDef</code></td>
+<td>id、cost、range、damage、fire_rate、kind</td>
+<td>必填、cost&gt;0、kind 枚举</td>
+</tr>
+<tr>
+<td><code>EnemyDef</code></td>
+<td>id、hp、speed、reward、leak_damage</td>
+<td>必填、hp&gt;0、speed&gt;0</td>
+</tr>
+<tr>
+<td><code>ProcedureDef</code></td>
+<td>card、wave、choices</td>
+<td>选项存在、收益可计算</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>沿用 <a href="rules/tech/a01_单一数据源.html">TECH-A1</a>：Markdown 仍是源，JSON/Pack 是导出物；<code>numbers-check</code> 仍是硬门槛。</p>
+</blockquote>
+<h2 id="九故障冗余与降级">九、故障、冗余与降级</h2>
+<h3 id="91-失败分类">9.1 失败分类</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>例子</th>
+<th>策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>启动失败</td>
+<td>Pack 缺字段、地图 &lt;2 点</td>
+<td><strong>fail fast</strong>，不进入任务</td>
+</tr>
+<tr>
+<td>核心运行失败</td>
+<td>Enemy 状态损坏、塔伤害 NaN</td>
+<td>停止任务，写黑匣子，进入 <code>LOST/ERROR</code></td>
+</tr>
+<tr>
+<td>可选模块失败</td>
+<td>音频设备、粒子、编辑器预览</td>
+<td>降级/关闭，任务继续</td>
+</tr>
+<tr>
+<td>数据保存失败</td>
+<td>磁盘满、权限</td>
+<td>提示，内存记录继续，不崩溃</td>
+</tr>
+<tr>
+<td>视图异常</td>
+<td>字体缺失、贴图缺失</td>
+<td>占位/回退，不影响模拟</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="92-降级模式">9.2 降级模式</h3>
+<pre class="text"><code>DEGRADED_AUDIO   无音频
+DEGRADED_FX      无粒子/光束，只保留必要反馈
+DEGRADED_PREVIEW 编辑器预览退回轻量视口
+READ_ONLY        回放/调试，只读黑匣子</code></pre>
+<ul>
+<li>降级必须显示在状态栏/诊断面板，不能静默。</li>
+<li>核心规则模块<strong>不允许</strong>「降级运行」；宁可失败，也不带错误规则继续。</li>
+<li>对应 NASApunk 的「隔离 vs 旁路」：隔离是停掉可选模块，旁路是换轻量实现；两者都要有明确日志。</li>
+</ul>
+<h3 id="93-熔断与预算">9.3 熔断与预算</h3>
+<ul>
+<li>每个模块有 <code>tick_budget_ms</code> 和 <code>event_budget</code>；超预算记录 warning，不直接崩。</li>
+<li>事件总线有环形缓冲；可选消费者（音频/特效）掉帧时丢弃低优先级事件。</li>
+<li>诊断面板显示：tick p50/p95、事件数、模块耗时、最近错误。</li>
+</ul>
+<h2 id="十黑匣子回放与验收">十、黑匣子、回放与验收</h2>
+<h3 id="101-黑匣子">10.1 黑匣子</h3>
+<p>每局写 <code>user://blackbox/last_shift.jsonl</code>（环形，保留最近 N 局）：</p>
+<pre class="text"><code>{&quot;seq&quot;:1,&quot;tick&quot;:0,&quot;type&quot;:&quot;MissionPhaseChanged&quot;,&quot;payload&quot;:{&quot;to&quot;:&quot;PREP&quot;},&quot;hash&quot;:&quot;...&quot;}
+{&quot;seq&quot;:2,&quot;tick&quot;:0,&quot;type&quot;:&quot;BuildTower&quot;,&quot;payload&quot;:{&quot;slot&quot;:2,&quot;tower&quot;:&quot;interceptor&quot;},&quot;request_id&quot;:1}
+{&quot;seq&quot;:3,&quot;tick&quot;:137,&quot;type&quot;:&quot;EnemyLeaked&quot;,&quot;payload&quot;:{&quot;enemy&quot;:&quot;hulk&quot;,&quot;damage&quot;:18}}</code></pre>
+<ul>
+<li>记录<strong>命令 + 事件 + Pack hash + seed</strong>，不记录每帧画面。</li>
+<li>回放 = 同 Pack + 同 seed + 同命令序列；断言最终 result 与 hash 一致。</li>
+<li>崩溃时保留最后 5 秒；不包含隐私数据。</li>
+</ul>
+<h3 id="102-测试金字塔">10.2 测试金字塔</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>数量目标</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模块单测</td>
+<td>每模块 3–8</td>
+<td>经济扣费、塔索敌、路径插值</td>
+</tr>
+<tr>
+<td>契约测试</td>
+<td>每端口 2–3</td>
+<td>端口只读、命令拒绝原因</td>
+</tr>
+<tr>
+<td>场景/golden</td>
+<td>3–5</td>
+<td>标准班 B/40/59、失败班、旁路班</td>
+</tr>
+<tr>
+<td>集成</td>
+<td>1–2</td>
+<td>无头组装 + 5 波</td>
+</tr>
+<tr>
+<td>视图 smoke</td>
+<td>2–3</td>
+<td>启动、结算、编辑器预览</td>
+</tr>
+<tr>
+<td>故障注入</td>
+<td>3–5</td>
+<td>数据损坏、模块异常、存档损坏</td>
+</tr>
+</tbody>
+</table></div>
+<p>验收命令沿用 <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a>，新增：</p>
+<pre class="bash"><code>./run.sh test          # 模块 + golden + 集成
+./run.sh numbers-check # Pack 与 numbers 一致
+./run.sh check         # 无头启动
+./run.sh trace-check   # 黑匣子回放一致（新增）</code></pre>
+<h2 id="十一视图与编辑器">十一、视图与编辑器</h2>
+<h3 id="111-视图拆分">11.1 视图拆分</h3>
+<p><code>main.gd</code> 建议拆为：</p>
+<pre class="text"><code>presentation/
+  mission_view.gd      # 根节点，只组装
+  mission_presenter.gd # 快照 → 显示数据
+  map_renderer.gd
+  tower_renderer.gd
+  enemy_renderer.gd
+  effects.gd
+  hud.gd
+  result_overlay.gd
+  input_controller.gd
+  theme.gd</code></pre>
+<p>约束：</p>
+<ul>
+<li>视图只读 <code>MissionReadModel</code>，不读 <code>sim</code> 内部字段。</li>
+<li>视图不做索敌/伤害/波次判断；按钮可用性由 presenter 根据命令校验结果给出。</li>
+<li>动画/插值属于视图时间，不回写模拟。</li>
+</ul>
+<h3 id="112-编辑器">11.2 编辑器</h3>
+<p>编辑器不是第二套游戏，而是<strong>另一个适配器</strong>：</p>
+<pre class="text"><code>EditorPlugin → EditorBridge → ContentCompiler → MissionPack
+             → PreviewHarness → MissionOrchestrator → MissionReadModel</code></pre>
+<ul>
+<li>预览使用真实模块与真实编排器；只把数据源换成内存 Pack。</li>
+<li>地图/波次/数值编辑仍写 <code>numbers/</code>，不直接写 <code>game/data</code>。</li>
+<li>预览里的建造/升级/出售发命令，不直接改 <code>Sim</code> 字段。</li>
+<li>这样「编辑器能跑」和「游戏能跑」共享同一套规则，避免两边漂移。</li>
+</ul>
+<h2 id="十二建议目录">十二、建议目录</h2>
+<pre class="text"><code>game/
+├── src/
+│   ├── kernel/
+│   │   ├── composition_root.gd
+│   │   ├── mission_clock.gd
+│   │   ├── event_bus.gd
+│   │   ├── command_bus.gd
+│   │   ├── result.gd
+│   │   └── diagnostics.gd
+│   ├── domain/
+│   │   ├── map/
+│   │   ├── waves/
+│   │   ├── enemies/
+│   │   ├── towers/
+│   │   ├── economy/
+│   │   ├── mission/
+│   │   ├── faults/
+│   │   └── procedures/
+│   ├── application/
+│   │   ├── mission_orchestrator.gd
+│   │   ├── commands/
+│   │   └── read_models/
+│   ├── presentation/
+│   │   ├── game/
+│   │   ├── hud/
+│   │   ├── renderers/
+│   │   └── theme/
+│   ├── content/
+│   │   ├── pack_loader.gd
+│   │   ├── schema/
+│   │   └── migrations/
+│   └── platform/
+│       ├── save/
+│       ├── telemetry/
+│       └── editor_bridge/
+├── data/                 # 编译产物；不手改
+├── tests/
+│   ├── unit/
+│   ├── contract/
+│   ├── golden/
+│   ├── fixtures/
+│   └── run_all.gd
+└── project.godot</code></pre>
+<p>不必一次搬完；迁移期间可以保留 <code>scripts/core/sim.gd</code> 作为适配层，逐步把内部职责搬走。</p>
+<h2 id="十三迁移路线每步可回退">十三、迁移路线（每步可回退）</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>内容</th>
+<th>预估</th>
+<th>验收</th>
+<th>回退</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M0</td>
+<td>冻结行为：记录 3 个 golden（标准/失败/旁路占位）</td>
+<td>1 天</td>
+<td>结果与 37 项一致</td>
+<td>无代码变更</td>
+</tr>
+<tr>
+<td>M1</td>
+<td>内核：<code>Result</code>、<code>Tick</code>、<code>EventBus</code>、<code>CommandBus</code>、<code>CompositionRoot</code>；把现有 <code>Sim</code> 包成一个模块</td>
+<td>2–3 天</td>
+<td>37/37 + 事件日志</td>
+<td>开关回旧 <code>Sim</code></td>
+</tr>
+<tr>
+<td>M2</td>
+<td>拆 <code>Map</code> / <code>Enemy</code> / <code>Economy</code></td>
+<td>3–5 天</td>
+<td>模块单测 + golden 不变</td>
+<td>旧 <code>Sim</code> 保留</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>拆 <code>Wave</code> / <code>Tower</code> / <code>Mission</code> / <code>Fault</code></td>
+<td>3–5 天</td>
+<td>端口契约 + 故障注入</td>
+<td>逐步切换</td>
+</tr>
+<tr>
+<td>M4</td>
+<td><code>ReadModel</code> + presenter + 视图拆分</td>
+<td>3–5 天</td>
+<td>视图 smoke + 截图对比</td>
+<td>旧 <code>main</code> 入口</td>
+</tr>
+<tr>
+<td>M5</td>
+<td><code>MissionPack</code> + schema + 编译器 + 编辑器共用</td>
+<td>3–5 天</td>
+<td><code>numbers-check</code> + Pack 校验</td>
+<td>旧 DataLoader</td>
+</tr>
+<tr>
+<td>M6</td>
+<td>黑匣子 / 回放 / 诊断面板</td>
+<td>2–3 天</td>
+<td><code>trace-check</code></td>
+<td>关闭日志</td>
+</tr>
+<tr>
+<td>M7</td>
+<td>把 <a href="14_塔防NASApunk深化.html">14</a> 的检查单/旁路/记录做成 <code>Procedure</code>/<code>Fault</code> 模块</td>
+<td>3–5 天</td>
+<td>8–10 条新断言</td>
+<td>功能开关</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>总计约 3–4 周（单人、非全职估算）；如果只做 M0–M3，先把规则模块化，也能获得大部分收益。</p>
+</blockquote>
+<h2 id="十四风险与取舍">十四、风险与取舍</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>风险</th>
+<th>表现</th>
+<th>缓解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>过度设计</td>
+<td>每个模块只有 20 行，接口 100 行</td>
+<td>以「变化点」拆，不以「文件小」拆</td>
+</tr>
+<tr>
+<td>事件面条</td>
+<td>一个事件 10 个消费者，顺序不可控</td>
+<td>事件只描述事实；顺序由编排器固定</td>
+</tr>
+<tr>
+<td>双份状态</td>
+<td>ReadModel 与模块状态不同步</td>
+<td>ReadModel 每 tick 重建；视图不缓存规则</td>
+</tr>
+<tr>
+<td>GDScript 动态类型</td>
+<td>端口传错类型</td>
+<td>契约测试 + <code>Result</code> + 运行时校验</td>
+</tr>
+<tr>
+<td>迁移踩坏</td>
+<td>旧行为变了</td>
+<td>M0 golden + 每阶段开关 + 37 项回归</td>
+</tr>
+<tr>
+<td>编辑器再次分叉</td>
+<td>预览又写一套规则</td>
+<td>预览只走 <code>MissionOrchestrator</code>，禁止直接改 Sim</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>事件/快照每 tick 分配</td>
+<td>对象池、只读快照、预算与 p95 监控</td>
+</tr>
+<tr>
+<td>团队认知负担</td>
+<td>模块太多</td>
+<td>先 6 个核心模块；D9/Procedure 后置</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="不推荐现在做">不推荐现在做</h3>
+<ul>
+<li>ECS：实体数量小，收益低于迁移成本；</li>
+<li>完整事件溯源：回放用「命令 + 事件 + 快照」足够；</li>
+<li>运行时插件热插拔：编辑器插件 ≠ 游戏模块；</li>
+<li>把 <code>numbers/</code> 改成数据库：Markdown 的可读性是当前优势；</li>
+<li>微服务/多进程：单机塔防不需要。</li>
+</ul>
+<h2 id="十五需要人类拍板的问题">十五、需要人类拍板的问题</h2>
+<blockquote>
+<p>以下是<strong>建议</strong>，不是决定。人类可以只采纳其中一部分。</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>问题</th>
+<th>选项</th>
+<th>AI 建议</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D19-A</td>
+<td>模块粒度</td>
+<td>A 6 个粗模块 / B 9 个领域模块 / C 3 个大层</td>
+<td><strong>B</strong>，但 D9 先留空</td>
+<td>模块多，测试也多</td>
+</tr>
+<tr>
+<td>D19-B</td>
+<td>模块通信</td>
+<td>A 直接引用 / B 内核事件总线 / C 每个模块自定义信号</td>
+<td><strong>B</strong>，事件带信封</td>
+<td>需要纪律，否则事件面条</td>
+</tr>
+<tr>
+<td>D19-C</td>
+<td>数据入口</td>
+<td>A 继续多 JSON / B MissionPack + schema / C 数据库</td>
+<td><strong>B</strong>，保留 Markdown 源</td>
+<td>编译器与迁移成本</td>
+</tr>
+<tr>
+<td>D19-D</td>
+<td>视图</td>
+<td>A 继续 <code>main.gd</code> / B ReadModel + presenter / C 多场景</td>
+<td><strong>B</strong>，先拆 HUD/渲染</td>
+<td>中短期 UI 改动变慢</td>
+</tr>
+<tr>
+<td>D19-E</td>
+<td>编辑器</td>
+<td>A 独立预览 / B 共用编排器</td>
+<td><strong>B</strong>，长期避免规则漂移</td>
+<td>需要 PreviewHarness</td>
+</tr>
+<tr>
+<td>D19-F</td>
+<td>黑匣子</td>
+<td>A 不做 / B 最近 10 局 / C 全量</td>
+<td><strong>B</strong></td>
+<td>存储与隐私边界</td>
+</tr>
+</tbody>
+</table></div>
+<p>建议先只拍 <strong>D19-A/B/C</strong>：模块粒度、通信方式、数据入口。这三项决定其余设计。</p>
+<h2 id="十六模块准入检查单pre-flight-checklist">十六、模块准入检查单（Pre-flight Checklist）</h2>
+<p>每个新模块/大改，上线前逐项打勾：</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />单一职责：能用一句话说清；没有「顺便」。</label></li>
+<li><label><input type="checkbox" />公开契约：端口/命令/事件有文档；没有让别的模块读内部字段。</label></li>
+<li><label><input type="checkbox" />依赖合法：只依赖 Kernel/Contracts；没有 sibling import。</label></li>
+<li><label><input type="checkbox" />可测试：有独立单测；不启动场景即可跑。</label></li>
+<li><label><input type="checkbox" />可快照：<code>snapshot/restore</code> 可复现。</label></li>
+<li><label><input type="checkbox" />可诊断：有 <code>diagnostics()</code> 与关键计数器。</label></li>
+<li><label><input type="checkbox" />有预算：tick/事件/内存有上限；超限有日志。</label></li>
+<li><label><input type="checkbox" />可降级/可关闭：可选模块能关；核心失败有明确错误。</label></li>
+<li><label><input type="checkbox" />数据契约：schema 版本、校验、迁移。</label></li>
+<li><label><input type="checkbox" />有回退：开关/旧实现/提交回滚。</label></li>
+<li><label><input type="checkbox" />文档：更新 <code>12</code>/<code>16</code>/模块 README。</label></li>
+<li><label><input type="checkbox" />验收：<code>test</code>、<code>numbers-check</code>、<code>check</code> 全过。</label></li>
+</ul>
+<h2 id="十七与现有文档的关系">十七、与现有文档的关系</h2>
+<ul>
+<li><a href="12_技术方案_Godot工程.html">12</a> 是<strong>现行</strong>工程事实；本文是<strong>下一阶段参考</strong>，不替代 12。</li>
+<li><a href="14_塔防NASApunk深化.html">14</a> 的检查单/降级/记录，是本文 <code>FaultModule</code> 与 <code>ProcedureModule</code> 的第一批真实需求；先有机制，再有模块。</li>
+<li><a href="15_专用游戏编辑器方案.html">15</a> 的编辑器，是本文 <code>PreviewHarness</code> + <code>EditorBridge</code> 的第一个适配器；不应再复制规则。</li>
+<li><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> 仍是数据主权；MissionPack 只是导出物的组织方式，不是新源。</li>
+<li><a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> 仍是底线；本文只是把「模拟」内部再分舱。</li>
+</ul>
+<h2 id="十八一句话总结">十八、一句话总结</h2>
+<blockquote>
+<p>不是把 LiveBay 做成 NASA 的软件，而是让它在<strong>坏一半的时候还能飞</strong>：<br />
+模块能换，接口不飘，故障能隔离，黑匣子能回放，编辑器不再另造一套规则。</p>
+</blockquote>
+<p>（本篇完）</p>
+
+</article>
+<nav class="pager" aria-label="上一篇 / 下一篇"><a class="prev" href="15_专用游戏编辑器方案.html"><span class="dir">prev</span><span class="label">专用游戏编辑器方案</span></a></nav>
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="./index.html">索引</a> · <a href="../16_模块化技术架构_NASApunk.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

@@ -3,6 +3,31 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.27] - 2026-11-04 22:32
+
+### 新增
+
+- **16 · 模块化技术架构：NASApunk 系统方案**（参考稿，未裁决、未实现）：
+  - ORU 模块目录：Map / Wave / Enemy / Tower / Economy / Mission / Fault / Procedure / Modifier；
+  - 内核：CompositionRoot、MissionClock、EventBus、CommandBus、Diagnostics、MissionPack；
+  - 端口、命令、事件、依赖规则与 tick 顺序；
+  - MissionPack / schema / 迁移、黑匣子与回放；
+  - 模块准入检查单、迁移路线（M0–M7）与 D19-A–F 待拍板问题。
+- 12 增加「模块化演进参考」链接；README 文档表加入 16；HTML 增加 16 页并重生成。
+
+### 说明
+
+- 16 是**供人类参考的工程方案**，不是决定，也不改变 12 的现行事实；
+- 未改游戏代码、数值或编辑器功能；
+- 未把 D19 写入待裁决清单，等人类先看方案。
+
+### 验证
+
+- Markdown 链接 44 个，0 失效；
+- HTML R-016 41/41；
+- HTML 本地链接 1,670 个，0 失效；
+- `./run.sh test` 37/37；`./run.sh numbers-check` 全部一致。
+
 ## [0.1.26] - 2026-11-04 21:13
 
 ### 变更
