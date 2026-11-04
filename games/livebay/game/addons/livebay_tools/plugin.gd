@@ -45,6 +45,7 @@ var preview_stop_button: Button
 var embedded_preview: Control
 var embedded_button: Button
 var embedded_stop_button: Button
+var preview_picker: OptionButton
 var preview_playing := false
 var preview_time := 0.0
 var preview_wave_index := -1
@@ -229,7 +230,20 @@ func _build_dock() -> void:
 
 	embedded_preview = PreviewViewport.new()
 	embedded_preview.custom_minimum_size = Vector2(260, 146)
+	embedded_preview.status.connect(func(text: String): _set_status(text))
 	dock.add_child(embedded_preview)
+	var preview_pick_row := HBoxContainer.new()
+	dock.add_child(preview_pick_row)
+	var preview_pick_label := Label.new()
+	preview_pick_label.text = "预览塔"
+	preview_pick_row.add_child(preview_pick_label)
+	preview_picker = OptionButton.new()
+	preview_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	preview_picker.item_selected.connect(func(i: int):
+		if embedded_preview and i >= 0 and i < towers.size():
+			embedded_preview.selected_tower_id = str(towers[i].get("id", "interceptor"))
+	)
+	preview_pick_row.add_child(preview_picker)
 	var embedded_row := HBoxContainer.new()
 	dock.add_child(embedded_row)
 	embedded_button = Button.new()
@@ -300,10 +314,18 @@ func _reload(announce: bool) -> void:
 
 func _refresh_tower_picker() -> void:
 	tower_picker.clear()
+	if preview_picker:
+		preview_picker.clear()
 	for t in towers:
-		tower_picker.add_item("%s · %d" % [str(t.get("name", t.get("id", "?"))), int(t.get("cost", 0))])
+		var label := "%s · %d" % [str(t.get("name", t.get("id", "?"))), int(t.get("cost", 0))]
+		tower_picker.add_item(label)
+		if preview_picker:
+			preview_picker.add_item(label)
 	if tower_picker.item_count > 0:
 		tower_picker.select(0)
+	if preview_picker and preview_picker.item_count > 0:
+		preview_picker.select(0)
+		embedded_preview.selected_tower_id = str(towers[0].get("id", "interceptor"))
 
 
 func _save() -> void:
@@ -828,6 +850,8 @@ func _start_embedded() -> void:
 	if embedded_preview == null:
 		_set_status("内嵌预览未初始化。", true)
 		return
+	if preview_picker and preview_picker.selected >= 0 and preview_picker.selected < towers.size():
+		embedded_preview.selected_tower_id = str(towers[preview_picker.selected].get("id", "interceptor"))
 	_set_status(embedded_preview.start_preview(map_data, wave_data, selected_wave))
 
 
