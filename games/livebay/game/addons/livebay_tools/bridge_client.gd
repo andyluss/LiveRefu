@@ -48,13 +48,17 @@ func read_map() -> Dictionary:
 	return result
 
 
-func write_map(map_data: Dictionary, wave_data: Array = []) -> Dictionary:
+func write_map(map_data: Dictionary, wave_data: Array = [], tower_data: Array = [], enemy_data: Array = []) -> Dictionary:
 	var file := FileAccess.open(TEMP_FILE, FileAccess.WRITE)
 	if file == null:
 		return {"ok": false, "error": "无法写临时文件"}
 	var payload := {"map": map_data}
 	if not wave_data.is_empty():
 		payload["waves"] = wave_data
+	if not tower_data.is_empty():
+		payload["towers"] = tower_data
+	if not enemy_data.is_empty():
+		payload["enemies"] = enemy_data
 	file.store_string(JSON.stringify(payload, "  "))
 	file.close()
 	return _execute("write")

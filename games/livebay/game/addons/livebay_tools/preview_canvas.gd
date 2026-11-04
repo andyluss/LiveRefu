@@ -16,6 +16,7 @@ const BASE_C := Color("#3E6F6B")
 const CREAM := Color("#F5EFE2")
 
 var sim: Variant = null
+var wave_offset := 0
 var beams: Array = []
 var floats: Array = []
 
@@ -88,7 +89,7 @@ func _draw() -> void:
 
 	draw_rect(Rect2(0, 0, 1280, 54), Color(INK, 0.88), true)
 	draw_string(font, Vector2(18, 24), "内嵌预览 / PREVIEW", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, CREAM)
-	draw_string(font, Vector2(18, 44), "供能 %d   保障度 %d   波次 %d/%d" % [int(sim.energy), int(sim.integrity), sim.wave_index + 1, sim.waves.size()], HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(CREAM, 0.82))
+	draw_string(font, Vector2(18, 44), "供能 %d   保障度 %d   波次 %d/%d" % [int(sim.energy), int(sim.integrity), sim.wave_index + 1 + wave_offset, sim.waves.size() + wave_offset], HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(CREAM, 0.82))
 	if sim.state == SimScript.State.WON:
 		draw_rect(Rect2(0, 0, 1280, 720), Color(0.09, 0.11, 0.12, 0.55), true)
 		draw_string(font, Vector2(460, 350), "WON", HORIZONTAL_ALIGNMENT_LEFT, -1, 48, CREAM)
@@ -96,4 +97,11 @@ func _draw() -> void:
 		draw_rect(Rect2(0, 0, 1280, 720), Color(0.55, 0.12, 0.08, 0.45), true)
 		draw_string(font, Vector2(430, 350), "LOST", HORIZONTAL_ALIGNMENT_LEFT, -1, 48, CREAM)
 	if not sim.result.is_empty():
-		draw_string(font, Vector2(430, 386), "grade %s  integrity %d  kills %d" % [str(sim.result.get("grade", "-")), int(sim.result.get("integrity", 0)), int(sim.result.get("kills", 0))], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, CREAM)
+		var r: Dictionary = sim.result
+		draw_rect(Rect2(380, 230, 520, 250), Color(0.09, 0.11, 0.12, 0.92), true)
+		draw_rect(Rect2(380, 230, 520, 250), ORANGE, false, 2)
+		draw_string(font, Vector2(410, 270), "本班结算 / SHIFT REPORT", HORIZONTAL_ALIGNMENT_LEFT, -1, 20, CREAM)
+		draw_string(font, Vector2(410, 310), "评级  %s" % str(r.get("grade", "-")), HORIZONTAL_ALIGNMENT_LEFT, -1, 24, AMBER)
+		draw_string(font, Vector2(410, 342), "保障度  %d / %d" % [int(r.get("integrity", 0)), int(r.get("max_integrity", 100))], HORIZONTAL_ALIGNMENT_LEFT, -1, 15, CREAM)
+		draw_string(font, Vector2(410, 368), "击杀  %d    漏过  %d" % [int(r.get("kills", 0)), int(r.get("leaked", 0))], HORIZONTAL_ALIGNMENT_LEFT, -1, 15, CREAM)
+		draw_string(font, Vector2(410, 394), "建造  %d    消耗  %d    清波  %d/%d" % [int(r.get("built", 0)), int(r.get("spent", 0)), int(r.get("waves_cleared", 0)), int(r.get("total_waves", 0))], HORIZONTAL_ALIGNMENT_LEFT, -1, 15, CREAM)

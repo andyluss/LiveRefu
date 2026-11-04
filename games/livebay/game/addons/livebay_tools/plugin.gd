@@ -10,6 +10,21 @@ extends EditorPlugin
 const BridgeClient = preload("res://addons/livebay_tools/bridge_client.gd")
 const WaveTimeline = preload("res://addons/livebay_tools/wave_timeline.gd")
 const PreviewViewport = preload("res://addons/livebay_tools/preview_viewport.gd")
+
+const TOWER_EDIT_FIELDS := [
+	["id", "ID"], ["name", "名称"], ["cost", "造价"], ["range", "射程"],
+	["damage", "伤害"], ["fire_rate", "射速"], ["kind", "类型"], ["slow", "减速"],
+	["slow_duration", "减速时长"], ["income", "产出"], ["income_interval", "产出间隔"],
+	["repair", "维修"], ["color", "颜色"], ["description", "说明"],
+]
+const ENEMY_EDIT_FIELDS := [
+	["id", "ID"], ["name", "名称"], ["hp", "生命"], ["speed", "速度"],
+	["reward", "奖励"], ["leak_damage", "漏过伤害"], ["radius", "半径"], ["shape", "形状"],
+	["color", "颜色"], ["behavior", "行为"], ["disable_duration", "故障时长"],
+	["disable_radius", "故障半径"], ["disable_targets", "故障目标"], ["description", "说明"],
+]
+const TOWER_NUMERIC := ["cost", "range", "damage", "fire_rate", "slow", "slow_duration", "income", "income_interval", "repair"]
+const ENEMY_NUMERIC := ["hp", "speed", "reward", "leak_damage", "radius", "disable_duration", "disable_radius", "disable_targets"]
 const COLOR_PATH := Color("#E0A22E")
 const COLOR_SLOT := Color("#D9622B")
 const COLOR_BASE := Color("#3E6F6B")
@@ -40,12 +55,21 @@ var selected_group := -1
 var history_list: ItemList
 var history_log: Array = []
 var history_restoring := false
+var history_cursor := -1
 var preview_button: Button
 var preview_stop_button: Button
 var embedded_preview: Control
 var embedded_button: Button
 var embedded_stop_button: Button
+var preview_pause_button: Button
+var preview_next_button: Button
 var preview_picker: OptionButton
+var numeric_window: Window
+var numeric_type: OptionButton
+var numeric_item: OptionButton
+var numeric_grid: GridContainer
+var numeric_status: Label
+var numeric_fields: Dictionary = {}
 var preview_playing := false
 var preview_time := 0.0
 var preview_wave_index := -1
@@ -254,6 +278,20 @@ func _build_dock() -> void:
 	embedded_stop_button.text = "停止内嵌"
 	embedded_stop_button.pressed.connect(_stop_embedded)
 	embedded_row.add_child(embedded_stop_button)
+	var embedded_row2 := HBoxContainer.new()
+	dock.add_child(embedded_row2)
+	preview_pause_button = Button.new()
+	preview_pause_button.text = "暂停"
+	preview_pause_button.pressed.connect(_toggle_embedded_pause)
+	embedded_row2.add_child(preview_pause_button)
+	preview_next_button = Button.new()
+	preview_next_button.text = "下一波"
+	preview_next_button.pressed.connect(_next_embedded_wave)
+	embedded_row2.add_child(preview_next_button)
+	var preview_hint := Label.new()
+	preview_hint.text = "预览内：左键建造/升级，右键出售"
+	preview_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	dock.add_child(preview_hint)
 
 	var history_title := Label.new()
 	history_title.text = "操作历史"
@@ -295,6 +333,7 @@ func _reload(announce: bool) -> void:
 	undo_stack.clear()
 	redo_stack.clear()
 	history_log.clear()
+	history_cursor = -1
 	_refresh_history()
 	dirty = false
 	if save_button:
@@ -306,6 +345,8 @@ func _reload(announce: bool) -> void:
 	_refresh_tower_picker()
 	_refresh_enemy_picker()
 	_refresh_wave_ui()
+	if numeric_window and numeric_window.visible:
+		_populate_numeric_fields()
 	_update_status()
 	if announce:
 		_set_status("已从 numbers/ 重载。")
@@ -329,7 +370,7 @@ func _refresh_tower_picker() -> void:
 
 
 func _save() -> void:
-	var result: Dictionary = bridge.write_map(map_data, wave_data)
+	var result: Dictionary = bridge.write_map(map_data, wave_data, towers, enemies)
 	if not bool(result.get("ok", false)):
 		_set_status("保存失败：" + str(result.get("error", "未知错误")), true)
 		return
@@ -354,12 +395,19 @@ func _run_game() -> void:
 
 
 func _snapshot() -> Dictionary:
-	return {"map": map_data.duplicate(true), "waves": wave_data.duplicate(true)}
+	return {
+		"map": map_data.duplicate(true),
+		"waves": wave_data.duplicate(true),
+		"towers": towers.duplicate(true),
+		"enemies": enemies.duplicate(true),
+	}
 
 
 func _restore_snapshot(snapshot: Dictionary) -> void:
 	map_data = snapshot.get("map", {}).duplicate(true)
 	wave_data = snapshot.get("waves", []).duplicate(true)
+	towers = snapshot.get("towers", towers).duplicate(true)
+	enemies = snapshot.get("enemies", enemies).duplicate(true)
 
 
 func _label(text: String) -> Label:
@@ -579,6 +627,10 @@ func _remove_wave() -> void:
 
 
 func _begin_edit(label: String = "编辑") -> void:
+	if history_cursor >= 0 and history_cursor < undo_stack.size():
+		undo_stack = undo_stack.slice(0, history_cursor)
+		history_log = history_log.slice(0, history_cursor)
+		history_cursor = -1
 	undo_stack.append({"label": label, "state": _snapshot()})
 	if undo_stack.size() > 40:
 		undo_stack.pop_front()
@@ -597,10 +649,12 @@ func _refresh_history() -> void:
 		return
 	history_restoring = true
 	history_list.clear()
-	for label in history_log:
-		history_list.add_item(str(label))
+	for i in range(history_log.size()):
+		var prefix := "↳ " if history_cursor >= 0 and i > history_cursor else ""
+		history_list.add_item(prefix + str(history_log[i]))
 	if history_list.item_count > 0:
-		history_list.select(history_list.item_count - 1)
+		var selected := history_cursor if history_cursor >= 0 and history_cursor < history_list.item_count else history_list.item_count - 1
+		history_list.select(selected)
 	history_restoring = false
 
 
@@ -609,20 +663,22 @@ func _on_history_selected(index: int) -> void:
 		return
 	var entry: Dictionary = undo_stack[index]
 	_restore_snapshot(entry.get("state", {}))
-	undo_stack = undo_stack.slice(0, index)
-	history_log = history_log.slice(0, index)
-	redo_stack.clear()
+	history_cursor = index
 	_refresh_history()
 	_clamp_selection()
+	_refresh_tower_picker()
 	_refresh_wave_ui()
+	if numeric_window and numeric_window.visible:
+		_populate_numeric_fields()
 	dirty = true
 	if save_button:
 		save_button.text = "保存 *"
-	_set_status("已回到「%s」之前。" % str(entry.get("label", "编辑")))
+	_set_status("已回到「%s」之前；后续历史作为分支保留，编辑会截断分支。" % str(entry.get("label", "编辑")))
 	_update_status()
 
 
 func _undo() -> void:
+	history_cursor = -1
 	if undo_stack.is_empty():
 		_set_status("没有可撤销的操作。", true)
 		return
@@ -637,11 +693,15 @@ func _undo() -> void:
 	if save_button:
 		save_button.text = "保存 *"
 	_set_status("已撤销：" + str(entry.get("label", "编辑")))
+	_refresh_tower_picker()
 	_refresh_wave_ui()
+	if numeric_window and numeric_window.visible:
+		_populate_numeric_fields()
 	_update_status()
 
 
 func _redo() -> void:
+	history_cursor = -1
 	if redo_stack.is_empty():
 		_set_status("没有可重做的操作。", true)
 		return
@@ -655,7 +715,10 @@ func _redo() -> void:
 	if save_button:
 		save_button.text = "保存 *"
 	_set_status("已重做：" + str(entry.get("label", "编辑")))
+	_refresh_tower_picker()
 	_refresh_wave_ui()
+	if numeric_window and numeric_window.visible:
+		_populate_numeric_fields()
 	_update_status()
 
 
@@ -852,13 +915,187 @@ func _start_embedded() -> void:
 		return
 	if preview_picker and preview_picker.selected >= 0 and preview_picker.selected < towers.size():
 		embedded_preview.selected_tower_id = str(towers[preview_picker.selected].get("id", "interceptor"))
+	preview_pause_button.text = "暂停"
 	_set_status(embedded_preview.start_preview(map_data, wave_data, selected_wave))
 
 
 func _stop_embedded() -> void:
 	if embedded_preview:
 		embedded_preview.stop_preview()
+	preview_pause_button.text = "暂停"
 	_set_status("内嵌预览已停止。")
+
+
+func _toggle_embedded_pause() -> void:
+	if embedded_preview == null:
+		return
+	embedded_preview.toggle_pause()
+	preview_pause_button.text = "继续" if embedded_preview.paused else "暂停"
+
+
+func _next_embedded_wave() -> void:
+	if embedded_preview:
+		embedded_preview.next_wave()
+		preview_pause_button.text = "暂停"
+
+
+func _build_numeric_window() -> void:
+	numeric_window = Window.new()
+	numeric_window.title = "LiveBay · 数值表（numbers/02–03）"
+	numeric_window.size = Vector2i(620, 640)
+	numeric_window.close_requested.connect(func(): numeric_window.hide())
+	add_child(numeric_window)
+	var root := VBoxContainer.new()
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	root.add_theme_constant_override("separation", 8)
+	numeric_window.add_child(root)
+
+	var top := HBoxContainer.new()
+	root.add_child(top)
+	numeric_type = OptionButton.new()
+	numeric_type.add_item("塔 / towers")
+	numeric_type.add_item("敌人 / enemies")
+	numeric_type.item_selected.connect(_on_numeric_type_changed)
+	top.add_child(numeric_type)
+	numeric_item = OptionButton.new()
+	numeric_item.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	numeric_item.item_selected.connect(func(_i: int): _populate_numeric_fields())
+	top.add_child(numeric_item)
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.custom_minimum_size = Vector2(0, 480)
+	root.add_child(scroll)
+	numeric_grid = GridContainer.new()
+	numeric_grid.columns = 2
+	numeric_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(numeric_grid)
+
+	var bottom := HBoxContainer.new()
+	root.add_child(bottom)
+	var apply := Button.new()
+	apply.text = "应用（内存）"
+	apply.pressed.connect(_apply_numeric)
+	bottom.add_child(apply)
+	var apply_save := Button.new()
+	apply_save.text = "应用并保存"
+	apply_save.pressed.connect(_apply_numeric_and_save)
+	bottom.add_child(apply_save)
+	var close := Button.new()
+	close.text = "关闭"
+	close.pressed.connect(func(): numeric_window.hide())
+	bottom.add_child(close)
+	numeric_status = Label.new()
+	numeric_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	numeric_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bottom.add_child(numeric_status)
+
+
+func _open_numeric_editor() -> void:
+	if numeric_window == null:
+		_build_numeric_window()
+	numeric_type.select(0)
+	_on_numeric_type_changed(0)
+	numeric_window.popup_centered()
+
+
+func _on_numeric_type_changed(_index: int) -> void:
+	if numeric_item == null:
+		return
+	numeric_item.clear()
+	var data: Array = towers if numeric_type.selected == 0 else enemies
+	for item in data:
+		numeric_item.add_item(str(item.get("name", item.get("id", "?"))))
+	if numeric_item.item_count > 0:
+		numeric_item.select(0)
+	_populate_numeric_fields()
+
+
+func _numeric_data() -> Array:
+	return towers if numeric_type.selected == 0 else enemies
+
+
+func _numeric_target() -> Dictionary:
+	var data := _numeric_data()
+	if numeric_item == null or numeric_item.selected < 0 or numeric_item.selected >= data.size():
+		return {}
+	return data[numeric_item.selected]
+
+
+func _populate_numeric_fields() -> void:
+	if numeric_grid == null:
+		return
+	for child in numeric_grid.get_children():
+		child.queue_free()
+	numeric_fields.clear()
+	var target := _numeric_target()
+	if target.is_empty():
+		return
+	var fields: Array = TOWER_EDIT_FIELDS if numeric_type.selected == 0 else ENEMY_EDIT_FIELDS
+	var numeric: Array = TOWER_NUMERIC if numeric_type.selected == 0 else ENEMY_NUMERIC
+	var required: Array = ["cost", "range", "damage", "fire_rate"] if numeric_type.selected == 0 else ["hp", "speed", "reward", "leak_damage", "radius"]
+	for entry in fields:
+		var field: String = entry[0]
+		numeric_grid.add_child(_label(entry[1]))
+		if field == "id":
+			var id_edit := LineEdit.new()
+			id_edit.text = str(target.get("id", ""))
+			id_edit.editable = false
+			numeric_grid.add_child(id_edit)
+			numeric_fields[field] = id_edit
+		elif field in numeric and field in required:
+			var spin := SpinBox.new()
+			spin.allow_greater = true
+			spin.min_value = 0.0
+			spin.max_value = 99999.0
+			spin.step = 1.0 if field in ["cost", "range", "damage", "hp", "speed", "reward", "leak_damage", "radius", "disable_targets"] else 0.1
+			spin.set_value_no_signal(float(target.get(field, 0)))
+			numeric_grid.add_child(spin)
+			numeric_fields[field] = spin
+		else:
+			var edit := LineEdit.new()
+			edit.text = str(target.get(field, ""))
+			edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			numeric_grid.add_child(edit)
+			numeric_fields[field] = edit
+
+
+func _apply_numeric() -> bool:
+	var target := _numeric_target()
+	if target.is_empty():
+		numeric_status.text = "没有选中数值条目。"
+		return false
+	_begin_edit("修改%s数值" % ("塔" if numeric_type.selected == 0 else "敌人"))
+	var numeric: Array = TOWER_NUMERIC if numeric_type.selected == 0 else ENEMY_NUMERIC
+	for field in numeric_fields.keys():
+		var control: Control = numeric_fields[field]
+		if control is SpinBox:
+			target[field] = float((control as SpinBox).value)
+		elif control is LineEdit:
+			var text := (control as LineEdit).text.strip_edges()
+			if text.is_empty():
+				target.erase(field)
+			elif field in numeric:
+				if not text.is_valid_float():
+					numeric_status.text = "%s 不是数字。" % field
+					return false
+				target[field] = float(text)
+			else:
+				target[field] = text
+	dirty = true
+	if save_button:
+		save_button.text = "保存 *"
+	numeric_status.text = "已改到内存；点「应用并保存」写入 numbers/。"
+	_refresh_tower_picker()
+	return true
+
+
+func _apply_numeric_and_save() -> void:
+	if not _apply_numeric():
+		return
+	_save()
+	numeric_status.text = "已写入 numbers/02–03 并导出。"
+	_populate_numeric_fields()
 
 
 func _set_status(text: String, warn := false) -> void:

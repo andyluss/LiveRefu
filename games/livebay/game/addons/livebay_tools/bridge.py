@@ -6,8 +6,8 @@
     python3 bridge.py write --json /tmp/map.json
     python3 bridge.py check
 
-read  : numbers/05 地图表 + numbers/04 波次表 -> JSON（map / towers / waves / enemies）
-write : JSON -> numbers/05 地图表 + numbers/04 波次表 -> export_numbers.py -> game/data
+read  : numbers/05 地图 + 04 波次 + 02 塔 + 03 敌人 -> JSON
+write : JSON -> numbers/02–05 表 -> export_numbers.py -> game/data
 check : python3 tools/export_numbers.py --check
 
 规则：TECH-A1（单一数据源）、DES-C1（数值与场景引用）。
@@ -28,6 +28,8 @@ import export_numbers as numbers  # noqa: E402
 
 MAP_MD = PROJECT / "docs-ai" / "design01" / "numbers" / "05_地图与塔位.md"
 WAVES_MD = PROJECT / "docs-ai" / "design01" / "numbers" / "04_波次数值.md"
+TOWERS_MD = PROJECT / "docs-ai" / "design01" / "numbers" / "02_塔数值.md"
+ENEMIES_MD = PROJECT / "docs-ai" / "design01" / "numbers" / "03_敌人数值.md"
 
 
 def fail(message: str) -> None:
@@ -65,6 +67,14 @@ def table_rows(key: str, data: dict) -> list[str]:
     if key == "map_base":
         pos = data["base"]["pos"]
         return [f"| {int(pos[0])} | {int(pos[1])} | {int(data['base']['radius'])} |"]
+    if key == "towers":
+        time_fields = {"slow_duration", "income_interval"}
+        return [
+            "| " + " | ".join(fmt_time(t.get(f, 0)) if f in time_fields and t.get(f, "") != "" else cell(t.get(f, "")) for f in numbers.TOWER_FIELDS) + " |"
+            for t in data
+        ]
+    if key == "enemies":
+        return ["| " + " | ".join(cell(t.get(f, "")) for f in numbers.ENEMY_FIELDS) + " |" for t in data]
     if key == "waves":
         rows: list[str] = []
         for wave in data:
@@ -100,11 +110,21 @@ def fmt_time(value: object) -> str:
     return f"{float(value):.1f}"
 
 
+def cell(value: object) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, float):
+        return str(int(value)) if value.is_integer() else f"{value:g}"
+    return str(value)
+
+
 def write_data(data: dict) -> dict:
     map_data = data.get("map")
     wave_data = data.get("waves")
-    if map_data is None and wave_data is None:
-        fail("缺少 map 或 waves")
+    tower_data = data.get("towers")
+    enemy_data = data.get("enemies")
+    if all(v is None for v in (map_data, wave_data, tower_data, enemy_data)):
+        fail("缺少 map / waves / towers / enemies")
     if map_data is not None:
         for key in ("id", "name", "description", "path", "slots", "base"):
             if key not in map_data:
@@ -131,6 +151,26 @@ def write_data(data: dict) -> dict:
         text = WAVES_MD.read_text(encoding="utf-8")
         text = replace_table(text, "waves", table_rows("waves", wave_data))
         WAVES_MD.write_text(text, encoding="utf-8")
+    if tower_data is not None:
+        if not isinstance(tower_data, list) or not tower_data:
+            fail("towers 必须是非空数组")
+        for t in tower_data:
+            for key in ("id", "name", "cost", "range", "damage", "fire_rate", "kind"):
+                if key not in t:
+                    fail(f"tower 缺少 {key}")
+        text = TOWERS_MD.read_text(encoding="utf-8")
+        text = replace_table(text, "towers", table_rows("towers", tower_data))
+        TOWERS_MD.write_text(text, encoding="utf-8")
+    if enemy_data is not None:
+        if not isinstance(enemy_data, list) or not enemy_data:
+            fail("enemies 必须是非空数组")
+        for e in enemy_data:
+            for key in ("id", "name", "hp", "speed", "reward", "leak_damage", "radius", "shape"):
+                if key not in e:
+                    fail(f"enemy 缺少 {key}")
+        text = ENEMIES_MD.read_text(encoding="utf-8")
+        text = replace_table(text, "enemies", table_rows("enemies", enemy_data))
+        ENEMIES_MD.write_text(text, encoding="utf-8")
 
     result = subprocess.run(
         [sys.executable, str(PROJECT / "tools" / "export_numbers.py")],
@@ -151,6 +191,10 @@ def write_data(data: dict) -> dict:
     if wave_data is not None:
         enemies = numbers.build_enemies(tables["enemies"])
         result["waves"] = numbers.build_waves(tables["waves"], {e["id"] for e in enemies})
+    if tower_data is not None:
+        result["towers"] = numbers.build_towers(tables["towers"])
+    if enemy_data is not None:
+        result["enemies"] = numbers.build_enemies(tables["enemies"])
     return result
 
 

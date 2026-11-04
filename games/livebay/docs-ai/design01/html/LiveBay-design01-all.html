@@ -5712,7 +5712,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 <p>D16 已裁决为垂直切片；D02/D05/D04 已裁决。内部故障（C）已实现，下一步是 v0.2 护理师。</p>
 </blockquote>
 <p>（本篇完）</p><p class="merged-back"><a href="#top">↑ 返回总目录</a></p></section><section class="merged-doc" id="doc-15-专用游戏编辑器方案" data-doc="15_专用游戏编辑器方案.html"><h1 id="doc-15-专用游戏编辑器方案--15--专用游戏编辑器方案">15 · 专用游戏编辑器方案</h1>
-<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程与工具方案</dd><dt>状态</dt><dd>草案 v0.6（E1–E4 已通过；Phase 1–3 + 可交互 SubViewport 预览）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 设计，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="#rule-TECH-A1">TECH-A1</a> · <a href="#rule-TECH-A2">TECH-A2</a> · <a href="#rule-TECH-B1">TECH-B1</a> · <a href="#rule-TECH-B2">TECH-B2</a> · <a href="#rule-BIZ-B1">BIZ-B1</a> · <a href="#rule-DES-B1">DES-B1</a></dd><dt>上游</dt><dd><a href="#doc-12-技术方案-Godot工程">12_技术方案_Godot工程</a> · <a href="../numbers/README.md">numbers</a> · <a href="#doc-11-待人类裁决清单">11_待人类裁决清单</a></dd><dt>关联</dt><dd><a href="#doc-04-塔防玩法">04_塔防玩法</a> · <a href="#doc-14-塔防NASApunk深化">14_塔防NASApunk深化</a> · <a href="#rule-TECH-A1">单一数据源</a></dd></dl></div>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程与工具方案</dd><dt>状态</dt><dd>草案 v0.7（E1–E4 已通过；Phase 1–3 + 数值表 + 预览交互）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 设计，人类拍板</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="#rule-TECH-A1">TECH-A1</a> · <a href="#rule-TECH-A2">TECH-A2</a> · <a href="#rule-TECH-B1">TECH-B1</a> · <a href="#rule-TECH-B2">TECH-B2</a> · <a href="#rule-BIZ-B1">BIZ-B1</a> · <a href="#rule-DES-B1">DES-B1</a></dd><dt>上游</dt><dd><a href="#doc-12-技术方案-Godot工程">12_技术方案_Godot工程</a> · <a href="../numbers/README.md">numbers</a> · <a href="#doc-11-待人类裁决清单">11_待人类裁决清单</a></dd><dt>关联</dt><dd><a href="#doc-04-塔防玩法">04_塔防玩法</a> · <a href="#doc-14-塔防NASApunk深化">14_塔防NASApunk深化</a> · <a href="#rule-TECH-A1">单一数据源</a></dd></dl></div>
 <blockquote>
 <p><strong>一句话</strong>：可以开发，但第一版不应是独立游戏编辑器，而应是 <strong>Godot 编辑器里的 LiveBay Tools 插件</strong>：在真实场景上拖塔位、看射程、调波次、即时预览；数据仍走 <code>numbers/ → game/data/</code> 的单一源。</p>
 <p><strong>结论</strong>：先做插件 + Python 数据桥（2–3 周 MVP），独立 Web 编辑器作为 v0.3+ 的可选分支，不在现在做。</p>
@@ -6105,7 +6105,7 @@ Sim / 场景重载 / 内嵌预览</code></pre>
 </tbody>
 </table></div>
 <blockquote>
-<p>2026-11-04 人类选择「全按推荐」：E1–E4 均按 A。Phase 1（地图/塔位）、Phase 2（波次时间轴/数值面板）与 Phase 3（视口预览、可交互 SubViewport 预览、时间轴拖动、命名历史）MVP 已实现。实现入口：<a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>。</p>
+<p>2026-11-04 人类选择「全按推荐」：E1–E4 均按 A。Phase 1（地图/塔位）、Phase 2（波次时间轴/数值面板）与 Phase 3（视口预览、可交互 SubViewport 预览、时间轴拖动、命名历史、数值表、分支保留）MVP 已实现。实现入口：<a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>。</p>
 </blockquote>
 <h2 id="doc-15-专用游戏编辑器方案--十一结论">十一、结论</h2>
 <ul>
@@ -6114,7 +6114,7 @@ Sim / 场景重载 / 内嵌预览</code></pre>
 <li>先用 Python bridge 守住 <code>numbers/</code> 单一源，再逐步加视口编辑、波次时间轴、内嵌预览；</li>
 <li><strong>Phase 1 MVP 已实现</strong>：路径点 / 塔位 / 基地拖动、射程预览、保存写回、校验、运行游戏；</li>
 <li><strong>Phase 2 MVP 已实现</strong>：波次时间轴、波次数值面板、组/波次增删；</li>
-<li><strong>Phase 3 MVP 已实现</strong>：视口内波次预览、<code>SubViewport</code> 内嵌预览（真实 Sim，预览内可建造/升级）、时间轴拖动 <code>delay</code> / <code>interval</code>、命名撤销/重做与历史跳转；见 <a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>；</li>
+<li><strong>Phase 3 MVP 已实现</strong>：视口内波次预览、<code>SubViewport</code> 内嵌预览（真实 Sim，左键建造/升级、右键出售、暂停/下一波、详细结算）、时间轴拖动 <code>delay</code> / <code>interval</code>、命名撤销/重做与分支保留历史、塔/敌人数值表；见 <a href="../../../game/addons/livebay_tools/README.md"><code>game/addons/livebay_tools/README.md</code></a>；</li>
 <li>独立 Web 编辑器是 Phase 4 的选项，不是现在的起点。</li>
 </ul>
 <p>（本篇完）</p>
