@@ -39,8 +39,11 @@ case "$CMD" in
   numbers-check)
     exec python3 "$HERE/tools/export_numbers.py" --check
     ;;
+  merge)
+    exec python3 "$HERE/tools/merge_design_html.py"
+    ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check|numbers|numbers-check]" >&2
+    echo "用法: ./run.sh [run|editor|import|test|check|numbers|numbers-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2
@@ -48,6 +51,7 @@ case "$CMD" in
     echo "  check   无头启动 180 帧，抓脚本错误" >&2
     echo "  numbers        从 numbers/ 表格导出 game/data" >&2
     echo "  numbers-check  校验表格与 game/data 是否一致" >&2
+    echo "  merge          把 design01 的 HTML 融合成单文件" >&2
     exit 1
     ;;
 esac

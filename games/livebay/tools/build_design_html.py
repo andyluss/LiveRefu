@@ -475,6 +475,7 @@ INDEX_BODY = """<section class="hero">
 <div class="hero-actions">
 <a class="button" href="README.html">从总览开始</a>
 <a class="button ghost" href="11_待人类裁决清单.html">看裁决记录</a>
+<a class="button ghost" href="LiveBay-design01-all.html">完整单页版</a>
 <a class="button ghost" href="../shots/v0.1_gameplay.mp4">实机演示 ↗</a>
 </div>
 </section>
