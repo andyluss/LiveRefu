@@ -7,6 +7,21 @@
 > [`../future-debris/CHANGELOG.md`](../future-debris/CHANGELOG.md)）。历史上有 17 段产品内容记在这里，
 > 已于 0.18.0 迁走。
 
+## [0.24.0] - 2026-11-04 16:54
+
+### 变更
+
+- **主线切换到 LiveBay**：`games/livebay/` 正式成为当前主线游戏项目；`future-debris` 转为历史主线候选，不再投入主线资源；
+- 重写 `README.md`：当前主线、入口、旧项目关系、讨论模板与边界；
+- 新增 [`docs/01_LiveBay主线状态.md`](docs/01_LiveBay主线状态.md)：当前证据、裁决地图、P0–P2 优先级与完成判据；
+- `docs/00_决策总表.md`、`docs/02_资产盘点与杠杆.md`、`docs/11_主线项目评估_未来残片与Refu001.md` 加“历史文档”说明，保留原文不删结论；
+- 根 README、`games/README.md` 同步：LiveBay 为当前主线，未来残片为历史主线候选，Refu 为第二轨。
+
+### 备注
+
+- 本轮只改主线纲领与索引，未改 LiveBay 代码；
+- 主线细节以 LiveBay `README` / `design01/11` 为准，本目录不复制。
+
 ## [0.23.0] - 2026-11-02 12:05
 
 ### 变更

@@ -6,10 +6,10 @@
 
 | 项目 | 目录 | 说明 |
 | --- | --- | --- |
-| 未来残片 | [`future-debris/`](future-debris/README.md) | 主线 Godot 项目 |
-| Refu Game 001 | [`refu-game-001/`](refu-game-001/README.md) | 卡片塔防垂直切片 |
-| 明日频道 | [`tomorrows-channel/`](tomorrows-channel/README.md) | 复古未来氛围陪伴应用 |
-| 逍遥湾 · LiveBay | [`livebay/`](livebay/README.md) | NASA朋克 · 岗位塔防 + 沉浸 + 放置；v0.1 可玩切片 |
+| 逍遥湾 · LiveBay | [`livebay/`](livebay/README.md) | **当前主线**：NASApunk · 岗位塔防 + 沉浸 + 放置；v0.1 可玩切片 |
+| 未来残片 | [`future-debris/`](future-debris/README.md) | 历史主线候选（2026-11-04 起归档，不再投入主线资源） |
+| Refu Game 001 | [`refu-game-001/`](refu-game-001/README.md) | 第二轨预研 / 卡片塔防垂直切片 |
+| 明日频道 | [`tomorrows-channel/`](tomorrows-channel/README.md) | 复古未来氛围陪伴应用（卫星项目） |
 
 ## Godot 数据
 

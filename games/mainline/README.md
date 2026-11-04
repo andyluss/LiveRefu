@@ -1,65 +1,88 @@
-# 主线纲领 · 决策与讨论空间
+# 主线纲领 · LiveBay
 
-> **这是什么**：工作区里"下一款主线产品"的**纲领**——它不是某一款具体游戏，而是容纳具体项目及其后继者的决策空间。
-> 这里存两样东西：**建议**（提案、论证、数据）与**决定**（裁决、理由、代价）——建议面向讨论，决定面向执行。
-> **为什么是纲领而不是项目**：具体产品可能更换，但**决策历史必须长期留存**；因此本目录不随任何单个项目的生命周期结束。
-> **当前也是第一个候选具体项目**：[`../future-debris/`](../future-debris/README.md)（《未来残片》，代号 `future-debris`）。具体状态、设计与工程说明见项目 README；本目录只保留纲领与决策历史。
-
-## 一、怎么用这个空间
-
-| 你想做的事 | 看哪 |
-| --- | --- |
-| 快速知道"要决定哪几件事、现状如何" | [00_决策总表](docs/00_决策总表.md) |
-| 读某条建议的完整论证 | 纲领级见 `docs/00`、`02`、`11`；项目级见 [`../future-debris/docs/planning/`](../future-debris/docs/planning/) |
-| 直接回我的问题 | 各篇末「待裁决问题」；或一次回答 [决策总表](docs/00_决策总表.md) 的 Q1–Q15 |
-| 记录一次讨论 | 在 `docs/discussions/` 下新建 `YYYYMMDD-HHMM-关键词.md`（模板见第三节；时间规则见 [R06](../../rules/R06-time.md)） |
-| 查询某个词什么意思 | [08_共同语言与命名](../future-debris/docs/planning/08_共同语言与命名.md) |
-
-**约定**：**一条建议一个文件**；裁决后**不回删原文**，在原文上追加「裁决」小节（日期 + 选择 + 理由），并在 [00_决策总表](docs/00_决策总表.md) 与根 [`CHANGELOG.md`](../../CHANGELOG.md) 记账——保留"当时的判断"，将来才能看出哪里错了。
-
-## 二、纲领级文档
-
-| # | 文档 | 一句话 |
-| --- | --- | --- |
-| 00 | [决策总表](docs/00_决策总表.md) | Q1–Q15 的裁决、待裁决项、依据与影响范围（项目决策历史索引） |
-| 02 | [资产盘点与杠杆](docs/02_资产盘点与杠杆.md) | 工作区存量清单（按可用程度分级）+ 五条核心矛盾 |
-| 11 | [主线项目评估：未来残片 vs Refu 001](docs/11_主线项目评估_未来残片与Refu001.md) | 两条已有路线的对比、主线建议、资源分配与改判门槛 |
-
-
-> **项目级文档已归位**：定位、美术/技术、路线/风险、共同语言、竞品调研、推进计划与 research 均已迁入 [`../future-debris/docs/planning/`](../future-debris/docs/planning/)；本目录只保留跨项目判断与决策索引。
+> **当前主线项目**：[`../livebay/`](../livebay/README.md)（《逍遥湾》/ LiveBay），自 **2026-11-04** 起正式承担主线。
 >
-> **AI 协作方法参考**：[`ideas/AI/`](../../ideas/AI/README.md)（人类控制权、函数式协作）；参考不是项目决定。
+> 本目录不是 LiveBay 的项目文档，也不是某一款游戏的 GDD。它是**主线纲领**：容纳“当前主线是谁、为什么是它、下一步押什么”的决策空间，以及被替换项目的决策历史。
+>
+> 项目细节在 [`../livebay/`](../livebay/README.md)；当前状态见 [01_LiveBay主线状态](docs/01_LiveBay主线状态.md)。
 
-> 具体项目的玩法、商业化、发行等执行文档已随项目迁移，入口见 [`../future-debris/README.md`](../future-debris/README.md)。
+## 一、当前主线
 
-## 三、当前具体项目
+| 项 | 内容 |
+| --- | --- |
+| 项目 | **LiveBay（逍遥湾）** |
+| 目录 | [`../livebay/`](../livebay/README.md) |
+| 类型 | NASApunk · 岗位塔防 + 沉浸体验 + 放置养成 |
+| 当前阶段 | v0.1 可玩垂直切片；NASApunk 轻量包已选、待实现 |
+| 当前证据 | 1 图 / 7 塔位 / 3 塔 / 4 敌 / 5 波；37 项无头断言；50 秒实机 |
+| 决策权威 | [`../livebay/docs-ai/design01/11_待人类裁决清单.md`](../livebay/docs-ai/design01/11_待人类裁决清单.md) |
+| 规则 | [`../livebay/docs-ai/design01/rules/README.md`](../livebay/docs-ai/design01/rules/README.md) |
 
-**《未来残片》是主线纲领的当前也是第一个候选具体项目。**
+一句话：**当前主线不是“未来残片”，是 LiveBay；主线资源、裁决与验收都以 LiveBay 的文档为准。**
 
-具体状态、设计、导览与工程说明见 [`../future-debris/README.md`](../future-debris/README.md)；本目录不复制这些内容。项目更换时，只在 [`00_决策总表`](docs/00_决策总表.md) 记录更替理由，旧的 `future-debris/` 保留归档。
+## 二、先看哪几篇
 
-## 四、与工作区其它部分的关系
+| 你想知道 | 看 |
+| --- | --- |
+| 当前主线到什么程度、下一步押什么 | [01_LiveBay主线状态](docs/01_LiveBay主线状态.md) |
+| LiveBay 是什么、怎么跑 | [`../livebay/README.md`](../livebay/README.md) |
+| 已裁决/待裁决有哪些 | [`../livebay/docs-ai/design01/11_待人类裁决清单.md`](../livebay/docs-ai/design01/11_待人类裁决清单.md) |
+| 玩法、数值、美术、小说、规则 | [`../livebay/docs-ai/design01/README.md`](../livebay/docs-ai/design01/README.md) |
+| 专用编辑器值不值得做 | [`../livebay/docs-ai/design01/15_专用游戏编辑器方案.md`](../livebay/docs-ai/design01/15_专用游戏编辑器方案.md) |
+| 旧主线为什么被替换 | 本目录 [00](docs/00_决策总表.md)、[02](docs/02_资产盘点与杠杆.md)、[11](docs/11_主线项目评估_未来残片与Refu001.md)（历史文档） |
 
-- 本目录受工作区根规则约束：[`rules/R01`](../../rules/R01-docs-convention.md)（文档体例与相对链接）、[`rules/R02`](../../rules/R02-git-convention.md)（提交信息）、[`rules/R03`](../../rules/R03-link-validation.md)（链接校验）、[`rules/R05`](../../rules/R05-changelog.md)（变更日志）。
-- **题材权威**在 [`docs/retro-futurism/`](../../docs/retro-futurism/README.md) 与 [`docs/retro-futurism/原朋克五卷残留/`](../../docs/retro-futurism/原朋克五卷残留/README.md)：本目录引用它，**不复制、不改写**它的结论。
-- **既有项目可复用、可并入，但不默认继承**：[`../refu-game-001/`](../refu-game-001/README.md)、[`../tomorrows-channel/`](../tomorrows-channel/README.md)、[`../../projects/website/`](../../projects/website/README.md)、[`../../indie/live-rpg/`](../../indie/README.md)。是否并入由项目裁决记录决定。
-- **目录边界**：本目录只放纲领级文档；具体项目在 `games/<代号>/`，与 `mainline/` 平级，按代号命名。
-- **如何容纳下一个具体项目**：在 `games/<新代号>/` 建立新项目（自带 README / CHANGELOG / docs / 可运行实现）；本目录的 `docs/` 不动——决策历史是纲领的资产，不属于任何单个项目。
-- **执行文档随项目走**：纲领只出"要做什么、为什么"，具体怎么实现写在项目自己的 `docs/` 里。
+## 三、纲领级文档
 
-## 五、讨论记录模板（新建文件时复制）
+| # | 文档 | 状态 | 一句话 |
+| --- | --- | --- | --- |
+| 01 | [LiveBay 主线状态](docs/01_LiveBay主线状态.md) | **现行** | 当前主线、证据、裁决地图、优先级与完成判据 |
+| 00 | [历史：未来残片决策总表](docs/00_决策总表.md) | 历史 | Q1–Q15；已由 LiveBay 主线取代，保留决策历史 |
+| 02 | [历史：资产盘点与杠杆](docs/02_资产盘点与杠杆.md) | 历史 | 未来残片时期的资产分级与五条矛盾 |
+| 11 | [历史：主线项目评估](docs/11_主线项目评估_未来残片与Refu001.md) | 历史 | 未来残片 vs Refu 001 的对比；当时结论已不再生效 |
 
-> **命名与时间**：文件名 `YYYYMMDD-HHMM-关键词.md`（例 `20261002-0915-玩法裁决.md`），正文首行用 `HH:MM`。
-> **时间必须精确到分，且取自该记录的首次提交时间**（`git log --diff-filter=A`）——权威约定见 [R06 时间与时间戳约定](../../rules/R06-time.md)，并由 [`tools/check_time_naming.ts`](../../tools/check_time_naming.ts) 机器校验。
+> 历史文档不删除、不重写结论；只在篇首加“历史”说明，避免被误读为当前决定。
+
+## 四、为什么是 LiveBay
+
+1. **可玩**：v0.1 已能完成 5 波闭环，不是概念稿；
+2. **可验证**：37 项无头断言、数据校验、启动检查、数值导出检查；
+3. **可维护**：数值/地图/敌人/波次是数据，模拟与视图分离；
+4. **有边界**：D01–D16 已裁决；NASApunk 轻量包 N1–N3 已选；P2/E1–E4 待裁决；
+5. **有内容管线**：数值、规则、艺术、小说、HTML 都已成形，能支撑下一阶段。
+
+它不是最大的项目；它是当前**最完整、最可验证、最接近可试玩**的那个。
+
+## 五、与旧项目的关系
+
+| 项目 | 身份 | 处理 |
+| --- | --- | --- |
+| [`../future-debris/`](../future-debris/README.md) | 前主线候选 | **归档为历史主线候选**；不投入主线资源；文档与工程保留 |
+| [`../refu-game-001/`](../refu-game-001/README.md) | 卡片塔防垂直切片 | **第二轨预研/归档**；不争夺主线资源；可复用其验证方式 |
+| [`../tomorrows-channel/`](../tomorrows-channel/README.md) | 氛围陪伴应用 | 卫星项目；不并入 LiveBay |
+| [`../../projects/website/`](../../projects/website/README.md) | 未来档案网站 | 暂停；不自动并入主线 |
+
+> 旧项目可以“被参考”，但不会因为曾经是主线就自动成为 LiveBay 的一部分；是否并入，由 LiveBay 的裁决记录决定。
+
+## 六、规则与边界
+
+- 主线级决策以 LiveBay `11` 为准；本目录只做索引与历史；
+- 具体玩法、数值、美术、工程规格在 `games/livebay/`，不在本目录复制；
+- 主线更替时：更新 [01](docs/01_LiveBay主线状态.md) + 本 README + [`CHANGELOG.md`](CHANGELOG.md)，旧文档标记历史；
+- 不因为“主线”就扩范围：先守住 v0.1 轻量包与 v0.2 护理师；
+- 工作区通用规则（R01/R02/R03/R05/R06）仍然适用。
+
+## 七、讨论记录
+
+需要新讨论时，在 `docs/discussions/` 新建 `YYYYMMDD-HHMM-关键词.md`，时间取首次提交时间（R06）。
 
 ```markdown
 # 讨论记录 · YYYY-MM-DD HH:MM · <主题>
 
 - 参与：<人 / 角色>
-- 关联：<Q编号 或 文档链接>
+- 关联：<决策 ID 或文档链接>
 
 ## 结论
-<一句话；若未收敛写"未收敛，下次继续">
+<一句话；未收敛写“未收敛，下次继续”>
 
 ## 论点与依据
 - …
@@ -71,7 +94,8 @@
 - [ ] …
 ```
 
-## 六、相关
+## 八、相关
 
 - 工作区总览：[`../../README.md`](../../README.md)
-- 题材总论（读题材从这里开始）：[`docs/retro-futurism/00_总论_未来的考古学与全卷地图.md`](../../docs/retro-futurism/00_总论_未来的考古学与全卷地图.md)
+- 游戏项目区：[`../README.md`](../README.md)
+- 题材总论：[`../../docs/retro-futurism/00_总论_未来的考古学与全卷地图.md`](../../docs/retro-futurism/00_总论_未来的考古学与全卷地图.md)
