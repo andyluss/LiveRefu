@@ -144,6 +144,19 @@ table{{width:100%;border-collapse:collapse;font-size:11.5px}}th,td{{padding:5px 
   <div id="traceTable"></div>
 </section>
 
+<section class="card" id="miniCard" style="margin-top:16px">
+  <h2><span class="n">06</span>P4 离散小模拟</h2>
+  <p class="hint">用当前地图、当前塔位与塔等级跑一次固定步长的小模拟：移动、索敌、开火、减速、故障停塔、漏过、供能与评级。它比解析估算更接近游戏，但仍不是完整 Godot 复刻。</p>
+  <div class="toolbar">
+    <button class="btn primary" id="miniRun">运行 P4</button>
+    <button class="btn" id="miniReset">重置</button>
+    <span class="tag" id="miniStatus">尚未运行</span>
+  </div>
+  <div class="stats" id="miniStats"></div>
+  <div class="diag" id="miniDiag">点「运行 P4」开始；使用当前塔位选择，塔等级采用上方等级。</div>
+  <div id="miniWaves"></div>
+</section>
+
 <footer class="footer"><span>由 <code>tools/build_simulator.py</code> 生成 · 数据 hash <code id="hash"></code></span><span><a href="../flows/game_flow.html">流程图</a> · <a href="README.md">方案/说明</a></span></footer>
 </main>
 <script>
@@ -288,6 +301,145 @@ function renderTrace() {{
   $('#traceStatus').innerHTML = `当前地图：<b>${{mapData().name}}</b> · 场景：<b>standard</b> · Godot：<b>${{r.grade||'?'}}</b> / 保障度 ${{r.integrity||0}} / 击杀 ${{r.kills||0}} / 漏过 ${{r.leaked||0}} / ${{Number(r.seconds||0).toFixed(1)}}s`;
   $('#traceTable').innerHTML = `<table><thead><tr><th>静态事实</th><th>沙盘</th><th>Godot</th><th>判定</th><th>容差</th></tr></thead><tbody>${{html}}</tbody></table><p class="hint" style="margin-top:8px">Godot 逐局结果仅作为参考；当前配置若不是标准班，塔数/花费会出现差异，这是预期。</p>`;
 }}
+
+/* ---------------- P4 discrete mini simulation ---------------- */
+let mini = null;
+function miniTowerCost(def, level) {
+  return Number(def.cost || 0);
+}
+function miniStart() {
+  const m = mapData();
+  const mods = m.modifiers || {};
+  const towers = [];
+  let energy = Number(DATA.balance.starting_energy || 90) + Number(mods.energy_delta || 0);
+  assigned().forEach(a => {
+    const def = a.def;
+    const cost = miniTowerCost(def, state.level);
+    if (energy < cost) return;
+    energy -= cost;
+    towers.push({
+      slot: a.slot, def, level: state.level, cooldown: 0,
+      incomeTimer: 0, disabled: 0, degraded: 0,
+      invested: cost
+    });
+  });
+  const maxIntegrity = Number(DATA.balance.starting_integrity || 100) + Number(mods.integrity_delta || 0);
+  mini = {
+    map: m, towers, energy, integrity: maxIntegrity, maxIntegrity,
+    waveIndex: -1, state: 'prep', timer: 1.0, time: 0,
+    enemies: [], queue: [], kills: 0, leaked: 0, spent: 0,
+    waveCleared: [], waves: [],
+    speedMult: Number(mods.speed_mult || 1) * Number(state.speed || 1),
+    damageMult: Number(mods.damage_mult || 1)
+  };
+  mini.spent = towers.reduce((n,t)=>n+t.invested,0);
+  $('#miniStatus').textContent = `开始 · ${m.name} · ${towers.length} 塔`;
+  beginMiniWave();
+}
+function beginMiniWave() {
+  const m = mini.map;
+  mini.waveIndex += 1;
+  if (mini.waveIndex >= m.waves.length) { mini.state='won'; return; }
+  const w = m.waves[mini.waveIndex];
+  mini.state='wave'; mini.timer=0; mini.queue=[];
+  for (const g of w.groups) for (let i=0;i<g.count;i++) mini.queue.push({t: g.delay + i*g.interval, enemy: g.enemy});
+  mini.queue.sort((a,b)=>a.t-b.t);
+  mini.waveStartEnergy=mini.energy; mini.waveKills=mini.kills; mini.waveLeaked=mini.leaked;
+  mini.waveTime=0;
+}
+function miniSpawnDue() {
+  while (mini.queue.length && mini.queue[0].t <= mini.waveTime) {
+    const item=mini.queue.shift();
+    const e=DATA.enemies.find(x=>x.id===item.enemy);
+    const reverse=(e.behavior==='reverse');
+    mini.enemies.push({
+      def:e, hp:Number(e.hp), dist: reverse ? Number(mini.map.path.length?pathLen(mini.map):0) : 0,
+      direction: reverse?-1:1, slow:0, slowTimer:0, hit:{}
+    });
+  }
+}
+function miniPoint(d) {
+  const p=mini.map.path; if(p.length<2) return [0,0];
+  const total=pathLen(mini.map); if(d<=0) return p[0]; if(d>=total) return p[p.length-1];
+  let acc=0;
+  for(let i=1;i<p.length;i++){const seg=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]); if(acc+seg>=d){const t=(d-acc)/(seg||1);return [p[i-1][0]+(p[i][0]-p[i-1][0])*t,p[i-1][1]+(p[i][1]-p[i-1][1])*t];} acc+=seg;}
+  return p[p.length-1];
+}
+function miniTick(dt) {
+  if (mini.state==='won' || mini.state==='lost') return;
+  mini.time += dt;
+  if (mini.state==='prep') { mini.timer-=dt; if(mini.timer<=0) beginMiniWave(); return; }
+  if (mini.state!=='wave') return;
+  mini.waveTime += dt; miniSpawnDue();
+  // towers
+  for (const t of mini.towers) {
+    if (t.disabled>0) { t.disabled-=dt; continue; }
+    if (t.degraded>0) { t.degraded-=dt; }
+    const def=t.def, dmg=Number(def.damage||0)*(1+0.25*(t.level-1))*mini.damageMult;
+    if (def.kind==='supply') {
+      t.incomeTimer-=dt;
+      if(t.incomeTimer<=0){t.incomeTimer+=Number(def.income_interval||5); mini.energy+=Number(def.income||0);}
+      continue;
+    }
+    t.cooldown-=dt;
+    if(t.cooldown>0) continue;
+    const pos=mini.map.slots[t.slot];
+    const range=Number(def.range||0);
+    const targets=mini.enemies.filter(e=>!e.dead && Math.hypot(pos[0]-miniPoint(e.dist)[0],pos[1]-miniPoint(e.dist)[1])<=range);
+    if(!targets.length) continue;
+    if(def.kind==='single') {
+      targets.sort((a,b)=>b.dist-a.dist);
+      const e=targets[0]; e.hp-=dmg; if(e.hp<=0)e.dead=true;
+    } else {
+      for(const e of targets){e.hp-=dmg; const slow=Number(def.slow||0); if(slow>0){e.slow=Math.max(e.slow,slow);e.slowTimer=Math.max(e.slowTimer,Number(def.slow_duration||1.5));} if(e.hp<=0)e.dead=true;}
+    }
+    t.cooldown=1/Math.max(0.05,Number(def.fire_rate||0.5));
+  }
+  // enemies
+  for (const e of mini.enemies) {
+    if(e.dead) continue;
+    if(e.slowTimer>0){e.slowTimer-=dt;e.slow*=1;}
+    let speed=Number(e.def.speed||0)*mini.speedMult;
+    if(e.slowTimer>0) speed*=1-e.slow;
+    e.dist += speed*dt*e.direction;
+    // fault: disable nearby towers once
+    if(e.def.behavior==='reverse') {
+      const p=miniPoint(e.dist);
+      for(const t of mini.towers){ if(e.hit[t.slot]) continue; const sp=mini.map.slots[t.slot]; if(Math.hypot(p[0]-sp[0],p[1]-sp[1])<=Number(e.def.disable_radius||0)){e.hit[t.slot]=true; t.disabled=Math.max(t.disabled,Number(e.def.disable_duration||0)); if(Object.keys(e.hit).length>=Number(e.def.disable_targets||99)) break;}}
+    }
+    if(e.direction>0 && e.dist>=pathLen(mini.map)) { e.dead=true; e.leaked=true; }
+    else if(e.direction<0 && e.dist<=0) { e.dead=true; }
+  }
+  for(const e of mini.enemies){if(e.dead && e.leaked){mini.leaked++; mini.integrity=Math.max(0,mini.integrity-Number(e.def.leak_damage||0));} else if(e.dead){mini.kills++; mini.energy+=Number(e.def.reward||0);} }
+  mini.enemies=mini.enemies.filter(e=>!e.dead);
+  if(mini.integrity<=0){mini.state='lost'; finishMini(); return;}
+  if(!mini.queue.length && !mini.enemies.length){
+    mini.waveCleared.push(mini.waveIndex+1);
+    mini.waves.push({index:mini.waveIndex+1,kills:mini.kills-mini.waveKills,leaked:mini.leaked-mini.waveLeaked,energy:mini.energy-mini.waveStartEnergy});
+    for(const t of mini.towers){if(t.def.kind==='supply' && t.disabled<=0) mini.integrity=Math.min(mini.maxIntegrity, mini.integrity+Number(t.def.repair||0));}
+    if(mini.waveIndex>=mini.map.waves.length-1){mini.state='won';finishMini();return;}
+    mini.state='prep'; mini.timer=1.0;
+  }
+  }
+}
+function finishMini(){
+  const r=mini.integrity/mini.maxIntegrity;
+  const b=DATA.balance;
+  mini.grade = mini.state==='lost' ? 'F' : (r>=b.grade_s_ratio?'S':r>=b.grade_a_ratio?'A':r>=b.grade_b_ratio?'B':'C');
+  mini.done=true;
+  $('#miniStatus').textContent = `完成 · ${mini.grade} · ${mini.integrity.toFixed(0)}/${mini.maxIntegrity}`;
+  $('#miniStats').innerHTML=[
+    ['grade',mini.grade],['保障度',mini.integrity.toFixed(0)+'/'+mini.maxIntegrity],['击杀',mini.kills],['漏过',mini.leaked],['供能',Math.round(mini.energy)],['模拟时长',mini.time.toFixed(1)+'s']
+  ].map(([l,v])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+  $('#miniWaves').innerHTML='<table><thead><tr><th>波</th><th>击杀</th><th>漏过</th><th>供能变化</th></tr></thead><tbody>'+mini.waves.map(w=>`<tr><td>${w.index}</td><td>${w.kills}</td><td>${w.leaked}</td><td>${w.energy}</td></tr>`).join('')+'</tbody></table>';
+  $('#miniDiag').textContent = mini.state==='lost' ? '保障度归零：这次配置失败。' : '小模拟结束。它仍是离散近似；请用 ./run.sh playtest 或实际游戏复核关键结论。';
+}
+function runMini(){
+  miniStart();
+  let steps=0;
+  while(mini && (mini.state==='prep'||mini.state==='wave') && steps<60*900){miniTick(1/60);steps++;}
+  if(mini && !mini.done){ if(mini.state!=='lost'&&mini.state!=='won') mini.state='lost'; finishMini(); }
+}
 function writeHash() {{
   const p=new URLSearchParams(); p.set('map',state.mapId); p.set('wave',state.wave); p.set('level',state.level); p.set('speed',state.speed);
   const slots=Object.entries(state.slots).map(([k,v])=>k+':'+v).join(','); if(slots) p.set('slots',slots);
@@ -319,6 +471,8 @@ function init() {{
   $('#preset').addEventListener('click',()=>{{state.slots=defaultSlots(mapData());state.level=1;state.speed=1;syncControls();writeHash();render();}});
   $('#clear').addEventListener('click',()=>{{state.slots={{}};writeHash();render();}});
   $('#traceBuiltin').addEventListener('click',()=>{{traceData=TRACES;$('#traceSource').textContent='内置';renderTrace();}});
+  $('#miniRun').addEventListener('click',runMini);
+  $('#miniReset').addEventListener('click',()=>{{mini=null;$('#miniStats').innerHTML='';$('#miniWaves').innerHTML='';$('#miniStatus').textContent='尚未运行';$('#miniDiag').textContent='点「运行 P4」开始。';}});
   $('#traceFile').addEventListener('change',async e=>{{
     const f=e.target.files?.[0]; if(!f) return;
     try {{ traceData=JSON.parse(await f.text()); $('#traceSource').textContent=f.name; renderTrace(); }}
