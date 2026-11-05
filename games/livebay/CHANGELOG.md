@@ -3,6 +3,21 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.89] - 2026-11-05 22:30
+
+### 新增
+
+- `flows/swimlane_flow.md/html`：玩家/UI、Runtime/Clock、Sim/Domain、扩展/内容四条泳道；
+- `extra_flows.html` 升级为五图总览；
+- HUB「流程图」Tab 增加泳道图与 Mermaid 链接；
+- flows README 与 design01 索引同步。
+
+### 验证
+
+- `flow-check`：通过；
+- 流程图 R-016：7/7；
+- HUB + GUIDE R-016：2/2。
+
 ## [0.1.88] - 2026-11-05 22:06
 
 ### 重构

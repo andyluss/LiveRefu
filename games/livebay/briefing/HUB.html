@@ -106,7 +106,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.88</span> · 2026-11-05</div>
+      <div class="stamp">v<span data-fact="version">0.1.89</span> · 2026-11-05</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -285,17 +285,18 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <p>PREP → WAVE → BETWEEN → WON/LOST；检查单与 W5 故障选择作为等待态。配套 <a href="../docs-ai/design01/flows/game_flow.md">Mermaid / 迁移表</a>。</p>
     </div>
 
-    <h3>四张补充图</h3>
+    <h3>补充图</h3>
     <div class="grid g3">
       <article class="card"><h4><a href="../docs-ai/design01/flows/player_flow.html">玩家操作流程</a></h4><p>选择塔位、供能判断、建造/升级、开波、整备；暂停/倍速是横切操作。</p><p><a href="../docs-ai/design01/flows/player_flow.md">Mermaid 版</a></p></article>
       <article class="card"><h4><a href="../docs-ai/design01/flows/wave_flow.html">波次生命周期</a></h4><p>准备/开波、生成组、敌人移动、故障/开火、漏过、清空、下一波/胜负。</p><p><a href="../docs-ai/design01/flows/wave_flow.md">Mermaid 版</a></p></article>
       <article class="card"><h4><a href="../docs-ai/design01/flows/l1_flow.html">L1 班次扩展</a></h4><p>W4 检查单、W5 故障、事故记录、10 班档案、低报审计与下一班简报。</p><p><a href="../docs-ai/design01/flows/l1_flow.md">Mermaid 版</a></p></article>
       <article class="card"><h4><a href="../docs-ai/design01/flows/data_flow.html">数据到 MissionPack</a></h4><p>numbers Markdown → export → data → MissionPack → DataLoader → Sim → tests/HUB。</p><p><a href="../docs-ai/design01/flows/data_flow.md">Mermaid 版</a></p></article>
-      <article class="card"><h4><a href="../docs-ai/design01/flows/extra_flows.html">四图总览</a></h4><p>一次看完操作、波次、L1、数据四张补充图；Graphviz 内联 SVG，可离线阅读。</p></article>
+      <article class="card"><h4><a href="../docs-ai/design01/flows/swimlane_flow.html">泳道图：职责分工</a></h4><p>玩家/UI、Runtime/Clock、Sim/Domain、扩展/内容四条泳道，谁发起、谁调度、谁改变状态、谁提供班次内容。</p><p><a href="../docs-ai/design01/flows/swimlane_flow.md">Mermaid 版</a></p></article>
+      <article class="card"><h4><a href="../docs-ai/design01/flows/extra_flows.html">五图总览</a></h4><p>一次看完操作、波次、L1、数据、泳道五张补充图；Graphviz 内联 SVG，可离线阅读。</p></article>
       <article class="card"><h4><a href="../docs-ai/design01/flows/README.md">方法与维护规则</a></h4><p>完整方法、泳道画法、常见错误、生成与校验流程；改流程后先读这里。</p></article>
     </div>
 
-    <div class="note"><b>维护：</b>状态/命令/事件来自 <code>game/scripts/</code>；迁移模型在 <code>tools/build_flow.py</code> 与 <code>build_extra_flows.py</code>。改代码后跑 <code>./run.sh flow</code>，不要手改生成页。</div>
+    <div class="note"><b>维护：</b>状态/命令/事件来自 <code>game/scripts/</code>；迁移模型在 <code>tools/build_flow.py</code>。改代码后跑 <code>./run.sh flow</code>，不要手改生成页。</div>
   </section>
 </main>
 <footer class="foot">LiveBay · briefing/HUB.html · 数字由 <code>briefing/check_hub.ts</code> 对账；GUIDE 由 <code>briefing/build_guide.ts</code> 生成。不是策划源，细节回 <a href="../docs-ai/design01/README.md">design01</a>。</footer>

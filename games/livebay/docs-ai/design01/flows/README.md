@@ -15,7 +15,8 @@ flows/
 ├── wave_flow.*      # 波次生命周期
 ├── l1_flow.*        # L1 检查单/故障/记录
 ├── data_flow.*      # 数据到 MissionPack
-├── extra_flows.html # 四张补充图的总览
+├── swimlane_flow.*  # 玩家/Runtime/Sim/扩展四条泳道
+├── extra_flows.html # 五张补充图的总览
 └── (生成器)         # ../../../tools/build_flow.py
 ```
 
@@ -24,7 +25,8 @@ flows/
 | `game_flow.md` | 生成器 | `python3 tools/build_flow.py` |
 | `game_flow.html` | 生成器 | 同上 |
 | `player_flow.*` / `wave_flow.*` / `l1_flow.*` / `data_flow.*` | 生成器 | `python3 tools/build_flow.py` |
-| `extra_flows.html` | 生成器 | 同上，四图总览 |
+| `swimlane_flow.*` | 生成器 | 同上 |
+| `extra_flows.html` | 生成器 | 同上，五图总览 |
 | `README.md` | 人 | 手写方法说明 |
 
 ## 二、为什么要做静态流程图
@@ -143,7 +145,7 @@ WAVE --cleared--> BETWEEN
 
 ```bash
 cd games/livebay
-python3 tools/build_flow.py           # 生成总图 + 四张补充图（补充图依赖 Graphviz dot）
+python3 tools/build_flow.py           # 生成总图 + 五张补充图（补充图依赖 Graphviz dot）
 python3 tools/build_flow.py --check   # 只校验，不写文件
 ```
 

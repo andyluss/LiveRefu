@@ -7,7 +7,7 @@
   flows/wave_flow.{md,html}     波次生命周期
   flows/l1_flow.{md,html}       L1 检查单/故障/记录
   flows/data_flow.{md,html}     数据到 MissionPack
-  flows/extra_flows.html        四张补充图总览
+  flows/extra_flows.html        五张补充图总览
 
 用法：
   python3 tools/build_flow.py
@@ -550,6 +550,77 @@ EXTRA_DOCS = [
   F -> G; G -> H; H -> I; I -> A [style=dashed, label="反馈"];
 }""",
     },
+    {
+        "id": "swimlane_flow",
+        "title": "泳道图：一局的职责分工",
+        "desc": "把玩家、Runtime、Sim、扩展内容分成四条泳道：谁发起、谁调度、谁改变状态、谁提供班次内容。",
+        "mermaid": """flowchart LR
+    subgraph P["玩家 / UI"]
+        P1[选择塔位]
+        P2[建造 / 升级 / 出售]
+        P3[开波]
+        P4[检查单 / 故障选择]
+    end
+    subgraph R["Runtime / Clock"]
+        R1[CommandBus]
+        R2[MissionClock]
+        R3[EventBus]
+    end
+    subgraph S["Sim / Domain"]
+        S1[PREP]
+        S2[WAVE]
+        S3[BETWEEN]
+        S4[WON / LOST]
+    end
+    subgraph X["扩展 / 内容"]
+        X1[W4 检查单]
+        X2[W5 故障]
+        X3[记录 / 简报]
+    end
+    P1 --> R1
+    P2 --> R1
+    P3 --> R1
+    R1 --> S1
+    S1 --> S2
+    S2 --> R3
+    R3 --> S3
+    S3 --> S2
+    S2 --> S4
+    S2 --> X2
+    S3 --> X1
+    X1 --> P4
+    X2 --> P4
+    P4 --> R1
+    S4 --> X3
+    X3 --> P1
+    R2 -. 暂停/恢复 .-> S2""",
+        "dot": """digraph swimlane {
+  rankdir=LR; newrank=true; bgcolor="transparent"; fontname="PingFang SC"; fontsize=11;
+  node [shape=box, style="rounded,filled", fillcolor="#F5EFE2", color="#6F7B89", fontcolor="#232B2F", fontname="PingFang SC", margin="0.14,0.07"];
+  edge [color="#6F7B89", fontcolor="#5F6967", fontname="PingFang SC", fontsize=9];
+  subgraph cluster_player {
+    label="玩家 / UI"; fontsize=12; fontcolor="#D9622B"; color="#D9622B"; style="rounded,dashed";
+    P1 [label="选择塔位"]; P2 [label="建造 / 升级 / 出售"]; P3 [label="开波"]; P4 [label="检查单 / 故障选择"];
+  }
+  subgraph cluster_runtime {
+    label="Runtime / Clock"; fontsize=12; fontcolor="#3E6F6B"; color="#3E6F6B"; style="rounded";
+    R1 [label="CommandBus"]; R2 [label="MissionClock"]; R3 [label="EventBus"];
+  }
+  subgraph cluster_sim {
+    label="Sim / Domain"; fontsize=12; fontcolor="#3E6F6B"; color="#3E6F6B"; style="rounded";
+    S1 [label="PREP"]; S2 [label="WAVE"]; S3 [label="BETWEEN"]; S4 [label="WON / LOST"];
+  }
+  subgraph cluster_ext {
+    label="扩展 / 内容"; fontsize=12; fontcolor="#B47A16"; color="#B47A16"; style="rounded,dashed";
+    X1 [label="W4 检查单"]; X2 [label="W5 故障"]; X3 [label="记录 / 简报"];
+  }
+  P1 -> R1; P2 -> R1; P3 -> R1;
+  R1 -> S1; S1 -> S2; S2 -> R3; R3 -> S3; S3 -> S2; S2 -> S4;
+  S3 -> X1; S2 -> X2; X1 -> P4; X2 -> P4; P4 -> R1;
+  S4 -> X3; X3 -> P1 [label="下一班"];
+  R2 -> S2 [style=dashed, label="暂停/恢复"];
+}""",
+    },
 ]
 
 
@@ -630,8 +701,8 @@ nav.flow-nav{{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0}}nav.flow-nav a{
 <body>
 <header class="topbar"><div class="brand"><span>LiveBay · design01 · flows</span><strong>补充流程图</strong></div><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div></header>
 <main class="wrap">
-<p class="eyebrow">More static views</p><h1>四张补充流程图：操作、波次、L1、数据。</h1>
-<p class="lede">总状态机回答“一局在哪里停”；这四张图分别回答“玩家怎么操作、波次怎么走、L1 怎么扩、数据怎么进工程”。均由 Graphviz 预渲染为内联 SVG，不依赖在线渲染。</p>
+<p class="eyebrow">More static views</p><h1>五张补充流程图：操作、波次、L1、数据、泳道。</h1>
+<p class="lede">总状态机回答“一局在哪里停”；这五张图分别回答“玩家怎么操作、波次怎么走、L1 怎么扩、数据怎么进工程、谁和谁在同一层协作”。均由 Graphviz 预渲染为内联 SVG，不依赖在线渲染。</p>
 <nav class="flow-nav">{nav}<a href="game_flow.html">总状态机 →</a></nav>
 {''.join(sections)}
 <footer class="foot">由 <code>tools/build_flow.py</code> 生成 · 配套方法见 <a href="README.md">README.md</a> · 不要手改</footer>
@@ -701,7 +772,7 @@ nav.flow-nav{{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0}}nav.flow-nav a{
 <main class="wrap">
 <p class="eyebrow">Single flow view</p><h1>{html.escape(d['title'])}</h1>
 <p class="lede">{html.escape(d['desc'])}</p>
-<nav class="flow-nav"><a href="extra_flows.html">四图总览</a><a href="game_flow.html">总状态机</a>{others}<a href="{d['id']}.md">Mermaid 版</a></nav>
+<nav class="flow-nav"><a href="extra_flows.html">五图总览</a><a href="game_flow.html">总状态机</a>{others}<a href="{d['id']}.md">Mermaid 版</a></nav>
 <section class="card"><div class="diagram">{svg}</div></section>
 <section class="card"><p class="lede" style="margin:0">这张图由 <code>tools/build_flow.py</code> 生成，使用 Graphviz 预渲染 SVG。流程方法与维护规则见 <a href="README.md">flows/README.md</a>；总状态机见 <a href="game_flow.html">game_flow.html</a>。</p></section>
 <footer class="foot">不要手改 · 改模型后运行 <code>./run.sh flow</code> · LiveBay</footer>
