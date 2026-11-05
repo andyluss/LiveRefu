@@ -67,7 +67,7 @@ html:not([data-theme]) { color-scheme: light dark; }
 html {
   scroll-behavior: smooth;
   /* 顶栏 sticky 高度 + 呼吸位；锚点跳转时避免标题被遮住 */
-  scroll-padding-top: 72px;
+  /* scroll-padding-top: 72px; */
 }
 .prose :is(h1, h2, h3, h4, h5) { scroll-margin-top: 72px; }
 body {
