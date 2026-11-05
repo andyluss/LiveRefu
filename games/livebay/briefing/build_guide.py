@@ -127,7 +127,7 @@ def build():
 html,body{{margin:0;padding:0;background:var(--bg);color:var(--ink);font:17px/1.75 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}}
 a{{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--teal) 30%,transparent)}}
 a:hover{{border-bottom-color:var(--teal)}}
-.wrap{{max-width:900px;margin:0 auto;padding:42px 24px 90px}}
+.wrap{{max-width:1180px;margin:0 auto;padding:42px 24px 90px}}
 .guide-topbar{{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}}
 .guide-topbar-inner{{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:18px}}
 .guide-brand{{flex:0 0 auto;color:var(--ink);text-decoration:none;font-weight:800;font-size:16px}}
@@ -194,7 +194,7 @@ th{{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim
 <body data-page="guide">
 <header class="guide-topbar">
   <div class="guide-topbar-inner">
-    <a class="guide-brand" href="HUB.html">LiveBay <span>GUIDE</span></a>
+    <a class="guide-brand" href="HUB.html" title="返回项目 HUB" aria-label="返回 LiveBay 项目 HUB">LiveBay <span>GUIDE</span></a>
     <nav class="guide-links" aria-label="章节导航">
       <a href="#s1">三十秒</a><a href="#s2">一局</a><a href="#s3">资源</a><a href="#s4">塔</a><a href="#s5">敌人</a><a href="#s6">波次</a><a href="#s7">故障</a><a href="#s8">L1</a><a href="#s9">结果</a><a href="#s10">为什么</a><a href="#s11">词表</a>
     </nav>

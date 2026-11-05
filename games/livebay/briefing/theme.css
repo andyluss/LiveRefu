@@ -39,6 +39,12 @@ html[data-js] .theme-switch{display:inline-flex}
 .theme-switch button{border:0;background:transparent;color:var(--dim);font:11px/1 -apple-system,"PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.04em;padding:6px 9px;border-radius:999px;cursor:pointer}
 .theme-switch button[aria-pressed="true"]{background:var(--teal);color:var(--bg)}
 .theme-switch button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+body[data-page="hub"] .theme-switch{margin-left:10px}
+/* GUIDE：顶栏与正文使用同一个 1180px 容器，左右内边距也一致。 */
+body[data-page="guide"] .wrap{max-width:1180px;margin:0 auto;padding:42px 24px 90px}
+body[data-page="guide"] .guide-brand{text-decoration:none;border-bottom:0}
+body[data-page="guide"] .guide-brand:hover span{color:var(--orange)}
+body[data-page="guide"] h2{scroll-margin-top:76px}
 @media print{
   .theme-switch{display:none !important}
 }
