@@ -4,6 +4,7 @@ class_name LiveBayShiftMemory
 extends RefCounted
 
 var shifts := 0
+var audit_remaining := 0
 var history: Array = []
 var last_report: Dictionary = {}
 var store: LiveBayShiftStore
@@ -17,6 +18,7 @@ func _init(persist: LiveBayShiftStore = null) -> void:
 		if not history.is_empty():
 			last_report = history[history.size() - 1]
 			shifts = int(last_report.get("shift", history.size()))
+			audit_remaining = int(last_report.get("audit_remaining", 0))
 
 
 func has_last() -> bool:
@@ -25,6 +27,8 @@ func has_last() -> bool:
 
 func record(result: Dictionary, choice: String, low_report: int) -> void:
 	shifts += 1
+	if audit_remaining > 0:
+		audit_remaining -= 1
 	var entry := {
 		"shift": shifts,
 		"choice": choice,
@@ -33,6 +37,9 @@ func record(result: Dictionary, choice: String, low_report: int) -> void:
 		"integrity": int(result.get("integrity", 0)),
 	}
 	history.append(entry)
+	if low_streak() >= 3 and audit_remaining == 0:
+		audit_remaining = 2
+	entry["audit_remaining"] = audit_remaining
 	history = history.slice(-10)
 	last_report = entry
 	if store != null:
@@ -55,7 +62,9 @@ func briefing() -> Dictionary:
 			text = "上一班没有留下文字记录。交接单上只有评级与保障度。"
 	var streak := low_streak()
 	var audit := ""
-	if streak > 0:
+	if audit_remaining > 0:
+		audit = "\n\n停班审计剩余 %d 班：旁路禁用、故障停塔 +%ds、准备时间 -5s。" % [audit_remaining, streak]
+	elif streak > 0:
 		audit = "\n\n审计备注：连续低报 %d 班，下次故障停塔 +%ds、准备时间 -5s。" % [streak, streak]
 		var broadcast := broadcast_text()
 		if not broadcast.is_empty():
@@ -78,7 +87,7 @@ func briefing() -> Dictionary:
 
 
 func bypass_locked() -> bool:
-	return low_streak() >= 3
+	return audit_remaining > 0 or low_streak() >= 3
 
 
 func audit_prep_penalty() -> float:
@@ -87,6 +96,8 @@ func audit_prep_penalty() -> float:
 
 func broadcast_text() -> String:
 	var streak := low_streak()
+	if audit_remaining > 0:
+		return "广播：停班审计进行中，剩余 %d 班。" % audit_remaining
 	if streak >= 3:
 		return "广播：外环进入停班审计，事故统计暂停对外发布。"
 	if streak >= 2:

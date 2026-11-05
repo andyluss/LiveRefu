@@ -18,14 +18,16 @@ var flags: LiveBayFeatureFlags
 var procedure: LiveBayProcedureModule
 var _blackbox_meta: Dictionary
 var carry_low_report := 0
+var audit_remaining := 0
 var _fault_requested := false
 var _connections: Array = []
 
 
-func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null, initial_carry_low_report := 0) -> void:
+func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null, initial_carry_low_report := 0, initial_audit_remaining := 0) -> void:
 	data = initial_set.apply_data(game_data) if initial_set != null else game_data
 	expansion_set = initial_set if initial_set != null else LiveBayExpansionSet.empty()
 	carry_low_report = int(initial_carry_low_report)
+	audit_remaining = int(initial_audit_remaining)
 	flags = LiveBayFeatureFlags.from_set(expansion_set)
 	clock = LiveBayMissionClock.new()
 	events = LiveBayEventBus.new()
@@ -49,8 +51,8 @@ func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null, initi
 func _new_sim() -> void:
 	sim = SimScript.new(data)
 	sim.fault_choice_enabled = expansion_set.has_provides("procedure.fault_choice")
-	sim.fault_bypass_locked = carry_low_report >= 3
-	if carry_low_report >= 3:
+	sim.fault_bypass_locked = audit_remaining > 0 or carry_low_report >= 3
+	if audit_remaining > 0 or carry_low_report >= 3:
 		sim.wave.timer = maxf(0.0, sim.wave.timer - 5.0)
 	_connect(sim.wave_started, func(index: int): events.emit_event(&"WaveStarted", {"index": index}, &"wave"))
 	_connect(sim.wave_cleared, func(index: int): events.emit_event(&"WaveCleared", {"index": index}, &"wave"))

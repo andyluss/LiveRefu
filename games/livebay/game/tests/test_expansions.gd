@@ -92,6 +92,11 @@ func _initialize() -> void:
 	severe.record({"grade": "F", "integrity": 0}, "custom", 1)
 	_check(str(severe.broadcast_text()).contains("停班审计"), "shift: 3 consecutive low reports escalate")
 	_check(severe.bypass_locked() and is_equal_approx(severe.audit_prep_penalty(), 5.0), "shift: audit locks bypass and prep -5s")
+	_check(severe.audit_remaining == 2, "shift: audit lasts 2 shifts")
+	severe.record({"grade": "B", "integrity": 40}, "honest", 0)
+	_check(severe.audit_remaining == 1 and severe.bypass_locked(), "shift: audit still active after honest shift")
+	severe.record({"grade": "B", "integrity": 40}, "honest", 0)
+	_check(severe.audit_remaining == 0 and not severe.bypass_locked(), "shift: audit expires after 2 shifts")
 	_check(str(severe.archive_text()).contains("第 3 班"), "shift: archive lists recent shifts")
 	var long_history := LiveBayShiftMemory.new()
 	for i in range(12):
