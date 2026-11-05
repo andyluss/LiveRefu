@@ -23,7 +23,7 @@ PROJECT = Path(__file__).resolve().parents[1]
 NUMBERS = PROJECT / "docs-ai" / "design01" / "numbers"
 DATA = PROJECT / "game" / "data"
 
-MARKER = re.compile(r"<!--\s*export:\s*([a-z_]+)\s*-->\s*\n")
+MARKER = re.compile(r"<!--\s*export:\s*([a-z0-9_]+)\s*-->\s*\n")
 
 BALANCE_REQUIRED = [
     "starting_energy",
@@ -235,10 +235,10 @@ def build_waves(rows: list[dict[str, str]], enemy_ids: set[str]) -> list[dict]:
     return [grouped[k] for k in sorted(grouped)]
 
 
-def build_map(tables: dict[str, list[dict[str, str]]]) -> dict:
-    meta_rows = tables.get("map_meta", [])
+def build_map(tables: dict[str, list[dict[str, str]]], prefix: str = "map") -> dict:
+    meta_rows = tables.get(f"{prefix}_meta", [])
     if len(meta_rows) != 1:
-        fail("map_meta: 需要一行")
+        fail(f"{prefix}_meta: 需要一行")
     meta = meta_rows[0]
 
     def points(key: str) -> list[list[int]]:
@@ -247,15 +247,15 @@ def build_map(tables: dict[str, list[dict[str, str]]]) -> dict:
             fail(f"{key}: 没有数据")
         return [[int(float(r["x"])), int(float(r["y"]))] for r in rows]
 
-    path = points("map_path")
-    slots = points("map_slots")
+    path = points(f"{prefix}_path")
+    slots = points(f"{prefix}_slots")
     if len(path) < 2:
-        fail("map_path: 至少需要 2 个点")
+        fail(f"{prefix}_path: 至少需要 2 个点")
     if not slots:
-        fail("map_slots: 至少需要 1 个塔位")
-    base_rows = tables.get("map_base", [])
+        fail(f"{prefix}_slots: 至少需要 1 个塔位")
+    base_rows = tables.get(f"{prefix}_base", [])
     if len(base_rows) != 1:
-        fail("map_base: 需要一行")
+        fail(f"{prefix}_base: 需要一行")
     base = base_rows[0]
     return {
         "id": meta["id"],
@@ -280,7 +280,7 @@ def render(value: object, compact_pairs: bool = False) -> str:
 def main() -> None:
     check = "--check" in sys.argv
     tables = collect()
-    for required in ("balance", "profession", "towers", "enemies", "waves", "map_meta", "map_path", "map_slots", "map_base"):
+    for required in ("balance", "profession", "towers", "enemies", "waves", "map_meta", "map_path", "map_slots", "map_base", "map2_meta", "map2_path", "map2_slots", "map2_base"):
         if required not in tables:
             fail(f"缺少 export:{required}")
 
@@ -290,6 +290,7 @@ def main() -> None:
     enemies = build_enemies(tables["enemies"])
     waves = build_waves(tables["waves"], {e["id"] for e in enemies})
     map_data = build_map(tables)
+    map2_data = build_map(tables, "map2")
 
     targets = {
         "balance.json": balance,
@@ -298,12 +299,13 @@ def main() -> None:
         "enemies.json": enemies,
         "waves.json": waves,
         "map_bay01.json": map_data,
+        "map_bay02.json": map2_data,
     }
 
     mismatched: list[str] = []
     for name, value in targets.items():
         path = DATA / name
-        text = render(value, compact_pairs=(name == "map_bay01.json"))
+        text = render(value, compact_pairs=name.startswith("map_"))
         old = path.read_text(encoding="utf-8") if path.exists() else ""
         if check:
             if old != text:

@@ -76,6 +76,8 @@ var broadcast_timer := 0.0
 var broadcast_reveal := 0.0
 var broadcast_full := ""
 var archive_button: Button
+var map_button: Button
+var current_map_id := "bay01"
 var archive_page := 0
 var archive_filter := "all"
 var archive_open := false
@@ -165,6 +167,7 @@ func _new_sim() -> void:
 	runtime = RuntimeScript.new(data, expansion_set, shift_memory.next_low_report(), shift_memory.audit_remaining)
 	runtime.events.subscribe(&"ChecklistRequested", _on_checklist_requested)
 	runtime.events.subscribe(&"FaultChoiceRequested", _on_fault_choice_requested)
+	current_map_id = str(data.get("map_id", "bay01"))
 	sim = runtime.sim
 	sim.tower_fired.connect(_on_tower_fired)
 	sim.game_won.connect(_on_game_won)
@@ -220,6 +223,9 @@ func _build_ui() -> void:
 		labels[i].custom_minimum_size = Vector2(widths[i], 30)
 		stats.add_child(labels[i])
 
+	map_button = _make_top_button("地图 (G)", Vector2(838, 11))
+	map_button.pressed.connect(_show_map_picker)
+	top.add_child(map_button)
 	archive_button = _make_top_button("档案 (H)", Vector2(946, 11))
 	archive_button.pressed.connect(_show_archive.bind(0))
 	top.add_child(archive_button)
@@ -496,6 +502,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_toggle_speed()
 		"archive":
 			_show_archive(0)
+		"map":
+			_show_map_picker()
 		"mute":
 			_toggle_audio()
 		"restart":
@@ -621,6 +629,45 @@ func _toggle_audio() -> void:
 	toast_timer = 1.4
 	if not audio.muted:
 		audio.play("ui")
+
+
+func _show_map_picker() -> void:
+	if checklist_overlay == null or checklist_overlay.visible:
+		return
+	checklist_title.text = "选择地图"
+	checklist_body.text = "当前：%s。切换会重开一班，接班记录与低报 carry 保留。" % str(data.get("map", {}).get("name", current_map_id))
+	for child in checklist_buttons.get_children():
+		child.queue_free()
+	for map_id: String in data.get("maps", {}).keys():
+		var map_data: Dictionary = data.maps[map_id]
+		var button := Button.new()
+		button.text = "%s · %s" % [str(map_data.get("name", map_id)), map_id]
+		button.custom_minimum_size = Vector2(440, 42)
+		_style_button(button, PALETTE.teal if map_id == current_map_id else PALETTE.sage, PALETTE.cream)
+		button.pressed.connect(_choose_map.bind(map_id))
+		checklist_buttons.add_child(button)
+	checklist_overlay.visible = true
+	if runtime != null:
+		runtime.clock.paused = true
+
+
+func _choose_map(map_id: String) -> void:
+	checklist_overlay.visible = false
+	if map_id == current_map_id:
+		if runtime != null:
+			runtime.clock.paused = false
+		return
+	if runtime != null:
+		runtime.dispose()
+		runtime = null
+	sim = null
+	data = DataLoaderScript.load_mission_pack("res://data", map_id)
+	if data.is_empty():
+		_show_fatal("地图加载失败：%s" % map_id)
+		return
+	_new_sim()
+	toast_text = "已切换到 %s" % str(data.get("map", {}).get("name", map_id))
+	toast_timer = 1.6
 
 
 func _show_archive(page := 0, filter := "all") -> void:

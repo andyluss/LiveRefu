@@ -43,8 +43,8 @@ static func load_json(path: String) -> Variant:
 	return parsed
 
 
-static func load_mission_pack(base_dir: String = DATA_DIR) -> Dictionary:
-	var data := load_game_data(base_dir)
+static func load_mission_pack(base_dir: String = DATA_DIR, map_id: String = "bay01") -> Dictionary:
+	var data := load_game_data(base_dir, map_id)
 	if data.is_empty():
 		return {}
 	var pack: LiveBayMissionPack = MissionPackScript.build(data)
@@ -61,17 +61,28 @@ static func load_mission_pack(base_dir: String = DATA_DIR) -> Dictionary:
 	return pack.data
 
 
-static func load_game_data(base_dir: String = DATA_DIR) -> Dictionary:
+static func load_game_data(base_dir: String = DATA_DIR, map_id: String = "bay01") -> Dictionary:
 	var profession: Variant = load_json(base_dir.path_join("profession_guard.json"))
 	var towers: Variant = load_json(base_dir.path_join("towers.json"))
 	var enemies: Variant = load_json(base_dir.path_join("enemies.json"))
 	var waves: Variant = load_json(base_dir.path_join("waves.json"))
-	var map_data: Variant = load_json(base_dir.path_join("map_bay01.json"))
 	var balance: Variant = load_json(base_dir.path_join("balance.json"))
 
 	if not _is_dict(profession) or not _is_array(towers) or not _is_array(enemies):
 		return {}
-	if not _is_array(waves) or not _is_dict(map_data) or not _is_dict(balance):
+	if not _is_array(waves) or not _is_dict(balance):
+		return {}
+
+	var maps: Dictionary = {}
+	for map_file: String in ["map_bay01.json", "map_bay02.json"]:
+		var raw_map: Variant = load_json(base_dir.path_join(map_file))
+		if not _is_dict(raw_map) or not raw_map.has("id"):
+			push_error("DataLoader: 地图文件不合法 %s" % map_file)
+			return {}
+		maps[str(raw_map.id)] = raw_map
+	var map_data: Variant = maps.get(map_id, null)
+	if not _is_dict(map_data):
+		push_error("DataLoader: 未知地图 %s" % map_id)
 		return {}
 
 	var towers_by_id := {}
@@ -137,6 +148,8 @@ static func load_game_data(base_dir: String = DATA_DIR) -> Dictionary:
 		"enemies_by_id": enemies_by_id,
 		"waves": waves,
 		"map": map_data,
+		"maps": maps,
+		"map_id": map_id,
 		"balance": balance,
 	}
 

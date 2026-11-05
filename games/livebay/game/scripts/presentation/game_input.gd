@@ -16,6 +16,7 @@ const ACTIONS := {
 	KEY_ESCAPE: "clear",
 	KEY_H: "archive",
 	KEY_M: "mute",
+	KEY_G: "map",
 }
 
 

@@ -81,6 +81,7 @@ function build(): string {
   const enemies = load('enemies.json');
   const waves = load('waves.json');
   const mapdata = load('map_bay01.json');
+  const map2data = load('map_bay02.json');
   const balance = load('balance.json');
   const totalSlots = mapdata.slots.length;
   const totalWaves = waves.length;
@@ -215,6 +216,7 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
     <h1>你是一个值班人，<br>不是指挥官。</h1>
     <p class="lead">在一座月牙形的移动太空城里，你守外环的一段舱壁。敌人不是“邪恶军团”，而是星际尘埃、乱流、重壳，以及从湾口反向扩散的内部故障。你要做的不是打赢一场战争，而是让这一班安全过去。</p>
     <div class="box tip"><h3>三十秒版本</h3><p>用供能造 <b>${totalTowers} 种塔</b>，守住 <b>${totalSlots} 个固定塔位</b>，扛过 <b>${totalWaves} 波</b>敌人。漏过敌人会扣保障度；保障度归零就失败。第 4/5 波的「故障」会让塔短暂离线——先修输出还是先保经济，是这一班的核心选择。</p></div>
+    <p class="dim">可选地图：<b>${esc(mapdata.name)}</b>（${mapdata.slots.length} 塔位，弧形主防线）与 <b>${esc(map2data.name)}</b>（${map2data.slots.length} 塔位，回环维护路径）。</p>
   </section>
 
   <section id="s2">

@@ -135,6 +135,10 @@ func _test_kernel(data: Dictionary) -> void:
 func _test_data(data: Dictionary) -> void:
 	_check(data.towers.size() == 4, "4 towers")
 	_check(data.enemies.size() == 5, "5 enemies")
+	var map2: Dictionary = DataLoaderScript.load_game_data("res://data", "bay02")
+	_check(not map2.is_empty() and str(map2.get("map_id", "")) == "bay02" and map2.map.slots.size() == 9, "map 02 loads with 9 slots")
+	var map2_sim := SimScript.new(map2)
+	_check(map2_sim.path_total > 1000.0 and map2_sim.slots.size() == 9, "map 02 has a traversable path")
 	_check(data.towers_by_id.has("tractor"), "tractor tower exists")
 	_check(data.enemies_by_id.has("armor"), "armor enemy exists")
 	_check(data.enemies_by_id.has("fault"), "fault enemy exists")
