@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>游戏系统地图 · 宏观分析交互版</title>
+<meta name="description" content="把游戏拆成八层系统、六组张力和三个循环，用可交互的雷达、节拍器与诊断面板理解游戏设计。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  apply();
+  try { mql.addEventListener('change', function () {
+    if (document.documentElement.dataset.themeChoice === 'system') apply();
+  }); } catch (e) {}
+})();
+</script>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #e9e3d5;
+  --panel: #f5efe2;
+  --panel-2: #ded5c3;
+  --ink: #232b2f;
+  --muted: #5f6967;
+  --line: #b9ae98;
+  --teal: #2f6b65;
+  --teal-2: #3e8a82;
+  --orange: #c95b2c;
+  --amber: #b47a16;
+  --rust: #8c4a32;
+  --sage: #6d7f5d;
+  --shadow: 0 16px 40px rgba(35, 43, 47, .12);
+  --radius: 16px;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #11181b;
+  --panel: #182326;
+  --panel-2: #223136;
+  --ink: #e9e3d5;
+  --muted: #a9b4b0;
+  --line: #3d4d4d;
+  --teal: #73c5bb;
+  --teal-2: #99ded5;
+  --orange: #ed8a5a;
+  --amber: #e0b35f;
+  --rust: #d08a70;
+  --sage: #a7bd93;
+  --shadow: 0 18px 50px rgba(0, 0, 0, .36);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) { color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 80% -10%, rgba(62, 138, 130, .18), transparent 38rem),
+    linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 82%, var(--panel) 18%));
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+button, input { font: inherit; }
+button { color: inherit; }
+a { color: var(--teal); }
+.skip-link {
+  position: absolute; left: 12px; top: -60px; padding: 8px 12px;
+  background: var(--ink); color: var(--bg); z-index: 20; border-radius: 6px;
+}
+.skip-link:focus { top: 12px; }
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px clamp(16px, 4vw, 44px);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  backdrop-filter: blur(12px);
+}
+.brand { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-kicker { font: 700 10px/1 var(--mono); letter-spacing: .18em; color: var(--orange); text-transform: uppercase; }
+.brand-title { font-size: 15px; font-weight: 800; letter-spacing: .04em; }
+.theme-switch { display: flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+.theme-switch button {
+  border: 0; background: transparent; color: var(--muted); cursor: pointer;
+  padding: 6px 11px; border-radius: 999px; font-size: 12px;
+}
+.theme-switch button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 44px) 56px; }
+.hero { padding: clamp(38px, 8vw, 86px) 0 28px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); gap: clamp(20px, 5vw, 60px); align-items: end; }
+.eyebrow { font: 700 11px/1 var(--mono); letter-spacing: .2em; color: var(--orange); text-transform: uppercase; margin: 0 0 14px; }
+h1 { font-size: clamp(36px, 6vw, 74px); line-height: 1.04; letter-spacing: -.045em; margin: 0; max-width: 900px; }
+h1 em { font-style: normal; color: var(--teal); }
+.lede { max-width: 62ch; color: var(--muted); font-size: clamp(15px, 1.6vw, 18px); margin: 20px 0 0; }
+.hero-note { border-left: 3px solid var(--orange); padding: 4px 0 4px 16px; color: var(--muted); font-size: 13px; }
+.badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.badge { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; font: 600 11px/1.4 var(--mono); color: var(--muted); }
+.badge.hot { border-color: color-mix(in srgb, var(--orange) 60%, var(--line)); color: var(--orange); }
+.grid { display: grid; gap: 18px; }
+.grid.two { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: start; }
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: clamp(16px, 2.4vw, 26px); min-width: 0;
+}
+.card h2 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 4px; font-size: 18px; letter-spacing: -.02em; }
+.card h2 .num { font: 700 10px/1 var(--mono); color: var(--orange); letter-spacing: .1em; }
+.card .hint { margin: 0 0 16px; color: var(--muted); font-size: 12px; }
+.map-card { position: relative; overflow: hidden; }
+#systemMap { width: 100%; height: auto; display: block; touch-action: manipulation; }
+#systemMap .edge { stroke: var(--line); stroke-width: 1.2; opacity: .7; }
+#systemMap .edge.hot { stroke: var(--orange); opacity: .9; }
+#systemMap .node circle.ring { fill: var(--panel-2); stroke: var(--line); stroke-width: 1.5; }
+#systemMap .node:hover circle.ring, #systemMap .node:focus-visible circle.ring { stroke: var(--orange); stroke-width: 3; }
+#systemMap .node.is-active circle.ring { fill: var(--teal); stroke: var(--teal); }
+#systemMap .node.is-active text.label { fill: var(--panel); }
+#systemMap .node.is-weak circle.ring { stroke: var(--rust); stroke-dasharray: 4 3; }
+#systemMap .node text.label { fill: var(--ink); font: 700 12px var(--sans); text-anchor: middle; pointer-events: none; }
+#systemMap .node text.sub { fill: var(--muted); font: 9px var(--mono); text-anchor: middle; pointer-events: none; }
+#systemMap .core { fill: var(--teal); opacity: .12; }
+#systemMap .core-text { fill: var(--teal); font: 700 11px var(--mono); text-anchor: middle; letter-spacing: .1em; }
+.map-status { position: absolute; top: 18px; right: 18px; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 10px; font: 600 10px var(--mono); color: var(--muted); }
+.map-status.weak { color: var(--rust); border-color: var(--rust); }
+.layer-detail { margin-top: 6px; border-top: 1px dashed var(--line); padding-top: 14px; min-height: 150px; }
+.layer-detail h3 { margin: 0 0 2px; font-size: 20px; letter-spacing: -.02em; }
+.layer-detail .q { color: var(--teal); font-size: 13px; margin: 0 0 8px; }
+.layer-detail p { margin: 6px 0; color: var(--muted); font-size: 13px; }
+.layer-detail .risk { color: var(--rust); }
+.layer-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.chip {
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+  border-radius: 999px; padding: 5px 10px; cursor: pointer; font-size: 12px;
+}
+.chip:hover, .chip:focus-visible { border-color: var(--teal); color: var(--teal); }
+.chip.on { background: var(--teal); border-color: var(--teal); color: var(--panel); }
+.slider-row { display: grid; grid-template-columns: 108px minmax(0, 1fr) 34px; gap: 10px; align-items: center; margin: 10px 0; }
+.slider-row label { font-size: 12px; color: var(--muted); }
+.slider-row output { font: 700 11px var(--mono); color: var(--ink); text-align: right; }
+input[type="range"] { width: 100%; accent-color: var(--teal); }
+.tension-legend { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font: 10px var(--mono); margin-top: 4px; }
+#radar { width: 100%; max-width: 330px; display: block; margin: 6px auto 0; }
+#radar .grid-line { stroke: var(--line); fill: none; opacity: .7; }
+#radar .axis { stroke: var(--line); opacity: .5; }
+#radar .poly { fill: color-mix(in srgb, var(--teal) 26%, transparent); stroke: var(--teal); stroke-width: 2.4; }
+#radar .dot { fill: var(--orange); }
+#radar text { fill: var(--muted); font: 10px var(--mono); }
+.verdict { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.verdict strong { color: var(--orange); font-size: 12px; letter-spacing: .08em; }
+.verdict p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.control { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); }
+.control label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.control output { font: 700 22px/1.2 var(--mono); color: var(--teal); }
+.beat { display: flex; align-items: center; gap: 14px; margin: 18px 0 4px; }
+.beat-dot {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--orange);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--orange) 40%, transparent);
+  animation: pulse var(--beat, 2s) infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--orange) 36%, transparent); }
+  70% { box-shadow: 0 0 0 16px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.beat-line { height: 8px; flex: 1; background: var(--panel-2); border-radius: 999px; overflow: hidden; }
+.beat-line span { display: block; height: 100%; width: var(--fill, 40%); background: linear-gradient(90deg, var(--teal), var(--orange)); }
+.bars { display: flex; align-items: end; gap: 12px; height: 110px; margin: 12px 0 0; padding: 8px 4px 0; border-bottom: 1px solid var(--line); }
+.bar { flex: 1; display: flex; flex-direction: column; justify-content: end; align-items: center; gap: 5px; height: 100%; }
+.bar i { display: block; width: 100%; max-width: 46px; border-radius: 4px 4px 0 0; background: var(--teal); opacity: .8; min-height: 4px; }
+.bar b { font: 700 10px var(--mono); color: var(--muted); }
+.bar small { font: 10px var(--muted); color: var(--muted); }
+.presets { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 12px; }
+.presets button {
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 12px;
+}
+.presets button[aria-pressed="true"] { border-color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); }
+.preset-scene { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.preset-scene article { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); }
+.preset-scene h3 { margin: 0 0 4px; font-size: 13px; }
+.preset-scene p { margin: 0; color: var(--muted); font-size: 12px; }
+.checklist { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.checklist label { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); font-size: 12px; color: var(--muted); cursor: pointer; }
+.checklist input { accent-color: var(--teal); margin-top: 3px; }
+.score { font: 700 28px var(--mono); color: var(--teal); }
+.footer { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 24px; color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.footer a { color: var(--teal); }
+.noscript { border: 1px solid var(--rust); color: var(--rust); padding: 12px; border-radius: 8px; margin: 16px 0; }
+@media (max-width: 900px) {
+  .hero, .grid.two { grid-template-columns: 1fr; }
+  .hero { padding-top: 30px; }
+  .map-status { position: static; display: inline-block; margin-bottom: 6px; }
+  .preset-scene { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beat-dot { animation: none; }
+  html { scroll-behavior: auto; }
+}
+@media print {
+  :root, :root[data-theme] { color-scheme: light; --bg: #fff; --panel: #fff; --panel-2: #f0f0f0; --ink: #111; --muted: #333; --line: #999; }
+  .topbar, .theme-switch, .presets, .layer-actions, .checklist, .footer { display: none !important; }
+  .card { box-shadow: none; break-inside: avoid; }
+  .hero { padding-top: 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到交互内容</a>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-kicker">LiveBay · game systems</span>
+    <span class="brand-title">游戏系统地图</span>
+  </div>
+  <div class="theme-switch" role="group" aria-label="主题">
+    <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+    <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+    <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">An interactive systems map</p>
+      <h1>游戏不是内容清单，<br>是一组<em>互相拉扯</em>的系统。</h1>
+      <p class="lede">这不是文章的摘要页。它把“游戏的一切”拆成八个层、六组张力和三个循环节拍；你可以拖动、点击、切换项目原型，观察它们如何互相解释，也如何互相拆台。</p>
+      <div class="badges">
+        <span class="badge hot">8 层系统</span>
+        <span class="badge">6 组张力</span>
+        <span class="badge">3 个循环</span>
+        <span class="badge">实时诊断</span>
+      </div>
+    </div>
+    <aside class="hero-note">
+      <strong>怎么用：</strong>先点地图上的任一层，看看它在问什么；再拖动张力滑杆，观察雷达和诊断如何变化；最后用三个项目原型，比较不同商业/体验选择带来的系统性后果。<br><br>
+      所有判断都是启发式，不是评分标准。
+    </aside>
+  </section>
+
+  <noscript><div class="noscript">此页面的交互需要 JavaScript；下面的文字和表格仍然可以阅读。</div></noscript>
+
+  <section class="grid two">
+    <section class="card map-card" aria-labelledby="mapTitle">
+      <h2 id="mapTitle"><span class="num">01</span> 八层系统地图</h2>
+      <p class="hint">点击节点查看这一层的核心问题、常见失败与诊断提问；点击“标记为弱项”观察系统短板。</p>
+      <span class="map-status" id="mapStatus">短板：—</span>
+      <svg id="systemMap" viewBox="0 0 620 620" role="img" aria-label="八层游戏系统关系图：玩家、规则、空间、难度、叙事、审美、经济、社会技术。">
+        <g id="edges"></g>
+        <circle class="core" cx="310" cy="310" r="82"></circle>
+        <text class="core-text" x="310" y="306">GAME</text>
+        <text class="core-text" x="310" y="324">AS SYSTEM</text>
+        <g id="nodes"></g>
+      </svg>
+      <div class="layer-detail" id="layerDetail" aria-live="polite">
+        <h3>玩家</h3>
+        <p class="q">谁在玩，他带着什么能力、时间和期待？</p>
+        <p>玩家不是画像，而是一段正在展开的过程：动机会变，能力会变，时间会被生活切碎。</p>
+        <p class="risk">常见失败：把最熟悉的玩家当成所有人。</p>
+        <div class="layer-actions">
+          <button type="button" class="chip" id="toggleWeak" aria-pressed="false">标记为弱项</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="tensionTitle">
+      <h2 id="tensionTitle"><span class="num">02</span> 六组张力</h2>
+      <p class="hint">没有“正确值”。拖动滑杆，看看一个项目在哪些方向被拉得太紧。</p>
+      <div id="tensionControls">
+        <div class="slider-row"><label for="t-challenge">挑战 ↔ 可达</label><input id="t-challenge" data-key="challenge" type="range" min="0" max="100" value="65"><output>65</output></div>
+        <div class="slider-row"><label for="t-freedom">自由 ↔ 引导</label><input id="t-freedom" data-key="freedom" type="range" min="0" max="100" value="52"><output>52</output></div>
+        <div class="slider-row"><label for="t-narrative">叙事 ↔ 系统</label><input id="t-narrative" data-key="narrative" type="range" min="0" max="100" value="58"><output>58</output></div>
+        <div class="slider-row"><label for="t-commerce">商业 ↔ 信任</label><input id="t-commerce" data-key="commerce" type="range" min="0" max="100" value="40"><output>40</output></div>
+        <div class="slider-row"><label for="t-scale">规模 ↔ 深度</label><input id="t-scale" data-key="scale" type="range" min="0" max="100" value="50"><output>50</output></div>
+        <div class="slider-row"><label for="t-surprise">稳定 ↔ 惊喜</label><input id="t-surprise" data-key="surprise" type="range" min="0" max="100" value="62"><output>62</output></div>
+      </div>
+      <div class="tension-legend"><span>左端：更保守/更可控</span><span>右端：更激进/更不确定</span></div>
+      <svg id="radar" viewBox="0 0 360 300" role="img" aria-label="六组张力的实时雷达图"></svg>
+      <div class="verdict" id="tensionVerdict" aria-live="polite"><strong>诊断</strong><p>正在读取张力…</p></div>
+    </section>
+  </section>
+
+  <section class="card" aria-labelledby="loopTitle" style="margin-top:18px">
+    <h2 id="loopTitle"><span class="num">03</span> 循环节拍器</h2>
+    <p class="hint">把“一局多久”“一个循环多长”“反馈多密”放在一起，看看短、中、长循环是否接得上。</p>
+    <div class="controls">
+      <div class="control"><label for="session">单次会话（分钟）</label><output id="sessionOut">45</output><input id="session" type="range" min="10" max="180" value="45"></div>
+      <div class="control"><label for="loop">单个循环（秒）</label><output id="loopOut">90</output><input id="loop" type="range" min="10" max="600" value="90"></div>
+      <div class="control"><label for="density">反馈密度（1–10）</label><output id="densityOut">6</output><input id="density" type="range" min="1" max="10" value="6"></div>
+    </div>
+    <div class="beat"><span class="beat-dot" id="beatDot"></span><div class="beat-line"><span id="beatFill"></span></div></div>
+    <div class="bars" id="bars" aria-label="短中长循环的相对密度"></div>
+    <div class="verdict" id="loopVerdict" aria-live="polite"><strong>节拍诊断</strong><p>正在计算…</p></div>
+  </section>
+
+  <section class="card" aria-labelledby="presetTitle" style="margin-top:18px">
+    <h2 id="presetTitle"><span class="num">04</span> 三种项目原型</h2>
+    <p class="hint">同样是“做游戏”，叙事单人、竞技对战、长线服务会把系统拉向不同的方向。</p>
+    <div class="presets" role="group" aria-label="项目原型">
+      <button type="button" data-preset="narrative" aria-pressed="true">叙事单人</button>
+      <button type="button" data-preset="competitive" aria-pressed="false">竞技对战</button>
+      <button type="button" data-preset="live" aria-pressed="false">长线服务</button>
+    </div>
+    <div class="preset-scene">
+      <article><h3>它优先保护什么</h3><p id="presetProtect">—</p></article>
+      <article><h3>它最容易牺牲什么</h3><p id="presetSacrifice">—</p></article>
+      <article><h3>它的核心风险</h3><p id="presetRisk">—</p></article>
+      <article><h3>它的成功信号</h3><p id="presetSignal">—</p></article>
+    </div>
+  </section>
+
+  <section class="grid two" style="margin-top:18px">
+    <section class="card" aria-labelledby="checkTitle">
+      <h2 id="checkTitle"><span class="num">05</span> 十个问题</h2>
+      <p class="hint">勾选你已经能回答的问题。不是给游戏打分，是找“系统没有对齐”的地方。</p>
+      <div class="checklist" id="checklist">
+        <label><input type="checkbox" data-q="1"> 玩家 30 秒内知道该做什么</label>
+        <label><input type="checkbox" data-q="2"> 玩家 3 分钟内知道为何成败</label>
+        <label><input type="checkbox" data-q="3"> 玩家 30 分钟后形成自己的策略</label>
+        <label><input type="checkbox" data-q="4"> 玩家 3 小时后仍有新东西可学</label>
+        <label><input type="checkbox" data-q="5"> 玩家 3 天后还会想起这款游戏</label>
+        <label><input type="checkbox" data-q="6"> 核心循环有代价，不只是奖励</label>
+        <label><input type="checkbox" data-q="7"> 叙事 / 规则 / 空间 / 审美说同一件事</label>
+        <label><input type="checkbox" data-q="8"> 经济尊重时间，而不只延长在线</label>
+        <label><input type="checkbox" data-q="9"> 社交有意义，同时伤害有边界</label>
+        <label><input type="checkbox" data-q="10"> 商业让团队可持续，同时不破坏信任</label>
+      </div>
+      <div class="verdict"><strong>体检结果</strong><p><span class="score" id="checkScore">0</span> / 10。低于 7 项时，优先检查“循环—反馈—代价”是否对齐，而不是继续加内容。</p></div>
+    </section>
+
+    <section class="card" aria-labelledby="readTitle">
+      <h2 id="readTitle"><span class="num">06</span> 怎么读这张图</h2>
+      <p class="hint">三个视角，不需要背概念。</p>
+      <div class="preset-scene">
+        <article><h3>先看短板</h3><p>八层里最弱的一层，通常决定玩家最先在哪里流失；强项只能延缓，不能替代短板。</p></article>
+        <article><h3>再看张力</h3><p>张力不是“平衡值”，而是“这个项目愿意承担什么代价”。雷达越均匀，不代表越好。</p></article>
+        <article><h3>最后看节拍</h3><p>短循环负责手感，中循环负责一段时间的意义，长循环负责明天为什么回来；三者断一个，玩家就会停。</p></article>
+        <article><h3>把它当提问器</h3><p>每次改数值、加功能、换商业模型，都回到这三个视角问一次：哪层被牺牲了？</p></article>
+      </div>
+    </section>
+  </section>
+
+  <footer class="footer">
+    <span>游戏系统地图 · 配套文章：<a href="./游戏宏观分析.md">《游戏作为一座运行中的系统》</a></span>
+    <span>启发式工具，不是评分标准 · 2026-11-05</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var $ = function (sel, root) { return (root || document).querySelector(sel); };
+  var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+
+  /* ---------------- theme ---------------- */
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var themeButtons = $$('[data-theme-choice]');
+  function applyTheme() {
+    var choice = document.documentElement.dataset.themeChoice || 'system';
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    themeButtons.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.themeChoice === choice));
+    });
+  }
+  themeButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.documentElement.dataset.themeChoice = b.dataset.themeChoice;
+      try { localStorage.setItem(KEY, b.dataset.themeChoice); } catch (e) {}
+      applyTheme();
+    });
+  });
+  try { mql.addEventListener('change', applyTheme); } catch (e) {}
+  applyTheme();
+
+  /* ---------------- layers ---------------- */
+  var layers = [
+    { id: 'player', label: '玩家', x: 310, y: 76, q: '谁在玩，他带着什么能力、时间和期待？', body: '玩家不是画像，而是一段正在展开的过程：动机会变，能力会变，时间会被生活切碎。', risk: '把最熟悉的玩家当成所有人。' },
+    { id: 'rules', label: '规则', x: 500, y: 155, q: '目标、约束、信息和随机，如何组成有代价的选择？', body: '规则是语法：目标给方向，约束给重量，信息给判断，随机给变化。', risk: '没有代价的规则，只剩下按按钮。' },
+    { id: 'space', label: '空间', x: 544, y: 325, q: '玩家在哪里、看到什么、如何撤退与冒险？', body: '关卡把规则放进身体：路径、视线、地标、节奏和可达性共同决定决策。', risk: '空间只是背景，玩家读不懂系统。' },
+    { id: 'difficulty', label: '难度', x: 470, y: 500, q: '挑战是否略高于能力，失败是否提供信息？', body: '难度不是直线，而是能力与要求的关系；好的失败让玩家知道下一步改什么。', risk: '惩罚很重，但不知道为什么失败。' },
+    { id: 'narrative', label: '叙事', x: 310, y: 556, q: '故事、环境、系统和玩家叙事是否互相印证？', body: '作者、环境、系统、玩家四种叙事要能对上；否则剧情和玩法会互相拆台。', risk: '剧情说你很弱，玩法让你无敌。' },
+    { id: 'aesthetic', label: '审美', x: 150, y: 500, q: '玩家能否在零点几秒内读懂敌我、危险与路径？', body: '审美首先是可读性：颜色、形状、声音、动效都要建立信息层级。', risk: '所有东西都在抢注意力，玩家无法决策。' },
+    { id: 'economy', label: '经济', x: 76, y: 325, q: '资源如何生产、转化、消耗，是否尊重时间？', body: '水龙头与下水道要匹配；通胀、等待和付费点都会改变玩家对投入的感受。', risk: '产出大于消耗，奖励贬值；消耗大于产出，体验变成打工。' },
+    { id: 'society', label: '社会', x: 120, y: 155, q: '他人在场之后，合作、竞争、社区和治理是否成立？', body: '社交不是聊天框，而是他人在场对系统的影响；社区会延长生命，也会放大缺陷。', risk: '只有热闹，没有安全感。' }
+  ];
+  var activeLayer = 'player';
+  var weak = {};
+  var map = $('#systemMap');
+  var edges = $('#edges');
+  var nodes = $('#nodes');
+  var detail = $('#layerDetail');
+  var status = $('#mapStatus');
+
+  function pointOnCircle(a, b) {
+    var dx = b.x - a.x, dy = b.y - a.y, len = Math.sqrt(dx * dx + dy * dy) || 1;
+    return { x: a.x + dx / len * 40, y: a.y + dy / len * 40 };
+  }
+  function renderEdges() {
+    var html = '';
+    for (var i = 0; i < layers.length; i++) {
+      var a = layers[i], b = layers[(i + 1) % layers.length];
+      var p1 = pointOnCircle(a, b), p2 = pointOnCircle(b, a);
+      html += '<line class="edge" x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '"></line>';
+    }
+    edges.innerHTML = html;
+  }
+  function renderNodes() {
+    var html = '';
+    layers.forEach(function (l) {
+      var cls = 'node' + (l.id === activeLayer ? ' is-active' : '') + (weak[l.id] ? ' is-weak' : '');
+      html += '<g class="' + cls + '" data-layer="' + l.id + '" tabindex="0" role="button" aria-label="查看' + l.label + '层">' +
+        '<circle class="ring" cx="' + l.x + '" cy="' + l.y + '" r="40"></circle>' +
+        '<text class="label" x="' + l.x + '" y="' + (l.y - 3) + '">' + l.label + '</text>' +
+        '<text class="sub" x="' + l.x + '" y="' + (l.y + 14) + '">' + (weak[l.id] ? 'WEAK' : 'LAYER') + '</text>' +
+        '</g>';
+    });
+    nodes.innerHTML = html;
+    $$('.node', nodes).forEach(function (n) {
+      n.addEventListener('click', function () { selectLayer(n.dataset.layer); });
+      n.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectLayer(n.dataset.layer); }
+      });
+    });
+  }
+  function selectLayer(id) {
+    activeLayer = id;
+    var l = layers.filter(function (x) { return x.id === id; })[0];
+    if (!l) return;
+    detail.innerHTML = '<h3>' + l.label + '</h3><p class="q">' + l.q + '</p><p>' + l.body + '</p><p class="risk">常见失败：' + l.risk + '</p>' +
+      '<div class="layer-actions"><button type="button" class="chip' + (weak[id] ? ' on' : '') + '" id="toggleWeak" aria-pressed="' + String(!!weak[id]) + '">' + (weak[id] ? '取消弱项标记' : '标记为弱项') + '</button></div>';
+    $('#toggleWeak').addEventListener('click', function () { weak[id] = !weak[id]; renderNodes(); updateStatus(); selectLayer(id); });
+    renderNodes();
+    updateStatus();
+  }
+  function updateStatus() {
+    var weaks = layers.filter(function (l) { return weak[l.id]; });
+    if (!weaks.length) {
+      status.textContent = '短板：—';
+      status.classList.remove('weak');
+      return;
+    }
+    status.textContent = '短板：' + weaks.map(function (l) { return l.label; }).join(' / ');
+    status.classList.add('weak');
+  }
+  renderEdges(); renderNodes(); updateStatus(); selectLayer('player');
+
+  /* ---------------- tension radar ---------------- */
+  var axes = [
+    { key: 'challenge', label: '挑战', opposite: '可达' },
+    { key: 'freedom', label: '自由', opposite: '引导' },
+    { key: 'narrative', label: '叙事', opposite: '系统' },
+    { key: 'commerce', label: '商业', opposite: '信任' },
+    { key: 'scale', label: '规模', opposite: '深度' },
+    { key: 'surprise', label: '惊喜', opposite: '稳定' }
+  ];
+  var tension = { challenge: 65, freedom: 52, narrative: 58, commerce: 40, scale: 50, surprise: 62 };
+  var radar = $('#radar');
+  function radarPoint(i, value, radius, cx, cy) {
+    var angle = -Math.PI / 2 + i * 2 * Math.PI / axes.length;
+    var r = radius * value / 100;
+    return { x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r, angle: angle };
+  }
+  function renderRadar() {
+    var cx = 180, cy = 145, maxR = 104;
+    var svg = '<g>';
+    [25, 50, 75, 100].forEach(function (level) {
+      var pts = axes.map(function (_, i) { return radarPoint(i, level, maxR, cx, cy); });
+      svg += '<polygon class="grid-line" points="' + pts.map(function (p) { return p.x + ',' + p.y; }).join(' ') + '"></polygon>';
+    });
+    axes.forEach(function (a, i) {
+      var p = radarPoint(i, 100, maxR, cx, cy);
+      var tx = radarPoint(i, 122, maxR, cx, cy);
+      svg += '<line class="axis" x1="' + cx + '" y1="' + cy + '" x2="' + p.x + '" y2="' + p.y + '"></line>';
+      svg += '<text x="' + tx.x + '" y="' + tx.y + '" text-anchor="middle">' + a.label + '</text>';
+    });
+    var pts = axes.map(function (a, i) { return radarPoint(i, tension[a.key], maxR, cx, cy); });
+    svg += '<polygon class="poly" points="' + pts.map(function (p) { return p.x + ',' + p.y; }).join(' ') + '"></polygon>';
+    pts.forEach(function (p) { svg += '<circle class="dot" cx="' + p.x + '" cy="' + p.y + '" r="3.5"></circle>'; });
+    svg += '</g>';
+    radar.innerHTML = svg;
+  }
+  function updateTension() {
+    $$('#tensionControls input').forEach(function (input) {
+      tension[input.dataset.key] = Number(input.value);
+      input.parentElement.querySelector('output').textContent = input.value;
+    });
+    renderRadar();
+    var values = axes.map(function (a) { return tension[a.key]; });
+    var avg = values.reduce(function (a, b) { return a + b; }, 0) / values.length;
+    var extremes = axes.filter(function (a) { return tension[a.key] >= 75 || tension[a.key] <= 25; });
+    var msg = '平均张力 ' + Math.round(avg) + '。';
+    if (!extremes.length) {
+      msg += '当前没有单项被拉到极端；这不等于健康，只说明取舍尚未显性化。';
+    } else {
+      msg += '被拉得最紧的方向：' + extremes.map(function (a) { return tension[a.key] >= 75 ? a.label : a.opposite; }).join('、') + '。';
+      msg += '张力越极端，越需要在另一层付出补偿，否则会以流失、疲劳或信任下降的形式回到系统里。';
+    }
+    $('#tensionVerdict').innerHTML = '<strong>诊断</strong><p>' + msg + '</p>';
+  }
+  $$('#tensionControls input').forEach(function (input) { input.addEventListener('input', updateTension); });
+  updateTension();
+
+  /* ---------------- loop metronome ---------------- */
+  var loopEls = { session: $('#session'), loop: $('#loop'), density: $('#density') };
+  var bars = $('#bars');
+  function updateLoop() {
+    var session = Number(loopEls.session.value);
+    var loop = Number(loopEls.loop.value);
+    var density = Number(loopEls.density.value);
+    $('#sessionOut').textContent = session;
+    $('#loopOut').textContent = loop;
+    $('#densityOut').textContent = density;
+    var loops = Math.round(session * 60 / loop);
+    var fill = Math.min(100, Math.max(8, 100 / loops * 3 + density * 4));
+    $('#beatFill').style.setProperty('--fill', fill + '%');
+    $('#beatDot').style.setProperty('--beat', Math.max(0.6, loop / 60) + 's');
+    var labels = ['短循环', '中循环', '长循环'];
+    var values = [
+      Math.min(100, density * 10),
+      Math.min(100, 100 - Math.abs(loop - 180) / 3),
+      Math.min(100, 35 + loops / 4)
+    ];
+    bars.innerHTML = labels.map(function (label, i) {
+      return '<div class="bar"><i style="height:' + values[i] + '%"></i><b>' + Math.round(values[i]) + '</b><small>' + label + '</small></div>';
+    }).join('');
+    var msg = '本次会话约 ' + loops + ' 个循环。';
+    if (loops < 8) msg += '循环太稀，反馈间隔过长，玩家可能在中途失去方向。';
+    else if (loops > 120) msg += '循环过密，短期刺激很强，但容易疲劳，长循环会被挤压。';
+    else msg += '循环密度处于可讨论区间；接下来要看每个循环是否带来新的判断，而不是重复同一个动作。';
+    if (density <= 3) msg += ' 反馈密度偏低，玩家可能不知道自己做对了什么。';
+    if (density >= 9) msg += ' 反馈密度偏高，注意奖励通胀和注意力透支。';
+    $('#loopVerdict').innerHTML = '<strong>节拍诊断</strong><p>' + msg + '</p>';
+  }
+  Object.keys(loopEls).forEach(function (k) { loopEls[k].addEventListener('input', updateLoop); });
+  updateLoop();
+
+  /* ---------------- presets ---------------- */
+  var presets = {
+    narrative: {
+      title: '叙事单人',
+      tension: { challenge: 42, freedom: 34, narrative: 86, commerce: 20, scale: 34, surprise: 56 },
+      loop: { session: 120, loop: 240, density: 4 },
+      protect: '作者表达、氛围、节奏、玩家的情感记忆。',
+      sacrifice: '竞技公平、长线留存、规模化内容生产。',
+      risk: '叙事与玩法失调；通关即离开，商业回收困难。',
+      signal: '玩家在结束后仍讨论角色、场景和选择。'
+    },
+    competitive: {
+      title: '竞技对战',
+      tension: { challenge: 88, freedom: 58, narrative: 18, commerce: 48, scale: 56, surprise: 66 },
+      loop: { session: 38, loop: 75, density: 8 },
+      protect: '公平、清晰、可学习的失败、技巧表达。',
+      sacrifice: '叙事沉浸、休闲玩家的低压力入口、内容多样性。',
+      risk: '平衡被少数最优解支配；新手挫败与毒性社区。',
+      signal: '玩家主动研究、复盘、练习，并愿意看高水平对局。'
+    },
+    live: {
+      title: '长线服务',
+      tension: { challenge: 62, freedom: 72, narrative: 38, commerce: 84, scale: 88, surprise: 76 },
+      loop: { session: 55, loop: 300, density: 8 },
+      protect: '持续更新、社区、运营节奏、长期收入。',
+      sacrifice: '完整体验的收束、开发者的可持续、玩家的时间主权。',
+      risk: '内容跑步机、奖励通胀、付费压力侵蚀信任。',
+      signal: '玩家形成稳定社区与身份，同时不觉得被打卡绑架。'
+    }
+  };
+  function setPreset(key) {
+    var p = presets[key];
+    if (!p) return;
+    Object.keys(p.tension).forEach(function (k) { tension[k] = p.tension[k]; });
+    Object.keys(p.loop).forEach(function (k) { loopEls[k].value = p.loop[k]; });
+    $$('#tensionControls input').forEach(function (input) { input.value = tension[input.dataset.key]; });
+    updateTension(); updateLoop();
+    $('#presetProtect').textContent = p.protect;
+    $('#presetSacrifice').textContent = p.sacrifice;
+    $('#presetRisk').textContent = p.risk;
+    $('#presetSignal').textContent = p.signal;
+    $$('[data-preset]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.preset === key)); });
+  }
+  $$('[data-preset]').forEach(function (b) { b.addEventListener('click', function () { setPreset(b.dataset.preset); }); });
+  setPreset('narrative');
+
+  /* ---------------- checklist ---------------- */
+  function updateChecklist() {
+    var checked = $$('#checklist input:checked').length;
+    $('#checkScore').textContent = checked;
+  }
+  $$('#checklist input').forEach(function (i) { i.addEventListener('change', updateChecklist); });
+  updateChecklist();
+})();
+</script>
+</body>
+</html>
