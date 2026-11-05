@@ -53,6 +53,7 @@ func _draw_all() -> void:
 	_draw_path()
 	_draw_base()
 	_draw_slots()
+	_draw_fault_preview()
 	_draw_towers()
 	_draw_enemies()
 	_draw_beams()
@@ -138,6 +139,20 @@ func _draw_slots() -> void:
 		canvas.draw_arc(pos, 18.0, 0, TAU, 32, PALETTE.ink, 2.0, true)
 		canvas.draw_arc(pos, 13.0, 0, TAU, 32, Color(PALETTE.ink, 0.2), 1.0, true)
 		canvas.draw_string(font, pos + Vector2(-20, 5), str(i + 1), HORIZONTAL_ALIGNMENT_CENTER, 40, 13, PALETTE.ink)
+
+
+func _draw_fault_preview() -> void:
+	if sim == null:
+		return
+	if bool(sim.fault_choice_pending) and not sim.fault_pending.is_empty():
+		for slot in sim.fault_pending.get("slots", []):
+			var p: Vector2 = sim.slots[int(slot)]
+			canvas.draw_circle(p, 28.0, Color(PALETTE.amber, 0.12))
+			canvas.draw_arc(p, 28.0, 0, TAU, 40, PALETTE.amber, 2.5, true)
+	for entry in sim.pending_adjacent:
+		var source: int = int(entry.slot)
+		canvas.draw_circle(sim.slots[source], 160.0, Color(PALETTE.amber, 0.035))
+		canvas.draw_arc(sim.slots[source], 160.0, 0, TAU, 64, Color(PALETTE.amber, 0.25), 1.0, true)
 
 
 func _draw_towers() -> void:

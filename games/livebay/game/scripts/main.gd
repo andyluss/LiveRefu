@@ -69,6 +69,9 @@ var checklist_buttons: VBoxContainer
 var report_buttons: HBoxContainer
 var shift_memory: LiveBayShiftMemory
 var current_result: Dictionary = {}
+var broadcast_banner: PanelContainer
+var broadcast_label: Label
+var broadcast_timer := 0.0
 
 var fatal_label: Label
 
@@ -137,6 +140,9 @@ func _process(delta: float) -> void:
 			beams.remove_at(i)
 	leak_flash = max(0.0, leak_flash - delta)
 	toast_timer = max(0.0, toast_timer - delta)
+	if broadcast_timer > 0.0:
+		broadcast_timer = max(0.0, broadcast_timer - delta)
+		broadcast_banner.visible = broadcast_timer > 0.0
 	_update_ui()
 	queue_redraw()
 
@@ -209,6 +215,24 @@ func _build_ui() -> void:
 	speed_button = _make_top_button("速度 1x", Vector2(1150, 11))
 	speed_button.pressed.connect(_toggle_speed)
 	top.add_child(speed_button)
+
+	# 广播横幅
+	broadcast_banner = PanelContainer.new()
+	broadcast_banner.add_theme_stylebox_override("panel", _panel_style(PALETTE.slate, PALETTE.amber, 6))
+	broadcast_banner.position = Vector2(250, 66)
+	broadcast_banner.size = Vector2(780, 38)
+	broadcast_banner.visible = false
+	broadcast_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(broadcast_banner)
+	var broadcast_margin := MarginContainer.new()
+	broadcast_margin.add_theme_constant_override("margin_left", 14)
+	broadcast_margin.add_theme_constant_override("margin_right", 14)
+	broadcast_margin.add_theme_constant_override("margin_top", 8)
+	broadcast_margin.add_theme_constant_override("margin_bottom", 8)
+	broadcast_banner.add_child(broadcast_margin)
+	broadcast_label = _make_label("", 13, PALETTE.cream)
+	broadcast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	broadcast_margin.add_child(broadcast_label)
 
 	# 底栏
 	var bottom := Panel.new()
@@ -589,13 +613,25 @@ func _dismiss_briefing() -> void:
 		runtime.clock.paused = false
 	var broadcast: String = shift_memory.broadcast_text()
 	if not broadcast.is_empty():
-		toast_text = broadcast
-		toast_timer = 4.5
+		_show_broadcast(broadcast, 6.0)
+
+
+func _show_broadcast(text: String, duration: float) -> void:
+	if broadcast_banner == null:
+		return
+	broadcast_label.text = "BROADCAST  /  " + text
+	broadcast_timer = duration
+	broadcast_banner.visible = true
 
 
 func _on_fault_choice_requested(_envelope: Dictionary) -> void:
 	checklist_title.text = "第 5 波 · 故障命中"
-	checklist_body.text = "隔离保安全，但这段弧会短暂无人守；\n旁路保覆盖，但塔会降级 8 秒。"
+	var targets: Array = []
+	if runtime != null and not runtime.sim.fault_pending.is_empty():
+		for slot in runtime.sim.fault_pending.get("slots", []):
+			targets.append("T-%02d" % (int(slot) + 1))
+	var target_text := "受影响塔位：" + ("、".join(targets) if not targets.is_empty() else "—")
+	checklist_body.text = "%s\n隔离保安全，但这段弧会短暂无人守；\n旁路保覆盖，但塔会降级 8 秒。" % target_text
 	for child in checklist_buttons.get_children():
 		child.queue_free()
 	var isolate := Button.new()
