@@ -137,6 +137,7 @@ func _new_sim() -> void:
 	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
 	runtime = RuntimeScript.new(data, expansion_set)
 	runtime.events.subscribe(&"ChecklistRequested", _on_checklist_requested)
+	runtime.events.subscribe(&"FaultChoiceRequested", _on_fault_choice_requested)
 	sim = runtime.sim
 	sim.tower_fired.connect(_on_tower_fired)
 	sim.game_won.connect(_on_game_won)
@@ -546,6 +547,37 @@ func _on_checklist_requested(envelope: Dictionary) -> void:
 		button.pressed.connect(_choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
 		checklist_buttons.add_child(button)
 	checklist_overlay.visible = true
+
+
+func _on_fault_choice_requested(_envelope: Dictionary) -> void:
+	checklist_title.text = "第 5 波 · 故障命中"
+	checklist_body.text = "隔离保安全，但这段弧会短暂无人守；\n旁路保覆盖，但塔会降级 8 秒。"
+	for child in checklist_buttons.get_children():
+		child.queue_free()
+	var isolate := Button.new()
+	isolate.text = "隔离：停塔 2.5s"
+	isolate.custom_minimum_size = Vector2(440, 42)
+	_style_button(isolate, PALETTE.teal, PALETTE.cream)
+	isolate.pressed.connect(_choose_fault_choice.bind("isolate"))
+	checklist_buttons.add_child(isolate)
+	var bypass := Button.new()
+	bypass.text = "旁路：降级 8s，保持在线"
+	bypass.custom_minimum_size = Vector2(440, 42)
+	_style_button(bypass, PALETTE.amber, PALETTE.ink)
+	bypass.pressed.connect(_choose_fault_choice.bind("bypass"))
+	checklist_buttons.add_child(bypass)
+	checklist_overlay.visible = true
+
+
+func _choose_fault_choice(choice: String) -> void:
+	if runtime == null:
+		return
+	var result: LiveBayResult = runtime.dispatch(&"submit_fault_choice", {"choice": choice})
+	if not result.ok:
+		toast_text = "故障处置：" + result.message
+		toast_timer = 1.6
+		return
+	checklist_overlay.visible = false
 
 
 func _choose_checklist(card_id: String, option_id: String) -> void:

@@ -38,6 +38,14 @@ func has_pack(pack_id: String) -> bool:
 	return pack_id in pack_ids()
 
 
+func has_provides(capability: String) -> bool:
+	for m in manifests:
+		for provided in m.data.get("provides", []):
+			if str(provided) == capability:
+				return true
+	return false
+
+
 func to_meta() -> Dictionary:
 	return {"set_id": id, "set_hash": hash, "packs": pack_ids(), "slots": slots}
 

@@ -79,6 +79,10 @@ var towers: Array:
 var stats: Dictionary = {}
 var fault_duration_bonus := 0.0
 var fault_bypass := false
+var fault_choice_enabled := false
+var fault_choice_pending := false
+var fault_choice_made := false
+var fault_pending: Dictionary = {}
 var low_report := 0
 var result: Dictionary:
 	get: return mission.result
@@ -109,6 +113,9 @@ func reset() -> void:
 	towers_module.reset()
 	fault_duration_bonus = 0.0
 	fault_bypass = false
+	fault_choice_pending = false
+	fault_choice_made = false
+	fault_pending = {}
 	low_report = 0
 	stats = {
 		"kills": 0,
@@ -191,8 +198,31 @@ func _cleanup_dead() -> void:
 
 
 func _apply_fault_effect(enemy: Dictionary) -> void:
+	if fault_choice_enabled and wave_index == 4 and not fault_choice_made:
+		if fault_choice_pending:
+			return
+		var candidates := fault.candidates(enemy, towers, slots, _enemy_pos(enemy))
+		if not candidates.is_empty():
+			fault_pending = {"enemy": enemy, "slots": candidates}
+			fault_choice_pending = true
+			return
 	for hit in fault.apply(enemy, towers, slots, _enemy_pos(enemy), fault_duration_bonus, fault_bypass):
 		tower_disabled.emit(int(hit.slot), float(hit.duration))
+
+
+func resolve_fault_choice(choice: String) -> bool:
+	if not fault_choice_pending or fault_pending.is_empty():
+		return false
+	var enemy: Dictionary = fault_pending.enemy
+	var chosen := choice == "bypass"
+	var hits := fault.apply_slots(enemy, towers, slots, fault_pending.slots, chosen, fault_duration_bonus)
+	fault_bypass = chosen
+	fault_choice_made = true
+	fault_choice_pending = false
+	fault_pending = {}
+	for hit in hits:
+		tower_disabled.emit(int(hit.slot), float(hit.duration))
+	return true
 
 
 func _escape_fault(index: int) -> void:

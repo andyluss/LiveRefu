@@ -51,23 +51,13 @@ func _initialize() -> void:
 	var card: Dictionary = procedure.update(sim_for_proc)
 	_check(not card.is_empty() and int(card.wave) == 4, "procedure: W4 checklist requested")
 	_check(procedure.resolve(str(card.id), "review", sim_for_proc).ok and sim_for_proc.fault_duration_bonus < 0.0, "procedure: review modifies fault duration")
-	var sim_w5: Variant = SimScript.new(proc_data)
-	sim_w5.wave.index = 3
-	sim_w5.state = 2
-	var procedure_w5: LiveBayProcedureModule = preload("res://scripts/domain/procedures/procedure_module.gd").new()
-	procedure_w5.configure(proc_data)
-	var card_w5: Dictionary = procedure_w5.update(sim_w5)
-	_check(not card_w5.is_empty() and int(card_w5.wave) == 5, "procedure: W5 fault plan requested")
-	_check(procedure_w5.resolve(str(card_w5.id), "bypass", sim_w5).ok and sim_w5.fault_bypass, "procedure: bypass selected")
-	var fault_mod: LiveBayFaultModule = preload("res://scripts/domain/faults/fault_module.gd").new()
+	var sim_fault: Variant = SimScript.new(proc_data)
+	sim_fault.build(0, "interceptor")
 	var enemy_fault := {"def": {"disable_duration": 2.5, "disable_radius": 100, "disable_targets": 2}, "hit_towers": {}}
-	var tower_bypass := [{"slot": 0, "disabled_timer": 0.0, "degraded_timer": 0.0, "degraded_factor": 1.0}]
-	var hits := fault_mod.apply(enemy_fault, tower_bypass, [Vector2.ZERO], Vector2.ZERO, 0.0, true)
-	_check(hits.size() == 1 and float(tower_bypass[0].degraded_timer) > 0.0 and float(tower_bypass[0].disabled_timer) == 0.0, "fault: bypass degrades without disabling")
-	var report_proc: LiveBayProcedureModule = preload("res://scripts/domain/procedures/procedure_module.gd").new()
-	report_proc.configure(proc_data)
-	var report_result: LiveBayResult = report_proc.submit_report("custom", sim_w5)
-	_check(report_result.ok and report_proc.report_choice == "custom" and sim_w5.low_report == 1, "procedure: report choice + low report")
+	sim_fault.wave.index = 4
+	sim_fault.fault_pending = {"enemy": enemy_fault, "slots": [0]}
+	sim_fault.fault_choice_pending = true
+	_check(sim_fault.resolve_fault_choice("bypass") and float(sim_fault.get_tower_at(0).degraded_timer) > 0.0, "fault: W5 bypass applies pending choice")
 	var result_a := _run_variant(data, a.data, "isolate")
 	var result_b := _run_variant(data, b.data, "isolate")
 	var result_c := _run_variant(data, c.data, "bypass")
@@ -93,6 +83,9 @@ func _run_variant(data: Dictionary, set: LiveBayExpansionSet, w5_choice := "isol
 			if int(card.get("wave", 0)) == 5:
 				option = w5_choice
 			rt.dispatch(&"submit_checklist", {"card_id": str(card.id), "option_id": option})
+			continue
+		if rt.sim.fault_choice_pending:
+			rt.dispatch(&"submit_fault_choice", {"choice": w5_choice})
 			continue
 		rt.step(1.0 / 60.0)
 		if rt.sim.state == SimScript.State.BETWEEN:

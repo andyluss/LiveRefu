@@ -17,6 +17,7 @@ var expansion_set: LiveBayExpansionSet
 var flags: LiveBayFeatureFlags
 var procedure: LiveBayProcedureModule
 var _blackbox_meta: Dictionary
+var _fault_requested := false
 var _connections: Array = []
 
 
@@ -45,6 +46,7 @@ func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null) -> vo
 
 func _new_sim() -> void:
 	sim = SimScript.new(data)
+	sim.fault_choice_enabled = expansion_set.has_provides("procedure.fault_choice")
 	_connect(sim.wave_started, func(index: int): events.emit_event(&"WaveStarted", {"index": index}, &"wave"))
 	_connect(sim.wave_cleared, func(index: int): events.emit_event(&"WaveCleared", {"index": index}, &"wave"))
 	_connect(sim.enemy_killed, func(enemy: Dictionary): events.emit_event(&"EnemyKilled", {"enemy": str(enemy.get("def", {}).get("id", "")), "reward": int(enemy.get("def", {}).get("reward", 0))}, &"enemy"))
@@ -121,6 +123,15 @@ func _register_commands() -> void:
 			events.emit_event(&"ChecklistResolved", {"card_id": card_id, "option_id": option_id, "effect": result.data.get("effect", "")}, &"procedure")
 		return result
 	)
+	commands.register(&"submit_fault_choice", func(payload: Dictionary) -> LiveBayResult:
+		var choice := str(payload.get("choice", "isolate"))
+		if sim.resolve_fault_choice(choice):
+			clock.paused = false
+			_fault_requested = false
+			events.emit_event(&"FaultResolved", {"choice": choice}, &"fault")
+			return LiveBayResult.success("故障处置已提交")
+		return LiveBayResult.failure(&"fault_not_pending", "没有待处置的故障")
+	)
 	commands.register(&"submit_report", func(payload: Dictionary) -> LiveBayResult:
 		var result := procedure.submit_report(str(payload.get("option_id", "")), sim)
 		if result.ok:
@@ -137,10 +148,22 @@ func step(delta: float) -> void:
 	if procedure.has_pending():
 		clock.paused = true
 		return
+	if sim.fault_choice_pending:
+		clock.paused = true
+		if not _fault_requested:
+			_fault_requested = true
+			events.emit_event(&"FaultChoiceRequested", {"choices": ["isolate", "bypass"]}, &"fault")
+		return
 	var step_delta := clock.consume(delta)
 	events.tick = clock.ticks
 	if step_delta > 0.0:
 		sim.step(step_delta)
+	if sim.fault_choice_pending:
+		clock.paused = true
+		if not _fault_requested:
+			_fault_requested = true
+			events.emit_event(&"FaultChoiceRequested", {"choices": ["isolate", "bypass"]}, &"fault")
+		return
 	var card: Dictionary = procedure.update(sim)
 	if not card.is_empty():
 		clock.paused = true
@@ -175,6 +198,7 @@ func reset() -> void:
 	sim.reset()
 	clock.reset()
 	procedure.reset()
+	_fault_requested = false
 	blackbox.begin(_blackbox_meta)
 	events.emit_event(&"MissionReset", {}, &"runtime")
 

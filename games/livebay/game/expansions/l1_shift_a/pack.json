@@ -10,7 +10,8 @@
   "requires": [],
   "conflicts": [],
   "provides": [
-    "procedure.checklist"
+    "procedure.checklist",
+    "procedure.fault_choice"
   ],
   "modifiers": {
     "starting_energy": 95
@@ -33,24 +34,6 @@
               "id": "review",
               "label": "复查：故障停塔 -1s",
               "effect": "review"
-            }
-          ]
-        },
-        {
-          "id": "l1_shift_a_w5_fault",
-          "wave": 5,
-          "title": "第 5 波故障预案",
-          "body": "故障命中时：隔离保安全，旁路保覆盖。",
-          "options": [
-            {
-              "id": "isolate",
-              "label": "隔离：停塔 2.5s",
-              "effect": "isolate"
-            },
-            {
-              "id": "bypass",
-              "label": "旁路：降级 8s，保持在线",
-              "effect": "bypass"
             }
           ]
         }

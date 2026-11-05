@@ -3,6 +3,30 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.50] - 2026-11-05 13:34
+
+### 新增
+
+- W5 从「开波前预案」改为 **故障命中时暂停选择**：
+  - `Sim.fault_choice_pending/fault_pending`；
+  - `FaultModule.candidates/apply_slots` 分离；
+  - 运行时发 `FaultChoiceRequested`，暂停 clock；
+  - HUD 复用检查单遮罩，提供隔离/旁路；
+  - `submit_fault_choice` 命令。
+- 故障选择只对加载了 `procedure.fault_choice` 能力的扩展包启用；baseline 保持原自动停塔行为。
+
+### 验证
+
+- `./run.sh test` 73/73，标准班仍 B/40/59/9；
+- `./run.sh check` 退出码 0；
+- `./run.sh expansions-check` 15/15；
+- `./run.sh editor-test` 通过。
+
+### 边界
+
+- W5 故障命中只暂停一次；相邻塔降级、伤害数字等表现未做；
+- 事故记录仍未接下一班简报。
+
 ## [0.1.49] - 2026-11-05 13:32
 
 ### 新增
