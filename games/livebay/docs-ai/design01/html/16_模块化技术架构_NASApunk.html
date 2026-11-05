@@ -139,7 +139,7 @@
 <tr>
 <td>M4 ReadModel / Presenter</td>
 <td>🟡 部分</td>
-<td>ReadModel/Presenter 已接 HUD；编辑器预览已改用 MissionRuntime</td>
+<td>ReadModel/Presenter + InputController 已拆；绘制仍在 <code>main.gd</code></td>
 </tr>
 <tr>
 <td>M5 MissionPack / schema</td>
@@ -234,7 +234,7 @@
 <li><strong>可降级</strong>：可选模块失败时，任务能进入明确的降级模式；核心模块失败时，启动即失败，不带着坏规则跑。</li>
 <li><strong>可观测</strong>：每局有黑匣子，能回答「第 137 tick 为什么漏了」。</li>
 <li><strong>可复用</strong>：游戏视图、编辑器预览、未来回放/测试台共用同一套任务组装与读模型。</li>
-<li><strong>可迁移</strong>：从现行架构分阶段走，不要求一次性重写，不改变现有 68 项验收的行为。</li>
+<li><strong>可迁移</strong>：从现行架构分阶段走，不要求一次性重写，不改变现有 71 项验收的行为。</li>
 </ol>
 <h3 id="32-非目标">3.2 非目标</h3>
 <ul>
@@ -941,7 +941,7 @@ READ_ONLY        回放/调试，只读黑匣子</code></pre>
 <td>M1</td>
 <td>内核：<code>Result</code>、<code>Tick</code>、<code>EventBus</code>、<code>CommandBus</code>、<code>CompositionRoot</code>；把现有 <code>Sim</code> 包成一个模块</td>
 <td>2–3 天</td>
-<td>68/68 + 事件日志</td>
+<td>71/71 + 事件日志</td>
 <td>开关回旧 <code>Sim</code></td>
 </tr>
 <tr>
@@ -1024,7 +1024,7 @@ READ_ONLY        回放/调试，只读黑匣子</code></pre>
 <tr>
 <td>迁移踩坏</td>
 <td>旧行为变了</td>
-<td>M0 golden + 每阶段开关 + 68 项回归</td>
+<td>M0 golden + 每阶段开关 + 71 项回归</td>
 </tr>
 <tr>
 <td>编辑器再次分叉</td>

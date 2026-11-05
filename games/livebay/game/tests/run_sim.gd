@@ -18,6 +18,7 @@ const ReadModelScript = preload("res://scripts/application/mission_read_model.gd
 const PresenterScript = preload("res://scripts/presentation/mission_presenter.gd")
 const EnemyModuleScript = preload("res://scripts/domain/enemies/enemy_module.gd")
 const TowerModuleScript = preload("res://scripts/domain/towers/tower_module.gd")
+const InputScript = preload("res://scripts/presentation/game_input.gd")
 
 var failures: int = 0
 var checks: int = 0
@@ -114,6 +115,16 @@ func _test_kernel(data: Dictionary) -> void:
 	_check(tower_mod.build(0, "interceptor").ok and tower_mod.towers.size() == 1, "domain: tower module build")
 	_check(tower_mod.upgrade(0).ok and int(tower_mod.towers[0].level) == 2, "domain: tower module upgrade")
 	_check(tower_mod.sell(0).ok and tower_mod.towers.is_empty(), "domain: tower module sell")
+	var slot_at := func(_pos: Vector2): return 2
+	var mouse := InputEventMouseMotion.new()
+	mouse.position = Vector2(10, 10)
+	_check(str(InputScript.translate(mouse, slot_at, 3).type) == "hover", "view: input hover")
+	var key := InputEventKey.new()
+	key.keycode = KEY_SPACE
+	key.pressed = true
+	_check(str(InputScript.translate(key, slot_at, 3).type) == "start_wave", "view: input start wave")
+	key.keycode = KEY_4
+	_check(str(InputScript.translate(key, slot_at, 3).type) == "none", "view: input rejects unknown tower key")
 	runtime.dispose()
 
 

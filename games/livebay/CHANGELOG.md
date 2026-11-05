@@ -3,6 +3,26 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.34] - 2026-11-05 12:40
+
+### 新增（模块化 M4）
+
+- `presentation/game_input.gd`：InputEvent → 视图动作，不直接改 Sim；
+- `main._unhandled_input` 改为动作分发；
+- 新增 hover / start_wave / unknown tower key 输入测试。
+
+### 变更
+
+- `16`：M4 标记「ReadModel/Presenter + InputController 已拆；绘制仍在 main」；
+- 测试从 68 增至 **71 项**。
+
+### 验证
+
+- `./run.sh test` 71/71；
+- `./run.sh check` 退出码 0；
+- `./run.sh editor-test` 通过；
+- 标准班仍为 B / 40 / 59 击杀 / 9 漏过。
+
 ## [0.1.33] - 2026-11-05 12:39
 
 ### 新增（模块化 M6）

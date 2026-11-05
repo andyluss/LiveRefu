@@ -7,6 +7,7 @@ const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
 const SimScript = preload("res://scripts/core/sim.gd")
 const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
 const ReadModelScript = preload("res://scripts/application/mission_read_model.gd")
+const InputScript = preload("res://scripts/presentation/game_input.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -378,42 +379,28 @@ func _show_fatal(message: String) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if sim == null:
 		return
-	if event is InputEventMouseMotion:
-		hover_slot = _slot_at(event.position)
-		return
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			var slot := _slot_at(event.position)
-			if slot >= 0:
-				_click_slot(slot)
-			else:
-				selected_slot = -1
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
+	var action: Dictionary = InputScript.translate(event, _slot_at, TOWER_ORDER.size())
+	match str(action.type):
+		"hover":
+			hover_slot = int(action.slot)
+		"click_slot":
+			_click_slot(int(action.slot))
+		"clear":
 			selected_slot = -1
-		return
-	if event is InputEventKey and event.pressed and not event.echo:
-		match event.keycode:
-			KEY_1:
-				_select_tower(0)
-			KEY_2:
-				_select_tower(1)
-			KEY_3:
-				_select_tower(2)
-			KEY_SPACE:
-				_start_wave()
-			KEY_P:
-				_toggle_pause()
-			KEY_TAB:
-				_toggle_speed()
-			KEY_R:
-				_restart()
-			KEY_U:
-				_upgrade_selected()
-			KEY_X:
-				_sell_selected()
-			KEY_ESCAPE:
-				selected_slot = -1
-
+		"select_tower":
+			_select_tower(int(action.index))
+		"start_wave":
+			_start_wave()
+		"pause":
+			_toggle_pause()
+		"speed":
+			_toggle_speed()
+		"restart":
+			_restart()
+		"upgrade":
+			_upgrade_selected()
+		"sell":
+			_sell_selected()
 
 func _slot_at(pos: Vector2) -> int:
 	if sim == null:
