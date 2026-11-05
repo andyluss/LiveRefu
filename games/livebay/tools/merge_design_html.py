@@ -33,7 +33,7 @@ DOC_GROUPS = [
         "expansions/03_L2_岗位层.html",
         "expansions/04_L3_城市层.html",
         "expansions/05_版本切片与决策.html",
-        "expansions/06_Pluggable_Expansion_Architecture.html",
+        "expansions/00_可插拔扩展架构.html",
     ]),
     ("表现与工程", ["08_美术与音频方向.html", "12_技术方案_Godot工程.html", "15_专用游戏编辑器方案.html"]),
 ]
