@@ -43,6 +43,7 @@ platform: "PC 优先（D14 待定）"
 ./run.sh pack-check # 校验 MissionPack 清单
 ./run.sh replay     # 回放最近一局黑匣子
 ./run.sh expansions-check # 校验扩展包/preset/变体互斥
+./run.sh compare          # L1 A/B/C 对比表
 ./run.sh editor-test # 编辑器数据桥冒烟测试
 ./run.sh import   # 首次导入资源
 ```

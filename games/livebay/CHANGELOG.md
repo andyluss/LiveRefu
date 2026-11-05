@@ -3,6 +3,22 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.65] - 2026-11-05 13:52
+
+### 新增
+
+- `./run.sh compare`：同一张图、同一命令脚本，跑 A/B/C 三个 L1 变体；
+- 输出 grade / integrity / kills / leaked / energy / duration；
+- 使用标准班建造策略，结果可读；
+- README / expansions README / 架构文档同步。
+
+### 验证
+
+- `./run.sh compare`：A/B/C 均 B / 40 / 59 / 9；
+- `./run.sh test` 73/73；
+- `./run.sh expansions-check` 34/34；
+- HTML R-016 48/48。
+
 ## [0.1.64] - 2026-11-05 13:51
 
 ### 新增
