@@ -62,6 +62,9 @@ case "$CMD" in
   compare)
     exec "$GODOT" --headless --path "$GAME" --script tests/compare_expansions.gd -- "${@:2}"
     ;;
+  playtest)
+    exec "$GODOT" --headless --path "$GAME" --script tests/playtest_maps.gd
+    ;;
   briefing)
     exec node "$HERE/briefing/build_guide.ts"
     ;;
@@ -70,7 +73,7 @@ case "$CMD" in
     exec node "$HERE/briefing/check_hub.ts"
     ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
+    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2
@@ -84,6 +87,7 @@ case "$CMD" in
     echo "  replay         回放最新黑匣子（可传路径）" >&2
     echo "  expansions-check 校验扩展包/preset/变体互斥" >&2
     echo "  compare        输出 L1 A/B/C 对比表" >&2
+    echo "  playtest       三张地图的无头基础策略试玩" >&2
     echo "  briefing       从数据重新生成 briefing/GUIDE.html" >&2
     echo "  briefing-check 校验 GUIDE 与 HUB 数字/素材" >&2
     echo "  merge          把 design01 的 HTML 融合成单文件" >&2

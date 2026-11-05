@@ -257,10 +257,20 @@ def build_map(tables: dict[str, list[dict[str, str]]], prefix: str = "map") -> d
     if len(base_rows) != 1:
         fail(f"{prefix}_base: 需要一行")
     base = base_rows[0]
+    modifiers = {}
+    for key in ("energy_delta", "integrity_delta"):
+        raw = meta.get(key, "").strip()
+        if raw:
+            modifiers[key] = int(float(raw))
+    for key in ("speed_mult", "damage_mult"):
+        raw = meta.get(key, "").strip()
+        if raw:
+            modifiers[key] = float(raw)
     return {
         "id": meta["id"],
         "name": meta["name"],
         "description": meta["description"],
+        "modifiers": modifiers,
         "path": path,
         "slots": slots,
         "base": {

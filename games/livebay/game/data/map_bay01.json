@@ -2,6 +2,12 @@
   "id": "bay01",
   "name": "外环第七段",
   "description": "月牙外弧的一段舱壁。左侧是尖角入口，右侧是湾口。",
+  "modifiers": {
+    "energy_delta": 0,
+    "integrity_delta": 0,
+    "speed_mult": 1.0,
+    "damage_mult": 1.0
+  },
   "path": [
     [-60, 540],
     [110, 505],

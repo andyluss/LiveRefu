@@ -106,7 +106,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.81</span> · 2026-11-05</div>
+      <div class="stamp">v<span data-fact="version">0.1.82</span> · 2026-11-05</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -138,12 +138,12 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <div class="stat o"><div class="v" data-fact="waves">5</div><div class="l">波次</div></div>
       <div class="stat p"><div class="v" data-fact="slots">7</div><div class="l">固定塔位</div></div>
       <div class="stat p"><div class="v" data-fact="professions">1</div><div class="l">示例职业</div></div>
-      <div class="stat o"><div class="v" data-fact="tests">81</div><div class="l">无头断言</div></div>
+      <div class="stat o"><div class="v" data-fact="tests">83</div><div class="l">无头断言</div></div>
       <div class="stat o"><div class="v" data-fact="expansions">34</div><div class="l">扩展检查</div></div>
     </div>
     <div class="grid g2" style="margin-top:18px">
       <article class="card"><h4>它已经能玩什么</h4><p>外环第七段、中环维护环、湾口对接臂三张图；4 种塔、5 种敌人（含内部故障）、5 波、准备/交战/整备/结算、建造/升级/出售/暂停/倍速/存档；无头测试可复现胜负。</p></article>
-      <article class="card"><h4>三张地图</h4><p>外环第七段：7 塔位弧形主防线；中环维护环：9 塔位回环；湾口对接臂：5 塔位短路径。每张图有独立波次表，顶部「地图 (G)」切换。</p></article>
+      <article class="card"><h4>三张地图</h4><p>外环第七段：7 塔位弧形主防线；中环维护环：9 塔位回环，供能 -15、保障度 -10、塔伤 0.8；湾口对接臂：5 塔位短路径，供能 +10、保障度 -15。每张图有独立波次表，顶部「地图 (G)」切换。</p></article>
       <article class="card"><h4>它还不是什么</h4><p>不是完整游戏，不是 L2/L3 城市模拟，也不是最终平衡。所有中文名词和数值仍是工程占位；正式内容要等人类裁决与内容生产。</p></article>
       <article class="card"><h4>这一版最想验证</h4><p>10 分钟闭环：玩家是否能在一次班次里理解“供能—建造—故障—修复—评级”的因果，并愿意再来一班。</p></article>
       <article class="card"><h4>最先读什么</h4><p>第一次听说：<a href="GUIDE.html">GUIDE</a> 的「三十秒版本」。想参与判断：本页「决策」与「风险/下一步」，再回 <a href="../docs-ai/design01/11_待人类裁决清单.md">11 待裁决清单</a>。</p></article>
@@ -183,7 +183,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     </ol>
     <div class="note warn"><b>状态边界：</b>扩展包 A/B/C 是 <span data-fact="l1_variants">3</span> 个样例，不是正式关卡；W5 故障命中暂停只做样例；L2/L3 还没进入工程。</div>
     <h3>工程证据</h3>
-    <p class="lede"><span data-fact="tests">81</span> 项无头断言、<span data-fact="expansions">34</span> 项扩展检查、<span data-fact="l1_variants">3</span> 个 L1 样例变体、<span data-fact="doc_pages">49</span> 个 design01 HTML 页面；<code>./run.sh check</code> 无头启动、<code>./run.sh editor-test</code> 编辑器数据桥冒烟、<code>./run.sh compare</code> A/B/C 对比。</p>
+    <p class="lede"><span data-fact="tests">83</span> 项无头断言、<span data-fact="expansions">34</span> 项扩展检查、<span data-fact="l1_variants">3</span> 个 L1 样例变体、<span data-fact="doc_pages">49</span> 个 design01 HTML 页面；<code>./run.sh check</code> 无头启动、<code>./run.sh editor-test</code> 编辑器数据桥冒烟、<code>./run.sh compare</code> A/B/C 对比。</p>
   </section>
 
   <section class="panel" id="p4" role="tabpanel" aria-labelledby="t4">

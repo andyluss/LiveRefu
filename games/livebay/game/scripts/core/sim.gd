@@ -87,6 +87,7 @@ var fault_choice_made := false
 var fault_pending: Dictionary = {}
 var pending_adjacent: Array = []
 var low_report := 0
+var map_speed_mult := 1.0
 var result: Dictionary:
 	get: return mission.result
 
@@ -100,7 +101,7 @@ func _init(game_data: Dictionary) -> void:
 	wave.waves = data.get("waves", [])
 	_parse_map(data.get("map", {}))
 	enemies_module.configure(enemies_by_id, map)
-	towers_module.configure(towers_by_id, balance, profession, economy)
+	towers_module.configure(towers_by_id, balance, profession, economy, float(data.get("map", {}).get("modifiers", {}).get("damage_mult", 1.0)))
 	reset()
 
 
@@ -109,8 +110,15 @@ func _parse_map(map_data: Dictionary) -> void:
 
 
 func reset() -> void:
+	var map_mods: Dictionary = data.get("map", {}).get("modifiers", {})
+	map_speed_mult = float(map_mods.get("speed_mult", 1.0))
 	mission.reset(profession, balance)
-	economy.reset(float(profession.get("start_energy", balance.get("starting_energy", 90.0))))
+	var integrity_delta := float(map_mods.get("integrity_delta", 0.0))
+	if integrity_delta != 0.0:
+		mission.max_integrity = maxf(1.0, mission.max_integrity + integrity_delta)
+		mission.integrity = mission.max_integrity
+	var start_energy := float(profession.get("start_energy", balance.get("starting_energy", 90.0))) + float(map_mods.get("energy_delta", 0.0))
+	economy.reset(maxf(0.0, start_energy))
 	wave.reset(waves, balance)
 	enemies_module.reset()
 	towers_module.reset()
@@ -154,7 +162,7 @@ func _tick(dt: float) -> void:
 	wave.advance_time(dt)
 	_spawn_due()
 
-	var moved: Dictionary = enemies_module.update(dt, path_total)
+	var moved: Dictionary = enemies_module.update(dt, path_total, map_speed_mult)
 	for enemy: Dictionary in moved.leaked:
 		_on_enemy_leaked(enemy)
 		if state == State.LOST:

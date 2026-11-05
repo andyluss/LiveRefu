@@ -2,6 +2,12 @@
   "id": "bay02",
   "name": "中环维护环",
   "description": "中环的一条维护回路：从外环接口进入，绕行设备环，再从湾口离开。",
+  "modifiers": {
+    "energy_delta": -15,
+    "integrity_delta": -10,
+    "speed_mult": 1.15,
+    "damage_mult": 0.8
+  },
   "path": [
     [-60, 360],
     [120, 380],

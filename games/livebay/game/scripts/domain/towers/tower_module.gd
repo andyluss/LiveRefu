@@ -8,13 +8,15 @@ var defs: Dictionary = {}
 var balance: Dictionary = {}
 var profession: Dictionary = {}
 var economy: Variant
+var damage_mult := 1.0
 
 
-func configure(tower_defs: Dictionary, balance_data: Dictionary, profession_data: Dictionary, economy_module: Variant) -> void:
+func configure(tower_defs: Dictionary, balance_data: Dictionary, profession_data: Dictionary, economy_module: Variant, map_damage_mult := 1.0) -> void:
 	defs = tower_defs
 	balance = balance_data
 	profession = profession_data
 	economy = economy_module
+	damage_mult = map_damage_mult
 
 
 func reset() -> void:
@@ -77,7 +79,7 @@ func sell(slot_index: int) -> LiveBayResult:
 
 
 func tower_damage(tower: Dictionary) -> float:
-	return float(tower.def.damage) * (1.0 + float(balance.get("upgrade_damage_factor", 0.25)) * (int(tower.level) - 1))
+	return float(tower.def.damage) * (1.0 + float(balance.get("upgrade_damage_factor", 0.25)) * (int(tower.level) - 1)) * damage_mult
 
 
 func tower_range(tower: Dictionary) -> float:

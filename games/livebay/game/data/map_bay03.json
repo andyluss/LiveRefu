@@ -2,6 +2,12 @@
   "id": "bay03",
   "name": "湾口对接臂",
   "description": "一条短而直的对接臂，塔位少，敌人很快到达湾口。",
+  "modifiers": {
+    "energy_delta": 10,
+    "integrity_delta": -15,
+    "speed_mult": 1.0,
+    "damage_mult": 1.0
+  },
   "path": [
     [-60, 430],
     [120, 450],

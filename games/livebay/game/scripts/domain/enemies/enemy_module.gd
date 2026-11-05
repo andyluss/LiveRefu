@@ -42,7 +42,7 @@ func pos(enemy: Dictionary) -> Vector2:
 	return map.point_at(float(enemy.dist))
 
 
-func update(delta: float, path_total: float) -> Dictionary:
+func update(delta: float, path_total: float, speed_mult := 1.0) -> Dictionary:
 	var leaked: Array = []
 	var escaped: Array = []
 	var active: Array = []
@@ -50,7 +50,7 @@ func update(delta: float, path_total: float) -> Dictionary:
 		var enemy: Dictionary = enemies[i]
 		if enemy.slow_timer > 0.0:
 			enemy.slow_timer -= delta
-		var speed := float(enemy.def.speed)
+		var speed := float(enemy.def.speed) * maxf(0.0, speed_mult)
 		if enemy.slow_timer > 0.0:
 			speed *= 1.0 - float(enemy.slow_factor)
 		var direction := int(enemy.get("direction", 1))
