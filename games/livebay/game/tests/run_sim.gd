@@ -5,6 +5,12 @@ extends SceneTree
 
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
 const SimScript = preload("res://scripts/core/sim.gd")
+const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
+const ClockScript = preload("res://scripts/kernel/mission_clock.gd")
+const EventBusScript = preload("res://scripts/kernel/event_bus.gd")
+const CommandBusScript = preload("res://scripts/kernel/command_bus.gd")
+const MapModuleScript = preload("res://scripts/domain/map/map_module.gd")
+const EconomyModuleScript = preload("res://scripts/domain/economy/economy_module.gd")
 
 var failures: int = 0
 var checks: int = 0
@@ -18,6 +24,7 @@ func _initialize() -> void:
 		_finish()
 		return
 
+	_test_kernel(data)
 	_test_data(data)
 	_test_economy(data)
 	_test_upgrade(data)
@@ -26,6 +33,45 @@ func _initialize() -> void:
 	_test_loss(data)
 	_test_win(data)
 	_finish()
+
+
+func _test_kernel(data: Dictionary) -> void:
+	var ok := LiveBayResult.success("ok")
+	var bad := LiveBayResult.failure(&"bad", "no")
+	_check(ok.ok and ok.code == &"ok", "kernel: result success")
+	_check(not bad.ok and bad.code == &"bad", "kernel: result failure")
+	var clock := ClockScript.new()
+	clock.set_speed(2.0)
+	var d: float = clock.consume(0.5)
+	_check(is_equal_approx(d, 1.0) and is_equal_approx(clock.sim_time, 1.0), "kernel: clock speed")
+	clock.set_paused(true)
+	_check(is_equal_approx(clock.consume(0.5), 0.0), "kernel: clock pause")
+	var bus := EventBusScript.new()
+	var seen := [0]
+	bus.subscribe(&"Ping", func(env: Dictionary): seen[0] = int(env.seq))
+	bus.emit_event(&"Ping", {"x": 1}, &"test")
+	_check(seen[0] == 1 and bus.seq == 1, "kernel: event bus envelope")
+	var commands := CommandBusScript.new()
+	commands.register(&"double", func(payload: Dictionary): return int(payload.get("x", 0)) * 2)
+	var r: LiveBayResult = commands.dispatch(&"double", {"x": 3})
+	_check(r.ok and int(r.data) == 6, "kernel: command bus dispatch")
+	_check(commands.dispatch(&"missing").code == &"unknown_command", "kernel: unknown command")
+	var map := MapModuleScript.new()
+	map.load_map(data.map)
+	_check(map.path.size() >= 2 and map.path_total > 500.0, "domain: map module geometry")
+	_check(map.point_at(0.0).distance_to(map.path[0]) < 0.01, "domain: map point_at start")
+	var eco := EconomyModuleScript.new()
+	eco.reset(10.0)
+	_check(eco.spend(4.0) and is_equal_approx(eco.energy, 6.0), "domain: economy spend")
+	_check(not eco.spend(7.0), "domain: economy rejects overspend")
+	var runtime: LiveBayMissionRuntime = RuntimeScript.new(data)
+	runtime.blackbox.enabled = false
+	var built: LiveBayResult = runtime.dispatch(&"build_tower", {"slot": 0, "tower_id": "interceptor"})
+	var started: LiveBayResult = runtime.dispatch(&"start_wave")
+	runtime.step(0.1)
+	_check(built.ok and started.ok and runtime.clock.ticks == 1, "kernel: runtime commands/tick")
+	_check(runtime.events.seq >= 4, "kernel: runtime emits events")
+	runtime.dispose()
 
 
 func _test_data(data: Dictionary) -> void:

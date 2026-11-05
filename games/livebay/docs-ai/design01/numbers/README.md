@@ -65,7 +65,7 @@ related:
 cd games/livebay
 python3 tools/export_numbers.py          # 写入 game/data/*.json
 python3 tools/export_numbers.py --check  # 只检查是否一致
-./run.sh test                            # 数据加载 + 37 项玩法断言
+./run.sh test                            # 数据加载 + 50 项玩法断言
 ```
 
 ## 五、规则

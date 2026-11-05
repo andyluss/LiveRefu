@@ -5,6 +5,7 @@ extends Node2D
 
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
 const SimScript = preload("res://scripts/core/sim.gd")
+const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -25,6 +26,7 @@ const TOP_BAR_H := 56.0
 const BOTTOM_BAR_H := 88.0
 
 var data: Dictionary = {}
+var runtime: LiveBayMissionRuntime
 var sim: Variant = null
 var font: SystemFont
 var ui_theme: Theme
@@ -32,8 +34,6 @@ var ui_theme: Theme
 var selected_tower_id := "interceptor"
 var selected_slot := -1
 var hover_slot := -1
-var speed := 1
-var paused := false
 var beams: Array = []
 var leak_flash := 0.0
 var toast_text := ""
@@ -57,6 +57,28 @@ var overlay_title: Label
 var overlay_body: Label
 
 var fatal_label: Label
+
+
+func _exit_tree() -> void:
+	if sim != null:
+		if sim.tower_fired.is_connected(_on_tower_fired):
+			sim.tower_fired.disconnect(_on_tower_fired)
+		if sim.game_won.is_connected(_on_game_won):
+			sim.game_won.disconnect(_on_game_won)
+		if sim.game_lost.is_connected(_on_game_lost):
+			sim.game_lost.disconnect(_on_game_lost)
+		if sim.enemy_leaked.is_connected(_on_enemy_leaked):
+			sim.enemy_leaked.disconnect(_on_enemy_leaked)
+		if sim.fault_escaped.is_connected(_on_fault_escaped):
+			sim.fault_escaped.disconnect(_on_fault_escaped)
+		if sim.tower_disabled.is_connected(_on_tower_disabled):
+			sim.tower_disabled.disconnect(_on_tower_disabled)
+		if sim.wave_started.is_connected(_on_wave_started):
+			sim.wave_started.disconnect(_on_wave_started)
+	if runtime != null:
+		runtime.dispose()
+		runtime = null
+	sim = null
 
 
 func _ready() -> void:
@@ -88,8 +110,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if sim == null:
 		return
-	if not paused:
-		sim.step(delta * speed)
+	if runtime != null:
+		runtime.step(delta)
 	for i: int in range(beams.size() - 1, -1, -1):
 		beams[i].life -= delta
 		if beams[i].life <= 0.0:
@@ -101,7 +123,8 @@ func _process(delta: float) -> void:
 
 
 func _new_sim() -> void:
-	sim = SimScript.new(data)
+	runtime = RuntimeScript.new(data)
+	sim = runtime.sim
 	sim.tower_fired.connect(_on_tower_fired)
 	sim.game_won.connect(_on_game_won)
 	sim.game_lost.connect(_on_game_lost)
@@ -113,7 +136,7 @@ func _new_sim() -> void:
 	beams.clear()
 	leak_flash = 0.0
 	toast_timer = 0.0
-	paused = false
+	runtime.clock.paused = false
 	if overlay != null:
 		overlay.visible = false
 
@@ -404,7 +427,8 @@ func _click_slot(slot: int) -> void:
 	if sim.get_tower_at(slot) != null:
 		selected_slot = slot
 		return
-	if sim.build(slot, selected_tower_id):
+	var result: LiveBayResult = runtime.dispatch(&"build_tower", {"slot": slot, "tower_id": selected_tower_id})
+	if result.ok:
 		selected_slot = slot
 		toast_text = "已建造 %s" % String(data.towers_by_id[selected_tower_id].name)
 		toast_timer = 1.4
@@ -420,14 +444,14 @@ func _select_tower(index: int) -> void:
 func _start_wave() -> void:
 	if sim == null:
 		return
-	if sim.start_wave():
-		pass
+	runtime.dispatch(&"start_wave")
 
 
 func _upgrade_selected() -> void:
 	if selected_slot < 0:
 		return
-	if sim.upgrade(selected_slot):
+	var result: LiveBayResult = runtime.dispatch(&"upgrade_tower", {"slot": selected_slot})
+	if result.ok:
 		toast_text = "已升级"
 		toast_timer = 1.2
 
@@ -435,24 +459,28 @@ func _upgrade_selected() -> void:
 func _sell_selected() -> void:
 	if selected_slot < 0:
 		return
-	if sim.sell(selected_slot):
+	var result: LiveBayResult = runtime.dispatch(&"sell_tower", {"slot": selected_slot})
+	if result.ok:
 		toast_text = "已出售"
 		toast_timer = 1.2
 		selected_slot = -1
 
 
 func _toggle_pause() -> void:
-	paused = not paused
+	if runtime != null:
+		runtime.dispatch(&"set_pause", {"paused": not runtime.clock.paused})
 
 
 func _toggle_speed() -> void:
-	speed = 2 if speed == 1 else 1
+	if runtime != null:
+		runtime.dispatch(&"set_speed", {"speed": 2.0 if runtime.clock.speed == 1.0 else 1.0})
 
 
 func _restart() -> void:
 	if sim == null:
 		return
-	sim.reset()
+	runtime.reset()
+	sim = runtime.sim
 	selected_slot = -1
 	beams.clear()
 	leak_flash = 0.0
@@ -488,8 +516,8 @@ func _update_ui() -> void:
 
 	start_button.disabled = ended or not (sim.state == SimScript.State.PREP or sim.state == SimScript.State.BETWEEN)
 	start_button.text = "开波 (空格)" if sim.wave_index < 0 else "下一波 (空格)"
-	pause_button.text = "继续 (P)" if paused else "暂停 (P)"
-	speed_button.text = "速度 %dx" % speed
+	pause_button.text = "继续 (P)" if runtime.clock.paused else "暂停 (P)"
+	speed_button.text = "速度 %dx" % int(runtime.clock.speed)
 
 	var tower: Variant = sim.get_tower_at(selected_slot) if selected_slot >= 0 else null
 	var has_tower: bool = tower != null
@@ -508,7 +536,7 @@ func _hint_text() -> String:
 		return "本班结束 · R 再来一班"
 	if sim.state == SimScript.State.LOST:
 		return "事故 · R 重新值班"
-	if paused:
+	if runtime.clock.paused:
 		return "已暂停 · P 继续"
 	var tower: Variant = sim.get_tower_at(selected_slot) if selected_slot >= 0 else null
 	if tower != null:
@@ -595,7 +623,7 @@ func _draw() -> void:
 	_draw_enemies()
 	_draw_beams()
 	_draw_toast()
-	if paused and sim.state != SimScript.State.WON and sim.state != SimScript.State.LOST:
+	if runtime.clock.paused and sim.state != SimScript.State.WON and sim.state != SimScript.State.LOST:
 		draw_rect(Rect2(Vector2.ZERO, VIEW_SIZE), Color(0.09, 0.11, 0.12, 0.35))
 		_draw_center_text("已暂停", 42, PALETTE.cream, 24)
 	if leak_flash > 0.0:

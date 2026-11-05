@@ -29,15 +29,26 @@ var towers_by_id: Dictionary
 var enemies_by_id: Dictionary
 var waves: Array
 
-var path: PackedVector2Array = PackedVector2Array()
-var path_cum: PackedFloat32Array = PackedFloat32Array()
-var path_total: float = 0.0
-var slots: Array = []
-var base_pos: Vector2 = Vector2.ZERO
-var base_radius: float = 26.0
+var map := LiveBayMapModule.new()
+var economy := LiveBayEconomyModule.new()
+
+var path: PackedVector2Array:
+	get: return map.path
+var path_cum: PackedFloat32Array:
+	get: return map.path_cum
+var path_total: float:
+	get: return map.path_total
+var slots: Array:
+	get: return map.slots
+var base_pos: Vector2:
+	get: return map.base_pos
+var base_radius: float:
+	get: return map.base_radius
 
 var state: int = State.PREP
-var energy: float = 0.0
+var energy: float:
+	get: return economy.energy
+	set(value): economy.energy = value
 var integrity: float = 0.0
 var max_integrity: float = 100.0
 var wave_index: int = -1
@@ -62,28 +73,14 @@ func _init(game_data: Dictionary) -> void:
 
 
 func _parse_map(map_data: Dictionary) -> void:
-	path.clear()
-	path_cum.clear()
-	for raw: Variant in map_data.get("path", []):
-		var p := Vector2(float(raw[0]), float(raw[1]))
-		if not path.is_empty():
-			path_total += path[path.size() - 1].distance_to(p)
-		path.append(p)
-		path_cum.append(path_total)
-	slots.clear()
-	for raw_slot: Variant in map_data.get("slots", []):
-		slots.append(Vector2(float(raw_slot[0]), float(raw_slot[1])))
-	var base: Dictionary = map_data.get("base", {})
-	var base_raw: Variant = base.get("pos", [0, 0])
-	base_pos = Vector2(float(base_raw[0]), float(base_raw[1]))
-	base_radius = float(base.get("radius", 26.0))
+	map.load_map(map_data)
 
 
 func reset() -> void:
 	state = State.PREP
 	max_integrity = float(profession.get("start_integrity", balance.get("starting_integrity", 100.0)))
 	integrity = max_integrity
-	energy = float(profession.get("start_energy", balance.get("starting_energy", 90.0)))
+	economy.reset(float(profession.get("start_energy", balance.get("starting_energy", 90.0))))
 	wave_index = -1
 	wave_time = 0.0
 	timer = float(waves[0].get("prep", balance.get("prepare_time", 30.0))) if not waves.is_empty() else 30.0
@@ -217,7 +214,7 @@ func _update_towers(dt: float) -> void:
 			tower.income_timer -= dt
 			if tower.income_timer <= 0.0:
 				tower.income_timer += float(def.get("income_interval", 5.0))
-				energy += _supply_income(tower)
+				economy.earn(_supply_income(tower))
 				energy_changed.emit(energy)
 			continue
 
@@ -267,7 +264,7 @@ func _cleanup_dead() -> void:
 		var enemy: Dictionary = enemies[i]
 		if enemy.dead:
 			var def: Dictionary = enemy.def
-			energy += float(def.reward)
+			economy.earn(float(def.reward))
 			stats.kills += 1
 			enemies.remove_at(i)
 			enemy_killed.emit(enemy)
@@ -372,9 +369,8 @@ func build(slot_index: int, tower_id: String) -> bool:
 		return false
 	var def: Dictionary = towers_by_id[tower_id]
 	var cost: int = _build_cost(def)
-	if energy < float(cost):
+	if not economy.spend(float(cost)):
 		return false
-	energy -= float(cost)
 	towers.append({
 		"slot": slot_index,
 		"def": def,
@@ -398,9 +394,8 @@ func upgrade(slot_index: int) -> bool:
 	if int(tower.level) >= max_level:
 		return false
 	var cost: int = int(round(float(tower.def.cost) * float(balance.get("upgrade_cost_factor", 0.8)) * float(tower.level)))
-	if energy < float(cost):
+	if not economy.spend(float(cost)):
 		return false
-	energy -= float(cost)
 	tower.level += 1
 	tower.invested += cost
 	stats.spent += cost
@@ -413,7 +408,7 @@ func sell(slot_index: int) -> bool:
 	if tower == null:
 		return false
 	var refund: int = int(floor(float(tower.invested) * float(balance.get("sell_refund", 0.7))))
-	energy += float(refund)
+	economy.earn(float(refund))
 	towers.erase(tower)
 	energy_changed.emit(energy)
 	return true
@@ -451,19 +446,7 @@ func _enemy_pos(enemy: Dictionary) -> Vector2:
 
 
 func point_at(distance: float) -> Vector2:
-	if path.is_empty():
-		return Vector2.ZERO
-	if distance <= 0.0:
-		return path[0]
-	if distance >= path_total:
-		return path[path.size() - 1]
-	for i: int in range(1, path.size()):
-		if path_cum[i] >= distance:
-			var segment: float = path_cum[i] - path_cum[i - 1]
-			var t: float = 0.0 if segment <= 0.0 else (distance - path_cum[i - 1]) / segment
-			return path[i - 1].lerp(path[i], t)
-	return path[path.size() - 1]
-
+	return map.point_at(distance)
 
 func get_result() -> Dictionary:
 	return result.duplicate(true)

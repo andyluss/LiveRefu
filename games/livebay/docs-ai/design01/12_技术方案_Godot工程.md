@@ -259,7 +259,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 
 ## 七、测试
 
-`tests/run_sim.gd` 是 SceneTree 脚本，不依赖窗口，当前 37 项断言：
+`tests/run_sim.gd` 是 SceneTree 脚本，不依赖窗口，当前 50 项断言：
 
 1. **数据完整性**：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1；评级阈值、波次 `prep` 数据驱动。
 2. **胜利路径**：在 2 个塔位建塔，跑完 5 波，断言 `WON` 且保障度 > 0。
@@ -312,7 +312,11 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 
 > D16 已裁决为垂直切片；D02/D05/D04 已裁决。内部故障（C）已实现，下一步是 v0.2 护理师。
 
-## 十二、模块化演进参考
+## 十二、模块化落地状态
+
+截至 2026-11-05，M1/M2 已落地：`MissionRuntime` 组合 `MissionClock`、`EventBus`、`CommandBus`、`BlackBox` 与 `Sim`；`Sim` 内部已使用 `MapModule` 与 `EconomyModule`（属性代理，行为不变）。M3–M7 仍按 [16](16_模块化技术架构_NASApunk.md) 推进。
+
+## 十三、模块化演进参考
 
 当前仍是「Sim / View 两层 + 少量模块」的 MVP 结构。若要继续拆分，见 [16 · 模块化技术架构](16_模块化技术架构_NASApunk.md)：ORU 模块、端口、命令/事件总线、MissionPack、黑匣子与迁移路线。该文是参考方案，未裁决、未实现，不改变本篇的现行事实。
 

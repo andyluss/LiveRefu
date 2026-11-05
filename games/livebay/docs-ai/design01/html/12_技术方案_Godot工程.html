@@ -51,7 +51,7 @@
 <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </header>
 <main id="content" class="content">
-<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一目标与非目标">一、目标与非目标</a></li><li class="sub"><a href="#11-v01-目标">1.1 v0.1 目标</a></li><li class="sub"><a href="#12-非目标">1.2 非目标</a></li><li class=""><a href="#二环境与运行">二、环境与运行</a></li><li class=""><a href="#三目录结构">三、目录结构</a></li><li class=""><a href="#四架构模拟与视图分离">四、架构：模拟与视图分离</a></li><li class="sub"><a href="#41-sim-的职责">4.1 Sim 的职责</a></li><li class="sub"><a href="#42-main-的职责">4.2 main 的职责</a></li><li class=""><a href="#五数据契约">五、数据契约</a></li><li class="sub"><a href="#51-profession_guardjson">5.1 profession_guard.json</a></li><li class="sub"><a href="#52-towersjson">5.2 towers.json</a></li><li class="sub"><a href="#53-enemiesjson">5.3 enemies.json</a></li><li class="sub"><a href="#54-wavesjson">5.4 waves.json</a></li><li class="sub"><a href="#55-map_bay01json">5.5 map_bay01.json</a></li><li class="sub"><a href="#56-balancejson">5.6 balance.json</a></li><li class=""><a href="#六sim-的关键规则">六、Sim 的关键规则</a></li><li class=""><a href="#七测试">七、测试</a></li><li class=""><a href="#八存档">八、存档</a></li><li class=""><a href="#九扩展点">九、扩展点</a></li><li class=""><a href="#十已知限制">十、已知限制</a></li><li class=""><a href="#十一待裁决">十一、待裁决</a></li><li class=""><a href="#十二模块化演进参考">十二、模块化演进参考</a></li></ul></details>
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一目标与非目标">一、目标与非目标</a></li><li class="sub"><a href="#11-v01-目标">1.1 v0.1 目标</a></li><li class="sub"><a href="#12-非目标">1.2 非目标</a></li><li class=""><a href="#二环境与运行">二、环境与运行</a></li><li class=""><a href="#三目录结构">三、目录结构</a></li><li class=""><a href="#四架构模拟与视图分离">四、架构：模拟与视图分离</a></li><li class="sub"><a href="#41-sim-的职责">4.1 Sim 的职责</a></li><li class="sub"><a href="#42-main-的职责">4.2 main 的职责</a></li><li class=""><a href="#五数据契约">五、数据契约</a></li><li class="sub"><a href="#51-profession_guardjson">5.1 profession_guard.json</a></li><li class="sub"><a href="#52-towersjson">5.2 towers.json</a></li><li class="sub"><a href="#53-enemiesjson">5.3 enemies.json</a></li><li class="sub"><a href="#54-wavesjson">5.4 waves.json</a></li><li class="sub"><a href="#55-map_bay01json">5.5 map_bay01.json</a></li><li class="sub"><a href="#56-balancejson">5.6 balance.json</a></li><li class=""><a href="#六sim-的关键规则">六、Sim 的关键规则</a></li><li class=""><a href="#七测试">七、测试</a></li><li class=""><a href="#八存档">八、存档</a></li><li class=""><a href="#九扩展点">九、扩展点</a></li><li class=""><a href="#十已知限制">十、已知限制</a></li><li class=""><a href="#十一待裁决">十一、待裁决</a></li><li class=""><a href="#十二模块化落地状态">十二、模块化落地状态</a></li><li class=""><a href="#十三模块化演进参考">十三、模块化演进参考</a></li></ul></details>
 <article class="prose">
 <h1 id="12--技术方案godot-工程">12 · 技术方案：Godot 工程</h1>
 <div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（非设计决定）</dd><dt>状态</dt><dd>草案 v0.2（D16 已裁决）</dd><dt>日期</dt><dd>2026-11-03</dd><dt>来源</dt><dd>AI 起草，人类确认</dd><dt>决策权</dt><dd>人类（范围）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a></dd><dt>上游</dt><dd><a href="../../../docs-human/概念设定.md">概念设定</a></dd><dt>关联</dt><dd><a href="04_塔防玩法.html">04_塔防玩法</a> · <a href="../../../game">Godot 工程</a> · <a href="11_待人类裁决清单.html">11_待人类裁决清单</a></dd></dl></div>
@@ -310,7 +310,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 </tbody>
 </table></div>
 <h2 id="七测试">七、测试</h2>
-<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口，当前 37 项断言：</p>
+<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口，当前 50 项断言：</p>
 <ol type="1">
 <li><strong>数据完整性</strong>：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1；评级阈值、波次 <code>prep</code> 数据驱动。</li>
 <li><strong>胜利路径</strong>：在 2 个塔位建塔，跑完 5 波，断言 <code>WON</code> 且保障度 &gt; 0。</li>
@@ -394,7 +394,9 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 <blockquote>
 <p>D16 已裁决为垂直切片；D02/D05/D04 已裁决。内部故障（C）已实现，下一步是 v0.2 护理师。</p>
 </blockquote>
-<h2 id="十二模块化演进参考">十二、模块化演进参考</h2>
+<h2 id="十二模块化落地状态">十二、模块化落地状态</h2>
+<p>截至 2026-11-05，M1/M2 已落地：<code>MissionRuntime</code> 组合 <code>MissionClock</code>、<code>EventBus</code>、<code>CommandBus</code>、<code>BlackBox</code> 与 <code>Sim</code>；<code>Sim</code> 内部已使用 <code>MapModule</code> 与 <code>EconomyModule</code>（属性代理，行为不变）。M3–M7 仍按 <a href="16_模块化技术架构_NASApunk.html">16</a> 推进。</p>
+<h2 id="十三模块化演进参考">十三、模块化演进参考</h2>
 <p>当前仍是「Sim / View 两层 + 少量模块」的 MVP 结构。若要继续拆分，见 <a href="16_模块化技术架构_NASApunk.html">16 · 模块化技术架构</a>：ORU 模块、端口、命令/事件总线、MissionPack、黑匣子与迁移路线。该文是参考方案，未裁决、未实现，不改变本篇的现行事实。</p>
 <p>（本篇完）</p>
 

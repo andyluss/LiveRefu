@@ -3,6 +3,44 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.28] - 2026-11-05 12:34
+
+### 新增（模块化 M1）
+
+- `kernel/result.gd`：统一成功/拒绝 Result；
+- `kernel/mission_clock.gd`：暂停/倍速/模拟时间；
+- `kernel/event_bus.gd`：带 seq/source/payload 的事件信封；
+- `kernel/command_bus.gd`：命令注册、派发、拒绝原因；
+- `platform/black_box.gd`：事件记录、最近 10 局、JSONL 落盘；
+- `application/mission_runtime.gd`：组合 Sim + Clock + EventBus + CommandBus + BlackBox；
+- `main.gd` 改走 runtime：建造/升级/出售/开波/暂停/倍速通过命令，视图仍直接读 Sim 状态；
+- 运行时 `dispose()` 断开信号并清空命令/事件，避免退出泄漏。
+
+### 新增（模块化 M2）
+
+- `domain/map/map_module.gd`：路径几何、塔位、基地；
+- `domain/economy/economy_module.gd`：供能余额与收支；
+- `Sim` 通过属性代理使用 Map/Economy，外部字段读取方式不变；
+- 新增 Map/Economy 模块测试。
+
+### 变更
+
+- 测试从 37 增至 **50 项**；`12`/`16`/`B2`/README 等同步；
+- `16` 升到 v0.2：M1/M2 已落地，M3–M7 进行中；
+- `12` 增加「模块化落地状态」。
+
+### 验证
+
+- `./run.sh test` 50/50；
+- `./run.sh check` 退出码 0，无泄漏警告；
+- `./run.sh editor-test` 通过；
+- `./run.sh numbers-check` 全部一致。
+
+### 备注
+
+- 行为/数值未变；M3 领域拆分仍在进行；
+- 黑匣子已记录事件，回放命令尚未接。
+
 ## [0.1.27] - 2026-11-04 22:32
 
 ### 新增

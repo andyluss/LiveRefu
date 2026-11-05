@@ -51,16 +51,16 @@
 <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </header>
 <main id="content" class="content">
-<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一为什么现在还不够">一、为什么现在还不够</a></li><li class=""><a href="#二nasapunk-的工程类比">二、NASApunk 的工程类比</a></li><li class="sub"><a href="#21-硬接口软表面">2.1 硬接口，软表面</a></li><li class=""><a href="#三目标与非目标">三、目标与非目标</a></li><li class="sub"><a href="#31-目标">3.1 目标</a></li><li class="sub"><a href="#32-非目标">3.2 非目标</a></li><li class=""><a href="#四目标架构总览">四、目标架构总览</a></li><li class=""><a href="#五模块目录建议的-oru-清单">五、模块目录（建议的 ORU 清单）</a></li><li class="sub"><a href="#51-内核kernel">5.1 内核（Kernel）</a></li><li class="sub"><a href="#52-领域模块domain">5.2 领域模块（Domain）</a></li><li class="sub"><a href="#53-表现与适配器">5.3 表现与适配器</a></li><li class=""><a href="#六模块契约">六、模块契约</a></li><li class="sub"><a href="#61-生命周期">6.1 生命周期</a></li><li class="sub"><a href="#62-端口">6.2 端口</a></li><li class="sub"><a href="#63-命令">6.3 命令</a></li><li class="sub"><a href="#64-事件">6.4 事件</a></li><li class="sub"><a href="#65-依赖规则">6.5 依赖规则</a></li><li class=""><a href="#七任务编排与阶段">七、任务编排与阶段</a></li><li class="sub"><a href="#71-阶段状态机">7.1 阶段状态机</a></li><li class="sub"><a href="#72-tick-顺序">7.2 Tick 顺序</a></li><li class="sub"><a href="#73-两个时钟">7.3 两个时钟</a></li><li class=""><a href="#八数据与内容包">八、数据与内容包</a></li><li class="sub"><a href="#81-为什么需要-pack">8.1 为什么需要 Pack</a></li><li class="sub"><a href="#82-内容契约">8.2 内容契约</a></li><li class=""><a href="#九故障冗余与降级">九、故障、冗余与降级</a></li><li class="sub"><a href="#91-失败分类">9.1 失败分类</a></li><li class="sub"><a href="#92-降级模式">9.2 降级模式</a></li><li class="sub"><a href="#93-熔断与预算">9.3 熔断与预算</a></li><li class=""><a href="#十黑匣子回放与验收">十、黑匣子、回放与验收</a></li><li class="sub"><a href="#101-黑匣子">10.1 黑匣子</a></li><li class="sub"><a href="#102-测试金字塔">10.2 测试金字塔</a></li><li class=""><a href="#十一视图与编辑器">十一、视图与编辑器</a></li><li class="sub"><a href="#111-视图拆分">11.1 视图拆分</a></li><li class="sub"><a href="#112-编辑器">11.2 编辑器</a></li><li class=""><a href="#十二建议目录">十二、建议目录</a></li><li class=""><a href="#十三迁移路线每步可回退">十三、迁移路线（每步可回退）</a></li><li class=""><a href="#十四风险与取舍">十四、风险与取舍</a></li><li class="sub"><a href="#不推荐现在做">不推荐现在做</a></li><li class=""><a href="#十五需要人类拍板的问题">十五、需要人类拍板的问题</a></li><li class=""><a href="#十六模块准入检查单pre-flight-checklist">十六、模块准入检查单（Pre-flight Checklist）</a></li><li class=""><a href="#十七与现有文档的关系">十七、与现有文档的关系</a></li><li class=""><a href="#十八一句话总结">十八、一句话总结</a></li></ul></details>
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一为什么现在还不够">一、为什么现在还不够</a></li><li class="sub"><a href="#11-当前落地进度2026-11-05">1.1 当前落地进度（2026-11-05）</a></li><li class=""><a href="#二nasapunk-的工程类比">二、NASApunk 的工程类比</a></li><li class="sub"><a href="#21-硬接口软表面">2.1 硬接口，软表面</a></li><li class=""><a href="#三目标与非目标">三、目标与非目标</a></li><li class="sub"><a href="#31-目标">3.1 目标</a></li><li class="sub"><a href="#32-非目标">3.2 非目标</a></li><li class=""><a href="#四目标架构总览">四、目标架构总览</a></li><li class=""><a href="#五模块目录建议的-oru-清单">五、模块目录（建议的 ORU 清单）</a></li><li class="sub"><a href="#51-内核kernel">5.1 内核（Kernel）</a></li><li class="sub"><a href="#52-领域模块domain">5.2 领域模块（Domain）</a></li><li class="sub"><a href="#53-表现与适配器">5.3 表现与适配器</a></li><li class=""><a href="#六模块契约">六、模块契约</a></li><li class="sub"><a href="#61-生命周期">6.1 生命周期</a></li><li class="sub"><a href="#62-端口">6.2 端口</a></li><li class="sub"><a href="#63-命令">6.3 命令</a></li><li class="sub"><a href="#64-事件">6.4 事件</a></li><li class="sub"><a href="#65-依赖规则">6.5 依赖规则</a></li><li class=""><a href="#七任务编排与阶段">七、任务编排与阶段</a></li><li class="sub"><a href="#71-阶段状态机">7.1 阶段状态机</a></li><li class="sub"><a href="#72-tick-顺序">7.2 Tick 顺序</a></li><li class="sub"><a href="#73-两个时钟">7.3 两个时钟</a></li><li class=""><a href="#八数据与内容包">八、数据与内容包</a></li><li class="sub"><a href="#81-为什么需要-pack">8.1 为什么需要 Pack</a></li><li class="sub"><a href="#82-内容契约">8.2 内容契约</a></li><li class=""><a href="#九故障冗余与降级">九、故障、冗余与降级</a></li><li class="sub"><a href="#91-失败分类">9.1 失败分类</a></li><li class="sub"><a href="#92-降级模式">9.2 降级模式</a></li><li class="sub"><a href="#93-熔断与预算">9.3 熔断与预算</a></li><li class=""><a href="#十黑匣子回放与验收">十、黑匣子、回放与验收</a></li><li class="sub"><a href="#101-黑匣子">10.1 黑匣子</a></li><li class="sub"><a href="#102-测试金字塔">10.2 测试金字塔</a></li><li class=""><a href="#十一视图与编辑器">十一、视图与编辑器</a></li><li class="sub"><a href="#111-视图拆分">11.1 视图拆分</a></li><li class="sub"><a href="#112-编辑器">11.2 编辑器</a></li><li class=""><a href="#十二建议目录">十二、建议目录</a></li><li class=""><a href="#十三迁移路线每步可回退">十三、迁移路线（每步可回退）</a></li><li class=""><a href="#十四风险与取舍">十四、风险与取舍</a></li><li class="sub"><a href="#不推荐现在做">不推荐现在做</a></li><li class=""><a href="#十五需要人类拍板的问题">十五、需要人类拍板的问题</a></li><li class=""><a href="#十六模块准入检查单pre-flight-checklist">十六、模块准入检查单（Pre-flight Checklist）</a></li><li class=""><a href="#十七与现有文档的关系">十七、与现有文档的关系</a></li><li class=""><a href="#十八一句话总结">十八、一句话总结</a></li></ul></details>
 <article class="prose">
 <h1 id="16--模块化技术架构nasapunk-系统方案">16 · 模块化技术架构：NASApunk 系统方案</h1>
-<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（非设计决定）</dd><dt>状态</dt><dd>参考 v0.1（供人类裁决；未实现）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a></dd><dt>上游</dt><dd><a href="12_技术方案_Godot工程.html">12_技术方案_Godot工程</a> · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a></dd><dt>关联</dt><dd><a href="../../../../../docs/retro-futurism/附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md">09_软与硬_生物可塑性与机械模块化</a> · <a href="../../../game">Godot 工程</a> · <a href="11_待人类裁决清单.html">11_待人类裁决清单</a></dd></dl></div>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（非设计决定）</dd><dt>状态</dt><dd>参考 v0.2（M1–M2 已实现；M3–M7 进行中）</dd><dt>日期</dt><dd>2026-11-04</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="rules/tech/b02_验收与不回归.html">TECH-B2</a></dd><dt>上游</dt><dd><a href="12_技术方案_Godot工程.html">12_技术方案_Godot工程</a> · <a href="14_塔防NASApunk深化.html">14_塔防NASApunk深化</a></dd><dt>关联</dt><dd><a href="../../../../../docs/retro-futurism/附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md">09_软与硬_生物可塑性与机械模块化</a> · <a href="../../../game">Godot 工程</a> · <a href="11_待人类裁决清单.html">11_待人类裁决清单</a></dd></dl></div>
 <blockquote>
 <p><strong>一句话</strong>：把现在的「Sim / View 两层」推进成「<strong>任务编排器 + 可替换模块 + 标准接口 + 总线 + 黑匣子</strong>」的模块化单体。</p>
 <p><strong>不是</strong> ECS，<strong>不是</strong>微服务，<strong>不是</strong>重写；是把现有规则拆成能单独测试、替换、降级的 ORU（轨道替换单元），让 NASApunk 的工程感进入代码结构，而不只停在界面。</p>
 </blockquote>
 <blockquote>
-<p><strong>状态</strong>：参考方案，未裁决、未实现。本文不改变 <a href="12_技术方案_Godot工程.html">12</a> 的现行工程事实，也不把任何「AI 建议」写成决定。人类确认后，才进入迁移。</p>
+<p><strong>状态</strong>：参考方案；<strong>M1 内核与 M2 Map/Economy 已落地</strong>，M3–M7 进行中。本文不改变 <a href="12_技术方案_Godot工程.html">12</a> 的现行事实，也不把任何「AI 建议」写成决定。</p>
 </blockquote>
 <h2 id="一为什么现在还不够">一、为什么现在还不够</h2>
 <p>现行架构已经做对了最重要的一件事：<strong>模拟与视图分离</strong>（<a href="rules/tech/a02_模拟与视图分离.html">TECH-A2</a>）。<code>sim.gd</code> 不依赖窗口，<code>main.gd</code> 只负责画和输入，<code>run_sim.gd</code> 可以无头跑完 5 波。这是继续模块化的地基，不是要推翻的东西。</p>
@@ -111,6 +111,53 @@
 <li>没有黑匣子：出现「为什么这波漏了」只能复现，不能回放。</li>
 </ul>
 <p>所以下一步不是「再加一层抽象」，而是把<strong>变化点</strong>做成模块，把<strong>模块之间</strong>做成标准接口。</p>
+<h3 id="11-当前落地进度2026-11-05">1.1 当前落地进度（2026-11-05）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>状态</th>
+<th>落点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1 内核</td>
+<td>✅ 已实现</td>
+<td><code>kernel/result</code>、<code>mission_clock</code>、<code>event_bus</code>、<code>command_bus</code>、<code>platform/black_box</code>、<code>application/mission_runtime</code></td>
+</tr>
+<tr>
+<td>M2 Map / Economy</td>
+<td>✅ 已实现</td>
+<td><code>domain/map/map_module.gd</code>、<code>domain/economy/economy_module.gd</code>，<code>Sim</code> 通过属性代理使用</td>
+</tr>
+<tr>
+<td>M3 Wave / Enemy / Tower / Mission / Fault</td>
+<td>⏳ 进行中</td>
+<td>仍由 <code>sim.gd</code> 承担；下一步拆分</td>
+</tr>
+<tr>
+<td>M4 ReadModel / Presenter</td>
+<td>⏳ 未开始</td>
+<td><code>main.gd</code> 仍直接读 Sim</td>
+</tr>
+<tr>
+<td>M5 MissionPack / schema</td>
+<td>⏳ 未开始</td>
+<td>当前仍由 <code>DataLoader</code> 读多 JSON</td>
+</tr>
+<tr>
+<td>M6 黑匣子回放</td>
+<td>🟡 部分</td>
+<td>黑匣子已记录事件；回放命令未接</td>
+</tr>
+<tr>
+<td>M7 Procedure/Fault 模块</td>
+<td>⏳ 未开始</td>
+<td>对应 <a href="14_塔防NASApunk深化.html">14</a></td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="二nasapunk-的工程类比">二、NASApunk 的工程类比</h2>
 <p>NASApunk 的模块化不是「把东西拆小」，而是「让系统坏得起、换得动、查得清」。对应到代码：</p>
 <div class="table-wrap"><table>
@@ -187,7 +234,7 @@
 <li><strong>可降级</strong>：可选模块失败时，任务能进入明确的降级模式；核心模块失败时，启动即失败，不带着坏规则跑。</li>
 <li><strong>可观测</strong>：每局有黑匣子，能回答「第 137 tick 为什么漏了」。</li>
 <li><strong>可复用</strong>：游戏视图、编辑器预览、未来回放/测试台共用同一套任务组装与读模型。</li>
-<li><strong>可迁移</strong>：从现行架构分阶段走，不要求一次性重写，不改变现有 37 项验收的行为。</li>
+<li><strong>可迁移</strong>：从现行架构分阶段走，不要求一次性重写，不改变现有 50 项验收的行为。</li>
 </ol>
 <h3 id="32-非目标">3.2 非目标</h3>
 <ul>
@@ -887,14 +934,14 @@ READ_ONLY        回放/调试，只读黑匣子</code></pre>
 <td>M0</td>
 <td>冻结行为：记录 3 个 golden（标准/失败/旁路占位）</td>
 <td>1 天</td>
-<td>结果与 37 项一致</td>
+<td>结果与迁移前 37 项一致</td>
 <td>无代码变更</td>
 </tr>
 <tr>
 <td>M1</td>
 <td>内核：<code>Result</code>、<code>Tick</code>、<code>EventBus</code>、<code>CommandBus</code>、<code>CompositionRoot</code>；把现有 <code>Sim</code> 包成一个模块</td>
 <td>2–3 天</td>
-<td>37/37 + 事件日志</td>
+<td>50/50 + 事件日志</td>
 <td>开关回旧 <code>Sim</code></td>
 </tr>
 <tr>
@@ -977,7 +1024,7 @@ READ_ONLY        回放/调试，只读黑匣子</code></pre>
 <tr>
 <td>迁移踩坏</td>
 <td>旧行为变了</td>
-<td>M0 golden + 每阶段开关 + 37 项回归</td>
+<td>M0 golden + 每阶段开关 + 50 项回归</td>
 </tr>
 <tr>
 <td>编辑器再次分叉</td>
