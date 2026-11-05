@@ -3,6 +3,27 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.73] - 2026-11-05 18:12
+
+### 文档结构
+
+- 艺术设定图移入 `docs-ai/design01/art/images/`：
+  - 6 张 PNG + 6 个 SVG；
+  - `make_art.py` / `render_art.sh` 输出路径同步；
+  - `art/README.md` 图片引用改为 `images/...`。
+- 可插拔扩展架构从 `expansions/00_可插拔扩展架构.md` 移到 `tech/00_可插拔扩展架构.md`：
+  - 同步 expansion/11/16 的引用；
+  - HTML 生成器/合并器与导航同步；
+  - 生成页移到 `html/tech/00_可插拔扩展架构.html`。
+- HTML 重新生成：49 个受管页面。
+
+### 验证
+
+- `./run.sh briefing-check`：通过；
+- HUB + GUIDE R-016：2/2；
+- design01 HTML R-016：49/49；
+- `check_links --sub games/livebay`：0 失效。
+
 ## [0.1.72] - 2026-11-05 18:11
 
 ### 变更

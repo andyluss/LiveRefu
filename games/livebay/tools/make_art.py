@@ -11,7 +11,7 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
-ART = ROOT / "docs-ai" / "design01" / "art"
+ART = ROOT / "docs-ai" / "design01" / "art" / "images"
 W, H = 1600, 1000
 
 INK = "#1E282C"

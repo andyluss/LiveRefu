@@ -24,7 +24,7 @@ related:
 
 ## 01 · 月牙城总览
 
-![月牙城总览](01_crescent_bay_overview.png)
+![月牙城总览](images/01_crescent_bay_overview.png)
 
 - 三环从外到内：外环护卫/采集/能源，中环居住/养生/娱乐/教育，内环政治/经济/文化；
 - 月牙的凹面是湾口，用两条对接臂连接城市与港湾；
@@ -33,7 +33,7 @@ related:
 
 ## 02 · 三环剖面
 
-![三环剖面](02_ring_section.png)
+![三环剖面](images/02_ring_section.png)
 
 - 把三环拆成可读的剖面：外环=任务时间，中环=人的时间，内环=机构时间；
 - 右侧面板不是图例，而是「这一环在保障什么」；
@@ -42,7 +42,7 @@ related:
 
 ## 03 · 中环 · 养生舱
 
-![中环养生舱](03_care_pod.png)
+![中环养生舱](images/03_care_pod.png)
 
 - 夜班 03:40，护理师在巡检，湾民在恢复舱里睡着；
 - 舱体是「可维修的白盒」：外露框架、状态灯、检查单、药柜、备件；
@@ -51,7 +51,7 @@ related:
 
 ## 04 · 外环 · 岗位防线
 
-![外环岗位防线](04_outer_defense.png)
+![外环岗位防线](images/04_outer_defense.png)
 
 - 七个塔位沿弧内侧展开，射程圈与弧线的关系一眼可见；
 - 故障从湾口方向反向扩散，标出「停塔 2.5 秒」的代价；
@@ -60,7 +60,7 @@ related:
 
 ## 05 · 岗位控制台
 
-![岗位控制台](05_shift_console.png)
+![岗位控制台](images/05_shift_console.png)
 
 - 交接班检查单、月牙弧地图、资源条、广播日志；
 - 界面是「世界的一部分」：纸张、金属框、螺钉、琥珀警报；
@@ -69,7 +69,7 @@ related:
 
 ## 06 · 岗位 / CREW
 
-![岗位剪影](06_crew.png)
+![岗位剪影](images/06_crew.png)
 
 - 五个岗位：护理师、护卫兵、采集兵、工程师、执政官；
 - 每人一条色带与一个工具，不靠脸识别，而靠岗位识别；
@@ -93,12 +93,12 @@ related:
 
 | 文件 | 说明 |
 | --- | --- |
-| `01_crescent_bay_overview.svg` | 矢量源文件 |
-| `02_ring_section.svg` | 矢量源文件 |
-| `03_care_pod.svg` | 矢量源文件 |
-| `04_outer_defense.svg` | 矢量源文件 |
-| `05_shift_console.svg` | 矢量源文件 |
-| `06_crew.svg` | 矢量源文件 |
+| `images/01_crescent_bay_overview.svg` | 矢量源文件 |
+| `images/02_ring_section.svg` | 矢量源文件 |
+| `images/03_care_pod.svg` | 矢量源文件 |
+| `images/04_outer_defense.svg` | 矢量源文件 |
+| `images/05_shift_console.svg` | 矢量源文件 |
+| `images/06_crew.svg` | 矢量源文件 |
 | `*.png` | 1600×1000 导出图 |
 
 ```bash
