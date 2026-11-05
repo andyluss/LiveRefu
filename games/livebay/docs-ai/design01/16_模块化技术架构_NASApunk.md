@@ -58,8 +58,8 @@ related:
 | --- | --- | --- |
 | M1 内核 | ✅ 已实现 | `kernel/result`、`mission_clock`、`event_bus`、`command_bus`、`platform/black_box`、`application/mission_runtime` |
 | M2 Map / Economy | ✅ 已实现 | `domain/map/map_module.gd`、`domain/economy/economy_module.gd`，`Sim` 通过属性代理使用 |
-| M3 Wave / Enemy / Tower / Mission / Fault | 🟡 部分 | Wave/Mission/Fault 已拆；Enemy/Tower 仍由 `sim.gd` 承担 |
-| M4 ReadModel / Presenter | 🟡 部分 | ReadModel/Presenter 已接 HUD；视图细节仍直接读 Sim |
+| M3 Wave / Enemy / Tower / Mission / Fault | 🟡 大部分 | 七个领域模块已拆；索敌/移动/清理仍由 `Sim` 编排 |
+| M4 ReadModel / Presenter | 🟡 部分 | ReadModel/Presenter 已接 HUD；编辑器预览已改用 MissionRuntime |
 | M5 MissionPack / schema | 🟡 部分 | `MissionPack` 已生成 manifest/hash 并接入 `DataLoader`；独立编译器未接 |
 | M6 黑匣子回放 | 🟡 部分 | 黑匣子已记录事件；回放命令未接 |
 | M7 Procedure/Fault 模块 | ⏳ 未开始 | 对应 [14](14_塔防NASApunk深化.md) |
@@ -101,7 +101,7 @@ NASApunk 的模块化不是「把东西拆小」，而是「让系统坏得起�
 3. **可降级**：可选模块失败时，任务能进入明确的降级模式；核心模块失败时，启动即失败，不带着坏规则跑。
 4. **可观测**：每局有黑匣子，能回答「第 137 tick 为什么漏了」。
 5. **可复用**：游戏视图、编辑器预览、未来回放/测试台共用同一套任务组装与读模型。
-6. **可迁移**：从现行架构分阶段走，不要求一次性重写，不改变现有 61 项验收的行为。
+6. **可迁移**：从现行架构分阶段走，不要求一次性重写，不改变现有 66 项验收的行为。
 
 ### 3.2 非目标
 
@@ -565,7 +565,7 @@ game/
 | 阶段 | 内容 | 预估 | 验收 | 回退 |
 | --- | --- | --- | --- | --- |
 | M0 | 冻结行为：记录 3 个 golden（标准/失败/旁路占位） | 1 天 | 结果与迁移前 37 项一致 | 无代码变更 |
-| M1 | 内核：`Result`、`Tick`、`EventBus`、`CommandBus`、`CompositionRoot`；把现有 `Sim` 包成一个模块 | 2–3 天 | 61/61 + 事件日志 | 开关回旧 `Sim` |
+| M1 | 内核：`Result`、`Tick`、`EventBus`、`CommandBus`、`CompositionRoot`；把现有 `Sim` 包成一个模块 | 2–3 天 | 66/66 + 事件日志 | 开关回旧 `Sim` |
 | M2 | 拆 `Map` / `Enemy` / `Economy` | 3–5 天 | 模块单测 + golden 不变 | 旧 `Sim` 保留 |
 | M3 | 拆 `Wave` / `Tower` / `Mission` / `Fault` | 3–5 天 | 端口契约 + 故障注入 | 逐步切换 |
 | M4 | `ReadModel` + presenter + 视图拆分 | 3–5 天 | 视图 smoke + 截图对比 | 旧 `main` 入口 |
@@ -583,7 +583,7 @@ game/
 | 事件面条 | 一个事件 10 个消费者，顺序不可控 | 事件只描述事实；顺序由编排器固定 |
 | 双份状态 | ReadModel 与模块状态不同步 | ReadModel 每 tick 重建；视图不缓存规则 |
 | GDScript 动态类型 | 端口传错类型 | 契约测试 + `Result` + 运行时校验 |
-| 迁移踩坏 | 旧行为变了 | M0 golden + 每阶段开关 + 61 项回归 |
+| 迁移踩坏 | 旧行为变了 | M0 golden + 每阶段开关 + 66 项回归 |
 | 编辑器再次分叉 | 预览又写一套规则 | 预览只走 `MissionOrchestrator`，禁止直接改 Sim |
 | 性能 | 事件/快照每 tick 分配 | 对象池、只读快照、预算与 p95 监控 |
 | 团队认知负担 | 模块太多 | 先 6 个核心模块；D9/Procedure 后置 |

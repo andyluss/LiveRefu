@@ -33,6 +33,8 @@ var economy := LiveBayEconomyModule.new()
 var wave := LiveBayWaveModule.new()
 var mission := LiveBayMissionModule.new()
 var fault := LiveBayFaultModule.new()
+var enemies_module := LiveBayEnemyModule.new()
+var towers_module := LiveBayTowerModule.new()
 
 var path: PackedVector2Array:
 	get: return map.path
@@ -70,8 +72,10 @@ var waves: Array:
 	get: return wave.waves
 var spawn_queue: Array:
 	get: return wave.queue
-var enemies: Array = []
-var towers: Array = []
+var enemies: Array:
+	get: return enemies_module.enemies
+var towers: Array:
+	get: return towers_module.towers
 var stats: Dictionary = {}
 var result: Dictionary:
 	get: return mission.result
@@ -85,6 +89,8 @@ func _init(game_data: Dictionary) -> void:
 	enemies_by_id = data.get("enemies_by_id", {})
 	wave.waves = data.get("waves", [])
 	_parse_map(data.get("map", {}))
+	enemies_module.configure(enemies_by_id, map)
+	towers_module.configure(towers_by_id, balance, profession, economy)
 	reset()
 
 
@@ -96,8 +102,8 @@ func reset() -> void:
 	mission.reset(profession, balance)
 	economy.reset(float(profession.get("start_energy", balance.get("starting_energy", 90.0))))
 	wave.reset(waves, balance)
-	enemies.clear()
-	towers.clear()
+	enemies_module.reset()
+	towers_module.reset()
 	stats = {
 		"kills": 0,
 		"leaked": 0,
@@ -168,22 +174,7 @@ func start_wave() -> bool:
 
 func _spawn_due() -> void:
 	for entry in wave.due():
-		var enemy_id: String = entry.enemy_id
-		if not enemies_by_id.has(enemy_id):
-			continue
-		var def: Dictionary = enemies_by_id[enemy_id]
-		var reverse: bool = String(def.get("behavior", "forward")) == "reverse"
-		enemies.append({
-			"def": def,
-			"hp": float(def.hp),
-			"max_hp": float(def.hp),
-			"dist": path_total if reverse else 0.0,
-			"direction": -1 if reverse else 1,
-			"hit_towers": {},
-			"slow_factor": 0.0,
-			"slow_timer": 0.0,
-			"dead": false,
-		})
+		enemies_module.spawn(str(entry.enemy_id))
 
 
 func _update_towers(dt: float) -> void:
@@ -304,64 +295,33 @@ func _finish(won: bool) -> void:
 func build(slot_index: int, tower_id: String) -> bool:
 	if state == State.WON or state == State.LOST:
 		return false
-	if slot_index < 0 or slot_index >= slots.size():
+	var result := towers_module.build(slot_index, tower_id)
+	if not result.ok:
 		return false
-	if _tower_at(slot_index) != null:
-		return false
-	if not towers_by_id.has(tower_id):
-		return false
-	var def: Dictionary = towers_by_id[tower_id]
-	var cost: int = _build_cost(def)
-	if not economy.spend(float(cost)):
-		return false
-	towers.append({
-		"slot": slot_index,
-		"def": def,
-		"level": 1,
-		"cooldown": 0.0,
-		"income_timer": 0.0,
-		"invested": cost,
-		"disabled_timer": 0.0,
-	})
 	stats.built += 1
-	stats.spent += cost
+	stats.spent += int(result.data.get("cost", 0))
 	energy_changed.emit(energy)
 	return true
 
 
 func upgrade(slot_index: int) -> bool:
-	var tower: Variant = _tower_at(slot_index)
-	if tower == null:
+	var result := towers_module.upgrade(slot_index)
+	if not result.ok:
 		return false
-	var max_level: int = int(balance.get("max_tower_level", 3))
-	if int(tower.level) >= max_level:
-		return false
-	var cost: int = int(round(float(tower.def.cost) * float(balance.get("upgrade_cost_factor", 0.8)) * float(tower.level)))
-	if not economy.spend(float(cost)):
-		return false
-	tower.level += 1
-	tower.invested += cost
-	stats.spent += cost
+	stats.spent += int(result.data.get("cost", 0))
 	energy_changed.emit(energy)
 	return true
 
 
 func sell(slot_index: int) -> bool:
-	var tower: Variant = _tower_at(slot_index)
-	if tower == null:
+	var result := towers_module.sell(slot_index)
+	if not result.ok:
 		return false
-	var refund: int = int(floor(float(tower.invested) * float(balance.get("sell_refund", 0.7))))
-	economy.earn(float(refund))
-	towers.erase(tower)
 	energy_changed.emit(energy)
 	return true
 
-
 func _tower_at(slot_index: int) -> Variant:
-	for tower: Dictionary in towers:
-		if int(tower.slot) == slot_index:
-			return tower
-	return null
+	return towers_module.at(slot_index)
 
 
 func _build_cost(def: Dictionary) -> int:
@@ -385,7 +345,7 @@ func _supply_repair(tower: Dictionary) -> float:
 
 
 func _enemy_pos(enemy: Dictionary) -> Vector2:
-	return point_at(float(enemy.dist))
+	return enemies_module.pos(enemy)
 
 
 func point_at(distance: float) -> Vector2:

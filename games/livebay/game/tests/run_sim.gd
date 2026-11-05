@@ -16,6 +16,8 @@ const MissionModuleScript = preload("res://scripts/domain/mission/mission_module
 const FaultModuleScript = preload("res://scripts/domain/faults/fault_module.gd")
 const ReadModelScript = preload("res://scripts/application/mission_read_model.gd")
 const PresenterScript = preload("res://scripts/presentation/mission_presenter.gd")
+const EnemyModuleScript = preload("res://scripts/domain/enemies/enemy_module.gd")
+const TowerModuleScript = preload("res://scripts/domain/towers/tower_module.gd")
 
 var failures: int = 0
 var checks: int = 0
@@ -100,6 +102,17 @@ func _test_kernel(data: Dictionary) -> void:
 	_check(view.energy > 0.0 and view.wave_count == 5, "view: read model snapshot")
 	var hud: Dictionary = PresenterScript.hud(view)
 	_check(str(hud.energy_text).begins_with("供能"), "view: presenter HUD text")
+	var enemy_mod := EnemyModuleScript.new()
+	enemy_mod.configure(data.enemies_by_id, map)
+	_check(enemy_mod.spawn("debris") and enemy_mod.enemies.size() == 1, "domain: enemy module spawn")
+	_check(enemy_mod.pos(enemy_mod.enemies[0]).distance_to(map.path[0]) < 0.01, "domain: enemy module position")
+	var tower_eco := EconomyModuleScript.new()
+	tower_eco.reset(90.0)
+	var tower_mod := TowerModuleScript.new()
+	tower_mod.configure(data.towers_by_id, data.balance, data.profession, tower_eco)
+	_check(tower_mod.build(0, "interceptor").ok and tower_mod.towers.size() == 1, "domain: tower module build")
+	_check(tower_mod.upgrade(0).ok and int(tower_mod.towers[0].level) == 2, "domain: tower module upgrade")
+	_check(tower_mod.sell(0).ok and tower_mod.towers.is_empty(), "domain: tower module sell")
 	runtime.dispose()
 
 

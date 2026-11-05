@@ -6,6 +6,7 @@ extends SubViewportContainer
 
 const SimScript = preload("res://scripts/core/sim.gd")
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
+const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
 const PreviewCanvas = preload("res://addons/livebay_tools/preview_canvas.gd")
 
 signal status(text: String)
@@ -13,6 +14,7 @@ var selected_tower_id := "interceptor"
 var viewport: SubViewport
 var canvas: Node2D
 var sim: Variant = null
+var runtime: LiveBayMissionRuntime
 var running := false
 var paused := false
 var wave_offset := 0
@@ -21,6 +23,12 @@ var total_waves := 0
 
 func _ready() -> void:
 	_ensure_initialized()
+
+
+func _exit_tree() -> void:
+	if runtime != null:
+		runtime.dispose()
+		runtime = null
 
 
 func _ensure_initialized() -> void:
@@ -77,8 +85,10 @@ func stop_preview() -> void:
 	running = false
 	paused = false
 	set_process(false)
-	if sim:
-		sim = null
+	if runtime:
+		runtime.dispose()
+		runtime = null
+	sim = null
 	if canvas:
 		canvas.set_sim(null)
 
@@ -88,9 +98,12 @@ func _process(delta: float) -> void:
 		return
 	if sim.state == SimScript.State.BETWEEN:
 		paused = true
+		if runtime:
+			runtime.clock.paused = true
 		status.emit("波间整备：点「下一波」继续。")
 		return
-	sim.step(delta)
+	if runtime:
+		runtime.step(delta)
 	canvas.queue_redraw()
 	if sim.state == SimScript.State.WON or sim.state == SimScript.State.LOST:
 		running = false
@@ -104,6 +117,8 @@ func toggle_pause() -> void:
 	if sim.state == SimScript.State.WON or sim.state == SimScript.State.LOST:
 		return
 	paused = not paused
+	if runtime:
+		runtime.clock.paused = paused
 	status.emit("预览已暂停。" if paused else "预览继续。")
 	set_process(true)
 
@@ -112,7 +127,9 @@ func next_wave() -> void:
 	if not running or sim == null:
 		return
 	if sim.state == SimScript.State.BETWEEN:
-		sim.start_wave()
+		if runtime:
+			runtime.clock.paused = false
+			runtime.dispatch(&"start_wave")
 		paused = false
 		status.emit("下一波开始。")
 		set_process(true)
@@ -135,15 +152,17 @@ func _gui_input(event: InputEvent) -> void:
 	if slot < 0:
 		return
 	if sim.get_tower_at(slot) == null:
-		if sim.build(slot, selected_tower_id):
+		var built: LiveBayResult = runtime.dispatch(&"build_tower", {"slot": slot, "tower_id": selected_tower_id})
+		if built.ok:
 			status.emit("预览：在 %d 号塔位建造 %s" % [slot + 1, selected_tower_id])
 		else:
-			status.emit("预览：供能不足或塔位不可用")
+			status.emit("预览：" + built.message)
 	else:
-		if sim.upgrade(slot):
+		var upgraded: LiveBayResult = runtime.dispatch(&"upgrade_tower", {"slot": slot})
+		if upgraded.ok:
 			status.emit("预览：升级 %d 号塔位" % [slot + 1])
 		else:
-			status.emit("预览：无法升级（满级或供能不足）")
+			status.emit("预览：" + upgraded.message)
 	canvas.queue_redraw()
 	accept_event()
 
@@ -153,7 +172,8 @@ func _sell_at(pos: Vector2) -> void:
 	var world: Vector2 = local / canvas.scale.x
 	var slot := _slot_at(world)
 	if slot >= 0 and sim.get_tower_at(slot) != null:
-		if sim.sell(slot):
+		var sold: LiveBayResult = runtime.dispatch(&"sell_tower", {"slot": slot})
+		if sold.ok:
 			status.emit("预览：出售 %d 号塔位" % [slot + 1])
 			canvas.queue_redraw()
 
