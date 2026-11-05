@@ -144,7 +144,7 @@ WAVE --cleared--> BETWEEN
 ```bash
 cd games/livebay
 python3 tools/build_flow.py           # 生成 game_flow.md / game_flow.html
-python3 tools/build_extra_flows.py    # 生成四张补充图 / extra_flows.html
+python3 tools/build_extra_flows.py    # 生成四张补充图 / extra_flows.html（依赖 Graphviz dot）
 python3 tools/build_flow.py --check   # 只校验总图
 python3 tools/build_extra_flows.py --check # 只校验补充图
 ```
