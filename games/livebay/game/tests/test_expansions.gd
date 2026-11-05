@@ -58,6 +58,13 @@ func _initialize() -> void:
 	sim_fault.fault_pending = {"enemy": enemy_fault, "slots": [0]}
 	sim_fault.fault_choice_pending = true
 	_check(sim_fault.resolve_fault_choice("bypass") and float(sim_fault.get_tower_at(0).degraded_timer) > 0.0, "fault: W5 bypass applies pending choice")
+	var report_proc: LiveBayProcedureModule = preload("res://scripts/domain/procedures/procedure_module.gd").new()
+	report_proc.configure(proc_data)
+	_check(report_proc.submit_report("custom", sim_fault).ok and sim_fault.low_report == 1, "procedure: report choice + low report")
+	var memory := LiveBayShiftMemory.new()
+	memory.record({"grade": "B", "integrity": 40}, "custom", 1)
+	var briefing: Dictionary = memory.briefing()
+	_check(not briefing.is_empty() and str(briefing.body).contains("低报"), "shift: briefing reads low report")
 	var result_a := _run_variant(data, a.data, "isolate")
 	var result_b := _run_variant(data, b.data, "isolate")
 	var result_c := _run_variant(data, c.data, "bypass")

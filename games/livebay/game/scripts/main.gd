@@ -10,6 +10,7 @@ const ReadModelScript = preload("res://scripts/application/mission_read_model.gd
 const InputScript = preload("res://scripts/presentation/game_input.gd")
 const RendererScript = preload("res://scripts/presentation/game_renderer.gd")
 const ExpansionBootScript = preload("res://scripts/expansion/expansion_boot.gd")
+const ShiftMemoryScript = preload("res://scripts/application/shift_memory.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -65,6 +66,8 @@ var checklist_title: Label
 var checklist_body: Label
 var checklist_buttons: VBoxContainer
 var report_buttons: HBoxContainer
+var shift_memory: LiveBayShiftMemory
+var current_result: Dictionary = {}
 
 var fatal_label: Label
 
@@ -92,6 +95,7 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
+	shift_memory = ShiftMemoryScript.new()
 	font = SystemFont.new()
 	font.font_names = PackedStringArray([
 		"PingFang SC",
@@ -527,6 +531,8 @@ func _restart() -> void:
 		overlay.visible = false
 	if checklist_overlay != null:
 		checklist_overlay.visible = false
+	if shift_memory != null and shift_memory.has_last():
+		_show_briefing()
 
 
 # ---------------------------------------------------------------- UI 刷新
@@ -547,6 +553,31 @@ func _on_checklist_requested(envelope: Dictionary) -> void:
 		button.pressed.connect(_choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
 		checklist_buttons.add_child(button)
 	checklist_overlay.visible = true
+
+
+func _show_briefing() -> void:
+	var briefing: Dictionary = shift_memory.briefing()
+	if briefing.is_empty():
+		return
+	checklist_title.text = str(briefing.get("title", "接班简报"))
+	checklist_body.text = str(briefing.get("body", ""))
+	for child in checklist_buttons.get_children():
+		child.queue_free()
+	var start := Button.new()
+	start.text = "接班"
+	start.custom_minimum_size = Vector2(440, 42)
+	_style_button(start, PALETTE.teal, PALETTE.cream)
+	start.pressed.connect(_dismiss_briefing)
+	checklist_buttons.add_child(start)
+	checklist_overlay.visible = true
+	if runtime != null:
+		runtime.clock.paused = true
+
+
+func _dismiss_briefing() -> void:
+	checklist_overlay.visible = false
+	if runtime != null:
+		runtime.clock.paused = false
 
 
 func _on_fault_choice_requested(_envelope: Dictionary) -> void:
@@ -690,6 +721,7 @@ func _on_game_lost(result: Dictionary) -> void:
 
 
 func _show_overlay(won: bool, result: Dictionary) -> void:
+	current_result = result.duplicate(true)
 	overlay.visible = true
 	overlay_title.text = "本班结束 · %s" % String(result.get("grade", "C")) if won else "事故报告 · F"
 	overlay_title.add_theme_color_override("font_color", PALETTE.teal if won else PALETTE.rust)
@@ -720,6 +752,7 @@ func _submit_report(option_id: String) -> void:
 	var result: LiveBayResult = runtime.dispatch(&"submit_report", {"option_id": option_id})
 	if result.ok:
 		overlay_body.text += "\n本班记录：%s" % ("低报" if str(result.data.get("effect", "")) == "custom" else "已记录")
+		shift_memory.record(current_result, option_id, runtime.sim.low_report)
 		for child in report_buttons.get_children():
 			child.queue_free()
 
