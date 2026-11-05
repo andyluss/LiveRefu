@@ -53,7 +53,17 @@ func briefing() -> Dictionary:
 			text = "上一班把 T-07 标成「待复查」。没有人被追责，但这件事还挂在交接单上。"
 		_:
 			text = "上一班没有留下文字记录。交接单上只有评级与保障度。"
-	var audit := "\n\n审计备注：本班交接后，下次故障停塔 +1s。" if int(last_report.low_report) > 0 else ""
+	var streak := low_streak()
+	var audit := ""
+	if streak > 0:
+		audit = "\n\n审计备注：连续低报 %d 班，下次故障停塔 +%ds。" % [streak, streak]
+		if streak >= 2:
+			audit += "\n广播：外环事故统计与交接记录不一致，已列入本周复核。"
+	var last_shift := "\n\n上一班：%s / 保障度 %d%s" % [
+		str(last_report.grade),
+		int(last_report.integrity),
+		" / 低报 +1" if int(last_report.low_report) > 0 else "",
+	]
 	var recent := ""
 	if history.size() > 1:
 		var parts: Array = []
@@ -62,20 +72,22 @@ func briefing() -> Dictionary:
 		recent = "\n\n最近三班：" + " · ".join(parts)
 	return {
 		"title": "接班简报 · 第 %d 班" % (int(last_report.shift) + 1),
-		"body": "%s\n\n上一班：%s / 保障度 %d%s%s%s" % [
-			text,
-			str(last_report.grade),
-			int(last_report.integrity),
-			" / 低报 +1" if int(last_report.low_report) > 0 else "",
-			audit,
-			recent,
-		],
+		"body": "%s%s%s%s" % [text, last_shift, audit, recent],
 	}
 
 
+func low_streak() -> int:
+	var count := 0
+	for i in range(history.size() - 1, -1, -1):
+		if int(history[i].get("low_report", 0)) <= 0:
+			break
+		count += 1
+	return count
+
+
 func next_low_report() -> int:
-	return int(last_report.get("low_report", 0))
+	return low_streak()
 
 
 func next_fault_bonus() -> float:
-	return 1.0 if next_low_report() > 0 else 0.0
+	return float(low_streak())
