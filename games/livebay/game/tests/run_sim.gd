@@ -11,6 +11,8 @@ const EventBusScript = preload("res://scripts/kernel/event_bus.gd")
 const CommandBusScript = preload("res://scripts/kernel/command_bus.gd")
 const MapModuleScript = preload("res://scripts/domain/map/map_module.gd")
 const EconomyModuleScript = preload("res://scripts/domain/economy/economy_module.gd")
+const WaveModuleScript = preload("res://scripts/domain/waves/wave_module.gd")
+const MissionModuleScript = preload("res://scripts/domain/mission/mission_module.gd")
 
 var failures: int = 0
 var checks: int = 0
@@ -64,6 +66,19 @@ func _test_kernel(data: Dictionary) -> void:
 	eco.reset(10.0)
 	_check(eco.spend(4.0) and is_equal_approx(eco.energy, 6.0), "domain: economy spend")
 	_check(not eco.spend(7.0), "domain: economy rejects overspend")
+	var wave_mod := WaveModuleScript.new()
+	wave_mod.reset(data.waves, data.balance)
+	_check(is_equal_approx(wave_mod.timer, 30.0), "domain: wave module prep")
+	_check(wave_mod.start() and wave_mod.index == 0, "domain: wave module starts W1")
+	wave_mod.advance_time(1.0)
+	_check(wave_mod.due().size() > 0, "domain: wave module spawn queue")
+	var mission_mod := MissionModuleScript.new()
+	mission_mod.reset(data.profession, data.balance)
+	mission_mod.damage(10.0)
+	mission_mod.repair(5.0)
+	_check(is_equal_approx(mission_mod.integrity, 95.0), "domain: mission damage/repair")
+	var result := mission_mod.finish(false, {"kills": 0, "leaked": 1, "built": 0, "spent": 0, "waves_cleared": 0}, 5, data.balance)
+	_check(result.grade == "F", "domain: mission failure grade")
 	var runtime: LiveBayMissionRuntime = RuntimeScript.new(data)
 	runtime.blackbox.enabled = false
 	var built: LiveBayResult = runtime.dispatch(&"build_tower", {"slot": 0, "tower_id": "interceptor"})

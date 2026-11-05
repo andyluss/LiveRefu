@@ -3,6 +3,27 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.30] - 2026-11-05 12:36
+
+### 新增（模块化 M3 部分）
+
+- `domain/waves/wave_module.gd`：准备计时、波次顺序、生成队列、下一波 prep；
+- `domain/mission/mission_module.gd`：阶段、保障度、维修、评级、结算；
+- `Sim` 通过属性代理使用 Wave/Mission，外部读取方式不变；
+- 新增 Wave/Mission 模块测试。
+
+### 变更
+
+- `16` 的 M3 标记为「部分」：Wave/Mission 已拆，Enemy/Tower/Fault 仍在 `Sim`；
+- 测试从 52 增至 **57 项**；`12`/`B2`/README 同步。
+
+### 验证
+
+- `./run.sh test` 57/57；
+- `./run.sh check` 退出码 0；
+- `./run.sh editor-test` 通过；
+- 标准班仍为 B / 40 / 59 击杀 / 9 漏过。
+
 ## [0.1.29] - 2026-11-05 12:35
 
 ### 新增（模块化 M5 部分）

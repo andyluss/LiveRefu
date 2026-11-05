@@ -27,10 +27,11 @@ var balance: Dictionary
 var profession: Dictionary
 var towers_by_id: Dictionary
 var enemies_by_id: Dictionary
-var waves: Array
 
 var map := LiveBayMapModule.new()
 var economy := LiveBayEconomyModule.new()
+var wave := LiveBayWaveModule.new()
+var mission := LiveBayMissionModule.new()
 
 var path: PackedVector2Array:
 	get: return map.path
@@ -45,20 +46,34 @@ var base_pos: Vector2:
 var base_radius: float:
 	get: return map.base_radius
 
-var state: int = State.PREP
+var state: int:
+	get: return mission.state
+	set(value): mission.state = value
 var energy: float:
 	get: return economy.energy
 	set(value): economy.energy = value
-var integrity: float = 0.0
-var max_integrity: float = 100.0
-var wave_index: int = -1
-var wave_time: float = 0.0
-var timer: float = 0.0
+var integrity: float:
+	get: return mission.integrity
+	set(value): mission.integrity = value
+var max_integrity: float:
+	get: return mission.max_integrity
+var wave_index: int:
+	get: return wave.index
+var wave_time: float:
+	get: return wave.time
+	set(value): wave.time = value
+var timer: float:
+	get: return wave.timer
+	set(value): wave.timer = value
+var waves: Array:
+	get: return wave.waves
+var spawn_queue: Array:
+	get: return wave.queue
 var enemies: Array = []
 var towers: Array = []
-var spawn_queue: Array = []
 var stats: Dictionary = {}
-var result: Dictionary = {}
+var result: Dictionary:
+	get: return mission.result
 
 
 func _init(game_data: Dictionary) -> void:
@@ -67,7 +82,7 @@ func _init(game_data: Dictionary) -> void:
 	profession = data.get("profession", {})
 	towers_by_id = data.get("towers_by_id", {})
 	enemies_by_id = data.get("enemies_by_id", {})
-	waves = data.get("waves", [])
+	wave.waves = data.get("waves", [])
 	_parse_map(data.get("map", {}))
 	reset()
 
@@ -77,16 +92,11 @@ func _parse_map(map_data: Dictionary) -> void:
 
 
 func reset() -> void:
-	state = State.PREP
-	max_integrity = float(profession.get("start_integrity", balance.get("starting_integrity", 100.0)))
-	integrity = max_integrity
+	mission.reset(profession, balance)
 	economy.reset(float(profession.get("start_energy", balance.get("starting_energy", 90.0))))
-	wave_index = -1
-	wave_time = 0.0
-	timer = float(waves[0].get("prep", balance.get("prepare_time", 30.0))) if not waves.is_empty() else 30.0
+	wave.reset(waves, balance)
 	enemies.clear()
 	towers.clear()
-	spawn_queue.clear()
 	stats = {
 		"kills": 0,
 		"leaked": 0,
@@ -94,22 +104,8 @@ func reset() -> void:
 		"spent": 0,
 		"waves_cleared": 0,
 	}
-	result = {}
-
-
 func state_name() -> String:
-	match state:
-		State.PREP:
-			return "准备"
-		State.WAVE:
-			return "交战中"
-		State.BETWEEN:
-			return "波间整备"
-		State.WON:
-			return "本班结束"
-		State.LOST:
-			return "事故"
-	return "?"
+	return mission.state_name()
 
 
 func step(delta: float) -> void:
@@ -126,13 +122,12 @@ func step(delta: float) -> void:
 
 func _tick(dt: float) -> void:
 	if state == State.PREP or state == State.BETWEEN:
-		timer -= dt
-		if timer <= 0.0:
+		if wave.tick_timer(dt):
 			start_wave()
 	if state != State.WAVE:
 		return
 
-	wave_time += dt
+	wave.advance_time(dt)
 	_spawn_due()
 
 	for i: int in range(enemies.size() - 1, -1, -1):
@@ -163,29 +158,15 @@ func _tick(dt: float) -> void:
 func start_wave() -> bool:
 	if state != State.PREP and state != State.BETWEEN:
 		return false
-	if wave_index + 1 >= waves.size():
+	if not wave.start():
 		return false
-	wave_index += 1
-	var wave: Dictionary = waves[wave_index]
 	state = State.WAVE
-	wave_time = 0.0
-	timer = 0.0
-	spawn_queue.clear()
-	for group: Variant in wave.get("groups", []):
-		var enemy_id: String = group.get("enemy", "")
-		var count: int = int(group.get("count", 0))
-		var interval: float = float(group.get("interval", 1.0))
-		var delay: float = float(group.get("delay", 0.0))
-		for i: int in range(count):
-			spawn_queue.append({"time": delay + i * interval, "enemy_id": enemy_id})
-	spawn_queue.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.time) < float(b.time))
-	wave_started.emit(wave_index + 1)
+	wave_started.emit(wave.index + 1)
 	return true
 
 
 func _spawn_due() -> void:
-	while not spawn_queue.is_empty() and float(spawn_queue[0].time) <= wave_time:
-		var entry: Dictionary = spawn_queue.pop_front()
+	for entry in wave.due():
 		var enemy_id: String = entry.enemy_id
 		if not enemies_by_id.has(enemy_id):
 			continue
@@ -300,7 +281,7 @@ func _leak_enemy(index: int) -> void:
 	var enemy: Dictionary = enemies[index]
 	var def: Dictionary = enemy.def
 	enemies.remove_at(index)
-	integrity = max(0.0, integrity - float(def.leak_damage))
+	mission.damage(float(def.leak_damage))
 	stats.leaked += 1
 	enemy_leaked.emit(enemy)
 	integrity_changed.emit(integrity)
@@ -315,47 +296,22 @@ func _on_wave_cleared() -> void:
 		if tower.def.kind == "supply":
 			repair += _supply_repair(tower)
 	if repair > 0.0:
-		integrity = min(max_integrity, integrity + repair)
+		mission.repair(repair)
 		integrity_changed.emit(integrity)
-	wave_cleared.emit(wave_index + 1)
-	if wave_index + 1 >= waves.size():
+	wave_cleared.emit(wave.index + 1)
+	if wave.index + 1 >= waves.size():
 		_finish(true)
 	else:
 		state = State.BETWEEN
-		timer = float(waves[wave_index + 1].get("prep", balance.get("between_wave_time", 20.0)))
+		timer = wave.next_prep(balance)
 
 
 func _finish(won: bool) -> void:
-	state = State.WON if won else State.LOST
-	var grade := _grade(won)
-	result = {
-		"won": won,
-		"grade": grade,
-		"integrity": integrity,
-		"max_integrity": max_integrity,
-		"kills": stats.kills,
-		"leaked": stats.leaked,
-		"built": stats.built,
-		"spent": stats.spent,
-		"waves_cleared": stats.waves_cleared,
-		"total_waves": waves.size(),
-	}
+	var final := mission.finish(won, stats, waves.size(), balance)
 	if won:
-		game_won.emit(result)
+		game_won.emit(final)
 	else:
-		game_lost.emit(result)
-
-
-func _grade(won: bool) -> String:
-	if not won:
-		return "F"
-	if integrity >= max_integrity * float(balance.get("grade_s_ratio", 0.9)):
-		return "S"
-	if integrity >= max_integrity * float(balance.get("grade_a_ratio", 0.7)):
-		return "A"
-	if integrity >= max_integrity * float(balance.get("grade_b_ratio", 0.4)):
-		return "B"
-	return "C"
+		game_lost.emit(final)
 
 
 func build(slot_index: int, tower_id: String) -> bool:

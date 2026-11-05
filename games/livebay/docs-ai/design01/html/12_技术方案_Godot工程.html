@@ -310,7 +310,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 </tbody>
 </table></div>
 <h2 id="七测试">七、测试</h2>
-<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口，当前 52 项断言：</p>
+<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口，当前 57 项断言：</p>
 <ol type="1">
 <li><strong>数据完整性</strong>：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1；评级阈值、波次 <code>prep</code> 数据驱动。</li>
 <li><strong>胜利路径</strong>：在 2 个塔位建塔，跑完 5 波，断言 <code>WON</code> 且保障度 &gt; 0。</li>
