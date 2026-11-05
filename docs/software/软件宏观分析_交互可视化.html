@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>软件系统雷达 · 宏观分析交互版</title>
+<meta name="description" content="把软件拆成八层基础设施、六组架构张力、技术债复利与可靠性预算，用可交互的雷达和推演理解软件工程。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  apply();
+  try { mql.addEventListener('change', function () {
+    if (document.documentElement.dataset.themeChoice === 'system') apply();
+  }); } catch (e) {}
+})();
+</script>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #e7e9e3;
+  --panel: #f5f3ea;
+  --panel-2: #d9ded5;
+  --ink: #1f2a2b;
+  --muted: #5c6967;
+  --line: #b3beb5;
+  --teal: #276d68;
+  --teal-2: #3a8e86;
+  --orange: #c25e2e;
+  --amber: #b47a18;
+  --rust: #8b4a34;
+  --sage: #6d8060;
+  --code: #243033;
+  --shadow: 0 16px 42px rgba(31, 42, 43, .11);
+  --radius: 16px;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #10181a;
+  --panel: #172427;
+  --panel-2: #223336;
+  --ink: #e8e8df;
+  --muted: #a8b5b0;
+  --line: #3b4c4b;
+  --teal: #77c9bd;
+  --teal-2: #9edfd5;
+  --orange: #eb8a58;
+  --amber: #e0b45f;
+  --rust: #d18b71;
+  --sage: #a8bd93;
+  --code: #0d1517;
+  --shadow: 0 18px 50px rgba(0, 0, 0, .35);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) { color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; min-height: 100vh; color: var(--ink); font-family: var(--sans); line-height: 1.65;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(58, 142, 134, .16), transparent 34rem),
+    radial-gradient(circle at 95% 10%, rgba(194, 94, 46, .10), transparent 30rem),
+    linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 84%, var(--panel) 16%));
+}
+button, input { font: inherit; }
+button { color: inherit; }
+a { color: var(--teal); }
+.skip-link { position: absolute; left: 12px; top: -60px; padding: 8px 12px; background: var(--ink); color: var(--bg); border-radius: 6px; z-index: 20; }
+.skip-link:focus { top: 12px; }
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 12px clamp(16px, 4vw, 44px);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(12px);
+}
+.brand { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-kicker { font: 700 10px/1 var(--mono); letter-spacing: .18em; color: var(--orange); text-transform: uppercase; }
+.brand-title { font-size: 15px; font-weight: 800; letter-spacing: .04em; }
+.theme-switch { display: flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+.theme-switch button { border: 0; background: transparent; color: var(--muted); cursor: pointer; padding: 6px 11px; border-radius: 999px; font-size: 12px; }
+.theme-switch button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.wrap { max-width: 1220px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 44px) 56px; }
+.hero { padding: clamp(36px, 7vw, 82px) 0 26px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(250px, .75fr); gap: clamp(20px, 5vw, 56px); align-items: end; }
+.eyebrow { margin: 0 0 14px; font: 700 11px/1 var(--mono); letter-spacing: .2em; color: var(--orange); text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(34px, 5.6vw, 70px); line-height: 1.05; letter-spacing: -.045em; }
+h1 em { font-style: normal; color: var(--teal); }
+.lede { color: var(--muted); max-width: 64ch; margin: 18px 0 0; font-size: clamp(15px, 1.5vw, 18px); }
+.hero-note { border-left: 3px solid var(--orange); padding: 4px 0 4px 16px; color: var(--muted); font-size: 13px; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.badge { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; font: 600 11px/1.4 var(--mono); color: var(--muted); }
+.badge.hot { border-color: color-mix(in srgb, var(--orange) 60%, var(--line)); color: var(--orange); }
+.grid { display: grid; gap: 18px; }
+.grid.two { grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); align-items: start; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: clamp(16px, 2.4vw, 26px); min-width: 0; }
+.card h2 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 4px; font-size: 18px; letter-spacing: -.02em; }
+.card h2 .num { font: 700 10px/1 var(--mono); color: var(--orange); letter-spacing: .1em; }
+.card .hint { margin: 0 0 16px; color: var(--muted); font-size: 12px; }
+.stack-card { position: relative; overflow: hidden; }
+#stackMap { width: 100%; height: auto; display: block; }
+#stackMap .edge { stroke: var(--line); stroke-width: 1.2; opacity: .7; }
+#stackMap .node circle { fill: var(--panel-2); stroke: var(--line); stroke-width: 1.5; }
+#stackMap .node:hover circle, #stackMap .node:focus-visible circle { stroke: var(--orange); stroke-width: 3; }
+#stackMap .node.active circle { fill: var(--teal); stroke: var(--teal); }
+#stackMap .node.active text.label { fill: var(--panel); }
+#stackMap .node.weak circle { stroke: var(--rust); stroke-dasharray: 4 3; }
+#stackMap .node text.label { fill: var(--ink); font: 700 12px var(--sans); text-anchor: middle; pointer-events: none; }
+#stackMap .node text.sub { fill: var(--muted); font: 9px var(--mono); text-anchor: middle; pointer-events: none; }
+#stackMap .core { fill: var(--teal); opacity: .1; }
+#stackMap .core-text { fill: var(--teal); font: 700 10px var(--mono); text-anchor: middle; letter-spacing: .08em; }
+.stack-status { position: absolute; top: 18px; right: 18px; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 10px; font: 600 10px var(--mono); color: var(--muted); }
+.stack-status.weak { border-color: var(--rust); color: var(--rust); }
+.stack-detail { border-top: 1px dashed var(--line); margin-top: 6px; padding-top: 14px; min-height: 145px; }
+.stack-detail h3 { margin: 0 0 2px; font-size: 20px; letter-spacing: -.02em; }
+.stack-detail .q { margin: 0 0 8px; color: var(--teal); font-size: 13px; }
+.stack-detail p { margin: 6px 0; color: var(--muted); font-size: 13px; }
+.stack-detail .risk { color: var(--rust); }
+.chip { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 5px 10px; cursor: pointer; font-size: 12px; margin-top: 8px; }
+.chip:hover, .chip:focus-visible { border-color: var(--teal); color: var(--teal); }
+.chip.on { background: var(--teal); border-color: var(--teal); color: var(--panel); }
+.slider-row { display: grid; grid-template-columns: 112px minmax(0, 1fr) 34px; gap: 10px; align-items: center; margin: 10px 0; }
+.slider-row label { color: var(--muted); font-size: 12px; }
+.slider-row output { text-align: right; font: 700 11px var(--mono); }
+input[type="range"] { width: 100%; accent-color: var(--teal); }
+#radar { width: 100%; max-width: 330px; display: block; margin: 6px auto 0; }
+#radar .grid-line { stroke: var(--line); fill: none; opacity: .7; }
+#radar .axis { stroke: var(--line); opacity: .5; }
+#radar .poly { fill: color-mix(in srgb, var(--orange) 22%, transparent); stroke: var(--orange); stroke-width: 2.4; }
+#radar .dot { fill: var(--teal); }
+#radar text { fill: var(--muted); font: 10px var(--mono); }
+.verdict { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.verdict strong { color: var(--orange); font-size: 12px; letter-spacing: .08em; }
+.verdict p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.control { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); }
+.control label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
+.control output { font: 700 22px/1.2 var(--mono); color: var(--teal); }
+.chart { width: 100%; height: 160px; display: block; margin-top: 12px; overflow: visible; }
+.chart .axis-line { stroke: var(--line); stroke-width: 1; }
+.chart .area { fill: color-mix(in srgb, var(--orange) 16%, transparent); }
+.chart .line { fill: none; stroke: var(--orange); stroke-width: 2.4; }
+.chart text { fill: var(--muted); font: 9px var(--mono); }
+.metric-row { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; }
+.metric { min-width: 110px; border-left: 2px solid var(--teal); padding-left: 10px; }
+.metric b { display: block; font: 700 22px/1.2 var(--mono); color: var(--ink); }
+.metric small { color: var(--muted); font-size: 11px; }
+.decision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-top: 8px; }
+.decision { text-align: left; border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--bg); cursor: pointer; }
+.decision:hover, .decision:focus-visible { border-color: var(--teal); }
+.decision[aria-pressed="true"] { border-color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); }
+.decision h3 { margin: 0 0 4px; font-size: 14px; }
+.decision p { margin: 0; color: var(--muted); font-size: 12px; }
+.checklist { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.checklist label { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--muted); font-size: 12px; cursor: pointer; }
+.checklist input { accent-color: var(--teal); margin-top: 3px; }
+.score { font: 700 28px var(--mono); color: var(--teal); }
+.footer { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; border-top: 1px solid var(--line); margin-top: 24px; padding-top: 16px; color: var(--muted); font-size: 12px; }
+.noscript { border: 1px solid var(--rust); color: var(--rust); border-radius: 8px; padding: 12px; margin: 16px 0; }
+@media (max-width: 900px) {
+  .hero, .grid.two { grid-template-columns: 1fr; }
+  .hero { padding-top: 30px; }
+  .stack-status { position: static; display: inline-block; margin-bottom: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media print {
+  :root, :root[data-theme] { color-scheme: light; --bg: #fff; --panel: #fff; --panel-2: #eee; --ink: #111; --muted: #333; --line: #999; }
+  .topbar, .theme-switch, .decision-grid, .checklist, .footer, .chip { display: none !important; }
+  .card { box-shadow: none; break-inside: avoid; }
+  .hero { padding-top: 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到交互内容</a>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-kicker">LiveRefu · software systems</span>
+    <span class="brand-title">软件系统雷达</span>
+  </div>
+  <div class="theme-switch" role="group" aria-label="主题">
+    <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+    <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+    <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">An interactive systems map for software</p>
+      <h1>软件不是代码，<br>是一座<em>持续运行</em>的城市。</h1>
+      <p class="lede">这不是文章摘要。它把软件拆成八层基础设施、六组架构张力、技术债的复利、可靠性预算与自建/采购/开源的取舍；拖动、点击、切换，观察一个决定如何沿着系统传导。</p>
+      <div class="badges">
+        <span class="badge hot">8 层基础设施</span>
+        <span class="badge">6 组架构张力</span>
+        <span class="badge">技术债复利</span>
+        <span class="badge">实时推演</span>
+      </div>
+    </div>
+    <aside class="hero-note">
+      <strong>建议顺序：</strong>先点八层地图，理解“软件在哪里运行”；再拖张力雷达，看一个团队愿意承担什么代价；然后用技术债和可靠性预算，把抽象取舍变成数字；最后用自建/采购/开源做一次决策练习。
+    </aside>
+  </section>
+  <noscript><div class="noscript">此页面的交互需要 JavaScript；下面的结构、标签和默认说明仍然可读。</div></noscript>
+
+  <section class="grid two">
+    <section class="card stack-card" aria-labelledby="stackTitle">
+      <h2 id="stackTitle"><span class="num">01</span> 八层基础设施</h2>
+      <p class="hint">从物理资源到治理，任何一层出问题，都会沿着依赖向上传导。</p>
+      <span class="stack-status" id="stackStatus">短板：—</span>
+      <svg id="stackMap" viewBox="0 0 620 620" role="img" aria-label="软件八层系统图：物理、平台、数据、接口、产品、组织、商业、治理。">
+        <g id="stackEdges"></g>
+        <circle class="core" cx="310" cy="310" r="82"></circle>
+        <text class="core-text" x="310" y="306">SOFTWARE</text>
+        <text class="core-text" x="310" y="322">AS CITY</text>
+        <g id="stackNodes"></g>
+      </svg>
+      <div class="stack-detail" id="stackDetail" aria-live="polite">
+        <h3>物理</h3>
+        <p class="q">芯片、电力、网络、机房、设备——软件真正跑在哪里？</p>
+        <p>云不是隐喻；每一次“弹性扩展”背后都有服务器、能耗、冷却和供应链。</p>
+        <p class="risk">常见失败：把云当成无限资源，把延迟当成免费。</p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="tensionTitle">
+      <h2 id="tensionTitle"><span class="num">02</span> 六组架构张力</h2>
+      <p class="hint">没有正确值。拖动滑杆，看看一个系统被拉向哪些极端。</p>
+      <div id="tensionControls">
+        <div class="slider-row"><label for="t-coupling">耦合 ↔ 自治</label><input id="t-coupling" data-key="coupling" type="range" min="0" max="100" value="60"><output>60</output></div>
+        <div class="slider-row"><label for="t-speed">速度 ↔ 可靠</label><input id="t-speed" data-key="speed" type="range" min="0" max="100" value="55"><output>55</output></div>
+        <div class="slider-row"><label for="t-open">开放 ↔ 控制</label><input id="t-open" data-key="open" type="range" min="0" max="100" value="48"><output>48</output></div>
+        <div class="slider-row"><label for="t-general">通用 ↔ 专用</label><input id="t-general" data-key="general" type="range" min="0" max="100" value="58"><output>58</output></div>
+        <div class="slider-row"><label for="t-local">本地 ↔ 云</label><input id="t-local" data-key="local" type="range" min="0" max="100" value="42"><output>42</output></div>
+        <div class="slider-row"><label for="t-auto">自动化 ↔ 可解释</label><input id="t-auto" data-key="auto" type="range" min="0" max="100" value="63"><output>63</output></div>
+      </div>
+      <svg id="radar" viewBox="0 0 360 300" role="img" aria-label="六组架构张力的实时雷达图"></svg>
+      <div class="verdict" id="tensionVerdict" aria-live="polite"><strong>诊断</strong><p>正在读取张力…</p></div>
+    </section>
+  </section>
+
+  <section class="card" aria-labelledby="debtTitle" style="margin-top:18px">
+    <h2 id="debtTitle"><span class="num">03</span> 技术债复利</h2>
+    <p class="hint">技术债不是道德问题，而是时间偏好：今天省下的，未来要连本带利还。</p>
+    <div class="controls">
+      <div class="control"><label for="debt">当前债务（0–100）</label><output id="debtOut">45</output><input id="debt" type="range" min="0" max="100" value="45"></div>
+      <div class="control"><label for="years">未偿还年数</label><output id="yearsOut">3</output><input id="years" type="range" min="0" max="10" value="3"></div>
+      <div class="control"><label for="interest">年利息（%）</label><output id="interestOut">18</output><input id="interest" type="range" min="5" max="40" value="18"></div>
+    </div>
+    <svg id="debtChart" class="chart" viewBox="0 0 620 160" role="img" aria-label="技术债随时间的复利曲线"></svg>
+    <div class="metric-row">
+      <div class="metric"><b id="debtNow">45</b><small>今天的债务</small></div>
+      <div class="metric"><b id="debtFuture">74</b><small>N 年后的等效债务</small></div>
+      <div class="metric"><b id="debtWindow">—</b><small>建议修复窗口</small></div>
+    </div>
+    <div class="verdict" id="debtVerdict" aria-live="polite"><strong>债务诊断</strong><p>正在计算…</p></div>
+  </section>
+
+  <section class="card" aria-labelledby="reliabilityTitle" style="margin-top:18px">
+    <h2 id="reliabilityTitle"><span class="num">04</span> 可靠性预算</h2>
+    <p class="hint">变更越快、依赖越多、值班越薄，越需要把“恢复”设计进系统，而不是靠运气。</p>
+    <div class="controls">
+      <div class="control"><label for="changes">每周变更次数</label><output id="changesOut">20</output><input id="changes" type="range" min="1" max="100" value="20"></div>
+      <div class="control"><label for="deps">关键依赖数</label><output id="depsOut">8</output><input id="deps" type="range" min="1" max="30" value="8"></div>
+      <div class="control"><label for="oncall">值班人数</label><output id="oncallOut">3</output><input id="oncall" type="range" min="1" max="10" value="3"></div>
+      <div class="control"><label for="slo">可用性目标（%）</label><output id="sloOut">99.9</output><input id="slo" type="range" min="99" max="99.99" step="0.01" value="99.9"></div>
+    </div>
+    <div class="metric-row">
+      <div class="metric"><b id="riskScore">—</b><small>变更压力指数</small></div>
+      <div class="metric"><b id="recoveryBudget">—</b><small>每月可接受停机（分钟）</small></div>
+      <div class="metric"><b id="oncallLoad">—</b><small>每人每周变更负载</small></div>
+    </div>
+    <div class="verdict" id="reliabilityVerdict" aria-live="polite"><strong>可靠性建议</strong><p>正在计算…</p></div>
+  </section>
+
+  <section class="card" aria-labelledby="decisionTitle" style="margin-top:18px">
+    <h2 id="decisionTitle"><span class="num">05</span> 自建 / 采购 / 开源</h2>
+    <p class="hint">没有免费组件。选择一种方式，看看它把责任放在哪里。</p>
+    <div class="decision-grid" role="group" aria-label="组件获取方式">
+      <button type="button" class="decision" data-decision="build" aria-pressed="true"><h3>自建</h3><p>控制力最强，长期维护责任最重。</p></button>
+      <button type="button" class="decision" data-decision="buy" aria-pressed="false"><h3>采购</h3><p>上线最快，供应商锁定与退出风险最高。</p></button>
+      <button type="button" class="decision" data-decision="open" aria-pressed="false"><h3>开源</h3><p>可审计、可修改，但要承担升级与治理成本。</p></button>
+    </div>
+    <div class="verdict" id="decisionVerdict" aria-live="polite"><strong>决策提示</strong><p>正在读取…</p></div>
+  </section>
+
+  <section class="grid two" style="margin-top:18px">
+    <section class="card" aria-labelledby="questionTitle">
+      <h2 id="questionTitle"><span class="num">06</span> 十二问体检</h2>
+      <p class="hint">勾选你目前能明确回答的问题；低于 8 项时，优先补系统，而不是加功能。</p>
+      <div class="checklist" id="softwareChecklist">
+        <label><input type="checkbox" data-q="1"> 解决谁的什么问题，替代方案是什么</label>
+        <label><input type="checkbox" data-q="2"> 用户五分钟内能完成核心任务</label>
+        <label><input type="checkbox" data-q="3"> 系统边界与依赖清楚</label>
+        <label><input type="checkbox" data-q="4"> 数据模型支持最可能的变化</label>
+        <label><input type="checkbox" data-q="5"> 失败可发现、可恢复、可回滚</label>
+        <label><input type="checkbox" data-q="6"> 权限最小化，敏感操作有审计</label>
+        <label><input type="checkbox" data-q="7"> 依赖供应链可追踪、可替换</label>
+        <label><input type="checkbox" data-q="8"> 发布可灰度、可观察、可撤销</label>
+        <label><input type="checkbox" data-q="9"> 技术债有负责人和偿还计划</label>
+        <label><input type="checkbox" data-q="10"> 商业模型与长期信任匹配</label>
+        <label><input type="checkbox" data-q="11"> 出事时责任、决策、沟通清楚</label>
+        <label><input type="checkbox" data-q="12"> 用户能导出数据并体面退出</label>
+      </div>
+      <div class="verdict"><strong>体检结果</strong><p><span class="score" id="softwareScore">0</span> / 12。答不上来的问题，就是下一轮设计要补的边界。</p></div>
+    </section>
+
+    <section class="card" aria-labelledby="readTitle">
+      <h2 id="readTitle"><span class="num">07</span> 怎么读这张图</h2>
+      <p class="hint">三个视角，不用背概念。</p>
+      <div class="decision-grid">
+        <article class="decision"><h3>先看传导</h3><p>物理、平台、数据、接口……任何一层的选择，都会沿着依赖放大到产品和治理。</p></article>
+        <article class="decision"><h3>再看张力</h3><p>架构不是找“最优解”，而是明确当前阶段愿意承担哪一组代价。</p></article>
+        <article class="decision"><h3>最后看复利</h3><p>技术债、可靠性、组织负载都会随时间复利；早期的小选择，后期会变成大约束。</p></article>
+        <article class="decision"><h3>当提问器用</h3><p>每次选型、发布、采购、招人，都回来问：哪一层被牺牲了？退出路径是什么？</p></article>
+      </div>
+    </section>
+  </section>
+
+  <footer class="footer">
+    <span>软件系统雷达 · 配套文章：<a href="./软件宏观分析.md">《软件作为一座持续运行的城市》</a></span>
+    <span>启发式工具，不是评分标准 · 2026-11-05</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* theme */
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var themeButtons = $$('[data-theme-choice]');
+  function applyTheme() {
+    var choice = document.documentElement.dataset.themeChoice || 'system';
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    themeButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoice === choice)); });
+  }
+  themeButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.documentElement.dataset.themeChoice = b.dataset.themeChoice;
+      try { localStorage.setItem(KEY, b.dataset.themeChoice); } catch (e) {}
+      applyTheme();
+    });
+  });
+  try { mql.addEventListener('change', applyTheme); } catch (e) {}
+  applyTheme();
+
+  /* layers */
+  var layers = [
+    { id: 'physical', label: '物理', x: 310, y: 76, q: '芯片、电力、网络、机房、设备——软件真正跑在哪里？', body: '云不是隐喻；每一次弹性扩展背后都有服务器、能耗、冷却和供应链。', risk: '把云当成无限资源，把延迟当成免费。' },
+    { id: 'platform', label: '平台', x: 500, y: 155, q: '操作系统、云、运行时、构建与部署，谁提供地基？', body: '平台把复杂性封装成能力，也把假设、价格和锁定写进地基。', risk: '平台抽象泄漏时，业务代码无处可退。' },
+    { id: 'data', label: '数据', x: 544, y: 325, q: '数据如何建模、存储、流动、治理和删除？', body: '数据是软件的记忆，也是权力；模型、一致性、隐私和保留策略都是产品设计。', risk: '假设强一致，系统只给最终一致。' },
+    { id: 'interface', label: '接口', x: 470, y: 500, q: 'API、协议和界面，是否把契约写清楚？', body: '接口是团队、系统、公司与用户之间的边界；命名、版本、错误和文档都是契约。', risk: '每次升级都要求调用方改代码。' },
+    { id: 'product', label: '产品', x: 310, y: 556, q: '它解决谁的问题，价值是否可验证？', body: '产品不是功能集合，而是对用户问题的一种可验证承诺。', risk: '功能上线后没人用，团队却继续加功能。' },
+    { id: 'organization', label: '组织', x: 150, y: 500, q: '谁决策、谁维护、谁 on-call、谁承担后果？', body: '软件是协作的化石；团队结构、激励和责任会直接长进系统边界。', risk: '责任不清，事故变成政治。' },
+    { id: 'business', label: '商业', x: 76, y: 325, q: '收入结构是否支持长期维护和用户信任？', body: '买断、订阅、按量、广告、平台抽成，对应不同的产品性格和代价。', risk: '短期增长，长期信任透支。' },
+    { id: 'governance', label: '治理', x: 120, y: 155, q: '隐私、安全、合规、审计和退出，谁负责？', body: '治理让权力的行使可见、可质疑、可纠正；它不只是法务补丁。', risk: '出问题时，所有人都在等别人负责。' }
+  ];
+  var active = 'physical';
+  var weak = {};
+  var status = $('#stackStatus');
+  var detail = $('#stackDetail');
+
+  function renderEdges() {
+    var html = '';
+    for (var i = 0; i < layers.length; i++) {
+      var a = layers[i], b = layers[(i + 1) % layers.length];
+      var dx = b.x - a.x, dy = b.y - a.y, len = Math.sqrt(dx * dx + dy * dy) || 1;
+      var p1 = { x: a.x + dx / len * 40, y: a.y + dy / len * 40 };
+      var p2 = { x: b.x - dx / len * 40, y: b.y - dy / len * 40 };
+      html += '<line class="edge" x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '"></line>';
+    }
+    $('#stackEdges').innerHTML = html;
+  }
+  function renderNodes() {
+    var html = '';
+    layers.forEach(function (l) {
+      var cls = 'node' + (l.id === active ? ' active' : '') + (weak[l.id] ? ' weak' : '');
+      html += '<g class="' + cls + '" data-layer="' + l.id + '" tabindex="0" role="button" aria-label="查看' + l.label + '层">' +
+        '<circle cx="' + l.x + '" cy="' + l.y + '" r="40"></circle>' +
+        '<text class="label" x="' + l.x + '" y="' + (l.y - 3) + '">' + l.label + '</text>' +
+        '<text class="sub" x="' + l.x + '" y="' + (l.y + 14) + '">' + (weak[l.id] ? 'WEAK' : 'LAYER') + '</text></g>';
+    });
+    $('#stackNodes').innerHTML = html;
+    $$('.node', $('#stackNodes')).forEach(function (n) {
+      n.addEventListener('click', function () { selectLayer(n.dataset.layer); });
+      n.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectLayer(n.dataset.layer); }
+      });
+    });
+  }
+  function updateStatus() {
+    var ws = layers.filter(function (l) { return weak[l.id]; });
+    status.textContent = ws.length ? '短板：' + ws.map(function (l) { return l.label; }).join(' / ') : '短板：—';
+    status.classList.toggle('weak', ws.length > 0);
+  }
+  function selectLayer(id) {
+    active = id;
+    var l = layers.filter(function (x) { return x.id === id; })[0];
+    if (!l) return;
+    detail.innerHTML = '<h3>' + l.label + '</h3><p class="q">' + l.q + '</p><p>' + l.body + '</p><p class="risk">常见失败：' + l.risk + '</p>' +
+      '<button type="button" class="chip' + (weak[id] ? ' on' : '') + '" id="toggleWeak" aria-pressed="' + String(!!weak[id]) + '">' + (weak[id] ? '取消弱项' : '标记为弱项') + '</button>';
+    $('#toggleWeak').addEventListener('click', function () {
+      weak[id] = !weak[id]; renderNodes(); updateStatus(); selectLayer(id);
+    });
+    renderNodes(); updateStatus();
+  }
+  renderEdges(); renderNodes(); selectLayer('physical');
+
+  /* radar */
+  var axes = [
+    { key: 'coupling', label: '耦合' }, { key: 'speed', label: '速度' },
+    { key: 'open', label: '开放' }, { key: 'general', label: '通用' },
+    { key: 'local', label: '本地' }, { key: 'auto', label: '自动化' }
+  ];
+  var tension = { coupling: 60, speed: 55, open: 48, general: 58, local: 42, auto: 63 };
+  function rp(i, v, r, cx, cy) {
+    var a = -Math.PI / 2 + i * 2 * Math.PI / axes.length;
+    return { x: cx + Math.cos(a) * r * v / 100, y: cy + Math.sin(a) * r * v / 100 };
+  }
+  function renderRadar() {
+    var cx = 180, cy = 145, maxR = 104, svg = '<g>';
+    [25, 50, 75, 100].forEach(function (level) {
+      var pts = axes.map(function (_, i) { return rp(i, level, maxR, cx, cy); });
+      svg += '<polygon class="grid-line" points="' + pts.map(function (p) { return p.x + ',' + p.y; }).join(' ') + '"></polygon>';
+    });
+    axes.forEach(function (a, i) {
+      var p = rp(i, 100, maxR, cx, cy), t = rp(i, 122, maxR, cx, cy);
+      svg += '<line class="axis" x1="' + cx + '" y1="' + cy + '" x2="' + p.x + '" y2="' + p.y + '"></line>';
+      svg += '<text x="' + t.x + '" y="' + t.y + '" text-anchor="middle">' + a.label + '</text>';
+    });
+    var pts = axes.map(function (a, i) { return rp(i, tension[a.key], maxR, cx, cy); });
+    svg += '<polygon class="poly" points="' + pts.map(function (p) { return p.x + ',' + p.y; }).join(' ') + '"></polygon>';
+    pts.forEach(function (p) { svg += '<circle class="dot" cx="' + p.x + '" cy="' + p.y + '" r="3.5"></circle>'; });
+    $('#radar').innerHTML = svg + '</g>';
+  }
+  function updateTension() {
+    $$('#tensionControls input').forEach(function (i) {
+      tension[i.dataset.key] = Number(i.value);
+      i.parentElement.querySelector('output').textContent = i.value;
+    });
+    renderRadar();
+    var vals = axes.map(function (a) { return tension[a.key]; });
+    var avg = vals.reduce(function (a, b) { return a + b; }, 0) / vals.length;
+    var high = axes.filter(function (a) { return tension[a.key] >= 75; });
+    var low = axes.filter(function (a) { return tension[a.key] <= 25; });
+    var msg = '平均张力 ' + Math.round(avg) + '。';
+    if (high.length || low.length) {
+      msg += '偏高：' + (high.map(function (a) { return a.label; }).join('、') || '无') +
+        '；偏低：' + (low.map(function (a) { return a.label; }).join('、') || '无') +
+        '。极端值会通过交付速度、故障率或团队疲劳回到系统里。';
+    } else {
+      msg += '当前没有单项被拉到极端；这不等于健康，只说明取舍还没有显性化。';
+    }
+    $('#tensionVerdict').innerHTML = '<strong>诊断</strong><p>' + msg + '</p>';
+  }
+  $$('#tensionControls input').forEach(function (i) { i.addEventListener('input', updateTension); });
+  updateTension();
+
+  /* debt */
+  var debtEls = { debt: $('#debt'), years: $('#years'), interest: $('#interest') };
+  function updateDebt() {
+    var debt = Number(debtEls.debt.value), years = Number(debtEls.years.value), interest = Number(debtEls.interest.value);
+    $('#debtOut').textContent = debt; $('#yearsOut').textContent = years; $('#interestOut').textContent = interest;
+    var future = debt * Math.pow(1 + interest / 100, years);
+    $('#debtNow').textContent = debt;
+    $('#debtFuture').textContent = Math.round(future);
+    var window = years === 0 ? '现在' : years <= 2 ? '6 个月内' : years <= 5 ? '今年内' : '已经偏晚';
+    $('#debtWindow').textContent = window;
+    var points = [], w = 560, h = 110, x0 = 40, y0 = 125, maxY = Math.max(100, future * 1.15);
+    for (var y = 0; y <= Math.max(1, years); y++) {
+      var v = debt * Math.pow(1 + interest / 100, y);
+      var x = x0 + (years === 0 ? 0 : (w * y / years));
+      var yy = y0 - (h * v / maxY);
+      points.push([x, yy]);
+    }
+    if (points.length === 1) points.push([points[0][0] + w, points[0][1]]);
+    var line = points.map(function (p, i) { return (i ? 'L' : 'M') + p[0] + ' ' + p[1]; }).join(' ');
+    var area = line + ' L' + points[points.length - 1][0] + ' ' + y0 + ' L' + points[0][0] + ' ' + y0 + ' Z';
+    var grid = '';
+    for (var g = 0; g <= 4; g++) {
+      var gy = y0 - h * g / 4;
+      grid += '<line class="axis-line" x1="' + x0 + '" y1="' + gy + '" x2="' + (x0 + w) + '" y2="' + gy + '"></line>';
+      grid += '<text x="4" y="' + (gy + 3) + '">' + Math.round(maxY * g / 4) + '</text>';
+    }
+    $('#debtChart').innerHTML = grid + '<path class="area" d="' + area + '"></path><path class="line" d="' + line + '"></path>' +
+      '<text x="' + (x0 + w - 10) + '" y="' + (y0 + 18) + '" text-anchor="end">' + years + ' 年</text>';
+    var msg = '按 ' + interest + '% 年利息估算，' + years + ' 年后等效债务约为今天的 ' + (future / Math.max(1, debt)).toFixed(1) + ' 倍。';
+    if (future >= 100) msg += ' 债务已经接近“改不动”的区域，优先做边界、测试和可回滚改造。';
+    else if (future >= 60) msg += ' 债务开始侵占交付能力，建议设一个固定的偿还窗口。';
+    else msg += ' 债务仍可管理，但要避免在高压区域继续借新债。';
+    $('#debtVerdict').innerHTML = '<strong>债务诊断</strong><p>' + msg + '</p>';
+  }
+  Object.keys(debtEls).forEach(function (k) { debtEls[k].addEventListener('input', updateDebt); });
+  updateDebt();
+
+  /* reliability */
+  var relEls = { changes: $('#changes'), deps: $('#deps'), oncall: $('#oncall'), slo: $('#slo') };
+  function updateReliability() {
+    var c = Number(relEls.changes.value), d = Number(relEls.deps.value), o = Number(relEls.oncall.value), slo = Number(relEls.slo.value);
+    $('#changesOut').textContent = c; $('#depsOut').textContent = d; $('#oncallOut').textContent = o; $('#sloOut').textContent = slo;
+    var risk = Math.round((c / 2) + d * 2 + (100 - slo) * 40 / o);
+    var downtime = (100 - slo) / 100 * 30 * 24 * 60;
+    var load = (c / o).toFixed(1);
+    $('#riskScore').textContent = risk;
+    $('#recoveryBudget').textContent = downtime.toFixed(1);
+    $('#oncallLoad').textContent = load;
+    var msg = '每周 ' + c + ' 次变更、' + d + ' 个关键依赖、' + o + ' 人值班。';
+    if (risk >= 80) msg += ' 变更压力很高：优先做灰度、自动回滚、依赖隔离和可观测性。';
+    else if (risk >= 50) msg += ' 压力中等：至少要有发布检查表、回滚演练和明确的 on-call 交接。';
+    else msg += ' 压力可控：把节省下来的余量投入到测试、文档和故障演练，而不是继续加变更。';
+    if (load > 20) msg += ' 每人每周变更负载偏高，注意疲劳和交接风险。';
+    $('#reliabilityVerdict').innerHTML = '<strong>可靠性建议</strong><p>' + msg + '</p>';
+  }
+  Object.keys(relEls).forEach(function (k) { relEls[k].addEventListener('input', updateReliability); });
+  updateReliability();
+
+  /* build/buy/open */
+  var decisions = {
+    build: { title: '自建', protect: '控制力、差异化、长期可演进', sacrifice: '速度、短期成本、招聘与维护', risk: '关键人依赖、重复造轮子、长期 on-call', question: '这项能力是否是核心差异化，并且团队能维护五年？' },
+    buy: { title: '采购', protect: '上线速度、专业能力、风险转移', sacrifice: '定制自由、数据主权、路线图控制', risk: '供应商锁定、涨价、停服、集成复杂', question: '如果供应商明天涨价或停服，退出路径是什么？' },
+    open: { title: '开源', protect: '可审计、可修改、可社区协作', sacrifice: '许可费换工程与治理成本', risk: '升级负担、漏洞响应、维护者 burnout、fork 分裂', question: '团队是否愿意参与治理，而不只是使用？' }
+  };
+  function setDecision(key) {
+    var d = decisions[key];
+    if (!d) return;
+    $('#decisionVerdict').innerHTML = '<strong>' + d.title + ' · 决策提示</strong><p>优先保护：' + d.protect + '。<br>需要牺牲：' + d.sacrifice + '。<br>主要风险：' + d.risk + '。<br><br>关键问题：' + d.question + '</p>';
+    $$('[data-decision]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.decision === key)); });
+  }
+  $$('[data-decision]').forEach(function (b) { b.addEventListener('click', function () { setDecision(b.dataset.decision); }); });
+  setDecision('build');
+
+  /* checklist */
+  function updateChecklist() {
+    $('#softwareScore').textContent = $$('#softwareChecklist input:checked').length;
+  }
+  $$('#softwareChecklist input').forEach(function (i) { i.addEventListener('change', updateChecklist); });
+  updateChecklist();
+})();
+</script>
+</body>
+</html>
