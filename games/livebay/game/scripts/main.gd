@@ -75,6 +75,7 @@ var broadcast_timer := 0.0
 var broadcast_reveal := 0.0
 var broadcast_full := ""
 var archive_button: Button
+var archive_page := 0
 
 var fatal_label: Label
 
@@ -214,7 +215,7 @@ func _build_ui() -> void:
 		stats.add_child(labels[i])
 
 	archive_button = _make_top_button("档案 (H)", Vector2(946, 11))
-	archive_button.pressed.connect(_show_archive)
+	archive_button.pressed.connect(_show_archive.bind(0))
 	top.add_child(archive_button)
 	pause_button = _make_top_button("暂停 (P)", Vector2(1040, 11))
 	pause_button.pressed.connect(_toggle_pause)
@@ -488,7 +489,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		"speed":
 			_toggle_speed()
 		"archive":
-			_show_archive()
+			_show_archive(0)
 		"restart":
 			_restart()
 		"upgrade":
@@ -600,16 +601,33 @@ func _on_checklist_requested(envelope: Dictionary) -> void:
 	checklist_overlay.visible = true
 
 
-func _show_archive() -> void:
+func _show_archive(page := 0) -> void:
 	if checklist_overlay == null or checklist_overlay.visible:
 		return
-	checklist_title.text = "班次档案"
-	checklist_body.text = shift_memory.archive_text() if shift_memory != null else "还没有班次记录。"
+	var archive: Dictionary = shift_memory.archive_page(page, 5) if shift_memory != null else {"text": "还没有班次记录。", "page": 0, "pages": 1}
+	archive_page = int(archive.get("page", 0))
+	checklist_title.text = "班次档案 · %d/%d" % [archive_page + 1, int(archive.get("pages", 1))]
+	checklist_body.text = str(archive.get("text", ""))
 	for child in checklist_buttons.get_children():
 		child.queue_free()
+	if int(archive.get("pages", 1)) > 1:
+		var prev := Button.new()
+		prev.text = "上一页"
+		prev.custom_minimum_size = Vector2(140, 34)
+		_style_button(prev, PALETTE.sage, PALETTE.ink)
+		prev.disabled = archive_page <= 0
+		prev.pressed.connect(_show_archive.bind(archive_page - 1))
+		checklist_buttons.add_child(prev)
+		var next := Button.new()
+		next.text = "下一页"
+		next.custom_minimum_size = Vector2(140, 34)
+		_style_button(next, PALETTE.sage, PALETTE.ink)
+		next.disabled = archive_page >= int(archive.get("pages", 1)) - 1
+		next.pressed.connect(_show_archive.bind(archive_page + 1))
+		checklist_buttons.add_child(next)
 	var close := Button.new()
 	close.text = "关闭"
-	close.custom_minimum_size = Vector2(440, 42)
+	close.custom_minimum_size = Vector2(140, 34)
 	_style_button(close, PALETTE.teal, PALETTE.cream)
 	close.pressed.connect(_close_archive)
 	checklist_buttons.add_child(close)

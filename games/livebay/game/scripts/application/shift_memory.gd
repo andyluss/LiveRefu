@@ -115,11 +115,20 @@ func low_streak() -> int:
 
 
 func archive_text() -> String:
+	return str(archive_page(0, 10).get("text", ""))
+
+
+func archive_page(page: int, page_size := 5) -> Dictionary:
 	if history.is_empty():
-		return "还没有班次记录。"
+		return {"text": "还没有班次记录。", "page": 0, "pages": 1, "total": 0}
+	var pages := int(ceil(float(history.size()) / float(page_size)))
+	var current := clampi(page, 0, max(0, pages - 1))
 	var labels := {"honest": "如实", "custom": "按惯例", "review": "待复查", "": "未记录"}
 	var lines: Array = []
-	for entry in history:
+	var start := current * page_size
+	var end := mini(start + page_size, history.size())
+	for i in range(start, end):
+		var entry: Dictionary = history[i]
 		lines.append("第 %d 班   %s   保障度 %d   %s%s" % [
 			int(entry.shift),
 			str(entry.grade),
@@ -127,7 +136,7 @@ func archive_text() -> String:
 			str(labels.get(str(entry.choice), str(entry.choice))),
 			"   低报 +1" if int(entry.low_report) > 0 else "",
 		])
-	return "\n".join(lines)
+	return {"text": "\n".join(lines), "page": current, "pages": pages, "total": history.size()}
 
 
 func next_low_report() -> int:
