@@ -68,7 +68,7 @@ fi
 # ---- 1.6) R-016 生成式 HTML 三态检查（受管页面）----
 HTML_THEME_SCRIPT="$GIT_ROOT/design/tools/check_html_theme.ts"
 if [ -f "$HTML_THEME_SCRIPT" ]; then
-  HTML_THEME_FILES="$(git diff --cached --name-only --diff-filter=ACMR | grep -E '^(HUB\.html|design/(HUB|GUIDE)\.html|design/(philosophy/html|lab/spacetime)/.*\.html|games/refu-game-001/(HUB|GUIDE)\.html|games/future-debris/briefing/(HUB|GUIDE)\.html)$' || true)"
+  HTML_THEME_FILES="$(git diff --cached --name-only --diff-filter=ACMR | grep -E '^(HUB\.html|design/(HUB|GUIDE)\.html|design/(philosophy/html|lab/spacetime)/.*\.html|games/refu-game-001/(HUB|GUIDE)\.html|games/future-debris/briefing/(HUB|GUIDE)\.html|games/livebay/briefing/(HUB|GUIDE)\.html)$' || true)"
   if [ -n "$HTML_THEME_FILES" ]; then
     echo "[pre-commit:html-theme] 暂存涉及受管 HTML，跑 R-016 三态检查..." >&2
     if node "$HTML_THEME_SCRIPT" $HTML_THEME_FILES; then
@@ -255,6 +255,24 @@ if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/future-de
     fi
   else
     echo "[pre-commit:hub] 未找到 ${HUB_CHECK}，跳过。" >&2
+  fi
+fi
+
+# ---- 5.10) LiveBay briefing：GUIDE 是否过期 + HUB 数字对账 ----
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/livebay/briefing/(HUB\.html|GUIDE\.html)|^games/livebay/(game/data/|run\.sh|game/tests/)'; then
+  LB_GUIDE="games/livebay/briefing/build_guide.py"
+  LB_HUB="games/livebay/briefing/check_hub.py"
+  if [ -f "$LB_GUIDE" ] && [ -f "$LB_HUB" ]; then
+    echo "[pre-commit:livebay-briefing] GUIDE 与数据 / HUB 数字对账..." >&2
+    if python3 "$LB_GUIDE" --check >&2 && python3 "$LB_HUB" >&2; then
+      echo "[pre-commit:livebay-briefing] 通过。" >&2
+    else
+      echo "[pre-commit:livebay-briefing] GUIDE 过期或 HUB 数字不一致，已拦截提交。" >&2
+      echo "  复跑: cd games/livebay && ./run.sh briefing-check" >&2
+      exit 1
+    fi
+  else
+    echo "[pre-commit:livebay-briefing] 检查器缺失，跳过。" >&2
   fi
 fi
 

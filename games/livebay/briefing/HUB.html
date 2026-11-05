@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveBay · 逍遥湾 · 项目 HUB</title>
+<meta name="description" content="LiveBay（逍遥湾）的状态、决策、玩法、架构、素材、风险与下一步。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:15px/1.65 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 35%,transparent)}
+a:hover{border-bottom-color:var(--focus)}
+code{background:var(--sunken);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:.88em}
+.topbar{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:12px 22px 0}
+.topline{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800;letter-spacing:.03em}
+.brand .en{color:var(--faint);font-weight:400;font-size:12px;margin-left:8px;letter-spacing:.08em}
+.stamp{color:var(--faint);font-size:12px;margin-left:auto}
+.hint{color:var(--dim);font-size:12.5px;margin-top:3px}
+nav.tabs{display:flex;gap:4px;margin-top:12px;flex-wrap:wrap}
+nav.tabs button{appearance:none;background:transparent;color:var(--dim);border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:9px 14px;font:inherit;font-size:13.5px;cursor:pointer}
+nav.tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 4%,transparent)}
+nav.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);border-color:var(--line);box-shadow:inset 0 2px 0 var(--teal)}
+nav.tabs button .n{color:var(--faint);font-size:11px;margin-right:6px}
+main{max-width:1180px;margin:0 auto;padding:22px}
+.panel{display:block}
+body.js .panel{display:none}
+body.js .panel.active{display:block}
+h2{font-size:20px;margin:2px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:15px;margin:20px 0 8px;color:var(--teal);letter-spacing:.03em}
+h3:first-child{margin-top:6px}
+.lede{color:var(--dim);margin:8px 0 16px}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px}
+.card h4{margin:0 0 7px;font-size:14.5px;color:var(--ink)}
+.card p{margin:6px 0;color:var(--dim);font-size:13.5px}
+.card .k{color:var(--ink)}
+.chip{display:inline-block;background:var(--sunken);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12.5px;color:var(--dim);margin:0 6px 6px 0}
+.chip.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
+.chip.warn{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,var(--line))}
+.chip.todo{color:var(--orange);border-color:color-mix(in srgb,var(--orange) 45%,var(--line))}
+.chip.acc{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 45%,var(--line))}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 4px}
+.stat{background:var(--sunken);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px}
+.stat .v{font-size:26px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums}
+.stat .l{color:var(--dim);font-size:12.5px;margin-top:3px}
+.stat.p .v{color:var(--teal)}.stat.r .v{color:var(--orange)}.stat.o .v{color:var(--ok)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--faint);font-weight:600;font-size:12.5px;letter-spacing:.03em}
+tr:last-child td{border-bottom:none}
+.q{color:var(--faint);font-variant-numeric:tabular-nums}
+.pick{color:var(--ok)}.pend{color:var(--amber)}
+.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+figure{margin:0;background:var(--sunken);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+figure img{display:block;width:100%;height:auto;background:#000}
+figcaption{padding:8px 11px;color:var(--dim);font-size:12.5px}
+figcaption b{color:var(--ink)}
+video{width:100%;border-radius:var(--radius);border:1px solid var(--line);background:#000}
+ol.tl{list-style:none;margin:6px 0;padding:0}
+ol.tl li{position:relative;padding:0 0 14px 22px;border-left:1px solid var(--line)}
+ol.tl li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.tl li::before{content:"";position:absolute;left:-5px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--line-strong)}
+ol.tl li.done::before{background:var(--ok)}ol.tl li.now::before{background:var(--teal);box-shadow:0 0 0 4px color-mix(in srgb,var(--teal) 18%,transparent)}
+ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
+.note{border-left:3px solid var(--line-strong);background:var(--sunken);border-radius:0 var(--radius) var(--radius) 0;padding:11px 14px;margin:12px 0;color:var(--dim);font-size:13.5px}
+.note.warn{border-left-color:var(--amber)}.note.bad{border-left-color:var(--orange)}.note.ok{border-left-color:var(--ok)}
+.note b{color:var(--ink)}
+.foot{max-width:1180px;margin:0 auto;padding:8px 22px 34px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);margin-top:26px}
+@media(max-width:900px){.g3,.g4,.stats,.shots{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+@media(max-width:620px){.g3,.g4,.stats,.shots{grid-template-columns:1fr}}
+@media print{
+  html,body{background:#fff;color:#000;font-size:10.5px;line-height:1.45}
+  .topbar{position:static;border-bottom:1.5px solid #000}nav.tabs,.theme-switch,.noprint{display:none!important}
+  body.js .panel,body.js .panel.active{display:block!important}
+  .card,.stat,figure,.note,table{break-inside:avoid}.card,.stat,figure{border:1px solid #999;background:#fff}
+  .note,figcaption,.card p,.lede,td,th,.stat .l,.chip{color:#1a1a1a!important}
+  a{color:#000;border-bottom:none}h2{color:#000}h3{color:#0a4a44}
+  .shots{grid-template-columns:repeat(3,1fr);gap:5px}video{display:none!important}
+  @page{margin:11mm 10mm}
+}
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body data-page="hub">
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topline">
+      <div class="brand">LiveBay <span class="en">逍遥湾</span></div>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+      </div>
+      <div class="stamp">v<span data-fact="version">0.1.69</span> · 2026-11-05</div>
+    </div>
+    <div class="hint">给隔了很久回来的项目参与者：用最少的滚动重新接上“为什么、到哪了、下一步”。</div>
+    <nav class="tabs" role="tablist" aria-label="HUB 分区">
+      <button role="tab" aria-selected="true" aria-controls="p1" id="t1" data-tab="p1"><span class="n">01</span>概览</button>
+      <button role="tab" aria-selected="false" aria-controls="p2" id="t2" data-tab="p2"><span class="n">02</span>一局</button>
+      <button role="tab" aria-selected="false" aria-controls="p3" id="t3" data-tab="p3"><span class="n">03</span>到哪了</button>
+      <button role="tab" aria-selected="false" aria-controls="p4" id="t4" data-tab="p4"><span class="n">04</span>决策</button>
+      <button role="tab" aria-selected="false" aria-controls="p5" id="t5" data-tab="p5"><span class="n">05</span>内容</button>
+      <button role="tab" aria-selected="false" aria-controls="p6" id="t6" data-tab="p6"><span class="n">06</span>架构</button>
+      <button role="tab" aria-selected="false" aria-controls="p7" id="t7" data-tab="p7"><span class="n">07</span>素材</button>
+      <button role="tab" aria-selected="false" aria-controls="p8" id="t8" data-tab="p8"><span class="n">08</span>风险/下一步</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="panel active" id="p1" role="tabpanel" aria-labelledby="t1">
+    <h2>概览：一座移动太空城的夜班塔防</h2>
+    <p class="lede">LiveBay 是 NASApunk 岗位塔防 + 沉浸体验 + 放置养成的垂直切片。你不是指挥官；你是外环第七段的一个值班人，在 5 波压力里决定先修哪台设备、先守哪段弧。</p>
+    <div class="stats">
+      <div class="stat p"><div class="v" data-fact="maps">1</div><div class="l">可玩地图</div></div>
+      <div class="stat p"><div class="v" data-fact="towers">3</div><div class="l">塔型</div></div>
+      <div class="stat r"><div class="v" data-fact="enemies">4</div><div class="l">敌人 / 故障</div></div>
+      <div class="stat o"><div class="v" data-fact="waves">5</div><div class="l">波次</div></div>
+      <div class="stat p"><div class="v" data-fact="slots">7</div><div class="l">固定塔位</div></div>
+      <div class="stat p"><div class="v" data-fact="professions">1</div><div class="l">示例职业</div></div>
+      <div class="stat o"><div class="v" data-fact="tests">73</div><div class="l">无头断言</div></div>
+      <div class="stat o"><div class="v" data-fact="expansions">34</div><div class="l">扩展检查</div></div>
+    </div>
+    <div class="grid g2" style="margin-top:18px">
+      <article class="card"><h4>它已经能玩什么</h4><p>外环第七段弧形路径、3 种塔、4 种敌人（含内部故障）、5 波、准备/交战/整备/结算、建造/升级/出售/暂停/倍速/存档；无头测试可复现胜负。</p></article>
+      <article class="card"><h4>它还不是什么</h4><p>不是完整游戏，不是 L2/L3 城市模拟，也不是最终平衡。所有中文名词和数值仍是工程占位；正式内容要等人类裁决与内容生产。</p></article>
+      <article class="card"><h4>这一版最想验证</h4><p>10 分钟闭环：玩家是否能在一次班次里理解“供能—建造—故障—修复—评级”的因果，并愿意再来一班。</p></article>
+      <article class="card"><h4>最先读什么</h4><p>第一次听说：<a href="GUIDE.html">GUIDE</a> 的「三十秒版本」。想参与判断：本页「决策」与「风险/下一步」，再回 <a href="../docs-ai/design01/11_待人类裁决清单.md">11 待裁决清单</a>。</p></article>
+    </div>
+  </section>
+
+  <section class="panel" id="p2" role="tabpanel" aria-labelledby="t2">
+    <h2>一局：先供能，再守弧，再处理故障</h2>
+    <p class="lede">一局不是“造塔—看数字”，而是“值班—判断—修复—交接”的压缩。</p>
+    <div class="grid g4">
+      <article class="card"><h4>1 · 准备</h4><p>30 秒（后续波 20 秒）看路径、塔位与供能，决定先造拦截炮还是脉冲环。</p></article>
+      <article class="card"><h4>2 · 交战</h4><p>敌人沿月牙外弧向湾口移动；漏过扣保障度，击杀给供能。</p></article>
+      <article class="card"><h4>3 · 故障</h4><p>第 4/5 波出现「故障」：从湾口反向扩散，经过塔位时让 2 座塔短暂离线。</p></article>
+      <article class="card"><h4>4 · 交接</h4><p>5 波结束或保障度归零；结算评级、击杀/漏过/建造，并进入下一班或重试。</p></article>
+    </div>
+    <div class="note"><b>核心张力：</b>供能只够做少数几个决定。拦截炮便宜、单体；脉冲环能减速但更贵；补给塔不输出，却决定你能不能撑到后面。故障来了，先修输出还是先保经济？</div>
+    <h3>L1 扩展样例</h3>
+    <p class="lede">扩展包不是换皮，而是把“班次”变成可比较的设计空间：W4 检查单、W5 故障命中暂停、事故记录、接班简报、低报审计与广播。</p>
+    <div class="grid g3">
+      <article class="card"><h4>A · 复查</h4><p>W4 复查故障停塔 -1s；W5 隔离。偏谨慎的班次。</p></article>
+      <article class="card"><h4>B · 按惯例</h4><p>W4 低报 +1；W5 隔离。短期省事，长期进审计。</p></article>
+      <article class="card"><h4>C · 照签 / 旁路</h4><p>W4 照签；W5 旁路，本塔降级并扩散到相邻塔。偏冒险。</p></article>
+    </div>
+    <p class="lede">三个包同属 <code>L1.shift</code>，同一 preset 只能选一个；<code>./run.sh compare</code> 输出同图同命令的 A/B/C 对比。</p>
+  </section>
+
+  <section class="panel" id="p3" role="tabpanel" aria-labelledby="t3">
+    <h2>到哪了：垂直切片 + 扩展运行时</h2>
+    <p class="lede">当前不是“做完了”，而是“核心闭环成立，正在把岗位/班次/扩展做成可复用的结构”。</p>
+    <ol class="tl">
+      <li class="done"><b>核心闭环</b><br><span>1 职业 / 1 图 / 5 波 / 3 塔 / 4 敌人；胜负、评级、存档、黑匣子回放。</span></li>
+      <li class="done"><b>NASApunk 轻量包</b><br><span>检查单、故障、低报、事故记录的设计已进入文档与样例。</span></li>
+      <li class="done"><b>编辑器与数据桥</b><br><span>LiveBay Tools：地图/塔位拖动、射程预览、波次时间轴、写回 numbers。</span></li>
+      <li class="done"><b>模块化</b><br><span>MissionRuntime + 时钟/事件/命令/黑匣子 + 7 个领域模块；MissionPack 编译。</span></li>
+      <li class="done"><b>扩展运行时 E0/E1</b><br><span>manifest / preset / variant_group / A/B/C / W4/W5 / 记录 / 10 班档案 / 广播 / 短音效。</span></li>
+      <li class="now"><b>下一阶段</b><br><span>正式 L1 内容、L2 岗位、L3 轻城市；平台/语言/更新节奏仍待裁决。</span></li>
+    </ol>
+    <div class="note warn"><b>状态边界：</b>扩展包 A/B/C 是 <span data-fact="l1_variants">3</span> 个样例，不是正式关卡；W5 故障命中暂停只做样例；L2/L3 还没进入工程。</div>
+    <h3>工程证据</h3>
+    <p class="lede"><span data-fact="tests">73</span> 项无头断言、<span data-fact="expansions">34</span> 项扩展检查、<span data-fact="l1_variants">3</span> 个 L1 样例变体、<span data-fact="doc_pages">49</span> 个 design01 HTML 页面；<code>./run.sh check</code> 无头启动、<code>./run.sh editor-test</code> 编辑器数据桥冒烟、<code>./run.sh compare</code> A/B/C 对比。</p>
+  </section>
+
+  <section class="panel" id="p4" role="tabpanel" aria-labelledby="t4">
+    <h2>决策：已经把“为什么”钉住的部分</h2>
+    <p class="lede">完整记录在 <a href="../docs-ai/design01/11_待人类裁决清单.md">11 待裁决清单</a> 与 <a href="../CHANGELOG.md">CHANGELOG</a>。这里只留会影响玩法的骨架。</p>
+    <table>
+      <thead><tr><th>ID</th><th>决定</th><th>对工程的含义</th></tr></thead>
+      <tbody>
+        <tr><td>D01</td><td>有裂缝的善意</td><td>体系有效，但以排除少数人为代价；不是纯温暖。</td></tr>
+        <tr><td>D02</td><td>混合敌人；首版自然 + 内部故障</td><td>已有碎片/乱流/重壳/故障。</td></tr>
+        <tr><td>D03</td><td>生存 / 生活 / 生产；慢 + 好</td><td>班次不是刷效率，保留恢复与交接。</td></tr>
+        <tr><td>D05</td><td>第一职业护卫兵；护理师 v0.2</td><td>v0.1 只做护湾卫兵。</td></tr>
+        <tr><td>D08</td><td>低报事故，只埋线索</td><td>记录/审计/广播进入 L1 样例。</td></tr>
+        <tr><td>D09</td><td>弧形路径</td><td>月牙外弧、7 个固定塔位。</td></tr>
+        <tr><td>D10</td><td>重试 + 可跳过复盘</td><td>失败不是惩罚终点。</td></tr>
+        <tr><td>D16</td><td>垂直切片：10 分钟闭环</td><td>不做大而全，先验证一班。</td></tr>
+        <tr><td>E17</td><td>扩展包：manifest / preset / variant_group / 失败隔离</td><td>E0/E1 运行时与样例已落地。</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>只剩 P2：</b>D14 平台、D17 更新节奏、D18 语言。它们会影响发布与内容生产，但不阻塞当前垂直切片。</div>
+  </section>
+
+  <section class="panel" id="p5" role="tabpanel" aria-labelledby="t5">
+    <h2>内容：少而互相咬合</h2>
+    <div class="grid g3">
+      <article class="card"><h4>拦截炮 · 30</h4><p>单体、优先最靠近湾口；便宜，是前期骨架。</p></article>
+      <article class="card"><h4>脉冲环 · 45</h4><p>范围伤害 + 减速；处理密集小型目标，但贵。</p></article>
+      <article class="card"><h4>补给塔 · 40</h4><p>每 5 秒产供能，每波修复保障度；不输出，是长期投资。</p></article>
+    </div>
+    <div class="grid g2" style="margin-top:18px">
+      <article class="card"><h4>敌人</h4><p>碎片：慢、数量多。乱流：快、容易漏。重壳：血厚、漏过伤害高。故障：反向扩散、让塔离线。</p></article>
+      <article class="card"><h4>波次</h4><p>5 波，准备时间从 30 秒递减到 20 秒；第 4/5 波引入故障，压力从“输出”转向“处置”。</p></article>
+    </div>
+    <h3>数值与内容入口</h3>
+    <p class="lede">塔/敌人/波次/地图在 <code>game/data/*.json</code>；数值源在 <a href="../docs-ai/design01/numbers/README.md">numbers/</a>；扩展包在 <code>game/expansions/</code>；不要直接手改生成的 <code>mission_pack.json</code>。</p>
+  </section>
+
+  <section class="panel" id="p6" role="tabpanel" aria-labelledby="t6">
+    <h2>架构：MissionRuntime 把规则、视图和扩展分开</h2>
+    <p class="lede">不是“拆得越多越好”，而是让变化有边界：规则在领域模块，视图在读模型/呈现，扩展在 manifest/preset，记录在黑匣子。</p>
+    <div class="grid g3">
+      <article class="card"><h4>Kernel</h4><p>LiveBayResult / MissionClock / EventBus / CommandBus / BlackBox；tick + seq 可回放。</p></article>
+      <article class="card"><h4>Domain</h4><p>Map / Economy / Wave / Mission / Fault / Enemy / Tower；Sim 仍编排 tick，逐步收口。</p></article>
+      <article class="card"><h4>Presentation</h4><p>ReadModel / Presenter / Renderer / Input；渲染器不写规则。</p></article>
+      <article class="card"><h4>Data</h4><p>Markdown numbers → Python 导出 → game/data → MissionPack（schema + hash）。</p></article>
+      <article class="card"><h4>Expansion</h4><p>manifest / registry / preset / ExpansionSet / feature flags；无热加载，失败不阻塞核心。</p></article>
+      <article class="card"><h4>Blackbox</h4><p>事件 + 命令；<code>replay</code> 回放最近一局，便于复盘与回归。</p></article>
+    </div>
+    <div class="note"><b>读代码顺序：</b><code>scripts/application/mission_runtime.gd</code> → <code>scripts/core/sim.gd</code> → <code>domain/</code> → <code>presentation/</code>。工程细节见 <a href="../docs-ai/design01/tech/12_技术方案_Godot工程.md">tech/12</a>。</div>
+  </section>
+
+  <section class="panel" id="p7" role="tabpanel" aria-labelledby="t7">
+    <h2>素材：先看它在跑</h2>
+    <div class="shots">
+      <figure><img src="../docs-ai/design01/shots/v0.1_combat.png" alt="v0.1 战斗画面"><figcaption><b>v0.1 战斗</b> · 外环第七段、塔位与波次</figcaption></figure>
+      <figure><video controls poster="../docs-ai/design01/shots/v0.1_gameplay_poster.png" src="../docs-ai/design01/shots/v0.1_gameplay.mp4"></video><figcaption><b>50 秒实机</b> · 第 1 到第 5 波；无音频</figcaption></figure>
+      <figure><img src="../docs-ai/design01/shots/editor_usage_v2_poster.png" alt="编辑器演示 poster"><figcaption><b>编辑器 + 架构演示</b> · 40 秒；程序化演示场景</figcaption></figure>
+      <figure><img src="../docs-ai/design01/shots/editor_usage_poster.png" alt="旧版编辑器演示 poster"><figcaption><b>旧版 32 秒</b> · 保留作对照</figcaption></figure>
+    </div>
+    <p class="lede">视频是程序化演示场景，不是桌面录屏；全部画面当前由 Godot 程序化绘制，短音效已接入，音乐尚未接入。</p>
+  </section>
+
+  <section class="panel" id="p8" role="tabpanel" aria-labelledby="t8">
+    <h2>风险与下一步</h2>
+    <div class="grid g2">
+      <article class="card"><h4>风险 1 · 内容量</h4><p>1 图 5 波能验证闭环，但不足以支撑长期留存；L2/L3 不能靠堆量解决。</p></article>
+      <article class="card"><h4>风险 2 · 样例与正式内容混淆</h4><p>A/B/C 是运行时样例，不是正式关卡；HUB/GUIDE 必须标清“样例”。</p></article>
+      <article class="card"><h4>风险 3 · 文档/实现脱钩</h4><p>数字和截图会过期；HUB 用 <code>data-fact</code> 对账，GUIDE 由数据生成。</p></article>
+      <article class="card"><h4>风险 4 · 范围膨胀</h4><p>垂直切片阶段最贵的不是加功能，而是加“看起来该有”的系统。</p></article>
+    </div>
+    <h3>下一步（按推荐顺序）</h3>
+    <ol class="tl">
+      <li class="now"><b>正式 L1 内容</b><br><span>把 A/B/C 样例提升为可玩的正式班次；补 W4/W5 内容与记录链。</span></li>
+      <li><b>L2 岗位层</b><br><span>塔座 2 槽、备件、湾民、事故链；不要一次做全。</span></li>
+      <li><b>L3 轻城市</b><br><span>2 舱室 + 1 城市事件；只做“你不在时城怎么活”。</span></li>
+      <li><b>发布决策</b><br><span>D14 平台、D17 更新节奏、D18 语言。</span></li>
+    </ol>
+    <div class="note ok"><b>当前可执行：</b><code>./run.sh</code> 启动，<code>./run.sh test</code> 73 项，<code>./run.sh expansions-check</code> 34 项，<code>./run.sh compare</code> 看 A/B/C。</div>
+  </section>
+</main>
+<footer class="foot">LiveBay · briefing/HUB.html · 数字由 <code>briefing/check_hub.py</code> 对账；GUIDE 由 <code>briefing/build_guide.py</code> 生成。不是策划源，细节回 <a href="../docs-ai/design01/README.md">design01</a>。</footer>
+
+<script>
+(function () {
+  document.body.classList.add('js');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-tab]'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  function show(id) {
+    tabs.forEach(function (t) {
+      var on = t.dataset.tab === id;
+      t.setAttribute('aria-selected', String(on));
+    });
+    panels.forEach(function (p) { p.classList.toggle('active', p.id === id); });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.dataset.tab); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        var i = tabs.indexOf(t);
+        var next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        next.focus(); show(next.dataset.tab);
+      }
+    });
+  });
+  show('p1');
+  if (location.hash) {
+    var target = location.hash.slice(1);
+    if (document.getElementById(target)) {
+      var tab = tabs.filter(function (t) { return t.dataset.tab === target; })[0];
+      if (tab) show(target);
+    }
+  }
+})();
+</script>
+<script src="theme.js" defer></script>
+</body>
+</html>

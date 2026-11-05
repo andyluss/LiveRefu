@@ -3,6 +3,28 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.69] - 2026-11-05 17:39
+
+### 新增
+
+- `briefing/` 导览层：
+  - `HUB.html`：项目状态、决策、玩法、架构、素材、风险与下一步；
+  - `GUIDE.html`：从 `game/data/*.json` 生成的第一次上手说明；
+  - `theme.css` / `theme.js`：HUB/GUIDE 三态主题；
+  - `build_guide.py`：GUIDE 生成与 `--check`；
+  - `check_hub.py`：11 个 `data-fact` 对账 + 素材存在性检查。
+- `./run.sh briefing` / `./run.sh briefing-check`；
+- HUB 数字从工程现读：地图/塔/敌人/波次/塔位/职业/变体/测试/扩展检查/文档页/版本；
+- GUIDE 的塔、敌人、波次、地图、资源全部来自数据，禁止手改。
+
+### 验证
+
+- `build_guide.py --check`：通过；
+- `check_hub.py`：通过（11 facts / 素材）；
+- `check_hub.py --self-test`：9/9；
+- R-016：HUB + GUIDE 通过；
+- 游戏 73/73、扩展 34/34 保持不变。
+
 ## [0.1.68] - 2026-11-05 14:00
 
 ### 文档结构

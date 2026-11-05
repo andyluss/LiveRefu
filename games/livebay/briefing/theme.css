@@ -1,0 +1,44 @@
+/* LiveBay briefing · 三态主题（R-016）。
+   HUB 默认深色、GUIDE 默认浅色；system/light/dark 只覆盖 token，不复制 DOM。 */
+:root{color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+
+body[data-page="hub"]{
+  --bg:#10161c;--panel:#18212b;--panel2:#212e3a;--sunken:#0b1116;
+  --ink:#f3ede1;--dim:#a9a395;--faint:#9e9889;
+  --line:#2a3742;--line-strong:#6f7b89;
+  --teal:#4fd1c5;--orange:#ff6b35;--accent:#e4572e;
+  --focus:#8ab4f8;--amber:#ffc857;--ok:#7bd389;
+  --radius:10px;
+}
+body[data-page="guide"]{
+  --bg:#fbf8f1;--panel:#fff;--panel2:#f2ecdf;--sunken:#f6f0e3;
+  --ink:#221d15;--dim:#5f5748;--faint:#7d7462;
+  --line:#e0d8c6;--line-strong:#a89f8a;
+  --teal:#1f9e94;--orange:#d9612f;--accent:#d9612f;
+  --focus:#1d5fa8;--amber:#c08a13;--ok:#4f9e5a;
+  --radius:12px;
+}
+html[data-theme="light"] body[data-page="hub"]{
+  --bg:#fbf7ec;--panel:#fffdf7;--panel2:#f1ebdd;--sunken:#f6f0e3;
+  --ink:#17241f;--dim:#4e5b54;--faint:#6f7a70;
+  --line:#d6cdb9;--line-strong:#8c978f;
+  --teal:#0f766e;--orange:#b9502c;--accent:#b9502c;
+  --focus:#1d5fa8;--amber:#8a5a00;--ok:#246b3a;
+}
+html[data-theme="dark"] body[data-page="guide"]{
+  --bg:#0c1412;--panel:#121d1a;--panel2:#1a2824;--sunken:#17241f;
+  --ink:#eee7d6;--dim:#a8b5ac;--faint:#7e8f85;
+  --line:#33453e;--line-strong:#577067;
+  --teal:#6fe3d1;--orange:#f0a06e;--accent:#f0a06e;
+  --focus:#8ab4f8;--amber:#d9b66b;--ok:#8fd19a;
+}
+.theme-switch{display:none;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:3px;margin-left:auto;vertical-align:middle}
+html[data-js] .theme-switch{display:inline-flex}
+.theme-switch button{border:0;background:transparent;color:var(--dim);font:11px/1 -apple-system,"PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.04em;padding:6px 9px;border-radius:999px;cursor:pointer}
+.theme-switch button[aria-pressed="true"]{background:var(--teal);color:var(--bg)}
+.theme-switch button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media print{
+  .theme-switch{display:none !important}
+}
