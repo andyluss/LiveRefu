@@ -86,10 +86,23 @@ table{width:100%;border-collapse:collapse;font-size:11.5px}th,td{padding:5px 4px
   </section>
 </div>
 
+<section class="card" id="traceCard" style="margin-top:16px">
+  <h2><span class="n">05</span>Godot 对账</h2>
+  <p class="hint">内置 trace 来自 <code>./run.sh sim-trace</code>；页面对照当前配置与标准班的静态事实。解析沙盘不产生逐局 grade，因此击杀/漏过/保障度只显示 Godot 参考值，不冒充预测。</p>
+  <div class="toolbar">
+    <div class="field"><label for="traceFile">导入 traces.json</label><input id="traceFile" type="file" accept="application/json,.json"></div>
+    <button class="btn" id="traceBuiltin">使用内置 trace</button>
+    <span class="tag" id="traceSource">内置</span>
+  </div>
+  <div class="diag" id="traceStatus">正在读取 trace…</div>
+  <div id="traceTable"></div>
+</section>
+
 <footer class="footer"><span>由 <code>tools/build_simulator.py</code> 生成 · 数据 hash <code id="hash"></code></span><span><a href="../flows/game_flow.html">流程图</a> · <a href="README.md">方案/说明</a></span></footer>
 </main>
 <script>
 const DATA = {"towers":[{"id":"interceptor","name":"拦截炮","cost":30,"range":120,"damage":10,"fire_rate":1.2,"kind":"single","color":"#D9622B","description":"单体射击，优先攻击最靠近湾口的敌人。"},{"id":"pulse","name":"脉冲环","cost":45,"range":105,"damage":5,"fire_rate":0.8,"kind":"aoe","slow":0.35,"slow_duration":1.5,"color":"#E0A22E","description":"范围脉冲，造成伤害并减速。适合处理密集的小型目标。"},{"id":"tractor","name":"牵引锚","cost":55,"range":110,"damage":4,"fire_rate":0.6,"kind":"aoe","slow":0.5,"slow_duration":2.0,"color":"#5C7C8A","description":"范围牵引，低伤害、强减速；适合把敌人留在射程里。"},{"id":"supply","name":"补给塔","cost":40,"range":0,"damage":0,"fire_rate":0,"kind":"supply","income":6,"income_interval":5.0,"repair":3,"color":"#7C8F6B","description":"每 5 秒产出供能，每波结束修复少量保障度。"}],"enemies":[{"id":"debris","name":"碎片","hp":30,"speed":45,"reward":6,"leak_damage":8,"radius":9,"shape":"triangle","color":"#8C4A32","description":"星际尘埃结块，缓慢但数量多。"},{"id":"turbulence","name":"乱流","hp":20,"speed":85,"reward":5,"leak_damage":6,"radius":7,"shape":"diamond","color":"#E0A22E","description":"局部湍流，速度很快，容易漏过。"},{"id":"hulk","name":"重壳","hp":90,"speed":30,"reward":14,"leak_damage":18,"radius":12,"shape":"hexagon","color":"#2F3A3E","description":"致密残骸，血厚速度慢，漏过伤害高。"},{"id":"armor","name":"装甲片","hp":60,"speed":38,"reward":12,"leak_damage":16,"radius":12,"shape":"hexagon","color":"#5B6470","description":"高密度装甲残片，血厚、慢，漏过伤害高。"},{"id":"fault","name":"故障","hp":36,"speed":58,"reward":4,"leak_damage":0,"radius":8,"shape":"square","color":"#3E6F6B","behavior":"reverse","disable_duration":2.5,"disable_radius":100,"disable_targets":2,"description":"内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。"}],"balance":{"starting_energy":90,"starting_integrity":100,"sell_refund":0.7,"max_tower_level":3,"upgrade_cost_factor":0.8,"upgrade_damage_factor":0.25,"upgrade_range_factor":0.05,"upgrade_income_factor":0.5,"upgrade_repair_factor":0.5,"prepare_time":30.0,"between_wave_time":20.0,"grade_s_ratio":0.9,"grade_a_ratio":0.7,"grade_b_ratio":0.4},"maps":[{"id":"bay01","name":"外环第七段","description":"月牙外弧的一段舱壁。左侧是尖角入口，右侧是湾口。","modifiers":{"energy_delta":0,"integrity_delta":0,"speed_mult":1.0,"damage_mult":1.0},"path":[[-60,540],[110,505],[250,450],[390,385],[530,340],[660,325],[790,340],[930,385],[1070,450],[1180,505]],"slots":[[260,530],[390,470],[520,425],[650,405],[780,420],[910,462],[1040,520]],"base":{"pos":[1180,505],"radius":26},"waves":[{"index":1,"prep":30.0,"groups":[{"enemy":"debris","count":6,"interval":0.9,"delay":0.0}]},{"index":2,"prep":20.0,"groups":[{"enemy":"debris","count":8,"interval":0.8,"delay":0.0},{"enemy":"turbulence","count":4,"interval":1.0,"delay":5.0}]},{"index":3,"prep":20.0,"groups":[{"enemy":"turbulence","count":6,"interval":0.7,"delay":0.0},{"enemy":"hulk","count":2,"interval":2.0,"delay":4.0}]},{"index":4,"prep":20.0,"groups":[{"enemy":"debris","count":10,"interval":0.6,"delay":0.0},{"enemy":"turbulence","count":6,"interval":0.8,"delay":3.5},{"enemy":"hulk","count":2,"interval":2.0,"delay":8.0},{"enemy":"fault","count":1,"interval":1.0,"delay":6.0},{"enemy":"armor","count":1,"interval":2.0,"delay":12.0}]},{"index":5,"prep":20.0,"groups":[{"enemy":"debris","count":12,"interval":0.5,"delay":0.0},{"enemy":"turbulence","count":8,"interval":0.7,"delay":2.5},{"enemy":"hulk","count":4,"interval":1.6,"delay":6.0},{"enemy":"fault","count":1,"interval":5.0,"delay":4.0}]}]},{"id":"bay02","name":"中环维护环","description":"中环的一条维护回路：从外环接口进入，绕行设备环，再从湾口离开。","modifiers":{"energy_delta":-15,"integrity_delta":-10,"speed_mult":1.15,"damage_mult":0.8},"path":[[-60,360],[120,380],[260,300],[380,220],[540,190],[700,220],[820,310],[880,430],[820,540],[680,590],[520,560],[420,470],[440,360],[560,300],[700,300],[800,370],[820,470],[740,540],[620,540],[520,480],[500,400],[580,350],[700,350],[780,420],[760,520],[650,560],[1180,505]],"slots":[[300,380],[430,260],[600,170],[760,260],[900,380],[900,520],[700,630],[500,630],[360,520]],"base":{"pos":[1180,505],"radius":26},"waves":[{"index":1,"prep":30.0,"groups":[{"enemy":"debris","count":8,"interval":0.9,"delay":0.0}]},{"index":2,"prep":20.0,"groups":[{"enemy":"debris","count":10,"interval":0.7,"delay":0.0},{"enemy":"turbulence","count":5,"interval":0.9,"delay":5.0}]},{"index":3,"prep":20.0,"groups":[{"enemy":"turbulence","count":8,"interval":0.6,"delay":0.0},{"enemy":"hulk","count":3,"interval":1.8,"delay":4.0}]},{"index":4,"prep":20.0,"groups":[{"enemy":"debris","count":12,"interval":0.55,"delay":0.0},{"enemy":"turbulence","count":8,"interval":0.7,"delay":3.0},{"enemy":"hulk","count":3,"interval":1.8,"delay":7.0},{"enemy":"armor","count":1,"interval":2.0,"delay":11.0},{"enemy":"fault","count":1,"interval":1.0,"delay":9.0}]},{"index":5,"prep":20.0,"groups":[{"enemy":"debris","count":14,"interval":0.45,"delay":0.0},{"enemy":"turbulence","count":10,"interval":0.6,"delay":2.5},{"enemy":"hulk","count":5,"interval":1.5,"delay":6.0},{"enemy":"armor","count":2,"interval":1.8,"delay":8.0},{"enemy":"fault","count":1,"interval":5.0,"delay":4.0}]}]},{"id":"bay03","name":"湾口对接臂","description":"一条短而直的对接臂，塔位少，敌人很快到达湾口。","modifiers":{"energy_delta":10,"integrity_delta":-15,"speed_mult":1.0,"damage_mult":1.0},"path":[[-60,430],[120,450],[300,430],[480,400],[660,410],[840,450],[1000,480],[1180,505]],"slots":[[180,520],[360,340],[560,500],[780,540],[940,560]],"base":{"pos":[1180,505],"radius":26},"waves":[{"index":1,"prep":30.0,"groups":[{"enemy":"debris","count":5,"interval":0.9,"delay":0.0}]},{"index":2,"prep":20.0,"groups":[{"enemy":"debris","count":7,"interval":0.8,"delay":0.0},{"enemy":"turbulence","count":4,"interval":1.0,"delay":5.0}]},{"index":3,"prep":20.0,"groups":[{"enemy":"turbulence","count":5,"interval":0.7,"delay":0.0},{"enemy":"hulk","count":2,"interval":2.0,"delay":4.0}]},{"index":4,"prep":20.0,"groups":[{"enemy":"debris","count":8,"interval":0.7,"delay":0.0},{"enemy":"turbulence","count":5,"interval":0.8,"delay":3.0},{"enemy":"hulk","count":2,"interval":2.0,"delay":7.0},{"enemy":"fault","count":1,"interval":1.0,"delay":6.0}]},{"index":5,"prep":20.0,"groups":[{"enemy":"debris","count":10,"interval":0.6,"delay":0.0},{"enemy":"turbulence","count":6,"interval":0.7,"delay":2.5},{"enemy":"hulk","count":3,"interval":1.7,"delay":6.0},{"enemy":"armor","count":1,"interval":2.0,"delay":9.0},{"enemy":"fault","count":1,"interval":5.0,"delay":4.0}]}]}],"source_hash":"sha256:eda4204d6c61e5b3fca8c6937a088f6b0e00121df3a9ba60f65275de4523c62d"};
+const TRACES = {"generated_by":"game/tests/sim_trace.gd","note":"standard: two interceptors, then supply/interceptor/upgrade by energy; not human play","scenario":"standard","scenarios":[{"build":[{"slot":3,"tower":"interceptor"},{"slot":4,"tower":"interceptor"},{"slot":6,"tower":"supply"},{"slot":2,"tower":"interceptor"},{"slot":3,"tower":"upgrade"},{"slot":3,"tower":"upgrade"}],"facts":{"path_length":1311.50621795654,"slots":7,"wave_count":71,"wave_hp":2412,"waves":5},"id":"bay01-standard","map":"bay01","result":{"built":4,"grade":"C","integrity":32.0,"kills":61,"leaked":10,"max_integrity":100.0,"seconds":165.5,"spent":202,"waves_cleared":5,"won":true},"scenario":"standard"},{"build":[{"slot":3,"tower":"interceptor"},{"slot":4,"tower":"interceptor"},{"slot":6,"tower":"supply"},{"slot":2,"tower":"interceptor"},{"slot":3,"tower":"upgrade"},{"slot":3,"tower":"upgrade"}],"facts":{"path_length":3775.51100158691,"slots":9,"wave_count":91,"wave_hp":3182,"waves":5},"id":"bay02-standard","map":"bay02","result":{"built":4,"grade":"S","integrity":85.0,"kills":90,"leaked":1,"max_integrity":90.0,"seconds":316.316666666667,"spent":202,"waves_cleared":5,"won":true},"scenario":"standard"},{"build":[{"slot":3,"tower":"interceptor"},{"slot":4,"tower":"interceptor"},{"slot":2,"tower":"interceptor"},{"slot":3,"tower":"upgrade"},{"slot":3,"tower":"upgrade"}],"facts":{"path_length":1253.88273620605,"slots":5,"wave_count":60,"wave_hp":2062,"waves":5},"id":"bay03-standard","map":"bay03","result":{"built":3,"grade":"A","integrity":69.0,"kills":58,"leaked":2,"max_integrity":85.0,"seconds":170.633333333333,"spent":162,"waves_cleared":5,"won":true},"scenario":"standard"}],"schema":1};
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const state = {mapId: DATA.maps[0].id, wave: 'all', level: 1, speed: 1, slots: {}};
@@ -196,6 +209,38 @@ function render() {
   const mods=mapData().modifiers||{}; $('#mods').textContent=Object.keys(mods).length?Object.entries(mods).map(([k,v])=>k+' '+v).join(' · '):'无';
   $('#hash').textContent=DATA.source_hash;
   renderMap();
+  renderTrace();
+}
+let traceData = TRACES;
+function waveStatsAll() {
+  const old = state.wave; state.wave='all'; const r=waveStats(); state.wave=old; return r;
+}
+function renderTrace() {
+  const target = (traceData?.scenarios || []).find(s => s.map === state.mapId && s.scenario === 'standard');
+  if (!target) {
+    $('#traceStatus').textContent = '没有当前地图的 trace。运行 ./run.sh sim-trace 后重新生成页面，或导入 JSON。';
+    $('#traceTable').innerHTML = '';
+    return;
+  }
+  const all = waveStatsAll();
+  const towers = assigned().map(towerStats);
+  const facts = target.facts || {};
+  const rows = [
+    ['路径长度', Math.round(pathLen(mapData())), Math.round(Number(facts.path_length || 0)), '±1 px'],
+    ['塔位', mapData().slots.length, Number(facts.slots || 0), '精确'],
+    ['波数', mapData().waves.length, Number(facts.waves || 0), '精确'],
+    ['敌人总数', all.count, Number(facts.wave_count || 0), '精确'],
+    ['波次 HP', all.hp, Number(facts.wave_hp || 0), '精确'],
+    ['建造塔数', towers.filter(t => t.def.kind !== 'upgrade').length, (target.build || []).filter(b => b.tower !== 'upgrade').length, '精确'],
+    ['建造花费', towers.reduce((n,t)=>n+Number(t.def.cost||0),0), Number(target.result?.spent || 0), '参考'],
+  ];
+  const html = rows.map(([name,a,b,tol]) => {
+    const ok = Math.abs(Number(a)-Number(b)) <= (tol === '±1 px' ? 1 : 0);
+    return `<tr><td>${name}</td><td>${a}</td><td>${b}</td><td>${ok?'<span style="color:var(--teal)">一致</span>':'<span style="color:var(--orange)">差异</span>'}</td><td>${tol}</td></tr>`;
+  }).join('');
+  const r = target.result || {};
+  $('#traceStatus').innerHTML = `当前地图：<b>${mapData().name}</b> · 场景：<b>standard</b> · Godot：<b>${r.grade||'?'}</b> / 保障度 ${r.integrity||0} / 击杀 ${r.kills||0} / 漏过 ${r.leaked||0} / ${Number(r.seconds||0).toFixed(1)}s`;
+  $('#traceTable').innerHTML = `<table><thead><tr><th>静态事实</th><th>沙盘</th><th>Godot</th><th>判定</th><th>容差</th></tr></thead><tbody>${html}</tbody></table><p class="hint" style="margin-top:8px">Godot 逐局结果仅作为参考；当前配置若不是标准班，塔数/花费会出现差异，这是预期。</p>`;
 }
 function writeHash() {
   const p=new URLSearchParams(); p.set('map',state.mapId); p.set('wave',state.wave); p.set('level',state.level); p.set('speed',state.speed);
@@ -227,6 +272,12 @@ function init() {
   $('#speed').addEventListener('input',e=>{state.speed=Number(e.target.value);$('#speedOut').textContent=state.speed.toFixed(2);writeHash();render();});
   $('#preset').addEventListener('click',()=>{state.slots=defaultSlots(mapData());state.level=1;state.speed=1;syncControls();writeHash();render();});
   $('#clear').addEventListener('click',()=>{state.slots={};writeHash();render();});
+  $('#traceBuiltin').addEventListener('click',()=>{traceData=TRACES;$('#traceSource').textContent='内置';renderTrace();});
+  $('#traceFile').addEventListener('change',async e=>{
+    const f=e.target.files?.[0]; if(!f) return;
+    try { traceData=JSON.parse(await f.text()); $('#traceSource').textContent=f.name; renderTrace(); }
+    catch(err) { $('#traceStatus').textContent='trace JSON 解析失败：'+err; }
+  });
   render();
 }
 init();

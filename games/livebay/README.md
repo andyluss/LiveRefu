@@ -46,6 +46,7 @@ platform: "PC 优先（D14 待定）"
 ./run.sh expansions-check # 校验扩展包/preset/变体互斥
 ./run.sh compare          # L1 A/B/C 对比表
 ./run.sh playtest         # 三张地图的无头试玩
+./run.sh sim-trace        # 导出 Godot 标准场景对账 trace
 ./run.sh simulator        # 生成数值沙盘
 ./run.sh simulator-check  # 校验数值沙盘是否过期
 ./run.sh flow             # 生成 flows/ 静态流程图

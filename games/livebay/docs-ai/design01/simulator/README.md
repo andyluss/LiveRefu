@@ -2,7 +2,7 @@
 
 > **一句话**：离线、单页、数据驱动的解析计算器；用于调塔/波次/地图/经济，不替代 Godot 试玩。
 >
-> 方案：[`../tech/18_HTML数值模拟器方案.md`](../tech/18_HTML数值模拟器方案.md)。本目录只实现 C-lite 的 **P1–P2**。
+> 方案：[`../tech/18_HTML数值模拟器方案.md`](../tech/18_HTML数值模拟器方案.md)。本目录实现 C-lite 的 **P1–P3 工具链**：解析沙盘 + Godot trace 导入/内置对账。
 
 ## 一、怎么用
 
@@ -18,6 +18,7 @@ docs-ai/design01/simulator/index.html
 cd games/livebay
 ./run.sh simulator
 ./run.sh simulator-check
+./run.sh sim-trace       # 导出 Godot 标准场景 traces.json
 ```
 
 页面不联网、无后端；数据已嵌入 HTML。
@@ -36,7 +37,8 @@ cd games/livebay
   - 每波 HP/奖励/漏过/压力；
   - 地图修正；
 - 场景会写入 URL hash，刷新/分享可恢复；
-- 「标准班」按钮恢复默认配置。
+- 「标准班」按钮恢复默认配置；
+- 导入 `sim-trace` 导出的 `traces.json`，或使用内置 trace，对照路径/塔位/波次/HP/塔数。
 
 ## 三、公式与口径
 
@@ -79,7 +81,7 @@ DPS = damage × fire_rate × (1 + 0.25 × (level − 1))
 - **不是**完整战斗模拟：没有逐帧走位、索敌、减速叠加、故障相邻塔、玩家操作；
 - **不是**最终平衡裁决：结论必须用 Godot `./run.sh playtest` 或人工试玩复核；
 - 数据来自 `game/data/*.json`，生成物不手改；
-- 方案 P3 的 `sim-trace` 对账尚未实现。
+- P3 已提供 `sim-trace` 与 trace 导入/内置对照；解析沙盘本身不产生逐局 grade，因此击杀/漏过/保障度只显示 Godot 参考值，不冒充预测。
 
 ## 五、生成
 
@@ -98,8 +100,28 @@ game/data/map_bay01/02/03.json
 game/data/waves*.json
 ```
 
-## 六、后续
+## 六、P3 对账
 
-- P3：`./run.sh sim-trace` 导出 Godot 标准场景 JSON，在页面里对比估算偏差；
+```bash
+./run.sh sim-trace
+```
+
+写出：
+
+```text
+docs-ai/design01/simulator/traces.json
+```
+
+当前 trace：
+
+- 三张地图；
+- 场景 `standard`：两座拦截炮 + 供能/补塔/升级的固定策略；
+- 结果：grade / 保障度 / 击杀 / 漏过 / 建造/花费 / 时长；
+- 静态事实：路径长度、塔位、波数、敌人总数、波次 HP。
+
+页面内置这份 trace，也可以手动导入新的 JSON。对照表会检查静态事实；逐局结果只显示 Godot 参考值。
+
+## 七、后续
+
 - P4（可选）：离散事件小模拟，加入更真实的目标选择/减速/故障；
-- 在 P3 之前，页面里的诊断只能作为**相对比较**，不能当绝对结果。
+- 在 P4 之前，页面里的诊断只能作为**相对比较**，不能当绝对结果。

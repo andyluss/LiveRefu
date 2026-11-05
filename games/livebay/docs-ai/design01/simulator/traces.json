@@ -1,0 +1,154 @@
+{
+	"generated_by": "game/tests/sim_trace.gd",
+	"note": "standard: two interceptors, then supply/interceptor/upgrade by energy; not human play",
+	"scenario": "standard",
+	"scenarios": [
+		{
+			"build": [
+				{
+					"slot": 3,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 4,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 6,
+					"tower": "supply"
+				},
+				{
+					"slot": 2,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 3,
+					"tower": "upgrade"
+				},
+				{
+					"slot": 3,
+					"tower": "upgrade"
+				}
+			],
+			"facts": {
+				"path_length": 1311.50621795654,
+				"slots": 7,
+				"wave_count": 71,
+				"wave_hp": 2412,
+				"waves": 5
+			},
+			"id": "bay01-standard",
+			"map": "bay01",
+			"result": {
+				"built": 4,
+				"grade": "C",
+				"integrity": 32.0,
+				"kills": 61,
+				"leaked": 10,
+				"max_integrity": 100.0,
+				"seconds": 165.5,
+				"spent": 202,
+				"waves_cleared": 5,
+				"won": true
+			},
+			"scenario": "standard"
+		},
+		{
+			"build": [
+				{
+					"slot": 3,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 4,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 6,
+					"tower": "supply"
+				},
+				{
+					"slot": 2,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 3,
+					"tower": "upgrade"
+				},
+				{
+					"slot": 3,
+					"tower": "upgrade"
+				}
+			],
+			"facts": {
+				"path_length": 3775.51100158691,
+				"slots": 9,
+				"wave_count": 91,
+				"wave_hp": 3182,
+				"waves": 5
+			},
+			"id": "bay02-standard",
+			"map": "bay02",
+			"result": {
+				"built": 4,
+				"grade": "S",
+				"integrity": 85.0,
+				"kills": 90,
+				"leaked": 1,
+				"max_integrity": 90.0,
+				"seconds": 316.316666666667,
+				"spent": 202,
+				"waves_cleared": 5,
+				"won": true
+			},
+			"scenario": "standard"
+		},
+		{
+			"build": [
+				{
+					"slot": 3,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 4,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 2,
+					"tower": "interceptor"
+				},
+				{
+					"slot": 3,
+					"tower": "upgrade"
+				},
+				{
+					"slot": 3,
+					"tower": "upgrade"
+				}
+			],
+			"facts": {
+				"path_length": 1253.88273620605,
+				"slots": 5,
+				"wave_count": 60,
+				"wave_hp": 2062,
+				"waves": 5
+			},
+			"id": "bay03-standard",
+			"map": "bay03",
+			"result": {
+				"built": 3,
+				"grade": "A",
+				"integrity": 69.0,
+				"kills": 58,
+				"leaked": 2,
+				"max_integrity": 85.0,
+				"seconds": 170.633333333333,
+				"spent": 162,
+				"waves_cleared": 5,
+				"won": true
+			},
+			"scenario": "standard"
+		}
+	],
+	"schema": 1
+}

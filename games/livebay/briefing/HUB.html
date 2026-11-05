@@ -106,7 +106,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.92</span> · 2026-11-05</div>
+      <div class="stamp">v<span data-fact="version">0.1.93</span> · 2026-11-05</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -152,22 +152,23 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     </div>
   </section>
 
-
   <section class="panel" id="p10" role="tabpanel" aria-labelledby="t10">
     <h2>数值沙盘：先算清楚，再打一局</h2>
     <p class="lede">不用启动 Godot，直接调地图、塔位、等级、敌人速度，观察覆盖、DPS、波次压力与供能。它是一个离线、单页、数据驱动的<b>解析估算器</b>，不是完整战斗复刻。</p>
+    <div class="card">
+      <h4><a href="../docs-ai/design01/simulator/index.html">打开数值沙盘 →</a></h4>
+      <p>入口说明与公式见 <a href="../docs-ai/design01/simulator/README.md">simulator/README.md</a>；设计取舍见 <a href="../docs-ai/design01/tech/18_HTML数值模拟器方案.md">tech/18 方案</a>。</p>
+      <p><code>./run.sh simulator</code> 生成 · <code>./run.sh simulator-check</code> 校验过期。</p>
+    </div>
+    <br>
     <div class="grid g2">
       <article class="card"><h4>能调什么</h4><p>三张地图、单波/全部、每个塔位的塔、塔等级 1–3、敌速倍率；支持「标准班」「清空」，场景写入 URL hash，刷新/分享可恢复。</p></article>
       <article class="card"><h4>能看什么</h4><p>路径长度、覆盖弦长/倍率、理论 DPS、波次 HP/压力、建造与剩余供能、每波奖励/漏过，以及“输出不足 / 覆盖偏窄”的诊断。</p></article>
       <article class="card"><h4>公式口径</h4><p>弦长 <code>2×sqrt(range²−dist²)</code>；DPS <code>damage×fire_rate×(1+0.25×(level−1))</code>；压力 <code>波次HP/(生成窗口+穿越时间)</code>。详见模拟器 README。</p></article>
       <article class="card"><h4>边界</h4><p>没有逐帧走位、索敌、减速叠加、故障相邻塔、玩家操作误差；P3 的 <code>sim-trace</code> 对账尚未实现。结果只适合相对比较，不替代 Godot 试玩。</p></article>
     </div>
-    <div class="card">
-      <h4><a href="../docs-ai/design01/simulator/index.html">打开数值沙盘 →</a></h4>
-      <p>入口说明与公式见 <a href="../docs-ai/design01/simulator/README.md">simulator/README.md</a>；设计取舍见 <a href="../docs-ai/design01/tech/18_HTML数值模拟器方案.md">tech/18 方案</a>。</p>
-      <p><code>./run.sh simulator</code> 生成 · <code>./run.sh simulator-check</code> 校验过期。</p>
-    </div>
   </section>
+
   <section class="panel" id="p2" role="tabpanel" aria-labelledby="t2">
     <h2>一局：先供能，再守弧，再处理故障</h2>
     <p class="lede">一局不是“造塔—看数字”，而是“值班—判断—修复—交接”的压缩。</p>
@@ -306,7 +307,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <h3>补充图</h3>
     <div class="grid g3">
       <article class="card"><h4><a href="../docs-ai/design01/flows/extra_flows.html">五图总览</a></h4><p>一次看完操作、波次、L1、数据、泳道五张补充图；Graphviz 内联 SVG，可离线阅读。</p></article>
-      <article class="card"><h4><a href="../docs-ai/design01/simulator/index.html">数值沙盘</a></h4><p>不用启动 Godot，直接调地图/塔/波次/等级，查看覆盖、DPS、波次压力与供能；P1–P2 解析估算。</p><p><a href="../docs-ai/design01/simulator/README.md">说明</a></p></article>
+      <article class="card"><h4><a href="../docs-ai/design01/simulator/index.html">数值沙盘</a></h4><p>不用启动 Godot，直接调地图/塔/波次/等级，查看覆盖、DPS、波次压力与供能；可导入 <code>sim-trace</code> 的 trace 对账静态事实。</p><p><a href="../docs-ai/design01/simulator/README.md">说明</a></p></article>
       <article class="card"><h4><a href="../docs-ai/design01/flows/player_flow.html">玩家操作流程</a></h4><p>选择塔位、供能判断、建造/升级、开波、整备；暂停/倍速是横切操作。</p><p><a href="../docs-ai/design01/flows/player_flow.md">Mermaid 版</a></p></article>
       <article class="card"><h4><a href="../docs-ai/design01/flows/wave_flow.html">波次生命周期</a></h4><p>准备/开波、生成组、敌人移动、故障/开火、漏过、清空、下一波/胜负。</p><p><a href="../docs-ai/design01/flows/wave_flow.md">Mermaid 版</a></p></article>
       <article class="card"><h4><a href="../docs-ai/design01/flows/l1_flow.html">L1 班次扩展</a></h4><p>W4 检查单、W5 故障、事故记录、10 班档案、低报审计与下一班简报。</p><p><a href="../docs-ai/design01/flows/l1_flow.md">Mermaid 版</a></p></article>

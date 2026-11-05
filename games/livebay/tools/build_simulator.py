@@ -15,6 +15,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "game" / "data"
 OUT = ROOT / "docs-ai" / "design01" / "simulator" / "index.html"
+TRACE = ROOT / "docs-ai" / "design01" / "simulator" / "traces.json"
 WAVE_FILES = {"bay01": "waves.json", "bay02": "waves_bay02.json", "bay03": "waves_bay03.json"}
 MAP_FILES = ["map_bay01.json", "map_bay02.json", "map_bay03.json"]
 
@@ -40,8 +41,9 @@ def build_data() -> dict:
     return payload
 
 
-def html_page(data: dict) -> str:
+def html_page(data: dict, traces: dict) -> str:
     js_data = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    js_traces = json.dumps(traces, ensure_ascii=False, separators=(",", ":"))
     page = r'''<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -130,10 +132,23 @@ table{{width:100%;border-collapse:collapse;font-size:11.5px}}th,td{{padding:5px 
   </section>
 </div>
 
+<section class="card" id="traceCard" style="margin-top:16px">
+  <h2><span class="n">05</span>Godot 对账</h2>
+  <p class="hint">内置 trace 来自 <code>./run.sh sim-trace</code>；页面对照当前配置与标准班的静态事实。解析沙盘不产生逐局 grade，因此击杀/漏过/保障度只显示 Godot 参考值，不冒充预测。</p>
+  <div class="toolbar">
+    <div class="field"><label for="traceFile">导入 traces.json</label><input id="traceFile" type="file" accept="application/json,.json"></div>
+    <button class="btn" id="traceBuiltin">使用内置 trace</button>
+    <span class="tag" id="traceSource">内置</span>
+  </div>
+  <div class="diag" id="traceStatus">正在读取 trace…</div>
+  <div id="traceTable"></div>
+</section>
+
 <footer class="footer"><span>由 <code>tools/build_simulator.py</code> 生成 · 数据 hash <code id="hash"></code></span><span><a href="../flows/game_flow.html">流程图</a> · <a href="README.md">方案/说明</a></span></footer>
 </main>
 <script>
 const DATA = __DATA__;
+const TRACES = __TRACES__;
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const state = {{mapId: DATA.maps[0].id, wave: 'all', level: 1, speed: 1, slots: {{}}}};
@@ -240,6 +255,38 @@ function render() {{
   const mods=mapData().modifiers||{}; $('#mods').textContent=Object.keys(mods).length?Object.entries(mods).map(([k,v])=>k+' '+v).join(' · '):'无';
   $('#hash').textContent=DATA.source_hash;
   renderMap();
+  renderTrace();
+}}
+let traceData = TRACES;
+function waveStatsAll() {{
+  const old = state.wave; state.wave='all'; const r=waveStats(); state.wave=old; return r;
+}}
+function renderTrace() {{
+  const target = (traceData?.scenarios || []).find(s => s.map === state.mapId && s.scenario === 'standard');
+  if (!target) {{
+    $('#traceStatus').textContent = '没有当前地图的 trace。运行 ./run.sh sim-trace 后重新生成页面，或导入 JSON。';
+    $('#traceTable').innerHTML = '';
+    return;
+  }}
+  const all = waveStatsAll();
+  const towers = assigned().map(towerStats);
+  const facts = target.facts || {{}};
+  const rows = [
+    ['路径长度', Math.round(pathLen(mapData())), Math.round(Number(facts.path_length || 0)), '±1 px'],
+    ['塔位', mapData().slots.length, Number(facts.slots || 0), '精确'],
+    ['波数', mapData().waves.length, Number(facts.waves || 0), '精确'],
+    ['敌人总数', all.count, Number(facts.wave_count || 0), '精确'],
+    ['波次 HP', all.hp, Number(facts.wave_hp || 0), '精确'],
+    ['建造塔数', towers.filter(t => t.def.kind !== 'upgrade').length, (target.build || []).filter(b => b.tower !== 'upgrade').length, '精确'],
+    ['建造花费', towers.reduce((n,t)=>n+Number(t.def.cost||0),0), Number(target.result?.spent || 0), '参考'],
+  ];
+  const html = rows.map(([name,a,b,tol]) => {{
+    const ok = Math.abs(Number(a)-Number(b)) <= (tol === '±1 px' ? 1 : 0);
+    return `<tr><td>${{name}}</td><td>${{a}}</td><td>${{b}}</td><td>${{ok?'<span style="color:var(--teal)">一致</span>':'<span style="color:var(--orange)">差异</span>'}}</td><td>${{tol}}</td></tr>`;
+  }}).join('');
+  const r = target.result || {{}};
+  $('#traceStatus').innerHTML = `当前地图：<b>${{mapData().name}}</b> · 场景：<b>standard</b> · Godot：<b>${{r.grade||'?'}}</b> / 保障度 ${{r.integrity||0}} / 击杀 ${{r.kills||0}} / 漏过 ${{r.leaked||0}} / ${{Number(r.seconds||0).toFixed(1)}}s`;
+  $('#traceTable').innerHTML = `<table><thead><tr><th>静态事实</th><th>沙盘</th><th>Godot</th><th>判定</th><th>容差</th></tr></thead><tbody>${{html}}</tbody></table><p class="hint" style="margin-top:8px">Godot 逐局结果仅作为参考；当前配置若不是标准班，塔数/花费会出现差异，这是预期。</p>`;
 }}
 function writeHash() {{
   const p=new URLSearchParams(); p.set('map',state.mapId); p.set('wave',state.wave); p.set('level',state.level); p.set('speed',state.speed);
@@ -271,6 +318,12 @@ function init() {{
   $('#speed').addEventListener('input',e=>{{state.speed=Number(e.target.value);$('#speedOut').textContent=state.speed.toFixed(2);writeHash();render();}});
   $('#preset').addEventListener('click',()=>{{state.slots=defaultSlots(mapData());state.level=1;state.speed=1;syncControls();writeHash();render();}});
   $('#clear').addEventListener('click',()=>{{state.slots={{}};writeHash();render();}});
+  $('#traceBuiltin').addEventListener('click',()=>{{traceData=TRACES;$('#traceSource').textContent='内置';renderTrace();}});
+  $('#traceFile').addEventListener('change',async e=>{{
+    const f=e.target.files?.[0]; if(!f) return;
+    try {{ traceData=JSON.parse(await f.text()); $('#traceSource').textContent=f.name; renderTrace(); }}
+    catch(err) {{ $('#traceStatus').textContent='trace JSON 解析失败：'+err; }}
+  }});
   render();
 }}
 init();
@@ -288,12 +341,14 @@ init();
 </body>
 </html>'''
     page = page.replace('{{', '{').replace('}}', '}')
-    return page.replace('__DATA__', js_data)
+    page = page.replace('__DATA__', js_data)
+    return page.replace('__TRACES__', js_traces)
 
 
 def main() -> int:
     data = build_data()
-    page = html_page(data)
+    traces = json.loads(TRACE.read_text(encoding="utf-8")) if TRACE.exists() else {"scenarios": []}
+    page = html_page(data, traces)
     if "--check" in sys.argv:
         if not OUT.exists() or OUT.read_text(encoding="utf-8") != page:
             print("build_simulator: index.html 过期，请运行 ./run.sh simulator", file=sys.stderr)
