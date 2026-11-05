@@ -11,15 +11,15 @@ briefing/
 ├── GUIDE.html        # 给第一次听说这个游戏的人看的玩法说明（生成物）
 ├── theme.css         # 两页共享的三态主题 token 与覆盖
 ├── theme.js          # 三态切换、持久化、系统态实时响应
-├── build_guide.py    # 从 game/data/*.json 生成 GUIDE.html
-├── check_hub.py      # 核对 HUB 的 data-fact、素材存在性
+├── build_guide.ts    # 从 game/data/*.json 生成 GUIDE.html
+├── check_hub.ts      # 核对 HUB 的 data-fact、素材存在性
 └── README.md         # 本文件
 ```
 
 | 文件 | 谁维护 | 怎么产生 |
 | --- | --- | --- |
-| `HUB.html` | 项目负责人 / 设计主控 | 手写结构，数字由 `check_hub.py` 对账 |
-| `GUIDE.html` | 项目负责人 + 数据 | `build_guide.py` 生成，禁止手改 |
+| `HUB.html` | 项目负责人 / 设计主控 | 手写结构，数字由 `check_hub.ts` 对账 |
+| `GUIDE.html` | 项目负责人 + 数据 | `build_guide.ts` 生成，禁止手改 |
 | `theme.css` / `theme.js` | 设计主控 | 手写；两页共用，遵守 R-016 |
 
 ## 二、HUB 与 GUIDE 的分工
@@ -45,7 +45,7 @@ HUB 中需要核对的数字写成：
 <span data-fact="towers">3</span>
 ```
 
-`check_hub.py` 会从工程现读真实值，核对**每一处**相同 fact；数字不一致、缺少 fact、找不到来源都会报错。
+`check_hub.ts` 会从工程现读真实值，核对**每一处**相同 fact；数字不一致、缺少 fact、找不到来源都会报错。
 
 当前核对：
 
@@ -59,8 +59,8 @@ HUB 中需要核对的数字写成：
 ```
 
 ```bash
-python3 briefing/check_hub.py             # 对账
-python3 briefing/check_hub.py --self-test # 用坏数据确认它会失败
+node briefing/check_hub.ts             # 对账
+node briefing/check_hub.ts --self-test # 用坏数据确认它会失败
 ```
 
 失败时先改**数据源**或 HUB 的数字，**不要让两者并存**。
@@ -84,8 +84,8 @@ game/data/balance.json
 - `--check` 只读磁盘，适合 CI / 提交前检查。
 
 ```bash
-python3 briefing/build_guide.py            # 重新生成 GUIDE.html
-python3 briefing/build_guide.py --check    # 页面与数据一致？不写文件
+node briefing/build_guide.ts            # 重新生成 GUIDE.html
+node briefing/build_guide.ts --check    # 页面与数据一致？不写文件
 ```
 
 ## 五、三态主题（R-016）
@@ -129,9 +129,9 @@ system / light / dark
 
 | 改动 | 要做什么 |
 | --- | --- |
-| HUB 叙述/结构 | 直接改 `HUB.html`，跑 `check_hub.py` |
-| HUB 数字 | 先改数据源，再跑 `check_hub.py` |
-| GUIDE 图表/数字 | 改数据或 `build_guide.py`，重跑 |
+| HUB 叙述/结构 | 直接改 `HUB.html`，跑 `check_hub.ts` |
+| HUB 数字 | 先改数据源，再跑 `check_hub.ts` |
+| GUIDE 图表/数字 | 改数据或 `build_guide.ts`，重跑 |
 | 主题 | 改 `theme.css` / `theme.js`；新页面复制预绘制与控件模式 |
 | 新增导览页 | 同目录、同主题、同数据来源；更新 README 与 HUB 入口 |
 
@@ -144,6 +144,6 @@ system / light / dark
 
 ## 九、维护
 
-- 版本：与项目版本同步；当前项目 `0.1.71`；
+- 版本：与项目版本同步；当前项目 `0.1.72`；
 - 变更：项目级变更写入 `../CHANGELOG.md`，本目录不单独维护版本日志；
 - 入口：[`HUB.html`](HUB.html) ｜ [`GUIDE.html`](GUIDE.html) ｜ [项目 README](../README.md)。

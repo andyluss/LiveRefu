@@ -260,11 +260,11 @@ fi
 
 # ---- 5.10) LiveBay briefing：GUIDE 是否过期 + HUB 数字对账 ----
 if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/livebay/briefing/(HUB\.html|GUIDE\.html)|^games/livebay/(game/data/|run\.sh|game/tests/)'; then
-  LB_GUIDE="games/livebay/briefing/build_guide.py"
-  LB_HUB="games/livebay/briefing/check_hub.py"
+  LB_GUIDE="games/livebay/briefing/build_guide.ts"
+  LB_HUB="games/livebay/briefing/check_hub.ts"
   if [ -f "$LB_GUIDE" ] && [ -f "$LB_HUB" ]; then
     echo "[pre-commit:livebay-briefing] GUIDE 与数据 / HUB 数字对账..." >&2
-    if python3 "$LB_GUIDE" --check >&2 && python3 "$LB_HUB" >&2; then
+    if node "$LB_GUIDE" --check >&2 && node "$LB_HUB" >&2; then
       echo "[pre-commit:livebay-briefing] 通过。" >&2
     else
       echo "[pre-commit:livebay-briefing] GUIDE 过期或 HUB 数字不一致，已拦截提交。" >&2

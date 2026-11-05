@@ -3,6 +3,23 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.72] - 2026-11-05 18:11
+
+### 变更
+
+- `briefing/build_guide.py` → `briefing/build_guide.ts`；
+- `briefing/check_hub.py` → `briefing/check_hub.ts`；
+- 两个脚本可直接用 Node 24+ 运行（`.ts` 类型剥离），支持 `--check` / `--self-test`；
+- `run.sh`、pre-commit、briefing README 同步改为 `node`；
+- 修复 GUIDE 锚点跳转被 sticky 顶栏遮住：`section[id]` 增加 `scroll-margin-top`，移动端用更大偏移。
+
+### 验证
+
+- `node briefing/build_guide.ts --check`；
+- `node briefing/check_hub.ts`；
+- `node briefing/check_hub.ts --self-test` 9/9；
+- HUB + GUIDE R-016 2/2。
+
 ## [0.1.71] - 2026-11-05 17:47
 
 ### 修复

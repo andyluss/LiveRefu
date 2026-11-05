@@ -63,11 +63,11 @@ case "$CMD" in
     exec "$GODOT" --headless --path "$GAME" --script tests/compare_expansions.gd -- "${@:2}"
     ;;
   briefing)
-    exec python3 "$HERE/briefing/build_guide.py"
+    exec node "$HERE/briefing/build_guide.ts"
     ;;
   briefing-check)
-    python3 "$HERE/briefing/build_guide.py" --check
-    exec python3 "$HERE/briefing/check_hub.py"
+    node "$HERE/briefing/build_guide.ts" --check
+    exec node "$HERE/briefing/check_hub.ts"
     ;;
   *)
     echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
