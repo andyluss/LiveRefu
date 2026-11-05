@@ -22,10 +22,10 @@ var _fault_requested := false
 var _connections: Array = []
 
 
-func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null, carry_low_report := 0) -> void:
+func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null, initial_carry_low_report := 0) -> void:
 	data = initial_set.apply_data(game_data) if initial_set != null else game_data
 	expansion_set = initial_set if initial_set != null else LiveBayExpansionSet.empty()
-	carry_low_report = int(carry_low_report)
+	carry_low_report = int(initial_carry_low_report)
 	flags = LiveBayFeatureFlags.from_set(expansion_set)
 	clock = LiveBayMissionClock.new()
 	events = LiveBayEventBus.new()
@@ -50,6 +50,8 @@ func _new_sim() -> void:
 	sim = SimScript.new(data)
 	sim.fault_choice_enabled = expansion_set.has_provides("procedure.fault_choice")
 	sim.fault_bypass_locked = carry_low_report >= 3
+	if carry_low_report >= 3:
+		sim.wave.timer = maxf(0.0, sim.wave.timer - 5.0)
 	_connect(sim.wave_started, func(index: int): events.emit_event(&"WaveStarted", {"index": index}, &"wave"))
 	_connect(sim.wave_cleared, func(index: int): events.emit_event(&"WaveCleared", {"index": index}, &"wave"))
 	_connect(sim.enemy_killed, func(enemy: Dictionary): events.emit_event(&"EnemyKilled", {"enemy": str(enemy.get("def", {}).get("id", "")), "reward": int(enemy.get("def", {}).get("reward", 0))}, &"enemy"))

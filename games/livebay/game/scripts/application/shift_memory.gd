@@ -13,7 +13,7 @@ func _init(persist: LiveBayShiftStore = null) -> void:
 	store = persist
 	if store != null:
 		var loaded: Array = store.load_records()
-		history = loaded.slice(max(0, loaded.size() - 3))
+		history = loaded.slice(max(0, loaded.size() - 10))
 		if not history.is_empty():
 			last_report = history[history.size() - 1]
 			shifts = int(last_report.get("shift", history.size()))
@@ -33,7 +33,7 @@ func record(result: Dictionary, choice: String, low_report: int) -> void:
 		"integrity": int(result.get("integrity", 0)),
 	}
 	history.append(entry)
-	history = history.slice(-3)
+	history = history.slice(-10)
 	last_report = entry
 	if store != null:
 		store.save_records(history)
@@ -56,7 +56,7 @@ func briefing() -> Dictionary:
 	var streak := low_streak()
 	var audit := ""
 	if streak > 0:
-		audit = "\n\n审计备注：连续低报 %d 班，下次故障停塔 +%ds。" % [streak, streak]
+		audit = "\n\n审计备注：连续低报 %d 班，下次故障停塔 +%ds、准备时间 -5s。" % [streak, streak]
 		var broadcast := broadcast_text()
 		if not broadcast.is_empty():
 			audit += "\n" + broadcast
@@ -79,6 +79,10 @@ func briefing() -> Dictionary:
 
 func bypass_locked() -> bool:
 	return low_streak() >= 3
+
+
+func audit_prep_penalty() -> float:
+	return 5.0 if bypass_locked() else 0.0
 
 
 func broadcast_text() -> String:

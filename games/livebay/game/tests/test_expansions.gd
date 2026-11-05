@@ -91,8 +91,15 @@ func _initialize() -> void:
 	severe.record({"grade": "F", "integrity": 0}, "custom", 1)
 	severe.record({"grade": "F", "integrity": 0}, "custom", 1)
 	_check(str(severe.broadcast_text()).contains("停班审计"), "shift: 3 consecutive low reports escalate")
-	_check(severe.bypass_locked(), "shift: stop-work audit locks bypass")
+	_check(severe.bypass_locked() and is_equal_approx(severe.audit_prep_penalty(), 5.0), "shift: audit locks bypass and prep -5s")
 	_check(str(severe.archive_text()).contains("第 3 班"), "shift: archive lists recent shifts")
+	var long_history := LiveBayShiftMemory.new()
+	for i in range(12):
+		long_history.record({"grade": "B", "integrity": 40}, "honest", 0)
+	_check(long_history.history.size() == 10, "shift: archive keeps last 10 records")
+	var audit_runtime: LiveBayMissionRuntime = RuntimeScript.new(data, a.data, 3)
+	_check(is_equal_approx(audit_runtime.sim.wave.timer, 25.0), "shift: audit prep -5s on next shift")
+	audit_runtime.dispose()
 	var locked_sim: Variant = SimScript.new(proc_data)
 	locked_sim.build(0, "interceptor")
 	locked_sim.fault_pending = {"enemy": {"def": {"disable_duration": 2.5, "disable_radius": 100, "disable_targets": 2}, "hit_towers": {}}, "slots": [0]}

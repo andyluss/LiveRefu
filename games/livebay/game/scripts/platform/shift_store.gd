@@ -4,7 +4,7 @@ class_name LiveBayShiftStore
 extends RefCounted
 
 const PATH := "user://shift.json"
-const MAX_RECORDS := 3
+const MAX_RECORDS := 10
 
 
 func load_records() -> Array:

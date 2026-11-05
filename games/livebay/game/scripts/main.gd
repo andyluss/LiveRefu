@@ -72,6 +72,8 @@ var current_result: Dictionary = {}
 var broadcast_banner: PanelContainer
 var broadcast_label: Label
 var broadcast_timer := 0.0
+var broadcast_reveal := 0.0
+var broadcast_full := ""
 var archive_button: Button
 
 var fatal_label: Label
@@ -143,6 +145,8 @@ func _process(delta: float) -> void:
 	toast_timer = max(0.0, toast_timer - delta)
 	if broadcast_timer > 0.0:
 		broadcast_timer = max(0.0, broadcast_timer - delta)
+		broadcast_reveal = minf(float(broadcast_full.length()), broadcast_reveal + delta * 28.0)
+		broadcast_label.text = "BROADCAST  /  " + broadcast_full.substr(0, int(broadcast_reveal))
 		broadcast_banner.visible = broadcast_timer > 0.0
 	_update_ui()
 	queue_redraw()
@@ -562,6 +566,8 @@ func _restart() -> void:
 	sim = runtime.sim
 	sim.fault_duration_bonus = shift_memory.next_fault_bonus()
 	sim.fault_bypass_locked = shift_memory.bypass_locked()
+	if shift_memory.audit_prep_penalty() > 0.0:
+		sim.wave.timer = maxf(0.0, sim.wave.timer - shift_memory.audit_prep_penalty())
 	selected_slot = -1
 	beams.clear()
 	leak_flash = 0.0
@@ -649,7 +655,9 @@ func _dismiss_briefing() -> void:
 func _show_broadcast(text: String, duration: float) -> void:
 	if broadcast_banner == null:
 		return
-	broadcast_label.text = "BROADCAST  /  " + text
+	broadcast_full = text
+	broadcast_reveal = 0.0
+	broadcast_label.text = "BROADCAST  /  "
 	broadcast_timer = duration
 	broadcast_banner.visible = true
 
