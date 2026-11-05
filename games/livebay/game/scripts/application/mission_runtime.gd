@@ -111,12 +111,33 @@ func _register_commands() -> void:
 
 func step(delta: float) -> void:
 	var step_delta := clock.consume(delta)
+	events.tick = clock.ticks
 	if step_delta > 0.0:
 		sim.step(step_delta)
 
 
 func dispatch(command: StringName, payload: Dictionary = {}) -> LiveBayResult:
+	events.tick = clock.ticks
+	events.emit_event(&"CommandIssued", {"command": String(command), "payload": payload.duplicate(true)}, &"view")
 	return commands.dispatch(command, payload)
+
+
+static func replay(game_data: Dictionary, entries: Array, max_ticks := 60 * 600) -> LiveBayMissionRuntime:
+	var runtime: LiveBayMissionRuntime = LiveBayMissionRuntime.new(game_data)
+	runtime.blackbox.enabled = false
+	for entry in entries:
+		if not (entry is Dictionary) or str(entry.get("type", "")) != "CommandIssued":
+			continue
+		var target_tick := int(entry.get("tick", 0))
+		while runtime.clock.ticks < target_tick:
+			runtime.step(1.0 / 60.0)
+		var payload: Dictionary = entry.get("payload", {})
+		runtime.dispatch(StringName(str(payload.get("command", ""))), payload.get("payload", {}))
+	var guard := 0
+	while runtime.sim.state != SimScript.State.WON and runtime.sim.state != SimScript.State.LOST and guard < max_ticks:
+		runtime.step(1.0 / 60.0)
+		guard += 1
+	return runtime
 
 
 func reset() -> void:

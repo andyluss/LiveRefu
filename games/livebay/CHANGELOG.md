@@ -3,6 +3,27 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.33] - 2026-11-05 12:39
+
+### 新增（模块化 M6）
+
+- 事件信封增加 `tick`；
+- `MissionRuntime.dispatch()` 记录 `CommandIssued`（命令 + 载荷 + tick）；
+- `MissionRuntime.replay(game_data, entries)`：按 tick 重放命令，并自动推进到结果；
+- `BlackBox.read_events()`：读取 JSONL 会话；
+- 测试：同一局命令日志重放后 integrity / grade 一致。
+
+### 变更
+
+- `16`：M6 标记「核心已通」，CLI 回放未接；
+- 测试从 66 增至 **68 项**。
+
+### 验证
+
+- `./run.sh test` 68/68；
+- `./run.sh check` 退出码 0；
+- 标准班仍为 B / 40 / 59 击杀 / 9 漏过。
+
 ## [0.1.32] - 2026-11-05 12:39
 
 ### 新增（模块化 M3/M4）

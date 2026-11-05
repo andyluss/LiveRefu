@@ -10,6 +10,7 @@ const MAX_EVENTS := 2000
 var enabled := true
 var events: Array = []
 var meta: Dictionary = {}
+var last_path := ""
 var _active := false
 
 
@@ -47,6 +48,7 @@ func finish(result: Dictionary) -> void:
 		file.store_line(JSON.stringify(event))
 	file.store_line(JSON.stringify({"kind": "result", "result": result}))
 	file.close()
+	last_path = path
 	_prune()
 
 
@@ -66,3 +68,20 @@ func _prune() -> void:
 	while files.size() > MAX_SESSIONS:
 		var old: String = files.pop_front()
 		dir.remove(old)
+
+
+static func read_events(path: String) -> Array:
+	var out: Array = []
+	if not FileAccess.file_exists(path):
+		return out
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return out
+	while not file.eof_reached():
+		var line := file.get_line().strip_edges()
+		if line.is_empty():
+			continue
+		var parsed: Variant = JSON.parse_string(line)
+		if parsed is Dictionary:
+			out.append(parsed)
+	return out

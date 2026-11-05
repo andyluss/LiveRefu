@@ -37,6 +37,7 @@ func _initialize() -> void:
 	_test_upgrade(data)
 	_test_supply_upgrade(data)
 	_test_fault(data)
+	_test_replay(data)
 	_test_loss(data)
 	_test_win(data)
 	_finish()
@@ -186,6 +187,26 @@ func _test_fault(data: Dictionary) -> void:
 		sim.step(1.0 / 60.0)
 		frames += 1
 	_check(sim.integrity == 100.0, "fault escape does not damage integrity")
+
+
+func _test_replay(data: Dictionary) -> void:
+	var runtime: LiveBayMissionRuntime = RuntimeScript.new(data)
+	runtime.dispatch(&"build_tower", {"slot": 3, "tower_id": "interceptor"})
+	runtime.dispatch(&"build_tower", {"slot": 4, "tower_id": "pulse"})
+	runtime.dispatch(&"start_wave")
+	var frames := 0
+	while runtime.sim.state != SimScript.State.WON and runtime.sim.state != SimScript.State.LOST and frames < 60 * 600:
+		runtime.step(1.0 / 60.0)
+		if runtime.sim.state == SimScript.State.BETWEEN:
+			runtime.dispatch(&"start_wave")
+		frames += 1
+	var before: Dictionary = runtime.sim.result.duplicate(true)
+	var entries: Array = runtime.blackbox.events.duplicate(true)
+	var replay: LiveBayMissionRuntime = RuntimeScript.replay(data, entries)
+	_check(int(replay.sim.result.get("integrity", -1)) == int(before.get("integrity", -2)), "replay: integrity matches")
+	_check(str(replay.sim.result.get("grade", "")) == str(before.get("grade", "")), "replay: grade matches")
+	replay.dispose()
+	runtime.dispose()
 
 
 func _test_loss(data: Dictionary) -> void:

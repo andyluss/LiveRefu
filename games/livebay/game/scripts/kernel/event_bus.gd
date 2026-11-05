@@ -4,6 +4,7 @@ class_name LiveBayEventBus
 extends RefCounted
 
 var seq := 0
+var tick := 0
 var _subscribers: Dictionary = {}
 var _all_subscribers: Array = []
 
@@ -22,6 +23,7 @@ func emit_event(type: StringName, payload: Dictionary = {}, source: StringName =
 	seq += 1
 	var envelope := {
 		"seq": seq,
+		"tick": tick,
 		"type": type,
 		"source": source,
 		"payload": payload.duplicate(true),
