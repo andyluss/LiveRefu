@@ -33,10 +33,9 @@ DOC_GROUPS = [
         "expansions/03_L2_岗位层.html",
         "expansions/04_L3_城市层.html",
         "expansions/05_版本切片与决策.html",
-        "tech/00_可插拔扩展架构.html",
         "expansions/06_实现对照与验收.html",
     ]),
-    ("表现与工程", ["art/08_美术与音频方向.html", "tech/00_可插拔扩展架构.html", "tech/12_技术方案_Godot工程.html", "tech/15_专用游戏编辑器方案.html", "tech/16_模块化技术架构_NASApunk.html"]),
+    ("表现与工程", ["art/08_美术与音频方向.html", "tech/12_技术方案_Godot工程.html", "tech/15_专用游戏编辑器方案.html", "tech/16_模块化技术架构_NASApunk.html", "tech/17_可插拔扩展架构.html"]),
 ]
 
 RULE_FILES = [
