@@ -1,0 +1,321 @@
+<!-- 由 tools/build_design_html.py 从 ../17_玩法扩展/03_L2_岗位层.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>L2 岗位层：模块化设施与人员 · LiveBay design01</title>
+<meta name="description" content="塔座 2 槽、备件、3 名湾民、事故链。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="../14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../17_玩法扩展/README.html">玩法扩展：分层设计</a><a href="../17_玩法扩展/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../17_玩法扩展/02_L1_班次层.html">L1 班次层：让一局像一班</a><a href="../17_玩法扩展/03_L2_岗位层.html" aria-current="page">L2 岗位层：模块化设施与人员</a><a href="../17_玩法扩展/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../17_玩法扩展/05_版本切片与决策.html">版本切片与决策：建议你先拍这五个</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../08_美术与音频方向.html">美术与音频方向</a><a href="../12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../17_玩法扩展/03_L2_岗位层.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">L2 岗位层：模块化设施与人员</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一塔座模块化2-槽">一、塔座模块化（2 槽）</a></li><li class="sub"><a href="#11-模块示例">1.1 模块示例</a></li><li class="sub"><a href="#12-与故障的关系">1.2 与故障的关系</a></li><li class=""><a href="#二备件">二、备件</a></li><li class=""><a href="#三湾民3-名">三、湾民（3 名）</a></li><li class=""><a href="#四事故链3-班合同--1-条链">四、事故链（3 班合同 → 1 条链）</a></li><li class=""><a href="#五与-l1-的咬合">五、与 L1 的咬合</a></li><li class=""><a href="#六数据与工程映射">六、数据与工程映射</a></li><li class=""><a href="#七验收">七、验收</a></li><li class=""><a href="#八l2-不做什么">八、L2 不做什么</a></li></ul></details>
+<article class="prose">
+<h1 id="1703--l2-岗位层模块化设施与人员">17.03 · L2 岗位层：模块化设施与人员</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>玩法扩展参考</dd><dt>状态</dt><dd>参考 v0.1（待人类裁决）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="../rules/design/b01_班次循环.html">DES-B1</a> · <a href="../rules/biz/b01_切片与范围门槛.html">BIZ-B1</a> · <a href="../rules/tech/a02_模拟与视图分离.html">TECH-A2</a></dd><dt>上游</dt><dd><a href="../14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="../03_职业体系.html">03_职业体系</a></dd><dt>关联</dt><dd><a href="../16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a> · <a href="01_分层总览.html">01_分层总览</a> · <a href="05_版本切片与决策.html">05_版本切片与决策</a></dd></dl></div>
+<blockquote>
+<p><strong>范围</strong>：v0.3 起；在 L1 成立后再做。核心不是「更多塔」，而是「同一座塔长出不同岗位性格」。 <strong>一句话</strong>：塔座是 ORU 插槽，模块是备件，湾民是岗位，三者都服务于「这一班怎么修、怎么换、怎么扛」。</p>
+</blockquote>
+<h2 id="一塔座模块化2-槽">一、塔座模块化（2 槽）</h2>
+<p>每座塔有 <strong>2 个槽</strong>：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>槽</th>
+<th>作用</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>核心槽</td>
+<td>决定攻击方式/主参数</td>
+<td>拦截炮管、脉冲线圈、补给泵</td>
+</tr>
+<tr>
+<td>支持槽</td>
+<td>改变代价/容错</td>
+<td>冷却鳍、电容、旁路继电器、维修臂</td>
+</tr>
+</tbody>
+</table></div>
+<p>规则：</p>
+<ul>
+<li>塔的 <code>kind</code> 仍只有 single/aoe/supply；</li>
+<li>模块只改「参数 + 一个标签」，不新增一套技能树；</li>
+<li>每个槽 1 个模块；换模块只能在准备/波间；</li>
+<li>拆下的模块回备件库，不损耗（或 10% 损耗，待试玩）；</li>
+<li>模块不随机掉落；通过合同/记录/城市事件获得。</li>
+</ul>
+<h3 id="11-模块示例">1.1 模块示例</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>槽</th>
+<th>效果</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>长管</td>
+<td>核心</td>
+<td>射程 +20%</td>
+<td>攻速 -10%</td>
+</tr>
+<tr>
+<td>过载电容</td>
+<td>支持</td>
+<td>攻速 +25%</td>
+<td>故障时长 +1s</td>
+</tr>
+<tr>
+<td>冷却鳍</td>
+<td>支持</td>
+<td>故障时长 -1s</td>
+<td>造价 +5</td>
+</tr>
+<tr>
+<td>旁路继电器</td>
+<td>支持</td>
+<td>第一次故障免疫</td>
+<td>之后故障 +2s</td>
+</tr>
+<tr>
+<td>维修臂</td>
+<td>支持</td>
+<td>每波修复 2 点</td>
+<td>输出 -5%</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>每个模块都应有「不是纯加法」的代价；否则会变成数值堆叠。</p>
+</blockquote>
+<h3 id="12-与故障的关系">1.2 与故障的关系</h3>
+<ul>
+<li>模块可以被故障「隔离」：只停该模块，不整塔离线（高阶玩法，L2b 再开）；</li>
+<li>旁路继电器把「停机」变成「降级」，但增加后续风险；</li>
+<li>故障不再只是「停 2.5s」，而是「你装了什么东西，决定它怎么坏」。</li>
+</ul>
+<h2 id="二备件">二、备件</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>来源</td>
+<td>合同完成、记录「如实」、城市事件、拆解</td>
+</tr>
+<tr>
+<td>用途</td>
+<td>安装/更换模块、维修</td>
+</tr>
+<tr>
+<td>上限</td>
+<td>软上限，不逼每日刷</td>
+</tr>
+<tr>
+<td>不带入</td>
+<td>不卖、不抽、不与现实货币挂钩</td>
+</tr>
+</tbody>
+</table></div>
+<p>备件是 L2 的「小资源」，不是第二套主经济；它只影响「这一班能不能换一个模块」。</p>
+<h2 id="三湾民3-名">三、湾民（3 名）</h2>
+<p>不做抽卡，不做全员养成。第一版只做 3 个有名有岗位的人：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>湾民</th>
+<th>岗位</th>
+<th>特质</th>
+<th>效果（小）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>阿岚</td>
+<td>维修工</td>
+<td>手稳</td>
+<td>故障停塔 -0.5s</td>
+</tr>
+<tr>
+<td>老周</td>
+<td>调度</td>
+<td>熟流程</td>
+<td>检查单复查少花 2s</td>
+</tr>
+<tr>
+<td>小满</td>
+<td>实习生</td>
+<td>学得快</td>
+<td>每班首次升级 -5 供能</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>每个湾民有疲劳/心情，但不死亡、不永久伤病；</li>
+<li>分配岗位有 +10% 效率，不匹配 -10%，但可培养；</li>
+<li>效果上限小，不能替代塔与操作；</li>
+<li>湾民通过剧情/合同加入，不通过抽卡。</li>
+</ul>
+<h2 id="四事故链3-班合同--1-条链">四、事故链（3 班合同 → 1 条链）</h2>
+<p>L2 的「长期对象」不是等级，而是一条 <strong>3 班事故链</strong>：</p>
+<pre class="text"><code>第 1 班：发现异响 → 记录
+第 2 班：故障升级 → 隔离/旁路
+第 3 班：审计/交接 → 选择谁背记录</code></pre>
+<ul>
+<li>每班仍是 5 波；</li>
+<li>选择改变下一班的 1 个条件（不是永久数值）；</li>
+<li>结束后留下 1 个档案条目/1 个模块；</li>
+<li>不做多结局树，只做「记录不同」。</li>
+</ul>
+<h2 id="五与-l1-的咬合">五、与 L1 的咬合</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>L1 产出</th>
+<th>L2 用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>低报标记</td>
+<td>事故链中触发「审计」班次</td>
+</tr>
+<tr>
+<td>复查记录</td>
+<td>解锁「旁路继电器」备件</td>
+</tr>
+<tr>
+<td>故障处置选择</td>
+<td>决定第 3 班是否出现「相邻塔降级」</td>
+</tr>
+<tr>
+<td>班次合同完成</td>
+<td>获得模块/湾民</td>
+</tr>
+</tbody>
+</table></div>
+<p>L2 不改变 L1 的规则，只把 L1 的记录变成 L2 的内容。</p>
+<h2 id="六数据与工程映射">六、数据与工程映射</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>内容</th>
+<th>字段</th>
+<th>模块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模块定义</td>
+<td><code>modules[]</code>：id、slot、effects、tags、cost</td>
+<td><code>TowerModule</code> 扩展</td>
+</tr>
+<tr>
+<td>塔槽</td>
+<td><code>tower.sockets[]</code></td>
+<td><code>TowerModule</code></td>
+</tr>
+<tr>
+<td>备件</td>
+<td><code>parts</code></td>
+<td><code>Economy</code> 扩展</td>
+</tr>
+<tr>
+<td>湾民</td>
+<td><code>crew[]</code>：id、role、trait、fatigue</td>
+<td><code>ModifierModule</code></td>
+</tr>
+<tr>
+<td>事故链</td>
+<td><code>contracts</code> / <code>records</code></td>
+<td><code>ProcedureModule</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>架构要求：</p>
+<ul>
+<li>模块效果通过 <code>ModifierModule</code> 汇总，不散落在 Tower 的 if；</li>
+<li>所有模块可数据关闭；</li>
+<li>预览/编辑器能读同一套模块定义。</li>
+</ul>
+<h2 id="七验收">七、验收</h2>
+<ul>
+<li>不装模块，标准班仍能过（B/40）；</li>
+<li>装模块不出现「唯一最优」；</li>
+<li>模块数量 ≤6 个第一版（2 槽 × 3 塔的可用组合不必全填满）；</li>
+<li>备件不逼每日刷；</li>
+<li>湾民效果不超过一个塔等级的 30%；</li>
+<li>故障/记录/模块三者能讲清一个「这一班怎么坏」的故事。</li>
+</ul>
+<h2 id="八l2-不做什么">八、L2 不做什么</h2>
+<ul>
+<li>不做随机掉落/抽卡；</li>
+<li>不做三槽以上；</li>
+<li>不做人员死亡/永久伤病；</li>
+<li>不做独立备件货币的每日产出；</li>
+<li>不做新塔/新图（第一版）。</li>
+</ul>
+<p>（本篇完）</p>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../17_玩法扩展/03_L2_岗位层.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

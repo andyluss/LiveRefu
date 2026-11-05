@@ -46,13 +46,19 @@ DOCS = [
     ("09_三玩法联动.md", "玩法", "三玩法联动", "v0.1 L0，v0.2 L1；先各自成立，再共享世界。"),
     ("10_内容节奏与长期留存.md", "玩法", "内容节奏与长期留存", "买断 + 内购、版本节奏与反 FOMO。"),
     ("14_塔防NASApunk深化.md", "玩法", "塔防 NASApunk 深化", "检查单、第 5 波降级故障、事故记录；轻量包。"),
+    ("17_玩法扩展/README.md", "玩法扩展", "玩法扩展：分层设计", "L1 班次 / L2 岗位 / L3 城市；参考方案，待裁决。"),
+    ("17_玩法扩展/01_分层总览.md", "玩法扩展", "分层总览：三层怎么咬合", "班次、岗位、城市三层的关系与边界。"),
+    ("17_玩法扩展/02_L1_班次层.md", "玩法扩展", "L1 班次层：让一局像一班", "检查单、故障隔离/旁路、事故记录、班次合同。"),
+    ("17_玩法扩展/03_L2_岗位层.md", "玩法扩展", "L2 岗位层：模块化设施与人员", "塔座 2 槽、备件、3 名湾民、事故链。"),
+    ("17_玩法扩展/04_L3_城市层.md", "玩法扩展", "L3 城市层：轻城市与档案", "2 舱室、1 城市事件、职业执照、档案网络。"),
+    ("17_玩法扩展/05_版本切片与决策.md", "玩法扩展", "版本切片与决策：建议你先拍这五个", "E17-1–E17-8 决策表与验收门槛。"),
     ("08_美术与音频方向.md", "表现与工程", "美术与音频方向", "NASApunk 落地、2D 矢量与声音层次。"),
     ("12_技术方案_Godot工程.md", "表现与工程", "技术方案：Godot 工程", "架构、数据契约、测试与扩展点。"),
     ("15_专用游戏编辑器方案.md", "表现与工程", "专用游戏编辑器方案", "Godot 插件、Python 数据桥、分阶段 WYSIWYG。"),
     ("16_模块化技术架构_NASApunk.md", "表现与工程", "模块化技术架构：NASApunk", "ORU 模块、端口、总线、黑匣子；参考方案，未裁决。"),
 ]
 MD_SET = {md for md, *_ in DOCS}
-GROUPS = ["开始", "世界与职业", "玩法", "表现与工程"]
+GROUPS = ["开始", "世界与职业", "玩法", "玩法扩展", "表现与工程"]
 
 
 def to_html_name(md_name: str) -> str:
@@ -662,6 +668,8 @@ def build_docs() -> None:
         ).stdout
         html_name = to_html_name(md)
         html_file = OUT / html_name
+        html_file.parent.mkdir(parents=True, exist_ok=True)
+        base = Path(os.path.relpath(OUT, html_file.parent)).as_posix()
         body = wrap_tables(rewrite_links(body, md_path, html_file))
         meta_html = render_meta(meta, md_path, html_file)
         if meta_html:
@@ -674,9 +682,10 @@ def build_docs() -> None:
             title,
             body,
             toc=toc,
-            pager=pager_html(html_name),
+            pager="" if "/" in html_name else pager_html(html_name),
             source_path=md_path,
             html_file=html_file,
+            base=base,
         )
         text = f"<!-- 由 tools/build_design_html.py 从 ../{md} 生成；不要手改。 -->\n" + text
         (OUT / html_name).write_text(text, encoding="utf-8")

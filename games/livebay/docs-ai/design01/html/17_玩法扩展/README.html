@@ -1,0 +1,199 @@
+<!-- 由 tools/build_design_html.py 从 ../17_玩法扩展/README.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>玩法扩展：分层设计 · LiveBay design01</title>
+<meta name="description" content="L1 班次 / L2 岗位 / L3 城市；参考方案，待裁决。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="../14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../17_玩法扩展/README.html" aria-current="page">玩法扩展：分层设计</a><a href="../17_玩法扩展/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../17_玩法扩展/02_L1_班次层.html">L1 班次层：让一局像一班</a><a href="../17_玩法扩展/03_L2_岗位层.html">L2 岗位层：模块化设施与人员</a><a href="../17_玩法扩展/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../17_玩法扩展/05_版本切片与决策.html">版本切片与决策：建议你先拍这五个</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../08_美术与音频方向.html">美术与音频方向</a><a href="../12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../17_玩法扩展/README.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">玩法扩展：分层设计</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一为什么分层而不是继续加模式">一、为什么分层，而不是继续加模式</a></li><li class=""><a href="#二三层总览">二、三层总览</a></li><li class=""><a href="#三四份子文档">三、四份子文档</a></li><li class=""><a href="#四统一约束">四、统一约束</a></li><li class=""><a href="#五与现有裁决的关系">五、与现有裁决的关系</a></li><li class=""><a href="#六一句话建议">六、一句话建议</a></li></ul></details>
+<article class="prose">
+<h1 id="17--玩法扩展分层设计">17 · 玩法扩展：分层设计</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>玩法扩展参考（分层）</dd><dt>状态</dt><dd>参考 v0.1（待人类裁决）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 设计（展开）</dd><dt>遵循规则</dt><dd><a href="../rules/design/a01_岗位与无名主角.html">DES-A1</a> · <a href="../rules/design/a02_三生与慢好.html">DES-A2</a> · <a href="../rules/design/b01_班次循环.html">DES-B1</a> · <a href="../rules/biz/b01_切片与范围门槛.html">BIZ-B1</a></dd><dt>上游</dt><dd><a href="../04_塔防玩法.html">04_塔防玩法</a> · <a href="../06_沉浸体验玩法.html">06_沉浸体验玩法</a> · <a href="../07_放置养成玩法.html">07_放置养成玩法</a> · <a href="../09_三玩法联动.html">09_三玩法联动</a> · <a href="../14_塔防NASApunk深化.html">14_塔防NASApunk深化</a></dd><dt>关联</dt><dd><a href="../11_待人类裁决清单.html">11_待人类裁决清单</a> · <a href="../12_技术方案_Godot工程.html">12_技术方案_Godot工程</a> · <a href="../16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：不新增第四种玩法，把现有的「一班」往深里做：班次层（L1）→ 岗位层（L2）→ 城市层（L3）。每一层都能单独试玩，也能单独砍掉。</p>
+<p><strong>状态</strong>：参考方案，未裁决。所有数字都是量级，不是定案；所有「建议」都可被推翻。</p>
+</blockquote>
+<h2 id="一为什么分层而不是继续加模式">一、为什么分层，而不是继续加模式</h2>
+<p>LiveBay 已经有三支柱：塔防、沉浸、放置。现在的问题不是「模式不够」，而是：</p>
+<ul>
+<li>塔防的一班只有 5 波、3 塔、4 敌，重复玩很快见底；</li>
+<li>检查单、故障降级、事故记录（<a href="../14_塔防NASApunk深化.html">14</a>）还停在设计；</li>
+<li>三玩法仍是 L0/L1，缺少一个<strong>共同的长期对象</strong>；</li>
+<li>模块化架构已经能承载「可替换设施」，但玩法上还没有用到。</li>
+</ul>
+<p>所以扩展的方向不是「再来一种玩法」，而是：</p>
+<pre class="text"><code>同一班 → 同一岗位 → 同一座城
+L1 班次层：这一班怎么过
+L2 岗位层：这个岗位怎么变强/变复杂
+L3 城市层：你不在时，城怎么活</code></pre>
+<h2 id="二三层总览">二、三层总览</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>时间尺度</th>
+<th>玩家的问题</th>
+<th>主要系统</th>
+<th>成本</th>
+<th>风险</th>
+<th>建议版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>L0 现状</strong></td>
+<td>8–12 分钟</td>
+<td>这一班能不能守住</td>
+<td>3 塔、4 敌、5 波</td>
+<td>已有</td>
+<td>内容少</td>
+<td>v0.1</td>
+</tr>
+<tr>
+<td><strong>L1 班次层</strong></td>
+<td>8–12 分钟</td>
+<td>这一班怎么过得更像上班</td>
+<td>检查单、故障隔离/旁路、事故记录、班次合同</td>
+<td>低</td>
+<td>弹窗打断</td>
+<td>v0.2</td>
+</tr>
+<tr>
+<td><strong>L2 岗位层</strong></td>
+<td>1–2 周</td>
+<td>这个岗位怎么长出选择</td>
+<td>塔座模块、备件、3 名湾民、事故链</td>
+<td>中</td>
+<td>模块数值膨胀</td>
+<td>v0.3</td>
+</tr>
+<tr>
+<td><strong>L3 城市层</strong></td>
+<td>1–3 月</td>
+<td>你不在时，城怎么活</td>
+<td>舱室、城市事件、职业执照、档案网络</td>
+<td>高</td>
+<td>逼登录/逼玩</td>
+<td>v0.5+</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>建议顺序</strong>：L1 → L2 → L3。L1 最便宜、最贴 NASApunk；L2 用模块化架构；L3 最后做，而且只做「轻城市」，不做全城模拟。</p>
+</blockquote>
+<h2 id="三四份子文档">三、四份子文档</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>文档</th>
+<th>回答什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td><a href="01_分层总览.html">分层总览</a></td>
+<td>三层怎么咬合、每层不做什么</td>
+</tr>
+<tr>
+<td>02</td>
+<td><a href="02_L1_班次层.html">L1 班次层</a></td>
+<td>检查单、故障隔离/旁路、事故记录、班次合同</td>
+</tr>
+<tr>
+<td>03</td>
+<td><a href="03_L2_岗位层.html">L2 岗位层</a></td>
+<td>塔座模块、备件、湾民、事故链</td>
+</tr>
+<tr>
+<td>04</td>
+<td><a href="04_L3_城市层.html">L3 城市层</a></td>
+<td>舱室、城市事件、职业执照、档案网络</td>
+</tr>
+<tr>
+<td>05</td>
+<td><a href="05_版本切片与决策.html">版本切片与决策</a></td>
+<td>先做什么、砍什么、需要你拍什么</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="四统一约束">四、统一约束</h2>
+<p>无论哪一层，都遵守：</p>
+<ol type="1">
+<li><strong>不新增硬门槛</strong>：不玩 L2/L3 也能完整玩塔防；</li>
+<li><strong>不做日常/体力/限时</strong>：不惩罚离开；</li>
+<li><strong>不卖数值</strong>：买断 + 外观/扩展（D12）；</li>
+<li><strong>失败不永久损失</strong>：只有记录与关系变化，没有「角色死亡/资源清零」；</li>
+<li><strong>每层都能单独关闭</strong>：用 feature flag / MissionPack 开关；</li>
+<li><strong>先验证再扩层</strong>：L1 不好玩，不做 L2；L2 不好玩，不做 L3；</li>
+<li><strong>叙事优先于数值</strong>：扩展首先增加「这一班发生了什么」，其次才是 +5%。</li>
+</ol>
+<h2 id="五与现有裁决的关系">五、与现有裁决的关系</h2>
+<ul>
+<li>D11（v0.1 L0 / v0.2 L1）不变；本文把 L1 从「共享世界」扩展为「班次层」，但不强制跨模式；</li>
+<li>N1–N3（轻量包）是 L1 的第一批内容，已裁决但未实现；</li>
+<li>D16 垂直切片不变：L1 仍是一张图、3 塔、5 波；</li>
+<li>本文不替代 <a href="../14_塔防NASApunk深化.html">14</a>，只把它放进更大的分层里。</li>
+</ul>
+<h2 id="六一句话建议">六、一句话建议</h2>
+<p><strong>先做 L1，不扩内容量；再让 L2 用模块化架构长出来；L3 只做「轻城市 + 档案」，不做第二款游戏。</strong></p>
+<p>（目录完）</p>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../17_玩法扩展/README.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

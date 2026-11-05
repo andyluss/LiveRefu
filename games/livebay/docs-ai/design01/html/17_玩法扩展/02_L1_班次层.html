@@ -1,0 +1,270 @@
+<!-- 由 tools/build_design_html.py 从 ../17_玩法扩展/02_L1_班次层.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>L1 班次层：让一局像一班 · LiveBay design01</title>
+<meta name="description" content="检查单、故障隔离/旁路、事故记录、班次合同。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="../14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../17_玩法扩展/README.html">玩法扩展：分层设计</a><a href="../17_玩法扩展/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../17_玩法扩展/02_L1_班次层.html" aria-current="page">L1 班次层：让一局像一班</a><a href="../17_玩法扩展/03_L2_岗位层.html">L2 岗位层：模块化设施与人员</a><a href="../17_玩法扩展/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../17_玩法扩展/05_版本切片与决策.html">版本切片与决策：建议你先拍这五个</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../08_美术与音频方向.html">美术与音频方向</a><a href="../12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../17_玩法扩展/02_L1_班次层.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">L1 班次层：让一局像一班</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一核心目标">一、核心目标</a></li><li class=""><a href="#二一班的流程">二、一班的流程</a></li><li class=""><a href="#三机制一班前检查单">三、机制一：班前检查单</a></li><li class=""><a href="#四机制二故障处置">四、机制二：故障处置</a></li><li class="sub"><a href="#41-第-4-波教学">4.1 第 4 波：教学</a></li><li class="sub"><a href="#42-第-5-波隔离--旁路">4.2 第 5 波：隔离 / 旁路</a></li><li class=""><a href="#五机制三事故记录">五、机制三：事故记录</a></li><li class=""><a href="#六新增班次合同l1-的扩展骨架">六、新增：班次合同（L1 的扩展骨架）</a></li><li class=""><a href="#七数据与工程映射">七、数据与工程映射</a></li><li class=""><a href="#八验收">八、验收</a></li><li class=""><a href="#九l1-不做什么">九、L1 不做什么</a></li></ul></details>
+<article class="prose">
+<h1 id="1702--l1-班次层让一局像一班">17.02 · L1 班次层：让一局像一班</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>玩法扩展参考</dd><dt>状态</dt><dd>参考 v0.1（待人类裁决）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="../rules/design/b01_班次循环.html">DES-B1</a> · <a href="../rules/design/b03_故障与低报.html">DES-B3</a> · <a href="../rules/biz/b01_切片与范围门槛.html">BIZ-B1</a></dd><dt>上游</dt><dd><a href="../14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="../04_塔防玩法.html">04_塔防玩法</a></dd><dt>关联</dt><dd><a href="01_分层总览.html">01_分层总览</a> · <a href="05_版本切片与决策.html">05_版本切片与决策</a></dd></dl></div>
+<blockquote>
+<p><strong>范围</strong>：8–12 分钟一局；不新增塔/敌人/地图；只加「流程判断」。 <strong>第一版就是 <a href="../14_塔防NASApunk深化.html">14</a> 的 N1–N3</strong>，本文补上「班次合同」和落地顺序。</p>
+</blockquote>
+<h2 id="一核心目标">一、核心目标</h2>
+<p>玩家不是「塔的操作员」，而是「这一班的负责人」。L1 增加的不是数值，而是：</p>
+<ul>
+<li>开波前的一次判断；</li>
+<li>故障时的一次取舍；</li>
+<li>结算时的一次记录；</li>
+<li>下一班读到上一班留下的话。</li>
+</ul>
+<h2 id="二一班的流程">二、一班的流程</h2>
+<pre class="text"><code>接班简报（1 屏）
+  ↓
+准备（30s，可提前开）
+  ↓ 第 4/5 波前：检查单（暂停准备）
+开波（5 波）
+  ↓ 第 5 波故障：隔离 / 旁路
+结算（评级 + 事故记录三选一）
+  ↓
+交班记录（写入本班档案）
+  ↓
+下一班简报（读到上一班记录）</code></pre>
+<h2 id="三机制一班前检查单">三、机制一：班前检查单</h2>
+<p>只在第 4、5 波前出现，避免每波弹窗。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>卡</th>
+<th>触发</th>
+<th>照签</th>
+<th>复查</th>
+<th>照惯例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A T-07 阻尼器异响</td>
+<td>W4 前</td>
+<td>无消耗</td>
+<td>花 5s 准备；下次故障停塔 -1s，显示目标</td>
+<td>低报 +1</td>
+</tr>
+<tr>
+<td>B 广播事故数对不上</td>
+<td>W5 前</td>
+<td>无消耗</td>
+<td>花 5s 准备；结算多一条「待核」</td>
+<td>低报 +1</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>准备时间不足 5s 时，复查改花 5 供能；两者都不够则不可选；</li>
+<li>打开检查单时暂停 prep 计时；</li>
+<li>照惯例不是「错误选项」：省时间，但留记录。</li>
+</ul>
+<p><strong>设计约束</strong>：每张卡 ≤2 行；不给论文；不随机。</p>
+<h2 id="四机制二故障处置">四、机制二：故障处置</h2>
+<h3 id="41-第-4-波教学">4.1 第 4 波：教学</h3>
+<p>保持现状：故障经过塔位，塔离线 2.5s，最多 2 座；不扣保障度。波末提示「第 5 波可尝试旁路」。</p>
+<h3 id="42-第-5-波隔离--旁路">4.2 第 5 波：隔离 / 旁路</h3>
+<pre class="text"><code>故障命中 T-05 / T-06
+[ 隔离 ] 2.5s 离线，安全，但这段弧没人守
+[ 旁路 ] 8s 50% 攻速；4s 后相邻塔也降级 4s</code></pre>
+<ul>
+<li>隔离 = 安全冗余；旁路 = 覆盖冗余；</li>
+<li>旁路不是严格更优：总输出更低，还拖累邻居；</li>
+<li>只在第 5 波出现选择；第 4 波不弹面板，保证教学。</li>
+</ul>
+<h2 id="五机制三事故记录">五、机制三：事故记录</h2>
+<p>结算多一行：</p>
+<pre class="text"><code>本班记录：[ 如实 ] [ 按惯例 ] [ 待复查 ]</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>选择</th>
+<th>文本</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>如实</td>
+<td>「T-07 异响，已复查；广播事故数待核。」</td>
+<td>记录真实；下一班简报出现「已知异常」</td>
+</tr>
+<tr>
+<td>按惯例</td>
+<td>「系统运行正常。」</td>
+<td>低报 +1；下一班简报更干净，但档案留一笔</td>
+</tr>
+<tr>
+<td>待复查</td>
+<td>「T-07 待复查。」</td>
+<td>中性；下一班简报出现「待复查」</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>不做数值奖励</strong>：记录是表达，不是刷分按钮。v0.1 只在本局/下一班生效，不做长期惩罚。</p>
+<h2 id="六新增班次合同l1-的扩展骨架">六、新增：班次合同（L1 的扩展骨架）</h2>
+<p>在 N1–N3 之上，加一个 <strong>3 班的小合同</strong>，用来验证「记录连续性」，不改变塔防规则：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>长度</td>
+<td>3 班</td>
+</tr>
+<tr>
+<td>每班</td>
+<td>1 张「班次牌」+ 1 条「交接遗产」</td>
+</tr>
+<tr>
+<td>班次牌</td>
+<td>1 个轻修正：如「夜班：第一波 prep -5s」「检修：故障停塔 +0.5s」</td>
+</tr>
+<tr>
+<td>交接遗产</td>
+<td>上一班的记录变成下一班的 1 条简报/1 个小事件</td>
+</tr>
+<tr>
+<td>奖励</td>
+<td>档案条目 + 少量备件（L2 才用）</td>
+</tr>
+<tr>
+<td>失败</td>
+<td>不中断合同；记录「未完成」，可重试</td>
+</tr>
+</tbody>
+</table></div>
+<p>示例：</p>
+<pre class="text"><code>合同：外环第七段 · 三班交接
+第 1 班：安静的夜班（无修正）
+第 2 班：广播检修（W5 故障提前 2s）
+第 3 班：交接审计（上一班低报 → 多 1 张检查单）</code></pre>
+<blockquote>
+<p>合同不是「关卡链」：每班仍是 5 波、同一张图；只是把记录串起来。</p>
+</blockquote>
+<h2 id="七数据与工程映射">七、数据与工程映射</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>内容</th>
+<th>字段</th>
+<th>模块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>检查单卡</td>
+<td><code>procedures.cards[]</code>：id、wave、options、effects</td>
+<td><code>ProcedureModule</code></td>
+</tr>
+<tr>
+<td>班次牌</td>
+<td><code>contracts.shifts[]</code>：modifier、record_tag</td>
+<td><code>ModifierModule</code></td>
+</tr>
+<tr>
+<td>事故记录</td>
+<td><code>records[]</code>：choice、tag、text</td>
+<td><code>ProcedureModule</code> + Profile</td>
+</tr>
+<tr>
+<td>故障处置</td>
+<td><code>fault.choice</code>：isolate/bypass</td>
+<td><code>FaultModule</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>工程要求：</p>
+<ul>
+<li>检查单打开时暂停 prep，不发 <code>WaveStarted</code>；</li>
+<li>选择通过命令（<code>SubmitChecklist</code>/<code>RespondFault</code>），不直接改 Sim；</li>
+<li>记录写 BlackBox/Profile，不写回 numbers；</li>
+<li>所有效果可关闭（feature flag）。</li>
+</ul>
+<h2 id="八验收">八、验收</h2>
+<ul>
+<li>完全不用检查单/旁路，标准班仍 <strong>B / 40 / 59 / 9</strong>；</li>
+<li>复查/旁路不是必选，也不是必不选；</li>
+<li>第 4 波只停塔，不弹选择；第 5 波旁路最多影响 2 座塔；</li>
+<li>检查单打开时 prep 计时暂停；</li>
+<li>记录能在下一班简报里被读到；</li>
+<li>一局仍 ≤12 分钟。</li>
+</ul>
+<h2 id="九l1-不做什么">九、L1 不做什么</h2>
+<ul>
+<li>不做随机检查单；</li>
+<li>不做永久低报惩罚；</li>
+<li>不做「不选就输」；</li>
+<li>不做新塔/新怪/新图；</li>
+<li>不做 L2 模块。</li>
+</ul>
+<p>（本篇完）</p>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../17_玩法扩展/02_L1_班次层.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>
