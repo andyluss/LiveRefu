@@ -13,6 +13,9 @@ const MapModuleScript = preload("res://scripts/domain/map/map_module.gd")
 const EconomyModuleScript = preload("res://scripts/domain/economy/economy_module.gd")
 const WaveModuleScript = preload("res://scripts/domain/waves/wave_module.gd")
 const MissionModuleScript = preload("res://scripts/domain/mission/mission_module.gd")
+const FaultModuleScript = preload("res://scripts/domain/faults/fault_module.gd")
+const ReadModelScript = preload("res://scripts/application/mission_read_model.gd")
+const PresenterScript = preload("res://scripts/presentation/mission_presenter.gd")
 
 var failures: int = 0
 var checks: int = 0
@@ -79,6 +82,13 @@ func _test_kernel(data: Dictionary) -> void:
 	_check(is_equal_approx(mission_mod.integrity, 95.0), "domain: mission damage/repair")
 	var result := mission_mod.finish(false, {"kills": 0, "leaked": 1, "built": 0, "spent": 0, "waves_cleared": 0}, 5, data.balance)
 	_check(result.grade == "F", "domain: mission failure grade")
+	var fault_mod := FaultModuleScript.new()
+	var enemy := {"def": {"disable_duration": 2.5, "disable_radius": 100, "disable_targets": 2}, "hit_towers": {}}
+	var towers_data := [{"slot": 0, "disabled_timer": 0.0}, {"slot": 1, "disabled_timer": 0.0}, {"slot": 2, "disabled_timer": 0.0}]
+	var slots_data := [Vector2(0, 0), Vector2(10, 0), Vector2(500, 0)]
+	var hits := fault_mod.apply(enemy, towers_data, slots_data, Vector2(0, 0))
+	_check(hits.size() == 2 and is_equal_approx(float(towers_data[0].disabled_timer), 2.5), "domain: fault module targets")
+	_check(fault_mod.apply(enemy, towers_data, slots_data, Vector2(0, 0)).is_empty(), "domain: fault module no repeat")
 	var runtime: LiveBayMissionRuntime = RuntimeScript.new(data)
 	runtime.blackbox.enabled = false
 	var built: LiveBayResult = runtime.dispatch(&"build_tower", {"slot": 0, "tower_id": "interceptor"})
@@ -86,6 +96,10 @@ func _test_kernel(data: Dictionary) -> void:
 	runtime.step(0.1)
 	_check(built.ok and started.ok and runtime.clock.ticks == 1, "kernel: runtime commands/tick")
 	_check(runtime.events.seq >= 4, "kernel: runtime emits events")
+	var view: LiveBayMissionReadModel = ReadModelScript.from_sim(runtime.sim, runtime.clock)
+	_check(view.energy > 0.0 and view.wave_count == 5, "view: read model snapshot")
+	var hud: Dictionary = PresenterScript.hud(view)
+	_check(str(hud.energy_text).begins_with("供能"), "view: presenter HUD text")
 	runtime.dispose()
 
 

@@ -6,6 +6,7 @@ extends Node2D
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
 const SimScript = preload("res://scripts/core/sim.gd")
 const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
+const ReadModelScript = preload("res://scripts/application/mission_read_model.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -494,15 +495,12 @@ func _restart() -> void:
 func _update_ui() -> void:
 	if sim == null or energy_label == null:
 		return
-	energy_label.text = "供能 %d" % int(sim.energy)
-	integrity_label.text = "保障度 %d/%d" % [int(sim.integrity), int(sim.max_integrity)]
-	if sim.wave_index < 0:
-		wave_label.text = "波次 待命 · %ds" % int(ceil(sim.timer))
-	elif sim.state == SimScript.State.PREP or sim.state == SimScript.State.BETWEEN:
-		wave_label.text = "波次 %d/%d · %ds" % [sim.wave_index + 1, sim.waves.size(), int(ceil(sim.timer))]
-	else:
-		wave_label.text = "波次 %d/%d" % [sim.wave_index + 1, sim.waves.size()]
-	state_label.text = sim.state_name()
+	var view: LiveBayMissionReadModel = ReadModelScript.from_sim(sim, runtime.clock)
+	var hud: Dictionary = LiveBayMissionPresenter.hud(view)
+	energy_label.text = hud.energy_text
+	integrity_label.text = hud.integrity_text
+	wave_label.text = hud.wave_text
+	state_label.text = hud.state_text
 	best_label.text = "最佳 %s · 通关 %d" % [String(SaveStore.data.best_grade), int(SaveStore.data.clears)]
 	hint_label.text = _hint_text()
 
@@ -517,7 +515,7 @@ func _update_ui() -> void:
 	start_button.disabled = ended or not (sim.state == SimScript.State.PREP or sim.state == SimScript.State.BETWEEN)
 	start_button.text = "开波 (空格)" if sim.wave_index < 0 else "下一波 (空格)"
 	pause_button.text = "继续 (P)" if runtime.clock.paused else "暂停 (P)"
-	speed_button.text = "速度 %dx" % int(runtime.clock.speed)
+	speed_button.text = hud.speed_text
 
 	var tower: Variant = sim.get_tower_at(selected_slot) if selected_slot >= 0 else null
 	var has_tower: bool = tower != null

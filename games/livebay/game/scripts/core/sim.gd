@@ -32,6 +32,7 @@ var map := LiveBayMapModule.new()
 var economy := LiveBayEconomyModule.new()
 var wave := LiveBayWaveModule.new()
 var mission := LiveBayMissionModule.new()
+var fault := LiveBayFaultModule.new()
 
 var path: PackedVector2Array:
 	get: return map.path
@@ -253,22 +254,8 @@ func _cleanup_dead() -> void:
 
 
 func _apply_fault_effect(enemy: Dictionary) -> void:
-	var duration: float = float(enemy.def.get("disable_duration", 0.0))
-	var radius: float = float(enemy.def.get("disable_radius", 0.0))
-	var max_targets: int = int(enemy.def.get("disable_targets", 99))
-	if duration <= 0.0 or radius <= 0.0:
-		return
-	if enemy.hit_towers.size() >= max_targets:
-		return
-	var pos: Vector2 = _enemy_pos(enemy)
-	for tower: Dictionary in towers:
-		var slot: int = int(tower.slot)
-		if enemy.hit_towers.has(slot):
-			continue
-		if pos.distance_to(slots[slot]) <= radius:
-			enemy.hit_towers[slot] = true
-			tower.disabled_timer = max(float(tower.get("disabled_timer", 0.0)), duration)
-			tower_disabled.emit(slot, duration)
+	for hit in fault.apply(enemy, towers, slots, _enemy_pos(enemy)):
+		tower_disabled.emit(int(hit.slot), float(hit.duration))
 
 
 func _escape_fault(index: int) -> void:

@@ -5632,7 +5632,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 </tbody>
 </table></div>
 <h2 id="doc-12-技术方案-Godot工程--七测试">七、测试</h2>
-<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口，当前 57 项断言：</p>
+<p><code>tests/run_sim.gd</code> 是 SceneTree 脚本，不依赖窗口，当前 61 项断言：</p>
 <ol type="1">
 <li><strong>数据完整性</strong>：6 个 JSON 可读；塔/敌人/波次引用存在；路径 ≥ 2 点；塔位 ≥ 1；评级阈值、波次 <code>prep</code> 数据驱动。</li>
 <li><strong>胜利路径</strong>：在 2 个塔位建塔，跑完 5 波，断言 <code>WON</code> 且保障度 &gt; 0。</li>
@@ -6075,7 +6075,7 @@ Sim / 场景重载 / 内嵌预览</code></pre>
 3. 保存后运行结果与预览一致：100%
 4. 非法数据被保存前拦截：100%
 5. 不手改 JSON 完成一次地图调整：是
-6. 现有 57 项测试保持通过：是</code></pre>
+6. 现有 61 项测试保持通过：是</code></pre>
 <h2 id="doc-15-专用游戏编辑器方案--十需要裁决">十、需要裁决</h2>
 <div class="table-wrap"><table>
 <thead>
@@ -7465,13 +7465,13 @@ fail(any) ⇒ stop ∧ report</code></pre>
 </ol>
 <h2 id="rule-TECH-B2--四判定与验收">四、判定与验收</h2>
 <pre class="text"><code>PASS ⇔
-  ./run.sh test            → 57/57
+  ./run.sh test            → 61/61
   ./run.sh numbers-check   → 全部一致
   ./run.sh check           → exit 0
   node tools/check_links.ts → 0 broken
   check_html_theme          → all pass</code></pre>
 <blockquote>
-<p>测试数量随版本增长，以实际输出为准；当前为 57 项。</p>
+<p>测试数量随版本增长，以实际输出为准；当前为 61 项。</p>
 </blockquote>
 <h2 id="rule-TECH-B2--五反例">五、反例</h2>
 <ul>

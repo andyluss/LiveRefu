@@ -3,6 +3,28 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.31] - 2026-11-05 12:37
+
+### 新增（模块化 M3/M4 部分）
+
+- `domain/faults/fault_module.gd`：故障命中判定、停塔时长、目标上限；`Sim` 只负责位移/信号；
+- `application/mission_read_model.gd`：HUD 只读快照；
+- `presentation/mission_presenter.gd`：快照 → 显示文本；
+- `main` 的供能/保障度/波次/状态/速度改走 ReadModel + Presenter；
+- 新增故障模块、读模型、Presenter 测试。
+
+### 变更
+
+- `16`：M3 标记 Wave/Mission/Fault 已拆；M4 标记为部分；
+- 测试从 57 增至 **61 项**；`12`/`B2`/README 同步。
+
+### 验证
+
+- `./run.sh test` 61/61；
+- `./run.sh check` 退出码 0；
+- `./run.sh editor-test` 通过；
+- 标准班仍为 B / 40 / 59 击杀 / 9 漏过。
+
 ## [0.1.30] - 2026-11-05 12:36
 
 ### 新增（模块化 M3 部分）
