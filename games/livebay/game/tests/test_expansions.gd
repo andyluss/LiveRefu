@@ -66,6 +66,18 @@ func _initialize() -> void:
 	var briefing: Dictionary = memory.briefing()
 	_check(not briefing.is_empty() and str(briefing.body).contains("低报"), "shift: briefing reads low report")
 	_check(is_equal_approx(memory.next_fault_bonus(), 1.0), "shift: low report carries fault +1s")
+	var audit_proc: LiveBayProcedureModule = preload("res://scripts/domain/procedures/procedure_module.gd").new()
+	audit_proc.configure(proc_data, 1)
+	var sim_audit: Variant = SimScript.new(proc_data)
+	sim_audit.wave.index = 2
+	sim_audit.state = 2
+	var audit_card: Dictionary = audit_proc.update(sim_audit)
+	_check(not audit_card.is_empty() and str(audit_card.id) == "audit_previous_low", "shift: audit checklist replaces W4")
+	var history := LiveBayShiftMemory.new()
+	history.record({"grade": "B", "integrity": 40}, "honest", 0)
+	history.record({"grade": "C", "integrity": 30}, "custom", 1)
+	history.record({"grade": "A", "integrity": 60}, "review", 0)
+	_check(history.history.size() == 3 and history.next_low_report() == 0, "shift: keeps last 3 records")
 	var result_a := _run_variant(data, a.data, "isolate")
 	var result_b := _run_variant(data, b.data, "isolate")
 	var result_c := _run_variant(data, c.data, "bypass")

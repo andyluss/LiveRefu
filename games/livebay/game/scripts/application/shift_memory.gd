@@ -1,9 +1,10 @@
 # LiveBay · 连续班次记忆
-# 只存「上一班记录」用于下一班简报；不写长期存档，不参与规则。
+# 保留最近 3 班；只用于接班简报与低报 carry，不参与规则。
 class_name LiveBayShiftMemory
 extends RefCounted
 
 var shifts := 0
+var history: Array = []
 var last_report: Dictionary = {}
 var store: LiveBayShiftStore
 
@@ -11,10 +12,11 @@ var store: LiveBayShiftStore
 func _init(persist: LiveBayShiftStore = null) -> void:
 	store = persist
 	if store != null:
-		var loaded := store.load_record()
-		if loaded.has("shift"):
-			last_report = loaded
-			shifts = int(loaded.shift)
+		var loaded: Array = store.load_records()
+		history = loaded.slice(max(0, loaded.size() - 3))
+		if not history.is_empty():
+			last_report = history[history.size() - 1]
+			shifts = int(last_report.get("shift", history.size()))
 
 
 func has_last() -> bool:
@@ -23,15 +25,18 @@ func has_last() -> bool:
 
 func record(result: Dictionary, choice: String, low_report: int) -> void:
 	shifts += 1
-	last_report = {
+	var entry := {
 		"shift": shifts,
 		"choice": choice,
 		"low_report": low_report,
 		"grade": str(result.get("grade", "C")),
 		"integrity": int(result.get("integrity", 0)),
 	}
+	history.append(entry)
+	history = history.slice(-3)
+	last_report = entry
 	if store != null:
-		store.save_record(last_report)
+		store.save_records(history)
 
 
 func briefing() -> Dictionary:
@@ -49,17 +54,28 @@ func briefing() -> Dictionary:
 		_:
 			text = "上一班没有留下文字记录。交接单上只有评级与保障度。"
 	var audit := "\n\n审计备注：本班交接后，下次故障停塔 +1s。" if int(last_report.low_report) > 0 else ""
+	var recent := ""
+	if history.size() > 1:
+		var parts: Array = []
+		for entry in history:
+			parts.append("第%d班 %s" % [int(entry.shift), str(entry.grade)])
+		recent = "\n\n最近三班：" + " · ".join(parts)
 	return {
 		"title": "接班简报 · 第 %d 班" % (int(last_report.shift) + 1),
-		"body": "%s\n\n上一班：%s / 保障度 %d%s%s" % [
+		"body": "%s\n\n上一班：%s / 保障度 %d%s%s%s" % [
 			text,
 			str(last_report.grade),
 			int(last_report.integrity),
 			" / 低报 +1" if int(last_report.low_report) > 0 else "",
 			audit,
+			recent,
 		],
 	}
 
 
+func next_low_report() -> int:
+	return int(last_report.get("low_report", 0))
+
+
 func next_fault_bonus() -> float:
-	return 1.0 if int(last_report.get("low_report", 0)) > 0 else 0.0
+	return 1.0 if next_low_report() > 0 else 0.0

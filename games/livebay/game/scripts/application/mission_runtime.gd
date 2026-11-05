@@ -21,7 +21,7 @@ var _fault_requested := false
 var _connections: Array = []
 
 
-func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null) -> void:
+func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null, carry_low_report := 0) -> void:
 	data = initial_set.apply_data(game_data) if initial_set != null else game_data
 	expansion_set = initial_set if initial_set != null else LiveBayExpansionSet.empty()
 	flags = LiveBayFeatureFlags.from_set(expansion_set)
@@ -37,7 +37,7 @@ func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null) -> vo
 	}
 	events.subscribe_all(func(envelope: Dictionary): blackbox.record(envelope))
 	procedure = ProcedureScript.new()
-	procedure.configure(data)
+	procedure.configure(data, carry_low_report)
 	_new_sim()
 	_register_commands()
 	blackbox.begin(_blackbox_meta)

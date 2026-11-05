@@ -10,9 +10,22 @@ var done: Dictionary = {}
 var pending: Dictionary = {}
 
 
-func configure(game_data: Dictionary) -> void:
+func configure(game_data: Dictionary, prior_low_report := 0) -> void:
 	var procedures: Dictionary = game_data.get("procedures", {})
 	cards = procedures.get("cards", [])
+	if int(prior_low_report) > 0:
+		# 有低报时，第 4 波先过一张审计卡，替代原 W4 检查单。
+		cards = cards.filter(func(card: Dictionary) -> bool: return int(card.get("wave", 0)) != 4)
+		cards.insert(0, {
+			"id": "audit_previous_low",
+			"wave": 4,
+			"title": "交接审计 · 上一班低报",
+			"body": "上一班的记录对不上。配合审计，还是继续按惯例？",
+			"options": [
+				{"id": "cooperate", "label": "配合审计：如实补记", "effect": "sign"},
+				{"id": "deny", "label": "按惯例：再记一笔低报", "effect": "custom"},
+			],
+		})
 	report_options = procedures.get("report", [])
 	report_choice = ""
 	reset()

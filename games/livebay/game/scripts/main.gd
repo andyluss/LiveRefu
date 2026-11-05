@@ -142,7 +142,7 @@ func _process(delta: float) -> void:
 func _new_sim() -> void:
 	var boot: LiveBayResult = ExpansionBootScript.load_preset("res://data/expansion_sets/baseline.json")
 	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
-	runtime = RuntimeScript.new(data, expansion_set)
+	runtime = RuntimeScript.new(data, expansion_set, shift_memory.next_low_report())
 	runtime.events.subscribe(&"ChecklistRequested", _on_checklist_requested)
 	runtime.events.subscribe(&"FaultChoiceRequested", _on_fault_choice_requested)
 	sim = runtime.sim
@@ -525,6 +525,7 @@ func _restart() -> void:
 	if sim == null:
 		return
 	runtime.reset()
+	runtime.procedure.configure(runtime.data, shift_memory.next_low_report())
 	sim = runtime.sim
 	sim.fault_duration_bonus = shift_memory.next_fault_bonus()
 	selected_slot = -1
