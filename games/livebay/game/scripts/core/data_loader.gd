@@ -6,6 +6,7 @@ class_name DataLoader
 extends RefCounted
 
 const DATA_DIR := "res://data"
+const MissionPackScript = preload("res://scripts/content/mission_pack.gd")
 
 const REQUIRED_TOWER_FIELDS := ["id", "name", "cost", "range", "damage", "fire_rate", "kind"]
 const REQUIRED_ENEMY_FIELDS := ["id", "name", "hp", "speed", "reward", "leak_damage", "radius", "shape"]
@@ -40,6 +41,18 @@ static func load_json(path: String) -> Variant:
 	if parsed == null:
 		push_error("DataLoader: JSON 解析失败 %s" % path)
 	return parsed
+
+
+static func load_mission_pack(base_dir: String = DATA_DIR) -> Dictionary:
+	var data := load_game_data(base_dir)
+	if data.is_empty():
+		return {}
+	var pack: LiveBayMissionPack = MissionPackScript.build(data)
+	var result: LiveBayResult = pack.validate()
+	if not result.ok:
+		push_error("DataLoader: MissionPack 校验失败：%s" % result.message)
+		return {}
+	return pack.data
 
 
 static func load_game_data(base_dir: String = DATA_DIR) -> Dictionary:

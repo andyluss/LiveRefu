@@ -18,7 +18,7 @@ var checks: int = 0
 
 func _initialize() -> void:
 	print("== LiveBay sim tests ==")
-	var data: Dictionary = DataLoaderScript.load_game_data()
+	var data: Dictionary = DataLoaderScript.load_mission_pack()
 	_check(not data.is_empty(), "data loads and validates")
 	if data.is_empty():
 		_finish()
@@ -87,6 +87,8 @@ func _test_data(data: Dictionary) -> void:
 	_check(sim.energy == 90.0, "starting energy 90")
 	_check(sim.integrity == 100.0, "starting integrity 100")
 	_check(data.balance.has("grade_s_ratio"), "grade thresholds are data-driven")
+	_check(data.get("pack_manifest", {}).get("schema_version", 0) == 1, "mission pack schema version")
+	_check(str(data.get("pack_manifest", {}).get("hash", "")).begins_with("sha256:"), "mission pack hash")
 	_check(is_equal_approx(float(data.waves[0].prep), 30.0), "wave 1 prep 30")
 	_check(is_equal_approx(float(data.waves[1].prep), 20.0), "wave 2 prep 20")
 

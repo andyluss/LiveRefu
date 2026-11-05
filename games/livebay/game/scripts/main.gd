@@ -97,7 +97,7 @@ func _ready() -> void:
 	ui_theme.default_font = font
 	ui_theme.default_font_size = 16
 
-	data = DataLoaderScript.load_game_data()
+	data = DataLoaderScript.load_mission_pack()
 	if data.is_empty():
 		_show_fatal("数据加载失败：请检查 game/data/*.json")
 		return

@@ -3,6 +3,27 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.29] - 2026-11-05 12:35
+
+### 新增（模块化 M5 部分）
+
+- `content/mission_pack.gd`：MissionPack 容器、`schema_version=1`、manifest、sha256 hash、基础校验；
+- `DataLoader.load_mission_pack()`：在现有 JSON 加载之上生成任务包并校验；`main` 改走 Pack；
+- 测试检查 Pack 版本与 hash；
+- 运行行为不变，Pack 只是内容的组织层。
+
+### 变更
+
+- `16` 的 M5 标记为「部分」：manifest/schema 已接，独立编译器未接；
+- 测试从 50 增至 **52 项**；`12`/`B2`/README 同步。
+
+### 验证
+
+- `./run.sh test` 52/52；
+- `./run.sh check` 退出码 0；
+- `./run.sh editor-test` 通过；
+- `./run.sh numbers-check` 全部一致。
+
 ## [0.1.28] - 2026-11-05 12:34
 
 ### 新增（模块化 M1）
