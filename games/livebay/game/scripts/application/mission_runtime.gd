@@ -19,7 +19,7 @@ var _connections: Array = []
 
 
 func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null) -> void:
-	data = game_data
+	data = initial_set.apply_data(game_data) if initial_set != null else game_data
 	expansion_set = initial_set if initial_set != null else LiveBayExpansionSet.empty()
 	flags = LiveBayFeatureFlags.from_set(expansion_set)
 	clock = LiveBayMissionClock.new()

@@ -19,11 +19,11 @@ static func build(set_id: String, slot_selection: Dictionary, packs: Array) -> L
 	set.id = set_id
 	set.slots = slot_selection.duplicate(true)
 	set.manifests = packs.duplicate()
-	var ids: Array = []
+	var fingerprints: Array = []
 	for m in packs:
-		ids.append("%s@%s" % [m.id(), m.data.version])
-	ids.sort()
-	set.hash = "sha256:" + JSON.stringify(ids).sha256_text()
+		fingerprints.append({"id": m.id(), "version": m.data.version, "modifiers": m.data.get("modifiers", {})})
+	fingerprints.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return str(a.id) < str(b.id))
+	set.hash = "sha256:" + JSON.stringify(fingerprints).sha256_text()
 	return set
 
 
@@ -40,3 +40,12 @@ func has_pack(pack_id: String) -> bool:
 
 func to_meta() -> Dictionary:
 	return {"set_id": id, "set_hash": hash, "packs": pack_ids(), "slots": slots}
+
+
+func apply_data(game_data: Dictionary) -> Dictionary:
+	var out: Dictionary = game_data.duplicate(true)
+	for m in manifests:
+		var mods: Dictionary = m.data.get("modifiers", {})
+		if mods.has("starting_energy"):
+			out["profession"]["start_energy"] = float(mods.starting_energy)
+	return out

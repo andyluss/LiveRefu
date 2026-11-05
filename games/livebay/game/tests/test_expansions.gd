@@ -34,9 +34,15 @@ func _initialize() -> void:
 	_check(not invalid.ok, "preset: same variant group rejected")
 
 	var data: Dictionary = DataLoaderScript.load_mission_pack()
+	var run_a: LiveBayMissionRuntime = RuntimeScript.new(data, a.data)
+	var run_b: LiveBayMissionRuntime = RuntimeScript.new(data, b.data)
+	_check(is_equal_approx(run_a.sim.energy, 95.0), "modifier: A starting energy 95")
+	_check(is_equal_approx(run_b.sim.energy, 85.0), "modifier: B starting energy 85")
+	run_a.dispose()
+	run_b.dispose()
 	var result_a := _run_variant(data, a.data)
 	var result_b := _run_variant(data, b.data)
-	_check(result_a.get("grade", "") == result_b.get("grade", ""), "compare: same grade (no-op sample packs)")
+	_check(result_a.get("grade", "") == result_b.get("grade", ""), "compare: same grade (sample modifiers)")
 	_check(int(result_a.get("integrity", -1)) == int(result_b.get("integrity", -2)), "compare: same integrity")
 
 	print("-- %d checks, %d failed --" % [checks, failures])

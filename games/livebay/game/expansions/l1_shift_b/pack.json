@@ -10,6 +10,7 @@
   "requires": [],
   "conflicts": [],
   "provides": ["procedure.checklist"],
+  "modifiers": {"starting_energy": 85},
   "content": {},
   "modules": [],
   "ui": [],

@@ -147,6 +147,9 @@ MissionRuntime ← 只认接口，不认识具体包</code></pre>
   &quot;optional&quot;: [&quot;lb.exp.l2.racks&quot;],
   &quot;conflicts&quot;: [&quot;lb.exp.l1.old_checklist&quot;],
   &quot;provides&quot;: [&quot;procedure.checklist&quot;, &quot;record.shift&quot;, &quot;modifier.night&quot;],
+  &quot;modifiers&quot;: {
+    &quot;starting_energy&quot;: 95
+  },
   &quot;content&quot;: {
     &quot;procedures&quot;: &quot;content/procedures.json&quot;,
     &quot;contracts&quot;: &quot;content/contracts.json&quot;
@@ -213,6 +216,10 @@ MissionRuntime ← 只认接口，不认识具体包</code></pre>
 <td>内容文件；加载后进入独立命名空间</td>
 </tr>
 <tr>
+<td><code>modifiers</code></td>
+<td>窄接口修正器（当前支持 <code>starting_energy</code>；仅用于实验）</td>
+</tr>
+<tr>
 <td><code>modules</code></td>
 <td>已注册模块 ID；<strong>不在运行时加载任意脚本</strong></td>
 </tr>
@@ -239,6 +246,7 @@ MissionRuntime ← 只认接口，不认识具体包</code></pre>
 <li>检查单、事故记录、班次合同；</li>
 <li>城市事件、档案。</li>
 </ul>
+<p>当前 E0 只实现一个窄修正器：<code>modifiers.starting_energy</code>。它不是 L1 机制，仅用于验证 A/B 变体确实能改变运行结果；后续 L1 内容应通过 <code>ProcedureModule</code> / <code>ModifierModule</code> 接入，而不是无限扩这个字段。</p>
 <p>所有 ID 自动加命名空间：</p>
 <pre class="text"><code>lb.exp.l1.night_shift:procedure/checklist_w4
 lb.exp.l2.racks:tower_module/long_barrel</code></pre>
@@ -675,6 +683,11 @@ settings.section</code></pre>
 <td>E0</td>
 <td>manifest + registry + preset + flags（无内容）</td>
 <td>✅ 已实现：baseline 73 项不变 + <code>expansions-check</code></td>
+</tr>
+<tr>
+<td>E0.1</td>
+<td>窄修正器 <code>starting_energy</code> + A/B 差异</td>
+<td>✅ 已实现：A=95 / B=85</td>
 </tr>
 <tr>
 <td>E1</td>
