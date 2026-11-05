@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>LiveBay · 一局静态流程图</title>
+<meta name="description" content="LiveBay 一局的静态状态机：状态、命令、事件、守卫条件与检查单/故障等待态。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  apply();
+  try { mql.addEventListener('change', function () {
+    if (document.documentElement.dataset.themeChoice === 'system') apply();
+  }); } catch (e) {}
+})();
+</script>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg:#e9e3d5; --panel:#f5efe2; --panel2:#ded5c3; --ink:#232b2f; --muted:#5f6967;
+  --line:#b9ae98; --line-strong:#8f8778; --teal:#2f6b65; --orange:#c95b2c; --amber:#b47a16;
+  --shadow:0 16px 40px rgba(35,43,47,.12); --mono:"SFMono-Regular",Consolas,monospace;
+  --sans:"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC",system-ui,sans-serif;
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:#11181b; --panel:#182326; --panel2:#223136; --ink:#e9e3d5; --muted:#a9b4b0;
+  --line:#3d4d4d; --line-strong:#6d7d78; --teal:#73c5bb; --orange:#ed8a5a; --amber:#e0b35f;
+  --shadow:0 18px 50px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) { color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.65 var(--sans); }
+a { color:var(--teal); }
+.topbar { position:sticky; top:0; z-index:10; display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:10px clamp(14px,4vw,40px); background:color-mix(in srgb,var(--bg) 90%,transparent);
+  border-bottom:1px solid var(--line); backdrop-filter:blur(12px); }
+.brand span { display:block; font:700 10px/1.4 var(--mono); letter-spacing:.16em; color:var(--orange); }
+.theme-switch { display:flex; gap:4px; border:1px solid var(--line); border-radius:999px; padding:3px; background:var(--panel); }
+.theme-switch button { border:0; background:transparent; color:var(--muted); padding:6px 10px; border-radius:999px; cursor:pointer; font-size:12px; }
+.theme-switch button[aria-pressed="true"] { background:var(--ink); color:var(--panel); }
+.wrap { max-width:1180px; margin:0 auto; padding:clamp(24px,5vw,50px) clamp(14px,4vw,40px) 60px; }
+.eyebrow { margin:0 0 10px; font:700 11px/1 var(--mono); letter-spacing:.2em; color:var(--orange); text-transform:uppercase; }
+h1 { margin:0; font-size:clamp(30px,5vw,54px); line-height:1.08; letter-spacing:-.04em; }
+.lede { max-width:70ch; color:var(--muted); font-size:clamp(15px,1.6vw,18px); }
+.badges { display:flex; gap:8px; flex-wrap:wrap; margin:16px 0; }
+.chip { border:1px solid var(--line); border-radius:999px; padding:3px 9px; font:600 11px var(--mono); color:var(--muted); }
+.chip.core { color:var(--teal); border-color:color-mix(in srgb,var(--teal) 45%,var(--line)); }
+.chip.overlay { color:var(--amber); border-color:color-mix(in srgb,var(--amber) 45%,var(--line)); border-style:dashed; }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:18px; margin-top:16px; }
+h2 { font-size:19px; margin:0 0 4px; } h2 .n { color:var(--orange); font:700 11px var(--mono); margin-right:8px; }
+.hint { color:var(--muted); font-size:12.5px; margin:0 0 12px; }
+.diagram { width:100%; height:auto; display:block; background:var(--bg); border:1px solid var(--line); border-radius:12px; }
+.diagram .edge { fill:none; stroke:var(--line-strong); stroke-width:1.6; opacity:.9; }
+.diagram .node rect { fill:var(--panel2); stroke:var(--line); stroke-width:1.5; }
+.diagram .node.core rect { stroke:var(--teal); }
+.diagram .node.overlay rect { stroke:var(--amber); stroke-dasharray:5 4; fill:transparent; }
+.diagram .node.terminal rect { fill:var(--ink); stroke:var(--ink); }
+.diagram .node.terminal .node-name { fill:var(--panel); } .diagram .node.terminal .node-sub { fill:var(--panel2); }
+.diagram .node-name { fill:var(--ink); font:700 13px var(--sans); }
+.diagram .node-sub { fill:var(--muted); font:9px var(--mono); }
+.diagram .edge-label { fill:var(--muted); font:9px var(--mono); paint-order:stroke; stroke:var(--bg); stroke-width:3px; }
+.diagram .start-label { fill:var(--muted); font:9px var(--mono); }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th,td { text-align:left; vertical-align:top; padding:7px 8px; border-bottom:1px solid var(--line); }
+th { color:var(--muted); font-weight:600; }
+code { font-family:var(--mono); font-size:.9em; }
+.method { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+.method article { border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:var(--bg); }
+.method h3 { margin:0 0 4px; font-size:13px; } .method p { margin:0; color:var(--muted); font-size:12px; }
+.foot { margin-top:22px; border-top:1px solid var(--line); padding-top:12px; color:var(--muted); font-size:12px; }
+.noscript { border:1px solid var(--orange); color:var(--orange); padding:10px; border-radius:8px; }
+@media print {
+  :root,:root[data-theme] { color-scheme:light; --bg:#fff; --panel:#fff; --panel2:#eee; --ink:#111; --muted:#333; --line:#999; --line-strong:#555; }
+  .topbar,.theme-switch,.foot { display:none!important; } .card { box-shadow:none; break-inside:avoid; }
+  body { background:#fff; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>LiveBay · design01 · flows</span><strong>一局静态流程图</strong></div>
+  <div class="theme-switch" role="group" aria-label="主题">
+    <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+    <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+    <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+  </div>
+</header>
+<main class="wrap">
+  <p class="eyebrow">Generated from state / command / event</p>
+  <h1>把一局游戏，压成一张可以验证的图。</h1>
+  <p class="lede">这不是每一帧的录像，而是 LiveBay 的稳定状态、玩家命令、系统事件和守卫条件。检查单/故障等待态用虚线表示；它们不是 <code>Sim.State</code> 的枚举值。</p>
+  <div class="badges"><span class="chip core">PREP</span><span class="chip core">WAVE</span><span class="chip core">BETWEEN</span><span class="chip core">WON</span><span class="chip core">LOST</span><span class="chip overlay">CHECKLIST</span><span class="chip overlay">FAULT</span><span class="chip">12 条迁移</span></div>
+  <noscript><div class="noscript">此页的交互只有主题切换；流程图、迁移表和说明无需 JavaScript。</div></noscript>
+
+  <section class="card">
+    <h2><span class="n">01</span>一局状态机</h2>
+    <p class="hint">实线=核心迁移，虚线=等待态；WON/LOST 仍可通过 reset 回到 PREP。</p>
+    <svg class="diagram" viewBox="0 0 1040 460" role="img" aria-label="LiveBay 一局状态机">
+      <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="var(--line-strong)"/></marker></defs><path class="edge" d="M 30 50 L 90 88" marker-end="url(#arrow)"/><text class="edge-label" x="58" y="73" text-anchor="middle">new_run</text><path class="edge" d="M 160 120 L 250 120" marker-end="url(#arrow)"/><text class="edge-label" x="205" y="108" text-anchor="middle">start_wave</text><path class="edge" d="M 400 120 L 490 120" marker-end="url(#arrow)"/><text class="edge-label" x="445" y="108" text-anchor="middle">cleared</text><path class="edge" d="M 640 120 L 730 120" marker-end="url(#arrow)"/><text class="edge-label" x="685" y="108" text-anchor="middle">last wave</text><path class="edge" d="M 390 152 C 430 250, 500 300, 550 330" marker-end="url(#arrow)"/><text class="edge-label" x="470" y="250" text-anchor="middle">integrity=0</text><path class="edge" d="M 300 152 C 230 230, 180 290, 150 330" marker-end="url(#arrow)"/><text class="edge-label" x="205" y="245" text-anchor="middle">fault</text><path class="edge" d="M 130 300 C 180 230, 240 190, 300 150" marker-end="url(#arrow)"/><text class="edge-label" x="190" y="235" text-anchor="middle">choice</text><path class="edge" d="M 540 152 C 500 230, 450 290, 400 330" marker-end="url(#arrow)"/><text class="edge-label" x="470" y="245" text-anchor="middle">checklist</text><path class="edge" d="M 380 300 C 430 230, 500 190, 540 150" marker-end="url(#arrow)"/><text class="edge-label" x="455" y="235" text-anchor="middle">submit</text><path class="edge" d="M 570 88 C 520 30, 440 30, 390 88" marker-end="url(#arrow)"/><text class="edge-label" x="480" y="34" text-anchor="middle">start_wave (loop)</text><path class="edge" d="M 810 88 C 600 0, 200 0, 90 88" marker-end="url(#arrow)"/><text class="edge-label" x="450" y="18" text-anchor="middle">reset</text><path class="edge" d="M 570 362 C 350 430, 130 430, 90 152" marker-end="url(#arrow)"/><text class="edge-label" x="330" y="430" text-anchor="middle">reset</text><g class="node core"><rect x="20" y="88" width="140" height="64" rx="12"/><text class="node-name" x="90" y="116" text-anchor="middle">PREP</text><text class="node-sub" x="90" y="134" text-anchor="middle">准备：看路径、塔位、供能，决定第一座</text></g><g class="node core"><rect x="260" y="88" width="140" height="64" rx="12"/><text class="node-name" x="330" y="116" text-anchor="middle">WAVE</text><text class="node-sub" x="330" y="134" text-anchor="middle">交战：敌人沿路径移动，塔开火，故障可</text></g><g class="node core"><rect x="500" y="88" width="140" height="64" rx="12"/><text class="node-name" x="570" y="116" text-anchor="middle">BETWEEN</text><text class="node-sub" x="570" y="134" text-anchor="middle">波间整备：补塔、升级、修复，准备下一</text></g><g class="node terminal"><rect x="740" y="88" width="140" height="64" rx="12"/><text class="node-name" x="810" y="116" text-anchor="middle">WON</text><text class="node-sub" x="810" y="134" text-anchor="middle">结束：5 波清除，结算评级与保障度。</text></g><g class="node overlay"><rect x="260" y="298" width="140" height="64" rx="12"/><text class="node-name" x="330" y="326" text-anchor="middle">CHECKLIST</text><text class="node-sub" x="330" y="344" text-anchor="middle">等待：W4/W5 检查单打开，clo</text></g><g class="node overlay"><rect x="20" y="298" width="140" height="64" rx="12"/><text class="node-name" x="90" y="326" text-anchor="middle">FAULT</text><text class="node-sub" x="90" y="344" text-anchor="middle">等待：W5 故障命中，选择隔离/旁路</text></g><g class="node terminal"><rect x="500" y="298" width="140" height="64" rx="12"/><text class="node-name" x="570" y="326" text-anchor="middle">LOST</text><text class="node-sub" x="570" y="344" text-anchor="middle">结束：保障度归零，结算事故。</text></g><text class="start-label" x="30" y="30" text-anchor="middle">start</text>
+    </svg>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">02</span>迁移表：图的可验证版本</h2>
+    <p class="hint">图用来理解，表用来实现和测试。每条边都有触发、守卫和副作用。</p>
+    <table><thead><tr><th>从</th><th>触发</th><th>到</th><th>类型</th><th>守卫</th><th>副作用</th></tr></thead><tbody><tr><td><code>[*]</code></td><td><code>new_run</code></td><td><code>PREP</code></td><td>system</td><td>创建 MissionRuntime</td><td>clock / event bus / black box 初始化</td></tr><tr><td><code>PREP</code></td><td><code>start_wave</code></td><td><code>WAVE</code></td><td>player</td><td>state == PREP</td><td>生成第 1 波；玩家也可提前开波</td></tr><tr><td><code>WAVE</code></td><td><code>WaveCleared</code></td><td><code>BETWEEN</code></td><td>system</td><td>spawn_queue 空且 enemies 空；不是最后一波</td><td>进入波间整备</td></tr><tr><td><code>BETWEEN</code></td><td><code>start_wave</code></td><td><code>WAVE</code></td><td>player</td><td>state == BETWEEN</td><td>生成下一波</td></tr><tr><td><code>WAVE</code></td><td><code>last_wave_cleared</code></td><td><code>WON</code></td><td>system</td><td>最后一波清除</td><td>结算 grade / integrity / kills</td></tr><tr><td><code>WAVE</code></td><td><code>integrity_zero</code></td><td><code>LOST</code></td><td>system</td><td>integrity &lt;= 0</td><td>事故结算，可重试</td></tr><tr><td><code>BETWEEN</code></td><td><code>ChecklistRequested</code></td><td><code>CHECKLIST</code></td><td>system</td><td>下一波有检查单（W4/W5）；clock 暂停</td><td>打开检查单 UI</td></tr><tr><td><code>CHECKLIST</code></td><td><code>submit_checklist</code></td><td><code>BETWEEN</code></td><td>player</td><td>pending card 匹配</td><td>写入检查单结果；恢复 clock</td></tr><tr><td><code>WAVE</code></td><td><code>FaultChoiceRequested</code></td><td><code>FAULT</code></td><td>system</td><td>W5 故障命中；clock 暂停</td><td>打开隔离/旁路 UI</td></tr><tr><td><code>FAULT</code></td><td><code>submit_fault_choice</code></td><td><code>WAVE</code></td><td>player</td><td>fault_choice_pending</td><td>应用隔离/旁路；恢复 clock</td></tr><tr><td><code>WON</code></td><td><code>reset</code></td><td><code>PREP</code></td><td>player</td><td>本班结束</td><td>重开一班；保留接班记忆</td></tr><tr><td><code>LOST</code></td><td><code>reset</code></td><td><code>PREP</code></td><td>player</td><td>本班结束</td><td>重开一班；保留接班记录</td></tr></tbody></table>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">03</span>方法：动态怎么变静态</h2>
+    <div class="method">
+      <article><h3>按稳定状态截断</h3><p>只记录状态改变，不记录每一秒。</p></article>
+      <article><h3>把循环折叠成回边</h3><p>五波不画五遍；用回边 + 终止条件。</p></article>
+      <article><h3>把时间/随机放到边上</h3><p>超时、概率、并行都写成守卫或注释。</p></article>
+      <article><h3>用日志反推</h3><p>从 EventBus / CommandBus / BlackBox 生成真实迁移。</p></article>
+    </div>
+    <p class="hint" style="margin-top:12px">完整方法与维护规则见 <a href="README.md">flows/README.md</a>；Mermaid 版见 <a href="game_flow.md">game_flow.md</a>。</p>
+  </section>
+
+  <footer class="foot">由 <code>tools/build_flow.py</code> 生成 · 状态/命令/事件来自 <code>game/scripts/</code> · 迁移模型人工维护 · 不要手改本页</footer>
+</main>
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-choice]'));
+  function apply() {
+    var c = document.documentElement.dataset.themeChoice || 'system';
+    var mode = c === 'system' ? (mql.matches ? 'dark' : 'light') : c;
+    document.documentElement.dataset.theme = mode;
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeChoice === c)); });
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.documentElement.dataset.themeChoice = b.dataset.themeChoice;
+      try { localStorage.setItem(KEY, b.dataset.themeChoice); } catch (e) {}
+      apply();
+    });
+  });
+  try { mql.addEventListener('change', apply); } catch (e) {}
+  apply();
+})();
+</script>
+</body>
+</html>

@@ -3,6 +3,24 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.83] - 2026-11-05 21:40
+
+### 新增
+
+- `docs-ai/design01/flows/`：
+  - `README.md`：静态流程图方法；
+  - `game_flow.md`：Mermaid 状态图 + 迁移表；
+  - `game_flow.html`：自包含 SVG 流程图与方法卡片；
+- `tools/build_flow.py`：从状态/命令/事件 + 迁移模型生成；
+- `./run.sh flow` / `./run.sh flow-check`；
+- HUB/README 增加流程图入口。
+
+### 验证
+
+- `flow-check`：通过；
+- 流程图 R-016：1/1；
+- HUB + GUIDE R-016：2/2。
+
 ## [0.1.82] - 2026-11-05 18:47
 
 ### 新增

@@ -45,6 +45,9 @@ platform: "PC 优先（D14 待定）"
 ./run.sh replay     # 回放最近一局黑匣子
 ./run.sh expansions-check # 校验扩展包/preset/变体互斥
 ./run.sh compare          # L1 A/B/C 对比表
+./run.sh playtest         # 三张地图的无头试玩
+./run.sh flow             # 生成 flows/ 静态流程图
+./run.sh flow-check       # 校验流程图是否过期
 ./run.sh briefing         # 从数据重新生成 briefing/GUIDE.html
 ./run.sh briefing-check   # 校验 GUIDE 与 HUB 数字/素材
 ./run.sh editor-test # 编辑器数据桥冒烟测试
@@ -79,6 +82,7 @@ Godot 编辑器内置 **LiveBay Tools** 插件（`game/addons/livebay_tools/`）
 | 看 HTML 阅读版 | [`docs-ai/design01/html/index.html`](docs-ai/design01/html/index.html)（支持系统 / 浅色 / 深色） |
 | 看还需要你拍板什么 | [`docs-ai/design01/11_待人类裁决清单.md`](docs-ai/design01/11_待人类裁决清单.md) |
 | 看 NASA朋克美学 | [`docs/retro-futurism/附录_NASA朋克卷/`](../../docs/retro-futurism/附录_NASA朋克卷/README.md) |
+| 看一局流程图 | [`docs-ai/design01/flows/game_flow.html`](docs-ai/design01/flows/game_flow.html) |
 | 看工程结构 | [`docs-ai/design01/tech/12_技术方案_Godot工程.md`](docs-ai/design01/tech/12_技术方案_Godot工程.md) |
 | 看数值体系 | [`docs-ai/design01/numbers/README.md`](docs-ai/design01/numbers/README.md) |
 | 看艺术设定图 | [`docs-ai/design01/art/README.md`](docs-ai/design01/art/README.md) |
