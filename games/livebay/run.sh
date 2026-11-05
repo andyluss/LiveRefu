@@ -66,10 +66,10 @@ case "$CMD" in
     exec "$GODOT" --headless --path "$GAME" --script tests/playtest_maps.gd
     ;;
   flow)
-    exec python3 "$HERE/tools/build_flow.py"
+    python3 "$HERE/tools/build_flow.py" && exec python3 "$HERE/tools/build_extra_flows.py"
     ;;
   flow-check)
-    exec python3 "$HERE/tools/build_flow.py" --check
+    python3 "$HERE/tools/build_flow.py" --check && exec python3 "$HERE/tools/build_extra_flows.py" --check
     ;;
   briefing)
     exec node "$HERE/briefing/build_guide.ts"

@@ -82,7 +82,7 @@ Godot 编辑器内置 **LiveBay Tools** 插件（`game/addons/livebay_tools/`）
 | 看 HTML 阅读版 | [`docs-ai/design01/html/index.html`](docs-ai/design01/html/index.html)（支持系统 / 浅色 / 深色） |
 | 看还需要你拍板什么 | [`docs-ai/design01/11_待人类裁决清单.md`](docs-ai/design01/11_待人类裁决清单.md) |
 | 看 NASA朋克美学 | [`docs/retro-futurism/附录_NASA朋克卷/`](../../docs/retro-futurism/附录_NASA朋克卷/README.md) |
-| 看一局流程图 | [`docs-ai/design01/flows/game_flow.html`](docs-ai/design01/flows/game_flow.html) |
+| 看一局流程图 | [`docs-ai/design01/flows/game_flow.html`](docs-ai/design01/flows/game_flow.html) ｜ [补充流程图](docs-ai/design01/flows/extra_flows.html) |
 | 看工程结构 | [`docs-ai/design01/tech/12_技术方案_Godot工程.md`](docs-ai/design01/tech/12_技术方案_Godot工程.md) |
 | 看数值体系 | [`docs-ai/design01/numbers/README.md`](docs-ai/design01/numbers/README.md) |
 | 看艺术设定图 | [`docs-ai/design01/art/README.md`](docs-ai/design01/art/README.md) |

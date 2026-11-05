@@ -280,7 +280,7 @@ fi
 if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^games/livebay/docs-ai/design01/flows/|^games/livebay/game/scripts/(core/sim|application/mission_runtime)\.gd|^games/livebay/tools/build_flow\.py'; then
   if [ -f games/livebay/tools/build_flow.py ]; then
     echo "[pre-commit:livebay-flow] 校验流程图..." >&2
-    if python3 games/livebay/tools/build_flow.py --check >&2; then
+    if python3 games/livebay/tools/build_flow.py --check >&2 && python3 games/livebay/tools/build_extra_flows.py --check >&2; then
       echo "[pre-commit:livebay-flow] 通过。" >&2
     else
       echo "[pre-commit:livebay-flow] 流程图过期，已拦截提交。" >&2
