@@ -9,10 +9,39 @@
   "core_api": ">=0.1 <1.0",
   "requires": [],
   "conflicts": [],
-  "provides": ["procedure.checklist"],
-  "modifiers": {"starting_energy": 85},
-  "content": {},
+  "provides": [
+    "procedure.checklist"
+  ],
+  "modifiers": {
+    "starting_energy": 85
+  },
+  "content": {
+    "procedures": {
+      "cards": [
+        {
+          "id": "b_w4_damper",
+          "wave": 4,
+          "title": "T-07 阻尼器异响（B）",
+          "body": "照惯例省时间，但留下一笔低报记录。",
+          "options": [
+            {
+              "id": "sign",
+              "label": "照签",
+              "effect": "sign"
+            },
+            {
+              "id": "custom",
+              "label": "按惯例：低报 +1",
+              "effect": "custom"
+            }
+          ]
+        }
+      ]
+    }
+  },
   "modules": [],
   "ui": [],
-  "flags": {"default": false}
+  "flags": {
+    "default": false
+  }
 }

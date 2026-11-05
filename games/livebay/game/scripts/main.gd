@@ -60,6 +60,10 @@ var speed_button: Button
 var overlay: Control
 var overlay_title: Label
 var overlay_body: Label
+var checklist_overlay: Control
+var checklist_title: Label
+var checklist_body: Label
+var checklist_buttons: VBoxContainer
 
 var fatal_label: Label
 
@@ -131,6 +135,7 @@ func _new_sim() -> void:
 	var boot: LiveBayResult = ExpansionBootScript.load_preset("res://data/expansion_sets/baseline.json")
 	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
 	runtime = RuntimeScript.new(data, expansion_set)
+	runtime.events.subscribe(&"ChecklistRequested", _on_checklist_requested)
 	sim = runtime.sim
 	sim.tower_fired.connect(_on_tower_fired)
 	sim.game_won.connect(_on_game_won)
@@ -146,6 +151,8 @@ func _new_sim() -> void:
 	runtime.clock.paused = false
 	if overlay != null:
 		overlay.visible = false
+	if checklist_overlay != null:
+		checklist_overlay.visible = false
 
 
 # ---------------------------------------------------------------- UI 构建
@@ -282,6 +289,38 @@ func _build_ui() -> void:
 	again_center.add_child(again)
 	box.add_child(again_center)
 
+	# 班次检查单（由扩展包 Procedure 内容触发）
+	checklist_overlay = Control.new()
+	checklist_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	checklist_overlay.visible = false
+	root.add_child(checklist_overlay)
+	var checklist_shade := ColorRect.new()
+	checklist_shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	checklist_shade.color = Color(0.09, 0.11, 0.12, 0.72)
+	checklist_overlay.add_child(checklist_shade)
+	var checklist_center := CenterContainer.new()
+	checklist_center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	checklist_overlay.add_child(checklist_center)
+	var checklist_card := PanelContainer.new()
+	checklist_card.add_theme_stylebox_override("panel", _panel_style(PALETTE.paper, PALETTE.ink, 10))
+	checklist_card.custom_minimum_size = Vector2(520, 300)
+	checklist_center.add_child(checklist_card)
+	var checklist_margin := MarginContainer.new()
+	checklist_margin.add_theme_constant_override("margin_left", 26)
+	checklist_margin.add_theme_constant_override("margin_right", 26)
+	checklist_margin.add_theme_constant_override("margin_top", 22)
+	checklist_margin.add_theme_constant_override("margin_bottom", 22)
+	checklist_card.add_child(checklist_margin)
+	var checklist_box := VBoxContainer.new()
+	checklist_box.add_theme_constant_override("separation", 12)
+	checklist_margin.add_child(checklist_box)
+	checklist_title = _make_label("", 22, PALETTE.ink)
+	checklist_box.add_child(checklist_title)
+	checklist_body = _make_label("", 15, PALETTE.slate)
+	checklist_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	checklist_box.add_child(checklist_body)
+	checklist_buttons = VBoxContainer.new()
+	checklist_box.add_child(checklist_buttons)
 	_refresh_tower_buttons()
 
 
@@ -480,9 +519,40 @@ func _restart() -> void:
 	toast_timer = 0.0
 	if overlay != null:
 		overlay.visible = false
+	if checklist_overlay != null:
+		checklist_overlay.visible = false
 
 
 # ---------------------------------------------------------------- UI 刷新
+
+func _on_checklist_requested(envelope: Dictionary) -> void:
+	var card: Dictionary = envelope.get("payload", {}).get("card", {})
+	if card.is_empty():
+		return
+	checklist_title.text = str(card.get("title", "班前检查单"))
+	checklist_body.text = str(card.get("body", "请选择处理方式。"))
+	for child in checklist_buttons.get_children():
+		child.queue_free()
+	for option in card.get("options", []):
+		var button := Button.new()
+		button.text = str(option.get("label", "选择"))
+		button.custom_minimum_size = Vector2(440, 42)
+		_style_button(button, PALETTE.teal, PALETTE.cream)
+		button.pressed.connect(_choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
+		checklist_buttons.add_child(button)
+	checklist_overlay.visible = true
+
+
+func _choose_checklist(card_id: String, option_id: String) -> void:
+	if runtime == null:
+		return
+	var result: LiveBayResult = runtime.dispatch(&"submit_checklist", {"card_id": card_id, "option_id": option_id})
+	if not result.ok:
+		toast_text = "检查单：" + result.message
+		toast_timer = 1.6
+		return
+	checklist_overlay.visible = false
+
 
 func _update_ui() -> void:
 	if sim == null or energy_label == null:

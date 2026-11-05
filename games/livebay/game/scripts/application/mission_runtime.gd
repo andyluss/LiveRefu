@@ -5,6 +5,7 @@ class_name LiveBayMissionRuntime
 extends RefCounted
 
 const SimScript = preload("res://scripts/core/sim.gd")
+const ProcedureScript = preload("res://scripts/domain/procedures/procedure_module.gd")
 
 var data: Dictionary
 var sim: Variant
@@ -14,6 +15,7 @@ var commands: LiveBayCommandBus
 var blackbox: LiveBayBlackBox
 var expansion_set: LiveBayExpansionSet
 var flags: LiveBayFeatureFlags
+var procedure: LiveBayProcedureModule
 var _blackbox_meta: Dictionary
 var _connections: Array = []
 
@@ -33,6 +35,8 @@ func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null) -> vo
 		"expansion_set": expansion_set.to_meta(),
 	}
 	events.subscribe_all(func(envelope: Dictionary): blackbox.record(envelope))
+	procedure = ProcedureScript.new()
+	procedure.configure(data)
 	_new_sim()
 	_register_commands()
 	blackbox.begin(_blackbox_meta)
@@ -108,6 +112,15 @@ func _register_commands() -> void:
 		events.emit_event(&"SpeedChanged", {"speed": clock.speed}, &"clock")
 		return LiveBayResult.success()
 	)
+	commands.register(&"submit_checklist", func(payload: Dictionary) -> LiveBayResult:
+		var card_id := str(payload.get("card_id", ""))
+		var option_id := str(payload.get("option_id", ""))
+		var result := procedure.resolve(card_id, option_id, sim)
+		if result.ok:
+			clock.paused = false
+			events.emit_event(&"ChecklistResolved", {"card_id": card_id, "option_id": option_id, "effect": result.data.get("effect", "")}, &"procedure")
+		return result
+	)
 	commands.register(&"reset", func(_payload: Dictionary) -> LiveBayResult:
 		reset()
 		return LiveBayResult.success("已重置")
@@ -115,10 +128,17 @@ func _register_commands() -> void:
 
 
 func step(delta: float) -> void:
+	if procedure.has_pending():
+		clock.paused = true
+		return
 	var step_delta := clock.consume(delta)
 	events.tick = clock.ticks
 	if step_delta > 0.0:
 		sim.step(step_delta)
+	var card: Dictionary = procedure.update(sim)
+	if not card.is_empty():
+		clock.paused = true
+		events.emit_event(&"ChecklistRequested", {"card": card}, &"procedure")
 
 
 func dispatch(command: StringName, payload: Dictionary = {}) -> LiveBayResult:
@@ -148,6 +168,7 @@ static func replay(game_data: Dictionary, entries: Array, max_ticks := 60 * 600)
 func reset() -> void:
 	sim.reset()
 	clock.reset()
+	procedure.reset()
 	blackbox.begin(_blackbox_meta)
 	events.emit_event(&"MissionReset", {}, &"runtime")
 

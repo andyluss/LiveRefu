@@ -2,9 +2,10 @@
 
 当前是 **E0 运行时**，不是 L1 玩法内容：
 
-- `l1_shift_a/`、`l1_shift_b/`：两个 **实验包**，只用于验证 `variant_group` 互斥、preset slot 与 A/B 启动；
-  - A：开局供能 95；B：开局供能 85；
-  - 这两个数字是运行时验证用的占位，不是 L1 班次机制。
+- `l1_shift_a/`、`l1_shift_b/`：两个 **实验包**，用于验证 `variant_group` 互斥、preset slot、A/B 检查单；
+  - A：开局供能 95；W4 检查单「复查」→ 下次故障停塔 -1s；
+  - B：开局供能 85；W4 检查单「按惯例」→ 低报 +1；
+  - 这些是 L1 样例，不是最终数值/完整班次。
 - `baseline`：`game/data/expansion_sets/baseline.json`，主游戏默认使用，不含任何包。
 - 对比 preset：`l1_compare_a.json` / `l1_compare_b.json`。
 - 校验：`./run.sh expansions-check`。

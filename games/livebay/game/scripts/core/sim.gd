@@ -77,6 +77,8 @@ var enemies: Array:
 var towers: Array:
 	get: return towers_module.towers
 var stats: Dictionary = {}
+var fault_duration_bonus := 0.0
+var low_report := 0
 var result: Dictionary:
 	get: return mission.result
 
@@ -104,6 +106,8 @@ func reset() -> void:
 	wave.reset(waves, balance)
 	enemies_module.reset()
 	towers_module.reset()
+	fault_duration_bonus = 0.0
+	low_report = 0
 	stats = {
 		"kills": 0,
 		"leaked": 0,
@@ -185,7 +189,7 @@ func _cleanup_dead() -> void:
 
 
 func _apply_fault_effect(enemy: Dictionary) -> void:
-	for hit in fault.apply(enemy, towers, slots, _enemy_pos(enemy)):
+	for hit in fault.apply(enemy, towers, slots, _enemy_pos(enemy), fault_duration_bonus):
 		tower_disabled.emit(int(hit.slot), float(hit.duration))
 
 

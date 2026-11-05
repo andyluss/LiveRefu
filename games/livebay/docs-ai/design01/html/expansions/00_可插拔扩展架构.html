@@ -54,10 +54,10 @@
 <details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一问题为什么现在的扩展还不够可插拔">一、问题：为什么现在的扩展还不够“可插拔”</a></li><li class=""><a href="#二术语">二、术语</a></li><li class=""><a href="#三目标架构">三、目标架构</a></li><li class=""><a href="#四pack-manifest">四、Pack Manifest</a></li><li class="sub"><a href="#41-字段约束">4.1 字段约束</a></li><li class=""><a href="#五扩展点">五、扩展点</a></li><li class="sub"><a href="#51-内容贡献">5.1 内容贡献</a></li><li class="sub"><a href="#52-模块贡献">5.2 模块贡献</a></li><li class="sub"><a href="#53-ui-贡献">5.3 UI 贡献</a></li><li class="sub"><a href="#54-存档与档案">5.4 存档与档案</a></li><li class=""><a href="#六加载与失败隔离">六、加载与失败隔离</a></li><li class="sub"><a href="#61-启动顺序">6.1 启动顺序</a></li><li class="sub"><a href="#62-失败策略">6.2 失败策略</a></li><li class="sub"><a href="#63-feature-flag">6.3 Feature Flag</a></li><li class=""><a href="#七分层可插拔">七、分层可插拔</a></li><li class=""><a href="#八多个-l1-变体与-ab-对比">八、多个 L1 变体与 A/B 对比</a></li><li class="sub"><a href="#81-两种包additive--variant">8.1 两种包：additive / variant</a></li><li class="sub"><a href="#82-preset-用槽位选择">8.2 Preset 用槽位选择</a></li><li class="sub"><a href="#83-多种实现如何对比">8.3 多种实现如何对比</a></li><li class="sub"><a href="#84-对比的验收">8.4 对比的验收</a></li><li class="sub"><a href="#85-建议默认未单独裁决">8.5 建议默认（未单独裁决）</a></li><li class=""><a href="#九实验生命周期">九、实验生命周期</a></li><li class="sub"><a href="#81-实验流程">8.1 实验流程</a></li><li class="sub"><a href="#82-实验包准入gate">8.2 实验包准入（Gate）</a></li><li class=""><a href="#十正式发布决策">十、正式发布决策</a></li><li class="sub"><a href="#91-release-set">9.1 Release Set</a></li><li class="sub"><a href="#92-发布验收">9.2 发布验收</a></li><li class=""><a href="#十一目录布局">十一、目录布局</a></li><li class="sub"><a href="#101-设计文档">10.1 设计文档</a></li><li class="sub"><a href="#102-运行时包">10.2 运行时包</a></li><li class=""><a href="#十二与现有架构的接口">十二、与现有架构的接口</a></li><li class=""><a href="#十三实施切片">十三、实施切片</a></li><li class=""><a href="#十四裁决">十四、裁决</a></li><li class=""><a href="#十五验收">十五、验收</a></li><li class=""><a href="#十六不做什么">十六、不做什么</a></li><li class=""><a href="#十七与-16-的关系">十七、与 16 的关系</a></li></ul></details>
 <article class="prose">
 <h1 id="可插拔扩展架构">可插拔扩展架构</h1>
-<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（扩展包架构）</dd><dt>状态</dt><dd>已裁决 v0.3（D17-X1–X6 通过；E0 运行时已实现；L1 内容未实现）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="../rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="../rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="../rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="../rules/tech/b02_验收与不回归.html">TECH-B2</a></dd><dt>上游</dt><dd><a href="../16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a> · <a href="README.html">README</a></dd><dt>关联</dt><dd><a href="01_分层总览.html">01_分层总览</a> · <a href="05_版本切片与决策.html">05_版本切片与决策</a> · <a href="../12_技术方案_Godot工程.html">12_技术方案_Godot工程</a></dd></dl></div>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（扩展包架构）</dd><dt>状态</dt><dd>已裁决 v0.3（D17-X1–X6 通过；E0/E1 样例已实现；完整 L1 未实现）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="../rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="../rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="../rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="../rules/tech/b02_验收与不回归.html">TECH-B2</a></dd><dt>上游</dt><dd><a href="../16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a> · <a href="README.html">README</a></dd><dt>关联</dt><dd><a href="01_分层总览.html">01_分层总览</a> · <a href="05_版本切片与决策.html">05_版本切片与决策</a> · <a href="../12_技术方案_Godot工程.html">12_技术方案_Godot工程</a></dd></dl></div>
 <blockquote>
 <p><strong>一句话</strong>：玩法扩展不是往 <code>Sim</code> 里加 <code>if</code>，而是做成<strong>可启停的扩展包</strong>：有自己的 manifest、内容、模块、存档命名空间和实验开关；关掉它，主体玩法仍然完整。</p>
-<p><strong>状态</strong>：2026-11-05 人类确认 D17-X1–X6 全部按建议通过；<strong>E0 运行时已实现</strong>（manifest/registry/preset/variant_group/ExpansionSet），L1 玩法内容仍未实现。</p>
+<p><strong>状态</strong>：2026-11-05 人类确认 D17-X1–X6 全部按建议通过；<strong>E0 运行时已实现</strong>（manifest/registry/preset/variant_group/ExpansionSet），并接了 <strong>E1 样例检查单</strong>（W4，A/B 两版）；完整 L1 仍未实现。</p>
 <p><strong>目标</strong>：开发期可以不断试 L1/L2/L3 的新玩法，各自独立启停；只有通过验收的包才进入正式发布预设。</p>
 </blockquote>
 <h2 id="一问题为什么现在的扩展还不够可插拔">一、问题：为什么现在的扩展还不够“可插拔”</h2>
@@ -688,6 +688,11 @@ settings.section</code></pre>
 <td>E0.1</td>
 <td>窄修正器 <code>starting_energy</code> + A/B 差异</td>
 <td>✅ 已实现：A=95 / B=85</td>
+</tr>
+<tr>
+<td>E1</td>
+<td>W4 检查单 A/B 样例 + 检查单 UI + <code>ProcedureModule</code></td>
+<td>✅ 样例已实现；W5/事故记录未做</td>
 </tr>
 <tr>
 <td>E1</td>

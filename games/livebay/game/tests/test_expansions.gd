@@ -40,6 +40,15 @@ func _initialize() -> void:
 	_check(is_equal_approx(run_b.sim.energy, 85.0), "modifier: B starting energy 85")
 	run_a.dispose()
 	run_b.dispose()
+	var proc_data: Dictionary = a.data.apply_data(data)
+	var sim_for_proc: Variant = SimScript.new(proc_data)
+	sim_for_proc.wave.index = 2
+	sim_for_proc.state = 2
+	var procedure: LiveBayProcedureModule = preload("res://scripts/domain/procedures/procedure_module.gd").new()
+	procedure.configure(proc_data)
+	var card: Dictionary = procedure.update(sim_for_proc)
+	_check(not card.is_empty() and int(card.wave) == 4, "procedure: W4 checklist requested")
+	_check(procedure.resolve(str(card.id), "review", sim_for_proc).ok and sim_for_proc.fault_duration_bonus < 0.0, "procedure: review modifies fault duration")
 	var result_a := _run_variant(data, a.data)
 	var result_b := _run_variant(data, b.data)
 	_check(result_a.get("grade", "") == result_b.get("grade", ""), "compare: same grade (sample modifiers)")
@@ -57,6 +66,9 @@ func _run_variant(data: Dictionary, set: LiveBayExpansionSet) -> Dictionary:
 	rt.dispatch(&"start_wave")
 	var frames := 0
 	while rt.sim.state != SimScript.State.WON and rt.sim.state != SimScript.State.LOST and frames < 60 * 600:
+		if rt.procedure.has_pending():
+			rt.dispatch(&"submit_checklist", {"card_id": rt.procedure.pending.id, "option_id": "sign"})
+			continue
 		rt.step(1.0 / 60.0)
 		if rt.sim.state == SimScript.State.BETWEEN:
 			rt.dispatch(&"start_wave")

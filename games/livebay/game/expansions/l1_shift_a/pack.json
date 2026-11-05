@@ -9,10 +9,39 @@
   "core_api": ">=0.1 <1.0",
   "requires": [],
   "conflicts": [],
-  "provides": ["procedure.checklist"],
-  "modifiers": {"starting_energy": 95},
-  "content": {},
+  "provides": [
+    "procedure.checklist"
+  ],
+  "modifiers": {
+    "starting_energy": 95
+  },
+  "content": {
+    "procedures": {
+      "cards": [
+        {
+          "id": "a_w4_damper",
+          "wave": 4,
+          "title": "T-07 阻尼器异响（A）",
+          "body": "班前复查可缩短下一次故障停塔。",
+          "options": [
+            {
+              "id": "sign",
+              "label": "照签",
+              "effect": "sign"
+            },
+            {
+              "id": "review",
+              "label": "复查：故障停塔 -1s",
+              "effect": "review"
+            }
+          ]
+        }
+      ]
+    }
+  },
   "modules": [],
   "ui": [],
-  "flags": {"default": false}
+  "flags": {
+    "default": false
+  }
 }

@@ -3,6 +3,32 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.47] - 2026-11-05 13:29
+
+### 新增（E1 样例）
+
+- `ProcedureModule`：W4 检查单请求/选项/效果；
+- 扩展包 A/B content 增加 W4 检查单：
+  - A「复查」→ 下次故障停塔 -1s；
+  - B「按惯例」→ 低报 +1；
+- `MissionRuntime` 在检查单打开时暂停 clock，`submit_checklist` 命令恢复；
+- HUD 增加检查单遮罩/选项按钮；
+- `Sim.fault_duration_bonus`、`low_report` 字段；
+- `expansions-check` 增至 **12 项**。
+
+### 边界
+
+- 只做 W4 检查单样例；W5 隔离/旁路、事故记录仍未做；
+- 这是扩展内容，baseline 不加载，标准班不变。
+
+### 验证
+
+- `./run.sh test` 73/73；
+- `./run.sh check` 退出码 0；
+- `./run.sh expansions-check` 12/12；
+- `./run.sh editor-test` 通过；
+- baseline 仍 B/40/59/9。
+
 ## [0.1.46] - 2026-11-05 13:24
 
 ### 新增（E0.1）

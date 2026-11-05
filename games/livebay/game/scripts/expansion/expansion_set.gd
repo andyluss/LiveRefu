@@ -48,4 +48,7 @@ func apply_data(game_data: Dictionary) -> Dictionary:
 		var mods: Dictionary = m.data.get("modifiers", {})
 		if mods.has("starting_energy"):
 			out["profession"]["start_energy"] = float(mods.starting_energy)
+		var content: Dictionary = m.data.get("content", {})
+		if content.has("procedures"):
+			out["procedures"] = content.procedures.duplicate(true)
 	return out
