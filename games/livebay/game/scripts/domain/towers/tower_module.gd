@@ -72,3 +72,74 @@ func sell(slot_index: int) -> LiveBayResult:
 	economy.earn(float(refund))
 	towers.erase(tower)
 	return LiveBayResult.success("已出售", {"refund": refund})
+
+
+func tower_damage(tower: Dictionary) -> float:
+	return float(tower.def.damage) * (1.0 + float(balance.get("upgrade_damage_factor", 0.25)) * (int(tower.level) - 1))
+
+
+func tower_range(tower: Dictionary) -> float:
+	return float(tower.def.range) * (1.0 + float(balance.get("upgrade_range_factor", 0.05)) * (int(tower.level) - 1))
+
+
+func supply_income(tower: Dictionary) -> float:
+	return float(tower.def.get("income", 0.0)) * (1.0 + float(balance.get("upgrade_income_factor", 0.5)) * (int(tower.level) - 1))
+
+
+func supply_repair(tower: Dictionary) -> float:
+	return float(tower.def.get("repair", 0.0)) * (1.0 + float(balance.get("upgrade_repair_factor", 0.5)) * (int(tower.level) - 1))
+
+
+func update(dt: float, enemies: Array, slots: Array, map: Variant) -> Dictionary:
+	var fired: Array = []
+	var income := 0.0
+	for tower: Dictionary in towers:
+		var def: Dictionary = tower.def
+		if float(tower.get("disabled_timer", 0.0)) > 0.0:
+			tower.disabled_timer -= dt
+			continue
+		if def.kind == "supply":
+			tower.income_timer -= dt
+			if tower.income_timer <= 0.0:
+				tower.income_timer += float(def.get("income_interval", 5.0))
+				income += supply_income(tower)
+			continue
+		tower.cooldown -= dt
+		if tower.cooldown > 0.0:
+			continue
+		var range_px := tower_range(tower)
+		var tower_pos: Vector2 = slots[tower.slot]
+		var candidates: Array = []
+		for enemy: Dictionary in enemies:
+			if enemy.dead:
+				continue
+			if tower_pos.distance_to(map.point_at(float(enemy.dist))) <= range_px:
+				candidates.append(enemy)
+		if candidates.is_empty():
+			continue
+		var damage := tower_damage(tower)
+		var cooldown := 1.0 / maxf(0.05, float(def.fire_rate))
+		if def.kind == "single":
+			var target: Dictionary = candidates[0]
+			for enemy: Dictionary in candidates:
+				if float(enemy.dist) > float(target.dist):
+					target = enemy
+			target.hp -= damage
+			if target.hp <= 0.0:
+				target.dead = true
+			fired.append({"from": tower_pos, "to": map.point_at(float(target.dist)), "kind": "single"})
+		elif def.kind == "aoe":
+			var first_pos: Vector2 = tower_pos
+			for enemy: Dictionary in candidates:
+				enemy.hp -= damage
+				var slow := float(def.get("slow", 0.0))
+				if slow > 0.0:
+					enemy.slow_factor = maxf(float(enemy.slow_factor), slow)
+					enemy.slow_timer = maxf(float(enemy.slow_timer), float(def.get("slow_duration", 1.5)))
+				if enemy.hp <= 0.0:
+					enemy.dead = true
+				if first_pos == tower_pos:
+					first_pos = map.point_at(float(enemy.dist))
+			fired.append({"from": tower_pos, "to": first_pos, "kind": "aoe"})
+		tower.cooldown = cooldown
+	return {"fired": fired, "income": income}

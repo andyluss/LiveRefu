@@ -58,7 +58,7 @@ related:
 | --- | --- | --- |
 | M1 内核 | ✅ 已实现 | `kernel/result`、`mission_clock`、`event_bus`、`command_bus`、`platform/black_box`、`application/mission_runtime` |
 | M2 Map / Economy | ✅ 已实现 | `domain/map/map_module.gd`、`domain/economy/economy_module.gd`，`Sim` 通过属性代理使用 |
-| M3 Wave / Enemy / Tower / Mission / Fault | 🟡 大部分 | 七个领域模块已拆；索敌/移动/清理仍由 `Sim` 编排 |
+| M3 Wave / Enemy / Tower / Mission / Fault | 🟡 大部分 | 塔索敌/开火/供给已进 TowerModule；敌人移动/清理仍由 Sim 编排 |
 | M4 ReadModel / Presenter | 🟡 大部分 | ReadModel/Presenter + InputController + GameRenderer 已拆；HUD 构建仍在 `main.gd` |
 | M5 MissionPack / schema | ✅ 已实现 | `tools/export_mission_pack.py` 编译 manifest/hash；`DataLoader` 读取清单；`numbers-check` 同时校验 |
 | M6 黑匣子回放 | ✅ 已实现 | 事件带 tick；`replay()` + `./run.sh replay` 可回放并比对结果 |

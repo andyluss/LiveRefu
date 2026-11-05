@@ -178,59 +178,12 @@ func _spawn_due() -> void:
 
 
 func _update_towers(dt: float) -> void:
-	for tower: Dictionary in towers:
-		var def: Dictionary = tower.def
-		if float(tower.get("disabled_timer", 0.0)) > 0.0:
-			tower.disabled_timer -= dt
-			continue
-		if def.kind == "supply":
-			tower.income_timer -= dt
-			if tower.income_timer <= 0.0:
-				tower.income_timer += float(def.get("income_interval", 5.0))
-				economy.earn(_supply_income(tower))
-				energy_changed.emit(energy)
-			continue
-
-		tower.cooldown -= dt
-		if tower.cooldown > 0.0:
-			continue
-		var range_px: float = _tower_range(tower)
-		var tower_pos: Vector2 = slots[tower.slot]
-		var candidates: Array = []
-		for enemy: Dictionary in enemies:
-			if enemy.dead:
-				continue
-			if tower_pos.distance_to(_enemy_pos(enemy)) <= range_px:
-				candidates.append(enemy)
-		if candidates.is_empty():
-			continue
-
-		var damage: float = _tower_damage(tower)
-		var cooldown: float = 1.0 / max(0.05, float(def.fire_rate))
-		if def.kind == "single":
-			var target: Dictionary = candidates[0]
-			for enemy: Dictionary in candidates:
-				if float(enemy.dist) > float(target.dist):
-					target = enemy
-			target.hp -= damage
-			if target.hp <= 0.0:
-				target.dead = true
-			tower_fired.emit(tower_pos, _enemy_pos(target), "single")
-		elif def.kind == "aoe":
-			var first_pos: Vector2 = tower_pos
-			for enemy: Dictionary in candidates:
-				enemy.hp -= damage
-				var slow: float = float(def.get("slow", 0.0))
-				if slow > 0.0:
-					enemy.slow_factor = max(float(enemy.slow_factor), slow)
-					enemy.slow_timer = max(float(enemy.slow_timer), float(def.get("slow_duration", 1.5)))
-				if enemy.hp <= 0.0:
-					enemy.dead = true
-				if first_pos == tower_pos:
-					first_pos = _enemy_pos(enemy)
-			tower_fired.emit(tower_pos, first_pos, "aoe")
-		tower.cooldown = cooldown
-
+	var result: Dictionary = towers_module.update(dt, enemies, slots, map)
+	if float(result.get("income", 0.0)) > 0.0:
+		economy.earn(float(result.income))
+		energy_changed.emit(energy)
+	for shot in result.get("fired", []):
+		tower_fired.emit(shot.from, shot.to, str(shot.kind))
 
 func _cleanup_dead() -> void:
 	for i: int in range(enemies.size() - 1, -1, -1):
@@ -329,19 +282,19 @@ func _build_cost(def: Dictionary) -> int:
 
 
 func _tower_damage(tower: Dictionary) -> float:
-	return float(tower.def.damage) * (1.0 + float(balance.get("upgrade_damage_factor", 0.25)) * (int(tower.level) - 1))
+	return towers_module.tower_damage(tower)
 
 
 func _tower_range(tower: Dictionary) -> float:
-	return float(tower.def.range) * (1.0 + float(balance.get("upgrade_range_factor", 0.05)) * (int(tower.level) - 1))
+	return towers_module.tower_range(tower)
 
 
 func _supply_income(tower: Dictionary) -> float:
-	return float(tower.def.get("income", 0.0)) * (1.0 + float(balance.get("upgrade_income_factor", 0.5)) * (int(tower.level) - 1))
+	return towers_module.supply_income(tower)
 
 
 func _supply_repair(tower: Dictionary) -> float:
-	return float(tower.def.get("repair", 0.0)) * (1.0 + float(balance.get("upgrade_repair_factor", 0.5)) * (int(tower.level) - 1))
+	return towers_module.supply_repair(tower)
 
 
 func _enemy_pos(enemy: Dictionary) -> Vector2:
