@@ -249,7 +249,7 @@ def html_page(docs: list[dict], svgs: dict[str, str]) -> str:
   <h2>{html.escape(d['title'])}</h2>
   <p class="hint">{html.escape(d['desc'])}</p>
   <div class="diagram">{svgs[d['id']]}</div>
-  <p class="hint"><a href="{d['id']}.md">Markdown / Mermaid 版</a></p>
+  <p class="hint"><a href="{d['id']}.html">单页 HTML</a> · <a href="{d['id']}.md">Markdown / Mermaid 版</a></p>
 </section>''')
     nav = "".join(f'<a href="#{d["id"]}">{html.escape(d["title"])}</a>' for d in docs)
     return f'''<!doctype html>
@@ -317,11 +317,82 @@ nav.flow-nav{{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0}}nav.flow-nav a{
 </html>'''
 
 
+def single_page(d: dict, svg: str) -> str:
+    others = "".join(
+        f'<a href="{x["id"]}.html">{html.escape(x["title"])}</a>'
+        for x in DOCS if x["id"] != d["id"])
+    return f'''<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>LiveBay · {html.escape(d['title'])}</title>
+<script>
+(function () {{
+  var KEY='lrds-theme', choice='system', saved=null;
+  try {{ saved=localStorage.getItem(KEY); }} catch(e) {{}}
+  if (saved==='system'||saved==='light'||saved==='dark') choice=saved;
+  var mql=window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme=choice==='system'?(mql.matches?'dark':'light'):choice;
+  document.documentElement.dataset.themeChoice=choice;
+  document.documentElement.classList.add('js');
+}})();
+</script>
+<style>
+:root{{color-scheme:light dark;--bg:#e9e3d5;--panel:#f5efe2;--ink:#232b2f;--muted:#5f6967;--line:#b9ae98;--teal:#2f6b65;--orange:#c95b2c;--shadow:0 14px 36px rgba(35,43,47,.1);--sans:"PingFang SC","Noto Sans CJK SC",system-ui,sans-serif;--mono:Menlo,Consolas,monospace}}
+:root[data-theme="light"]{{color-scheme:light}}
+:root[data-theme="dark"]{{color-scheme:dark;--bg:#11181b;--panel:#182326;--ink:#e9e3d5;--muted:#a9b4b0;--line:#3d4d4d;--teal:#73c5bb;--orange:#ed8a5a;--shadow:0 18px 50px rgba(0,0,0,.35)}}
+@media (prefers-color-scheme:dark){{:root:not([data-theme]){{color-scheme:dark}}}}
+*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 var(--sans)}}
+a{{color:var(--teal)}} .topbar{{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px clamp(14px,4vw,40px);border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:10}}
+.brand span{{display:block;font:700 10px/1.3 var(--mono);letter-spacing:.16em;color:var(--orange)}}.brand strong{{display:block}}
+.theme-switch{{display:flex;gap:3px;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--panel)}}
+.theme-switch button{{border:0;background:transparent;color:var(--muted);padding:6px 9px;border-radius:999px;cursor:pointer;font-size:12px}}
+.theme-switch button[aria-pressed="true"]{{background:var(--ink);color:var(--panel)}}
+.wrap{{max-width:1180px;margin:0 auto;padding:clamp(24px,5vw,48px) clamp(14px,4vw,40px) 60px}}
+.eyebrow{{margin:0 0 10px;font:700 11px/1 var(--mono);letter-spacing:.2em;color:var(--orange)}}h1{{margin:0;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-.04em}}.lede{{max-width:70ch;color:var(--muted)}}
+nav.flow-nav{{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0}}nav.flow-nav a{{border:1px solid var(--line);border-radius:999px;padding:4px 9px;text-decoration:none;font-size:12px}}
+.card{{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px;margin-top:16px}}
+.diagram{{background:#F5EFE2;border:1px solid var(--line);border-radius:12px;padding:8px;overflow:auto}}.diagram svg{{max-width:100%;height:auto;display:block;margin:0 auto}}
+.foot{{margin-top:22px;border-top:1px solid var(--line);padding-top:12px;color:var(--muted);font-size:12px}}
+@media print{{.topbar,nav.flow-nav,.theme-switch{{display:none!important}}.card{{box-shadow:none;break-inside:avoid}}}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="brand"><span>LiveBay · design01 · flows</span><strong>{html.escape(d['title'])}</strong></div><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div></header>
+<main class="wrap">
+<p class="eyebrow">Single flow view</p><h1>{html.escape(d['title'])}</h1>
+<p class="lede">{html.escape(d['desc'])}</p>
+<nav class="flow-nav"><a href="extra_flows.html">四图总览</a><a href="game_flow.html">总状态机</a>{others}<a href="{d['id']}.md">Mermaid 版</a></nav>
+<section class="card"><div class="diagram">{svg}</div></section>
+<section class="card"><p class="lede" style="margin:0">这张图由 <code>tools/build_extra_flows.py</code> 生成，使用 Graphviz 预渲染 SVG。流程方法与维护规则见 <a href="README.md">flows/README.md</a>；总状态机见 <a href="game_flow.html">game_flow.html</a>。</p></section>
+<footer class="foot">不要手改 · 改模型后运行 <code>./run.sh flow</code> · LiveBay</footer>
+</main>
+<script>
+(function(){{
+  var KEY='lrds-theme', buttons=Array.prototype.slice.call(document.querySelectorAll('[data-theme-choice]'));
+  var mql=window.matchMedia('(prefers-color-scheme: dark)');
+  function apply(){{
+    var c=document.documentElement.dataset.themeChoice||'system', mode=c==='system'?(mql.matches?'dark':'light'):c;
+    document.documentElement.dataset.theme=mode;
+    buttons.forEach(function(b){{b.setAttribute('aria-pressed',String(b.dataset.themeChoice===c));}});
+  }}
+  buttons.forEach(function(b){{b.addEventListener('click',function(){{document.documentElement.dataset.themeChoice=b.dataset.themeChoice;try{{localStorage.setItem(KEY,b.dataset.themeChoice);}}catch(e){{}}apply();}});}});
+  try{{mql.addEventListener('change',apply);}}catch(e){{}}
+  apply();
+}})();
+</script>
+</body>
+</html>'''
+
+
 def main() -> int:
     svgs = {d["id"]: render_svg(d["dot"]) for d in DOCS}
     targets = {}
     for d in DOCS:
         targets[OUT / f"{d['id']}.md"] = write_md(d)
+        targets[OUT / f"{d['id']}.html"] = single_page(d, svgs[d["id"]])
     targets[OUT / "extra_flows.html"] = html_page(DOCS, svgs)
     if "--check" in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in targets.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
