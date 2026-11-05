@@ -3,6 +3,34 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.45] - 2026-11-05 13:22
+
+### 新增（E0 扩展运行时）
+
+- `ExpansionManifest`：pack.json 解析/校验；
+- `ExpansionRegistry`：扫描 `expansions/`、preset 解析、core_api 检查、依赖/冲突/变体组校验；
+- `ExpansionSet`：启用集合、slot 选择、set hash；
+- `FeatureFlags`：从 ExpansionSet 生成；
+- `ExpansionBoot`：启动加载 baseline；
+- `MissionRuntime` 接收 ExpansionSet，黑匣子 meta 记录 set hash；
+- `main` 默认加载 `baseline`（无包），不影响标准班；
+- 两个 no-op L1 实验包 A/B + baseline/A/B/invalid preset；
+- `./run.sh expansions-check`：8 项校验（含同组互斥与 A/B 运行）。
+
+### 文档
+
+- `expansions/00_可插拔扩展架构` 升到 v0.3：E0 已实现，L1 内容未实现；
+- `expansions/README` 说明运行时地基；
+- README 增加 `expansions-check`。
+
+### 验证
+
+- `./run.sh test` 73/73；
+- `./run.sh check` 退出码 0；
+- `./run.sh expansions-check` 8/8；
+- `./run.sh editor-test` 通过；
+- 标准班仍 B/40/59/9。
+
 ## [0.1.44] - 2026-11-05 13:18
 
 ### 新增

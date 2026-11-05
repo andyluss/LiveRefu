@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "lb.exp.l1.shift_a",
+  "name": "L1 班次 A（比较用）",
+  "version": "0.1.0",
+  "state": "experimental",
+  "layer": "L1",
+  "variant_group": "L1.shift",
+  "core_api": ">=0.1 <1.0",
+  "requires": [],
+  "conflicts": [],
+  "provides": ["procedure.checklist"],
+  "content": {},
+  "modules": [],
+  "ui": [],
+  "flags": {"default": false}
+}

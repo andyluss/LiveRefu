@@ -9,6 +9,7 @@ const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
 const ReadModelScript = preload("res://scripts/application/mission_read_model.gd")
 const InputScript = preload("res://scripts/presentation/game_input.gd")
 const RendererScript = preload("res://scripts/presentation/game_renderer.gd")
+const ExpansionBootScript = preload("res://scripts/expansion/expansion_boot.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -127,7 +128,9 @@ func _process(delta: float) -> void:
 
 
 func _new_sim() -> void:
-	runtime = RuntimeScript.new(data)
+	var boot: LiveBayResult = ExpansionBootScript.load_preset("res://data/expansion_sets/baseline.json")
+	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
+	runtime = RuntimeScript.new(data, expansion_set)
 	sim = runtime.sim
 	sim.tower_fired.connect(_on_tower_fired)
 	sim.game_won.connect(_on_game_won)

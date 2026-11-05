@@ -56,8 +56,11 @@ case "$CMD" in
   replay)
     exec "$GODOT" --headless --path "$GAME" --script tests/replay_blackbox.gd -- "${@:2}"
     ;;
+  expansions-check)
+    exec "$GODOT" --headless --path "$GAME" --script tests/test_expansions.gd
+    ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|numbers|numbers-check|pack|pack-check|merge]" >&2
+    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|numbers|numbers-check|pack|pack-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2
@@ -69,6 +72,7 @@ case "$CMD" in
     echo "  pack-check     校验 MissionPack 清单是否最新" >&2
     echo "  editor-test    检查编辑器数据桥（读取 + numbers 校验）" >&2
     echo "  replay         回放最新黑匣子（可传路径）" >&2
+    echo "  expansions-check 校验扩展包/preset/变体互斥" >&2
     echo "  merge          把 design01 的 HTML 融合成单文件" >&2
     exit 1
     ;;

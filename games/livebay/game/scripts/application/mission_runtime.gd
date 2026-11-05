@@ -12,12 +12,16 @@ var clock: LiveBayMissionClock
 var events: LiveBayEventBus
 var commands: LiveBayCommandBus
 var blackbox: LiveBayBlackBox
+var expansion_set: LiveBayExpansionSet
+var flags: LiveBayFeatureFlags
 var _blackbox_meta: Dictionary
 var _connections: Array = []
 
 
-func _init(game_data: Dictionary) -> void:
+func _init(game_data: Dictionary, initial_set: LiveBayExpansionSet = null) -> void:
 	data = game_data
+	expansion_set = initial_set if initial_set != null else LiveBayExpansionSet.empty()
+	flags = LiveBayFeatureFlags.from_set(expansion_set)
 	clock = LiveBayMissionClock.new()
 	events = LiveBayEventBus.new()
 	commands = LiveBayCommandBus.new()
@@ -26,6 +30,7 @@ func _init(game_data: Dictionary) -> void:
 		"pack": "livebay.bay01",
 		"schema": 0,
 		"mode": "runtime",
+		"expansion_set": expansion_set.to_meta(),
 	}
 	events.subscribe_all(func(envelope: Dictionary): blackbox.record(envelope))
 	_new_sim()

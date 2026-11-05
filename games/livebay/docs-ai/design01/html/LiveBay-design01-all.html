@@ -1943,7 +1943,7 @@ a.button:not(.ghost) { color: #fff; }
 </tbody>
 </table></div>
 <blockquote>
-<p>详见 <a href="#doc-expansions-00-可插拔扩展架构">可插拔扩展架构</a>。架构方案已裁决，代码未实现。</p>
+<p>详见 <a href="#doc-expansions-00-可插拔扩展架构">可插拔扩展架构</a>。架构方案已裁决；E0 运行时已实现，L1 内容未实现。</p>
 </blockquote>
 <h2 id="doc-11-待人类裁决清单--八p6玩法扩展切片2026-11-05">八、P6：玩法扩展切片（2026-11-05）</h2>
 <div class="table-wrap"><table>
@@ -5393,10 +5393,10 @@ a.button:not(.ghost) { color: #fff; }
 </ul>
 <p>它不新增「人机融合」的奇观，而是让玩家在现有三塔上做一次<strong>岗位判断</strong>。</p>
 <p>（本篇完）</p><p class="merged-back"><a href="#top">↑ 返回总目录</a></p></section><section class="merged-doc" id="doc-expansions-README" data-doc="README.html"><h1 id="doc-expansions-README--玩法扩展分层设计">玩法扩展：分层设计</h1>
-<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>玩法扩展参考（分层）</dd><dt>状态</dt><dd>已裁决 v0.2（D17/E17 按建议通过；未实现）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 设计（展开）</dd><dt>遵循规则</dt><dd><a href="#rule-DES-A1">DES-A1</a> · <a href="#rule-DES-A2">DES-A2</a> · <a href="#rule-DES-B1">DES-B1</a> · <a href="#rule-BIZ-B1">BIZ-B1</a></dd><dt>上游</dt><dd><a href="#doc-04-塔防玩法">04_塔防玩法</a> · <a href="#doc-06-沉浸体验玩法">06_沉浸体验玩法</a> · <a href="#doc-07-放置养成玩法">07_放置养成玩法</a> · <a href="#doc-09-三玩法联动">09_三玩法联动</a> · <a href="#doc-14-塔防NASApunk深化">14_塔防NASApunk深化</a></dd><dt>关联</dt><dd><a href="#doc-11-待人类裁决清单">11_待人类裁决清单</a> · <a href="#doc-12-技术方案-Godot工程">12_技术方案_Godot工程</a> · <a href="16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a></dd></dl></div>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>玩法扩展参考（分层）</dd><dt>状态</dt><dd>已裁决 v0.3（D17/E17 通过；E0 运行时已实现；L1 内容未实现）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 设计（展开）</dd><dt>遵循规则</dt><dd><a href="#rule-DES-A1">DES-A1</a> · <a href="#rule-DES-A2">DES-A2</a> · <a href="#rule-DES-B1">DES-B1</a> · <a href="#rule-BIZ-B1">BIZ-B1</a></dd><dt>上游</dt><dd><a href="#doc-04-塔防玩法">04_塔防玩法</a> · <a href="#doc-06-沉浸体验玩法">06_沉浸体验玩法</a> · <a href="#doc-07-放置养成玩法">07_放置养成玩法</a> · <a href="#doc-09-三玩法联动">09_三玩法联动</a> · <a href="#doc-14-塔防NASApunk深化">14_塔防NASApunk深化</a></dd><dt>关联</dt><dd><a href="#doc-11-待人类裁决清单">11_待人类裁决清单</a> · <a href="#doc-12-技术方案-Godot工程">12_技术方案_Godot工程</a> · <a href="16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a></dd></dl></div>
 <blockquote>
 <p><strong>一句话</strong>：不新增第四种玩法，把现有的「一班」往深里做：班次层（L1）→ 岗位层（L2）→ 城市层（L3）。每一层都能单独试玩，也能单独砍掉。</p>
-<p><strong>状态</strong>：2026-11-05 人类确认扩展包架构与 E17 切片全部按建议通过；方向已定，代码未实现。所有数字仍是量级，不是承诺。</p>
+<p><strong>状态</strong>：2026-11-05 人类确认扩展包架构与 E17 切片全部按建议通过；E0 运行时（registry/preset/variant_group）已实现，L1 内容未实现。所有数字仍是量级，不是承诺。</p>
 </blockquote>
 <h2 id="doc-expansions-README--一为什么分层而不是继续加模式">一、为什么分层，而不是继续加模式</h2>
 <p>LiveBay 已经有三支柱：塔防、沉浸、放置。现在的问题不是「模式不够」，而是：</p>
@@ -6475,10 +6475,10 @@ L0 一班：地图 · 3 塔 · 4 敌 · 5 波</code></pre>
 <h2 id="doc-expansions-05-版本切片与决策--六一句话">六、一句话</h2>
 <p><strong>先让「这一班」值得重玩，再让「这个岗位」值得养，最后让「这座城」值得回来。</strong></p>
 <p>（本篇完）</p><p class="merged-back"><a href="#top">↑ 返回总目录</a></p></section><section class="merged-doc" id="doc-expansions-00-可插拔扩展架构" data-doc="00_可插拔扩展架构.html"><h1 id="doc-expansions-00-可插拔扩展架构--可插拔扩展架构">可插拔扩展架构</h1>
-<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（扩展包架构）</dd><dt>状态</dt><dd>已裁决 v0.2（D17-X1–X6 按建议通过；未实现）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="#rule-TECH-A1">TECH-A1</a> · <a href="#rule-TECH-A2">TECH-A2</a> · <a href="#rule-TECH-B1">TECH-B1</a> · <a href="#rule-TECH-B2">TECH-B2</a></dd><dt>上游</dt><dd><a href="16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a> · <a href="#doc-expansions-README">README</a></dd><dt>关联</dt><dd><a href="#doc-expansions-01-分层总览">01_分层总览</a> · <a href="#doc-expansions-05-版本切片与决策">05_版本切片与决策</a> · <a href="#doc-12-技术方案-Godot工程">12_技术方案_Godot工程</a></dd></dl></div>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>工程参考（扩展包架构）</dd><dt>状态</dt><dd>已裁决 v0.3（D17-X1–X6 通过；E0 运行时已实现；L1 内容未实现）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 起草，人类参考</dd><dt>决策权</dt><dd>人类（是否采纳）/ 工程（实现）</dd><dt>遵循规则</dt><dd><a href="#rule-TECH-A1">TECH-A1</a> · <a href="#rule-TECH-A2">TECH-A2</a> · <a href="#rule-TECH-B1">TECH-B1</a> · <a href="#rule-TECH-B2">TECH-B2</a></dd><dt>上游</dt><dd><a href="16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a> · <a href="#doc-expansions-README">README</a></dd><dt>关联</dt><dd><a href="#doc-expansions-01-分层总览">01_分层总览</a> · <a href="#doc-expansions-05-版本切片与决策">05_版本切片与决策</a> · <a href="#doc-12-技术方案-Godot工程">12_技术方案_Godot工程</a></dd></dl></div>
 <blockquote>
 <p><strong>一句话</strong>：玩法扩展不是往 <code>Sim</code> 里加 <code>if</code>，而是做成<strong>可启停的扩展包</strong>：有自己的 manifest、内容、模块、存档命名空间和实验开关；关掉它，主体玩法仍然完整。</p>
-<p><strong>状态</strong>：2026-11-05 人类确认 D17-X1–X6 全部按建议通过；本文从参考稿升级为已裁决方案，代码仍未实现。</p>
+<p><strong>状态</strong>：2026-11-05 人类确认 D17-X1–X6 全部按建议通过；<strong>E0 运行时已实现</strong>（manifest/registry/preset/variant_group/ExpansionSet），L1 玩法内容仍未实现。</p>
 <p><strong>目标</strong>：开发期可以不断试 L1/L2/L3 的新玩法，各自独立启停；只有通过验收的包才进入正式发布预设。</p>
 </blockquote>
 <h2 id="doc-expansions-00-可插拔扩展架构--一问题为什么现在的扩展还不够可插拔">一、问题：为什么现在的扩展还不够“可插拔”</h2>
@@ -7095,7 +7095,7 @@ settings.section</code></pre>
 <tr>
 <td>E0</td>
 <td>manifest + registry + preset + flags（无内容）</td>
-<td>baseline 73 项不变</td>
+<td>✅ 已实现：baseline 73 项不变 + <code>expansions-check</code></td>
 </tr>
 <tr>
 <td>E1</td>

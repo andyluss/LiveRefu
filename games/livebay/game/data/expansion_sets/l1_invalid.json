@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "id": "l1_invalid",
+  "packs": ["lb.exp.l1.shift_a", "lb.exp.l1.shift_b"],
+  "slots": {}
+}
