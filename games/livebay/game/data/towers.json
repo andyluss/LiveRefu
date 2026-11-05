@@ -24,6 +24,19 @@
     "description": "范围脉冲，造成伤害并减速。适合处理密集的小型目标。"
   },
   {
+    "id": "tractor",
+    "name": "牵引锚",
+    "cost": 55,
+    "range": 110,
+    "damage": 4,
+    "fire_rate": 0.6,
+    "kind": "aoe",
+    "slow": 0.5,
+    "slow_duration": 2.0,
+    "color": "#5C7C8A",
+    "description": "范围牵引，低伤害、强减速；适合把敌人留在射程里。"
+  },
+  {
     "id": "supply",
     "name": "补给塔",
     "cost": 40,

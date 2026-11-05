@@ -133,8 +133,10 @@ func _test_kernel(data: Dictionary) -> void:
 
 
 func _test_data(data: Dictionary) -> void:
-	_check(data.towers.size() == 3, "3 towers")
-	_check(data.enemies.size() == 4, "4 enemies")
+	_check(data.towers.size() == 4, "4 towers")
+	_check(data.enemies.size() == 5, "5 enemies")
+	_check(data.towers_by_id.has("tractor"), "tractor tower exists")
+	_check(data.enemies_by_id.has("armor"), "armor enemy exists")
 	_check(data.enemies_by_id.has("fault"), "fault enemy exists")
 	_check(String(data.enemies_by_id["fault"].get("behavior", "")) == "reverse", "fault moves in reverse")
 	_check(data.waves.size() == 5, "5 waves")

@@ -106,7 +106,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.75</span> · 2026-11-05</div>
+      <div class="stamp">v<span data-fact="version">0.1.76</span> · 2026-11-05</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -133,16 +133,16 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <p class="lede">LiveBay 是 NASApunk 岗位塔防 + 沉浸体验 + 放置养成的垂直切片。你不是指挥官；你是外环第七段的一个值班人，在 5 波压力里决定先修哪台设备、先守哪段弧。</p>
     <div class="stats">
       <div class="stat p"><div class="v" data-fact="maps">1</div><div class="l">可玩地图</div></div>
-      <div class="stat p"><div class="v" data-fact="towers">3</div><div class="l">塔型</div></div>
-      <div class="stat r"><div class="v" data-fact="enemies">4</div><div class="l">敌人 / 故障</div></div>
+      <div class="stat p"><div class="v" data-fact="towers">4</div><div class="l">塔型</div></div>
+      <div class="stat r"><div class="v" data-fact="enemies">5</div><div class="l">敌人 / 故障</div></div>
       <div class="stat o"><div class="v" data-fact="waves">5</div><div class="l">波次</div></div>
       <div class="stat p"><div class="v" data-fact="slots">7</div><div class="l">固定塔位</div></div>
       <div class="stat p"><div class="v" data-fact="professions">1</div><div class="l">示例职业</div></div>
-      <div class="stat o"><div class="v" data-fact="tests">73</div><div class="l">无头断言</div></div>
+      <div class="stat o"><div class="v" data-fact="tests">75</div><div class="l">无头断言</div></div>
       <div class="stat o"><div class="v" data-fact="expansions">34</div><div class="l">扩展检查</div></div>
     </div>
     <div class="grid g2" style="margin-top:18px">
-      <article class="card"><h4>它已经能玩什么</h4><p>外环第七段弧形路径、3 种塔、4 种敌人（含内部故障）、5 波、准备/交战/整备/结算、建造/升级/出售/暂停/倍速/存档；无头测试可复现胜负。</p></article>
+      <article class="card"><h4>它已经能玩什么</h4><p>外环第七段弧形路径、4 种塔、5 种敌人（含内部故障）、5 波、准备/交战/整备/结算、建造/升级/出售/暂停/倍速/存档；无头测试可复现胜负。</p></article>
       <article class="card"><h4>它还不是什么</h4><p>不是完整游戏，不是 L2/L3 城市模拟，也不是最终平衡。所有中文名词和数值仍是工程占位；正式内容要等人类裁决与内容生产。</p></article>
       <article class="card"><h4>这一版最想验证</h4><p>10 分钟闭环：玩家是否能在一次班次里理解“供能—建造—故障—修复—评级”的因果，并愿意再来一班。</p></article>
       <article class="card"><h4>最先读什么</h4><p>第一次听说：<a href="GUIDE.html">GUIDE</a> 的「三十秒版本」。想参与判断：本页「决策」与「风险/下一步」，再回 <a href="../docs-ai/design01/11_待人类裁决清单.md">11 待裁决清单</a>。</p></article>
@@ -173,7 +173,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <h2>到哪了：垂直切片 + 扩展运行时</h2>
     <p class="lede">当前不是“做完了”，而是“核心闭环成立，正在把岗位/班次/扩展做成可复用的结构”。</p>
     <ol class="tl">
-      <li class="done"><b>核心闭环</b><br><span>1 职业 / 1 图 / 5 波 / 3 塔 / 4 敌人；胜负、评级、存档、黑匣子回放。</span></li>
+      <li class="done"><b>核心闭环</b><br><span>1 职业 / 1 图 / 5 波 / 4 塔 / 5 敌人；胜负、评级、存档、黑匣子回放。</span></li>
       <li class="done"><b>NASApunk 轻量包</b><br><span>检查单、故障、低报、事故记录的设计已进入文档与样例。</span></li>
       <li class="done"><b>编辑器与数据桥</b><br><span>LiveBay Tools：地图/塔位拖动、射程预览、波次时间轴、写回 numbers。</span></li>
       <li class="done"><b>模块化</b><br><span>MissionRuntime + 时钟/事件/命令/黑匣子 + 7 个领域模块；MissionPack 编译。</span></li>
@@ -182,7 +182,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     </ol>
     <div class="note warn"><b>状态边界：</b>扩展包 A/B/C 是 <span data-fact="l1_variants">3</span> 个样例，不是正式关卡；W5 故障命中暂停只做样例；L2/L3 还没进入工程。</div>
     <h3>工程证据</h3>
-    <p class="lede"><span data-fact="tests">73</span> 项无头断言、<span data-fact="expansions">34</span> 项扩展检查、<span data-fact="l1_variants">3</span> 个 L1 样例变体、<span data-fact="doc_pages">49</span> 个 design01 HTML 页面；<code>./run.sh check</code> 无头启动、<code>./run.sh editor-test</code> 编辑器数据桥冒烟、<code>./run.sh compare</code> A/B/C 对比。</p>
+    <p class="lede"><span data-fact="tests">75</span> 项无头断言、<span data-fact="expansions">34</span> 项扩展检查、<span data-fact="l1_variants">3</span> 个 L1 样例变体、<span data-fact="doc_pages">49</span> 个 design01 HTML 页面；<code>./run.sh check</code> 无头启动、<code>./run.sh editor-test</code> 编辑器数据桥冒烟、<code>./run.sh compare</code> A/B/C 对比。</p>
   </section>
 
   <section class="panel" id="p4" role="tabpanel" aria-labelledby="t4">
@@ -210,10 +210,11 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <div class="grid g3">
       <article class="card"><h4>拦截炮 · 30</h4><p>单体、优先最靠近湾口；便宜，是前期骨架。</p></article>
       <article class="card"><h4>脉冲环 · 45</h4><p>范围伤害 + 减速；处理密集小型目标，但贵。</p></article>
+      <article class="card"><h4>牵引锚 · 55</h4><p>范围强减速、低伤害；把敌人留在射程里，和脉冲环分工。</p></article>
       <article class="card"><h4>补给塔 · 40</h4><p>每 5 秒产供能，每波修复保障度；不输出，是长期投资。</p></article>
     </div>
     <div class="grid g2" style="margin-top:18px">
-      <article class="card"><h4>敌人</h4><p>碎片：慢、数量多。乱流：快、容易漏。重壳：血厚、漏过伤害高。故障：反向扩散、让塔离线。</p></article>
+      <article class="card"><h4>敌人</h4><p>碎片：慢、数量多。乱流：快、容易漏。重壳：血厚。装甲片：血厚且慢。故障：反向扩散、让塔离线。</p></article>
       <article class="card"><h4>波次</h4><p>5 波，准备时间从 30 秒递减到 20 秒；第 4/5 波引入故障，压力从“输出”转向“处置”。</p></article>
     </div>
     <h3>数值与内容入口</h3>

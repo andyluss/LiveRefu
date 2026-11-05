@@ -74,6 +74,12 @@
         "count": 1,
         "interval": 1.0,
         "delay": 6.0
+      },
+      {
+        "enemy": "armor",
+        "count": 1,
+        "interval": 2.0,
+        "delay": 12.0
       }
     ]
   },

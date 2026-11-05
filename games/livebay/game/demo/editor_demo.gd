@@ -349,7 +349,7 @@ func _draw_summary() -> void:
 	for i in range(items.size()):
 		draw_circle(Vector2(74, 220 + i * 34), 4, ORANGE if i < 3 else TEAL)
 		_text(Vector2(92, 226 + i * 34), items[i], 14, CREAM)
-	_text(Vector2(70, 610), "LiveBay · 外环第七段  |  7 塔位 · 5 波 · 3 塔 · 4 敌", 11, MUTED, true)
+	_text(Vector2(70, 610), "LiveBay · 外环第七段  |  7 塔位 · 5 波 · 4 塔 · 5 敌", 11, MUTED, true)
 	_text(Vector2(920, 680), "程序化演示 · 2026-11-04", 10, MUTED, true)
 
 

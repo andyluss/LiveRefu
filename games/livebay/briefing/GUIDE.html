@@ -111,7 +111,7 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
     <p class="dim">LiveBay · 逍遥湾 · 给第一次听说它的人</p>
     <h1>你是一个值班人，<br>不是指挥官。</h1>
     <p class="lead">在一座月牙形的移动太空城里，你守外环的一段舱壁。敌人不是“邪恶军团”，而是星际尘埃、乱流、重壳，以及从湾口反向扩散的内部故障。你要做的不是打赢一场战争，而是让这一班安全过去。</p>
-    <div class="box tip"><h3>三十秒版本</h3><p>用供能造 <b>3 种塔</b>，守住 <b>7 个固定塔位</b>，扛过 <b>5 波</b>敌人。漏过敌人会扣保障度；保障度归零就失败。第 4/5 波的「故障」会让塔短暂离线——先修输出还是先保经济，是这一班的核心选择。</p></div>
+    <div class="box tip"><h3>三十秒版本</h3><p>用供能造 <b>4 种塔</b>，守住 <b>7 个固定塔位</b>，扛过 <b>5 波</b>敌人。漏过敌人会扣保障度；保障度归零就失败。第 4/5 波的「故障」会让塔短暂离线——先修输出还是先保经济，是这一班的核心选择。</p></div>
   </section>
 
   <section id="s2">
@@ -136,7 +136,7 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
   </section>
 
   <section id="s4">
-    <h2><span class="n">03</span>三座塔，三种职责</h2>
+    <h2><span class="n">03</span>4 座塔，各有职责</h2>
     <div class="grid3"><article class="card">
       <div class="card-top"><h3>拦截炮</h3><span class="cost">30 供能</span></div>
       <p>单体射击，优先攻击最靠近湾口的敌人。</p>
@@ -146,6 +146,10 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
       <p>范围脉冲，造成伤害并减速。适合处理密集的小型目标。</p>
       <div class="kv"><span>伤害 <b>5</b></span><span>射程 <b>105</b></span><span>攻速 <b>0.8</b></span></div>
     </article><article class="card">
+      <div class="card-top"><h3>牵引锚</h3><span class="cost">55 供能</span></div>
+      <p>范围牵引，低伤害、强减速；适合把敌人留在射程里。</p>
+      <div class="kv"><span>伤害 <b>4</b></span><span>射程 <b>110</b></span><span>攻速 <b>0.6</b></span></div>
+    </article><article class="card">
       <div class="card-top"><h3>补给塔</h3><span class="cost">40 供能</span></div>
       <p>每 5 秒产出供能，每波结束修复少量保障度。</p>
       <div class="kv"><span>伤害 <b>0</b></span><span>射程 <b>0</b></span><span>攻速 <b>0</b></span></div>
@@ -154,14 +158,16 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
   </section>
 
   <section id="s5">
-    <h2><span class="n">04</span>四种敌人：压力不是一种</h2>
+    <h2><span class="n">04</span>5 种敌人：压力不是一种</h2>
     <table><thead><tr><th>敌人</th><th>HP</th><th>速度</th><th>漏过伤害</th><th>行为</th></tr></thead><tbody><tr><td><b>碎片</b><br><span class="dim">星际尘埃结块，缓慢但数量多。</span></td>
       <td class="q">30</td><td class="q">45</td>
       <td class="q">8</td><td>normal</td></tr><tr><td><b>乱流</b><br><span class="dim">局部湍流，速度很快，容易漏过。</span></td>
       <td class="q">20</td><td class="q">85</td>
       <td class="q">6</td><td>normal</td></tr><tr><td><b>重壳</b><br><span class="dim">致密残骸，血厚速度慢，漏过伤害高。</span></td>
       <td class="q">90</td><td class="q">30</td>
-      <td class="q">18</td><td>normal</td></tr><tr><td><b>故障</b><br><span class="dim">内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。</span></td>
+      <td class="q">18</td><td>normal</td></tr><tr><td><b>装甲片</b><br><span class="dim">高密度装甲残片，血厚、慢，漏过伤害高。</span></td>
+      <td class="q">60</td><td class="q">38</td>
+      <td class="q">16</td><td>normal</td></tr><tr><td><b>故障</b><br><span class="dim">内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。</span></td>
       <td class="q">36</td><td class="q">58</td>
       <td class="q">0</td><td>reverse</td></tr></tbody></table>
     <p>第 4/5 波出现「故障」：从湾口反向扩散，经过塔位时让塔短暂离线。</p>
@@ -169,7 +175,7 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
 
   <section id="s6">
     <h2><span class="n">05</span>五波：从数量到处置</h2>
-    <svg viewBox="0 0 860 240" class="chart" role="img" aria-label="每波敌人数量与总血量"><rect x="7.1" y="167.3" width="69.8" height="30.7" rx="4" fill="#D9622F" opacity=".78"/><text x="42.0" y="160.3" class="lbl">6 敌 / 180 HP</text><text x="42.0" y="216.0" class="lbl">第 1 波</text><rect x="201.1" y="143.5" width="69.8" height="54.5" rx="4" fill="#D9622F" opacity=".78"/><text x="236.0" y="136.5" class="lbl">12 敌 / 320 HP</text><text x="236.0" y="216.0" class="lbl">第 2 波</text><rect x="395.1" y="146.9" width="69.8" height="51.1" rx="4" fill="#D9622F" opacity=".78"/><text x="430.0" y="139.9" class="lbl">8 敌 / 300 HP</text><text x="430.0" y="216.0" class="lbl">第 3 波</text><rect x="589.1" y="89.7" width="69.8" height="108.3" rx="4" fill="#D9622F" opacity=".78"/><text x="624.0" y="82.7" class="lbl">19 敌 / 636 HP</text><text x="624.0" y="216.0" class="lbl">第 4 波</text><rect x="783.1" y="42.0" width="69.8" height="156.0" rx="4" fill="#D9622F" opacity=".78"/><text x="818.0" y="35.0" class="lbl">25 敌 / 916 HP</text><text x="818.0" y="216.0" class="lbl">第 5 波</text></svg>
+    <svg viewBox="0 0 860 240" class="chart" role="img" aria-label="每波敌人数量与总血量"><rect x="7.1" y="167.3" width="69.8" height="30.7" rx="4" fill="#D9622F" opacity=".78"/><text x="42.0" y="160.3" class="lbl">6 敌 / 180 HP</text><text x="42.0" y="216.0" class="lbl">第 1 波</text><rect x="201.1" y="143.5" width="69.8" height="54.5" rx="4" fill="#D9622F" opacity=".78"/><text x="236.0" y="136.5" class="lbl">12 敌 / 320 HP</text><text x="236.0" y="216.0" class="lbl">第 2 波</text><rect x="395.1" y="146.9" width="69.8" height="51.1" rx="4" fill="#D9622F" opacity=".78"/><text x="430.0" y="139.9" class="lbl">8 敌 / 300 HP</text><text x="430.0" y="216.0" class="lbl">第 3 波</text><rect x="589.1" y="79.5" width="69.8" height="118.5" rx="4" fill="#D9622F" opacity=".78"/><text x="624.0" y="72.5" class="lbl">20 敌 / 696 HP</text><text x="624.0" y="216.0" class="lbl">第 4 波</text><rect x="783.1" y="42.0" width="69.8" height="156.0" rx="4" fill="#D9622F" opacity=".78"/><text x="818.0" y="35.0" class="lbl">25 敌 / 916 HP</text><text x="818.0" y="216.0" class="lbl">第 5 波</text></svg>
     <p>前 3 波主要考“输出够不够”，第 4/5 波开始考“故障来了怎么办”。柱状图是每波敌人数量与总血量，不是难度评分；真正的难度还取决于路径、塔位和你的建造顺序。</p>
   </section>
 

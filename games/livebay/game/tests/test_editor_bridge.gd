@@ -27,4 +27,4 @@ func _initialize() -> void:
 	var preview_ok: bool = pv.running and not preview_msg.begins_with("没有") and not preview_msg.begins_with("无法")
 	pv.stop_preview()
 	pv.queue_free()
-	quit(0 if data.get("ok", false) and check.get("ok", false) and slots == 7 and towers_count == 3 and waves == 5 and enemies == 4 and preview_ok else 1)
+	quit(0 if data.get("ok", false) and check.get("ok", false) and slots == 7 and towers_count == 4 and waves == 5 and enemies == 5 and preview_ok else 1)

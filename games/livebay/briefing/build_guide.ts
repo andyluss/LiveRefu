@@ -85,6 +85,7 @@ function build(): string {
   const totalSlots = mapdata.slots.length;
   const totalWaves = waves.length;
   const totalTowers = towers.length;
+  const totalEnemies = enemies.length;
   const startEnergy = Number(balance.starting_energy ?? 0);
   const startIntegrity = Number(balance.starting_integrity ?? 0);
 
@@ -238,13 +239,13 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
   </section>
 
   <section id="s4">
-    <h2><span class="n">03</span>三座塔，三种职责</h2>
+    <h2><span class="n">03</span>${totalTowers} 座塔，各有职责</h2>
     <div class="grid3">${towerCards}</div>
     <p class="dim">塔位固定，不能随便挪；升级提高伤害/射程/产出，出售返还一部分投入。</p>
   </section>
 
   <section id="s5">
-    <h2><span class="n">04</span>四种敌人：压力不是一种</h2>
+    <h2><span class="n">04</span>${totalEnemies} 种敌人：压力不是一种</h2>
     <table><thead><tr><th>敌人</th><th>HP</th><th>速度</th><th>漏过伤害</th><th>行为</th></tr></thead><tbody>${enemyRows}</tbody></table>
     <p>${faultText}</p>
   </section>

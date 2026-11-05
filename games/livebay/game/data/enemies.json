@@ -36,6 +36,18 @@
     "description": "致密残骸，血厚速度慢，漏过伤害高。"
   },
   {
+    "id": "armor",
+    "name": "装甲片",
+    "hp": 60,
+    "speed": 38,
+    "reward": 12,
+    "leak_damage": 16,
+    "radius": 12,
+    "shape": "hexagon",
+    "color": "#5B6470",
+    "description": "高密度装甲残片，血厚、慢，漏过伤害高。"
+  },
+  {
     "id": "fault",
     "name": "故障",
     "hp": 36,
