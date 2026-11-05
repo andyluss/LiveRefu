@@ -12,11 +12,11 @@ rules:
   - "TECH-B2"
 upstream:
   - "12_技术方案_Godot工程.md"
-  - "14_塔防NASApunk深化.md"
+  - "../14_塔防NASApunk深化.md"
 related:
-  - "../../../../docs/retro-futurism/附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md"
-  - "../../game/"
-  - "11_待人类裁决清单.md"
+  - "../../../../../docs/retro-futurism/附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md"
+  - "../../../game/"
+  - "../11_待人类裁决清单.md"
 ---
 
 # 16 · 模块化技术架构：NASApunk 系统方案
@@ -29,7 +29,7 @@ related:
 
 ## 一、为什么现在还不够
 
-现行架构已经做对了最重要的一件事：**模拟与视图分离**（[TECH-A2](rules/tech/a02_模拟与视图分离.md)）。`sim.gd` 不依赖窗口，`main.gd` 只负责画和输入，`run_sim.gd` 可以无头跑完 5 波。这是继续模块化的地基，不是要推翻的东西。
+现行架构已经做对了最重要的一件事：**模拟与视图分离**（[TECH-A2](../rules/tech/a02_模拟与视图分离.md)）。`sim.gd` 不依赖窗口，`main.gd` 只负责画和输入，`run_sim.gd` 可以无头跑完 5 波。这是继续模块化的地基，不是要推翻的东西。
 
 但按 2026-11-04 的实际代码量看：
 
@@ -62,7 +62,7 @@ related:
 | M4 ReadModel / Presenter | ✅ 核心已实现 | ReadModel + Presenter + InputController + GameRenderer；HUD 构建仍在 `main.gd`，但不含规则 |
 | M5 MissionPack / schema | ✅ 已实现 | `tools/export_mission_pack.py` 编译 manifest/hash；`DataLoader` 读取清单；`numbers-check` 同时校验 |
 | M6 黑匣子回放 | ✅ 已实现 | 事件带 tick；`replay()` + `./run.sh replay` 可回放并比对结果 |
-| M7 Procedure/Fault 模块 | ⏳ 未开始 | 对应 [14](14_塔防NASApunk深化.md) |
+| M7 Procedure/Fault 模块 | ⏳ 未开始 | 对应 [14](../14_塔防NASApunk深化.md) |
 
 ## 二、NASApunk 的工程类比
 
@@ -330,7 +330,7 @@ BOOT
 ```
 
 - `PAUSED` / `SPEED` 不是阶段，是 `MissionClock` 的修饰；暂停不改变阶段。
-- 检查单打开时暂停 prep 计时（对应 [14](14_塔防NASApunk深化.md)）。
+- 检查单打开时暂停 prep 计时（对应 [14](../14_塔防NASApunk深化.md)）。
 - `REPORT` 阶段只接收记录选择，不推进波次。
 - `LOST/WON` 是 `MissionModule` 的结果，不是视图判断。
 
@@ -401,7 +401,7 @@ BOOT
 | `EnemyDef` | id、hp、speed、reward、leak_damage | 必填、hp>0、speed>0 |
 | `ProcedureDef` | card、wave、choices | 选项存在、收益可计算 |
 
-> 沿用 [TECH-A1](rules/tech/a01_单一数据源.md)：Markdown 仍是源，JSON/Pack 是导出物；`numbers-check` 仍是硬门槛。
+> 沿用 [TECH-A1](../rules/tech/a01_单一数据源.md)：Markdown 仍是源，JSON/Pack 是导出物；`numbers-check` 仍是硬门槛。
 
 ## 九、故障、冗余与降级
 
@@ -461,7 +461,7 @@ READ_ONLY        回放/调试，只读黑匣子
 | 视图 smoke | 2–3 | 启动、结算、编辑器预览 |
 | 故障注入 | 3–5 | 数据损坏、模块异常、存档损坏 |
 
-验收命令沿用 [TECH-B2](rules/tech/b02_验收与不回归.md)，新增：
+验收命令沿用 [TECH-B2](../rules/tech/b02_验收与不回归.md)，新增：
 
 ```bash
 ./run.sh test          # 模块 + golden + 集成
@@ -571,7 +571,7 @@ game/
 | M4 | `ReadModel` + presenter + 视图拆分 | 3–5 天 | 视图 smoke + 截图对比 | 旧 `main` 入口 |
 | M5 | `MissionPack` + schema + 编译器 + 编辑器共用 | 3–5 天 | `numbers-check` + Pack 校验 | 旧 DataLoader |
 | M6 | 黑匣子 / 回放 / 诊断面板 | 2–3 天 | `trace-check` | 关闭日志 |
-| M7 | 把 [14](14_塔防NASApunk深化.md) 的检查单/旁路/记录做成 `Procedure`/`Fault` 模块 | 3–5 天 | 8–10 条新断言 | 功能开关 |
+| M7 | 把 [14](../14_塔防NASApunk深化.md) 的检查单/旁路/记录做成 `Procedure`/`Fault` 模块 | 3–5 天 | 8–10 条新断言 | 功能开关 |
 
 > 总计约 3–4 周（单人、非全职估算）；如果只做 M0–M3，先把规则模块化，也能获得大部分收益。
 
@@ -631,14 +631,14 @@ game/
 ## 十七、与现有文档的关系
 
 - [12](12_技术方案_Godot工程.md) 是**现行**工程事实；本文是**下一阶段参考**，不替代 12。
-- [14](14_塔防NASApunk深化.md) 的检查单/降级/记录，是本文 `FaultModule` 与 `ProcedureModule` 的第一批真实需求；先有机制，再有模块。
+- [14](../14_塔防NASApunk深化.md) 的检查单/降级/记录，是本文 `FaultModule` 与 `ProcedureModule` 的第一批真实需求；先有机制，再有模块。
 - [15](15_专用游戏编辑器方案.md) 的编辑器，是本文 `PreviewHarness` + `EditorBridge` 的第一个适配器；不应再复制规则。
-- [TECH-A1](rules/tech/a01_单一数据源.md) 仍是数据主权；MissionPack 只是导出物的组织方式，不是新源。
-- [TECH-A2](rules/tech/a02_模拟与视图分离.md) 仍是底线；本文只是把「模拟」内部再分舱。
+- [TECH-A1](../rules/tech/a01_单一数据源.md) 仍是数据主权；MissionPack 只是导出物的组织方式，不是新源。
+- [TECH-A2](../rules/tech/a02_模拟与视图分离.md) 仍是底线；本文只是把「模拟」内部再分舱。
 
 ## 十八、扩展包架构
 
-玩法扩展的可插拔方案（manifest / preset / 层依赖 / 实验生命周期 / 发布 gate）见 [expansions/00](expansions/00_可插拔扩展架构.md)。它把本文的 ORU 模块延伸到「核心 + 扩展包」：核心不 import 具体包，包失败不阻塞核心。
+玩法扩展的可插拔方案（manifest / preset / 层依赖 / 实验生命周期 / 发布 gate）见 [expansions/00](../expansions/00_可插拔扩展架构.md)。它把本文的 ORU 模块延伸到「核心 + 扩展包」：核心不 import 具体包，包失败不阻塞核心。
 
 ## 十九、一句话总结
 

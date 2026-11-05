@@ -56,6 +56,6 @@
 
 ## 六、与 LiveBay 的关系
 
-LiveBay（《逍遥湾》）把本卷的美学当作**总体风格**，但不是照搬 NASA：它把「真实航天机构」替换成一座移动太空城的三环保障体系，把「任务」替换成「轮班与生活」。本卷因此也是 LiveBay 美术与世界观的上游参考之一，项目侧落地见 [`games/livebay/docs-ai/design01/08_美术与音频方向.md`](../../../games/livebay/docs-ai/design01/08_美术与音频方向.md)。
+LiveBay（《逍遥湾》）把本卷的美学当作**总体风格**，但不是照搬 NASA：它把「真实航天机构」替换成一座移动太空城的三环保障体系，把「任务」替换成「轮班与生活」。本卷因此也是 LiveBay 美术与世界观的上游参考之一，项目侧落地见 [`games/livebay/docs-ai/design01/art/08_美术与音频方向.md`](../../../games/livebay/docs-ai/design01/art/08_美术与音频方向.md)。
 
 > 一句话：NASApunk 的未来不是「我们终将抵达群星」，而是「今天这班岗，谁来接」。

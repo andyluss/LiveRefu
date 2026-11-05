@@ -36,7 +36,7 @@ DOC_GROUPS = [
         "expansions/00_可插拔扩展架构.html",
         "expansions/06_实现对照与验收.html",
     ]),
-    ("表现与工程", ["08_美术与音频方向.html", "12_技术方案_Godot工程.html", "15_专用游戏编辑器方案.html"]),
+    ("表现与工程", ["art/08_美术与音频方向.html", "tech/12_技术方案_Godot工程.html", "tech/15_专用游戏编辑器方案.html", "tech/16_模块化技术架构_NASApunk.html"]),
 ]
 
 RULE_FILES = [

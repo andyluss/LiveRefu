@@ -97,4 +97,4 @@ export_numbers.py → game/data/*.json
 - 插件保存会直接改 `numbers/05_地图与塔位.md`；建议先提交或备份；
 - 保存后 `game/data/map_bay01.json` 会由导出器重写，不要手改；
 - 如果 Python 路径不对，把 `PYTHON` 环境变量指向解释器，或在 `bridge_client.gd` 里改默认命令；
-- 这是 Phase 1 MVP，不是完整游戏编辑器；范围见 [15_专用游戏编辑器方案](../../../docs-ai/design01/15_专用游戏编辑器方案.md)。
+- 这是 Phase 1 MVP，不是完整游戏编辑器；范围见 [15_专用游戏编辑器方案](../../../docs-ai/design01/tech/15_专用游戏编辑器方案.md)。

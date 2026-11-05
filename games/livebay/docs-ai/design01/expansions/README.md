@@ -18,8 +18,8 @@ upstream:
   - "../14_塔防NASApunk深化.md"
 related:
   - "../11_待人类裁决清单.md"
-  - "../12_技术方案_Godot工程.md"
-  - "../16_模块化技术架构_NASApunk.md"
+  - "../tech/12_技术方案_Godot工程.md"
+  - "../tech/16_模块化技术架构_NASApunk.md"
 ---
 
 # 玩法扩展：分层设计

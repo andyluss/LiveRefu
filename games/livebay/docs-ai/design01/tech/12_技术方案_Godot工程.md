@@ -11,7 +11,7 @@ rules:
   - "TECH-B1"
   - "TECH-B2"
 upstream:
-  - "../../docs-human/概念设定.md"
+  - "../../../docs-human/概念设定.md"
 related:
   - "04_塔防玩法.md"
   - "../../game/"
