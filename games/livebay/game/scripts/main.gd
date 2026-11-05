@@ -11,6 +11,7 @@ const InputScript = preload("res://scripts/presentation/game_input.gd")
 const RendererScript = preload("res://scripts/presentation/game_renderer.gd")
 const ExpansionBootScript = preload("res://scripts/expansion/expansion_boot.gd")
 const ShiftMemoryScript = preload("res://scripts/application/shift_memory.gd")
+const ShiftStoreScript = preload("res://scripts/platform/shift_store.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -95,7 +96,7 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
-	shift_memory = ShiftMemoryScript.new()
+	shift_memory = ShiftMemoryScript.new(ShiftStoreScript.new())
 	font = SystemFont.new()
 	font.font_names = PackedStringArray([
 		"PingFang SC",
@@ -119,6 +120,8 @@ func _ready() -> void:
 	_new_sim()
 	_build_ui()
 	queue_redraw()
+	if shift_memory.has_last():
+		_show_briefing()
 
 
 func _process(delta: float) -> void:
@@ -523,6 +526,7 @@ func _restart() -> void:
 		return
 	runtime.reset()
 	sim = runtime.sim
+	sim.fault_duration_bonus = shift_memory.next_fault_bonus()
 	selected_slot = -1
 	beams.clear()
 	leak_flash = 0.0

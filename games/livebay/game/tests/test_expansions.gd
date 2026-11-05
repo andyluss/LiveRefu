@@ -65,6 +65,7 @@ func _initialize() -> void:
 	memory.record({"grade": "B", "integrity": 40}, "custom", 1)
 	var briefing: Dictionary = memory.briefing()
 	_check(not briefing.is_empty() and str(briefing.body).contains("低报"), "shift: briefing reads low report")
+	_check(is_equal_approx(memory.next_fault_bonus(), 1.0), "shift: low report carries fault +1s")
 	var result_a := _run_variant(data, a.data, "isolate")
 	var result_b := _run_variant(data, b.data, "isolate")
 	var result_c := _run_variant(data, c.data, "bypass")

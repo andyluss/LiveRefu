@@ -3,6 +3,24 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.52] - 2026-11-05 13:37
+
+### 新增
+
+- `ShiftStore`：上一班记录持久化到 `user://shift.json`；
+- `ShiftMemory` 启动时读取上一班；重新打开游戏也能看到接班简报；
+- 低报 carry：`low_report > 0` → 下一班 `fault_duration_bonus +1s`；
+- 简报明确显示「审计备注：下次故障停塔 +1s」；
+- `expansions-check` 增至 **18 项**。
+
+### 验证
+
+- `./run.sh test` 73/73；
+- `./run.sh check` 退出码 0；
+- `./run.sh expansions-check` 18/18；
+- `./run.sh editor-test` 通过；
+- baseline 仍 B/40/59/9。
+
 ## [0.1.51] - 2026-11-05 13:35
 
 ### 新增
