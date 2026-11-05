@@ -26,6 +26,8 @@ a:hover{border-bottom-color:var(--teal)}
 .guide-topbar-inner{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:18px}
 .guide-brand{flex:0 0 auto;color:var(--ink);text-decoration:none;font-weight:800;font-size:16px}
 .guide-brand span{color:var(--teal);font:10px var(--mono,Menlo,monospace);letter-spacing:.12em;margin-left:6px}
+.guide-hub-link{flex:0 0 auto;color:var(--teal);font-size:11px;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 9px;white-space:nowrap}
+.guide-hub-link:hover{border-color:var(--teal);background:var(--panel)}
 .guide-links{display:flex;gap:13px;flex:1;overflow-x:auto;padding:2px 0}
 .guide-links a{flex:0 0 auto;color:var(--dim);text-decoration:none;font-size:12px;border-bottom:1px solid transparent;padding:3px 0}
 .guide-links a:hover{color:var(--teal);border-bottom-color:var(--teal)}
@@ -71,6 +73,7 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
 .footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
 @media(max-width:720px){
   .guide-topbar-inner{padding:8px 18px;gap:10px;flex-wrap:wrap}
+  .guide-hub-link{font-size:10px;padding:2px 7px}
   .guide-links{order:3;flex-basis:100%;gap:12px;padding-bottom:4px}
   .guide-brand{font-size:15px} .wrap{padding-left:18px;padding-right:18px}
 }
@@ -85,10 +88,11 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
-<body data-page="guide">
+<body id="top" data-page="guide">
 <header class="guide-topbar">
   <div class="guide-topbar-inner">
-    <a class="guide-brand" href="HUB.html" title="返回项目 HUB" aria-label="返回 LiveBay 项目 HUB">LiveBay <span>GUIDE</span></a>
+    <a class="guide-brand" href="#top" title="回到顶部" aria-label="回到页面顶部">LiveBay <span>GUIDE</span></a>
+    <a class="guide-hub-link" href="HUB.html" title="返回项目 HUB" aria-label="返回 LiveBay 项目 HUB">项目 HUB ↗</a>
     <nav class="guide-links" aria-label="章节导航">
       <a href="#s1">三十秒</a><a href="#s2">一局</a><a href="#s3">资源</a><a href="#s4">塔</a><a href="#s5">敌人</a><a href="#s6">波次</a><a href="#s7">故障</a><a href="#s8">L1</a><a href="#s9">结果</a><a href="#s10">为什么</a><a href="#s11">词表</a>
     </nav>
