@@ -636,7 +636,11 @@ game/
 - [TECH-A1](rules/tech/a01_单一数据源.md) 仍是数据主权；MissionPack 只是导出物的组织方式，不是新源。
 - [TECH-A2](rules/tech/a02_模拟与视图分离.md) 仍是底线；本文只是把「模拟」内部再分舱。
 
-## 十八、一句话总结
+## 十八、扩展包架构
+
+玩法扩展的可插拔方案（manifest / preset / 层依赖 / 实验生命周期 / 发布 gate）见 [expansions/06](expansions/06_Pluggable_Expansion_Architecture.md)。它把本文的 ORU 模块延伸到「核心 + 扩展包」：核心不 import 具体包，包失败不阻塞核心。
+
+## 十九、一句话总结
 
 > 不是把 LiveBay 做成 NASA 的软件，而是让它在**坏一半的时候还能飞**：  
 > 模块能换，接口不飘，故障能隔离，黑匣子能回放，编辑器不再另造一套规则。

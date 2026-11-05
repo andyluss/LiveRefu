@@ -3,6 +3,30 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.42] - 2026-11-05 13:01
+
+### 变更
+
+- 玩法扩展目录由 `17_玩法扩展/` 改为长期英文名 **`expansions/`**，去掉了数字前缀；
+- 文档标题中的 `17.xx` 编号同步去掉，保留文件名序号用于阅读顺序；
+- HTML 阅读版路径改为 `html/expansions/`，旧路径不保留。
+
+### 新增
+
+- `expansions/06_Pluggable_Expansion_Architecture.md`：可插拔扩展包方案；
+- Pack manifest（id/version/state/layer/core_api/requires/conflicts/provides/flags）；
+- Preset（baseline / l1_experiment / release）与实验生命周期；
+- 层依赖采用能力/软依赖，不强制 L1→L2→L3；
+- 包命名空间、失败隔离、存档停用安全、构建期模块注册、发布 gate；
+- D17-X1–X6 决策表。
+
+### 验证
+
+- Markdown 链接 55 个，0 失效；
+- HTML R-016 48/48；
+- HTML 本地链接 2,288 个，0 失效；
+- 未改游戏代码/数值；现有 73 项测试不受影响。
+
 ## [0.1.41] - 2026-11-05 12:54
 
 ### 新增

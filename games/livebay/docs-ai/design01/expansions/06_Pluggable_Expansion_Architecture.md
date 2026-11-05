@@ -1,0 +1,427 @@
+---
+title: "玩法扩展包：可插拔架构"
+doc_type: "工程参考（扩展包架构）"
+status: "参考 v0.1（待人类裁决；未实现）"
+date: "2026-11-05"
+source: "AI 起草，人类参考"
+authority: "人类（是否采纳）/ 工程（实现）"
+rules:
+  - "TECH-A1"
+  - "TECH-A2"
+  - "TECH-B1"
+  - "TECH-B2"
+upstream:
+  - "../16_模块化技术架构_NASApunk.md"
+  - "README.md"
+related:
+  - "01_分层总览.md"
+  - "05_版本切片与决策.md"
+  - "../12_技术方案_Godot工程.md"
+---
+
+# 玩法扩展包：可插拔架构
+
+> **一句话**：玩法扩展不是往 `Sim` 里加 `if`，而是做成**可启停的扩展包**：有自己的 manifest、内容、模块、存档命名空间和实验开关；关掉它，主体玩法仍然完整。
+>
+> **目标**：开发期可以不断试 L1/L2/L3 的新玩法，各自独立启停；只有通过验收的包才进入正式发布预设。
+
+## 一、问题：为什么现在的扩展还不够“可插拔”
+
+当前架构已经能装模块，但玩法扩展仍容易变成：
+
+- 在 `Sim` 或 `main.gd` 里加一段 `if expansion == ...`；
+- 新内容直接混进 `numbers/` 主表；
+- 新 UI 直接改 HUD；
+- 新存档字段直接写进全局 profile；
+- 试坏了只能回滚代码，不能“关掉这个包”。
+
+这不是模块化，而是**把分支藏进主体**。可插拔扩展要解决的是：
+
+```text
+core = 稳定、可独立运行
+expansion = 可选、可启停、可丢弃
+core + expansion = 仍能回放/测试/发布
+```
+
+## 二、术语
+
+| 词 | 含义 |
+| --- | --- |
+| **Core** | 基础游戏：地图、3 塔、4 敌、5 波、结算 |
+| **Expansion Pack** | 一个可启停的玩法扩展包 |
+| **Expansion Set / Preset** | 一次运行启用的包集合，如 baseline / l1_experiment / release |
+| **Layer** | L1 班次 / L2 岗位 / L3 城市；是能力标签，不是硬链 |
+| **Contribution** | 包向核心贡献的内容/模块/UI/存档字段 |
+| **Feature Flag** | 运行期开关；实验包默认关闭 |
+| **Retired** | 停用但保留内容与存档，不再默认启用 |
+
+## 三、目标架构
+
+```text
+presets/
+  baseline.json          # core only
+  l1_experiment.json     # core + L1 pack(s)
+  release.json           # core + stable packs only
+        ↓
+ExpansionRegistry         # 扫描 expansions/*/pack.json
+        ↓ validate / resolve / gate
+ExpansionSet              # 本次运行启用的包 + 能力
+        ↓
+MissionPack + ModuleRegistry + UiContributions
+        ↓
+MissionRuntime ← 只认接口，不认识具体包
+```
+
+原则：
+
+- **Core 不 import 任何具体扩展包**；
+- 包只通过 `ExpansionContext` 的端口/命令/事件接入；
+- 包关掉后，Core 的内容、存档、回放仍可用；
+- 包的失败不阻塞 Core 启动。
+
+## 四、Pack Manifest
+
+每个包一个 `pack.json`：
+
+```json
+{
+  "schema_version": 1,
+  "id": "lb.exp.l1.night_shift",
+  "name": "L1 · 夜班检查单",
+  "version": "0.1.0",
+  "state": "experimental",
+  "layer": "L1",
+  "core_api": ">=0.1 <1.0",
+  "requires": [],
+  "optional": ["lb.exp.l2.racks"],
+  "conflicts": ["lb.exp.l1.old_checklist"],
+  "provides": ["procedure.checklist", "record.shift", "modifier.night"],
+  "content": {
+    "procedures": "content/procedures.json",
+    "contracts": "content/contracts.json"
+  },
+  "modules": [
+    {"id": "lb.exp.l1.night_shift.procedure", "kind": "procedure"}
+  ],
+  "ui": [
+    {"slot": "briefing.extra", "scene": "ui/night_shift_card.tscn"}
+  ],
+  "flags": {
+    "default": false,
+    "experiment": true
+  },
+  "migrations": {"profile": 1}
+}
+```
+
+### 4.1 字段约束
+
+| 字段 | 规则 |
+| --- | --- |
+| `id` | 全局唯一，建议 `lb.exp.<layer>.<name>`；所有贡献 ID 加此命名空间 |
+| `state` | `draft` / `experimental` / `stable` / `retired` |
+| `layer` | 主层；一个包只声明一个主层，跨层用 `provides` |
+| `core_api` | 语义化范围；不匹配则拒绝加载 |
+| `requires` | 硬依赖；缺失则跳过该包（不阻塞 core） |
+| `optional` | 有则更好，没有也能跑 |
+| `conflicts` | 冲突包；按 preset 优先级跳过 |
+| `provides` | 能力字符串；其他包依赖能力而不是具体包 |
+| `content` | 内容文件；加载后进入独立命名空间 |
+| `modules` | 已注册模块 ID；**不在运行时加载任意脚本** |
+| `ui` | UI 贡献槽；不允许直接改 HUD 私有节点 |
+| `flags` | 默认开关与实验开关 |
+| `migrations` | 存档/内容迁移版本 |
+
+## 五、扩展点
+
+### 5.1 内容贡献
+
+包可以贡献：
+
+- 地图、波次、塔、敌人；
+- 塔座模块、备件；
+- 检查单、事故记录、班次合同；
+- 城市事件、档案。
+
+所有 ID 自动加命名空间：
+
+```text
+lb.exp.l1.night_shift:procedure/checklist_w4
+lb.exp.l2.racks:tower_module/long_barrel
+```
+
+Core 只读 `MissionPack` 的统一内容表；不关心它来自哪个包。
+
+### 5.2 模块贡献
+
+包的代码模块必须在构建期注册，运行期只按 `modules[].id` 启用：
+
+```text
+ModuleRegistry
+  ├─ core.map
+  ├─ core.economy
+  ├─ core.wave
+  ├─ core.mission
+  ├─ core.fault
+  ├─ core.enemy
+  ├─ core.tower
+  └─ lb.exp.l1.night_shift.procedure
+```
+
+- 不下载/不热加载外部脚本；
+- 包模块只实现 `ProcedurePort` / `ModifierPort` 等窄接口；
+- 不能直接 import core 的具体模块；
+- 关掉包 = 不注册模块、不加载内容。
+
+### 5.3 UI 贡献
+
+HUD/面板提供固定槽位：
+
+```text
+briefing.extra
+hud.badge
+result.extra
+settings.section
+```
+
+包提供场景/控件，只能放进槽位；不能替换根 HUD，不能直接操作 Sim。槽位缺失时自动跳过，不影响 core。
+
+### 5.4 存档与档案
+
+- Profile 有 `expansions` 命名空间；
+- 每个包只写自己的键；
+- 包停用后，数据保留但不再读取；重新启用时跑迁移；
+- 档案条目按 `pack_id` 过滤；
+- 不在 core profile 里写 `if pack_x`。
+
+## 六、加载与失败隔离
+
+### 6.1 启动顺序
+
+```text
+1. 读 preset（baseline / l1_experiment / release）
+2. 扫描 expansions/*/pack.json
+3. schema 校验；未知字段 warning，不崩
+4. 解析 requires / optional / conflicts
+5. 过滤：core_api 不匹配、状态 retired、flag 关闭
+6. 拓扑排序；缺依赖的包跳过（不阻塞无依赖包）
+7. 合并内容到 MissionPack；注册模块/UI/事件
+8. 启动 MissionRuntime
+```
+
+### 6.2 失败策略
+
+| 失败 | 行为 |
+| --- | --- |
+| 单个 pack.json 坏 | 跳过该包，core 启动，写诊断 |
+| 缺硬依赖 | 跳过该包及其依赖者 |
+| 版本不匹配 | 跳过，提示需要哪个 core_api |
+| 冲突 | 按 preset 优先级保留一个，另一个跳过 |
+| 内容重复 ID | 拒绝该包，不覆盖 core |
+| 模块注册失败 | 禁用该包，不半加载 |
+| UI 槽位缺失 | 跳过该 UI，不影响规则 |
+| 存档迁移失败 | 包进入只读/停用，core 存档可用 |
+
+> **核心原则**：包失败是“这个包没上机”，不是“整座城断电”。
+
+### 6.3 Feature Flag
+
+- 包默认开关来自 preset，玩家可在设置中关闭实验包；
+- `baseline` 永远只含 core；
+- `l1_experiment` / `l2_experiment` 是内部预设；
+- 正式发布只使用 `release` preset；
+- 关闭包不删除存档，只停止读取。
+
+## 七、分层可插拔
+
+| 层 | 包示例 | 可独立启用 | 依赖 |
+| --- | --- | --- | --- |
+| L1 | 夜班检查单、3 班合同 | 是 | 只依赖 core |
+| L2 | 塔座 2 槽、备件、湾民 | 是 | 只依赖 core API；不强制 L1 包 |
+| L3 | 舱室、城市事件、档案 | 是 | 只依赖 core Meta API |
+| 跨层 | L2 需要读写 L1 记录 | 可选 | 通过 `requires` 或 `optional` 声明，不直接 import |
+
+- **官方 release** 可以按 L1→L2→L3 顺序启用；
+- **开发实验** 可以只启用 L2、不启用 L1，验证“模块本身是否成立”；
+- 包可以声明 `layer` 但不强迫玩家按顺序玩。
+
+## 八、实验生命周期
+
+```text
+draft（本地）
+  → experimental（internal preset，默认关）
+  → stable（release preset）
+  → retired（停用，内容/存档保留）
+```
+
+### 8.1 实验流程
+
+1. 新包放 `expansions/<id>/`，`state: draft`，不进 preset；
+2. 用 `l1_experiment` 等内部 preset 启用；
+3. 只观察一个假设，不顺便改 core；
+4. 通过验收 → `experimental`；
+5. 进入 release 验收 → `stable`；
+6. 失败/过时 → `retired`，不删除。
+
+### 8.2 实验包准入（Gate）
+
+- 不修改 core 的规则代码；
+- 关闭包后，baseline 测试全过；
+- 不影响标准班 B/40；
+- 内容 ID 全部命名空间化；
+- 有 save 迁移或明确不写存档；
+- 有 blackbox 事件/回放标记；
+- 有性能预算（tick/事件/内存）；
+- 有人类可读的 `README` 和回退方式。
+
+## 九、正式发布决策
+
+### 9.1 Release Set
+
+```json
+{
+  "id": "livebay.release",
+  "core_version": "0.1.0",
+  "packs": [
+    {"id": "lb.exp.l1.night_shift", "version": "0.1.0"},
+    {"id": "lb.exp.l2.racks", "version": "0.1.0"}
+  ],
+  "hash": "sha256:..."
+}
+```
+
+- 发布物是一组**固定版本的 pack**，不是“最新文件夹”；
+- `baseline` 始终可启动；
+- `release` 只含 `stable`；
+- `hash` 进入黑匣子，回放可校验。
+
+### 9.2 发布验收
+
+| 检查 | 通过条件 |
+| --- | --- |
+| Baseline | 无包启动，73 项测试全过 |
+| Pack on | 启用包，标准班仍 B/40（除非包明确改变） |
+| Pack off | 关闭包，存档可读，不崩 |
+| Invalid pack | 坏包被跳过，core 启动 |
+| Isolation | 包内容/事件/存档不污染 core |
+| Replay | 同 preset + hash 结果一致 |
+| Performance | tick p95 不超预算 |
+| Narrative | 文本/设定通过人类审阅 |
+
+## 十、目录布局
+
+### 10.1 设计文档
+
+```text
+docs-ai/design01/expansions/
+  README.md
+  01_分层总览.md
+  02_L1_班次层.md
+  03_L2_岗位层.md
+  04_L3_城市层.md
+  05_版本切片与决策.md
+  06_Pluggable_Expansion_Architecture.md
+```
+
+### 10.2 运行时包
+
+```text
+game/
+├── expansions/
+│   ├── l1_night_shift/
+│   │   ├── pack.json
+│   │   ├── content/
+│   │   └── ui/
+│   └── l2_racks/
+│       ├── pack.json
+│       ├── content/
+│       └── ui/
+├── data/
+│   ├── mission_pack.json
+│   └── expansion_sets/
+│       ├── baseline.json
+│       ├── l1_experiment.json
+│       └── release.json
+└── scripts/
+    └── expansion/
+        ├── expansion_manifest.gd
+        ├── expansion_registry.gd
+        ├── expansion_loader.gd
+        └── expansion_set.gd
+```
+
+> 运行时包是否放 `game/expansions/` 还是 `game/data/expansions/`，建议前者放 manifest/内容，后者只放编译产物；见 D17-X2。
+
+## 十一、与现有架构的接口
+
+| 现有 | 扩展方式 |
+| --- | --- |
+| `MissionPack` | 合并包内容，保留来源 `pack_id` |
+| `MissionRuntime` | 接收 `ExpansionSet`，不 import 具体包 |
+| `ProcedureModule` | 第一个真实扩展点（L1 检查单） |
+| `TowerModule` | 塔座 2 槽通过数据 + `ModifierModule` |
+| `BlackBox` | 记录 `pack_id`/`set_hash`，回放可复现 |
+| 编辑器 | 读取同一套包 manifest；可开关实验包预览 |
+
+工程要求：
+
+- `ExpansionSet` 在 `MissionRuntime` 创建前解析；
+- core 模块不依赖扩展包类；
+- 扩展包只通过端口/命令/事件；
+- 所有包内容进 `MissionPack` 的独立命名空间；
+- 包关闭时，不注册 UI/模块/事件。
+
+## 十二、实施切片
+
+| 阶段 | 内容 | 验收 |
+| --- | --- | --- |
+| E0 | manifest + registry + preset + flags（无内容） | baseline 73 项不变 |
+| E1 | L1 包（纯数据：检查单/合同） | 启用/关闭可切换 |
+| E2 | 模块注册 + ProcedureModule | 包模块可启停 |
+| E3 | UI 槽位 + 简报/结算贡献 | 槽位缺失不崩 |
+| E4 | 存档命名空间 + 迁移 | 关包后存档可读 |
+| E5 | 黑匣子 `pack_id`/`set_hash` + 回放 | 同 set 可复现 |
+| E6 | 实验遥测/发布 gate | 可决定是否 stable |
+
+## 十三、需要人类拍板
+
+| ID | 问题 | 选项 | AI 建议 | 理由 |
+| --- | --- | --- | --- | --- |
+| **D17-X1** | 包代码模型 | A 纯数据 / B 数据+构建期注册模块 / C 运行时热加载脚本 | **B** | 有代码扩展能力，又不引入热加载风险 |
+| **D17-X2** | 目录 | A `game/expansions/` + `data/expansion_sets/` / B `game/packs/` / C `game/plugins/` | **A** | 语义清楚，和设计目录 `expansions/` 对齐 |
+| **D17-X3** | 层依赖 | A 能力/软依赖 / B L1→L2→L3 硬链 | **A** | 可单独实验 L2/L3，不被前置包卡住 |
+| **D17-X4** | 发布预设 | A baseline + release（只 stable）/ B experimental 默认进正式 | **A** | 实验包不能污染正式 |
+| **D17-X5** | 存档隔离 | A 包命名空间 + 停用安全 / B 全局字段 | **A** | 关包不毁档，实验可回退 |
+| **D17-X6** | 代码加载 | A 构建期注册 / B 运行期热加载 | **A** | 可测试、可回放、可审计 |
+
+**建议先拍 D17-X1 / X2 / X4**；X3/X5/X6 可按建议执行，后续再改。
+
+## 十四、验收
+
+```text
+baseline(no packs)      → 73/73，标准班 B/40
+enable L1 pack          → 包内容出现；baseline 仍可关
+disable L1 pack         → 存档可读，包内容消失
+invalid pack            → 跳过；core 启动
+duplicate ID            → 包拒绝，core 不变
+pack event/command      → 命名空间隔离
+replay(pack set)        → 同 hash 同结果
+```
+
+## 十五、不做什么
+
+- 不做运行时下载/热加载用户脚本；
+- 不做扩展市场/创意工坊（至少在 v1.0 前）；
+- 不做包之间任意代码 import；
+- 不做“关包就删档”；
+- 不做没有 baseline 的发行版。
+
+## 十六、与 16 的关系
+
+[16](../16_模块化技术架构_NASApunk.md) 解决「核心内部怎么分舱」；本文解决「扩展怎么上船、怎么下船、怎么不拖垮船」。
+
+一句话：
+
+> **核心是船，扩展是 ORU；ORU 可以换，但船不能因为一个坏模块沉掉。**
+
+（本篇完）
