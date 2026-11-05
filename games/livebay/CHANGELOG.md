@@ -3,6 +3,26 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.35] - 2026-11-05 12:41
+
+### 新增（模块化 M4）
+
+- `presentation/game_renderer.gd`：路径/塔/敌人/光束/提示/暂停遮罩等绘制从 `main.gd` 拆出；
+- `main._draw()` 只负责把 Sim 状态交给 Renderer；
+- `main.gd` 从 816 行降到约 600 行，绘制不再和输入/HUD/规则混在一起。
+
+### 变更
+
+- `16`：M4 标记「大部分」：ReadModel/Presenter + InputController + GameRenderer 已拆；HUD 构建仍在 main；
+- 测试仍为 71 项（绘制拆分不改规则）。
+
+### 验证
+
+- `./run.sh test` 71/71；
+- `./run.sh check` 退出码 0；
+- `./run.sh editor-test` 通过；
+- 标准班仍为 B / 40 / 59 击杀 / 9 漏过。
+
 ## [0.1.34] - 2026-11-05 12:40
 
 ### 新增（模块化 M4）
