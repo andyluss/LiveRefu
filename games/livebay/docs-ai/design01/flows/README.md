@@ -11,7 +11,7 @@ flows/
 ├── README.md        # 方法与维护说明（本文件）
 ├── game_flow.md     # 生成物：Mermaid 状态图 + 迁移表
 ├── game_flow.html   # 生成物：自包含 HTML 流程图 + 方法卡片
-└── (生成器)         # ../tools/build_flow.py
+└── (生成器)         # ../../../tools/build_flow.py
 ```
 
 | 文件 | 谁维护 | 怎么产生 |
@@ -181,4 +181,4 @@ python3 tools/build_flow.py --check   # 只校验，不写文件
 - 工程结构：[`../tech/12_技术方案_Godot工程.md`](../tech/12_技术方案_Godot工程.md)
 - 扩展架构：[`../tech/17_可插拔扩展架构.md`](../tech/17_可插拔扩展架构.md)
 - 地图/波次：[`../numbers/05_地图与塔位.md`](../numbers/05_地图与塔位.md)
-- 流程图生成器：`../tools/build_flow.py`
+- 流程图生成器：`../../../tools/build_flow.py`
