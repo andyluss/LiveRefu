@@ -397,7 +397,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD</
 <h2 id="十二模块化落地状态">十二、模块化落地状态</h2>
 <p>截至 2026-11-05，M1/M2 已落地：<code>MissionRuntime</code> 组合 <code>MissionClock</code>、<code>EventBus</code>、<code>CommandBus</code>、<code>BlackBox</code> 与 <code>Sim</code>；<code>Sim</code> 内部已使用 <code>MapModule</code> 与 <code>EconomyModule</code>（属性代理，行为不变）。M3–M7 仍按 <a href="16_模块化技术架构_NASApunk.html">16</a> 推进。</p>
 <h2 id="十三模块化演进参考">十三、模块化演进参考</h2>
-<p>当前仍是「Sim / View 两层 + 少量模块」的 MVP 结构。若要继续拆分，见 <a href="16_模块化技术架构_NASApunk.html">16 · 模块化技术架构</a>：ORU 模块、端口、命令/事件总线、MissionPack、黑匣子与迁移路线。该文是参考方案，未裁决、未实现，不改变本篇的现行事实。</p>
+<p>当前已是「MissionRuntime + 领域模块 + ReadModel/Presenter/Renderer + MissionPack」结构，仍在继续拆 Sim 的索敌/移动编排。若要继续拆分，见 <a href="16_模块化技术架构_NASApunk.html">16 · 模块化技术架构</a>：ORU 模块、端口、命令/事件总线、MissionPack、黑匣子与迁移路线。该文是参考方案，未裁决、未实现，不改变本篇的现行事实。</p>
 <p>（本篇完）</p>
 
 </article>

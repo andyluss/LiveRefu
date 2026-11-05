@@ -48,6 +48,12 @@ static func load_mission_pack(base_dir: String = DATA_DIR) -> Dictionary:
 	if data.is_empty():
 		return {}
 	var pack: LiveBayMissionPack = MissionPackScript.build(data)
+	var manifest_path := base_dir.path_join("mission_pack.json")
+	if FileAccess.file_exists(manifest_path):
+		var parsed: Variant = load_json(manifest_path)
+		if parsed is Dictionary and int(parsed.get("schema_version", 0)) == 1 and str(parsed.get("hash", "")).begins_with("sha256:"):
+			pack.manifest = parsed
+			pack.data["pack_manifest"] = parsed
 	var result: LiveBayResult = pack.validate()
 	if not result.ok:
 		push_error("DataLoader: MissionPack 校验失败：%s" % result.message)

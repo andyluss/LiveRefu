@@ -184,6 +184,12 @@ def write_data(data: dict) -> dict:
     )
     if check.returncode != 0:
         fail("导出后校验失败：" + (check.stderr or check.stdout).strip())
+    pack = subprocess.run(
+        [sys.executable, str(PROJECT / "tools" / "export_mission_pack.py")],
+        cwd=PROJECT, capture_output=True, text=True,
+    )
+    if pack.returncode != 0:
+        fail("MissionPack 编译失败：" + (pack.stderr or pack.stdout).strip())
     tables = load_tables()
     result = {"ok": True, "message": "已写回 numbers/ 并导出 game/data"}
     if map_data is not None:

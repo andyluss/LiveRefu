@@ -34,10 +34,18 @@ case "$CMD" in
     exec "$GODOT" --headless --path "$GAME" --quit-after 180
     ;;
   numbers)
-    exec python3 "$HERE/tools/export_numbers.py"
+    python3 "$HERE/tools/export_numbers.py"
+    exec python3 "$HERE/tools/export_mission_pack.py"
     ;;
   numbers-check)
-    exec python3 "$HERE/tools/export_numbers.py" --check
+    python3 "$HERE/tools/export_numbers.py" --check
+    exec python3 "$HERE/tools/export_mission_pack.py" --check
+    ;;
+  pack)
+    exec python3 "$HERE/tools/export_mission_pack.py"
+    ;;
+  pack-check)
+    exec python3 "$HERE/tools/export_mission_pack.py" --check
     ;;
   merge)
     exec python3 "$HERE/tools/merge_design_html.py"
@@ -46,7 +54,7 @@ case "$CMD" in
     exec "$GODOT" --headless --path "$GAME" --script tests/test_editor_bridge.gd
     ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|numbers|numbers-check|merge]" >&2
+    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|numbers|numbers-check|pack|pack-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2
@@ -54,6 +62,8 @@ case "$CMD" in
     echo "  check   无头启动 180 帧，抓脚本错误" >&2
     echo "  numbers        从 numbers/ 表格导出 game/data" >&2
     echo "  numbers-check  校验表格与 game/data 是否一致" >&2
+    echo "  pack           编译 game/data/mission_pack.json" >&2
+    echo "  pack-check     校验 MissionPack 清单是否最新" >&2
     echo "  editor-test    检查编辑器数据桥（读取 + numbers 校验）" >&2
     echo "  merge          把 design01 的 HTML 融合成单文件" >&2
     exit 1

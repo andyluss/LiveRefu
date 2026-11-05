@@ -39,6 +39,7 @@ platform: "PC 优先（D14 待定）"
 ./run.sh editor   # 打开 Godot 编辑器
 ./run.sh test     # 无头模拟测试（71 项断言）
 ./run.sh check    # 无头启动 180 帧，抓脚本错误
+./run.sh pack-check # 校验 MissionPack 清单
 ./run.sh editor-test # 编辑器数据桥冒烟测试
 ./run.sh import   # 首次导入资源
 ```

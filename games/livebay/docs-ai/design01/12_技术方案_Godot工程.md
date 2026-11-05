@@ -318,6 +318,6 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 
 ## 十三、模块化演进参考
 
-当前仍是「Sim / View 两层 + 少量模块」的 MVP 结构。若要继续拆分，见 [16 · 模块化技术架构](16_模块化技术架构_NASApunk.md)：ORU 模块、端口、命令/事件总线、MissionPack、黑匣子与迁移路线。该文是参考方案，未裁决、未实现，不改变本篇的现行事实。
+当前已是「MissionRuntime + 领域模块 + ReadModel/Presenter/Renderer + MissionPack」结构，仍在继续拆 Sim 的索敌/移动编排。若要继续拆分，见 [16 · 模块化技术架构](16_模块化技术架构_NASApunk.md)：ORU 模块、端口、命令/事件总线、MissionPack、黑匣子与迁移路线。该文是参考方案，未裁决、未实现，不改变本篇的现行事实。
 
 （本篇完）

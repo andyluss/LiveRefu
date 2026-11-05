@@ -60,7 +60,7 @@ related:
 | M2 Map / Economy | ✅ 已实现 | `domain/map/map_module.gd`、`domain/economy/economy_module.gd`，`Sim` 通过属性代理使用 |
 | M3 Wave / Enemy / Tower / Mission / Fault | 🟡 大部分 | 七个领域模块已拆；索敌/移动/清理仍由 `Sim` 编排 |
 | M4 ReadModel / Presenter | 🟡 大部分 | ReadModel/Presenter + InputController + GameRenderer 已拆；HUD 构建仍在 `main.gd` |
-| M5 MissionPack / schema | 🟡 部分 | `MissionPack` 已生成 manifest/hash 并接入 `DataLoader`；独立编译器未接 |
+| M5 MissionPack / schema | ✅ 已实现 | `tools/export_mission_pack.py` 编译 manifest/hash；`DataLoader` 读取清单；`numbers-check` 同时校验 |
 | M6 黑匣子回放 | 🟡 核心已通 | 事件带 tick；`replay()` 可重放命令并比对结果；CLI 未接 |
 | M7 Procedure/Fault 模块 | ⏳ 未开始 | 对应 [14](14_塔防NASApunk深化.md) |
 

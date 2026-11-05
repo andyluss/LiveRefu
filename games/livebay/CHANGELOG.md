@@ -3,6 +3,29 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.36] - 2026-11-05 12:42
+
+### 新增（模块化 M5 完成）
+
+- `tools/export_mission_pack.py`：从 `numbers/` 编译 `game/data/mission_pack.json`；
+- 清单含 `schema_version`、`pack_id`、`version`、sha256；`--check` 校验是否最新；
+- `DataLoader.load_mission_pack()` 优先读取编译清单；
+- `run.sh pack` / `pack-check`；`numbers` / `numbers-check` 同步编译/校验清单；
+- 编辑器 Bridge 写回后自动重编译 MissionPack。
+
+### 变更
+
+- `16`：M5 标记为完成；
+- 测试仍为 71 项（内容组织变化，不改规则）。
+
+### 验证
+
+- `./run.sh numbers-check`：表格一致 + 清单一致；
+- `./run.sh pack-check`：清单一致；
+- `./run.sh test` 71/71；
+- `./run.sh check` 退出码 0；
+- `./run.sh editor-test` 通过。
+
 ## [0.1.35] - 2026-11-05 12:41
 
 ### 新增（模块化 M4）
