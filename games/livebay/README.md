@@ -17,10 +17,11 @@ platform: "PC 优先（D14 待定）"
 
 ## 编辑器演示
 
-[![编辑器使用演示](docs-ai/design01/shots/editor_usage_poster.png)](docs-ai/design01/shots/editor_usage.mp4)
+[![编辑器与架构演示](docs-ai/design01/shots/editor_usage_v2_poster.png)](docs-ai/design01/shots/editor_usage_v2.mp4)
 
-> **32 秒编辑器演示**（1280×720，H.264，无音频）：地图拖动、插入路径点、波次时间轴、内嵌预览、数值表、保存与历史分支。  
-> 这是程序化演示场景（[`game/demo/`](game/demo/README.md)），不是桌面录屏。
+> **40 秒编辑器 + 模块化架构演示**（1280×720，H.264，无音频）：前 32 秒是编辑器操作，最后 8 秒是 MissionRuntime / 7 模块 / Pack / 回放架构页。  
+> 这是程序化演示场景（[`game/demo/`](game/demo/README.md)），不是桌面录屏。  
+> 旧版 32 秒编辑器视频保留：[`editor_usage.mp4`](docs-ai/design01/shots/editor_usage.mp4)。
 
 ## 目录
 

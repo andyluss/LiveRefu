@@ -81,6 +81,9 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	if t > 32.0:
+		_draw_architecture()
+		return
 	if t > 27.5:
 		_draw_summary()
 		return
@@ -348,6 +351,49 @@ func _draw_summary() -> void:
 		_text(Vector2(92, 226 + i * 34), items[i], 14, CREAM)
 	_text(Vector2(70, 610), "LiveBay · 外环第七段  |  7 塔位 · 5 波 · 3 塔 · 4 敌", 11, MUTED, true)
 	_text(Vector2(920, 680), "程序化演示 · 2026-11-04", 10, MUTED, true)
+
+
+func _draw_architecture() -> void:
+	draw_rect(Rect2(0, 0, W, H), Color("#171B1D"), true)
+	draw_rect(Rect2(0, 0, 10, H), TEAL, true)
+	_text(Vector2(60, 92), "模块化落地 / Modular Monolith", 26, CREAM)
+	_text(Vector2(60, 126), "MissionRuntime 组合根 + 7 个领域模块 + 数据/回放适配器", 14, AMBER)
+	# center runtime
+	draw_rect(Rect2(470, 172, 340, 70), Color(TEAL, 0.18), true)
+	draw_rect(Rect2(470, 172, 340, 70), TEAL, false, 2)
+	_text(Vector2(500, 202), "MissionRuntime", 20, CREAM)
+	_text(Vector2(500, 226), "Clock · EventBus · CommandBus · BlackBox", 10, MUTED)
+	# seven modules
+	var mods := [
+		["Map", 120, 300], ["Economy", 280, 300], ["Wave", 440, 300],
+		["Mission", 600, 300], ["Fault", 760, 300], ["Enemy", 920, 300], ["Tower", 1080, 300],
+	]
+	for m in mods:
+		var r := Rect2(float(m[1]), float(m[2]), 130, 52)
+		draw_rect(r, Color(ORANGE, 0.12), true)
+		draw_rect(r, ORANGE, false, 1)
+		_text(Vector2(float(m[1]) + 14, float(m[2]) + 32), str(m[0]), 14, CREAM)
+	# lower adapters
+	draw_rect(Rect2(120, 410, 330, 62), Color(PANEL2, 0.9), true)
+	draw_rect(Rect2(120, 410, 330, 62), AMBER, false, 1)
+	_text(Vector2(140, 436), "MissionPack / schema / hash", 15, CREAM)
+	_text(Vector2(140, 458), "numbers/ → compiler → game/data", 10, MUTED, true)
+	draw_rect(Rect2(470, 410, 330, 62), Color(PANEL2, 0.9), true)
+	draw_rect(Rect2(470, 410, 330, 62), AMBER, false, 1)
+	_text(Vector2(490, 436), "ReadModel / Presenter", 15, CREAM)
+	_text(Vector2(490, 458), "InputController · Renderer", 10, MUTED, true)
+	draw_rect(Rect2(820, 410, 330, 62), Color(PANEL2, 0.9), true)
+	draw_rect(Rect2(820, 410, 330, 62), AMBER, false, 1)
+	_text(Vector2(840, 436), "BlackBox / replay", 15, CREAM)
+	_text(Vector2(840, 458), "CommandIssued + tick → ./run.sh replay", 10, MUTED, true)
+	# arrows
+	draw_line(Vector2(640, 242), Vector2(640, 300), Color(TEAL, 0.7), 2)
+	draw_line(Vector2(220, 352), Vector2(470, 352), Color(ORANGE, 0.35), 1)
+	draw_line(Vector2(860, 352), Vector2(1110, 352), Color(ORANGE, 0.35), 1)
+	_text(Vector2(60, 560), "73 项测试  ·  标准班 B / 40 / 59 / 9  ·  numbers + pack 一致", 14, CREAM)
+	_text(Vector2(60, 592), "编辑器预览与游戏共用 MissionRuntime；规则不再有第二套。", 12, MUTED)
+	_text(Vector2(60, 650), "LiveBay Tools · 2026-11-05", 10, MUTED, true)
+	_text(Vector2(900, 650), "程序化演示 · 架构页", 10, MUTED, true)
 
 
 func _draw_cursor() -> void:

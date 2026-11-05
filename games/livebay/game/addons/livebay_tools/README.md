@@ -87,7 +87,8 @@ export_numbers.py → game/data/*.json
 
 ## 五、演示
 
-- 视频：[`../../../docs-ai/design01/shots/editor_usage.mp4`](../../../docs-ai/design01/shots/editor_usage.mp4)
+- 视频 v2：[`../../../docs-ai/design01/shots/editor_usage_v2.mp4`](../../../docs-ai/design01/shots/editor_usage_v2.mp4)
+- 旧版视频：[`../../../docs-ai/design01/shots/editor_usage.mp4`](../../../docs-ai/design01/shots/editor_usage.mp4)
 - 程序化演示源：[`../../demo/editor_demo.gd`](../../demo/editor_demo.gd)
 - 说明：[`../../demo/README.md`](../../demo/README.md)
 
