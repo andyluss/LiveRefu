@@ -3,6 +3,34 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.66] - 2026-11-05 13:54
+
+### 新增
+
+- `./run.sh compare` 增加 `--json` / `--csv` 输出；
+- A/B/C preset 增加 `choices`：
+  - A：W4 review / W5 isolate；
+  - B：W4 custom / W5 isolate；
+  - C：W4 sign / W5 bypass；
+- 对比表增加 W4/W5 列，当前结果：
+  - A B/40/61/9；
+  - B B/40/59/9；
+  - C C/34/59/10。
+- 新增 `expansions/06_实现对照与验收.md`：设计文档 → 代码 → 测试 → 当前缺口的映射。
+
+### 文档
+
+- 回答「功能设计文档在哪里」：`expansions/00–05` + `14` + `16`；实现映射见 `expansions/06`；
+- HTML 阅读版增加 `06` 页；R-016 49/49。
+
+### 验证
+
+- `./run.sh test` 73/73；
+- `./run.sh expansions-check` 34/34；
+- `./run.sh compare` 输出 A/B/C 差异；
+- `./run.sh check` 退出码 0；
+- `./run.sh editor-test` 通过。
+
 ## [0.1.65] - 2026-11-05 13:52
 
 ### 新增

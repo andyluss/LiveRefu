@@ -2,5 +2,11 @@
   "schema_version": 1,
   "id": "l1_compare_c",
   "packs": [],
-  "slots": {"L1.shift": "lb.exp.l1.shift_c"}
+  "slots": {
+    "L1.shift": "lb.exp.l1.shift_c"
+  },
+  "choices": {
+    "w4": "sign",
+    "w5": "bypass"
+  }
 }

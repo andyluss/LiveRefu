@@ -2,5 +2,11 @@
   "schema_version": 1,
   "id": "l1_compare_b",
   "packs": [],
-  "slots": {"L1.shift": "lb.exp.l1.shift_b"}
+  "slots": {
+    "L1.shift": "lb.exp.l1.shift_b"
+  },
+  "choices": {
+    "w4": "custom",
+    "w5": "isolate"
+  }
 }

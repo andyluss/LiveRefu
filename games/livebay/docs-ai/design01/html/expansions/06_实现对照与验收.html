@@ -1,0 +1,325 @@
+<!-- 由 tools/build_design_html.py 从 ../expansions/06_实现对照与验收.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>实现对照与验收 · LiveBay design01</title>
+<meta name="description" content="设计 → 代码 → 测试映射；当前 L1 样例与缺口。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="../14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../expansions/README.html">玩法扩展：分层设计</a><a href="../expansions/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../expansions/02_L1_班次层.html">L1 班次层：让一局像一班</a><a href="../expansions/03_L2_岗位层.html">L2 岗位层：模块化设施与人员</a><a href="../expansions/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../expansions/05_版本切片与决策.html">版本切片与决策</a><a href="../expansions/00_可插拔扩展架构.html">可插拔扩展架构</a><a href="../expansions/06_实现对照与验收.html" aria-current="page">实现对照与验收</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../08_美术与音频方向.html">美术与音频方向</a><a href="../12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../expansions/06_实现对照与验收.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">实现对照与验收</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一文档地图">一、文档地图</a></li><li class=""><a href="#二l1-实现对照">二、L1 实现对照</a></li><li class=""><a href="#三样例包与命令">三、样例包与命令</a></li><li class="sub"><a href="#31-包">3.1 包</a></li><li class="sub"><a href="#32-preset">3.2 Preset</a></li><li class="sub"><a href="#33-命令">3.3 命令</a></li><li class=""><a href="#四对比结果样例">四、对比结果（样例）</a></li><li class=""><a href="#五验收">五、验收</a></li><li class=""><a href="#六已知缺口">六、已知缺口</a></li><li class=""><a href="#七维护规则">七、维护规则</a></li></ul></details>
+<article class="prose">
+<h1 id="实现对照与验收">实现对照与验收</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>实现映射（非设计决定）</dd><dt>状态</dt><dd>现行 v0.1（2026-11-05）</dd><dt>日期</dt><dd>2026-11-05</dd><dt>来源</dt><dd>AI 整理，代码为准</dd><dt>决策权</dt><dd>工程（实现）/ 人类（方向）</dd><dt>遵循规则</dt><dd><a href="../rules/tech/a01_单一数据源.html">TECH-A1</a> · <a href="../rules/tech/a02_模拟与视图分离.html">TECH-A2</a> · <a href="../rules/tech/b01_可逆工程.html">TECH-B1</a> · <a href="../rules/tech/b02_验收与不回归.html">TECH-B2</a></dd><dt>上游</dt><dd><a href="README.html">README</a> · <a href="00_可插拔扩展架构.html">00_可插拔扩展架构</a> · <a href="02_L1_班次层.html">02_L1_班次层</a></dd><dt>关联</dt><dd><a href="../14_塔防NASApunk深化.html">14_塔防NASApunk深化</a> · <a href="../16_模块化技术架构_NASApunk.html">16_模块化技术架构_NASApunk</a> · <a href="../11_待人类裁决清单.html">11_待人类裁决清单</a></dd></dl></div>
+<blockquote>
+<p><strong>先回答“文档在哪里”</strong>：设计在 <code>docs-ai/design01/expansions/</code> 与 <a href="../14_塔防NASApunk深化.html"><code>14</code></a>、<a href="../16_模块化技术架构_NASApunk.html"><code>16</code></a>；代码在 <code>game/scripts/expansion/</code>、<code>game/scripts/domain/</code>、<code>game/expansions/</code>；验收在 <code>game/tests/</code> 与本页。</p>
+<p>本页是<strong>设计到实现的对照表</strong>，不是新的设计决定。代码行为以实际代码为准。</p>
+</blockquote>
+<h2 id="一文档地图">一、文档地图</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>你想看</th>
+<th>文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>为什么做扩展包、manifest/preset/失败隔离</td>
+<td><a href="00_可插拔扩展架构.html">00 可插拔扩展架构</a></td>
+</tr>
+<tr>
+<td>L1/L2/L3 分层</td>
+<td><a href="01_分层总览.html">01 分层总览</a></td>
+</tr>
+<tr>
+<td>L1 检查单/故障/记录的设计</td>
+<td><a href="02_L1_班次层.html">02 L1 班次层</a></td>
+</tr>
+<tr>
+<td>L2 模块/备件/湾民</td>
+<td><a href="03_L2_岗位层.html">03 L2 岗位层</a></td>
+</tr>
+<tr>
+<td>L3 舱室/城市事件/档案</td>
+<td><a href="04_L3_城市层.html">04 L3 城市层</a></td>
+</tr>
+<tr>
+<td>先做什么、砍什么</td>
+<td><a href="05_版本切片与决策.html">05 版本切片与决策</a></td>
+</tr>
+<tr>
+<td>NASApunk 原始机制</td>
+<td><a href="../14_塔防NASApunk深化.html"><code>14</code></a></td>
+</tr>
+<tr>
+<td>核心模块化架构</td>
+<td><a href="../16_模块化技术架构_NASApunk.html"><code>16</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="二l1-实现对照">二、L1 实现对照</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>设计能力</th>
+<th>设计来源</th>
+<th>实现位置</th>
+<th>验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>扩展包 manifest / registry / preset</td>
+<td>00</td>
+<td><code>game/scripts/expansion/</code></td>
+<td><code>./run.sh expansions-check</code></td>
+</tr>
+<tr>
+<td>多 L1 变体互斥</td>
+<td>00</td>
+<td><code>variant_group</code> + preset <code>slots</code></td>
+<td>A/B/C 检查</td>
+</tr>
+<tr>
+<td>W4 检查单</td>
+<td>02 / 14</td>
+<td><code>ProcedureModule</code> + pack content + HUD</td>
+<td><code>expansions-check</code></td>
+</tr>
+<tr>
+<td>W5 故障命中暂停</td>
+<td>02 / 14</td>
+<td><code>Sim.fault_choice_pending</code> + <code>FaultChoiceRequested</code></td>
+<td><code>expansions-check</code></td>
+</tr>
+<tr>
+<td>隔离 / 旁路</td>
+<td>14</td>
+<td><code>FaultModule</code> / <code>TowerModule</code></td>
+<td>bypass 测试</td>
+</tr>
+<tr>
+<td>旁路相邻塔降级</td>
+<td>14</td>
+<td><code>Sim.pending_adjacent</code></td>
+<td>adjacent 测试</td>
+</tr>
+<tr>
+<td>事故记录</td>
+<td>02 / 14</td>
+<td><code>ProcedureModule.submit_report</code> + 结算按钮</td>
+<td>report 测试</td>
+</tr>
+<tr>
+<td>低报 carry</td>
+<td>02</td>
+<td><code>ShiftMemory</code> + <code>ShiftStore</code></td>
+<td>low report / audit 测试</td>
+</tr>
+<tr>
+<td>最近 10 班档案</td>
+<td>本页</td>
+<td><code>ShiftMemory</code> + HUD 档案页</td>
+<td>archive 测试</td>
+</tr>
+<tr>
+<td>连续低报广播</td>
+<td>本页</td>
+<td><code>ShiftMemory.broadcast_text</code> + 顶部横幅</td>
+<td>broadcast 测试</td>
+</tr>
+<tr>
+<td>停班审计 2 班</td>
+<td>本页</td>
+<td><code>audit_remaining</code> + bypass lock + prep -5s</td>
+<td>audit 测试</td>
+</tr>
+<tr>
+<td>A/B/C 对比</td>
+<td>本页</td>
+<td><code>tests/compare_expansions.gd</code></td>
+<td><code>./run.sh compare</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="三样例包与命令">三、样例包与命令</h2>
+<h3 id="31-包">3.1 包</h3>
+<pre class="text"><code>game/expansions/
+  l1_shift_a/   # W4 复查；W5 隔离
+  l1_shift_b/   # W4 按惯例；W5 隔离
+  l1_shift_c/   # W4 照签；W5 旁路</code></pre>
+<ul>
+<li>同属 <code>variant_group = L1.shift</code>；</li>
+<li>只能通过 preset <code>slots</code> 选一个；</li>
+<li>baseline 不加载任何包。</li>
+</ul>
+<h3 id="32-preset">3.2 Preset</h3>
+<pre class="text"><code>game/data/expansion_sets/
+  baseline.json
+  l1_compare_a.json
+  l1_compare_b.json
+  l1_compare_c.json
+  l1_invalid.json      # 同组同时启用，预期失败</code></pre>
+<h3 id="33-命令">3.3 命令</h3>
+<pre class="bash"><code>./run.sh test              # 73 项基础回归
+./run.sh expansions-check  # 34 项扩展/变体/审计检查
+./run.sh compare           # A/B/C 对比表
+./run.sh compare --json    # JSON 行
+./run.sh compare --csv     # CSV
+./run.sh check             # 启动检查</code></pre>
+<h2 id="四对比结果样例">四、对比结果（样例）</h2>
+<p>同一张图、同一命令脚本、不同 W4/W5 选择：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>变体</th>
+<th>W4</th>
+<th>W5</th>
+<th>grade</th>
+<th>integrity</th>
+<th>kills</th>
+<th>leaked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>review</td>
+<td>isolate</td>
+<td>B</td>
+<td>40</td>
+<td>61</td>
+<td>9</td>
+</tr>
+<tr>
+<td>B</td>
+<td>custom</td>
+<td>isolate</td>
+<td>B</td>
+<td>40</td>
+<td>59</td>
+<td>9</td>
+</tr>
+<tr>
+<td>C</td>
+<td>sign</td>
+<td>bypass</td>
+<td>C</td>
+<td>34</td>
+<td>59</td>
+<td>10</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>这些是当前样例数值，不是平衡定案；A/B/C 的差异证明运行时能切换策略并影响结果。</p>
+</blockquote>
+<h2 id="五验收">五、验收</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>检查</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>./run.sh test</code></td>
+<td>73/73</td>
+</tr>
+<tr>
+<td><code>./run.sh expansions-check</code></td>
+<td>34/34</td>
+</tr>
+<tr>
+<td><code>./run.sh check</code></td>
+<td>exit 0</td>
+</tr>
+<tr>
+<td><code>./run.sh editor-test</code></td>
+<td>通过</td>
+</tr>
+<tr>
+<td><code>./run.sh numbers-check</code></td>
+<td>数值 + MissionPack 一致</td>
+</tr>
+<tr>
+<td>HTML R-016</td>
+<td>48/48</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="六已知缺口">六、已知缺口</h2>
+<ul>
+<li>W5 故障命中暂停是样例，不是完整故障链；</li>
+<li>事故记录只影响本局/低报 carry，没有长期档案页；</li>
+<li>广播没有音效；</li>
+<li>档案最多 10 班，没有持久化完整历史；</li>
+<li>A/B/C 仍是样例包，不是正式 L1 内容；</li>
+<li><code>compare</code> 输出是终端表格，没有生成报告文件。</li>
+</ul>
+<h2 id="七维护规则">七、维护规则</h2>
+<ul>
+<li>设计变更：改 00–05 / 14 / 16；</li>
+<li>实现变更：改代码 + 本表 + <code>expansions-check</code>；</li>
+<li>数值/文案变更：先改 <code>numbers/</code>，再跑 <code>numbers-check</code>；</li>
+<li>本页只做映射，不替代设计文档。</li>
+</ul>
+<p>（本页完）</p>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../expansions/06_实现对照与验收.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

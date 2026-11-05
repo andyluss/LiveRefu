@@ -60,7 +60,7 @@ case "$CMD" in
     exec "$GODOT" --headless --path "$GAME" --script tests/test_expansions.gd
     ;;
   compare)
-    exec "$GODOT" --headless --path "$GAME" --script tests/compare_expansions.gd
+    exec "$GODOT" --headless --path "$GAME" --script tests/compare_expansions.gd -- "${@:2}"
     ;;
   *)
     echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|numbers|numbers-check|pack|pack-check|merge]" >&2
