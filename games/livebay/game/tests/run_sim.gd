@@ -108,6 +108,10 @@ func _test_kernel(data: Dictionary) -> void:
 	enemy_mod.configure(data.enemies_by_id, map)
 	_check(enemy_mod.spawn("debris") and enemy_mod.enemies.size() == 1, "domain: enemy module spawn")
 	_check(enemy_mod.pos(enemy_mod.enemies[0]).distance_to(map.path[0]) < 0.01, "domain: enemy module position")
+	enemy_mod.update(0.1, map.path_total)
+	_check(float(enemy_mod.enemies[0].dist) > 0.0, "domain: enemy module movement")
+	enemy_mod.enemies[0].dead = true
+	_check(enemy_mod.cleanup().size() == 1 and enemy_mod.enemies.is_empty(), "domain: enemy module cleanup")
 	var tower_eco := EconomyModuleScript.new()
 	tower_eco.reset(90.0)
 	var tower_mod := TowerModuleScript.new()

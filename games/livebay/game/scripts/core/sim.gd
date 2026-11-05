@@ -137,24 +137,15 @@ func _tick(dt: float) -> void:
 	wave.advance_time(dt)
 	_spawn_due()
 
-	for i: int in range(enemies.size() - 1, -1, -1):
-		var enemy: Dictionary = enemies[i]
-		if enemy.slow_timer > 0.0:
-			enemy.slow_timer -= dt
-		var speed: float = float(enemy.def.speed)
-		if enemy.slow_timer > 0.0:
-			speed *= 1.0 - float(enemy.slow_factor)
-		var direction: int = int(enemy.get("direction", 1))
-		enemy.dist += speed * dt * direction
-		if direction > 0 and enemy.dist >= path_total:
-			_leak_enemy(i)
-			if state == State.LOST:
-				return
-		elif direction < 0 and enemy.dist <= 0.0:
-			_escape_fault(i)
-		else:
-			_apply_fault_effect(enemy)
-
+	var moved: Dictionary = enemies_module.update(dt, path_total)
+	for enemy: Dictionary in moved.leaked:
+		_on_enemy_leaked(enemy)
+		if state == State.LOST:
+			return
+	for enemy: Dictionary in moved.escaped:
+		fault_escaped.emit(enemy)
+	for enemy: Dictionary in moved.active:
+		_apply_fault_effect(enemy)
 	_update_towers(dt)
 	_cleanup_dead()
 
@@ -186,15 +177,11 @@ func _update_towers(dt: float) -> void:
 		tower_fired.emit(shot.from, shot.to, str(shot.kind))
 
 func _cleanup_dead() -> void:
-	for i: int in range(enemies.size() - 1, -1, -1):
-		var enemy: Dictionary = enemies[i]
-		if enemy.dead:
-			var def: Dictionary = enemy.def
-			economy.earn(float(def.reward))
-			stats.kills += 1
-			enemies.remove_at(i)
-			enemy_killed.emit(enemy)
-			energy_changed.emit(energy)
+	for enemy: Dictionary in enemies_module.cleanup():
+		economy.earn(float(enemy.def.reward))
+		stats.kills += 1
+		enemy_killed.emit(enemy)
+		energy_changed.emit(energy)
 
 
 func _apply_fault_effect(enemy: Dictionary) -> void:
@@ -208,11 +195,8 @@ func _escape_fault(index: int) -> void:
 	fault_escaped.emit(enemy)
 
 
-func _leak_enemy(index: int) -> void:
-	var enemy: Dictionary = enemies[index]
-	var def: Dictionary = enemy.def
-	enemies.remove_at(index)
-	mission.damage(float(def.leak_damage))
+func _on_enemy_leaked(enemy: Dictionary) -> void:
+	mission.damage(float(enemy.def.leak_damage))
 	stats.leaked += 1
 	enemy_leaked.emit(enemy)
 	integrity_changed.emit(integrity)

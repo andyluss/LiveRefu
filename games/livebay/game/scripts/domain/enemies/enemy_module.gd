@@ -40,3 +40,37 @@ func pos(enemy: Dictionary) -> Vector2:
 	if map == null:
 		return Vector2.ZERO
 	return map.point_at(float(enemy.dist))
+
+
+func update(delta: float, path_total: float) -> Dictionary:
+	var leaked: Array = []
+	var escaped: Array = []
+	var active: Array = []
+	for i in range(enemies.size() - 1, -1, -1):
+		var enemy: Dictionary = enemies[i]
+		if enemy.slow_timer > 0.0:
+			enemy.slow_timer -= delta
+		var speed := float(enemy.def.speed)
+		if enemy.slow_timer > 0.0:
+			speed *= 1.0 - float(enemy.slow_factor)
+		var direction := int(enemy.get("direction", 1))
+		enemy.dist += speed * delta * direction
+		if direction > 0 and enemy.dist >= path_total:
+			enemies.remove_at(i)
+			leaked.append(enemy)
+		elif direction < 0 and enemy.dist <= 0.0:
+			enemies.remove_at(i)
+			escaped.append(enemy)
+		else:
+			active.append(enemy)
+	return {"leaked": leaked, "escaped": escaped, "active": active}
+
+
+func cleanup() -> Array:
+	var killed: Array = []
+	for i in range(enemies.size() - 1, -1, -1):
+		var enemy: Dictionary = enemies[i]
+		if enemy.dead:
+			enemies.remove_at(i)
+			killed.append(enemy)
+	return killed
