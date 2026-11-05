@@ -14,6 +14,7 @@ const ACTIONS := {
 	KEY_U: "upgrade",
 	KEY_X: "sell",
 	KEY_ESCAPE: "clear",
+	KEY_H: "archive",
 }
 
 

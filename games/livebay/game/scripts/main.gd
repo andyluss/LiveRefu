@@ -72,6 +72,7 @@ var current_result: Dictionary = {}
 var broadcast_banner: PanelContainer
 var broadcast_label: Label
 var broadcast_timer := 0.0
+var archive_button: Button
 
 var fatal_label: Label
 
@@ -208,6 +209,9 @@ func _build_ui() -> void:
 		labels[i].custom_minimum_size = Vector2(widths[i], 30)
 		stats.add_child(labels[i])
 
+	archive_button = _make_top_button("档案 (H)", Vector2(946, 11))
+	archive_button.pressed.connect(_show_archive)
+	top.add_child(archive_button)
 	pause_button = _make_top_button("暂停 (P)", Vector2(1040, 11))
 	pause_button.pressed.connect(_toggle_pause)
 	top.add_child(pause_button)
@@ -479,6 +483,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_toggle_pause()
 		"speed":
 			_toggle_speed()
+		"archive":
+			_show_archive()
 		"restart":
 			_restart()
 		"upgrade":
@@ -586,6 +592,30 @@ func _on_checklist_requested(envelope: Dictionary) -> void:
 		button.pressed.connect(_choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
 		checklist_buttons.add_child(button)
 	checklist_overlay.visible = true
+
+
+func _show_archive() -> void:
+	if checklist_overlay == null or checklist_overlay.visible:
+		return
+	checklist_title.text = "班次档案"
+	checklist_body.text = shift_memory.archive_text() if shift_memory != null else "还没有班次记录。"
+	for child in checklist_buttons.get_children():
+		child.queue_free()
+	var close := Button.new()
+	close.text = "关闭"
+	close.custom_minimum_size = Vector2(440, 42)
+	_style_button(close, PALETTE.teal, PALETTE.cream)
+	close.pressed.connect(_close_archive)
+	checklist_buttons.add_child(close)
+	checklist_overlay.visible = true
+	if runtime != null:
+		runtime.clock.paused = true
+
+
+func _close_archive() -> void:
+	checklist_overlay.visible = false
+	if runtime != null:
+		runtime.clock.paused = false
 
 
 func _show_briefing() -> void:

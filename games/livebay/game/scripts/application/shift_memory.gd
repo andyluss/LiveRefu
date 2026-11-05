@@ -99,6 +99,22 @@ func low_streak() -> int:
 	return count
 
 
+func archive_text() -> String:
+	if history.is_empty():
+		return "还没有班次记录。"
+	var labels := {"honest": "如实", "custom": "按惯例", "review": "待复查", "": "未记录"}
+	var lines: Array = []
+	for entry in history:
+		lines.append("第 %d 班   %s   保障度 %d   %s%s" % [
+			int(entry.shift),
+			str(entry.grade),
+			int(entry.integrity),
+			str(labels.get(str(entry.choice), str(entry.choice))),
+			"   低报 +1" if int(entry.low_report) > 0 else "",
+		])
+	return "\n".join(lines)
+
+
 func next_low_report() -> int:
 	return low_streak()
 

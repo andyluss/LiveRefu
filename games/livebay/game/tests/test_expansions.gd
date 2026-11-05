@@ -92,6 +92,7 @@ func _initialize() -> void:
 	severe.record({"grade": "F", "integrity": 0}, "custom", 1)
 	_check(str(severe.broadcast_text()).contains("停班审计"), "shift: 3 consecutive low reports escalate")
 	_check(severe.bypass_locked(), "shift: stop-work audit locks bypass")
+	_check(str(severe.archive_text()).contains("第 3 班"), "shift: archive lists recent shifts")
 	var locked_sim: Variant = SimScript.new(proc_data)
 	locked_sim.build(0, "interceptor")
 	locked_sim.fault_pending = {"enemy": {"def": {"disable_duration": 2.5, "disable_radius": 100, "disable_targets": 2}, "hit_towers": {}}, "slots": [0]}
