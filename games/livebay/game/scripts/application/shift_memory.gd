@@ -57,8 +57,9 @@ func briefing() -> Dictionary:
 	var audit := ""
 	if streak > 0:
 		audit = "\n\n审计备注：连续低报 %d 班，下次故障停塔 +%ds。" % [streak, streak]
-		if streak >= 2:
-			audit += "\n广播：外环事故统计与交接记录不一致，已列入本周复核。"
+		var broadcast := broadcast_text()
+		if not broadcast.is_empty():
+			audit += "\n" + broadcast
 	var last_shift := "\n\n上一班：%s / 保障度 %d%s" % [
 		str(last_report.grade),
 		int(last_report.integrity),
@@ -74,6 +75,15 @@ func briefing() -> Dictionary:
 		"title": "接班简报 · 第 %d 班" % (int(last_report.shift) + 1),
 		"body": "%s%s%s%s" % [text, last_shift, audit, recent],
 	}
+
+
+func broadcast_text() -> String:
+	var streak := low_streak()
+	if streak >= 3:
+		return "广播：外环进入停班审计，事故统计暂停对外发布。"
+	if streak >= 2:
+		return "广播：外环事故统计与交接记录不一致，已列入本周复核。"
+	return ""
 
 
 func low_streak() -> int:

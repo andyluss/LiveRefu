@@ -12,7 +12,8 @@
   - 降级塔显示琥珀色环 + `DEGRADED` 标签；
   - 事故记录会进入下一班「接班简报」，最近 3 班持久化到 `user://shift.json`；
   - 连续低报会让下一班故障停塔 +Ns，并把 W4 检查单替换为「交接审计」；
-  - 连续 2 班低报会在简报里出现「广播：事故统计不一致」；
+  - 连续 2 班低报会在简报里出现「广播：事故统计不一致」，接班后顶部 toast 显示；
+  - 连续 3 班低报升级为「停班审计」广播；
   - 这些是 L1 样例，不是最终数值。
 - `baseline`：`game/data/expansion_sets/baseline.json`，主游戏默认使用，不含任何包。
 - 对比 preset：`l1_compare_a.json` / `l1_compare_b.json`。

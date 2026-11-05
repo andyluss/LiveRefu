@@ -586,6 +586,10 @@ func _dismiss_briefing() -> void:
 	checklist_overlay.visible = false
 	if runtime != null:
 		runtime.clock.paused = false
+	var broadcast: String = shift_memory.broadcast_text()
+	if not broadcast.is_empty():
+		toast_text = broadcast
+		toast_timer = 4.5
 
 
 func _on_fault_choice_requested(_envelope: Dictionary) -> void:
