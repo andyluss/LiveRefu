@@ -15,6 +15,7 @@ const ACTIONS := {
 	KEY_X: "sell",
 	KEY_ESCAPE: "clear",
 	KEY_H: "archive",
+	KEY_M: "mute",
 }
 
 

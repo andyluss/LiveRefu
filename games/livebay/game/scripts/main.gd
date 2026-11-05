@@ -12,6 +12,7 @@ const RendererScript = preload("res://scripts/presentation/game_renderer.gd")
 const ExpansionBootScript = preload("res://scripts/expansion/expansion_boot.gd")
 const ShiftMemoryScript = preload("res://scripts/application/shift_memory.gd")
 const ShiftStoreScript = preload("res://scripts/platform/shift_store.gd")
+const AudioScript = preload("res://scripts/presentation/audio_director.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -78,6 +79,7 @@ var archive_button: Button
 var archive_page := 0
 var archive_filter := "all"
 var archive_open := false
+var audio: LiveBayAudioDirector
 
 var fatal_label: Label
 
@@ -108,6 +110,8 @@ func _exit_tree() -> void:
 
 func _ready() -> void:
 	shift_memory = ShiftMemoryScript.new(ShiftStoreScript.new())
+	audio = AudioScript.new()
+	add_child(audio)
 	font = SystemFont.new()
 	font.font_names = PackedStringArray([
 		"PingFang SC",
@@ -492,6 +496,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_toggle_speed()
 		"archive":
 			_show_archive(0)
+		"mute":
+			_toggle_audio()
 		"restart":
 			_restart()
 		"upgrade":
@@ -515,6 +521,7 @@ func _click_slot(slot: int) -> void:
 	var result: LiveBayResult = runtime.dispatch(&"build_tower", {"slot": slot, "tower_id": selected_tower_id})
 	if result.ok:
 		selected_slot = slot
+		audio.play("build")
 		toast_text = "已建造 %s" % String(data.towers_by_id[selected_tower_id].name)
 		toast_timer = 1.4
 
@@ -537,6 +544,7 @@ func _upgrade_selected() -> void:
 		return
 	var result: LiveBayResult = runtime.dispatch(&"upgrade_tower", {"slot": selected_slot})
 	if result.ok:
+		audio.play("upgrade")
 		toast_text = "已升级"
 		toast_timer = 1.2
 
@@ -546,6 +554,7 @@ func _sell_selected() -> void:
 		return
 	var result: LiveBayResult = runtime.dispatch(&"sell_tower", {"slot": selected_slot})
 	if result.ok:
+		audio.play("sell")
 		toast_text = "已出售"
 		toast_timer = 1.2
 		selected_slot = -1
@@ -586,6 +595,7 @@ func _restart() -> void:
 # ---------------------------------------------------------------- UI 刷新
 
 func _on_checklist_requested(envelope: Dictionary) -> void:
+	audio.play("checklist")
 	var card: Dictionary = envelope.get("payload", {}).get("card", {})
 	if card.is_empty():
 		return
@@ -601,6 +611,16 @@ func _on_checklist_requested(envelope: Dictionary) -> void:
 		button.pressed.connect(_choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
 		checklist_buttons.add_child(button)
 	checklist_overlay.visible = true
+
+
+func _toggle_audio() -> void:
+	if audio == null:
+		return
+	audio.muted = not audio.muted
+	toast_text = "音效已关闭" if audio.muted else "音效已开启"
+	toast_timer = 1.4
+	if not audio.muted:
+		audio.play("ui")
 
 
 func _show_archive(page := 0, filter := "all") -> void:
@@ -688,6 +708,7 @@ func _dismiss_briefing() -> void:
 func _show_broadcast(text: String, duration: float) -> void:
 	if broadcast_banner == null:
 		return
+	audio.play("broadcast")
 	broadcast_full = text
 	broadcast_reveal = 0.0
 	broadcast_label.text = "BROADCAST  /  "
@@ -696,6 +717,7 @@ func _show_broadcast(text: String, duration: float) -> void:
 
 
 func _on_fault_choice_requested(_envelope: Dictionary) -> void:
+	audio.play("fault")
 	checklist_title.text = "第 5 波 · 故障命中"
 	var targets: Array = []
 	if runtime != null and not runtime.sim.fault_pending.is_empty():
@@ -829,6 +851,7 @@ func _on_tower_disabled(slot: int, duration: float) -> void:
 
 
 func _on_tower_degraded(slot: int, duration: float) -> void:
+	audio.play("degraded")
 	toast_text = "第 %d 号塔降级 · %.0f 秒" % [slot + 1, duration]
 	toast_timer = 2.0
 
@@ -839,11 +862,13 @@ func _on_fault_escaped(_enemy: Dictionary) -> void:
 
 
 func _on_game_won(result: Dictionary) -> void:
+	audio.play("win")
 	SaveStore.record_result(result)
 	_show_overlay(true, result)
 
 
 func _on_game_lost(result: Dictionary) -> void:
+	audio.play("lost")
 	SaveStore.record_result(result)
 	_show_overlay(false, result)
 

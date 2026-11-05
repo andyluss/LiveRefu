@@ -23,7 +23,8 @@
 - `baseline`：`game/data/expansion_sets/baseline.json`，主游戏默认使用，不含任何包。
 - 对比 preset：`l1_compare_a.json` / `l1_compare_b.json`。
 - 校验：`./run.sh expansions-check`；
-- 对比：`./run.sh compare`（A/B/C 同图同命令）。
+- 对比：`./run.sh compare`（A/B/C 同图同命令）；
+- 音效：程序生成的短 WAV，`M` 静音。
 
 运行时入口：
 
