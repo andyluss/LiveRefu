@@ -531,6 +531,7 @@ func _restart() -> void:
 	runtime.procedure.configure(runtime.data, shift_memory.next_low_report())
 	sim = runtime.sim
 	sim.fault_duration_bonus = shift_memory.next_fault_bonus()
+	sim.fault_bypass_locked = shift_memory.bypass_locked()
 	selected_slot = -1
 	beams.clear()
 	leak_flash = 0.0
@@ -603,12 +604,15 @@ func _on_fault_choice_requested(_envelope: Dictionary) -> void:
 	_style_button(isolate, PALETTE.teal, PALETTE.cream)
 	isolate.pressed.connect(_choose_fault_choice.bind("isolate"))
 	checklist_buttons.add_child(isolate)
-	var bypass := Button.new()
-	bypass.text = "旁路：降级 8s，保持在线"
-	bypass.custom_minimum_size = Vector2(440, 42)
-	_style_button(bypass, PALETTE.amber, PALETTE.ink)
-	bypass.pressed.connect(_choose_fault_choice.bind("bypass"))
-	checklist_buttons.add_child(bypass)
+	if shift_memory != null and shift_memory.bypass_locked():
+		checklist_body.text += "\n\n停班审计期间，旁路被禁用。"
+	else:
+		var bypass := Button.new()
+		bypass.text = "旁路：降级 8s，保持在线"
+		bypass.custom_minimum_size = Vector2(440, 42)
+		_style_button(bypass, PALETTE.amber, PALETTE.ink)
+		bypass.pressed.connect(_choose_fault_choice.bind("bypass"))
+		checklist_buttons.add_child(bypass)
 	checklist_overlay.visible = true
 
 

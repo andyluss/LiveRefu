@@ -81,6 +81,7 @@ var stats: Dictionary = {}
 var fault_duration_bonus := 0.0
 var fault_bypass := false
 var fault_choice_enabled := false
+var fault_bypass_locked := false
 var fault_choice_pending := false
 var fault_choice_made := false
 var fault_pending: Dictionary = {}
@@ -216,6 +217,8 @@ func _apply_fault_effect(enemy: Dictionary) -> void:
 
 func resolve_fault_choice(choice: String) -> bool:
 	if not fault_choice_pending or fault_pending.is_empty():
+		return false
+	if choice == "bypass" and fault_bypass_locked:
 		return false
 	var enemy: Dictionary = fault_pending.enemy
 	var chosen := choice == "bypass"

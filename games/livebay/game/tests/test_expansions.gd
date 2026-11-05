@@ -91,6 +91,13 @@ func _initialize() -> void:
 	severe.record({"grade": "F", "integrity": 0}, "custom", 1)
 	severe.record({"grade": "F", "integrity": 0}, "custom", 1)
 	_check(str(severe.broadcast_text()).contains("停班审计"), "shift: 3 consecutive low reports escalate")
+	_check(severe.bypass_locked(), "shift: stop-work audit locks bypass")
+	var locked_sim: Variant = SimScript.new(proc_data)
+	locked_sim.build(0, "interceptor")
+	locked_sim.fault_pending = {"enemy": {"def": {"disable_duration": 2.5, "disable_radius": 100, "disable_targets": 2}, "hit_towers": {}}, "slots": [0]}
+	locked_sim.fault_choice_pending = true
+	locked_sim.fault_bypass_locked = true
+	_check(not locked_sim.resolve_fault_choice("bypass"), "fault: audit rejects bypass")
 	var result_a := _run_variant(data, a.data, "isolate")
 	var result_b := _run_variant(data, b.data, "isolate")
 	var result_c := _run_variant(data, c.data, "bypass")

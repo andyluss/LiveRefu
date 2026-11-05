@@ -77,6 +77,10 @@ func briefing() -> Dictionary:
 	}
 
 
+func bypass_locked() -> bool:
+	return low_streak() >= 3
+
+
 func broadcast_text() -> String:
 	var streak := low_streak()
 	if streak >= 3:
