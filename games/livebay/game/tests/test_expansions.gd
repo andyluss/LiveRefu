@@ -104,6 +104,8 @@ func _initialize() -> void:
 	_check(long_history.history.size() == 10, "shift: archive keeps last 10 records")
 	var page1: Dictionary = long_history.archive_page(1, 5)
 	_check(int(page1.pages) == 2 and int(page1.page) == 1 and str(page1.text).contains("第 10 班"), "shift: archive pagination")
+	var low_page: Dictionary = long_history.archive_page(0, 5, "low")
+	_check(int(low_page.total) == 0 and str(low_page.text).contains("没有符合"), "shift: archive filter low")
 	var audit_runtime: LiveBayMissionRuntime = RuntimeScript.new(data, a.data, 3)
 	_check(is_equal_approx(audit_runtime.sim.wave.timer, 25.0), "shift: audit prep -5s on next shift")
 	audit_runtime.dispose()

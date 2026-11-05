@@ -118,17 +118,27 @@ func archive_text() -> String:
 	return str(archive_page(0, 10).get("text", ""))
 
 
-func archive_page(page: int, page_size := 5) -> Dictionary:
-	if history.is_empty():
-		return {"text": "还没有班次记录。", "page": 0, "pages": 1, "total": 0}
-	var pages := int(ceil(float(history.size()) / float(page_size)))
+func archive_page(page: int, page_size := 5, filter := "all") -> Dictionary:
+	var filtered: Array = []
+	for entry in history:
+		if filter == "low":
+			if int(entry.get("low_report", 0)) > 0:
+				filtered.append(entry)
+		elif filter in ["honest", "custom", "review"]:
+			if str(entry.get("choice", "")) == filter:
+				filtered.append(entry)
+		else:
+			filtered.append(entry)
+	if filtered.is_empty():
+		return {"text": "没有符合条件的班次。", "page": 0, "pages": 1, "total": 0, "filter": filter}
+	var pages := int(ceil(float(filtered.size()) / float(page_size)))
 	var current := clampi(page, 0, max(0, pages - 1))
 	var labels := {"honest": "如实", "custom": "按惯例", "review": "待复查", "": "未记录"}
 	var lines: Array = []
 	var start := current * page_size
-	var end := mini(start + page_size, history.size())
+	var end := mini(start + page_size, filtered.size())
 	for i in range(start, end):
-		var entry: Dictionary = history[i]
+		var entry: Dictionary = filtered[i]
 		lines.append("第 %d 班   %s   保障度 %d   %s%s" % [
 			int(entry.shift),
 			str(entry.grade),
@@ -136,7 +146,7 @@ func archive_page(page: int, page_size := 5) -> Dictionary:
 			str(labels.get(str(entry.choice), str(entry.choice))),
 			"   低报 +1" if int(entry.low_report) > 0 else "",
 		])
-	return {"text": "\n".join(lines), "page": current, "pages": pages, "total": history.size()}
+	return {"text": "\n".join(lines), "page": current, "pages": pages, "total": filtered.size(), "filter": filter}
 
 
 func next_low_report() -> int:

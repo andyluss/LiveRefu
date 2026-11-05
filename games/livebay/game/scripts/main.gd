@@ -76,6 +76,8 @@ var broadcast_reveal := 0.0
 var broadcast_full := ""
 var archive_button: Button
 var archive_page := 0
+var archive_filter := "all"
+var archive_open := false
 
 var fatal_label: Label
 
@@ -601,29 +603,41 @@ func _on_checklist_requested(envelope: Dictionary) -> void:
 	checklist_overlay.visible = true
 
 
-func _show_archive(page := 0) -> void:
-	if checklist_overlay == null or checklist_overlay.visible:
+func _show_archive(page := 0, filter := "all") -> void:
+	if checklist_overlay == null or (checklist_overlay.visible and not archive_open):
 		return
-	var archive: Dictionary = shift_memory.archive_page(page, 5) if shift_memory != null else {"text": "还没有班次记录。", "page": 0, "pages": 1}
+	archive_open = true
+	archive_filter = filter
+	var archive: Dictionary = shift_memory.archive_page(page, 5, filter) if shift_memory != null else {"text": "还没有班次记录。", "page": 0, "pages": 1}
 	archive_page = int(archive.get("page", 0))
-	checklist_title.text = "班次档案 · %d/%d" % [archive_page + 1, int(archive.get("pages", 1))]
+	var filter_labels := {"all": "全部", "low": "低报", "honest": "如实", "custom": "按惯例"}
+	checklist_title.text = "班次档案 · %s · %d/%d" % [str(filter_labels.get(filter, filter)), archive_page + 1, int(archive.get("pages", 1))]
 	checklist_body.text = str(archive.get("text", ""))
 	for child in checklist_buttons.get_children():
 		child.queue_free()
+	var filter_row := HBoxContainer.new()
+	for key in ["all", "low", "honest", "custom"]:
+		var filter_button := Button.new()
+		filter_button.text = str(filter_labels[key])
+		filter_button.custom_minimum_size = Vector2(92, 30)
+		_style_button(filter_button, PALETTE.sage if key == filter else PALETTE.paper, PALETTE.ink, 12)
+		filter_button.pressed.connect(_show_archive.bind(0, key))
+		filter_row.add_child(filter_button)
+	checklist_buttons.add_child(filter_row)
 	if int(archive.get("pages", 1)) > 1:
 		var prev := Button.new()
 		prev.text = "上一页"
 		prev.custom_minimum_size = Vector2(140, 34)
 		_style_button(prev, PALETTE.sage, PALETTE.ink)
 		prev.disabled = archive_page <= 0
-		prev.pressed.connect(_show_archive.bind(archive_page - 1))
+		prev.pressed.connect(_show_archive.bind(archive_page - 1, archive_filter))
 		checklist_buttons.add_child(prev)
 		var next := Button.new()
 		next.text = "下一页"
 		next.custom_minimum_size = Vector2(140, 34)
 		_style_button(next, PALETTE.sage, PALETTE.ink)
 		next.disabled = archive_page >= int(archive.get("pages", 1)) - 1
-		next.pressed.connect(_show_archive.bind(archive_page + 1))
+		next.pressed.connect(_show_archive.bind(archive_page + 1, archive_filter))
 		checklist_buttons.add_child(next)
 	var close := Button.new()
 	close.text = "关闭"
@@ -638,6 +652,7 @@ func _show_archive(page := 0) -> void:
 
 func _close_archive() -> void:
 	checklist_overlay.visible = false
+	archive_open = false
 	if runtime != null:
 		runtime.clock.paused = false
 
