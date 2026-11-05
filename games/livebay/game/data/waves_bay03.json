@@ -1,0 +1,116 @@
+[
+  {
+    "index": 1,
+    "prep": 30.0,
+    "groups": [
+      {
+        "enemy": "debris",
+        "count": 5,
+        "interval": 0.9,
+        "delay": 0.0
+      }
+    ]
+  },
+  {
+    "index": 2,
+    "prep": 20.0,
+    "groups": [
+      {
+        "enemy": "debris",
+        "count": 7,
+        "interval": 0.8,
+        "delay": 0.0
+      },
+      {
+        "enemy": "turbulence",
+        "count": 4,
+        "interval": 1.0,
+        "delay": 5.0
+      }
+    ]
+  },
+  {
+    "index": 3,
+    "prep": 20.0,
+    "groups": [
+      {
+        "enemy": "turbulence",
+        "count": 5,
+        "interval": 0.7,
+        "delay": 0.0
+      },
+      {
+        "enemy": "hulk",
+        "count": 2,
+        "interval": 2.0,
+        "delay": 4.0
+      }
+    ]
+  },
+  {
+    "index": 4,
+    "prep": 20.0,
+    "groups": [
+      {
+        "enemy": "debris",
+        "count": 8,
+        "interval": 0.7,
+        "delay": 0.0
+      },
+      {
+        "enemy": "turbulence",
+        "count": 5,
+        "interval": 0.8,
+        "delay": 3.0
+      },
+      {
+        "enemy": "hulk",
+        "count": 2,
+        "interval": 2.0,
+        "delay": 7.0
+      },
+      {
+        "enemy": "fault",
+        "count": 1,
+        "interval": 1.0,
+        "delay": 6.0
+      }
+    ]
+  },
+  {
+    "index": 5,
+    "prep": 20.0,
+    "groups": [
+      {
+        "enemy": "debris",
+        "count": 10,
+        "interval": 0.6,
+        "delay": 0.0
+      },
+      {
+        "enemy": "turbulence",
+        "count": 6,
+        "interval": 0.7,
+        "delay": 2.5
+      },
+      {
+        "enemy": "hulk",
+        "count": 3,
+        "interval": 1.7,
+        "delay": 6.0
+      },
+      {
+        "enemy": "armor",
+        "count": 1,
+        "interval": 2.0,
+        "delay": 9.0
+      },
+      {
+        "enemy": "fault",
+        "count": 1,
+        "interval": 5.0,
+        "delay": 4.0
+      }
+    ]
+  }
+]

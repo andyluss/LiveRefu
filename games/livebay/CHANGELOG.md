@@ -3,6 +3,27 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.80] - 2026-11-05 18:40
+
+### 新增
+
+- 三张地图使用各自的波次表：
+  - `waves.json`（bay01）；
+  - `waves_bay02.json`（中环维护环：91 敌 / 3182 HP）；
+  - `waves_bay03.json`（湾口对接臂：60 敌 / 2062 HP）；
+- `numbers/04_波次数值.md` 增加 map02/map03 波次表与预算；
+- `export_numbers.py` 支持多波次表；
+- `DataLoader` 按 `map_id` 加载对应波次；
+- 无头断言 81 项。
+
+### 验证
+
+- `./run.sh numbers-check` / `pack-check`：通过；
+- `./run.sh test`：81/81；
+- `./run.sh check`：退出码 0；
+- `./run.sh briefing-check`：通过；
+- 默认 bay01 标准班仍 B/40/60/9。
+
 ## [0.1.79] - 2026-11-05 18:37
 
 ### 文档

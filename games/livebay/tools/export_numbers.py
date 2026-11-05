@@ -280,7 +280,7 @@ def render(value: object, compact_pairs: bool = False) -> str:
 def main() -> None:
     check = "--check" in sys.argv
     tables = collect()
-    for required in ("balance", "profession", "towers", "enemies", "waves", "map_meta", "map_path", "map_slots", "map_base", "map2_meta", "map2_path", "map2_slots", "map2_base", "map3_meta", "map3_path", "map3_slots", "map3_base"):
+    for required in ("balance", "profession", "towers", "enemies", "waves", "map_meta", "map_path", "map_slots", "map_base", "map2_meta", "map2_path", "map2_slots", "map2_base", "map3_meta", "map3_path", "map3_slots", "map3_base", "waves2", "waves3"):
         if required not in tables:
             fail(f"缺少 export:{required}")
 
@@ -288,7 +288,10 @@ def main() -> None:
     profession = build_profession(tables["profession"])
     towers = build_towers(tables["towers"])
     enemies = build_enemies(tables["enemies"])
-    waves = build_waves(tables["waves"], {e["id"] for e in enemies})
+    enemy_ids = {e["id"] for e in enemies}
+    waves = build_waves(tables["waves"], enemy_ids)
+    waves2 = build_waves(tables["waves2"], enemy_ids)
+    waves3 = build_waves(tables["waves3"], enemy_ids)
     map_data = build_map(tables)
     map2_data = build_map(tables, "map2")
     map3_data = build_map(tables, "map3")
@@ -299,6 +302,8 @@ def main() -> None:
         "towers.json": towers,
         "enemies.json": enemies,
         "waves.json": waves,
+        "waves_bay02.json": waves2,
+        "waves_bay03.json": waves3,
         "map_bay01.json": map_data,
         "map_bay02.json": map2_data,
         "map_bay03.json": map3_data,

@@ -65,7 +65,8 @@ static func load_game_data(base_dir: String = DATA_DIR, map_id: String = "bay01"
 	var profession: Variant = load_json(base_dir.path_join("profession_guard.json"))
 	var towers: Variant = load_json(base_dir.path_join("towers.json"))
 	var enemies: Variant = load_json(base_dir.path_join("enemies.json"))
-	var waves: Variant = load_json(base_dir.path_join("waves.json"))
+	var wave_files := {"bay01": "waves.json", "bay02": "waves_bay02.json", "bay03": "waves_bay03.json"}
+	var waves: Variant = load_json(base_dir.path_join(str(wave_files.get(map_id, "waves.json"))))
 	var balance: Variant = load_json(base_dir.path_join("balance.json"))
 
 	if not _is_dict(profession) or not _is_array(towers) or not _is_array(enemies):
