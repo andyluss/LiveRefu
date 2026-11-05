@@ -53,11 +53,14 @@ func _initialize() -> void:
 	_check(procedure.resolve(str(card.id), "review", sim_for_proc).ok and sim_for_proc.fault_duration_bonus < 0.0, "procedure: review modifies fault duration")
 	var sim_fault: Variant = SimScript.new(proc_data)
 	sim_fault.build(0, "interceptor")
+	sim_fault.build(1, "interceptor")
 	var enemy_fault := {"def": {"disable_duration": 2.5, "disable_radius": 100, "disable_targets": 2}, "hit_towers": {}}
 	sim_fault.wave.index = 4
 	sim_fault.fault_pending = {"enemy": enemy_fault, "slots": [0]}
 	sim_fault.fault_choice_pending = true
 	_check(sim_fault.resolve_fault_choice("bypass") and float(sim_fault.get_tower_at(0).degraded_timer) > 0.0, "fault: W5 bypass applies pending choice")
+	sim_fault._update_adjacent_degradation(4.1)
+	_check(float(sim_fault.get_tower_at(1).degraded_timer) > 0.0, "fault: bypass degrades adjacent tower")
 	var report_proc: LiveBayProcedureModule = preload("res://scripts/domain/procedures/procedure_module.gd").new()
 	report_proc.configure(proc_data)
 	_check(report_proc.submit_report("custom", sim_fault).ok and sim_fault.low_report == 1, "procedure: report choice + low report")

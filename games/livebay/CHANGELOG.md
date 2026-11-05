@@ -3,6 +3,23 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.55] - 2026-11-05 13:42
+
+### 新增
+
+- 旁路后 4s，相邻 160px 内塔降级 4s；
+- `Sim.pending_adjacent` 延迟队列 + `_update_adjacent_degradation`；
+- 新增 `tower_degraded` 信号，HUD 提示「第 N 号塔降级」；
+- `expansions-check` 增至 **23 项**。
+
+### 验证
+
+- `./run.sh test` 73/73；
+- `./run.sh check` 退出码 0；
+- `./run.sh expansions-check` 23/23；
+- `./run.sh editor-test` 通过；
+- baseline 仍 B/40/59/9。
+
 ## [0.1.54] - 2026-11-05 13:41
 
 ### 新增

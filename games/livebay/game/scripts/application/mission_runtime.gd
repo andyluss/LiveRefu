@@ -53,6 +53,7 @@ func _new_sim() -> void:
 	_connect(sim.enemy_leaked, func(enemy: Dictionary): events.emit_event(&"EnemyLeaked", {"enemy": str(enemy.get("def", {}).get("id", "")), "damage": int(enemy.get("def", {}).get("leak_damage", 0))}, &"enemy"))
 	_connect(sim.fault_escaped, func(enemy: Dictionary): events.emit_event(&"FaultEscaped", {"enemy": str(enemy.get("def", {}).get("id", ""))}, &"fault"))
 	_connect(sim.tower_disabled, func(slot: int, duration: float): events.emit_event(&"TowerDisabled", {"slot": slot, "duration": duration}, &"fault"))
+	_connect(sim.tower_degraded, func(slot: int, duration: float): events.emit_event(&"TowerDegraded", {"slot": slot, "duration": duration}, &"fault"))
 	_connect(sim.tower_fired, func(from: Vector2, to: Vector2, kind: String): events.emit_event(&"TowerFired", {"from": [from.x, from.y], "to": [to.x, to.y], "kind": kind}, &"tower"))
 	_connect(sim.energy_changed, func(value: float): events.emit_event(&"EnergyChanged", {"value": value}, &"economy"))
 	_connect(sim.integrity_changed, func(value: float): events.emit_event(&"IntegrityChanged", {"value": value}, &"mission"))

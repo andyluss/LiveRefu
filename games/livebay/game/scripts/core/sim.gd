@@ -11,6 +11,7 @@ signal enemy_killed(enemy: Dictionary)
 signal enemy_leaked(enemy: Dictionary)
 signal fault_escaped(enemy: Dictionary)
 signal tower_disabled(slot: int, duration: float)
+signal tower_degraded(slot: int, duration: float)
 signal tower_fired(from: Vector2, to: Vector2, kind: String)
 signal energy_changed(value: float)
 signal integrity_changed(value: float)
@@ -83,6 +84,7 @@ var fault_choice_enabled := false
 var fault_choice_pending := false
 var fault_choice_made := false
 var fault_pending: Dictionary = {}
+var pending_adjacent: Array = []
 var low_report := 0
 var result: Dictionary:
 	get: return mission.result
@@ -116,6 +118,7 @@ func reset() -> void:
 	fault_choice_pending = false
 	fault_choice_made = false
 	fault_pending = {}
+	pending_adjacent.clear()
 	low_report = 0
 	stats = {
 		"kills": 0,
@@ -159,6 +162,7 @@ func _tick(dt: float) -> void:
 		fault_escaped.emit(enemy)
 	for enemy: Dictionary in moved.active:
 		_apply_fault_effect(enemy)
+	_update_adjacent_degradation(dt)
 	_update_towers(dt)
 	_cleanup_dead()
 
@@ -222,7 +226,28 @@ func resolve_fault_choice(choice: String) -> bool:
 	fault_pending = {}
 	for hit in hits:
 		tower_disabled.emit(int(hit.slot), float(hit.duration))
+		if str(hit.get("mode", "")) == "bypass":
+			pending_adjacent.append({"slot": int(hit.slot), "timer": 4.0, "duration": 4.0})
 	return true
+
+
+func _update_adjacent_degradation(dt: float) -> void:
+	if pending_adjacent.is_empty():
+		return
+	for entry in pending_adjacent.duplicate():
+		entry.timer -= dt
+		if float(entry.timer) > 0.0:
+			continue
+		var source_slot := int(entry.slot)
+		var source_pos: Vector2 = slots[source_slot]
+		for tower: Dictionary in towers:
+			if int(tower.slot) == source_slot:
+				continue
+			if source_pos.distance_to(slots[int(tower.slot)]) <= 160.0:
+				tower.degraded_timer = maxf(float(tower.get("degraded_timer", 0.0)), float(entry.duration))
+				tower.degraded_factor = 0.5
+				tower_degraded.emit(int(tower.slot), float(entry.duration))
+		pending_adjacent.erase(entry)
 
 
 func _escape_fault(index: int) -> void:

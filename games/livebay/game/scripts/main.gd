@@ -87,6 +87,8 @@ func _exit_tree() -> void:
 			sim.fault_escaped.disconnect(_on_fault_escaped)
 		if sim.tower_disabled.is_connected(_on_tower_disabled):
 			sim.tower_disabled.disconnect(_on_tower_disabled)
+		if sim.tower_degraded.is_connected(_on_tower_degraded):
+			sim.tower_degraded.disconnect(_on_tower_degraded)
 		if sim.wave_started.is_connected(_on_wave_started):
 			sim.wave_started.disconnect(_on_wave_started)
 	if runtime != null:
@@ -152,6 +154,7 @@ func _new_sim() -> void:
 	sim.enemy_leaked.connect(_on_enemy_leaked)
 	sim.fault_escaped.connect(_on_fault_escaped)
 	sim.tower_disabled.connect(_on_tower_disabled)
+	sim.tower_degraded.connect(_on_tower_degraded)
 	sim.wave_started.connect(_on_wave_started)
 	selected_slot = -1
 	beams.clear()
@@ -707,6 +710,11 @@ func _on_wave_started(index: int) -> void:
 
 func _on_tower_disabled(slot: int, duration: float) -> void:
 	toast_text = "第 %d 号塔故障 · %.0f 秒" % [slot + 1, duration]
+	toast_timer = 2.0
+
+
+func _on_tower_degraded(slot: int, duration: float) -> void:
+	toast_text = "第 %d 号塔降级 · %.0f 秒" % [slot + 1, duration]
 	toast_timer = 2.0
 
 
