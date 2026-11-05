@@ -64,6 +64,10 @@ func _initialize() -> void:
 	var tower_bypass := [{"slot": 0, "disabled_timer": 0.0, "degraded_timer": 0.0, "degraded_factor": 1.0}]
 	var hits := fault_mod.apply(enemy_fault, tower_bypass, [Vector2.ZERO], Vector2.ZERO, 0.0, true)
 	_check(hits.size() == 1 and float(tower_bypass[0].degraded_timer) > 0.0 and float(tower_bypass[0].disabled_timer) == 0.0, "fault: bypass degrades without disabling")
+	var report_proc: LiveBayProcedureModule = preload("res://scripts/domain/procedures/procedure_module.gd").new()
+	report_proc.configure(proc_data)
+	var report_result: LiveBayResult = report_proc.submit_report("custom", sim_w5)
+	_check(report_result.ok and report_proc.report_choice == "custom" and sim_w5.low_report == 1, "procedure: report choice + low report")
 	var result_a := _run_variant(data, a.data, "isolate")
 	var result_b := _run_variant(data, b.data, "isolate")
 	var result_c := _run_variant(data, c.data, "bypass")

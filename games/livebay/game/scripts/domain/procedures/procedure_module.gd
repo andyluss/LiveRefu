@@ -4,6 +4,8 @@ class_name LiveBayProcedureModule
 extends RefCounted
 
 var cards: Array = []
+var report_options: Array = []
+var report_choice := ""
 var done: Dictionary = {}
 var pending: Dictionary = {}
 
@@ -11,12 +13,15 @@ var pending: Dictionary = {}
 func configure(game_data: Dictionary) -> void:
 	var procedures: Dictionary = game_data.get("procedures", {})
 	cards = procedures.get("cards", [])
+	report_options = procedures.get("report", [])
+	report_choice = ""
 	reset()
 
 
 func reset() -> void:
 	done.clear()
 	pending.clear()
+	report_choice = ""
 
 
 func has_pending() -> bool:
@@ -59,3 +64,15 @@ func resolve(card_id: String, option_id: String, sim: Variant) -> LiveBayResult:
 		pending.clear()
 		return LiveBayResult.success("检查单已处理", {"effect": effect})
 	return LiveBayResult.failure(&"checklist_option", "未知选项 %s" % option_id)
+
+
+func submit_report(option_id: String, sim: Variant) -> LiveBayResult:
+	for option in report_options:
+		if str(option.get("id", "")) != option_id:
+			continue
+		var effect := str(option.get("effect", "none"))
+		if effect == "custom":
+			sim.low_report += 1
+		report_choice = option_id
+		return LiveBayResult.success("记录已提交", {"effect": effect, "choice": option_id})
+	return LiveBayResult.failure(&"report_option", "未知记录选项 %s" % option_id)

@@ -6,7 +6,8 @@
   - A：开局供能 95；W4 复查 -1s；W5 可选隔离/旁路；
   - B：开局供能 85；W4 按惯例低报 +1；W5 可选隔离/旁路；
   - C：开局供能 90；W5 用于旁路对照；
-  - 这些是 L1 样例，不是最终数值/完整班次；事故记录未做。
+  - 三个包都有结算事故记录：如实 / 按惯例（低报 +1）/ 待复查；
+  - 这些是 L1 样例，不是最终数值；W5 仍是开波前预案。
 - `baseline`：`game/data/expansion_sets/baseline.json`，主游戏默认使用，不含任何包。
 - 对比 preset：`l1_compare_a.json` / `l1_compare_b.json`。
 - 校验：`./run.sh expansions-check`。

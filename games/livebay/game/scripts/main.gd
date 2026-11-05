@@ -64,6 +64,7 @@ var checklist_overlay: Control
 var checklist_title: Label
 var checklist_body: Label
 var checklist_buttons: VBoxContainer
+var report_buttons: HBoxContainer
 
 var fatal_label: Label
 
@@ -279,6 +280,10 @@ func _build_ui() -> void:
 	overlay_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	overlay_body.custom_minimum_size = Vector2(400, 120)
 	box.add_child(overlay_body)
+
+	report_buttons = HBoxContainer.new()
+	report_buttons.add_theme_constant_override("separation", 8)
+	box.add_child(report_buttons)
 
 	var again := Button.new()
 	again.text = "再来一班 (R)"
@@ -665,6 +670,26 @@ func _show_overlay(won: bool, result: Dictionary) -> void:
 		overlay_body.text = "保障度归零。\n击杀 %d · 漏过 %d · 撑到第 %d 波\n\n复盘：先补控制，再补输出。" % [
 			int(result.kills), int(result.leaked), int(result.waves_cleared),
 		]
+	for child in report_buttons.get_children():
+		child.queue_free()
+	if runtime != null and not runtime.procedure.report_options.is_empty():
+		for option in runtime.procedure.report_options:
+			var button := Button.new()
+			button.text = str(option.get("label", "记录"))
+			button.custom_minimum_size = Vector2(140, 34)
+			_style_button(button, PALETTE.sage, PALETTE.ink, 13)
+			button.pressed.connect(_submit_report.bind(str(option.get("id", ""))))
+			report_buttons.add_child(button)
+
+
+func _submit_report(option_id: String) -> void:
+	if runtime == null:
+		return
+	var result: LiveBayResult = runtime.dispatch(&"submit_report", {"option_id": option_id})
+	if result.ok:
+		overlay_body.text += "\n本班记录：%s" % ("低报" if str(result.data.get("effect", "")) == "custom" else "已记录")
+		for child in report_buttons.get_children():
+			child.queue_free()
 
 
 # ---------------------------------------------------------------- 绘制

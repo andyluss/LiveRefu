@@ -121,6 +121,12 @@ func _register_commands() -> void:
 			events.emit_event(&"ChecklistResolved", {"card_id": card_id, "option_id": option_id, "effect": result.data.get("effect", "")}, &"procedure")
 		return result
 	)
+	commands.register(&"submit_report", func(payload: Dictionary) -> LiveBayResult:
+		var result := procedure.submit_report(str(payload.get("option_id", "")), sim)
+		if result.ok:
+			events.emit_event(&"ReportSubmitted", {"option_id": str(payload.get("option_id", "")), "effect": result.data.get("effect", "")}, &"procedure")
+		return result
+	)
 	commands.register(&"reset", func(_payload: Dictionary) -> LiveBayResult:
 		reset()
 		return LiveBayResult.success("已重置")

@@ -54,6 +54,23 @@
             }
           ]
         }
+      ],
+      "report": [
+        {
+          "id": "honest",
+          "label": "如实记录",
+          "effect": "honest"
+        },
+        {
+          "id": "custom",
+          "label": "按惯例：低报 +1",
+          "effect": "custom"
+        },
+        {
+          "id": "review",
+          "label": "待复查",
+          "effect": "review"
+        }
       ]
     }
   },
