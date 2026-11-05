@@ -84,6 +84,7 @@ related:
 | 12 | [技术方案](tech/12_技术方案_Godot工程.md) | Godot 工程结构、数据契约、测试与验收 |
 | 15 | [专用游戏编辑器方案](tech/15_专用游戏编辑器方案.md) | Godot 插件 / 独立 Web / 数据桥；E1–E4 已裁决 |
 | 16 | [模块化技术架构：NASApunk 系统方案](tech/16_模块化技术架构_NASApunk.md) | ORU 模块、端口、总线、黑匣子；参考方案，未裁决 |
+| 18 | [HTML 数值模拟器方案](tech/18_HTML数值模拟器方案.md) | 浏览器数值沙盘 + Godot trace 对账；待裁决 |
 | — | [一局静态流程图](flows/game_flow.html) | 状态、命令、事件、守卫条件；由代码生成 |
 | — | [补充流程图](flows/extra_flows.html) | 玩家操作、波次、L1 扩展、数据到 MissionPack、职责泳道 |
 
