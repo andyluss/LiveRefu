@@ -280,7 +280,7 @@ def render(value: object, compact_pairs: bool = False) -> str:
 def main() -> None:
     check = "--check" in sys.argv
     tables = collect()
-    for required in ("balance", "profession", "towers", "enemies", "waves", "map_meta", "map_path", "map_slots", "map_base", "map2_meta", "map2_path", "map2_slots", "map2_base"):
+    for required in ("balance", "profession", "towers", "enemies", "waves", "map_meta", "map_path", "map_slots", "map_base", "map2_meta", "map2_path", "map2_slots", "map2_base", "map3_meta", "map3_path", "map3_slots", "map3_base"):
         if required not in tables:
             fail(f"缺少 export:{required}")
 
@@ -291,6 +291,7 @@ def main() -> None:
     waves = build_waves(tables["waves"], {e["id"] for e in enemies})
     map_data = build_map(tables)
     map2_data = build_map(tables, "map2")
+    map3_data = build_map(tables, "map3")
 
     targets = {
         "balance.json": balance,
@@ -300,6 +301,7 @@ def main() -> None:
         "waves.json": waves,
         "map_bay01.json": map_data,
         "map_bay02.json": map2_data,
+        "map_bay03.json": map3_data,
     }
 
     mismatched: list[str] = []

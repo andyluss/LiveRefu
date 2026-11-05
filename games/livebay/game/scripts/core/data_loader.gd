@@ -74,7 +74,7 @@ static func load_game_data(base_dir: String = DATA_DIR, map_id: String = "bay01"
 		return {}
 
 	var maps: Dictionary = {}
-	for map_file: String in ["map_bay01.json", "map_bay02.json"]:
+	for map_file: String in ["map_bay01.json", "map_bay02.json", "map_bay03.json"]:
 		var raw_map: Variant = load_json(base_dir.path_join(map_file))
 		if not _is_dict(raw_map) or not raw_map.has("id"):
 			push_error("DataLoader: 地图文件不合法 %s" % map_file)
