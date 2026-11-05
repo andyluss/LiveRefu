@@ -1,6 +1,6 @@
 # 玩家操作流程
 
-> 由 `tools/build_extra_flows.py` 生成；配套总览见 [README.md](README.md)，总状态机见 [game_flow.md](game_flow.md)。
+> 由 `tools/build_flow.py` 生成；配套总览见 [README.md](README.md)，总状态机见 [game_flow.md](game_flow.md)。
 
 一次值班里，玩家在准备/交战/整备之间做什么；暂停与倍速是横切操作，不改变核心状态。
 

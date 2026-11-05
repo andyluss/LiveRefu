@@ -1,6 +1,6 @@
 # 波次生命周期
 
-> 由 `tools/build_extra_flows.py` 生成；配套总览见 [README.md](README.md)，总状态机见 [game_flow.md](game_flow.md)。
+> 由 `tools/build_flow.py` 生成；配套总览见 [README.md](README.md)，总状态机见 [game_flow.md](game_flow.md)。
 
 从准备倒计时到生成、移动、命中/漏过、清除；最后一波进入 WON，保障度归零进入 LOST。
 

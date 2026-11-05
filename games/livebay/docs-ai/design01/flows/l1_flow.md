@@ -1,6 +1,6 @@
 # L1 班次扩展流程
 
-> 由 `tools/build_extra_flows.py` 生成；配套总览见 [README.md](README.md)，总状态机见 [game_flow.md](game_flow.md)。
+> 由 `tools/build_flow.py` 生成；配套总览见 [README.md](README.md)，总状态机见 [game_flow.md](game_flow.md)。
 
 W4 检查单、W5 故障选择、结算记录、接班记忆与低报审计；这些是班次层样例，不是核心状态枚举。
 

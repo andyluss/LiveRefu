@@ -16,14 +16,14 @@ flows/
 ├── l1_flow.*        # L1 检查单/故障/记录
 ├── data_flow.*      # 数据到 MissionPack
 ├── extra_flows.html # 四张补充图的总览
-└── (生成器)         # ../../../tools/build_flow.py + build_extra_flows.py
+└── (生成器)         # ../../../tools/build_flow.py
 ```
 
 | 文件 | 谁维护 | 怎么产生 |
 | --- | --- | --- |
 | `game_flow.md` | 生成器 | `python3 tools/build_flow.py` |
 | `game_flow.html` | 生成器 | 同上 |
-| `player_flow.*` / `wave_flow.*` / `l1_flow.*` / `data_flow.*` | 生成器 | `python3 tools/build_extra_flows.py` |
+| `player_flow.*` / `wave_flow.*` / `l1_flow.*` / `data_flow.*` | 生成器 | `python3 tools/build_flow.py` |
 | `extra_flows.html` | 生成器 | 同上，四图总览 |
 | `README.md` | 人 | 手写方法说明 |
 
@@ -143,10 +143,8 @@ WAVE --cleared--> BETWEEN
 
 ```bash
 cd games/livebay
-python3 tools/build_flow.py           # 生成 game_flow.md / game_flow.html
-python3 tools/build_extra_flows.py    # 生成四张补充图 / extra_flows.html（依赖 Graphviz dot）
-python3 tools/build_flow.py --check   # 只校验总图
-python3 tools/build_extra_flows.py --check # 只校验补充图
+python3 tools/build_flow.py           # 生成总图 + 四张补充图（补充图依赖 Graphviz dot）
+python3 tools/build_flow.py --check   # 只校验，不写文件
 ```
 
 生成器会：
@@ -190,4 +188,4 @@ python3 tools/build_extra_flows.py --check # 只校验补充图
 - 工程结构：[`../tech/12_技术方案_Godot工程.md`](../tech/12_技术方案_Godot工程.md)
 - 扩展架构：[`../tech/17_可插拔扩展架构.md`](../tech/17_可插拔扩展架构.md)
 - 地图/波次：[`../numbers/05_地图与塔位.md`](../numbers/05_地图与塔位.md)
-- 流程图生成器：`../../../tools/build_flow.py` / `../../../tools/build_extra_flows.py`
+- 流程图生成器：`../../../tools/build_flow.py`
