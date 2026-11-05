@@ -51,6 +51,10 @@ func resolve(card_id: String, option_id: String, sim: Variant) -> LiveBayResult:
 			sim.fault_duration_bonus = minf(float(sim.fault_duration_bonus), -1.0)
 		elif effect == "custom":
 			sim.low_report += 1
+		elif effect == "isolate":
+			sim.fault_bypass = false
+		elif effect == "bypass":
+			sim.fault_bypass = true
 		done[card_id] = option_id
 		pending.clear()
 		return LiveBayResult.success("检查单已处理", {"effect": effect})

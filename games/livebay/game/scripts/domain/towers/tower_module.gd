@@ -45,6 +45,8 @@ func build(slot_index: int, tower_id: String) -> LiveBayResult:
 		"income_timer": 0.0,
 		"invested": cost,
 		"disabled_timer": 0.0,
+		"degraded_timer": 0.0,
+		"degraded_factor": 1.0,
 	})
 	return LiveBayResult.success("已建造", {"cost": cost})
 
@@ -98,11 +100,16 @@ func update(dt: float, enemies: Array, slots: Array, map: Variant) -> Dictionary
 		if float(tower.get("disabled_timer", 0.0)) > 0.0:
 			tower.disabled_timer -= dt
 			continue
+		if float(tower.get("degraded_timer", 0.0)) > 0.0:
+			tower.degraded_timer -= dt
+			if tower.degraded_timer <= 0.0:
+				tower.degraded_factor = 1.0
+		var degrade := float(tower.get("degraded_factor", 1.0)) if float(tower.get("degraded_timer", 0.0)) > 0.0 else 1.0
 		if def.kind == "supply":
 			tower.income_timer -= dt
 			if tower.income_timer <= 0.0:
 				tower.income_timer += float(def.get("income_interval", 5.0))
-				income += supply_income(tower)
+				income += supply_income(tower) * degrade
 			continue
 		tower.cooldown -= dt
 		if tower.cooldown > 0.0:
@@ -118,7 +125,7 @@ func update(dt: float, enemies: Array, slots: Array, map: Variant) -> Dictionary
 		if candidates.is_empty():
 			continue
 		var damage := tower_damage(tower)
-		var cooldown := 1.0 / maxf(0.05, float(def.fire_rate))
+		var cooldown := 1.0 / maxf(0.05, float(def.fire_rate) * degrade)
 		if def.kind == "single":
 			var target: Dictionary = candidates[0]
 			for enemy: Dictionary in candidates:

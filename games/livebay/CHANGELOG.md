@@ -3,6 +3,30 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.48] - 2026-11-05 13:31
+
+### 新增
+
+- L1 样例扩展到三个变体：A/B/C（`variant_group=L1.shift`）；
+- W5「故障预案」检查单：隔离 / 旁路；
+- `Sim.fault_bypass`；`FaultModule` 旁路时改为降级 8s（不再停塔）；
+- `TowerModule` 支持 `degraded_timer/degraded_factor`，降级期间攻速/产出按 50%；
+- `expansions-check` 增至 **17 项**（C 变体、W5 预案、旁路降级）。
+
+### 边界
+
+- W5 目前是「开波前预案」，不是故障命中时的瞬时暂停面板；
+- 事故记录、下一班简报仍未做；
+- baseline 不加载扩展包，标准班不变。
+
+### 验证
+
+- `./run.sh test` 73/73；
+- `./run.sh check` 退出码 0；
+- `./run.sh expansions-check` 17/17；
+- `./run.sh editor-test` 通过；
+- baseline 仍 B/40/59/9。
+
 ## [0.1.47] - 2026-11-05 13:29
 
 ### 新增（E1 样例）

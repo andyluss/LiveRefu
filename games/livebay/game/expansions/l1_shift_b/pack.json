@@ -22,7 +22,7 @@
           "id": "b_w4_damper",
           "wave": 4,
           "title": "T-07 阻尼器异响（B）",
-          "body": "照惯例省时间，但留下一笔低报记录。",
+          "body": "班前复查可缩短下一次故障停塔。",
           "options": [
             {
               "id": "sign",
@@ -33,6 +33,24 @@
               "id": "custom",
               "label": "按惯例：低报 +1",
               "effect": "custom"
+            }
+          ]
+        },
+        {
+          "id": "l1_shift_b_w5_fault",
+          "wave": 5,
+          "title": "第 5 波故障预案",
+          "body": "故障命中时：隔离保安全，旁路保覆盖。",
+          "options": [
+            {
+              "id": "isolate",
+              "label": "隔离：停塔 2.5s",
+              "effect": "isolate"
+            },
+            {
+              "id": "bypass",
+              "label": "旁路：降级 8s，保持在线",
+              "effect": "bypass"
             }
           ]
         }

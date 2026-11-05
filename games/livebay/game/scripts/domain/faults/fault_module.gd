@@ -4,7 +4,7 @@ class_name LiveBayFaultModule
 extends RefCounted
 
 # 返回 [{slot, duration}]；命中记录写入 enemy.hit_towers，避免同一故障重复命中。
-func apply(enemy: Dictionary, towers: Array, slots: Array, enemy_pos: Vector2, duration_bonus := 0.0) -> Array:
+func apply(enemy: Dictionary, towers: Array, slots: Array, enemy_pos: Vector2, duration_bonus := 0.0, bypass := false) -> Array:
 	var duration := maxf(0.0, float(enemy.def.get("disable_duration", 0.0)) + duration_bonus)
 	var radius := float(enemy.def.get("disable_radius", 0.0))
 	var max_targets := int(enemy.def.get("disable_targets", 99))
@@ -19,8 +19,13 @@ func apply(enemy: Dictionary, towers: Array, slots: Array, enemy_pos: Vector2, d
 			continue
 		if enemy_pos.distance_to(slots[slot]) <= radius:
 			enemy.hit_towers[slot] = true
-			tower.disabled_timer = maxf(float(tower.get("disabled_timer", 0.0)), duration)
-			hits.append({"slot": slot, "duration": duration})
+			if bypass:
+				tower.degraded_timer = maxf(float(tower.get("degraded_timer", 0.0)), 8.0)
+				tower.degraded_factor = 0.5
+				hits.append({"slot": slot, "duration": 8.0, "mode": "bypass"})
+			else:
+				tower.disabled_timer = maxf(float(tower.get("disabled_timer", 0.0)), duration)
+				hits.append({"slot": slot, "duration": duration, "mode": "isolate"})
 			if enemy.hit_towers.size() >= max_targets:
 				break
 	return hits

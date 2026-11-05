@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "lb.exp.l1.shift_c",
+  "name": "L1 班次 C（比较用）",
+  "version": "0.1.0",
+  "state": "experimental",
+  "layer": "L1",
+  "variant_group": "L1.shift",
+  "core_api": ">=0.1 <1.0",
+  "requires": [],
+  "conflicts": [],
+  "provides": [
+    "procedure.checklist"
+  ],
+  "modifiers": {
+    "starting_energy": 90
+  },
+  "content": {
+    "procedures": {
+      "cards": [
+        {
+          "id": "c_w4_damper",
+          "wave": 4,
+          "title": "T-07 阻尼器异响（C）",
+          "body": "班前复查可缩短下一次故障停塔。",
+          "options": [
+            {
+              "id": "sign",
+              "label": "照签",
+              "effect": "sign"
+            },
+            {
+              "id": "review",
+              "label": "复查：故障停塔 -1s",
+              "effect": "review"
+            }
+          ]
+        },
+        {
+          "id": "c_w5_fault",
+          "wave": 5,
+          "title": "第 5 波故障预案",
+          "body": "故障命中时：隔离保安全，旁路保覆盖。",
+          "options": [
+            {
+              "id": "isolate",
+              "label": "隔离：停塔 2.5s",
+              "effect": "isolate"
+            },
+            {
+              "id": "bypass",
+              "label": "旁路：降级 8s，保持在线",
+              "effect": "bypass"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "modules": [],
+  "ui": [],
+  "flags": {
+    "default": false
+  }
+}
