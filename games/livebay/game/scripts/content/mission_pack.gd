@@ -22,6 +22,7 @@ static func build(game_data: Dictionary, pack_id := "livebay.bay01", version := 
 		"balance": game_data.get("balance", {}),
 		"procedures": game_data.get("procedures", {}),
 		"contracts": game_data.get("contracts", []),
+		"residents": game_data.get("residents", []),
 	}
 	pack.manifest = {
 		"schema_version": SCHEMA_VERSION,

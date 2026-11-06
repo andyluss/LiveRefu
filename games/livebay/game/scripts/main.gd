@@ -97,6 +97,7 @@ func _exit_tree() -> void:
 func _ready() -> void:
 	audio = AudioScript.new()
 	add_child(audio)
+	audio.play_music("prep")
 	font = SystemFont.new()
 	font.font_names = PackedStringArray([
 		"PingFang SC",
@@ -282,6 +283,7 @@ func _toggle_speed() -> void:
 func _restart() -> void:
 	if session_controller != null:
 		session_controller.restart()
+	audio.play_music("prep")
 
 
 func _on_checklist_requested(envelope: Dictionary) -> void:
@@ -293,7 +295,7 @@ func _on_checklist_requested(envelope: Dictionary) -> void:
 func _toggle_audio() -> void:
 	if audio == null:
 		return
-	audio.muted = not audio.muted
+	audio.set_muted(not audio.muted)
 	toast_text = "音效已关闭" if audio.muted else "音效已开启"
 	toast_timer = 1.4
 	if not audio.muted:
@@ -448,13 +450,29 @@ func _on_enemy_leaked(_enemy: Dictionary) -> void:
 
 
 func _on_wave_started(index: int) -> void:
-	if index == 4:
-		toast_text = "第 4 波 · 内部故障"
-	elif index == 5:
-		toast_text = "第 5 波 · 故障链"
+	audio.play_music("wave")
+	var resident := _resident_line(index)
+	if not resident.is_empty():
+		toast_text = resident
+		toast_timer = 3.2
+		audio.play("resident")
+	elif index >= 4:
+		toast_text = "第 %d 波 · 故障链" % index
+		toast_timer = 1.8
 	else:
 		toast_text = "第 %d 波 · 交战中" % index
-	toast_timer = 1.8
+		toast_timer = 1.8
+
+
+func _resident_line(index: int) -> String:
+	for r: Variant in data.get("residents", []):
+		var waves: Array = r.get("waves", [])
+		var pos := waves.find(index)
+		if pos >= 0:
+			var lines: Array = r.get("lines", [])
+			if pos < lines.size():
+				return "%s（%s）：%s" % [str(r.get("name", "?")), str(r.get("role", "")), str(lines[pos])]
+	return ""
 
 
 func _on_tower_disabled(slot: int, duration: float) -> void:
@@ -486,6 +504,7 @@ func _on_game_lost(result: Dictionary) -> void:
 
 
 func _show_overlay(won: bool, result: Dictionary) -> void:
+	audio.play_music("result")
 	current_result = result.duplicate(true)
 	if flow_controller != null:
 		flow_controller.show_result(won, result)

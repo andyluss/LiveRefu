@@ -158,6 +158,7 @@ func _test_data(data: Dictionary) -> void:
 	_check(data.waves.size() == 8, "8 waves")
 	_check(data.get("procedures", {}).get("cards", []).size() == 12, "12 checklist cards")
 	_check(data.get("contracts", []).size() == 3, "3 contracts")
+	_check(data.get("residents", []).size() == 3, "3 residents")
 	var sim := SimScript.new(data)
 	_check(sim.path.size() >= 2, "path has points")
 	_check(sim.path_total > 500.0, "path has length")

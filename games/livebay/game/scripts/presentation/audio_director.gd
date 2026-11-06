@@ -16,8 +16,16 @@ const STREAMS := {
 	"lost": preload("res://assets/audio/lost.wav"),
 }
 
+const MUSIC := {
+	"prep": preload("res://assets/audio/music_prep.wav"),
+	"wave": preload("res://assets/audio/music_wave.wav"),
+	"result": preload("res://assets/audio/music_result.wav"),
+}
+
 var muted := false
 var _players: Array[AudioStreamPlayer] = []
+var _music: AudioStreamPlayer
+var music_key := ""
 
 
 func _ready() -> void:
@@ -26,6 +34,35 @@ func _ready() -> void:
 		p.volume_db = -6.0
 		add_child(p)
 		_players.append(p)
+	_music = AudioStreamPlayer.new()
+	_music.volume_db = -16.0
+	add_child(_music)
+
+
+func play_music(key: String) -> void:
+	if muted or not MUSIC.has(key) or _music == null:
+		return
+	if music_key == key and _music.playing:
+		return
+	music_key = key
+	_music.stream = MUSIC[key]
+	_music.play()
+
+
+func stop_music() -> void:
+	music_key = ""
+	if _music != null:
+		_music.stop()
+
+
+func set_muted(value: bool) -> void:
+	muted = value
+	if _music == null:
+		return
+	if muted:
+		_music.stop()
+	elif music_key != "" and not _music.playing:
+		_music.play()
 
 
 func play(key: String) -> void:

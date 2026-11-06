@@ -40,6 +40,7 @@ def _pack_entry(map_id: str, map_data: dict, waves: list, common: dict) -> dict:
         "balance": common["balance"],
         "procedures": common["procedures"],
         "contracts": common["contracts"],
+        "residents": common["residents"],
     }
     canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return {
@@ -62,6 +63,7 @@ def build_manifest() -> dict:
         "balance": numbers.build_balance(tables["balance"]),
         "procedures": json.loads((PROJECT / "game" / "data" / "procedures.json").read_text(encoding="utf-8")),
         "contracts": json.loads((PROJECT / "game" / "data" / "contracts.json").read_text(encoding="utf-8")),
+        "residents": json.loads((PROJECT / "game" / "data" / "residents.json").read_text(encoding="utf-8")),
     }
     maps = {
         "bay01": (numbers.build_map(tables), numbers.build_waves(tables["waves"], enemy_ids)),

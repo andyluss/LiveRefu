@@ -9,21 +9,21 @@
       "pack_id": "livebay.bay01",
       "map_id": "bay01",
       "version": "0.2.0",
-      "hash": "sha256:ac1f9eeaafde024b3e15b66c5117abeaefac75d57367ff0b328e08daa7a1a825"
+      "hash": "sha256:31bb109d8c53f5a3ccadd32b5ac24c5e6af4544541b11e7ef5ba7d34dcdcab04"
     },
     "bay02": {
       "schema_version": 2,
       "pack_id": "livebay.bay02",
       "map_id": "bay02",
       "version": "0.2.0",
-      "hash": "sha256:655327c865852216c0caa2d04cd951c99e95ae9fc5449412abf02ec7382615a2"
+      "hash": "sha256:1aa28614cd81fcacfa1205625e6f41ce95c85cb53912c2fa331fcb2a203a8850"
     },
     "bay03": {
       "schema_version": 2,
       "pack_id": "livebay.bay03",
       "map_id": "bay03",
       "version": "0.2.0",
-      "hash": "sha256:a90f4ad9fb6067c805cc0177c331e1ab677078c8f4af52f3ad4b0d525c132caf"
+      "hash": "sha256:c3cc651bfc97ec4f39f8a6b1f55679d73ca20d1a5388669a8120ca91be854b8a"
     }
   }
 }
