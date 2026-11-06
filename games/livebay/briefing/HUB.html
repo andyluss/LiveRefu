@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.98</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.99</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -162,11 +162,11 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 
   <section class="panel" id="p11" role="tabpanel" aria-labelledby="t11">
     <h2>工程力评估：一个成熟的垂直切片，还不是生产级项目</h2>
-    <p class="lede">这是一份 AI 自评，不是外部审计。评分看的是“当前工程能否支撑下一步”，不是“代码是否完美”。结论：<b>3.85 / 5（B+，约 77/100）</b>，处于 <b>L2+ 垂直切片</b>，距离可发布的 L3 还差性能、发布与内容厚度。</p>
+    <p class="lede">这是一份 AI 自评，不是外部审计。评分看的是“当前工程能否支撑下一步”，不是“代码是否完美”。结论：<b>3.88 / 5（B+，约 78/100）</b>，处于 <b>L2+ 垂直切片</b>，距离可发布的 L3 还差性能、发布与内容厚度。</p>
     <div class="grid g3">
-      <article class="card"><h4>综合等级</h4><div class="grade-big">B+</div><p>3.85 / 5 · 77 / 100</p><p class="dim">L2+：垂直切片成熟，进入发布前工程化</p></article>
+      <article class="card"><h4>综合等级</h4><div class="grade-big">B+</div><p>3.88 / 5 · 78 / 100</p><p class="dim">L2+：垂直切片成熟，进入发布前工程化</p></article>
       <article class="card"><h4>最强三项</h4><p><b>数据单一源</b>：numbers → data → MissionPack；<b>测试与回放</b>：83 断言 + 34 扩展检查 + blackbox；<b>文档与工具</b>：49 页 + 流程图 + 沙盘 + 编辑器。</p></article>
-      <article class="card"><h4>最弱三项</h4><p><b>性能/规模</b>未测；<b>发布链路</b>未定（D14/D17/D18）；<b>内容厚度</b>仍只有 1 职业 / 3 图 / 5 波。</p></article>
+      <article class="card"><h4>最弱三项</h4><p><b>性能/规模</b>已有 headless 基线，但未测渲染/内存；<b>发布链路</b>未定（D14/D17/D18）；<b>内容厚度</b>仍只有 1 职业 / 3 图 / 5 波。</p></article>
     </div>
 
     <h3>评分维度</h3>
@@ -177,11 +177,12 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <div class="score-row"><span>文档与知识</span><div class="meter"><i style="width:90%"></i></div><span class="num">4.5</span></div>
       <div class="score-row"><span>工具与工作流</span><div class="meter"><i style="width:80%"></i></div><span class="num">4.0</span></div>
       <div class="score-row"><span>可维护/可逆</span><div class="meter"><i style="width:70%"></i></div><span class="num">3.5</span></div>
-      <div class="score-row"><span>性能与规模</span><div class="meter"><i style="width:50%"></i></div><span class="num">2.5</span></div>
+      <div class="score-row"><span>性能与规模</span><div class="meter"><i style="width:60%"></i></div><span class="num">3.0</span></div>
       <div class="score-row"><span>可观测/运营</span><div class="meter"><i style="width:60%"></i></div><span class="num">3.0</span></div>
       <div class="score-row"><span>交付与发布</span><div class="meter"><i style="width:60%"></i></div><span class="num">3.0</span></div>
     </div>
-    <p class="hint">权重：架构 20%、数据 15%、测试 15%、文档 10%、工具 10%、维护 10%、性能 5%、可观测 5%、交付 10%。加权结果 3.85。</p>
+    <p class="hint">权重：架构 20%、数据 15%、测试 15%、文档 10%、工具 10%、维护 10%、性能 5%、可观测 5%、交付 10%。加权结果 3.88。</p>
+    <div class="note ok"><b>性能基线（headless）：</b>5 波 p95 0.077 ms · 2,000 实体 p95 6.3 ms · 5 分钟 0.19 s · 地图加载 p95 ≤0.97 ms。数据与限制见 <a href="../docs-ai/design01/performance/README.md">performance/README.md</a>。</div>
 
     <h3>评分依据</h3>
     <table>
@@ -193,7 +194,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <tr><td>文档与知识</td><td>design01 49 个 HTML 页面；flows；simulator；briefing HUB/GUIDE；决策记录。</td><td>文档密度高，但存在与实现同步的成本；部分设计仍是提案/样例。</td></tr>
         <tr><td>工具与工作流</td><td>LiveBay Tools 编辑器；numbers 导出；MissionPack；blackbox/replay；流程图生成；数值沙盘。</td><td>工具各自可用，但没有一个“全量验收入口”；新成员仍需读多个 README。</td></tr>
         <tr><td>可维护/可逆</td><td>数据驱动；模块可单测；扩展包失败不阻塞核心；回放可复盘。</td><td>Sim 编排、main.gd、部分 HUD 逻辑仍是技术债；没有正式架构守护测试。</td></tr>
-        <tr><td>性能与规模</td><td>当前 1 图/5 波/少量实体；无头测试快。</td><td>没有帧率、内存、加载、长时间运行、地图规模基准；三图也尚未做真实人类试玩。</td></tr>
+        <tr><td>性能与规模</td><td>headless 基线：5 波 p95 0.077 ms、2,000 实体 p95 6.3 ms、5 分钟 0.19 s、地图加载 p95 ≤0.97 ms。</td><td>只测模拟步进，不含渲染/GPU/音频/内存；单图、合成实体，仍不是完整性能验收。</td></tr>
         <tr><td>可观测/运营</td><td>EventBus + BlackBox + replay；HUD 诊断；sim-trace。</td><td>没有生产遥测、崩溃上报、指标面板、玩家行为分析。</td></tr>
         <tr><td>交付与发布</td><td>可运行垂直切片、编辑器、演示视频、存档。</td><td>D14 平台、D17 更新节奏、D18 语言未定；没有打包/签名/发布流水线。</td></tr>
       </tbody>

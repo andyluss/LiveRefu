@@ -1,0 +1,93 @@
+{
+	"engine": "4.7-stable (official)",
+	"entities": {
+		"rows": [
+			{
+				"avg_ms": 0.28645,
+				"max_ms": 0.423,
+				"n": 100,
+				"p50_ms": 0.282,
+				"p95_ms": 0.293
+			},
+			{
+				"avg_ms": 1.39635833333333,
+				"max_ms": 1.968,
+				"n": 500,
+				"p50_ms": 1.379,
+				"p95_ms": 1.412
+			},
+			{
+				"avg_ms": 2.77661666666667,
+				"max_ms": 3.903,
+				"n": 1000,
+				"p50_ms": 2.747,
+				"p95_ms": 2.785
+			},
+			{
+				"avg_ms": 5.643175,
+				"max_ms": 7.852,
+				"n": 2000,
+				"p50_ms": 5.528,
+				"p95_ms": 6.257
+			}
+		]
+	},
+	"frame_time": {
+		"avg_ms": 0.0339910372608258,
+		"frames": 9930,
+		"max_ms": 0.178,
+		"n": 9930,
+		"p50_ms": 0.029,
+		"p95_ms": 0.077,
+		"result": {
+			"built": 4,
+			"grade": "C",
+			"integrity": 32.0,
+			"kills": 61,
+			"leaked": 10,
+			"max_integrity": 100.0,
+			"spent": 202,
+			"total_waves": 5,
+			"waves_cleared": 5,
+			"won": true
+		}
+	},
+	"generated_at": "2026-11-06T13:08:08",
+	"hardware": {
+		"cores": 8,
+		"os": "macOS",
+		"processor": "Apple M1 Pro"
+	},
+	"long_run": {
+		"entities": 1,
+		"frames": 18000,
+		"ms_per_frame": 0.0104195555555556,
+		"state": 1,
+		"wall_ms": 187.552
+	},
+	"map_load": {
+		"bay01": {
+			"avg_ms": 0.6223,
+			"max_ms": 0.653,
+			"n": 20,
+			"p50_ms": 0.62,
+			"p95_ms": 0.653
+		},
+		"bay02": {
+			"avg_ms": 0.6363,
+			"max_ms": 0.671,
+			"n": 20,
+			"p50_ms": 0.635,
+			"p95_ms": 0.671
+		},
+		"bay03": {
+			"avg_ms": 0.66725,
+			"max_ms": 0.965,
+			"n": 20,
+			"p50_ms": 0.625,
+			"p95_ms": 0.965
+		}
+	},
+	"scenario": "standard",
+	"schema": 1
+}

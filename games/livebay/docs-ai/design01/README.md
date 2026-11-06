@@ -86,6 +86,7 @@ related:
 | 16 | [模块化技术架构：NASApunk 系统方案](tech/16_模块化技术架构_NASApunk.md) | ORU 模块、端口、总线、黑匣子；参考方案，未裁决 |
 | 18 | [HTML 数值模拟器方案](tech/18_HTML数值模拟器方案.md) | 浏览器数值沙盘 + Godot trace 对账；方案 |
 | — | [数值沙盘](simulator/index.html) | 地图覆盖、DPS、波次压力、经济诊断；P1–P2 |
+| — | [性能基线](performance/README.md) | 帧时间、实体压力、5 分钟长跑、三图加载 |
 | — | [一局静态流程图](flows/game_flow.html) | 状态、命令、事件、守卫条件；由代码生成 |
 | — | [补充流程图](flows/extra_flows.html) | 玩家操作、波次、L1 扩展、数据到 MissionPack、职责泳道 |
 

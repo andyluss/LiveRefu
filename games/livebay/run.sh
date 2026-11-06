@@ -71,6 +71,9 @@ case "$CMD" in
   sim-trace)
     exec "$GODOT" --headless --path "$GAME" --script tests/sim_trace.gd
     ;;
+  perf)
+    exec "$GODOT" --headless --path "$GAME" --script tests/perf_bench.gd
+    ;;
   simulator)
     exec python3 "$HERE/tools/build_simulator.py"
     ;;
@@ -91,7 +94,7 @@ case "$CMD" in
     exec node "$HERE/briefing/check_hub.ts"
     ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|verify|sim-trace|simulator|simulator-check|flow|flow-check|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
+    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|verify|sim-trace|perf|simulator|simulator-check|flow|flow-check|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2
