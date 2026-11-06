@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.95</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.96</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -201,7 +201,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 
     <h3>下一步：把 3.85 推到 4.2+</h3>
     <div class="grid g2">
-      <article class="card"><h4>1 · 一键全量验收</h4><p>增加 <code>./run.sh verify</code>：test + expansions-check + editor-test + playtest + flow-check + simulator-check + link/HTML 检查；CI 直接调用。</p></article>
+      <article class="card"><h4>1 · 一键全量验收 ✅</h4><p>已实现 <code>./run.sh verify</code>：test + expansions-check + editor-test + playtest + numbers/pack + flow + simulator + briefing + 启动 + 链接 + R-016；12 项汇总。</p></article>
       <article class="card"><h4>2 · 性能基准</h4><p>固定场景记录帧时间、实体上限、5 分钟长跑与三图加载时间；把“没测过”变成“有基线”。</p></article>
       <article class="card"><h4>3 · 收口 main.gd</h4><p>把 HUD 构建/流程状态从 main.gd 抽到 presenter/controller；Sim 再拆索敌/移动编排。</p></article>
       <article class="card"><h4>4 · 内容厚度</h4><p>1 职业 / 3 图 / 5 波是切片，不是产品；L1 正式内容、L2 岗位、日常循环需要进入下一阶段。</p></article>

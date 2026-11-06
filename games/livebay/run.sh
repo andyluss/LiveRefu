@@ -65,6 +65,9 @@ case "$CMD" in
   playtest)
     exec "$GODOT" --headless --path "$GAME" --script tests/playtest_maps.gd
     ;;
+  verify)
+    exec bash "$HERE/tools/verify.sh"
+    ;;
   sim-trace)
     exec "$GODOT" --headless --path "$GAME" --script tests/sim_trace.gd
     ;;
@@ -88,7 +91,7 @@ case "$CMD" in
     exec node "$HERE/briefing/check_hub.ts"
     ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|sim-trace|simulator|simulator-check|flow|flow-check|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
+    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|verify|sim-trace|simulator|simulator-check|flow|flow-check|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2
@@ -103,6 +106,7 @@ case "$CMD" in
     echo "  expansions-check 校验扩展包/preset/变体互斥" >&2
     echo "  compare        输出 L1 A/B/C 对比表" >&2
     echo "  playtest       三张地图的无头基础策略试玩" >&2
+    echo "  verify         一键全量验收（测试/扩展/编辑器/试玩/生成物/链接/HTML）" >&2
     echo "  sim-trace      导出 Godot 标准场景对账 JSON" >&2
     echo "  simulator      生成 docs-ai/design01/simulator/index.html" >&2
     echo "  simulator-check 校验数值沙盘是否过期" >&2

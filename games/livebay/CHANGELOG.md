@@ -3,6 +3,25 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.96] - 2026-11-06 12:56
+
+### 新增
+
+- `./run.sh verify`：一键全量验收；
+  - test / expansions-check / editor-test / playtest；
+  - numbers-check / pack-check；
+  - flow-check / simulator-check / briefing-check；
+  - 无头启动 180 帧；
+  - Markdown 内部链接；
+  - R-016（设计文档 + briefing + flows + simulator + 工作区 HUB）。
+- 失败项继续跑完，最后汇总 PASS/FAIL；
+- HUB 工程力页更新“一键验收已实现”。
+
+### 验证
+
+- `./run.sh verify`：**PASS 12 · FAIL 0**；
+- R-016：60 个受管页面通过。
+
 ## [0.1.95] - 2026-11-06 12:14
 
 ### 文档
