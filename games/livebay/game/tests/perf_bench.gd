@@ -5,6 +5,8 @@ extends SceneTree
 
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
 const SimScript = preload("res://scripts/core/sim.gd")
+const AudioScript = preload("res://scripts/presentation/audio_director.gd")
+const RendererScript = preload("res://scripts/presentation/game_renderer.gd")
 const MAPS := ["bay01", "bay02", "bay03"]
 
 
@@ -23,6 +25,8 @@ func _initialize() -> void:
 		"frame_time": _frame_time(),
 		"entities": _entities(),
 		"long_run": _long_run(),
+		"audio": _audio(),
+		"render": _render(),
 	}
 	var out := ProjectSettings.globalize_path("res://").path_join("../docs-ai/design01/performance/bench.json").simplify_path()
 	DirAccess.make_dir_recursive_absolute(out.get_base_dir())
@@ -70,6 +74,7 @@ func _map_load() -> Dictionary:
 
 
 func _frame_time() -> Dictionary:
+	var mem_before := OS.get_static_memory_usage()
 	var sim: Variant = _new_sim("bay01")
 	_standard(sim)
 	sim.start_wave()
@@ -86,6 +91,8 @@ func _frame_time() -> Dictionary:
 	var s := _stats(samples)
 	s["frames"] = frames
 	s["result"] = sim.get_result()
+	s["static_memory_mb_before"] = mem_before / 1048576.0
+	s["static_memory_mb_after"] = OS.get_static_memory_usage() / 1048576.0
 	return s
 
 
@@ -123,11 +130,13 @@ func _entities() -> Dictionary:
 			samples.append((Time.get_ticks_usec() - t) / 1000.0)
 		var s := _stats(samples)
 		s["n"] = n
+		s["static_memory_mb"] = OS.get_static_memory_usage() / 1048576.0
 		rows.append(s)
 	return {"rows": rows}
 
 
 func _long_run() -> Dictionary:
+	var mem_before := OS.get_static_memory_usage()
 	var sim: Variant = _new_sim("bay01")
 	_standard(sim)
 	sim.start_wave()
@@ -152,7 +161,60 @@ func _long_run() -> Dictionary:
 		"ms_per_frame": wall / maxf(1.0, float(frames)),
 		"entities": sim.enemies.size(),
 		"state": sim.state,
+		"static_memory_mb_before": mem_before / 1048576.0,
+		"static_memory_mb_after": OS.get_static_memory_usage() / 1048576.0,
 	}
+
+
+class FakeCanvas:
+	var calls := 0
+	func draw_rect(_r: Rect2, _c: Color, _filled := true, _width := -1.0, _aa := false) -> void: calls += 1
+	func draw_line(_a: Vector2, _b: Vector2, _c: Color, _w := 1.0, _aa := false) -> void: calls += 1
+	func draw_circle(_p: Vector2, _r: float, _c: Color) -> void: calls += 1
+	func draw_arc(_p: Vector2, _r: float, _a: float, _b: float, _n: int, _c: Color, _w := 1.0, _aa := false) -> void: calls += 1
+	func draw_polyline(_p: PackedVector2Array, _c: Color, _w := 1.0, _aa := false) -> void: calls += 1
+	func draw_colored_polygon(_p: PackedVector2Array, _c: Color) -> void: calls += 1
+	func draw_string(_f: Font, _p: Vector2, _t: String, _a := 0, _w := -1.0, _s := 16, _c := Color.WHITE) -> void: calls += 1
+
+
+func _render() -> Dictionary:
+	var font := SystemFont.new()
+	font.font_names = PackedStringArray(["PingFang SC", "Arial Unicode MS"])
+	var sim: Variant = _new_sim("bay01")
+	_standard(sim)
+	sim.start_wave()
+	var renderer: Variant = RendererScript.new()
+	renderer.font = font
+	var fake := FakeCanvas.new()
+	var samples: Array = []
+	for i: int in range(1000):
+		sim.step(1.0 / 60.0)
+		var t := Time.get_ticks_usec()
+		renderer.draw(fake, sim, -1, -1, [], 0.0, "", 0.0, false)
+		samples.append((Time.get_ticks_usec() - t) / 1000.0)
+	var stats := _stats(samples)
+	return {
+		"headless": true,
+		"cpu_draw": stats,
+		"draw_calls_per_frame": fake.calls / 1000,
+		"adapter": RenderingServer.get_video_adapter_name(),
+		"gpu_note": "headless 无 GPU 帧；cpu_draw 只测绘制命令生成，不是 GPU 时间",
+	}
+
+
+func _audio() -> Dictionary:
+	var audio: Variant = AudioScript.new()
+	root.add_child(audio)
+	audio._ready()
+	var out := {
+		"voices": audio._players.size(),
+		"driver": AudioServer.get_driver_name(),
+		"mix_rate": AudioServer.get_mix_rate(),
+		"output_latency_ms": AudioServer.get_output_latency() * 1000.0,
+		"note": "headless/dummy：只验证音频通道与驱动参数；播放延迟需显示环境/真机。",
+	}
+	audio.queue_free()
+	return out
 
 
 func _stats(values: Array) -> Dictionary:

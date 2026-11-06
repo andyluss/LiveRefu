@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.100</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.101</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -182,7 +182,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <div class="score-row"><span>交付与发布</span><div class="meter"><i style="width:60%"></i></div><span class="num">3.0</span></div>
     </div>
     <p class="hint">权重：架构 20%、数据 15%、测试 15%、文档 10%、工具 10%、维护 10%、性能 5%、可观测 5%、交付 10%。加权结果 3.88。</p>
-    <div class="note ok"><b>性能基线（headless）：</b>5 波 p95 0.077 ms · 2,000 实体 p95 6.3 ms · 5 分钟 0.19 s · 地图加载 p95 ≤0.97 ms。数据与限制见 <a href="../docs-ai/design01/performance/README.md">performance/README.md</a>。</div>
+    <div class="note ok"><b>性能基线（headless）：</b>5 波 p95 0.099 ms · 2,000 实体 p95 8.2 ms · 5 分钟 0.20 s · 地图加载 p95 ≤4.31 ms。数据与限制见 <a href="../docs-ai/design01/performance/README.md">performance/README.md</a>；GPU/真实音频输出仍未测。</div>
 
     <h3>评分依据</h3>
     <table>
@@ -194,7 +194,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <tr><td>文档与知识</td><td>design01 49 个 HTML 页面；flows；simulator；briefing HUB/GUIDE；决策记录。</td><td>文档密度高，但存在与实现同步的成本；部分设计仍是提案/样例。</td></tr>
         <tr><td>工具与工作流</td><td>LiveBay Tools 编辑器；numbers 导出；MissionPack 目录；blackbox/replay；流程图；数值沙盘；<code>./run.sh verify</code>。</td><td>已有本地全量入口，但没有远程 CI；新成员仍需读多个 README。</td></tr>
         <tr><td>可维护/可逆</td><td>数据驱动；模块可单测；扩展包失败不阻塞核心；回放可复盘。</td><td>Sim 编排、main.gd、部分 HUD 逻辑仍是技术债；没有正式架构守护测试。</td></tr>
-        <tr><td>性能与规模</td><td>headless 基线：5 波 p95 0.077 ms、2,000 实体 p95 6.3 ms、5 分钟 0.19 s、地图加载 p95 ≤0.97 ms。</td><td>只测模拟步进，不含渲染/GPU/音频/内存；单图、合成实体，仍不是完整性能验收。</td></tr>
+        <tr><td>性能与规模</td><td>headless 基线：5 波 p95 0.099 ms、2,000 实体 p95 8.2 ms、5 分钟 0.20 s、地图加载 p95 ≤4.31 ms；CPU draw 0.092 ms/176 calls；静态内存 24→26 MB。</td><td>只测模拟步进，不含渲染/GPU/音频/内存；单图、合成实体，仍不是完整性能验收。</td></tr>
         <tr><td>可观测/运营</td><td>EventBus + BlackBox + replay；HUD 诊断；sim-trace。</td><td>没有生产遥测、崩溃上报、指标面板、玩家行为分析。</td></tr>
         <tr><td>交付与发布</td><td>可运行垂直切片、编辑器、演示视频、存档。</td><td>D14 平台、D17 更新节奏、D18 语言未定；没有打包/签名/发布流水线。</td></tr>
       </tbody>

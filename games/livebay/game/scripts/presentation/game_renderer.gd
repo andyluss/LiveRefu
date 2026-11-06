@@ -19,7 +19,7 @@ const VIEW_SIZE := Vector2(1280, 720)
 const TOP_BAR_H := 56.0
 
 var font: Font
-var canvas: CanvasItem
+var canvas: Variant  # CanvasItem 或性能基准的 FakeCanvas
 var sim: Variant
 var selected_slot := -1
 var hover_slot := -1
@@ -30,7 +30,7 @@ var toast_timer := 0.0
 var paused := false
 
 
-func draw(target: CanvasItem, game_sim: Variant, selected: int, hover: int, beam_list: Array, flash: float, text: String, timer: float, is_paused: bool) -> void:
+func draw(target: Variant, game_sim: Variant, selected: int, hover: int, beam_list: Array, flash: float, text: String, timer: float, is_paused: bool) -> void:
 	canvas = target
 	sim = game_sim
 	selected_slot = selected
