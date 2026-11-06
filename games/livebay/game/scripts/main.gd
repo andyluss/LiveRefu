@@ -98,6 +98,7 @@ func _ready() -> void:
 	audio = AudioScript.new()
 	add_child(audio)
 	audio.play_music("prep")
+	audio.play("ambient_hum")
 	font = SystemFont.new()
 	font.font_names = PackedStringArray([
 		"PingFang SC",
@@ -240,6 +241,7 @@ func _select_tower(index: int) -> void:
 	if index < 0 or index >= TOWER_ORDER.size():
 		return
 	selected_tower_id = TOWER_ORDER[index]
+	audio.play("ui_hover")
 	_refresh_tower_buttons()
 
 
@@ -305,6 +307,18 @@ func _toggle_audio() -> void:
 func _show_contracts() -> void:
 	if flow_controller != null:
 		flow_controller.show_contracts()
+
+
+func _show_residents() -> void:
+	if flow_controller != null:
+		flow_controller.show_residents(data)
+
+
+func _close_residents() -> void:
+	if flow_controller != null:
+		flow_controller.hide_all()
+	if runtime != null:
+		runtime.clock.paused = false
 
 
 func _show_map_picker() -> void:
@@ -429,7 +443,7 @@ func _hint_text() -> String:
 	var tower: Variant = sim.get_tower_at(selected_slot) if selected_slot >= 0 else null
 	if tower != null:
 		return "已选中 %s Lv.%d · U 升级 · X 出售 · 右键取消" % [String(tower.def.name), int(tower.level)]
-	return "点击塔位建造 · 1–6 选塔 · C 合同 · 空格开波 · Tab 加速 · P 暂停"
+	return "点击塔位建造 · 1–6 选塔 · C 合同 · V 湾民 · 空格开波 · Tab 加速 · P 暂停"
 
 
 func _refresh_tower_buttons() -> void:
@@ -451,6 +465,7 @@ func _on_enemy_leaked(_enemy: Dictionary) -> void:
 
 func _on_wave_started(index: int) -> void:
 	audio.play_music("wave")
+	audio.play("wave_warning")
 	var resident := _resident_line(index)
 	if not resident.is_empty():
 		toast_text = resident
@@ -476,17 +491,20 @@ func _resident_line(index: int) -> String:
 
 
 func _on_tower_disabled(slot: int, duration: float) -> void:
+	audio.play("fault_spark")
 	toast_text = "第 %d 号塔故障 · %.0f 秒" % [slot + 1, duration]
 	toast_timer = 2.0
 
 
 func _on_tower_degraded(slot: int, duration: float) -> void:
 	audio.play("degraded")
+	audio.play("fault_short")
 	toast_text = "第 %d 号塔降级 · %.0f 秒" % [slot + 1, duration]
 	toast_timer = 2.0
 
 
 func _on_fault_escaped(_enemy: Dictionary) -> void:
+	audio.play("fault_arc")
 	toast_text = "故障已扩散出外环"
 	toast_timer = 1.6
 
@@ -505,6 +523,7 @@ func _on_game_lost(result: Dictionary) -> void:
 
 func _show_overlay(won: bool, result: Dictionary) -> void:
 	audio.play_music("result")
+	audio.play("result_stamp")
 	current_result = result.duplicate(true)
 	if flow_controller != null:
 		flow_controller.show_result(won, result)

@@ -39,6 +39,8 @@ func handle(event: InputEvent) -> void:
 			host._show_map_picker()
 		"contract":
 			host._show_contracts()
+		"residents":
+			host._show_residents()
 		"mute":
 			host._toggle_audio()
 		"restart":

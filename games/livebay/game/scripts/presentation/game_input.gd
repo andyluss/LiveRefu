@@ -21,6 +21,7 @@ const ACTIONS := {
 	KEY_M: "mute",
 	KEY_G: "map",
 	KEY_C: "contract",
+	KEY_V: "residents",
 }
 
 

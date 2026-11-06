@@ -79,6 +79,30 @@ func show_contracts() -> void:
 		host.runtime.clock.paused = true
 
 
+func show_residents(data: Dictionary) -> void:
+	if hud == null or hud.checklist_overlay.visible:
+		return
+	hud.checklist_title.text = "湾民 · 值班日志"
+	hud.checklist_body.text = "按 V 关闭。三名湾民会随波次出现；这里是他们的完整台词。"
+	_clear_buttons()
+	for r: Variant in data.get("residents", []):
+		var line := Label.new()
+		line.text = "%s（%s）\n%s" % [str(r.get("name", "?")), str(r.get("role", "")), "\n".join(r.get("lines", []))]
+		line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		line.custom_minimum_size = Vector2(440, 0)
+		line.add_theme_font_size_override("font_size", 13)
+		hud.checklist_buttons.add_child(line)
+	var close := Button.new()
+	close.text = "关闭 (V)"
+	close.custom_minimum_size = Vector2(140, 34)
+	hud.style_button(close, palette.teal, palette.cream)
+	close.pressed.connect(host._close_residents)
+	hud.checklist_buttons.add_child(close)
+	hud.checklist_overlay.visible = true
+	if host.runtime != null:
+		host.runtime.clock.paused = true
+
+
 func show_archive(page: int = 0, filter: String = "all") -> void:
 	if hud == null or (hud.checklist_overlay.visible and not archive_open):
 		return

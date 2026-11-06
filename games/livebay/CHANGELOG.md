@@ -3,6 +3,22 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.106] - 2026-11-06 13:50
+
+### 新增
+
+- 12 个环境/故障音：ambient_hum / wind / dock / alarm，fault_spark / short / arc / lock，ui_hover / confirm，wave_warning，result_stamp；
+- 按 `V` 打开「湾民 · 值班日志」，可回看阿岚/老周/小满完整台词；
+- 主游戏在准备/切图/故障/结算时播放对应环境音；
+- 湾民日志是独立可关闭层，不是分支对话；
+- 内容文档同步。
+
+### 验证
+
+- `./run.sh test`：95/95；
+- `./run.sh verify`：PASS 12 · FAIL 0；
+- GUIDE 重建。
+
 ## [0.1.105] - 2026-11-06 13:48
 
 ### 新增
@@ -12,16 +28,17 @@
   - 老周（焊工）：第 3/7 波；
   - 小满（湾民学生）：第 4/8 波；
 - 3 段循环音乐：准备/交战/结算；
+- 12 个环境/故障音：hum/wind/dock/alarm + spark/short/arc/lock 等；
 - 新音效：resident、ambient_alarm；
 - AudioDirector 支持 `play_music` / `stop_music` / `set_muted`；
 - 主游戏按状态切换音乐，静音同时停音乐；
+- 按 `V` 打开「湾民 · 值班日志」，三名湾民的完整台词可回看；
 - `residents.json` 纳入 MissionPack；
 - 测试 94→95。
 
 ### 边界
 
-- 12 个环境音仍只补了部分；
-- 湾民目前是台词层，不是独立对话系统；
+- 湾民日志是台词/档案层，不是分支对话；
 - 音乐为程序生成占位，不是最终配乐。
 
 ### 验证
