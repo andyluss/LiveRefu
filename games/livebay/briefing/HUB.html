@@ -185,7 +185,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 
     <h3>评分依据</h3>
     <table>
-      <thead><tr><th>维度</th><th>证据</th><th>为什么不是满分</th></tr></thead>
+      <thead><tr><th width="110">维度</th><th>证据</th><th>为什么不是满分</th></tr></thead>
       <tbody>
         <tr><td>架构与边界</td><td>MissionRuntime + 时钟/事件/命令/黑匣子 + 7 领域模块；ReadModel/Presenter/Renderer；扩展包 manifest/preset。</td><td>Sim 仍编排部分 tick；main.gd 仍承担较多 HUD/流程；边界还不是“可替换模块”的最终形态。</td></tr>
         <tr><td>数据与单一源</td><td>numbers Markdown → export → data → MissionPack；HUB 11 facts 对账；模拟器数据 hash。</td><td>地图/波次已独立，但 `mission_pack` 仍以 bay01 为默认清单；跨地图 pack 语义还可更清晰。</td></tr>
