@@ -3,7 +3,7 @@
 class_name LiveBayGameCommandController
 extends RefCounted
 
-const TOWER_ORDER := ["interceptor", "pulse", "tractor", "supply", "welder", "beacon"]
+const Consts = preload("res://scripts/shared/constants.gd")
 
 var host: Node
 var palette: Dictionary
@@ -36,9 +36,9 @@ func click_slot(slot: int) -> void:
 
 
 func select_tower(index: int) -> void:
-	if index < 0 or index >= TOWER_ORDER.size():
+	if index < 0 or index >= Consts.TOWER_ORDER.size():
 		return
-	host.selected_tower_id = TOWER_ORDER[index]
+	host.selected_tower_id = Consts.TOWER_ORDER[index]
 	host.audio.play("ui_hover")
 	host.ui_presenter.refresh_tower_buttons()
 

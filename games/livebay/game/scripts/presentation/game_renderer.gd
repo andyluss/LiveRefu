@@ -3,20 +3,7 @@
 class_name LiveBayGameRenderer
 extends RefCounted
 
-const PALETTE := {
-	"paper": Color("#E9E3D5"),
-	"panel": Color("#D6CEBC"),
-	"cream": Color("#F5EFE2"),
-	"ink": Color("#232B2F"),
-	"slate": Color("#2F3A3E"),
-	"teal": Color("#3E6F6B"),
-	"orange": Color("#D9622B"),
-	"amber": Color("#E0A22E"),
-	"rust": Color("#8C4A32"),
-	"sage": Color("#7C8F6B"),
-}
-const VIEW_SIZE := Vector2(1280, 720)
-const TOP_BAR_H := 56.0
+const Consts = preload("res://scripts/shared/constants.gd")
 
 var font: Font
 var canvas: Variant  # CanvasItem 或性能基准的 FakeCanvas
@@ -44,7 +31,7 @@ func draw(target: Variant, game_sim: Variant, selected: int, hover: int, beam_li
 
 
 func _draw_all() -> void:
-	canvas.draw_rect(Rect2(Vector2.ZERO, VIEW_SIZE), PALETTE.paper)
+	canvas.draw_rect(Rect2(Vector2.ZERO, Consts.VIEW_SIZE), Consts.PALETTE.paper)
 	_draw_grid()
 	_draw_title()
 	_draw_city()
@@ -59,24 +46,24 @@ func _draw_all() -> void:
 	_draw_beams()
 	_draw_toast()
 	if paused and sim.state != 2 and sim.state != 4:
-		canvas.draw_rect(Rect2(Vector2.ZERO, VIEW_SIZE), Color(0.09, 0.11, 0.12, 0.35))
-		_draw_center_text("已暂停", 42, PALETTE.cream, 24)
+		canvas.draw_rect(Rect2(Vector2.ZERO, Consts.VIEW_SIZE), Color(0.09, 0.11, 0.12, 0.35))
+		_draw_center_text("已暂停", 42, Consts.PALETTE.cream, 24)
 	if leak_flash > 0.0:
-		canvas.draw_rect(Rect2(Vector2.ZERO, VIEW_SIZE), Color(0.85, 0.2, 0.1, leak_flash * 0.28))
+		canvas.draw_rect(Rect2(Vector2.ZERO, Consts.VIEW_SIZE), Color(0.85, 0.2, 0.1, leak_flash * 0.28))
 
 
 func _draw_title() -> void:
-	canvas.draw_string(font, Vector2(26, 92), "外环 · 第七段", HORIZONTAL_ALIGNMENT_LEFT, -1, 26, PALETTE.ink)
-	canvas.draw_string(font, Vector2(26, 116), "夜班 03:40 · 交接后第 1 班", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(PALETTE.ink, 0.6))
-	canvas.draw_line(Vector2(26, 128), Vector2(250, 128), Color(PALETTE.orange, 0.8), 2.0)
+	canvas.draw_string(font, Vector2(26, 92), "外环 · 第七段", HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Consts.PALETTE.ink)
+	canvas.draw_string(font, Vector2(26, 116), "夜班 03:40 · 交接后第 1 班", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(Consts.PALETTE.ink, 0.6))
+	canvas.draw_line(Vector2(26, 128), Vector2(250, 128), Color(Consts.PALETTE.orange, 0.8), 2.0)
 
 
 func _draw_grid() -> void:
-	var color := Color(PALETTE.ink, 0.05)
-	for x: int in range(0, int(VIEW_SIZE.x) + 1, 40):
-		canvas.draw_line(Vector2(x, 0), Vector2(x, VIEW_SIZE.y), color, 1.0)
-	for y: int in range(0, int(VIEW_SIZE.y) + 1, 40):
-		canvas.draw_line(Vector2(0, y), Vector2(VIEW_SIZE.x, y), color, 1.0)
+	var color := Color(Consts.PALETTE.ink, 0.05)
+	for x: int in range(0, int(Consts.VIEW_SIZE.x) + 1, 40):
+		canvas.draw_line(Vector2(x, 0), Vector2(x, Consts.VIEW_SIZE.y), color, 1.0)
+	for y: int in range(0, int(Consts.VIEW_SIZE.y) + 1, 40):
+		canvas.draw_line(Vector2(0, y), Vector2(Consts.VIEW_SIZE.x, y), color, 1.0)
 
 
 func _draw_city() -> void:
@@ -87,17 +74,17 @@ func _draw_city() -> void:
 		[920, 556, 130, 50], [1070, 571, 150, 35],
 	]
 	for block: Array in blocks:
-		canvas.draw_rect(Rect2(float(block[0]), float(block[1]), float(block[2]), float(block[3])), Color(PALETTE.panel, 0.55))
-		canvas.draw_rect(Rect2(float(block[0]), float(block[1]), float(block[2]), float(block[3])), Color(PALETTE.ink, 0.18), false, 1.0)
+		canvas.draw_rect(Rect2(float(block[0]), float(block[1]), float(block[2]), float(block[3])), Color(Consts.PALETTE.panel, 0.55))
+		canvas.draw_rect(Rect2(float(block[0]), float(block[1]), float(block[2]), float(block[3])), Color(Consts.PALETTE.ink, 0.18), false, 1.0)
 	for i: int in range(0, 14):
 		var x := 92.0 + i * 82.0
-		canvas.draw_circle(Vector2(x, 584), 2.4, Color(PALETTE.amber, 0.55))
+		canvas.draw_circle(Vector2(x, 584), 2.4, Color(Consts.PALETTE.amber, 0.55))
 
 
 func _draw_path() -> void:
 	if sim.path.size() < 2:
 		return
-	canvas.draw_polyline(sim.path, Color(PALETTE.ink, 0.18), 44.0, true)
+	canvas.draw_polyline(sim.path, Color(Consts.PALETTE.ink, 0.18), 44.0, true)
 	canvas.draw_polyline(sim.path, Color("#394447"), 32.0, true)
 	canvas.draw_polyline(sim.path, Color("#6E7873"), 26.0, true)
 	# 中心虚线
@@ -110,17 +97,17 @@ func _draw_path() -> void:
 			if s % 2 == 0:
 				var p0: Vector2 = a.lerp(b, float(s) / float(max(1, steps)))
 				var p1: Vector2 = a.lerp(b, min(1.0, (float(s) + 0.55) / float(max(1, steps))))
-				canvas.draw_line(p0, p1, Color(PALETTE.amber, 0.5), 2.0)
+				canvas.draw_line(p0, p1, Color(Consts.PALETTE.amber, 0.5), 2.0)
 
 
 func _draw_base() -> void:
 	var t: float = Time.get_ticks_msec() / 1000.0
 	var pulse: float = 3.0 + sin(t * 2.2) * 2.0
-	canvas.draw_circle(sim.base_pos, sim.base_radius + pulse, Color(PALETTE.orange, 0.12))
-	canvas.draw_circle(sim.base_pos, sim.base_radius, PALETTE.slate)
-	canvas.draw_arc(sim.base_pos, sim.base_radius, 0, TAU, 48, PALETTE.amber, 3.0, true)
-	canvas.draw_circle(sim.base_pos, 9.0, PALETTE.orange)
-	canvas.draw_string(font, sim.base_pos + Vector2(-30, 52), "湾口", HORIZONTAL_ALIGNMENT_CENTER, 60, 15, PALETTE.ink)
+	canvas.draw_circle(sim.base_pos, sim.base_radius + pulse, Color(Consts.PALETTE.orange, 0.12))
+	canvas.draw_circle(sim.base_pos, sim.base_radius, Consts.PALETTE.slate)
+	canvas.draw_arc(sim.base_pos, sim.base_radius, 0, TAU, 48, Consts.PALETTE.amber, 3.0, true)
+	canvas.draw_circle(sim.base_pos, 9.0, Consts.PALETTE.orange)
+	canvas.draw_string(font, sim.base_pos + Vector2(-30, 52), "湾口", HORIZONTAL_ALIGNMENT_CENTER, 60, 15, Consts.PALETTE.ink)
 
 
 func _draw_slots() -> void:
@@ -130,15 +117,15 @@ func _draw_slots() -> void:
 			var tower: Variant = sim.get_tower_at(i)
 			if tower != null:
 				var range_px: float = sim._tower_range(tower)
-				canvas.draw_circle(pos, range_px, Color(PALETTE.teal, 0.08))
-				canvas.draw_arc(pos, range_px, 0, TAU, 64, Color(PALETTE.teal, 0.55), 2.0, true)
+				canvas.draw_circle(pos, range_px, Color(Consts.PALETTE.teal, 0.08))
+				canvas.draw_arc(pos, range_px, 0, TAU, 64, Color(Consts.PALETTE.teal, 0.55), 2.0, true)
 		if sim.get_tower_at(i) != null:
 			continue
-		var fill := PALETTE.cream if i != hover_slot else Color("#FFF6E6")
+		var fill := Consts.PALETTE.cream if i != hover_slot else Color("#FFF6E6")
 		canvas.draw_circle(pos, 18.0, fill)
-		canvas.draw_arc(pos, 18.0, 0, TAU, 32, PALETTE.ink, 2.0, true)
-		canvas.draw_arc(pos, 13.0, 0, TAU, 32, Color(PALETTE.ink, 0.2), 1.0, true)
-		canvas.draw_string(font, pos + Vector2(-20, 5), str(i + 1), HORIZONTAL_ALIGNMENT_CENTER, 40, 13, PALETTE.ink)
+		canvas.draw_arc(pos, 18.0, 0, TAU, 32, Consts.PALETTE.ink, 2.0, true)
+		canvas.draw_arc(pos, 13.0, 0, TAU, 32, Color(Consts.PALETTE.ink, 0.2), 1.0, true)
+		canvas.draw_string(font, pos + Vector2(-20, 5), str(i + 1), HORIZONTAL_ALIGNMENT_CENTER, 40, 13, Consts.PALETTE.ink)
 
 
 func _draw_fault_preview() -> void:
@@ -147,12 +134,12 @@ func _draw_fault_preview() -> void:
 	if bool(sim.fault_choice_pending) and not sim.fault_pending.is_empty():
 		for slot in sim.fault_pending.get("slots", []):
 			var p: Vector2 = sim.slots[int(slot)]
-			canvas.draw_circle(p, 28.0, Color(PALETTE.amber, 0.12))
-			canvas.draw_arc(p, 28.0, 0, TAU, 40, PALETTE.amber, 2.5, true)
+			canvas.draw_circle(p, 28.0, Color(Consts.PALETTE.amber, 0.12))
+			canvas.draw_arc(p, 28.0, 0, TAU, 40, Consts.PALETTE.amber, 2.5, true)
 	for entry in sim.pending_adjacent:
 		var source: int = int(entry.slot)
-		canvas.draw_circle(sim.slots[source], 160.0, Color(PALETTE.amber, 0.035))
-		canvas.draw_arc(sim.slots[source], 160.0, 0, TAU, 64, Color(PALETTE.amber, 0.25), 1.0, true)
+		canvas.draw_circle(sim.slots[source], 160.0, Color(Consts.PALETTE.amber, 0.035))
+		canvas.draw_arc(sim.slots[source], 160.0, 0, TAU, 64, Color(Consts.PALETTE.amber, 0.25), 1.0, true)
 
 
 func _draw_towers() -> void:
@@ -160,23 +147,23 @@ func _draw_towers() -> void:
 		var pos: Vector2 = sim.slots[tower.slot]
 		var color: Color = Color(String(tower.def.color))
 		var disabled: bool = float(tower.get("disabled_timer", 0.0)) > 0.0
-		canvas.draw_circle(pos, 16.0, PALETTE.slate)
+		canvas.draw_circle(pos, 16.0, Consts.PALETTE.slate)
 		canvas.draw_circle(pos, 13.0, Color(color, 0.45) if disabled else color)
-		canvas.draw_arc(pos, 13.0, 0, TAU, 28, PALETTE.ink, 1.5, true)
+		canvas.draw_arc(pos, 13.0, 0, TAU, 28, Consts.PALETTE.ink, 1.5, true)
 		if disabled:
-			canvas.draw_arc(pos, 19.0, 0, TAU, 32, PALETTE.rust, 2.5, true)
-			canvas.draw_string(font, pos + Vector2(-6, 6), "!", HORIZONTAL_ALIGNMENT_CENTER, 12, 16, PALETTE.rust)
+			canvas.draw_arc(pos, 19.0, 0, TAU, 32, Consts.PALETTE.rust, 2.5, true)
+			canvas.draw_string(font, pos + Vector2(-6, 6), "!", HORIZONTAL_ALIGNMENT_CENTER, 12, 16, Consts.PALETTE.rust)
 		if String(tower.def.kind) == "supply":
-			canvas.draw_rect(Rect2(pos - Vector2(6, 6), Vector2(12, 12)), PALETTE.ink, false, 2.0)
+			canvas.draw_rect(Rect2(pos - Vector2(6, 6), Vector2(12, 12)), Consts.PALETTE.ink, false, 2.0)
 		else:
 			var angle := -PI / 2.0
 			var target: Variant = _nearest_enemy(pos)
 			if target != null:
 				angle = (sim._enemy_pos(target) - pos).angle()
-			canvas.draw_line(pos, pos + Vector2(cos(angle), sin(angle)) * 22.0, PALETTE.ink, 5.0)
-			canvas.draw_line(pos, pos + Vector2(cos(angle), sin(angle)) * 18.0, PALETTE.amber, 2.0)
+			canvas.draw_line(pos, pos + Vector2(cos(angle), sin(angle)) * 22.0, Consts.PALETTE.ink, 5.0)
+			canvas.draw_line(pos, pos + Vector2(cos(angle), sin(angle)) * 18.0, Consts.PALETTE.amber, 2.0)
 		for level: int in range(int(tower.level)):
-			canvas.draw_circle(pos + Vector2(-8 + level * 8, -22), 2.6, PALETTE.amber)
+			canvas.draw_circle(pos + Vector2(-8 + level * 8, -22), 2.6, Consts.PALETTE.amber)
 
 
 func _draw_enemies() -> void:
@@ -185,37 +172,37 @@ func _draw_enemies() -> void:
 		var radius: float = float(enemy.def.radius)
 		var color: Color = Color(String(enemy.def.color))
 		canvas.draw_colored_polygon(_shape_points(String(enemy.def.shape), pos, radius), color)
-		canvas.draw_polyline(_closed(_shape_points(String(enemy.def.shape), pos, radius)), PALETTE.ink, 1.2, true)
+		canvas.draw_polyline(_closed(_shape_points(String(enemy.def.shape), pos, radius)), Consts.PALETTE.ink, 1.2, true)
 		var hp_ratio: float = clamp(float(enemy.hp) / max(1.0, float(enemy.max_hp)), 0.0, 1.0)
-		canvas.draw_rect(Rect2(pos + Vector2(-12, -radius - 10), Vector2(24, 3)), Color(PALETTE.ink, 0.35))
-		canvas.draw_rect(Rect2(pos + Vector2(-12, -radius - 10), Vector2(24 * hp_ratio, 3)), PALETTE.orange)
+		canvas.draw_rect(Rect2(pos + Vector2(-12, -radius - 10), Vector2(24, 3)), Color(Consts.PALETTE.ink, 0.35))
+		canvas.draw_rect(Rect2(pos + Vector2(-12, -radius - 10), Vector2(24 * hp_ratio, 3)), Consts.PALETTE.orange)
 		if float(enemy.slow_timer) > 0.0:
-			canvas.draw_arc(pos, radius + 5, 0, TAU, 20, Color(PALETTE.teal, 0.8), 1.5, true)
+			canvas.draw_arc(pos, radius + 5, 0, TAU, 20, Color(Consts.PALETTE.teal, 0.8), 1.5, true)
 
 
 func _draw_beams() -> void:
 	for beam: Dictionary in beams:
 		var alpha: float = float(beam.life) / max(0.001, float(beam.max_life))
 		if String(beam.kind) == "aoe":
-			canvas.draw_circle(beam.to, 10.0 + (1.0 - alpha) * 18.0, Color(PALETTE.amber, alpha * 0.25))
-			canvas.draw_arc(beam.to, 10.0 + (1.0 - alpha) * 18.0, 0, TAU, 24, Color(PALETTE.amber, alpha), 2.0, true)
+			canvas.draw_circle(beam.to, 10.0 + (1.0 - alpha) * 18.0, Color(Consts.PALETTE.amber, alpha * 0.25))
+			canvas.draw_arc(beam.to, 10.0 + (1.0 - alpha) * 18.0, 0, TAU, 24, Color(Consts.PALETTE.amber, alpha), 2.0, true)
 		else:
-			canvas.draw_line(beam.from, beam.to, Color(PALETTE.orange, alpha * 0.9), 2.5)
-			canvas.draw_circle(beam.to, 3.5, Color(PALETTE.amber, alpha))
+			canvas.draw_line(beam.from, beam.to, Color(Consts.PALETTE.orange, alpha * 0.9), 2.5)
+			canvas.draw_circle(beam.to, 3.5, Color(Consts.PALETTE.amber, alpha))
 
 
 func _draw_toast() -> void:
 	if toast_timer <= 0.0 or toast_text.is_empty():
 		return
 	var alpha: float = clamp(toast_timer, 0.0, 1.0)
-	var rect := Rect2(Vector2(VIEW_SIZE.x * 0.5 - 190, TOP_BAR_H + 14), Vector2(380, 38))
-	canvas.draw_rect(rect, Color(PALETTE.slate, 0.88 * alpha))
-	canvas.draw_rect(rect, Color(PALETTE.amber, 0.7 * alpha), false, 1.5)
-	canvas.draw_string(font, rect.position + Vector2(0, 25), toast_text, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, 16, Color(PALETTE.cream, alpha))
+	var rect := Rect2(Vector2(Consts.VIEW_SIZE.x * 0.5 - 190, Consts.TOP_BAR_H + 14), Vector2(380, 38))
+	canvas.draw_rect(rect, Color(Consts.PALETTE.slate, 0.88 * alpha))
+	canvas.draw_rect(rect, Color(Consts.PALETTE.amber, 0.7 * alpha), false, 1.5)
+	canvas.draw_string(font, rect.position + Vector2(0, 25), toast_text, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, 16, Color(Consts.PALETTE.cream, alpha))
 
 
 func _draw_center_text(text: String, size: int, color: Color, y: float) -> void:
-	canvas.draw_string(font, Vector2(0, VIEW_SIZE.y * 0.5 + y), text, HORIZONTAL_ALIGNMENT_CENTER, VIEW_SIZE.x, size, color)
+	canvas.draw_string(font, Vector2(0, Consts.VIEW_SIZE.y * 0.5 + y), text, HORIZONTAL_ALIGNMENT_CENTER, Consts.VIEW_SIZE.x, size, color)
 
 
 func _nearest_enemy(pos: Vector2) -> Variant:

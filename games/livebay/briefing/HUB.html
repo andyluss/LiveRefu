@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.107</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.108</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -271,7 +271,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <div class="grid g2">
       <article class="card"><h4>1 · 一键全量验收 ✅</h4><p>已实现 <code>./run.sh verify</code>：test + expansions-check + editor-test + playtest + numbers/pack + flow + simulator + briefing + 启动 + 链接 + R-016；12 项汇总。</p></article>
       <article class="card"><h4>2 · 性能基准</h4><p>固定场景记录帧时间、实体上限、5 分钟长跑与三图加载时间；把“没测过”变成“有基线”。</p></article>
-      <article class="card"><h4>3 · main 入口化 ✅</h4><p>HUD/流程/输入/会期/命令/反馈/UI 呈现均已拆出；main 966→<b>226</b> 行，只保留启动、连线、每帧驱动、绘制。下一步再拆 Sim 的索敌/移动编排。</p></article>
+      <article class="card"><h4>3 · main 入口化 ✅</h4><p>HUD/流程/输入/会期/命令/反馈/UI 呈现均已拆出；main 966→<b>210</b> 行；公共色板/布局/塔顺序在 <code>shared/constants.gd</code>，只保留启动、连线、每帧驱动、绘制。下一步再拆 Sim 的索敌/移动编排。</p></article>
       <article class="card"><h4>4 · 内容厚度</h4><p>1 职业 / 3 图 / 8 波是切片，不是产品；L1 正式内容、L2 岗位、日常循环需要进入下一阶段。</p></article>
     </div>
     <div class="note warn"><b>怎么读这份评分：</b>它是当前工程的“体检”，不是奖项。分数高不代表可以发布；分数低的地方，正好是下一步最该投入的地方。</div>

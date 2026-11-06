@@ -17,24 +17,8 @@ const SessionControllerScript = preload("res://scripts/presentation/game_session
 const CommandControllerScript = preload("res://scripts/presentation/game_command_controller.gd")
 const FeedbackControllerScript = preload("res://scripts/presentation/game_feedback.gd")
 const UiPresenterScript = preload("res://scripts/presentation/game_ui_presenter.gd")
+const Consts = preload("res://scripts/shared/constants.gd")
 
-const PALETTE := {
-	"paper": Color("#E9E3D5"),
-	"panel": Color("#D6CEBC"),
-	"cream": Color("#F5EFE2"),
-	"ink": Color("#232B2F"),
-	"slate": Color("#2F3A3E"),
-	"teal": Color("#3E6F6B"),
-	"orange": Color("#D9622B"),
-	"amber": Color("#E0A22E"),
-	"rust": Color("#8C4A32"),
-	"sage": Color("#7C8F6B"),
-}
-
-const TOWER_ORDER := ["interceptor", "pulse", "tractor", "supply", "welder", "beacon"]
-const VIEW_SIZE := Vector2(1280, 720)
-const TOP_BAR_H := 56.0
-const BOTTOM_BAR_H := 88.0
 
 var data: Dictionary = {}
 var runtime: LiveBayMissionRuntime
@@ -122,18 +106,18 @@ func _ready() -> void:
 	feedback = FeedbackControllerScript.new()
 	feedback.setup(self)
 	commands = CommandControllerScript.new()
-	commands.setup(self, PALETTE)
+	commands.setup(self, Consts.PALETTE)
 	session_controller = SessionControllerScript.new()
 	session_controller.setup(self)
 	if data.is_empty():
 		return
 	_build_ui()
 	flow_controller = FlowControllerScript.new()
-	flow_controller.setup(self, game_hud, PALETTE)
+	flow_controller.setup(self, game_hud, Consts.PALETTE)
 	ui_presenter = UiPresenterScript.new()
 	ui_presenter.setup(self)
 	input_controller = InputControllerScript.new()
-	input_controller.setup(self, TOWER_ORDER.size())
+	input_controller.setup(self, Consts.TOWER_ORDER.size())
 	queue_redraw()
 	if shift_memory.has_last():
 		commands.show_briefing()
@@ -161,7 +145,7 @@ func _process(delta: float) -> void:
 
 func _build_ui() -> void:
 	game_hud = GameHudScript.new()
-	game_hud.build(self, data, ui_theme, PALETTE, {
+	game_hud.build(self, data, ui_theme, Consts.PALETTE, {
 		"select_tower": commands.select_tower,
 		"start_wave": commands.start_wave,
 		"upgrade": commands.upgrade_selected,
@@ -206,7 +190,7 @@ func _show_fatal(message: String) -> void:
 	fatal_label = Label.new()
 	fatal_label.text = message
 	fatal_label.add_theme_font_size_override("font_size", 20)
-	fatal_label.add_theme_color_override("font_color", PALETTE.rust)
+	fatal_label.add_theme_color_override("font_color", Consts.PALETTE.rust)
 	fatal_label.position = Vector2(40, 40)
 	fatal_label.size = Vector2(1200, 60)
 	layer.add_child(fatal_label)

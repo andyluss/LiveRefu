@@ -5,7 +5,7 @@ extends RefCounted
 
 const ReadModelScript = preload("res://scripts/application/mission_read_model.gd")
 const SimScript = preload("res://scripts/core/sim.gd")
-const TOWER_ORDER := ["interceptor", "pulse", "tractor", "supply", "welder", "beacon"]
+const Consts = preload("res://scripts/shared/constants.gd")
 
 var host: Node
 
@@ -28,10 +28,10 @@ func update() -> void:
 
 	var ended: bool = host.sim.state == SimScript.State.WON or host.sim.state == SimScript.State.LOST
 	for i: int in range(host.tower_buttons.size()):
-		var def: Dictionary = host.data.towers_by_id.get(TOWER_ORDER[i], {})
+		var def: Dictionary = host.data.towers_by_id.get(Consts.TOWER_ORDER[i], {})
 		var cost: int = int(round(float(def.get("cost", 0)) * float(host.sim.profession.get("tower_cost_mult", 1.0))))
 		host.tower_buttons[i].disabled = ended or host.sim.energy < float(cost)
-		var selected: bool = TOWER_ORDER[i] == host.selected_tower_id
+		var selected: bool = Consts.TOWER_ORDER[i] == host.selected_tower_id
 		host.tower_buttons[i].modulate = Color(1, 1, 1, 1) if selected else Color(1, 1, 1, 0.88)
 
 	host.start_button.disabled = ended or not (host.sim.state == SimScript.State.PREP or host.sim.state == SimScript.State.BETWEEN)

@@ -3,10 +3,7 @@
 class_name LiveBayGameHud
 extends RefCounted
 
-const TOWER_ORDER := ["interceptor", "pulse", "tractor", "supply", "welder", "beacon"]
-const VIEW_SIZE := Vector2(1280, 720)
-const TOP_BAR_H := 56.0
-const BOTTOM_BAR_H := 88.0
+const Consts = preload("res://scripts/shared/constants.gd")
 
 var host: Node
 var data: Dictionary
@@ -66,7 +63,7 @@ func build(host_node: Node, game_data: Dictionary, ui_theme: Theme, palette_data
 func _build_top() -> void:
 	var top := Panel.new()
 	top.position = Vector2.ZERO
-	top.size = Vector2(VIEW_SIZE.x, TOP_BAR_H)
+	top.size = Vector2(Consts.VIEW_SIZE.x, Consts.TOP_BAR_H)
 	top.add_theme_stylebox_override("panel", panel_style(palette.slate, palette.ink))
 	root.add_child(top)
 
@@ -122,19 +119,19 @@ func _build_banner() -> void:
 
 func _build_bottom() -> void:
 	var bottom := Panel.new()
-	bottom.position = Vector2(0, VIEW_SIZE.y - BOTTOM_BAR_H)
-	bottom.size = Vector2(VIEW_SIZE.x, BOTTOM_BAR_H)
+	bottom.position = Vector2(0, Consts.VIEW_SIZE.y - Consts.BOTTOM_BAR_H)
+	bottom.size = Vector2(Consts.VIEW_SIZE.x, Consts.BOTTOM_BAR_H)
 	bottom.add_theme_stylebox_override("panel", panel_style(palette.panel, palette.ink))
 	root.add_child(bottom)
 
 	var bar := HBoxContainer.new()
 	bar.position = Vector2(16, 12)
-	bar.size = Vector2(VIEW_SIZE.x - 32, 64)
+	bar.size = Vector2(Consts.VIEW_SIZE.x - 32, 64)
 	bar.add_theme_constant_override("separation", 10)
 	bottom.add_child(bar)
 
-	for i: int in range(TOWER_ORDER.size()):
-		var id: String = TOWER_ORDER[i]
+	for i: int in range(Consts.TOWER_ORDER.size()):
+		var id: String = Consts.TOWER_ORDER[i]
 		var def: Dictionary = data.towers_by_id.get(id, {})
 		var button := make_build_button(i, def)
 		bar.add_child(button)
@@ -155,8 +152,8 @@ func _build_bottom() -> void:
 	bar.add_child(sell_button)
 
 	hint_label = make_label("", 13, Color(palette.cream, 0.7))
-	hint_label.position = Vector2(18, VIEW_SIZE.y - 22)
-	hint_label.size = Vector2(VIEW_SIZE.x - 36, 18)
+	hint_label.position = Vector2(18, Consts.VIEW_SIZE.y - 22)
+	hint_label.size = Vector2(Consts.VIEW_SIZE.x - 36, 18)
 	root.add_child(hint_label)
 
 
@@ -321,5 +318,5 @@ func tower_kind_label(kind: String) -> String:
 
 func refresh_tower_buttons(selected_id: String) -> void:
 	for i: int in range(tower_buttons.size()):
-		var selected: bool = TOWER_ORDER[i] == selected_id
+		var selected: bool = Consts.TOWER_ORDER[i] == selected_id
 		tower_buttons[i].modulate = Color(1, 1, 1, 1) if selected else Color(1, 1, 1, 0.82)

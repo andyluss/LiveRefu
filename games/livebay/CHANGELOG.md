@@ -3,6 +3,23 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.108] - 2026-11-06 13:58
+
+### 重构
+
+- 公共 UI 常数抽到 `shared/constants.gd`：
+  - `PALETTE`；
+  - `TOWER_ORDER`；
+  - `VIEW_SIZE` / `TOP_BAR_H` / `BOTTOM_BAR_H`；
+- main / HUD / renderer / command / UI presenter 统一引用，删除 5 处重复定义；
+- main 226→**210** 行，继续只作为入口。
+
+### 验证
+
+- `./run.sh verify`：PASS 12 · FAIL 0；
+- 无头 UI 冒烟：6 塔按钮/地图/湾民日志通过；
+- R-016：60 个页面通过。
+
 ## [0.1.107] - 2026-11-06 13:52
 
 ### 重构
