@@ -80,7 +80,7 @@ func _frame_time() -> Dictionary:
 	sim.start_wave()
 	var samples: Array = []
 	var frames := 0
-	while sim.state != SimScript.State.WON and sim.state != SimScript.State.LOST and frames < 60 * 260:
+	while sim.state != SimScript.State.WON and sim.state != SimScript.State.LOST and frames < 60 * 600:
 		var t := Time.get_ticks_usec()
 		sim.step(1.0 / 60.0)
 		samples.append((Time.get_ticks_usec() - t) / 1000.0)

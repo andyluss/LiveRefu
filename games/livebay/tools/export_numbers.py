@@ -45,12 +45,12 @@ BALANCE_REQUIRED = [
 TOWER_FIELDS = [
     "id", "name", "cost", "range", "damage", "fire_rate", "kind",
     "slow", "slow_duration", "income", "income_interval", "repair",
-    "color", "description",
+    "mark_bonus", "mark_duration", "color", "description",
 ]
 ENEMY_FIELDS = [
     "id", "name", "hp", "speed", "reward", "leak_damage", "radius",
     "shape", "color", "behavior", "disable_duration", "disable_radius",
-    "disable_targets", "description",
+    "disable_targets", "damage_taken_mult", "split_into", "split_count", "description",
 ]
 WAVE_GROUP_FIELDS = ["enemy", "count", "interval", "delay"]
 
@@ -165,7 +165,7 @@ def build_profession(rows: list[dict[str, str]]) -> dict:
 def build_towers(rows: list[dict[str, str]]) -> list[dict]:
     out: list[dict] = []
     seen: set[str] = set()
-    numeric = {"cost", "range", "damage", "fire_rate", "slow", "slow_duration", "income", "income_interval", "repair"}
+    numeric = {"cost", "range", "damage", "fire_rate", "slow", "slow_duration", "income", "income_interval", "repair", "mark_bonus", "mark_duration", "damage_taken_mult", "split_count"}
     for row in rows:
         tower: dict = {}
         for field in TOWER_FIELDS:
@@ -191,7 +191,7 @@ def build_towers(rows: list[dict[str, str]]) -> list[dict]:
 def build_enemies(rows: list[dict[str, str]]) -> list[dict]:
     out: list[dict] = []
     seen: set[str] = set()
-    numeric = {"hp", "speed", "reward", "leak_damage", "radius", "disable_duration", "disable_radius", "disable_targets"}
+    numeric = {"hp", "speed", "reward", "leak_damage", "radius", "disable_duration", "disable_radius", "disable_targets", "damage_taken_mult", "split_count"}
     for row in rows:
         enemy: dict = {}
         for field in ENEMY_FIELDS:

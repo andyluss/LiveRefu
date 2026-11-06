@@ -2,7 +2,7 @@
 	"audio": {
 		"driver": "Dummy",
 		"mix_rate": 44100.0,
-		"note": "headless/dummy：只验证音频通道与驱动参数；播放延迟需 perf-render 或真机。",
+		"note": "headless/dummy：只验证音频通道与驱动参数；播放延迟需显示环境/真机。",
 		"output_latency_ms": 0.0,
 		"voices": 4
 	},
@@ -10,62 +10,62 @@
 	"entities": {
 		"rows": [
 			{
-				"avg_ms": 0.31155,
-				"max_ms": 0.671,
+				"avg_ms": 0.395975,
+				"max_ms": 0.557,
 				"n": 100,
-				"p50_ms": 0.293,
-				"p95_ms": 0.441,
-				"static_memory_mb": 24.0984516143799
+				"p50_ms": 0.383,
+				"p95_ms": 0.491,
+				"static_memory_mb": 24.1808395385742
 			},
 			{
-				"avg_ms": 1.48739166666667,
-				"max_ms": 2.459,
+				"avg_ms": 1.975625,
+				"max_ms": 2.637,
 				"n": 500,
-				"p50_ms": 1.416,
-				"p95_ms": 1.795,
-				"static_memory_mb": 24.5349864959717
+				"p50_ms": 1.911,
+				"p95_ms": 2.188,
+				"static_memory_mb": 24.617374420166
 			},
 			{
-				"avg_ms": 3.0108,
-				"max_ms": 4.54,
+				"avg_ms": 3.97125833333333,
+				"max_ms": 5.657,
 				"n": 1000,
-				"p50_ms": 2.96,
-				"p95_ms": 3.38,
-				"static_memory_mb": 25.0721988677979
+				"p50_ms": 3.93,
+				"p95_ms": 4.321,
+				"static_memory_mb": 25.1545867919922
 			},
 			{
-				"avg_ms": 6.27014166666666,
-				"max_ms": 25.091,
+				"avg_ms": 8.00338333333333,
+				"max_ms": 11.308,
 				"n": 2000,
-				"p50_ms": 5.957,
-				"p95_ms": 8.178,
-				"static_memory_mb": 26.1601314544678
+				"p50_ms": 7.967,
+				"p95_ms": 8.427,
+				"static_memory_mb": 26.2425193786621
 			}
 		]
 	},
 	"frame_time": {
-		"avg_ms": 0.0436993957703928,
-		"frames": 9930,
-		"max_ms": 2.008,
-		"n": 9930,
-		"p50_ms": 0.032,
+		"avg_ms": 0.0434944535484685,
+		"frames": 15866,
+		"max_ms": 0.236,
+		"n": 15866,
+		"p50_ms": 0.037,
 		"p95_ms": 0.099,
 		"result": {
 			"built": 4,
-			"grade": "C",
-			"integrity": 32.0,
-			"kills": 61,
+			"grade": "B",
+			"integrity": 41.0,
+			"kills": 94,
 			"leaked": 10,
 			"max_integrity": 100.0,
 			"spent": 202,
-			"total_waves": 5,
-			"waves_cleared": 5,
+			"total_waves": 8,
+			"waves_cleared": 8,
 			"won": true
 		},
-		"static_memory_mb_after": 24.2649745941162,
-		"static_memory_mb_before": 23.905179977417
+		"static_memory_mb_after": 24.486270904541,
+		"static_memory_mb_before": 23.92138671875
 	},
-	"generated_at": "2026-11-06T13:17:03",
+	"generated_at": "2026-11-06T13:43:47",
 	"hardware": {
 		"cores": 8,
 		"os": "macOS",
@@ -74,43 +74,43 @@
 	"long_run": {
 		"entities": 1,
 		"frames": 18000,
-		"ms_per_frame": 0.0109366666666667,
+		"ms_per_frame": 0.0140666666666667,
 		"state": 1,
-		"static_memory_mb_after": 23.9901180267334,
-		"static_memory_mb_before": 23.9107837677002,
-		"wall_ms": 196.86
+		"static_memory_mb_after": 24.0725059509277,
+		"static_memory_mb_before": 23.9269905090332,
+		"wall_ms": 253.2
 	},
 	"map_load": {
 		"bay01": {
-			"avg_ms": 1.4056,
-			"max_ms": 2.627,
+			"avg_ms": 1.3875,
+			"max_ms": 1.657,
 			"n": 20,
-			"p50_ms": 1.402,
-			"p95_ms": 2.627
+			"p50_ms": 1.341,
+			"p95_ms": 1.657
 		},
 		"bay02": {
-			"avg_ms": 1.9912,
-			"max_ms": 3.955,
+			"avg_ms": 1.383,
+			"max_ms": 1.805,
 			"n": 20,
-			"p50_ms": 2.139,
-			"p95_ms": 3.955
+			"p50_ms": 1.337,
+			"p95_ms": 1.805
 		},
 		"bay03": {
-			"avg_ms": 1.7014,
-			"max_ms": 4.311,
+			"avg_ms": 1.39535,
+			"max_ms": 1.784,
 			"n": 20,
-			"p50_ms": 1.239,
-			"p95_ms": 4.311
+			"p50_ms": 1.326,
+			"p95_ms": 1.784
 		}
 	},
 	"render": {
 		"adapter": "",
 		"cpu_draw": {
-			"avg_ms": 0.0779389999999996,
-			"max_ms": 0.202,
+			"avg_ms": 0.101761,
+			"max_ms": 0.218,
 			"n": 1000,
-			"p50_ms": 0.079,
-			"p95_ms": 0.092
+			"p50_ms": 0.104,
+			"p95_ms": 0.113
 		},
 		"draw_calls_per_frame": 176,
 		"gpu_note": "headless 无 GPU 帧；cpu_draw 只测绘制命令生成，不是 GPU 时间",

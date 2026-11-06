@@ -7,6 +7,9 @@ const ACTIONS := {
 	KEY_1: "select_tower:0",
 	KEY_2: "select_tower:1",
 	KEY_3: "select_tower:2",
+	KEY_4: "select_tower:3",
+	KEY_5: "select_tower:4",
+	KEY_6: "select_tower:5",
 	KEY_SPACE: "start_wave",
 	KEY_P: "pause",
 	KEY_TAB: "speed",
@@ -17,6 +20,7 @@ const ACTIONS := {
 	KEY_H: "archive",
 	KEY_M: "mute",
 	KEY_G: "map",
+	KEY_C: "contract",
 }
 
 

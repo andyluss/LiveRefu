@@ -78,8 +78,18 @@ func sell(slot_index: int) -> LiveBayResult:
 	return LiveBayResult.success("已出售", {"refund": refund})
 
 
-func tower_damage(tower: Dictionary) -> float:
-	return float(tower.def.damage) * (1.0 + float(balance.get("upgrade_damage_factor", 0.25)) * (int(tower.level) - 1)) * damage_mult
+func tower_damage(tower: Dictionary, enemy: Variant = null) -> float:
+	var value := float(tower.def.damage) * (1.0 + float(balance.get("upgrade_damage_factor", 0.25)) * (int(tower.level) - 1)) * damage_mult
+	if enemy != null and float(enemy.get("mark_timer", 0.0)) > 0.0:
+		value *= 1.0 + float(enemy.get("mark_bonus", 0.0))
+	return value
+
+
+func _apply_damage(enemy: Dictionary, amount: float) -> void:
+	var taken := amount * float(enemy.def.get("damage_taken_mult", 1.0))
+	enemy.hp -= taken
+	if enemy.hp <= 0.0:
+		enemy.dead = true
 
 
 func tower_range(tower: Dictionary) -> float:
@@ -126,27 +136,25 @@ func update(dt: float, enemies: Array, slots: Array, map: Variant) -> Dictionary
 				candidates.append(enemy)
 		if candidates.is_empty():
 			continue
-		var damage := tower_damage(tower)
 		var cooldown := 1.0 / maxf(0.05, float(def.fire_rate) * degrade)
 		if def.kind == "single":
 			var target: Dictionary = candidates[0]
 			for enemy: Dictionary in candidates:
 				if float(enemy.dist) > float(target.dist):
 					target = enemy
-			target.hp -= damage
-			if target.hp <= 0.0:
-				target.dead = true
+			_apply_damage(target, tower_damage(tower, target))
+			if float(def.get("mark_duration", 0.0)) > 0.0:
+				target.mark_timer = float(def.mark_duration)
+				target.mark_bonus = float(def.get("mark_bonus", 0.0))
 			fired.append({"from": tower_pos, "to": map.point_at(float(target.dist)), "kind": "single"})
 		elif def.kind == "aoe":
 			var first_pos: Vector2 = tower_pos
 			for enemy: Dictionary in candidates:
-				enemy.hp -= damage
+				_apply_damage(enemy, tower_damage(tower, enemy))
 				var slow := float(def.get("slow", 0.0))
 				if slow > 0.0:
 					enemy.slow_factor = maxf(float(enemy.slow_factor), slow)
 					enemy.slow_timer = maxf(float(enemy.slow_timer), float(def.get("slow_duration", 1.5)))
-				if enemy.hp <= 0.0:
-					enemy.dead = true
 				if first_pos == tower_pos:
 					first_pos = map.point_at(float(enemy.dist))
 			fired.append({"from": tower_pos, "to": first_pos, "kind": "aoe"})

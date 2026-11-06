@@ -1,0 +1,29 @@
+[
+  {
+    "id": "stable",
+    "name": "稳定班",
+    "description": "标准交接，无额外修正。",
+    "energy_delta": 0,
+    "prep_delta": 0.0,
+    "bypass_locked": false,
+    "fault_bonus": 0.0
+  },
+  {
+    "id": "audit",
+    "name": "审计班",
+    "description": "开局供能 -10，旁路锁定，准备时间 -5s；低报会被重点核对。",
+    "energy_delta": -10,
+    "prep_delta": -5.0,
+    "bypass_locked": true,
+    "fault_bonus": 0.0
+  },
+  {
+    "id": "fault_tide",
+    "name": "故障潮",
+    "description": "开局供能 +10，故障停塔 +1s；故障更频繁，但赏金更高。",
+    "energy_delta": 10,
+    "prep_delta": 0.0,
+    "bypass_locked": false,
+    "fault_bonus": 1.0
+  }
+]

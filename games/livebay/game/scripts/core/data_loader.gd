@@ -102,10 +102,18 @@ static func load_game_data(base_dir: String = DATA_DIR, map_id: String = "bay01"
 	var wave_files := {"bay01": "waves.json", "bay02": "waves_bay02.json", "bay03": "waves_bay03.json"}
 	var waves: Variant = load_json(base_dir.path_join(str(wave_files.get(map_id, "waves.json"))))
 	var balance: Variant = load_json(base_dir.path_join("balance.json"))
+	var procedures: Variant = load_json(base_dir.path_join("procedures.json"))
+	var contracts: Variant = load_json(base_dir.path_join("contracts.json"))
 
 	if not _is_dict(profession) or not _is_array(towers) or not _is_array(enemies):
 		return {}
 	if not _is_array(waves) or not _is_dict(balance):
+		return {}
+	if procedures != null and not _is_dict(procedures):
+		push_error("DataLoader: procedures.json 不是对象")
+		return {}
+	if contracts != null and not _is_array(contracts):
+		push_error("DataLoader: contracts.json 不是数组")
 		return {}
 
 	var maps: Dictionary = {}
@@ -186,6 +194,8 @@ static func load_game_data(base_dir: String = DATA_DIR, map_id: String = "bay01"
 		"maps": maps,
 		"map_id": map_id,
 		"balance": balance,
+		"procedures": procedures if procedures != null else {"cards": [], "report": []},
+		"contracts": contracts if contracts != null else [],
 	}
 
 

@@ -49,5 +49,32 @@
     "repair": 3,
     "color": "#7C8F6B",
     "description": "每 5 秒产出供能，每波结束修复少量保障度。"
+  },
+  {
+    "id": "welder",
+    "name": "焊补塔",
+    "cost": 50,
+    "range": 0,
+    "damage": 0,
+    "fire_rate": 0,
+    "kind": "supply",
+    "income": 2,
+    "income_interval": 5.0,
+    "repair": 8,
+    "color": "#6F8F8A",
+    "description": "低产出、高维修；修塔还是补输出？"
+  },
+  {
+    "id": "beacon",
+    "name": "信标塔",
+    "cost": 40,
+    "range": 140,
+    "damage": 2,
+    "fire_rate": 1.0,
+    "kind": "single",
+    "mark_bonus": 0.25,
+    "mark_duration": 2.0,
+    "color": "#B47A16",
+    "description": "标记目标，使其他塔对其伤害提高 25%，持续 2s。"
   }
 ]

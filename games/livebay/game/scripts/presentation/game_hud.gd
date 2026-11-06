@@ -3,7 +3,7 @@
 class_name LiveBayGameHud
 extends RefCounted
 
-const TOWER_ORDER := ["interceptor", "pulse", "supply"]
+const TOWER_ORDER := ["interceptor", "pulse", "tractor", "supply", "welder", "beacon"]
 const VIEW_SIZE := Vector2(1280, 720)
 const TOP_BAR_H := 56.0
 const BOTTOM_BAR_H := 88.0
@@ -259,7 +259,7 @@ func make_top_button(text: String, pos: Vector2) -> Button:
 
 func make_build_button(index: int, def: Dictionary) -> Button:
 	var button := Button.new()
-	button.custom_minimum_size = Vector2(200, 64)
+	button.custom_minimum_size = Vector2(150, 64)
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.text = "%d  %s\n    %d 供能 · %s" % [
 		index + 1,

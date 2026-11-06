@@ -1,0 +1,21 @@
+{
+  "cards": [
+    {"id":"w2_patrol","wave":2,"title":"外环巡检 · 第 2 波前","body":"巡检记录有一处空白。照签，还是复查？","options":[{"id":"sign","label":"照签：按计划开波","effect":"sign"},{"id":"review","label":"复查：故障停塔 -1s","effect":"review"}]},
+    {"id":"w2_supply","wave":2,"title":"补给表 · 第 2 波前","body":"补给表与库存对不上。如实补记，还是按惯例？","options":[{"id":"honest","label":"如实补记","effect":"sign"},{"id":"custom","label":"按惯例：低报 +1","effect":"custom"}]},
+    {"id":"w3_damper","wave":3,"title":"T-07 阻尼器异响","body":"可以停塔复查，也可以带病运行。","options":[{"id":"sign","label":"带病运行","effect":"sign"},{"id":"review","label":"复查：故障停塔 -1s","effect":"review"}]},
+    {"id":"w3_spare","wave":3,"title":"备用件清单","body":"备用件只够修一段弧。先修哪段？","options":[{"id":"isolate","label":"隔离：保安全","effect":"isolate"},{"id":"bypass","label":"旁路：保覆盖","effect":"bypass"}]},
+    {"id":"w4_checklist","wave":4,"title":"第 4 波 · 班前检查单","body":"三处仪表读数不一致。照签、复查，还是按惯例？","options":[{"id":"sign","label":"照签","effect":"sign"},{"id":"review","label":"复查：故障停塔 -1s","effect":"review"},{"id":"custom","label":"按惯例：低报 +1","effect":"custom"}]},
+    {"id":"w4_handover","wave":4,"title":"交接记录","body":"上一班留下一条未闭合的事故记录。","options":[{"id":"honest","label":"如实补记","effect":"sign"},{"id":"custom","label":"按惯例：低报 +1","effect":"custom"}]},
+    {"id":"w5_fault_drill","wave":5,"title":"第 5 波 · 故障预检","body":"故障链可能从湾口反向出现。选择处置姿态。","options":[{"id":"isolate","label":"隔离优先","effect":"isolate"},{"id":"bypass","label":"旁路优先","effect":"bypass"}]},
+    {"id":"w5_bypass","wave":5,"title":"旁路权限","body":"旁路能保覆盖，但相邻塔会降级。","options":[{"id":"sign","label":"不启用旁路","effect":"sign"},{"id":"bypass","label":"启用旁路","effect":"bypass"}]},
+    {"id":"w6_audit","wave":6,"title":"第 6 波 · 审计抽检","body":"审计员要求核对最近三班的低报记录。","options":[{"id":"honest","label":"配合审计","effect":"sign"},{"id":"custom","label":"按惯例：低报 +1","effect":"custom"}]},
+    {"id":"w7_weld","wave":7,"title":"焊补排班","body":"焊补塔只能修一段弧。修塔，还是保输出？","options":[{"id":"isolate","label":"停塔焊补","effect":"isolate"},{"id":"sign","label":"带病运行","effect":"sign"}]},
+    {"id":"w7_beacon","wave":7,"title":"信标校准","body":"信标可以标记目标，但需要占用一个塔位。","options":[{"id":"sign","label":"校准信标","effect":"sign"},{"id":"review","label":"复查：故障停塔 -1s","effect":"review"}]},
+    {"id":"w8_final","wave":8,"title":"第 8 波 · 最后巡检","body":"这是本班最后一次选择。记录会进入下一班简报。","options":[{"id":"honest","label":"如实记录","effect":"sign"},{"id":"custom","label":"按惯例：低报 +1","effect":"custom"}]}
+  ],
+  "report": [
+    {"id":"honest","label":"如实记录","effect":"honest"},
+    {"id":"custom","label":"按惯例：低报 +1","effect":"custom"},
+    {"id":"review","label":"待复查","effect":"review"}
+  ]
+}

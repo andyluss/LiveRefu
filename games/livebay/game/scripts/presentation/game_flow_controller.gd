@@ -46,7 +46,7 @@ func show_map_picker(data: Dictionary, current_map_id: String) -> void:
 	if hud == null or hud.checklist_overlay.visible:
 		return
 	hud.checklist_title.text = "选择地图"
-	hud.checklist_body.text = "当前：%s。切换会重开一班，接班记录与低报 carry 保留。" % str(data.get("map", {}).get("name", current_map_id))
+	hud.checklist_body.text = "当前：%s · 合同：%s。切换会重开一班，接班记录与低报 carry 保留。" % [str(data.get("map", {}).get("name", current_map_id)), str(host.current_contract)]
 	_clear_buttons()
 	for map_id: String in data.get("maps", {}).keys():
 		var map_data: Dictionary = data.maps[map_id]
@@ -55,6 +55,24 @@ func show_map_picker(data: Dictionary, current_map_id: String) -> void:
 		button.custom_minimum_size = Vector2(440, 42)
 		hud.style_button(button, palette.teal if map_id == current_map_id else palette.sage, palette.cream)
 		button.pressed.connect(host._choose_map.bind(map_id))
+		hud.checklist_buttons.add_child(button)
+	hud.checklist_overlay.visible = true
+	if host.runtime != null:
+		host.runtime.clock.paused = true
+
+
+func show_contracts() -> void:
+	if hud == null or hud.checklist_overlay.visible:
+		return
+	hud.checklist_title.text = "班次合同"
+	hud.checklist_body.text = "合同改变本班规则，不是数值皮肤。当前：%s" % str(host.current_contract)
+	_clear_buttons()
+	for c: Variant in host.data.get("contracts", []):
+		var button := Button.new()
+		button.text = "%s · %s" % [str(c.get("name", "?")), str(c.get("description", ""))]
+		button.custom_minimum_size = Vector2(440, 42)
+		hud.style_button(button, palette.teal if str(c.get("id", "")) == str(host.current_contract) else palette.sage, palette.cream)
+		button.pressed.connect(host._choose_contract.bind(str(c.get("id", ""))))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:

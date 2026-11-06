@@ -101,7 +101,7 @@ func _test_kernel(data: Dictionary) -> void:
 	_check(built.ok and started.ok and runtime.clock.ticks == 1, "kernel: runtime commands/tick")
 	_check(runtime.events.seq >= 4, "kernel: runtime emits events")
 	var view: LiveBayMissionReadModel = ReadModelScript.from_sim(runtime.sim, runtime.clock)
-	_check(view.energy > 0.0 and view.wave_count == 5, "view: read model snapshot")
+	_check(view.energy > 0.0 and view.wave_count == 8, "view: read model snapshot")
 	var hud: Dictionary = PresenterScript.hud(view)
 	_check(str(hud.energy_text).begins_with("供能"), "view: presenter HUD text")
 	var enemy_mod := EnemyModuleScript.new()
@@ -133,25 +133,31 @@ func _test_kernel(data: Dictionary) -> void:
 
 
 func _test_data(data: Dictionary) -> void:
-	_check(data.towers.size() == 4, "4 towers")
-	_check(data.enemies.size() == 5, "5 enemies")
+	_check(data.towers.size() == 6, "6 towers")
+	_check(data.enemies.size() == 7, "7 enemies")
 	var map2: Dictionary = DataLoaderScript.load_game_data("res://data", "bay02")
 	_check(not map2.is_empty() and str(map2.get("map_id", "")) == "bay02" and map2.map.slots.size() == 9, "map 02 loads with 9 slots")
 	var map2_sim := SimScript.new(map2)
 	_check(map2_sim.path_total > 1000.0 and map2_sim.slots.size() == 9, "map 02 has a traversable path")
-	_check(map2.waves.size() == 5 and int(map2.waves[0].groups[0].count) == 8, "map 02 has its own wave table")
+	_check(map2.waves.size() == 8 and int(map2.waves[0].groups[0].count) == 8, "map 02 has its own wave table")
 	_check(is_equal_approx(map2_sim.energy, 75.0) and is_equal_approx(map2_sim.max_integrity, 90.0) and is_equal_approx(map2_sim.map_speed_mult, 1.15), "map 02 modifiers applied")
 	var map3: Dictionary = DataLoaderScript.load_game_data("res://data", "bay03")
 	_check(not map3.is_empty() and str(map3.get("map_id", "")) == "bay03" and map3.map.slots.size() == 5, "map 03 loads with 5 slots")
 	var map3_sim := SimScript.new(map3)
 	_check(map3_sim.path_total > 500.0 and map3_sim.slots.size() == 5, "map 03 has a short traversable path")
-	_check(map3.waves.size() == 5 and int(map3.waves[0].groups[0].count) == 5, "map 03 has its own wave table")
+	_check(map3.waves.size() == 8 and int(map3.waves[0].groups[0].count) == 5, "map 03 has its own wave table")
 	_check(is_equal_approx(map3_sim.energy, 100.0) and is_equal_approx(map3_sim.max_integrity, 85.0), "map 03 modifiers applied")
 	_check(data.towers_by_id.has("tractor"), "tractor tower exists")
+	_check(data.towers_by_id.has("welder"), "welder tower exists")
+	_check(data.towers_by_id.has("beacon"), "beacon tower exists")
 	_check(data.enemies_by_id.has("armor"), "armor enemy exists")
+	_check(data.enemies_by_id.has("carrier"), "carrier enemy exists")
+	_check(data.enemies_by_id.has("splitter"), "splitter enemy exists")
 	_check(data.enemies_by_id.has("fault"), "fault enemy exists")
 	_check(String(data.enemies_by_id["fault"].get("behavior", "")) == "reverse", "fault moves in reverse")
-	_check(data.waves.size() == 5, "5 waves")
+	_check(data.waves.size() == 8, "8 waves")
+	_check(data.get("procedures", {}).get("cards", []).size() == 12, "12 checklist cards")
+	_check(data.get("contracts", []).size() == 3, "3 contracts")
 	var sim := SimScript.new(data)
 	_check(sim.path.size() >= 2, "path has points")
 	_check(sim.path_total > 500.0, "path has length")
@@ -226,7 +232,10 @@ func _test_fault(data: Dictionary) -> void:
 
 
 func _test_replay(data: Dictionary) -> void:
-	var runtime: LiveBayMissionRuntime = RuntimeScript.new(data)
+	# 回放测试聚焦模拟确定性；检查单会暂停时钟，另由 UI/流程测试覆盖。
+	var replay_data: Dictionary = data.duplicate(true)
+	replay_data["procedures"] = {"cards": [], "report": []}
+	var runtime: LiveBayMissionRuntime = RuntimeScript.new(replay_data)
 	runtime.dispatch(&"build_tower", {"slot": 3, "tower_id": "interceptor"})
 	runtime.dispatch(&"build_tower", {"slot": 4, "tower_id": "pulse"})
 	runtime.dispatch(&"start_wave")
@@ -238,7 +247,7 @@ func _test_replay(data: Dictionary) -> void:
 		frames += 1
 	var before: Dictionary = runtime.sim.result.duplicate(true)
 	var entries: Array = runtime.blackbox.events.duplicate(true)
-	var replay: LiveBayMissionRuntime = RuntimeScript.replay(data, entries)
+	var replay: LiveBayMissionRuntime = RuntimeScript.replay(replay_data, entries)
 	_check(int(replay.sim.result.get("integrity", -1)) == int(before.get("integrity", -2)), "replay: integrity matches")
 	_check(str(replay.sim.result.get("grade", "")) == str(before.get("grade", "")), "replay: grade matches")
 	replay.dispose()
@@ -279,7 +288,7 @@ func _test_win(data: Dictionary) -> void:
 	_check(sim.state == SimScript.State.WON, "2+ towers -> won")
 	if sim.state == SimScript.State.WON:
 		var result: Dictionary = sim.get_result()
-		_check(int(result.waves_cleared) == 5, "cleared 5 waves")
+		_check(int(result.waves_cleared) == 8, "cleared 8 waves")
 		_check(float(result.integrity) > 0.0, "integrity above zero")
 		print("   win result: grade=%s integrity=%d kills=%d leaked=%d" % [
 			String(result.grade), int(result.integrity), int(result.kills), int(result.leaked),

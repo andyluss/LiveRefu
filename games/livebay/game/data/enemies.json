@@ -62,5 +62,32 @@
     "disable_radius": 100,
     "disable_targets": 2,
     "description": "内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。"
+  },
+  {
+    "id": "carrier",
+    "name": "护盾载体",
+    "hp": 70,
+    "speed": 34,
+    "reward": 16,
+    "leak_damage": 18,
+    "radius": 13,
+    "shape": "hexagon",
+    "color": "#4D6A7A",
+    "damage_taken_mult": 0.65,
+    "description": "自带护盾，受到的伤害降低 35%；需要集中火力。"
+  },
+  {
+    "id": "splitter",
+    "name": "分裂残片",
+    "hp": 45,
+    "speed": 42,
+    "reward": 10,
+    "leak_damage": 12,
+    "radius": 10,
+    "shape": "diamond",
+    "color": "#8C6A4A",
+    "split_into": "debris",
+    "split_count": 2,
+    "description": "死亡后分裂为 2 个碎片。"
   }
 ]

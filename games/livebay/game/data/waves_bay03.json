@@ -112,5 +112,83 @@
         "delay": 4.0
       }
     ]
+  },
+  {
+    "index": 6,
+    "prep": 20.0,
+    "groups": [
+      {
+        "enemy": "debris",
+        "count": 7,
+        "interval": 0.65,
+        "delay": 0.0
+      },
+      {
+        "enemy": "turbulence",
+        "count": 4,
+        "interval": 0.8,
+        "delay": 2.0
+      },
+      {
+        "enemy": "carrier",
+        "count": 1,
+        "interval": 1.0,
+        "delay": 7.0
+      }
+    ]
+  },
+  {
+    "index": 7,
+    "prep": 20.0,
+    "groups": [
+      {
+        "enemy": "hulk",
+        "count": 2,
+        "interval": 1.8,
+        "delay": 0.0
+      },
+      {
+        "enemy": "splitter",
+        "count": 2,
+        "interval": 1.8,
+        "delay": 3.0
+      },
+      {
+        "enemy": "fault",
+        "count": 1,
+        "interval": 5.0,
+        "delay": 5.0
+      }
+    ]
+  },
+  {
+    "index": 8,
+    "prep": 20.0,
+    "groups": [
+      {
+        "enemy": "carrier",
+        "count": 1,
+        "interval": 4.0,
+        "delay": 0.0
+      },
+      {
+        "enemy": "splitter",
+        "count": 2,
+        "interval": 1.4,
+        "delay": 2.0
+      },
+      {
+        "enemy": "armor",
+        "count": 1,
+        "interval": 2.0,
+        "delay": 6.0
+      },
+      {
+        "enemy": "fault",
+        "count": 1,
+        "interval": 6.0,
+        "delay": 4.0
+      }
+    ]
   }
 ]

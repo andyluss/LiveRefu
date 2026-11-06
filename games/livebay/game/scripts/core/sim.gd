@@ -208,6 +208,10 @@ func _cleanup_dead() -> void:
 		stats.kills += 1
 		enemy_killed.emit(enemy)
 		energy_changed.emit(energy)
+		var split_into := str(enemy.def.get("split_into", ""))
+		if not split_into.is_empty():
+			for i: int in range(int(enemy.def.get("split_count", 0))):
+				enemies_module.spawn(split_into)
 
 
 func _apply_fault_effect(enemy: Dictionary) -> void:

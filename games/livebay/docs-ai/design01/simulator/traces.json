@@ -33,22 +33,22 @@
 			"facts": {
 				"path_length": 1311.50621795654,
 				"slots": 7,
-				"wave_count": 71,
-				"wave_hp": 2412,
-				"waves": 5
+				"wave_count": 96,
+				"wave_hp": 3474,
+				"waves": 8
 			},
 			"id": "bay01-standard",
 			"map": "bay01",
 			"result": {
 				"built": 4,
-				"grade": "C",
-				"integrity": 32.0,
-				"kills": 61,
+				"grade": "B",
+				"integrity": 41.0,
+				"kills": 94,
 				"leaked": 10,
 				"max_integrity": 100.0,
-				"seconds": 165.5,
+				"seconds": 264.433333333333,
 				"spent": 202,
-				"waves_cleared": 5,
+				"waves_cleared": 8,
 				"won": true
 			},
 			"scenario": "standard"
@@ -83,22 +83,22 @@
 			"facts": {
 				"path_length": 3775.51100158691,
 				"slots": 9,
-				"wave_count": 91,
-				"wave_hp": 3182,
-				"waves": 5
+				"wave_count": 120,
+				"wave_hp": 4378,
+				"waves": 8
 			},
 			"id": "bay02-standard",
 			"map": "bay02",
 			"result": {
 				"built": 4,
 				"grade": "S",
-				"integrity": 85.0,
-				"kills": 90,
+				"integrity": 90.0,
+				"kills": 131,
 				"leaked": 1,
 				"max_integrity": 90.0,
-				"seconds": 316.316666666667,
+				"seconds": 479.466666666667,
 				"spent": 202,
-				"waves_cleared": 5,
+				"waves_cleared": 8,
 				"won": true
 			},
 			"scenario": "standard"
@@ -129,9 +129,9 @@
 			"facts": {
 				"path_length": 1253.88273620605,
 				"slots": 5,
-				"wave_count": 60,
-				"wave_hp": 2062,
-				"waves": 5
+				"wave_count": 82,
+				"wave_hp": 2984,
+				"waves": 8
 			},
 			"id": "bay03-standard",
 			"map": "bay03",
@@ -139,12 +139,12 @@
 				"built": 3,
 				"grade": "A",
 				"integrity": 69.0,
-				"kills": 58,
+				"kills": 88,
 				"leaked": 2,
 				"max_integrity": 85.0,
-				"seconds": 170.633333333333,
+				"seconds": 287.9,
 				"spent": 162,
-				"waves_cleared": 5,
+				"waves_cleared": 8,
 				"won": true
 			},
 			"scenario": "standard"

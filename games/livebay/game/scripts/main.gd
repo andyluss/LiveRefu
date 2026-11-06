@@ -28,7 +28,7 @@ const PALETTE := {
 	"sage": Color("#7C8F6B"),
 }
 
-const TOWER_ORDER := ["interceptor", "pulse", "supply"]
+const TOWER_ORDER := ["interceptor", "pulse", "tractor", "supply", "welder", "beacon"]
 const VIEW_SIZE := Vector2(1280, 720)
 const TOP_BAR_H := 56.0
 const BOTTOM_BAR_H := 88.0
@@ -83,6 +83,7 @@ var broadcast_full := ""
 var archive_button: Button
 var map_button: Button
 var current_map_id := "bay01"
+var current_contract := "stable"
 var audio: LiveBayAudioDirector
 
 var fatal_label: Label
@@ -299,9 +300,20 @@ func _toggle_audio() -> void:
 		audio.play("ui")
 
 
+func _show_contracts() -> void:
+	if flow_controller != null:
+		flow_controller.show_contracts()
+
+
 func _show_map_picker() -> void:
 	if flow_controller != null:
 		flow_controller.show_map_picker(data, current_map_id)
+
+func _choose_contract(contract_id: String) -> void:
+	if session_controller != null and session_controller.choose_contract(contract_id):
+		toast_text = "已切换合同：%s" % contract_id
+		toast_timer = 1.6
+
 
 func _choose_map(map_id: String) -> void:
 	if session_controller != null and session_controller.switch_map(map_id):
@@ -415,7 +427,7 @@ func _hint_text() -> String:
 	var tower: Variant = sim.get_tower_at(selected_slot) if selected_slot >= 0 else null
 	if tower != null:
 		return "已选中 %s Lv.%d · U 升级 · X 出售 · 右键取消" % [String(tower.def.name), int(tower.level)]
-	return "点击塔位建造 · 1/2/3 选塔 · 空格开波 · Tab 加速 · P 暂停"
+	return "点击塔位建造 · 1–6 选塔 · C 合同 · 空格开波 · Tab 加速 · P 暂停"
 
 
 func _refresh_tower_buttons() -> void:

@@ -31,6 +31,8 @@ func spawn(enemy_id: String) -> bool:
 		"hit_towers": {},
 		"slow_factor": 0.0,
 		"slow_timer": 0.0,
+		"mark_timer": 0.0,
+		"mark_bonus": 0.0,
 		"dead": false,
 	})
 	return true
@@ -50,6 +52,8 @@ func update(delta: float, path_total: float, speed_mult := 1.0) -> Dictionary:
 		var enemy: Dictionary = enemies[i]
 		if enemy.slow_timer > 0.0:
 			enemy.slow_timer -= delta
+		if float(enemy.get("mark_timer", 0.0)) > 0.0:
+			enemy.mark_timer = maxf(0.0, float(enemy.mark_timer) - delta)
 		var speed := float(enemy.def.speed) * maxf(0.0, speed_mult)
 		if enemy.slow_timer > 0.0:
 			speed *= 1.0 - float(enemy.slow_factor)

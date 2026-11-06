@@ -17,6 +17,7 @@ func setup(host_node: Node) -> void:
 	host = host_node
 	host.shift_memory = ShiftMemoryScript.new(ShiftStoreScript.new())
 	host.current_map_id = "bay01"
+	host.current_contract = "stable"
 	host.data = DataLoaderScript.load_mission_pack()
 	if host.data.is_empty():
 		host._show_fatal("数据加载失败：请检查 game/data/*.json")
@@ -27,6 +28,7 @@ func setup(host_node: Node) -> void:
 func new_sim() -> void:
 	if host == null or host.data.is_empty():
 		return
+	_apply_contract()
 	var boot: LiveBayResult = ExpansionBootScript.load_preset("res://data/expansion_sets/baseline.json")
 	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
 	host.runtime = RuntimeScript.new(host.data, expansion_set, host.shift_memory.next_low_report(), host.shift_memory.audit_remaining)
@@ -34,6 +36,9 @@ func new_sim() -> void:
 	host.runtime.events.subscribe(&"FaultChoiceRequested", host._on_fault_choice_requested)
 	host.current_map_id = str(host.data.get("map_id", "bay01"))
 	host.sim = host.runtime.sim
+	if _contract().get("bypass_locked", false):
+		host.sim.fault_bypass_locked = true
+	host.sim.fault_duration_bonus += float(_contract().get("fault_bonus", 0.0))
 	_connect_sim()
 	host.selected_slot = -1
 	host.beams.clear()
@@ -72,6 +77,42 @@ func restart() -> void:
 			host.checklist_overlay.visible = false
 	if host.shift_memory.has_last():
 		host._show_briefing()
+
+
+func choose_contract(contract_id: String) -> bool:
+	if host == null:
+		return false
+	var found := false
+	for c: Variant in host.data.get("contracts", []):
+		if str(c.get("id", "")) == contract_id:
+			found = true
+			break
+	if not found:
+		return false
+	host.current_contract = contract_id
+	host.data = DataLoaderScript.load_mission_pack("res://data", host.current_map_id)
+	if host.data.is_empty():
+		return false
+	new_sim()
+	return true
+
+
+func _contract() -> Dictionary:
+	for c: Variant in host.data.get("contracts", []):
+		if str(c.get("id", "")) == str(host.current_contract):
+			return c
+	return {}
+
+
+func _apply_contract() -> void:
+	var c := _contract()
+	if c.is_empty():
+		return
+	host.data.balance["starting_energy"] = float(host.data.balance.get("starting_energy", 0.0)) + float(c.get("energy_delta", 0.0))
+	var prep_delta := float(c.get("prep_delta", 0.0))
+	if not is_zero_approx(prep_delta):
+		for w: Dictionary in host.data.get("waves", []):
+			w.prep = maxf(1.0, float(w.get("prep", 0.0)) + prep_delta)
 
 
 func switch_map(map_id: String) -> bool:
