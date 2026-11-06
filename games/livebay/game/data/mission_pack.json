@@ -1,6 +1,29 @@
 {
-  "schema_version": 1,
-  "pack_id": "livebay.bay01",
-  "version": "0.1.0",
-  "hash": "sha256:34af822875b5a3cde6ab580855ddb382e9f642a8c2a5eff1c15920ac2bfb8fce"
+  "schema_version": 2,
+  "catalog_id": "livebay.maps",
+  "version": "0.2.0",
+  "default_map": "bay01",
+  "packs": {
+    "bay01": {
+      "schema_version": 2,
+      "pack_id": "livebay.bay01",
+      "map_id": "bay01",
+      "version": "0.2.0",
+      "hash": "sha256:34af822875b5a3cde6ab580855ddb382e9f642a8c2a5eff1c15920ac2bfb8fce"
+    },
+    "bay02": {
+      "schema_version": 2,
+      "pack_id": "livebay.bay02",
+      "map_id": "bay02",
+      "version": "0.2.0",
+      "hash": "sha256:403414f2629b24336fe62fa6b1cc990dfeb64aaebd2b158d098f2aadecaa1f50"
+    },
+    "bay03": {
+      "schema_version": 2,
+      "pack_id": "livebay.bay03",
+      "map_id": "bay03",
+      "version": "0.2.0",
+      "hash": "sha256:7ce4b28bbd9eb90e9db54d0d65394bce9e654c7731b5ff8b1be06acbbac91949"
+    }
+  }
 }

@@ -47,13 +47,47 @@ static func load_mission_pack(base_dir: String = DATA_DIR, map_id: String = "bay
 	var data := load_game_data(base_dir, map_id)
 	if data.is_empty():
 		return {}
-	var pack: LiveBayMissionPack = MissionPackScript.build(data)
+	var pack: LiveBayMissionPack = MissionPackScript.build(data, "livebay.%s" % map_id)
 	var manifest_path := base_dir.path_join("mission_pack.json")
 	if FileAccess.file_exists(manifest_path):
 		var parsed: Variant = load_json(manifest_path)
-		if parsed is Dictionary and int(parsed.get("schema_version", 0)) == 1 and str(parsed.get("hash", "")).begins_with("sha256:"):
-			pack.manifest = parsed
-			pack.data["pack_manifest"] = parsed
+		if not (parsed is Dictionary):
+			push_error("DataLoader: mission_pack.json 不是对象")
+			return {}
+		var schema := int(parsed.get("schema_version", 0))
+		if schema == 2:
+			var packs: Variant = parsed.get("packs", null)
+			if not (packs is Dictionary) or not packs.has(map_id):
+				push_error("DataLoader: mission_pack 目录缺少地图 %s" % map_id)
+				return {}
+			var entry: Variant = packs[map_id]
+			if not (entry is Dictionary):
+				push_error("DataLoader: mission_pack.%s 不是对象" % map_id)
+				return {}
+			if int(entry.get("schema_version", 0)) != 2 or str(entry.get("map_id", "")) != map_id:
+				push_error("DataLoader: mission_pack.%s 条目与地图不匹配" % map_id)
+				return {}
+			if not str(entry.get("pack_id", "")).begins_with("livebay.") or not str(entry.get("hash", "")).begins_with("sha256:"):
+				push_error("DataLoader: mission_pack.%s 的 pack_id/hash 不合法" % map_id)
+				return {}
+			pack.manifest = entry
+			pack.data["pack_manifest"] = entry
+			pack.data["pack_catalog"] = {
+				"catalog_id": str(parsed.get("catalog_id", "")),
+				"version": str(parsed.get("version", "")),
+				"default_map": str(parsed.get("default_map", "")),
+			}
+		elif schema == 1:
+			# 旧清单只代表 bay01；不能再套到 bay02/03。
+			if map_id == "bay01" and str(parsed.get("hash", "")).begins_with("sha256:"):
+				pack.manifest = parsed
+				pack.data["pack_manifest"] = parsed
+			else:
+				push_error("DataLoader: 旧版 mission_pack 只支持 bay01，请运行 pack 导出目录")
+				return {}
+		else:
+			push_error("DataLoader: 不支持的 mission_pack schema_version=%d" % schema)
+			return {}
 	var result: LiveBayResult = pack.validate()
 	if not result.ok:
 		push_error("DataLoader: MissionPack 校验失败：%s" % result.message)

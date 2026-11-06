@@ -4,13 +4,13 @@
 class_name LiveBayMissionPack
 extends RefCounted
 
-const SCHEMA_VERSION := 1
+const SCHEMA_VERSION := 2
 
 var data: Dictionary
 var manifest: Dictionary
 
 
-static func build(game_data: Dictionary, pack_id := "livebay.bay01", version := "0.1.0") -> LiveBayMissionPack:
+static func build(game_data: Dictionary, pack_id := "livebay.bay01", version := "0.2.0") -> LiveBayMissionPack:
 	var pack := LiveBayMissionPack.new()
 	pack.data = game_data
 	var payload := {
@@ -24,6 +24,7 @@ static func build(game_data: Dictionary, pack_id := "livebay.bay01", version := 
 	pack.manifest = {
 		"schema_version": SCHEMA_VERSION,
 		"pack_id": pack_id,
+		"map_id": str(game_data.get("map_id", "")),
 		"version": version,
 		"hash": "sha256:" + JSON.stringify(payload).sha256_text(),
 	}
@@ -45,4 +46,6 @@ func validate() -> LiveBayResult:
 		return LiveBayResult.failure(&"pack_roster_empty", "任务包没有塔或敌人")
 	if not manifest.has("schema_version") or int(manifest.schema_version) != SCHEMA_VERSION:
 		return LiveBayResult.failure(&"pack_schema", "schema_version 不匹配")
+	if str(manifest.get("map_id", "")) != str(map.get("id", "")):
+		return LiveBayResult.failure(&"pack_map_mismatch", "清单 map_id 与地图不一致")
 	return LiveBayResult.success("任务包有效", manifest)

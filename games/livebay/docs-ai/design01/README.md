@@ -85,6 +85,7 @@ related:
 | 15 | [专用游戏编辑器方案](tech/15_专用游戏编辑器方案.md) | Godot 插件 / 独立 Web / 数据桥；E1–E4 已裁决 |
 | 16 | [模块化技术架构：NASApunk 系统方案](tech/16_模块化技术架构_NASApunk.md) | ORU 模块、端口、总线、黑匣子；参考方案，未裁决 |
 | 18 | [HTML 数值模拟器方案](tech/18_HTML数值模拟器方案.md) | 浏览器数值沙盘 + Godot trace 对账；方案 |
+| 19 | [任务包目录与跨地图语义](tech/19_任务包目录与跨地图语义.md) | schema 2 目录、`default_map`、按 map_id 选包 |
 | — | [数值沙盘](simulator/index.html) | 地图覆盖、DPS、波次压力、经济诊断；P1–P2 |
 | — | [性能基线](performance/README.md) | 帧时间、实体压力、5 分钟长跑、三图加载 |
 | — | [一局静态流程图](flows/game_flow.html) | 状态、命令、事件、守卫条件；由代码生成 |

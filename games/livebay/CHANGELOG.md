@@ -3,6 +3,27 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.100] - 2026-11-06 13:11
+
+### 修复
+
+- `mission_pack.json` 从“单 bay01 清单”升级为 **schema 2 地图目录**：
+  - `default_map` 明确默认入口；
+  - `packs` 下 bay01/02/03 各有独立 `pack_id`、`map_id`、`version`、`hash`；
+- `DataLoader.load_mission_pack(map_id)` 按 map_id 选择条目并校验归属，不再把 bay01 清单套到 bay02/03；
+- 旧 schema 1 只允许 bay01，其他地图明确报错；
+- `MissionPack` schema 2；`pack_id`/`map_id` 与地图一致；
+- 新增 5 项跨地图 pack 断言，测试 83→88；
+- 新增技术说明 `tech/19_任务包目录与跨地图语义.md`；
+- HUB 数据/测试行同步更新。
+
+### 验证
+
+- `./run.sh pack-check`：三图目录一致；
+- `./run.sh test`：88/88；
+- `./run.sh verify`：PASS 12 · FAIL 0；
+- HUB 11 facts：通过。
+
 ## [0.1.99] - 2026-11-06 13:08
 
 ### 新增
