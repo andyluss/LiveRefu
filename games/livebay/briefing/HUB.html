@@ -60,6 +60,12 @@ h3:first-child{margin-top:6px}
 .stat .v{font-size:26px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums}
 .stat .l{color:var(--dim);font-size:12.5px;margin-top:3px}
 .stat.p .v{color:var(--teal)}.stat.r .v{color:var(--orange)}.stat.o .v{color:var(--ok)}
+.score-grid{display:grid;gap:9px;margin-top:8px}
+.score-row{display:grid;grid-template-columns:132px 1fr 52px;gap:10px;align-items:center;font-size:12px;color:var(--muted)}
+.score-row .meter{height:8px;border-radius:999px;background:var(--sunken);overflow:hidden;border:1px solid var(--line)}
+.score-row .meter i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--ok))}
+.score-row .num{text-align:right;font:700 11px var(--mono);color:var(--ink)}
+.grade-big{font:800 44px/1 var(--mono);color:var(--teal)}
 table{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 th{color:var(--faint);font-weight:600;font-size:12.5px;letter-spacing:.03em}
@@ -106,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.94</span> · 2026-11-05</div>
+      <div class="stamp">v<span data-fact="version">0.1.95</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -116,15 +122,16 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <div class="hint">给隔了很久回来的项目参与者：用最少的滚动重新接上“为什么、到哪了、下一步”。</div>
     <nav class="tabs" role="tablist" aria-label="HUB 分区">
       <button role="tab" aria-selected="true" aria-controls="p1" id="t1" data-tab="p1" data-route="overview"><span class="n">01</span>概览</button>
-      <button role="tab" aria-selected="false" aria-controls="p10" id="t10" data-tab="p10" data-route="simulator"><span class="n">02</span>模拟器</button>
-      <button role="tab" aria-selected="false" aria-controls="p9" id="t9" data-tab="p9" data-route="flow"><span class="n">03</span>流程图</button>
-      <button role="tab" aria-selected="false" aria-controls="p2" id="t2" data-tab="p2" data-route="run"><span class="n">04</span>一局</button>
-      <button role="tab" aria-selected="false" aria-controls="p3" id="t3" data-tab="p3" data-route="status"><span class="n">05</span>到哪了</button>
-      <button role="tab" aria-selected="false" aria-controls="p4" id="t4" data-tab="p4" data-route="decisions"><span class="n">06</span>决策</button>
-      <button role="tab" aria-selected="false" aria-controls="p5" id="t5" data-tab="p5" data-route="content"><span class="n">07</span>内容</button>
-      <button role="tab" aria-selected="false" aria-controls="p6" id="t6" data-tab="p6" data-route="architecture"><span class="n">08</span>架构</button>
-      <button role="tab" aria-selected="false" aria-controls="p7" id="t7" data-tab="p7" data-route="media"><span class="n">09</span>素材</button>
-      <button role="tab" aria-selected="false" aria-controls="p8" id="t8" data-tab="p8" data-route="risks"><span class="n">10</span>风险/下一步</button>
+      <button role="tab" aria-selected="false" aria-controls="p11" id="t11" data-tab="p11" data-route="engineering"><span class="n">02</span>工程力</button>
+      <button role="tab" aria-selected="false" aria-controls="p10" id="t10" data-tab="p10" data-route="simulator"><span class="n">03</span>模拟器</button>
+      <button role="tab" aria-selected="false" aria-controls="p9" id="t9" data-tab="p9" data-route="flow"><span class="n">04</span>流程图</button>
+      <button role="tab" aria-selected="false" aria-controls="p2" id="t2" data-tab="p2" data-route="run"><span class="n">05</span>一局</button>
+      <button role="tab" aria-selected="false" aria-controls="p3" id="t3" data-tab="p3" data-route="status"><span class="n">06</span>到哪了</button>
+      <button role="tab" aria-selected="false" aria-controls="p4" id="t4" data-tab="p4" data-route="decisions"><span class="n">07</span>决策</button>
+      <button role="tab" aria-selected="false" aria-controls="p5" id="t5" data-tab="p5" data-route="content"><span class="n">08</span>内容</button>
+      <button role="tab" aria-selected="false" aria-controls="p6" id="t6" data-tab="p6" data-route="architecture"><span class="n">09</span>架构</button>
+      <button role="tab" aria-selected="false" aria-controls="p7" id="t7" data-tab="p7" data-route="media"><span class="n">10</span>素材</button>
+      <button role="tab" aria-selected="false" aria-controls="p8" id="t8" data-tab="p8" data-route="risks"><span class="n">11</span>风险/下一步</button>
     </nav>
   </div>
 </header>
@@ -152,6 +159,55 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     </div>
   </section>
 
+
+  <section class="panel" id="p11" role="tabpanel" aria-labelledby="t11">
+    <h2>工程力评估：一个成熟的垂直切片，还不是生产级项目</h2>
+    <p class="lede">这是一份 AI 自评，不是外部审计。评分看的是“当前工程能否支撑下一步”，不是“代码是否完美”。结论：<b>3.85 / 5（B+，约 77/100）</b>，处于 <b>L2+ 垂直切片</b>，距离可发布的 L3 还差性能、发布与内容厚度。</p>
+    <div class="grid g3">
+      <article class="card"><h4>综合等级</h4><div class="grade-big">B+</div><p>3.85 / 5 · 77 / 100</p><p class="dim">L2+：垂直切片成熟，进入发布前工程化</p></article>
+      <article class="card"><h4>最强三项</h4><p><b>数据单一源</b>：numbers → data → MissionPack；<b>测试与回放</b>：83 断言 + 34 扩展检查 + blackbox；<b>文档与工具</b>：49 页 + 流程图 + 沙盘 + 编辑器。</p></article>
+      <article class="card"><h4>最弱三项</h4><p><b>性能/规模</b>未测；<b>发布链路</b>未定（D14/D17/D18）；<b>内容厚度</b>仍只有 1 职业 / 3 图 / 5 波。</p></article>
+    </div>
+
+    <h3>评分维度</h3>
+    <div class="score-grid">
+      <div class="score-row"><span>架构与边界</span><div class="meter"><i style="width:80%"></i></div><span class="num">4.0</span></div>
+      <div class="score-row"><span>数据与单一源</span><div class="meter"><i style="width:90%"></i></div><span class="num">4.5</span></div>
+      <div class="score-row"><span>测试与回归</span><div class="meter"><i style="width:80%"></i></div><span class="num">4.0</span></div>
+      <div class="score-row"><span>文档与知识</span><div class="meter"><i style="width:90%"></i></div><span class="num">4.5</span></div>
+      <div class="score-row"><span>工具与工作流</span><div class="meter"><i style="width:80%"></i></div><span class="num">4.0</span></div>
+      <div class="score-row"><span>可维护/可逆</span><div class="meter"><i style="width:70%"></i></div><span class="num">3.5</span></div>
+      <div class="score-row"><span>性能与规模</span><div class="meter"><i style="width:50%"></i></div><span class="num">2.5</span></div>
+      <div class="score-row"><span>可观测/运营</span><div class="meter"><i style="width:60%"></i></div><span class="num">3.0</span></div>
+      <div class="score-row"><span>交付与发布</span><div class="meter"><i style="width:60%"></i></div><span class="num">3.0</span></div>
+    </div>
+    <p class="hint">权重：架构 20%、数据 15%、测试 15%、文档 10%、工具 10%、维护 10%、性能 5%、可观测 5%、交付 10%。加权结果 3.85。</p>
+
+    <h3>评分依据</h3>
+    <table>
+      <thead><tr><th>维度</th><th>证据</th><th>为什么不是满分</th></tr></thead>
+      <tbody>
+        <tr><td>架构与边界</td><td>MissionRuntime + 时钟/事件/命令/黑匣子 + 7 领域模块；ReadModel/Presenter/Renderer；扩展包 manifest/preset。</td><td>Sim 仍编排部分 tick；main.gd 仍承担较多 HUD/流程；边界还不是“可替换模块”的最终形态。</td></tr>
+        <tr><td>数据与单一源</td><td>numbers Markdown → export → data → MissionPack；HUB 11 facts 对账；模拟器数据 hash。</td><td>地图/波次已独立，但 `mission_pack` 仍以 bay01 为默认清单；跨地图 pack 语义还可更清晰。</td></tr>
+        <tr><td>测试与回归</td><td><span data-fact="tests">83</span> 项无头断言；<span data-fact="expansions">34</span> 项扩展检查；editor-test；playtest；flow-check；simulator-check。</td><td>没有覆盖率指标；没有性能/压力/长时运行测试；没有 CI 汇总命令。</td></tr>
+        <tr><td>文档与知识</td><td>design01 49 个 HTML 页面；flows；simulator；briefing HUB/GUIDE；决策记录。</td><td>文档密度高，但存在与实现同步的成本；部分设计仍是提案/样例。</td></tr>
+        <tr><td>工具与工作流</td><td>LiveBay Tools 编辑器；numbers 导出；MissionPack；blackbox/replay；流程图生成；数值沙盘。</td><td>工具各自可用，但没有一个“全量验收入口”；新成员仍需读多个 README。</td></tr>
+        <tr><td>可维护/可逆</td><td>数据驱动；模块可单测；扩展包失败不阻塞核心；回放可复盘。</td><td>Sim 编排、main.gd、部分 HUD 逻辑仍是技术债；没有正式架构守护测试。</td></tr>
+        <tr><td>性能与规模</td><td>当前 1 图/5 波/少量实体；无头测试快。</td><td>没有帧率、内存、加载、长时间运行、地图规模基准；三图也尚未做真实人类试玩。</td></tr>
+        <tr><td>可观测/运营</td><td>EventBus + BlackBox + replay；HUD 诊断；sim-trace。</td><td>没有生产遥测、崩溃上报、指标面板、玩家行为分析。</td></tr>
+        <tr><td>交付与发布</td><td>可运行垂直切片、编辑器、演示视频、存档。</td><td>D14 平台、D17 更新节奏、D18 语言未定；没有打包/签名/发布流水线。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>下一步：把 3.85 推到 4.2+</h3>
+    <div class="grid g2">
+      <article class="card"><h4>1 · 一键全量验收</h4><p>增加 <code>./run.sh verify</code>：test + expansions-check + editor-test + playtest + flow-check + simulator-check + link/HTML 检查；CI 直接调用。</p></article>
+      <article class="card"><h4>2 · 性能基准</h4><p>固定场景记录帧时间、实体上限、5 分钟长跑与三图加载时间；把“没测过”变成“有基线”。</p></article>
+      <article class="card"><h4>3 · 收口 main.gd</h4><p>把 HUD 构建/流程状态从 main.gd 抽到 presenter/controller；Sim 再拆索敌/移动编排。</p></article>
+      <article class="card"><h4>4 · 内容厚度</h4><p>1 职业 / 3 图 / 5 波是切片，不是产品；L1 正式内容、L2 岗位、日常循环需要进入下一阶段。</p></article>
+    </div>
+    <div class="note warn"><b>怎么读这份评分：</b>它是当前工程的“体检”，不是奖项。分数高不代表可以发布；分数低的地方，正好是下一步最该投入的地方。</div>
+  </section>
   <section class="panel" id="p10" role="tabpanel" aria-labelledby="t10">
     <h2>数值沙盘：先算清楚，再打一局</h2>
     <p class="lede">不用启动 Godot，直接调地图、塔位、等级、敌人速度，观察覆盖、DPS、波次压力与供能。它是一个离线、单页、数据驱动的<b>解析估算器</b>，不是完整战斗复刻。</p>
