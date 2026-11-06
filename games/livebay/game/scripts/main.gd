@@ -13,6 +13,8 @@ const ExpansionBootScript = preload("res://scripts/expansion/expansion_boot.gd")
 const ShiftMemoryScript = preload("res://scripts/application/shift_memory.gd")
 const ShiftStoreScript = preload("res://scripts/platform/shift_store.gd")
 const AudioScript = preload("res://scripts/presentation/audio_director.gd")
+const GameHudScript = preload("res://scripts/presentation/game_hud.gd")
+const FlowControllerScript = preload("res://scripts/presentation/game_flow_controller.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -38,6 +40,8 @@ var sim: Variant = null
 var renderer: LiveBayGameRenderer
 var font: SystemFont
 var ui_theme: Theme
+var game_hud: LiveBayGameHud
+var flow_controller: LiveBayGameFlowController
 
 var selected_tower_id := "interceptor"
 var selected_slot := -1
@@ -78,9 +82,6 @@ var broadcast_full := ""
 var archive_button: Button
 var map_button: Button
 var current_map_id := "bay01"
-var archive_page := 0
-var archive_filter := "all"
-var archive_open := false
 var audio: LiveBayAudioDirector
 
 var fatal_label: Label
@@ -136,6 +137,8 @@ func _ready() -> void:
 
 	_new_sim()
 	_build_ui()
+	flow_controller = FlowControllerScript.new()
+	flow_controller.setup(self, game_hud, PALETTE)
 	queue_redraw()
 	if shift_memory.has_last():
 		_show_briefing()
@@ -191,280 +194,44 @@ func _new_sim() -> void:
 # ---------------------------------------------------------------- UI 构建
 
 func _build_ui() -> void:
-	var layer := CanvasLayer.new()
-	add_child(layer)
-	var root := Control.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
-	root.theme = ui_theme
-	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	layer.add_child(root)
-
-	# 顶栏
-	var top := Panel.new()
-	top.position = Vector2.ZERO
-	top.size = Vector2(VIEW_SIZE.x, TOP_BAR_H)
-	top.add_theme_stylebox_override("panel", _panel_style(PALETTE.slate, PALETTE.ink))
-	root.add_child(top)
-
-	var stats := HBoxContainer.new()
-	stats.position = Vector2(18, 14)
-	stats.size = Vector2(820, 32)
-	stats.add_theme_constant_override("separation", 26)
-	top.add_child(stats)
-
-	energy_label = _make_label("供能 0", 18, PALETTE.amber)
-	integrity_label = _make_label("保障度 0/0", 18, PALETTE.cream)
-	wave_label = _make_label("波次 待命", 18, PALETTE.cream)
-	state_label = _make_label("准备", 18, PALETTE.sage)
-	best_label = _make_label("最佳 —", 15, Color(PALETTE.cream, 0.72))
-	var widths := [130, 190, 190, 90, 170]
-	var labels: Array = [energy_label, integrity_label, wave_label, state_label, best_label]
-	for i: int in range(labels.size()):
-		labels[i].custom_minimum_size = Vector2(widths[i], 30)
-		stats.add_child(labels[i])
-
-	map_button = _make_top_button("地图 (G)", Vector2(838, 11))
-	map_button.pressed.connect(_show_map_picker)
-	top.add_child(map_button)
-	archive_button = _make_top_button("档案 (H)", Vector2(946, 11))
-	archive_button.pressed.connect(_show_archive.bind(0))
-	top.add_child(archive_button)
-	pause_button = _make_top_button("暂停 (P)", Vector2(1040, 11))
-	pause_button.pressed.connect(_toggle_pause)
-	top.add_child(pause_button)
-
-	speed_button = _make_top_button("速度 1x", Vector2(1150, 11))
-	speed_button.pressed.connect(_toggle_speed)
-	top.add_child(speed_button)
-
-	# 广播横幅
-	broadcast_banner = PanelContainer.new()
-	broadcast_banner.add_theme_stylebox_override("panel", _panel_style(PALETTE.slate, PALETTE.amber, 6))
-	broadcast_banner.position = Vector2(250, 66)
-	broadcast_banner.size = Vector2(780, 38)
-	broadcast_banner.visible = false
-	broadcast_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	root.add_child(broadcast_banner)
-	var broadcast_margin := MarginContainer.new()
-	broadcast_margin.add_theme_constant_override("margin_left", 14)
-	broadcast_margin.add_theme_constant_override("margin_right", 14)
-	broadcast_margin.add_theme_constant_override("margin_top", 8)
-	broadcast_margin.add_theme_constant_override("margin_bottom", 8)
-	broadcast_banner.add_child(broadcast_margin)
-	broadcast_label = _make_label("", 13, PALETTE.cream)
-	broadcast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	broadcast_margin.add_child(broadcast_label)
-
-	# 底栏
-	var bottom := Panel.new()
-	bottom.position = Vector2(0, VIEW_SIZE.y - BOTTOM_BAR_H)
-	bottom.size = Vector2(VIEW_SIZE.x, BOTTOM_BAR_H)
-	bottom.add_theme_stylebox_override("panel", _panel_style(PALETTE.panel, PALETTE.ink))
-	root.add_child(bottom)
-
-	var bar := HBoxContainer.new()
-	bar.position = Vector2(16, 12)
-	bar.size = Vector2(VIEW_SIZE.x - 32, 64)
-	bar.add_theme_constant_override("separation", 10)
-	bottom.add_child(bar)
-
-	for i: int in range(TOWER_ORDER.size()):
-		var id: String = TOWER_ORDER[i]
-		var def: Dictionary = data.towers_by_id.get(id, {})
-		var button := _make_build_button(i, def)
-		bar.add_child(button)
-		tower_buttons.append(button)
-
-	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(12, 64)
-	bar.add_child(spacer)
-
-	start_button = _make_action_button("开波 (空格)", PALETTE.orange)
-	start_button.pressed.connect(_start_wave)
-	bar.add_child(start_button)
-
-	upgrade_button = _make_action_button("升级 (U)", PALETTE.teal)
-	upgrade_button.pressed.connect(_upgrade_selected)
-	bar.add_child(upgrade_button)
-
-	sell_button = _make_action_button("出售 (X)", PALETTE.rust)
-	sell_button.pressed.connect(_sell_selected)
-	bar.add_child(sell_button)
-
-	hint_label = _make_label("", 13, Color(PALETTE.cream, 0.7))
-	hint_label.position = Vector2(18, VIEW_SIZE.y - 22)
-	hint_label.size = Vector2(VIEW_SIZE.x - 36, 18)
-	root.add_child(hint_label)
-
-	# 结算层
-	overlay = Control.new()
-	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	overlay.visible = false
-	root.add_child(overlay)
-
-	var shade := ColorRect.new()
-	shade.set_anchors_preset(Control.PRESET_FULL_RECT)
-	shade.color = Color(0.09, 0.11, 0.12, 0.84)
-	overlay.add_child(shade)
-
-	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	overlay.add_child(center)
-
-	var card := PanelContainer.new()
-	card.add_theme_stylebox_override("panel", _panel_style(PALETTE.paper, PALETTE.ink, 10))
-	card.custom_minimum_size = Vector2(460, 300)
-	center.add_child(card)
-
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 28)
-	margin.add_theme_constant_override("margin_right", 28)
-	margin.add_theme_constant_override("margin_top", 24)
-	margin.add_theme_constant_override("margin_bottom", 24)
-	card.add_child(margin)
-
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 14)
-	margin.add_child(box)
-
-	overlay_title = _make_label("", 28, PALETTE.ink)
-	overlay_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(overlay_title)
-
-	overlay_body = _make_label("", 16, PALETTE.slate)
-	overlay_body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	overlay_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	overlay_body.custom_minimum_size = Vector2(400, 120)
-	box.add_child(overlay_body)
-
-	report_buttons = HBoxContainer.new()
-	report_buttons.add_theme_constant_override("separation", 8)
-	box.add_child(report_buttons)
-
-	var again := Button.new()
-	again.text = "再来一班 (R)"
-	again.custom_minimum_size = Vector2(200, 46)
-	_style_button(again, PALETTE.orange, PALETTE.cream)
-	again.pressed.connect(_restart)
-	var again_center := CenterContainer.new()
-	again_center.add_child(again)
-	box.add_child(again_center)
-
-	# 班次检查单（由扩展包 Procedure 内容触发）
-	checklist_overlay = Control.new()
-	checklist_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	checklist_overlay.visible = false
-	root.add_child(checklist_overlay)
-	var checklist_shade := ColorRect.new()
-	checklist_shade.set_anchors_preset(Control.PRESET_FULL_RECT)
-	checklist_shade.color = Color(0.09, 0.11, 0.12, 0.72)
-	checklist_overlay.add_child(checklist_shade)
-	var checklist_center := CenterContainer.new()
-	checklist_center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	checklist_overlay.add_child(checklist_center)
-	var checklist_card := PanelContainer.new()
-	checklist_card.add_theme_stylebox_override("panel", _panel_style(PALETTE.paper, PALETTE.ink, 10))
-	checklist_card.custom_minimum_size = Vector2(520, 300)
-	checklist_center.add_child(checklist_card)
-	var checklist_margin := MarginContainer.new()
-	checklist_margin.add_theme_constant_override("margin_left", 26)
-	checklist_margin.add_theme_constant_override("margin_right", 26)
-	checklist_margin.add_theme_constant_override("margin_top", 22)
-	checklist_margin.add_theme_constant_override("margin_bottom", 22)
-	checklist_card.add_child(checklist_margin)
-	var checklist_box := VBoxContainer.new()
-	checklist_box.add_theme_constant_override("separation", 12)
-	checklist_margin.add_child(checklist_box)
-	checklist_title = _make_label("", 22, PALETTE.ink)
-	checklist_box.add_child(checklist_title)
-	checklist_body = _make_label("", 15, PALETTE.slate)
-	checklist_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	checklist_box.add_child(checklist_body)
-	checklist_buttons = VBoxContainer.new()
-	checklist_box.add_child(checklist_buttons)
+	game_hud = GameHudScript.new()
+	game_hud.build(self, data, ui_theme, PALETTE, {
+		"select_tower": _select_tower,
+		"start_wave": _start_wave,
+		"upgrade": _upgrade_selected,
+		"sell": _sell_selected,
+		"pause": _toggle_pause,
+		"speed": _toggle_speed,
+		"map": _show_map_picker,
+		"archive": _show_archive.bind(0),
+		"restart": _restart,
+	})
+	# 兼容现有流程代码：HUD 节点以别名暴露，业务状态仍由 Main/Controller 管理。
+	energy_label = game_hud.energy_label
+	integrity_label = game_hud.integrity_label
+	wave_label = game_hud.wave_label
+	state_label = game_hud.state_label
+	best_label = game_hud.best_label
+	hint_label = game_hud.hint_label
+	tower_buttons = game_hud.tower_buttons
+	start_button = game_hud.start_button
+	upgrade_button = game_hud.upgrade_button
+	sell_button = game_hud.sell_button
+	pause_button = game_hud.pause_button
+	speed_button = game_hud.speed_button
+	map_button = game_hud.map_button
+	archive_button = game_hud.archive_button
+	overlay = game_hud.overlay
+	overlay_title = game_hud.overlay_title
+	overlay_body = game_hud.overlay_body
+	report_buttons = game_hud.report_buttons
+	checklist_overlay = game_hud.checklist_overlay
+	checklist_title = game_hud.checklist_title
+	checklist_body = game_hud.checklist_body
+	checklist_buttons = game_hud.checklist_buttons
+	broadcast_banner = game_hud.broadcast_banner
+	broadcast_label = game_hud.broadcast_label
 	_refresh_tower_buttons()
-
-
-func _make_label(text: String, size: int, color: Color) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.add_theme_font_size_override("font_size", size)
-	label.add_theme_color_override("font_color", color)
-	return label
-
-
-func _make_top_button(text: String, pos: Vector2) -> Button:
-	var button := Button.new()
-	button.text = text
-	button.position = pos
-	button.size = Vector2(100, 34)
-	_style_button(button, PALETTE.teal, PALETTE.cream, 15)
-	return button
-
-
-func _make_build_button(index: int, def: Dictionary) -> Button:
-	var button := Button.new()
-	button.custom_minimum_size = Vector2(200, 64)
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.text = "%d  %s\n    %d 供能 · %s" % [
-		index + 1,
-		String(def.get("name", "?")),
-		int(def.get("cost", 0)),
-		_tower_kind_label(String(def.get("kind", ""))),
-	]
-	button.add_theme_font_size_override("font_size", 14)
-	_style_button(button, PALETTE.cream, PALETTE.slate, 15)
-	button.pressed.connect(_select_tower.bind(index))
-	return button
-
-
-func _make_action_button(text: String, accent: Color) -> Button:
-	var button := Button.new()
-	button.text = text
-	button.custom_minimum_size = Vector2(126, 64)
-	_style_button(button, accent, PALETTE.cream, 15)
-	return button
-
-
-func _style_button(button: Button, bg: Color, fg: Color, font_size: int = 15) -> void:
-	var normal := _panel_style(bg, PALETTE.ink, 6)
-	var hover := _panel_style(bg.lightened(0.08), PALETTE.orange, 6)
-	var pressed := _panel_style(bg.darkened(0.12), PALETTE.ink, 6)
-	var disabled := _panel_style(Color(PALETTE.panel, 0.55), Color(PALETTE.slate, 0.35), 6)
-	button.add_theme_stylebox_override("normal", normal)
-	button.add_theme_stylebox_override("hover", hover)
-	button.add_theme_stylebox_override("pressed", pressed)
-	button.add_theme_stylebox_override("disabled", disabled)
-	button.add_theme_stylebox_override("focus", hover)
-	button.add_theme_color_override("font_color", fg)
-	button.add_theme_color_override("font_hover_color", fg)
-	button.add_theme_color_override("font_pressed_color", fg)
-	button.add_theme_color_override("font_disabled_color", Color(PALETTE.slate, 0.45))
-	button.add_theme_font_size_override("font_size", font_size)
-
-
-func _panel_style(bg: Color, border: Color, radius: int = 0) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = bg
-	style.border_color = border
-	style.set_border_width_all(1 if radius == 0 else 2)
-	style.set_corner_radius_all(radius)
-	style.content_margin_left = 10
-	style.content_margin_right = 10
-	style.content_margin_top = 6
-	style.content_margin_bottom = 6
-	return style
-
-
-func _tower_kind_label(kind: String) -> String:
-	match kind:
-		"single":
-			return "单体"
-		"aoe":
-			return "范围"
-		"supply":
-			return "经济"
-	return kind
 
 
 func _show_fatal(message: String) -> void:
@@ -592,10 +359,12 @@ func _restart() -> void:
 	beams.clear()
 	leak_flash = 0.0
 	toast_timer = 0.0
-	if overlay != null:
+	if flow_controller != null:
+		flow_controller.hide_all()
+	elif overlay != null:
 		overlay.visible = false
-	if checklist_overlay != null:
-		checklist_overlay.visible = false
+		if checklist_overlay != null:
+			checklist_overlay.visible = false
 	if shift_memory != null and shift_memory.has_last():
 		_show_briefing()
 
@@ -605,21 +374,8 @@ func _restart() -> void:
 func _on_checklist_requested(envelope: Dictionary) -> void:
 	audio.play("checklist")
 	var card: Dictionary = envelope.get("payload", {}).get("card", {})
-	if card.is_empty():
-		return
-	checklist_title.text = str(card.get("title", "班前检查单"))
-	checklist_body.text = str(card.get("body", "请选择处理方式。"))
-	for child in checklist_buttons.get_children():
-		child.queue_free()
-	for option in card.get("options", []):
-		var button := Button.new()
-		button.text = str(option.get("label", "选择"))
-		button.custom_minimum_size = Vector2(440, 42)
-		_style_button(button, PALETTE.teal, PALETTE.cream)
-		button.pressed.connect(_choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
-		checklist_buttons.add_child(button)
-	checklist_overlay.visible = true
-
+	if flow_controller != null:
+		flow_controller.show_checklist(card)
 
 func _toggle_audio() -> void:
 	if audio == null:
@@ -632,27 +388,12 @@ func _toggle_audio() -> void:
 
 
 func _show_map_picker() -> void:
-	if checklist_overlay == null or checklist_overlay.visible:
-		return
-	checklist_title.text = "选择地图"
-	checklist_body.text = "当前：%s。切换会重开一班，接班记录与低报 carry 保留。" % str(data.get("map", {}).get("name", current_map_id))
-	for child in checklist_buttons.get_children():
-		child.queue_free()
-	for map_id: String in data.get("maps", {}).keys():
-		var map_data: Dictionary = data.maps[map_id]
-		var button := Button.new()
-		button.text = "%s · %s" % [str(map_data.get("name", map_id)), map_id]
-		button.custom_minimum_size = Vector2(440, 42)
-		_style_button(button, PALETTE.teal if map_id == current_map_id else PALETTE.sage, PALETTE.cream)
-		button.pressed.connect(_choose_map.bind(map_id))
-		checklist_buttons.add_child(button)
-	checklist_overlay.visible = true
-	if runtime != null:
-		runtime.clock.paused = true
-
+	if flow_controller != null:
+		flow_controller.show_map_picker(data, current_map_id)
 
 func _choose_map(map_id: String) -> void:
-	checklist_overlay.visible = false
+	if flow_controller != null:
+		flow_controller.hide_all()
 	if map_id == current_map_id:
 		if runtime != null:
 			runtime.clock.paused = false
@@ -671,126 +412,38 @@ func _choose_map(map_id: String) -> void:
 
 
 func _show_archive(page := 0, filter := "all") -> void:
-	if checklist_overlay == null or (checklist_overlay.visible and not archive_open):
-		return
-	archive_open = true
-	archive_filter = filter
-	var archive: Dictionary = shift_memory.archive_page(page, 5, filter) if shift_memory != null else {"text": "还没有班次记录。", "page": 0, "pages": 1}
-	archive_page = int(archive.get("page", 0))
-	var filter_labels := {"all": "全部", "low": "低报", "honest": "如实", "custom": "按惯例"}
-	checklist_title.text = "班次档案 · %s · %d/%d" % [str(filter_labels.get(filter, filter)), archive_page + 1, int(archive.get("pages", 1))]
-	checklist_body.text = str(archive.get("text", ""))
-	for child in checklist_buttons.get_children():
-		child.queue_free()
-	var filter_row := HBoxContainer.new()
-	for key in ["all", "low", "honest", "custom"]:
-		var filter_button := Button.new()
-		filter_button.text = str(filter_labels[key])
-		filter_button.custom_minimum_size = Vector2(92, 30)
-		_style_button(filter_button, PALETTE.sage if key == filter else PALETTE.paper, PALETTE.ink, 12)
-		filter_button.pressed.connect(_show_archive.bind(0, key))
-		filter_row.add_child(filter_button)
-	checklist_buttons.add_child(filter_row)
-	if int(archive.get("pages", 1)) > 1:
-		var prev := Button.new()
-		prev.text = "上一页"
-		prev.custom_minimum_size = Vector2(140, 34)
-		_style_button(prev, PALETTE.sage, PALETTE.ink)
-		prev.disabled = archive_page <= 0
-		prev.pressed.connect(_show_archive.bind(archive_page - 1, archive_filter))
-		checklist_buttons.add_child(prev)
-		var next := Button.new()
-		next.text = "下一页"
-		next.custom_minimum_size = Vector2(140, 34)
-		_style_button(next, PALETTE.sage, PALETTE.ink)
-		next.disabled = archive_page >= int(archive.get("pages", 1)) - 1
-		next.pressed.connect(_show_archive.bind(archive_page + 1, archive_filter))
-		checklist_buttons.add_child(next)
-	var close := Button.new()
-	close.text = "关闭"
-	close.custom_minimum_size = Vector2(140, 34)
-	_style_button(close, PALETTE.teal, PALETTE.cream)
-	close.pressed.connect(_close_archive)
-	checklist_buttons.add_child(close)
-	checklist_overlay.visible = true
-	if runtime != null:
-		runtime.clock.paused = true
-
+	if flow_controller != null:
+		flow_controller.show_archive(page, filter)
 
 func _close_archive() -> void:
-	checklist_overlay.visible = false
-	archive_open = false
-	if runtime != null:
-		runtime.clock.paused = false
-
+	if flow_controller != null:
+		flow_controller.close_archive()
 
 func _show_briefing() -> void:
-	var briefing: Dictionary = shift_memory.briefing()
-	if briefing.is_empty():
-		return
-	checklist_title.text = str(briefing.get("title", "接班简报"))
-	checklist_body.text = str(briefing.get("body", ""))
-	for child in checklist_buttons.get_children():
-		child.queue_free()
-	var start := Button.new()
-	start.text = "接班"
-	start.custom_minimum_size = Vector2(440, 42)
-	_style_button(start, PALETTE.teal, PALETTE.cream)
-	start.pressed.connect(_dismiss_briefing)
-	checklist_buttons.add_child(start)
-	checklist_overlay.visible = true
-	if runtime != null:
-		runtime.clock.paused = true
-
+	if flow_controller != null and shift_memory != null:
+		flow_controller.show_briefing(shift_memory.briefing())
 
 func _dismiss_briefing() -> void:
-	checklist_overlay.visible = false
+	if flow_controller != null:
+		flow_controller.hide_all()
 	if runtime != null:
 		runtime.clock.paused = false
-	var broadcast: String = shift_memory.broadcast_text()
-	if not broadcast.is_empty():
-		_show_broadcast(broadcast, 6.0)
-
+	if shift_memory != null:
+		var broadcast: String = shift_memory.broadcast_text()
+		if not broadcast.is_empty():
+			_show_broadcast(broadcast, 6.0)
 
 func _show_broadcast(text: String, duration: float) -> void:
-	if broadcast_banner == null:
+	if flow_controller == null:
 		return
 	audio.play("broadcast")
-	broadcast_full = text
-	broadcast_reveal = 0.0
-	broadcast_label.text = "BROADCAST  /  "
+	flow_controller.show_broadcast(text)
 	broadcast_timer = duration
-	broadcast_banner.visible = true
-
 
 func _on_fault_choice_requested(_envelope: Dictionary) -> void:
 	audio.play("fault")
-	checklist_title.text = "第 5 波 · 故障命中"
-	var targets: Array = []
-	if runtime != null and not runtime.sim.fault_pending.is_empty():
-		for slot in runtime.sim.fault_pending.get("slots", []):
-			targets.append("T-%02d" % (int(slot) + 1))
-	var target_text := "受影响塔位：" + ("、".join(targets) if not targets.is_empty() else "—")
-	checklist_body.text = "%s\n隔离保安全，但这段弧会短暂无人守；\n旁路保覆盖，但塔会降级 8 秒。" % target_text
-	for child in checklist_buttons.get_children():
-		child.queue_free()
-	var isolate := Button.new()
-	isolate.text = "隔离：停塔 2.5s"
-	isolate.custom_minimum_size = Vector2(440, 42)
-	_style_button(isolate, PALETTE.teal, PALETTE.cream)
-	isolate.pressed.connect(_choose_fault_choice.bind("isolate"))
-	checklist_buttons.add_child(isolate)
-	if shift_memory != null and shift_memory.bypass_locked():
-		checklist_body.text += "\n\n停班审计期间，旁路被禁用。"
-	else:
-		var bypass := Button.new()
-		bypass.text = "旁路：降级 8s，保持在线"
-		bypass.custom_minimum_size = Vector2(440, 42)
-		_style_button(bypass, PALETTE.amber, PALETTE.ink)
-		bypass.pressed.connect(_choose_fault_choice.bind("bypass"))
-		checklist_buttons.add_child(bypass)
-	checklist_overlay.visible = true
-
+	if flow_controller != null:
+		flow_controller.show_fault()
 
 func _choose_fault_choice(choice: String) -> void:
 	if runtime == null:
@@ -800,7 +453,10 @@ func _choose_fault_choice(choice: String) -> void:
 		toast_text = "故障处置：" + result.message
 		toast_timer = 1.6
 		return
-	checklist_overlay.visible = false
+	if flow_controller != null:
+		flow_controller.hide_all()
+	else:
+		checklist_overlay.visible = false
 
 
 func _choose_checklist(card_id: String, option_id: String) -> void:
@@ -818,11 +474,11 @@ func _update_ui() -> void:
 	if sim == null or energy_label == null:
 		return
 	var view: LiveBayMissionReadModel = ReadModelScript.from_sim(sim, runtime.clock)
-	var hud: Dictionary = LiveBayMissionPresenter.hud(view)
-	energy_label.text = hud.energy_text
-	integrity_label.text = hud.integrity_text
-	wave_label.text = hud.wave_text
-	state_label.text = hud.state_text
+	var hud_data: Dictionary = LiveBayMissionPresenter.hud(view)
+	energy_label.text = hud_data.energy_text
+	integrity_label.text = hud_data.integrity_text
+	wave_label.text = hud_data.wave_text
+	state_label.text = hud_data.state_text
 	best_label.text = "最佳 %s · 通关 %d" % [String(SaveStore.data.best_grade), int(SaveStore.data.clears)]
 	hint_label.text = _hint_text()
 
@@ -837,7 +493,7 @@ func _update_ui() -> void:
 	start_button.disabled = ended or not (sim.state == SimScript.State.PREP or sim.state == SimScript.State.BETWEEN)
 	start_button.text = "开波 (空格)" if sim.wave_index < 0 else "下一波 (空格)"
 	pause_button.text = "继续 (P)" if runtime.clock.paused else "暂停 (P)"
-	speed_button.text = hud.speed_text
+	speed_button.text = hud_data.speed_text
 
 	var tower: Variant = sim.get_tower_at(selected_slot) if selected_slot >= 0 else null
 	var has_tower: bool = tower != null
@@ -865,9 +521,8 @@ func _hint_text() -> String:
 
 
 func _refresh_tower_buttons() -> void:
-	for i: int in range(tower_buttons.size()):
-		var selected: bool = TOWER_ORDER[i] == selected_tower_id
-		tower_buttons[i].modulate = Color(1, 1, 1, 1) if selected else Color(1, 1, 1, 0.82)
+	if game_hud != null:
+		game_hud.refresh_tower_buttons(selected_tower_id)
 
 
 # ---------------------------------------------------------------- 信号
@@ -922,29 +577,8 @@ func _on_game_lost(result: Dictionary) -> void:
 
 func _show_overlay(won: bool, result: Dictionary) -> void:
 	current_result = result.duplicate(true)
-	overlay.visible = true
-	overlay_title.text = "本班结束 · %s" % String(result.get("grade", "C")) if won else "事故报告 · F"
-	overlay_title.add_theme_color_override("font_color", PALETTE.teal if won else PALETTE.rust)
-	if won:
-		overlay_body.text = "保障度 %d/%d\n击杀 %d · 漏过 %d · 建造 %d\n\n下一班见。" % [
-			int(result.integrity), int(result.max_integrity),
-			int(result.kills), int(result.leaked), int(result.built),
-		]
-	else:
-		overlay_body.text = "保障度归零。\n击杀 %d · 漏过 %d · 撑到第 %d 波\n\n复盘：先补控制，再补输出。" % [
-			int(result.kills), int(result.leaked), int(result.waves_cleared),
-		]
-	for child in report_buttons.get_children():
-		child.queue_free()
-	if runtime != null and not runtime.procedure.report_options.is_empty():
-		for option in runtime.procedure.report_options:
-			var button := Button.new()
-			button.text = str(option.get("label", "记录"))
-			button.custom_minimum_size = Vector2(140, 34)
-			_style_button(button, PALETTE.sage, PALETTE.ink, 13)
-			button.pressed.connect(_submit_report.bind(str(option.get("id", ""))))
-			report_buttons.add_child(button)
-
+	if flow_controller != null:
+		flow_controller.show_result(won, result)
 
 func _submit_report(option_id: String) -> void:
 	if runtime == null:
