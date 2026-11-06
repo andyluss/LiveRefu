@@ -9,12 +9,11 @@ const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
 const ReadModelScript = preload("res://scripts/application/mission_read_model.gd")
 const InputScript = preload("res://scripts/presentation/game_input.gd")
 const RendererScript = preload("res://scripts/presentation/game_renderer.gd")
-const ExpansionBootScript = preload("res://scripts/expansion/expansion_boot.gd")
-const ShiftMemoryScript = preload("res://scripts/application/shift_memory.gd")
-const ShiftStoreScript = preload("res://scripts/platform/shift_store.gd")
 const AudioScript = preload("res://scripts/presentation/audio_director.gd")
 const GameHudScript = preload("res://scripts/presentation/game_hud.gd")
 const FlowControllerScript = preload("res://scripts/presentation/game_flow_controller.gd")
+const InputControllerScript = preload("res://scripts/presentation/game_input_controller.gd")
+const SessionControllerScript = preload("res://scripts/presentation/game_session_controller.gd")
 
 const PALETTE := {
 	"paper": Color("#E9E3D5"),
@@ -42,6 +41,8 @@ var font: SystemFont
 var ui_theme: Theme
 var game_hud: LiveBayGameHud
 var flow_controller: LiveBayGameFlowController
+var input_controller: LiveBayGameInputController
+var session_controller: LiveBayGameSession
 
 var selected_tower_id := "interceptor"
 var selected_slot := -1
@@ -88,31 +89,11 @@ var fatal_label: Label
 
 
 func _exit_tree() -> void:
-	if sim != null:
-		if sim.tower_fired.is_connected(_on_tower_fired):
-			sim.tower_fired.disconnect(_on_tower_fired)
-		if sim.game_won.is_connected(_on_game_won):
-			sim.game_won.disconnect(_on_game_won)
-		if sim.game_lost.is_connected(_on_game_lost):
-			sim.game_lost.disconnect(_on_game_lost)
-		if sim.enemy_leaked.is_connected(_on_enemy_leaked):
-			sim.enemy_leaked.disconnect(_on_enemy_leaked)
-		if sim.fault_escaped.is_connected(_on_fault_escaped):
-			sim.fault_escaped.disconnect(_on_fault_escaped)
-		if sim.tower_disabled.is_connected(_on_tower_disabled):
-			sim.tower_disabled.disconnect(_on_tower_disabled)
-		if sim.tower_degraded.is_connected(_on_tower_degraded):
-			sim.tower_degraded.disconnect(_on_tower_degraded)
-		if sim.wave_started.is_connected(_on_wave_started):
-			sim.wave_started.disconnect(_on_wave_started)
-	if runtime != null:
-		runtime.dispose()
-		runtime = null
-	sim = null
+	if session_controller != null:
+		session_controller.dispose()
 
 
 func _ready() -> void:
-	shift_memory = ShiftMemoryScript.new(ShiftStoreScript.new())
 	audio = AudioScript.new()
 	add_child(audio)
 	font = SystemFont.new()
@@ -130,15 +111,16 @@ func _ready() -> void:
 	ui_theme.default_font = font
 	ui_theme.default_font_size = 16
 
-	data = DataLoaderScript.load_mission_pack()
+	session_controller = SessionControllerScript.new()
+	session_controller.setup(self)
 	if data.is_empty():
-		_show_fatal("数据加载失败：请检查 game/data/*.json")
 		return
 
-	_new_sim()
 	_build_ui()
 	flow_controller = FlowControllerScript.new()
 	flow_controller.setup(self, game_hud, PALETTE)
+	input_controller = InputControllerScript.new()
+	input_controller.setup(self, TOWER_ORDER.size())
 	queue_redraw()
 	if shift_memory.has_last():
 		_show_briefing()
@@ -165,30 +147,8 @@ func _process(delta: float) -> void:
 
 
 func _new_sim() -> void:
-	var boot: LiveBayResult = ExpansionBootScript.load_preset("res://data/expansion_sets/baseline.json")
-	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
-	runtime = RuntimeScript.new(data, expansion_set, shift_memory.next_low_report(), shift_memory.audit_remaining)
-	runtime.events.subscribe(&"ChecklistRequested", _on_checklist_requested)
-	runtime.events.subscribe(&"FaultChoiceRequested", _on_fault_choice_requested)
-	current_map_id = str(data.get("map_id", "bay01"))
-	sim = runtime.sim
-	sim.tower_fired.connect(_on_tower_fired)
-	sim.game_won.connect(_on_game_won)
-	sim.game_lost.connect(_on_game_lost)
-	sim.enemy_leaked.connect(_on_enemy_leaked)
-	sim.fault_escaped.connect(_on_fault_escaped)
-	sim.tower_disabled.connect(_on_tower_disabled)
-	sim.tower_degraded.connect(_on_tower_degraded)
-	sim.wave_started.connect(_on_wave_started)
-	selected_slot = -1
-	beams.clear()
-	leak_flash = 0.0
-	toast_timer = 0.0
-	runtime.clock.paused = false
-	if overlay != null:
-		overlay.visible = false
-	if checklist_overlay != null:
-		checklist_overlay.visible = false
+	if session_controller != null:
+		session_controller.new_sim()
 
 
 # ---------------------------------------------------------------- UI 构建
@@ -249,36 +209,9 @@ func _show_fatal(message: String) -> void:
 # ---------------------------------------------------------------- 输入
 
 func _unhandled_input(event: InputEvent) -> void:
-	if sim == null:
-		return
-	var action: Dictionary = InputScript.translate(event, _slot_at, TOWER_ORDER.size())
-	match str(action.type):
-		"hover":
-			hover_slot = int(action.slot)
-		"click_slot":
-			_click_slot(int(action.slot))
-		"clear":
-			selected_slot = -1
-		"select_tower":
-			_select_tower(int(action.index))
-		"start_wave":
-			_start_wave()
-		"pause":
-			_toggle_pause()
-		"speed":
-			_toggle_speed()
-		"archive":
-			_show_archive(0)
-		"map":
-			_show_map_picker()
-		"mute":
-			_toggle_audio()
-		"restart":
-			_restart()
-		"upgrade":
-			_upgrade_selected()
-		"sell":
-			_sell_selected()
+	if input_controller != null:
+		input_controller.handle(event)
+
 
 func _slot_at(pos: Vector2) -> int:
 	if sim == null:
@@ -346,30 +279,9 @@ func _toggle_speed() -> void:
 
 
 func _restart() -> void:
-	if sim == null:
-		return
-	runtime.reset()
-	runtime.procedure.configure(runtime.data, shift_memory.next_low_report())
-	sim = runtime.sim
-	sim.fault_duration_bonus = shift_memory.next_fault_bonus()
-	sim.fault_bypass_locked = shift_memory.bypass_locked()
-	if shift_memory.audit_prep_penalty() > 0.0:
-		sim.wave.timer = maxf(0.0, sim.wave.timer - shift_memory.audit_prep_penalty())
-	selected_slot = -1
-	beams.clear()
-	leak_flash = 0.0
-	toast_timer = 0.0
-	if flow_controller != null:
-		flow_controller.hide_all()
-	elif overlay != null:
-		overlay.visible = false
-		if checklist_overlay != null:
-			checklist_overlay.visible = false
-	if shift_memory != null and shift_memory.has_last():
-		_show_briefing()
+	if session_controller != null:
+		session_controller.restart()
 
-
-# ---------------------------------------------------------------- UI 刷新
 
 func _on_checklist_requested(envelope: Dictionary) -> void:
 	audio.play("checklist")
@@ -392,23 +304,9 @@ func _show_map_picker() -> void:
 		flow_controller.show_map_picker(data, current_map_id)
 
 func _choose_map(map_id: String) -> void:
-	if flow_controller != null:
-		flow_controller.hide_all()
-	if map_id == current_map_id:
-		if runtime != null:
-			runtime.clock.paused = false
-		return
-	if runtime != null:
-		runtime.dispose()
-		runtime = null
-	sim = null
-	data = DataLoaderScript.load_mission_pack("res://data", map_id)
-	if data.is_empty():
-		_show_fatal("地图加载失败：%s" % map_id)
-		return
-	_new_sim()
-	toast_text = "已切换到 %s" % str(data.get("map", {}).get("name", map_id))
-	toast_timer = 1.6
+	if session_controller != null and session_controller.switch_map(map_id):
+		toast_text = "已切换到 %s" % str(data.get("map", {}).get("name", map_id))
+		toast_timer = 1.6
 
 
 func _show_archive(page := 0, filter := "all") -> void:
