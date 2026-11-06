@@ -37,7 +37,7 @@ func show_checklist(card: Dictionary) -> void:
 		button.text = str(option.get("label", "选择"))
 		button.custom_minimum_size = Vector2(440, 42)
 		hud.style_button(button, palette.teal, palette.cream)
-		button.pressed.connect(host._choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
+		button.pressed.connect(host.commands.choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
 
@@ -54,7 +54,7 @@ func show_map_picker(data: Dictionary, current_map_id: String) -> void:
 		button.text = "%s · %s" % [str(map_data.get("name", map_id)), map_id]
 		button.custom_minimum_size = Vector2(440, 42)
 		hud.style_button(button, palette.teal if map_id == current_map_id else palette.sage, palette.cream)
-		button.pressed.connect(host._choose_map.bind(map_id))
+		button.pressed.connect(host.commands.choose_map.bind(map_id))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:
@@ -72,7 +72,7 @@ func show_contracts() -> void:
 		button.text = "%s · %s" % [str(c.get("name", "?")), str(c.get("description", ""))]
 		button.custom_minimum_size = Vector2(440, 42)
 		hud.style_button(button, palette.teal if str(c.get("id", "")) == str(host.current_contract) else palette.sage, palette.cream)
-		button.pressed.connect(host._choose_contract.bind(str(c.get("id", ""))))
+		button.pressed.connect(host.commands.choose_contract.bind(str(c.get("id", ""))))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:
@@ -96,7 +96,7 @@ func show_residents(data: Dictionary) -> void:
 	close.text = "关闭 (V)"
 	close.custom_minimum_size = Vector2(140, 34)
 	hud.style_button(close, palette.teal, palette.cream)
-	close.pressed.connect(host._close_residents)
+	close.pressed.connect(host.commands.close_residents)
 	hud.checklist_buttons.add_child(close)
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:
@@ -142,7 +142,7 @@ func show_archive(page: int = 0, filter: String = "all") -> void:
 	close.text = "关闭"
 	close.custom_minimum_size = Vector2(140, 34)
 	hud.style_button(close, palette.teal, palette.cream)
-	close.pressed.connect(host._close_archive)
+	close.pressed.connect(host.commands.close_archive)
 	hud.checklist_buttons.add_child(close)
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:
@@ -168,7 +168,7 @@ func show_briefing(briefing: Dictionary) -> void:
 	start.text = "接班"
 	start.custom_minimum_size = Vector2(440, 42)
 	hud.style_button(start, palette.teal, palette.cream)
-	start.pressed.connect(host._dismiss_briefing)
+	start.pressed.connect(host.commands.dismiss_briefing)
 	hud.checklist_buttons.add_child(start)
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:
@@ -190,7 +190,7 @@ func show_fault() -> void:
 	isolate.text = "隔离：停塔 2.5s"
 	isolate.custom_minimum_size = Vector2(440, 42)
 	hud.style_button(isolate, palette.teal, palette.cream)
-	isolate.pressed.connect(host._choose_fault_choice.bind("isolate"))
+	isolate.pressed.connect(host.commands.choose_fault_choice.bind("isolate"))
 	hud.checklist_buttons.add_child(isolate)
 	if host.shift_memory != null and host.shift_memory.bypass_locked():
 		hud.checklist_body.text += "\n\n停班审计期间，旁路被禁用。"
@@ -199,7 +199,7 @@ func show_fault() -> void:
 		bypass.text = "旁路：降级 8s，保持在线"
 		bypass.custom_minimum_size = Vector2(440, 42)
 		hud.style_button(bypass, palette.amber, palette.ink)
-		bypass.pressed.connect(host._choose_fault_choice.bind("bypass"))
+		bypass.pressed.connect(host.commands.choose_fault_choice.bind("bypass"))
 		hud.checklist_buttons.add_child(bypass)
 	hud.checklist_overlay.visible = true
 
@@ -227,7 +227,7 @@ func show_result(won: bool, result: Dictionary) -> void:
 			button.text = str(option.get("label", "记录"))
 			button.custom_minimum_size = Vector2(140, 34)
 			hud.style_button(button, palette.sage, palette.ink, 13)
-			button.pressed.connect(host._submit_report.bind(str(option.get("id", ""))))
+			button.pressed.connect(host.feedback.submit_report.bind(str(option.get("id", ""))))
 			hud.report_buttons.add_child(button)
 
 
@@ -238,6 +238,18 @@ func show_broadcast(text: String) -> void:
 	host.broadcast_reveal = 0.0
 	hud.broadcast_label.text = "BROADCAST  /  "
 	host.broadcast_banner.visible = true
+
+
+func set_report_note(text: String) -> void:
+	if hud != null:
+		hud.overlay_body.text += "\n" + text
+
+
+func clear_report_buttons() -> void:
+	if hud == null:
+		return
+	for child in hud.report_buttons.get_children():
+		child.queue_free()
 
 
 func _clear_buttons() -> void:

@@ -32,8 +32,8 @@ func new_sim() -> void:
 	var boot: LiveBayResult = ExpansionBootScript.load_preset("res://data/expansion_sets/baseline.json")
 	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
 	host.runtime = RuntimeScript.new(host.data, expansion_set, host.shift_memory.next_low_report(), host.shift_memory.audit_remaining)
-	host.runtime.events.subscribe(&"ChecklistRequested", host._on_checklist_requested)
-	host.runtime.events.subscribe(&"FaultChoiceRequested", host._on_fault_choice_requested)
+	host.runtime.events.subscribe(&"ChecklistRequested", host.commands.show_checklist)
+	host.runtime.events.subscribe(&"FaultChoiceRequested", host.commands.show_fault)
 	host.current_map_id = str(host.data.get("map_id", "bay01"))
 	host.sim = host.runtime.sim
 	if _contract().get("bypass_locked", false):
@@ -52,7 +52,7 @@ func new_sim() -> void:
 		if host.checklist_overlay != null:
 			host.checklist_overlay.visible = false
 	if host.shift_memory.has_last():
-		host._show_briefing()
+		host.commands.show_briefing()
 
 
 func restart() -> void:
@@ -76,7 +76,7 @@ func restart() -> void:
 		if host.checklist_overlay != null:
 			host.checklist_overlay.visible = false
 	if host.shift_memory.has_last():
-		host._show_briefing()
+		host.commands.show_briefing()
 
 
 func choose_contract(contract_id: String) -> bool:
@@ -108,6 +108,7 @@ func _apply_contract() -> void:
 	var c := _contract()
 	if c.is_empty():
 		return
+	host.data.profession["start_energy"] = float(host.data.profession.get("start_energy", 90.0)) + float(c.get("energy_delta", 0.0))
 	host.data.balance["starting_energy"] = float(host.data.balance.get("starting_energy", 0.0)) + float(c.get("energy_delta", 0.0))
 	var prep_delta := float(c.get("prep_delta", 0.0))
 	if not is_zero_approx(prep_delta):
@@ -146,14 +147,14 @@ func dispose() -> void:
 
 func _connect_sim() -> void:
 	var s = host.sim
-	s.tower_fired.connect(host._on_tower_fired)
-	s.game_won.connect(host._on_game_won)
-	s.game_lost.connect(host._on_game_lost)
-	s.enemy_leaked.connect(host._on_enemy_leaked)
-	s.fault_escaped.connect(host._on_fault_escaped)
-	s.tower_disabled.connect(host._on_tower_disabled)
-	s.tower_degraded.connect(host._on_tower_degraded)
-	s.wave_started.connect(host._on_wave_started)
+	s.tower_fired.connect(host.feedback.on_tower_fired)
+	s.game_won.connect(host.feedback.on_game_won)
+	s.game_lost.connect(host.feedback.on_game_lost)
+	s.enemy_leaked.connect(host.feedback.on_enemy_leaked)
+	s.fault_escaped.connect(host.feedback.on_fault_escaped)
+	s.tower_disabled.connect(host.feedback.on_tower_disabled)
+	s.tower_degraded.connect(host.feedback.on_tower_degraded)
+	s.wave_started.connect(host.feedback.on_wave_started)
 
 
 func _disconnect_sim() -> void:
@@ -161,6 +162,6 @@ func _disconnect_sim() -> void:
 	if s == null:
 		return
 	for sig: String in ["tower_fired", "game_won", "game_lost", "enemy_leaked", "fault_escaped", "tower_disabled", "tower_degraded", "wave_started"]:
-		var callable: Callable = Callable(host, "_on_" + sig)
+		var callable: Callable = Callable(host.feedback, "on_" + sig)
 		if s.is_connected(sig, callable):
 			s.disconnect(sig, callable)

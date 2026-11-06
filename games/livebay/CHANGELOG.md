@@ -3,6 +3,28 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.107] - 2026-11-06 13:52
+
+### 重构
+
+- `main.gd` 548→**226** 行，定位为入口：
+  - 启动/数据/音频/HUD/控制器连线；
+  - 每帧驱动 Runtime；
+  - 输入转交 InputController；
+  - 绘制入口。
+- 新增 `presentation/game_command_controller.gd`：建造/开波/升级/出售/暂停/倍速/切图/合同/检查单/故障/重开；
+- 新增 `presentation/game_feedback.gd`：模拟信号 → 音效/音乐/toast/结算/报告；
+- 新增 `presentation/game_ui_presenter.gd`：ReadModel → HUD 文本/按钮状态；
+- Session 连接 Feedback，Runtime 事件连接 CommandController；
+- 修复合同 `energy_delta` 未作用到职业初始供能的问题（审计班 90→80）。
+
+### 验证
+
+- `./run.sh test`：95/95；
+- `./run.sh verify`：PASS 12 · FAIL 0；
+- 无头 UI 冒烟：地图/合同/湾民/切图/重开通过；
+- R-016：60 个页面通过。
+
 ## [0.1.106] - 2026-11-06 13:50
 
 ### 新增

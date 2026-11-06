@@ -17,35 +17,35 @@ func setup(host_node: Node, towers: int = 3) -> void:
 func handle(event: InputEvent) -> void:
 	if host == null or host.sim == null:
 		return
-	var action: Dictionary = InputScript.translate(event, host._slot_at, tower_count)
+	var action: Dictionary = InputScript.translate(event, host.commands.slot_at, tower_count)
 	match str(action.type):
 		"hover":
 			host.hover_slot = int(action.slot)
 		"click_slot":
-			host._click_slot(int(action.slot))
+			host.commands.click_slot(int(action.slot))
 		"clear":
 			host.selected_slot = -1
 		"select_tower":
-			host._select_tower(int(action.index))
+			host.commands.select_tower(int(action.index))
 		"start_wave":
-			host._start_wave()
+			host.commands.start_wave()
 		"pause":
-			host._toggle_pause()
+			host.commands.toggle_pause()
 		"speed":
-			host._toggle_speed()
+			host.commands.toggle_speed()
 		"archive":
-			host._show_archive(0)
+			host.commands.show_archive(0)
 		"map":
-			host._show_map_picker()
+			host.commands.show_map_picker()
 		"contract":
-			host._show_contracts()
+			host.commands.show_contracts()
 		"residents":
-			host._show_residents()
+			host.commands.show_residents()
 		"mute":
-			host._toggle_audio()
+			host.commands.toggle_audio()
 		"restart":
-			host._restart()
+			host.commands.restart()
 		"upgrade":
-			host._upgrade_selected()
+			host.commands.upgrade_selected()
 		"sell":
-			host._sell_selected()
+			host.commands.sell_selected()
