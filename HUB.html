@@ -38,7 +38,7 @@
   }
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
+html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden;scroll-padding-top:88px}
 body{
   margin:0;color:var(--ink);background:var(--paper);
   font:16px/1.75 var(--sans);
@@ -48,6 +48,7 @@ body{
 a{color:var(--teal);text-underline-offset:3px}
 a:hover{color:var(--orange)}
 .topbar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+section[id]{scroll-margin-top:88px}
 .topbar-inner{max-width:1180px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font-weight:800;letter-spacing:.02em}
 .brand i{width:9px;height:9px;background:var(--teal);border-radius:50%;box-shadow:0 0 10px var(--teal)}
@@ -109,6 +110,16 @@ h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,38px);line-height:1.25;ma
 .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .links a{border:1px solid var(--line);padding:4px 7px;font:10px var(--mono);color:var(--ink);text-decoration:none;background:var(--paper)}
 .links a:hover{border-color:var(--teal);color:var(--teal)}
+.hub-tree{list-style:none;margin:10px 0 0;padding:0}
+.hub-tree li{position:relative;padding:5px 0 5px 22px;border-left:1px solid var(--line);margin-left:10px}
+.hub-tree li:last-child{border-left-color:transparent}
+.hub-tree li::before{content:"";position:absolute;left:-4px;top:16px;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+.hub-tree a{display:inline-block;font:13px/1.4 var(--mono);text-decoration:none;border-bottom:1px solid transparent}
+.hub-tree a:hover{border-bottom-color:var(--teal);color:var(--teal)}
+.hub-tree .root>a{font:700 16px/1.4 var(--serif);color:var(--ink)}
+.hub-tree .meta{display:block;color:var(--muted);font:10px var(--mono);margin-left:2px}
+.hub-tree ul{list-style:none;margin:3px 0 0;padding:0}
+@media(max-width:900px){html{scroll-padding-top:120px}section[id]{scroll-margin-top:120px}}
 .footer{border-top:1px solid var(--line);margin-top:58px;padding-top:16px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font:10px var(--mono);color:var(--muted)}
 .footer a{color:var(--muted);text-decoration:none}
 .footer a:hover{color:var(--teal)}
@@ -132,7 +143,7 @@ h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,38px);line-height:1.25;ma
   <div class="topbar-inner">
     <a class="brand" href="HUB.html"><i></i>LiveRefu <small>WORKSPACE HUB</small></a>
     <nav class="topnav" aria-label="工作区导航">
-      <a href="#map">工作区地图</a><a href="#projects">项目</a><a href="#knowledge">知识库</a><a href="#concepts">概念</a><a href="#governance">治理</a><a href="ideas/README.md">想法</a>
+      <a href="#map">工作区地图</a><a href="#projects">项目</a><a href="#knowledge">知识库</a><a href="#concepts">概念</a><a href="#governance">治理</a><a href="#hubs">HUB 树</a><a href="ideas/README.md">想法</a>
     </nav>
     <div class="theme-switch" role="group" aria-label="主题">
       <button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
@@ -266,6 +277,29 @@ h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,38px);line-height:1.25;ma
       <a class="card" href="docs/README.md"><div class="n">READ</div><h3>我想读题材</h3><p>从知识库索引进入，先读总论，再按卷读。</p><span class="more">进入 docs →</span></a>
       <a class="card" href="games/README.md"><div class="n">PLAY</div><h3>我想看游戏</h3><p>从 games/ 进入项目；未来残片与 Refu 各有 HUB/GUIDE。</p><span class="more">进入 games →</span></a>
       <a class="card" href="AGENTS.md"><div class="n">BUILD</div><h3>我想参与开发</h3><p>先读 AGENTS 与 rules；再进 TODO 和对应项目。</p><span class="more">读协作规范 →</span></a>
+    </div>
+  </section>
+
+
+  <section id="hubs">
+    <p class="kicker">HUB navigation</p>
+    <h2>所有 HUB 的树</h2>
+    <p class="sub">工作区、设计系统、全栈与三个游戏项目的 HUB 入口。这里只做导航，不复制各页内容。</p>
+    <div class="panel">
+      <ul class="hub-tree">
+        <li class="root"><a href="HUB.html">LiveRefu · 工作区 HUB</a><span class="meta">当前页 · 知识 / 项目 / 产品 / 规则 / 实验</span>
+          <ul>
+            <li><a href="design/HUB.html">LiveDSO · 设计系统 HUB</a><span class="meta">设计系统 · token / 组件 / 规则 / 验收</span>
+              <ul>
+                <li><a href="design/fullstack/HUB.html">LiveDSO · 全栈 HUB</a><span class="meta">青橙全栈 · 应用与工程</span></li>
+              </ul>
+            </li>
+            <li><a href="games/future-debris/briefing/HUB.html">《未来残片》· 项目 HUB</a><span class="meta">主线候选 · 卡牌塔防</span></li>
+            <li><a href="games/livebay/briefing/HUB.html">《LiveBay 逍遥湾》· 项目 HUB</a><span class="meta">岗位塔防 + 沉浸体验 + 放置养成</span></li>
+            <li><a href="games/refu-game-001/HUB.html">《节点防线》· 项目 HUB</a><span class="meta">Refu Game 001 · 可运行垂直切片</span></li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </section>
 
