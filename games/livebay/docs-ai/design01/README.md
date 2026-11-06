@@ -89,6 +89,9 @@ related:
 | 19 | [任务包目录与跨地图语义](tech/19_任务包目录与跨地图语义.md) | schema 2 目录、`default_map`、按 map_id 选包 |
 | — | [数值沙盘](simulator/index.html) | 地图覆盖、DPS、波次压力、经济诊断；P1–P2 |
 | — | [性能基线](performance/README.md) | 帧时间、实体压力、5 分钟长跑、三图加载 |
+| — | [工程力评估](assessments/00_工程力评估.md) | 架构/数据/测试/性能/发布；3.93 / 5（B+） |
+| — | [设计力评估](assessments/01_设计力评估.md) | 主题/循环/系统/内容/留存；3.70 / 5（B） |
+| — | [存续力评估](assessments/02_存续力评估.md) | 范围/资金/单点/发布/缓冲；3.15 / 5（C+） |
 | — | [一局静态流程图](flows/game_flow.html) | 状态、命令、事件、守卫条件；由代码生成 |
 | — | [补充流程图](flows/extra_flows.html) | 玩家操作、波次、L1 扩展、数据到 MissionPack、职责泳道 |
 
