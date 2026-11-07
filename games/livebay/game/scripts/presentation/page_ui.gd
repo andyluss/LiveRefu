@@ -6,6 +6,25 @@ extends RefCounted
 const Consts = preload("res://scripts/shared/constants.gd")
 
 
+static func make_background() -> TextureRect:
+	var gradient := Gradient.new()
+	gradient.colors = PackedColorArray([Color("#0C1412"), Color("#16231F"), Color("#0C1412")])
+	gradient.offsets = PackedFloat32Array([0.0, 0.55, 1.0])
+	var tex := GradientTexture2D.new()
+	tex.gradient = gradient
+	tex.width = 1280
+	tex.height = 720
+	tex.fill_from = Vector2(0, 0)
+	tex.fill_to = Vector2(1, 1)
+	var rect := TextureRect.new()
+	rect.texture = tex
+	rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	rect.stretch_mode = TextureRect.STRETCH_SCALE
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return rect
+
+
 static func make_theme() -> Theme:
 	var t := Theme.new()
 	var f := SystemFont.new()
