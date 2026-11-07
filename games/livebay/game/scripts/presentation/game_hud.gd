@@ -73,7 +73,7 @@ func _build_top() -> void:
 	var stats := HBoxContainer.new()
 	stats.position = Vector2(18, 14)
 	stats.size = Vector2(650, 32)
-	stats.add_theme_constant_override("separation", 26)
+	stats.add_theme_constant_override("separation", 10)
 	top.add_child(stats)
 
 	energy_label = make_label("供能 0", 18, palette.amber)
@@ -81,7 +81,7 @@ func _build_top() -> void:
 	wave_label = make_label("波次 待命", 18, palette.cream)
 	state_label = make_label("准备", 18, palette.sage)
 	best_label = make_label("最佳 —", 15, Color(palette.cream, 0.72))
-	var widths := [130, 190, 190, 90, 170]
+	var widths := [90, 140, 160, 90, 130]
 	var labels: Array = [energy_label, integrity_label, wave_label, state_label, best_label]
 	for i: int in range(labels.size()):
 		labels[i].custom_minimum_size = Vector2(widths[i], 30)
@@ -133,7 +133,7 @@ func _build_bottom() -> void:
 	var bar := HBoxContainer.new()
 	bar.position = Vector2(16, 12)
 	bar.size = Vector2(Consts.VIEW_SIZE.x - 32, 64)
-	bar.add_theme_constant_override("separation", 10)
+	bar.add_theme_constant_override("separation", 6)
 	bottom.add_child(bar)
 
 	for i: int in range(Consts.TOWER_ORDER.size()):
@@ -144,7 +144,7 @@ func _build_bottom() -> void:
 		tower_buttons.append(button)
 
 	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(12, 64)
+	spacer.custom_minimum_size = Vector2(6, 64)
 	bar.add_child(spacer)
 
 	start_button = make_action_button("开波 (空格)", palette.orange)
@@ -268,8 +268,14 @@ func _build_checklist_overlay() -> void:
 	checklist_body = make_label("", 15, palette.slate)
 	checklist_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(checklist_body)
+	var options_scroll := ScrollContainer.new()
+	options_scroll.custom_minimum_size = Vector2(440, 150)
+	options_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	options_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	box.add_child(options_scroll)
 	checklist_buttons = VBoxContainer.new()
-	box.add_child(checklist_buttons)
+	checklist_buttons.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	options_scroll.add_child(checklist_buttons)
 
 
 func make_label(text: String, size: int, color: Color) -> Label:
@@ -291,7 +297,7 @@ func make_top_button(text: String, pos: Vector2) -> Button:
 
 func make_build_button(index: int, def: Dictionary) -> Button:
 	var button := Button.new()
-	button.custom_minimum_size = Vector2(150, 64)
+	button.custom_minimum_size = Vector2(122, 64)
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.text = "%d  %s\n    %d 供能 · %s" % [
 		index + 1,
@@ -309,7 +315,7 @@ func make_build_button(index: int, def: Dictionary) -> Button:
 func make_action_button(text: String, accent: Color) -> Button:
 	var button := Button.new()
 	button.text = text
-	button.custom_minimum_size = Vector2(126, 64)
+	button.custom_minimum_size = Vector2(112, 64)
 	style_button(button, accent, palette.cream, 15)
 	return button
 
