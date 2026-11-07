@@ -22,7 +22,10 @@ func update() -> void:
 	host.energy_label.text = hud_data.energy_text
 	host.integrity_label.text = hud_data.integrity_text
 	host.wave_label.text = hud_data.wave_text
-	host.state_label.text = hud_data.state_text
+	var countdown := ""
+	if host.sim.state == SimScript.State.PREP or host.sim.state == SimScript.State.BETWEEN:
+		countdown = " %ds" % int(ceil(host.sim.timer))
+	host.state_label.text = hud_data.state_text + countdown
 	host.best_label.text = "最佳 %s · 通关 %d" % [String(SaveStore.data.best_grade), int(SaveStore.data.clears)]
 	host.hint_label.text = hint_text()
 

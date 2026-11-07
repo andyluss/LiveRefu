@@ -119,12 +119,18 @@ func _draw_slots() -> void:
 				var range_px: float = sim._tower_range(tower)
 				canvas.draw_circle(pos, range_px, Color(Consts.PALETTE.teal, 0.08))
 				canvas.draw_arc(pos, range_px, 0, TAU, 64, Color(Consts.PALETTE.teal, 0.55), 2.0, true)
+		var selected := i == selected_slot
 		if sim.get_tower_at(i) != null:
+			if selected:
+				canvas.draw_arc(pos, 24.0, 0, TAU, 40, Consts.PALETTE.orange, 3.0, true)
+				canvas.draw_string(font, pos + Vector2(-20, -20), "选中", HORIZONTAL_ALIGNMENT_CENTER, 40, 11, Consts.PALETTE.orange)
 			continue
-		var fill := Consts.PALETTE.cream if i != hover_slot else Color("#FFF6E6")
+		var fill := Consts.PALETTE.orange if selected else (Consts.PALETTE.cream if i != hover_slot else Color("#FFF6E6"))
 		canvas.draw_circle(pos, 18.0, fill)
 		canvas.draw_arc(pos, 18.0, 0, TAU, 32, Consts.PALETTE.ink, 2.0, true)
 		canvas.draw_arc(pos, 13.0, 0, TAU, 32, Color(Consts.PALETTE.ink, 0.2), 1.0, true)
+		if selected:
+			canvas.draw_arc(pos, 24.0, 0, TAU, 40, Consts.PALETTE.orange, 3.0, true)
 		canvas.draw_string(font, pos + Vector2(-20, 5), str(i + 1), HORIZONTAL_ALIGNMENT_CENTER, 40, 13, Consts.PALETTE.ink)
 
 

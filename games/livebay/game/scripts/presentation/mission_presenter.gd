@@ -6,7 +6,9 @@ extends RefCounted
 
 static func hud(view: LiveBayMissionReadModel) -> Dictionary:
 	var wave_text := "波次 待命"
-	if view.wave_index >= 0:
+	if view.wave_index < 0 and view.state == 0:
+		wave_text = "首波倒计时 %ds" % int(ceil(view.timer))
+	elif view.wave_index >= 0:
 		if view.state == 0 or view.state == 2:
 			wave_text = "波次 %d/%d · %ds" % [view.wave_index + 1, view.wave_count, int(ceil(view.timer))]
 		else:

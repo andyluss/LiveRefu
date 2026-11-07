@@ -300,6 +300,7 @@ func make_build_button(index: int, def: Dictionary) -> Button:
 		tower_kind_label(String(def.get("kind", ""))),
 	]
 	button.add_theme_font_size_override("font_size", 14)
+	button.set_meta("base_text", button.text)
 	style_button(button, palette.cream, palette.slate, 15)
 	button.pressed.connect(callbacks["select_tower"].bind(index))
 	return button
@@ -359,4 +360,7 @@ func set_checklist_close_visible(value: bool) -> void:
 func refresh_tower_buttons(selected_id: String) -> void:
 	for i: int in range(tower_buttons.size()):
 		var selected: bool = Consts.TOWER_ORDER[i] == selected_id
+		var base := str(tower_buttons[i].get_meta("base_text", tower_buttons[i].text))
+		tower_buttons[i].text = ("▶ " if selected else "") + base
 		tower_buttons[i].modulate = Color(1, 1, 1, 1) if selected else Color(1, 1, 1, 0.82)
+		style_button(tower_buttons[i], palette.orange if selected else palette.cream, palette.cream if selected else palette.slate, 15)
