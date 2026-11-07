@@ -31,10 +31,12 @@ var quit_button: Button
 var overlay: Control
 var overlay_title: Label
 var overlay_body: Label
+var overlay_close: Button
 var report_buttons: HBoxContainer
 var checklist_overlay: Control
 var checklist_title: Label
 var checklist_body: Label
+var checklist_close: Button
 var checklist_buttons: VBoxContainer
 var broadcast_banner: PanelContainer
 var broadcast_label: Label
@@ -186,9 +188,20 @@ func _build_result_overlay() -> void:
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 14)
 	margin.add_child(box)
+	var overlay_header := HBoxContainer.new()
+	overlay_header.add_theme_constant_override("separation", 8)
 	overlay_title = make_label("", 28, palette.ink)
-	overlay_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(overlay_title)
+	overlay_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	overlay_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	overlay_header.add_child(overlay_title)
+	overlay_close = Button.new()
+	overlay_close.text = "×"
+	overlay_close.tooltip_text = "关闭 (Esc)"
+	overlay_close.custom_minimum_size = Vector2(34, 34)
+	style_button(overlay_close, palette.paper, palette.slate, 18)
+	overlay_close.pressed.connect(callbacks["close_modal"])
+	overlay_header.add_child(overlay_close)
+	box.add_child(overlay_header)
 	overlay_body = make_label("", 16, palette.slate)
 	overlay_body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	overlay_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -232,8 +245,20 @@ func _build_checklist_overlay() -> void:
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 12)
 	margin.add_child(box)
+	var checklist_header := HBoxContainer.new()
+	checklist_header.add_theme_constant_override("separation", 8)
 	checklist_title = make_label("", 22, palette.ink)
-	box.add_child(checklist_title)
+	checklist_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	checklist_header.add_child(checklist_title)
+	checklist_close = Button.new()
+	checklist_close.text = "×"
+	checklist_close.tooltip_text = "关闭 (Esc)"
+	checklist_close.custom_minimum_size = Vector2(34, 34)
+	set_checklist_close_visible(false)
+	style_button(checklist_close, palette.paper, palette.slate, 18)
+	checklist_close.pressed.connect(callbacks["close_modal"])
+	checklist_header.add_child(checklist_close)
+	box.add_child(checklist_header)
 	checklist_body = make_label("", 15, palette.slate)
 	checklist_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(checklist_body)
@@ -318,6 +343,11 @@ func tower_kind_label(kind: String) -> String:
 		"aoe": return "范围"
 		"supply": return "经济"
 	return kind
+
+
+func set_checklist_close_visible(value: bool) -> void:
+	if checklist_close != null:
+		checklist_close.visible = value
 
 
 func refresh_tower_buttons(selected_id: String) -> void:

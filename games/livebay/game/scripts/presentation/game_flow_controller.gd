@@ -35,6 +35,7 @@ func close_modal() -> void:
 		return
 	hud.checklist_overlay.visible = false
 	hud.overlay.visible = false
+	hud.set_checklist_close_visible(false)
 	archive_open = false
 	modal_kind = ""
 	if host.runtime != null:
@@ -46,6 +47,7 @@ func hide_all() -> void:
 		return
 	hud.overlay.visible = false
 	hud.checklist_overlay.visible = false
+	hud.set_checklist_close_visible(false)
 	archive_open = false
 	modal_kind = ""
 
@@ -65,6 +67,7 @@ func show_checklist(card: Dictionary) -> void:
 		button.pressed.connect(host.commands.choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 
 
 func show_quit_confirm() -> void:
@@ -93,6 +96,7 @@ func show_quit_confirm() -> void:
 	no.pressed.connect(host.commands.cancel_quit)
 	hud.checklist_buttons.add_child(no)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -189,6 +193,7 @@ func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: 
 	footer.add_child(close)
 	hud.checklist_buttons.add_child(footer)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -227,6 +232,7 @@ func show_candidate(scenario: Dictionary, diff: Dictionary, path: String) -> voi
 	close.pressed.connect(host.commands.close_archive)
 	hud.checklist_buttons.add_child(close)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -247,6 +253,7 @@ func show_map_picker(data: Dictionary, current_map_id: String) -> void:
 		button.pressed.connect(host.commands.choose_map.bind(map_id))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -266,6 +273,7 @@ func show_contracts() -> void:
 		button.pressed.connect(host.commands.choose_contract.bind(str(c.get("id", ""))))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -291,6 +299,7 @@ func show_residents(data: Dictionary) -> void:
 	close.pressed.connect(host.commands.close_residents)
 	hud.checklist_buttons.add_child(close)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -338,6 +347,7 @@ func show_archive(page: int = 0, filter: String = "all") -> void:
 	close.pressed.connect(host.commands.close_archive)
 	hud.checklist_buttons.add_child(close)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -365,6 +375,7 @@ func show_briefing(briefing: Dictionary) -> void:
 	start.pressed.connect(host.commands.dismiss_briefing)
 	hud.checklist_buttons.add_child(start)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 	if host.runtime != null:
 		host.runtime.clock.paused = true
 
@@ -397,6 +408,7 @@ func show_fault() -> void:
 		bypass.pressed.connect(host.commands.choose_fault_choice.bind("bypass"))
 		hud.checklist_buttons.add_child(bypass)
 	hud.checklist_overlay.visible = true
+	hud.set_checklist_close_visible(modal_kind not in ["checklist", "fault"])
 
 
 func show_result(won: bool, result: Dictionary) -> void:

@@ -168,6 +168,7 @@ func _build_ui() -> void:
 		"archive": commands.show_archive.bind(0),
 		"restart": commands.restart,
 		"quit": commands.request_quit,
+		"close_modal": commands.cancel_modal,
 	})
 	# 兼容现有流程代码：HUD 节点以别名暴露，业务状态仍由 Main/Controller 管理。
 	energy_label = game_hud.energy_label

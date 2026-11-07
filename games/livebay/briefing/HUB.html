@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.120</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.121</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -170,7 +170,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <h2>自由模式：外环试验场</h2>
     <p class="lede">给玩家和你自己一个不受主线约束、但仍属于逍遥湾的实验场：用 JSON 搭玩法、打标签、调数值、快速试玩；好设定变成候选，不自动进主线。</p>
     <div class="grid g3">
-      <article class="card"><h4>入口</h4><p>启动先到独立主页「今晚，守哪一段？」；选「自由模式」进入独立实验页。页面由 <code>App</code> 路由器切换，不是 overlay。游戏内按 <code>L</code> 回实验页；<code>F1</code> 回主页；<code>Esc</code> 关闭当前弹层；<code>Q</code> 退出并确认。</p></article>
+      <article class="card"><h4>入口</h4><p>启动先到独立主页「今晚，守哪一段？」；选「自由模式」进入独立实验页。页面由 <code>App</code> 路由器切换，不是 overlay。游戏内按 <code>L</code> 回实验页；<code>F1</code> 回主页；弹层右上角 <code>×</code> 或 <code>Esc</code> 关闭；<code>Q</code> 退出并确认。</p></article>
       <article class="card"><h4>实验方式</h4><p>每个实验是一个 JSON：元数据 + 标签 + 白名单覆盖。只读 <code>game/data/lab/scenarios/</code>，不写主线数据。</p></article>
       <article class="card"><h4>边界</h4><p>默认独立运行时、空 ShiftMemory；实验不写主线存档。没有脚本/MOD/在线分享。</p></article>
     </div>
@@ -201,7 +201,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <h3>操作</h3>
     <div class="grid g2">
       <article class="card"><h4>主页 / 模式</h4><p><code>F1</code> 回主页；主页选主线或自由模式；<code>Q</code> 退出并确认。</p></article>
-      <article class="card"><h4>实验浏览器</h4><p><code>L</code> 打开；主轴/难度筛选；每项可「试玩」「候选」「导出」；底部「导入实验」；「返回主线」。</p></article>
+      <article class="card"><h4>实验浏览器</h4><p><code>L</code> 打开；主轴/难度筛选；每项可「试玩」「候选」「导出」；底部「导入实验」；「返回主线」；右上角 <code>×</code> / <code>Esc</code> 关闭。</p></article>
     </div>
 
     <div class="note ok"><b>文件位置：</b><code>user://lab/candidates/</code> 候选；<code>user://lab/exports/</code> 实验导出；实验定义在 <code>game/data/lab/scenarios/</code>。候选与导入都<b>不会自动修改主线</b>。</div>
