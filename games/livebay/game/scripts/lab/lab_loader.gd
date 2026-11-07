@@ -5,6 +5,7 @@ extends RefCounted
 
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
 const DIR := "res://data/lab/scenarios"
+const ALLOWED_CAPS := ["towers", "waves", "economy", "fault", "procedures"]
 
 
 static func load_all() -> Array:
@@ -28,7 +29,19 @@ static func apply(scenario: Dictionary) -> Dictionary:
 	var data: Dictionary = DataLoaderScript.load_mission_pack("res://data", map_id)
 	if data.is_empty():
 		return {}
+	var caps: Variant = scenario.get("capabilities", ["towers", "waves", "economy"])
+	if not (caps is Array):
+		return {}
+	for c: Variant in caps:
+		if str(c) not in ALLOWED_CAPS:
+			return {}
+	data = data.duplicate(true)
 	var overrides: Dictionary = scenario.get("overrides", {})
+	var disabled_towers: Array = overrides.get("towers", {}).get("disabled", [])
+	for t: Variant in disabled_towers:
+		if not data.towers_by_id.has(str(t)):
+			return {}
+	data["tower_disabled"] = disabled_towers
 	var balance: Dictionary = overrides.get("balance", {})
 	if balance.has("starting_energy"):
 		var delta := float(balance.starting_energy)
@@ -52,6 +65,7 @@ static func apply(scenario: Dictionary) -> Dictionary:
 		"id": str(scenario.get("id", "")),
 		"name": str(scenario.get("name", "")),
 		"tags": scenario.get("tags", {}),
+		"capabilities": caps,
 		"fault_bonus": float(overrides.get("fault_bonus", 0.0)),
 	}
 	return data

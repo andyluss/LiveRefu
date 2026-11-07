@@ -2,6 +2,7 @@
 extends Control
 
 const LabLoaderScript = preload("res://scripts/lab/lab_loader.gd")
+const PageUi = preload("res://scripts/presentation/page_ui.gd")
 
 var app: Node
 var scenarios: Array = []
@@ -17,9 +18,10 @@ func setup(app_node: Node) -> void:
 	scenarios = LabLoaderScript.load_all()
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	theme = PageUi.make_theme()
 	var bg := ColorRect.new()
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	bg.color = Color(0.07, 0.10, 0.11)
+	bg.color = Color("#0C1412")
 	add_child(bg)
 	var wrap := VBoxContainer.new()
 	wrap.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -35,6 +37,7 @@ func setup(app_node: Node) -> void:
 	var back := Button.new()
 	back.text = "← 主页"
 	back.custom_minimum_size = Vector2(100, 34)
+	PageUi.style_button(back, Color("#2F6B65"), Color("#F5EFE2"))
 	back.pressed.connect(func() -> void: app.open_home())
 	top.add_child(back)
 	var title := Label.new()
@@ -50,6 +53,7 @@ func setup(app_node: Node) -> void:
 		var b := Button.new()
 		b.text = str(pair[1])
 		b.custom_minimum_size = Vector2(86, 30)
+		PageUi.style_button(b, Color("#2F6B65") if axis_filter == str(pair[0]) else Color("#223136"), Color("#F5EFE2"))
 		b.pressed.connect(_set_axis.bind(str(pair[0])))
 		filters.add_child(b)
 	wrap.add_child(filters)
@@ -59,6 +63,7 @@ func setup(app_node: Node) -> void:
 		var b := Button.new()
 		b.text = str(pair[1])
 		b.custom_minimum_size = Vector2(82, 28)
+		PageUi.style_button(b, Color("#2F6B65") if difficulty_filter == str(pair[0]) else Color("#223136"), Color("#F5EFE2"))
 		b.pressed.connect(_set_difficulty.bind(str(pair[0])))
 		diffs.add_child(b)
 	wrap.add_child(diffs)
@@ -76,10 +81,13 @@ func setup(app_node: Node) -> void:
 	var import_btn := Button.new()
 	import_btn.text = "导入实验"
 	import_btn.custom_minimum_size = Vector2(120, 34)
+	PageUi.style_button(import_btn, Color("#2F6B65"), Color("#F5EFE2"))
 	import_btn.pressed.connect(_open_import)
 	footer.add_child(import_btn)
 	status_label = Label.new()
 	status_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status_label.add_theme_color_override("font_color", Color("#B8C1BC"))
 	status_label.text = "实验不写主线存档；候选/导出写入 user://lab/"
 	footer.add_child(status_label)
 	wrap.add_child(footer)
@@ -115,16 +123,19 @@ func _render() -> void:
 		name.text = "%s\n%s · %s\n%s" % [str(s.get("name", "?")), ", ".join(axes), ", ".join(diffs), str(s.get("description", ""))]
 		name.custom_minimum_size = Vector2(580, 62)
 		name.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		PageUi.style_button(name, Color("#182326"), Color("#E9E3D5"))
 		name.pressed.connect(func() -> void: app.open_game(s))
 		row.add_child(name)
 		var candidate := Button.new()
 		candidate.text = "候选"
 		candidate.custom_minimum_size = Vector2(74, 62)
+		PageUi.style_button(candidate, Color("#B47A16"), Color("#F5EFE2"))
 		candidate.pressed.connect(func() -> void: _export_candidate(s))
 		row.add_child(candidate)
 		var export_btn := Button.new()
 		export_btn.text = "导出"
 		export_btn.custom_minimum_size = Vector2(64, 62)
+		PageUi.style_button(export_btn, Color("#3D4D4D"), Color("#F5EFE2"))
 		export_btn.pressed.connect(func() -> void: _export_scenario(s))
 		row.add_child(export_btn)
 		list_box.add_child(row)

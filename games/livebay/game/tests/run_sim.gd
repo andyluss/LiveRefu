@@ -183,7 +183,7 @@ func _test_data(data: Dictionary) -> void:
 
 func _test_lab() -> void:
 	var labs: Array = LabLoaderScript.load_all()
-	_check(labs.size() == 3, "lab: 3 scenarios load")
+	_check(labs.size() == 4, "lab: 4 scenarios load")
 	if labs.is_empty():
 		return
 	var first: Dictionary = labs[0]

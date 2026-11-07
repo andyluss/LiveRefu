@@ -27,8 +27,11 @@ func update() -> void:
 	host.hint_label.text = hint_text()
 
 	var ended: bool = host.sim.state == SimScript.State.WON or host.sim.state == SimScript.State.LOST
+	var disabled: Array = host.data.get("tower_disabled", [])
 	for i: int in range(host.tower_buttons.size()):
-		var def: Dictionary = host.data.towers_by_id.get(Consts.TOWER_ORDER[i], {})
+		var tower_id := str(Consts.TOWER_ORDER[i])
+		host.tower_buttons[i].visible = tower_id not in disabled
+		var def: Dictionary = host.data.towers_by_id.get(tower_id, {})
 		var cost: int = int(round(float(def.get("cost", 0)) * float(host.sim.profession.get("tower_cost_mult", 1.0))))
 		host.tower_buttons[i].disabled = ended or host.sim.energy < float(cost)
 		var selected: bool = Consts.TOWER_ORDER[i] == host.selected_tower_id
@@ -52,6 +55,9 @@ func update() -> void:
 
 
 func hint_text() -> String:
+	var lab := ""
+	if host.current_mode == "lab":
+		lab = "实验 · %s · " % str(host.data.get("lab_meta", {}).get("name", "自由模式"))
 	if host.sim.state == SimScript.State.WON:
 		return "本班结束 · R 再来一班"
 	if host.sim.state == SimScript.State.LOST:
@@ -61,7 +67,7 @@ func hint_text() -> String:
 	var tower: Variant = host.sim.get_tower_at(host.selected_slot) if host.selected_slot >= 0 else null
 	if tower != null:
 		return "已选中 %s Lv.%d · U 升级 · X 出售 · 右键取消" % [String(tower.def.name), int(tower.level)]
-	return "点击塔位建造 · 1–6 选塔 · C 合同 · V 湾民 · L 自由模式 · F1 主页 · Q 退出 · 空格开波 · Tab 加速 · P 暂停"
+	return lab + "点击塔位建造 · 1–6 选塔 · C 合同 · V 湾民 · L 自由模式 · F1 主页 · Q 退出 · 空格开波 · Tab 加速 · P 暂停"
 
 
 func refresh_tower_buttons() -> void:

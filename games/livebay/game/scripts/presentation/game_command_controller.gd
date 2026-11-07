@@ -38,7 +38,12 @@ func click_slot(slot: int) -> void:
 func select_tower(index: int) -> void:
 	if index < 0 or index >= Consts.TOWER_ORDER.size():
 		return
-	host.selected_tower_id = Consts.TOWER_ORDER[index]
+	var tower_id := str(Consts.TOWER_ORDER[index])
+	if tower_id in host.data.get("tower_disabled", []):
+		host.toast_text = "本实验禁用了该塔"
+		host.toast_timer = 1.4
+		return
+	host.selected_tower_id = tower_id
 	host.audio.play("ui_hover")
 	host.ui_presenter.refresh_tower_buttons()
 

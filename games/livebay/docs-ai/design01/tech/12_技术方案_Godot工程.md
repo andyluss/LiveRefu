@@ -1,8 +1,8 @@
 ---
 title: "12 · 技术方案：Godot 工程"
 doc_type: "工程参考（非设计决定）"
-status: "草案 v0.2（D16 已裁决）"
-date: "2026-11-03"
+status: "现行 v0.4（App + Router + Pages；v0.2 内容已落地）"
+date: "2026-11-07"
 source: "AI 起草，人类确认"
 authority: "人类（范围）/ 工程（实现）"
 rules:
@@ -24,16 +24,18 @@ related:
 
 ## 一、目标与非目标
 
-### 1.1 v0.1 目标
+### 1.1 当前目标（v0.2 切片）
 
-在 Godot 4.7 上跑通一个**可玩最小闭环**：
+在 Godot 4.7 上跑通一个**可玩、可验证、可扩展**的垂直切片：
 
-- 1 张月牙外弧地图，7 个塔位（D16=A 垂直切片）；
-- 1 个示例职业：护湾卫兵（D05=A）；
-- 3 种塔、4 种敌人（3 自然 + 1 内部故障）、5 波；D02 首版 A+C 已落地；
-- 建造、升级、出售、加速、暂停；
-- 胜负判定、结算、最高记录存档；
-- 无头测试可在 10 秒内跑完。
+- 3 张地图：外环 / 中环 / 湾口，各 8 波；
+- 1 个示例职业；6 种塔、7 种敌人（含故障/护盾/分裂）；
+- 3 份班次合同、12 张检查单/故障卡、3 名湾民、3 段音乐；
+- 建造、升级、出售、加速、暂停、检查单、故障处置、档案、接班；
+- 胜负、评级、存档、黑匣子回放；
+- 无头测试 103 项，`./run.sh verify` 12 项全量验收。
+
+> v0.1 的“1 图 / 5 波 / 3 塔 / 4 敌”仅作为历史基线保留，不再是当前事实。
 
 ### 1.2 非目标
 
@@ -57,10 +59,13 @@ related:
 命令（在 `games/livebay/` 下）：
 
 ```bash
-./run.sh          # 启动游戏
+./run.sh          # 启动 App → 主页
+./run.sh game     # 直接进入游戏页，跳过主页（测试用）
 ./run.sh editor   # 打开编辑器
-./run.sh test     # 无头模拟测试
+./run.sh test     # 无头模拟测试（103 项）
+./run.sh verify   # 一键全量验收
 ./run.sh check    # 无头启动 180 帧，抓脚本错误
+./run.sh perf     # 性能基线
 ```
 
 ## 三、目录结构
@@ -69,38 +74,55 @@ related:
 game/
 ├── project.godot
 ├── scenes/
-│   └── main.tscn              # 唯一场景，根节点 Node2D
+│   ├── app.tscn               # App 路由器（主页/实验/游戏）
+│   └── main.tscn              # GamePage（游戏页）
 ├── scripts/
-│   ├── main.gd                # 视图 + 输入 + UI
+│   ├── app.gd                 # 页面路由
+│   ├── main.gd                # GamePage 入口：连线/每帧/绘制
+│   ├── presentation/
+│   │   ├── home_page.gd       # 独立主页
+│   │   ├── lab_page.gd        # 独立自由模式页
+│   │   ├── game_hud.gd        # HUD
+│   │   ├── game_flow_controller.gd
+│   │   ├── game_command_controller.gd
+│   │   ├── game_feedback.gd
+│   │   ├── game_ui_presenter.gd
+│   │   └── page_ui.gd
+│   ├── lab/
+│   │   └── lab_loader.gd      # 实验 JSON / 覆盖 / 候选
 │   ├── core/
-│   │   ├── data_loader.gd     # JSON 读取与校验
-│   │   └── sim.gd             # 纯逻辑模拟（无渲染）
+│   │   ├── data_loader.gd
+│   │   └── sim.gd
 │   └── autoload/
-│       └── save_store.gd      # 最高记录 / 设置
+│       └── save_store.gd
 ├── data/
-│   ├── profession_guard.json  # 职业参数
-│   ├── towers.json            # 塔
-│   ├── enemies.json           # 敌人
-│   ├── waves.json             # 波次
-│   ├── map_bay01.json         # 路径、塔位、基地
-│   └── balance.json           # 全局平衡
+│   ├── lab/scenarios/         # 自由模式实验（不写主线）
+│   ├── mission_pack.json      # schema 2 地图目录
+│   ├── towers.json / enemies.json
+│   ├── waves*.json / map_bay*.json
+│   └── balance.json
 ├── tests/
-│   └── run_sim.gd             # 无头测试
+│   └── run_sim.gd
 └── run.sh
 ```
 
 ## 四、架构：模拟与视图分离
 
 ```text
-data/*.json
-   ↓ DataLoader
-LiveBaySim (RefCounted)  ←— 无渲染、可测试、固定步长
-   ↑ step(dt) / build / upgrade / sell / start_wave
-   │ signals: wave_started, wave_cleared, enemy_killed,
-   │          enemy_leaked, fault_escaped, tower_disabled,
-   │          game_won, game_lost, tower_fired
-   ↓
-main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
+App (scenes/app.tscn)
+├── HomePage       主菜单：主线 / 自由模式
+├── LabPage        标签筛选 / 候选 / 导出 / 导入
+└── GamePage       游戏页（scenes/main.tscn）
+        │
+        ├── SessionController   数据/运行时生命周期
+        ├── CommandController   按钮/输入 → Runtime
+        ├── FeedbackController  信号 → 音效/音乐/toast/结算
+        ├── UiPresenter         ReadModel → HUD
+        ├── FlowController      地图/档案/简报/检查单/故障/结算
+        └── HUD                 CanvasLayer
+                │
+                ↓
+        MissionRuntime + Sim（纯逻辑、固定步长）
 ```
 
 **为什么分离**：
@@ -118,12 +140,30 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 - 资源、波次、胜负；
 - 发送信号给视图。
 
-### 4.2 main 的职责
+### 4.2 main.gd（GamePage）的职责
 
-- 读取输入，调用 Sim；
-- 绘制；
-- HUD 与结算界面；
-- 存档读写。
+- 作为游戏页入口：创建 Session/Command/Feedback/UI/Flow/HUD；
+- 每帧驱动 Runtime；
+- 转交输入；
+- `_draw()` 绘制入口；
+- 不再直接处理建造/开波/切图/结算等业务命令。
+
+### 4.3 App 与页面
+
+- `app.tscn` 是项目主场景；
+- 页面切换使用 add/queue_free，不使用 overlay 模拟页面；
+- `HomePage` 不依赖 HUD；
+- `LabPage` 读取 `game/data/lab/scenarios`，选择实验后进入 GamePage(lab)；
+- `./run.sh game` 直接加载 `main.tscn`，跳过 App，便于测试；
+- `F1` 从游戏页回主页；`Q` 退出确认。
+
+### 4.4 自由模式边界
+
+- 复用同一套 Sim/Data + 白名单覆盖；
+- 实验使用独立运行时与空 ShiftMemory，不写主线存档；
+- 候选写入 `user://lab/candidates/`，实验导出到 `user://lab/exports/`；
+- 不支持脚本/MOD/在线分享；
+- 真正的非塔防玩法需要 Mode Adapter，见 `lab/00_自由模式方案.md` 第十三节。
 
 ## 五、数据契约
 
@@ -314,7 +354,7 @@ main.gd (Node2D)  —— _draw() 画路径/塔/敌人/光束；Control 做 HUD
 
 ## 十二、模块化落地状态
 
-截至 2026-11-05，M1/M2 已落地：`MissionRuntime` 组合 `MissionClock`、`EventBus`、`CommandBus`、`BlackBox` 与 `Sim`；`Sim` 内部已使用 `MapModule` 与 `EconomyModule`（属性代理，行为不变）。M3–M7 仍按 [16](16_模块化技术架构_NASApunk.md) 推进。
+截至 2026-11-07，App/Router/Pages 已落地，M1/M2 已落地：`MissionRuntime` 组合 `MissionClock`、`EventBus`、`CommandBus`、`BlackBox` 与 `Sim`；`Sim` 内部已使用 `MapModule` 与 `EconomyModule`（属性代理，行为不变）。M3–M7 仍按 [16](16_模块化技术架构_NASApunk.md) 推进。
 
 ## 十三、模块化演进参考
 

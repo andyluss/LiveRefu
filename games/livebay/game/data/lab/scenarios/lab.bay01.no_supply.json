@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "lab.bay01.no_supply",
+  "name": "无补给外环",
+  "description": "禁用补给塔，只能靠击杀奖励和升级撑住 8 波；演示动态塔位。",
+  "world": "outer_ring",
+  "tags": {
+    "axis": ["tower_defense"],
+    "difficulty": ["hard"],
+    "theme": ["outer_ring", "night_shift"],
+    "mechanic": ["economy", "tower", "wave"],
+    "duration": ["standard"],
+    "fidelity": ["overrides"],
+    "state": ["playable"]
+  },
+  "capabilities": ["towers", "waves", "economy", "fault", "procedures"],
+  "base": { "map": "bay01", "mode": "tower_defense" },
+  "overrides": {
+    "towers": { "disabled": ["supply"] },
+    "balance": { "starting_energy": 10 }
+  },
+  "provenance": { "author": "lab", "created": "2026-11-07", "source": "hand-authored" }
+}
