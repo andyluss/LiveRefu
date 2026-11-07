@@ -11,6 +11,7 @@ var archive_page := 0
 var archive_filter := "all"
 var archive_open := false
 var import_dialog: FileDialog
+var modal_kind := ""
 
 
 func setup(host_node: Node, game_hud: LiveBayGameHud, palette_data: Dictionary) -> void:
@@ -19,15 +20,38 @@ func setup(host_node: Node, game_hud: LiveBayGameHud, palette_data: Dictionary) 
 	palette = palette_data
 
 
+func has_modal() -> bool:
+	return hud != null and (hud.checklist_overlay.visible or hud.overlay.visible)
+
+
+func close_modal() -> void:
+	if not has_modal():
+		return
+	# 检查单/故障是阻塞选择；Esc 不能静默跳过，提示后保留弹层。
+	if modal_kind in ["checklist", "fault"]:
+		if host.toast_text is String:
+			host.toast_text = "请先做出选择（检查单/故障）"
+			host.toast_timer = 1.6
+		return
+	hud.checklist_overlay.visible = false
+	hud.overlay.visible = false
+	archive_open = false
+	modal_kind = ""
+	if host.runtime != null:
+		host.runtime.clock.paused = false
+
+
 func hide_all() -> void:
 	if hud == null:
 		return
 	hud.overlay.visible = false
 	hud.checklist_overlay.visible = false
 	archive_open = false
+	modal_kind = ""
 
 
 func show_checklist(card: Dictionary) -> void:
+	modal_kind = "checklist"
 	if card.is_empty() or hud == null:
 		return
 	hud.checklist_title.text = str(card.get("title", "班前检查单"))
@@ -44,6 +68,7 @@ func show_checklist(card: Dictionary) -> void:
 
 
 func show_quit_confirm() -> void:
+	modal_kind = "quit"
 	if hud == null:
 		return
 	hud.checklist_title.text = "退出游戏？"
@@ -73,6 +98,7 @@ func show_quit_confirm() -> void:
 
 
 func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: String = "all") -> void:
+	modal_kind = "lab"
 	if hud == null:
 		return
 	hud.checklist_title.text = "自由模式 · 外环试验场"
@@ -179,6 +205,7 @@ func open_import_dialog() -> void:
 
 
 func show_candidate(scenario: Dictionary, diff: Dictionary, path: String) -> void:
+	modal_kind = "candidate"
 	if hud == null:
 		return
 	hud.checklist_title.text = "候选方案 · %s" % str(scenario.get("name", "?"))
@@ -205,6 +232,7 @@ func show_candidate(scenario: Dictionary, diff: Dictionary, path: String) -> voi
 
 
 func show_map_picker(data: Dictionary, current_map_id: String) -> void:
+	modal_kind = "map"
 	if hud == null or hud.checklist_overlay.visible:
 		return
 	hud.checklist_title.text = "选择地图"
@@ -224,6 +252,7 @@ func show_map_picker(data: Dictionary, current_map_id: String) -> void:
 
 
 func show_contracts() -> void:
+	modal_kind = "contracts"
 	if hud == null or hud.checklist_overlay.visible:
 		return
 	hud.checklist_title.text = "班次合同"
@@ -242,6 +271,7 @@ func show_contracts() -> void:
 
 
 func show_residents(data: Dictionary) -> void:
+	modal_kind = "residents"
 	if hud == null or hud.checklist_overlay.visible:
 		return
 	hud.checklist_title.text = "湾民 · 值班日志"
@@ -266,6 +296,7 @@ func show_residents(data: Dictionary) -> void:
 
 
 func show_archive(page: int = 0, filter: String = "all") -> void:
+	modal_kind = "archive"
 	if hud == null or (hud.checklist_overlay.visible and not archive_open):
 		return
 	archive_open = true
@@ -321,6 +352,7 @@ func close_archive() -> void:
 
 
 func show_briefing(briefing: Dictionary) -> void:
+	modal_kind = "briefing"
 	if briefing.is_empty() or hud == null:
 		return
 	hud.checklist_title.text = str(briefing.get("title", "接班简报"))
@@ -338,6 +370,7 @@ func show_briefing(briefing: Dictionary) -> void:
 
 
 func show_fault() -> void:
+	modal_kind = "fault"
 	if hud == null:
 		return
 	hud.checklist_title.text = "第 5 波 · 故障命中"
@@ -367,6 +400,7 @@ func show_fault() -> void:
 
 
 func show_result(won: bool, result: Dictionary) -> void:
+	modal_kind = "result"
 	if hud == null:
 		return
 	hud.overlay.visible = true

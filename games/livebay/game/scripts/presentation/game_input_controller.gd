@@ -25,6 +25,8 @@ func handle(event: InputEvent) -> void:
 			host.commands.click_slot(int(action.slot))
 		"clear":
 			host.selected_slot = -1
+		"cancel":
+			host.commands.cancel_modal()
 		"select_tower":
 			host.commands.select_tower(int(action.index))
 		"start_wave":

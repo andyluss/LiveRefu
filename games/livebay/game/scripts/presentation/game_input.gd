@@ -16,7 +16,7 @@ const ACTIONS := {
 	KEY_R: "restart",
 	KEY_U: "upgrade",
 	KEY_X: "sell",
-	KEY_ESCAPE: "clear",
+	KEY_ESCAPE: "cancel",
 	KEY_H: "archive",
 	KEY_M: "mute",
 	KEY_G: "map",

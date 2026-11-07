@@ -110,6 +110,13 @@ func show_fault() -> void:
 		host.flow_controller.show_fault()
 
 
+func cancel_modal() -> void:
+	if host.flow_controller != null and host.flow_controller.has_modal():
+		host.flow_controller.close_modal()
+		return
+	host.selected_slot = -1
+
+
 func request_quit() -> void:
 	if host.flow_controller != null:
 		host.flow_controller.show_quit_confirm()
