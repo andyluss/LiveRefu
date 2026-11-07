@@ -105,9 +105,47 @@ func show_fault() -> void:
 		host.flow_controller.show_fault()
 
 
+func show_home() -> void:
+	if host.home != null:
+		host.home.show()
+	if host.runtime != null:
+		host.runtime.clock.paused = true
+
+
+func enter_main() -> void:
+	if host.home != null:
+		host.home.hide()
+	if host.current_mode == "lab" and host.session_controller != null:
+		host.session_controller.start_main()
+	if host.runtime != null:
+		host.runtime.clock.paused = false
+	if host.shift_memory != null and host.shift_memory.has_last() and not host.briefing_seen:
+		host.briefing_seen = true
+		show_briefing()
+
+
+func open_lab() -> void:
+	if host.home != null:
+		host.home.hide()
+	show_lab()
+
+
 func show_lab(axis: String = "all", difficulty: String = "all") -> void:
 	if host.flow_controller != null:
 		host.flow_controller.show_lab(host.lab_scenarios, host.current_mode, axis, difficulty)
+
+
+func export_candidate(scenario_id: String) -> void:
+	for scenario: Variant in host.lab_scenarios:
+		if str(scenario.get("id", "")) != scenario_id:
+			continue
+		var path: String = LiveBayLabLoader.export_candidate(scenario)
+		if path.is_empty():
+			host.toast_text = "候选导出失败"
+			host.toast_timer = 1.6
+			return
+		host.flow_controller.show_candidate(scenario, LiveBayLabLoader.diff(scenario), path)
+		return
 
 
 func start_lab(scenario_id: String) -> void:

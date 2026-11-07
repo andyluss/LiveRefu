@@ -89,7 +89,17 @@ func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: 
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		hud.style_button(button, palette.teal, palette.cream, 12)
 		button.pressed.connect(host.commands.start_lab.bind(str(scenario.get("id", ""))))
-		hud.checklist_buttons.add_child(button)
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 4)
+		button.custom_minimum_size = Vector2(340, 54)
+		row.add_child(button)
+		var candidate := Button.new()
+		candidate.text = "候选"
+		candidate.custom_minimum_size = Vector2(88, 54)
+		hud.style_button(candidate, palette.paper, palette.ink, 11)
+		candidate.pressed.connect(host.commands.export_candidate.bind(str(scenario.get("id", ""))))
+		row.add_child(candidate)
+		hud.checklist_buttons.add_child(row)
 	if shown == 0:
 		var empty := Label.new()
 		empty.text = "没有符合筛选的实验。"
@@ -110,6 +120,32 @@ func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: 
 	close.pressed.connect(host.commands.close_archive)
 	footer.add_child(close)
 	hud.checklist_buttons.add_child(footer)
+	hud.checklist_overlay.visible = true
+	if host.runtime != null:
+		host.runtime.clock.paused = true
+
+
+func show_candidate(scenario: Dictionary, diff: Dictionary, path: String) -> void:
+	if hud == null:
+		return
+	hud.checklist_title.text = "候选方案 · %s" % str(scenario.get("name", "?"))
+	hud.checklist_body.text = "已写入 %s\n\n初始供能：%s → %s\n初始保障度：%s → %s\n敌人 HP ×%s · 速度 ×%s · 故障 +%ss\n\n这是候选，不会自动进入主线。" % [
+		path,
+		str(diff.get("starting_energy", {}).get("base", "?")),
+		str(diff.get("starting_energy", {}).get("lab", "?")),
+		str(diff.get("starting_integrity", {}).get("base", "?")),
+		str(diff.get("starting_integrity", {}).get("lab", "?")),
+		str(diff.get("enemy_hp_scale", 1.0)),
+		str(diff.get("enemy_speed_scale", 1.0)),
+		str(diff.get("fault_bonus", 0.0)),
+	]
+	_clear_buttons()
+	var close := Button.new()
+	close.text = "关闭"
+	close.custom_minimum_size = Vector2(140, 34)
+	hud.style_button(close, palette.sage, palette.ink)
+	close.pressed.connect(host.commands.close_archive)
+	hud.checklist_buttons.add_child(close)
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:
 		host.runtime.clock.paused = true

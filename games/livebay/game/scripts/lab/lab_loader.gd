@@ -55,3 +55,43 @@ static func apply(scenario: Dictionary) -> Dictionary:
 		"fault_bonus": float(overrides.get("fault_bonus", 0.0)),
 	}
 	return data
+
+
+static func diff(scenario: Dictionary) -> Dictionary:
+	var base: Dictionary = DataLoaderScript.load_mission_pack("res://data", str(scenario.get("base", {}).get("map", "bay01")))
+	var applied: Dictionary = apply(scenario)
+	if base.is_empty() or applied.is_empty():
+		return {}
+	var overrides: Dictionary = scenario.get("overrides", {})
+	var out := {
+		"base_map": str(base.get("map_id", "")),
+		"starting_energy": {"base": float(base.get("profession", {}).get("start_energy", 0.0)), "lab": float(applied.get("profession", {}).get("start_energy", 0.0))},
+		"starting_integrity": {"base": float(base.get("balance", {}).get("starting_integrity", 0.0)), "lab": float(applied.get("balance", {}).get("starting_integrity", 0.0))},
+		"enemy_hp_scale": float(overrides.get("waves", {}).get("hp_scale", 1.0)),
+		"enemy_speed_scale": float(overrides.get("waves", {}).get("speed_scale", 1.0)),
+		"wave_count_scale": float(overrides.get("waves", {}).get("count_scale", 1.0)),
+		"fault_bonus": float(overrides.get("fault_bonus", 0.0)),
+	}
+	return out
+
+
+static func export_candidate(scenario: Dictionary) -> String:
+	var diff_data := diff(scenario)
+	if diff_data.is_empty():
+		return ""
+	var dir := "user://lab/candidates"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
+	var path := dir.path_join(str(scenario.get("id", "candidate")).replace(".", "_") + ".json")
+	var payload := {
+		"schema_version": 1,
+		"generated_at": Time.get_datetime_string_from_system(),
+		"scenario": scenario,
+		"diff": diff_data,
+		"note": "候选方案，不自动进入主线；需人类评审。",
+	}
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return ""
+	file.store_string(JSON.stringify(payload, "\t"))
+	file.close()
+	return path

@@ -43,6 +43,8 @@ func handle(event: InputEvent) -> void:
 			host.commands.show_residents()
 		"lab":
 			host.commands.show_lab()
+		"home":
+			host.commands.show_home()
 		"mute":
 			host.commands.toggle_audio()
 		"restart":

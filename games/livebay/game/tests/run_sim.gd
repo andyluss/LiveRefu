@@ -192,6 +192,10 @@ func _test_lab() -> void:
 	var base: Dictionary = DataLoaderScript.load_mission_pack("res://data", str(first.get("base", {}).get("map", "bay01")))
 	_check(not base.is_empty() and float(applied.profession.start_energy) < float(base.profession.start_energy), "lab: energy override applies")
 	_check(str(applied.get("lab_meta", {}).get("id", "")) == str(first.get("id", "")), "lab: metadata attached")
+	var diff: Dictionary = LabLoaderScript.diff(first)
+	_check(not diff.is_empty() and diff.has("starting_energy"), "lab: diff computed")
+	var path: String = LabLoaderScript.export_candidate(first)
+	_check(not path.is_empty() and FileAccess.file_exists(path), "lab: candidate exported")
 
 
 func _test_economy(data: Dictionary) -> void:

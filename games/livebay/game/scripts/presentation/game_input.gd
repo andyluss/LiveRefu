@@ -23,6 +23,7 @@ const ACTIONS := {
 	KEY_C: "contract",
 	KEY_V: "residents",
 	KEY_L: "lab",
+	KEY_F1: "home",
 }
 
 
