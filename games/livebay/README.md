@@ -37,7 +37,8 @@ platform: "PC 优先（D14 待定）"
 ## 快速开始
 
 ```bash
-./run.sh          # 启动游戏
+./run.sh          # 启动 App → 主页
+./run.sh game     # 直接进入游戏页（跳过主页，便于测试）
 ./run.sh editor   # 打开 Godot 编辑器
 ./run.sh test     # 无头模拟测试（103 项断言）
 ./run.sh verify   # 一键全量验收（测试/扩展/编辑器/试玩/生成物/链接/HTML）

@@ -21,6 +21,9 @@ case "$CMD" in
   run)
     exec "$GODOT" --path "$GAME" "${@:2}"
     ;;
+  game)
+    exec "$GODOT" --path "$GAME" res://scenes/main.tscn
+    ;;
   editor)
     exec "$GODOT" -e --path "$GAME" "${@:2}"
     ;;
@@ -94,7 +97,7 @@ case "$CMD" in
     exec node "$HERE/briefing/check_hub.ts"
     ;;
   *)
-    echo "用法: ./run.sh [run|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|verify|sim-trace|perf|simulator|simulator-check|flow|flow-check|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
+    echo "用法: ./run.sh [run|game|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|verify|sim-trace|perf|simulator|simulator-check|flow|flow-check|briefing|briefing-check|numbers|numbers-check|pack|pack-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2

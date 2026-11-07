@@ -122,15 +122,17 @@ func cancel_quit() -> void:
 
 
 func show_home() -> void:
-	if host.home != null:
-		host.home.show()
-	if host.runtime != null:
-		host.runtime.clock.paused = true
+	if host.router != null:
+		host.router.open_home()
+		return
+	host.toast_text = "直接游戏页：无主页；按 Q 退出"
+	host.toast_timer = 1.8
 
 
 func enter_main() -> void:
-	if host.home != null:
-		host.home.hide()
+	if host.router != null:
+		host.router.open_game()
+		return
 	if host.current_mode == "lab" and host.session_controller != null:
 		host.session_controller.start_main()
 	if host.runtime != null:
@@ -141,12 +143,16 @@ func enter_main() -> void:
 
 
 func open_lab() -> void:
-	if host.home != null:
-		host.home.hide()
+	if host.router != null:
+		host.router.open_lab()
+		return
 	show_lab()
 
 
 func show_lab(axis: String = "all", difficulty: String = "all") -> void:
+	if host.router != null:
+		host.router.open_lab()
+		return
 	if host.flow_controller != null:
 		host.flow_controller.show_lab(host.lab_scenarios, host.current_mode, axis, difficulty)
 

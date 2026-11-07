@@ -3,6 +3,29 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.116] - 2026-11-07 16:44
+
+### 重构
+
+- 新增 `App` 路由器（`scenes/app.tscn`）：
+  - `HomePage` 独立主页；
+  - `LabPage` 独立自由模式页；
+  - `GamePage` 当前游戏场景；
+  - 页面切换使用 add/queue_free，不再用 overlay 模拟页面；
+- 删除旧 `home_screen.gd` 覆盖层；
+- GamePage 移除主页构建，接受 `launch_lab` 启动实验；
+- `F1` 从游戏页回主页；`L` 从游戏页回实验页；
+- 保留 App 外旧 overlay 路径作为直接游戏页 fallback；
+- 新增 `./run.sh game`：直接进入游戏页，跳过主页，便于测试；
+- 主页/实验页/游戏页生命周期分离；Home 不再依赖 HUD。
+
+### 验证
+
+- App 路由冒烟：home → game → home → lab → game(lab) 通过；
+- 直接游戏页 headless 启动通过；
+- `./run.sh test`：103/103；
+- `./run.sh verify`：PASS 12 · FAIL 0。
+
 ## [0.1.115] - 2026-11-07 16:29
 
 ### 文档

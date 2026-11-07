@@ -10,7 +10,7 @@ config_version=5
 config/name="LiveBay"
 config/description="逍遥湾 · 月牙城岗位防线（垂直切片）"
 config/version="0.1.0"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/app.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [autoload]

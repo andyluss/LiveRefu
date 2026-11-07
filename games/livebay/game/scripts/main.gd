@@ -19,7 +19,6 @@ const FeedbackControllerScript = preload("res://scripts/presentation/game_feedba
 const UiPresenterScript = preload("res://scripts/presentation/game_ui_presenter.gd")
 const Consts = preload("res://scripts/shared/constants.gd")
 const LabLoaderScript = preload("res://scripts/lab/lab_loader.gd")
-const HomeScreenScript = preload("res://scripts/presentation/home_screen.gd")
 
 
 var data: Dictionary = {}
@@ -35,8 +34,9 @@ var session_controller: LiveBayGameSession
 var commands: LiveBayGameCommandController
 var feedback: LiveBayGameFeedback
 var ui_presenter: LiveBayGameUiPresenter
-var home: LiveBayHomeScreen
 var briefing_seen := false
+var router: Node = null
+var launch_lab: Dictionary = {}
 
 var selected_tower_id := "interceptor"
 var selected_slot := -1
@@ -127,9 +127,11 @@ func _ready() -> void:
 	ui_presenter.setup(self)
 	input_controller = InputControllerScript.new()
 	input_controller.setup(self, Consts.TOWER_ORDER.size())
-	home = HomeScreenScript.new()
-	home.build(self, Consts.PALETTE, {"main": commands.enter_main, "lab": commands.open_lab})
-	commands.show_home()
+	if not launch_lab.is_empty():
+		session_controller.start_lab(launch_lab)
+	if shift_memory.has_last() and not briefing_seen:
+		briefing_seen = true
+		commands.show_briefing()
 	queue_redraw()
 
 
