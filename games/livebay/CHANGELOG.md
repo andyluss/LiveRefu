@@ -3,6 +3,25 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.125] - 2026-11-07 17:22
+
+### 修复
+
+- 班前检查单仍然没有选项的根因：
+  - Runtime 的 `ChecklistRequested` 事件传的是 envelope；
+  - Session 直接把它接到 `show_checklist`，导致 `payload.card` 没有被解包；
+  - UI 读不到 title/body/options，只显示默认占位。
+- `CommandController.show_checklist` 现在兼容两种输入：
+  - envelope：读取 `payload.card`；
+  - card：直接使用。
+- 冒烟：envelope 输入后显示「测试检查单」、2 个选项。
+
+### 验证
+
+- 检查单 envelope 冒烟：title/body/options 正确；
+- `./run.sh test`：103/103；
+- `./run.sh verify`：PASS 12 · FAIL 0。
+
 ## [0.1.124] - 2026-11-07 17:20
 
 ### 修复

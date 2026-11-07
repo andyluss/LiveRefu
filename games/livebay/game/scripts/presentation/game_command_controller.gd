@@ -100,7 +100,11 @@ func toggle_audio() -> void:
 		host.audio.play("ui")
 
 
-func show_checklist(card: Dictionary) -> void:
+func show_checklist(envelope: Dictionary) -> void:
+	# Runtime 事件传的是 envelope；直接调用时可传 card 本身。
+	var card: Dictionary = envelope
+	if envelope.has("payload") and envelope.get("payload") is Dictionary:
+		card = envelope.payload.get("card", {})
 	if host.flow_controller != null:
 		host.flow_controller.show_checklist(card)
 
