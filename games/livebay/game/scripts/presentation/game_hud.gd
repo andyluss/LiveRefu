@@ -157,9 +157,15 @@ func _build_bottom() -> void:
 	sell_button.pressed.connect(callbacks["sell"])
 	bar.add_child(sell_button)
 
-	hint_label = make_label("", 13, Color(palette.cream, 0.7))
-	hint_label.position = Vector2(18, Consts.VIEW_SIZE.y - 22)
-	hint_label.size = Vector2(Consts.VIEW_SIZE.x - 36, 18)
+	var hint_bg := ColorRect.new()
+	hint_bg.position = Vector2(12, Consts.VIEW_SIZE.y - Consts.BOTTOM_BAR_H - 34)
+	hint_bg.size = Vector2(Consts.VIEW_SIZE.x - 24, 26)
+	hint_bg.color = Color(palette.paper, 0.92)
+	hint_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(hint_bg)
+	hint_label = make_label("", 14, palette.ink)
+	hint_label.position = Vector2(18, Consts.VIEW_SIZE.y - Consts.BOTTOM_BAR_H - 31)
+	hint_label.size = Vector2(Consts.VIEW_SIZE.x - 36, 20)
 	root.add_child(hint_label)
 
 
