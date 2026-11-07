@@ -80,8 +80,15 @@ func toggle_pause() -> void:
 
 
 func toggle_speed() -> void:
-	if host.runtime != null:
-		host.runtime.dispatch(&"set_speed", {"speed": 2.0 if host.runtime.clock.speed == 1.0 else 1.0})
+	if host.runtime == null:
+		return
+	var current := float(host.runtime.clock.speed)
+	var next := 1.0
+	if current < 1.5:
+		next = 2.0
+	elif current < 3.0:
+		next = 4.0
+	host.runtime.dispatch(&"set_speed", {"speed": next})
 
 
 func restart() -> void:
