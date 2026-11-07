@@ -42,6 +42,79 @@ func show_checklist(card: Dictionary) -> void:
 	hud.checklist_overlay.visible = true
 
 
+func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: String = "all") -> void:
+	if hud == null:
+		return
+	hud.checklist_title.text = "自由模式 · 外环试验场"
+	hud.checklist_body.text = "数据驱动实验：标签筛选、试玩、回主线。当前模式：%s。实验不写主线存档。" % ("自由" if mode == "lab" else "主线")
+	_clear_buttons()
+	var filters := HBoxContainer.new()
+	filters.add_theme_constant_override("separation", 4)
+	for pair in [["all", "全部主轴"], ["tower_defense", "塔防"], ["idle", "放置"], ["hybrid", "混合"], ["toy", "玩具"]]:
+		var b := Button.new()
+		b.text = str(pair[1])
+		b.custom_minimum_size = Vector2(86, 30)
+		hud.style_button(b, palette.sage if axis == str(pair[0]) else palette.paper, palette.ink, 11)
+		b.pressed.connect(host.commands.show_lab.bind(str(pair[0]), difficulty))
+		filters.add_child(b)
+	hud.checklist_buttons.add_child(filters)
+	var diff_row := HBoxContainer.new()
+	diff_row.add_theme_constant_override("separation", 4)
+	for pair in [["all", "全部难度"], ["easy", "容易"], ["normal", "标准"], ["hard", "困难"], ["extreme", "超难"], ["experimental", "实验"]]:
+		var b := Button.new()
+		b.text = str(pair[1])
+		b.custom_minimum_size = Vector2(82, 28)
+		hud.style_button(b, palette.sage if difficulty == str(pair[0]) else palette.paper, palette.ink, 10)
+		b.pressed.connect(host.commands.show_lab.bind(axis, str(pair[0])))
+		diff_row.add_child(b)
+	hud.checklist_buttons.add_child(diff_row)
+	var shown := 0
+	for scenario: Variant in scenarios:
+		var tags: Dictionary = scenario.get("tags", {})
+		var axes: Array = tags.get("axis", [])
+		var diffs: Array = tags.get("difficulty", [])
+		if axis != "all" and axis not in axes:
+			continue
+		if difficulty != "all" and difficulty not in diffs:
+			continue
+		shown += 1
+		var button := Button.new()
+		button.text = "%s\n%s · %s · %s" % [
+			str(scenario.get("name", "?")),
+			", ".join(axes),
+			", ".join(diffs),
+			str(scenario.get("description", "")),
+		]
+		button.custom_minimum_size = Vector2(440, 54)
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		hud.style_button(button, palette.teal, palette.cream, 12)
+		button.pressed.connect(host.commands.start_lab.bind(str(scenario.get("id", ""))))
+		hud.checklist_buttons.add_child(button)
+	if shown == 0:
+		var empty := Label.new()
+		empty.text = "没有符合筛选的实验。"
+		hud.checklist_buttons.add_child(empty)
+	var footer := HBoxContainer.new()
+	footer.add_theme_constant_override("separation", 6)
+	if mode == "lab":
+		var back := Button.new()
+		back.text = "返回主线"
+		back.custom_minimum_size = Vector2(140, 34)
+		hud.style_button(back, palette.orange, palette.cream)
+		back.pressed.connect(host.commands.return_main)
+		footer.add_child(back)
+	var close := Button.new()
+	close.text = "关闭 (L)"
+	close.custom_minimum_size = Vector2(140, 34)
+	hud.style_button(close, palette.sage, palette.ink)
+	close.pressed.connect(host.commands.close_archive)
+	footer.add_child(close)
+	hud.checklist_buttons.add_child(footer)
+	hud.checklist_overlay.visible = true
+	if host.runtime != null:
+		host.runtime.clock.paused = true
+
+
 func show_map_picker(data: Dictionary, current_map_id: String) -> void:
 	if hud == null or hud.checklist_overlay.visible:
 		return

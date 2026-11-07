@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "lab.bay02.idle",
+  "name": "维护环慢班",
+  "description": "供能充裕、敌人更慢更薄；适合边看城市边维护，不做高压塔防。",
+  "world": "middle_ring",
+  "tags": {
+    "axis": ["idle", "hybrid"],
+    "difficulty": ["easy"],
+    "theme": ["middle_ring", "night_shift"],
+    "mechanic": ["economy", "wave"],
+    "duration": ["long"],
+    "fidelity": ["overrides"],
+    "state": ["playable"]
+  },
+  "base": { "map": "bay02", "mode": "idle" },
+  "overrides": {
+    "balance": { "starting_energy": 80 },
+    "waves": { "hp_scale": 0.7, "speed_scale": 0.9 }
+  },
+  "provenance": { "author": "lab", "created": "2026-11-07", "source": "hand-authored" }
+}

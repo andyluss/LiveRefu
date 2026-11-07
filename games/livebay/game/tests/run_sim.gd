@@ -19,6 +19,7 @@ const PresenterScript = preload("res://scripts/presentation/mission_presenter.gd
 const EnemyModuleScript = preload("res://scripts/domain/enemies/enemy_module.gd")
 const TowerModuleScript = preload("res://scripts/domain/towers/tower_module.gd")
 const InputScript = preload("res://scripts/presentation/game_input.gd")
+const LabLoaderScript = preload("res://scripts/lab/lab_loader.gd")
 
 var failures: int = 0
 var checks: int = 0
@@ -34,6 +35,7 @@ func _initialize() -> void:
 
 	_test_kernel(data)
 	_test_data(data)
+	_test_lab()
 	_test_economy(data)
 	_test_upgrade(data)
 	_test_supply_upgrade(data)
@@ -177,6 +179,19 @@ func _test_data(data: Dictionary) -> void:
 	_check(str(pack3.get("pack_catalog", {}).get("default_map", "")) == "bay01", "mission pack catalog default map")
 	_check(is_equal_approx(float(data.waves[0].prep), 30.0), "wave 1 prep 30")
 	_check(is_equal_approx(float(data.waves[1].prep), 20.0), "wave 2 prep 20")
+
+
+func _test_lab() -> void:
+	var labs: Array = LabLoaderScript.load_all()
+	_check(labs.size() == 3, "lab: 3 scenarios load")
+	if labs.is_empty():
+		return
+	var first: Dictionary = labs[0]
+	var applied: Dictionary = LabLoaderScript.apply(first)
+	_check(not applied.is_empty(), "lab: scenario applies")
+	var base: Dictionary = DataLoaderScript.load_mission_pack("res://data", str(first.get("base", {}).get("map", "bay01")))
+	_check(not base.is_empty() and float(applied.profession.start_energy) < float(base.profession.start_energy), "lab: energy override applies")
+	_check(str(applied.get("lab_meta", {}).get("id", "")) == str(first.get("id", "")), "lab: metadata attached")
 
 
 func _test_economy(data: Dictionary) -> void:

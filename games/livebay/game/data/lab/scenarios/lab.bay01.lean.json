@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "lab.bay01.lean",
+  "name": "紧缩外环",
+  "description": "开局少 20 供能，敌人多 10% HP；靠更少塔撑过 8 波。",
+  "world": "outer_ring",
+  "tags": {
+    "axis": ["tower_defense"],
+    "difficulty": ["hard"],
+    "theme": ["outer_ring", "night_shift"],
+    "mechanic": ["economy", "wave"],
+    "duration": ["standard"],
+    "fidelity": ["overrides"],
+    "state": ["playable"]
+  },
+  "base": { "map": "bay01", "mode": "tower_defense" },
+  "overrides": {
+    "balance": { "starting_energy": -20 },
+    "waves": { "hp_scale": 1.1 }
+  },
+  "provenance": { "author": "lab", "created": "2026-11-07", "source": "hand-authored" }
+}

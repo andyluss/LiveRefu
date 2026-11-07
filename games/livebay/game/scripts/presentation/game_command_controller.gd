@@ -105,6 +105,31 @@ func show_fault() -> void:
 		host.flow_controller.show_fault()
 
 
+func show_lab(axis: String = "all", difficulty: String = "all") -> void:
+	if host.flow_controller != null:
+		host.flow_controller.show_lab(host.lab_scenarios, host.current_mode, axis, difficulty)
+
+
+func start_lab(scenario_id: String) -> void:
+	for scenario: Variant in host.lab_scenarios:
+		if str(scenario.get("id", "")) != scenario_id:
+			continue
+		if host.session_controller.start_lab(scenario):
+			host.flow_controller.hide_all()
+			host.audio.play_music("prep")
+			host.toast_text = "自由模式：%s" % str(scenario.get("name", scenario_id))
+			host.toast_timer = 2.4
+		return
+
+
+func return_main() -> void:
+	if host.session_controller.start_main():
+		host.flow_controller.hide_all()
+		host.audio.play_music("prep")
+		host.toast_text = "已回到主线"
+		host.toast_timer = 1.6
+
+
 func show_map_picker() -> void:
 	if host.flow_controller != null:
 		host.flow_controller.show_map_picker(host.data, host.current_map_id)

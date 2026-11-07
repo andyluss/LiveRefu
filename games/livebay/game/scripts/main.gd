@@ -18,6 +18,7 @@ const CommandControllerScript = preload("res://scripts/presentation/game_command
 const FeedbackControllerScript = preload("res://scripts/presentation/game_feedback.gd")
 const UiPresenterScript = preload("res://scripts/presentation/game_ui_presenter.gd")
 const Consts = preload("res://scripts/shared/constants.gd")
+const LabLoaderScript = preload("res://scripts/lab/lab_loader.gd")
 
 
 var data: Dictionary = {}
@@ -74,6 +75,9 @@ var archive_button: Button
 var map_button: Button
 var current_map_id := "bay01"
 var current_contract := "stable"
+var current_mode := "main"
+var current_lab := ""
+var lab_scenarios: Array = []
 var audio: LiveBayAudioDirector
 
 var fatal_label: Label
@@ -107,6 +111,7 @@ func _ready() -> void:
 	feedback.setup(self)
 	commands = CommandControllerScript.new()
 	commands.setup(self, Consts.PALETTE)
+	lab_scenarios = LabLoaderScript.load_all()
 	session_controller = SessionControllerScript.new()
 	session_controller.setup(self)
 	if data.is_empty():
