@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.114</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.115</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -122,18 +122,19 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <div class="hint">给隔了很久回来的项目参与者：用最少的滚动重新接上“为什么、到哪了、下一步”。</div>
     <nav class="tabs" role="tablist" aria-label="HUB 分区">
       <button role="tab" aria-selected="true" aria-controls="p1" id="t1" data-tab="p1" data-route="overview"><span class="n">01</span>概览</button>
-      <button role="tab" aria-selected="false" aria-controls="p13" id="t13" data-tab="p13" data-route="sustainability"><span class="n">02</span>存续力</button>
-      <button role="tab" aria-selected="false" aria-controls="p12" id="t12" data-tab="p12" data-route="design"><span class="n">03</span>设计力</button>
-      <button role="tab" aria-selected="false" aria-controls="p11" id="t11" data-tab="p11" data-route="engineering"><span class="n">04</span>工程力</button>
-      <button role="tab" aria-selected="false" aria-controls="p10" id="t10" data-tab="p10" data-route="simulator"><span class="n">05</span>模拟器</button>
-      <button role="tab" aria-selected="false" aria-controls="p9" id="t9" data-tab="p9" data-route="flow"><span class="n">06</span>流程图</button>
-      <button role="tab" aria-selected="false" aria-controls="p2" id="t2" data-tab="p2" data-route="run"><span class="n">07</span>一局</button>
-      <button role="tab" aria-selected="false" aria-controls="p3" id="t3" data-tab="p3" data-route="status"><span class="n">08</span>到哪了</button>
-      <button role="tab" aria-selected="false" aria-controls="p4" id="t4" data-tab="p4" data-route="decisions"><span class="n">09</span>决策</button>
-      <button role="tab" aria-selected="false" aria-controls="p5" id="t5" data-tab="p5" data-route="content"><span class="n">10</span>内容</button>
-      <button role="tab" aria-selected="false" aria-controls="p6" id="t6" data-tab="p6" data-route="architecture"><span class="n">11</span>架构</button>
-      <button role="tab" aria-selected="false" aria-controls="p7" id="t7" data-tab="p7" data-route="media"><span class="n">12</span>素材</button>
-      <button role="tab" aria-selected="false" aria-controls="p8" id="t8" data-tab="p8" data-route="risks"><span class="n">13</span>风险/下一步</button>
+      <button role="tab" aria-selected="false" aria-controls="p14" id="t14" data-tab="p14" data-route="lab"><span class="n">02</span>自由模式</button>
+      <button role="tab" aria-selected="false" aria-controls="p13" id="t13" data-tab="p13" data-route="sustainability"><span class="n">03</span>存续力</button>
+      <button role="tab" aria-selected="false" aria-controls="p12" id="t12" data-tab="p12" data-route="design"><span class="n">04</span>设计力</button>
+      <button role="tab" aria-selected="false" aria-controls="p11" id="t11" data-tab="p11" data-route="engineering"><span class="n">05</span>工程力</button>
+      <button role="tab" aria-selected="false" aria-controls="p10" id="t10" data-tab="p10" data-route="simulator"><span class="n">06</span>模拟器</button>
+      <button role="tab" aria-selected="false" aria-controls="p9" id="t9" data-tab="p9" data-route="flow"><span class="n">07</span>流程图</button>
+      <button role="tab" aria-selected="false" aria-controls="p2" id="t2" data-tab="p2" data-route="run"><span class="n">08</span>一局</button>
+      <button role="tab" aria-selected="false" aria-controls="p3" id="t3" data-tab="p3" data-route="status"><span class="n">09</span>到哪了</button>
+      <button role="tab" aria-selected="false" aria-controls="p4" id="t4" data-tab="p4" data-route="decisions"><span class="n">10</span>决策</button>
+      <button role="tab" aria-selected="false" aria-controls="p5" id="t5" data-tab="p5" data-route="content"><span class="n">11</span>内容</button>
+      <button role="tab" aria-selected="false" aria-controls="p6" id="t6" data-tab="p6" data-route="architecture"><span class="n">12</span>架构</button>
+      <button role="tab" aria-selected="false" aria-controls="p7" id="t7" data-tab="p7" data-route="media"><span class="n">13</span>素材</button>
+      <button role="tab" aria-selected="false" aria-controls="p8" id="t8" data-tab="p8" data-route="risks"><span class="n">14</span>风险/下一步</button>
     </nav>
   </div>
 </header>
@@ -164,6 +165,47 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 
 
 
+
+  <section class="panel" id="p14" role="tabpanel" aria-labelledby="t14">
+    <h2>自由模式：外环试验场</h2>
+    <p class="lede">给玩家和你自己一个不受主线约束、但仍属于逍遥湾的实验场：用 JSON 搭玩法、打标签、调数值、快速试玩；好设定变成候选，不自动进主线。</p>
+    <div class="grid g3">
+      <article class="card"><h4>入口</h4><p>启动先到主页「今晚，守哪一段？」；选「自由模式」。游戏内按 <code>L</code> 打开；<code>F1</code> 回主页；<code>Q</code> 退出并确认。</p></article>
+      <article class="card"><h4>实验方式</h4><p>每个实验是一个 JSON：元数据 + 标签 + 白名单覆盖。只读 <code>game/data/lab/scenarios/</code>，不写主线数据。</p></article>
+      <article class="card"><h4>边界</h4><p>默认独立运行时、空 ShiftMemory；实验不写主线存档。没有脚本/MOD/在线分享。</p></article>
+    </div>
+
+    <h3>当前 3 个实验</h3>
+    <table>
+      <thead><tr><th>实验</th><th>主轴</th><th>难度</th><th>覆盖</th></tr></thead>
+      <tbody>
+        <tr><td>紧缩外环</td><td>塔防</td><td>困难</td><td>供能 −20，敌人 HP +10%</td></tr>
+        <tr><td>维护环慢班</td><td>放置 / 混合</td><td>容易</td><td>供能 +80，HP −30%，速度 −10%</td></tr>
+        <tr><td>湾口故障潮</td><td>塔防</td><td>超难</td><td>供能 +20，HP +20%，速度 +10%，故障 +1.5s</td></tr>
+      </tbody>
+    </table>
+    <p class="hint">浏览器支持主轴 / 难度筛选；标签体系还包括主题、机制、时长、保真度与状态。</p>
+
+    <h3>已实现到哪</h3>
+    <table>
+      <thead><tr><th>阶段</th><th>内容</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td>P1</td><td>本地实验场：浏览器 + 标签 + JSON 覆盖 + 3 样例 + 独立运行时</td><td><b>已实现</b></td></tr>
+        <tr><td>P2</td><td>候选 diff 写入 <code>user://lab/candidates/</code></td><td><b>已实现</b></td></tr>
+        <tr><td>P3</td><td>实验导出到 <code>user://lab/exports/</code>，文件对话框导入</td><td><b>已实现</b></td></tr>
+        <tr><td>P4</td><td>在线工坊 / 脚本 MOD</td><td>不做</td></tr>
+      </tbody>
+    </table>
+
+    <h3>操作</h3>
+    <div class="grid g2">
+      <article class="card"><h4>主页 / 模式</h4><p><code>F1</code> 回主页；主页选主线或自由模式；<code>Q</code> 退出并确认。</p></article>
+      <article class="card"><h4>实验浏览器</h4><p><code>L</code> 打开；主轴/难度筛选；每项可「试玩」「候选」「导出」；底部「导入实验」；「返回主线」。</p></article>
+    </div>
+
+    <div class="note ok"><b>文件位置：</b><code>user://lab/candidates/</code> 候选；<code>user://lab/exports/</code> 实验导出；实验定义在 <code>game/data/lab/scenarios/</code>。候选与导入都<b>不会自动修改主线</b>。</div>
+    <p class="hint">方案与生命周期：<a href="../docs-ai/design01/lab/00_自由模式方案.md">lab/00_自由模式方案.md</a>；候选/导入导出是本地文件，不做在线服务。</p>
+  </section>
   <section class="panel" id="p13" role="tabpanel" aria-labelledby="t13">
     <h2>存续力：能继续，但没有安全垫</h2>
     <p class="lede">存续力不是“游戏能活多久”，而是项目在时间、资金、精力、人员变动、平台变化与范围膨胀中，继续存在并推进的能力。结论：<b>3.15 / 5（C+，约 63/100）</b>；方向与资产在，缓冲与外部验证不在。</p>
