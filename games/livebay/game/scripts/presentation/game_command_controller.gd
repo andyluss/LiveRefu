@@ -114,6 +114,15 @@ func confirm_quit() -> void:
 	host.get_tree().quit()
 
 
+func return_home() -> void:
+	if host.router != null:
+		host.router.open_home()
+		return
+	cancel_quit()
+	host.toast_text = "直接游戏页没有主页"
+	host.toast_timer = 1.8
+
+
 func cancel_quit() -> void:
 	if host.flow_controller != null:
 		host.flow_controller.hide_all()

@@ -55,6 +55,12 @@ func show_quit_confirm() -> void:
 	hud.style_button(yes, palette.rust, palette.cream)
 	yes.pressed.connect(host.commands.confirm_quit)
 	hud.checklist_buttons.add_child(yes)
+	var home := Button.new()
+	home.text = "返回主页"
+	home.custom_minimum_size = Vector2(180, 40)
+	hud.style_button(home, palette.teal, palette.cream)
+	home.pressed.connect(host.commands.return_home)
+	hud.checklist_buttons.add_child(home)
 	var no := Button.new()
 	no.text = "取消"
 	no.custom_minimum_size = Vector2(180, 40)
