@@ -58,6 +58,7 @@ var upgrade_button: Button
 var sell_button: Button
 var pause_button: Button
 var speed_button: Button
+var quit_button: Button
 
 var overlay: Control
 var overlay_title: Label
@@ -164,6 +165,7 @@ func _build_ui() -> void:
 		"map": commands.show_map_picker,
 		"archive": commands.show_archive.bind(0),
 		"restart": commands.restart,
+		"quit": commands.request_quit,
 	})
 	# 兼容现有流程代码：HUD 节点以别名暴露，业务状态仍由 Main/Controller 管理。
 	energy_label = game_hud.energy_label
@@ -179,6 +181,7 @@ func _build_ui() -> void:
 	pause_button = game_hud.pause_button
 	speed_button = game_hud.speed_button
 	map_button = game_hud.map_button
+	quit_button = game_hud.quit_button
 	archive_button = game_hud.archive_button
 	overlay = game_hud.overlay
 	overlay_title = game_hud.overlay_title

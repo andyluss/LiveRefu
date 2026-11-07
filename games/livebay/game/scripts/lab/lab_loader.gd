@@ -95,3 +95,29 @@ static func export_candidate(scenario: Dictionary) -> String:
 	file.store_string(JSON.stringify(payload, "\t"))
 	file.close()
 	return path
+
+
+static func export_scenario(scenario: Dictionary) -> String:
+	var dir := "user://lab/exports"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
+	var path := dir.path_join(str(scenario.get("id", "scenario")).replace(".", "_") + ".json")
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return ""
+	file.store_string(JSON.stringify(scenario, "\t"))
+	file.close()
+	return path
+
+
+static func import_scenario(path: String) -> Dictionary:
+	if not FileAccess.file_exists(path):
+		return {}
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not (parsed is Dictionary) or int(parsed.get("schema_version", 0)) != 1:
+		return {}
+	if str(parsed.get("id", "")).is_empty() or not parsed.has("base") or not parsed.has("overrides"):
+		return {}
+	var base: Dictionary = parsed.get("base", {})
+	if str(base.get("map", "")).is_empty():
+		return {}
+	return parsed

@@ -196,6 +196,10 @@ func _test_lab() -> void:
 	_check(not diff.is_empty() and diff.has("starting_energy"), "lab: diff computed")
 	var path: String = LabLoaderScript.export_candidate(first)
 	_check(not path.is_empty() and FileAccess.file_exists(path), "lab: candidate exported")
+	var export_path: String = LabLoaderScript.export_scenario(first)
+	_check(not export_path.is_empty() and FileAccess.file_exists(export_path), "lab: scenario exported")
+	var imported: Dictionary = LabLoaderScript.import_scenario(export_path)
+	_check(not imported.is_empty() and str(imported.get("id", "")) == str(first.get("id", "")), "lab: scenario imported")
 
 
 func _test_economy(data: Dictionary) -> void:

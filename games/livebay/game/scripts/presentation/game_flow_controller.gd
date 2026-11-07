@@ -10,6 +10,7 @@ var palette: Dictionary
 var archive_page := 0
 var archive_filter := "all"
 var archive_open := false
+var import_dialog: FileDialog
 
 
 func setup(host_node: Node, game_hud: LiveBayGameHud, palette_data: Dictionary) -> void:
@@ -40,6 +41,29 @@ func show_checklist(card: Dictionary) -> void:
 		button.pressed.connect(host.commands.choose_checklist.bind(str(card.get("id", "")), str(option.get("id", ""))))
 		hud.checklist_buttons.add_child(button)
 	hud.checklist_overlay.visible = true
+
+
+func show_quit_confirm() -> void:
+	if hud == null:
+		return
+	hud.checklist_title.text = "退出游戏？"
+	hud.checklist_body.text = "当前班次/实验不会自动保存进度。确定退出吗？"
+	_clear_buttons()
+	var yes := Button.new()
+	yes.text = "确认退出"
+	yes.custom_minimum_size = Vector2(180, 40)
+	hud.style_button(yes, palette.rust, palette.cream)
+	yes.pressed.connect(host.commands.confirm_quit)
+	hud.checklist_buttons.add_child(yes)
+	var no := Button.new()
+	no.text = "取消"
+	no.custom_minimum_size = Vector2(180, 40)
+	hud.style_button(no, palette.sage, palette.ink)
+	no.pressed.connect(host.commands.cancel_quit)
+	hud.checklist_buttons.add_child(no)
+	hud.checklist_overlay.visible = true
+	if host.runtime != null:
+		host.runtime.clock.paused = true
 
 
 func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: String = "all") -> void:
@@ -91,14 +115,20 @@ func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: 
 		button.pressed.connect(host.commands.start_lab.bind(str(scenario.get("id", ""))))
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 4)
-		button.custom_minimum_size = Vector2(340, 54)
+		button.custom_minimum_size = Vector2(280, 54)
 		row.add_child(button)
 		var candidate := Button.new()
 		candidate.text = "候选"
-		candidate.custom_minimum_size = Vector2(88, 54)
+		candidate.custom_minimum_size = Vector2(74, 54)
 		hud.style_button(candidate, palette.paper, palette.ink, 11)
 		candidate.pressed.connect(host.commands.export_candidate.bind(str(scenario.get("id", ""))))
 		row.add_child(candidate)
+		var export_btn := Button.new()
+		export_btn.text = "导出"
+		export_btn.custom_minimum_size = Vector2(64, 54)
+		hud.style_button(export_btn, palette.paper, palette.ink, 11)
+		export_btn.pressed.connect(host.commands.export_lab_scenario.bind(str(scenario.get("id", ""))))
+		row.add_child(export_btn)
 		hud.checklist_buttons.add_child(row)
 	if shown == 0:
 		var empty := Label.new()
@@ -113,6 +143,12 @@ func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: 
 		hud.style_button(back, palette.orange, palette.cream)
 		back.pressed.connect(host.commands.return_main)
 		footer.add_child(back)
+	var import_btn := Button.new()
+	import_btn.text = "导入实验"
+	import_btn.custom_minimum_size = Vector2(140, 34)
+	hud.style_button(import_btn, palette.sage, palette.ink)
+	import_btn.pressed.connect(host.commands.open_import_dialog)
+	footer.add_child(import_btn)
 	var close := Button.new()
 	close.text = "关闭 (L)"
 	close.custom_minimum_size = Vector2(140, 34)
@@ -123,6 +159,17 @@ func show_lab(scenarios: Array, mode: String, axis: String = "all", difficulty: 
 	hud.checklist_overlay.visible = true
 	if host.runtime != null:
 		host.runtime.clock.paused = true
+
+
+func open_import_dialog() -> void:
+	if import_dialog == null:
+		import_dialog = FileDialog.new()
+		import_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+		import_dialog.access = FileDialog.ACCESS_FILESYSTEM
+		import_dialog.filters = PackedStringArray(["*.json ; 自由模式实验"])
+		import_dialog.file_selected.connect(host.commands.import_lab)
+		host.add_child(import_dialog)
+	import_dialog.popup_centered_ratio(0.7)
 
 
 func show_candidate(scenario: Dictionary, diff: Dictionary, path: String) -> void:

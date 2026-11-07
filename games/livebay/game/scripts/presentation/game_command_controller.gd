@@ -105,6 +105,22 @@ func show_fault() -> void:
 		host.flow_controller.show_fault()
 
 
+func request_quit() -> void:
+	if host.flow_controller != null:
+		host.flow_controller.show_quit_confirm()
+
+
+func confirm_quit() -> void:
+	host.get_tree().quit()
+
+
+func cancel_quit() -> void:
+	if host.flow_controller != null:
+		host.flow_controller.hide_all()
+	if host.runtime != null:
+		host.runtime.clock.paused = false
+
+
 func show_home() -> void:
 	if host.home != null:
 		host.home.show()
@@ -133,6 +149,36 @@ func open_lab() -> void:
 func show_lab(axis: String = "all", difficulty: String = "all") -> void:
 	if host.flow_controller != null:
 		host.flow_controller.show_lab(host.lab_scenarios, host.current_mode, axis, difficulty)
+
+
+func open_import_dialog() -> void:
+	if host.flow_controller != null:
+		host.flow_controller.open_import_dialog()
+
+
+func export_lab_scenario(scenario_id: String) -> void:
+	for scenario: Variant in host.lab_scenarios:
+		if str(scenario.get("id", "")) == scenario_id:
+			var path: String = LiveBayLabLoader.export_scenario(scenario)
+			host.toast_text = "已导出实验：%s" % path if not path.is_empty() else "导出失败"
+			host.toast_timer = 2.4
+			return
+
+
+func import_lab(path: String) -> void:
+	var scenario: Dictionary = LiveBayLabLoader.import_scenario(path)
+	if scenario.is_empty():
+		host.toast_text = "导入失败：不是有效实验 JSON"
+		host.toast_timer = 2.0
+		return
+	var id := str(scenario.get("id", ""))
+	for i: int in range(host.lab_scenarios.size()):
+		if str(host.lab_scenarios[i].get("id", "")) == id:
+			host.lab_scenarios[i] = scenario
+			host.flow_controller.show_lab(host.lab_scenarios, host.current_mode)
+			return
+	host.lab_scenarios.append(scenario)
+	host.flow_controller.show_lab(host.lab_scenarios, host.current_mode)
 
 
 func export_candidate(scenario_id: String) -> void:

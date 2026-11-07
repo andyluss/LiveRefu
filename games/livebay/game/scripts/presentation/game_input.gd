@@ -24,6 +24,7 @@ const ACTIONS := {
 	KEY_V: "residents",
 	KEY_L: "lab",
 	KEY_F1: "home",
+	KEY_Q: "quit",
 }
 
 

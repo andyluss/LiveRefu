@@ -26,6 +26,7 @@ var pause_button: Button
 var speed_button: Button
 var map_button: Button
 var archive_button: Button
+var quit_button: Button
 
 var overlay: Control
 var overlay_title: Label
@@ -69,7 +70,7 @@ func _build_top() -> void:
 
 	var stats := HBoxContainer.new()
 	stats.position = Vector2(18, 14)
-	stats.size = Vector2(820, 32)
+	stats.size = Vector2(650, 32)
 	stats.add_theme_constant_override("separation", 26)
 	top.add_child(stats)
 
@@ -84,18 +85,21 @@ func _build_top() -> void:
 		labels[i].custom_minimum_size = Vector2(widths[i], 30)
 		stats.add_child(labels[i])
 
-	map_button = make_top_button("地图 (G)", Vector2(838, 11))
+	map_button = make_top_button("地图 (G)", Vector2(670, 11))
 	map_button.pressed.connect(callbacks["map"])
 	top.add_child(map_button)
-	archive_button = make_top_button("档案 (H)", Vector2(946, 11))
+	archive_button = make_top_button("档案 (H)", Vector2(778, 11))
 	archive_button.pressed.connect(callbacks["archive"])
 	top.add_child(archive_button)
-	pause_button = make_top_button("暂停 (P)", Vector2(1040, 11))
+	pause_button = make_top_button("暂停 (P)", Vector2(882, 11))
 	pause_button.pressed.connect(callbacks["pause"])
 	top.add_child(pause_button)
-	speed_button = make_top_button("速度 1x", Vector2(1150, 11))
+	speed_button = make_top_button("速度 1x", Vector2(986, 11))
 	speed_button.pressed.connect(callbacks["speed"])
 	top.add_child(speed_button)
+	quit_button = make_top_button("退出 (Q)", Vector2(1090, 11))
+	quit_button.pressed.connect(callbacks["quit"])
+	top.add_child(quit_button)
 
 
 func _build_banner() -> void:

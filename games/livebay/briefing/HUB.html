@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.113</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.114</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -149,7 +149,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <div class="stat o"><div class="v" data-fact="waves">8</div><div class="l">波次</div></div>
       <div class="stat p"><div class="v" data-fact="slots">7</div><div class="l">固定塔位</div></div>
       <div class="stat p"><div class="v" data-fact="professions">1</div><div class="l">示例职业</div></div>
-      <div class="stat o"><div class="v" data-fact="tests">101</div><div class="l">无头断言</div></div>
+      <div class="stat o"><div class="v" data-fact="tests">103</div><div class="l">无头断言</div></div>
       <div class="stat o"><div class="v" data-fact="expansions">34</div><div class="l">扩展检查</div></div>
     </div>
     <div class="grid g2" style="margin-top:18px">
@@ -282,7 +282,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <p class="lede">这是一份 AI 自评，不是外部审计。评分看的是“当前工程能否支撑下一步”，不是“代码是否完美”。结论：<b>3.88 / 5（B+，约 78/100）</b>，处于 <b>L2+ 垂直切片</b>，距离可发布的 L3 还差性能、发布与内容厚度。</p>
     <div class="grid g3">
       <article class="card"><h4>综合等级</h4><div class="grade-big">B+</div><p>3.88 / 5 · 78 / 100</p><p class="dim">L2+：垂直切片成熟，进入发布前工程化</p></article>
-      <article class="card"><h4>最强三项</h4><p><b>数据单一源</b>：numbers → data → MissionPack；<b>测试与回放</b>：101 断言 + 34 扩展检查 + blackbox；<b>文档与工具</b>：49 页 + 流程图 + 沙盘 + 编辑器。</p></article>
+      <article class="card"><h4>最强三项</h4><p><b>数据单一源</b>：numbers → data → MissionPack；<b>测试与回放</b>：103 断言 + 34 扩展检查 + blackbox；<b>文档与工具</b>：49 页 + 流程图 + 沙盘 + 编辑器。</p></article>
       <article class="card"><h4>最弱三项</h4><p><b>性能/规模</b>已有 headless 基线，但未测渲染/内存；<b>发布链路</b>未定（D14/D17/D18）；<b>内容厚度</b>仍只有 1 职业 / 3 图 / 8 波。</p></article>
     </div>
 
@@ -307,7 +307,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <tbody>
         <tr><td>架构与边界</td><td>MissionRuntime + 时钟/事件/命令/黑匣子 + 7 领域模块；HUD/流程/输入/会期控制器；扩展包 manifest/preset。</td><td>Sim 仍编排部分 tick；main 仍承担 UI 刷新/信号/绘制；边界还不是“可替换模块”的最终形态。</td></tr>
         <tr><td>数据与单一源</td><td>numbers → export → data → MissionPack schema 2 目录：每图独立 pack_id/map_id/hash；HUB 11 facts 对账；模拟器数据 hash。</td><td>hash 只做格式/归属校验，未做运行时内容重算；目录未签名。</td></tr>
-        <tr><td>测试与回归</td><td><span data-fact="tests">101</span> 项无头断言；<span data-fact="expansions">34</span> 项扩展检查；editor-test；playtest；flow/simulator-check；headless 性能基线。</td><td>没有覆盖率指标；没有渲染/内存基准；没有 CI 服务（仅本地 verify）。</td></tr>
+        <tr><td>测试与回归</td><td><span data-fact="tests">103</span> 项无头断言；<span data-fact="expansions">34</span> 项扩展检查；editor-test；playtest；flow/simulator-check；headless 性能基线。</td><td>没有覆盖率指标；没有渲染/内存基准；没有 CI 服务（仅本地 verify）。</td></tr>
         <tr><td>文档与知识</td><td>design01 49 个 HTML 页面；flows；simulator；briefing HUB/GUIDE；决策记录。</td><td>文档密度高，但存在与实现同步的成本；部分设计仍是提案/样例。</td></tr>
         <tr><td>工具与工作流</td><td>LiveBay Tools 编辑器；numbers 导出；MissionPack 目录；blackbox/replay；流程图；数值沙盘；<code>./run.sh verify</code>。</td><td>已有本地全量入口，但没有远程 CI；新成员仍需读多个 README。</td></tr>
         <tr><td>可维护/可逆</td><td>数据驱动；模块可单测；扩展包失败不阻塞核心；回放可复盘。</td><td>Sim 编排、main.gd、部分 HUD 逻辑仍是技术债；没有正式架构守护测试。</td></tr>
@@ -376,7 +376,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     </ol>
     <div class="note warn"><b>状态边界：</b>扩展包 A/B/C 是 <span data-fact="l1_variants">3</span> 个样例，不是正式关卡；W5 故障命中暂停只做样例；L2/L3 还没进入工程。</div>
     <h3>工程证据</h3>
-    <p class="lede"><span data-fact="tests">101</span> 项无头断言、<span data-fact="expansions">34</span> 项扩展检查、<span data-fact="l1_variants">3</span> 个 L1 样例变体、<span data-fact="doc_pages">49</span> 个 design01 HTML 页面；<code>./run.sh check</code> 无头启动、<code>./run.sh editor-test</code> 编辑器数据桥冒烟、<code>./run.sh compare</code> A/B/C 对比。</p>
+    <p class="lede"><span data-fact="tests">103</span> 项无头断言、<span data-fact="expansions">34</span> 项扩展检查、<span data-fact="l1_variants">3</span> 个 L1 样例变体、<span data-fact="doc_pages">49</span> 个 design01 HTML 页面；<code>./run.sh check</code> 无头启动、<code>./run.sh editor-test</code> 编辑器数据桥冒烟、<code>./run.sh compare</code> A/B/C 对比。</p>
   </section>
 
   <section class="panel" id="p4" role="tabpanel" aria-labelledby="t4">

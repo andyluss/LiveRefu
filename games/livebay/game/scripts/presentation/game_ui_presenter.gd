@@ -61,7 +61,7 @@ func hint_text() -> String:
 	var tower: Variant = host.sim.get_tower_at(host.selected_slot) if host.selected_slot >= 0 else null
 	if tower != null:
 		return "已选中 %s Lv.%d · U 升级 · X 出售 · 右键取消" % [String(tower.def.name), int(tower.level)]
-	return "点击塔位建造 · 1–6 选塔 · C 合同 · V 湾民 · L 自由模式 · F1 主页 · 空格开波 · Tab 加速 · P 暂停"
+	return "点击塔位建造 · 1–6 选塔 · C 合同 · V 湾民 · L 自由模式 · F1 主页 · Q 退出 · 空格开波 · Tab 加速 · P 暂停"
 
 
 func refresh_tower_buttons() -> void:
