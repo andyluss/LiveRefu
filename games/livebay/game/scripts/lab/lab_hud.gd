@@ -16,6 +16,10 @@ var energy_label: Label
 var integrity_label: Label
 var wave_label: Label
 var state_label: Label
+var survival_label: Label
+var survival_power_label: Label
+var survival_oxygen_label: Label
+var battery_button: Button
 var start_button: Button
 var speed_button: Button
 var tower_buttons: Dictionary = {}
@@ -56,6 +60,35 @@ func build(host_node: Node, data: Dictionary, callbacks: Dictionary) -> void:
 	row.add_child(wave_label)
 	state_label = make_label("准备", 15, Consts.PALETTE.sage)
 	row.add_child(state_label)
+
+	if host.survival != null:
+		var survival := Panel.new()
+		survival.position = Vector2(0, 58)
+		survival.size = Vector2(Consts.VIEW_SIZE.x, 36)
+		survival.add_theme_stylebox_override("panel", PageUi.panel_style(Color("#223136"), Color("#3D4D4D"), 0))
+		root.add_child(survival)
+		var srow := HBoxContainer.new()
+		srow.position = Vector2(16, 5)
+		srow.size = Vector2(Consts.VIEW_SIZE.x - 32, 26)
+		srow.add_theme_constant_override("separation", 12)
+		survival.add_child(srow)
+		survival_label = make_label("", 13, Consts.PALETTE.cream)
+		survival_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		srow.add_child(survival_label)
+		survival_oxygen_label = make_label("", 13, Consts.PALETTE.teal)
+		srow.add_child(survival_oxygen_label)
+		survival_power_label = make_label("", 13, Consts.PALETTE.amber)
+		srow.add_child(survival_power_label)
+		var less := Button.new(); less.text = "塔组 −"; less.custom_minimum_size = Vector2(66, 26)
+		PageUi.style_button(less, Consts.PALETTE.slate, Consts.PALETTE.cream)
+		less.pressed.connect(callbacks["tower_less"]); srow.add_child(less)
+		var more := Button.new(); more.text = "塔组 +"; more.custom_minimum_size = Vector2(66, 26)
+		PageUi.style_button(more, Consts.PALETTE.teal, Consts.PALETTE.cream)
+		more.pressed.connect(callbacks["tower_more"]); srow.add_child(more)
+		battery_button = Button.new(); battery_button.text = "备用电池"
+		battery_button.custom_minimum_size = Vector2(82, 26)
+		PageUi.style_button(battery_button, Consts.PALETTE.amber, Consts.PALETTE.ink)
+		battery_button.pressed.connect(callbacks["battery"]); srow.add_child(battery_button)
 
 	var bottom := Panel.new()
 	bottom.position = Vector2(0, Consts.VIEW_SIZE.y - 82)
@@ -162,6 +195,12 @@ func update() -> void:
 	integrity_label.text = info.integrity_text
 	wave_label.text = info.wave_text
 	state_label.text = info.state_text + (" %ds" % int(ceil(view.timer)) if host.sim.state in [0, 2] else "")
+	if host.survival != null:
+		var sv: LiveBaySurvival = host.survival
+		survival_label.text = "救援 %s · 塔组 %d%% / 生命 %d%%" % [format_time(sv.rescue_left), int(round(sv.tower_share * 100.0)), int(round((1.0 - sv.tower_share) * 100.0))]
+		survival_oxygen_label.text = "O2 %d%%" % int(round(sv.oxygen / maxf(1.0, sv.oxygen_max) * 100.0))
+		survival_power_label.text = "功率 %d · 塔效 %d%%" % [int(round(sv.power)), int(round(sv.tower_factor(host.sim) * 100.0))]
+		battery_button.disabled = sv.battery_used
 	start_button.disabled = host.sim.state not in [0, 2]
 	start_button.text = "开波 (空格)" if host.sim.wave_index < 0 else "下一波 (空格)"
 	speed_button.text = info.speed_text
@@ -171,12 +210,17 @@ func update() -> void:
 		tower_buttons[id].modulate = Color(1, 1, 1, 1) if host.selected_tower_id == id else Color(1, 1, 1, 0.72)
 
 
+func format_time(seconds: float) -> String:
+	return "%02d:%02d" % [int(seconds) / 60, int(seconds) % 60]
+
+
 func show_result(won: bool, result: Dictionary) -> void:
 	overlay.visible = true
 	overlay_title.text = "实验结束 · %s" % str(result.get("grade", "C")) if won else "实验失败"
-	overlay_body.text = "保障度 %d/%d\n击杀 %d · 漏过 %d\n\n自由模式结果不写主线存档。" % [
+	overlay_body.text = "保障度 %d/%d\n击杀 %d · 漏过 %d\n%s\n自由模式结果不写主线存档。" % [
 		int(result.get("integrity", 0)), int(result.get("max_integrity", 0)),
 		int(result.get("kills", 0)), int(result.get("leaked", 0)),
+		str(result.get("reason", "")),
 	]
 
 

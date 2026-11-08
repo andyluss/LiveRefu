@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "lab.bay01.low_power",
+  "name": "低功率夜班",
+  "description": "外环断电，救援 5 分钟后到。电力同时供塔组和生命维持；氧气、保障度、救援三线并行。",
+  "world": "outer_ring",
+  "mode": "survival",
+  "tags": {
+    "axis": ["survival", "tower_defense", "hybrid"],
+    "difficulty": ["hard"],
+    "theme": ["outer_ring", "night_shift"],
+    "mechanic": ["economy", "wave", "fault", "survival"],
+    "duration": ["standard"],
+    "fidelity": ["overrides"],
+    "state": ["playable"]
+  },
+  "capabilities": ["towers", "waves", "economy", "fault", "survival"],
+  "base": { "map": "bay01", "mode": "survival" },
+  "survival": {
+    "rescue_seconds": 300.0,
+    "power": 100.0,
+    "tower_share": 0.5,
+    "oxygen_seconds": 120.0,
+    "oxygen_drain_per_gap": 0.8,
+    "battery_power": 40.0,
+    "life_demand_base": 30.0,
+    "life_demand_per_wave": 3.0,
+    "tower_demand_per_tower": 6.0,
+    "tower_demand_per_wave": 4.0
+  },
+  "provenance": { "author": "lab", "created": "2026-11-07", "source": "survival-p1" }
+}

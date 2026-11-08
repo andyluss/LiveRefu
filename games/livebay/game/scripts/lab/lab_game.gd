@@ -7,6 +7,7 @@ const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
 const RendererScript = preload("res://scripts/presentation/game_renderer.gd")
 const HUDScript = preload("res://scripts/lab/lab_hud.gd")
 const AudioScript = preload("res://scripts/presentation/audio_director.gd")
+const SurvivalScript = preload("res://scripts/lab/survival_module.gd")
 
 var app: Node
 var scenario: Dictionary = {}
@@ -15,6 +16,7 @@ var runtime: LiveBayMissionRuntime
 var sim: Variant
 var renderer: LiveBayGameRenderer
 var hud: LiveBayLabHud
+var survival: LiveBaySurvival
 var audio: LiveBayAudioDirector
 var font: SystemFont
 var selected_tower_id := "interceptor"
@@ -35,6 +37,9 @@ func _ready() -> void:
 	runtime = RuntimeScript.new(data)
 	sim = runtime.sim
 	sim.fault_duration_bonus += float(data.get("lab_meta", {}).get("fault_bonus", 0.0))
+	if str(data.get("lab_meta", {}).get("mode", "")) == "survival":
+		survival = SurvivalScript.new()
+		survival.configure(data, sim)
 	selected_tower_id = str(data.towers[0].id)
 	font = SystemFont.new()
 	font.font_names = PackedStringArray(["PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei"])
@@ -48,6 +53,9 @@ func _ready() -> void:
 		"speed": toggle_speed,
 		"back": back_to_lab,
 		"retry": retry,
+		"tower_less": func() -> void: survival.adjust_share(-0.05) if survival != null else null,
+		"tower_more": func() -> void: survival.adjust_share(0.05) if survival != null else null,
+		"battery": func() -> void: survival.use_battery() if survival != null else null,
 	})
 	sim.tower_fired.connect(_on_fired)
 	sim.enemy_leaked.connect(_on_leak)
@@ -57,9 +65,14 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if runtime == null:
+	if runtime == null or ended:
 		return
 	runtime.step(delta)
+	if survival != null:
+		survival.update(delta, sim)
+		if survival.failed or survival.won:
+			_finish(survival.won, _survival_result())
+			return
 	leak_flash = maxf(0.0, leak_flash - delta)
 	toast_timer = maxf(0.0, toast_timer - delta)
 	for i in range(beams.size() - 1, -1, -1):
@@ -104,6 +117,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _draw() -> void:
 	if renderer == null:
 		renderer = RendererScript.new()
+	if font == null:
+		font = SystemFont.new()
+		font.font_names = PackedStringArray(["PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei"])
 	renderer.font = font
 	renderer.draw(self, sim, selected_slot, hover_slot, beams, leak_flash, toast_text, toast_timer, runtime != null and runtime.clock.paused)
 
@@ -166,6 +182,18 @@ func _on_leak(_enemy: Dictionary) -> void:
 	leak_flash = 0.4
 	toast_text = "保障度受损"
 	toast_timer = 1.2
+
+
+func _survival_result() -> Dictionary:
+	var result: Dictionary = sim.get_result().duplicate(true)
+	result["won"] = survival.won
+	result["reason"] = survival.reason
+	result["integrity"] = sim.integrity
+	result["max_integrity"] = sim.max_integrity
+	result["kills"] = sim.stats.get("kills", 0)
+	result["leaked"] = sim.stats.get("leaked", 0)
+	result["grade"] = "S" if survival.won and sim.integrity >= sim.max_integrity * 0.8 else "A" if survival.won and sim.integrity >= sim.max_integrity * 0.5 else "B" if survival.won else "F"
+	return result
 
 
 func _finish(won: bool, result: Dictionary) -> void:

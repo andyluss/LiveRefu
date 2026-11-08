@@ -5,7 +5,7 @@ extends RefCounted
 
 const DataLoaderScript = preload("res://scripts/core/data_loader.gd")
 const DIR := "res://data/lab/scenarios"
-const ALLOWED_CAPS := ["towers", "waves", "economy", "fault", "procedures"]
+const ALLOWED_CAPS := ["towers", "waves", "economy", "fault", "procedures", "survival"]
 
 
 static func load_all() -> Array:
@@ -64,9 +64,11 @@ static func apply(scenario: Dictionary) -> Dictionary:
 	data["lab_meta"] = {
 		"id": str(scenario.get("id", "")),
 		"name": str(scenario.get("name", "")),
+		"mode": str(scenario.get("mode", "tower_defense")),
 		"tags": scenario.get("tags", {}),
 		"capabilities": caps,
 		"fault_bonus": float(overrides.get("fault_bonus", 0.0)),
+		"survival": scenario.get("survival", {}),
 	}
 	return data
 
