@@ -29,6 +29,7 @@ run_step "无头模拟测试" "$RUN" test
 run_step "扩展包检查" "$RUN" expansions-check
 run_step "编辑器数据桥" "$RUN" editor-test
 run_step "三张地图无头试玩" "$RUN" playtest
+run_step "生存玩法与数值矩阵" "$RUN" survival-test
 run_step "数值与 data 一致" "$RUN" numbers-check
 run_step "MissionPack 清单" "$RUN" pack-check
 run_step "流程图生成物" "$RUN" flow-check

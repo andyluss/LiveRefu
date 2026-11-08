@@ -168,7 +168,9 @@ App (scenes/app.tscn)
 - 实验使用独立运行时与空 ShiftMemory，不写主线存档；
 - 候选写入 `user://lab/candidates/`，实验导出到 `user://lab/exports/`；
 - 不支持脚本/MOD/在线分享；
-- 真正的非塔防/生存玩法在 `lab/` 内演进，见 `lab/01_塔防生存玩法建议.md`。
+- 真正的非塔防/生存玩法在 `lab/` 内演进，见 `lab/01_塔防生存玩法建议.md`；
+- 低功率夜班 S1/S2 已实现：功率分配、氧气、救援、封舱、撤离；氧气归零只扣评级；
+- 生存数值/玩法测试：`./run.sh survival-test`，已接入 `./run.sh verify`（13 项）。
 
 ## 五、数据契约
 

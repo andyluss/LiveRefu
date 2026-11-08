@@ -41,7 +41,8 @@ platform: "PC 优先（D14 待定）"
 ./run.sh game     # 直接进入游戏页（跳过主页，便于测试）
 ./run.sh editor   # 打开 Godot 编辑器
 ./run.sh test     # 无头模拟测试（103 项断言）
-./run.sh verify   # 一键全量验收（测试/扩展/编辑器/试玩/生成物/链接/HTML）
+./run.sh verify   # 一键全量验收（13 项）
+./run.sh survival-test  # 生存玩法/数值矩阵（测试/扩展/编辑器/试玩/生成物/链接/HTML）
 ./run.sh check    # 无头启动 180 帧，抓脚本错误
 ./run.sh pack-check # 校验 MissionPack 清单
 ./run.sh replay     # 回放最近一局黑匣子

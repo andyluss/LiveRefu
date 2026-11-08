@@ -20,6 +20,8 @@ var survival_label: Label
 var survival_power_label: Label
 var survival_oxygen_label: Label
 var battery_button: Button
+var seal_button: Button
+var evac_button: Button
 var start_button: Button
 var speed_button: Button
 var tower_buttons: Dictionary = {}
@@ -89,6 +91,14 @@ func build(host_node: Node, data: Dictionary, callbacks: Dictionary) -> void:
 		battery_button.custom_minimum_size = Vector2(82, 26)
 		PageUi.style_button(battery_button, Consts.PALETTE.amber, Consts.PALETTE.ink)
 		battery_button.pressed.connect(callbacks["battery"]); srow.add_child(battery_button)
+		seal_button = Button.new(); seal_button.text = "封舱"
+		seal_button.custom_minimum_size = Vector2(64, 26)
+		PageUi.style_button(seal_button, Consts.PALETTE.slate, Consts.PALETTE.cream)
+		seal_button.pressed.connect(callbacks["seal"]); srow.add_child(seal_button)
+		evac_button = Button.new(); evac_button.text = "撤离"
+		evac_button.custom_minimum_size = Vector2(64, 26)
+		PageUi.style_button(evac_button, Consts.PALETTE.rust, Consts.PALETTE.cream)
+		evac_button.pressed.connect(callbacks["evacuate"]); srow.add_child(evac_button)
 
 	var bottom := Panel.new()
 	bottom.position = Vector2(0, Consts.VIEW_SIZE.y - 82)
@@ -201,6 +211,9 @@ func update() -> void:
 		survival_oxygen_label.text = "O2 %d%%" % int(round(sv.oxygen / maxf(1.0, sv.oxygen_max) * 100.0))
 		survival_power_label.text = "功率 %d · 塔效 %d%%" % [int(round(sv.power)), int(round(sv.tower_factor(host.sim) * 100.0))]
 		battery_button.disabled = sv.battery_used
+		seal_button.text = "开舱" if sv.sealed else "封舱"
+		seal_button.disabled = sv.power < sv.seal_cost and not sv.sealed
+		evac_button.visible = sv.can_evacuate(host.sim)
 	start_button.disabled = host.sim.state not in [0, 2]
 	start_button.text = "开波 (空格)" if host.sim.wave_index < 0 else "下一波 (空格)"
 	speed_button.text = info.speed_text

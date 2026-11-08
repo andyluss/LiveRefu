@@ -56,6 +56,8 @@ func _ready() -> void:
 		"tower_less": func() -> void: survival.adjust_share(-0.05) if survival != null else null,
 		"tower_more": func() -> void: survival.adjust_share(0.05) if survival != null else null,
 		"battery": func() -> void: survival.use_battery() if survival != null else null,
+		"seal": func() -> void: survival.toggle_seal() if survival != null else null,
+		"evacuate": func() -> void: survival.evacuate() if survival != null else null,
 	})
 	sim.tower_fired.connect(_on_fired)
 	sim.enemy_leaked.connect(_on_leak)
@@ -192,7 +194,7 @@ func _survival_result() -> Dictionary:
 	result["max_integrity"] = sim.max_integrity
 	result["kills"] = sim.stats.get("kills", 0)
 	result["leaked"] = sim.stats.get("leaked", 0)
-	result["grade"] = "S" if survival.won and sim.integrity >= sim.max_integrity * 0.8 else "A" if survival.won and sim.integrity >= sim.max_integrity * 0.5 else "B" if survival.won else "F"
+	result["grade"] = survival.grade(sim)
 	return result
 
 

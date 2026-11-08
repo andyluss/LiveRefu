@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.128</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.129</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -197,6 +197,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <tr><td>P3</td><td>实验导出到 <code>user://lab/exports/</code>，文件对话框导入</td><td><b>已实现</b></td></tr>
         <tr><td>独立页</td><td>LabPage + LabGame + LabHud，不复用主模式 GamePage/HUD</td><td><b>已实现</b></td></tr>
         <tr><td>S1 生存</td><td>低功率夜班：功率分配/氧气/救援/电池</td><td><b>已实现</b></td></tr>
+        <tr><td>S2 生存</td><td>封舱/开舱、主动撤离、氧气只扣评级</td><td><b>已实现</b></td></tr>
         <tr><td>P4</td><td>在线工坊 / 脚本 MOD</td><td>不做</td></tr>
       </tbody>
     </table>
@@ -209,7 +210,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 
     <div class="note ok"><b>文件位置：</b><code>user://lab/candidates/</code> 候选；<code>user://lab/exports/</code> 实验导出；实验定义在 <code>game/data/lab/scenarios/</code>。候选与导入都<b>不会自动修改主线</b>。</div>
     <p class="hint">方案与生命周期：<a href="../docs-ai/design01/lab/00_自由模式方案.md">lab/00_自由模式方案.md</a>；候选/导入导出是本地文件，不做在线服务。</p>
-    <div class="note"><b>生存玩法：</b><a href="../docs-ai/design01/lab/01_塔防生存玩法建议.md">低功率夜班 / 断缆 90 分钟 / 湾口封舱</a>——S1 低功率夜班已实现；S2+ 待拍板。</div>
+    <div class="note"><b>生存玩法：</b><a href="../docs-ai/design01/lab/01_塔防生存玩法建议.md">低功率夜班 / 断缆 90 分钟 / 湾口封舱</a>——S1/S2 已实现；断缆/封舱空间版待拍板。</div>
     <div class="note"><b>复用取舍：</b>实验当前复用同一套 Sim/Data，适合塔防变体；真正的放置/小玩具需要 Mode Adapter，详见方案文档第十三节。</div>
   </section>
   <section class="panel" id="p13" role="tabpanel" aria-labelledby="t13">
@@ -367,7 +368,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 
     <h3>下一步：把 3.85 推到 4.2+</h3>
     <div class="grid g2">
-      <article class="card"><h4>1 · 一键全量验收 ✅</h4><p>已实现 <code>./run.sh verify</code>：test + expansions-check + editor-test + playtest + numbers/pack + flow + simulator + briefing + 启动 + 链接 + R-016；12 项汇总。</p></article>
+      <article class="card"><h4>1 · 一键全量验收 ✅</h4><p>已实现 <code>./run.sh verify</code>：test + expansions-check + editor-test + playtest + numbers/pack + flow + simulator + briefing + 启动 + 链接 + R-016；13 项汇总。</p></article>
       <article class="card"><h4>2 · 性能基准</h4><p>固定场景记录帧时间、实体上限、5 分钟长跑与三图加载时间；把“没测过”变成“有基线”。</p></article>
       <article class="card"><h4>3 · main 入口化 ✅</h4><p>HUD/流程/输入/会期/命令/反馈/UI 呈现均已拆出；main 966→<b>210</b> 行；公共色板/布局/塔顺序在 <code>shared/constants.gd</code>，只保留启动、连线、每帧驱动、绘制。下一步再拆 Sim 的索敌/移动编排。</p></article>
       <article class="card"><h4>4 · 内容厚度</h4><p>1 职业 / 3 图 / 8 波是切片，不是产品；L1 正式内容、L2 岗位、日常循环需要进入下一阶段。</p></article>
