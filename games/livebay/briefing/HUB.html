@@ -112,7 +112,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.126</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.127</span> · 2026-11-06</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -194,6 +194,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <tr><td>P1</td><td>本地实验场：浏览器 + 标签 + JSON 覆盖 + 3 样例 + 独立运行时</td><td><b>已实现</b></td></tr>
         <tr><td>P2</td><td>候选 diff 写入 <code>user://lab/candidates/</code></td><td><b>已实现</b></td></tr>
         <tr><td>P3</td><td>实验导出到 <code>user://lab/exports/</code>，文件对话框导入</td><td><b>已实现</b></td></tr>
+        <tr><td>独立页</td><td>LabPage + LabGame + LabHud，不复用主模式 GamePage/HUD</td><td><b>已实现</b></td></tr>
         <tr><td>P4</td><td>在线工坊 / 脚本 MOD</td><td>不做</td></tr>
       </tbody>
     </table>
@@ -206,6 +207,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 
     <div class="note ok"><b>文件位置：</b><code>user://lab/candidates/</code> 候选；<code>user://lab/exports/</code> 实验导出；实验定义在 <code>game/data/lab/scenarios/</code>。候选与导入都<b>不会自动修改主线</b>。</div>
     <p class="hint">方案与生命周期：<a href="../docs-ai/design01/lab/00_自由模式方案.md">lab/00_自由模式方案.md</a>；候选/导入导出是本地文件，不做在线服务。</p>
+    <div class="note"><b>生存玩法提案：</b><a href="../docs-ai/design01/lab/01_塔防生存玩法建议.md">低功率夜班 / 断缆 90 分钟 / 湾口封舱</a>——先做低功率夜班，推荐待拍板。</div>
     <div class="note"><b>复用取舍：</b>实验当前复用同一套 Sim/Data，适合塔防变体；真正的放置/小玩具需要 Mode Adapter，详见方案文档第十三节。</div>
   </section>
   <section class="panel" id="p13" role="tabpanel" aria-labelledby="t13">

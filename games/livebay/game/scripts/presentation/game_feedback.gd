@@ -57,15 +57,13 @@ func on_fault_escaped(_enemy: Dictionary) -> void:
 
 func on_game_won(result: Dictionary) -> void:
 	host.audio.play("win")
-	if host.current_mode == "main":
-		SaveStore.record_result(result)
+	SaveStore.record_result(result)
 	show_result(true, result)
 
 
 func on_game_lost(result: Dictionary) -> void:
 	host.audio.play("lost")
-	if host.current_mode == "main":
-		SaveStore.record_result(result)
+	SaveStore.record_result(result)
 	show_result(false, result)
 
 
@@ -84,8 +82,7 @@ func submit_report(option_id: String) -> void:
 	if not result.ok:
 		return
 	host.flow_controller.set_report_note("本班记录：%s" % ("低报" if str(result.data.get("effect", "")) == "custom" else "已记录"))
-	if host.current_mode == "main":
-		host.shift_memory.record(host.current_result, option_id, host.runtime.sim.low_report)
+	host.shift_memory.record(host.current_result, option_id, host.runtime.sim.low_report)
 	host.flow_controller.clear_report_buttons()
 
 

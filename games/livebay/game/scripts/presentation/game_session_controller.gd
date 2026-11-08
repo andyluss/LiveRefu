@@ -9,18 +9,13 @@ const RuntimeScript = preload("res://scripts/application/mission_runtime.gd")
 const ExpansionBootScript = preload("res://scripts/expansion/expansion_boot.gd")
 const ShiftMemoryScript = preload("res://scripts/application/shift_memory.gd")
 const ShiftStoreScript = preload("res://scripts/platform/shift_store.gd")
-const LabLoaderScript = preload("res://scripts/lab/lab_loader.gd")
 
 var host: Node
-var main_shift_memory: LiveBayShiftMemory
 
 
 func setup(host_node: Node) -> void:
 	host = host_node
 	host.shift_memory = ShiftMemoryScript.new(ShiftStoreScript.new())
-	main_shift_memory = host.shift_memory
-	host.current_mode = "main"
-	host.current_lab = ""
 	host.current_map_id = "bay01"
 	host.current_contract = "stable"
 	host.data = DataLoaderScript.load_mission_pack()
@@ -95,9 +90,6 @@ func choose_contract(contract_id: String) -> bool:
 	if not found:
 		return false
 	host.current_contract = contract_id
-	host.current_mode = "main"
-	host.current_lab = ""
-	host.shift_memory = main_shift_memory if main_shift_memory != null else host.shift_memory
 	host.data = DataLoaderScript.load_mission_pack("res://data", host.current_map_id)
 	if host.data.is_empty():
 		return false
@@ -124,60 +116,9 @@ func _apply_contract() -> void:
 			w.prep = maxf(1.0, float(w.get("prep", 0.0)) + prep_delta)
 
 
-func start_lab(scenario: Dictionary) -> bool:
-	if host == null or scenario.is_empty():
-		return false
-	var data: Dictionary = LabLoaderScript.apply(scenario)
-	if data.is_empty():
-		return false
-	if host.runtime != null:
-		host.runtime.dispose()
-		host.runtime = null
-	host.data = data
-	host.current_mode = "lab"
-	host.current_lab = str(scenario.get("id", ""))
-	host.current_map_id = str(data.get("map_id", "bay01"))
-	host.shift_memory = ShiftMemoryScript.new()
-	var boot: LiveBayResult = ExpansionBootScript.load_preset("res://data/expansion_sets/baseline.json")
-	var expansion_set: LiveBayExpansionSet = boot.data if boot.ok else null
-	host.runtime = RuntimeScript.new(host.data, expansion_set, 0, 0)
-	host.runtime.events.subscribe(&"ChecklistRequested", host.commands.show_checklist)
-	host.runtime.events.subscribe(&"FaultChoiceRequested", host.commands.show_fault)
-	host.sim = host.runtime.sim
-	host.sim.fault_duration_bonus = float(data.get("lab_meta", {}).get("fault_bonus", 0.0))
-	_connect_sim()
-	host.selected_slot = -1
-	host.beams.clear()
-	host.leak_flash = 0.0
-	host.toast_timer = 0.0
-	host.runtime.clock.paused = false
-	if host.flow_controller != null:
-		host.flow_controller.hide_all()
-	return true
-
-
-func start_main() -> bool:
-	if host == null:
-		return false
-	if host.runtime != null:
-		host.runtime.dispose()
-		host.runtime = null
-	host.current_mode = "main"
-	host.current_lab = ""
-	host.shift_memory = main_shift_memory if main_shift_memory != null else ShiftMemoryScript.new(ShiftStoreScript.new())
-	host.data = DataLoaderScript.load_mission_pack("res://data", host.current_map_id)
-	if host.data.is_empty():
-		return false
-	new_sim()
-	return true
-
-
 func switch_map(map_id: String) -> bool:
 	if host == null:
 		return false
-	host.current_mode = "main"
-	host.current_lab = ""
-	host.shift_memory = main_shift_memory if main_shift_memory != null else host.shift_memory
 	if map_id == host.current_map_id:
 		if host.runtime != null:
 			host.runtime.clock.paused = false

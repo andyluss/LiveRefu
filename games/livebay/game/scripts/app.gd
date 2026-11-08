@@ -3,8 +3,9 @@
 extends Control
 
 const HomePageScript = preload("res://scripts/presentation/home_page.gd")
-const LabPageScript = preload("res://scripts/presentation/lab_page.gd")
+const LabPageScript = preload("res://scripts/lab/lab_page.gd")
 const GameScene = preload("res://scenes/main.tscn")
+const LabGameScene = preload("res://scenes/lab_game.tscn")
 
 var page_host: Control
 var current: Node
@@ -30,9 +31,14 @@ func open_lab() -> void:
 
 
 func open_game(lab_scenario: Dictionary = {}) -> void:
-	var game := GameScene.instantiate()
-	game.router = self
-	game.launch_lab = lab_scenario
+	var game: Node
+	if lab_scenario.is_empty():
+		game = GameScene.instantiate()
+		game.router = self
+	else:
+		game = LabGameScene.instantiate()
+		game.app = self
+		game.scenario = lab_scenario
 	_swap(game, "game")
 
 

@@ -18,7 +18,6 @@ const CommandControllerScript = preload("res://scripts/presentation/game_command
 const FeedbackControllerScript = preload("res://scripts/presentation/game_feedback.gd")
 const UiPresenterScript = preload("res://scripts/presentation/game_ui_presenter.gd")
 const Consts = preload("res://scripts/shared/constants.gd")
-const LabLoaderScript = preload("res://scripts/lab/lab_loader.gd")
 
 
 var data: Dictionary = {}
@@ -36,7 +35,6 @@ var feedback: LiveBayGameFeedback
 var ui_presenter: LiveBayGameUiPresenter
 var briefing_seen := false
 var router: Node = null
-var launch_lab: Dictionary = {}
 
 var selected_tower_id := "interceptor"
 var selected_slot := -1
@@ -79,9 +77,6 @@ var archive_button: Button
 var map_button: Button
 var current_map_id := "bay01"
 var current_contract := "stable"
-var current_mode := "main"
-var current_lab := ""
-var lab_scenarios: Array = []
 var audio: LiveBayAudioDirector
 
 var fatal_label: Label
@@ -115,7 +110,6 @@ func _ready() -> void:
 	feedback.setup(self)
 	commands = CommandControllerScript.new()
 	commands.setup(self, Consts.PALETTE)
-	lab_scenarios = LabLoaderScript.load_all()
 	session_controller = SessionControllerScript.new()
 	session_controller.setup(self)
 	if data.is_empty():
@@ -127,8 +121,6 @@ func _ready() -> void:
 	ui_presenter.setup(self)
 	input_controller = InputControllerScript.new()
 	input_controller.setup(self, Consts.TOWER_ORDER.size())
-	if not launch_lab.is_empty():
-		session_controller.start_lab(launch_lab)
 	if shift_memory.has_last() and not briefing_seen:
 		briefing_seen = true
 		commands.show_briefing()

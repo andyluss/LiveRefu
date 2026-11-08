@@ -3,6 +3,33 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.127] - 2026-11-08 14:11
+
+### 重构
+
+- 自由模式代码从主模式解耦：
+  - `LabPage` 移入 `scripts/lab/`；
+  - 新增独立 `LabGamePage`（`scenes/lab_game.tscn`）：
+    - 自己的 Runtime；
+    - 自己的 HUD（`lab_hud.gd`）；
+    - 自己的输入、建塔、开波、倍速、结算；
+  - 主模式删除 `launch_lab`、lab 会话、lab HUD/流程、lab 候选/导入导出代码；
+  - App 根据是否带实验参数路由到 GamePage 或 LabGamePage；
+  - 共享仅保留 Sim/Data/MissionRuntime/Renderer/Audio/Constants。
+- 新增 `lab/01_塔防生存玩法建议.md`：
+  - 低功率夜班（推荐 P1）；
+  - 断缆 90 分钟；
+  - 湾口封舱；
+  - 生存资源、失败条件、Lab 架构与 S1 切片；
+- HUB 自由模式页与 tech/12 同步。
+
+### 验证
+
+- App 路由：home → main / lab → lab_game；
+- LabGame 点击建塔冒烟通过；
+- `./run.sh test`：103/103；
+- `./run.sh verify`：PASS 12 · FAIL 0。
+
 ## [0.1.126] - 2026-11-07 17:24
 
 ### 新增

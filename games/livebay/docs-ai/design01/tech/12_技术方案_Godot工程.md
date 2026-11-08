@@ -159,11 +159,16 @@ App (scenes/app.tscn)
 
 ### 4.4 自由模式边界
 
-- 复用同一套 Sim/Data + 白名单覆盖；
+- 自由模式有**独立页面与游戏页**：
+  - `LabPage`：标签筛选、候选、导出、导入；
+  - `LabGamePage`：自己的 Runtime/HUD/输入；
+  - `LabHud`：自由模式自己的顶栏/底栏/结算；
+- 主模式 GamePage 不再包含 lab 页面、lab HUD、lab 输入或 lab 会话代码；
+- 共享组件仅限 `Sim`、`DataLoader`、`MissionRuntime`、`GameRenderer`、`AudioDirector`、`constants` 等；
 - 实验使用独立运行时与空 ShiftMemory，不写主线存档；
 - 候选写入 `user://lab/candidates/`，实验导出到 `user://lab/exports/`；
 - 不支持脚本/MOD/在线分享；
-- 真正的非塔防玩法需要 Mode Adapter，见 `lab/00_自由模式方案.md` 第十三节。
+- 真正的非塔防/生存玩法在 `lab/` 内演进，见 `lab/01_塔防生存玩法建议.md`。
 
 ## 五、数据契约
 
