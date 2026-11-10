@@ -394,8 +394,8 @@ def nav_html(current: str, base: str = ".") -> str:
         "</a>"
         f'<details class="nav-fold" open><summary>文档目录</summary><nav class="nav">'
         f'<div class="nav-group"><h2>索引</h2><a href="{prefix}index.html"{index_active}>文档索引</a></div>'
-        + "".join(blocks)
         + rules_block
+        + "".join(blocks)
         + "</nav></details>"
     )
 
