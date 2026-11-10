@@ -12,6 +12,7 @@ upstream:
 related:
   - "../../../../../../docs/retro-futurism/附录_NASA朋克卷/README.md"
   - "b01_三环三套语法.md"
+  - "../../world/11_Solarpunk与NASApunk.md"
 ---
 
 # ART-A1 · NASApunk 四件套
@@ -92,4 +93,5 @@ valid(asset) ⇔
 
 - 被引用处：[08_美术与音频方向](../../art/08_美术与音频方向.md)、[艺术设定图](../../art/README.md)；
 - 变更：a 层，需人类裁决 + 版本升级；
-- 关联：[ART-B1](b01_三环三套语法.md)、[ART-C1](c01_色板字体与比例.md)。
+- 关联：[ART-B1](b01_三环三套语法.md)、[ART-C1](c01_色板字体与比例.md)、[Solarpunk 与 NASApunk](../../world/11_Solarpunk与NASApunk.md)。
+- Solarpunk 是叠加层，不替代四件套；ART-A1 的 MUST 仍然有效。

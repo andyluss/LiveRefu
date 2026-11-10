@@ -1,0 +1,389 @@
+<!-- 由 tools/build_design_html.py 从 ../world/11_Solarpunk与NASApunk.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Solarpunk 与 NASApunk · LiveBay design01</title>
+<meta name="description" content="太阳能、循环物质、太阳公约与可持续政治经济。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>世界观</h2><a href="../world/README.html">世界观目录</a><a href="../world/02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../world/03_职业体系.html">职业体系</a><a href="../world/04_地理与三环.html">地理与三环</a><a href="../world/05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../world/06_舰队与组织.html">舰队与组织</a><a href="../world/07_外环夜班与岗位.html">外环夜班与岗位</a><a href="../world/08_湾民生活.html">湾民生活</a><a href="../world/09_故障与事故文化.html">故障与事故文化</a><a href="../world/10_生存资源与舱段.html">生存资源与舱段</a><a href="../world/11_Solarpunk与NASApunk.html" aria-current="page">Solarpunk 与 NASApunk</a></div><div class="nav-group"><h2>玩法</h2><a href="../gameplay/README.html">玩法目录</a><a href="../gameplay/04_塔防玩法.html">塔防：岗位防线</a><a href="../gameplay/14_塔防NASApunk深化.html">塔防 NASApunk 深化</a><a href="../gameplay/06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../gameplay/07_放置养成玩法.html">放置养成玩法</a><a href="../gameplay/09_三玩法联动.html">三玩法联动</a><a href="../gameplay/10_内容节奏与长期留存.html">内容节奏与长期留存</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../gameplay/expansions/README.html">玩法扩展：分层设计</a><a href="../gameplay/expansions/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../gameplay/expansions/02_L1_班次层.html">L1 班次层：让一局像一班</a><a href="../gameplay/expansions/03_L2_岗位层.html">L2 岗位层：模块化设施与人员</a><a href="../gameplay/expansions/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../gameplay/expansions/05_版本切片与决策.html">版本切片与决策</a><a href="../gameplay/expansions/06_实现对照与验收.html">实现对照与验收</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../art/08_美术与音频方向.html">美术与音频方向</a><a href="../tech/12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../tech/15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../tech/16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a><a href="../tech/17_可插拔扩展架构.html">可插拔扩展架构</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../world/11_Solarpunk与NASApunk.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">Solarpunk 与 NASApunk</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一人类已定方向">一、人类已定方向</a></li><li class=""><a href="#二为什么是-solarpunk而不是绿色贴纸">二、为什么是 Solarpunk，而不是“绿色贴纸”</a></li><li class=""><a href="#三能源太阳是公共基础设施">三、能源：太阳是公共基础设施</a></li><li class="sub"><a href="#31-主供">3.1 主供</a></li><li class="sub"><a href="#32-太阳能的限制">3.2 太阳能的限制</a></li><li class="sub"><a href="#33-政治经济太阳公约">3.3 政治经济：太阳公约</a></li><li class="sub"><a href="#34-可命名的候选">3.4 可命名的候选</a></li><li class=""><a href="#四物质闭环不是回收桶">四、物质：闭环不是“回收桶”</a></li><li class="sub"><a href="#41-循环层级">4.1 循环层级</a></li><li class="sub"><a href="#42-循环的代价">4.2 循环的代价</a></li><li class="sub"><a href="#43-政治经济循环公约">4.3 政治经济：循环公约</a></li><li class=""><a href="#五政治经济可持续的分配">五、政治经济：可持续的分配</a></li><li class="sub"><a href="#51-三条原则">5.1 三条原则</a></li><li class="sub"><a href="#52-与既有双轨制的关系">5.2 与既有双轨制的关系</a></li><li class="sub"><a href="#53-政治光谱候选">5.3 政治光谱（候选）</a></li><li class=""><a href="#六视觉nasapunk-的骨solarpunk-的代谢">六、视觉：NASApunk 的骨，Solarpunk 的代谢</a></li><li class="sub"><a href="#61-配比">6.1 配比</a></li><li class="sub"><a href="#62-视觉语法">6.2 视觉语法</a></li><li class="sub"><a href="#63-禁忌">6.3 禁忌</a></li><li class=""><a href="#七玩法接口">七、玩法接口</a></li><li class="sub"><a href="#71-低功率夜班的解释">7.1 低功率夜班的解释</a></li><li class=""><a href="#八与既有文档的关系">八、与既有文档的关系</a></li><li class=""><a href="#九待裁决">九、待裁决</a></li><li class=""><a href="#十一句话总结">十、一句话总结</a></li></ul></details>
+<article class="prose">
+<h1 id="11--solarpunk-与-nasapunk">11 · Solarpunk 与 NASApunk</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>世界观参考</dd><dt>状态</dt><dd>参考草案 v0.1（人类已定 + AI 候选）</dd><dt>日期</dt><dd>2026-11-10</dd><dt>来源</dt><dd>人类提出 Solarpunk 方向，AI 展开</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="../rules/design/a02_三生与慢好.html">DES-A2</a> · <a href="../rules/art/a01_NASA朋克四件套.html">ART-A1</a> · <a href="../rules/art/b01_三环三套语法.html">ART-B1</a></dd><dt>上游</dt><dd><a href="02_世界观_逍遥湾.html">02_世界观_逍遥湾</a></dd><dt>关联</dt><dd><a href="04_地理与三环.html">04_地理与三环</a> · <a href="05_社会系统_慢好三生保障体系.html">05_社会系统_慢好三生保障体系</a> · <a href="06_舰队与组织.html">06_舰队与组织</a> · <a href="10_生存资源与舱段.html">10_生存资源与舱段</a> · <a href="../art/08_美术与音频方向.html">08_美术与音频方向</a></dd></dl></div>
+<blockquote>
+<p><strong>一句话</strong>：NASApunk 是逍遥湾的<strong>骨</strong>——白盒、检查单、可维修；Solarpunk（太阳朋克）是它的<strong>代谢</strong>——太阳能、循环物质、可持续的政治经济。</p>
+<p>两者不是两套美术，而是同一座城的两层：<strong>工程怎么修，资源怎么循环，权力怎么分配。</strong></p>
+</blockquote>
+<h2 id="一人类已定方向">一、人类已定方向</h2>
+<p>【人类已定 2026-11-10】</p>
+<ul>
+<li>逍遥湾太空城<strong>主要依赖太阳能</strong>；</li>
+<li>物质尽量<strong>循环利用</strong>；</li>
+<li>城市重视<strong>可持续发展与环保</strong>；</li>
+<li>配套一套<strong>太阳朋克的政治经济理念</strong>；</li>
+<li>Solarpunk 与既有 NASApunk 配合，不替换 NASApunk。</li>
+</ul>
+<blockquote>
+<p>本文其余内容都是 <strong>AI 参考候选</strong>：具体机构名、比例、数值与政治细节可以改。</p>
+</blockquote>
+<h2 id="二为什么是-solarpunk而不是绿色贴纸">二、为什么是 Solarpunk，而不是“绿色贴纸”</h2>
+<p>逍遥湾是一座封闭的移动太空城：</p>
+<ul>
+<li>没有无限的空气、水、金属；</li>
+<li>太阳能不是“免费电”，它需要巨大的采集面、储能、散热与维护；</li>
+<li>废弃物不会“消失”，只会变成下一段舱段的污染；</li>
+<li>任何“环保”都必须回答：<strong>谁维护、谁付费、谁被排除。</strong></li>
+</ul>
+<p>所以 Solarpunk 在这里不是“到处种树、人人幸福”的乌托邦，而是：</p>
+<pre class="text"><code>太阳能 + 循环物质 + 维修权 + 能源民主
+  × 封闭空间的稀缺
+  × 机构疲惫与低报</code></pre>
+<p>它和 NASApunk 的“有裂缝的善意”是兼容的：</p>
+<blockquote>
+<p>城市真的在努力可持续；但可持续的代价，往往由外环和夜班承担。</p>
+</blockquote>
+<h2 id="三能源太阳是公共基础设施">三、能源：太阳是公共基础设施</h2>
+<h3 id="31-主供">3.1 主供</h3>
+<p>【人类已定】主要依赖太阳能。</p>
+<p>【参考】能源系统：</p>
+<pre class="text"><code>月牙凸面光伏/光热阵列
+  → 外环采集/整流
+  → 主环网
+  → 储能（电池/热储/飞轮）
+  → 舱段配电</code></pre>
+<ul>
+<li>月牙凸面朝向恒星，是天然采集面；</li>
+<li>外环尖角是整流/推进阵列，也是太阳能最集中的地方；</li>
+<li>中环用暖光模拟昼夜，但电力来自同一张网；</li>
+<li>内环有独立备份，危机时优先级最高。</li>
+</ul>
+<h3 id="32-太阳能的限制">3.2 太阳能的限制</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>限制</th>
+<th>后果</th>
+<th>玩法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日蚀/遮挡</td>
+<td>输入骤降</td>
+<td>储能/限电事件</td>
+</tr>
+<tr>
+<td>尘埃/微陨石</td>
+<td>采集面效率下降</td>
+<td>清洗/维修任务</td>
+</tr>
+<tr>
+<td>储能容量</td>
+<td>夜间/峰值不够</td>
+<td>电力分配</td>
+</tr>
+<tr>
+<td>散热</td>
+<td>采集越猛，废热越多</td>
+<td>热管理/舱段降级</td>
+</tr>
+<tr>
+<td>距离/航向</td>
+<td>光强变化</td>
+<td>长期航程压力</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>“主要依赖太阳能”不等于“永远有电”。储能和限电才是 Solarpunk 的戏剧来源。</p>
+</blockquote>
+<h3 id="33-政治经济太阳公约">3.3 政治经济：太阳公约</h3>
+<p>【参考】Solar Commons / 太阳公约：</p>
+<ol type="1">
+<li><strong>采集面是公共资产</strong>：不能私人拥有大型光伏/光热阵列；</li>
+<li><strong>能量预算是公共预算</strong>：按算法 + 议会例外分配；</li>
+<li><strong>基本能量权</strong>：每个湾民有最低生活用电/用氧额度；</li>
+<li><strong>超额用能</strong>：用贡献点/合同/紧急授权支付；</li>
+<li><strong>外环优先保供</strong>：因为外环是采集与防线，但外环人常最后被补偿。</li>
+</ol>
+<p>冲突：</p>
+<ul>
+<li>“太阳是免费的，为什么电要算钱？”</li>
+<li>“基本能量权”是否包括娱乐/舒适？</li>
+<li>外环采集区承担风险，却拿不到同等能量配额；</li>
+<li>内环备份充足，外环却要限电。</li>
+</ul>
+<h3 id="34-可命名的候选">3.4 可命名的候选</h3>
+<ul>
+<li><strong>太阳公约</strong>：能源公共所有 + 基本能量权；</li>
+<li><strong>能量预算</strong>：每班/每舱的功率配额；</li>
+<li><strong>日蚀窗口</strong>：采集下降的预警期；</li>
+<li><strong>储能塔</strong>：外环的巨型储能/热储设施；</li>
+<li><strong>限电工单</strong>：危机时强制降载的工单。</li>
+</ul>
+<h2 id="四物质闭环不是回收桶">四、物质：闭环不是“回收桶”</h2>
+<p>【人类已定】物质尽量循环利用。</p>
+<h3 id="41-循环层级">4.1 循环层级</h3>
+<pre class="text"><code>减量 → 再用 → 维修 → 再制造 → 材料回收 → 受控废弃</code></pre>
+<ul>
+<li><strong>减量</strong>：少做一次性包装、少换整机；</li>
+<li><strong>再用</strong>：备件/舱段/工具的二次分配；</li>
+<li><strong>维修</strong>：优先修，不是优先换；</li>
+<li><strong>再制造</strong>：把旧模块拆成可用零件；</li>
+<li><strong>材料回收</strong>：金属/塑料/水/空气；</li>
+<li><strong>受控废弃</strong>：无法回收的少量残渣，封存而不是排放。</li>
+</ul>
+<h3 id="42-循环的代价">4.2 循环的代价</h3>
+<ul>
+<li>回收需要能源，而能源来自太阳能；</li>
+<li>分类/拆解需要人力，往往压给夜班/外环；</li>
+<li>稀有元素不能无限循环，必须靠外部采集/贸易；</li>
+<li>“环保”可能变成“穷的人用旧东西，富的人用新东西”；</li>
+<li>黑市会把可回收材料偷出闭环。</li>
+</ul>
+<h3 id="43-政治经济循环公约">4.3 政治经济：循环公约</h3>
+<p>【参考】</p>
+<ul>
+<li><strong>物质账户</strong>：每个舱段有材料进出账；</li>
+<li><strong>循环额度</strong>：可回收材料优先给公共项目；</li>
+<li><strong>维修权</strong>：设备必须可拆、可修、有备件；</li>
+<li><strong>再制造公社</strong>：维护工会/互助会运营的拆解与再制造点；</li>
+<li><strong>受控废弃</strong>：少量残渣封存，记录在案；</li>
+<li><strong>绿色溢价</strong>：可持续产品更贵，还是更便宜？由政治决定。</li>
+</ul>
+<blockquote>
+<p>闭环不是“道德正确”，而是“谁承担拆解与分类的劳动”。</p>
+</blockquote>
+<h2 id="五政治经济可持续的分配">五、政治经济：可持续的分配</h2>
+<h3 id="51-三条原则">5.1 三条原则</h3>
+<ol type="1">
+<li><strong>公共所有</strong>：太阳采集面、主环网、储能、循环中心是公共基础设施；</li>
+<li><strong>基本权利</strong>：最低能量/水/氧/维修服务是权利，不是慈善；</li>
+<li><strong>按代价分配</strong>：超额用能/材料由贡献点、合同或议会例外支付。</li>
+</ol>
+<h3 id="52-与既有双轨制的关系">5.2 与既有双轨制的关系</h3>
+<ul>
+<li>日常：算法配给 + 能量预算；</li>
+<li>危机：议会接管 + 限电/封舱/征用；</li>
+<li>申诉：可以，但常在算法与议会之间被踢回；</li>
+<li>低报：事故数字被“绿色叙事”修饰——“系统运行正常”“已按惯例处理”。</li>
+</ul>
+<h3 id="53-政治光谱候选">5.3 政治光谱（候选）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>派别</th>
+<th>主张</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>循环派</td>
+<td>更严格的闭环、维修权、限电</td>
+<td>被批“让所有人过苦日子”</td>
+</tr>
+<tr>
+<td>增长派</td>
+<td>更多采集面、更多舒适、更多外部贸易</td>
+<td>被批“把风险推给外环”</td>
+</tr>
+<tr>
+<td>公社派</td>
+<td>能源/循环设施由互助会/工会管理</td>
+<td>被批“架空议会”</td>
+</tr>
+<tr>
+<td>传统派</td>
+<td>保留出发地生活方式</td>
+<td>被批“不适应封闭城市”</td>
+</tr>
+<tr>
+<td>效率派</td>
+<td>算法优化、减少人为例外</td>
+<td>被批“没有人负责”</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>玩家不需要选边；玩家在值班中被迫做出这些派别之间的取舍。</p>
+</blockquote>
+<h2 id="六视觉nasapunk-的骨solarpunk-的代谢">六、视觉：NASApunk 的骨，Solarpunk 的代谢</h2>
+<h3 id="61-配比">6.1 配比</h3>
+<p>【参考】70% NASApunk + 30% Solarpunk：</p>
+<ul>
+<li>NASApunk：白盒、检查单、模拟 UI、机构色、磨损、编号；</li>
+<li>Solarpunk：太阳能玻璃、暖光、植物、循环管线、维修花园、公共空间；</li>
+<li>不是“把设备涂成绿色”，而是“让能量与物质流动可见”。</li>
+</ul>
+<h3 id="62-视觉语法">6.2 视觉语法</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>元素</th>
+<th>NASApunk</th>
+<th>Solarpunk 叠加</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结构</td>
+<td>外露桁架/接缝</td>
+<td>光伏玻璃/遮阳/绿植架</td>
+</tr>
+<tr>
+<td>光</td>
+<td>冷白/警示橙</td>
+<td>暖金/柔绿/日光模拟</td>
+</tr>
+<tr>
+<td>管线</td>
+<td>折线/接头</td>
+<td>水循环/营养液/热回收</td>
+</tr>
+<tr>
+<td>表面</td>
+<td>标签/磨损</td>
+<td>修补痕迹/手写养护记录</td>
+</tr>
+<tr>
+<td>空间</td>
+<td>岗位/舱段</td>
+<td>公共花园/维修庭院/循环站</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>检查单/按钮</td>
+<td>能量预算/循环账户/日蚀预警</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="63-禁忌">6.3 禁忌</h3>
+<ul>
+<li>不要把 Solarpunk 做成“无摩擦的绿色乌托邦”；</li>
+<li>不要用大面积荧光绿/全息植物；</li>
+<li>不要让植物脱离维护系统（谁浇水？谁补光？）；</li>
+<li>不要用“自然”掩盖劳动与不平等。</li>
+</ul>
+<h2 id="七玩法接口">七、玩法接口</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>玩法</th>
+<th>Solarpunk 接口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>塔防</td>
+<td>太阳能输入/储能/日蚀限电；塔组功率</td>
+</tr>
+<tr>
+<td>生存</td>
+<td>电力/氧气/热管理；低功率夜班</td>
+</tr>
+<tr>
+<td>放置</td>
+<td>循环站/维修花园/储能升级</td>
+</tr>
+<tr>
+<td>沉浸</td>
+<td>能源预算争议、维修权、绿色溢价</td>
+</tr>
+<tr>
+<td>扩展</td>
+<td>太阳能阵列/循环中心/公社合同</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="71-低功率夜班的解释">7.1 低功率夜班的解释</h3>
+<p>现有「低功率夜班」可以正式解释为：</p>
+<pre class="text"><code>日蚀窗口 + 储能不足 + 外环限电</code></pre>
+<ul>
+<li>电力不是“凭空少”，而是太阳能输入下降；</li>
+<li>备用电池是储能塔的应急份额；</li>
+<li>封舱减少氧气/热损失，也减少采集面；</li>
+<li>救援抵达意味着外部接电/补给窗口。</li>
+</ul>
+<blockquote>
+<p>不需要改现有玩法数值，只需要把“电”换成“太阳能的班次预算”。</p>
+</blockquote>
+<h2 id="八与既有文档的关系">八、与既有文档的关系</h2>
+<ul>
+<li><a href="02_世界观_逍遥湾.html">02 世界观</a>：总览；</li>
+<li><a href="04_地理与三环.html">04 地理</a>：采集面/储能/循环站的空间；</li>
+<li><a href="05_社会系统_慢好三生保障体系.html">05 社会系统</a>：慢好与可持续；</li>
+<li><a href="06_舰队与组织.html">06 舰队与组织</a>：能源/循环机构；</li>
+<li><a href="10_生存资源与舱段.html">10 生存资源</a>：电/氧/热/舱段；</li>
+<li><a href="../art/08_美术与音频方向.html">08 美术方向</a>：视觉配比；</li>
+<li><a href="../rules/art/a01_NASA朋克四件套.html">ART-A1</a>：NASApunk 四件套仍是硬规则。</li>
+</ul>
+<h2 id="九待裁决">九、待裁决</h2>
+<ol type="1">
+<li>太阳能采集面的正式名称/位置；</li>
+<li>是否保留少量核/化学应急能源；</li>
+<li>“基本能量权”是否包括娱乐/舒适；</li>
+<li>循环额度是否可交易；</li>
+<li>维修权是否写入城市宪章；</li>
+<li>Solarpunk 的绿色比例（建议 30%）；</li>
+<li>是否允许“绿色溢价”造成阶层差异。</li>
+</ol>
+<h2 id="十一句话总结">十、一句话总结</h2>
+<p><strong>NASApunk 让城市能修；Solarpunk 让城市能循环。</strong> 两者合起来，才是逍遥湾：一座靠太阳活着、靠维修撑住、靠分配决定谁先断电的城。</p>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../world/11_Solarpunk与NASApunk.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

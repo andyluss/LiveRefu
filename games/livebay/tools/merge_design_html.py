@@ -35,6 +35,7 @@ DOC_GROUPS = [
         "world/08_湾民生活.html",
         "world/09_故障与事故文化.html",
         "world/10_生存资源与舱段.html",
+        "world/11_Solarpunk与NASApunk.html",
     ]),
     ("世界与职业", ["13_术语表.html"]),
     ("玩法", ["gameplay/README.html", "gameplay/04_塔防玩法.html", "gameplay/14_塔防NASApunk深化.html", "gameplay/06_沉浸体验玩法.html", "gameplay/07_放置养成玩法.html", "gameplay/09_三玩法联动.html", "gameplay/10_内容节奏与长期留存.html"]),
