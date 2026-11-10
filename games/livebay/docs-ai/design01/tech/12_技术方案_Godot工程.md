@@ -13,9 +13,9 @@ rules:
 upstream:
   - "../../../docs-human/概念设定.md"
 related:
-  - "04_塔防玩法.md"
+  - "../gameplay/04_塔防玩法.md"
   - "../../game/"
-  - "11_待人类裁决清单.md"
+  - "../11_待人类裁决清单.md"
 ---
 
 # 12 · 技术方案：Godot 工程

@@ -9,7 +9,7 @@ rules:
   - "DES-C1"
   - "TECH-A1"
 upstream:
-  - "../04_塔防玩法.md"
+  - "../gameplay/04_塔防玩法.md"
 related:
   - "00_总览与公式.md"
   - "01_经济与成长.md"

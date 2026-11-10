@@ -101,7 +101,7 @@ change(c) ⇒ DocUpdate ∧ Acceptance
 在文档、代码、提交信息里引用规则 ID：
 
 ```markdown
-本关的故障设计遵循 [DES-B3](../rules/design/b03_故障与低报.md)。
+本关的故障设计遵循 [DES-B3](design/b03_故障与低报.md)。
 ```
 
 ```gdscript

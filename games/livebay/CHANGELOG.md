@@ -3,6 +3,23 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.133] - 2026-11-10 08:52
+
+### 文档
+
+- 玩法策划文档收拢到 `docs-ai/design01/gameplay/`：
+  - 04 塔防、06 沉浸、07 放置、09 三玩法联动、10 内容节奏、14 NASApunk 深化；
+  - 原 `docs-ai/design01/expansions/` 移入 `gameplay/expansions/`；
+  - 新增 `gameplay/README.md` 阅读顺序与边界。
+- 运行时代码 `game/expansions/` **未移动**，避免破坏 ExpansionRegistry/测试。
+- 同步 design01 索引、全部 Markdown 内链、HTML 生成器/合并版；
+- design01 HTML 57 页。
+
+### 验证
+
+- Markdown 内链：0 失效；
+- `./run.sh verify`：PASS 13 · FAIL 0。
+
 ## [0.1.132] - 2026-11-10 08:36
 
 ### 新增
