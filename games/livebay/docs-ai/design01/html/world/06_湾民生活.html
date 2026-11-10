@@ -1,0 +1,318 @@
+<!-- 由 tools/build_design_html.py 从 ../world/06_湾民生活.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>湾民生活 · LiveBay design01</title>
+<meta name="description" content="食物、娱乐、语言、纪念、家庭。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界观</h2><a href="../world/README.html">世界观目录</a><a href="../world/02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../world/03_地理与三环.html">地理与三环</a><a href="../world/04_舰队与组织.html">舰队与组织</a><a href="../world/05_外环夜班与岗位.html">外环夜班与岗位</a><a href="../world/06_湾民生活.html" aria-current="page">湾民生活</a><a href="../world/07_故障与事故文化.html">故障与事故文化</a><a href="../world/08_生存资源与舱段.html">生存资源与舱段</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="../14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../expansions/README.html">玩法扩展：分层设计</a><a href="../expansions/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../expansions/02_L1_班次层.html">L1 班次层：让一局像一班</a><a href="../expansions/03_L2_岗位层.html">L2 岗位层：模块化设施与人员</a><a href="../expansions/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../expansions/05_版本切片与决策.html">版本切片与决策</a><a href="../expansions/06_实现对照与验收.html">实现对照与验收</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../art/08_美术与音频方向.html">美术与音频方向</a><a href="../tech/12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../tech/15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../tech/16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a><a href="../tech/17_可插拔扩展架构.html">可插拔扩展架构</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../world/06_湾民生活.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">湾民生活</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一湾民是谁">一、湾民是谁</a></li><li class=""><a href="#二一天怎么过">二、一天怎么过</a></li><li class=""><a href="#三吃什么">三、吃什么</a></li><li class="sub"><a href="#31-可写的食物细节">3.1 可写的食物细节</a></li><li class=""><a href="#四怎么玩">四、怎么玩</a></li><li class=""><a href="#五怎么说话">五、怎么说话</a></li><li class="sub"><a href="#51-常用词候选">5.1 常用词候选</a></li><li class=""><a href="#六怎么纪念">六、怎么纪念</a></li><li class=""><a href="#七家庭与照护">七、家庭与照护</a></li><li class=""><a href="#八阶层与偏见">八、阶层与偏见</a></li><li class=""><a href="#九玩法接口">九、玩法接口</a></li><li class=""><a href="#十待裁决">十、待裁决</a></li></ul></details>
+<article class="prose">
+<h1 id="06--湾民生活">06 · 湾民生活</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>世界观参考</dd><dt>状态</dt><dd>参考草案 v0.1（AI 候选）</dd><dt>日期</dt><dd>2026-11-10</dd><dt>来源</dt><dd>AI 展开，待人类裁决</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="../rules/design/a02_三生与慢好.html">DES-A2</a> · <a href="../rules/art/b01_三环三套语法.html">ART-B1</a></dd><dt>上游</dt><dd><a href="02_世界观_逍遥湾.html">02_世界观_逍遥湾</a></dd><dt>关联</dt><dd><a href="03_地理与三环.html">03_地理与三环</a> · <a href="04_舰队与组织.html">04_舰队与组织</a> · <a href="../05_社会系统_慢好三生保障体系.html">05_社会系统_慢好三生保障体系</a> · <a href="../06_沉浸体验玩法.html">06_沉浸体验玩法</a></dd></dl></div>
+<blockquote>
+<p>用于沉浸玩法、放置养成、NPC 对话与日常叙事。<strong>不是风俗百科</strong>；每条都应该能变成场景、道具或选择。</p>
+</blockquote>
+<h2 id="一湾民是谁">一、湾民是谁</h2>
+<p>【人类已定】航行约 200 年，第七代；大多数居民认同“湾民”身份，地球是传说。</p>
+<p>【参考】湾民身份的三个层次：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层次</th>
+<th>表现</th>
+<th>冲突</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>制度身份</td>
+<td>配给号、贡献点、岗位记录</td>
+<td>无记录的人不存在</td>
+</tr>
+<tr>
+<td>地方身份</td>
+<td>“我是外环的/中环的/内环的”</td>
+<td>环际偏见</td>
+</tr>
+<tr>
+<td>记忆身份</td>
+<td>家族来自哪艘船、哪道菜、哪句方言</td>
+<td>传统派 vs 湾民</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="二一天怎么过">二、一天怎么过</h2>
+<p>【参考】中环居民按“班次”生活，不按昼夜：</p>
+<pre class="text"><code>醒来 → 配给早餐 → 工作/学习/照护 → 娱乐/社交 → 养生舱 → 睡眠</code></pre>
+<ul>
+<li>外环值班人作息相反：别人睡时他们上班；</li>
+<li>中环的“白天”是暖光模拟，夜晚降低色温；</li>
+<li>广播每天固定时段播报，是全城的共同节拍。</li>
+</ul>
+<h2 id="三吃什么">三、吃什么</h2>
+<p>【参考】</p>
+<ul>
+<li>基础配给：藻类蛋白、菌菇、豆类、合成淀粉、维生素块；</li>
+<li>加餐券：换取真实口感、香料、甜点、外部船员带来的东西；</li>
+<li>节日菜：保留出发地做法，但食材已本地化；</li>
+<li>夜班餐：高热量、易保存、单手能吃；</li>
+<li>禁忌：浪费食物是重罪；把配给券当货币是灰色地带。</li>
+</ul>
+<h3 id="31-可写的食物细节">3.1 可写的食物细节</h3>
+<ul>
+<li>“第七段面”：夜班食堂的招牌，其实是藻蛋白面 + 一点真辣椒；</li>
+<li>加餐券可以换“有嚼劲的东西”；</li>
+<li>传统派家里会做“出发地菜”，但第二代已经不知道原味；</li>
+<li>外环人喝茶/咖啡，中环人喝花草饮；</li>
+<li>养生舱不允许带食物。</li>
+</ul>
+<h2 id="四怎么玩">四、怎么玩</h2>
+<p>【参考】</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>娱乐</th>
+<th>空间</th>
+<th>玩法接口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>零重力球</td>
+<td>娱乐舱/体育舱</td>
+<td>跨环联赛、博彩、名额</td>
+</tr>
+<tr>
+<td>桌游/牌</td>
+<td>娱乐舱</td>
+<td>NPC 社交、赌注</td>
+</tr>
+<tr>
+<td>虚拟场景</td>
+<td>娱乐舱</td>
+<td>沉浸式回忆/训练</td>
+</tr>
+<tr>
+<td>影院/广播剧</td>
+<td>中环</td>
+<td>叙事、宣传</td>
+</tr>
+<tr>
+<td>维修美学展</td>
+<td>内环/中环</td>
+<td>艺术、废料再创作</td>
+</tr>
+<tr>
+<td>夜班电台</td>
+<td>外环</td>
+<td>音乐、点歌、事故暗号</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>游戏里的“音乐”可以作为湾民生活的一部分：夜班电台、传统派合唱、内环仪式音乐。</p>
+</blockquote>
+<h2 id="五怎么说话">五、怎么说话</h2>
+<p>【参考】</p>
+<ul>
+<li>通用语 + 环际口音；</li>
+<li>外环用工程缩写/编号/手势；</li>
+<li>中环更礼貌、更回避冲突；</li>
+<li>内环用流程语言（“经研究”“按程序”“原则上”）；</li>
+<li>传统派保留出发地方言/宗教词；</li>
+<li>脏话多与设备/班次有关，而不是性/身体。</li>
+</ul>
+<h3 id="51-常用词候选">5.1 常用词候选</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>词</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同班</td>
+<td>一起值班的人，比同事亲</td>
+</tr>
+<tr>
+<td>接段</td>
+<td>接手一个舱段/岗位</td>
+</tr>
+<tr>
+<td>按惯例</td>
+<td>不按流程、但大家都这么做</td>
+</tr>
+<tr>
+<td>干净数字</td>
+<td>低报后的事故数字</td>
+</tr>
+<tr>
+<td>留灯</td>
+<td>为死者/失踪者保留工位灯</td>
+</tr>
+<tr>
+<td>下环</td>
+<td>从外环回中环，带“活着回来”的意思</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>术语最终以 <code>../13_术语表.md</code> 为准；这里只给语感。</p>
+</blockquote>
+<h2 id="六怎么纪念">六、怎么纪念</h2>
+<p>【参考】</p>
+<ul>
+<li>事故死者：名字进档案，工位留灯，低调纪念；</li>
+<li>失踪者：不宣布死亡，保留配给号一段时间；</li>
+<li>退休：交接仪式 + 一只旧工具/一件工服；</li>
+<li>节日：出发地纪念日、建城日、救援日；</li>
+<li>葬礼：物质有限，多采用集体纪念/回收仪式。</li>
+</ul>
+<blockquote>
+<p>低报事故的死者，往往没有正式纪念；这是叙事的痛点。</p>
+</blockquote>
+<h2 id="七家庭与照护">七、家庭与照护</h2>
+<p>【参考】</p>
+<ul>
+<li>家庭形式多样：血缘、合住、互助会、同班；</li>
+<li>儿童教育在中环；外环值班人常错过家长会；</li>
+<li>养生舱也承担心理辅导/职业康复；</li>
+<li>老人/伤者/退役者由照护署与互助会共同支持；</li>
+<li>“还能上班”是残酷的健康标准。</li>
+</ul>
+<h2 id="八阶层与偏见">八、阶层与偏见</h2>
+<p>【参考】</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>群体</th>
+<th>被怎么看</th>
+<th>真实处境</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>外环人</td>
+<td>粗、能扛、没文化</td>
+<td>风险最高、声音最小</td>
+</tr>
+<tr>
+<td>中环人</td>
+<td>安稳、软弱、被保护</td>
+<td>也不自由，只是风险被转移</td>
+</tr>
+<tr>
+<td>内环人</td>
+<td>冷漠、官僚、特权</td>
+<td>承担决策，也承担甩锅</td>
+</tr>
+<tr>
+<td>传统派</td>
+<td>固执、怀旧</td>
+<td>保留记忆，也被边缘化</td>
+</tr>
+<tr>
+<td>外部船员</td>
+<td>野、不可信、有钱</td>
+<td>带来物资，也带来风险</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="九玩法接口">九、玩法接口</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>玩法</th>
+<th>可直接引用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>沉浸</td>
+<td>食堂、养生舱、娱乐舱、广播、家庭事件</td>
+</tr>
+<tr>
+<td>放置</td>
+<td>舱室装饰、加餐券、湾民心情、节日</td>
+</tr>
+<tr>
+<td>塔防</td>
+<td>夜班餐、交接文化、同班称谓</td>
+</tr>
+<tr>
+<td>生存</td>
+<td>配给、照护、封舱时先救谁</td>
+</tr>
+<tr>
+<td>叙事</td>
+<td>纪念、低报、传统派/湾民冲突</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="十待裁决">十、待裁决</h2>
+<ol type="1">
+<li>湾民是否信教/保留哪些出发地宗教；</li>
+<li>家庭与配给单位如何绑定；</li>
+<li>加餐券是否合法；</li>
+<li>零重力球是否跨环联赛；</li>
+<li>低报事故死者是否有公开纪念。</li>
+</ol>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../world/06_湾民生活.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

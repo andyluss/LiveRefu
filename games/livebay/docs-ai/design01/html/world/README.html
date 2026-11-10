@@ -1,0 +1,169 @@
+<!-- 由 tools/build_design_html.py 从 ../world/README.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>世界观目录 · LiveBay design01</title>
+<meta name="description" content="世界文档怎么用、怎么加、边界在哪。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界观</h2><a href="../world/README.html" aria-current="page">世界观目录</a><a href="../world/02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../world/03_地理与三环.html">地理与三环</a><a href="../world/04_舰队与组织.html">舰队与组织</a><a href="../world/05_外环夜班与岗位.html">外环夜班与岗位</a><a href="../world/06_湾民生活.html">湾民生活</a><a href="../world/07_故障与事故文化.html">故障与事故文化</a><a href="../world/08_生存资源与舱段.html">生存资源与舱段</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="../14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../expansions/README.html">玩法扩展：分层设计</a><a href="../expansions/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../expansions/02_L1_班次层.html">L1 班次层：让一局像一班</a><a href="../expansions/03_L2_岗位层.html">L2 岗位层：模块化设施与人员</a><a href="../expansions/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../expansions/05_版本切片与决策.html">版本切片与决策</a><a href="../expansions/06_实现对照与验收.html">实现对照与验收</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../art/08_美术与音频方向.html">美术与音频方向</a><a href="../tech/12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../tech/15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../tech/16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a><a href="../tech/17_可插拔扩展架构.html">可插拔扩展架构</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../world/README.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">世界观目录</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一这个目录解决什么问题">一、这个目录解决什么问题</a></li><li class=""><a href="#二文档清单">二、文档清单</a></li><li class=""><a href="#三写作约定">三、写作约定</a></li><li class=""><a href="#四建议阅读顺序">四、建议阅读顺序</a></li><li class=""><a href="#五待补的世界观文档">五、待补的世界观文档</a></li></ul></details>
+<article class="prose">
+<h1 id="世界观目录--逍遥湾">世界观目录 · 逍遥湾</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>目录与写作约定</dd><dt>状态</dt><dd>参考 v0.1（结构建议）</dd><dt>日期</dt><dd>2026-11-10</dd><dt>来源</dt><dd>AI 整理，人类确认目录</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="../rules/design/a02_三生与慢好.html">DES-A2</a> · <a href="../rules/art/b01_三环三套语法.html">ART-B1</a></dd><dt>上游</dt><dd><a href="02_世界观_逍遥湾.html">02_世界观_逍遥湾</a></dd><dt>关联</dt><dd><a href="../README.html">..</a> · <a href="../05_社会系统_慢好三生保障体系.html">05_社会系统_慢好三生保障体系</a> · <a href="../03_职业体系.html">03_职业体系</a> · <a href="../13_术语表.html">13_术语表</a></dd></dl></div>
+<blockquote>
+<p>这里放<strong>支撑玩法的世界参考</strong>：地理、组织、岗位、日常生活、故障文化、生存资源。</p>
+<p>除了标【人类已定】的内容，其余都是 <strong>AI 参考候选</strong>，不是最终设定；可以改、可以删、可以被玩法推翻。</p>
+</blockquote>
+<h2 id="一这个目录解决什么问题">一、这个目录解决什么问题</h2>
+<p>玩法需要的不只是“世界设定”，而是能被引用的<strong>具体背景知识</strong>：</p>
+<ul>
+<li>为什么外环有塔位，中环没有？</li>
+<li>夜班为什么有检查单、交接记录和低报？</li>
+<li>断氧、断电、封舱时，城里的人会先救什么？</li>
+<li>一个新玩法需要新的地点、组织、习俗时，去哪里找依据？</li>
+</ul>
+<p>本目录的文档按“<strong>能直接支撑玩法/叙事/美术</strong>”来写，不追求百科式完整。</p>
+<h2 id="二文档清单">二、文档清单</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>文档</th>
+<th>回答什么</th>
+<th>主要玩法接口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>02</td>
+<td><a href="02_世界观_逍遥湾.html">世界观：逍遥湾</a></td>
+<td>月牙城、三环、舰队集群、200 年、双轨与低报事故</td>
+<td>全部</td>
+</tr>
+<tr>
+<td>03</td>
+<td><a href="03_地理与三环.html">地理与三环</a></td>
+<td>城市空间、环带、湾口、舱段、通行与隔离</td>
+<td>塔防地图、生存舱段</td>
+</tr>
+<tr>
+<td>04</td>
+<td><a href="04_舰队与组织.html">舰队与组织</a></td>
+<td>谁在管理城市、谁负责外环、谁掌握档案</td>
+<td>合同、势力、NPC</td>
+</tr>
+<tr>
+<td>05</td>
+<td><a href="05_外环夜班与岗位.html">外环夜班与岗位</a></td>
+<td>一班怎么上、检查单、交接、故障处置</td>
+<td>塔防、生存、检查单</td>
+</tr>
+<tr>
+<td>06</td>
+<td><a href="06_湾民生活.html">湾民生活</a></td>
+<td>吃什么、怎么玩、怎么纪念、怎么说话</td>
+<td>沉浸、放置、日常叙事</td>
+</tr>
+<tr>
+<td>07</td>
+<td><a href="07_故障与事故文化.html">故障与事故文化</a></td>
+<td>故障怎么分类、事故怎么被记录/低报</td>
+<td>故障卡、广播、档案</td>
+</tr>
+<tr>
+<td>08</td>
+<td><a href="08_生存资源与舱段.html">生存资源与舱段</a></td>
+<td>电、氧、水、热、压、舱门、撤离</td>
+<td>低功率夜班、S2、封舱</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="三写作约定">三、写作约定</h2>
+<ol type="1">
+<li><strong>先标来源</strong>：人类已定 / AI 参考 / 工程占位，三者不要混写。</li>
+<li><strong>先写用途</strong>：每个设定尽量回答“它能支撑哪个玩法/场景”。</li>
+<li><strong>不写死数值</strong>：数值放 <code>game/data/</code>；世界观只写量级、限制与代价。</li>
+<li><strong>允许矛盾候选</strong>：不确定的地方列 2–3 个候选，标代价，不偷偷定案。</li>
+<li><strong>不替代人类源</strong>：人类原始设定在 <code>docs-human/概念设定.md</code>；本目录只展开，不改写。</li>
+<li><strong>不写百科</strong>：优先写“玩家能遇到、能选择、能付出代价”的部分。</li>
+</ol>
+<h2 id="四建议阅读顺序">四、建议阅读顺序</h2>
+<pre class="text"><code>02 世界总览
+  → 03 地理与三环
+  → 05 外环夜班与岗位
+  → 07 故障与事故文化
+  → 08 生存资源与舱段
+  → 04 舰队与组织
+  → 06 湾民生活</code></pre>
+<h2 id="五待补的世界观文档">五、待补的世界观文档</h2>
+<p>以下只是候选，等玩法需要再写：</p>
+<ul>
+<li>内环政治与议会程序；</li>
+<li>湾民语言、方言与命名；</li>
+<li>食物、配给与加餐券；</li>
+<li>节日、葬礼与纪念仪式；</li>
+<li>教育、选拔与职业执照；</li>
+<li>外部舰队、失联船与人类冲突；</li>
+<li>宗教/传统派/出发地记忆；</li>
+<li>城市传说与低报事故的民间版本。</li>
+</ul>
+<blockquote>
+<p>每新增一篇，先在本目录登记“它能支撑什么玩法”，再写内容。</p>
+</blockquote>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../world/README.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>

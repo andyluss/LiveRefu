@@ -12,7 +12,7 @@ rules:
   - "ART-C1"
 upstream:
   - "08_美术与音频方向.md"
-  - "../02_世界观_逍遥湾.md"
+  - "../world/02_世界观_逍遥湾.md"
 related:
   - "../README.md"
   - "../../../../../docs/retro-futurism/附录_NASA朋克卷/README.md"

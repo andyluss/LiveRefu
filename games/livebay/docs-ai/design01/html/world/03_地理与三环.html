@@ -1,0 +1,308 @@
+<!-- 由 tools/build_design_html.py 从 ../world/03_地理与三环.md 生成；不要手改。 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>地理与三环 · LiveBay design01</title>
+<meta name="description" content="城市空间、湾口、舱段、通行与隔离。">
+<script>
+(function () {
+  var KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var choice = 'system';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  } catch (e) {}
+  function apply() {
+    var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.dataset.themeChoice = choice;
+    document.documentElement.classList.add('js');
+  }
+  function onSystemChange() {
+    if (document.documentElement.dataset.themeChoice === 'system') {
+      document.documentElement.dataset.theme = mql.matches ? 'dark' : 'light';
+    }
+  }
+  apply();
+  try { mql.addEventListener('change', onSystemChange); }
+  catch (e) { try { mql.addListener(onSystemChange); } catch (e2) {} }
+})();
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/theme.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">跳到正文</a>
+<div class="app">
+<aside class="sidebar">
+<a class="brand" href="../index.html"><span class="brand-kicker">LiveBay · design01</span><span class="brand-title">逍遥湾</span><span class="brand-sub">策划文档集 · HTML 阅读版</span></a><details class="nav-fold" open><summary>文档目录</summary><nav class="nav"><div class="nav-group"><h2>索引</h2><a href="../index.html">文档索引</a></div><div class="nav-group"><h2>开始</h2><a href="../README.html">策划文档集 · 总览</a><a href="../00_阅读指南与裁决规则.html">阅读指南与裁决规则</a><a href="../01_项目北极星.html">项目北极星</a><a href="../11_待人类裁决清单.html">待人类裁决清单</a></div><div class="nav-group"><h2>世界观</h2><a href="../world/README.html">世界观目录</a><a href="../world/02_世界观_逍遥湾.html">世界观：逍遥湾</a><a href="../world/03_地理与三环.html" aria-current="page">地理与三环</a><a href="../world/04_舰队与组织.html">舰队与组织</a><a href="../world/05_外环夜班与岗位.html">外环夜班与岗位</a><a href="../world/06_湾民生活.html">湾民生活</a><a href="../world/07_故障与事故文化.html">故障与事故文化</a><a href="../world/08_生存资源与舱段.html">生存资源与舱段</a></div><div class="nav-group"><h2>世界与职业</h2><a href="../05_社会系统_慢好三生保障体系.html">慢好三生保障体系</a><a href="../03_职业体系.html">职业体系</a><a href="../13_术语表.html">术语表</a></div><div class="nav-group"><h2>玩法</h2><a href="../04_塔防玩法.html">塔防：岗位防线</a><a href="../06_沉浸体验玩法.html">沉浸体验玩法</a><a href="../07_放置养成玩法.html">放置养成玩法</a><a href="../09_三玩法联动.html">三玩法联动</a><a href="../10_内容节奏与长期留存.html">内容节奏与长期留存</a><a href="../14_塔防NASApunk深化.html">塔防 NASApunk 深化</a></div><div class="nav-group"><h2>玩法扩展</h2><a href="../expansions/README.html">玩法扩展：分层设计</a><a href="../expansions/01_分层总览.html">分层总览：三层怎么咬合</a><a href="../expansions/02_L1_班次层.html">L1 班次层：让一局像一班</a><a href="../expansions/03_L2_岗位层.html">L2 岗位层：模块化设施与人员</a><a href="../expansions/04_L3_城市层.html">L3 城市层：轻城市与档案</a><a href="../expansions/05_版本切片与决策.html">版本切片与决策</a><a href="../expansions/06_实现对照与验收.html">实现对照与验收</a></div><div class="nav-group"><h2>表现与工程</h2><a href="../art/08_美术与音频方向.html">美术与音频方向</a><a href="../tech/12_技术方案_Godot工程.html">技术方案：Godot 工程</a><a href="../tech/15_专用游戏编辑器方案.html">专用游戏编辑器方案</a><a href="../tech/16_模块化技术架构_NASApunk.html">模块化技术架构：NASApunk</a><a href="../tech/17_可插拔扩展架构.html">可插拔扩展架构</a></div><div class="nav-group"><h2>规则</h2><a href="../rules/index.html">规则总览</a></div></nav></details>
+<div class="sidebar-foot">
+<p>AI 策划参考，非决定。<br>人类裁决记录见 <a href="../11_待人类裁决清单.html">11</a>。</p>
+<p><a href="../../world/03_地理与三环.md">查看源 Markdown</a></p>
+</div>
+</aside>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left"><span class="topbar-kicker">design01</span><span class="topbar-title">地理与三环</span></div>
+<div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
+</header>
+<main id="content" class="content">
+<details class="toc" open><summary>本页目录</summary><ul class="toc-list"><li class=""><a href="#一已定的空间骨架">一、已定的空间骨架</a></li><li class=""><a href="#二空间模型">二、空间模型</a></li><li class="sub"><a href="#21-三条环境梯度">2.1 三条环境梯度</a></li><li class=""><a href="#三外环城的盾与手">三、外环：城的盾与手</a></li><li class="sub"><a href="#31-功能">3.1 功能</a></li><li class="sub"><a href="#32-空间形态">3.2 空间形态</a></li><li class="sub"><a href="#33-地图切片">3.3 地图切片</a></li><li class=""><a href="#四中环生活与恢复">四、中环：生活与恢复</a></li><li class="sub"><a href="#41-中环的空间逻辑">4.1 中环的空间逻辑</a></li><li class=""><a href="#五内环机构与合法性">五、内环：机构与合法性</a></li><li class=""><a href="#六通行与隔离">六、通行与隔离</a></li><li class="sub"><a href="#61-封舱的空间代价">6.1 封舱的空间代价</a></li><li class=""><a href="#七玩法接口">七、玩法接口</a></li><li class=""><a href="#八待裁决">八、待裁决</a></li></ul></details>
+<article class="prose">
+<h1 id="03--地理与三环">03 · 地理与三环</h1>
+<div class="doc-meta" aria-label="文档元数据"><dl><dt>文档类型</dt><dd>世界观参考</dd><dt>状态</dt><dd>参考草案 v0.1（AI 候选）</dd><dt>日期</dt><dd>2026-11-10</dd><dt>来源</dt><dd>AI 展开，待人类裁决</dd><dt>决策权</dt><dd>人类</dd><dt>遵循规则</dt><dd><a href="../rules/design/a02_三生与慢好.html">DES-A2</a> · <a href="../rules/art/b01_三环三套语法.html">ART-B1</a></dd><dt>上游</dt><dd><a href="02_世界观_逍遥湾.html">02_世界观_逍遥湾</a></dd><dt>关联</dt><dd><a href="05_外环夜班与岗位.html">05_外环夜班与岗位</a> · <a href="08_生存资源与舱段.html">08_生存资源与舱段</a> · <a href="../04_塔防玩法.html">04_塔防玩法</a></dd></dl></div>
+<blockquote>
+<p>除【人类已定】外，以下都是<strong>参考候选</strong>。地名、距离、舱段编号都可以改；先保证它们能支撑玩法。</p>
+</blockquote>
+<h2 id="一已定的空间骨架">一、已定的空间骨架</h2>
+<p>【人类已定】逍遥湾是一座月牙形移动太空城，三环：</p>
+<ul>
+<li><strong>外环</strong>：护卫、能源、资源采集；</li>
+<li><strong>中环</strong>：居住、养生、娱乐、教育；</li>
+<li><strong>内环</strong>：政治、经济、文化。</li>
+</ul>
+<p>【人类已定】月牙凹面是港湾/船坞方向；外环沿凸面展开，最先承受外部风险。</p>
+<h2 id="二空间模型">二、空间模型</h2>
+<pre class="text"><code>航向 ↑
+        外环（凸面）
+   ┌────────────────────┐
+   │  中环（居住带）      │
+   │   ┌────────────┐   │
+   │   │ 内环（机构）│   │
+   │   └────────────┘   │
+   └────────────────────┘
+        凹面：湾口 / 船坞</code></pre>
+<h3 id="21-三条环境梯度">2.1 三条环境梯度</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>梯度</th>
+<th>外环</th>
+<th>中环</th>
+<th>内环</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>辐射/碎片风险</td>
+<td>高</td>
+<td>低</td>
+<td>极低</td>
+</tr>
+<tr>
+<td>噪音/振动</td>
+<td>高</td>
+<td>中</td>
+<td>低</td>
+</tr>
+<tr>
+<td>温度</td>
+<td>冷</td>
+<td>暖</td>
+<td>恒温</td>
+</tr>
+<tr>
+<td>重力</td>
+<td>可变/偏弱</td>
+<td>接近标准</td>
+<td>标准</td>
+</tr>
+<tr>
+<td>光</td>
+<td>冷白/警示橙</td>
+<td>暖白/琥珀</td>
+<td>石材/玻璃/黄铜</td>
+</tr>
+<tr>
+<td>人的状态</td>
+<td>值班、短住</td>
+<td>生活、恢复</td>
+<td>办公、仪式</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>这条梯度是美术、音效、玩法难度的共同依据：越往外，越“工程”；越往里，越“机构”。</p>
+</blockquote>
+<h2 id="三外环城的盾与手">三、外环：城的盾与手</h2>
+<h3 id="31-功能">3.1 功能</h3>
+<ul>
+<li>护卫阵列：拦截碎片、乱流、异常轨道物；</li>
+<li>采集/能源：矿脉、冰、气体、太阳风；</li>
+<li>船坞/对接：货运、维修、救援；</li>
+<li>外环岗位：塔位、巡检、故障隔离、交接。</li>
+</ul>
+<h3 id="32-空间形态">3.2 空间形态</h3>
+<p>【参考】外环不是一条完整走廊，而是一串<strong>可独立封闭的舱段</strong>：</p>
+<pre class="text"><code>湾口 → 第七段 → 第六段 → 第五段 → … → 外环枢纽</code></pre>
+<ul>
+<li>每段有独立供电、氧气循环、舱门；</li>
+<li>段与段之间可以隔离，代价是失去通路/供能；</li>
+<li>塔位沿弧内侧分布，覆盖“敌人从湾口反向进入”的路径；</li>
+<li>故障沿舱段/管线传播，不会瞬间传遍全城。</li>
+</ul>
+<blockquote>
+<p>这解释了塔防的“弧形路径 + 分段塔位”，也解释了生存模式的“封舱/断电/断氧”。</p>
+</blockquote>
+<h3 id="33-地图切片">3.3 地图切片</h3>
+<p>工程里的三张地图是外环的不同切片，不是整座城：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>地图</th>
+<th>空间意向</th>
+<th>玩法重心</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bay01 外环</td>
+<td>标准弧段、7 塔位</td>
+<td>基础塔防/检查单</td>
+</tr>
+<tr>
+<td>bay02 中环</td>
+<td>居住舱外缘、较窄通路</td>
+<td>放置/混合实验</td>
+</tr>
+<tr>
+<td>bay03 湾口</td>
+<td>船坞/对接区、故障潮</td>
+<td>高压/故障</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>地图名与空间意向是工程占位，可被新关卡替换。</p>
+</blockquote>
+<h2 id="四中环生活与恢复">四、中环：生活与恢复</h2>
+<p>【参考】中环是“人的时间”：</p>
+<ul>
+<li>居住舱：家庭/合住/单人舱，按贡献点与家庭规模分配；</li>
+<li>养生舱：恢复、睡眠、心理辅导，不是医院；</li>
+<li>娱乐舱：影院、桌游、虚拟场景、运动；</li>
+<li>教育舱：儿童教育、成人再教育、选拔培训；</li>
+<li>食堂/配给点：基本配给 + 加餐券；</li>
+<li>广播/公告：班次、事故、配给、选拔。</li>
+</ul>
+<h3 id="41-中环的空间逻辑">4.1 中环的空间逻辑</h3>
+<ul>
+<li>以“生活半径”组织：居住—食堂—养生—娱乐，步行/短途轨道可达；</li>
+<li>与外环通过<strong>闸口/电梯井/轨道</strong>连接，非值班人员不能随意进入外环；</li>
+<li>越靠近内环，空间越安静、越正式、越“被设计”。</li>
+</ul>
+<h2 id="五内环机构与合法性">五、内环：机构与合法性</h2>
+<p>【参考】内环是“机构的时间”：</p>
+<ul>
+<li>议会厅：危机时接管；</li>
+<li>配给/算法署：日常资源分配；</li>
+<li>交易所/贡献点清算；</li>
+<li>档案馆：事故、班次、职业记录；</li>
+<li>广播中心：全城播报；</li>
+<li>礼制空间：交接仪式、纪念、裁决。</li>
+</ul>
+<blockquote>
+<p>内环不是“坏人总部”；它真的维持了城市运转，只是它的效率建立在排除与低报上。</p>
+</blockquote>
+<h2 id="六通行与隔离">六、通行与隔离</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>通道</th>
+<th>用途</th>
+<th>限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主环轨</td>
+<td>三环日常通勤</td>
+<td>高峰期拥挤，事故时停运</td>
+</tr>
+<tr>
+<td>外环闸口</td>
+<td>值班/维修/救援</td>
+<td>需权限；可封舱</td>
+</tr>
+<tr>
+<td>船坞对接臂</td>
+<td>货运/救援</td>
+<td>外部风险最高</td>
+</tr>
+<tr>
+<td>维护竖井</td>
+<td>管线/电缆/检修</td>
+<td>狭窄、故障高发</td>
+</tr>
+<tr>
+<td>应急通道</td>
+<td>撤离/救援</td>
+<td>平时关闭，需人工开启</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="61-封舱的空间代价">6.1 封舱的空间代价</h3>
+<ul>
+<li>封舱能阻断故障/泄漏/敌人；</li>
+<li>但被封的段会失去供能、氧气循环与通行；</li>
+<li>被封段里的人可能被困；</li>
+<li>封舱决定应该留下“谁按下的、为什么”的记录。</li>
+</ul>
+<blockquote>
+<p>这直接支撑 S2 的“封舱/撤离”，也为未来“按舱段封舱”留接口。</p>
+</blockquote>
+<h2 id="七玩法接口">七、玩法接口</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>玩法</th>
+<th>可直接引用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>塔防</td>
+<td>弧形路径、分段塔位、湾口反向故障、外环闸口</td>
+</tr>
+<tr>
+<td>生存</td>
+<td>舱段、氧气循环、电力、封舱、撤离</td>
+</tr>
+<tr>
+<td>沉浸</td>
+<td>中环生活半径、养生舱、食堂、广播</td>
+</tr>
+<tr>
+<td>放置</td>
+<td>舱室/居住带/配给点</td>
+</tr>
+<tr>
+<td>叙事</td>
+<td>内环议会、档案馆、船坞救援</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="八待裁决">八、待裁决</h2>
+<ol type="1">
+<li>外环分段的正式编号/命名；</li>
+<li>三环之间的通行时间（分钟级）；</li>
+<li>中环居住舱的分配规则；</li>
+<li>湾口船坞是否常驻外部人员；</li>
+<li>封舱是否有“自动/手动”两套权限。</li>
+</ol>
+
+</article>
+
+</main>
+<footer class="page-foot">
+<span>LiveBay · design01 · 生成于 2026-11-04</span>
+<span><a href="../index.html">索引</a> · <a href="../../world/03_地理与三环.md">源 Markdown</a></span>
+</footer>
+</div>
+</div>
+</body>
+</html>
