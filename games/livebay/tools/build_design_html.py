@@ -67,7 +67,7 @@ DOCS = [
     ("tech/17_可插拔扩展架构.md", "表现与工程", "可插拔扩展架构", "manifest、preset、能力/层依赖、实验生命周期与发布 gate。"),
 ]
 MD_SET = {md for md, *_ in DOCS}
-GROUPS = ["开始", "世界观", "世界与职业", "玩法", "玩法扩展", "表现与工程"]
+GROUPS = ["开始", "世界观", "玩法", "玩法扩展", "表现与工程"]
 
 
 def to_html_name(md_name: str) -> str:
