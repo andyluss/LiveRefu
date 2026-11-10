@@ -144,6 +144,6 @@ system / light / dark
 
 ## 九、维护
 
-- 版本：与项目版本同步；当前项目 `0.1.130`；
+- 版本：与项目版本同步；当前项目 `0.1.131`；
 - 变更：项目级变更写入 `../CHANGELOG.md`，本目录不单独维护版本日志；
 - 入口：[`HUB.html`](HUB.html) ｜ [`GUIDE.html`](GUIDE.html) ｜ [项目 README](../README.md)。

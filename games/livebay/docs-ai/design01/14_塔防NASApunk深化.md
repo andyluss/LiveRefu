@@ -17,7 +17,7 @@ upstream:
   - "11_待人类裁决清单.md"
   - "../../../../docs/retro-futurism/附录_NASA朋克卷/09_软与硬_生物可塑性与机械模块化.md"
 related:
-  - "03_职业体系.md"
+  - "world/03_职业体系.md"
   - "tech/12_技术方案_Godot工程.md"
   - "numbers/README.md"
 ---

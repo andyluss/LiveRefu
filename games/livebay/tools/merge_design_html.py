@@ -24,7 +24,19 @@ GENERATED = "2026-11-04"
 
 DOC_GROUPS = [
     ("开始", ["README.html", "00_阅读指南与裁决规则.html", "01_项目北极星.html", "11_待人类裁决清单.html"]),
-    ("世界与职业", ["02_世界观_逍遥湾.html", "05_社会系统_慢好三生保障体系.html", "03_职业体系.html", "13_术语表.html"]),
+    ("世界观", [
+        "world/README.html",
+        "world/02_世界观_逍遥湾.html",
+        "world/03_职业体系.html",
+        "world/04_地理与三环.html",
+        "world/05_社会系统_慢好三生保障体系.html",
+        "world/06_舰队与组织.html",
+        "world/07_外环夜班与岗位.html",
+        "world/08_湾民生活.html",
+        "world/09_故障与事故文化.html",
+        "world/10_生存资源与舱段.html",
+    ]),
+    ("世界与职业", ["13_术语表.html"]),
     ("玩法", ["04_塔防玩法.html", "06_沉浸体验玩法.html", "07_放置养成玩法.html", "09_三玩法联动.html", "10_内容节奏与长期留存.html", "14_塔防NASApunk深化.html"]),
     ("玩法扩展", [
         "expansions/README.html",
