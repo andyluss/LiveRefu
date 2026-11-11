@@ -17,6 +17,8 @@
 })();
 </script>
 <style>
+:root{--st-done:#2e6f9e;--st-now:#3d7a50}
+html[data-theme="dark"]{--st-done:#83c3ea;--st-now:#91c38d}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:15px/1.65 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
 a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 35%,transparent)}
@@ -82,7 +84,7 @@ ol.tl{list-style:none;margin:6px 0;padding:0}
 ol.tl li{position:relative;padding:0 0 14px 22px;border-left:1px solid var(--line)}
 ol.tl li:last-child{border-left-color:transparent;padding-bottom:0}
 ol.tl li::before{content:"";position:absolute;left:-5px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--line-strong)}
-ol.tl li.done::before{background:var(--ok)}ol.tl li.now::before{background:var(--teal);box-shadow:0 0 0 4px color-mix(in srgb,var(--teal) 18%,transparent)}
+ol.tl li.done::before{background:var(--st-done)}ol.tl li.now::before{background:var(--st-now);box-shadow:0 0 0 4px color-mix(in srgb,var(--st-now) 18%,transparent)}
 ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 .note{border-left:3px solid var(--line-strong);background:var(--sunken);border-radius:0 var(--radius) var(--radius) 0;padding:11px 14px;margin:12px 0;color:var(--dim);font-size:13.5px}
 .note.warn{border-left-color:var(--amber)}.note.bad{border-left-color:var(--orange)}.note.ok{border-left-color:var(--ok)}
@@ -93,7 +95,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 .pm-top b{font-size:14.5px;color:var(--ink)}.pm-top span{display:block;color:var(--faint);font-size:12px;margin-top:2px}
 .pm-legend{display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--dim)}
 .pm-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:1px}
-.pm-legend .done i{background:var(--ok)}.pm-legend .now i{background:var(--teal)}.pm-legend .next i{background:var(--amber)}.pm-legend .todo i{background:var(--line-strong)}
+.pm-legend .done i{background:var(--st-done)}.pm-legend .now i{background:var(--st-now)}.pm-legend .next i{background:var(--amber)}.pm-legend .todo i{background:var(--line-strong)}
 .pm-lanes{display:grid;gap:8px;min-width:900px}
 .pm-lane{display:grid;grid-template-columns:132px 1fr;gap:10px;align-items:stretch;padding:5px 0;border-top:1px dashed var(--line)}
 .pm-lane:first-child{border-top:none}
@@ -105,8 +107,8 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 .pm-node b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:1px}
 .pm-node em{display:block;color:var(--faint);font-style:normal;font-size:11.5px}
 .pm-node .dot{position:absolute;left:9px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--line-strong);box-shadow:0 0 0 3px color-mix(in srgb,var(--line-strong) 16%,transparent)}
-.pm-node.done .dot{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 16%,transparent)}
-.pm-node.now .dot{background:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 18%,transparent)}
+.pm-node.done .dot{background:var(--st-done);box-shadow:0 0 0 3px color-mix(in srgb,var(--st-done) 16%,transparent)}
+.pm-node.now .dot{background:var(--st-now);box-shadow:0 0 0 3px color-mix(in srgb,var(--st-now) 18%,transparent)}
 .pm-node.next .dot{background:var(--amber);box-shadow:0 0 0 3px color-mix(in srgb,var(--amber) 18%,transparent)}
 .pm-node.todo{opacity:.78}
 .pm-node.todo .dot{background:var(--line-strong)}
@@ -141,7 +143,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="BOX-GAME.html">BOX-GAME</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.140</span> · 2026-11-11</div>
+      <div class="stamp">v<span data-fact="version">0.1.141</span> · 2026-11-11</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
