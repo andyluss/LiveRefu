@@ -23,7 +23,7 @@
   --line:#d5cbb8;--line-strong:#b8ad98;--teal:#2f6b65;--teal-soft:#dbe9e3;--orange:#c85a2b;
   --amber:#a96f17;--amber-soft:#f3e2c6;--ok:#3d7a50;--ok-soft:#deecd9;--danger:#a84532;
   --focus:#286b64;--radius:12px;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
-  --st-done:#2e6f9e;--st-now:#3d7a50;
+  --st-done:#2e6f9e;--st-now:#3d7a50;--st-next:#a96f17;--st-todo:#7d877f;
   --shadow:0 10px 30px rgba(50,42,30,.08);--stage:#ece4d3;--node:#fffdf6;
 }
 html[data-theme="dark"]{
@@ -32,7 +32,7 @@ html[data-theme="dark"]{
   --line:#33433d;--line-strong:#50635a;--teal:#7fb8ae;--teal-soft:#223d37;--orange:#e27b4c;
   --amber:#d5a54a;--amber-soft:#3b2f1d;--ok:#91c38d;--ok-soft:#22372a;--danger:#e08a72;
   --focus:#9ad8cf;--stage:#0d1714;--node:#1f2d27;--shadow:0 12px 34px rgba(0,0,0,.35);
-  --st-done:#83c3ea;--st-now:#91c38d;
+  --st-done:#83c3ea;--st-now:#91c38d;--st-next:#d5a54a;--st-todo:#83918a;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
@@ -60,7 +60,7 @@ h1{font-size:clamp(30px,4vw,52px);line-height:1.05;margin:0 0 10px;letter-spacin
 .hero-note b{color:var(--ink)}.hero-note p{margin:4px 0 0;color:var(--dim);font-size:12.5px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:11.5px;color:var(--dim);background:var(--sunken)}
-.chip i{width:7px;height:7px;border-radius:50%;background:var(--line-strong)}.chip.done i{background:var(--st-done)}.chip.now i{background:var(--st-now)}.chip.next i{background:var(--amber)}.chip.todo i{background:var(--faint)}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--line-strong)}.chip.done i{background:var(--st-done)}.chip.now i{background:var(--st-now)}.chip.next i{background:var(--st-next)}.chip.todo i{background:var(--st-todo)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .stat b{display:block;font:800 24px/1.2 monospace;color:var(--teal)}.stat span{display:block;color:var(--faint);font-size:11.5px;margin-top:2px}
@@ -101,14 +101,14 @@ input[type=range]{width:100%;accent-color:var(--teal)}
 .matrix{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
 .matrix th,.matrix td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
 .matrix th{color:var(--faint);font-size:11px;font-weight:600;letter-spacing:.03em}.matrix td b{color:var(--ink)}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line-strong);margin-right:5px}.dot.done{background:var(--st-done)}.dot.now{background:var(--st-now)}.dot.next{background:var(--amber)}.dot.todo{background:var(--faint)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line-strong);margin-right:5px}.dot.done{background:var(--st-done)}.dot.now{background:var(--st-now)}.dot.next{background:var(--st-next)}.dot.todo{background:var(--st-todo)}
 .horizon{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-.horizon .card{border-top:3px solid var(--line-strong)}.horizon .card.now{border-top-color:var(--st-now)}.horizon .card.next{border-top-color:var(--amber)}.horizon .card.todo{border-top-color:var(--faint)}
+.horizon .card{border-top:3px solid var(--line-strong)}.horizon .card.now{border-top-color:var(--st-now)}.horizon .card.next{border-top-color:var(--st-next)}.horizon .card.todo{border-top-color:var(--st-todo)}
 .risklist{display:grid;gap:8px}.risk{display:grid;grid-template-columns:1fr 90px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}.risk:last-child{border-bottom:0}.risk b{display:block;font-size:12px}.risk span{color:var(--faint);font-size:11px}
 .note{border-left:3px solid var(--teal);background:var(--sunken);padding:9px 12px;border-radius:0 8px 8px 0;color:var(--dim);font-size:12.5px;margin:12px 0}
 .note b{color:var(--ink)}
 .foot{max-width:1500px;margin:24px auto 0;padding:12px 22px 30px;border-top:1px solid var(--line);color:var(--faint);font-size:11.5px}
-.legend{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--faint)}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.legend .done i{background:var(--st-done)}.legend .now i{background:var(--st-now)}.legend .next i{background:var(--amber)}.legend .todo i{background:var(--faint)}
+.legend{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--faint)}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.legend .done i{background:var(--st-done)}.legend .now i{background:var(--st-now)}.legend .next i{background:var(--st-next)}.legend .todo i{background:var(--st-todo)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(max-width:1050px){.hero{grid-template-columns:1fr}.stage{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.wrap,.topbar-inner{padding-left:14px;padding-right:14px}.grid2,.grid3,.horizon,.side{grid-template-columns:1fr}.canvaswrap{min-height:520px}canvas{height:520px}.stamp{order:5;margin-left:0}.stats{grid-template-columns:1fr 1fr}}
@@ -123,7 +123,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
       <nav class="links" aria-label="相关页面">
         <a href="HUB.html">HUB</a><a href="GUIDE.html">GUIDE</a><a href="BOX-GAME.html">BOX-GAME →</a><a href="../docs-ai/design01/html/index.html">design01</a>
       </nav>
-      <div class="stamp">v0.1.141 · 2026-11-11</div>
+      <div class="stamp">v0.1.142 · 2026-11-11</div>
       <div class="theme" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -166,7 +166,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
     <button class="btn" id="autoRotate" aria-pressed="false">自动旋转</button>
     <button class="btn" id="resetCam">复位视角</button>
     <button class="btn subtle" id="focusNow">聚焦“现在”</button>
-    <span class="legend" aria-label="状态图例"><span class="done"><i></i>已落地</span><span class="now"><i></i>现在</span><span class="next"><i></i>下一</span><span class="todo"><i></i>未做</span></span>
+    <span class="legend" aria-label="状态图例"><span class="done"><i></i>✓ 已落地</span><span class="now"><i></i>● 现在</span><span class="next"><i></i>◐ 下一</span><span class="todo"><i></i>○ 未做</span></span>
   </div>
 
   <div class="stage">
@@ -304,6 +304,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
     ]}
   ];
   var statusName = { done: '已落地', now: '现在', next: '下一', todo: '未做' };
+  var statusGlyph = { done: '✓', now: '●', next: '◐', todo: '○' };
   var visible = { world: true, play: true, lab: true, tech: true, verify: true, content: true };
   var canvas = document.getElementById('projectCanvas');
   var ctx = canvas.getContext('2d');
@@ -323,7 +324,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
       teal: css.getPropertyValue('--teal').trim(), tealSoft: css.getPropertyValue('--teal-soft').trim(),
       orange: css.getPropertyValue('--orange').trim(), amber: css.getPropertyValue('--amber').trim(),
       ok: css.getPropertyValue('--ok').trim(), danger: css.getPropertyValue('--danger').trim(),
-      stDone: css.getPropertyValue('--st-done').trim(), stNow: css.getPropertyValue('--st-now').trim(),
+      stDone: css.getPropertyValue('--st-done').trim(), stNow: css.getPropertyValue('--st-now').trim(), stNext: css.getPropertyValue('--st-next').trim(), stTodo: css.getPropertyValue('--st-todo').trim(),
       sunken: css.getPropertyValue('--sunken').trim(), node: css.getPropertyValue('--node').trim()
     };
   }
@@ -361,7 +362,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
   }
 
   function layerColor(status) {
-    return status === 'done' ? palette.stDone : status === 'now' ? palette.stNow : status === 'next' ? palette.amber : palette.faint;
+    return status === 'done' ? palette.stDone : status === 'now' ? palette.stNow : status === 'next' ? palette.stNext : palette.stTodo;
   }
 
   function draw() {
@@ -434,7 +435,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
         ctx.fillStyle = palette.ink; ctx.font = '700 10px -apple-system,"PingFang SC","Noto Sans CJK SC",sans-serif';
         ctx.fillText(node.title, hit.x + 21, hit.y + 14);
         ctx.fillStyle = palette.faint; ctx.font = '8.5px monospace';
-        ctx.fillText(statusName[node.status], hit.x + 21, hit.y + 25);
+        ctx.fillText(statusGlyph[node.status] + ' ' + statusName[node.status], hit.x + 21, hit.y + 25);
       });
     });
 
