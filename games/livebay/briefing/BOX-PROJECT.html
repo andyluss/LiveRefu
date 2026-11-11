@@ -71,8 +71,8 @@ h1{font-size:clamp(30px,4vw,52px);line-height:1.05;margin:0 0 10px;letter-spacin
 .stagecard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
 .stagehead{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .stagehead b{font-size:13.5px}.stagehead span{color:var(--faint);font-size:11.5px}
-.canvaswrap{position:relative;background:var(--stage);min-height:520px}
-canvas{display:block;width:100%;height:560px;touch-action:none;cursor:grab}
+.canvaswrap{position:relative;background:var(--stage);min-height:700px}
+canvas{display:block;width:100%;height:700px;touch-action:none;cursor:grab}
 canvas:active{cursor:grabbing}
 .canvasmeta{position:absolute;left:12px;bottom:10px;font:11px monospace;color:var(--faint);pointer-events:none}
 .cam{position:absolute;right:10px;top:10px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
@@ -109,7 +109,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
 .legend{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--faint)}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.legend .done i{background:var(--ok)}.legend .now i{background:var(--teal)}.legend .next i{background:var(--amber)}.legend .todo i{background:var(--faint)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(max-width:1050px){.hero{grid-template-columns:1fr}.stage{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.wrap,.topbar-inner{padding-left:14px;padding-right:14px}.grid2,.grid3,.horizon,.side{grid-template-columns:1fr}canvas{height:430px}.stamp{order:5;margin-left:0}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.wrap,.topbar-inner{padding-left:14px;padding-right:14px}.grid2,.grid3,.horizon,.side{grid-template-columns:1fr}.canvaswrap{min-height:520px}canvas{height:520px}.stamp{order:5;margin-left:0}.stats{grid-template-columns:1fr 1fr}}
 @media print{.topbar,.cam,.toolbar,.theme,.dimlist,input[type=range]{display:none!important}.stage{display:block}.canvaswrap{display:none}body{background:#fff;color:#000}.card,.panel,.stagecard{box-shadow:none;border:1px solid #999;break-inside:avoid}a{color:#000;border-bottom:0}}
 </style>
 </head>
@@ -121,7 +121,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
       <nav class="links" aria-label="相关页面">
         <a href="HUB.html">HUB</a><a href="GUIDE.html">GUIDE</a><a href="BOX-GAME.html">BOX-GAME →</a><a href="../docs-ai/design01/html/index.html">design01</a>
       </nav>
-      <div class="stamp">v0.1.136 · 2026-11-11</div>
+      <div class="stamp">v0.1.137 · 2026-11-11</div>
       <div class="theme" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -338,7 +338,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
     var cp = Math.cos(pitch), sp = Math.sin(pitch);
     var y2 = y1 * cp - z * sp;
     var z2 = y1 * sp + z * cp;
-    var s = Math.min(view.w / 1050, view.h / 610) * zoom;
+    var s = Math.min(view.w / 1050, view.h / 720) * zoom;
     return { x: view.w / 2 + x1 * s, y: view.h / 2 + 35 + y2 * s, z: z2, s: s };
   }
 
