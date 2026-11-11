@@ -121,7 +121,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
       <nav class="links" aria-label="相关页面">
         <a href="HUB.html">HUB</a><a href="GUIDE.html">GUIDE</a><a href="BOX-GAME.html">BOX-GAME →</a><a href="../docs-ai/design01/html/index.html">design01</a>
       </nav>
-      <div class="stamp">v0.1.138 · 2026-11-11</div>
+      <div class="stamp">v0.1.139 · 2026-11-11</div>
       <div class="theme" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -160,6 +160,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
 
   <div class="toolbar" role="toolbar" aria-label="地图控制">
     <button class="btn on" data-view="stack" aria-pressed="true">3D 分层</button>
+    <button class="btn on" id="togglePerspective" aria-pressed="true">透视投影</button>
     <button class="btn" id="autoRotate" aria-pressed="false">自动旋转</button>
     <button class="btn" id="resetCam">复位视角</button>
     <button class="btn subtle" id="focusNow">聚焦“现在”</button>
@@ -306,6 +307,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
   var ctx = canvas.getContext('2d');
   var inspector = document.getElementById('inspector');
   var yaw = -0.56, pitch = 0.95, zoom = 0.82, auto = false, hover = null, selected = null;
+  var perspective = true;
   var view = { w: 0, h: 0, dpr: 1 };
   var nodeHits = [];
   var palette = {};
@@ -338,8 +340,10 @@ input[type=range]{width:100%;accent-color:var(--teal)}
     var cp = Math.cos(pitch), sp = Math.sin(pitch);
     var y2 = y1 * cp - z * sp;
     var z2 = y1 * sp + z * cp;
-    var s = Math.min(view.w / 1050, view.h / 720) * zoom;
-    return { x: view.w / 2 + x1 * s, y: view.h / 2 + 90 + y2 * s, z: z2, s: s };
+    var s = Math.min(view.w / 1050, view.h / 720) * zoom * 1.25;
+    // 透视：越靠后的层越小；正交作为对照可切换。
+    var p = perspective ? (1500.0 / (1500.0 + z2 * 0.85)) : 1.0;
+    return { x: view.w / 2 + x1 * s * p, y: view.h / 2 + 100 + y2 * s * p, z: z2, s: s * p, p: p };
   }
 
   function roundRect(x, y, w, h, r) {
@@ -505,6 +509,13 @@ input[type=range]{width:100%;accent-color:var(--teal)}
 
   document.querySelectorAll('[data-layer]').forEach(function (cb) {
     cb.addEventListener('change', function () { visible[cb.dataset.layer] = cb.checked; draw(); });
+  });
+  document.getElementById('togglePerspective').addEventListener('click', function () {
+    perspective = !perspective;
+    this.setAttribute('aria-pressed', perspective ? 'true' : 'false');
+    this.textContent = perspective ? '透视投影' : '正交投影';
+    this.classList.toggle('on', perspective);
+    draw();
   });
   document.getElementById('resetCam').addEventListener('click', function () { yaw = -0.56; pitch = 0.95; zoom = 0.82; draw(); });
   document.getElementById('zoomIn').addEventListener('click', function () { zoom = Math.min(1.5, zoom + 0.08); draw(); });
