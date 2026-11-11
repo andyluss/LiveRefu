@@ -121,7 +121,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
       <nav class="links" aria-label="相关页面">
         <a href="HUB.html">HUB</a><a href="GUIDE.html">GUIDE</a><a href="BOX-GAME.html">BOX-GAME →</a><a href="../docs-ai/design01/html/index.html">design01</a>
       </nav>
-      <div class="stamp">v0.1.137 · 2026-11-11</div>
+      <div class="stamp">v0.1.138 · 2026-11-11</div>
       <div class="theme" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -339,7 +339,7 @@ input[type=range]{width:100%;accent-color:var(--teal)}
     var y2 = y1 * cp - z * sp;
     var z2 = y1 * sp + z * cp;
     var s = Math.min(view.w / 1050, view.h / 720) * zoom;
-    return { x: view.w / 2 + x1 * s, y: view.h / 2 + 35 + y2 * s, z: z2, s: s };
+    return { x: view.w / 2 + x1 * s, y: view.h / 2 + 90 + y2 * s, z: z2, s: s };
   }
 
   function roundRect(x, y, w, h, r) {
