@@ -411,6 +411,36 @@ const pages = [
     quote: '先让界面像一个可以理解的空间，再让它像一个可以阅读的文档。',
     quoteBy: '12 · 空间直觉',
   },
+  {
+    slug: '13_白盒化方法_把系统翻过来',
+    n: '13',
+    title: '白盒化方法',
+    subtitle: '把系统翻过来',
+    thesis: '白盒化不是全曝光，而是把来源、结构、代价、权限与退路放在正确的分辨率上。',
+    visual: `
+      <div class="matrix">
+        <div class="quad solar"><div class="tag">SEE</div><b>看见</b><span>可视化 · 地图 · 空间 · 仪表 · 时间</span></div>
+        <div class="quad"><div class="tag">VERIFY</div><b>核对</b><span>数据 · 标准 · 来源 · 审计 · 测试</span></div>
+        <div class="quad mid"><div class="tag">CONTROL</div><b>控制</b><span>接口 · 模块 · 回放 · 沙盘 · 解释</span></div>
+        <div class="quad cyber"><div class="tag">EXIT</div><b>参与 / 退出</b><span>开源 · 参与 · 文档 · 版本 · 代价</span></div>
+      </div>`,
+    caption: '29 种方法不是 29 个都要做；先选与问题匹配的 3–5 种，让外部人能够核对。',
+    points: [
+      ['不是全曝光', '透明不是把所有信息摊开；曝光不等于可理解，可理解不等于可核对。'],
+      ['五目标', '可见、可核、可参与、可控、可退；缺一项就会退化成透明表演或仪表盘倾倒。'],
+      ['先组合', '开源、可视化、透明、标准、数据、地图各自回答不同问题，不能互相替代。'],
+    ],
+    map: [
+      ['01', '看见', '可视化、地图化、空间化、仪表化、时间化。'],
+      ['02', '核对', '数据化、标准化、来源化、可追溯、可审计、可测试、基线化。'],
+      ['03', '控制', '可控化、接口化、模块化、回放、沙盘、可解释。'],
+      ['04', '参与/退出', '开源、参与、文档、版本、代价、可退出、可维护。'],
+      ['05', '反模式', '透明表演、仪表盘倾倒、开源洗白、标准锁定、假精确、地图谎言。'],
+      ['06', 'LiveBay 组合', '数据管线 + BOX 地图 + verify/生存测试 + 文档；先补来源/代价/退出。'],
+    ],
+    quote: '白盒化不是把墙拆掉，而是把墙的位置、材料、门和钥匙都标出来。',
+    quoteBy: '13 · 白盒化方法',
+  },
 ]
 
 const total = pages.length
@@ -495,7 +525,7 @@ const index = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>青橙设计 · 理念可视化索引</title>
-<meta name="description" content="青橙设计理念系列 00–11 的可视化索引。">
+<meta name="description" content="青橙设计理念系列 00–13 的可视化索引。">
   <script>
     (function () {
       document.documentElement.dataset.js = 'true';
@@ -514,11 +544,11 @@ const index = `<!doctype html>
 <header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">INDEX / ${String(total).padStart(2, '0')}</span></div></header>
 <main class="shell">
   <section class="hero">
-    <div><div class="eyebrow">Orange Design · Philosophy Index</div><h1>把理念<br><span class="thin">先看成一张图。</span></h1><p class="thesis">00–12 共 13 篇。每篇一页可视化：先看关系，再回到原文读论证。所有页面共用一份 CSS，不依赖外部字体、脚本或网络。</p></div>
+    <div><div class="eyebrow">Orange Design · Philosophy Index</div><h1>把理念<br><span class="thin">先看成一张图。</span></h1><p class="thesis">00–13 共 14 篇。每篇一页可视化：先看关系，再回到原文读论证。所有页面共用一份 CSS，不依赖外部字体、脚本或网络。</p></div>
     <aside class="hero-aside"><b>READ</b>从 00 总纲开始<br><br><b>USE</b>评审时先看图<br><br><b>SOURCE</b>design/philosophy/</aside>
   </section>
   <div class="rule"></div>
-  <section class="block"><p class="kicker">Twelve papers · twelve images</p><h2>可视化目录</h2><div class="grid3">${cards}</div></section>
+  <section class="block"><p class="kicker">Fourteen papers · fourteen images</p><h2>可视化目录</h2><div class="grid3">${cards}</div></section>
   <div class="nav"><a href="../README.md">系列索引</a><a href="../00_总纲_青橙设计.md">00 总纲原文</a><a href="../10_设计思维_从问题到可被体验的答案.md">10 设计思维原文</a></div>
   <footer class="footer"><span>青橙设计 · philosophy/html/</span><span>静态 HTML · 可离线打开</span></footer>
 </main>
