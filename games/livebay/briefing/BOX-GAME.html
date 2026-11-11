@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveBay · BOX-GAME · 白盒游戏沙盘</title>
+<meta name="description" content="LiveBay 游戏白盒化：空间、时间、经济、威胁、故障、生存与数据。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f1ede3;--panel:#fffaf0;--sunken:#e8e0d1;--ink:#1e2a27;--dim:#5c6861;--faint:#7d887f;
+  --line:#d4cab8;--line-strong:#b5aa95;--teal:#2f6b65;--teal-soft:#dbe9e3;--orange:#c85a2b;
+  --amber:#a96f17;--amber-soft:#f2e1c4;--ok:#3d7a50;--ok-soft:#deecd9;--danger:#a84532;
+  --focus:#286b64;--radius:12px;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --shadow:0 10px 30px rgba(50,42,30,.08);--stage:#e9e1d0;--node:#fffdf6;
+}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111a18;--panel:#18231f;--sunken:#1d2b26;--ink:#e9e5d8;--dim:#aebbb3;--faint:#83918a;
+  --line:#33433d;--line-strong:#50635a;--teal:#7fb8ae;--teal-soft:#223d37;--orange:#e27b4c;
+  --amber:#d5a54a;--amber-soft:#3b2f1d;--ok:#91c38d;--ok-soft:#22372a;--danger:#e08a72;
+  --focus:#9ad8cf;--stage:#0d1714;--node:#1f2d27;--shadow:0 12px 34px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+body{min-height:100vh}
+a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 35%,transparent)}
+a:hover{border-bottom-color:var(--focus)}
+button{font:inherit;color:inherit}
+code{font-family:var(--mono);font-size:.88em;background:var(--sunken);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+.wrap{max-width:1500px;margin:0 auto;padding:0 22px 34px}
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1500px;margin:0 auto;padding:10px 22px 0}
+.topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.03em;font-size:18px}.brand span{color:var(--faint);font-size:12px;font-weight:400;margin-left:7px;letter-spacing:.08em}
+.links{display:flex;gap:6px;flex-wrap:wrap}.links a{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.stamp{color:var(--faint);font-size:12px;margin-left:auto}
+.theme{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.theme button{appearance:none;border:0;background:transparent;color:var(--dim);padding:5px 9px;font-size:12px;cursor:pointer}
+.theme button[aria-pressed="true"]{background:var(--teal);color:#fff}
+.subhint{color:var(--faint);font-size:12px;margin:4px 0 10px}
+.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:20px;padding:26px 0 10px;align-items:end}
+.kicker{font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:7px}
+h1{font-size:clamp(30px,4vw,52px);line-height:1.05;margin:0 0 10px;letter-spacing:-.03em}
+.lede{color:var(--dim);max-width:74ch;margin:0;font-size:15px}
+.hero-note{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;box-shadow:var(--shadow)}
+.hero-note b{color:var(--ink)}.hero-note p{margin:4px 0 0;color:var(--dim);font-size:12.5px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font:800 23px/1.2 var(--mono);color:var(--teal)}.stat span{display:block;color:var(--faint);font-size:11.5px;margin-top:2px}
+.toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.btn{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:8px;padding:7px 10px;font-size:12.5px;cursor:pointer}
+.btn:hover{border-color:var(--teal);color:var(--ink)}
+.btn[aria-pressed="true"],.btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.subtle{background:transparent}
+.mapbtn{min-width:120px;text-align:left}
+.mapbtn small{display:block;color:var(--faint);font-size:10.5px}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.stagecard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.stagehead{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.stagehead b{font-size:13.5px}.stagehead span{color:var(--faint);font-size:11.5px}
+.canvaswrap{position:relative;background:var(--stage);min-height:520px}
+canvas{display:block;width:100%;height:560px;touch-action:none;cursor:grab}
+canvas:active{cursor:grabbing}
+.canvasmeta{position:absolute;left:12px;bottom:10px;font:11px var(--mono);color:var(--faint);pointer-events:none}
+.cam{position:absolute;right:10px;top:10px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.cam .btn{padding:4px 7px;font-size:11px;background:color-mix(in srgb,var(--panel) 88%,transparent)}
+.legend{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--faint)}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.legend .done i{background:var(--ok)}.legend .now i{background:var(--teal)}.legend .next i{background:var(--amber)}.legend .todo i{background:var(--faint)}
+.side{display:grid;gap:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
+.panel h2,.panel h3{margin:0 0 7px;font-size:13.5px;color:var(--ink)}
+.panel p{margin:4px 0;color:var(--dim);font-size:12.5px}
+.inspector{min-height:200px}.inspector .tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 7px;color:var(--faint);margin-bottom:6px}
+.inspector b{color:var(--ink)}
+.dimlist{display:grid;gap:4px}.dimrow{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.dimrow:last-child{border-bottom:0}.dimrow input{accent-color:var(--teal)}.dimrow span{color:var(--dim)}.dimrow em{margin-left:auto;color:var(--faint);font:10.5px var(--mono);font-style:normal}
+.slider{display:grid;gap:2px;margin:8px 0}.slider label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim)}.slider output{font:11px var(--mono);color:var(--teal)}
+input[type=range]{width:100%;accent-color:var(--teal)}
+.bars{display:grid;gap:7px;margin-top:8px}.barrow{display:grid;grid-template-columns:84px 1fr 34px;gap:6px;align-items:center;font-size:11.5px;color:var(--dim)}
+.bar{height:7px;background:var(--sunken);border:1px solid var(--line);border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--ok))}
+.bar.risk i{background:linear-gradient(90deg,var(--amber),var(--danger))}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 5px;font-size:13.5px}.card p{margin:4px 0;color:var(--dim);font-size:12.5px}
+.towers{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.tower{appearance:none;text-align:left;border:1px solid var(--line);background:var(--sunken);border-radius:8px;padding:8px 9px;cursor:pointer;color:var(--dim);font-size:11.5px}
+.tower:hover{border-color:var(--teal)}.tower[aria-pressed="true"]{border-color:var(--orange);background:var(--amber-soft)}
+.tower b{display:block;color:var(--ink);font-size:12.5px}.tower small{display:block;color:var(--faint);font-size:10.5px;margin-top:2px}
+.table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}.table th,.table td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}.table th{color:var(--faint);font-size:11px;font-weight:600;letter-spacing:.03em}.table td b{color:var(--ink)}
+.heat{display:grid;grid-template-columns:100px repeat(7,1fr);gap:2px;font-size:10px;margin-top:6px;overflow-x:auto;min-width:620px}
+.heat div{padding:5px 4px;text-align:center;border-radius:3px;color:var(--ink);background:var(--sunken);border:1px solid transparent;white-space:nowrap}
+.heat .h{color:var(--faint);background:transparent;text-align:left}.heat .v{font-family:var(--mono)}
+.note{border-left:3px solid var(--teal);background:var(--sunken);padding:9px 12px;border-radius:0 8px 8px 0;color:var(--dim);font-size:12.5px;margin:12px 0}.note b{color:var(--ink)}
+.survival{display:none}.survival.on{display:block}
+.survival .stitle{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:5px}.survival .stitle b{font-size:13px}.survival .stitle span{font:10px var(--mono);color:var(--faint)}
+.survival .gauge{display:grid;grid-template-columns:70px 1fr 38px;gap:6px;align-items:center;font-size:11px;color:var(--dim);margin:5px 0}.survival .gauge .bar{height:8px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.flow div{background:var(--sunken);border:1px solid var(--line);border-radius:8px;padding:9px;font-size:11.5px;color:var(--dim)}.flow b{display:block;color:var(--ink);font-size:12px;margin-bottom:2px}
+.foot{max-width:1500px;margin:24px auto 0;padding:12px 22px 30px;border-top:1px solid var(--line);color:var(--faint);font-size:11.5px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:1100px){.hero{grid-template-columns:1fr}.stage{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.wrap,.topbar-inner{padding-left:14px;padding-right:14px}.grid2,.grid3,.side,.flow{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}canvas{height:440px}.stamp{order:5;margin-left:0}.towers{grid-template-columns:1fr 1fr}}
+@media print{.topbar,.cam,.toolbar,.theme,.dimlist,input[type=range],canvas{display:none!important}.stage{display:block}.card,.panel,.stagecard{box-shadow:none;border:1px solid #999;break-inside:avoid}body{background:#fff;color:#000}a{color:#000;border-bottom:0}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topline">
+      <div class="brand">BOX-GAME<span>白盒游戏沙盘</span></div>
+      <nav class="links" aria-label="相关页面">
+        <a href="HUB.html">HUB</a><a href="BOX-PROJECT.html">← BOX-PROJECT</a><a href="GUIDE.html">GUIDE</a><a href="../docs-ai/design01/html/index.html">design01</a>
+      </nav>
+      <div class="stamp">v0.1.136 · 2026-11-11</div>
+      <div class="theme" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+      </div>
+    </div>
+    <div class="subhint">把一局翻过来：空间、时间、经济、威胁、故障、生存，各自可开关；点击塔位/塔/波次，看内部数字。</div>
+  </div>
+</header>
+<div class="wrap">
+  <section class="hero" aria-labelledby="gtitle">
+    <div>
+      <div class="kicker">WHITEBOX / GAME / 2026-11-11</div>
+      <h1 id="gtitle">把一局<br>拆成可以摸的零件。</h1>
+      <p class="lede">这不是游戏录屏，是游戏的白盒沙盘：地图、塔位、波次、经济、威胁矩阵、故障与低功率夜班，全部摊开。改地图、改波次、点塔位、开层，看看数字从哪里来、压力在哪里断。</p>
+      <div class="legend" aria-label="图例"><span class="done"><i></i>已有数据</span><span class="now"><i></i>当前选择</span><span class="next"><i></i>下一步</span><span class="todo"><i></i>未做</span></div>
+    </div>
+    <aside class="hero-note">
+      <b>先看哪里</b>
+      <p>1）拖动画布看空间；2）点「低功率夜班」看生存；3）切波次看时间；4）点塔位/塔卡看经济。所有数字是当前仓库快照的白盒估算，不是最终平衡。</p>
+      <p><a href="../docs-ai/design01/gameplay/04_塔防玩法.md">04 塔防</a> · <a href="../docs-ai/design01/lab/01_塔防生存玩法建议.md">生存建议</a></p>
+    </aside>
+  </section>
+
+  <div class="stats" aria-label="游戏事实">
+    <div class="stat"><b id="statMap">3</b><span>地图</span></div>
+    <div class="stat"><b id="statWaves">8</b><span>波次</span></div>
+    <div class="stat"><b id="statTowers">6</b><span>塔型</span></div>
+    <div class="stat"><b id="statEnemies">7</b><span>敌人 / 故障</span></div>
+    <div class="stat"><b id="statEnergy">90</b><span>初始供能</span></div>
+  </div>
+
+  <div class="toolbar" role="toolbar" aria-label="地图与波次控制">
+    <div id="mapButtons" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    <button class="btn" id="prevWave" aria-label="上一波">← 波次</button>
+    <input id="waveRange" type="range" min="0" max="7" value="0" style="max-width:150px" aria-label="选择波次">
+    <button class="btn" id="nextWave" aria-label="下一波">波次 →</button>
+    <button class="btn" id="playWave">▶ 播一波</button>
+    <button class="btn" id="autoBuild">自动布防</button>
+    <button class="btn" id="resetBuild">清空</button>
+    <span class="legend"><span class="now"><i></i>选中</span><span class="done"><i></i>已建</span></span>
+  </div>
+
+  <div class="stage">
+    <div class="stagecard">
+      <div class="stagehead"><b id="mapTitle">外环第七段 / Bay 01</b><span>拖动旋转 · 滚轮缩放 · 点塔位建造 · 右键拆除</span></div>
+      <div class="canvaswrap">
+        <canvas id="gameCanvas" width="1100" height="560" tabindex="0" aria-label="可旋转的塔防地图白盒沙盘。拖动旋转，滚轮缩放，点击塔位建造。"></canvas>
+        <div class="cam">
+          <button class="btn" id="zoomIn" aria-label="放大">＋</button>
+          <button class="btn" id="zoomOut" aria-label="缩小">－</button>
+          <button class="btn" id="pitchUp" aria-label="抬高视角">↑</button>
+          <button class="btn" id="pitchDown" aria-label="降低视角">↓</button>
+          <button class="btn" id="resetCam" aria-label="复位视角">复位</button>
+        </div>
+        <div class="canvasmeta" id="canvasMeta">bay01 · wave 1 · 0 towers · drag to orbit</div>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="panel inspector" id="inspector" aria-live="polite">
+        <h2>检查器</h2>
+        <p>点塔位、塔卡或波次。这里显示当前选择的内部数字。</p>
+      </div>
+      <div class="panel">
+        <h2>显示维度</h2>
+        <div class="dimlist" id="dimensions">
+          <label class="dimrow"><input type="checkbox" checked data-dim="grid"><span>地面网格</span><em>space</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-dim="path"><span>路径与方向</span><em>route</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-dim="slots"><span>塔位</span><em>7</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-dim="ranges"><span>射程圈</span><em>range</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-dim="towers"><span>已建塔</span><em>build</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-dim="enemies"><span>敌人预览</span><em>wave</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-dim="labels"><span>标签</span><em>text</em></label>
+          <label class="dimrow"><input type="checkbox" data-dim="economy"><span>经济面板</span><em>energy</em></label>
+          <label class="dimrow"><input type="checkbox" data-dim="survival"><span>低功率夜班</span><em>survival</em></label>
+        </div>
+        <p class="chart-note" style="color:var(--faint);font-size:11px;margin-top:6px">经济/生存是面板层；空间层始终保留路径与塔位，避免“看不见原因”。</p>
+      </div>
+      <div class="panel survival" id="survivalPanel">
+        <div class="stitle"><b>低功率夜班</b><span>LAB · S1/S2</span></div>
+        <p style="font-size:11.5px">日蚀窗口 + 储能不足。拖动分配电力；氧归零只扣评级。</p>
+        <div class="gauge"><span>救援</span><div class="bar"><i id="rescueBar" style="width:100%"></i></div><output id="rescueOut">5:00</output></div>
+        <div class="gauge"><span>O2</span><div class="bar"><i id="oxygenBar" style="width:100%"></i></div><output id="oxygenOut">100%</output></div>
+        <div class="gauge"><span>功率</span><div class="bar"><i id="powerBar" style="width:50%"></i></div><output id="powerOut">50%</output></div>
+        <div class="slider"><label for="powerShare">塔组 / 生命 <output id="powerShareOut">50 / 50</output></label><input id="powerShare" type="range" min="10" max="90" value="50"></div>
+        <button class="btn" id="battery">备用电池 +40</button>
+      </div>
+      <div class="panel" id="economyPanel" hidden>
+        <h2>经济 / 白盒</h2>
+        <div class="bars">
+          <div class="barrow"><span>初始供能</span><div class="bar"><i id="eStart" style="width:100%"></i></div><output id="eStartOut">90</output></div>
+          <div class="barrow"><span>已花费</span><div class="bar risk"><i id="eSpent" style="width:0%"></i></div><output id="eSpentOut">0</output></div>
+          <div class="barrow"><span>本波奖励</span><div class="bar"><i id="eReward" style="width:0%"></i></div><output id="eRewardOut">0</output></div>
+          <div class="barrow"><span>剩余</span><div class="bar"><i id="eLeft" style="width:100%"></i></div><output id="eLeftOut">90</output></div>
+        </div>
+        <p class="hint" style="color:var(--faint);font-size:11px;margin-top:6px">奖励=该波击杀赏金上限；未计漏过/维修/升级。</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>时间 / 波次账本</h3>
+      <p id="waveSummary">—</p>
+      <table class="table" id="waveTable"><thead><tr><th>组</th><th>数量</th><th>间隔</th><th>HP</th><th>赏金</th><th>威胁</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="card">
+      <h3>空间 / 地图修饰</h3>
+      <p id="mapDesc">—</p>
+      <table class="table" id="mapMods"><tbody></tbody></table>
+      <div class="note"><b>白盒读法：</b>地图不是背景，是 modifier：供能/保障度/塔伤/路径长度。塔位沿弧线，覆盖的是“路径段”，不是“格子”。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>塔卡 / 现在能建什么</h3>
+    <p>选中一张塔卡，再点地图塔位。价格/射程/DPS 来自当前数据快照；DPS 是裸值，不含护甲/减速/标记。</p>
+    <div class="towers" id="towerCards"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>威胁矩阵 / 塔 × 敌</h3>
+      <p>数值是“相对适配度”0–5，不是实际击杀时间；用于看分工与盲区。列是敌人，行是塔。</p>
+      <div class="heat" id="heat"></div>
+    </div>
+    <div class="card">
+      <h3>敌人 / 故障</h3>
+      <div id="enemyCards"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>系统流 / 谁改了什么</h3>
+      <div class="flow">
+        <div><b>Data</b>numbers → JSON → MissionPack；hash/清单。</div>
+        <div><b>Sim</b>路径/塔/敌/波/故障；固定步长。</div>
+        <div><b>Runtime</b>Clock/EventBus/CommandBus/BlackBox；回放。</div>
+        <div><b>View</b>ReadModel → HUD；渲染不写规则。</div>
+      </div>
+      <p style="margin-top:8px">白盒化不是把 UI 变透明，而是让改变有边界：数据、规则、视图、记录各自可指认。</p>
+    </div>
+    <div class="card">
+      <h3>这页故意没做的事</h3>
+      <p>没有假装完整战斗、没有真实寻路、没有精确 DPS 模拟、没有在线数据。它是设计沙盘：帮你看结构、压力与缺口，不替平衡拍板。</p>
+      <p><a href="BOX-PROJECT.html">← 回到项目白盒</a> · <a href="../docs-ai/design01/lab/01_塔防生存玩法建议.md">生存建议</a> · <a href="../docs-ai/design01/tech/12_技术方案_Godot工程.md">tech/12</a></p>
+    </div>
+  </div>
+</div>
+<footer class="foot">BOX-GAME · 白盒游戏沙盘 · 数据快照 v0.1.136 · 所有数字是设计参考，不是最终平衡。</footer>
+
+<script>
+window.__GAME_DATA__ = {"baseEnergy":90,"maps":{"bay01":{"id":"bay01","name":"外环第七段","description":"月牙外弧的一段舱壁。左侧是尖角入口，右侧是湾口。","modifiers":{"energy_delta":0,"integrity_delta":0,"speed_mult":1.0,"damage_mult":1.0},"path":[[-60,540],[110,505],[250,450],[390,385],[530,340],[660,325],[790,340],[930,385],[1070,450],[1180,505]],"slots":[[260,530],[390,470],[520,425],[650,405],[780,420],[910,462],[1040,520]],"base":{"pos":[1180,505],"radius":26}},"bay02":{"id":"bay02","name":"中环维护环","description":"中环的一条维护回路：从外环接口进入，绕行设备环，再从湾口离开。","modifiers":{"energy_delta":-15,"integrity_delta":-10,"speed_mult":1.15,"damage_mult":0.8},"path":[[-60,360],[120,380],[260,300],[380,220],[540,190],[700,220],[820,310],[880,430],[820,540],[680,590],[520,560],[420,470],[440,360],[560,300],[700,300],[800,370],[820,470],[740,540],[620,540],[520,480],[500,400],[580,350],[700,350],[780,420],[760,520],[650,560],[1180,505]],"slots":[[300,380],[430,260],[600,170],[760,260],[900,380],[900,520],[700,630],[500,630],[360,520]],"base":{"pos":[1180,505],"radius":26}},"bay03":{"id":"bay03","name":"湾口对接臂","description":"一条短而直的对接臂，塔位少，敌人很快到达湾口。","modifiers":{"energy_delta":10,"integrity_delta":-15,"speed_mult":1.0,"damage_mult":1.0},"path":[[-60,430],[120,450],[300,430],[480,400],[660,410],[840,450],[1000,480],[1180,505]],"slots":[[180,520],[360,340],[560,500],[780,540],[940,560]],"base":{"pos":[1180,505],"radius":26}}},"towers":[{"id":"interceptor","name":"拦截炮","cost":30,"range":120,"damage":10,"fire_rate":1.2,"kind":"single","color":"#D9622B","description":"单体射击，优先攻击最靠近湾口的敌人。"},{"id":"pulse","name":"脉冲环","cost":45,"range":105,"damage":5,"fire_rate":0.8,"kind":"aoe","slow":0.35,"slow_duration":1.5,"color":"#E0A22E","description":"范围脉冲，造成伤害并减速。适合处理密集的小型目标。"},{"id":"tractor","name":"牵引锚","cost":55,"range":110,"damage":4,"fire_rate":0.6,"kind":"aoe","slow":0.5,"slow_duration":2.0,"color":"#5C7C8A","description":"范围牵引，低伤害、强减速；适合把敌人留在射程里。"},{"id":"supply","name":"补给塔","cost":40,"range":0,"damage":0,"fire_rate":0,"kind":"supply","income":6,"income_interval":5.0,"repair":3,"color":"#7C8F6B","description":"每 5 秒产出供能，每波结束修复少量保障度。"},{"id":"welder","name":"焊补塔","cost":50,"range":0,"damage":0,"fire_rate":0,"kind":"supply","income":2,"income_interval":5.0,"repair":8,"color":"#6F8F8A","description":"低产出、高维修；修塔还是补输出？"},{"id":"beacon","name":"信标塔","cost":40,"range":140,"damage":2,"fire_rate":1.0,"kind":"single","mark_bonus":0.25,"mark_duration":2.0,"color":"#B47A16","description":"标记目标，使其他塔对其伤害提高 25%，持续 2s。"}],"enemies":[{"id":"debris","name":"碎片","hp":30,"speed":45,"reward":6,"leak_damage":8,"radius":9,"shape":"triangle","color":"#8C4A32","description":"星际尘埃结块，缓慢但数量多。"},{"id":"turbulence","name":"乱流","hp":20,"speed":85,"reward":5,"leak_damage":6,"radius":7,"shape":"diamond","color":"#E0A22E","description":"局部湍流，速度很快，容易漏过。"},{"id":"hulk","name":"重壳","hp":90,"speed":30,"reward":14,"leak_damage":18,"radius":12,"shape":"hexagon","color":"#2F3A3E","description":"致密残骸，血厚速度慢，漏过伤害高。"},{"id":"armor","name":"装甲片","hp":60,"speed":38,"reward":12,"leak_damage":16,"radius":12,"shape":"hexagon","color":"#5B6470","description":"高密度装甲残片，血厚、慢，漏过伤害高。"},{"id":"fault","name":"故障","hp":36,"speed":58,"reward":4,"leak_damage":0,"radius":8,"shape":"square","color":"#3E6F6B","behavior":"reverse","disable_duration":2.5,"disable_radius":100,"disable_targets":2,"description":"内部故障链，从湾口向外扩散；经过塔位时会让设施短暂离线。"},{"id":"carrier","name":"护盾载体","hp":70,"speed":34,"reward":16,"leak_damage":18,"radius":13,"shape":"hexagon","color":"#4D6A7A","damage_taken_mult":0.65,"description":"自带护盾，受到的伤害降低 35%；需要集中火力。"},{"id":"splitter","name":"分裂残片","hp":45,"speed":42,"reward":10,"leak_damage":12,"radius":10,"shape":"diamond","color":"#8C6A4A","split_into":"debris","split_count":2,"description":"死亡后分裂为 2 个碎片。"}],"waves":{"bay01":[{"index":1,"prep":30.0,"groups":[{"enemy":"debris","count":6,"interval":0.9,"delay":0.0}]},{"index":2,"prep":20.0,"groups":[{"enemy":"debris","count":8,"interval":0.8,"delay":0.0},{"enemy":"turbulence","count":4,"interval":1.0,"delay":5.0}]},{"index":3,"prep":20.0,"groups":[{"enemy":"turbulence","count":6,"interval":0.7,"delay":0.0},{"enemy":"hulk","count":2,"interval":2.0,"delay":4.0}]},{"index":4,"prep":20.0,"groups":[{"enemy":"debris","count":10,"interval":0.6,"delay":0.0},{"enemy":"turbulence","count":6,"interval":0.8,"delay":3.5},{"enemy":"hulk","count":2,"interval":2.0,"delay":8.0},{"enemy":"fault","count":1,"interval":1.0,"delay":6.0},{"enemy":"armor","count":1,"interval":2.0,"delay":12.0}]},{"index":5,"prep":20.0,"groups":[{"enemy":"debris","count":12,"interval":0.5,"delay":0.0},{"enemy":"turbulence","count":8,"interval":0.7,"delay":2.5},{"enemy":"hulk","count":4,"interval":1.6,"delay":6.0},{"enemy":"fault","count":1,"interval":5.0,"delay":4.0}]},{"index":6,"prep":20.0,"groups":[{"enemy":"debris","count":8,"interval":0.55,"delay":0.0},{"enemy":"turbulence","count":5,"interval":0.7,"delay":2.0},{"enemy":"carrier","count":1,"interval":1.0,"delay":8.0}]},{"index":7,"prep":20.0,"groups":[{"enemy":"hulk","count":3,"interval":1.6,"delay":0.0},{"enemy":"splitter","count":2,"interval":2.0,"delay":3.0},{"enemy":"fault","count":1,"interval":5.0,"delay":5.0}]},{"index":8,"prep":20.0,"groups":[{"enemy":"carrier","count":1,"interval":4.0,"delay":0.0},{"enemy":"splitter","count":2,"interval":1.4,"delay":2.0},{"enemy":"armor","count":1,"interval":2.0,"delay":6.0},{"enemy":"fault","count":1,"interval":6.0,"delay":4.0}]}],"bay02":[{"index":1,"prep":30.0,"groups":[{"enemy":"debris","count":8,"interval":0.9,"delay":0.0}]},{"index":2,"prep":20.0,"groups":[{"enemy":"debris","count":10,"interval":0.7,"delay":0.0},{"enemy":"turbulence","count":5,"interval":0.9,"delay":5.0}]},{"index":3,"prep":20.0,"groups":[{"enemy":"turbulence","count":8,"interval":0.6,"delay":0.0},{"enemy":"hulk","count":3,"interval":1.8,"delay":4.0}]},{"index":4,"prep":20.0,"groups":[{"enemy":"debris","count":12,"interval":0.55,"delay":0.0},{"enemy":"turbulence","count":8,"interval":0.7,"delay":3.0},{"enemy":"hulk","count":3,"interval":1.8,"delay":7.0},{"enemy":"armor","count":1,"interval":2.0,"delay":11.0},{"enemy":"fault","count":1,"interval":1.0,"delay":9.0}]},{"index":5,"prep":20.0,"groups":[{"enemy":"debris","count":14,"interval":0.45,"delay":0.0},{"enemy":"turbulence","count":10,"interval":0.6,"delay":2.5},{"enemy":"hulk","count":5,"interval":1.5,"delay":6.0},{"enemy":"armor","count":2,"interval":1.8,"delay":8.0},{"enemy":"fault","count":1,"interval":5.0,"delay":4.0}]},{"index":6,"prep":20.0,"groups":[{"enemy":"debris","count":10,"interval":0.5,"delay":0.0},{"enemy":"turbulence","count":6,"interval":0.65,"delay":2.0},{"enemy":"carrier","count":1,"interval":1.0,"delay":9.0}]},{"index":7,"prep":20.0,"groups":[{"enemy":"hulk","count":3,"interval":1.6,"delay":0.0},{"enemy":"splitter","count":3,"interval":2.0,"delay":3.0},{"enemy":"armor","count":1,"interval":2.0,"delay":7.0}]},{"index":8,"prep":20.0,"groups":[{"enemy":"carrier","count":1,"interval":4.0,"delay":0.0},{"enemy":"splitter","count":3,"interval":1.3,"delay":2.0},{"enemy":"fault","count":1,"interval":6.0,"delay":4.0}]}],"bay03":[{"index":1,"prep":30.0,"groups":[{"enemy":"debris","count":5,"interval":0.9,"delay":0.0}]},{"index":2,"prep":20.0,"groups":[{"enemy":"debris","count":7,"interval":0.8,"delay":0.0},{"enemy":"turbulence","count":4,"interval":1.0,"delay":5.0}]},{"index":3,"prep":20.0,"groups":[{"enemy":"turbulence","count":5,"interval":0.7,"delay":0.0},{"enemy":"hulk","count":2,"interval":2.0,"delay":4.0}]},{"index":4,"prep":20.0,"groups":[{"enemy":"debris","count":8,"interval":0.7,"delay":0.0},{"enemy":"turbulence","count":5,"interval":0.8,"delay":3.0},{"enemy":"hulk","count":2,"interval":2.0,"delay":7.0},{"enemy":"fault","count":1,"interval":1.0,"delay":6.0}]},{"index":5,"prep":20.0,"groups":[{"enemy":"debris","count":10,"interval":0.6,"delay":0.0},{"enemy":"turbulence","count":6,"interval":0.7,"delay":2.5},{"enemy":"hulk","count":3,"interval":1.7,"delay":6.0},{"enemy":"armor","count":1,"interval":2.0,"delay":9.0},{"enemy":"fault","count":1,"interval":5.0,"delay":4.0}]},{"index":6,"prep":20.0,"groups":[{"enemy":"debris","count":7,"interval":0.65,"delay":0.0},{"enemy":"turbulence","count":4,"interval":0.8,"delay":2.0},{"enemy":"carrier","count":1,"interval":1.0,"delay":7.0}]},{"index":7,"prep":20.0,"groups":[{"enemy":"hulk","count":2,"interval":1.8,"delay":0.0},{"enemy":"splitter","count":2,"interval":1.8,"delay":3.0},{"enemy":"fault","count":1,"interval":5.0,"delay":5.0}]},{"index":8,"prep":20.0,"groups":[{"enemy":"carrier","count":1,"interval":4.0,"delay":0.0},{"enemy":"splitter","count":2,"interval":1.4,"delay":2.0},{"enemy":"armor","count":1,"interval":2.0,"delay":6.0},{"enemy":"fault","count":1,"interval":6.0,"delay":4.0}]}]},"profession":{"id":"guard","name":"护湾卫兵","ring":"outer","description":"外环第七段的当班卫兵。你的班次从交接开始，到舱壁安全为止。","start_energy":90,"start_integrity":100,"tower_cost_mult":1.0}};
+(function () {
+  'use strict';
+  var DATA = window.__GAME_DATA__;
+  var root = document.documentElement, KEY = 'lrds-theme';
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var palette = {};
+  function readPalette() {
+    var css = getComputedStyle(root);
+    palette = {
+      bg: css.getPropertyValue('--stage').trim(), panel: css.getPropertyValue('--panel').trim(),
+      ink: css.getPropertyValue('--ink').trim(), dim: css.getPropertyValue('--dim').trim(),
+      faint: css.getPropertyValue('--faint').trim(), line: css.getPropertyValue('--line').trim(),
+      teal: css.getPropertyValue('--teal').trim(), orange: css.getPropertyValue('--orange').trim(),
+      amber: css.getPropertyValue('--amber').trim(), ok: css.getPropertyValue('--ok').trim(),
+      danger: css.getPropertyValue('--danger').trim(), sunken: css.getPropertyValue('--sunken').trim(),
+      node: css.getPropertyValue('--node').trim()
+    };
+  }
+  function applyTheme(choice) {
+    root.dataset.themeChoice = choice;
+    root.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    try { localStorage.setItem(KEY, choice); } catch (e) {}
+    document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.themeChoice === choice ? 'true' : 'false'); });
+    draw();
+  }
+  document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { applyTheme(b.dataset.themeChoice); }); });
+  mql.addEventListener('change', function () { if (root.dataset.themeChoice === 'system') applyTheme('system'); });
+  applyTheme(root.dataset.themeChoice || 'system');
+
+  var mapIds = Object.keys(DATA.maps);
+  var currentMap = 'bay01';
+  var waveIndex = 0;
+  var selectedTower = 'interceptor';
+  var selectedSlot = -1;
+  var placed = {};
+  var energy = 90;
+  var show = { grid: true, path: true, slots: true, ranges: true, towers: true, enemies: true, labels: true, economy: false, survival: false };
+  var camera = { yaw: -0.52, pitch: 0.95, zoom: 0.9 };
+  var canvas = document.getElementById('gameCanvas'), ctx = canvas.getContext('2d');
+  var view = { w: 0, h: 0, dpr: 1 };
+  var hits = [], hoverSlot = -1, playing = false, playT = 0;
+  var survival = { rescue: 300, oxygen: 120, oxygenMax: 120, power: 100, towerShare: .5, battery: false };
+
+  function towerById(id) { return DATA.towers.find(function (t) { return t.id === id; }); }
+  function enemyById(id) { return DATA.enemies.find(function (e) { return e.id === id; }); }
+  function map() { return DATA.maps[currentMap]; }
+  function waves() { return DATA.waves[currentMap]; }
+  function wave() { return waves()[Math.min(waveIndex, waves().length - 1)]; }
+  function escape(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fmt(n, d) { return (Math.round(n * (d ? 100 : 1)) / (d ? 100 : 1)).toFixed(d || 0); }
+
+  var slides = DATA.towers;
+  // UI: map buttons
+  var mb = document.getElementById('mapButtons');
+  mapIds.forEach(function (id) {
+    var b = document.createElement('button');
+    b.className = 'btn mapbtn' + (id === currentMap ? ' on' : '');
+    b.dataset.map = id;
+    b.innerHTML = escape(DATA.maps[id].name) + '<small>' + id + ' · ' + DATA.maps[id].slots.length + ' 塔位</small>';
+    b.addEventListener('click', function () { currentMap = id; waveIndex = 0; resetBuild(); syncUI(); });
+    mb.appendChild(b);
+  });
+
+  function syncMapButtons() {
+    document.querySelectorAll('[data-map]').forEach(function (b) { b.classList.toggle('on', b.dataset.map === currentMap); b.setAttribute('aria-pressed', b.dataset.map === currentMap ? 'true' : 'false'); });
+  }
+
+  function resetBuild() {
+    placed = {};
+    energy = DATA.baseEnergy;
+    var slots = map().slots;
+    [0, 1].forEach(function (i) { if (slots[i]) placed[i] = 'interceptor'; });
+    energy -= 60;
+    selectedSlot = -1;
+    survival = { rescue: 300, oxygen: 120, oxygenMax: 120, power: 100, towerShare: .5, battery: false };
+    syncUI();
+  }
+
+  function syncUI() {
+    syncMapButtons();
+    var w = wave();
+    document.getElementById('waveRange').max = String(waves().length - 1);
+    document.getElementById('waveRange').value = String(waveIndex);
+    document.getElementById('mapTitle').textContent = map().name + ' / ' + currentMap.toUpperCase();
+    document.getElementById('statMap').textContent = mapIds.length;
+    document.getElementById('statWaves').textContent = waves().length;
+    document.getElementById('statTowers').textContent = DATA.towers.length;
+    document.getElementById('statEnemies').textContent = DATA.enemies.length;
+    document.getElementById('statEnergy').textContent = DATA.baseEnergy;
+    document.getElementById('canvasMeta').textContent = currentMap + ' · wave ' + (waveIndex + 1) + ' · ' + Object.keys(placed).length + ' towers · drag to orbit';
+    renderWaveTable();
+    renderTowerCards();
+    renderEnemyCards();
+    renderHeat();
+    renderEconomy();
+    renderMapMods();
+    updateSurvival();
+    updateInspector();
+    draw();
+  }
+
+  function renderMapMods() {
+    var mods = map().modifiers || {};
+    var rows = [['供能修正', mods.energy_delta || 0], ['保障度修正', mods.integrity_delta || 0], ['塔伤倍率', mods.damage_mult || 1], ['速度倍率', mods.speed_mult || 1], ['路径节点', map().path.length], ['塔位', map().slots.length]];
+    document.getElementById('mapDesc').textContent = map().description || '';
+    document.querySelector('#mapMods tbody').innerHTML = rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td class="q"><b>' + (typeof r[1] === 'number' ? fmt(r[1], r[1] % 1 ? 1 : 0) : r[1]) + '</b></td></tr>'; }).join('');
+  }
+
+  function waveGroups() {
+    var out = [];
+    (wave().groups || []).forEach(function (g) {
+      var e = enemyById(g.enemy) || { name: g.enemy, hp: 0, reward: 0 };
+      out.push({ id: g.enemy, name: e.name, count: g.count, interval: g.interval, delay: g.delay, hp: e.hp, reward: e.reward });
+    });
+    return out;
+  }
+
+  function chooseDefaultTowerForSlot(slot) {
+    var prefs = ['interceptor', 'pulse', 'tractor', 'beacon'];
+    for (var i = 0; i < prefs.length; i++) {
+      var t = towerById(prefs[i]);
+      if (energy >= t.cost) return prefs[i];
+    }
+    return null;
+  }
+
+  function buildSlot(slot) {
+    if (placed[slot]) { selectedSlot = slot; updateInspector(); draw(); return; }
+    var t = towerById(selectedTower);
+    if (!t || energy < t.cost) { flash('供能不足：' + (t ? t.cost : 0)); return; }
+    placed[slot] = selectedTower; energy -= t.cost; selectedSlot = slot;
+    updateInspector(); renderEconomy(); draw();
+  }
+
+  function flash(msg) {
+    var el = document.getElementById('inspector');
+    el.innerHTML = '<span class="tag">提示</span><p>' + escape(msg) + '</p>';
+  }
+
+  function renderWaveTable() {
+    var gs = waveGroups();
+    var totalHp = 0, totalReward = 0;
+    gs.forEach(function (g) { totalHp += g.count * g.hp; totalReward += g.count * g.reward; });
+    document.getElementById('waveSummary').innerHTML = '第 <b>' + (waveIndex + 1) + '</b> / ' + waves().length + ' 波 · 准备 ' + wave().prep + 's · ' + gs.length + ' 组 · 总量 <b>' + totalHp + ' HP</b> · 赏金上限 <b>' + totalReward + '</b>';
+    document.querySelector('#waveTable tbody').innerHTML = gs.map(function (g) {
+      return '<tr><td><b>' + escape(g.name) + '</b><br><span style="color:var(--faint);font-size:10.5px">' + g.id + '</span></td><td>' + g.count + '</td><td>' + g.interval + 's</td><td>' + g.hp + '</td><td>' + g.reward + '</td><td>' + (g.id === 'fault' ? '停塔/反向' : (g.count > 8 ? '数量' : '单点')) + '</td></tr>';
+    }).join('');
+    return { hp: totalHp, reward: totalReward };
+  }
+
+  function renderTowerCards() {
+    var root = document.getElementById('towerCards');
+    root.innerHTML = '';
+    DATA.towers.forEach(function (t) {
+      var b = document.createElement('button');
+      b.className = 'tower'; b.setAttribute('aria-pressed', selectedTower === t.id ? 'true' : 'false');
+      b.innerHTML = '<b>' + escape(t.name) + '</b><small>' + t.cost + ' 供能 · ' + (t.kind === 'supply' ? '后勤' : ('DPS ' + (t.damage * t.fire_rate).toFixed(1))) + ' · ' + escape(t.kind) + '</small>';
+      b.addEventListener('click', function () { selectedTower = t.id; renderTowerCards(); updateInspector(); draw(); });
+      root.appendChild(b);
+    });
+  }
+
+  function renderEnemyCards() {
+    var root = document.getElementById('enemyCards');
+    root.innerHTML = DATA.enemies.map(function (e) {
+      return '<div style="display:grid;grid-template-columns:80px 1fr;gap:6px;border-bottom:1px dashed var(--line);padding:5px 0;font-size:11.5px"><b>' + escape(e.name) + '</b><span style="color:var(--dim)">HP ' + e.hp + ' · 速度 ' + e.speed + ' · 漏过 ' + e.leak_damage + ' · 赏金 ' + e.reward + '</span><span></span><span style="color:var(--faint)">' + escape(e.description || '') + '</span></div>';
+    }).join('');
+  }
+
+  function threatScore(t, e) {
+    if (t.kind === 'supply') return 2 + (t.repair || 0) / 5;
+    var dps = (t.damage || 0) * (t.fire_rate || 0);
+    var base = dps / Math.max(8, (e.hp || 20) / 8);
+    if (e.id === 'fault') base = (t.damage || 0) > 0 ? 1.2 : 2.2;
+    if (e.id === 'turbulence') base += (t.slow || 0) * 2;
+    if (e.id === 'carrier') base *= .7;
+    if (e.id === 'splitter' && t.kind === 'aoe') base += 1;
+    if (e.id === 'hulk' && (t.damage || 0) >= 10) base += .7;
+    return Math.max(0, Math.min(5, base));
+  }
+
+  function renderHeat() {
+    var root = document.getElementById('heat');
+    var html = '<div class="h">塔 \\ 敌</div>' + DATA.enemies.map(function (e) { return '<div class="h">' + escape(e.name) + '</div>'; }).join('');
+    DATA.towers.forEach(function (t) {
+      html += '<div class="h">' + escape(t.name) + '</div>';
+      DATA.enemies.forEach(function (e) {
+        var v = threatScore(t, e);
+        var alpha = .10 + v / 5 * .55;
+        var color = t.kind === 'supply' ? 'color-mix(in srgb,var(--teal) ' + Math.round(alpha * 100) + '%,transparent)' : 'color-mix(in srgb,var(--orange) ' + Math.round(alpha * 100) + '%,transparent)';
+        html += '<div class="v" style="background:' + color + '">' + v.toFixed(1) + '</div>';
+      });
+    });
+    root.innerHTML = html;
+  }
+
+  function renderEconomy() {
+    var spent = 0; Object.keys(placed).forEach(function (s) { spent += towerById(placed[s]).cost; });
+    var w = renderWaveTable();
+    var left = DATA.baseEnergy - spent;
+    document.getElementById('eStart').style.width = '100%'; document.getElementById('eStartOut').textContent = DATA.baseEnergy;
+    document.getElementById('eSpent').style.width = Math.min(100, spent / DATA.baseEnergy * 100) + '%'; document.getElementById('eSpentOut').textContent = spent;
+    var reward = w.reward;
+    document.getElementById('eReward').style.width = Math.min(100, reward / DATA.baseEnergy * 100) + '%'; document.getElementById('eRewardOut').textContent = reward;
+    document.getElementById('eLeft').style.width = Math.max(0, left / DATA.baseEnergy * 100) + '%'; document.getElementById('eLeftOut').textContent = left;
+  }
+
+  function updateSurvival() {
+    document.getElementById('survivalPanel').classList.toggle('on', show.survival);
+    var maxO = survival.oxygenMax;
+    document.getElementById('rescueBar').style.width = Math.max(0, survival.rescue / 300 * 100) + '%';
+    document.getElementById('rescueOut').textContent = Math.floor(survival.rescue / 60) + ':' + String(Math.floor(survival.rescue % 60)).padStart(2, '0');
+    document.getElementById('oxygenBar').style.width = Math.max(0, survival.oxygen / maxO * 100) + '%';
+    document.getElementById('oxygenOut').textContent = Math.round(survival.oxygen / maxO * 100) + '%';
+    document.getElementById('powerBar').style.width = survival.towerShare * 100 + '%';
+    document.getElementById('powerOut').textContent = Math.round(survival.towerShare * 100) + '%';
+    document.getElementById('powerShareOut').textContent = Math.round(survival.towerShare * 100) + ' / ' + Math.round((1 - survival.towerShare) * 100);
+  }
+
+  function updateInspector() {
+    var el = document.getElementById('inspector');
+    if (selectedSlot >= 0) {
+      var tid = placed[selectedSlot];
+      if (tid) {
+        var t = towerById(tid);
+        el.innerHTML = '<span class="tag">塔位 ' + (selectedSlot + 1) + ' · ' + escape(t.name) + '</span><h2>' + escape(t.name) + '</h2><p>' + escape(t.description) + '</p><p>建造 ' + t.cost + ' · 射程 ' + t.range + ' · DPS ' + (t.damage * t.fire_rate).toFixed(1) + (t.slow ? ' · 减速 ' + Math.round(t.slow * 100) + '%' : '') + '</p><p style="color:var(--faint);font-size:11px">右键拆除 · 点击另一个塔位建造</p>';
+      } else {
+        el.innerHTML = '<span class="tag">空塔位 ' + (selectedSlot + 1) + '</span><h2>建造点</h2><p>当前选择：<b>' + escape((towerById(selectedTower) || {}).name || '—') + '</b> · ' + ((towerById(selectedTower) || {}).cost || 0) + ' 供能</p><p>点击左侧塔卡切换，或直接点地图塔位。</p>';
+      }
+      return;
+    }
+    var w = wave();
+    var gs = waveGroups();
+    el.innerHTML = '<span class="tag">波次 ' + (waveIndex + 1) + ' / ' + waves().length + '</span><h2>' + escape(gs.map(function (g) { return g.name; }).join(' · ')) + '</h2><p>准备 ' + w.prep + 's · ' + gs.reduce(function (n, g) { return n + g.count; }, 0) + ' 个目标 · 总量 ' + gs.reduce(function (n, g) { return n + g.count * g.hp; }, 0) + ' HP。</p><p style="color:var(--faint);font-size:11px">点击塔位看建造；点塔卡切换；点「播一波」看时间。</p>';
+  }
+
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    view.dpr = Math.min(2, window.devicePixelRatio || 1);
+    view.w = Math.max(320, r.width); view.h = Math.max(300, r.height);
+    canvas.width = Math.round(view.w * view.dpr); canvas.height = Math.round(view.h * view.dpr);
+    draw();
+  }
+  function project(x, y, z) {
+    x -= 640; y -= 360;
+    var cy = Math.cos(camera.yaw), sy = Math.sin(camera.yaw);
+    var x1 = x * cy - y * sy, y1 = x * sy + y * cy;
+    var cp = Math.cos(camera.pitch), sp = Math.sin(camera.pitch);
+    var y2 = y1 * cp - z * sp, z2 = y1 * sp + z * cp;
+    var s = Math.min(view.w / 1320, view.h / 760) * camera.zoom;
+    return { x: view.w / 2 + x1 * s, y: view.h / 2 + 28 + y2 * s, z: z2, s: s };
+  }
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+  function pathPoint(t) {
+    var path = map().path; if (!path.length) return { x: 640, y: 360 };
+    if (path.length === 1) return { x: path[0][0], y: path[0][1] };
+    var seg = Math.min(path.length - 2, Math.floor(t * (path.length - 1)));
+    var f = t * (path.length - 1) - seg;
+    var a = path[seg], b = path[seg + 1];
+    return { x: a[0] + (b[0] - a[0]) * f, y: a[1] + (b[1] - a[1]) * f };
+  }
+  function draw() {
+    if (!ctx) return;
+    readPalette();
+    ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+    ctx.clearRect(0, 0, view.w, view.h);
+    var bg = ctx.createLinearGradient(0, 0, 0, view.h); bg.addColorStop(0, palette.bg); bg.addColorStop(1, palette.sunken);
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, view.w, view.h);
+    if (show.grid) {
+      ctx.save(); ctx.globalAlpha = .28;
+      for (var gx = 0; gx <= 1280; gx += 80) { var a = project(gx, 0, 0), b = project(gx, 720, 0); ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.strokeStyle = palette.line; ctx.lineWidth = 1; ctx.stroke(); }
+      for (var gy = 0; gy <= 720; gy += 80) { var c = project(0, gy, 0), d = project(1280, gy, 0); ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.strokeStyle = palette.line; ctx.lineWidth = 1; ctx.stroke(); }
+      ctx.restore();
+    }
+    if (show.path) {
+      var pts = map().path.map(function (p) { return project(p[0], p[1], 0); });
+      ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); pts.forEach(function (p) { ctx.lineTo(p.x, p.y); });
+      ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 18; ctx.stroke();
+      ctx.strokeStyle = palette.amber; ctx.lineWidth = 9; ctx.stroke();
+      ctx.strokeStyle = palette.ink; ctx.lineWidth = 2; ctx.setLineDash([5, 8]); ctx.stroke(); ctx.setLineDash([]);
+      if (show.labels) {
+        ctx.fillStyle = palette.faint; ctx.font = '10px monospace';
+        ctx.fillText('湾口 / entry', pts[0].x - 8, pts[0].y + 22);
+        var last = pts[pts.length - 1]; ctx.fillText('base / 保障度', last.x - 40, last.y - 12);
+      }
+    }
+    // slots
+    hits = [];
+    map().slots.forEach(function (s, i) {
+      var p = project(s[0], s[1], 0);
+      var occupied = placed[i];
+      var isSel = selectedSlot === i, isHover = hoverSlot === i;
+      if (show.towers && occupied) {
+        var t = towerById(occupied);
+        var h = 34;
+        var top = project(s[0], s[1], h);
+        ctx.beginPath(); ctx.ellipse(p.x, p.y + 3, 13, 6, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.fill();
+        ctx.beginPath(); ctx.moveTo(p.x - 9, p.y); ctx.lineTo(top.x - 9, top.y); ctx.lineTo(top.x + 9, top.y); ctx.lineTo(p.x + 9, p.y); ctx.closePath(); ctx.fillStyle = t.color; ctx.fill();
+        ctx.beginPath(); ctx.ellipse(top.x, top.y, 9, 4.5, 0, 0, Math.PI * 2); ctx.fillStyle = palette.node; ctx.fill(); ctx.strokeStyle = t.color; ctx.lineWidth = 2; ctx.stroke();
+        if (show.labels) { ctx.fillStyle = palette.ink; ctx.font = '10px monospace'; ctx.fillText(t.name, top.x - 10, top.y - 8); }
+      }
+      if (show.slots) {
+        ctx.beginPath(); ctx.arc(p.x, p.y, isHover ? 15 : 11, 0, Math.PI * 2); ctx.fillStyle = isSel ? palette.orange : (occupied ? 'rgba(0,0,0,0)' : palette.node); ctx.fill(); ctx.strokeStyle = isSel ? palette.orange : palette.ink; ctx.lineWidth = isSel ? 3 : 1.5; ctx.stroke();
+        if (!occupied && show.labels) { ctx.fillStyle = palette.faint; ctx.font = '10px monospace'; ctx.fillText(String(i + 1), p.x + 12, p.y + 13); }
+      }
+      if (show.ranges && (isSel || isHover || (!occupied && selectedSlot < 0))) {
+        var t = towerById(selectedTower); if (t && t.range > 0) {
+          ctx.beginPath();
+          for (var a = 0; a <= 48; a++) { var aa = a / 48 * Math.PI * 2; var rp = project(s[0] + Math.cos(aa) * t.range, s[1] + Math.sin(aa) * t.range, 1); if (a === 0) ctx.moveTo(rp.x, rp.y); else ctx.lineTo(rp.x, rp.y); }
+          ctx.closePath(); ctx.fillStyle = 'rgba(47,107,101,.07)'; ctx.fill(); ctx.strokeStyle = palette.teal; ctx.lineWidth = 1; ctx.setLineDash([4, 5]); ctx.stroke(); ctx.setLineDash([]);
+        }
+      }
+      hits.push({ slot: i, x: p.x, y: p.y });
+    });
+    // base
+    var bp = project(map().base.pos[0], map().base.pos[1], 0);
+    ctx.beginPath(); ctx.arc(bp.x, bp.y, 20, 0, Math.PI * 2); ctx.fillStyle = palette.ink; ctx.fill(); ctx.strokeStyle = palette.orange; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = palette.orange; ctx.font = '700 10px monospace'; ctx.fillText('BASE', bp.x - 16, bp.y + 3);
+    // enemies
+    if (show.enemies) {
+      var gs = waveGroups(); var list = [];
+      gs.forEach(function (g) { for (var k = 0; k < g.count; k++) list.push(g); });
+      var t = playing ? playT : .25;
+      list.forEach(function (g, i) {
+        var progress = (t + i * 0.018) % 1;
+        var p = pathPoint(progress);
+        var e = enemyById(g.id) || { color: palette.faint, radius: 8 };
+        var sp = project(p.x, p.y, 8);
+        ctx.beginPath(); ctx.arc(sp.x, sp.y, Math.max(3, (e.radius || 8) * .55), 0, Math.PI * 2); ctx.fillStyle = e.color || palette.dim; ctx.fill(); ctx.strokeStyle = palette.ink; ctx.lineWidth = 1; ctx.stroke();
+      });
+      if (show.labels) { ctx.fillStyle = palette.faint; ctx.font = '10px monospace'; ctx.fillText('enemy preview · wave ' + (waveIndex + 1), 14, 20); }
+    }
+    // survival overlay
+    if (show.survival) {
+      ctx.save();
+      var x = 12, y = 22;
+      ctx.fillStyle = 'rgba(15,25,22,.82)'; roundRect(x, y, 174, 66, 8); ctx.fill();
+      ctx.fillStyle = '#f5efe2'; ctx.font = '700 11px monospace'; ctx.fillText('LOW POWER SHIFT', x + 10, y + 16);
+      ctx.font = '10px monospace'; ctx.fillStyle = '#b8c1bc'; ctx.fillText('rescue ' + Math.floor(survival.rescue / 60) + ':' + String(Math.floor(survival.rescue % 60)).padStart(2, '0'), x + 10, y + 31);
+      ctx.fillText('O2 ' + Math.round(survival.oxygen / survival.oxygenMax * 100) + '%  ·  power ' + Math.round(survival.towerShare * 100) + '%', x + 10, y + 45);
+      ctx.fillStyle = survival.oxygen < 30 ? '#e08a72' : '#7fb8ae'; ctx.fillRect(x + 10, y + 53, Math.max(0, survival.oxygen / survival.oxygenMax * 154), 4);
+      ctx.restore();
+    }
+  }
+  function hitSlot(ev) {
+    var r = canvas.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top;
+    for (var i = hits.length - 1; i >= 0; i--) { var h = hits[i]; if (Math.hypot(x - h.x, y - h.y) <= 26) return h.slot; }
+    return -1;
+  }
+  var drag = null;
+  canvas.addEventListener('pointerdown', function (ev) { canvas.setPointerCapture(ev.pointerId); drag = { x: ev.clientX, y: ev.clientY, yaw: camera.yaw, pitch: camera.pitch }; });
+  canvas.addEventListener('pointermove', function (ev) {
+    if (drag) { camera.yaw = drag.yaw + (ev.clientX - drag.x) * .007; camera.pitch = Math.max(.35, Math.min(1.35, drag.pitch + (ev.clientY - drag.y) * .004)); draw(); }
+    else { var s = hitSlot(ev); if (s !== hoverSlot) { hoverSlot = s; canvas.style.cursor = s >= 0 ? 'pointer' : 'grab'; draw(); } }
+  });
+  canvas.addEventListener('pointerup', function (ev) {
+    if (drag && Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) < 5) {
+      var s = hitSlot(ev); if (s >= 0) buildSlot(s);
+    }
+    drag = null;
+  });
+  canvas.addEventListener('pointercancel', function () { drag = null; });
+  canvas.addEventListener('contextmenu', function (ev) {
+    ev.preventDefault(); var s = hitSlot(ev); if (s >= 0 && placed[s]) { delete placed[s]; energy += towerById(placed[s]).cost; selectedSlot = s; updateInspector(); renderEconomy(); draw(); }
+  });
+  canvas.addEventListener('wheel', function (ev) { ev.preventDefault(); camera.zoom = Math.max(.55, Math.min(1.55, camera.zoom + (ev.deltaY > 0 ? -.07 : .07))); draw(); }, { passive: false });
+  canvas.addEventListener('keydown', function (ev) {
+    if (ev.key === 'ArrowLeft') camera.yaw -= .06; else if (ev.key === 'ArrowRight') camera.yaw += .06; else if (ev.key === 'ArrowUp') camera.pitch = Math.min(1.35, camera.pitch + .05); else if (ev.key === 'ArrowDown') camera.pitch = Math.max(.35, camera.pitch - .05); else return;
+    ev.preventDefault(); draw();
+  });
+
+  document.querySelectorAll('[data-dim]').forEach(function (cb) { cb.addEventListener('change', function () { show[cb.dataset.dim] = cb.checked; document.getElementById('economyPanel').hidden = !show.economy; updateSurvival(); draw(); }); });
+  document.getElementById('prevWave').addEventListener('click', function () { waveIndex = Math.max(0, waveIndex - 1); syncUI(); });
+  document.getElementById('nextWave').addEventListener('click', function () { waveIndex = Math.min(waves().length - 1, waveIndex + 1); syncUI(); });
+  document.getElementById('waveRange').addEventListener('input', function (e) { waveIndex = +e.target.value; syncUI(); });
+  document.getElementById('playWave').addEventListener('click', function () { playing = !playing; playT = 0; last = 0; this.textContent = playing ? '■ 停止' : '▶ 播一波'; this.classList.toggle('on', playing); if (playing) animate(); });
+  document.getElementById('autoBuild').addEventListener('click', function () {
+    var prefs = ['interceptor', 'pulse', 'tractor', 'beacon'];
+    map().slots.forEach(function (_, i) { if (placed[i]) return; for (var k = 0; k < prefs.length; k++) { var t = towerById(prefs[k]); if (energy >= t.cost) { placed[i] = t.id; energy -= t.cost; break; } } });
+    selectedSlot = -1; updateInspector(); renderEconomy(); draw();
+  });
+  document.getElementById('resetBuild').addEventListener('click', resetBuild);
+  document.getElementById('resetCam').addEventListener('click', function () { camera = { yaw: -.52, pitch: .95, zoom: .9 }; draw(); });
+  document.getElementById('zoomIn').addEventListener('click', function () { camera.zoom = Math.min(1.55, camera.zoom + .08); draw(); });
+  document.getElementById('zoomOut').addEventListener('click', function () { camera.zoom = Math.max(.55, camera.zoom - .08); draw(); });
+  document.getElementById('pitchUp').addEventListener('click', function () { camera.pitch = Math.min(1.35, camera.pitch + .08); draw(); });
+  document.getElementById('pitchDown').addEventListener('click', function () { camera.pitch = Math.max(.35, camera.pitch - .08); draw(); });
+  document.getElementById('powerShare').addEventListener('input', function (e) { survival.towerShare = +e.target.value / 100; updateSurvival(); draw(); });
+  document.getElementById('battery').addEventListener('click', function () { if (!survival.battery) { survival.battery = true; survival.power += 40; this.textContent = '电池已用'; this.disabled = true; updateSurvival(); } });
+
+  var last = 0;
+  function animate(ts) {
+    if (!playing) return;
+    if (!last) last = ts;
+    var dt = Math.min(40, ts - last); last = ts;
+    playT += dt / 3800; survival.rescue = Math.max(0, survival.rescue - dt / 1000 * 3);
+    var life = survival.towerShare * survival.power;
+    var waveN = waveIndex + 1;
+    var lifeDemand = 30 + 3 * waveN;
+    survival.oxygen = Math.max(0, Math.min(survival.oxygenMax, survival.oxygen + (life >= lifeDemand ? .08 : -(lifeDemand - life) * .8) * dt / 1000));
+    updateSurvival(); draw();
+    if (playT >= 1 || survival.rescue <= 0) { playing = false; playT = 0; document.getElementById('playWave').textContent = '▶ 播一波'; document.getElementById('playWave').classList.remove('on'); draw(); return; }
+    requestAnimationFrame(animate);
+  }
+
+  new ResizeObserver(resize).observe(canvas.parentElement);
+  resetBuild();
+  resize();
+  setTimeout(function () { var h = hits[0]; if (h) { selectedSlot = h.slot; updateInspector(); } }, 60);
+})();
+</script>
+</body>
+</html>

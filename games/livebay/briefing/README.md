@@ -1,6 +1,6 @@
 # briefing · LiveBay 的导览层
 
-> **一句话**：这里是《LiveBay（逍遥湾）》**面向人**的两个页面，以及它们的主题、生成器与数据校验器。
+> **一句话**：这里是《LiveBay（逍遥湾）》**面向人**的四个页面，以及它们的主题、生成器与数据校验器。
 > **不是**策划源、决策日志或工程文档；那些分别在 [`../docs-ai/`](../docs-ai/)、[`../docs-ai/design01/11_待人类裁决清单.md`](../docs-ai/design01/11_待人类裁决清单.md) 和 [`../README.md`](../README.md)。
 
 ## 一、这里有什么
@@ -9,6 +9,8 @@
 briefing/
 ├── HUB.html          # 项目状态 / 决策 / 玩法 / 架构 / 素材 / 风险 / 下一步
 ├── GUIDE.html        # 给第一次听说这个游戏的人看的玩法说明（生成物）
+├── BOX-PROJECT.html  # 项目白盒：3D 分层 / 矩阵 / 风险 / 假设推演
+├── BOX-GAME.html     # 游戏白盒：空间 / 时间 / 经济 / 威胁 / 生存沙盘
 ├── theme.css         # 两页共享的三态主题 token 与覆盖
 ├── theme.js          # 三态切换、持久化、系统态实时响应
 ├── build_guide.ts    # 从 game/data/*.json 生成 GUIDE.html
@@ -20,6 +22,8 @@ briefing/
 | --- | --- | --- |
 | `HUB.html` | 项目负责人 / 设计主控 | 手写结构，数字由 `check_hub.ts` 对账 |
 | `GUIDE.html` | 项目负责人 + 数据 | `build_guide.ts` 生成，禁止手改 |
+| `BOX-PROJECT.html` | 项目负责人 / 设计主控 | 手写结构；3D 分层与假设推演 |
+| `BOX-GAME.html` | 项目负责人 / 设计主控 | 手写结构；数据快照注入，交互沙盘 |
 | `theme.css` / `theme.js` | 设计主控 | 手写；两页共用，遵守 R-016 |
 
 ## 二、HUB 与 GUIDE 的分工
@@ -144,6 +148,6 @@ system / light / dark
 
 ## 九、维护
 
-- 版本：与项目版本同步；当前项目 `0.1.135`；
+- 版本：与项目版本同步；当前项目 `0.1.136`；
 - 变更：项目级变更写入 `../CHANGELOG.md`，本目录不单独维护版本日志；
 - 入口：[`HUB.html`](HUB.html) ｜ [`GUIDE.html`](GUIDE.html) ｜ [项目 README](../README.md)。

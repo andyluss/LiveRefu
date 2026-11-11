@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveBay · BOX-PROJECT · 白盒项目空间</title>
+<meta name="description" content="LiveBay 项目白盒化：3D 分层、矩阵、依赖、风险与假设推演。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4efe3;--panel:#fffaf0;--sunken:#e9e1d1;--ink:#1f2b28;--dim:#5e6a64;--faint:#7d877f;
+  --line:#d5cbb8;--line-strong:#b8ad98;--teal:#2f6b65;--teal-soft:#dbe9e3;--orange:#c85a2b;
+  --amber:#a96f17;--amber-soft:#f3e2c6;--ok:#3d7a50;--ok-soft:#deecd9;--danger:#a84532;
+  --focus:#286b64;--radius:12px;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --shadow:0 10px 30px rgba(50,42,30,.08);--stage:#ece4d3;--node:#fffdf6;
+}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111a18;--panel:#18231f;--sunken:#1d2b26;--ink:#e9e5d8;--dim:#aebbb3;--faint:#83918a;
+  --line:#33433d;--line-strong:#50635a;--teal:#7fb8ae;--teal-soft:#223d37;--orange:#e27b4c;
+  --amber:#d5a54a;--amber-soft:#3b2f1d;--ok:#91c38d;--ok-soft:#22372a;--danger:#e08a72;
+  --focus:#9ad8cf;--stage:#0d1714;--node:#1f2d27;--shadow:0 12px 34px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+body{min-height:100vh}
+a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 35%,transparent)}
+a:hover{border-bottom-color:var(--focus)}
+button{font:inherit;color:inherit}
+code{font-family:monospace;font-size:.88em;background:var(--sunken);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+.wrap{max-width:1500px;margin:0 auto;padding:0 22px 34px}
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1500px;margin:0 auto;padding:10px 22px 0}
+.topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.03em;font-size:18px}.brand span{color:var(--faint);font-size:12px;font-weight:400;margin-left:7px;letter-spacing:.08em}
+.links{display:flex;gap:6px;flex-wrap:wrap}.links a{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.stamp{color:var(--faint);font-size:12px;margin-left:auto}
+.theme{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.theme button{appearance:none;border:0;background:transparent;color:var(--dim);padding:5px 9px;font-size:12px;cursor:pointer}
+.theme button[aria-pressed="true"]{background:var(--teal);color:#fff}
+.subhint{color:var(--faint);font-size:12px;margin:4px 0 10px}
+.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:20px;padding:26px 0 10px;align-items:end}
+.kicker{font:600 11px monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:7px}
+h1{font-size:clamp(30px,4vw,52px);line-height:1.05;margin:0 0 10px;letter-spacing:-.03em}
+.lede{color:var(--dim);max-width:72ch;margin:0;font-size:15px}
+.hero-note{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;box-shadow:var(--shadow)}
+.hero-note b{color:var(--ink)}.hero-note p{margin:4px 0 0;color:var(--dim);font-size:12.5px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:11.5px;color:var(--dim);background:var(--sunken)}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--line-strong)}.chip.done i{background:var(--ok)}.chip.now i{background:var(--teal)}.chip.next i{background:var(--amber)}.chip.todo i{background:var(--faint)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font:800 24px/1.2 monospace;color:var(--teal)}.stat span{display:block;color:var(--faint);font-size:11.5px;margin-top:2px}
+.toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.btn{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:8px;padding:7px 10px;font-size:12.5px;cursor:pointer}
+.btn:hover{border-color:var(--teal);color:var(--ink)}
+.btn[aria-pressed="true"],.btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn.subtle{background:transparent}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:16px;align-items:start}
+.stagecard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.stagehead{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.stagehead b{font-size:13.5px}.stagehead span{color:var(--faint);font-size:11.5px}
+.canvaswrap{position:relative;background:var(--stage);min-height:520px}
+canvas{display:block;width:100%;height:560px;touch-action:none;cursor:grab}
+canvas:active{cursor:grabbing}
+.canvasmeta{position:absolute;left:12px;bottom:10px;font:11px monospace;color:var(--faint);pointer-events:none}
+.cam{position:absolute;right:10px;top:10px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.cam .btn{padding:4px 7px;font-size:11px;background:color-mix(in srgb,var(--panel) 88%,transparent)}
+.side{display:grid;gap:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
+.panel h2,.panel h3{margin:0 0 7px;font-size:13.5px;color:var(--ink)}
+.panel p{margin:4px 0;color:var(--dim);font-size:12.5px}
+.inspector{min-height:178px}
+.inspector .tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 7px;color:var(--faint);margin-bottom:6px}
+.inspector b{color:var(--ink)}
+.dimlist{display:grid;gap:4px}.dimrow{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.dimrow:last-child{border-bottom:0}.dimrow input{accent-color:var(--teal)}
+.dimrow span{color:var(--dim)}.dimrow em{margin-left:auto;color:var(--faint);font:10.5px monospace;font-style:normal}
+.slider{display:grid;gap:2px;margin:8px 0}.slider label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim)}.slider output{font:11px monospace;color:var(--teal)}
+input[type=range]{width:100%;accent-color:var(--teal)}
+.bars{display:grid;gap:7px;margin-top:8px}.barrow{display:grid;grid-template-columns:96px 1fr 36px;gap:6px;align-items:center;font-size:11.5px;color:var(--dim)}
+.bar{height:7px;background:var(--sunken);border:1px solid var(--line);border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--ok))}
+.bar.risk i{background:linear-gradient(90deg,var(--amber),var(--danger))}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 5px;font-size:13.5px}.card p{margin:4px 0;color:var(--dim);font-size:12.5px}
+.matrix{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.matrix th,.matrix td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.matrix th{color:var(--faint);font-size:11px;font-weight:600;letter-spacing:.03em}.matrix td b{color:var(--ink)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line-strong);margin-right:5px}.dot.done{background:var(--ok)}.dot.now{background:var(--teal)}.dot.next{background:var(--amber)}.dot.todo{background:var(--faint)}
+.horizon{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.horizon .card{border-top:3px solid var(--line-strong)}.horizon .card.now{border-top-color:var(--teal)}.horizon .card.next{border-top-color:var(--amber)}.horizon .card.todo{border-top-color:var(--faint)}
+.risklist{display:grid;gap:8px}.risk{display:grid;grid-template-columns:1fr 90px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}.risk:last-child{border-bottom:0}.risk b{display:block;font-size:12px}.risk span{color:var(--faint);font-size:11px}
+.note{border-left:3px solid var(--teal);background:var(--sunken);padding:9px 12px;border-radius:0 8px 8px 0;color:var(--dim);font-size:12.5px;margin:12px 0}
+.note b{color:var(--ink)}
+.foot{max-width:1500px;margin:24px auto 0;padding:12px 22px 30px;border-top:1px solid var(--line);color:var(--faint);font-size:11.5px}
+.legend{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--faint)}.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.legend .done i{background:var(--ok)}.legend .now i{background:var(--teal)}.legend .next i{background:var(--amber)}.legend .todo i{background:var(--faint)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:1050px){.hero{grid-template-columns:1fr}.stage{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.wrap,.topbar-inner{padding-left:14px;padding-right:14px}.grid2,.grid3,.horizon,.side{grid-template-columns:1fr}canvas{height:430px}.stamp{order:5;margin-left:0}.stats{grid-template-columns:1fr 1fr}}
+@media print{.topbar,.cam,.toolbar,.theme,.dimlist,input[type=range]{display:none!important}.stage{display:block}.canvaswrap{display:none}body{background:#fff;color:#000}.card,.panel,.stagecard{box-shadow:none;border:1px solid #999;break-inside:avoid}a{color:#000;border-bottom:0}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topline">
+      <div class="brand">BOX-PROJECT<span>白盒项目空间</span></div>
+      <nav class="links" aria-label="相关页面">
+        <a href="HUB.html">HUB</a><a href="GUIDE.html">GUIDE</a><a href="BOX-GAME.html">BOX-GAME →</a><a href="../docs-ai/design01/html/index.html">design01</a>
+      </nav>
+      <div class="stamp">v0.1.136 · 2026-11-11</div>
+      <div class="theme" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+      </div>
+    </div>
+    <div class="subhint">不是汇报页：把项目拆成可旋转、可筛选、可推演的层；每个节点都能回到源文档。</div>
+  </div>
+</header>
+<div class="wrap">
+  <section class="hero" aria-labelledby="btitle">
+    <div>
+      <div class="kicker">WHITEBOX / PROJECT / 2026-11-11</div>
+      <h1 id="btitle">把项目<br>翻过来给你看。</h1>
+      <p class="lede">LiveBay 的白盒项目空间：世界观、玩法、自由模式、工程、验证、内容六层叠在一起。旋转、筛维度、点节点、拉假设，看它到底靠什么成立、哪里还空着。</p>
+      <div class="chips">
+        <span class="chip done"><i></i>可玩切片</span>
+        <span class="chip now"><i></i>Solarpunk / 生存</span>
+        <span class="chip next"><i></i>真人验证</span>
+        <span class="chip todo"><i></i>L2 / L3</span>
+      </div>
+    </div>
+    <aside class="hero-note">
+      <b>怎么读这张图</b>
+      <p>层 = 项目的一个系统；节点 = 一个可指认的事实/缺口；连线 = 依赖，不是流程。点节点看证据，拉右侧假设看“如果更厚/更稳/更敢做”会怎样。</p>
+      <p><a href="../docs-ai/design01/world/11_Solarpunk与NASApunk.md">Solarpunk 专篇</a> · <a href="../docs-ai/design01/README.md">design01 索引</a></p>
+    </aside>
+  </section>
+
+  <div class="stats" aria-label="项目事实">
+    <div class="stat"><b>3</b><span>地图 / 8 波</span></div>
+    <div class="stat"><b>6</b><span>塔 / 7 敌</span></div>
+    <div class="stat"><b>103</b><span>无头断言</span></div>
+    <div class="stat"><b>58</b><span>设计文档页</span></div>
+  </div>
+
+  <div class="toolbar" role="toolbar" aria-label="地图控制">
+    <button class="btn on" data-view="stack" aria-pressed="true">3D 分层</button>
+    <button class="btn" id="autoRotate" aria-pressed="false">自动旋转</button>
+    <button class="btn" id="resetCam">复位视角</button>
+    <button class="btn subtle" id="focusNow">聚焦“现在”</button>
+    <span class="legend" aria-label="状态图例"><span class="done"><i></i>已落地</span><span class="now"><i></i>现在</span><span class="next"><i></i>下一</span><span class="todo"><i></i>未做</span></span>
+  </div>
+
+  <div class="stage">
+    <div class="stagecard">
+      <div class="stagehead"><b>项目堆栈 / Project Stack</b><span>拖动旋转 · 滚轮缩放 · 点击节点</span></div>
+      <div class="canvaswrap">
+        <canvas id="projectCanvas" width="1100" height="560" tabindex="0" aria-label="可旋转的项目分层图。拖动旋转，滚轮缩放，点击节点查看证据。"></canvas>
+        <div class="cam">
+          <button class="btn" id="zoomIn" aria-label="放大">＋</button>
+          <button class="btn" id="zoomOut" aria-label="缩小">－</button>
+          <button class="btn" id="pitchUp" aria-label="抬高视角">↑</button>
+          <button class="btn" id="pitchDown" aria-label="降低视角">↓</button>
+        </div>
+        <div class="canvasmeta">6 layers · 34 nodes · drag to orbit</div>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="panel inspector" id="inspector" aria-live="polite">
+        <h2>节点检查器</h2>
+        <p>点击 3D 图里的任一节点，查看它是什么、凭什么成立、下一步是什么。</p>
+      </div>
+      <div class="panel">
+        <h2>显示维度</h2>
+        <div class="dimlist" id="dimensions">
+          <label class="dimrow"><input type="checkbox" checked data-layer="world"><span>世界 / 叙事</span><em>02–11</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-layer="play"><span>玩法</span><em>3 图 / 8 波</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-layer="lab"><span>自由模式</span><em>5 实验</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-layer="tech"><span>工程</span><em>App + Runtime</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-layer="verify"><span>验证</span><em>13 项</em></label>
+          <label class="dimrow"><input type="checkbox" checked data-layer="content"><span>内容</span><em>下一阶段</em></label>
+        </div>
+        <p class="chart-note" style="color:var(--faint);font-size:11px;margin-top:6px">取消勾选会把整层从空间里移走；节点不会被删，只是暂时不显示。</p>
+      </div>
+      <div class="panel">
+        <h2>假设推演</h2>
+        <p style="font-size:11.5px">不是预测，是把“如果多做一点”翻译成可讨论的代价。</p>
+        <div class="slider"><label for="scope">范围膨胀 <output id="scopeOut">40</output></label><input id="scope" type="range" min="0" max="100" value="40"></div>
+        <div class="slider"><label for="content">内容厚度 <output id="contentOut">55</output></label><input id="content" type="range" min="0" max="100" value="55"></div>
+        <div class="slider"><label for="validation">真人验证 <output id="validationOut">20</output></label><input id="validation" type="range" min="0" max="100" value="20"></div>
+        <div class="bars" aria-label="推演结果">
+          <div class="barrow"><span>可发布度</span><div class="bar"><i id="readyBar" style="width:38%"></i></div><output id="readyOut">38</output></div>
+          <div class="barrow"><span>范围风险</span><div class="bar risk"><i id="riskBar" style="width:62%"></i></div><output id="riskOut">62</output></div>
+          <div class="barrow"><span>证据密度</span><div class="bar"><i id="evidenceBar" style="width:44%"></i></div><output id="evidenceOut">44</output></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>项目矩阵 / 谁在支撑谁</h3>
+      <p>横轴是问题，纵轴是系统。绿=有证据，青=正在做，琥珀=下一步，灰=还没做。</p>
+      <div style="overflow-x:auto">
+        <table class="matrix" id="matrix">
+          <thead><tr><th>系统</th><th>为什么可信</th><th>能玩到什么</th><th>怎么验证</th><th>下一步</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3>风险/缺口 / 现在最该看的</h3>
+      <div class="risklist" id="risks"></div>
+      <div class="note"><b>读法：</b>风险不是“坏消息”，是范围、证据、依赖三者的交叉点。先把“真人验证”和“内容厚度”分开看，别用堆量掩盖验证不足。</div>
+    </div>
+  </div>
+
+  <div class="horizon" aria-label="项目地平线">
+    <div class="card now"><div class="kicker">NOW</div><h3>把生存与 Solarpunk 接进同一套解释</h3><p>低功率夜班、太阳公约、自由模式自动测试；先把“为什么这座城会缺电”讲圆。</p></div>
+    <div class="card next"><div class="kicker">NEXT</div><h3>真人 10 分钟闭环</h3><p>看玩家是否能说出“我为什么输/为什么赢”；再做舱段级封舱与 Mode Adapter。</p></div>
+    <div class="card todo"><div class="kicker">NOT YET</div><h3>不提前做通用引擎</h3><p>在线工坊、L2/L3、堆量内容；等一个真实需要再开。</p></div>
+  </div>
+
+  <div class="note"><b>数据口径：</b>项目事实来自当前仓库快照（v0.1.136）：3 图、6 塔、7 敌、8 波、103 断言、13 项 verify、58 页 design01 HTML。3D 图是白盒示意，不是精确统计图；节点链接回源文档。</div>
+</div>
+<footer class="foot">BOX-PROJECT · 白盒项目空间 · 与 HUB 互补：HUB 负责“读”，BOX 负责“翻过来看”。</footer>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'lrds-theme';
+  var root = document.documentElement;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  function applyTheme(choice) {
+    root.dataset.themeChoice = choice;
+    root.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+    try { localStorage.setItem(KEY, choice); } catch (e) {}
+    document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.themeChoice === choice ? 'true' : 'false');
+    });
+    draw();
+  }
+  document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+    b.addEventListener('click', function () { applyTheme(b.dataset.themeChoice); });
+  });
+  mql.addEventListener('change', function () { if (root.dataset.themeChoice === 'system') applyTheme('system'); });
+  applyTheme(root.dataset.themeChoice || 'system');
+
+  var layers = [
+    { id: 'world', name: '世界 / 叙事', z: 0, color: 'ok', note: '月牙城、三环、夜班、Solarpunk', nodes: [
+      { id: 'world-02', title: '02 世界总览', status: 'done', x: -280, y: 0, detail: '月牙城 / 三环 / 200 年 / 双轨制 / 低报事故。', link: '../docs-ai/design01/world/02_世界观_逍遥湾.md' },
+      { id: 'world-03', title: '03 职业体系', status: 'done', x: -110, y: 0, detail: '16 个职业候选；同一塔防引擎换数据/叙事/美术。', link: '../docs-ai/design01/world/03_职业体系.md' },
+      { id: 'world-solar', title: '11 Solarpunk', status: 'now', x: 70, y: 0, detail: '太阳能主供、循环物质、太阳公约；NASApunk 的代谢层。', link: '../docs-ai/design01/world/11_Solarpunk与NASApunk.md' },
+      { id: 'world-crack', title: '低报裂缝', status: 'done', x: 250, y: 0, detail: '事故数字对不上；只埋线索，不揭开。', link: '../docs-ai/design01/world/09_故障与事故文化.md' }
+    ]},
+    { id: 'play', name: '玩法', z: 1, color: 'ok', note: '塔防 / 生存 / 沉浸 / 放置', nodes: [
+      { id: 'play-td', title: '塔防基本盘', status: 'done', x: -280, y: 0, detail: '3 图、7 塔位、8 波；建造/升级/出售/故障/检查单。', link: '../docs-ai/design01/gameplay/04_塔防玩法.md' },
+      { id: 'play-survival', title: '低功率夜班', status: 'now', x: -110, y: 0, detail: 'S1/S2：电力分配、氧气、救援、封舱、撤离、自动测试。', link: '../docs-ai/design01/lab/01_塔防生存玩法建议.md' },
+      { id: 'play-immerse', title: '沉浸', status: 'next', x: 70, y: 0, detail: '一班、一舱、一个没有完美答案的选择。', link: '../docs-ai/design01/gameplay/06_沉浸体验玩法.md' },
+      { id: 'play-idle', title: '放置', status: 'next', x: 250, y: 0, detail: '舱室、湾民、离线产出；不逼玩家回来。', link: '../docs-ai/design01/gameplay/07_放置养成玩法.md' }
+    ]},
+    { id: 'lab', name: '自由模式', z: 2, color: 'now', note: '实验速度 / 独立运行时', nodes: [
+      { id: 'lab-page', title: 'LabPage + LabGame', status: 'done', x: -280, y: 0, detail: '独立页面/独立 HUD，不复用主模式 GamePage。', link: '../docs-ai/design01/lab/00_自由模式方案.md' },
+      { id: 'lab-json', title: 'JSON 覆盖', status: 'done', x: -110, y: 0, detail: 'capability 白名单、不可变覆盖、候选/导入导出。', link: '../docs-ai/design01/lab/00_自由模式方案.md' },
+      { id: 'lab-auto', title: '自动测试', status: 'done', x: 70, y: 0, detail: 'survival-test：氧气/封舱/撤离/数值矩阵，13/13。', link: '../docs-ai/design01/lab/01_塔防生存玩法建议.md' },
+      { id: 'lab-adapter', title: 'Mode Adapter', status: 'todo', x: 250, y: 0, detail: '真正的非塔防循环；等第一个真实需求。', link: '../docs-ai/design01/lab/00_自由模式方案.md' }
+    ]},
+    { id: 'tech', name: '工程', z: 3, color: 'ok', note: 'App / Runtime / 数据 / 扩展', nodes: [
+      { id: 'tech-app', title: 'App + Router', status: 'done', x: -280, y: 0, detail: '主页 / 实验 / 游戏页；页面切换不是 overlay。', link: '../docs-ai/design01/tech/12_技术方案_Godot工程.md' },
+      { id: 'tech-runtime', title: 'Runtime + Sim', status: 'done', x: -110, y: 0, detail: '固定步长、命令/事件、读模型、黑匣子回放。', link: '../docs-ai/design01/tech/12_技术方案_Godot工程.md' },
+      { id: 'tech-data', title: '数据管线', status: 'done', x: 70, y: 0, detail: 'numbers → data → MissionPack schema 2；hash 对账。', link: '../docs-ai/design01/tech/12_技术方案_Godot工程.md' },
+      { id: 'tech-exp', title: '扩展注册', status: 'done', x: 250, y: 0, detail: 'manifest / preset / 34 项扩展检查。', link: '../docs-ai/design01/tech/17_可插拔扩展架构.md' }
+    ]},
+    { id: 'verify', name: '验证', z: 4, color: 'ok', note: '证据 / 回归 / 真人反馈', nodes: [
+      { id: 'verify-tests', title: '103 无头断言', status: 'done', x: -280, y: 0, detail: '可复现胜负、扩展、数据、播放；不依赖窗口。', link: '../docs-ai/design01/numbers/README.md' },
+      { id: 'verify-verify', title: '13 项全量验收', status: 'done', x: -110, y: 0, detail: 'test / pack / flow / simulator / HTML 三态 / 启动。', link: '../docs-ai/design01/tech/12_技术方案_Godot工程.md' },
+      { id: 'verify-human', title: '真人试玩', status: 'next', x: 70, y: 0, detail: '最重要但最缺：玩家是否愿意再来一班？', link: 'HUB.html' },
+      { id: 'verify-ship', title: '发布切片', status: 'todo', x: 250, y: 0, detail: '平台/语言/节奏未定；不阻塞当前切片。', link: 'HUB.html' }
+    ]},
+    { id: 'content', name: '内容', z: 5, color: 'next', note: '厚度 / 关卡 / 长期', nodes: [
+      { id: 'content-l1', title: '3 图 8 波', status: 'done', x: -280, y: 0, detail: '外环 / 中环 / 湾口；每图独立波次表。', link: '../docs-ai/design01/gameplay/04_塔防玩法.md' },
+      { id: 'content-cards', title: '12 卡 / 3 合同', status: 'done', x: -110, y: 0, detail: '检查单、故障、合同、班次记录。', link: '../docs-ai/design01/gameplay/14_塔防NASApunk深化.md' },
+      { id: 'content-l2', title: 'L2 岗位', status: 'todo', x: 70, y: 0, detail: '模块化设施、备件、湾民、事故链。', link: '../docs-ai/design01/gameplay/expansions/03_L2_岗位层.md' },
+      { id: 'content-l3', title: 'L3 城市', status: 'todo', x: 250, y: 0, detail: '轻城市、档案网络、长期留存。', link: '../docs-ai/design01/gameplay/expansions/04_L3_城市层.md' }
+    ]}
+  ];
+  var statusName = { done: '已落地', now: '现在', next: '下一', todo: '未做' };
+  var visible = { world: true, play: true, lab: true, tech: true, verify: true, content: true };
+  var canvas = document.getElementById('projectCanvas');
+  var ctx = canvas.getContext('2d');
+  var inspector = document.getElementById('inspector');
+  var yaw = -0.56, pitch = 0.95, zoom = 0.82, auto = false, hover = null, selected = null;
+  var view = { w: 0, h: 0, dpr: 1 };
+  var nodeHits = [];
+  var palette = {};
+
+  function readPalette() {
+    var css = getComputedStyle(root);
+    palette = {
+      bg: css.getPropertyValue('--stage').trim(), panel: css.getPropertyValue('--panel').trim(),
+      ink: css.getPropertyValue('--ink').trim(), dim: css.getPropertyValue('--dim').trim(),
+      faint: css.getPropertyValue('--faint').trim(), line: css.getPropertyValue('--line').trim(),
+      teal: css.getPropertyValue('--teal').trim(), tealSoft: css.getPropertyValue('--teal-soft').trim(),
+      orange: css.getPropertyValue('--orange').trim(), amber: css.getPropertyValue('--amber').trim(),
+      ok: css.getPropertyValue('--ok').trim(), danger: css.getPropertyValue('--danger').trim(),
+      sunken: css.getPropertyValue('--sunken').trim(), node: css.getPropertyValue('--node').trim()
+    };
+  }
+
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    view.dpr = Math.min(2, window.devicePixelRatio || 1);
+    view.w = Math.max(320, r.width); view.h = Math.max(300, r.height);
+    canvas.width = Math.round(view.w * view.dpr); canvas.height = Math.round(view.h * view.dpr);
+    draw();
+  }
+
+  function project(x, y, z) {
+    var cy = Math.cos(yaw), sy = Math.sin(yaw);
+    var x1 = x * cy - y * sy;
+    var y1 = x * sy + y * cy;
+    var cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var y2 = y1 * cp - z * sp;
+    var z2 = y1 * sp + z * cp;
+    var s = Math.min(view.w / 1050, view.h / 610) * zoom;
+    return { x: view.w / 2 + x1 * s, y: view.h / 2 + 35 + y2 * s, z: z2, s: s };
+  }
+
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function layerColor(status) {
+    return status === 'done' ? palette.ok : status === 'now' ? palette.teal : status === 'next' ? palette.amber : palette.faint;
+  }
+
+  function draw() {
+    if (!ctx) return;
+    readPalette();
+    ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+    ctx.clearRect(0, 0, view.w, view.h);
+    var bg = ctx.createLinearGradient(0, 0, 0, view.h);
+    bg.addColorStop(0, palette.bg); bg.addColorStop(1, palette.sunken);
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, view.w, view.h);
+
+    // floor grid
+    ctx.save();
+    ctx.globalAlpha = .38;
+    for (var x = -500; x <= 500; x += 100) {
+      var a = project(x, -240, 0), b = project(x, 240, 0);
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.strokeStyle = palette.line; ctx.lineWidth = 1; ctx.stroke();
+    }
+    for (var y = -240; y <= 240; y += 80) {
+      var c = project(-500, y, 0), d = project(500, y, 0);
+      ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.strokeStyle = palette.line; ctx.lineWidth = 1; ctx.stroke();
+    }
+    ctx.restore();
+
+    nodeHits = [];
+    var activeLayers = layers.filter(function (l) { return visible[l.id]; });
+    activeLayers.sort(function (a, b) { return a.z - b.z; });
+    activeLayers.forEach(function (layer) {
+      var z = layer.z * 88;
+      var xoff = 0;
+      // plate corners
+      var pts = [project(-390 + xoff, -150, z), project(390 + xoff, -150, z), project(390 + xoff, 150, z), project(-390 + xoff, 150, z)];
+      ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+      for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.closePath();
+      ctx.fillStyle = layer.z === 5 ? 'rgba(200,90,43,.06)' : 'rgba(47,107,101,.055)';
+      ctx.fill();
+      ctx.strokeStyle = layerColor(layer.color); ctx.lineWidth = layer.color === 'now' ? 2.2 : 1.3; ctx.setLineDash([7, 5]); ctx.stroke(); ctx.setLineDash([]);
+      // label on left
+      var lp = project(-435 + xoff, -150, z);
+      ctx.fillStyle = palette.ink; ctx.font = '700 12px -apple-system,"PingFang SC","Noto Sans CJK SC",sans-serif';
+      ctx.fillText(layer.name, lp.x - 20, lp.y + 4);
+      ctx.fillStyle = palette.faint; ctx.font = '10px monospace';
+      ctx.fillText(layer.note, lp.x - 20, lp.y + 18);
+      // connector spine
+      var sp1 = project(-390 + xoff, 0, z), sp2 = project(390 + xoff, 0, z);
+      ctx.beginPath(); ctx.moveTo(sp1.x, sp1.y); ctx.lineTo(sp2.x, sp2.y); ctx.strokeStyle = layerColor(layer.color); ctx.globalAlpha = .25; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1;
+      if (layer.z > 0) {
+        var top = project(-390, -150, z), below = project(-390, -150, z - 78);
+        ctx.beginPath(); ctx.moveTo(top.x, top.y); ctx.lineTo(below.x, below.y); ctx.strokeStyle = palette.line; ctx.setLineDash([3, 4]); ctx.stroke(); ctx.setLineDash([]);
+      }
+      layer.nodes.forEach(function (node) {
+        var p = project(node.x + xoff, node.y, z + 10);
+        var w = 116, h = 28;
+        var hit = { node: node, layer: layer, x: p.x - w / 2, y: p.y - h / 2, w: w, h: h };
+        nodeHits.push(hit);
+        var isHover = hover && hover.node.id === node.id;
+        var isSel = selected && selected.node.id === node.id;
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,.14)'; ctx.shadowBlur = isHover ? 12 : 5; ctx.shadowOffsetY = 3;
+        roundRect(hit.x, hit.y, w, h, 7);
+        ctx.fillStyle = isSel ? palette.tealSoft : palette.node;
+        ctx.fill();
+        ctx.restore();
+        roundRect(hit.x, hit.y, w, h, 7);
+        ctx.strokeStyle = isSel || isHover ? layerColor(node.status) : palette.line;
+        ctx.lineWidth = isSel ? 2 : 1; ctx.stroke();
+        ctx.fillStyle = layerColor(node.status);
+        ctx.beginPath(); ctx.arc(hit.x + 12, hit.y + 11, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = palette.ink; ctx.font = '700 10px -apple-system,"PingFang SC","Noto Sans CJK SC",sans-serif';
+        ctx.fillText(node.title, hit.x + 21, hit.y + 14);
+        ctx.fillStyle = palette.faint; ctx.font = '8.5px monospace';
+        ctx.fillText(statusName[node.status], hit.x + 21, hit.y + 25);
+      });
+    });
+
+    // vertical "now" line
+    var np = project(0, 220, 0);
+    ctx.beginPath(); ctx.moveTo(np.x, np.y); ctx.lineTo(np.x, np.y - 260); ctx.strokeStyle = palette.teal; ctx.globalAlpha = .35; ctx.setLineDash([2, 5]); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+    ctx.fillStyle = palette.teal; ctx.font = '10px monospace'; ctx.fillText('NOW', np.x + 5, np.y - 245);
+
+    if (auto) { yaw += 0.004; requestAnimationFrame(draw); }
+  }
+
+  function hitNode(ev) {
+    var r = canvas.getBoundingClientRect();
+    var x = ev.clientX - r.left, y = ev.clientY - r.top;
+    for (var i = nodeHits.length - 1; i >= 0; i--) {
+      var h = nodeHits[i];
+      if (x >= h.x && x <= h.x + h.w && y >= h.y && y <= h.y + h.h) return h;
+    }
+    return null;
+  }
+
+  function showInspector(hit) {
+    if (!hit) return;
+    selected = hit;
+    var n = hit.node;
+    inspector.innerHTML = '<span class="tag">' + statusName[n.status] + ' · ' + hit.layer.name + '</span>' +
+      '<h2>' + escapeHtml(n.title) + '</h2>' +
+      '<p>' + escapeHtml(n.detail) + '</p>' +
+      '<p><a href="' + n.link + '">打开源文档 →</a></p>' +
+      '<p style="color:var(--faint);font-size:11px">层：' + escapeHtml(hit.layer.name) + ' · ' + escapeHtml(hit.layer.note) + '</p>';
+    draw();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+  }
+
+  var drag = null;
+  canvas.addEventListener('pointerdown', function (ev) {
+    canvas.setPointerCapture(ev.pointerId);
+    drag = { x: ev.clientX, y: ev.clientY, yaw: yaw, pitch: pitch };
+  });
+  canvas.addEventListener('pointermove', function (ev) {
+    if (drag) {
+      yaw = drag.yaw + (ev.clientX - drag.x) * 0.007;
+      pitch = Math.max(0.35, Math.min(1.35, drag.pitch + (ev.clientY - drag.y) * 0.004));
+      draw();
+    } else {
+      var hit = hitNode(ev);
+      if ((hit && (!hover || hover.node.id !== hit.node.id)) || (!hit && hover)) {
+        hover = hit; canvas.style.cursor = hit ? 'pointer' : 'grab'; draw();
+      }
+    }
+  });
+  canvas.addEventListener('pointerup', function (ev) {
+    if (drag && Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) < 5) {
+      var hit = hitNode(ev); if (hit) showInspector(hit);
+    }
+    drag = null;
+  });
+  canvas.addEventListener('pointercancel', function () { drag = null; });
+  canvas.addEventListener('wheel', function (ev) {
+    ev.preventDefault(); zoom = Math.max(0.55, Math.min(1.5, zoom + (ev.deltaY > 0 ? -0.07 : 0.07))); draw();
+  }, { passive: false });
+  canvas.addEventListener('keydown', function (ev) {
+    if (ev.key === 'ArrowLeft') yaw -= 0.06;
+    else if (ev.key === 'ArrowRight') yaw += 0.06;
+    else if (ev.key === 'ArrowUp') pitch = Math.min(1.35, pitch + 0.05);
+    else if (ev.key === 'ArrowDown') pitch = Math.max(0.35, pitch - 0.05);
+    else if (ev.key === '+' || ev.key === '=') zoom = Math.min(1.5, zoom + 0.07);
+    else if (ev.key === '-') zoom = Math.max(0.55, zoom - 0.07);
+    else if (ev.key === 'Escape') { selected = null; }
+    else return;
+    ev.preventDefault(); draw();
+  });
+
+  document.querySelectorAll('[data-layer]').forEach(function (cb) {
+    cb.addEventListener('change', function () { visible[cb.dataset.layer] = cb.checked; draw(); });
+  });
+  document.getElementById('resetCam').addEventListener('click', function () { yaw = -0.56; pitch = 0.95; zoom = 0.82; draw(); });
+  document.getElementById('zoomIn').addEventListener('click', function () { zoom = Math.min(1.5, zoom + 0.08); draw(); });
+  document.getElementById('zoomOut').addEventListener('click', function () { zoom = Math.max(0.55, zoom - 0.08); draw(); });
+  document.getElementById('pitchUp').addEventListener('click', function () { pitch = Math.min(1.35, pitch + 0.08); draw(); });
+  document.getElementById('pitchDown').addEventListener('click', function () { pitch = Math.max(0.35, pitch - 0.08); draw(); });
+  document.getElementById('autoRotate').addEventListener('click', function () {
+    auto = !auto; this.setAttribute('aria-pressed', auto ? 'true' : 'false'); this.classList.toggle('on', auto); draw();
+  });
+  document.getElementById('focusNow').addEventListener('click', function () {
+    visible = { world: true, play: true, lab: true, tech: true, verify: true, content: true };
+    document.querySelectorAll('[data-layer]').forEach(function (cb) { cb.checked = true; });
+    var now = nodeHits.find(function (h) { return h.node.id === 'play-survival'; });
+    if (now) showInspector(now); else draw();
+  });
+
+  // matrix
+  var matrixRows = [
+    ['世界 / 叙事', 'done', '11 篇 world；Solarpunk 已接入', 'done', '世界足够支撑塔防/生存', 'done', '文档内链 0 失效', 'next', '广播/NPC 线'],
+    ['玩法', 'done', '塔防 3 图 8 波', 'done', '生存 S1/S2 可玩', 'done', 'survival-test 13/13', 'next', '真人 10 分钟'],
+    ['自由模式', 'done', '独立 LabGame/HUD', 'done', '5 个实验', 'done', '自动矩阵', 'todo', 'Mode Adapter'],
+    ['工程', 'done', 'App + Runtime', 'done', '数据/扩展/回放', 'done', '13 项 verify', 'todo', 'L2/L3'],
+    ['内容', 'done', '3 图 / 6 塔 / 8 波', 'now', '检查单/合同/生存', 'done', '103 断言', 'next', '内容厚度'],
+    ['验证', 'now', '58 页 / 13 项', 'next', '真人试玩缺失', 'now', '证据密度偏低', 'next', '发布切片']
+  ];
+  var tbody = document.querySelector('#matrix tbody');
+  matrixRows.forEach(function (r) {
+    var tr = document.createElement('tr');
+    [r[0], r[2], r[4], r[6], r[8]].forEach(function (v, i) {
+      var td = document.createElement('td');
+      if (i === 0) td.innerHTML = '<b>' + v + '</b>';
+      else td.innerHTML = '<span class="dot ' + r[i * 2 - 1] + '"></span>' + v;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  // risks
+  var riskData = [
+    ['真人验证不足', '最高优先；10 分钟闭环没有外部样本', 88],
+    ['内容厚度', '3 图 8 波能验证，不足以长期留存', 66],
+    ['系统范围', 'L2/L3/Mode Adapter 都可能膨胀', 58],
+    ['单点依赖', '关键知识与实现集中', 52],
+    ['Solarpunk 落地', '容易变成绿色贴图，需资源/政治接口', 36]
+  ];
+  var riskRoot = document.getElementById('risks');
+  riskData.forEach(function (r) {
+    var d = document.createElement('div'); d.className = 'risk';
+    d.innerHTML = '<div><b>' + r[0] + '</b><span>' + r[1] + '</span></div><div class="bar risk"><i style="width:' + r[2] + '%"></i></div>';
+    riskRoot.appendChild(d);
+  });
+
+  // sliders
+  var scope = document.getElementById('scope'), content = document.getElementById('content'), validation = document.getElementById('validation');
+  function calc() {
+    var s = +scope.value, c = +content.value, v = +validation.value;
+    document.getElementById('scopeOut').textContent = s;
+    document.getElementById('contentOut').textContent = c;
+    document.getElementById('validationOut').textContent = v;
+    var ready = Math.round(Math.max(0, Math.min(100, 22 + v * 0.38 + c * 0.22 - s * 0.18)));
+    var risk = Math.round(Math.max(0, Math.min(100, 34 + s * 0.48 - v * 0.2 - c * 0.08)));
+    var evidence = Math.round(Math.max(0, Math.min(100, 20 + v * 0.5 + c * 0.15)));
+    document.getElementById('readyBar').style.width = ready + '%'; document.getElementById('readyOut').textContent = ready;
+    document.getElementById('riskBar').style.width = risk + '%'; document.getElementById('riskOut').textContent = risk;
+    document.getElementById('evidenceBar').style.width = evidence + '%'; document.getElementById('evidenceOut').textContent = evidence;
+  }
+  [scope, content, validation].forEach(function (el) { el.addEventListener('input', calc); });
+  calc();
+
+  new ResizeObserver(resize).observe(canvas.parentElement);
+  resize();
+  var initial = nodeHits.find(function (n) { return n.node.id === 'play-survival'; });
+  if (initial) showInspector(initial);
+})();
+</script>
+</body>
+</html>
