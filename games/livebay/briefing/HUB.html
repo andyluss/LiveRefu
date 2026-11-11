@@ -88,7 +88,34 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 .note.warn{border-left-color:var(--amber)}.note.bad{border-left-color:var(--orange)}.note.ok{border-left-color:var(--ok)}
 .note b{color:var(--ink)}
 .foot{max-width:1180px;margin:0 auto;padding:8px 22px 34px;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);margin-top:26px}
-@media(max-width:900px){.g3,.g4,.stats,.shots{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+.projmap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px 10px;margin:16px 0 4px;overflow-x:auto}
+.pm-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}
+.pm-top b{font-size:14.5px;color:var(--ink)}.pm-top span{display:block;color:var(--faint);font-size:12px;margin-top:2px}
+.pm-legend{display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--dim)}
+.pm-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:1px}
+.pm-legend .done i{background:var(--ok)}.pm-legend .now i{background:var(--teal)}.pm-legend .next i{background:var(--amber)}.pm-legend .todo i{background:var(--line-strong)}
+.pm-lanes{display:grid;gap:8px;min-width:900px}
+.pm-lane{display:grid;grid-template-columns:132px 1fr;gap:10px;align-items:stretch;padding:5px 0;border-top:1px dashed var(--line)}
+.pm-lane:first-child{border-top:none}
+.pm-label{padding:8px 0 0;color:var(--ink);font-size:12.5px;font-weight:700}
+.pm-label span{display:block;color:var(--faint);font-size:11px;font-weight:400;margin-top:1px}
+.pm-track{display:flex;gap:8px;flex-wrap:wrap;position:relative;padding:4px 0 4px 4px}
+.pm-node{position:relative;display:block;flex:1 1 158px;min-width:158px;background:var(--sunken);border:1px solid var(--line);border-radius:8px;padding:8px 10px 8px 24px;color:var(--dim);font-size:12px;line-height:1.45;border-bottom:1px solid var(--line)}
+.pm-node:hover{border-color:var(--teal);background:var(--panel)}
+.pm-node b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:1px}
+.pm-node em{display:block;color:var(--faint);font-style:normal;font-size:11.5px}
+.pm-node .dot{position:absolute;left:9px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--line-strong);box-shadow:0 0 0 3px color-mix(in srgb,var(--line-strong) 16%,transparent)}
+.pm-node.done .dot{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 16%,transparent)}
+.pm-node.now .dot{background:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 18%,transparent)}
+.pm-node.next .dot{background:var(--amber);box-shadow:0 0 0 3px color-mix(in srgb,var(--amber) 18%,transparent)}
+.pm-node.todo{opacity:.78}
+.pm-node.todo .dot{background:var(--line-strong)}
+.pm-horizons{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 2px}
+.pm-horizon{border:1px solid var(--line);border-radius:10px;background:var(--sunken);padding:10px 12px}
+.pm-horizon b{display:block;font-size:12.5px;color:var(--ink);margin-bottom:3px}
+.pm-horizon span{display:block;color:var(--dim);font-size:12.5px}
+.pm-horizon .tag{display:inline-block;color:var(--teal);font-size:11px;margin-bottom:2px}
+@media(max-width:900px){.g3,.g4,.stats,.shots{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.pm-lanes{min-width:0}.pm-lane{grid-template-columns:1fr}.pm-label{padding:6px 0 0}.pm-horizons{grid-template-columns:1fr}}
 @media(max-width:620px){.g3,.g4,.stats,.shots{grid-template-columns:1fr}}
 @media print{
   html,body{background:#fff;color:#000;font-size:10.5px;line-height:1.45}
@@ -112,7 +139,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
         <a href="GUIDE.html">玩法说明 GUIDE</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.134</span> · 2026-11-06</div>
+      <div class="stamp">v<span data-fact="version">0.1.135</span> · 2026-11-11</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -143,7 +170,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
 <main>
   <section class="panel active" id="p1" role="tabpanel" aria-labelledby="t1">
     <h2>概览：一座移动太空城的夜班塔防</h2>
-    <p class="lede">LiveBay 是 NASApunk 岗位塔防 + 沉浸体验 + 放置养成的垂直切片。你不是指挥官；你是外环第七段的一个值班人，在 8 波压力里决定先修哪台设备、先守哪段弧。</p>
+    <p class="lede">LiveBay 是 NASApunk 岗位塔防 + 沉浸体验 + 放置养成的垂直切片，正在把 Solarpunk 的太阳能/循环/可持续政治经济接进同一座城。你不是指挥官；你是外环第七段的一个值班人，在 8 波压力里决定先修哪台设备、先守哪段弧。</p>
     <div class="stats">
       <div class="stat p"><div class="v" data-fact="maps">3</div><div class="l">可玩地图</div></div>
       <div class="stat p"><div class="v" data-fact="towers">6</div><div class="l">塔型</div></div>
@@ -153,7 +180,74 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <div class="stat p"><div class="v" data-fact="professions">1</div><div class="l">示例职业</div></div>
       <div class="stat o"><div class="v" data-fact="tests">103</div><div class="l">无头断言</div></div>
       <div class="stat o"><div class="v" data-fact="expansions">34</div><div class="l">扩展检查</div></div>
+      <div class="stat p"><div class="v" data-fact="doc_pages">58</div><div class="l">设计文档页</div></div>
+      <div class="stat o"><div class="v">13</div><div class="l">全量验收</div></div>
     </div>
+
+    <div class="projmap" aria-label="项目情况可视化地图">
+      <div class="pm-top">
+        <div><b>项目地形图</b><span>2026-11-11 · 从世界观到可验证切片；绿色=已落地，青色=现在，琥珀=下一，灰色=未做</span></div>
+        <div class="pm-legend" aria-label="状态图例">
+          <span class="done"><i></i>已落地</span><span class="now"><i></i>现在</span><span class="next"><i></i>下一</span><span class="todo"><i></i>未做</span>
+        </div>
+      </div>
+      <div class="pm-lanes">
+        <div class="pm-lane">
+          <div class="pm-label">世界 / 叙事<span>为什么可信</span></div>
+          <div class="pm-track">
+            <a class="pm-node done" href="../docs-ai/design01/world/02_世界观_逍遥湾.md"><span class="dot"></span><b>02 世界总览</b><em>月牙城 · 三环 · 200 年</em></a>
+            <a class="pm-node done" href="../docs-ai/design01/world/README.md"><span class="dot"></span><b>03–10 世界参考</b><em>职业 · 地理 · 社会 · 夜班</em></a>
+            <a class="pm-node now" href="../docs-ai/design01/world/11_Solarpunk与NASApunk.md"><span class="dot"></span><b>11 Solarpunk</b><em>太阳能 · 循环 · 太阳公约</em></a>
+            <span class="pm-node todo"><span class="dot"></span><b>广播 / NPC 线</b><em>低报线索 · 人物关系</em></span>
+          </div>
+        </div>
+        <div class="pm-lane">
+          <div class="pm-label">玩法<span>能玩到什么</span></div>
+          <div class="pm-track">
+            <a class="pm-node done" href="../docs-ai/design01/gameplay/04_塔防玩法.md"><span class="dot"></span><b>塔防</b><em>3 图 · 6 塔 · 8 波</em></a>
+            <a class="pm-node now" href="../docs-ai/design01/lab/01_塔防生存玩法建议.md"><span class="dot"></span><b>低功率夜班</b><em>S1/S2 · 氧气/封舱/撤离</em></a>
+            <a class="pm-node next" href="../docs-ai/design01/gameplay/06_沉浸体验玩法.md"><span class="dot"></span><b>沉浸</b><em>舱室 · 对话 · 事件</em></a>
+            <a class="pm-node next" href="../docs-ai/design01/gameplay/07_放置养成玩法.md"><span class="dot"></span><b>放置</b><em>舱室 · 湾民 · 离线</em></a>
+            <span class="pm-node todo"><span class="dot"></span><b>三玩法联动</b><em>L2 资源循环</em></span>
+          </div>
+        </div>
+        <div class="pm-lane">
+          <div class="pm-label">自由模式<span>实验速度</span></div>
+          <div class="pm-track">
+            <a class="pm-node done" href="../docs-ai/design01/lab/00_自由模式方案.md"><span class="dot"></span><b>LabPage + LabGame</b><em>独立页面 · 独立 HUD</em></a>
+            <a class="pm-node done" href="../docs-ai/design01/lab/00_自由模式方案.md"><span class="dot"></span><b>JSON 覆盖</b><em>capability · 候选 · 导入导出</em></a>
+            <a class="pm-node now" href="../docs-ai/design01/lab/01_塔防生存玩法建议.md"><span class="dot"></span><b>生存 S1/S2</b><em>5 实验 · 自动测试</em></a>
+            <span class="pm-node todo"><span class="dot"></span><b>Mode Adapter</b><em>真正非塔防循环</em></span>
+          </div>
+        </div>
+        <div class="pm-lane">
+          <div class="pm-label">工程<span>怎么持续</span></div>
+          <div class="pm-track">
+            <a class="pm-node done" href="../docs-ai/design01/tech/12_技术方案_Godot工程.md"><span class="dot"></span><b>App + Router + Pages</b><em>主页/实验/游戏页</em></a>
+            <a class="pm-node done" href="../docs-ai/design01/tech/12_技术方案_Godot工程.md"><span class="dot"></span><b>Runtime + Sim</b><em>读模型 · 回放 · 黑匣子</em></a>
+            <a class="pm-node done" href="../docs-ai/design01/tech/12_技术方案_Godot工程.md"><span class="dot"></span><b>数据管线</b><em>numbers → data → pack</em></a>
+            <a class="pm-node done" href="../docs-ai/design01/tech/17_可插拔扩展架构.md"><span class="dot"></span><b>扩展注册</b><em>manifest · preset · 34 检查</em></a>
+            <span class="pm-node todo"><span class="dot"></span><b>L2/L3 城市</b><em>岗位 · 城市 · 长期</em></span>
+          </div>
+        </div>
+        <div class="pm-lane">
+          <div class="pm-label">验证 / 内容<span>凭什么相信</span></div>
+          <div class="pm-track">
+            <a class="pm-node done" href="../docs-ai/design01/numbers/README.md"><span class="dot"></span><b>103 断言</b><em>无头 · 可复现</em></a>
+            <a class="pm-node done" href="../docs-ai/design01/tech/12_技术方案_Godot工程.md"><span class="dot"></span><b>13 项验收</b><em>test · pack · HTML · R-016</em></a>
+            <a class="pm-node done" href="../docs-ai/design01/world/README.md"><span class="dot"></span><b>58 页文档</b><em>world · gameplay · tech</em></a>
+            <span class="pm-node next"><span class="dot"></span><b>真人试玩</b><em>10 分钟闭环反馈</em></span>
+            <span class="pm-node todo"><span class="dot"></span><b>发布切片</b><em>平台/语言/节奏待决</em></span>
+          </div>
+        </div>
+      </div>
+      <div class="pm-horizons">
+        <div class="pm-horizon"><span class="tag">现在</span><b>把生存与 Solarpunk 接进同一套解释</b><span>低功率夜班 + 太阳公约 + 自由模式自动测试</span></div>
+        <div class="pm-horizon"><span class="tag">下一</span><b>真人验证与空间化封舱</b><span>10 分钟闭环、舱段级封舱、Mode Adapter</span></div>
+        <div class="pm-horizon"><span class="tag">不做</span><b>不提前做通用引擎</b><span>在线工坊、L2/L3、堆量内容</span></div>
+      </div>
+    </div>
+
     <div class="grid g2" style="margin-top:18px">
       <article class="card"><h4>它已经能玩什么</h4><p>外环第七段、中环维护环、湾口对接臂三张图；6 种塔、7 种敌人（含故障/护盾/分裂）、8 波、准备/交战/整备/结算、建造/升级/出售/暂停/倍速/存档；无头测试可复现胜负。</p></article>
       <article class="card"><h4>三张地图</h4><p>外环第七段：7 塔位弧形主防线；中环维护环：9 塔位回环，供能 -15、保障度 -10、塔伤 0.8；湾口对接臂：5 塔位短路径，供能 +10、保障度 -15。每张图有独立波次表，顶部「地图 (G)」切换。</p></article>
@@ -219,7 +313,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <p class="lede">存续力不是“游戏能活多久”，而是项目在时间、资金、精力、人员变动、平台变化与范围膨胀中，继续存在并推进的能力。结论：<b>3.15 / 5（C+，约 63/100）</b>；方向与资产在，缓冲与外部验证不在。</p>
     <div class="grid g3">
       <article class="card"><h4>综合等级</h4><div class="grade-big">C+</div><p>3.15 / 5 · 63 / 100</p><p class="dim">可继续，无安全垫</p></article>
-      <article class="card"><h4>存续资产</h4><p><b>低固定成本</b>：无服务器/无在线运营；<b>可复用管线</b>：numbers→data→pack→测试；<b>文档/工具</b>：49 页 + verify + 沙盘 + 编辑器；<b>范围纪律</b>：v0.2 没有新增第四种玩法。</p></article>
+      <article class="card"><h4>存续资产</h4><p><b>低固定成本</b>：无服务器/无在线运营；<b>可复用管线</b>：numbers→data→pack→测试；<b>文档/工具</b>：58 页 + verify + 沙盘 + 编辑器；<b>范围纪律</b>：v0.2 没有新增第四种玩法。</p></article>
       <article class="card"><h4>最脆弱</h4><p><b>单点依赖</b>：关键知识集中；<b>无收入/预算</b>：买不到美术/发行时间；<b>无人类验证</b>：做对做错都缺反馈；<b>发布未定</b>：D14/D17/D18 仍空着。</p></article>
     </div>
 
@@ -305,7 +399,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
       <article class="card"><h4>已覆盖且成立</h4><p>核心幻想、世界观、8 波循环、3 图独立波次、6 塔/7 敌、故障选择、检查单、结算、HUB/GUIDE、设计决策与数值表。</p></article>
       <article class="card"><h4>覆盖但偏薄</h4><p>经济只有单资源；塔/敌组合少；地图有修正但缺少关卡叙事；UX 有 HUD 但新手引导主要靠 HUB/GUIDE；美术是程序化占位；音频只有短音效。</p></article>
       <article class="card"><h4>几乎未覆盖</h4><p>L2/L3、日常循环、城市事件、角色关系、难度选择、成就/解锁、可访问性设置、本地化、云存档/跨平台。</p></article>
-      <article class="card"><h4>设计流程</h4><p>决策记录、49 页设计文档、数值 source、流程图、沙盘、trace；但“文档强、真人验证弱”仍是最大失衡。</p></article>
+      <article class="card"><h4>设计流程</h4><p>决策记录、58 页设计文档、数值 source、流程图、沙盘、trace；但“文档强、真人验证弱”仍是最大失衡。</p></article>
     </div>
 
     <h3>五个设计债</h3>
@@ -332,7 +426,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}
     <p class="lede">这是一份 AI 自评，不是外部审计。评分看的是“当前工程能否支撑下一步”，不是“代码是否完美”。结论：<b>3.88 / 5（B+，约 78/100）</b>，处于 <b>L2+ 垂直切片</b>，距离可发布的 L3 还差性能、发布与内容厚度。</p>
     <div class="grid g3">
       <article class="card"><h4>综合等级</h4><div class="grade-big">B+</div><p>3.88 / 5 · 78 / 100</p><p class="dim">L2+：垂直切片成熟，进入发布前工程化</p></article>
-      <article class="card"><h4>最强三项</h4><p><b>数据单一源</b>：numbers → data → MissionPack；<b>测试与回放</b>：103 断言 + 34 扩展检查 + blackbox；<b>文档与工具</b>：49 页 + 流程图 + 沙盘 + 编辑器。</p></article>
+      <article class="card"><h4>最强三项</h4><p><b>数据单一源</b>：numbers → data → MissionPack；<b>测试与回放</b>：103 断言 + 34 扩展检查 + blackbox；<b>文档与工具</b>：58 页 + 流程图 + 沙盘 + 编辑器。</p></article>
       <article class="card"><h4>最弱三项</h4><p><b>性能/规模</b>已有 headless 基线，但未测渲染/内存；<b>发布链路</b>未定（D14/D17/D18）；<b>内容厚度</b>仍只有 1 职业 / 3 图 / 8 波。</p></article>
     </div>
 
