@@ -38,7 +38,8 @@
   a{color:var(--focus);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--focus) 40%,transparent)}
   a:hover{border-bottom-color:var(--focus)}
   code{font-family:var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:.88em}
-  .topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg) 0%,var(--bg) 70%,color-mix(in srgb,var(--bg) 92%,transparent) 100%);border-bottom:1px solid var(--line);padding:12px 22px 0}
+  .topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg) 0%,var(--bg) 70%,color-mix(in srgb,var(--bg) 92%,transparent) 100%);border-bottom:1px solid var(--line)}
+  .topbar-inner{max-width:1200px;margin:0 auto;padding:12px 22px 0}
   .topline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
   .brand{font-size:19px;font-weight:700;letter-spacing:.03em}
   .brand .en{color:var(--muted);font-weight:400;font-size:12.5px;margin-left:8px}
@@ -55,6 +56,28 @@
   nav.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);border-color:var(--line);box-shadow:inset 0 2px 0 var(--teal)}
   nav.tabs button .n{color:var(--muted);font-size:12px;margin-right:6px}
   main{max-width:1200px;margin:0 auto;padding:22px}
+  .quick-links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 18px}
+  .quick-link{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;color:var(--text);border-bottom:1px solid var(--line)!important;transition:.15s}
+  .quick-link:hover{border-color:var(--teal);transform:translateY(-1px)}
+  .quick-link b{display:block;font-size:14px;margin-bottom:3px}
+  .quick-link span{display:block;color:var(--dim);font-size:12px}
+  .mini-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
+  .mini-stat{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px}
+  .mini-stat b{display:block;font:700 22px/1.1 var(--mono);color:var(--teal)}
+  .mini-stat span{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .map-card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;color:var(--text);border-bottom:1px solid var(--line)!important;transition:.15s}
+  .map-card:hover{border-color:var(--teal)}
+  .map-card h3{margin:0 0 4px;color:var(--text)}
+  .map-card p{margin:0;color:var(--dim);font-size:12.5px}
+  .lab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .lab-card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;color:var(--text);border-bottom:1px solid var(--line)!important;transition:.15s}
+  .lab-card:hover{border-color:var(--teal);transform:translateY(-1px)}
+  .lab-card .kicker{font:9px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .lab-card h3{margin:5px 0;color:var(--text)}
+  .lab-card p{margin:0;color:var(--dim);font-size:12px}
+  .lab-card .links{margin-top:8px!important}
+  .rule-links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 16px}
   .panel{display:block}
   body.js .panel{display:none}
   body.js .panel.active{display:block;animation:fade .18s ease-out}
@@ -170,7 +193,7 @@
   .toast.on{opacity:1;transform:none}
   input[type=search]{width:100%;max-width:420px;background:var(--bg);border:1.5px solid var(--line-strong);border-radius:4px;color:var(--text);padding:8px 10px;font:inherit;font-size:13px;margin:8px 0 12px}
   input[type=search]:focus{outline:2px solid var(--focus);outline-offset:1px}
-  @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots,.metric-grid{grid-template-columns:1fr 1fr}.type-row{grid-template-columns:1fr}.topbar{padding:10px 14px 0}main{padding:16px}.timeline{padding-left:28px}.tl-item::before{left:-23px}}
+  @media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.g4,.g3,.g2,.shots,.metric-grid,.quick-links,.mini-strip,.map-grid,.lab-grid,.rule-links{grid-template-columns:1fr 1fr}.type-row{grid-template-columns:1fr}.topbar-inner{padding:10px 14px 0}main{padding:16px}.timeline{padding-left:28px}.tl-item::before{left:-23px}}
   @media print{
     :root, html[data-theme]{
       --bg:#fff; --surface:#fff; --raised:#f5f5f5;
@@ -192,6 +215,7 @@
 </head>
 <body>
 <header class="topbar">
+  <div class="topbar-inner">
   <div class="topline">
     <div class="brand">青橙设计 · PROJECT HUB<span class="en">LRDS / Project</span></div>
     <div class="stamp">v0.2.0 已发布 ｜ App kit 起步（未发布）</div>
@@ -201,18 +225,25 @@
       <button type="button" data-theme-set="dark" aria-pressed="false">深色</button>
     </div>
   </div>
-  <div class="hint">项目 HUB：总览 / 演进 / 验收 / 决策 / 文档。设计系统本身（token / 组件 / 风格卡 / 规则 / 主题）见 <a href="GUIDE.html">GUIDE.html</a>；实验区见 <a href="lab/README.md">Lab / 青橙 OS</a>。由 <code>design/tools/build_hub.ts</code> 生成；右上角可切换系统 / 浅色 / 深色。</div>
+  <div class="hint">项目 HUB：总览 / 演进 / 验收 / 实验 / 决策 / 文档。设计系统本身（token / 组件 / 风格卡 / 规则 / 主题）见 <a href="GUIDE.html">GUIDE.html</a>；实验区见 <a href="lab/README.md">Lab / 时空实验室</a>。由 <code>design/tools/build_hub.ts</code> 生成；右上角可切换系统 / 浅色 / 深色。</div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="overview" aria-selected="true"><span class="n">01</span>总览</button>
     <button role="tab" data-tab="evolution"><span class="n">02</span>演进</button>
     <button role="tab" data-tab="checks"><span class="n">03</span>验收</button>
-    <button role="tab" data-tab="decisions"><span class="n">04</span>决策与文档</button>
+    <button role="tab" data-tab="labs"><span class="n">04</span>实验</button>
+    <button role="tab" data-tab="decisions"><span class="n">05</span>决策与文档</button>
   </nav>
+  </div>
 </header>
 <main>
   <section class="panel active" id="panel-overview">
     <h2>总览</h2>
     <p class="lede">一套语法，多种介质。设计系统不是配色表：它把品牌、语义 token、组件契约、介质适配、资产与评审收在一套可机器校验的结构里。</p>
+    <div class="quick-links">
+      <a class="quick-link" href="GUIDE.html"><b>设计系统 GUIDE →</b><span>token / 组件 / 风格卡 / 主题 / 规则</span></a>
+      <a class="quick-link" href="lab/spacetime/index.html"><b>时空实验室 →</b><span>2D / 3D / 慢好三生应用实验</span></a>
+      <a class="quick-link" href="philosophy/html/index.html"><b>青橙理念可视化 →</b><span>16 篇的阅读地图</span></a>
+    </div>
     <div class="stats">
       <div class="stat a"><div class="v">279</div><div class="l">Token 总数</div></div>
       <div class="stat"><div class="v">5</div><div class="l">风格卡</div></div>
@@ -221,9 +252,25 @@
       <div class="stat c"><div class="v">8</div><div class="l">生成物</div></div>
       <div class="stat"><div class="v">0</div><div class="l">Active 例外</div></div>
     </div>
+    <div class="mini-strip">
+      <div class="mini-stat"><b>16</b><span>设计规则 active</span></div>
+      <div class="mini-stat"><b>16</b><span>青橙理念篇目</span></div>
+      <div class="mini-stat"><b>2</b><span>实验项目</span></div>
+    </div>
     <h3>Token 构成</h3>
     <div class="bar"><span class="r" style="width:24.4%"></span><span class="s" style="width:35.5%"></span><span class="p" style="width:33.7%"></span></div>
     <div class="bar-label"><span><b>ref 68</b> 原始值</span><span><b>sys 99</b> 通用语义</span><span><b>product 94</b> 产品/纪元</span></div>
+
+    <h3>系统地图</h3>
+    <div class="map-grid">
+      <a class="map-card" href="philosophy/README.md"><h3>理念 · 16</h3><p>清澄、可感、可参与、适当的未来与设计思维；约束提问方式。</p></a>
+      <a class="map-card" href="GUIDE.html"><h3>Token · 279</h3><p>ref / sys / product 三层；JSON 是唯一事实源，CSS/Godot/App 由脚本生成。</p></a>
+      <a class="map-card" href="rules/README.md"><h3>规则 · 16</h3><p>R-001 三态、R-016 生成式 HTML、对比度、组件契约与生成物纪律。</p></a>
+      <a class="map-card" href="components/README.md"><h3>组件 · 3</h3><p>button / form-field / panel；契约先于实现，真实消费者才算交付。</p></a>
+      <a class="map-card" href="docs/07_风格卡登记.md"><h3>风格卡 · 5</h3><p>换色板、材质与光源，不换语法；每张卡都有源与投影。</p></a>
+      <a class="map-card" href="lab/README.md"><h3>实验 · 2</h3><p>青橙 OS 与时空实验室：把未定设计先做成可判断的原型。</p></a>
+    </div>
+
     <h3>产品覆盖</h3>
     <table>
       <thead><tr><th>产品</th><th>介质</th><th>状态</th><th>消费什么</th></tr></thead>
@@ -410,7 +457,7 @@
     <div class="grid g2">
       <div class="card">
         <h3>闸门</h3>
-        <div class="gate"><span class="dot"></span><span class="name">Token 结构 / 类型 / 别名 / 字阶</span><code>check_tokens.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">对比度 / 层级 / focus 分离</span><code>check_contrast.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">裸色值 / 裸尺寸</span><code>check_no_raw_values.ts</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">生成物无 diff</span><code>build_tokens.ts --check</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">明日频道 .tres 风格卡对账</span><code>check_tomorrows_channel_skin.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">组件契约 + 组件 CSS</span><code>check_component_contracts.ts</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">组件真实消费者审计</span><code>check_component_usage.ts</code><span class="st">4/4</span></div><div class="gate"><span class="dot"></span><span class="name">Web 组件层产物一致</span><code>build_web_kit.ts --check</code><span class="st">3/3</span></div><div class="gate"><span class="dot"></span><span class="name">HUB 与源一致（含自检）</span><code>build_hub.ts --check</code><span class="st">4/4</span></div>
+        <div class="gate"><span class="dot"></span><span class="name">Token 结构 / 类型 / 别名 / 字阶</span><code>check_tokens.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">对比度 / 层级 / focus 分离</span><code>check_contrast.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">裸色值 / 裸尺寸</span><code>check_no_raw_values.ts</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">生成物无 diff</span><code>build_tokens.ts --check</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">明日频道 .tres 风格卡对账</span><code>check_tomorrows_channel_skin.ts</code><span class="st">7/7</span></div><div class="gate"><span class="dot"></span><span class="name">组件契约 + 组件 CSS</span><code>check_component_contracts.ts</code><span class="st">8/8</span></div><div class="gate"><span class="dot"></span><span class="name">组件真实消费者审计</span><code>check_component_usage.ts</code><span class="st">4/4</span></div><div class="gate"><span class="dot"></span><span class="name">Web 组件层产物一致</span><code>build_web_kit.ts --check</code><span class="st">3/3</span></div><div class="gate"><span class="dot"></span><span class="name">HUB 与源一致（含自检）</span><code>build_hub.ts --check</code><span class="st">4/4</span></div><div class="gate"><span class="dot"></span><span class="name">HTML 三态 / 预绘制 / 打印</span><code>check_html_theme.ts</code><span class="st">6/6</span></div>
       </div>
       <div class="card">
         <h3>状态</h3>
@@ -425,6 +472,27 @@
     <div class="callout"><b>运行时提醒</b>：网站构建产物在本机 Bun 1.4.0 下曾触发 NAPI 崩溃，走查改用 Node 完成；部署前需按目标运行时复核。详见 <a href="docs/09_产品走查_v0.2.md">09 产品走查 §一</a>。</div>
   </section>
 
+  <section class="panel" id="panel-labs">
+    <h2>实验</h2>
+    <p class="lede">设计系统只管已经被验证的部分；实验区先把“还没定”的东西做成可判断的原型。实验不伪装成生产，但每个实验都必须有假设、边界与回收路径。</p>
+    <div class="lab-grid">
+      <a class="lab-card" href="lab/spacetime/index.html"><span class="kicker">SPACETIME / LAB</span><h3>时空实验室</h3><p>空间直觉与时间的空间化：2D 平面、3D 纵深、慢好三生应用。</p><span class="go" style="display:block;margin-top:8px;color:var(--teal);font:9px var(--mono)">进入总入口 →</span></a>
+      <a class="lab-card" href="lab/os/index.html"><span class="kicker">LAB / 01</span><h3>青橙 OS</h3><p>9 个应用 + 未来转盘的 Web 桌面；同一套语法上的三张世界皮肤。</p><span class="go" style="display:block;margin-top:8px;color:var(--teal);font:9px var(--mono)">打开桌面 →</span></a>
+      <a class="lab-card" href="philosophy/html/index.html"><span class="kicker">PHILOSOPHY / HTML</span><h3>理念可视化</h3><p>16 篇理念的 HTML 阅读层；先空间、再文字。</p><span class="go" style="display:block;margin-top:8px;color:var(--teal);font:9px var(--mono)">打开可视化 →</span></a>
+    </div>
+    <h3>按组进入</h3>
+    <div class="rule-links">
+      <a class="map-card" href="lab/spacetime/2d/index.html"><h3>2D · 平面实验</h3><p>五个平面空间语法：记忆星图 / 时间地形 / 因果织网 / 时间房间 / 折叠时间。</p></a>
+      <a class="map-card" href="lab/spacetime/3d/index.html"><h3>3D · 纵深实验</h3><p>四个 Canvas 3D 模型：高度、遮挡、相机与反馈延迟。</p></a>
+      <a class="map-card" href="lab/spacetime/慢好三生Demo/index.html"><h3>应用 · 慢好三生</h3><p>五个空间模型：罗盘、织机、螺旋、树网、立方。</p></a>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h3>实验规则</h3><p>标注 <code>LAB / EXPERIMENTAL</code>；假数据标明模拟；有假设、边界、入口与回收；不直接改生产 token/组件。</p><p class="links"><a href="lab/README.md">Lab 规则</a> · <a href="lab/spacetime/README.md">时空实验室说明</a></p></div>
+      <div class="card"><h3>怎么判断一个实验值得留下</h3><p>它是否解决了真实问题，而不是“看起来未来”？可感现象能否追溯到状态？谁维护、谁承担、谁退出？能否在 200% 字号、键盘与减少动态下工作？</p></div>
+    </div>
+    <div class="callout"><b>当前状态</b>：时空实验室已有 <b>2D 5 案</b>、<b>3D 4 案</b>、<b>慢好三生 5 模型</b>；全部离线可开、三态主题、带 README。实验仍属 <code>prototype</code>，不是生产组件。</div>
+  </section>
+
   <section class="panel" id="panel-decisions">
     <h2>决策与文档</h2>
     <h3>决策总表</h3>
@@ -432,6 +500,12 @@
       <thead><tr><th>#</th><th>决策</th><th>选择</th><th>状态</th></tr></thead>
       <tbody><tr><td><code>D1</code></td><td>定位</td><td>治理系统，而非风格指南</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D2</code></td><td>品牌架构</td><td>母品牌背书 + 产品子品牌</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D3</code></td><td>系统模型</td><td>五层 + ref / sys / product 三层 token</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D4</code></td><td>单一事实来源</td><td>JSON 为源 + 生成各端 + CI 对账</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D5</code></td><td>视觉基调</td><td>双模 Archive + Console</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D6</code></td><td>介质优先级</td><td>Web + Godot 先行；打印/实体后置</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D7</code></td><td>治理权限</td><td>设计主控可否决 token 违规</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D8</code></td><td>版本策略</td><td>SemVer + 稳定性分级 + 弃用窗口</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D9</code></td><td>资产与法务</td><td>开源字体 + 自有图标 + 溯源</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D10</code></td><td>首版范围</td><td>地基 + 两个试点；外观基本不变</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D-011</code></td><td>青橙理念</td><td>16 篇 / 八批 / 上位理念</td><td><span class="chip ok">已裁决</span></td></tr><tr><td><code>D-012</code></td><td>清澄为核心</td><td>七种可见 / 透明≠曝光</td><td><span class="chip ok">已裁决</span></td></tr></tbody>
     </table>
+    <h3>规则与治理</h3>
+    <div class="rule-links">
+      <a class="map-card" href="rules/R-001-theme-modes.md"><h3>R-001 · 三态</h3><p>系统 / 浅色 / 深色；语义与 token 纪律。</p></a>
+      <a class="map-card" href="rules/R-016-html-theme-modes.md"><h3>R-016 · HTML</h3><p>生成式 HTML 的预绘制、持久化、打印与机器验收。</p></a>
+      <a class="map-card" href="rules/README.md"><h3>规则总表 · 16</h3><p>R-001–R-016；规则是权威，技术详解在 tech/。</p></a>
+    </div>
     <p class="lede">青橙理念（D-011）：<a href="philosophy/README.md">系列索引</a> · <a href="philosophy/00_总纲_青橙设计.md">00 总纲</a> · <a href="philosophy/01_未来考古_复古未来不是怀旧.md">01 未来考古</a> · <a href="philosophy/02_可感_从数字到现象.md">02 可感</a> · <a href="philosophy/03_可参与_技术如何保留人的位置.md">03 可参与</a> · <a href="philosophy/04_适当的未来_赛博朋克太阳朋克与中间地带.md">04 适当的未来</a> · <a href="philosophy/05_游戏作为未来实验室.md">05 游戏</a> · <a href="philosophy/06_多世界语法_共享问题不共享答案.md">06 多世界</a> · <a href="philosophy/07_边界_青橙设计拒绝什么.md">07 边界</a> · <a href="philosophy/08_青橙十问.md">08 十问</a> · <a href="philosophy/09_清澄_透明作为方法.md">09 清澄</a> · <a href="philosophy/10_设计思维_从问题到可被体验的答案.md">10 设计思维</a> · <a href="philosophy/11_设计思维与其它思维_六种镜头.md">11 六种镜头</a> · <a href="philosophy/12_空间直觉_让界面先被看见再被读懂.md">12 空间直觉</a> · <a href="philosophy/13_白盒化方法_把系统翻过来.md">13 白盒化方法</a> · <a href="philosophy/14_复杂性_把复杂放在正确的位置.md">14 复杂性</a> · <a href="philosophy/15_稀缺性_设计在不够的时候.md">15 稀缺性</a>。16 篇（13 已完稿 + 3 参考稿），附 <a href="philosophy/html/index.html">HTML 可视化</a>。</p>
     <p class="lede">青橙全栈（已收尾）：<a href="fullstack/HUB.html">Project HUB</a> · <a href="fullstack/GUIDE.html">Framework GUIDE</a> · <a href="fullstack/docs/TODO.md">TODO</a> · <a href="fullstack/docs/design/08_决策清单.md">决策清单</a>。</p>
     <h3>路线</h3>
