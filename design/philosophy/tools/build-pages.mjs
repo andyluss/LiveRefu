@@ -441,6 +441,66 @@ const pages = [
     quote: '白盒化不是把墙拆掉，而是把墙的位置、材料、门和钥匙都标出来。',
     quoteBy: '13 · 白盒化方法',
   },
+  {
+    slug: '14_复杂性_把复杂放在正确的位置',
+    n: '14',
+    title: '复杂性',
+    subtitle: '把复杂放在正确的位置',
+    thesis: '复杂性不会消失，只会换一个位置；设计的工作是选择它放在哪、由谁承担、是否可见。',
+    visual: `
+      <div class="matrix">
+        <div class="quad"><div class="tag">STRUCTURE</div><b>结构</b><span>模块、依赖、边界；用接口/模块/分层吸收。</span></div>
+        <div class="quad solar"><div class="tag">COGNITION</div><b>认知</b><span>选项、记忆、规则；用渐进披露/默认值/空间化。</span></div>
+        <div class="quad mid"><div class="tag">ORGANIZATION</div><b>组织</b><span>角色、权限、交接；用权限表/记录/责任边界。</span></div>
+        <div class="quad"><div class="tag">TIME</div><b>时间</b><span>版本、状态、历史；用时间线/回放/迁移。</span></div>
+      </div>`,
+    caption: '复杂性不是“删到简单”，而是把它放在系统、界面、组织、时间中合适的位置。',
+    points: [
+      ['不是敌人', '必要的复杂承载真实关系；删掉它只会把代价藏起来。'],
+      ['五种策略', '移除、吸收、排序、暴露、委托；先问谁最有能力承担。'],
+      ['持续管理', 'Frame → Map → Probe → Decide → Institutionalize；用可逆小实验代替大改。'],
+    ],
+    map: [
+      ['01', '六个来源', '结构、认知、组织、时间、技术债、意义。'],
+      ['02', '复杂 vs 错综', 'complicated 可拆解；complex 只能探测、适应、响应。'],
+      ['03', '放在哪里', '系统、界面、组织、时间、空间、叙事。'],
+      ['04', '工具箱', '渐进披露、默认值、契约、可观测、可逆、冗余、删除。'],
+      ['05', '度量', '首次成功、错误恢复、变更成本、支持负担、事故半径。'],
+      ['06', '与稀缺', '复杂性消耗稀缺注意力/维护力；稀缺又制造复杂性。'],
+    ],
+    quote: '好的设计不是让系统看起来简单，而是让复杂出现在该出现的地方，并由有能力承担的人/系统承担。',
+    quoteBy: '14 · 复杂性',
+  },
+  {
+    slug: '15_稀缺性_设计在不够的时候',
+    n: '15',
+    title: '稀缺性',
+    subtitle: '设计在不够的时候',
+    thesis: '稀缺不是“少”，而是“不能同时满足”；设计不能消灭稀缺，但可以让它被看见、分配、承担与退出。',
+    visual: `
+      <div class="matrix">
+        <div class="quad solar"><div class="tag">MATERIAL</div><b>物质 / 能源</b><span>预算、循环、替代、储备、降级。</span></div>
+        <div class="quad"><div class="tag">ATTENTION</div><b>注意力 / 时间</b><span>默认、分层、静默、队列、异步。</span></div>
+        <div class="quad mid"><div class="tag">TRUST</div><b>信任 / 维护</b><span>来源、审计、维修权、文档、冗余。</span></div>
+        <div class="quad cyber"><div class="tag">EXIT</div><b>选择权 / 退出</b><span>可逆承诺、导出、迁移、公共选项。</span></div>
+      </div>`,
+    caption: '稀缺是设计材料：谁先、谁后、谁承担、谁可以走。',
+    points: [
+      ['不是少', '绝对稀缺、相对稀缺、制造稀缺要分开诊断。'],
+      ['管理循环', '说清稀缺 → 画资源流 → 小规模试用 → 决定规则 → 制度化。'],
+      ['伦理', '谁决定、谁承担、谁被排除、谁维护、谁获益；不能把稀缺自然化。'],
+    ],
+    map: [
+      ['01', '八种稀缺', '物质、能源、注意力、时间、信任、维护、协调、选择权。'],
+      ['02', '八种策略', '降需求、增供给、缓冲、共享、排序、替代、降级、退出。'],
+      ['03', '设计模式', '预算、配额、队列、预约、渐进分配、储备、优雅降级。'],
+      ['04', '伦理', '稀缺剧场、转移、自然化、羞耻；分配规则必须可申诉。'],
+      ['05', 'LiveBay', '低功率夜班：电/氧/救援；自由模式：时间/注意力。'],
+      ['06', '度量', '等待分布、排除率、维护 backlog、决策延迟、谁承担最多。'],
+    ],
+    quote: '在不够的时候，设计最重要的不是“挤更多”，而是“谁先、谁后、谁承担、谁可以走”。',
+    quoteBy: '15 · 稀缺性',
+  },
 ]
 
 const total = pages.length
@@ -525,7 +585,7 @@ const index = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>青橙设计 · 理念可视化索引</title>
-<meta name="description" content="青橙设计理念系列 00–13 的可视化索引。">
+<meta name="description" content="青橙设计理念系列 00–15 的可视化索引。">
   <script>
     (function () {
       document.documentElement.dataset.js = 'true';
@@ -544,11 +604,11 @@ const index = `<!doctype html>
 <header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">INDEX / ${String(total).padStart(2, '0')}</span></div></header>
 <main class="shell">
   <section class="hero">
-    <div><div class="eyebrow">Orange Design · Philosophy Index</div><h1>把理念<br><span class="thin">先看成一张图。</span></h1><p class="thesis">00–13 共 14 篇。每篇一页可视化：先看关系，再回到原文读论证。所有页面共用一份 CSS，不依赖外部字体、脚本或网络。</p></div>
+    <div><div class="eyebrow">Orange Design · Philosophy Index</div><h1>把理念<br><span class="thin">先看成一张图。</span></h1><p class="thesis">00–15 共 16 篇。每篇一页可视化：先看关系，再回到原文读论证。所有页面共用一份 CSS，不依赖外部字体、脚本或网络。</p></div>
     <aside class="hero-aside"><b>READ</b>从 00 总纲开始<br><br><b>USE</b>评审时先看图<br><br><b>SOURCE</b>design/philosophy/</aside>
   </section>
   <div class="rule"></div>
-  <section class="block"><p class="kicker">Fourteen papers · fourteen images</p><h2>可视化目录</h2><div class="grid3">${cards}</div></section>
+  <section class="block"><p class="kicker">Sixteen papers · sixteen images</p><h2>可视化目录</h2><div class="grid3">${cards}</div></section>
   <div class="nav"><a href="../README.md">系列索引</a><a href="../00_总纲_青橙设计.md">00 总纲原文</a><a href="../10_设计思维_从问题到可被体验的答案.md">10 设计思维原文</a></div>
   <footer class="footer"><span>青橙设计 · philosophy/html/</span><span>静态 HTML · 可离线打开</span></footer>
 </main>

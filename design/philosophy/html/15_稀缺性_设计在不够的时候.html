@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>15 · 稀缺性｜青橙设计</title>
+<meta name="description" content="稀缺不是“少”，而是“不能同时满足”；设计不能消灭稀缺，但可以让它被看见、分配、承担与退出。">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
+<link rel="stylesheet" href="./philosophy.css">
+</head>
+<body>
+<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">PAPER 15 / 16</span></div></header>
+<main class="shell">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Orange Design · Philosophy 15</div>
+      <h1>稀缺性<br><span class="thin">设计在不够的时候</span></h1>
+      <p class="thesis">稀缺不是“少”，而是“不能同时满足”；设计不能消灭稀缺，但可以让它被看见、分配、承担与退出。</p>
+    </div>
+    <aside class="hero-aside"><b>READING NOTE</b>15 / 16<br>青橙设计 · 理念系列<br><br><b>USE</b>先看图中的关系，再回到原文读论证。</aside>
+  </section>
+  <div class="rule"></div>
+  <section class="block">
+    <p class="kicker">The image before the argument</p>
+    <div class="visual diagram">
+      <div class="matrix">
+        <div class="quad solar"><div class="tag">MATERIAL</div><b>物质 / 能源</b><span>预算、循环、替代、储备、降级。</span></div>
+        <div class="quad"><div class="tag">ATTENTION</div><b>注意力 / 时间</b><span>默认、分层、静默、队列、异步。</span></div>
+        <div class="quad mid"><div class="tag">TRUST</div><b>信任 / 维护</b><span>来源、审计、维修权、文档、冗余。</span></div>
+        <div class="quad cyber"><div class="tag">EXIT</div><b>选择权 / 退出</b><span>可逆承诺、导出、迁移、公共选项。</span></div>
+      </div><div class="caption">稀缺是设计材料：谁先、谁后、谁承担、谁可以走。</div></div>
+  </section>
+  <section class="block">
+    <p class="kicker">Three coordinates</p>
+    <h2>三个判断</h2>
+    <div class="grid3"><article class="card"><div class="num">01</div><h3>不是少</h3><p>绝对稀缺、相对稀缺、制造稀缺要分开诊断。</p></article><article class="card"><div class="num">02</div><h3>管理循环</h3><p>说清稀缺 → 画资源流 → 小规模试用 → 决定规则 → 制度化。</p></article><article class="card"><div class="num">03</div><h3>伦理</h3><p>谁决定、谁承担、谁被排除、谁维护、谁获益；不能把稀缺自然化。</p></article></div>
+  </section>
+  <section class="block">
+    <p class="kicker">Reading map</p>
+    <h2>文章地图</h2>
+    <div class="map"><div class="item"><div class="idx">01</div><div><b>八种稀缺</b><span>物质、能源、注意力、时间、信任、维护、协调、选择权。</span></div></div><div class="item"><div class="idx">02</div><div><b>八种策略</b><span>降需求、增供给、缓冲、共享、排序、替代、降级、退出。</span></div></div><div class="item"><div class="idx">03</div><div><b>设计模式</b><span>预算、配额、队列、预约、渐进分配、储备、优雅降级。</span></div></div><div class="item"><div class="idx">04</div><div><b>伦理</b><span>稀缺剧场、转移、自然化、羞耻；分配规则必须可申诉。</span></div></div><div class="item"><div class="idx">05</div><div><b>LiveBay</b><span>低功率夜班：电/氧/救援；自由模式：时间/注意力。</span></div></div><div class="item"><div class="idx">06</div><div><b>度量</b><span>等待分布、排除率、维护 backlog、决策延迟、谁承担最多。</span></div></div></div>
+  </section>
+  <blockquote class="quote">在不够的时候，设计最重要的不是“挤更多”，而是“谁先、谁后、谁承担、谁可以走”。<small>15 · 稀缺性</small></blockquote>
+  <div class="nav"><a href="./index.html">全部可视化</a><a href="../README.md">系列索引</a><a href="../15_稀缺性_设计在不够的时候.md">读原文</a><a href="./14_复杂性_把复杂放在正确的位置.html">← 14 复杂性</a></div>
+  <footer class="footer"><span>青橙设计 · philosophy/15_稀缺性_设计在不够的时候.md</span><span>可视化生成：node design/philosophy/tools/build-pages.mjs</span></footer>
+</main>
+<script src="./philosophy-theme.js" defer></script>
+</body>
+</html>

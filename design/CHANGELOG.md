@@ -11,6 +11,7 @@
 > **青橙全栈已迁出**：P1–P17、可视化、TODO、QC 提案等全栈变更见 [`fullstack/CHANGELOG.md`](fullstack/CHANGELOG.md)。
 
 ### 新增
+- **青橙理念新增 14 复杂性 / 15 稀缺性（参考稿）**：新增 [14 复杂性](philosophy/14_复杂性_把复杂放在正确的位置.md)、[15 稀缺性](philosophy/15_稀缺性_设计在不够的时候.md)；分别整理复杂性来源/五种设计策略/管理循环/与稀缺的关系，以及八种稀缺/八种策略/分配伦理/LiveBay 低功率夜班案例；生成第 15、16 篇 HTML 可视化，系列更新为 16 篇（13 已完稿 + 3 参考稿）。
 - **青橙理念新增 13 白盒化方法（参考稿）**：新增 [13_白盒化方法_把系统翻过来](philosophy/13_白盒化方法_把系统翻过来.md)，整理 29 种白盒化方法（开源/可视化/透明/标准/数据/地图/空间/控制/审计/沙盘/退出等），附六法对比、12 法评分、按问题选法、八层白盒堆栈与反模式；生成第 14 篇 HTML 可视化，更新理念索引、design README 与 HUB。
 - **正式命名「时空实验室」**：`design/lab/spacetime/` 的用户面名称由 `Spacetime` 统一改为「时空实验室」；目录路径保留 `spacetime` 作为技术标识。
 - **R-016 机器检查器**：新增 `design/tools/check_html_theme.ts`（6 条自检），检查受管 39 个页面；接入 `check.sh` 与 pre-commit；补齐 `future-debris/briefing/GUIDE.html` 的打印浅色。

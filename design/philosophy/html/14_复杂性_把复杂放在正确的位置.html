@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>14 · 复杂性｜青橙设计</title>
+<meta name="description" content="复杂性不会消失，只会换一个位置；设计的工作是选择它放在哪、由谁承担、是否可见。">
+  <script>
+    (function () {
+      document.documentElement.dataset.js = 'true';
+      var KEY = 'lrds-theme', choice = 'system', saved = null;
+      try { saved = localStorage.getItem(KEY); } catch (e) {}
+      if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+      document.documentElement.dataset.theme = mode;
+      document.documentElement.dataset.themeChoice = choice;
+    })();
+  </script>
+<link rel="stylesheet" href="./philosophy.css">
+</head>
+<body>
+<header class="topbar"><a href="./index.html"><span class="dot"></span>青橙设计 · 理念可视化</a><div class="topbar-tools"><div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div><span class="page-no">PAPER 14 / 16</span></div></header>
+<main class="shell">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Orange Design · Philosophy 14</div>
+      <h1>复杂性<br><span class="thin">把复杂放在正确的位置</span></h1>
+      <p class="thesis">复杂性不会消失，只会换一个位置；设计的工作是选择它放在哪、由谁承担、是否可见。</p>
+    </div>
+    <aside class="hero-aside"><b>READING NOTE</b>14 / 16<br>青橙设计 · 理念系列<br><br><b>USE</b>先看图中的关系，再回到原文读论证。</aside>
+  </section>
+  <div class="rule"></div>
+  <section class="block">
+    <p class="kicker">The image before the argument</p>
+    <div class="visual diagram">
+      <div class="matrix">
+        <div class="quad"><div class="tag">STRUCTURE</div><b>结构</b><span>模块、依赖、边界；用接口/模块/分层吸收。</span></div>
+        <div class="quad solar"><div class="tag">COGNITION</div><b>认知</b><span>选项、记忆、规则；用渐进披露/默认值/空间化。</span></div>
+        <div class="quad mid"><div class="tag">ORGANIZATION</div><b>组织</b><span>角色、权限、交接；用权限表/记录/责任边界。</span></div>
+        <div class="quad"><div class="tag">TIME</div><b>时间</b><span>版本、状态、历史；用时间线/回放/迁移。</span></div>
+      </div><div class="caption">复杂性不是“删到简单”，而是把它放在系统、界面、组织、时间中合适的位置。</div></div>
+  </section>
+  <section class="block">
+    <p class="kicker">Three coordinates</p>
+    <h2>三个判断</h2>
+    <div class="grid3"><article class="card"><div class="num">01</div><h3>不是敌人</h3><p>必要的复杂承载真实关系；删掉它只会把代价藏起来。</p></article><article class="card"><div class="num">02</div><h3>五种策略</h3><p>移除、吸收、排序、暴露、委托；先问谁最有能力承担。</p></article><article class="card"><div class="num">03</div><h3>持续管理</h3><p>Frame → Map → Probe → Decide → Institutionalize；用可逆小实验代替大改。</p></article></div>
+  </section>
+  <section class="block">
+    <p class="kicker">Reading map</p>
+    <h2>文章地图</h2>
+    <div class="map"><div class="item"><div class="idx">01</div><div><b>六个来源</b><span>结构、认知、组织、时间、技术债、意义。</span></div></div><div class="item"><div class="idx">02</div><div><b>复杂 vs 错综</b><span>complicated 可拆解；complex 只能探测、适应、响应。</span></div></div><div class="item"><div class="idx">03</div><div><b>放在哪里</b><span>系统、界面、组织、时间、空间、叙事。</span></div></div><div class="item"><div class="idx">04</div><div><b>工具箱</b><span>渐进披露、默认值、契约、可观测、可逆、冗余、删除。</span></div></div><div class="item"><div class="idx">05</div><div><b>度量</b><span>首次成功、错误恢复、变更成本、支持负担、事故半径。</span></div></div><div class="item"><div class="idx">06</div><div><b>与稀缺</b><span>复杂性消耗稀缺注意力/维护力；稀缺又制造复杂性。</span></div></div></div>
+  </section>
+  <blockquote class="quote">好的设计不是让系统看起来简单，而是让复杂出现在该出现的地方，并由有能力承担的人/系统承担。<small>14 · 复杂性</small></blockquote>
+  <div class="nav"><a href="./index.html">全部可视化</a><a href="../README.md">系列索引</a><a href="../14_复杂性_把复杂放在正确的位置.md">读原文</a><a href="./13_白盒化方法_把系统翻过来.html">← 13 白盒化方法</a><a href="./15_稀缺性_设计在不够的时候.html">15 稀缺性 →</a></div>
+  <footer class="footer"><span>青橙设计 · philosophy/14_复杂性_把复杂放在正确的位置.md</span><span>可视化生成：node design/philosophy/tools/build-pages.mjs</span></footer>
+</main>
+<script src="./philosophy-theme.js" defer></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 # LiveRefu Design System（LRDS）· 项目设计系统
 
 > **一句话**：**清澄为核，一套语法，多种介质**——品牌、网站、游戏、应用与未来的实体产品共用同一套理解方式，各自拥有可替换的风格卡。
-> **状态**：**v0.2 已发布；2026-10-28 新增设计纲领与可选 component 层；v0.3 App kit 起步；青橙理念 00–13（14 篇，含 1 参考稿）；青橙全栈已收尾；规则 v1.1（R-001 / R-016 已生效）**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token、青橙理念 00–13、青橙全栈已收尾（P1–P17）。
+> **状态**：**v0.2 已发布；2026-10-28 新增设计纲领与可选 component 层；v0.3 App kit 起步；青橙理念 00–15（16 篇，含 3 参考稿）；青橙全栈已收尾；规则 v1.1（R-001 / R-016 已生效）**——v0.1 地基、网站/LiveFab token 化、明日频道风格卡、`design/` M1/M2 block、3 个组件契约、共享 Web 组件层、8px 面板圆角与按钮变体、平台无关 App token、青橙理念 00–15、青橙全栈已收尾（P1–P17）。
 > **建立**：2026-10-21 ｜ **定位**：工作区级统筹层，优先级仅次于用户 ｜ **代码/资产名**：`LRDS`（公开品牌名待定，见 [D2](docs/00_决策总表.md)）。
 > **运行环境**：Node.js **22.18+**（TS strip 默认，无需额外 flag）；青橙全栈以 Node 24 为主。
 > **中文名（暂定）**：**青橙设计**——青/橙是复古未来常用色；只作暂定中文名，不替代公开母品牌名。
@@ -31,7 +31,7 @@
 | **想读入门文章** | [12 设计系统入门](docs/12_设计系统入门.md)（长文，非规范） | [HUB](HUB.html) / [00 决策总表](docs/00_决策总表.md) |
 | **想看实验** | [实验区](lab/README.md)（青橙 OS：9 应用 + 未来转盘） | [打开 OS](lab/os/index.html) / [规则](rules/README.md) |
 | **想看规则** | [规则目录](rules/README.md)（16 条，全部 active） | [GUIDE](GUIDE.html) / [决策总表](docs/00_决策总表.md) |
-| **想读青橙理念** | [青橙理念系列](philosophy/README.md)（14 篇，13 已完稿 + 1 参考稿，清澄为核心） | [D-011](docs/decisions/D-011-philosophy-series.md) / [参考材料](ref/README.md) |
+| **想读青橙理念** | [青橙理念系列](philosophy/README.md)（16 篇，13 已完稿 + 3 参考稿，清澄为核心） | [D-011](docs/decisions/D-011-philosophy-series.md) / [参考材料](ref/README.md) |
 | **想做全栈技术** | [青橙全栈（已收尾）](fullstack/README.md)（Web 优先） | [Project HUB](fullstack/HUB.html) / [Framework GUIDE](fullstack/GUIDE.html) / [决策清单](fullstack/docs/design/08_决策清单.md) |
 | **决策者（你）** | [00 决策总表](docs/00_决策总表.md)（D1–D12 已裁决；E01–E20 已执行；全栈 F1–F12 待裁决） | [05 v0.1](docs/05_实现记录_v0.1.md) / [06 v0.2](docs/06_实现记录_v0.2.md) / [08 组件落地](docs/08_组件落地_v0.2.md) / [09 产品走查](docs/09_产品走查_v0.2.md) / [10 皮肤收口](docs/10_皮肤收口_v0.2.md) / [11 App kit](docs/11_App_kit_v0.2.md) |
 | **执行者 / 设计主控** | [02 系统架构](docs/02_系统架构.md)（五层模型、三层 token、单一事实来源） | [03 治理与运营](docs/03_治理与运营.md)（权限、版本、闸门） |
@@ -81,7 +81,7 @@ design/
 ├── CHANGELOG.md              # 设计系统版本日志
 ├── canon/                    # 设计系统纲领（总纲/分层/角色/主题/质量/治理）
 ├── projects/                 # 与 LRDS 协同演进的正式项目（LiveDSO）
-├── philosophy/               # 青橙理念系列（00–13 + HTML 可视化，清澄为核心）
+├── philosophy/               # 青橙理念系列（00–15 + HTML 可视化，清澄为核心）
 ├── fullstack/                # 青橙全栈技术框架提案
 ├── ref/                      # 参考理念材料（非规范）
 ├── docs/                     # 决策 / 盘点 / 架构 / 治理 / 路线 / 实现记录 / 例外
