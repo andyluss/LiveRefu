@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN" data-skin="archive">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>手边计算器 · Live Calc</title>
+<meta name="description" content="本地优先、离线可用的复古未来计算器。">
+<meta name="theme-color" content="#0F6B63">
+<script>
+(function(){
+  var skin = 'archive';
+  try { var s = localStorage.getItem('calc-skin'); if (s === 'archive' || s === 'console' || s === 'phosphor') skin = s; } catch (e) {}
+  document.documentElement.dataset.skin = skin;
+})();
+</script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">＋</span>
+      <div><b>手边计算器</b><small>LIVE CALC / LOCAL FIRST</small></div>
+    </div>
+    <div class="status"><span id="net">本地</span><span class="dot" aria-hidden="true"></span><span>离线可用</span></div>
+    <div class="skin-switch" role="group" aria-label="皮肤">
+      <button type="button" data-skin="archive" aria-pressed="true">Archive</button>
+      <button type="button" data-skin="console" aria-pressed="false">Console</button>
+      <button type="button" data-skin="phosphor" aria-pressed="false">Phosphor</button>
+    </div>
+    <button class="tape-toggle" type="button" id="tapeToggle" aria-expanded="false" aria-controls="tape">纸带</button>
+    <button class="install" type="button" id="install" hidden>安装</button>
+  </header>
+
+  <main class="workspace">
+    <section class="calculator" aria-label="计算器">
+      <div class="display" aria-live="polite">
+        <div class="display-meta"><span id="memoryChip" class="chip" hidden>M</span><span id="errorChip" class="chip danger" hidden>错误</span></div>
+        <div class="expression" id="expression">&nbsp;</div>
+        <div class="value" id="value">0</div>
+        <div class="display-foot"><span id="skinName">Archive / 纸感</span><span>⌘ / Ctrl + K 键盘</span></div>
+      </div>
+
+      <div class="memory" role="group" aria-label="记忆">
+        <button type="button" data-memory="clear">MC</button>
+        <button type="button" data-memory="recall">MR</button>
+        <button type="button" data-memory="add">M+</button>
+        <button type="button" data-memory="sub">M−</button>
+      </div>
+
+      <div class="keys" role="group" aria-label="按键">
+        <button class="key fn" type="button" data-action="clear">AC</button>
+        <button class="key fn" type="button" data-action="clearEntry">CE</button>
+        <button class="key fn" type="button" data-action="negate">±</button>
+        <button class="key op" type="button" data-action="operator" data-operator="div" aria-label="除">÷</button>
+
+        <button class="key fn" type="button" data-action="unary" data-unary="sqrt" aria-label="开方">√</button>
+        <button class="key fn" type="button" data-action="unary" data-unary="square" aria-label="平方">x²</button>
+        <button class="key fn" type="button" data-action="unary" data-unary="reciprocal" aria-label="倒数">1/x</button>
+        <button class="key fn" type="button" data-action="unary" data-unary="percent" aria-label="百分比">%</button>
+
+        <button class="key" type="button" data-digit="7">7</button>
+        <button class="key" type="button" data-digit="8">8</button>
+        <button class="key" type="button" data-digit="9">9</button>
+        <button class="key op" type="button" data-action="operator" data-operator="mul" aria-label="乘">×</button>
+
+        <button class="key" type="button" data-digit="4">4</button>
+        <button class="key" type="button" data-digit="5">5</button>
+        <button class="key" type="button" data-digit="6">6</button>
+        <button class="key op" type="button" data-action="operator" data-operator="sub" aria-label="减">−</button>
+
+        <button class="key" type="button" data-digit="1">1</button>
+        <button class="key" type="button" data-digit="2">2</button>
+        <button class="key" type="button" data-digit="3">3</button>
+        <button class="key op" type="button" data-action="operator" data-operator="add" aria-label="加">+</button>
+
+        <button class="key" type="button" data-digit="0">0</button>
+        <button class="key" type="button" data-action="decimal">.</button>
+        <button class="key fn" type="button" data-action="backspace" aria-label="退格">⌫</button>
+        <button class="key equals" type="button" data-action="equals">=</button>
+      </div>
+      <p class="keyboard">键盘：数字 / <b>+ − × ÷</b> / <b>Enter =</b> / <b>Esc AC</b> / <b>⌫</b> / <b>%</b> / <b>r √</b> / <b>q x²</b></p>
+    </section>
+
+    <aside class="tape" id="tape" aria-label="纸带历史">
+      <div class="tape-head"><div><b>纸带</b><small>TAPE / LOCAL ONLY</small></div><button type="button" id="clearTape">清空</button></div>
+      <div class="tape-empty" id="tapeEmpty">还没有计算。按 <b>=</b> 留下第一行。</div>
+      <ol class="tape-list" id="tapeList"></ol>
+      <p class="tape-foot">点击一行取回结果。纸带只保存在本机。</p>
+    </aside>
+  </main>
+  <footer class="foot"><span>手边计算器 · v0.1.0</span><span>App Kit / LRDS ｜ 无账号 · 无追踪 · 无网络请求</span></footer>
+</div>
+<noscript><p class="noscript">此计算器需要 JavaScript；它不联网，代码全部在本地。</p></noscript>
+<script type="module" src="app.js"></script>
+</body>
+</html>

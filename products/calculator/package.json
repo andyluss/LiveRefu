@@ -1,0 +1,16 @@
+{
+  "name": "live-calc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "手边计算器 · 本地优先、离线可用的 PWA 计算器；消费 LRDS App Kit token。",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/core.test.js",
+    "check": "node --test test/core.test.js && node tools/build-theme.js --self-test && node tools/build-theme.js --check",
+    "build:tokens": "node tools/build-theme.js"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}

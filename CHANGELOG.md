@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **新增 `products/calculator/` 手边计算器**：独立 PWA，移植纯计算核心、3 套皮肤、App Kit token 消费、纸带历史与离线缓存。
 - **工作区 HUB 导航树**：根 HUB 末尾增加所有 HUB 的树状入口（工作区 / LiveDSO / 全栈 / 未来残片 / LiveBay / 节点防线），顶栏加入 `#hubs` 锚点；同时给锚点目标增加 sticky 顶栏偏移，修复标题被遮住。
 - **LiveBay（逍遥湾）立项**：`games/livebay/` 建立人类设定 `docs-human/`、AI 策划文档集 `docs-ai/design01/` 与 Godot 4.7 可玩塔防切片；NASApunk 文集在 `docs/retro-futurism/附录_NASA朋克卷/` 建卷；工程内名词与数值均为占位；2026-11-03 已裁决 D01/D02/D03/D04/D05/D06/D07/D08/D09/D10/D11/D12/D13/D15/D16；D02 的内部故障 C 已落地；只剩 P2。
 - **初始化 `lab/aifun01/`**：函数式协作实验 01（AI 纯函数 / 人运行时 / 效果边界），含 6 条边界测试、demo、实验协议与 `aifun01-v0.1.0`。

@@ -1,0 +1,72 @@
+/* 由 products/calculator/tools/build-theme.js 生成；不要手改。 */
+/* 源：design/tokens/dist/app/tokens.json + products/calculator/design/skins.json */
+:root{
+  --app-bg:#0B0F14;--app-surface:#111823;--app-raised:#161D26;
+  --app-text:#F3EDE1;--app-muted:#808D9F;--app-line:#24303F;--app-line-strong:#66727F;
+  --app-accent:#4FD1C5;--app-on-accent:#0B0F14;--app-focus:#8AB4F8;
+  --app-danger:#FF6B35;--app-warning:#FFC857;--app-success:#7BD389;
+  --app-touch-min:44px;--app-radius-control:4px;--app-radius-panel:8px;
+  --app-space-1:4px;--app-space-2:8px;--app-space-3:12px;--app-space-4:16px;--app-space-5:24px;--app-space-6:32px;
+  --app-type-title:28px;--app-type-body:16px;--app-type-caption:14px;--app-type-number:32px;
+}
+html[data-skin="archive"]{
+  --calc-bg:#F5EFE3;
+  --calc-bg2:#E9E0CF;
+  --calc-surface:#FFFDF8;
+  --calc-raised:#F4EAD9;
+  --calc-text:#17221F;
+  --calc-muted:#5D6B64;
+  --calc-line:#D4C8B4;
+  --calc-lineStrong:#A99A82;
+  --calc-accent:#0F6B63;
+  --calc-onAccent:#FFFDF8;
+  --calc-accentSoft:#E1EFE9;
+  --calc-warning:#8A5A00;
+  --calc-danger:#A83A14;
+  --calc-focus:#0F6B63;
+  --calc-key:#FBF5E9;
+  --calc-keyOp:#E8DED0;
+  --calc-keyAccent:#0F6B63;
+  --calc-display:#FFFDF8;
+}
+html[data-skin="console"]{
+  --calc-bg:#0B0F14;
+  --calc-bg2:#0B1116;
+  --calc-surface:#111823;
+  --calc-raised:#161D26;
+  --calc-text:#F3EDE1;
+  --calc-muted:#9AA7B8;
+  --calc-line:#24303F;
+  --calc-lineStrong:#66727F;
+  --calc-accent:#4FD1C5;
+  --calc-onAccent:#0B0F14;
+  --calc-accentSoft:#183A36;
+  --calc-warning:#FFC857;
+  --calc-danger:#FF6B35;
+  --calc-focus:#8AB4F8;
+  --calc-key:#161D26;
+  --calc-keyOp:#24303F;
+  --calc-keyAccent:#4FD1C5;
+  --calc-display:#0B0F14;
+}
+html[data-skin="phosphor"]{
+  --calc-bg:#07130D;
+  --calc-bg2:#06100A;
+  --calc-surface:#0B1B12;
+  --calc-raised:#0F2518;
+  --calc-text:#D8FFD8;
+  --calc-muted:#82A88A;
+  --calc-line:#1E4429;
+  --calc-lineStrong:#4C7A5A;
+  --calc-accent:#7CFF9E;
+  --calc-onAccent:#07130D;
+  --calc-accentSoft:#143A1F;
+  --calc-warning:#D4C15A;
+  --calc-danger:#FF6B6B;
+  --calc-focus:#B8FFCA;
+  --calc-key:#0F2518;
+  --calc-keyOp:#1A3A24;
+  --calc-keyAccent:#7CFF9E;
+  --calc-display:#06100A;
+}
+/* default skin: archive */

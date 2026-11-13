@@ -1,0 +1,41 @@
+{
+  "default": "archive",
+  "skins": [
+    {
+      "id": "archive",
+      "name": "Archive / 纸感",
+      "description": "暖纸、青绿行动色；适合白天与长按阅读。",
+      "palette": {
+        "bg": "#F5EFE3", "bg2": "#E9E0CF", "surface": "#FFFDF8", "raised": "#F4EAD9",
+        "text": "#17221F", "muted": "#5D6B64", "line": "#D4C8B4", "lineStrong": "#A99A82",
+        "accent": "#0F6B63", "onAccent": "#FFFDF8", "accentSoft": "#E1EFE9",
+        "warning": "#8A5A00", "danger": "#A83A14", "focus": "#0F6B63",
+        "key": "#FBF5E9", "keyOp": "#E8DED0", "keyAccent": "#0F6B63", "display": "#FFFDF8"
+      }
+    },
+    {
+      "id": "console",
+      "name": "Console / 深色",
+      "description": "App Kit 当前基线；低光环境、长时间使用。",
+      "palette": {
+        "bg": "#0B0F14", "bg2": "#0B1116", "surface": "#111823", "raised": "#161D26",
+        "text": "#F3EDE1", "muted": "#9AA7B8", "line": "#24303F", "lineStrong": "#66727F",
+        "accent": "#4FD1C5", "onAccent": "#0B0F14", "accentSoft": "#183A36",
+        "warning": "#FFC857", "danger": "#FF6B35", "focus": "#8AB4F8",
+        "key": "#161D26", "keyOp": "#24303F", "keyAccent": "#4FD1C5", "display": "#0B0F14"
+      }
+    },
+    {
+      "id": "phosphor",
+      "name": "Phosphor / 荧光",
+      "description": "唯一的复古未来签名皮肤；不是默认，不替代前两套。",
+      "palette": {
+        "bg": "#07130D", "bg2": "#06100A", "surface": "#0B1B12", "raised": "#0F2518",
+        "text": "#D8FFD8", "muted": "#82A88A", "line": "#1E4429", "lineStrong": "#4C7A5A",
+        "accent": "#7CFF9E", "onAccent": "#07130D", "accentSoft": "#143A1F",
+        "warning": "#D4C15A", "danger": "#FF6B6B", "focus": "#B8FFCA",
+        "key": "#0F2518", "keyOp": "#1A3A24", "keyAccent": "#7CFF9E", "display": "#06100A"
+      }
+    }
+  ]
+}

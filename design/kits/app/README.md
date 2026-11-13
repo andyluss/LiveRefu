@@ -1,7 +1,7 @@
 # App Kit · 移动应用介质适配（起步）
 
 > 状态：**v0.3 起步**——平台无关 token 导出 + iOS/Android 使用规范 + 验收清单。
-> **还没有真实 App 消费者**：本 Kit 只到“可接入”为止；不虚构一个 App，也不声称已验收。
+> **已有 Web/PWA 消费者**：[`products/calculator/`](../../../products/calculator/README.md)（手边计算器）；**尚未有原生 iOS/Android 消费者**。不把 PWA 说成原生已验收。
 
 ## 一、产物
 
@@ -67,7 +67,7 @@
 - [ ] 截图：首页 / 表单 / 弹窗 / 空状态 / 错误状态。
 - [ ] 真机（至少一台 iOS + 一台 Android）走查记录。
 
-> 没有真实 App 前，这份清单是**契约**，不是“已通过”。
+> 没有原生 App 前，这份清单仍是**契约**；`products/calculator` 只完成 Web/PWA 侧的可验证项，真机项待第二阶段。
 
 ## 五、下一步
 

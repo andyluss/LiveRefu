@@ -1,0 +1,15 @@
+{
+  "name": "手边计算器 · Live Calc",
+  "short_name": "手边计算",
+  "description": "本地优先、离线可用的复古未来计算器。",
+  "start_url": "/web/",
+  "scope": "/web/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5EFE3",
+  "theme_color": "#0F6B63",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
