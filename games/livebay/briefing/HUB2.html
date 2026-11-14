@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveBay: Severed · HUB2</title>
+<meta name="description" content="《逍遥湾：断缆》独立生存游戏的项目总结：MVP、系统、工程、验证与下一步。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font:14px/1.6 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 64px}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:12px 24px 0}
+.topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800;letter-spacing:.02em}.brand span{color:var(--faint);font-size:12px;font-weight:400;margin-left:8px;letter-spacing:.08em}
+.brand-links{display:flex;gap:6px;flex-wrap:wrap}.brand-links a{color:var(--teal);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;text-decoration:none;border-bottom:1px solid var(--line)}
+.stamp{color:var(--faint);font-size:12px;margin-left:auto}
+.subhint{color:var(--dim);font-size:12px;margin:4px 0 13px}
+.hero{display:grid;grid-template-columns:1.4fr .6fr;gap:22px;padding:36px 0 16px;align-items:end}
+.kicker{font:600 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:7px}
+h1{font-size:clamp(38px,6vw,78px);line-height:.98;letter-spacing:-.045em;margin:0 0 12px}
+h1 .thin{color:var(--dim);font-weight:400}
+.thesis{font-size:16px;color:var(--dim);max-width:70ch;margin:0}
+.status{display:inline-flex;gap:7px;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 11px;font-size:12px;color:var(--ok);margin-top:12px}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 18%,transparent)}
+.aside{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.aside b{color:var(--ink)}.aside p{margin:5px 0;color:var(--dim);font-size:12.5px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.stat{background:var(--sunken);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.stat b{display:block;font:800 28px/1.1 var(--mono);color:var(--teal)}.stat span{display:block;color:var(--faint);font-size:11.5px;margin-top:3px}
+.section{padding:24px 0;border-top:1px solid var(--line)}
+.section h2{font-size:22px;margin:0 0 4px;padding:0;border:0}.section h2 span{color:var(--faint);font:11px var(--mono);letter-spacing:.1em;display:block;margin-bottom:3px}
+.lede{color:var(--dim);margin:6px 0 16px;max-width:80ch}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 15px}
+.card h3{margin:0 0 6px;font-size:14px;color:var(--ink)}.card p{margin:4px 0;color:var(--dim);font-size:12.5px}
+.card .tag{display:inline-block;font:10px var(--mono);letter-spacing:.08em;color:var(--orange);margin-bottom:5px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--faint);font-size:11px;font-weight:600}.card table{font-size:12px}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0}
+.timeline div{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:9px;font-size:11.5px;color:var(--dim);position:relative}
+.timeline div b{display:block;color:var(--ink);font-size:12px;margin-bottom:2px}.timeline div em{font:10px var(--mono);color:var(--orange);font-style:normal}
+.note{border-left:3px solid var(--teal);background:var(--sunken);padding:10px 12px;border-radius:0 8px 8px 0;color:var(--dim);font-size:12.5px;margin:12px 0}.note b{color:var(--ink)}
+.note.warn{border-left-color:var(--amber)}.note.bad{border-left-color:var(--orange)}.note.ok{border-left-color:var(--ok)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}.chip{border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:11px;color:var(--dim)}.chip.ok{color:var(--ok)}.chip.now{color:var(--teal)}.chip.next{color:var(--amber)}.chip.todo{color:var(--faint)}
+.cta{display:inline-block;background:var(--teal);color:var(--bg);border:1px solid var(--teal);border-radius:8px;padding:8px 12px;font-size:12.5px;text-decoration:none;margin:6px 6px 0 0}
+.cta.ghost{background:transparent;color:var(--teal)}
+.footer{border-top:1px solid var(--line);padding:16px 0 0;color:var(--faint);font-size:11.5px;margin-top:24px}
+.footer a{color:var(--teal)}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.g2,.g3{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.stats,.timeline{grid-template-columns:1fr}.brand-links{order:5}}
+@media print{.topbar,.theme-switch,.cta{display:none!important}body{background:#fff;color:#000}.card,.stat,.aside{break-inside:avoid;border:1px solid #999}table{font-size:10px}}
+</style>
+</head>
+<body data-page="hub">
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topline">
+      <div class="brand">LiveBay: Severed<span>HUB2 · 独立生存项目</span></div>
+      <nav class="brand-links" aria-label="相关页面">
+        <a href="HUB.html">← 主 HUB</a><a href="GUIDE2.html">GUIDE2</a><a href="../game02/README.md">game02</a><a href="../docs-ai/design02/README.md">design02</a>
+      </nav>
+      <div class="stamp">v0.1.145 · 2026-11-14</div>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+      </div>
+    </div>
+    <div class="subhint">这是一款独立生存游戏的项目总结，不是主塔防项目。当前只做 MVP，不承诺完整版。</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="kicker">Severed / Project HUB2 / 2026-11-14</div>
+      <h1>断缆<br><span class="thin">不是塔防，是生存。</span></h1>
+      <p class="thesis">外环第七段被碎片切断。你是夜班值班人，在氧气、电力、压力与救援窗口之间，决定先救哪一段、放弃哪一段、最后谁留下。</p>
+      <div class="status"><i></i>MVP 可玩 · 完整版未开发</div>
+    </div>
+    <aside class="aside">
+      <b>怎么读 HUB2</b>
+      <p>HUB2 记录“项目到哪了”：范围、系统、工程、验证、风险。GUIDE2 记录“玩家怎么玩”。</p>
+      <p><a href="../docs-ai/design02/README.md">design02 策划</a> · <a href="../game02/README.md">game02 原型</a></p>
+      <a class="cta" href="../game02/README.md">运行 game02</a><a class="cta ghost" href="GUIDE2.html">看 GUIDE2</a>
+    </aside>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><b>1</b><span>场景 / 断缆</span></div>
+    <div class="stat"><b>6</b><span>舱段房间</span></div>
+    <div class="stat"><b>3</b><span>主资源：氧/电/压</span></div>
+    <div class="stat"><b>17</b><span>模拟测试</span></div>
+  </div>
+
+  <section class="section" id="status">
+    <h2><span>01 / STATUS</span>项目到哪了</h2>
+    <p class="lede">不是“未来概念页”：已经有一个独立 Godot 原型，能跑、能失败、能结算。但它只是 MVP，离 design02 的完整游戏还很远。</p>
+    <div class="grid g3">
+      <article class="card"><div class="tag">DONE</div><h3>已经能玩</h3><p>1 张舱段、6 房间、3 资源、泄漏/火灾/断电、封门、NPC 岚、救援窗口、4 种结束。</p></article>
+      <article class="card"><div class="tag">NOW</div><h3>现在要验证</h3><p>没有战斗时，压力是否成立？玩家失败后能否说出“为什么”？撤离是否被视为合法结局？</p></article>
+      <article class="card"><div class="tag">NOT YET</div><h3>还没做</h3><p>第二/第三场景、元进程、城市记录、音频、精细美术、真人试玩、完整内容量。</p></article>
+    </div>
+    <div class="note ok"><b>当前结论：</b>MVP 已可运行，但还不能称为“完整游戏”。下一步不是加内容，而是 5–10 人真人试玩，验证 15–20 分钟舱段生存是否成立。</div>
+  </section>
+
+  <section class="section" id="run">
+    <h2><span>02 / RUN</span>一局是什么样</h2>
+    <p class="lede">一局 15–20 分钟；不是波次，是事故节奏。时间、空间和资源互相咬合。</p>
+    <div class="timeline">
+      <div><em>0–3 MIN</em><b>到达</b>听广播、看门灯、判断先去哪。</div>
+      <div><em>3–8 MIN</em><b>稳定</b>封门/修漏/断电，第一次“不能全做”。</div>
+      <div><em>8–14 MIN</em><b>故障链</b>火/失压/断电叠加，资源临界。</div>
+      <div><em>14–18 MIN</em><b>救援窗口</b>撤离、留下、救谁。</div>
+      <div><em>18–20 MIN</em><b>记录</b>班后报告：真话/低报/沉默。</div>
+    </div>
+    <div class="grid g2">
+      <article class="card"><h3>玩家动作</h3><p>移动、过门、封门、修补、灭火、切换主电、补充 suit 氧气、救岚、撤离/留下。</p></article>
+      <article class="card"><h3>失败不是“血条空了”</h3><p>缺氧、失压、失温、火灾、被困、救援错过；每种都有前兆，不应突然死亡。</p></article>
+    </div>
+  </section>
+
+  <section class="section" id="systems">
+    <h2><span>03 / SYSTEMS</span>系统总结</h2>
+    <p class="lede">六个房间不是关卡格子，是一张资源/压力/门/人的关系图。</p>
+    <table>
+      <thead><tr><th>系统</th><th>当前 MVP</th><th>设计意图</th></tr></thead>
+      <tbody>
+        <tr><td><b>空间</b></td><td>中央走廊、主控、配电、循环、医疗、对接臂；5 道门</td><td>门是通路，也是取舍；封门会困人/断通路</td></tr>
+        <tr><td><b>资源</b></td><td>氧气、电力、压力；suit O2、生命值、电池、封条、灭火器</td><td>资源互相转换；恢复一个会消耗另一个</td></tr>
+        <tr><td><b>故障</b></td><td>泄漏、火灾、断电；事件在 15/90/180/300/540 秒触发</td><td>故障链由状态推导，不是脚本跳吓</td></tr>
+        <tr><td><b>人</b></td><td>巡检员岚：受伤、可救、可死</td><td>救人是时间/O2/路线的选择，不是战斗</td></tr>
+        <tr><td><b>窗口</b></td><td>12:00 救援开放；15:00 结束</td><td>撤离是合法结局；留下是高风险选择</td></tr>
+        <tr><td><b>记录</b></td><td>结算文本；低报/如实记录</td><td>城市记忆与主题，不做善恶条</td></tr>
+      </tbody>
+    </table>
+    <div class="note warn"><b>与塔防的边界：</b>没有塔、没有波次、没有敌人、没有战斗、没有塔位。不要用塔防的“守到最后一波”理解它。</div>
+  </section>
+
+  <section class="section" id="engineering">
+    <h2><span>04 / ENGINEERING</span>工程与验证</h2>
+    <p class="lede">独立 Godot 工程 `game02/`；可以借鉴 `game/` 的工程习惯，但不复用塔防运行时。</p>
+    <div class="grid g2">
+      <article class="card"><h3>结构</h3><p><code>main.gd</code> 页面/输入/流程；<code>section_sim.gd</code> 纯逻辑；<code>section_renderer.gd</code> 绘制；<code>hud.gd</code> HUD；<code>map_view.gd</code> 地图；JSON 场景数据。</p></article>
+      <article class="card"><h3>验证</h3><p><code>./run.sh game02-test</code> 17/17；<code>./run.sh game02-check</code> 无头启动；已纳入 <code>./run.sh verify</code>（14 项）。</p></article>
+    </div>
+    <table>
+      <thead><tr><th>层</th><th>文件</th><th>职责</th></tr></thead>
+      <tbody>
+        <tr><td>数据</td><td><code>game02/data/section_bay01.json</code></td><td>房间/门/事件/NPC/救援窗口</td></tr>
+        <tr><td>规则</td><td><code>game02/scripts/section_sim.gd</code></td><td>资源/故障/门/玩家状态/结局</td></tr>
+        <tr><td>表现</td><td><code>section_renderer.gd</code> / <code>hud.gd</code></td><td>舱段图/HUD/地图</td></tr>
+        <tr><td>入口</td><td><code>game02/scripts/main.gd</code></td><td>移动/交互/暂停/结算</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section" id="next">
+    <h2><span>05 / NEXT</span>下一步与风险</h2>
+    <div class="grid g2">
+      <article class="card"><h3>下一步</h3><p>1. 5–10 人真人试玩；2. 观察失败归因；3. 调整资源/救援窗口；4. 再决定第二场景；5. 元进程最后做。</p></article>
+      <article class="card"><h3>最大风险</h3><p>系统耦合过度、玩家读不懂、没有战斗就没有压力、内容成本高于预期、与塔防工程混在一起。</p></article>
+    </div>
+    <div class="chips"><span class="chip ok">MVP 可玩</span><span class="chip now">真人验证</span><span class="chip next">第二场景</span><span class="chip todo">元进程</span></div>
+    <div class="note"><b>决策入口：</b><a href="../docs-ai/design02/12_待裁决清单.md">design02 / 12 待裁决清单</a>；先拍 D01–D08，再决定是否进入 M2。</div>
+    <a class="cta" href="../docs-ai/design02/README.md">读 design02</a><a class="cta ghost" href="GUIDE2.html">看玩家指南</a>
+  </section>
+
+  <footer class="footer">
+    HUB2 · 《逍遥湾：断缆》项目总结 · 当前版本 0.1.145 · <a href="HUB.html">主 HUB</a> · <a href="GUIDE2.html">GUIDE2</a> · <a href="../game02/README.md">game02</a><br>
+    这是独立生存游戏参考项目，不是主塔防项目的替代；不承诺完整版。
+  </footer>
+</main>
+<script src="theme.js" defer></script>
+</body>
+</html>

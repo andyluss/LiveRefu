@@ -3,6 +3,25 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.145] - 2026-11-14 11:55
+
+### 文档
+
+- 新增 `briefing/HUB2.html`：
+  - 《逍遥湾：断缆》独立生存项目总结；
+  - 状态、一局、系统、工程验证、下一步/风险。
+- 新增 `briefing/GUIDE2.html`：
+  - 玩家指南：操作、房间、资源、故障、NPC、结局、开局建议。
+- 主 HUB 增加 HUB2/GUIDE2 入口；
+- HUB2/GUIDE2 使用统一三态主题；briefing 目录更新为六页。
+
+### 验证
+
+- R-016：HUB2/GUIDE2 通过；
+- HUB2/GUIDE2 Chrome headless 截图正常；
+- `./run.sh briefing-check`：通过；
+- `./run.sh verify`：PASS 14 · FAIL 0。
+
 ## [0.1.144] - 2026-11-14 10:57
 
 ### 新增

@@ -1,6 +1,6 @@
 # briefing · LiveBay 的导览层
 
-> **一句话**：这里是《LiveBay（逍遥湾）》**面向人**的四个页面，以及它们的主题、生成器与数据校验器。
+> **一句话**：这里是《LiveBay（逍遥湾）》**面向人**的六个页面，以及它们的主题、生成器与数据校验器。
 > **不是**策划源、决策日志或工程文档；那些分别在 [`../docs-ai/`](../docs-ai/)、[`../docs-ai/design01/11_待人类裁决清单.md`](../docs-ai/design01/11_待人类裁决清单.md) 和 [`../README.md`](../README.md)。
 
 ## 一、这里有什么
@@ -11,6 +11,8 @@ briefing/
 ├── GUIDE.html        # 给第一次听说这个游戏的人看的玩法说明（生成物）
 ├── BOX-PROJECT.html  # 项目白盒：3D 分层 / 矩阵 / 风险 / 假设推演
 ├── BOX-GAME.html     # 游戏白盒：空间 / 时间 / 经济 / 威胁 / 生存沙盘
+├── HUB2.html         # 独立生存《断缆》项目总结
+├── GUIDE2.html       # 独立生存《断缆》玩家指南
 ├── theme.css         # 两页共享的三态主题 token 与覆盖
 ├── theme.js          # 三态切换、持久化、系统态实时响应
 ├── build_guide.ts    # 从 game/data/*.json 生成 GUIDE.html
@@ -24,7 +26,9 @@ briefing/
 | `GUIDE.html` | 项目负责人 + 数据 | `build_guide.ts` 生成，禁止手改 |
 | `BOX-PROJECT.html` | 项目负责人 / 设计主控 | 手写结构；3D 分层与假设推演 |
 | `BOX-GAME.html` | 项目负责人 / 设计主控 | 手写结构；数据快照注入，交互沙盘 |
-| `theme.css` / `theme.js` | 设计主控 | 手写；两页共用，遵守 R-016 |
+| `HUB2.html` | 生存项目负责人 | 手写结构；项目总结，不宣称完整版 |
+| `GUIDE2.html` | 生存项目负责人 | 手写结构；玩家指南/操作与建议 |
+| `theme.css` / `theme.js` | 设计主控 | 手写；六页共用，遵守 R-016 |
 
 ## 二、HUB 与 GUIDE 的分工
 

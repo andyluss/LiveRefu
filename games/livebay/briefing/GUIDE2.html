@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiveBay: Severed · GUIDE2</title>
+<meta name="description" content="《逍遥湾：断缆》玩家指南：目标、操作、资源、故障、结局与开局建议。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{font:15px/1.7 -apple-system,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 24px 80px}
+.topbar-inner{max-width:980px;margin:0 auto;padding:12px 24px 0}
+.topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800}.brand span{color:var(--faint);font-size:12px;font-weight:400;margin-left:8px;letter-spacing:.08em}
+.links{display:flex;gap:6px;flex-wrap:wrap}.links a{color:var(--teal);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;text-decoration:none;border-bottom:1px solid var(--line)}
+.stamp{color:var(--faint);font-size:12px;margin-left:auto}
+.hero{padding:48px 0 22px;border-bottom:1px solid var(--line)}
+.kicker{font:600 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:7px}
+h1{font-size:clamp(38px,5.5vw,66px);line-height:1.02;letter-spacing:-.04em;margin:0 0 12px}
+h1 .thin{color:var(--dim);font-weight:400}
+.thesis{font-size:17px;color:var(--dim);max-width:72ch;margin:0}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.quick div{background:var(--sunken);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+.quick b{display:block;color:var(--ink);font-size:12px;margin-bottom:3px}.quick span{color:var(--dim);font-size:12.5px}
+nav.toc{display:flex;gap:5px;flex-wrap:wrap;margin:14px 0 18px}
+nav.toc a{font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:4px 9px;text-decoration:none;border-bottom:1px solid var(--line)}
+section{padding:24px 0;border-top:1px solid var(--line)}section:first-of-type{border-top:0}
+h2{font-size:24px;margin:0 0 5px}h2 span{display:block;color:var(--faint);font:10px var(--mono);letter-spacing:.12em;margin-bottom:2px}
+h3{font-size:15px;margin:18px 0 6px;color:var(--teal)}
+p{color:var(--dim);margin:5px 0}.lede{font-size:15px;max-width:75ch}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--faint);font-size:11px;font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:10px 0}
+.card b{color:var(--ink)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.note{border-left:3px solid var(--teal);background:var(--sunken);padding:10px 13px;border-radius:0 8px 8px 0;color:var(--dim);font-size:13px;margin:12px 0}.note b{color:var(--ink)}.note.warn{border-left-color:var(--amber)}.note.bad{border-left-color:var(--orange)}.note.ok{border-left-color:var(--ok)}
+kbd{font:11px var(--mono);background:var(--sunken);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--ink)}
+.footer{border-top:1px solid var(--line);padding:18px 0 0;color:var(--faint);font-size:11.5px;margin-top:24px}.footer a{color:var(--teal)}
+@media(max-width:760px){.quick,.grid2{grid-template-columns:1fr}.hero{padding-top:32px}.stamp{order:5;margin-left:0}}
+@media print{.topbar,nav.toc,.theme-switch{display:none!important}body{background:#fff;color:#000}.card,.note{break-inside:avoid;border:1px solid #999}a{color:#000;border:0}}
+</style>
+</head>
+<body data-page="guide">
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topline">
+      <div class="brand">断缆<span>GUIDE2 · 玩家指南</span></div>
+      <nav class="links" aria-label="相关页面">
+        <a href="HUB2.html">HUB2</a><a href="HUB.html">主 HUB</a><a href="../game02/README.md">game02</a><a href="../docs-ai/design02/README.md">design02</a>
+      </nav>
+      <div class="stamp">v0.1.145 · 2026-11-14</div>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="kicker">LiveBay: Severed / Player Guide</div>
+    <h1>活到交接，<br><span class="thin">或者活着离开。</span></h1>
+    <p class="thesis">外环第七段被碎片切断。你是夜班值班人，没有武器，只有工具、权限和一段不够用的时间。目标不是杀光什么，而是让某一段、某个人，撑到救援或撤离。</p>
+    <div class="quick">
+      <div><b>一局</b><span>15–20 分钟 · 可暂停</span></div>
+      <div><b>核心</b><span>氧气 / 电力 / 压力</span></div>
+      <div><b>结局</b><span>撤离 / 留下 / 失联 / 死亡</span></div>
+    </div>
+    <div class="note"><b>先记住：</b>撤离不是输。你不需要救下所有人，也不需要修好所有东西。你需要在不够的时间里，决定什么值得被保住。</div>
+  </section>
+
+  <nav class="toc" aria-label="目录">
+    <a href="#start">三十秒</a><a href="#controls">操作</a><a href="#map">舱段</a><a href="#resources">资源</a><a href="#hazards">故障</a><a href="#people">岚</a><a href="#endings">结局</a><a href="#tips">开局建议</a><a href="#glossary">词表</a>
+  </nav>
+
+  <section id="start">
+    <h2><span>01 / THIRTY SECONDS</span>三十秒版本</h2>
+    <p class="lede">你在中央走廊醒来。广播说“局部异常，已按惯例处理”。门灯、压力表、远处的金属声告诉你：不是小问题。</p>
+    <div class="grid2">
+      <div class="card"><b>先做什么</b><p>看主控/配电/循环的位置；听泄漏；决定先去哪一段。不要一上来就封门——封门可能把岚关在外面。</p></div>
+      <div class="card"><b>不要做什么</b><p>不要一直开着主电等电池耗尽；不要在火里补氧；不要为了搜刮错过救援窗口。</p></div>
+    </div>
+  </section>
+
+  <section id="controls">
+    <h2><span>02 / CONTROLS</span>操作</h2>
+    <table>
+      <thead><tr><th>输入</th><th>行为</th></tr></thead>
+      <tbody>
+        <tr><td><kbd>WASD</kbd></td><td>在当前房间内移动</td></tr>
+        <tr><td><kbd>E</kbd></td><td>交互：过门 / 修漏 / 灭火 / 切换主电 / 补氧 / 救岚 / 撤离</td></tr>
+        <tr><td><kbd>R</kbd></td><td>在门边封门，消耗 1 个封条</td></tr>
+        <tr><td><kbd>F</kbd></td><td>救援窗口在对接臂时“留下”</td></tr>
+        <tr><td><kbd>TAB</kbd></td><td>舱段地图</td></tr>
+        <tr><td><kbd>SPACE</kbd></td><td>暂停</td></tr>
+        <tr><td><kbd>ESC</kbd></td><td>暂停 / 菜单</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="map">
+    <h2><span>03 / SECTION</span>六个房间</h2>
+    <p class="lede">房间不是关卡格子；门、压力、氧气和故障会把它们连在一起。</p>
+    <table>
+      <thead><tr><th>房间</th><th>能做什么</th><th>风险</th></tr></thead>
+      <tbody>
+        <tr><td><b>中央走廊</b></td><td>连接一切；去各舱段的起点</td><td>泄漏/失压会先影响这里</td></tr>
+        <tr><td><b>主控室</b></td><td>看地图/广播；理解事故</td><td>信息可能过时</td></tr>
+        <tr><td><b>配电间</b></td><td>切换主电；门/循环/灯的来源</td><td>断电会停氧循环</td></tr>
+        <tr><td><b>循环站</b></td><td>补充 suit 氧气；生命维持</td><td>泄漏会让补氧白费</td></tr>
+        <tr><td><b>医疗舱</b></td><td>救岚；药品</td><td>火灾/烟会先杀她</td></tr>
+        <tr><td><b>救援对接臂</b></td><td>救援窗口到达后撤离</td><td>错过窗口就失联</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="resources">
+    <h2><span>04 / RESOURCES</span>三样东西在要你的命</h2>
+    <table>
+      <thead><tr><th>资源</th><th>怎么变化</th><th>怎么处理</th></tr></thead>
+      <tbody>
+        <tr><td><b>氧气</b></td><td>suit 持续消耗；房间泄漏/火灾消耗；主电开启时循环站补氧</td><td>去循环站补 suit；封门/修漏；不要长时间断电</td></tr>
+        <tr><td><b>电力</b></td><td>主电开启时电池下降；门/循环/灯都吃电</td><td>需要时断电省电；但断电会停氧循环，别关太久</td></tr>
+        <tr><td><b>压力</b></td><td>泄漏持续下降；门开/封影响传播</td><td>找到泄漏点修补；修不了就封舱/绕开</td></tr>
+      </tbody>
+    </table>
+    <div class="note warn"><b>不要只看一个条：</b>氧气够、压力低，会失压；压力够、电力低，氧气会慢慢停。三样是一起看的。</div>
+  </section>
+
+  <section id="hazards">
+    <h2><span>05 / HAZARDS</span>故障</h2>
+    <div class="grid2">
+      <div class="card"><b>泄漏</b><p>嘶声、霜、压力下降。靠近破口按 <kbd>E</kbd> 修补；修不了就封门/绕开。</p></div>
+      <div class="card"><b>火灾</b><p>热、烟、跳闸。按 <kbd>E</kbd> 灭火；火要氧气，通风可能助燃。</p></div>
+      <div class="card"><b>断电</b><p>门/灯/循环停。去配电间按 <kbd>E</kbd> 切换；电池不是无限的。</p></div>
+      <div class="card"><b>封门</b><p>按 <kbd>R</kbd> 封门，消耗封条；能阻断通路/火/压力，但会困人。</p></div>
+    </div>
+  </section>
+
+  <section id="people">
+    <h2><span>06 / PEOPLE</span>岚</h2>
+    <p>巡检员岚在医疗舱，腿伤、缺氧。救她需要时间，也会拖慢你；不救，她会死，你会少一条证词/捷径。</p>
+    <div class="note"><b>不是队友：</b>岚不会战斗。她是时间、氧气和道德选择，不是战斗单位。</div>
+  </section>
+
+  <section id="endings">
+    <h2><span>07 / ENDINGS</span>四种结束</h2>
+    <table>
+      <thead><tr><th>结局</th><th>条件</th><th>你怎么看</th></tr></thead>
+      <tbody>
+        <tr><td><b>撤离</b></td><td>救援窗口开启后，在对接臂按 E</td><td>活着交接；可能放弃未完成</td></tr>
+        <tr><td><b>留下</b></td><td>救援窗口在对接臂按 F</td><td>高风险；可能救更多人/修更多</td></tr>
+        <tr><td><b>失联</b></td><td>救援窗口关闭仍未撤离</td><td>城市不知道你发生了什么</td></tr>
+        <tr><td><b>死亡</b></td><td>缺氧/失压/火灾/伤重</td><td>失败，但留下知识</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="tips">
+    <h2><span>08 / FIRST SHIFT</span>开局建议</h2>
+    <div class="grid2">
+      <div class="card"><b>第一分钟</b><p>先看主控和配电的方向，听泄漏。不要急着封门；先知道哪段最危险。</p></div>
+      <div class="card"><b>电力</b><p>主电先开；电池到 30% 以下考虑断电，但别让循环停太久。补氧前确认主电。</p></div>
+      <div class="card"><b>岚</b><p>如果医疗舱起火，先灭火再救她；否则她可能在你拖她之前死。</p></div>
+      <div class="card"><b>撤离</b><p>救援窗口开了不等于必须走。但如果你没把握，撤离是合法结局。</p></div>
+    </div>
+    <div class="note bad"><b>常见错误：</b>一直开着主电、在火里补氧、封门把岚关在外面、为了搜刮错过救援、把“撤离”当失败。</div>
+  </section>
+
+  <section id="glossary">
+    <h2><span>09 / GLOSSARY</span>词表</h2>
+    <table>
+      <tbody>
+        <tr><td><b>suit</b></td><td>你的工作服/头盔；suit O2 归零会死。</td></tr>
+        <tr><td><b>主电</b></td><td>舱段电力；门/循环/灯/工具都依赖它。</td></tr>
+        <tr><td><b>封条</b></td><td>封门消耗品；封死不可逆（MVP）。</td></tr>
+        <tr><td><b>救援窗口</b></td><td>救援船可对接的时间；错过就失联。</td></tr>
+        <tr><td><b>班后记录</b></td><td>结算文本；真话/低报/沉默是主题。</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="footer">
+    GUIDE2 · 《逍遥湾：断缆》玩家指南 · <a href="HUB2.html">项目 HUB2</a> · <a href="HUB.html">主 HUB</a> · <a href="../game02/README.md">game02</a> · <a href="../docs-ai/design02/README.md">design02</a><br>
+    当前为 MVP 原型；数值和内容会随试玩调整。
+  </footer>
+</main>
+<script src="theme.js" defer></script>
+</body>
+</html>
