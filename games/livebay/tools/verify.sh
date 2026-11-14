@@ -26,6 +26,7 @@ run_step() {
 }
 
 run_step "无头模拟测试" "$RUN" test
+run_step "game02 生存原型" "$RUN" game02-test
 run_step "扩展包检查" "$RUN" expansions-check
 run_step "编辑器数据桥" "$RUN" editor-test
 run_step "三张地图无头试玩" "$RUN" playtest

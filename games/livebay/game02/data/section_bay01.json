@@ -1,0 +1,32 @@
+{
+  "id": "bay01_severed",
+  "name": "外环第七段",
+  "subtitle": "断缆 · 夜班 03:40",
+  "player_start": [640, 340],
+  "rescue_at": 720.0,
+  "end_at": 900.0,
+  "rooms": [
+    {"id":"corridor","name":"中央走廊","type":"corridor","rect":[440,250,400,200],"o2":100,"pressure":100,"temp":22,"fire":0,"leak":0,"breach_pos":[470,330]},
+    {"id":"control","name":"主控室","type":"control","rect":[110,95,270,150],"o2":100,"pressure":100,"temp":22,"fire":0,"leak":0,"console_pos":[245,170]},
+    {"id":"power","name":"配电间","type":"power","rect":[900,95,270,150],"o2":100,"pressure":100,"temp":22,"fire":0,"leak":0,"console_pos":[1035,170]},
+    {"id":"life","name":"循环站","type":"life","rect":[110,455,270,150],"o2":100,"pressure":100,"temp":22,"fire":0,"leak":0,"console_pos":[245,530]},
+    {"id":"med","name":"医疗舱","type":"med","rect":[900,455,270,150],"o2":100,"pressure":100,"temp":22,"fire":0,"leak":0,"console_pos":[1035,530]},
+    {"id":"dock","name":"救援对接臂","type":"dock","rect":[1190,250,80,200],"o2":100,"pressure":100,"temp":22,"fire":0,"leak":0,"console_pos":[1230,340]}
+  ],
+  "doors": [
+    {"id":"d_control","a":"corridor","b":"control","a_pos":[520,250],"b_pos":[520,245],"open":true,"sealed":false},
+    {"id":"d_power","a":"corridor","b":"power","a_pos":[760,250],"b_pos":[760,245],"open":true,"sealed":false},
+    {"id":"d_life","a":"corridor","b":"life","a_pos":[520,450],"b_pos":[520,455],"open":true,"sealed":false},
+    {"id":"d_med","a":"corridor","b":"med","a_pos":[760,450],"b_pos":[760,455],"open":true,"sealed":false},
+    {"id":"d_dock","a":"corridor","b":"dock","a_pos":[840,340],"b_pos":[1190,340],"open":true,"sealed":false}
+  ],
+  "npc": {"id":"lan","name":"岚","role":"巡检员","room":"med","pos":[990,530],"health":62,"max_health":100,"rescued":false,"following":false},
+  "events": [
+    {"at":15,"type":"leak","room":"corridor","amount":1.0,"text":"中央走廊出现泄漏。压力在下降。"},
+    {"at":90,"type":"fire","room":"med","amount":0.5,"text":"医疗舱起火了。烟正在扩散。"},
+    {"at":180,"type":"leak","room":"life","amount":0.8,"text":"循环站管线破裂。"},
+    {"at":300,"type":"power_warning","text":"主电池低于一半。循环站和门开始抢电。"},
+    {"at":540,"type":"rescue_warning","text":"救援船将在三分钟后到达。请保持对接臂可用。"}
+  ],
+  "items": {"seal_kits":3,"extinguishers":1,"battery":100}
+}
