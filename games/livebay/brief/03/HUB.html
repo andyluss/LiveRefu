@@ -47,7 +47,7 @@ table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{te
 <header class="topbar"><div class="topbar-inner"><div class="topline">
   <div class="brand">湾居 · 夜航书房<span>HUB · 03</span></div>
   <nav class="links" aria-label="相关页面"><a href="GUIDE.html">GUIDE</a><a href="../HUB.html">主 HUB</a><a href="../../game03/README.md">game03</a><a href="../../docs-ai/design03/README.md">design03</a></nav>
-  <div class="stamp">v0.1.148 · 2026-11-17</div>
+  <div class="stamp">v0.1.149 · 2026-11-17</div>
   <div class="theme-switch" role="group" aria-label="主题"><button type="button" data-theme-choice="system" aria-pressed="true">系统</button><button type="button" data-theme-choice="light" aria-pressed="false">浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false">深色</button></div>
 </div><div class="subhint">独立 3D 专注/放松项目，不是塔防，也不是任务管理工具。Demo 已可运行。</div></div></header>
 <main class="wrap">
@@ -71,7 +71,7 @@ table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{te
     <table><thead><tr><th>系统</th><th>MVP</th><th>设计意图</th></tr></thead><tbody><tr><td><b>空间</b></td><td>1 间房、轨道相机、8 个互动物件</td><td>专注是一个可以进入的地方</td></tr><tr><td><b>专注</b></td><td>1/15/25/45 分钟、意图、暂停/重置/完成</td><td>低摩擦开始，无惩罚</td></tr><tr><td><b>声音</b></td><td>雨/风/唱针/低鸣，生成式，可静音</td><td>声音是建筑，不是播放列表</td></tr><tr><td><b>陪伴</b></td><td>猫、植物、窗外夜航</td><td>在场，不索取</td></tr><tr><td><b>成长</b></td><td>植物等级、总分钟、最近记录</td><td>房间记忆，不是战力</td></tr><tr><td><b>存储</b></td><td>localStorage</td><td>本地优先，无账号</td></tr></tbody></table>
   </section>
 
-  <section class="section"><h2><span>04 / WEB</span>技术</h2><div class="grid g2"><article class="card"><h3>栈</h3><p>Three.js（本地 vendor）+ WebAudio + 原生 ES modules + localStorage；静态服务器，无后端。</p></article><article class="card"><h3>验证</h3><p><code>./run.sh game03-test</code> 7/7；已纳入 <code>./run.sh verify</code>（15 项）。</p></article></div>
+  <section class="section"><h2><span>04 / WEB</span>技术</h2><div class="grid g2"><article class="card"><h3>栈</h3><p>Three.js r187 / 0.187.0（本地 vendor，含 three.core.js）+ WebAudio + 原生 ES modules + localStorage；静态服务器，无后端。</p></article><article class="card"><h3>验证</h3><p><code>./run.sh game03-test</code> 7/7；已纳入 <code>./run.sh verify</code>（15 项）。</p></article></div>
     <table><thead><tr><th>模块</th><th>职责</th></tr></thead><tbody><tr><td><code>src/main.js</code></td><td>Three.js 场景/相机/拾取/UI</td></tr><tr><td><code>src/session.js</code></td><td>专注会话纯逻辑（Node 测试）</td></tr><tr><td><code>src/audio.js</code></td><td>生成式环境声</td></tr><tr><td><code>vendor/</code></td><td>本地 Three.js，无 CDN</td></tr></tbody></table>
   </section>
 

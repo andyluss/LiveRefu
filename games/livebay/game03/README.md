@@ -49,7 +49,7 @@ src/main.js      Three.js 场景 / 相机 / 拾取 / UI
 src/session.js   专注会话纯逻辑（Node 可测）
 src/audio.js     生成式环境声（WebAudio）
 src/style.css
-vendor/          Three.js 本地 vendor
+vendor/          Three.js r187 本地 vendor（three.module.js + three.core.js；来源见 vendor/README.md）
 tests/           session.test.js
 ```
 

@@ -33,7 +33,7 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 stage.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
@@ -446,10 +446,12 @@ window.addEventListener('keydown', e => {
 });
 
 // animation
-const clock = new THREE.Clock();
 let lastUI = '';
-function animate() {
-  const dt = Math.min(clock.getDelta(), .05);
+let lastFrame = performance.now();
+function animate(now) {
+  const t = typeof now === 'number' ? now : performance.now();
+  const dt = Math.min((t - lastFrame) / 1000, .05);
+  lastFrame = t;
   sceneTime += dt;
   if (session.running) {
     session = tickSession(session, dt);
@@ -474,7 +476,7 @@ function animate() {
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
-animate();
+requestAnimationFrame(animate);
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();

@@ -3,6 +3,25 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.149] - 2026-11-17 12:21
+
+### 升级
+
+- `game03` 的 Three.js 从 r160 / 0.160.0 升级到 npm latest **r187 / 0.187.0**；
+- r187 的 `three.module.js` 依赖 `three.core.js`，已补入 `game03/vendor/`；
+- 同步更新 `THREE-LICENSE`；
+- 移除 r187 已废弃的 `THREE.Clock` / `PCFSoftShadowMap` 用法，改为帧时间与 `PCFShadowMap`；
+- 新增 `game03/vendor/README.md`，记录版本、来源与升级步骤；
+- 同步 game03/design03/brief03 版本到 0.1.149。
+
+### 验证
+
+- npm registry latest：0.187.0；
+- Chrome + SwiftShader：3D 场景正常，无 Three.js 废弃 API 警告；
+- `game03-test`：7/7；
+- `./run.sh verify`：PASS 15 · FAIL 0；
+- R-016：brief/03 通过。
+
 ## [0.1.148] - 2026-11-17 12:17
 
 ### 新增
