@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createSession, startSession, pauseSession, resetSession, tickSession, progress, formatTime, moodFor, recordSession, loadState } from '../src/session.js';
+import { createSession, startSession, syncSession, pauseSession, resetSession, tickSession, progress, formatTime, moodFor, recordSession, loadState } from '../src/session.js';
 
 test('session starts stopped at requested duration', () => {
   const s = createSession(25);
@@ -16,10 +16,29 @@ test('start, tick and pause', () => {
   s = tickSession(s, 10);
   assert.equal(s.remaining, 50);
   assert.equal(s.elapsed, 10);
-  s = pauseSession(s);
+  s = pauseSession(s, s.startedAt);
   assert.equal(s.running, false);
   s = tickSession(s, 10);
   assert.equal(s.remaining, 50);
+});
+
+test('wall clock catches up after a background gap', () => {
+  let s = startSession(createSession(1), 1000);
+  assert.equal(s.deadline, 61000);
+  s = syncSession(s, 11000);
+  assert.equal(s.remaining, 50);
+  s = syncSession(s, 61000);
+  assert.equal(s.remaining, 0);
+  assert.equal(s.completed, true);
+  assert.equal(s.running, false);
+});
+
+test('pause syncs wall-clock remaining time', () => {
+  const s = startSession(createSession(1), 1000);
+  const paused = pauseSession(s, 11000);
+  assert.equal(paused.running, false);
+  assert.equal(paused.deadline, null);
+  assert.equal(paused.remaining, 50);
 });
 
 test('completion is clamped and reports complete', () => {

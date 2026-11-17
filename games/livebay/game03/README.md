@@ -60,13 +60,17 @@ tests/           session.test.js
 - 生成式 lofi 声层；
 - localStorage `slow-cabin-state-v1`。
 
+## 计时
+
+专注计时使用绝对截止时间（`deadline`），不依赖 `requestAnimationFrame`。切到后台、最小化或失焦后，回到页面会按真实时间补算；暂停/继续也按墙钟同步。
+
 ## 验证
 
 ```bash
 ./run.sh game03-test
 ```
 
-7 项会话逻辑测试。
+9 项会话逻辑测试。
 
 ## 当前边界
 

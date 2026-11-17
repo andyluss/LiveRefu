@@ -13,29 +13,56 @@ export function createSession(minutes = DEFAULT_DURATION) {
     running: false,
     completed: false,
     startedAt: null,
+    deadline: null,
   };
 }
 
-export function startSession(session) {
+// 开始/继续时记录绝对截止时间：计时不依赖 requestAnimationFrame。
+export function startSession(session, now = Date.now()) {
   if (session.completed) return session;
-  return { ...session, running: true, startedAt: session.startedAt ?? Date.now() };
+  const remaining = Math.max(0, Number(session.remaining) || 0);
+  return {
+    ...session,
+    running: true,
+    startedAt: session.startedAt ?? now,
+    deadline: now + remaining * 1000,
+  };
 }
 
-export function pauseSession(session) {
-  return { ...session, running: false };
+// 按墙钟把剩余时间追平；后台标签页恢复时也能一次补上。
+export function syncSession(session, now = Date.now()) {
+  if (!session.running) return session;
+  const deadline = Number.isFinite(session.deadline) ? session.deadline : now + Math.max(0, session.remaining) * 1000;
+  const remaining = Math.max(0, (deadline - now) / 1000);
+  return {
+    ...session,
+    remaining,
+    elapsed: session.duration - remaining,
+    deadline,
+    running: remaining > 0,
+    completed: remaining <= 0,
+  };
+}
+
+export function pauseSession(session, now = Date.now()) {
+  const paused = syncSession(session, now);
+  return { ...paused, running: false, deadline: null };
 }
 
 export function resetSession(session) {
   return createSession(session.duration / 60);
 }
 
+// 纯步进接口保留给测试/工具；主循环用 syncSession + 绝对 deadline。
 export function tickSession(session, dtSeconds) {
   if (!session.running || session.completed) return session;
-  const next = Math.max(0, session.remaining - Math.max(0, dtSeconds));
+  const dt = Math.max(0, dtSeconds);
+  const next = Math.max(0, session.remaining - dt);
   return {
     ...session,
     remaining: next,
     elapsed: session.duration - next,
+    deadline: Number.isFinite(session.deadline) ? session.deadline - dt * 1000 : null,
     running: next > 0,
     completed: next <= 0,
   };

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { AmbientAudio, TRACKS, TRACK_IDS } from './audio.js';
 import {
   DURATIONS, DEFAULT_DURATION, createSession, startSession, pauseSession,
-  resetSession, tickSession, progress, formatTime, moodFor, recordSession, loadState,
+  resetSession, syncSession, progress, formatTime, moodFor, recordSession, loadState,
 } from './session.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -475,8 +475,8 @@ document.querySelectorAll('[data-track]').forEach(b => b.addEventListener('click
 function toggleSession() {
   if (!entered) { $('#welcome').hidden = false; return; }
   if (session.completed) session = createSession(selectedDuration);
-  if (session.running) { session = pauseSession(session); toast('先停一下。'); }
-  else { session = startSession(session); startAudio(); toast('这一会儿，只做这一件事。'); }
+  if (session.running) { session = pauseSession(session, Date.now()); toast('先停一下。'); }
+  else { session = startSession(session, Date.now()); startAudio(); toast('这一会儿，只做这一件事。'); }
   updateUI();
 }
 function finishSession() {
@@ -536,6 +536,18 @@ window.addEventListener('keydown', e => {
   } else if (e.key.toLowerCase() === 'h') { $('#welcome').hidden = false; $('#welcome-close').hidden = !entered; }
 });
 
+// 后台/失焦兜底：rAF 被节流时，用墙钟同步并在恢复时补算。
+function backgroundTick() {
+  if (!session.running) return;
+  session = syncSession(session, Date.now());
+  if (session.completed) finishSession();
+  else updateUI();
+}
+setInterval(backgroundTick, 500);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) backgroundTick(); });
+window.addEventListener('focus', backgroundTick);
+window.addEventListener('pageshow', backgroundTick);
+
 // animation
 let lastUI = '';
 let lastFrame = performance.now();
@@ -546,8 +558,8 @@ function animate(now) {
   lastFrame = t;
   sceneTime += dt;
   if (session.running) {
-    // 专注计时用真实墙钟；帧时间只用于动画，低帧率/后台不应偷走专注分钟。
-    session = tickSession(session, Math.min(rawDt, 5));
+    // 专注计时用绝对墙钟；帧只负责动画，后台/低帧率不会偷走专注分钟。
+    session = syncSession(session, Date.now());
     if (session.completed) finishSession();
     else {
       const key = formatTime(session.remaining);
