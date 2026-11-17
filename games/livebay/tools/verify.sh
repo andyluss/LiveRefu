@@ -35,16 +35,16 @@ run_step "数值与 data 一致" "$RUN" numbers-check
 run_step "MissionPack 清单" "$RUN" pack-check
 run_step "流程图生成物" "$RUN" flow-check
 run_step "数值沙盘生成物" "$RUN" simulator-check
-run_step " briefing GUIDE/HUB 对账" "$RUN" briefing-check
+run_step " brief GUIDE/HUB 对账" "$RUN" brief-check
 run_step "无头启动 180 帧" "$RUN" check
 
 # 文档链接（只扫 LiveBay）
 run_step "Markdown 内部链接" python3 "$WS_ROOT/tools/check_links.py" --sub "$HERE"
 
-# R-016：设计文档 HTML + briefing + flows + simulator + 工作区 HUB
+# R-016：设计文档 HTML + brief + flows + simulator + 工作区 HUB
 HTML_FILES="$(find "$HERE/docs-ai/design01/html" -name '*.html' -print)
-$HERE/briefing/HUB.html
-$HERE/briefing/GUIDE.html
+$HERE/brief/HUB.html
+$HERE/brief/GUIDE.html
 $(find "$HERE/docs-ai/design01/flows" -name '*.html' -print)
 $HERE/docs-ai/design01/simulator/index.html
 $WS_ROOT/HUB.html"

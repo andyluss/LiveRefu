@@ -162,5 +162,5 @@ docs-ai/design01/numbers/*.md
 - [技术方案](../docs-ai/design01/tech/12_技术方案_Godot工程.md)
 - [玩法目录](../docs-ai/design01/gameplay/README.md)
 - [自由模式方案](../docs-ai/design01/lab/00_自由模式方案.md)
-- [HUB](../briefing/HUB.html) · [GUIDE](../briefing/GUIDE.html)
+- [HUB](../brief/HUB.html) · [GUIDE](../brief/GUIDE.html)
 - [变更日志](../CHANGELOG.md)

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build_guide.ts —— 生成 briefing/GUIDE.html：给第一次听说 LiveBay 的人看的玩法说明。
+ * build_guide.ts —— 生成 brief/GUIDE.html：给第一次听说 LiveBay 的人看的玩法说明。
  *
  * 数字、塔/敌人/波次/地图全部从 game/data/*.json 现读；--check 比对磁盘页面，
  * 过期直接报错。Node 24+ 可直接运行 TypeScript。
@@ -118,7 +118,7 @@ function build(): string {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LiveBay · 玩法说明（给第一次听说它的人）</title>
-<!-- 由 briefing/build_guide.ts 生成；数字来自 game/data/*.json，改数据后重跑。 -->
+<!-- 由 brief/build_guide.ts 生成；数字来自 game/data/*.json，改数据后重跑。 -->
 <script>
 (function () {
   document.documentElement.dataset.js = 'true';
@@ -310,7 +310,7 @@ th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)
   </section>
 
   <footer class="footer">
-    <p>本页由 <code>briefing/build_guide.ts</code> 生成；数字来自 <code>game/data/*.json</code>。改数据后运行 <code>node briefing/build_guide.ts</code>，用 <code>--check</code> 校验是否过期。</p>
+    <p>本页由 <code>brief/build_guide.ts</code> 生成；数字来自 <code>game/data/*.json</code>。改数据后运行 <code>node brief/build_guide.ts</code>，用 <code>--check</code> 校验是否过期。</p>
     <p>返回 <a href="HUB.html">项目 HUB</a> · 详细设计见 <a href="../docs-ai/design01/README.md">design01</a> · 生成时间：${GENERATED}</p>
   </footer>
 </main>
@@ -328,7 +328,7 @@ function main(): number {
       return 1;
     }
     if (fs.readFileSync(OUT, 'utf8') !== html) {
-      console.log('FAIL GUIDE.html 已过期：请运行 node briefing/build_guide.ts');
+      console.log('FAIL GUIDE.html 已过期：请运行 node brief/build_guide.ts');
       return 1;
     }
     console.log('GUIDE.html 与数据一致');

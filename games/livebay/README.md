@@ -31,7 +31,7 @@ platform: "PC 优先（D14 待定）"
 | [`docs-ai/`](docs-ai/) | AI 生成的概念与策划参考；含 [design01 策划文档集](docs-ai/design01/README.md) | AI 起草，人类裁决 |
 | [`game/`](game/) | Godot 工程与可运行切片 | 工程 |
 | [`game/addons/livebay_tools/`](game/addons/livebay_tools/README.md) | **LiveBay Tools 编辑器插件**：地图/塔位拖动、射程预览、写回 numbers | 工程 |
-| [`briefing/`](briefing/README.md) | **面向人**的 HUB / GUIDE / 主题 / 数据校验 | 设计主控 + 工程 |
+| [`brief/`](brief/README.md) | **面向人**的 HUB / GUIDE / 主题 / 数据校验 | 设计主控 + 工程 |
 | [`run.sh`](run.sh) | 统一入口（运行 / 编辑器 / 测试 / 检查） | 工程 |
 
 ## 快速开始
@@ -56,8 +56,8 @@ platform: "PC 优先（D14 待定）"
 ./run.sh simulator-check  # 校验数值沙盘是否过期
 ./run.sh flow             # 生成 flows/ 静态流程图
 ./run.sh flow-check       # 校验流程图是否过期
-./run.sh briefing         # 从数据重新生成 briefing/GUIDE.html
-./run.sh briefing-check   # 校验 GUIDE 与 HUB 数字/素材
+./run.sh brief         # 从数据重新生成 brief/GUIDE.html
+./run.sh brief-check   # 校验 GUIDE 与 HUB 数字/素材
 ./run.sh editor-test # 编辑器数据桥冒烟测试
 ./run.sh import   # 首次导入资源
 ```
@@ -86,7 +86,7 @@ Godot 编辑器内置 **LiveBay Tools** 插件（`game/addons/livebay_tools/`）
 
 | 你想 | 去哪 |
 | --- | --- |
-| 先看项目导览 | [`briefing/HUB.html`](briefing/HUB.html) ｜ [玩法说明](briefing/GUIDE.html) |
+| 先看项目导览 | [`brief/HUB.html`](brief/HUB.html) ｜ [玩法说明](brief/GUIDE.html) |
 | 看人类原始设定 | [`docs-human/概念设定.md`](docs-human/概念设定.md) |
 | 看策划文档集总览 | [`docs-ai/design01/README.md`](docs-ai/design01/README.md) |
 | 看 HTML 阅读版 | [`docs-ai/design01/html/index.html`](docs-ai/design01/html/index.html)（支持系统 / 浅色 / 深色） |

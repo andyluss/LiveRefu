@@ -1,4 +1,4 @@
-# briefing · LiveBay 的导览层
+# brief · LiveBay 的导览层
 
 > **一句话**：这里是《LiveBay（逍遥湾）》**面向人**的六个页面，以及它们的主题、生成器与数据校验器。
 > **不是**策划源、决策日志或工程文档；那些分别在 [`../docs-ai/`](../docs-ai/)、[`../docs-ai/design01/11_待人类裁决清单.md`](../docs-ai/design01/11_待人类裁决清单.md) 和 [`../README.md`](../README.md)。
@@ -6,14 +6,15 @@
 ## 一、这里有什么
 
 ```text
-briefing/
+brief/
 ├── HUB.html          # 项目状态 / 决策 / 玩法 / 架构 / 素材 / 风险 / 下一步
 ├── GUIDE.html        # 给第一次听说这个游戏的人看的玩法说明（生成物）
 ├── BOX-PROJECT.html  # 项目白盒：3D 分层 / 矩阵 / 风险 / 假设推演
 ├── BOX-GAME.html     # 游戏白盒：空间 / 时间 / 经济 / 威胁 / 生存沙盘
-├── HUB2.html         # 独立生存《断缆》项目总结
-├── GUIDE2.html       # 独立生存《断缆》玩家指南
-├── theme.css         # 两页共享的三态主题 token 与覆盖
+├── 02/
+│   ├── HUB.html      # 独立生存《断缆》项目总结
+│   └── GUIDE.html    # 独立生存《断缆》玩家指南
+├── theme.css         # 六页共享的三态主题 token 与覆盖
 ├── theme.js          # 三态切换、持久化、系统态实时响应
 ├── build_guide.ts    # 从 game/data/*.json 生成 GUIDE.html
 ├── check_hub.ts      # 核对 HUB 的 data-fact、素材存在性
@@ -26,8 +27,8 @@ briefing/
 | `GUIDE.html` | 项目负责人 + 数据 | `build_guide.ts` 生成，禁止手改 |
 | `BOX-PROJECT.html` | 项目负责人 / 设计主控 | 手写结构；3D 分层与假设推演 |
 | `BOX-GAME.html` | 项目负责人 / 设计主控 | 手写结构；数据快照注入，交互沙盘 |
-| `HUB2.html` | 生存项目负责人 | 手写结构；项目总结，不宣称完整版 |
-| `GUIDE2.html` | 生存项目负责人 | 手写结构；玩家指南/操作与建议 |
+| `02/HUB.html` | 生存项目负责人 | 手写结构；项目总结，不宣称完整版 |
+| `02/GUIDE.html` | 生存项目负责人 | 手写结构；玩家指南/操作与建议 |
 | `theme.css` / `theme.js` | 设计主控 | 手写；六页共用，遵守 R-016 |
 
 ## 二、HUB 与 GUIDE 的分工
@@ -67,8 +68,8 @@ HUB 中需要核对的数字写成：
 ```
 
 ```bash
-node briefing/check_hub.ts             # 对账
-node briefing/check_hub.ts --self-test # 用坏数据确认它会失败
+node brief/check_hub.ts             # 对账
+node brief/check_hub.ts --self-test # 用坏数据确认它会失败
 ```
 
 失败时先改**数据源**或 HUB 的数字，**不要让两者并存**。
@@ -92,8 +93,8 @@ game/data/balance.json
 - `--check` 只读磁盘，适合 CI / 提交前检查。
 
 ```bash
-node briefing/build_guide.ts            # 重新生成 GUIDE.html
-node briefing/build_guide.ts --check    # 页面与数据一致？不写文件
+node brief/build_guide.ts            # 重新生成 GUIDE.html
+node brief/build_guide.ts --check    # 页面与数据一致？不写文件
 ```
 
 ## 五、三态主题（R-016）
@@ -123,7 +124,7 @@ system / light / dark
 
 ## 六、路径约定
 
-因为 `briefing/` 比项目根深一层，页面/说明里的相对路径要加一层：
+因为 `brief/` 比项目根深一层，页面/说明里的相对路径要加一层：
 
 | 目标 | 写法 |
 | --- | --- |
@@ -152,6 +153,6 @@ system / light / dark
 
 ## 九、维护
 
-- 版本：与项目版本同步；当前项目 `0.1.146`；
+- 版本：与项目版本同步；当前项目 `0.1.147`；
 - 变更：项目级变更写入 `../CHANGELOG.md`，本目录不单独维护版本日志；
 - 入口：[`HUB.html`](HUB.html) ｜ [`GUIDE.html`](GUIDE.html) ｜ [项目 README](../README.md)。

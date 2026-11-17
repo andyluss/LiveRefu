@@ -145,7 +145,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}ol.tl li::af
         <a href="BOX-GAME.html">BOX-GAME</a>
         <a href="../docs-ai/design01/html/index.html">design01 文档</a>
       </nav>
-      <div class="stamp">v<span data-fact="version">0.1.146</span> · 2026-11-14</div>
+      <div class="stamp">v<span data-fact="version">0.1.147</span> · 2026-11-17</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -313,7 +313,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}ol.tl li::af
     <p class="hint">方案与生命周期：<a href="../docs-ai/design01/lab/00_自由模式方案.md">lab/00_自由模式方案.md</a>；候选/导入导出是本地文件，不做在线服务。</p>
     <div class="note"><b>生存玩法：</b><a href="../docs-ai/design01/lab/01_塔防生存玩法建议.md">低功率夜班 / 断缆 90 分钟 / 湾口封舱</a>——S1/S2 已实现；断缆/封舱空间版待拍板。</div>
     <div class="note"><b>复用取舍：</b>实验当前复用同一套 Sim/Data，适合塔防变体；真正的放置/小玩具需要 Mode Adapter，详见方案文档第十三节。</div>
-    <div class="note"><b>独立生存参考：</b><a href="../docs-ai/design02/README.md">design02 · 《逍遥湾：断缆》</a>——完全生存玩法；game02 MVP 原型可玩（`./run.sh game02`）；与塔防工程无关。项目总结 <a href="HUB2.html">HUB2</a> · 玩家指南 <a href="GUIDE2.html">GUIDE2</a>。</div>
+    <div class="note"><b>独立生存参考：</b><a href="../docs-ai/design02/README.md">design02 · 《逍遥湾：断缆》</a>——完全生存玩法；game02 MVP 原型可玩（`./run.sh game02`）；与塔防工程无关。项目总结 <a href="02/HUB.html">HUB</a> · 玩家指南 <a href="02/GUIDE.html">GUIDE</a>。</div>
   </section>
   <section class="panel" id="p13" role="tabpanel" aria-labelledby="t13">
     <h2>存续力：能继续，但没有安全垫</h2>
@@ -459,7 +459,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}ol.tl li::af
         <tr><td>架构与边界</td><td>MissionRuntime + 时钟/事件/命令/黑匣子 + 7 领域模块；HUD/流程/输入/会期控制器；扩展包 manifest/preset。</td><td>Sim 仍编排部分 tick；main 仍承担 UI 刷新/信号/绘制；边界还不是“可替换模块”的最终形态。</td></tr>
         <tr><td>数据与单一源</td><td>numbers → export → data → MissionPack schema 2 目录：每图独立 pack_id/map_id/hash；HUB 11 facts 对账；模拟器数据 hash。</td><td>hash 只做格式/归属校验，未做运行时内容重算；目录未签名。</td></tr>
         <tr><td>测试与回归</td><td><span data-fact="tests">103</span> 项无头断言；<span data-fact="expansions">34</span> 项扩展检查；editor-test；playtest；flow/simulator-check；headless 性能基线。</td><td>没有覆盖率指标；没有渲染/内存基准；没有 CI 服务（仅本地 verify）。</td></tr>
-        <tr><td>文档与知识</td><td>design01 49 个 HTML 页面；flows；simulator；briefing HUB/GUIDE；决策记录。</td><td>文档密度高，但存在与实现同步的成本；部分设计仍是提案/样例。</td></tr>
+        <tr><td>文档与知识</td><td>design01 49 个 HTML 页面；flows；simulator；brief HUB/GUIDE；决策记录。</td><td>文档密度高，但存在与实现同步的成本；部分设计仍是提案/样例。</td></tr>
         <tr><td>工具与工作流</td><td>LiveBay Tools 编辑器；numbers 导出；MissionPack 目录；blackbox/replay；流程图；数值沙盘；<code>./run.sh verify</code>。</td><td>已有本地全量入口，但没有远程 CI；新成员仍需读多个 README。</td></tr>
         <tr><td>可维护/可逆</td><td>数据驱动；模块可单测；扩展包失败不阻塞核心；回放可复盘。</td><td>Sim 编排、main.gd、部分 HUD 逻辑仍是技术债；没有正式架构守护测试。</td></tr>
         <tr><td>性能与规模</td><td>headless 基线：8 波 p95 0.099 ms、2,000 实体 p95 8.2 ms、5 分钟 0.20 s、地图加载 p95 ≤4.31 ms；CPU draw 0.092 ms/176 calls；静态内存 24→26 MB。</td><td>只测模拟步进，不含渲染/GPU/音频/内存；单图、合成实体，仍不是完整性能验收。</td></tr>
@@ -470,7 +470,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}ol.tl li::af
 
     <h3>下一步：把 3.85 推到 4.2+</h3>
     <div class="grid g2">
-      <article class="card"><h4>1 · 一键全量验收 ✅</h4><p>已实现 <code>./run.sh verify</code>：test + game02-test + expansions-check + editor-test + playtest + numbers/pack + flow + simulator + briefing + 启动 + 链接 + R-016；14 项汇总。</p></article>
+      <article class="card"><h4>1 · 一键全量验收 ✅</h4><p>已实现 <code>./run.sh verify</code>：test + game02-test + expansions-check + editor-test + playtest + numbers/pack + flow + simulator + brief + 启动 + 链接 + R-016；14 项汇总。</p></article>
       <article class="card"><h4>2 · 性能基准</h4><p>固定场景记录帧时间、实体上限、5 分钟长跑与三图加载时间；把“没测过”变成“有基线”。</p></article>
       <article class="card"><h4>3 · main 入口化 ✅</h4><p>HUD/流程/输入/会期/命令/反馈/UI 呈现均已拆出；main 966→<b>210</b> 行；公共色板/布局/塔顺序在 <code>shared/constants.gd</code>，只保留启动、连线、每帧驱动、绘制。下一步再拆 Sim 的索敌/移动编排。</p></article>
       <article class="card"><h4>4 · 内容厚度</h4><p>1 职业 / 3 图 / 8 波是切片，不是产品；L1 正式内容、L2 岗位、日常循环需要进入下一阶段。</p></article>
@@ -672,7 +672,7 @@ ol.tl b{color:var(--ink)}ol.tl span{color:var(--dim);font-size:13px}ol.tl li::af
     <div class="note"><b>维护：</b>状态/命令/事件来自 <code>game/scripts/</code>；迁移模型在 <code>tools/build_flow.py</code>。改代码后跑 <code>./run.sh flow</code>，不要手改生成页。</div>
   </section>
 </main>
-<footer class="foot">LiveBay · briefing/HUB.html · 数字由 <code>briefing/check_hub.ts</code> 对账；GUIDE 由 <code>briefing/build_guide.ts</code> 生成。不是策划源，细节回 <a href="../docs-ai/design01/README.md">design01</a>。</footer>
+<footer class="foot">LiveBay · brief/HUB.html · 数字由 <code>brief/check_hub.ts</code> 对账；GUIDE 由 <code>brief/build_guide.ts</code> 生成。不是策划源，细节回 <a href="../docs-ai/design01/README.md">design01</a>。</footer>
 
 <script>
 (function () {

@@ -22,8 +22,8 @@
 
 ## 项目总结 / 指南
 
-- [HUB2](../briefing/HUB2.html)：项目到哪了
-- [GUIDE2](../briefing/GUIDE2.html)：玩家指南
+- [HUB](../brief/02/HUB.html)：项目到哪了
+- [GUIDE](../brief/02/GUIDE.html)：玩家指南
 
 ## 操作
 

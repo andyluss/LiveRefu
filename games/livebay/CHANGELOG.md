@@ -3,6 +3,29 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.147] - 2026-11-17 12:08
+
+### 重构
+
+- `games/livebay/briefing/` 重命名为 `games/livebay/brief/`；
+- `HUB2.html` / `GUIDE2.html` 移入 `brief/02/`，重命名为 `HUB.html` / `GUIDE.html`；
+- `brief` 目录保持：
+  - 根 `HUB.html` / `GUIDE.html`（主项目）；
+  - `02/HUB.html` / `02/GUIDE.html`（独立生存项目）；
+  - `BOX-PROJECT.html` / `BOX-GAME.html`；
+- 同步所有路径：
+  - `run.sh`：`brief` / `brief-check`；
+  - `verify.sh`、R-016 页面列表；
+  - 主 HUB、根 HUB、design01 生成器、game/game02 README；
+- `brief/02` 页面使用 `../theme.css` / `../theme.js`，内部链接指向 `../HUB.html` 与同目录 GUIDE；
+- 设计01 HTML 重新生成，指向 `../../../brief/HUB.html`。
+
+### 验证
+
+- `./run.sh brief-check`：通过；
+- `./run.sh verify`：PASS 14 · FAIL 0；
+- R-016：brief 根页 + 02 页通过。
+
 ## [0.1.146] - 2026-11-14 12:00
 
 ### 文档

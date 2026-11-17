@@ -1,4 +1,4 @@
-/* LiveBay briefing · 三态主题（R-016）。首屏预绘制在各自 <head> 内联完成。 */
+/* LiveBay brief · 三态主题（R-016）。首屏预绘制在各自 <head> 内联完成。 */
 (function () {
   var KEY = 'lrds-theme';
   var root = document.documentElement;

@@ -1,4 +1,4 @@
-/* LiveBay briefing · 三态主题（R-016）。
+/* LiveBay brief · 三态主题（R-016）。
    HUB 默认深色、GUIDE 默认浅色；system/light/dark 只覆盖 token，不复制 DOM。 */
 :root{color-scheme:dark}
 :root[data-theme="light"]{color-scheme:light}
