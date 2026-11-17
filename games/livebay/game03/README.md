@@ -61,7 +61,7 @@ tests/           session.test.js
 - Three.js ES module，本地 vendor，不依赖 CDN；
 - 手写轨道相机，无 OrbitControls 依赖；
 - 程序化几何，无外部模型/贴图；
-- 生成式 lofi 声层；
+- 生成式 lofi 声层；低鸣由 55/82.5/110Hz 基频与泛音组成，带缓慢呼吸；
 - localStorage `slow-cabin-state-v1`。
 
 ## 计时

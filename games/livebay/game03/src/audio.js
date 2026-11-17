@@ -160,11 +160,36 @@ export class AmbientAudio {
   }
 
   _buildHum() {
-    const osc = this.ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 55;
-    const gain = this.ctx.createGain(); gain.gain.value = .015;
-    osc.connect(gain); gain.connect(this.master); osc.start();
+    // 低鸣不是一条 55Hz 正弦：那在笔记本扬声器上几乎听不见。
+    // 用 55/82.5/110Hz 的基频与泛音，经低通与缓慢呼吸，做成可感的低频底噪。
+    const now = this.ctx.currentTime;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 240; filter.Q.value = .7;
+    const gain = this.ctx.createGain();
+    gain.gain.value = (this.state.hum ?? .2) * .30;
+    filter.connect(gain); gain.connect(this.master);
+    const partials = [
+      { freq: 55.0, type: 'sine', level: .45 },
+      { freq: 82.5, type: 'triangle', level: .18 },
+      { freq: 110.0, type: 'sine', level: .10 },
+    ];
+    this.humNodes = [];
+    for (const p of partials) {
+      const osc = this.ctx.createOscillator();
+      osc.type = p.type; osc.frequency.value = p.freq;
+      const g = this.ctx.createGain(); g.gain.value = p.level;
+      osc.connect(g); g.connect(filter); osc.start();
+      this.humNodes.push(osc);
+    }
+    // 非常慢的呼吸，避免低频变成死板的嗡嗡声。
+    const lfo = this.ctx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = .075;
+    const lfoGain = this.ctx.createGain(); lfoGain.gain.value = (this.state.hum ?? .2) * .08;
+    lfo.connect(lfoGain); lfoGain.connect(gain.gain); lfo.start(now);
+    this.humNodes.push(lfo);
+    this.humGain = gain;
+    this.humLfoGain = lfoGain;
     this.nodes = this.nodes || [];
-    this.nodes.push({ osc, gain, kind: 'hum' });
+    this.nodes.push({ gain, kind: 'hum' });
   }
 
   set(key, value) {
@@ -172,12 +197,16 @@ export class AmbientAudio {
     if (!this.started) return;
     if (key === 'muted') { this.master.gain.setTargetAtTime(value ? 0 : 0.18, this.ctx.currentTime, .1); return; }
     if (key === 'melody') { this.arpGain.gain.setTargetAtTime(value, this.ctx.currentTime, .08); return; }
+    if (key === 'hum') {
+      if (this.humGain) this.humGain.gain.setTargetAtTime(value * .30, this.ctx.currentTime, .12);
+      if (this.humLfoGain) this.humLfoGain.gain.setTargetAtTime(value * .08, this.ctx.currentTime, .12);
+      return;
+    }
     if (this.nodes) {
       this.nodes.forEach(n => {
         if (n.kind === key && n.gain) n.gain.gain.setTargetAtTime(value, this.ctx.currentTime, .08);
       });
     }
-    if (key === 'hum') this.nodes?.filter(n => n.kind === 'hum').forEach(n => n.gain.gain.setTargetAtTime(value * .08, this.ctx.currentTime, .08));
   }
 
   setAll(values) {
