@@ -62,8 +62,14 @@ test('loadState tolerates bad/partial data', () => {
   const d = loadState(null);
   assert.equal(d.duration, 25);
   assert.deepEqual(d.sessions, []);
-  const p = loadState({ duration: 15, totalMinutes: 3, audio: { rain: .4 } });
+  assert.equal(d.scene, 'night');
+  assert.equal(d.audio.track, 'night');
+  assert.equal(d.audio.melody, .22);
+  const p = loadState({ duration: 15, totalMinutes: 3, scene: 'rain', audio: { rain: .4, track: 'drift', melody: .5 } });
   assert.equal(p.duration, 15);
   assert.equal(p.audio.rain, .4);
   assert.equal(p.audio.muted, false);
+  assert.equal(p.scene, 'rain');
+  assert.equal(p.audio.track, 'drift');
+  assert.equal(p.audio.melody, .5);
 });

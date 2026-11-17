@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { AmbientAudio } from './audio.js';
+import { AmbientAudio, TRACKS, TRACK_IDS } from './audio.js';
 import {
   DURATIONS, DEFAULT_DURATION, createSession, startSession, pauseSession,
   resetSession, tickSession, progress, formatTime, moodFor, recordSession, loadState,
@@ -24,6 +24,13 @@ let toastTimer = 0;
 let sceneTime = 0;
 let hoverName = '';
 let lampOn = true;
+
+const SCENES = {
+  night: { label: '夜航', note: '夜航 · 城市在窗外呼吸', bg: '#0a1210', planet: '#87b8b0', emissive: '#2f6762', ring: '#b9a06a', window: '#9dc5d0', windowLevel: 1.25, fill: '#79c4b7', dust: '#e7d9b8', quote: '灯亮着，城市在窗外呼吸。' },
+  rain: { label: '雨港', note: '雨港 · 雨落在舷窗上', bg: '#071315', planet: '#6ba3ad', emissive: '#255f68', ring: '#8fae9d', window: '#7bb0b8', windowLevel: .8, fill: '#5da0a7', dust: '#b8d1d0', quote: '雨落在舷窗上，城市变得很远。' },
+  dawn: { label: '晨光', note: '晨光 · 天慢慢亮了', bg: '#17110f', planet: '#d6a070', emissive: '#8a5a42', ring: '#e0b17a', window: '#e0a478', windowLevel: 1.8, fill: '#e0a478', dust: '#f0dcc0', quote: '灯还没关，天已经慢慢亮了。' },
+};
+const SCENE_IDS = ['night', 'rain', 'dawn'];
 
 const stage = $('#stage');
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
@@ -236,6 +243,49 @@ dustGeo.setAttribute('position', new THREE.Float32BufferAttribute(dustPos, 3));
 const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: '#e7d9b8', size: .022, transparent: true, opacity: .38, depthWrite: false }));
 room.add(dust);
 
+// scene decor: rain/greenhouse + dawn record corner
+const rainScene = new THREE.Group(); rainScene.visible = false; room.add(rainScene);
+function miniPlant(x, z, scale = 1) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(scale); rainScene.add(g);
+  cyl(.18, .24, .3, new THREE.MeshStandardMaterial({ color: '#8e5d42', roughness: .9 }), 0, .15, 0, g);
+  for (let i = 0; i < 6; i++) {
+    const a = i / 6 * Math.PI * 2;
+    const stem = cyl(.012, .02, .42 + (i % 3) * .12, M.leaf, Math.cos(a) * .08, .48, Math.sin(a) * .08, g);
+    stem.rotation.z = Math.cos(a) * .3; stem.rotation.x = Math.sin(a) * .3;
+    const leaf = new THREE.Mesh(new THREE.SphereGeometry(.13 + (i % 2) * .03, 8, 6), i % 2 ? M.leaf2 : M.leaf);
+    leaf.scale.set(1.2, .45, .75); leaf.position.set(Math.cos(a) * .25, .72 + (i % 3) * .1, Math.sin(a) * .25); g.add(leaf);
+  }
+}
+miniPlant(-3.45, 1.85, 1.05);
+miniPlant(-3.55, -.55, .8);
+miniPlant(3.5, -2.35, .9);
+miniPlant(3.55, 2.35, .7);
+const rainGeo = new THREE.BufferGeometry();
+const rainPos = [];
+for (let i = 0; i < 180; i++) rainPos.push(.1 + Math.random() * 2.3, 1.3 + Math.random() * 1.5, -2.98 + Math.random() * .04);
+rainGeo.setAttribute('position', new THREE.Float32BufferAttribute(rainPos, 3));
+const rainDrops = new THREE.Points(rainGeo, new THREE.PointsMaterial({ color: '#b9dce0', size: .018, transparent: true, opacity: .55 }));
+rainScene.add(rainDrops);
+
+const dawnScene = new THREE.Group(); dawnScene.visible = false; room.add(dawnScene);
+box(1.25, .52, .95, M.wood, -3.35, .26, 2.35, dawnScene);
+for (let i = 0; i < 4; i++) {
+  const disc = cyl(.2, .2, .025, i % 2 ? M.dark : M.brass, -3.7 + i * .23, .55, 2.35, dawnScene, 24);
+  disc.rotation.z = .1 * (i % 2);
+}
+for (let i = 0; i < 3; i++) {
+  box(.06, .52, .06, M.brass, -3.75 + i * .35, .75, 2.7, dawnScene);
+}
+// 晨光场景：桌面上多两张唱片，近景可见
+for (let i = 0; i < 3; i++) {
+  const disc = cyl(.16, .16, .02, i === 1 ? M.brass : M.dark, 1.9 + i * .18, .94, .55 - i * .12, dawnScene, 24);
+  disc.rotation.z = .15 * (i - 1);
+}
+const neonMat = new THREE.MeshStandardMaterial({ color: '#e0a478', emissive: '#c46d4f', emissiveIntensity: 1.4, roughness: .45 });
+const neon = new THREE.Mesh(new THREE.TorusGeometry(.33, .026, 8, 36, Math.PI), neonMat);
+neon.position.set(1.25, 2.98, -3.0); neon.rotation.z = Math.PI; dawnScene.add(neon);
+const neonBar = box(1.0, .035, .035, neonMat, 1.25, 3.05, -3.0, dawnScene);
+
 // interaction
 const raycaster = new THREE.Raycaster();
 const ptr = new THREE.Vector2();
@@ -290,8 +340,8 @@ const OBJECTS = {
   lamp: { name: '黄铜台灯', desc: '光不刺眼。它不催你，只把桌面照得刚好够用。', action: '开关灯', run: () => { lampOn = !lampOn; lampLight.intensity = lampOn ? 2.1 : .08; shade.material.emissiveIntensity = lampOn ? .25 : 0; toast(lampOn ? '灯亮了。' : '只留下窗外的光。'); } },
   plant: { name: '窗边植物', desc: '它长得不快，但每一次专注都会留下一点新叶。', action: '浇水', run: () => { state.plantLevel = Math.min(4, state.plantLevel + 1); save(); applyPlant(); toast('浇了一点水。'); } },
   cat: { name: '猫', desc: '它不提供效率。它只是在这里，呼吸，偶尔看你一眼。', action: '摸一摸', run: () => { catWiggle = 1.2; toast('呼噜声。'); } },
-  window: { name: '舷窗', desc: '外面是夜航中的城市。没有任务，只有很远的光。', action: '换一个夜', run: () => { nightMode = !nightMode; applyNight(); toast(nightMode ? '切到夜航。' : '切到雨夜。'); } },
-  speaker: { name: '唱机', desc: '没有歌单，只有一层很轻的低鸣。', action: '开关环境声', run: () => { toggleSound(); } },
+  window: { name: '舷窗', desc: '外面是夜航中的城市。没有任务，只有很远的光。', action: '换一个场景', run: () => cycleScene() },
+  speaker: { name: '唱机', desc: '四张唱片：夜航、雨室、深空、晨光。', action: '换一张唱片', run: () => cycleTrack() },
   mug: { name: '茶杯', desc: '已经凉了，但还可以再坐一会儿。', action: '放下', run: () => { toast('茶还温着。'); } },
   chair: { name: '椅子', desc: '坐在这里，不必马上开始。', action: '坐下', run: () => { toast('先坐一会儿，也算开始。'); } },
   laptop: { name: '笔记本', desc: '屏幕没有通知。它只等你写下第一句话。', action: '开始专注', run: () => { if (!session.running) toggleSession(); } },
@@ -310,7 +360,6 @@ $('#object-close').addEventListener('click', () => { $('#object-card').hidden = 
 $('#object-action').addEventListener('click', () => { if (currentObject) OBJECTS[currentObject].run(); });
 
 let catWiggle = 0;
-let nightMode = true;
 
 function applyPlant() {
   const s = 1 + state.plantLevel * .08;
@@ -318,13 +367,48 @@ function applyPlant() {
   $('#plant-level').textContent = state.plantLevel;
   $('#comfort-plant').textContent = ['醒着', '新芽', '舒展', '有光', '茂盛'][state.plantLevel];
 }
-function applyNight() {
-  const c = nightMode ? '#0a1210' : '#152022';
-  scene.background.set(c); scene.fog.color.set(c);
-  planet.material.color.set(nightMode ? '#87b8b0' : '#b7a58a');
-  planet.material.emissive.set(nightMode ? '#2f6762' : '#5e4b39');
-  stars.material.opacity = nightMode ? .8 : .2;
-  windowLight.intensity = nightMode ? 1.25 : .6;
+function applyScene(id) {
+  const key = SCENES[id] ? id : 'night';
+  const cfg = SCENES[key];
+  state.scene = key;
+  scene.background.set(cfg.bg); scene.fog.color.set(cfg.bg);
+  planet.material.color.set(cfg.planet);
+  planet.material.emissive.set(cfg.emissive);
+  ring.material.color.set(cfg.ring);
+  windowLight.color.set(cfg.window);
+  windowLight.intensity = cfg.windowLevel;
+  fill.color.set(cfg.fill);
+  dust.material.color.set(cfg.dust);
+  rainScene.visible = key === 'rain';
+  dawnScene.visible = key === 'dawn';
+  stars.material.opacity = key === 'dawn' ? .18 : (key === 'rain' ? .2 : .8);
+  $('#scene-note').textContent = cfg.note;
+  document.querySelectorAll('[data-scene]').forEach(b => b.classList.toggle('on', b.dataset.scene === key));
+  if (!session.running) $('#caption').textContent = cfg.quote;
+}
+function setScene(id) {
+  const key = SCENES[id] ? id : 'night';
+  applyScene(key); save(); toast('场景：' + SCENES[key].label);
+}
+function cycleScene() {
+  const i = Math.max(0, SCENE_IDS.indexOf(state.scene));
+  setScene(SCENE_IDS[(i + 1) % SCENE_IDS.length]);
+}
+function applyTrack(id) {
+  const key = TRACKS[id] ? id : 'night';
+  state.audio.track = key;
+  if (audio.started) audio.setTrack(key);
+  document.querySelectorAll('[data-track]').forEach(b => b.classList.toggle('on', b.dataset.track === key));
+  save();
+}
+function setTrack(id) {
+  const key = TRACKS[id] ? id : 'night';
+  applyTrack(key);
+  toast('唱片：' + TRACKS[key].label + ' · ' + TRACKS[key].sub);
+}
+function cycleTrack() {
+  const i = Math.max(0, TRACK_IDS.indexOf(state.audio.track));
+  setTrack(TRACK_IDS[(i + 1) % TRACK_IDS.length]);
 }
 function toast(text) {
   const el = $('#toast'); el.textContent = text; el.classList.add('show');
@@ -357,7 +441,7 @@ $('#sound').setAttribute('aria-pressed', 'false');
 
 async function startAudio() {
   if (!audio.started) {
-    try { await audio.start(); audio.setAll(state.audio); updateSound(); }
+    try { await audio.start(); audio.setAll(state.audio); audio.setTrack(state.audio.track || 'night'); updateSound(); document.querySelectorAll('[data-track]').forEach(b => b.classList.toggle('on', b.dataset.track === state.audio.track)); }
     catch { toast('浏览器阻止了声音；交互后可再试。'); }
   }
 }
@@ -373,9 +457,10 @@ function updateSound() {
   b.setAttribute('aria-pressed', state.audio.muted ? 'true' : 'false');
 }
 
-const sliders = ['rain', 'wind', 'vinyl', 'hum'];
+const sliders = ['rain', 'wind', 'vinyl', 'hum', 'melody'];
 sliders.forEach(key => {
   const input = $('#' + key), out = $('#' + key + '-out');
+  if (!input) return;
   input.value = state.audio[key] ?? .2;
   out.textContent = Math.round(input.value * 100) + '%';
   input.addEventListener('input', () => {
@@ -384,6 +469,8 @@ sliders.forEach(key => {
     audio.set(key, Number(input.value)); save();
   });
 });
+document.querySelectorAll('[data-scene]').forEach(b => b.addEventListener('click', () => setScene(b.dataset.scene)));
+document.querySelectorAll('[data-track]').forEach(b => b.addEventListener('click', () => setTrack(b.dataset.track)));
 
 function toggleSession() {
   if (!entered) { $('#welcome').hidden = false; return; }
@@ -405,6 +492,7 @@ function finishSession() {
 function save() {
   state.duration = selectedDuration;
   state.intention = intention;
+  state.scene = state.scene || 'night';
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch {}
 }
 function updateUI() {
@@ -417,13 +505,13 @@ function updateUI() {
   const labels = { arrive: '准备好了吗？', settle: '安定下来。', deep: '正在深处。', return: '慢慢回来。' };
   $('#timer-label').textContent = session.completed ? '完成了。' : labels[mood];
   $('#focus-state').textContent = session.running ? '专注中' : (session.elapsed > 0 ? '已暂停' : '未开始');
-  $('#phase').textContent = '夜航 · ' + ['到达', '安定', '深入', '回来'][Math.min(3, Math.floor(p * 4))];
+  $('#phase').textContent = (SCENES[state.scene]?.label || '夜航') + ' · ' + ['到达', '安定', '深入', '回来'][Math.min(3, Math.floor(p * 4))];
   document.querySelectorAll('[data-min]').forEach(b => b.classList.toggle('on', Number(b.dataset.min) === selectedDuration));
   $('#total-min').textContent = state.totalMinutes || 0;
   $('#plant-level').textContent = state.plantLevel || 0;
   $('#comfort-light').textContent = lampOn ? '暖' : '只留窗光';
   $('#comfort-quiet').textContent = audio.state.muted ? '静音' : '高';
-  $('#caption').textContent = session.running ? ['灯亮着，城市在窗外呼吸。', '让呼吸慢一点。', '你不是机器。', '快回来了。'][Math.min(3, Math.floor(p * 4))] : '灯亮着，城市在窗外呼吸。';
+  $('#caption').textContent = session.running ? ['让呼吸慢一点。', '让呼吸慢一点。', '你不是机器。', '快回来了。'][Math.min(3, Math.floor(p * 4))] : (SCENES[state.scene]?.quote || '灯亮着，城市在窗外呼吸。');
   if ($('#log').querySelector('.empty') === null && state.sessions.length === 0) $('#log').innerHTML = logHTML();
 }
 function logHTML() {
@@ -432,7 +520,10 @@ function logHTML() {
 }
 function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 $('#log').innerHTML = logHTML();
-applyPlant(); applyNight(); updateSound(); updateUI();
+const debugParams = new URLSearchParams(location.search);
+if (SCENES[debugParams.get('scene')]) state.scene = debugParams.get('scene');
+if (TRACKS[debugParams.get('track')]) state.audio.track = debugParams.get('track');
+applyPlant(); applyScene(state.scene || 'night'); applyTrack(state.audio.track || 'night'); updateSound(); updateUI();
 
 // keyboard
 window.addEventListener('keydown', e => {
@@ -450,11 +541,13 @@ let lastUI = '';
 let lastFrame = performance.now();
 function animate(now) {
   const t = typeof now === 'number' ? now : performance.now();
-  const dt = Math.min((t - lastFrame) / 1000, .05);
+  const rawDt = Math.max(0, (t - lastFrame) / 1000);
+  const dt = Math.min(rawDt, .05);
   lastFrame = t;
   sceneTime += dt;
   if (session.running) {
-    session = tickSession(session, dt);
+    // 专注计时用真实墙钟；帧时间只用于动画，低帧率/后台不应偷走专注分钟。
+    session = tickSession(session, Math.min(rawDt, 5));
     if (session.completed) finishSession();
     else {
       const key = formatTime(session.remaining);
@@ -470,6 +563,19 @@ function animate(now) {
     dust.position.y = Math.sin(sceneTime * .18) * .04;
     planet.rotation.y += dt * .02;
     ring.rotation.z += dt * .01;
+    if (rainScene.visible) {
+      const pos = rainDrops.geometry.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        let y = pos.getY(i) - dt * 2.4;
+        if (y < 1.18) y = 2.9;
+        pos.setY(i, y);
+      }
+      pos.needsUpdate = true;
+    }
+    if (dawnScene.visible) {
+      neon.material.emissiveIntensity = 1.25 + Math.sin(sceneTime * 1.4) * .25;
+      neonBar.material.emissiveIntensity = 1.0 + Math.sin(sceneTime * 1.1) * .2;
+    }
   }
   lampLight.intensity = lampOn ? 2.0 + Math.sin(sceneTime * 2.1) * .05 : .08;
   shade.material.emissiveIntensity = lampOn ? .22 + Math.sin(sceneTime * 1.7) * .03 : 0;
@@ -489,3 +595,10 @@ if (!state.sessions.length) $('#welcome-close').hidden = true;
 if (new URLSearchParams(location.search).has('skipwelcome')) {
   entered = true; $('#welcome').hidden = true;
 }
+
+// 便于浏览器自动检查（不暴露任何远端能力）
+window.__slowCabin = {
+  get session() { return session; },
+  get state() { return state; },
+  audio, setScene, setTrack,
+};

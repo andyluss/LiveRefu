@@ -74,14 +74,18 @@ export function recordSession(state, minutes, intention) {
 
 export function loadState(raw) {
   if (!raw || typeof raw !== 'object') {
-    return { sessions: [], totalMinutes: 0, plantLevel: 0, duration: DEFAULT_DURATION, intention: '', audio: { rain: .25, wind: .12, vinyl: .18, hum: .2, muted: false } };
+    return { sessions: [], totalMinutes: 0, plantLevel: 0, duration: DEFAULT_DURATION, intention: '', scene: 'night', audio: { rain: .25, wind: .12, vinyl: .18, hum: .2, melody: .22, track: 'night', muted: false } };
   }
+  const audio = { rain: .25, wind: .12, vinyl: .18, hum: .2, melody: .22, track: 'night', muted: false, ...(raw.audio || {}) };
+  audio.melody = clamp(Number(audio.melody) || .22, 0, 1);
+  audio.track = ['night', 'rain', 'drift', 'dawn'].includes(audio.track) ? audio.track : 'night';
   return {
     sessions: Array.isArray(raw.sessions) ? raw.sessions.slice(0, 12) : [],
     totalMinutes: Number(raw.totalMinutes) || 0,
     plantLevel: clamp(Number(raw.plantLevel) || 0, 0, 4),
     duration: DURATIONS.includes(Number(raw.duration)) ? Number(raw.duration) : DEFAULT_DURATION,
     intention: typeof raw.intention === 'string' ? raw.intention.slice(0, 120) : '',
-    audio: { rain: .25, wind: .12, vinyl: .18, hum: .2, muted: false, ...(raw.audio || {}) },
+    scene: ['night', 'rain', 'dawn'].includes(raw.scene) ? raw.scene : 'night',
+    audio,
   };
 }

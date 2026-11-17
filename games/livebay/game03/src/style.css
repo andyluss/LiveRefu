@@ -38,6 +38,10 @@ h2{font-family:var(--serif);font-size:21px;line-height:1.15;margin:0 0 12px;font
 .presets button{appearance:none;border:1px solid var(--line);background:transparent;color:var(--faint);border-radius:999px;padding:3px 7px;font-size:10.5px;cursor:pointer}
 .presets button:hover{color:var(--ink);border-color:var(--line2)}
 .divider{height:1px;background:var(--line);margin:16px 0}
+.picker{display:grid;gap:5px;margin:8px 0 4px}.picker.scenes{grid-template-columns:repeat(3,1fr)}.picker.tracks{grid-template-columns:repeat(2,1fr)}
+.picker button{appearance:none;border:1px solid var(--line);background:rgba(8,16,13,.35);border-radius:7px;color:var(--faint);padding:5px 4px;font-size:10.5px;cursor:pointer;text-align:center}
+.picker button:hover{color:var(--ink);border-color:var(--line2)}.picker button.on{border-color:var(--gold);color:var(--gold);background:rgba(217,173,99,.08)}
+.scene-note{color:var(--faint);font-size:10px;margin:0 0 12px;letter-spacing:.02em}
 .durations{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
 .durations button{appearance:none;border:1px solid var(--line);background:rgba(8,16,13,.35);border-radius:8px;color:var(--dim);padding:8px 2px;font:12px var(--mono);cursor:pointer}
 .durations button small{display:block;font-size:8.5px;color:var(--faint);margin-top:2px}

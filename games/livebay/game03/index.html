@@ -85,6 +85,22 @@
   </section>
 
   <aside class="panel right" aria-label="环境与记录">
+    <div class="eyebrow">SCENE</div>
+    <div class="picker scenes" role="group" aria-label="场景">
+      <button type="button" data-scene="night" class="on">夜航</button>
+      <button type="button" data-scene="rain">雨港</button>
+      <button type="button" data-scene="dawn">晨光</button>
+    </div>
+    <div class="scene-note" id="scene-note">夜航 · 城市在窗外呼吸</div>
+
+    <div class="eyebrow">MUSIC</div>
+    <div class="picker tracks" role="group" aria-label="唱片">
+      <button type="button" data-track="night" class="on">夜航</button>
+      <button type="button" data-track="rain">雨室</button>
+      <button type="button" data-track="drift">深空</button>
+      <button type="button" data-track="dawn">晨光</button>
+    </div>
+
     <div class="eyebrow">ROOM TONE</div>
     <h2>让房间替你安静。</h2>
     <div class="sliders">
@@ -92,6 +108,7 @@
       <label class="slider"><span>风</span><input id="wind" type="range" min="0" max="1" step=".01" value=".12"><output id="wind-out">12%</output></label>
       <label class="slider"><span>唱针</span><input id="vinyl" type="range" min="0" max="1" step=".01" value=".18"><output id="vinyl-out">18%</output></label>
       <label class="slider"><span>低鸣</span><input id="hum" type="range" min="0" max="1" step=".01" value=".2"><output id="hum-out">20%</output></label>
+      <label class="slider"><span>旋律</span><input id="melody" type="range" min="0" max="1" step=".01" value=".22"><output id="melody-out">22%</output></label>
     </div>
     <div class="comfort" aria-label="房间状态">
       <span><i class="led amber"></i>灯光 <b id="comfort-light">暖</b></span>
