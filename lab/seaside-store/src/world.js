@@ -481,58 +481,68 @@ function buildLighthouse(parent, M) {
   }
   // 灯芯
   const lampCore = sph(g, 0.3, 0, 5.72, 0, lit('#fff0c0'), { seg: 12, cast: false });
-  const glow = sprite(g, glowMap, '#ffdca2', 3.0, 0, 5.72, 0, { opacity: 0.6 });
+  const glow = sprite(g, glowMap, '#ffdca2', 4.0, 0, 5.72, 0, { opacity: 0.66 });
   // 屋顶
   cyl(g, 0.05, 0.9, 0.75, 0, 6.58, 0, M.lighthouseRed, { seg: 18, outline: 1.02 });
   sph(g, 0.1, 0, 7.02, 0, M.metalDark, { seg: 8 });
 
-  // 扫过海面的光束：贴着水面的长条光带，比天空里的体积光更克制
-  const beamTex = canvasTexture(512, 128, (ctx, w, h) => {
-    const gx = ctx.createLinearGradient(0, 0, w, 0);
-    gx.addColorStop(0, 'rgba(255,255,255,.95)');
-    gx.addColorStop(0.25, 'rgba(255,255,255,.5)');
-    gx.addColorStop(0.7, 'rgba(255,255,255,.16)');
-    gx.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = gx; ctx.fillRect(0, 0, w, h);
-    ctx.globalCompositeOperation = 'destination-in';
-    const gy = ctx.createLinearGradient(0, 0, 0, h);
-    gy.addColorStop(0, 'rgba(0,0,0,0)');
-    gy.addColorStop(0.5, 'rgba(0,0,0,1)');
-    gy.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = gy; ctx.fillRect(0, 0, w, h);
+  // 旋转光束：从灯室水平扫过海面的三渲二体积光
+  // 由四片绕光束轴旋转的楔形面组成，从任何水平视角都能看到柔和的光束，
+  // 不再是贴在镜头上的平面贴图。
+  const BEAM_LEN = 8.5;
+  const BEAM_W = 2.7;
+  const beamGroup = new THREE.Group();
+  beamGroup.position.set(0, 5.72, 0);
+  g.add(beamGroup);
+
+  const beamGeo = new THREE.BufferGeometry();
+  beamGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+    0, -0.045, 0, 0, 0.045, 0, BEAM_LEN, -BEAM_W / 2, 0, BEAM_LEN, BEAM_W / 2, 0,
+  ]), 3));
+  beamGeo.setAttribute('uv', new THREE.BufferAttribute(new Float32Array([
+    0, 0, 0, 1, 1, 0, 1, 1,
+  ]), 2));
+  beamGeo.setIndex([0, 1, 2, 1, 3, 2]);
+
+  const beamUniforms = {
+    uTime: { value: 0 },
+    uColorA: { value: new THREE.Color('#fff1cd') },
+    uColorB: { value: new THREE.Color('#ffb15f') },
+    uOpacity: { value: 0.34 },
+  };
+  const beamMat = new THREE.ShaderMaterial({
+    uniforms: beamUniforms,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending,
+    toneMapped: false,
+    vertexShader: /* glsl */`
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }`,
+    fragmentShader: /* glsl */`
+      uniform float uTime, uOpacity;
+      uniform vec3 uColorA, uColorB;
+      varying vec2 vUv;
+      void main() {
+        float u = vUv.x;
+        float edge = smoothstep(0.0, 0.17, vUv.y) * smoothstep(1.0, 0.83, vUv.y);
+        float fade = smoothstep(0.0, 0.06, u) * pow(max(1.0 - u, 0.0), 1.35);
+        float flick = 0.92 + 0.08 * sin(uTime * 1.7 + u * 7.0);
+        vec3 col = mix(uColorA, uColorB, smoothstep(0.0, 1.0, u));
+        gl_FragColor = vec4(col, fade * edge * uOpacity * flick);
+      }`,
   });
-  const beamMat = new THREE.MeshBasicMaterial({
-    map: beamTex, color: '#ffdca2', transparent: true, opacity: 0.7, side: THREE.DoubleSide,
-    blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false,
-  });
-  const beams = new THREE.Group();
-  beams.position.set(0, -0.39, 0);
-  g.add(beams);
-  const beamPlane = new THREE.Mesh(new THREE.PlaneGeometry(6.6, 2.6), beamMat);
-  beamPlane.rotation.x = -Math.PI / 2;
-  beamPlane.position.set(3.3, 0.12, 0);
-  beamPlane.renderOrder = 10;
-  beams.add(beamPlane);
-  // 相机朝向的柔光束，保证任何角度都能看见灯塔在扫光
-  const shaftTex = canvasTexture(256, 128, (ctx, w, h) => {
-    ctx.clearRect(0, 0, w, h);
-    const g = ctx.createLinearGradient(0, 0, w, 0);
-    g.addColorStop(0, 'rgba(255,255,255,.9)');
-    g.addColorStop(0.4, 'rgba(255,255,255,.35)');
-    g.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.moveTo(0, h * 0.38); ctx.lineTo(w, h * 0.12); ctx.lineTo(w, h * 0.88); ctx.lineTo(0, h * 0.62);
-    ctx.closePath(); ctx.fill();
-  });
-  const shaftMat = new THREE.SpriteMaterial({
-    map: shaftTex, color: '#ffe0a8', transparent: true, opacity: 0.32,
-    blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false,
-  });
-  const shaft = new THREE.Sprite(shaftMat);
-  shaft.position.set(0, 5.72, 0);
-  shaft.scale.set(13, 3.2, 1);
-  g.add(shaft);
+  for (let i = 0; i < 4; i++) {
+    const bm = new THREE.Mesh(beamGeo, beamMat);
+    bm.rotation.x = (i / 4) * Math.PI;
+    bm.renderOrder = 9;
+    beamGroup.add(bm);
+  }
+
   const light = new THREE.PointLight('#ffdca2', 6, 14, 2);
   light.position.set(0, 5.8, 0);
   g.add(light);
@@ -540,13 +550,13 @@ function buildLighthouse(parent, M) {
   return {
     group: g,
     update(t, dt) {
-      beams.rotation.y = -0.2 + Math.sin(t * 0.25) * 0.35;
-      const pulse = 0.85 + Math.sin(t * 1.3) * 0.12;
-      beamMat.opacity = 0.9 * pulse;
-      shaftMat.opacity = 0.22 + 0.08 * Math.sin(t * 0.9);
-      shaftMat.rotation = -0.12 + Math.sin(t * 0.25) * 0.28;
+      // 只在海面上方缓慢扫动，避免光束越过底座边缘
+      beamGroup.rotation.y = Math.sin(t * 0.16) * 0.20;
+      const pulse = 0.9 + Math.sin(t * 1.3) * 0.1;
+      beamUniforms.uTime.value = t;
+      beamUniforms.uOpacity.value = 0.34 * pulse;
       lampCore.material.color.setScalar(1);
-      glow.material.opacity = 0.52 + Math.sin(t * 2.0) * 0.08;
+      glow.material.opacity = 0.54 + Math.sin(t * 2.0) * 0.08;
     },
   };
 }
