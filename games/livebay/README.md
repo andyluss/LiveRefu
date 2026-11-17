@@ -40,9 +40,10 @@ platform: "PC 优先（D14 待定）"
 ./run.sh          # 启动 App → 主页
 ./run.sh game     # 直接进入游戏页（跳过主页，便于测试）
 ./run.sh game02   # 《断缆》生存原型（design02 MVP）
+./run.sh game03   # 《湾居》3D 专注 Demo（design03；浏览器）
 ./run.sh editor   # 打开 Godot 编辑器
 ./run.sh test     # 无头模拟测试（103 项断言）
-./run.sh verify   # 一键全量验收（14 项，含 game02）
+./run.sh verify   # 一键全量验收（15 项，含 game02/game03）
 ./run.sh survival-test  # 生存玩法/数值矩阵（测试/扩展/编辑器/试玩/生成物/链接/HTML）
 ./run.sh check    # 无头启动 180 帧，抓脚本错误
 ./run.sh pack-check # 校验 MissionPack 清单

@@ -7,6 +7,7 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GAME="$HERE/game"
 GAME02="$HERE/game02"
+GAME03="$HERE/game03"
 
 WS_ROOT="$HERE"
 while [ "$WS_ROOT" != "/" ] && [ ! -d "$WS_ROOT/.git" ]; do
@@ -33,6 +34,12 @@ case "$CMD" in
     ;;
   game02-check)
     exec "$GODOT" --headless --path "$GAME02" --quit-after 180
+    ;;
+  game03)
+    exec python3 -m http.server 8033 --bind 127.0.0.1 --directory "$GAME03"
+    ;;
+  game03-test)
+    exec node --test "$GAME03/tests/session.test.js"
     ;;
   editor)
     exec "$GODOT" -e --path "$GAME" "${@:2}"
@@ -110,7 +117,7 @@ case "$CMD" in
     exec node "$HERE/brief/check_hub.ts"
     ;;
   *)
-    echo "用法: ./run.sh [run|game|game02|game02-test|game02-check|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|verify|sim-trace|survival-test|perf|simulator|simulator-check|flow|flow-check|brief|brief-check|numbers|numbers-check|pack|pack-check|merge]" >&2
+    echo "用法: ./run.sh [run|game|game02|game02-test|game02-check|game03|game03-test|editor|import|test|check|editor-test|replay|expansions-check|compare|playtest|verify|sim-trace|survival-test|perf|simulator|simulator-check|flow|flow-check|brief|brief-check|numbers|numbers-check|pack|pack-check|merge]" >&2
     echo "  run     启动游戏" >&2
     echo "  editor  打开 Godot 编辑器" >&2
     echo "  import  导入资源" >&2

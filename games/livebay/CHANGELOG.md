@@ -3,6 +3,27 @@
 > 记录本项目的里程碑、关键决策与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；版本头时间与 tag 对齐。
 
+## [0.1.148] - 2026-11-17 12:17
+
+### 新增
+
+- 新增 `docs-ai/design03/`：独立 3D 沉浸专注/放松游戏《湾居 · 夜航书房》策划；
+- 新增 `game03/`：Three.js + WebAudio + localStorage 可玩 Demo；
+  - 1 间 3D 书房、轨道相机、8 个互动物件；
+  - 1/15/25/45 分钟专注、意图、暂停/重置/完成记录；
+  - 生成式环境声、植物/灯/夜航、localStorage；
+  - 7 项会话逻辑测试。
+- 新增 `brief/03/HUB.html` / `brief/03/GUIDE.html`；
+- `run.sh` 新增 `game03` / `game03-test`；
+- `verify` 纳入 game03（15 项）。
+
+### 验证
+
+- `game03-test`：7/7；
+- Chrome + SwiftShader：3D 场景截图正常；
+- R-016：brief/03 两页通过；
+- `./run.sh verify`：PASS 15 · FAIL 0。
+
 ## [0.1.147] - 2026-11-17 12:08
 
 ### 重构

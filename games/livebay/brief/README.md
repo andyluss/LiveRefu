@@ -1,6 +1,6 @@
 # brief · LiveBay 的导览层
 
-> **一句话**：这里是《LiveBay（逍遥湾）》**面向人**的六个页面，以及它们的主题、生成器与数据校验器。
+> **一句话**：这里是《LiveBay（逍遥湾）》**面向人**的八个页面，以及它们的主题、生成器与数据校验器。
 > **不是**策划源、决策日志或工程文档；那些分别在 [`../docs-ai/`](../docs-ai/)、[`../docs-ai/design01/11_待人类裁决清单.md`](../docs-ai/design01/11_待人类裁决清单.md) 和 [`../README.md`](../README.md)。
 
 ## 一、这里有什么
@@ -14,7 +14,10 @@ brief/
 ├── 02/
 │   ├── HUB.html      # 独立生存《断缆》项目总结
 │   └── GUIDE.html    # 独立生存《断缆》玩家指南
-├── theme.css         # 六页共享的三态主题 token 与覆盖
+├── 03/
+│   ├── HUB.html      # 独立专注《湾居》项目总结
+│   └── GUIDE.html    # 独立专注《湾居》玩家指南
+├── theme.css         # 八页共享的三态主题 token 与覆盖
 ├── theme.js          # 三态切换、持久化、系统态实时响应
 ├── build_guide.ts    # 从 game/data/*.json 生成 GUIDE.html
 ├── check_hub.ts      # 核对 HUB 的 data-fact、素材存在性
@@ -29,7 +32,9 @@ brief/
 | `BOX-GAME.html` | 项目负责人 / 设计主控 | 手写结构；数据快照注入，交互沙盘 |
 | `02/HUB.html` | 生存项目负责人 | 手写结构；项目总结，不宣称完整版 |
 | `02/GUIDE.html` | 生存项目负责人 | 手写结构；玩家指南/操作与建议 |
-| `theme.css` / `theme.js` | 设计主控 | 手写；六页共用，遵守 R-016 |
+| `03/HUB.html` | 专注项目负责人 | 手写结构；3D 专注 Demo 项目总结 |
+| `03/GUIDE.html` | 专注项目负责人 | 手写结构；玩家指南/操作与建议 |
+| `theme.css` / `theme.js` | 设计主控 | 手写；八页共用，遵守 R-016 |
 
 ## 二、HUB 与 GUIDE 的分工
 
@@ -153,6 +158,6 @@ system / light / dark
 
 ## 九、维护
 
-- 版本：与项目版本同步；当前项目 `0.1.147`；
+- 版本：与项目版本同步；当前项目 `0.1.148`；
 - 变更：项目级变更写入 `../CHANGELOG.md`，本目录不单独维护版本日志；
 - 入口：[`HUB.html`](HUB.html) ｜ [`GUIDE.html`](GUIDE.html) ｜ [项目 README](../README.md)。

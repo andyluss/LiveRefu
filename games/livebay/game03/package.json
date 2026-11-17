@@ -1,0 +1,10 @@
+{
+  "name": "slow-cabin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "湾居 · Slow Cabin — a 3D focus room demo built with Three.js",
+  "scripts": {
+    "test": "node --test tests/session.test.js"
+  }
+}
