@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="盛夏黄昏的海边便利店 · 可自由拖拽、旋转、缩放的 Three.js 微缩场景">
+  <title>ナギサマート · 海辺の夕暮れ</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231e6663'/%3E%3Ccircle cx='50' cy='40' r='16' fill='%23ffb38a'/%3E%3Cpath d='M18 64c10-10 22 10 32 0s22 10 32 0' stroke='%23fff4dc' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: #1b2a3a; }
+    body {
+      overflow: hidden;
+      color: #f7ead2;
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    #stage { position: fixed; inset: 0; }
+    #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; filter: saturate(1.08) contrast(1.03); }
+    #stage canvas:focus-visible { outline: 2px solid rgba(255, 214, 160, .55); outline-offset: -2px; }
+    /* 展示模型摄影的轻微暗角；不承载任何信息 */
+    #vignette {
+      position: fixed; inset: 0; pointer-events: none; z-index: 2;
+      background:
+        radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(9, 15, 24, .28) 100%),
+        linear-gradient(180deg, rgba(9, 16, 28, .1), transparent 22%, transparent 82%, rgba(9, 15, 24, .12));
+    }
+    noscript {
+      position: fixed; inset: 0; display: grid; place-items: center;
+      padding: 2rem; text-align: center; line-height: 1.9; z-index: 3;
+      background: #1b2a3a; color: #f7ead2; font-size: 15px;
+    }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three.module.js" } }
+  </script>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="vignette" aria-hidden="true"></div>
+  <noscript>
+    这是一座盛夏黄昏的海边便利店微缩模型。<br>
+    打开 JavaScript 后，可以拖拽旋转、滚轮缩放，自由观看。
+  </noscript>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
