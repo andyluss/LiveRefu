@@ -17,11 +17,16 @@
 <header class="topbar">
   <a class="brand" href="./index.html"><span class="mark"></span><b>湾居</b><span>SLOW CABIN · 03</span></a>
   <div class="top-mid">
+    <span id="room-label">门厅</span>
+    <span class="dot">·</span>
+    <span id="floor-label">1F</span>
+    <span class="dot">·</span>
     <span id="phase">夜航 · 03:40</span>
     <span class="dot">·</span>
     <span id="focus-state">未开始</span>
   </div>
   <div class="top-actions">
+    <button id="immerse" class="text-btn" type="button">沉浸</button>
     <button id="sound" class="text-btn" type="button" aria-pressed="false">声音：关</button>
     <button id="help" class="text-btn" type="button">怎么用</button>
   </div>
@@ -71,9 +76,12 @@
 
   <section class="scene-ui" aria-label="书房">
     <div id="hover-label" class="hover-label"></div>
+    <div class="crosshair" id="crosshair" aria-hidden="true"></div>
+    <div class="interact-prompt" id="interact-prompt" aria-live="polite"></div>
+    <div class="walk-hint" id="walk-hint">点击画面环顾 · WASD 自由走动 · E 互动</div>
     <div class="scene-caption">
-      <span class="caption-kicker">DRAG TO LOOK · SCROLL TO ZOOM</span>
-      <span id="caption">灯亮着，城市在窗外呼吸。</span>
+      <span class="caption-kicker">WASD · MOUSE LOOK · E INTERACT</span>
+      <span id="caption">三层大宅，灯亮着，城市在窗外呼吸。</span>
     </div>
     <div class="object-card" id="object-card" hidden>
       <button id="object-close" class="object-close" type="button" aria-label="关闭">×</button>
@@ -125,18 +133,20 @@
 </main>
 
 <div class="bottom-hint">
+  <span><kbd>WASD</kbd> 走动</span>
+  <span><kbd>鼠标</kbd> 环顾</span>
+  <span><kbd>E</kbd> 互动</span>
   <span><kbd>SPACE</kbd> 开始 / 暂停</span>
-  <span><kbd>R</kbd> 重置</span>
   <span><kbd>M</kbd> 静音</span>
-  <span><kbd>1–4</kbd> 时长</span>
-  <span>点击台灯 / 植物 / 猫 / 窗 / 唱机</span>
+  <span><kbd>TAB</kbd> 隐藏面板</span>
+  <span><kbd>ESC</kbd> 释放鼠标</span>
 </div>
 
 <div class="modal" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
   <div class="welcome-card">
     <div class="kicker">SLOW CABIN / 03:40</div>
-    <h2 id="welcome-title">欢迎回到<br><span>夜航书房。</span></h2>
-    <p>这里没有任务清单的压力，也没有必须完成的目标。写下一句今晚想做的事，选一个时长，剩下的交给房间。</p>
+    <h2 id="welcome-title">欢迎回到<br><span>夜航大宅。</span></h2>
+    <p>这是一栋三层大宅。没有任务清单的压力，也没有必须完成的目标。走一走，写下一句今晚想做的事，选一个时长，剩下的交给房子。</p>
     <p class="welcome-note">建议戴耳机。环境声不会自动播放，进入后才开始。<br>所有数据只保存在本机。</p>
     <button id="enter" class="primary" type="button">进入书房</button>
     <button id="welcome-close" class="text-btn" type="button" hidden>继续当前会话</button>
