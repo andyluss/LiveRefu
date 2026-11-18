@@ -23,6 +23,7 @@
 | [`formal-system/`](formal-system/README.md) | 形式化协作实验基地（Rust/CUE/Alloy + 属性测试），成熟后回流主项目 | **是**（默认，未另约定） | [`formal-system/README.md`](formal-system/README.md) |
 | [`aifun01/`](aifun01/README.md) | **函数式协作实验 01**：AI 纯函数 / 人运行时 / 效果边界；学习、研究、应用三合一 | **是**（默认可自定义，实验自带测试） | [`aifun01/README.md`](aifun01/README.md) |
 | [`seaside-store/`](seaside-store/README.md) | **海边便利店**：盛夏黄昏的三渲二微缩场景（Three.js，可环绕 / 可缩放）；全部程序化生成 | **是**（默认） | [`seaside-store/README.md`](seaside-store/README.md) |
+| [`seaside-cafe/`](seaside-cafe/README.md) | **海边咖啡馆**：第一人称可探索的日式海边咖啡馆与周边（Three.js；程序化几何 / 纹理 / 音频；含轻任务、时间天气、拍照） | **是**（默认） | [`seaside-cafe/README.md`](seaside-cafe/README.md) |
 | —— | LiveDSO 已迁出至 [`design/projects/livedso/`](../design/projects/livedso/README.md) | 正式项目 | [`README.md`](../design/projects/livedso/README.md) |
 | [`liveland/`](liveland/README.md) | **LiveLand**：本地优先的世界/时代创作工具；canon/时代/实体/资产/lint/导出 | **否**（特别约定） | [`liveland/README.md`](liveland/README.md) |
 | [`livefile/`](livefile/README.md) | **LiveFile**：本地优先的个人档案 OS；索引/时间线/集合/来源/备份/继承 | **否**（特别约定） | [`livefile/README.md`](livefile/README.md) |
