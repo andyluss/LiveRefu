@@ -55,6 +55,32 @@ fn abi_reaches_same_hash_as_headless() {
         WORLD_OK
     );
 
+    let mut assets_len = 0usize;
+    assert_eq!(
+        world_zone_assets(
+            handle,
+            c"zone.harbor".as_ptr(),
+            ptr::null_mut(),
+            0,
+            &mut assets_len
+        ),
+        WORLD_ERR_BUFFER_TOO_SMALL
+    );
+    let mut assets_buf = vec![0u8; assets_len];
+    assert_eq!(
+        world_zone_assets(
+            handle,
+            c"zone.harbor".as_ptr(),
+            assets_buf.as_mut_ptr(),
+            assets_buf.len(),
+            &mut assets_len
+        ),
+        WORLD_OK
+    );
+    let assets: Vec<String> = serde_json::from_slice(&assets_buf[..assets_len]).unwrap();
+    assert!(assets.contains(&"mesh.keeper".to_string()));
+    assert!(assets.contains(&"mesh.airlock".to_string()));
+
     let player = world_find_entity(handle, c"player".as_ptr());
     let door = world_find_entity(handle, c"demo.airlock".as_ptr());
     let key = world_find_entity(handle, c"item.keycard".as_ptr());

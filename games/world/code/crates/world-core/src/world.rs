@@ -2,6 +2,7 @@ use crate::command::Command;
 use crate::entity::{Collider, Door, Entity, EntityKind, Interactable, ItemStack, Transform};
 use crate::event::EventEnvelope;
 use crate::ids::EntityId;
+use crate::nav;
 use crate::rng::Rng;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -33,6 +34,10 @@ pub struct Snapshot {
     pub timescale_milli: i64,
     #[serde(default)]
     pub move_intent: [f32; 2],
+    #[serde(default)]
+    pub path: Vec<[f32; 2]>,
+    #[serde(default)]
+    pub path_index: usize,
 }
 
 #[derive(Clone, Debug)]
@@ -68,6 +73,9 @@ pub struct World {
     pub suspended: bool,
     pub timescale: f64,
     pub move_intent: [f32; 2],
+    pub path: Vec<[f32; 2]>,
+    pub path_index: usize,
+    nav: Option<world_pack::NavGridDef>,
     zone_bounds: Option<([f32; 3], [f32; 3])>,
     accumulator_us: u64,
     pub max_catchup: u32,
@@ -108,6 +116,9 @@ impl World {
             suspended: false,
             timescale: 1.0,
             move_intent: [0.0, 0.0],
+            path: Vec::new(),
+            path_index: 0,
+            nav: None,
             zone_bounds: None,
             accumulator_us: 0,
             max_catchup: 4,
@@ -174,6 +185,7 @@ impl World {
             .get(zone_id)
             .ok_or_else(|| format!("区域不存在: {zone_id}"))?;
         self.zone_bounds = Some((zone.bounds.min, zone.bounds.max));
+        self.nav = zone.nav.as_ref().and_then(|id| pack.navs.get(id)).cloned();
         for p in &zone.placements {
             let transform = Transform::new(p.at, p.yaw);
             let entity = if let Some(id) = &p.actor {
@@ -396,27 +408,75 @@ impl World {
     fn apply_movement(&mut self) {
         let [x, z] = self.move_intent;
         let len = (x * x + z * z).sqrt();
-        if len < 1e-6 {
+        if len > 1e-6 {
+            self.path.clear();
+            self.path_index = 0;
+            let Some(player) = self.entity(self.player) else {
+                return;
+            };
+            let speed = player.speed.max(0.0);
+            if speed <= 0.0 {
+                return;
+            }
+            let step = speed / self.tick_hz.max(1) as f32;
+            let magnitude = len.min(1.0);
+            let dx = (x / len) * step * magnitude;
+            let dz = (z / len) * step * magnitude;
+            self.try_move_player(dx, 0.0);
+            self.try_move_player(0.0, dz);
             return;
         }
+
+        if self.path.is_empty() {
+            return;
+        }
+        while self.path_index < self.path.len() {
+            let waypoint = self.path[self.path_index];
+            let Some(player) = self.entity(self.player) else {
+                self.path.clear();
+                return;
+            };
+            let dx = waypoint[0] - player.transform.position[0];
+            let dz = waypoint[1] - player.transform.position[2];
+            if dx * dx + dz * dz <= 0.04 {
+                self.path_index += 1;
+            } else {
+                break;
+            }
+        }
+        if self.path_index >= self.path.len() {
+            self.path.clear();
+            self.path_index = 0;
+            return;
+        }
+        let waypoint = self.path[self.path_index];
         let Some(player) = self.entity(self.player) else {
+            self.path.clear();
             return;
         };
         let speed = player.speed.max(0.0);
         if speed <= 0.0 {
             return;
         }
-        let step = speed / self.tick_hz.max(1) as f32;
-        let magnitude = len.min(1.0);
-        let dx = (x / len) * step * magnitude;
-        let dz = (z / len) * step * magnitude;
-        self.try_move_player(dx, 0.0);
-        self.try_move_player(0.0, dz);
+        let dx = waypoint[0] - player.transform.position[0];
+        let dz = waypoint[1] - player.transform.position[2];
+        let distance = (dx * dx + dz * dz).sqrt();
+        if distance <= 1e-6 {
+            self.path_index += 1;
+            return;
+        }
+        let step = (speed / self.tick_hz.max(1) as f32).min(distance);
+        let moved_x = self.try_move_player(dx / distance * step, 0.0);
+        let moved_z = self.try_move_player(0.0, dz / distance * step);
+        if !moved_x && !moved_z {
+            self.path.clear();
+            self.path_index = 0;
+        }
     }
 
-    fn try_move_player(&mut self, dx: f32, dz: f32) {
+    fn try_move_player(&mut self, dx: f32, dz: f32) -> bool {
         let Some(player) = self.entity(self.player) else {
-            return;
+            return false;
         };
         let radius = player
             .collider
@@ -468,7 +528,9 @@ impl World {
                 player.transform.position[0] = next[0];
                 player.transform.position[2] = next[1];
             }
+            return true;
         }
+        false
     }
 
     fn update_schedules(&mut self) {
@@ -541,6 +603,7 @@ impl World {
                 Ok(())
             }
             Command::Move { actor, x, z } => self.command_move(actor, x, z),
+            Command::MoveTo { actor, x, z } => self.command_move_to(actor, x, z),
         }
     }
 
@@ -557,6 +620,26 @@ impl World {
         } else {
             self.move_intent = [x, z];
         }
+        Ok(())
+    }
+
+    fn command_move_to(&mut self, actor: EntityId, x: f32, z: f32) -> Result<(), String> {
+        if !x.is_finite() || !z.is_finite() {
+            return Err("move_to 输入必须是有限数值".to_string());
+        }
+        let entity = self
+            .entity(actor)
+            .ok_or_else(|| format!("actor 不存在: {actor}"))?;
+        let from = [entity.transform.position[0], entity.transform.position[2]];
+        let nav = self
+            .nav
+            .as_ref()
+            .ok_or_else(|| format!("区域 {} 没有导航网格", self.zone_id))?;
+        let path = nav::find_path(nav, from, [x, z])
+            .ok_or_else(|| format!("无法从 {from:?} 寻路到 ({x}, {z})"))?;
+        self.path_index = if path.len() > 1 { 1 } else { 0 };
+        self.path = path;
+        self.move_intent = [0.0, 0.0];
         Ok(())
     }
 
@@ -880,6 +963,8 @@ impl World {
             suspended: self.suspended,
             timescale_milli: (self.timescale * 1000.0).round() as i64,
             move_intent: self.move_intent,
+            path: self.path.clone(),
+            path_index: self.path_index,
         }
     }
 
@@ -905,6 +990,8 @@ impl World {
         self.suspended = snap.suspended;
         self.timescale = (snap.timescale_milli as f64) / 1000.0;
         self.move_intent = snap.move_intent;
+        self.path = snap.path;
+        self.path_index = snap.path_index;
         self.events.clear();
         self.event_seq = 0;
         self.pending.clear();

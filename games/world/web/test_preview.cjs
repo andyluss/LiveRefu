@@ -5,7 +5,7 @@ const { PreviewWorld } = require("./node-pkg/world_wasm.js");
 const root = __dirname;
 const pack = fs.readFileSync(path.join(root, "pack.data"), "utf8");
 const trace = fs.readFileSync(path.join(root, "m0.trace.json"), "utf8");
-const EXPECTED = "0x9c4032a29d99274d";
+const EXPECTED = "0xc840fe2090a0a085";
 
 const w = new PreviewWorld(pack);
 const replayHash = w.replay(trace);
@@ -40,6 +40,22 @@ const z = player.transform.position[2];
 console.log(`movement z=${z.toFixed(2)}`);
 if (!(z > 0.5 && z < 5.6)) {
   console.error(`movement/collision failed: z=${z}`);
+  process.exit(1);
+}
+// 寻路：点击门后，玩家应绕开气闸到达 z>7.5。
+w.reset();
+w.move_to(0, 9);
+for (let tick = 1; tick <= 500; tick++) w.tick(16666);
+const pathed = JSON.parse(w.state());
+const p2 = pathed.state.entities.find((e) => e.content_id === "player");
+const z2 = p2.transform.position[2];
+console.log(`path z=${z2.toFixed(2)} assets=${pathed.assets.length}`);
+if (z2 < 7.5) {
+  console.error(`pathfinding failed: z=${z2}`);
+  process.exit(1);
+}
+if (!pathed.assets.includes("mesh.keeper")) {
+  console.error(`assets missing: ${pathed.assets}`);
   process.exit(1);
 }
 console.log("wasm preview PASS");

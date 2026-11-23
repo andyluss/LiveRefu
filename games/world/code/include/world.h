@@ -42,7 +42,8 @@ enum {
     WORLD_ERR_PANIC = 5,
     WORLD_ERR_VERSION = 6,
     WORLD_ERR_STATE = 7,
-    WORLD_ERR_UNSUPPORTED = 8
+    WORLD_ERR_UNSUPPORTED = 8,
+    WORLD_ERR_INTERNAL = 9
 };
 
 WorldHandle* world_create(const WorldConfig* config);

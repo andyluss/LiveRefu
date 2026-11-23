@@ -116,6 +116,8 @@ pub struct ActorDef {
     pub inventory: Option<InventoryDef>,
     #[serde(default)]
     pub dialogue: Option<String>,
+    #[serde(default)]
+    pub visual: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -175,6 +177,8 @@ pub struct PropDef {
     pub interactable: InteractableDef,
     #[serde(default)]
     pub locked_by: Option<String>,
+    #[serde(default)]
+    pub visual: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -192,6 +196,8 @@ pub struct ItemDef {
     pub stack: u32,
     #[serde(default)]
     pub tags: Vec<String>,
+    #[serde(default)]
+    pub visual: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -304,6 +310,33 @@ pub struct ScheduleEntry {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct NavGridDef {
+    pub id: String,
+    pub zone: String,
+    #[serde(default = "default_cell")]
+    pub cell: f32,
+    pub origin: [f32; 2],
+    pub width: u32,
+    pub height: u32,
+    #[serde(default)]
+    pub blocked: Vec<u32>,
+}
+
+fn default_cell() -> f32 {
+    1.0
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AssetDef {
+    pub role: String,
+    pub source: String,
+    #[serde(default)]
+    pub variants: BTreeMap<String, String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Pack {
     pub manifest: PackManifest,
     pub world: WorldDef,
@@ -315,5 +348,7 @@ pub struct Pack {
     pub quests: BTreeMap<String, QuestDef>,
     pub dialogues: BTreeMap<String, DialogueDef>,
     pub schedules: BTreeMap<String, ScheduleDef>,
+    pub navs: BTreeMap<String, NavGridDef>,
+    pub assets: BTreeMap<String, AssetDef>,
     pub loc: BTreeMap<String, BTreeMap<String, String>>,
 }

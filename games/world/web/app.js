@@ -1,6 +1,6 @@
 import init, { PreviewWorld } from "./pkg/world_wasm.js";
 
-const EXPECTED_HASH = "0x9c4032a29d99274d";
+const EXPECTED_HASH = "0xc840fe2090a0a085";
 const TICK_US = 16666;
 
 const canvas = document.getElementById("view");
@@ -22,6 +22,7 @@ let paused = false;
 let selected = null;
 let lineCache = [];
 let screenMap = new Map();
+let viewMap = null;
 let last = performance.now();
 let acc = 0;
 let errorShown = false;
@@ -117,6 +118,7 @@ function renderHud() {
     <span class="tag">时间</span><span>${clock(s.clock_minutes)}</span>
     <span class="tag">哈希</span><span><code>${esc(current.final_hash)}</code></span>
     <span class="tag">实体</span><span>${s.entities.length}</span>
+    <span class="tag">资产</span><span>${(current.assets ?? []).length}</span>
     <span class="tag">位置</span><span>${player ? `${player.transform.position[0].toFixed(1)}, ${player.transform.position[2].toFixed(1)}` : "-"}</span>
     <span class="tag">状态</span><span>${paused ? "暂停" : "运行"}</span>
   `;
@@ -170,6 +172,7 @@ function draw() {
   const ox = (W - (maxX - minX) * scale) / 2 - minX * scale;
   const oz = (H - (maxZ - minZ) * scale) / 2 - minZ * scale;
   const screen = (x, z) => [ox + x * scale, oz + z * scale];
+  viewMap = { ox, oz, scale };
 
   ctx.strokeStyle = css("--grid");
   ctx.lineWidth = 1;
@@ -194,6 +197,24 @@ function draw() {
     ctx.strokeStyle = css("--line");
     ctx.lineWidth = 2;
     ctx.strokeRect(x0, z0, x1 - x0, z1 - z0);
+  }
+
+  const path = s.path ?? [];
+  if (path.length > 0) {
+    const [px, pz] = s.entities.find(isPlayer)?.transform.position ?? [0, 0, 0];
+    const [startX, startZ] = screen(px, pz);
+    ctx.save();
+    ctx.strokeStyle = css("--accent");
+    ctx.setLineDash([7, 5]);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(startX, startZ);
+    for (let i = Math.max(0, s.path_index ?? 0); i < path.length; i++) {
+      const [sx, sz] = screen(path[i][0], path[i][1]);
+      ctx.lineTo(sx, sz);
+    }
+    ctx.stroke();
+    ctx.restore();
   }
 
   screenMap = new Map();
@@ -268,6 +289,11 @@ function drawEntity(entity, sx, sz, key, label, labelY) {
   ctx.restore();
 }
 
+function screenToWorld(sx, sy) {
+  if (!viewMap) return null;
+  return [(sx - viewMap.ox) / viewMap.scale, (sy - viewMap.oz) / viewMap.scale];
+}
+
 function entityAt(x, y) {
   let best = null;
   let bestDist = Infinity;
@@ -325,7 +351,19 @@ function bindUi() {
     const x = (event.clientX - rect.left) * canvas.width / rect.width;
     const y = (event.clientY - rect.top) * canvas.height / rect.height;
     const hit = entityAt(x, y);
-    if (hit) act(hit.entity);
+    if (hit) {
+      act(hit.entity);
+    } else {
+      const target = screenToWorld(x, y);
+      if (target) {
+        try {
+          world.move_to(target[0], target[1]);
+          pushLine(`寻路到 (${target[0].toFixed(1)}, ${target[1].toFixed(1)})`);
+        } catch (error) {
+          pushLine(`寻路失败：${error}`);
+        }
+      }
+    }
   });
 
   el.pause.addEventListener("click", () => {

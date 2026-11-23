@@ -9,4 +9,5 @@ defineActor({
   brain: { profile: "schedule", schedule: "schedule.keeper" },
   inventory: { items: [{ item: "item.radio", count: 1 }] },
   dialogue: "dlg.keeper.intro",
+  visual: "mesh.keeper",
 });

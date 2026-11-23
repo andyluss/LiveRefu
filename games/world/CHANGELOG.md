@@ -19,10 +19,12 @@
 - **M1 切片：Web 预览**：`world-wasm`（wasm-bindgen）+ `web/`（Canvas 2D、点击/键盘交互、任务/事件 HUD、M0 trace 回放、R-016 三态主题）；截图见 `docs/shots/`。
 - **M1 记录**：[07 · M1 切片](docs/07_M1实现与验收.md)。
 - **M1 剩余：移动/碰撞**：`Command::Move`、`move_intent`、圆形玩家 vs 圆形/AABB 障碍、`open_door` 规则动作；关闭的门挡住玩家，开门后可通过。
-- **M1 剩余：Web 编辑器 v0**：`web/editor.html`、`tools/editor-server.mjs`、`worldc editor`；拖动摆放、字段/定义/规则编辑、校验、构建并试玩。
-- **M1 剩余：内容测试**：`worldc content-test` + `data/demo.harbor/tests/*.test.json`；`first_shift` 与 `airlock_locked_without_key`。
+- **M1 剩余：Web 编辑器 v0.5**：`web/editor.html`、`tools/editor-server.mjs`、`worldc editor`；拖动摆放、字段/定义/规则编辑、校验、构建并试玩。
+- **M1 剩余：内容测试**：`worldc content-test` + `data/demo.harbor/tests/*.test.json`；`first_shift`、`airlock_locked_without_key`、`pickup_keycard`。
 - **M1 剩余：sourcemap / 热重载**：TS 编译生成 `sourcemap.json`；预览轮询 `/api/pack-version`，编辑器构建后自动刷新。
 - **M1 剩余：5k 合成基准**：`worldc bench --synthetic 5000 --ticks 6000`，Apple M1 Pro release ≈ 0.01 ms/tick。
+- **M1 剩余：导航/寻路**：`worldc bake nav` 从 Zone/Prop AABB 烘焙 40×40 网格；核心 4 邻接确定性 A* + `Command::MoveTo`；预览点击地面沿虚线路径移动；编辑器「烘焙导航」。
+- **M1 剩余：资产依赖**：`assets/assets.index.json`、actor/prop/item `visual` 引用、校验与 `world_zone_assets` ABI；C ABI 返回 3 个逻辑资产 ID。
 - **M1 剩余：编辑器 v0.5**：字段表单、对话图（节点/边、编辑/新增/删除）、撤销/重做；保存仍走「先写后校验，失败回滚」。
 - **M1 剩余：类型检查与开发监听**：`worldc ts-check`/`npm run check`（TypeScript devDependency）、`npm run dev`（TS 监听→构建→复制 pack.data）。
 - **M1 剩余：第三条内容测试与两小时教程**：`pickup_keycard`；[08 · 两小时教程](docs/08_两小时教程.md)（真实作者试用待做）。
@@ -33,16 +35,16 @@
 - [05](docs/05_路线图与验收.md) 的待拍板问题改为已拍板结论，并补 M0 验收结果表。
 - 新增 `.github/workflows/world-m0.yml`：三 OS `cargo test`、C ABI 冒烟、wasm core 构建。
 - 新增 `test/run_m1.sh`、`web/build.sh`、`web/README.md`、`tools/editor-server.mjs`；`worldc` 增加 `ts-build`/`content-test`/`editor`。
-- 黄金哈希因 `collider`/`move_intent`/`open_door` 更新：包 `sha256:52116a…4ad55f`，600 tick `0x9c4032a29d99274d`。
+- 黄金哈希因 `collider`/`move_intent`/`open_door`/`path`/`nav`/`assets` 更新：包 `sha256:66125c46…46fe29e`，600 tick `0xc840fe2090a0a085`。
 
 ### 验证
 
-- `cargo test --workspace`：11 个测试通过。
-- Headless 600 tick 双跑：`0x9c4032a29d99274d`。
-- C ABI 宿主：同 `0x9c4032a29d99274d`。
+- `cargo test --workspace`：13 个测试通过。
+- Headless 600 tick 双跑：`0xc840fe2090a0a085`。
+- C ABI 宿主：同 `0xc840fe2090a0a085`。
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
-- M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0x9c4032a29d99274d`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
+- M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xc840fe2090a0a085`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
 - M1 剩余：`content-test` 3 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.01 ms/tick；R-016 两个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17

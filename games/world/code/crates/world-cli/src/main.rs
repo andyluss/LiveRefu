@@ -23,6 +23,7 @@ fn run() -> Result<(), String> {
     match command {
         "validate" => cmd_validate(&args[1..]),
         "build" => cmd_build(&args[1..]),
+        "bake" => cmd_bake(&args[1..]),
         "ts-build" => cmd_ts_build(&args[1..]),
         "ts-check" => cmd_ts_check(&args[1..]),
         "editor" => cmd_editor(&args[1..]),
@@ -170,6 +171,58 @@ fn cmd_build(args: &[String]) -> Result<(), String> {
     Ok(())
 }
 
+fn cmd_bake(args: &[String]) -> Result<(), String> {
+    if args.first().map(|s| s.as_str()) != Some("nav") {
+        return Err(
+            "bake 目前只支持: worldc bake nav [--pack DIR] [--zone ID] [--cell 1.0]".to_string(),
+        );
+    }
+    let path = pack_path(args);
+    let pack = load_pack(&path)?;
+    let cell: f32 = parse_flag(args, "--cell")
+        .unwrap_or("1.0")
+        .parse()
+        .map_err(|e| format!("--cell 解析失败: {e}"))?;
+    let only = parse_flag(args, "--zone");
+    let nav_dir = path.join("world/nav");
+    fs::create_dir_all(&nav_dir).map_err(|e| format!("创建 nav 目录失败: {e}"))?;
+    let mut baked = 0;
+    for (zone_id, zone) in &pack.zones {
+        if let Some(only) = only {
+            if zone_id != only {
+                continue;
+            }
+        }
+        let nav_id = zone.nav.clone().unwrap_or_else(|| format!("nav.{zone_id}"));
+        let nav = pack
+            .bake_zone_nav(zone_id, cell, 0.35)
+            .ok_or_else(|| format!("无法烘焙区域 {zone_id}"))?;
+        let out = nav_dir.join(format!("{nav_id}.json"));
+        fs::write(
+            &out,
+            serde_json::to_vec_pretty(&nav).map_err(|e| e.to_string())?,
+        )
+        .map_err(|e| format!("写 {} 失败: {e}", out.display()))?;
+        println!(
+            "bake: {} zone={} size={}x{} blocked={} cell={}",
+            out.display(),
+            zone_id,
+            nav.width,
+            nav.height,
+            nav.blocked.len(),
+            nav.cell
+        );
+        baked += 1;
+    }
+    if baked == 0 {
+        return Err("没有可烘焙的区域（检查 --zone 或 zone.nav）".to_string());
+    }
+    let reloaded = load_pack(&path)?;
+    require_valid(&reloaded)?;
+    println!("bake: {baked} 个导航网格，校验通过");
+    Ok(())
+}
+
 fn cmd_ts_build(args: &[String]) -> Result<(), String> {
     let base = Path::new(env!("CARGO_MANIFEST_DIR"));
     let src = parse_flag(args, "--src")
@@ -193,7 +246,26 @@ fn cmd_ts_build(args: &[String]) -> Result<(), String> {
     if !status.success() {
         return Err(format!("TS 编译失败（exit {:?}）", status.code()));
     }
-    let pack = load_pack(&out)?;
+    let mut pack = load_pack(&out)?;
+    if pack.zones.values().any(|z| z.nav.is_some()) {
+        let nav_dir = out.join("world/nav");
+        fs::create_dir_all(&nav_dir).map_err(|e| format!("创建 nav 目录失败: {e}"))?;
+        for (zone_id, zone) in &pack.zones {
+            if zone.nav.is_none() {
+                continue;
+            }
+            let nav_id = zone.nav.clone().unwrap_or_else(|| format!("nav.{zone_id}"));
+            let nav = pack
+                .bake_zone_nav(zone_id, 1.0, 0.35)
+                .ok_or_else(|| format!("无法烘焙区域 {zone_id}"))?;
+            fs::write(
+                nav_dir.join(format!("{nav_id}.json")),
+                serde_json::to_vec_pretty(&nav).map_err(|e| e.to_string())?,
+            )
+            .map_err(|e| format!("写 nav 失败: {e}"))?;
+        }
+        pack = load_pack(&out)?;
+    }
     require_valid(&pack)?;
     let hash = pack.hash().map_err(|e| e.to_string())?;
     println!("ts-build: {} -> {}", src.display(), out.display());
@@ -694,6 +766,7 @@ fn print_help() {
 用法:
   worldc validate [--pack DIR] [--json]
   worldc build    [--pack DIR] [--out DIR]
+  worldc bake nav [--pack DIR] [--zone ID] [--cell 1.0]
   worldc ts-build [--src DIR] [--out DIR] [--compare DIR]
   worldc ts-check
   worldc editor   [--pack DIR] [--port N]

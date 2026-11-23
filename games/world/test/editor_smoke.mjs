@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 编辑器服务器 API 冒烟：临时包 → 保存 → 校验 → 构建。
-import { cpSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -34,6 +34,8 @@ try {
   await waitForServer();
   const pack = await fetch(`http://127.0.0.1:${PORT}/api/pack`).then((r) => r.json());
   if (!pack.files || Object.keys(pack.files).length < 10) throw new Error("pack files 不完整");
+  if (!pack.files["assets/assets.index.json"]) throw new Error("assets 未加载");
+  if (!pack.files["world/nav/nav.harbor.json"]) throw new Error("nav 未加载");
 
   const zoneKey = Object.keys(pack.files).find((k) => k.startsWith("world/zones/"));
   const zone = pack.files[zoneKey];
@@ -60,6 +62,11 @@ try {
   if (afterBad.placements[0].actor !== "demo.keeper") {
     throw new Error("坏内容未被回滚");
   }
+
+  res = await fetch(`http://127.0.0.1:${PORT}/api/bake`, { method: "POST" });
+  const baked = await res.json();
+  if (!res.ok || !baked.ok) throw new Error(`烘焙失败: ${baked.error}`);
+  if (!existsSync(join(tmp, "world/nav/nav.harbor.json"))) throw new Error("导航文件未生成");
 
   res = await fetch(`http://127.0.0.1:${PORT}/api/validate`, { method: "POST" });
   const validation = await res.json();

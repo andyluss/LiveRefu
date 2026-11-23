@@ -1,5 +1,6 @@
 import type {
   ActorDef,
+  AssetTable,
   DialogueDef,
   ItemDef,
   LocTable,
@@ -25,7 +26,8 @@ type Def =
   | { kind: "quest"; data: QuestDef }
   | { kind: "dialogue"; data: DialogueDef }
   | { kind: "schedule"; data: ScheduleDef }
-  | { kind: "loc"; locale: string; data: LocTable };
+  | { kind: "loc"; locale: string; data: LocTable }
+  | { kind: "assets"; data: AssetTable };
 
 export type CollectedDef = Def & { source: string };
 
@@ -83,4 +85,7 @@ export function defineSchedule(data: ScheduleDef): void {
 }
 export function defineLoc(locale: string, data: LocTable): void {
   push({ kind: "loc", locale, data });
+}
+export function defineAssets(data: AssetTable): void {
+  push({ kind: "assets", data });
 }

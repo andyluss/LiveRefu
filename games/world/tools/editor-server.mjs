@@ -48,6 +48,7 @@ function loadPackFiles() {
   const dirs = [
     "world/zones", "world/actors", "world/props", "world/items",
     "rules", "quests", "dialogue", "schedules", "loc",
+    "assets", "world/nav",
   ];
   for (const dir of dirs) {
     for (const path of jsonFiles(join(packDir, dir))) {
@@ -64,8 +65,10 @@ function runWorldc(args) {
     encoding: "utf8",
     maxBuffer: 8 * 1024 * 1024,
   });
+  const status = result.status ?? 1;
   return {
-    status: result.status ?? 1,
+    ok: status === 0,
+    status,
     stdout: result.stdout ?? "",
     stderr: result.stderr ?? "",
   };
@@ -175,7 +178,21 @@ const server = createServer(async (req, res) => {
       sendJson(res, 200, { ok: result.json.ok, ...result.json, stdout: result.stdout, stderr: result.stderr });
       return;
     }
+    if (pathname === "/api/bake" && req.method === "POST") {
+      const result = runWorldc(["bake", "nav", "--pack", packDir]);
+      if (!result.ok) {
+        sendJson(res, 500, { ok: false, error: result.stderr || result.stdout || "bake failed" });
+        return;
+      }
+      sendJson(res, 200, { ok: true, output: result.stdout });
+      return;
+    }
     if (pathname === "/api/build" && req.method === "POST") {
+      const baked = runWorldc(["bake", "nav", "--pack", packDir]);
+      if (!baked.ok) {
+        sendJson(res, 500, { ok: false, error: baked.stderr || baked.stdout || "bake failed" });
+        return;
+      }
       const result = runWorldc(["build", "--pack", packDir, "--out", distDir]);
       if (result.status !== 0) {
         sendJson(res, 500, { ok: false, error: result.stderr || result.stdout });

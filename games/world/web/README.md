@@ -38,6 +38,7 @@ python3 -m http.server 8787
 | 操作 | 方式 |
 | --- | --- |
 | 移动 | `WASD` / 方向键；关闭的门与 NPC 会挡住玩家 |
+| 寻路 | 点击空地；A* 沿烘焙导航网格走，虚线显示路径 |
 | 拾取物品 | 点击黄色菱形，或 `F` / 「拾取 F」 |
 | 与 NPC 对话 | 点击绿色圆点，或 `T` / 「对话 T」 |
 | 与门交互 | 点击橙色方块，或 `E` / 「交互 E」 |
@@ -45,12 +46,13 @@ python3 -m http.server 8787
 | 重置 | `R` / 「重置」 |
 | 回放 M0 trace | 「回放 M0 trace」 |
 
-> 目标在玩家 8 米内才可操作；移动是简单的 2D 运动学 + 圆形/AABB 碰撞，不含跳跃与物理。
+> 目标在玩家 8 米内才可操作；移动是 2D 运动学 + 圆形/AABB 碰撞，点击移动走 A*，不含跳跃与物理。
+> 导航网格由 `./worldc bake nav` 生成；编辑器「构建并试玩」会先烘焙。
 
 ## 验收
 
 - `worldc ts-build --compare ../data/demo.harbor`：TS 包与 JSON 包同哈希。
-- `node web/test_preview.cjs`：wasm 预览的 replay 与 600 tick 点击序列都得到 `0x9c4032a29d99274d`。
+- `node web/test_preview.cjs`：wasm 预览的 replay 与 600 tick 点击序列都得到 `0xc840fe2090a0a085`。
 - 浏览器 CDP 实测：拾取 → 交互 → 对话后任务完成；回放 `PASS`；`system/light/dark` 三态与 `aria-pressed` 正确。
 
 ## 主题（R-016）

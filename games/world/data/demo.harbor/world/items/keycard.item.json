@@ -2,5 +2,6 @@
   "id": "item.keycard",
   "name": "loc:item.keycard.name",
   "stack": 1,
-  "tags": ["key", "harbor"]
+  "tags": ["key", "harbor"],
+  "visual": "mesh.keycard"
 }

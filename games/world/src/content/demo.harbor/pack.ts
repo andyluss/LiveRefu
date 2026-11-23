@@ -1,4 +1,4 @@
-import { defineLoc, definePack, defineWorld } from "#world-authoring";
+import { defineAssets, defineLoc, definePack, defineWorld } from "#world-authoring";
 
 definePack({
   schema: 1,
@@ -9,6 +9,7 @@ definePack({
   entry: { world: "world/harbor.world.json", start_zone: "zone.harbor" },
   sim_profile: "arcade",
   tick_hz: 60,
+  assets: "assets/assets.index.json",
   loc: ["loc/zh-CN.json"],
   requires: [],
   optional: [],
@@ -21,6 +22,13 @@ defineWorld({
   start_time: "08:00",
   seed: 20261123,
   player: { at: [0, 0, 0], inventory: [] },
+});
+
+defineAssets({
+  "mesh.keeper": { role: "mesh", source: "art/keeper.glb" },
+  "mesh.airlock": { role: "mesh", source: "art/airlock.glb" },
+  "mesh.keycard": { role: "mesh", source: "art/keycard.glb" },
+  "sfx.airlock.open": { role: "sfx", source: "audio/airlock_open.ogg" },
 });
 
 defineLoc("zh-CN", {

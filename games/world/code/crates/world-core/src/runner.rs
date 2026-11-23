@@ -108,5 +108,6 @@ fn describe_command(cmd: &TraceCommand) -> String {
         TraceCommand::Emit { event } => format!("emit {event}"),
         TraceCommand::ActivateZone { zone } => format!("activate zone {zone}"),
         TraceCommand::Move { actor, x, z } => format!("move {actor} ({x}, {z})"),
+        TraceCommand::MoveTo { actor, x, z } => format!("move_to {actor} ({x}, {z})"),
     }
 }

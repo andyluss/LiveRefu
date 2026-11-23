@@ -47,4 +47,9 @@ pub enum Command {
         x: f32,
         z: f32,
     },
+    MoveTo {
+        actor: EntityId,
+        x: f32,
+        z: f32,
+    },
 }

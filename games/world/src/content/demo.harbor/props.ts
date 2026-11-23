@@ -7,4 +7,5 @@ defineProp({
   body: { shape: "aabb", size: [1.2, 2.2, 0.4] },
   interactable: { verbs: ["interact"] },
   locked_by: "item.keycard",
+  visual: "mesh.airlock",
 });

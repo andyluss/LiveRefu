@@ -51,6 +51,13 @@ impl Pack {
         let quests = read_map::<QuestDef>(&root.join("quests"), |d| d.id.clone())?;
         let dialogues = read_map::<DialogueDef>(&root.join("dialogue"), |d| d.id.clone())?;
         let schedules = read_map::<ScheduleDef>(&root.join("schedules"), |d| d.id.clone())?;
+        let navs = read_map::<NavGridDef>(&root.join("world/nav"), |d| d.id.clone())?;
+
+        let assets = if let Some(path) = &manifest.assets {
+            read_json::<BTreeMap<String, AssetDef>>(&root.join(path))?
+        } else {
+            BTreeMap::new()
+        };
 
         let loc = read_loc(&root.join("loc"))?;
 
@@ -65,6 +72,8 @@ impl Pack {
             quests,
             dialogues,
             schedules,
+            navs,
+            assets,
             loc,
         })
     }
@@ -169,6 +178,7 @@ impl Pack {
                 brain: None,
                 inventory: None,
                 dialogue: None,
+                visual: None,
             },
         );
         Pack {
@@ -182,6 +192,8 @@ impl Pack {
             quests: BTreeMap::new(),
             dialogues: BTreeMap::new(),
             schedules: BTreeMap::new(),
+            navs: BTreeMap::new(),
+            assets: BTreeMap::new(),
             loc: BTreeMap::new(),
         }
     }
@@ -196,6 +208,82 @@ impl Pack {
     pub fn loc_has(&self, key: &str) -> bool {
         let key = key.strip_prefix("loc:").unwrap_or(key);
         self.default_locale().contains_key(key)
+    }
+
+    /// 用静态 Prop 的 AABB 烘焙一个区域的导航网格（M1 网格 + 4 邻接）。
+    pub fn bake_zone_nav(
+        &self,
+        zone_id: &str,
+        cell: f32,
+        player_radius: f32,
+    ) -> Option<NavGridDef> {
+        let zone = self.zones.get(zone_id)?;
+        let nav_id = zone.nav.clone().unwrap_or_else(|| format!("nav.{zone_id}"));
+        let cell = if cell.is_finite() && cell > 0.0 {
+            cell
+        } else {
+            1.0
+        };
+        let min = zone.bounds.min;
+        let max = zone.bounds.max;
+        let width = (((max[0] - min[0]) / cell).ceil() as u32).max(1);
+        let height = (((max[2] - min[2]) / cell).ceil() as u32).max(1);
+        let mut blocked = Vec::new();
+        for y in 0..height {
+            for x in 0..width {
+                let cx = min[0] + (x as f32 + 0.5) * cell;
+                let cz = min[2] + (y as f32 + 0.5) * cell;
+                let inside_any = zone.placements.iter().any(|p| {
+                    let Some(prop_id) = &p.prop else {
+                        return false;
+                    };
+                    let Some(prop) = self.props.get(prop_id) else {
+                        return false;
+                    };
+                    let Some(size) = prop.body.size else {
+                        return false;
+                    };
+                    let half_x = size[0] * 0.5 + player_radius;
+                    let half_z = size[2] * 0.5 + player_radius;
+                    (cx - p.at[0]).abs() < half_x && (cz - p.at[2]).abs() < half_z
+                });
+                if inside_any {
+                    blocked.push(y * width + x);
+                }
+            }
+        }
+        Some(NavGridDef {
+            id: nav_id,
+            zone: zone.id.clone(),
+            cell,
+            origin: [min[0], min[2]],
+            width,
+            height,
+            blocked,
+        })
+    }
+
+    /// 某个 Zone 的摆放所依赖的逻辑资产 ID（去重、排序）。
+    pub fn zone_assets(&self, zone_id: &str) -> Vec<String> {
+        let Some(zone) = self.zones.get(zone_id) else {
+            return Vec::new();
+        };
+        let mut out = std::collections::BTreeSet::new();
+        for placement in &zone.placements {
+            let visual = if let Some(id) = &placement.actor {
+                self.actors.get(id).and_then(|d| d.visual.clone())
+            } else if let Some(id) = &placement.prop {
+                self.props.get(id).and_then(|d| d.visual.clone())
+            } else if let Some(id) = &placement.item {
+                self.items.get(id).and_then(|d| d.visual.clone())
+            } else {
+                None
+            };
+            if let Some(visual) = visual {
+                out.insert(visual);
+            }
+        }
+        out.into_iter().collect()
     }
 }
 

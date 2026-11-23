@@ -131,3 +131,25 @@ fn movement_is_deterministic_and_blocked_by_closed_door() {
     let z = world.entity(player).unwrap().transform.position[2];
     assert!(z > 6.5, "打开的门不应挡住玩家，实际 z={z}");
 }
+
+#[test]
+fn pathfinding_moves_player_around_static_obstacle() {
+    use world_core::Command;
+    let pack = Pack::load_dir(demo_pack()).unwrap();
+    let hash = pack.hash().unwrap();
+    let mut world = World::from_pack(&pack, hash).unwrap();
+    let player = world.find_by_content_id("player").unwrap();
+    world.queue_command(Command::MoveTo {
+        actor: player,
+        x: 0.0,
+        z: 9.0,
+    });
+    for _ in 0..400 {
+        world.tick_once();
+    }
+    let position = world.entity(player).unwrap().transform.position;
+    assert!(
+        position[2] > 7.5,
+        "寻路应绕开气闸到达门后，实际 {position:?}"
+    );
+}

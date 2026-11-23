@@ -6,5 +6,6 @@
     { "actor": "demo.keeper", "at": [4.0, 0.0, -2.0], "yaw": 180.0, "persistent_id": "keeper" },
     { "prop": "demo.airlock", "at": [0.0, 0.0, 6.0], "yaw": 0.0, "persistent_id": "airlock" },
     { "item": "item.keycard", "at": [2.0, 0.0, 2.0], "yaw": 0.0, "persistent_id": "keycard" }
-  ]
+  ],
+  "nav": "nav.harbor"
 }

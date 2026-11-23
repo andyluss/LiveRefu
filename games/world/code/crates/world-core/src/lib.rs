@@ -2,6 +2,7 @@ pub mod command;
 pub mod entity;
 pub mod event;
 pub mod ids;
+pub mod nav;
 pub mod rng;
 pub mod runner;
 pub mod trace;

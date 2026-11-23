@@ -80,6 +80,16 @@ impl PreviewWorld {
         Ok(())
     }
 
+    pub fn move_to(&mut self, x: f32, z: f32) -> Result<(), JsValue> {
+        let player = self.find("player")?;
+        self.world.queue_command(Command::MoveTo {
+            actor: player,
+            x,
+            z,
+        });
+        Ok(())
+    }
+
     pub fn set_move(&mut self, x: f32, z: f32) -> Result<(), JsValue> {
         let player = self.find("player")?;
         self.world.queue_command(Command::Move {
@@ -128,6 +138,7 @@ impl PreviewWorld {
             "names": names,
             "quest_titles": quest_titles,
             "zones": zones,
+            "assets": self.pack.zone_assets(&self.world.zone_id),
             "loc": self.pack.default_locale(),
         });
         serde_json::to_string(&value)

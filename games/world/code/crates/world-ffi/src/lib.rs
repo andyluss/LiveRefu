@@ -16,6 +16,7 @@ pub const WORLD_ERR_PANIC: i32 = 5;
 pub const WORLD_ERR_VERSION: i32 = 6;
 pub const WORLD_ERR_STATE: i32 = 7;
 pub const WORLD_ERR_UNSUPPORTED: i32 = 8;
+pub const WORLD_ERR_INTERNAL: i32 = 9;
 
 pub const WORLD_ABI_MAJOR: u32 = 1;
 pub const WORLD_ABI_MINOR: u32 = 0;
@@ -416,13 +417,20 @@ pub extern "C" fn world_deactivate_zone(handle: *mut WorldHandle, _zone_id: *con
 #[no_mangle]
 pub extern "C" fn world_zone_assets(
     handle: *mut WorldHandle,
-    _zone_id: *const c_char,
+    zone_id: *const c_char,
     out: *mut u8,
     cap: usize,
     out_len: *mut usize,
 ) -> i32 {
-    with_world_mut(handle, |_handle| {
-        let text = b"[]";
+    with_world_mut(handle, |handle| {
+        let zone = cstr(zone_id)?;
+        let assets = handle
+            .pack
+            .as_ref()
+            .map(|pack| pack.zone_assets(&zone))
+            .unwrap_or_default();
+        let text = serde_json::to_vec(&assets)
+            .map_err(|e| (WORLD_ERR_INTERNAL, format!("资产序列化失败: {e}")))?;
         if !out_len.is_null() {
             unsafe { *out_len = text.len() };
         }

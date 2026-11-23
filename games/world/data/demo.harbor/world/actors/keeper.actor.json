@@ -6,5 +6,6 @@
   "stats": { "health": 100, "speed": 3.2 },
   "brain": { "profile": "schedule", "schedule": "schedule.keeper" },
   "inventory": { "items": [{ "item": "item.radio", "count": 1 }] },
-  "dialogue": "dlg.keeper.intro"
+  "dialogue": "dlg.keeper.intro",
+  "visual": "mesh.keeper"
 }

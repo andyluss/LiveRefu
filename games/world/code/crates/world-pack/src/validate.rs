@@ -55,6 +55,8 @@ pub fn validate_pack(pack: &Pack) -> ValidationReport {
     validate_quests(pack, &mut r);
     validate_dialogues(pack, &mut r);
     validate_schedules(pack, &mut r);
+    validate_navs(pack, &mut r);
+    validate_assets(pack, &mut r);
     validate_loc(pack, &mut r);
     r
 }
@@ -164,6 +166,15 @@ fn validate_zones(pack: &Pack, r: &mut ValidationReport) {
                 format!("zone.id ({}) 与索引键 ({id}) 不一致", z.id),
             );
         }
+        if let Some(nav) = &z.nav {
+            if !pack.navs.contains_key(nav) {
+                r.error(
+                    "E-REF-001",
+                    format!("world/zones/{id}.json"),
+                    format!("nav 引用了不存在的导航网格 {nav}"),
+                );
+            }
+        }
         if !finite3(z.bounds.min) || !finite3(z.bounds.max) {
             r.error(
                 "E-VALUE-001",
@@ -272,6 +283,15 @@ fn validate_actors(pack: &Pack, r: &mut ValidationReport) {
         if a.name.starts_with("loc:") && !pack.loc_has(&a.name) {
             r.error("E-LOC-001", &path, format!("缺少文案 {}", a.name));
         }
+        if let Some(visual) = &a.visual {
+            if !pack.assets.contains_key(visual) {
+                r.error(
+                    "E-REF-001",
+                    &path,
+                    format!("visual 引用了不存在的资产 {visual}"),
+                );
+            }
+        }
     }
 }
 
@@ -307,6 +327,15 @@ fn validate_props(pack: &Pack, r: &mut ValidationReport) {
         if p.name.starts_with("loc:") && !pack.loc_has(&p.name) {
             r.error("E-LOC-001", &path, format!("缺少文案 {}", p.name));
         }
+        if let Some(visual) = &p.visual {
+            if !pack.assets.contains_key(visual) {
+                r.error(
+                    "E-REF-001",
+                    &path,
+                    format!("visual 引用了不存在的资产 {visual}"),
+                );
+            }
+        }
     }
 }
 
@@ -325,6 +354,15 @@ fn validate_items(pack: &Pack, r: &mut ValidationReport) {
         }
         if i.name.starts_with("loc:") && !pack.loc_has(&i.name) {
             r.error("E-LOC-001", &path, format!("缺少文案 {}", i.name));
+        }
+        if let Some(visual) = &i.visual {
+            if !pack.assets.contains_key(visual) {
+                r.error(
+                    "E-REF-001",
+                    &path,
+                    format!("visual 引用了不存在的资产 {visual}"),
+                );
+            }
         }
     }
 }
@@ -550,6 +588,54 @@ fn validate_schedules(pack: &Pack, r: &mut ValidationReport) {
                     format!("entries[{i}].behavior 不能为空"),
                 );
             }
+        }
+    }
+}
+
+fn validate_navs(pack: &Pack, r: &mut ValidationReport) {
+    for (id, nav) in &pack.navs {
+        let path = format!("world/nav/{id}.json");
+        if nav.id != *id {
+            r.error(
+                "E-REF-003",
+                &path,
+                format!("nav.id ({}) 与索引键 ({id}) 不一致", nav.id),
+            );
+        }
+        if !pack.zones.contains_key(&nav.zone) {
+            r.error(
+                "E-REF-001",
+                &path,
+                format!("nav.zone 引用了不存在的区域 {}", nav.zone),
+            );
+        }
+        if !nav.cell.is_finite() || nav.cell <= 0.0 {
+            r.error("E-VALUE-001", &path, "cell 必须是正有限数");
+        }
+        if nav.width == 0 || nav.height == 0 {
+            r.error("E-VALUE-001", &path, "width/height 必须大于 0");
+        }
+        if !nav.origin.iter().all(|x| x.is_finite()) {
+            r.error("E-VALUE-001", &path, "origin 必须是有限数值");
+        }
+        let area = nav.width.saturating_mul(nav.height);
+        for cell in &nav.blocked {
+            if *cell >= area {
+                r.error("E-VALUE-001", &path, format!("blocked 索引越界: {cell}"));
+                break;
+            }
+        }
+    }
+}
+
+fn validate_assets(pack: &Pack, r: &mut ValidationReport) {
+    for (id, asset) in &pack.assets {
+        let path = format!("assets/{id}");
+        if asset.role.trim().is_empty() {
+            r.error("E-VALUE-001", &path, "asset.role 不能为空");
+        }
+        if asset.source.trim().is_empty() {
+            r.error("E-VALUE-001", &path, "asset.source 不能为空");
         }
     }
 }

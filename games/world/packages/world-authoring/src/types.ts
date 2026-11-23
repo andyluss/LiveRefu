@@ -1,5 +1,13 @@
 export type Vec3 = [number, number, number];
 
+export interface AssetDef {
+  role: string;
+  source: string;
+  variants?: Record<string, string>;
+}
+
+export type AssetTable = Record<string, AssetDef>;
+
 export interface ItemStackDef {
   item: string;
   count?: number;
@@ -10,6 +18,7 @@ export interface ItemDef {
   name: string;
   stack?: number;
   tags?: string[];
+  visual?: string;
 }
 
 export interface BodyDef {
@@ -28,6 +37,7 @@ export interface ActorDef {
   brain?: { profile: string; schedule?: string };
   inventory?: { items: ItemStackDef[] };
   dialogue?: string;
+  visual?: string;
 }
 
 export interface InteractableDef {
@@ -41,6 +51,7 @@ export interface PropDef {
   body: BodyDef;
   interactable: InteractableDef;
   locked_by?: string;
+  visual?: string;
 }
 
 export interface Placement {

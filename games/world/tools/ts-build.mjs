@@ -62,6 +62,7 @@ function idOf(def, kind) {
 }
 
 function assertUnique(defs, kind) {
+  if (kind === "assets") return;
   const seen = new Map();
   for (const def of byKind(defs, kind)) {
     const id = kind === "loc" ? def.locale : idOf(def, kind);
@@ -91,7 +92,7 @@ async function main() {
 
   const pack = one(defs, "pack", "内容包").data;
   const world = one(defs, "world", "世界").data;
-  for (const kind of ["zone", "actor", "prop", "item", "rule", "quest", "dialogue", "schedule", "loc"]) {
+  for (const kind of ["zone", "actor", "prop", "item", "rule", "quest", "dialogue", "schedule", "loc", "assets"]) {
     assertUnique(defs, kind);
   }
 
@@ -119,6 +120,9 @@ async function main() {
       writeJson(join(out, dir, `${idOf(def, kind)}.json`), def.data);
     }
   }
+  for (const def of byKind(defs, "assets")) {
+    writeJson(join(out, "assets/assets.index.json"), def.data);
+  }
   for (const def of byKind(defs, "loc")) {
     if (typeof def.locale !== "string" || def.locale.length === 0) {
       throw new Error(`loc 缺少 locale（来源 ${def.source}）`);
@@ -138,7 +142,7 @@ async function main() {
   writeJson(join(out, "sourcemap.json"), sourcemap);
 
   const counts = Object.fromEntries(
-    Object.keys(dirs).map((kind) => [kind, byKind(defs, kind).length]),
+    [...Object.keys(dirs), "assets"].map((kind) => [kind, byKind(defs, kind).length]),
   );
   console.log(`ts-build: ${src} -> ${out}`);
   console.log(JSON.stringify({ pack: pack.id, world: world.id, counts }));

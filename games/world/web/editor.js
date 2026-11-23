@@ -222,6 +222,11 @@ function renderDataForm() {
     def.tags = value.split(",").map((s) => s.trim()).filter(Boolean);
     update();
   }));
+  const assetIds = Object.keys(packData.files["assets/assets.index.json"] ?? {});
+  el.dataForm.append(formField("Visual", def.visual ?? "", (value) => {
+    def.visual = value || undefined;
+    update();
+  }, { select: ["", ...assetIds] }));
   if (isActor) {
     el.dataForm.append(formField("Health", def.stats?.health ?? 100, (value) => {
       def.stats = { ...(def.stats ?? {}), health: Number(value) || 0 };
@@ -517,6 +522,22 @@ async function saveAll() {
   return okZone && okDefinition && okRule && okDialogue;
 }
 
+async function bakeNav() {
+  try {
+    const saved = await saveAll();
+    if (!saved) { log("烘焙取消：有保存失败"); return; }
+    const response = await fetch("/api/bake", { method: "POST" });
+    const result = await response.json();
+    if (!response.ok || !result.ok) {
+      log(`烘焙失败：${result.error ?? response.status}`);
+      return;
+    }
+    log(result.output.trim());
+  } catch (error) {
+    log(`烘焙失败：${error}`);
+  }
+}
+
 async function validate() {
   try {
     const response = await fetch("/api/validate", { method: "POST" });
@@ -794,6 +815,7 @@ function bindButtons() {
   document.getElementById("save-placement").addEventListener("click", savePlacement);
   document.getElementById("save-definition").addEventListener("click", saveDefinition);
   document.getElementById("save-rule").addEventListener("click", saveRule);
+  document.getElementById("bake").addEventListener("click", bakeNav);
   document.getElementById("validate").addEventListener("click", validate);
   document.getElementById("build").addEventListener("click", buildAndPlay);
 }

@@ -10,6 +10,7 @@
   },
   "sim_profile": "arcade",
   "tick_hz": 60,
+  "assets": "assets/assets.index.json",
   "loc": ["loc/zh-CN.json"],
   "requires": [],
   "optional": [],

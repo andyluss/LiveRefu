@@ -14,7 +14,7 @@
 
 ## 证据
 
-- `hosts/c/main.c` 通过 C ABI 跑 600 tick，`final_hash=0x9c4032a29d99274d`，与 Headless 一致。
+- `hosts/c/main.c` 通过 C ABI 跑 600 tick，`final_hash=0xc840fe2090a0a085`，与 Headless 一致。
 - `cargo test -p world-ffi` 覆盖同哈希与 save/load。
 
 ## 代价 / 后续
