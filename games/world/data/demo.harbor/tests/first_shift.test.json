@@ -1,0 +1,21 @@
+{
+  "name": "first_shift",
+  "ticks": 60,
+  "steps": [
+    { "tick": 10, "command": { "op": "interact", "actor": "player", "target": "demo.airlock" } },
+    { "tick": 20, "command": { "op": "pickup", "actor": "player", "target": "item.keycard" } },
+    { "tick": 30, "command": { "op": "interact", "actor": "player", "target": "demo.airlock" } },
+    { "tick": 40, "command": { "op": "talk", "actor": "player", "target": "demo.keeper" } }
+  ],
+  "expect": {
+    "flags": {
+      "flag.airlock.open": true,
+      "flag.quest.first_shift.done": true
+    },
+    "quests": {
+      "quest.first_shift": "completed"
+    },
+    "events": ["door_opened", "quest_completed", "airlock.opened", "dialogue_started"],
+    "inventory": { "item.keycard": 1 }
+  }
+}

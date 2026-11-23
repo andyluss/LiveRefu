@@ -13,10 +13,12 @@ cd games/world/code
 
 - tick 9：无钥匙卡交互 → toast「气闸锁着。需要钥匙卡。」
 - tick 19：拾取钥匙卡 → `item_acquired`
-- tick 29：有钥匙卡交互 → `sound` / `flag_changed` / `airlock.opened`
+- tick 29：有钥匙卡交互 → `door_opened` / `sound` / `flag_changed` / `airlock.opened`
 - tick 39：和值班员说话 → `quest_completed` / `dialogue_started`
 
-600 tick 最终哈希：`0xd1c6ea084b71cc0d`。
+600 tick 最终哈希：`0x9c4032a29d99274d`。
+
+内容测试：`./worldc content-test`（`first_shift` / `airlock_locked_without_key`）。
 
 ## 目录
 
@@ -34,3 +36,5 @@ cd games/world/code
 | `schedules/keeper.schedule.json` | 工作 / 闲逛 / 睡觉 |
 | `loc/zh-CN.json` | 文案 key → 中文 |
 | `tests/m0.trace.json` | 600 tick 输入轨迹 |
+| `tests/first_shift.test.json` | 内容测试：说话 + 开门 + 任务完成 |
+| `tests/airlock_locked.test.json` | 内容测试：无钥匙卡时门不开 |

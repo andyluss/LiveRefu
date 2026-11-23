@@ -80,6 +80,16 @@ impl PreviewWorld {
         Ok(())
     }
 
+    pub fn set_move(&mut self, x: f32, z: f32) -> Result<(), JsValue> {
+        let player = self.find("player")?;
+        self.world.queue_command(Command::Move {
+            actor: player,
+            x,
+            z,
+        });
+        Ok(())
+    }
+
     pub fn command(&mut self, command_json: &str) -> Result<(), JsValue> {
         let command: Command = serde_json::from_str(command_json)
             .map_err(|e| JsValue::from_str(&format!("命令解析失败: {e}")))?;

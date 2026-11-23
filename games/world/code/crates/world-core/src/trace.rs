@@ -57,6 +57,11 @@ pub enum TraceCommand {
     ActivateZone {
         zone: String,
     },
+    Move {
+        actor: String,
+        x: f32,
+        z: f32,
+    },
 }
 
 impl TraceCommand {
@@ -95,6 +100,11 @@ impl TraceCommand {
                 event: event.clone(),
             },
             TraceCommand::ActivateZone { zone } => Command::ActivateZone { zone: zone.clone() },
+            TraceCommand::Move { actor, x, z } => Command::Move {
+                actor: find(world, actor)?,
+                x: *x,
+                z: *z,
+            },
         })
     }
 }

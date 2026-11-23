@@ -23,8 +23,11 @@
 ./run.sh test --workspace
 ./run.sh run -q -p world-cli -- validate
 ./run.sh run -q -p world-cli -- test --events
+./run.sh run -q -p world-cli -- content-test
+./run.sh run -q --release -p world-cli -- bench --synthetic 5000 --ticks 6000
+./run.sh run -q -p world-cli -- editor --port 8788
 ./run.sh run -q -p world-cli -- replay \
-  --trace ../data/demo.harbor/tests/m0.trace.json --expect 0xd1c6ea084b71cc0d
+  --trace ../data/demo.harbor/tests/m0.trace.json --expect 0x9c4032a29d99274d
 ./run.sh run -q --release -p world-cli -- bench
 ```
 

@@ -89,6 +89,103 @@ impl Pack {
         validate::validate_pack(self)
     }
 
+    /// M1 基准用合成包：一个区域 + N 个相同 Actor 的 placement。
+    /// 不写文件，也不进入正式内容；只用于量级/性能基线。
+    pub fn synthetic(entities: usize) -> Self {
+        let n = entities.max(1);
+        let side = (n as f64).sqrt().ceil() as i32;
+        let spacing = 2.0f32;
+        let half = (side as f32 * spacing) / 2.0 + 4.0;
+        let mut placements = Vec::with_capacity(n);
+        for i in 0..n {
+            let x = (i % side as usize) as f32 * spacing - half;
+            let z = (i / side as usize) as f32 * spacing - half;
+            placements.push(Placement {
+                actor: Some("bench.actor".to_string()),
+                prop: None,
+                item: None,
+                at: [x, 0.0, z],
+                yaw: 0.0,
+                persistent_id: format!("bench.{i}"),
+            });
+        }
+        let manifest = PackManifest {
+            schema: 1,
+            id: "bench.synthetic".to_string(),
+            version: "0.1.0".to_string(),
+            core_api: ">=0.1 <0.2".to_string(),
+            kits: vec!["core".to_string()],
+            entry: Entry {
+                world: "world/bench.world.json".to_string(),
+                start_zone: "zone.bench".to_string(),
+            },
+            sim_profile: "arcade".to_string(),
+            tick_hz: 60,
+            assets: None,
+            loc: vec![],
+            requires: vec![],
+            optional: vec![],
+            conflicts: vec![],
+        };
+        let world = WorldDef {
+            id: "world.bench".to_string(),
+            start_zone: "zone.bench".to_string(),
+            start_time: "08:00".to_string(),
+            seed: 1,
+            player: PlayerSpawn {
+                at: [0.0, 0.0, 0.0],
+                inventory: vec![],
+            },
+        };
+        let zone = ZoneDef {
+            id: "zone.bench".to_string(),
+            name: "bench".to_string(),
+            bounds: Bounds {
+                min: [-half, 0.0, -half],
+                max: [half, 8.0, half],
+            },
+            nav: None,
+            placements,
+        };
+        let mut zones = BTreeMap::new();
+        zones.insert(zone.id.clone(), zone);
+        let mut actors = BTreeMap::new();
+        actors.insert(
+            "bench.actor".to_string(),
+            ActorDef {
+                id: "bench.actor".to_string(),
+                name: "bench.actor".to_string(),
+                tags: vec!["bench".to_string()],
+                body: BodyDef {
+                    shape: "capsule".to_string(),
+                    radius: Some(0.35),
+                    height: Some(1.7),
+                    size: None,
+                },
+                stats: StatsDef {
+                    health: 100,
+                    speed: 0.0,
+                },
+                brain: None,
+                inventory: None,
+                dialogue: None,
+            },
+        );
+        Pack {
+            manifest,
+            world,
+            zones,
+            actors,
+            props: BTreeMap::new(),
+            items: BTreeMap::new(),
+            rules: BTreeMap::new(),
+            quests: BTreeMap::new(),
+            dialogues: BTreeMap::new(),
+            schedules: BTreeMap::new(),
+            loc: BTreeMap::new(),
+        }
+    }
+
     pub fn default_locale(&self) -> &BTreeMap<String, String> {
         self.loc
             .get("zh-CN")

@@ -94,3 +94,40 @@ fn tampered_checksum_is_rejected() {
     };
     assert!(error.contains("校验和"), "实际错误: {error}");
 }
+
+#[test]
+fn movement_is_deterministic_and_blocked_by_closed_door() {
+    use world_core::Command;
+    let pack = Pack::load_dir(demo_pack()).unwrap();
+    let hash = pack.hash().unwrap();
+    let mut world = World::from_pack(&pack, hash).unwrap();
+    let player = world.find_by_content_id("player").unwrap();
+    let door = world.find_by_content_id("demo.airlock").unwrap();
+
+    world.queue_command(Command::Move {
+        actor: player,
+        x: 0.0,
+        z: 1.0,
+    });
+    for _ in 0..120 {
+        world.tick_once();
+    }
+    let z = world.entity(player).unwrap().transform.position[2];
+    assert!(z > 0.5, "玩家应向前移动，实际 z={z}");
+    assert!(z < 5.6, "关闭的门应挡住玩家，实际 z={z}");
+
+    world.entity_mut(door).unwrap().door.as_mut().unwrap().open = true;
+    if let Some(player) = world.entity_mut(player) {
+        player.transform.position = [0.0, 0.0, 0.0];
+    }
+    world.queue_command(Command::Move {
+        actor: player,
+        x: 0.0,
+        z: 1.0,
+    });
+    for _ in 0..120 {
+        world.tick_once();
+    }
+    let z = world.entity(player).unwrap().transform.position[2];
+    assert!(z > 6.5, "打开的门不应挡住玩家，实际 z={z}");
+}

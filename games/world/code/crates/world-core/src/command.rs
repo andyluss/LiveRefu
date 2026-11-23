@@ -42,4 +42,9 @@ pub enum Command {
     ActivateZone {
         zone: String,
     },
+    Move {
+        actor: EntityId,
+        x: f32,
+        z: f32,
+    },
 }

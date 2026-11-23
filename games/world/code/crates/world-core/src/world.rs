@@ -1,5 +1,5 @@
 use crate::command::Command;
-use crate::entity::{Door, Entity, EntityKind, Interactable, ItemStack, Transform};
+use crate::entity::{Collider, Door, Entity, EntityKind, Interactable, ItemStack, Transform};
 use crate::event::EventEnvelope;
 use crate::ids::EntityId;
 use crate::rng::Rng;
@@ -31,6 +31,8 @@ pub struct Snapshot {
     pub zone_id: String,
     pub suspended: bool,
     pub timescale_milli: i64,
+    #[serde(default)]
+    pub move_intent: [f32; 2],
 }
 
 #[derive(Clone, Debug)]
@@ -65,6 +67,8 @@ pub struct World {
     pub pack_hash: String,
     pub suspended: bool,
     pub timescale: f64,
+    pub move_intent: [f32; 2],
+    zone_bounds: Option<([f32; 3], [f32; 3])>,
     accumulator_us: u64,
     pub max_catchup: u32,
     pub overrun_count: u32,
@@ -103,6 +107,8 @@ impl World {
             pack_hash,
             suspended: false,
             timescale: 1.0,
+            move_intent: [0.0, 0.0],
+            zone_bounds: None,
             accumulator_us: 0,
             max_catchup: 4,
             overrun_count: 0,
@@ -133,6 +139,7 @@ impl World {
             schedule: None,
             behavior: None,
             dialogue: None,
+            collider: Some(Collider::Circle { radius: 0.35 }),
         });
         world.player = player;
 
@@ -166,6 +173,7 @@ impl World {
             .zones
             .get(zone_id)
             .ok_or_else(|| format!("区域不存在: {zone_id}"))?;
+        self.zone_bounds = Some((zone.bounds.min, zone.bounds.max));
         for p in &zone.placements {
             let transform = Transform::new(p.at, p.yaw);
             let entity = if let Some(id) = &p.actor {
@@ -202,6 +210,9 @@ impl World {
                     schedule: def.brain.as_ref().and_then(|b| b.schedule.clone()),
                     behavior: None,
                     dialogue: def.dialogue.clone(),
+                    collider: Some(Collider::Circle {
+                        radius: def.body.radius.unwrap_or(0.35),
+                    }),
                 }
             } else if let Some(id) = &p.prop {
                 let def: &PropDef = pack
@@ -228,6 +239,12 @@ impl World {
                     schedule: None,
                     behavior: None,
                     dialogue: None,
+                    collider: Some(Collider::Aabb {
+                        half: [
+                            def.body.size.map(|s| s[0]).unwrap_or(1.0) * 0.5,
+                            def.body.size.map(|s| s[2]).unwrap_or(1.0) * 0.5,
+                        ],
+                    }),
                 }
             } else if let Some(id) = &p.item {
                 let def: &ItemDef = pack
@@ -251,6 +268,7 @@ impl World {
                     schedule: None,
                     behavior: None,
                     dialogue: None,
+                    collider: None,
                 }
             } else {
                 return Err("placement 未指定 actor/prop/item".to_string());
@@ -368,10 +386,89 @@ impl World {
             }
         }
 
+        self.apply_movement();
         self.tick = self.tick.saturating_add(1);
         let seconds = self.tick.saturating_mul(60) / self.tick_hz.max(1) as u64;
         self.clock_minutes = (self.start_minutes + (seconds / 60) as u32) % 1440;
         self.update_schedules();
+    }
+
+    fn apply_movement(&mut self) {
+        let [x, z] = self.move_intent;
+        let len = (x * x + z * z).sqrt();
+        if len < 1e-6 {
+            return;
+        }
+        let Some(player) = self.entity(self.player) else {
+            return;
+        };
+        let speed = player.speed.max(0.0);
+        if speed <= 0.0 {
+            return;
+        }
+        let step = speed / self.tick_hz.max(1) as f32;
+        let magnitude = len.min(1.0);
+        let dx = (x / len) * step * magnitude;
+        let dz = (z / len) * step * magnitude;
+        self.try_move_player(dx, 0.0);
+        self.try_move_player(0.0, dz);
+    }
+
+    fn try_move_player(&mut self, dx: f32, dz: f32) {
+        let Some(player) = self.entity(self.player) else {
+            return;
+        };
+        let radius = player
+            .collider
+            .as_ref()
+            .map(|c| c.radius())
+            .unwrap_or(0.35)
+            .max(0.05);
+        let mut next = [
+            player.transform.position[0] + dx,
+            player.transform.position[2] + dz,
+        ];
+
+        if let Some((min, max)) = self.zone_bounds {
+            next[0] = next[0].clamp(min[0] + radius, max[0] - radius);
+            next[1] = next[1].clamp(min[2] + radius, max[2] - radius);
+        }
+
+        let obstacles: Vec<([f32; 3], Option<Collider>, bool)> = self
+            .entities()
+            .filter(|e| e.id != self.player && e.kind != EntityKind::Item)
+            .map(|e| {
+                (
+                    e.transform.position,
+                    e.collider.clone(),
+                    e.door.as_ref().map(|d| d.open).unwrap_or(false),
+                )
+            })
+            .collect();
+
+        let blocked = obstacles.iter().any(|(position, collider, open)| {
+            if *open {
+                return false;
+            }
+            match collider {
+                Some(Collider::Aabb { half }) => {
+                    circle_aabb_overlap(next, radius, [position[0], position[2]], *half)
+                }
+                Some(Collider::Circle { radius: other }) => {
+                    let ddx = next[0] - position[0];
+                    let ddz = next[1] - position[2];
+                    (ddx * ddx + ddz * ddz).sqrt() < radius + other
+                }
+                None => false,
+            }
+        });
+
+        if !blocked {
+            if let Some(player) = self.entity_mut(self.player) {
+                player.transform.position[0] = next[0];
+                player.transform.position[2] = next[1];
+            }
+        }
     }
 
     fn update_schedules(&mut self) {
@@ -443,7 +540,24 @@ impl World {
                 self.emit("zone_activated", None, json!({"zone": zone}));
                 Ok(())
             }
+            Command::Move { actor, x, z } => self.command_move(actor, x, z),
         }
+    }
+
+    fn command_move(&mut self, actor: EntityId, x: f32, z: f32) -> Result<(), String> {
+        if !x.is_finite() || !z.is_finite() {
+            return Err("move 输入必须是有限数值".to_string());
+        }
+        if self.entity(actor).is_none() {
+            return Err(format!("actor 不存在: {actor}"));
+        }
+        let len = (x * x + z * z).sqrt();
+        if len > 1.0 {
+            self.move_intent = [x / len, z / len];
+        } else {
+            self.move_intent = [x, z];
+        }
+        Ok(())
     }
 
     fn command_interact(&mut self, actor: EntityId, target: EntityId) -> Result<(), String> {
@@ -626,6 +740,18 @@ impl World {
                 ActionDef::StartQuest { quest } => {
                     let _ = self.start_quest(quest);
                 }
+                ActionDef::OpenDoor => {
+                    let opened = self
+                        .entity_mut(target)
+                        .and_then(|entity| entity.door.as_mut())
+                        .map(|door| {
+                            door.open = true;
+                        })
+                        .is_some();
+                    if opened {
+                        self.emit("door_opened", Some(target), json!({"target": target}));
+                    }
+                }
             }
         }
     }
@@ -753,6 +879,7 @@ impl World {
             zone_id: self.zone_id.clone(),
             suspended: self.suspended,
             timescale_milli: (self.timescale * 1000.0).round() as i64,
+            move_intent: self.move_intent,
         }
     }
 
@@ -777,6 +904,7 @@ impl World {
         self.zone_id = snap.zone_id;
         self.suspended = snap.suspended;
         self.timescale = (snap.timescale_milli as f64) / 1000.0;
+        self.move_intent = snap.move_intent;
         self.events.clear();
         self.event_seq = 0;
         self.pending.clear();
@@ -915,4 +1043,12 @@ fn behavior_at(schedule: &ScheduleDef, minute: u32) -> Option<String> {
         }
     }
     None
+}
+
+fn circle_aabb_overlap(point: [f32; 2], radius: f32, center: [f32; 2], half: [f32; 2]) -> bool {
+    let dx = (point[0] - center[0]).abs() - half[0];
+    let dz = (point[1] - center[1]).abs() - half[1];
+    let nx = dx.max(0.0);
+    let nz = dz.max(0.0);
+    nx * nx + nz * nz < radius * radius
 }

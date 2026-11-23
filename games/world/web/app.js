@@ -1,6 +1,6 @@
 import init, { PreviewWorld } from "./pkg/world_wasm.js";
 
-const EXPECTED_HASH = "0xd1c6ea084b71cc0d";
+const EXPECTED_HASH = "0x9c4032a29d99274d";
 const TICK_US = 16666;
 
 const canvas = document.getElementById("view");
@@ -25,6 +25,9 @@ let screenMap = new Map();
 let last = performance.now();
 let acc = 0;
 let errorShown = false;
+let lastPackMtime = null;
+const keys = new Set();
+const MOVE_KEYS = new Set(["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"]);
 
 function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
@@ -114,6 +117,7 @@ function renderHud() {
     <span class="tag">时间</span><span>${clock(s.clock_minutes)}</span>
     <span class="tag">哈希</span><span><code>${esc(current.final_hash)}</code></span>
     <span class="tag">实体</span><span>${s.entities.length}</span>
+    <span class="tag">位置</span><span>${player ? `${player.transform.position[0].toFixed(1)}, ${player.transform.position[2].toFixed(1)}` : "-"}</span>
     <span class="tag">状态</span><span>${paused ? "暂停" : "运行"}</span>
   `;
 
@@ -335,6 +339,7 @@ function bindUi() {
       world.reset();
       selected = null;
       paused = false;
+      keys.clear();
       el.pause.textContent = "暂停";
       lineCache = [];
       el.replay.textContent = "";
@@ -359,11 +364,19 @@ function bindUi() {
   window.addEventListener("keydown", (event) => {
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
     const key = event.key.toLowerCase();
+    if (MOVE_KEYS.has(key)) {
+      keys.add(key);
+      event.preventDefault();
+      return;
+    }
     if (key === "e") { event.preventDefault(); act(nearest((e) => e.kind === "prop")); }
     if (key === "f") { event.preventDefault(); act(nearest((e) => e.kind === "item")); }
     if (key === "t") { event.preventDefault(); act(nearest((e) => e.kind === "actor")); }
     if (key === "p") { event.preventDefault(); el.pause.click(); }
     if (key === "r") { event.preventDefault(); document.getElementById("btn-reset").click(); }
+  });
+  window.addEventListener("keyup", (event) => {
+    keys.delete(event.key.toLowerCase());
   });
 }
 
@@ -375,6 +388,9 @@ function loop(now) {
   const dt = Math.min(now - last, 100);
   last = now;
   if (!paused) {
+    const mx = (keys.has("d") || keys.has("arrowright") ? 1 : 0) - (keys.has("a") || keys.has("arrowleft") ? 1 : 0);
+    const mz = (keys.has("s") || keys.has("arrowdown") ? 1 : 0) - (keys.has("w") || keys.has("arrowup") ? 1 : 0);
+    world.set_move(mx, mz);
     acc += dt * 1000;
     let n = 0;
     while (acc >= TICK_US && n < 4) {
@@ -398,6 +414,20 @@ function loop(now) {
   requestAnimationFrame(loop);
 }
 
+async function watchPack() {
+  try {
+    const response = await fetch("./api/pack-version", { cache: "no-store" });
+    if (response.ok) {
+      const value = await response.json();
+      if (lastPackMtime !== null && value.mtime !== lastPackMtime) location.reload();
+      lastPackMtime = value.mtime;
+    }
+  } catch {
+    // 用纯静态服务器打开时没有该 API；忽略。
+  }
+  setTimeout(watchPack, 1500);
+}
+
 async function boot() {
   try {
     await init();
@@ -416,6 +446,7 @@ async function boot() {
     renderHud();
     draw();
     requestAnimationFrame(loop);
+    watchPack();
   } catch (error) {
     el.status.innerHTML = `<p class="fail">加载失败：${esc(error)}</p>`;
     console.error(error);

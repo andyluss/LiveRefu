@@ -95,7 +95,8 @@ export type Action =
   | { kind: "play_sound"; id: string }
   | { kind: "emit"; event: string }
   | { kind: "give_item"; item: string; count: number }
-  | { kind: "start_quest"; quest: string };
+  | { kind: "start_quest"; quest: string }
+  | { kind: "open_door" };
 
 export interface RuleDef {
   id: string;

@@ -34,6 +34,24 @@ pub struct Interactable {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "shape", rename_all = "snake_case")]
+pub enum Collider {
+    /// 2D 俯视用的轴对齐矩形（x/z 半尺寸）。
+    Aabb { half: [f32; 2] },
+    /// 2D 俯视用的圆。
+    Circle { radius: f32 },
+}
+
+impl Collider {
+    pub fn radius(&self) -> f32 {
+        match self {
+            Collider::Aabb { half } => half[0].max(half[1]),
+            Collider::Circle { radius } => *radius,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Door {
     pub open: bool,
     pub locked_by: Option<String>,
@@ -55,6 +73,8 @@ pub struct Entity {
     pub schedule: Option<String>,
     pub behavior: Option<String>,
     pub dialogue: Option<String>,
+    #[serde(default)]
+    pub collider: Option<Collider>,
 }
 
 impl Entity {

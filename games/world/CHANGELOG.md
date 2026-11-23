@@ -18,22 +18,29 @@
 - **M1 切片：TypeScript DSL**：`packages/world-authoring`、`src/content/demo.harbor/*.ts`、`tools/ts-build.mjs`、`worldc ts-build`；TS 编译包与 JSON 包同哈希。
 - **M1 切片：Web 预览**：`world-wasm`（wasm-bindgen）+ `web/`（Canvas 2D、点击/键盘交互、任务/事件 HUD、M0 trace 回放、R-016 三态主题）；截图见 `docs/shots/`。
 - **M1 记录**：[07 · M1 切片](docs/07_M1实现与验收.md)。
+- **M1 剩余：移动/碰撞**：`Command::Move`、`move_intent`、圆形玩家 vs 圆形/AABB 障碍、`open_door` 规则动作；关闭的门挡住玩家，开门后可通过。
+- **M1 剩余：Web 编辑器 v0**：`web/editor.html`、`tools/editor-server.mjs`、`worldc editor`；拖动摆放、字段/定义/规则编辑、校验、构建并试玩。
+- **M1 剩余：内容测试**：`worldc content-test` + `data/demo.harbor/tests/*.test.json`；`first_shift` 与 `airlock_locked_without_key`。
+- **M1 剩余：sourcemap / 热重载**：TS 编译生成 `sourcemap.json`；预览轮询 `/api/pack-version`，编辑器构建后自动刷新。
+- **M1 剩余：5k 合成基准**：`worldc bench --synthetic 5000 --ticks 6000`，Apple M1 Pro release ≈ 0.009 ms/tick。
 
 ### 变更
 
-- README 状态改为 **M0 已通过 + M1 切片已通过**；项目名统一为 **RefuWorld**。
+- README 状态改为 **M0 已通过 + M1 主要切片已通过**；项目名统一为 **RefuWorld**。
 - [05](docs/05_路线图与验收.md) 的待拍板问题改为已拍板结论，并补 M0 验收结果表。
 - 新增 `.github/workflows/world-m0.yml`：三 OS `cargo test`、C ABI 冒烟、wasm core 构建。
-- 新增 `test/run_m1.sh`、`web/build.sh`、`web/README.md`；`worldc` 增加 `ts-build`。
+- 新增 `test/run_m1.sh`、`web/build.sh`、`web/README.md`、`tools/editor-server.mjs`；`worldc` 增加 `ts-build`/`content-test`/`editor`。
+- 黄金哈希因 `collider`/`move_intent`/`open_door` 更新：包 `sha256:52116a…4ad55f`，600 tick `0x9c4032a29d99274d`。
 
 ### 验证
 
-- `cargo test --workspace`：10 个测试通过。
-- Headless 600 tick 双跑：`0xd1c6ea084b71cc0d`。
-- C ABI 宿主：同 `0xd1c6ea084b71cc0d`。
+- `cargo test --workspace`：11 个测试通过。
+- Headless 600 tick 双跑：`0x9c4032a29d99274d`。
+- C ABI 宿主：同 `0x9c4032a29d99274d`。
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
-- M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xd1c6ea084b71cc0d`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
+- M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0x9c4032a29d99274d`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
+- M1 剩余：`content-test` 2 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.009 ms/tick；R-016 两个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17
 

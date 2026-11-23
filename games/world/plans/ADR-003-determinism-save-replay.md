@@ -12,11 +12,12 @@
 5. 存档 = JSON 信封（format/core/pack/hash/seed/tick/snapshot/checksum），校验和覆盖除 checksum 外的字段；包不匹配或校验和错误都拒绝加载。
 6. 回放 = 包哈希 + tick 数 + 输入/命令 trace + 每 60 tick 关键帧哈希 + 最终哈希。
 
-## M0 证据
+## M0 证据（M1 更新）
 
-- 同一 trace 双跑：`final_hash = 0xd1c6ea084b71cc0d`。
+- 同一 trace 双跑：`final_hash = 0x9c4032a29d99274d`。
 - save → load → hash 一致；篡改 checksum 被拒绝。
 - C ABI 宿主同一 trace 得到相同哈希。
+- **M1 变更**：加入 `collider`、`move_intent` 与 `open_door` 动作后，状态快照包含新字段，黄金哈希更新为 `0x9c4032a29d99274d`；旧 `0xd1c6…` 只对应 M0 的历史状态。
 
 ## 已知限制（M1 必须补）
 

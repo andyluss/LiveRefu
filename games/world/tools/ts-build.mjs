@@ -6,7 +6,7 @@
 // 类型检查由编辑器/未来的 tsc 任务负责；编译期只保证结构可被 worldc 校验。
 
 import { mkdirSync, readdirSync, rmSync, writeFileSync, statSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as dsl from "#world-authoring";
 
@@ -125,6 +125,17 @@ async function main() {
     }
     writeJson(join(out, "loc", `${def.locale}.json`), def.data);
   }
+
+  const sourcemap = {
+    pack: pack.id,
+    world: world.id,
+    definitions: defs.map((def) => ({
+      kind: def.kind,
+      id: def.kind === "loc" ? def.locale : (def.data?.id ?? null),
+      source: relative(process.cwd(), def.source),
+    })),
+  };
+  writeJson(join(out, "sourcemap.json"), sourcemap);
 
   const counts = Object.fromEntries(
     Object.keys(dirs).map((kind) => [kind, byKind(defs, kind).length]),

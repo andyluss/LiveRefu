@@ -1,0 +1,12 @@
+{
+  "name": "airlock_locked_without_key",
+  "ticks": 20,
+  "steps": [
+    { "tick": 10, "command": { "op": "interact", "actor": "player", "target": "demo.airlock" } }
+  ],
+  "expect": {
+    "flags": { "flag.airlock.open": false },
+    "events": ["toast"],
+    "inventory": {}
+  }
+}

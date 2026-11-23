@@ -35,6 +35,8 @@ jobs:
         run: cargo test --workspace
       - name: Determinism double-run
         run: cargo run -q -p world-cli -- test
+      - name: Content tests
+        run: cargo run -q -p world-cli -- content-test
 
   c-abi:
     name: C ABI smoke (unix)
@@ -59,7 +61,7 @@ jobs:
         with:
           node-version: "24"
       - name: R-016 three-state theme
-        run: node design/tools/check_html_theme.ts games/world/web/index.html
+        run: node design/tools/check_html_theme.ts games/world/web/index.html games/world/web/editor.html
       - name: TypeScript DSL compiler
         working-directory: games/world
         run: node tools/ts-build.mjs --src src/content/demo.harbor --out /tmp/refuworld-ts-demo

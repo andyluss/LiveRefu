@@ -19,13 +19,22 @@ echo "== 2. TS 包跑 M0 trace =="
   --pack "$ROOT/dist/ts/demo.harbor" \
   --trace "$ROOT/data/demo.harbor/tests/m0.trace.json"
 
-echo "== 3. 构建 Web 预览（wasm + wasm-bindgen） =="
+echo "== 3. 内容测试 =="
+"$CODE/run.sh" run -q -p world-cli -- content-test --pack "$ROOT/data/demo.harbor"
+
+echo "== 4. 编辑器服务器冒烟 =="
+node "$ROOT/test/editor_smoke.mjs"
+
+echo "== 5. 构建 Web 预览（wasm + wasm-bindgen） =="
 "$ROOT/web/build.sh"
 
-echo "== 4. R-016 三态主题检查 =="
-node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html"
+echo "== 6. 5k 合成基准 =="
+"$CODE/run.sh" run -q --release -p world-cli -- bench --synthetic 5000 --ticks 600
 
-echo "== 5. wasm 预览逻辑测试 =="
+echo "== 7. R-016 三态主题检查 =="
+node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html"
+
+echo "== 8. wasm 预览逻辑测试 =="
 node "$ROOT/web/test_preview.cjs"
 
 echo "M1 PASS"

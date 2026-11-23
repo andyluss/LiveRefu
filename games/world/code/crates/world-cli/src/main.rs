@@ -1,8 +1,10 @@
+use serde::Deserialize;
+use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command as ProcessCommand;
 use std::time::Instant;
-use world_core::{first_divergence, run_trace, Trace};
+use world_core::{first_divergence, run_trace, Trace, TraceStep, World};
 use world_pack::{Pack, ValidationReport};
 
 fn main() {
@@ -22,7 +24,9 @@ fn run() -> Result<(), String> {
         "validate" => cmd_validate(&args[1..]),
         "build" => cmd_build(&args[1..]),
         "ts-build" => cmd_ts_build(&args[1..]),
+        "editor" => cmd_editor(&args[1..]),
         "test" => cmd_test(&args[1..]),
+        "content-test" => cmd_content_test(&args[1..]),
         "replay" => cmd_replay(&args[1..]),
         "demo" => cmd_demo(&args[1..]),
         "bench" => cmd_bench(&args[1..]),
@@ -206,6 +210,31 @@ fn cmd_ts_build(args: &[String]) -> Result<(), String> {
     Ok(())
 }
 
+fn cmd_editor(args: &[String]) -> Result<(), String> {
+    let base = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let pack = parse_flag(args, "--pack")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| base.join("../../../data/demo.harbor"));
+    let port = parse_flag(args, "--port").unwrap_or("8788");
+    let script = base.join("../../../tools/editor-server.mjs");
+    if !script.is_file() {
+        return Err(format!("找不到编辑器服务器: {}", script.display()));
+    }
+    println!("RefuWorld editor: http://127.0.0.1:{port}/");
+    let status = ProcessCommand::new("node")
+        .arg(&script)
+        .arg("--pack")
+        .arg(&pack)
+        .arg("--port")
+        .arg(port)
+        .status()
+        .map_err(|e| format!("无法启动 node: {e}"))?;
+    if !status.success() {
+        return Err(format!("编辑器退出（exit {:?}）", status.code()));
+    }
+    Ok(())
+}
+
 fn cmd_test(args: &[String]) -> Result<(), String> {
     let path = pack_path(args);
     let pack = load_pack(&path)?;
@@ -254,6 +283,149 @@ fn cmd_test(args: &[String]) -> Result<(), String> {
         }
     }
     Ok(())
+}
+
+#[derive(Debug, Deserialize)]
+struct ContentTest {
+    name: String,
+    ticks: u64,
+    #[serde(default)]
+    steps: Vec<TraceStep>,
+    #[serde(default)]
+    expect: Expectations,
+}
+
+#[derive(Debug, Default, Deserialize)]
+struct Expectations {
+    #[serde(default)]
+    flags: BTreeMap<String, bool>,
+    #[serde(default)]
+    quests: BTreeMap<String, String>,
+    #[serde(default)]
+    events: Vec<String>,
+    #[serde(default)]
+    inventory: BTreeMap<String, u32>,
+}
+
+fn cmd_content_test(args: &[String]) -> Result<(), String> {
+    let path = pack_path(args);
+    let pack = load_pack(&path)?;
+    require_valid(&pack)?;
+    let tests_dir = path.join("tests");
+    let filter = parse_flag(args, "--filter");
+    let mut files: Vec<PathBuf> = fs::read_dir(&tests_dir)
+        .map_err(|e| format!("读取测试目录失败 {}: {e}", tests_dir.display()))?
+        .filter_map(|entry| entry.ok().map(|e| e.path()))
+        .filter(|p| {
+            p.file_name()
+                .and_then(|s| s.to_str())
+                .map(|s| s.ends_with(".test.json"))
+                .unwrap_or(false)
+        })
+        .collect();
+    files.sort();
+    if files.is_empty() {
+        return Err(format!("没有找到 *.test.json: {}", tests_dir.display()));
+    }
+
+    let mut failures = 0;
+    for file in files {
+        if let Some(filter) = filter {
+            if !file.to_string_lossy().contains(filter) {
+                continue;
+            }
+        }
+        let text =
+            fs::read_to_string(&file).map_err(|e| format!("读取 {} 失败: {e}", file.display()))?;
+        let test: ContentTest = serde_json::from_str(&text)
+            .map_err(|e| format!("解析 {} 失败: {e}", file.display()))?;
+        match run_content_test(&pack, &test) {
+            Ok(()) => println!("content-test: {} PASS", test.name),
+            Err(error) => {
+                failures += 1;
+                println!("content-test: {} FAIL", test.name);
+                for line in error.lines() {
+                    println!("  {line}");
+                }
+            }
+        }
+    }
+    if failures > 0 {
+        Err(format!("{failures} 个内容测试失败"))
+    } else {
+        Ok(())
+    }
+}
+
+fn run_content_test(pack: &Pack, test: &ContentTest) -> Result<(), String> {
+    let hash = pack.hash().map_err(|e| e.to_string())?;
+    let mut world = World::from_pack(pack, hash)?;
+    let mut steps = test.steps.clone();
+    steps.sort_by_key(|s| s.tick);
+    for tick in 1..=test.ticks {
+        for step in steps.iter().filter(|s| s.tick == tick) {
+            let command = step
+                .command
+                .resolve(&world)
+                .map_err(|e| format!("tick {tick}: {e}"))?;
+            world.queue_command(command);
+        }
+        world.tick_once();
+    }
+
+    let mut errors = Vec::new();
+    for (flag, expected) in &test.expect.flags {
+        let actual = world.flags.get(flag).copied().unwrap_or(false);
+        if actual != *expected {
+            errors.push(format!("flag {flag}: 期望 {expected}，实际 {actual}"));
+        }
+    }
+    for (quest, expected) in &test.expect.quests {
+        let actual = world
+            .quests
+            .get(quest)
+            .map(|q| {
+                if q.completed {
+                    "completed"
+                } else if q.active {
+                    "active"
+                } else {
+                    "inactive"
+                }
+            })
+            .unwrap_or("missing");
+        if actual != expected {
+            errors.push(format!("quest {quest}: 期望 {expected}，实际 {actual}"));
+        }
+    }
+    for event in &test.expect.events {
+        if !world.events.iter().any(|e| e.kind == *event) {
+            errors.push(format!("缺少事件 {event}"));
+        }
+    }
+    let player = world
+        .find_by_content_id("player")
+        .ok_or_else(|| "世界缺少 player".to_string())?;
+    let inventory: BTreeMap<String, u32> = world
+        .entity(player)
+        .map(|e| {
+            e.inventory
+                .iter()
+                .map(|s| (s.item.clone(), s.count))
+                .collect()
+        })
+        .unwrap_or_default();
+    for (item, expected) in &test.expect.inventory {
+        let actual = inventory.get(item).copied().unwrap_or(0);
+        if actual != *expected {
+            errors.push(format!("inventory {item}: 期望 {expected}，实际 {actual}"));
+        }
+    }
+    if errors.is_empty() {
+        Ok(())
+    } else {
+        Err(errors.join("\n"))
+    }
 }
 
 fn cmd_replay(args: &[String]) -> Result<(), String> {
@@ -315,6 +487,36 @@ fn cmd_demo(args: &[String]) -> Result<(), String> {
 }
 
 fn cmd_bench(args: &[String]) -> Result<(), String> {
+    if let Some(raw) = parse_flag(args, "--synthetic") {
+        let entities: usize = raw
+            .parse()
+            .map_err(|e| format!("--synthetic 解析失败: {e}"))?;
+        let ticks: u64 = parse_flag(args, "--ticks")
+            .unwrap_or("600")
+            .parse()
+            .map_err(|e| format!("--ticks 解析失败: {e}"))?;
+        let pack = Pack::synthetic(entities);
+        let hash = pack.hash().map_err(|e| e.to_string())?;
+        let mut world = World::from_pack(&pack, hash)?;
+        for _ in 0..60 {
+            world.tick_once();
+        }
+        let start = Instant::now();
+        for _ in 0..ticks {
+            world.tick_once();
+        }
+        let elapsed = start.elapsed();
+        let per_tick = elapsed.as_secs_f64() * 1000.0 / ticks.max(1) as f64;
+        println!(
+            "bench: synthetic entities={} ticks={} total={:.3}ms per_tick={:.4}ms hash=0x{:016x}",
+            entities,
+            ticks,
+            elapsed.as_secs_f64() * 1000.0,
+            per_tick,
+            world.state_hash()
+        );
+        return Ok(());
+    }
     let path = pack_path(args);
     let pack = load_pack(&path)?;
     require_valid(&pack)?;
@@ -465,16 +667,18 @@ fn cmd_explain(args: &[String]) -> Result<(), String> {
 
 fn print_help() {
     println!(
-        r#"worldc — RefuWorld M0 内容工具链
+        r#"worldc — RefuWorld 内容工具链
 
 用法:
   worldc validate [--pack DIR] [--json]
   worldc build    [--pack DIR] [--out DIR]
   worldc ts-build [--src DIR] [--out DIR] [--compare DIR]
+  worldc editor   [--pack DIR] [--port N]
   worldc test     [--pack DIR] [--trace FILE] [--ticks N] [--events]
+  worldc content-test [--pack DIR] [--filter TEXT]
   worldc replay   --trace FILE [--pack DIR] [--expect 0xHASH]
   worldc demo     [--pack DIR] [--trace FILE] [--ticks N]
-  worldc bench    [--pack DIR]
+  worldc bench    [--pack DIR] [--synthetic N] [--ticks N]
   worldc new      <pack.id> [--out DIR]
   worldc header   [--out FILE]
   worldc explain  <CODE>

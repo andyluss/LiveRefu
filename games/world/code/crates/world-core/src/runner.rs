@@ -107,5 +107,6 @@ fn describe_command(cmd: &TraceCommand) -> String {
         TraceCommand::PlaySound { id } => format!("sound {id}"),
         TraceCommand::Emit { event } => format!("emit {event}"),
         TraceCommand::ActivateZone { zone } => format!("activate zone {zone}"),
+        TraceCommand::Move { actor, x, z } => format!("move {actor} ({x}, {z})"),
     }
 }

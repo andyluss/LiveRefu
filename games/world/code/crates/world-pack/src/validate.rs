@@ -415,6 +415,7 @@ fn validate_action(pack: &Pack, a: &ActionDef, path: &str, r: &mut ValidationRep
                 );
             }
         }
+        ActionDef::OpenDoor => {}
     }
 }
 

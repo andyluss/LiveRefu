@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 世界编辑器 v0</title>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {
+        root.dataset.themeMode = 'system';
+        root.dataset.theme = 'light';
+      }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./editor.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div>
+        <h1>RefuWorld Editor <span class="badge">v0</span></h1>
+        <p>编辑 JSON 内容包 · 拖动摆放 · 构建并试玩</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="button-link" href="./index.html" target="_blank" rel="noopener">打开预览</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="editor-layout">
+    <section class="stage">
+      <div class="toolbar">
+        <button id="save-placement" type="button">保存摆放</button>
+        <button id="save-definition" type="button">保存定义</button>
+        <button id="save-rule" type="button">保存规则</button>
+        <button id="validate" type="button">校验</button>
+        <button id="build" type="button" class="primary">构建并试玩</button>
+        <span id="dirty" class="dirty">已保存</span>
+      </div>
+      <canvas id="layout" width="960" height="640" aria-label="区域布局编辑器"></canvas>
+      <p class="stage-hint">点击实体选中；拖动改变位置；Shift + 拖动可微调（0.5m 网格）。</p>
+    </section>
+
+    <aside class="panel editor-panel">
+      <section>
+        <h2>实体</h2>
+        <div id="placement-list" class="stack"></div>
+      </section>
+
+      <section>
+        <h2>摆放</h2>
+        <div class="fields">
+          <label>ID <input id="field-id" type="text" readonly /></label>
+          <label>X <input id="field-x" type="number" step="0.5" /></label>
+          <label>Z <input id="field-z" type="number" step="0.5" /></label>
+          <label>Yaw <input id="field-yaw" type="number" step="15" /></label>
+          <label>Persistent ID <input id="field-persistent" type="text" /></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>定义 JSON</h2>
+        <p class="hint" id="definition-path">未选中实体</p>
+        <textarea id="definition-json" spellcheck="false" rows="10"></textarea>
+      </section>
+
+      <section>
+        <h2>规则 JSON</h2>
+        <select id="rule-select"></select>
+        <textarea id="rule-json" spellcheck="false" rows="10"></textarea>
+      </section>
+
+      <section>
+        <h2>日志</h2>
+        <pre id="log" class="log"></pre>
+      </section>
+    </aside>
+  </main>
+
+  <noscript><p class="noscript">编辑器需要 JavaScript；内容仍可用文本方式编辑。</p></noscript>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+          button.setAttribute('aria-pressed', button.getAttribute('data-theme-choice') === mode ? 'true' : 'false');
+        });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+        button.addEventListener('click', function () { apply(button.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () {
+        if (root.dataset.themeMode === 'system') apply('system', false);
+      });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="module" src="./editor.js"></script>
+</body>
+</html>

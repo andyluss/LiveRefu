@@ -226,6 +226,7 @@ pub enum ActionDef {
     Emit { event: String },
     GiveItem { item: String, count: u32 },
     StartQuest { quest: String },
+    OpenDoor,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
