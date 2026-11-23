@@ -1,0 +1,11 @@
+{
+  "name": "pickup_keycard",
+  "ticks": 30,
+  "steps": [
+    { "tick": 10, "command": { "op": "pickup", "actor": "player", "target": "item.keycard" } }
+  ],
+  "expect": {
+    "inventory": { "item.keycard": 1 },
+    "events": ["item_acquired", "entity_despawned"]
+  }
+}

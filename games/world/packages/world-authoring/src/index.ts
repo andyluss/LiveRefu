@@ -27,9 +27,7 @@ type Def =
   | { kind: "schedule"; data: ScheduleDef }
   | { kind: "loc"; locale: string; data: LocTable };
 
-export interface CollectedDef extends Def {
-  source: string;
-}
+export type CollectedDef = Def & { source: string };
 
 let currentSource = "<unknown>";
 let registry: CollectedDef[] = [];

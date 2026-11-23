@@ -2,7 +2,7 @@
 title: "RefuWorld · 跨游戏世界系统中间层"
 tagline: "让内容作者写世界，让引擎只负责把它画出来"
 form: "Rust 权威内核 + TypeScript 内容层 + 薄引擎适配器"
-status: "M0 已通过；M1 主要切片（TS DSL / Web 预览 / 编辑器 v0 / 移动）已通过"
+status: "M0 已通过；M1 主要切片（TS DSL / Web 预览 / 编辑器 v0.5 / 移动）已通过"
 stack: "Rust / TypeScript / C ABI"
 scope: "跨游戏、跨引擎"
 ---
@@ -12,8 +12,8 @@ scope: "跨游戏、跨引擎"
 > **一句话**：把「世界怎么运转」从引擎里拿出来，做成一个**确定性、可测试、可替换引擎**的 Rust 内核；
 > 内容作者用 TypeScript 与数据描述世界，引擎只负责把世界画出来、放出声音、接收输入。
 
-> **当前状态**：**M0 已通过；M1 主要切片（TS DSL / Web 预览 / 编辑器 v0 / 移动）已通过**。
-> 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm Web 预览、Web 编辑器 v0、移动碰撞均可运行；
+> **当前状态**：**M0 已通过；M1 主要切片（TS DSL / Web 预览 / 编辑器 v0.5 / 移动）已通过**。
+> 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm Web 预览、Web 编辑器 v0.5、移动碰撞均可运行；
 > TS 编译包与 JSON 包同哈希，Web 预览回放得到同一 `0x9c4032a29d99274d`。
 > 记录见 [06 · M0](docs/06_M0实现与验收.md) 与 [07 · M1 切片](docs/07_M1实现与验收.md)。
 >
@@ -24,10 +24,13 @@ scope: "跨游戏、跨引擎"
 
 ```bash
 cd games/world
+npm install                    # TypeScript 类型检查（可选，但推荐）
 ./test/run_m0.sh          # M0：测试 / 双跑哈希 / 坏包 / C ABI / wasm+QuickJS / 基准
 ./test/run_m1.sh          # M1：TS DSL / 内容测试 / 5k 基准 / 编辑器 / wasm 预览
+./worldc ts-check                              # TypeScript 类型检查
 ./worldc ts-build --compare data/demo.harbor   # 单独跑 TS DSL 编译
-./worldc editor --port 8788                    # Web 编辑器 v0
+./worldc editor --port 8788                    # Web 编辑器 v0.5
+npm run dev                                    # TS 内容监听（编译→构建→复制 pack.data）
 ```
 
 M1 预览：
@@ -40,7 +43,7 @@ cd web && python3 -m http.server 8787
 # 编辑器（可保存/构建）：cd .. && ./worldc editor --port 8788
 ```
 
-> 当前有 **Web 预览**，还没有 **Web 编辑器**；TS DSL 已可用，但类型检查/热重载在 M1 剩余项里。
+> 当前有 **Web 预览** 与 **Web 编辑器 v0.5**（布局/表单/对话图/撤销）；TS 类型检查与 `npm run dev` 已可用；更完整的 schema 表单、导航与 ScriptHost 仍待。
 
 ## 先读哪篇
 
@@ -87,6 +90,7 @@ cd web && python3 -m http.server 8787
 | [`docs/05_路线图与验收.md`](docs/05_路线图与验收.md) | M0–M4 里程碑、第一个垂直切片、测试策略、指标、待拍板问题 |
 | [`docs/06_M0实现与验收.md`](docs/06_M0实现与验收.md) | M0 实际架构、验收对照、基准、偏差与已知限制 |
 | [`docs/07_M1实现与验收.md`](docs/07_M1实现与验收.md) | M1 切片：TS DSL、Web 预览、截图、验收与剩余 M1 |
+| [`docs/08_两小时教程.md`](docs/08_两小时教程.md) | 用 Web 编辑器做出「港湾值班室」的两小时教程 |
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |
 | [`tools/ts-build.mjs`](tools/ts-build.mjs) | TS DSL → 规范化内容包编译器 |

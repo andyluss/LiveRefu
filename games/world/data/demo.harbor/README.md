@@ -18,7 +18,7 @@ cd games/world/code
 
 600 tick 最终哈希：`0x9c4032a29d99274d`。
 
-内容测试：`./worldc content-test`（`first_shift` / `airlock_locked_without_key`）。
+内容测试：`./worldc content-test`（`first_shift` / `airlock_locked_without_key` / `pickup_keycard`）。
 
 ## 目录
 
@@ -38,3 +38,4 @@ cd games/world/code
 | `tests/m0.trace.json` | 600 tick 输入轨迹 |
 | `tests/first_shift.test.json` | 内容测试：说话 + 开门 + 任务完成 |
 | `tests/airlock_locked.test.json` | 内容测试：无钥匙卡时门不开 |
+| `tests/pickup_keycard.test.json` | 内容测试：拾取后背包有钥匙卡 |

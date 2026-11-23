@@ -13,6 +13,17 @@ const el = {
   rule: document.getElementById("rule-json"),
   dirty: document.getElementById("dirty"),
   log: document.getElementById("log"),
+  undo: document.getElementById("undo"),
+  redo: document.getElementById("redo"),
+  dataForm: document.getElementById("data-form"),
+  dialogueSelect: document.getElementById("dialogue-select"),
+  dialogueCanvas: document.getElementById("dialogue-canvas"),
+  nodeId: document.getElementById("node-id"),
+  nodeSpeaker: document.getElementById("node-speaker"),
+  nodeNext: document.getElementById("node-next"),
+  nodeEnd: document.getElementById("node-end"),
+  nodeText: document.getElementById("node-text"),
+  nodeChoices: document.getElementById("node-choices"),
 };
 
 let packData = null;
@@ -26,6 +37,10 @@ let dragging = false;
 let dragOffset = null;
 let dirty = new Set();
 let lines = [];
+let undoStack = [];
+let redoStack = [];
+let currentDialogueKey = null;
+let selectedNode = null;
 
 function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
@@ -53,6 +68,60 @@ function markClean(path) {
   } else {
     el.dirty.textContent = `有未保存改动（${dirty.size}）`;
   }
+}
+
+function cloneFiles() {
+  return structuredClone(packData.files);
+}
+
+function pushUndo() {
+  if (!packData) return;
+  undoStack.push(cloneFiles());
+  if (undoStack.length > 50) undoStack.shift();
+  redoStack = [];
+  updateUndoButtons();
+}
+
+function updateUndoButtons() {
+  el.undo.disabled = undoStack.length === 0;
+  el.redo.disabled = redoStack.length === 0;
+}
+
+function restoreFiles(files) {
+  packData.files = files;
+  manifest = files["pack.json"];
+  world = files[manifest.entry.world];
+  zone = files[zoneKey];
+  if (!zone) {
+    zoneKey = pickZone();
+    zone = files[zoneKey];
+  }
+  if (selected >= (zone?.placements?.length ?? 0)) selected = 0;
+}
+
+function undo() {
+  if (undoStack.length === 0) return;
+  redoStack.push(cloneFiles());
+  restoreFiles(undoStack.pop());
+  refreshAll();
+  log("撤销");
+}
+
+function redo() {
+  if (redoStack.length === 0) return;
+  undoStack.push(cloneFiles());
+  restoreFiles(redoStack.pop());
+  refreshAll();
+  log("重做");
+}
+
+function refreshAll() {
+  renderList();
+  syncInspector();
+  setupRules();
+  setupDialogues();
+  draw();
+  updateUndoButtons();
 }
 
 function filesUnder(prefix) {
@@ -104,6 +173,87 @@ function syncInspector() {
   el.definitionPath.textContent = path ?? "找不到定义";
   const definition = path ? packData.files[path] : null;
   el.definition.value = definition ? JSON.stringify(definition, null, 2) : "";
+  renderDataForm();
+}
+
+function formField(labelText, value, onInput, options = {}) {
+  const label = document.createElement("label");
+  label.textContent = labelText;
+  let input;
+  if (options.select) {
+    input = document.createElement("select");
+    for (const option of options.select) {
+      const node = document.createElement("option");
+      node.value = option;
+      node.textContent = option;
+      input.append(node);
+    }
+    input.value = String(value ?? "");
+  } else {
+    input = document.createElement("input");
+    input.type = options.type ?? "text";
+    if (options.step) input.step = options.step;
+    input.value = String(value ?? "");
+  }
+  input.addEventListener("focus", pushUndo);
+  input.addEventListener("input", () => onInput(input.value));
+  input.addEventListener("change", () => onInput(input.value));
+  label.append(input);
+  return label;
+}
+
+function renderDataForm() {
+  el.dataForm.replaceChildren();
+  const placement = currentPlacement();
+  const path = definitionPathFor(placement);
+  const def = path ? packData.files[path] : null;
+  if (!def) {
+    el.dataForm.innerHTML = '<p class="muted">未选中实体</p>';
+    return;
+  }
+  const isActor = path.includes("/actors/");
+  const isProp = path.includes("/props/");
+  const update = () => {
+    markDirty(path);
+    el.definition.value = JSON.stringify(def, null, 2);
+  };
+  el.dataForm.append(formField("Name", def.name, (value) => { def.name = value; update(); }));
+  el.dataForm.append(formField("Tags", (def.tags ?? []).join(", "), (value) => {
+    def.tags = value.split(",").map((s) => s.trim()).filter(Boolean);
+    update();
+  }));
+  if (isActor) {
+    el.dataForm.append(formField("Health", def.stats?.health ?? 100, (value) => {
+      def.stats = { ...(def.stats ?? {}), health: Number(value) || 0 };
+      update();
+    }, { type: "number" }));
+    el.dataForm.append(formField("Speed", def.stats?.speed ?? 0, (value) => {
+      def.stats = { ...(def.stats ?? {}), speed: Number(value) || 0 };
+      update();
+    }, { type: "number", step: "0.1" }));
+    el.dataForm.append(formField("Dialogue", def.dialogue ?? "", (value) => {
+      def.dialogue = value || undefined;
+      update();
+    }));
+    el.dataForm.append(formField("Schedule", def.brain?.schedule ?? "", (value) => {
+      def.brain = { ...(def.brain ?? { profile: "schedule" }), schedule: value || undefined };
+      update();
+    }));
+  } else if (isProp) {
+    el.dataForm.append(formField("Locked by", def.locked_by ?? "", (value) => {
+      def.locked_by = value || undefined;
+      update();
+    }));
+    el.dataForm.append(formField("Verbs", (def.interactable?.verbs ?? []).join(", "), (value) => {
+      def.interactable = { ...(def.interactable ?? {}), verbs: value.split(",").map((s) => s.trim()).filter(Boolean) };
+      update();
+    }));
+  } else {
+    el.dataForm.append(formField("Stack", def.stack ?? 1, (value) => {
+      def.stack = Number(value) || 1;
+      update();
+    }, { type: "number" }));
+  }
 }
 
 function renderList() {
@@ -259,6 +409,7 @@ function bindCanvas() {
     const [sx, sy] = canvasPoint(event);
     const index = hitPlacement(sx, sy);
     if (index < 0) return;
+    pushUndo();
     selected = index;
     dragging = true;
     renderList();
@@ -299,6 +450,7 @@ function bindFields() {
     draw();
   };
   [el.x, el.z, el.yaw, el.persistent].forEach((input) => {
+    input.addEventListener("focus", pushUndo);
     input.addEventListener("change", update);
     input.addEventListener("input", update);
   });
@@ -361,7 +513,8 @@ async function saveAll() {
   const okZone = await savePlacement();
   const okDefinition = await saveDefinition();
   const okRule = await saveRule();
-  return okZone && okDefinition && okRule;
+  const okDialogue = await saveDialogue();
+  return okZone && okDefinition && okRule && okDialogue;
 }
 
 async function validate() {
@@ -409,10 +562,222 @@ function setupRules() {
   } else {
     el.rule.value = "";
   }
-  el.ruleSelect.addEventListener("change", () => {
+  el.ruleSelect.onchange = () => {
     currentRuleKey = el.ruleSelect.value;
     el.rule.value = currentRuleKey ? JSON.stringify(packData.files[currentRuleKey], null, 2) : "";
+  };
+}
+
+function currentDialogue() {
+  return currentDialogueKey ? packData.files[currentDialogueKey] : null;
+}
+
+function setupDialogues() {
+  const keys = filesUnder("dialogue/");
+  el.dialogueSelect.replaceChildren(...keys.map((key) => {
+    const option = document.createElement("option");
+    option.value = key;
+    option.textContent = key.replace(/^dialogue\//, "").replace(/\.json$/, "");
+    return option;
+  }));
+  if (!keys.includes(currentDialogueKey)) currentDialogueKey = keys[0] ?? null;
+  if (currentDialogueKey) el.dialogueSelect.value = currentDialogueKey;
+  el.dialogueSelect.onchange = () => {
+    currentDialogueKey = el.dialogueSelect.value;
+    selectedNode = currentDialogue()?.start ?? null;
+    syncNodeFields();
+    drawDialogue();
+  };
+  const dialogue = currentDialogue();
+  selectedNode = dialogue?.nodes?.[selectedNode] ? selectedNode : (dialogue?.start ?? null);
+  syncNodeFields();
+  drawDialogue();
+}
+
+function syncNodeFields() {
+  const dialogue = currentDialogue();
+  const node = dialogue && selectedNode ? dialogue.nodes[selectedNode] : null;
+  const disabled = !node;
+  [el.nodeSpeaker, el.nodeNext, el.nodeEnd, el.nodeText, el.nodeChoices].forEach((input) => {
+    input.disabled = disabled;
   });
+  if (!node) {
+    el.nodeId.value = "";
+    el.nodeSpeaker.value = "";
+    el.nodeNext.value = "";
+    el.nodeText.value = "";
+    el.nodeChoices.value = "";
+    return;
+  }
+  el.nodeId.value = selectedNode;
+  el.nodeSpeaker.value = node.speaker ?? "";
+  el.nodeNext.value = node.next ?? "";
+  el.nodeEnd.value = node.end ? "true" : "false";
+  el.nodeText.value = node.text ?? "";
+  el.nodeChoices.value = (node.choices ?? []).map((c) => `${c.text} => ${c.next}`).join("\n");
+}
+
+function dialogueNodeRects() {
+  const dialogue = currentDialogue();
+  const rects = [];
+  if (!dialogue) return rects;
+  const levels = new Map();
+  const start = dialogue.start;
+  levels.set(start, 0);
+  const queue = [start];
+  while (queue.length) {
+    const id = queue.shift();
+    const node = dialogue.nodes[id];
+    if (!node) continue;
+    const nexts = [];
+    if (node.next) nexts.push(node.next);
+    for (const choice of node.choices ?? []) nexts.push(choice.next);
+    for (const next of nexts) {
+      if (!levels.has(next)) {
+        levels.set(next, (levels.get(id) ?? 0) + 1);
+        queue.push(next);
+      }
+    }
+  }
+  let fallback = 0;
+  const byLevel = new Map();
+  for (const id of Object.keys(dialogue.nodes)) {
+    const level = levels.get(id) ?? fallback++;
+    if (!byLevel.has(level)) byLevel.set(level, []);
+    byLevel.get(level).push(id);
+  }
+  for (const [level, ids] of byLevel) {
+    ids.sort();
+    ids.forEach((id, index) => {
+      rects.push({
+        id,
+        x: 18 + level * 132,
+        y: 22 + index * 62,
+        w: 112,
+        h: 38,
+      });
+    });
+  }
+  return rects;
+}
+
+function drawDialogue() {
+  const canvas = el.dialogueCanvas;
+  const ctx2 = canvas.getContext("2d");
+  const dialogue = currentDialogue();
+  ctx2.clearRect(0, 0, canvas.width, canvas.height);
+  ctx2.fillStyle = css("--bg");
+  ctx2.fillRect(0, 0, canvas.width, canvas.height);
+  if (!dialogue) return;
+  const rects = dialogueNodeRects();
+  const byId = new Map(rects.map((r) => [r.id, r]));
+  ctx2.strokeStyle = css("--line");
+  ctx2.fillStyle = css("--muted");
+  ctx2.lineWidth = 1.5;
+  for (const [id, node] of Object.entries(dialogue.nodes)) {
+    const from = byId.get(id);
+    if (!from) continue;
+    const nexts = [];
+    if (node.next) nexts.push(node.next);
+    for (const c of node.choices ?? []) nexts.push(c.next);
+    for (const next of nexts) {
+      const to = byId.get(next);
+      if (!to) continue;
+      ctx2.beginPath();
+      ctx2.moveTo(from.x + from.w, from.y + from.h / 2);
+      ctx2.lineTo(to.x, to.y + to.h / 2);
+      ctx2.stroke();
+    }
+  }
+  for (const rect of rects) {
+    const selectedHere = rect.id === selectedNode;
+    ctx2.fillStyle = selectedHere ? css("--accent") : css("--panel");
+    ctx2.strokeStyle = selectedHere ? css("--accent") : css("--line");
+    ctx2.lineWidth = selectedHere ? 2 : 1;
+    ctx2.beginPath();
+    ctx2.roundRect(rect.x, rect.y, rect.w, rect.h, 8);
+    ctx2.fill();
+    ctx2.stroke();
+    ctx2.fillStyle = selectedHere ? css("--panel") : css("--ink");
+    ctx2.font = "12px ui-sans-serif, system-ui, sans-serif";
+    ctx2.textAlign = "left";
+    ctx2.fillText(rect.id, rect.x + 8, rect.y + 16);
+    ctx2.fillStyle = selectedHere ? css("--panel") : css("--muted");
+    ctx2.font = "11px ui-sans-serif, system-ui, sans-serif";
+    const text = (dialogue.nodes[rect.id]?.text ?? "").replace(/^loc:/, "");
+    ctx2.fillText(text.slice(0, 14), rect.x + 8, rect.y + 30);
+  }
+}
+
+function bindDialogue() {
+  el.dialogueCanvas.addEventListener("click", (event) => {
+    const rect = el.dialogueCanvas.getBoundingClientRect();
+    const x = (event.clientX - rect.left) * el.dialogueCanvas.width / rect.width;
+    const y = (event.clientY - rect.top) * el.dialogueCanvas.height / rect.height;
+    for (const node of dialogueNodeRects()) {
+      if (x >= node.x && x <= node.x + node.w && y >= node.y && y <= node.y + node.h) {
+        selectedNode = node.id;
+        syncNodeFields();
+        drawDialogue();
+        return;
+      }
+    }
+  });
+  const update = () => {
+    const dialogue = currentDialogue();
+    const node = dialogue && selectedNode ? dialogue.nodes[selectedNode] : null;
+    if (!node) return;
+    node.speaker = el.nodeSpeaker.value || undefined;
+    node.next = el.nodeNext.value || undefined;
+    node.end = el.nodeEnd.value === "true" || undefined;
+    node.text = el.nodeText.value;
+    node.choices = el.nodeChoices.value.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
+      const [text, next] = line.split("=>").map((part) => part.trim());
+      return text && next ? { text, next } : null;
+    }).filter(Boolean);
+    markDirty(currentDialogueKey);
+    drawDialogue();
+  };
+  [el.nodeSpeaker, el.nodeNext, el.nodeEnd, el.nodeText, el.nodeChoices].forEach((input) => {
+    input.addEventListener("focus", pushUndo);
+    input.addEventListener("change", update);
+    input.addEventListener("input", update);
+  });
+  document.getElementById("node-add").addEventListener("click", () => {
+    const dialogue = currentDialogue();
+    if (!dialogue) return;
+    pushUndo();
+    let n = 1;
+    while (dialogue.nodes[`node.${n}`]) n += 1;
+    const id = `node.${n}`;
+    dialogue.nodes[id] = { text: "新节点", end: true };
+    selectedNode = id;
+    markDirty(currentDialogueKey);
+    syncNodeFields();
+    drawDialogue();
+  });
+  document.getElementById("node-delete").addEventListener("click", () => {
+    const dialogue = currentDialogue();
+    if (!dialogue || !selectedNode || selectedNode === dialogue.start) return;
+    pushUndo();
+    delete dialogue.nodes[selectedNode];
+    selectedNode = dialogue.start;
+    markDirty(currentDialogueKey);
+    syncNodeFields();
+    drawDialogue();
+  });
+  document.getElementById("save-dialogue").addEventListener("click", saveDialogue);
+}
+
+async function saveDialogue() {
+  if (!currentDialogueKey) return false;
+  try {
+    await saveFile(currentDialogueKey, currentDialogue());
+    return true;
+  } catch (error) {
+    log(`保存对话失败：${error}`);
+    return false;
+  }
 }
 
 function pickZone() {
@@ -422,6 +787,10 @@ function pickZone() {
 }
 
 function bindButtons() {
+  el.definition.addEventListener("focus", pushUndo);
+  el.rule.addEventListener("focus", pushUndo);
+  document.getElementById("undo").addEventListener("click", undo);
+  document.getElementById("redo").addEventListener("click", redo);
   document.getElementById("save-placement").addEventListener("click", savePlacement);
   document.getElementById("save-definition").addEventListener("click", saveDefinition);
   document.getElementById("save-rule").addEventListener("click", saveRule);
@@ -441,9 +810,12 @@ async function boot() {
     zone = packData.files[zoneKey];
     selected = 0;
     setupRules();
+    setupDialogues();
     bindButtons();
     bindFields();
     bindCanvas();
+    bindDialogue();
+    updateUndoButtons();
     renderList();
     syncInspector();
     draw();

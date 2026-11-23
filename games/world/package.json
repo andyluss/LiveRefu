@@ -7,8 +7,13 @@
   },
   "scripts": {
     "ts-build": "node tools/ts-build.mjs --src src/content/demo.harbor --out dist/ts/demo.harbor",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "dev": "node tools/dev-watch.mjs",
     "web": "bash web/build.sh",
     "test:m0": "bash test/run_m0.sh",
     "test:m1": "bash test/run_m1.sh"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

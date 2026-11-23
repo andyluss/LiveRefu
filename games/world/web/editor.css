@@ -51,3 +51,9 @@ select { font-family: inherit; }
   .editor-layout { grid-template-columns: 1fr; }
   .editor-panel { max-height: none; }
 }
+#dialogue-canvas {
+  width: 100%; height: auto; aspect-ratio: 400 / 220;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--bg);
+  margin: 6px 0 8px; cursor: pointer;
+}
+#node-text, #node-choices { margin-top: 6px; }

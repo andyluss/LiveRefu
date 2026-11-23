@@ -22,7 +22,10 @@
 - **M1 剩余：Web 编辑器 v0**：`web/editor.html`、`tools/editor-server.mjs`、`worldc editor`；拖动摆放、字段/定义/规则编辑、校验、构建并试玩。
 - **M1 剩余：内容测试**：`worldc content-test` + `data/demo.harbor/tests/*.test.json`；`first_shift` 与 `airlock_locked_without_key`。
 - **M1 剩余：sourcemap / 热重载**：TS 编译生成 `sourcemap.json`；预览轮询 `/api/pack-version`，编辑器构建后自动刷新。
-- **M1 剩余：5k 合成基准**：`worldc bench --synthetic 5000 --ticks 6000`，Apple M1 Pro release ≈ 0.009 ms/tick。
+- **M1 剩余：5k 合成基准**：`worldc bench --synthetic 5000 --ticks 6000`，Apple M1 Pro release ≈ 0.01 ms/tick。
+- **M1 剩余：编辑器 v0.5**：字段表单、对话图（节点/边、编辑/新增/删除）、撤销/重做；保存仍走「先写后校验，失败回滚」。
+- **M1 剩余：类型检查与开发监听**：`worldc ts-check`/`npm run check`（TypeScript devDependency）、`npm run dev`（TS 监听→构建→复制 pack.data）。
+- **M1 剩余：第三条内容测试与两小时教程**：`pickup_keycard`；[08 · 两小时教程](docs/08_两小时教程.md)（真实作者试用待做）。
 
 ### 变更
 
@@ -40,7 +43,7 @@
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
 - M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0x9c4032a29d99274d`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
-- M1 剩余：`content-test` 2 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.009 ms/tick；R-016 两个页面通过。
+- M1 剩余：`content-test` 3 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.01 ms/tick；R-016 两个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17
 

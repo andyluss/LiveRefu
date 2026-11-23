@@ -51,6 +51,8 @@
         <button id="save-definition" type="button">保存定义</button>
         <button id="save-rule" type="button">保存规则</button>
         <button id="validate" type="button">校验</button>
+        <button id="undo" type="button" title="Ctrl/Cmd+Z">撤销</button>
+        <button id="redo" type="button" title="Ctrl/Cmd+Shift+Z">重做</button>
         <button id="build" type="button" class="primary">构建并试玩</button>
         <span id="dirty" class="dirty">已保存</span>
       </div>
@@ -76,6 +78,11 @@
       </section>
 
       <section>
+        <h2>字段</h2>
+        <div id="data-form" class="fields"></div>
+      </section>
+
+      <section>
         <h2>定义 JSON</h2>
         <p class="hint" id="definition-path">未选中实体</p>
         <textarea id="definition-json" spellcheck="false" rows="10"></textarea>
@@ -85,6 +92,25 @@
         <h2>规则 JSON</h2>
         <select id="rule-select"></select>
         <textarea id="rule-json" spellcheck="false" rows="10"></textarea>
+      </section>
+
+      <section>
+        <h2>对话</h2>
+        <select id="dialogue-select"></select>
+        <canvas id="dialogue-canvas" width="400" height="220" aria-label="对话图"></canvas>
+        <div class="fields">
+          <label>节点 <input id="node-id" type="text" readonly /></label>
+          <label>Speaker <input id="node-speaker" type="text" /></label>
+          <label>Next <input id="node-next" type="text" /></label>
+          <label>结束 <select id="node-end"><option value="false">否</option><option value="true">是</option></select></label>
+        </div>
+        <textarea id="node-text" rows="3" spellcheck="false"></textarea>
+        <textarea id="node-choices" rows="3" spellcheck="false" placeholder="每行一个选项：text => next"></textarea>
+        <div class="actions">
+          <button id="node-add" type="button">新增节点</button>
+          <button id="node-delete" type="button">删除节点</button>
+          <button id="save-dialogue" type="button">保存对话</button>
+        </div>
       </section>
 
       <section>

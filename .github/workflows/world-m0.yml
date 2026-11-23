@@ -62,6 +62,12 @@ jobs:
           node-version: "24"
       - name: R-016 three-state theme
         run: node design/tools/check_html_theme.ts games/world/web/index.html games/world/web/editor.html
+      - name: Install TS tooling
+        working-directory: games/world
+        run: npm ci
+      - name: TypeScript typecheck
+        working-directory: games/world
+        run: npm run check
       - name: TypeScript DSL compiler
         working-directory: games/world
         run: node tools/ts-build.mjs --src src/content/demo.harbor --out /tmp/refuworld-ts-demo

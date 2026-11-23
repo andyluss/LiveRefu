@@ -24,6 +24,7 @@ fn run() -> Result<(), String> {
         "validate" => cmd_validate(&args[1..]),
         "build" => cmd_build(&args[1..]),
         "ts-build" => cmd_ts_build(&args[1..]),
+        "ts-check" => cmd_ts_check(&args[1..]),
         "editor" => cmd_editor(&args[1..]),
         "test" => cmd_test(&args[1..]),
         "content-test" => cmd_content_test(&args[1..]),
@@ -207,6 +208,27 @@ fn cmd_ts_build(args: &[String]) -> Result<(), String> {
         }
         println!("compare: PASS（与 {} 一致）", compare);
     }
+    Ok(())
+}
+
+fn cmd_ts_check(_args: &[String]) -> Result<(), String> {
+    let base = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let root = base.join("../../..");
+    let tsc = root.join("node_modules/.bin/tsc");
+    if !tsc.is_file() {
+        return Err("未找到本地 TypeScript；先在 games/world 运行 `npm install`".to_string());
+    }
+    let status = ProcessCommand::new(&tsc)
+        .arg("--noEmit")
+        .arg("-p")
+        .arg(root.join("tsconfig.json"))
+        .current_dir(&root)
+        .status()
+        .map_err(|e| format!("无法启动 tsc: {e}"))?;
+    if !status.success() {
+        return Err(format!("类型检查失败（exit {:?}）", status.code()));
+    }
+    println!("ts-check: PASS");
     Ok(())
 }
 
@@ -673,6 +695,7 @@ fn print_help() {
   worldc validate [--pack DIR] [--json]
   worldc build    [--pack DIR] [--out DIR]
   worldc ts-build [--src DIR] [--out DIR] [--compare DIR]
+  worldc ts-check
   worldc editor   [--pack DIR] [--port N]
   worldc test     [--pack DIR] [--trace FILE] [--ticks N] [--events]
   worldc content-test [--pack DIR] [--filter TEXT]

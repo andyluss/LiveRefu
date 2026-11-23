@@ -8,6 +8,13 @@ export CARGO_HOME="${CARGO_HOME:-$CODE/.cargo-home}"
 
 cd "$ROOT"
 
+echo "== 0. TypeScript 类型检查 =="
+if [ -x "$ROOT/node_modules/.bin/tsc" ]; then
+  "$ROOT/worldc" ts-check
+else
+  echo "skip: 未安装 typescript（cd games/world && npm install）"
+fi
+
 echo "== 1. TS DSL 编译 + 与 JSON 包对比 =="
 "$CODE/run.sh" run -q -p world-cli -- ts-build \
   --src "$ROOT/src/content/demo.harbor" \
