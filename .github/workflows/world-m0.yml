@@ -50,6 +50,20 @@ jobs:
       - run: cc hosts/c/main.c -I include -L target/debug -lworld_ffi -Wl,-rpath,$PWD/target/debug -o ../dist/c_host
       - run: ../dist/c_host --pack ../dist/demo.harbor/pack.data
 
+  web:
+    name: web preview checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: R-016 three-state theme
+        run: node design/tools/check_html_theme.ts games/world/web/index.html
+      - name: TypeScript DSL compiler
+        working-directory: games/world
+        run: node tools/ts-build.mjs --src src/content/demo.harbor --out /tmp/refuworld-ts-demo
+
   wasm-core:
     name: wasm32 build (core)
     runs-on: ubuntu-latest

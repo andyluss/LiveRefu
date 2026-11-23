@@ -8,6 +8,7 @@ members = [
     "crates/world-ffi",
     "crates/world-host-headless",
     "crates/world-cli",
+    "crates/world-wasm",
 ]
 
 [workspace.package]

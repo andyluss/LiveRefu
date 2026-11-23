@@ -13,6 +13,7 @@
 | `world-cli` | `worldc`：validate/build/test/replay/demo/bench/new/header/explain |
 | `world-script` | QuickJS spike（原生） |
 | `world-script-wasm` | QuickJS spike（wasm32，Node 可调） |
+| `world-wasm` | Web 预览 wasm 门面（wasm-bindgen） |
 | `hosts/c` | C 冒烟宿主（不在 workspace 内，用 `cc` 编译） |
 | `include/world.h` | C 头文件（`worldc header` 生成） |
 
@@ -25,6 +26,14 @@
 ./run.sh run -q -p world-cli -- replay \
   --trace ../data/demo.harbor/tests/m0.trace.json --expect 0xd1c6ea084b71cc0d
 ./run.sh run -q --release -p world-cli -- bench
+```
+
+Web 预览：
+
+```bash
+cd ..
+./web/build.sh
+cd web && python3 -m http.server 8787
 ```
 
 C 宿主：

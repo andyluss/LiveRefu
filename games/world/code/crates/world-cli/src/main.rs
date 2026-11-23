@@ -1,5 +1,6 @@
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::process::Command as ProcessCommand;
 use std::time::Instant;
 use world_core::{first_divergence, run_trace, Trace};
 use world_pack::{Pack, ValidationReport};
@@ -20,6 +21,7 @@ fn run() -> Result<(), String> {
     match command {
         "validate" => cmd_validate(&args[1..]),
         "build" => cmd_build(&args[1..]),
+        "ts-build" => cmd_ts_build(&args[1..]),
         "test" => cmd_test(&args[1..]),
         "replay" => cmd_replay(&args[1..]),
         "demo" => cmd_demo(&args[1..]),
@@ -160,6 +162,47 @@ fn cmd_build(args: &[String]) -> Result<(), String> {
     .map_err(|e| format!("写 manifest.json 失败: {e}"))?;
     println!("build: {} ({} bytes)", out.display(), bytes.len());
     println!("pack_hash: {hash}");
+    Ok(())
+}
+
+fn cmd_ts_build(args: &[String]) -> Result<(), String> {
+    let base = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let src = parse_flag(args, "--src")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| base.join("../../../src/content/demo.harbor"));
+    let out = parse_flag(args, "--out")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| base.join("../../../dist/ts/demo.harbor"));
+    let script = base.join("../../../tools/ts-build.mjs");
+    if !script.is_file() {
+        return Err(format!("找不到 TS 编译器: {}", script.display()));
+    }
+    let status = ProcessCommand::new("node")
+        .arg(&script)
+        .arg("--src")
+        .arg(&src)
+        .arg("--out")
+        .arg(&out)
+        .status()
+        .map_err(|e| format!("无法启动 node: {e}"))?;
+    if !status.success() {
+        return Err(format!("TS 编译失败（exit {:?}）", status.code()));
+    }
+    let pack = load_pack(&out)?;
+    require_valid(&pack)?;
+    let hash = pack.hash().map_err(|e| e.to_string())?;
+    println!("ts-build: {} -> {}", src.display(), out.display());
+    println!("pack_hash: {hash}");
+    if let Some(compare) = parse_flag(args, "--compare") {
+        let expected = load_pack(&PathBuf::from(compare))?;
+        let expected_hash = expected.hash().map_err(|e| e.to_string())?;
+        if expected_hash != hash {
+            return Err(format!(
+                "TS 包与 JSON 包哈希不一致：{hash} != {expected_hash}"
+            ));
+        }
+        println!("compare: PASS（与 {} 一致）", compare);
+    }
     Ok(())
 }
 
@@ -427,6 +470,7 @@ fn print_help() {
 用法:
   worldc validate [--pack DIR] [--json]
   worldc build    [--pack DIR] [--out DIR]
+  worldc ts-build [--src DIR] [--out DIR] [--compare DIR]
   worldc test     [--pack DIR] [--trace FILE] [--ticks N] [--events]
   worldc replay   --trace FILE [--pack DIR] [--expect 0xHASH]
   worldc demo     [--pack DIR] [--trace FILE] [--ticks N]

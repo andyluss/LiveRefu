@@ -1,0 +1,22 @@
+import { defineDialogue } from "#world-authoring";
+
+defineDialogue({
+  id: "dlg.keeper.intro",
+  start: "greet",
+  nodes: {
+    greet: {
+      speaker: "demo.keeper",
+      text: "loc:dlg.keeper.greet",
+      choices: [
+        { text: "loc:dlg.keeper.ask_shift", next: "shift" },
+        { text: "loc:dlg.keeper.bye", next: "end" },
+      ],
+    },
+    shift: {
+      speaker: "demo.keeper",
+      text: "loc:dlg.keeper.shift",
+      next: "end",
+    },
+    end: { end: true },
+  },
+});

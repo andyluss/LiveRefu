@@ -1,0 +1,10 @@
+import { defineSchedule } from "#world-authoring";
+
+defineSchedule({
+  id: "schedule.keeper",
+  entries: [
+    { from: "06:00", to: "14:00", behavior: "work", at: "zone.harbor" },
+    { from: "14:00", to: "22:00", behavior: "wander", at: "zone.harbor" },
+    { from: "22:00", to: "06:00", behavior: "sleep", at: "zone.harbor" },
+  ],
+});

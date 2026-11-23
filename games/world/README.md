@@ -2,7 +2,7 @@
 title: "RefuWorld · 跨游戏世界系统中间层"
 tagline: "让内容作者写世界，让引擎只负责把它画出来"
 form: "Rust 权威内核 + TypeScript 内容层 + 薄引擎适配器"
-status: "M0 已通过（macOS 本地；三平台 CI 待跑）"
+status: "M0 已通过；M1 切片（TS DSL + Web 预览）已通过"
 stack: "Rust / TypeScript / C ABI"
 scope: "跨游戏、跨引擎"
 ---
@@ -12,31 +12,33 @@ scope: "跨游戏、跨引擎"
 > **一句话**：把「世界怎么运转」从引擎里拿出来，做成一个**确定性、可测试、可替换引擎**的 Rust 内核；
 > 内容作者用 TypeScript 与数据描述世界，引擎只负责把世界画出来、放出声音、接收输入。
 
-> **当前状态**：**M0 已实现并通过本地验收**。无头内核、内容包、CLI、C ABI 冒烟宿主、
-> wasm32 + QuickJS spike 均可运行；同一 trace 在 Headless 与 C 宿主上得到相同状态哈希
-> `0xd1c6ea084b71cc0d`。实现记录见 [06 · M0 实现与验收](docs/06_M0实现与验收.md)。
+> **当前状态**：**M0 已通过；M1 切片（TS DSL + Web 预览）已通过**。
+> 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm Web 预览均可运行；
+> TS 编译包与 JSON 包同哈希，Web 预览回放得到同一 `0xd1c6ea084b71cc0d`。
+> 记录见 [06 · M0](docs/06_M0实现与验收.md) 与 [07 · M1 切片](docs/07_M1实现与验收.md)。
 >
 > 方案仍有效：推荐结论见 [04 · 选型对比与推荐](docs/04_选型对比与推荐.md)，路线见
 > [05 · 路线图与验收](docs/05_路线图与验收.md)。
 
-## M0 快速开始
+## 快速开始
 
 ```bash
 cd games/world
-./test/run_m0.sh          # 一键验收：测试 / 双跑哈希 / 坏包 / C ABI / wasm+QuickJS / 基准
+./test/run_m0.sh          # M0：测试 / 双跑哈希 / 坏包 / C ABI / wasm+QuickJS / 基准
+./test/run_m1.sh          # M1 切片：TS DSL 同哈希 + wasm Web 预览同哈希
+./worldc ts-build --compare data/demo.harbor   # 单独跑 TS DSL 编译
 ```
 
-分开跑：
+M1 预览：
 
 ```bash
-cd games/world/code
-cargo run -q -p world-cli -- validate
-cargo run -q -p world-cli -- test --events
-cargo run -q -p world-cli -- demo
-cargo run -q --release -p world-cli -- bench
+cd games/world
+./web/build.sh
+cd web && python3 -m http.server 8787
+# 打开 http://127.0.0.1:8787/
 ```
 
-> M0 的内容仍用 JSON 规则；TypeScript DSL 与 Web 编辑器是 M1 的交付，不是 M0 的既成事实。
+> 当前有 **Web 预览**，还没有 **Web 编辑器**；TS DSL 已可用，但类型检查/热重载在 M1 剩余项里。
 
 ## 先读哪篇
 
@@ -82,10 +84,15 @@ cargo run -q --release -p world-cli -- bench
 | [`docs/04_选型对比与推荐.md`](docs/04_选型对比与推荐.md) | 五个整体方案评分、十二个子决策、推荐理由、改选信号、风险登记 |
 | [`docs/05_路线图与验收.md`](docs/05_路线图与验收.md) | M0–M4 里程碑、第一个垂直切片、测试策略、指标、待拍板问题 |
 | [`docs/06_M0实现与验收.md`](docs/06_M0实现与验收.md) | M0 实际架构、验收对照、基准、偏差与已知限制 |
+| [`docs/07_M1实现与验收.md`](docs/07_M1实现与验收.md) | M1 切片：TS DSL、Web 预览、截图、验收与剩余 M1 |
+| [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
+| [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |
+| [`tools/ts-build.mjs`](tools/ts-build.mjs) | TS DSL → 规范化内容包编译器 |
+| [`web/`](web/) | wasm Web 预览（构建、页面、Node 测试） |
 | [`code/`](code/) | Rust workspace：pack/core/ffi/headless/cli/script/wasm |
 | [`data/demo.harbor/`](data/demo.harbor/) | 「港湾值班室」内容包（M0 垂直切片） |
 | [`test/`](test/) | 一键验收脚本、坏包 fixture、wasm QuickJS 检查 |
-| [`plans/`](plans/) | ADR-001…006：拍板、包 schema、确定性、ABI、ECS 偏差、QuickJS spike |
+| [`plans/`](plans/) | ADR-001…007：拍板、包 schema、确定性、ABI、ECS 偏差、QuickJS spike、M1 DSL/Web |
 | [`CHANGELOG.md`](CHANGELOG.md) | 本项目变更日志 |
 
 ## 边界（明确不做）

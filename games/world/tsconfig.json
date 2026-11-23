@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "#world-authoring": ["./packages/world-authoring/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "packages/**/*.ts"]
+}

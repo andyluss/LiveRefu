@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# 从 games/world 运行 worldc，保留调用方 cwd（相对路径按 games/world 解析）。
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export CARGO_HOME="${CARGO_HOME:-$ROOT/code/.cargo-home}"
+exec cargo run -q --manifest-path "$ROOT/code/Cargo.toml" -p world-cli -- "$@"

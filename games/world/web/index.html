@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 港湾值班室（M1 预览）</title>
+  <script>
+    // R-016：CSS 加载前预绘制主题；默认 system。
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {
+        root.dataset.themeMode = 'system';
+        root.dataset.theme = 'light';
+      }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div>
+        <h1>RefuWorld</h1>
+        <p>港湾值班室 · M1 Web 预览</p>
+      </div>
+    </div>
+    <div class="theme-control" role="group" aria-label="主题">
+      <button type="button" data-theme-choice="system">系统</button>
+      <button type="button" data-theme-choice="light">浅色</button>
+      <button type="button" data-theme-choice="dark">深色</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage" aria-label="世界视图">
+      <canvas id="view" width="960" height="640" aria-label="港湾值班室俯视图"></canvas>
+      <div class="stage-hint">点击实体：物品=拾取、NPC=对话、门=交互；也可用 E / F / T。</div>
+    </section>
+
+    <aside class="panel">
+      <section>
+        <h2>状态</h2>
+        <div id="status" class="status">
+          <p class="muted">正在加载 wasm 内核…</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>任务</h2>
+        <div id="quests" class="stack"></div>
+      </section>
+
+      <section>
+        <h2>背包与标记</h2>
+        <div id="inventory" class="stack"></div>
+        <div id="flags" class="stack"></div>
+      </section>
+
+      <section>
+        <h2>操作</h2>
+        <div class="actions">
+          <button id="btn-interact" type="button">交互 E</button>
+          <button id="btn-pickup" type="button">拾取 F</button>
+          <button id="btn-talk" type="button">对话 T</button>
+        </div>
+        <div class="actions">
+          <button id="btn-replay" type="button">回放 M0 trace</button>
+          <button id="btn-reset" type="button">重置</button>
+          <button id="btn-pause" type="button">暂停</button>
+        </div>
+        <p id="replay-result" class="hint" aria-live="polite"></p>
+      </section>
+
+      <section>
+        <h2>事件</h2>
+        <ol id="events" class="events"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot">
+    <span>M0 黄金哈希：<code>0xd1c6ea084b71cc0d</code></span>
+    <span>内容包：<code>demo.harbor</code> · 60 tick/s</span>
+  </footer>
+
+  <noscript>
+    <p class="noscript">这个预览需要 JavaScript 与 WebAssembly。没有脚本时，页面文字与说明仍可阅读。</p>
+  </noscript>
+
+  <script>
+    // 主题控制不依赖 wasm：即使内核加载失败，三态主题仍可用。
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) {
+          try { localStorage.setItem('lrds-theme', mode); } catch (e) { /* ignore */ }
+        }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+          var on = button.getAttribute('data-theme-choice') === mode;
+          button.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          apply(button.getAttribute('data-theme-choice'), true);
+        });
+      });
+      media.addEventListener('change', function () {
+        if (root.dataset.themeMode === 'system') apply('system', false);
+      });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "refuworld",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#world-authoring": "./packages/world-authoring/src/index.ts"
+  },
+  "scripts": {
+    "ts-build": "node tools/ts-build.mjs --src src/content/demo.harbor --out dist/ts/demo.harbor",
+    "web": "bash web/build.sh",
+    "test:m0": "bash test/run_m0.sh",
+    "test:m1": "bash test/run_m1.sh"
+  }
+}

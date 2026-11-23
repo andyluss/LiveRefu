@@ -1,0 +1,12 @@
+import { defineQuest } from "#world-authoring";
+
+defineQuest({
+  id: "quest.first_shift",
+  title: "loc:quest.first_shift.title",
+  auto_start: true,
+  objectives: [
+    { kind: "talk", target: "demo.keeper" },
+    { kind: "flag", flag: "flag.airlock.open", value: true },
+  ],
+  rewards: [{ kind: "flag", flag: "flag.quest.first_shift.done", value: true }],
+});
