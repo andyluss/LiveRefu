@@ -1,20 +1,42 @@
 ---
-title: "Refu World · 跨游戏世界系统中间层"
+title: "RefuWorld · 跨游戏世界系统中间层"
 tagline: "让内容作者写世界，让引擎只负责把它画出来"
 form: "Rust 权威内核 + TypeScript 内容层 + 薄引擎适配器"
-status: "方案 v0.1（未实现，等待拍板）"
+status: "M0 已通过（macOS 本地；三平台 CI 待跑）"
 stack: "Rust / TypeScript / C ABI"
 scope: "跨游戏、跨引擎"
 ---
 
-# Refu World（世界层）
+# RefuWorld（世界层）
 
 > **一句话**：把「世界怎么运转」从引擎里拿出来，做成一个**确定性、可测试、可替换引擎**的 Rust 内核；
 > 内容作者用 TypeScript 与数据描述世界，引擎只负责把世界画出来、放出声音、接收输入。
 
-> **当前状态**：本目录**只有方案文档，没有实现代码**。这是一次「先设计、再拍板、后动手」的提案，
-> 不是既成事实。推荐结论见 [04 · 选型对比与推荐](docs/04_选型对比与推荐.md)，
-> 落地步骤见 [05 · 路线图与验收](docs/05_路线图与验收.md)。
+> **当前状态**：**M0 已实现并通过本地验收**。无头内核、内容包、CLI、C ABI 冒烟宿主、
+> wasm32 + QuickJS spike 均可运行；同一 trace 在 Headless 与 C 宿主上得到相同状态哈希
+> `0xd1c6ea084b71cc0d`。实现记录见 [06 · M0 实现与验收](docs/06_M0实现与验收.md)。
+>
+> 方案仍有效：推荐结论见 [04 · 选型对比与推荐](docs/04_选型对比与推荐.md)，路线见
+> [05 · 路线图与验收](docs/05_路线图与验收.md)。
+
+## M0 快速开始
+
+```bash
+cd games/world
+./test/run_m0.sh          # 一键验收：测试 / 双跑哈希 / 坏包 / C ABI / wasm+QuickJS / 基准
+```
+
+分开跑：
+
+```bash
+cd games/world/code
+cargo run -q -p world-cli -- validate
+cargo run -q -p world-cli -- test --events
+cargo run -q -p world-cli -- demo
+cargo run -q --release -p world-cli -- bench
+```
+
+> M0 的内容仍用 JSON 规则；TypeScript DSL 与 Web 编辑器是 M1 的交付，不是 M0 的既成事实。
 
 ## 先读哪篇
 
@@ -59,6 +81,11 @@ scope: "跨游戏、跨引擎"
 | [`docs/03_引擎适配与替换.md`](docs/03_引擎适配与替换.md) | C ABI、表现同步、资产、Godot/Unity/Unreal/Web/Bevy、适配器契约测试 |
 | [`docs/04_选型对比与推荐.md`](docs/04_选型对比与推荐.md) | 五个整体方案评分、十二个子决策、推荐理由、改选信号、风险登记 |
 | [`docs/05_路线图与验收.md`](docs/05_路线图与验收.md) | M0–M4 里程碑、第一个垂直切片、测试策略、指标、待拍板问题 |
+| [`docs/06_M0实现与验收.md`](docs/06_M0实现与验收.md) | M0 实际架构、验收对照、基准、偏差与已知限制 |
+| [`code/`](code/) | Rust workspace：pack/core/ffi/headless/cli/script/wasm |
+| [`data/demo.harbor/`](data/demo.harbor/) | 「港湾值班室」内容包（M0 垂直切片） |
+| [`test/`](test/) | 一键验收脚本、坏包 fixture、wasm QuickJS 检查 |
+| [`plans/`](plans/) | ADR-001…006：拍板、包 schema、确定性、ABI、ECS 偏差、QuickJS spike |
 | [`CHANGELOG.md`](CHANGELOG.md) | 本项目变更日志 |
 
 ## 边界（明确不做）
@@ -85,10 +112,18 @@ LiveBay 的模块化架构（[16 · 模块化技术架构](../../games/livebay/d
 
 迁移路线是「新层先独立跑通 → 用 LiveBay 的一个切片做试点 → 再决定是否整体迁移」，不要求停掉现有项目重写。
 
-## 现在需要你拍板的三件事
+## 已拍板（2026-11-23）
 
-1. **首发试点选哪块**：LiveBay 的塔防任务切片、一个全新的「港湾值班室」小样、还是另一款游戏？
-2. **首发平台与网络**：PC 优先，还是同时要移动端/主机/Web？v0 是否需要多人？
-3. **作者主界面**：以 Web 世界编辑器为主（无需装引擎），还是先做 Godot 编辑器插件？
+| 编号 | 结论 |
+| --- | --- |
+| Q1 | 首发试点：**「港湾值班室」**；LiveBay 切片在 M4 试点 |
+| Q2 | 平台：**PC + Web** |
+| Q3 | v0 **不做联网/多人** |
+| Q4 | 作者主界面：**Web 编辑器优先**，Godot 插件后置 |
+| Q5 | 许可：**内部私有**；M0 不因开源协议收缩依赖 |
+| Q7 | 命名：**RefuWorld**（目录仍为 `games/world/`） |
+| Q8 | 团队：2 名核心全职 + 1.0 兼职 |
+| Q9 | 规模：5k 活跃 / 20k 总 / 10 MB 存档 |
+| Q10 | LiveBay：M4 试点一个切片，不做全量迁移 |
 
-完整清单见 [05 · 待拍板问题](docs/05_路线图与验收.md#七待拍板问题)。
+完整记录见 [ADR-001](plans/ADR-001-m0-decisions.md)；原始选项见 [05 · 待拍板问题](docs/05_路线图与验收.md#七待拍板问题)。

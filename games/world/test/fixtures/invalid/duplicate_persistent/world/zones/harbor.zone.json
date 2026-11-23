@@ -1,0 +1,48 @@
+{
+  "id": "zone.harbor",
+  "name": "loc:zone.harbor.name",
+  "bounds": {
+    "min": [
+      -20.0,
+      0.0,
+      -20.0
+    ],
+    "max": [
+      20.0,
+      8.0,
+      20.0
+    ]
+  },
+  "placements": [
+    {
+      "actor": "demo.keeper",
+      "at": [
+        4.0,
+        0.0,
+        -2.0
+      ],
+      "yaw": 180.0,
+      "persistent_id": "keeper"
+    },
+    {
+      "prop": "demo.airlock",
+      "at": [
+        0.0,
+        0.0,
+        6.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "keeper"
+    },
+    {
+      "item": "item.keycard",
+      "at": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "keycard"
+    }
+  ]
+}

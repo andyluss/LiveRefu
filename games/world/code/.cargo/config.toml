@@ -1,0 +1,3 @@
+[target.wasm32-unknown-unknown]
+# QuickJS 在 wasm 内需要比默认 1 MiB 更大的栈；16 MiB 是 M0 实测可用的保守值。
+rustflags = ["-C", "link-arg=-zstack-size=16777216"]

@@ -1,7 +1,34 @@
-# Refu World · 项目日志（CHANGELOG）
+# RefuWorld · 项目日志（CHANGELOG）
 
 > 记录 `games/world/` 世界系统中间层的方案与工程变更。遵循工作区 [R05 变更日志约定](../../rules/R05-changelog.md)。
 > 时间取该版本最后一个提交的作者时间（东八区，精确到分）；未发布改动集中在 `[未发布]`。
+
+## [未发布]
+
+### 新增
+
+- **M0 可运行实现**：新增 `code/` Rust workspace（`world-pack`、`world-core`、`world-ffi`、`world-host-headless`、`world-cli`、`world-script`、`world-script-wasm`）。
+- **「港湾值班室」内容包**：`data/demo.harbor/`，含 1 区、NPC、气闸、钥匙卡、规则、任务、对话、日程、文案与 600 tick trace。
+- **C ABI v0 + C 冒烟宿主**：`code/include/world.h`、`code/hosts/c/main.c`；C 宿主与 Headless 同哈希。
+- **wasm32 + QuickJS spike**：`world-script-wasm` 在 Node 中执行一条规则条件并返回 1。
+- **CLI `worldc`**：`validate`/`build`/`test`/`replay`/`demo`/`bench`/`new`/`header`/`explain`。
+- **验收脚本与 fixture**：`test/run_m0.sh`；6 个坏包 fixture；核心/ABI/校验/QuickJS 测试。
+- **ADR-001…006**：拍板结果、包 schema、确定性、ABI、ECS 偏差、QuickJS spike。
+- **M0 记录**：[06 · M0 实现与验收](docs/06_M0实现与验收.md)。
+
+### 变更
+
+- README 状态改为 **M0 已通过（macOS 本地；三平台 CI 待跑）**；项目名统一为 **RefuWorld**。
+- [05](docs/05_路线图与验收.md) 的待拍板问题改为已拍板结论，并补 M0 验收结果表。
+- 新增 `.github/workflows/world-m0.yml`：三 OS `cargo test`、C ABI 冒烟、wasm core 构建。
+
+### 验证
+
+- `cargo test --workspace`：10 个测试通过。
+- Headless 600 tick 双跑：`0xd1c6ea084b71cc0d`。
+- C ABI 宿主：同 `0xd1c6ea084b71cc0d`。
+- 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
+- `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
 
 ## [0.1.0] - 2026-11-23 12:17
 

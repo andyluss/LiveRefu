@@ -1,0 +1,6 @@
+{
+  "id": "item.radio",
+  "name": "loc:item.radio.name",
+  "stack": 1,
+  "tags": ["tool"]
+}

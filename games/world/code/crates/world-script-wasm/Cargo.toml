@@ -1,0 +1,12 @@
+[package]
+name = "world-script-wasm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+world-script = { path = "../world-script" }

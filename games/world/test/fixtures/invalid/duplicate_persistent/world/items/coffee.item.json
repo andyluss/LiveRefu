@@ -1,0 +1,6 @@
+{
+  "id": "item.coffee",
+  "name": "loc:item.coffee.name",
+  "stack": 5,
+  "tags": ["consumable"]
+}

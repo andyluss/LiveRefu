@@ -1,0 +1,16 @@
+[package]
+name = "world-host-headless"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "world-host-headless"
+path = "src/main.rs"
+
+[dependencies]
+world-core = { path = "../world-core" }
+world-pack = { path = "../world-pack" }
+serde.workspace = true
+serde_json.workspace = true

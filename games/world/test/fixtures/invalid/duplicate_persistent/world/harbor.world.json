@@ -1,0 +1,10 @@
+{
+  "id": "world.harbor",
+  "start_zone": "zone.harbor",
+  "start_time": "08:00",
+  "seed": 20261123,
+  "player": {
+    "at": [0.0, 0.0, 0.0],
+    "inventory": []
+  }
+}

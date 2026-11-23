@@ -1,0 +1,96 @@
+use std::path::PathBuf;
+use world_core::{run_trace, Trace, World};
+use world_pack::Pack;
+
+fn demo_pack() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../data/demo.harbor")
+}
+
+fn trace() -> Trace {
+    let text = std::fs::read_to_string(demo_pack().join("tests/m0.trace.json")).unwrap();
+    serde_json::from_str(&text).unwrap()
+}
+
+#[test]
+fn determinism_two_runs_match() {
+    let pack = Pack::load_dir(demo_pack()).unwrap();
+    let a = run_trace(&pack, &trace(), 60).unwrap();
+    let b = run_trace(&pack, &trace(), 60).unwrap();
+    assert_eq!(a.final_hash, b.final_hash);
+    assert_eq!(a.keyframes, b.keyframes);
+    assert!(a.events.len() >= 10);
+}
+
+#[test]
+fn save_load_roundtrip_preserves_hash() {
+    let pack = Pack::load_dir(demo_pack()).unwrap();
+    let hash = pack.hash().unwrap();
+    let mut world = World::from_pack(&pack, hash).unwrap();
+    for _ in 0..42 {
+        world.tick_once();
+    }
+    let before = world.state_hash();
+    let bytes = world.save_bytes().unwrap();
+    let restored = World::load_bytes(&pack, &bytes).unwrap();
+    assert_eq!(before, restored.state_hash());
+}
+
+#[test]
+fn corrupt_save_is_rejected() {
+    let pack = Pack::load_dir(demo_pack()).unwrap();
+    let hash = pack.hash().unwrap();
+    let mut world = World::from_pack(&pack, hash).unwrap();
+    for _ in 0..5 {
+        world.tick_once();
+    }
+    let bytes = world.save_bytes().unwrap();
+    let mut text = String::from_utf8(bytes).unwrap();
+    text = text.replacen("\"checksum\":", "\"checksum\": 1", 1);
+    let result = World::load_bytes(&pack, text.as_bytes());
+    assert!(result.is_err(), "篡改存档应被拒绝");
+}
+
+#[test]
+fn different_ticks_different_hash() {
+    let pack = Pack::load_dir(demo_pack()).unwrap();
+    let a = run_trace(
+        &pack,
+        &Trace {
+            ticks: 10,
+            steps: vec![],
+        },
+        5,
+    )
+    .unwrap();
+    let b = run_trace(
+        &pack,
+        &Trace {
+            ticks: 20,
+            steps: vec![],
+        },
+        5,
+    )
+    .unwrap();
+    assert_ne!(a.final_hash, b.final_hash);
+}
+
+#[test]
+fn tampered_checksum_is_rejected() {
+    let pack = Pack::load_dir(demo_pack()).unwrap();
+    let hash = pack.hash().unwrap();
+    let mut world = World::from_pack(&pack, hash).unwrap();
+    for _ in 0..5 {
+        world.tick_once();
+    }
+    let bytes = world.save_bytes().unwrap();
+    let mut value: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    let checksum = value["checksum"].as_u64().unwrap();
+    value["checksum"] = serde_json::json!(checksum.wrapping_add(1));
+    let tampered = serde_json::to_vec(&value).unwrap();
+    let result = World::load_bytes(&pack, &tampered);
+    let error = match result {
+        Ok(_) => panic!("篡改 checksum 应被拒绝"),
+        Err(error) => error,
+    };
+    assert!(error.contains("校验和"), "实际错误: {error}");
+}

@@ -1,0 +1,16 @@
+[package]
+name = "world-ffi"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+name = "world_ffi"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+world-core = { path = "../world-core" }
+world-pack = { path = "../world-pack" }
+serde.workspace = true
+serde_json.workspace = true

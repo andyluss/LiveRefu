@@ -1,0 +1,28 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/world-pack",
+    "crates/world-script",
+    "crates/world-script-wasm",
+    "crates/world-core",
+    "crates/world-ffi",
+    "crates/world-host-headless",
+    "crates/world-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["LiveRefu"]
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hex = "0.4"
+xxhash-rust = { version = "0.8", features = ["xxh3"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

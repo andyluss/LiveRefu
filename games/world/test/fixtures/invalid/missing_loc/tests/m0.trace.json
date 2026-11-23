@@ -1,0 +1,9 @@
+{
+  "ticks": 600,
+  "steps": [
+    { "tick": 10, "command": { "op": "interact", "actor": "player", "target": "demo.airlock" } },
+    { "tick": 20, "command": { "op": "pickup", "actor": "player", "target": "item.keycard" } },
+    { "tick": 30, "command": { "op": "interact", "actor": "player", "target": "demo.airlock" } },
+    { "tick": 40, "command": { "op": "talk", "actor": "player", "target": "demo.keeper" } }
+  ]
+}

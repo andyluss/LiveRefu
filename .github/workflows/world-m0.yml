@@ -1,0 +1,64 @@
+name: RefuWorld M0
+
+on:
+  push:
+    paths:
+      - "games/world/**"
+      - ".github/workflows/world-m0.yml"
+  pull_request:
+    paths:
+      - "games/world/**"
+
+jobs:
+  test:
+    name: cargo test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    defaults:
+      run:
+        working-directory: games/world/code
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            games/world/code/target
+          key: world-${{ matrix.os }}-${{ hashFiles('games/world/code/Cargo.lock') }}
+      - name: Workspace tests
+        run: cargo test --workspace
+      - name: Determinism double-run
+        run: cargo run -q -p world-cli -- test
+
+  c-abi:
+    name: C ABI smoke (unix)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/world/code
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build -q -p world-ffi -p world-cli
+      - run: cargo run -q -p world-cli -- build --out ../dist/demo.harbor
+      - run: cc hosts/c/main.c -I include -L target/debug -lworld_ffi -Wl,-rpath,$PWD/target/debug -o ../dist/c_host
+      - run: ../dist/c_host --pack ../dist/demo.harbor/pack.data
+
+  wasm-core:
+    name: wasm32 build (core)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/world/code
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - run: cargo build --target wasm32-unknown-unknown -p world-core
