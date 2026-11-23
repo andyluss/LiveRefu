@@ -10,6 +10,7 @@
 | 未来残片 | [`future-debris/`](future-debris/README.md) | 历史主线候选（2026-11-04 起归档，不再投入主线资源） |
 | Refu Game 001 | [`refu-game-001/`](refu-game-001/README.md) | 第二轨预研 / 卡片塔防垂直切片 |
 | 明日频道 | [`tomorrows-channel/`](tomorrows-channel/README.md) | 复古未来氛围陪伴应用（卫星项目） |
+| Refu World · 世界层 | [`world/`](world/README.md) | **跨游戏/跨引擎世界系统中间层（方案阶段，未实现）**：Rust 权威内核 + TypeScript 内容层 + 薄引擎适配器 |
 
 ## Godot 数据
 

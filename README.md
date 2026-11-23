@@ -54,6 +54,7 @@
 | [`games/`](games/README.md) | 游戏项目区：**LiveBay（当前主线）**、未来残片（历史主线候选）、Refu Game 001（第二轨）、明日频道；Godot 数据在 `games/.godot-home/` | [`games/README.md`](games/README.md) |
 | [`games/mainline/`](games/mainline/README.md) | **主线纲领 · LiveBay**：记录当前主线、旧主线决策历史与更替理由；项目细节不复制 | [`games/mainline/README.md`](games/mainline/README.md) |
 | [`games/livebay/`](games/livebay/README.md) | **当前主线游戏《逍遥湾》/ LiveBay**：NASApunk 岗位塔防 + 沉浸 + 放置；v0.1 可玩垂直切片（1 图 / 7 塔位 / 3 塔 / 4 敌 / 5 波），37 项无头断言；设计、数值、规则、艺术、小说、单文件 HTML 已成形 | [`games/livebay/README.md`](games/livebay/README.md) |
+| [`games/world/`](games/world/README.md) | **Refu World · 世界系统中间层（方案阶段，未实现）**：介于引擎与内容之间，Rust 权威内核 + TypeScript 内容层 + 版本化 C ABI + 薄引擎适配器；目标是内容作者无需引擎知识、同一内容包跨宿主一致、引擎可替换 | [`games/world/README.md`](games/world/README.md) |
 | [`games/future-debris/`](games/future-debris/README.md) | **历史主线候选《未来残片》**（2026-11-04 起不再承担主线，保留归档）：Godot 4.7 四层结构 + 八道验收闸门 + 43 项玩法断言；卡池 120 张、16 关 / 8 章；文档与工程保留作历史 | [`games/future-debris/README.md`](games/future-debris/README.md) |
 | [`games/tomorrows-channel/`](games/tomorrows-channel/README.md) | 项目《明日频道》：复古未来氛围陪伴应用（Godot 工程 + 按角色的项目文档） | [`games/tomorrows-channel/README.md`](games/tomorrows-channel/README.md) |
 | [`games/refu-game-001/`](games/refu-game-001/README.md) | 项目《Refu Game 001 · 节点防线》：卡片式塔防的**可运行实现**（Godot 4.7 竖屏；数据表与策划卷逐字段对账；无头验收 19 项） | [`games/refu-game-001/README.md`](games/refu-game-001/README.md) |

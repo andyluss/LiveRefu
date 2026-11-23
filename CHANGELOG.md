@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **新增 [`games/world/`](games/world/README.md) 世界系统中间层方案（方案阶段，未实现）**：介于游戏引擎与游戏内容之间的跨游戏/跨引擎层，推荐 Rust 权威内核 + TypeScript 内容层 + 版本化 C ABI + 薄引擎适配器；含问题定义、世界模型、内容作者工具链、引擎适配与替换验收、A–E 方案评分与推荐、M0–M4 路线图；项目日志见 [`games/world/CHANGELOG.md`](games/world/CHANGELOG.md)。
 - **新增 `products/calculator/` 手边计算器**：独立 PWA，移植纯计算核心、3 套皮肤、App Kit token 消费、纸带历史与离线缓存。
 - **工作区 HUB 导航树**：根 HUB 末尾增加所有 HUB 的树状入口（工作区 / LiveDSO / 全栈 / 未来残片 / LiveBay / 节点防线），顶栏加入 `#hubs` 锚点；同时给锚点目标增加 sticky 顶栏偏移，修复标题被遮住。
 - **LiveBay（逍遥湾）立项**：`games/livebay/` 建立人类设定 `docs-human/`、AI 策划文档集 `docs-ai/design01/` 与 Godot 4.7 可玩塔防切片；NASApunk 文集在 `docs/retro-futurism/附录_NASA朋克卷/` 建卷；工程内名词与数值均为占位；2026-11-03 已裁决 D01/D02/D03/D04/D05/D06/D07/D08/D09/D10/D11/D12/D13/D15/D16；D02 的内部故障 C 已落地；只剩 P2。
