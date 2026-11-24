@@ -57,6 +57,7 @@ cd web && python3 -m http.server 8787
 | 怎么做到「换引擎只换一层」 | [03 · 引擎适配与替换](docs/03_引擎适配与替换.md) | 25 分钟 |
 | 为什么选这套，不选别的 | [04 · 选型对比与推荐](docs/04_选型对比与推荐.md) | 20 分钟 |
 | 分几步做、怎么算做完 | [05 · 路线图与验收](docs/05_路线图与验收.md) | 15 分钟 |
+| 项目现在到哪、第一次怎么用 | [项目 HUB](brief/HUB.html) / [用户指南](brief/GUIDE.html) | 5–15 分钟 |
 
 ## 推荐方案（TL;DR）
 
@@ -93,6 +94,7 @@ cd web && python3 -m http.server 8787
 | [`docs/06_M0实现与验收.md`](docs/06_M0实现与验收.md) | M0 实际架构、验收对照、基准、偏差与已知限制 |
 | [`docs/07_M1实现与验收.md`](docs/07_M1实现与验收.md) | M1 切片：TS DSL、Web 预览、截图、验收与剩余 M1 |
 | [`docs/08_两小时教程.md`](docs/08_两小时教程.md) | 用 Web 编辑器做出「港湾值班室」的两小时教程 |
+| [`brief/`](brief/) | 项目 HUB 与用户指南（R-016 三态主题） |
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |
 | [`tools/ts-build.mjs`](tools/ts-build.mjs) | TS DSL → 规范化内容包编译器 |

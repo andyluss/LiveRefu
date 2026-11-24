@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RefuWorld · 用户指南</title>
+<meta name="description" content="RefuWorld 用户指南：从内容包到 2D/3D 可玩预览，编辑器、TS DSL、CLI、测试与排错。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="guide.css">
+</head>
+<body id="top" data-page="guide">
+<header class="guide-topbar">
+  <div class="guide-topbar-inner">
+    <a class="guide-brand" href="#top" title="回到顶部" aria-label="回到页面顶部">RefuWorld <span>GUIDE</span></a>
+    <a class="guide-hub-link" href="HUB.html" title="返回项目 HUB" aria-label="返回 RefuWorld 项目 HUB">项目 HUB ↗</a>
+    <nav class="guide-links" aria-label="章节导航">
+      <a href="#s1">三十秒</a><a href="#s2">跑起来</a><a href="#s3">编辑器</a><a href="#s4">TS DSL</a><a href="#s5">内容包</a><a href="#s6">预览</a><a href="#s7">CLI</a><a href="#s8">测试</a><a href="#s9">排错</a><a href="#s10">词表</a>
+    </nav>
+    <div class="theme-switch" role="group" aria-label="主题">
+      <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+      <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="s1">
+    <p class="dim">RefuWorld · 世界系统中间层 · 给内容作者与第一次接手的人</p>
+    <h1>你写世界，<br>引擎只负责把它画出来。</h1>
+    <p class="lead">RefuWorld 把“世界怎么运转”从引擎里拿出来：Rust 内核负责确定性 tick、规则、空间、导航和存档；你用 TypeScript 或 JSON 描述内容；Web 编辑器、2D 预览和 3D 演示都只是这份内容的视图。你不需要先学 Godot 或 Unity 才能做出一个可玩的房间。</p>
+    <div class="box tip"><h3>三十秒版本</h3><p>打开 Web 编辑器 → 拖一个 NPC、一扇门、一张钥匙卡 → 写一条“有钥匙卡就开门”的规则 → 接一段对话和任务 → <b>构建并试玩</b>。所有内容最终变成一个带哈希的内容包；同一条 trace 在 Headless、C ABI、wasm 预览里跑出同一局。</p></div>
+    <p class="dim">当前是 <b>M1 主要切片</b>：TS DSL、2D/3D 预览、编辑器 v0.5、移动/寻路、导航/资产、内容测试均可运行。完整 M1/M2 的边界见 <a href="HUB.html#risks">HUB 的风险页</a>。</p>
+  </section>
+
+  <section id="s2">
+    <h2><span class="n">01</span>五分钟跑起来</h2>
+    <pre><code>cd games/world
+npm install                    # TypeScript 类型检查（可选但推荐）
+./test/run_m0.sh               # 内核 / C ABI / 坏包 / QuickJS / 基准
+./test/run_m1.sh               # TS DSL / 内容 / 编辑器 / 3D / 5k / wasm</code></pre>
+    <p>只做内容预览时，最短路径是：</p>
+    <pre><code>cd games/world
+./web/build.sh
+cd web &amp;&amp; python3 -m http.server 8787
+# 2D：http://127.0.0.1:8787/
+# 3D：http://127.0.0.1:8787/demo3d.html</code></pre>
+    <div class="box warn"><h3>两个入口别混淆</h3><p><b>静态预览</b>（<code>http.server</code>）只读，适合看和演示；<b>编辑器</b>（<code>./worldc editor</code>）才能保存、校验和构建。编辑器打开 <code>http://127.0.0.1:8788/</code>。</p></div>
+    <div class="grid3">
+      <div class="card"><h3>2D 预览</h3><p>俯视、点击/键盘交互；最适合验证规则和任务。</p><p class="small">web/index.html</p></div>
+      <div class="card"><h3>3D 演示</h3><p>第三人称、气闸滑门、对话字幕；最适合感受氛围。</p><p class="small">web/demo3d.html</p></div>
+      <div class="card"><h3>Web 编辑器</h3><p>拖摆放、改字段/对话、校验、构建并试玩。</p><p class="small">worldc editor --port 8788</p></div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="n">02</span>第一次打开编辑器</h2>
+    <p>启动编辑器：</p>
+    <pre><code>cd games/world
+./worldc editor --port 8788
+# 浏览器打开 http://127.0.0.1:8788/</code></pre>
+    <figure class="shot"><img src="../docs/shots/m1_editor.png" alt="RefuWorld Web 编辑器 v0.5"><figcaption><b>编辑器 v0.5</b> · 左：布局；右：实体列表、摆放字段、字段表单、定义/规则 JSON、对话图。</figcaption></figure>
+    <div class="flow">
+      <div class="step"><b>选中实体</b><span>右侧列表或画布点击</span></div>
+      <div class="step"><b>拖动摆放</b><span>0.5m 网格，Shift 微调</span></div>
+      <div class="step"><b>改字段</b><span>name/tags/health/visual…</span></div>
+      <div class="step"><b>保存</b><span>先写后校验，失败回滚</span></div>
+      <div class="step"><b>构建并试玩</b><span>烘焙导航 → 构建 → 预览</span></div>
+    </div>
+    <h3>编辑器里最重要的四个动作</h3>
+    <table>
+      <thead><tr><th>动作</th><th>会发生什么</th><th>什么时候用</th></tr></thead>
+      <tbody>
+        <tr><td>保存摆放 / 保存定义 / 保存规则 / 保存对话</td><td>写源 JSON；服务器调用 <code>worldc validate</code>，失败返回 422 并回滚文件</td><td>每次修改后</td></tr>
+        <tr><td>烘焙导航</td><td>从 Zone + 静态 Prop AABB 生成 <code>world/nav/&lt;id&gt;.json</code></td><td>拖动门/墙/大型道具后</td></tr>
+        <tr><td>撤销 / 重做</td><td>拖动、表单、JSON、对话修改都进 undo 栈</td><td>改错时</td></tr>
+        <tr><td>构建并试玩</td><td>保存 → 烘焙 → 构建 → 复制 <code>pack.data</code> → 打开预览</td><td>验证完整闭环</td></tr>
+      </tbody>
+    </table>
+    <p class="dim">编辑器编辑的是 <code>data/demo.harbor</code> 的 JSON 包；<code>src/content/demo.harbor</code> 的 TS 源不会自动同步。两条前端二选一，不要同时改。</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="n">03</span>TS DSL：类型即文档</h2>
+    <p>作者只写 <code>define*</code>；编译器收集后写规范化 JSON，再由 Rust 校验/哈希。</p>
+    <pre><code>// src/content/demo.harbor/rules.ts
+import { defineRule } from "#world-authoring";
+
+defineRule({
+  id: "rule.airlock",
+  on: "interact",
+  target: "demo.airlock",
+  when: [{ kind: "has_item", item: "item.keycard" }],
+  then: [
+    { kind: "open_door" },
+    { kind: "play_sound", id: "sfx.airlock.open" },
+    { kind: "set_flag", flag: "flag.airlock.open", value: true },
+    { kind: "emit", event: "airlock.opened" },
+  ],
+  else: [{ kind: "toast", text: "loc:airlock.locked" }],
+});</code></pre>
+    <p>编译与对比：</p>
+    <pre><code>cd games/world
+./worldc ts-check
+./worldc ts-build --compare data/demo.harbor
+npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</code></pre>
+    <div class="box"><b>同哈希是硬约束：</b>TS 包与 JSON 包必须产生同一个规范化包哈希和同一个 600 tick 状态哈希。改内容后同时跑 <code>ts-build --compare</code> 和 <code>test</code>，不要只改一边。</div>
+  </section>
+
+  <section id="s5">
+    <h2><span class="n">04</span>内容包长什么样</h2>
+    <pre><code>data/demo.harbor/
+├── pack.json                 # id / version / kits / entry / tick_hz / assets
+├── world/
+│   ├── harbor.world.json     # 起始区域 / 时间 / 种子 / 玩家
+│   ├── zones/harbor.zone.json
+│   ├── nav/nav.harbor.json   # worldc bake nav 生成
+│   ├── actors/keeper.actor.json
+│   ├── props/airlock.prop.json
+│   └── items/keycard.item.json
+├── rules/airlock.rule.json
+├── quests/first_shift.quest.json
+├── dialogue/keeper.dlg.json
+├── schedules/keeper.schedule.json
+├── assets/assets.index.json  # 逻辑资产 ID → 源文件
+├── loc/zh-CN.json
+└── tests/*.test.json</code></pre>
+    <p>四条约定：</p>
+    <div class="grid2">
+      <div class="card"><h3>一个定义一个文件</h3><p>ID 命名空间：<code>demo.keeper</code>、<code>item.keycard</code>、<code>flag.airlock.open</code>；包内唯一。</p></div>
+      <div class="card"><h3>资产只写逻辑 ID</h3><p><code>mesh.keeper</code>，不写 <code>res://</code>、<code>.prefab</code> 或引擎路径；由适配器解析。</p></div>
+      <div class="card"><h3>导航是烘焙产物</h3><p><code>zone.nav</code> 引用 <code>world/nav/&lt;id&gt;.json</code>；用 <code>worldc bake nav</code> 生成，不手写格子。</p></div>
+      <div class="card"><h3>文案用 loc key</h3><p>内容里写 <code>loc:actor.keeper.name</code>；<code>loc/zh-CN.json</code> 提供实际文本。</p></div>
+    </div>
+  </section>
+
+  <section id="s6">
+    <h2><span class="n">05</span>预览里能做什么</h2>
+    <div class="grid2">
+      <div class="card"><h3>2D 预览</h3><p><span class="kbd">WASD</span> / 方向键移动；点击地面寻路；点击物品/NPC/门；<span class="kbd">E</span> 交互、<span class="kbd">F</span> 拾取、<span class="kbd">T</span> 对话；<span class="kbd">P</span> 暂停、<span class="kbd">R</span> 重置。</p><p class="small">目标是 8 米内可交互；关闭的门会挡路，开门后可通过。</p></div>
+      <div class="card"><h3>3D 演示</h3><p>第三人称跟随；鼠标拖动旋转、滚轮缩放；WASD/点击地面；E/F/T；气闸、对话字幕、任务/背包同步。</p><p class="small">3D 只是表现层；规则仍在同一个 wasm 世界。</p></div>
+    </div>
+    <figure class="shot"><img src="../docs/shots/m1_3d_dialogue.png" alt="3D 预览中的对话字幕"><figcaption><b>同一份状态：</b>2D 与 3D 都读取 <code>PreviewWorld.state()</code>；3D 不复制规则。</figcaption></figure>
+    <p><a href="../web/index.html" title="需要本地服务器">打开 2D 预览</a> · <a href="../web/demo3d.html" title="需要本地服务器">打开 3D 演示</a></p>
+  </section>
+
+  <section id="s7">
+    <h2><span class="n">06</span>CLI 速查</h2>
+    <table>
+      <thead><tr><th>命令</th><th>做什么</th><th>常用参数</th></tr></thead>
+      <tbody>
+        <tr><td><code>worldc validate</code></td><td>schema / 引用 / 文案 / 时间 / 对话 / 导航 / 资产校验</td><td><code>--pack DIR --json</code></td></tr>
+        <tr><td><code>worldc build</code></td><td>构建可加载的 pack.data</td><td><code>--pack DIR --out DIR</code></td></tr>
+        <tr><td><code>worldc ts-build</code></td><td>TS DSL → 规范化包；可自动烘焙导航</td><td><code>--compare DIR</code></td></tr>
+        <tr><td><code>worldc ts-check</code></td><td>TypeScript 类型检查</td><td>—</td></tr>
+        <tr><td><code>worldc test</code></td><td>黄金 trace / 双跑哈希</td><td><code>--trace FILE</code></td></tr>
+        <tr><td><code>worldc content-test</code></td><td>跑 <code>tests/*.test.json</code> 内容断言</td><td><code>--filter</code></td></tr>
+        <tr><td><code>worldc bake nav</code></td><td>从 Zone/Prop 烘焙导航网格</td><td><code>--zone --cell</code></td></tr>
+        <tr><td><code>worldc editor</code></td><td>启动本地编辑器服务器</td><td><code>--port 8788</code></td></tr>
+        <tr><td><code>worldc bench</code></td><td>Demo 基准 / 合成 5k 基准</td><td><code>--synthetic 5000</code></td></tr>
+      </tbody>
+    </table>
+    <p class="dim">完整命令：<code>./worldc --help</code>；错误码：<code>./worldc explain E-REF-001</code>。</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="n">07</span>测试与验收</h2>
+    <pre><code>cd games/world
+./test/run_m0.sh      # 测试 / 双跑 / 坏包 / C ABI / wasm QuickJS / 基准
+./test/run_m1.sh      # TS DSL / 内容测试 / 编辑器 / 3D / 5k / R-016
+./worldc content-test # 只跑内容断言</code></pre>
+    <p>当前基线：</p>
+    <div class="grid3">
+      <div class="card"><h3>13 个 Rust 测试</h3><p>core / pack / ffi / script；clippy 无警告。</p></div>
+      <div class="card"><h3>3 条内容测试</h3><p>first_shift / airlock_locked / pickup_keycard。</p></div>
+      <div class="card"><h3>黄金哈希</h3><p><code>0xc840fe2090a0a085</code>；Headless / C ABI / wasm 一致。</p></div>
+    </div>
+    <div class="box"><b>改内容后的最小自检：</b><code>worldc validate</code> → <code>worldc content-test</code> → <code>worldc test</code> → <code>./test/run_m1.sh</code>。只跑预览不跑测试，很容易把哈希漂移带进提交。</div>
+  </section>
+
+  <section id="s9">
+    <h2><span class="n">08</span>常见问题</h2>
+    <table>
+      <thead><tr><th>现象</th><th>先看</th><th>处理</th></tr></thead>
+      <tbody>
+        <tr><td>编辑器保存失败 / 弹出 422</td><td>日志里的错误码与路径</td><td>修复非法引用；服务器已自动回滚，不会留下半个包</td></tr>
+        <tr><td><code>nav 引用了不存在的导航网格</code></td><td><code>world/nav/</code></td><td>跑 <code>./worldc bake nav</code> 后重新构建</td></tr>
+        <tr><td>门开了但走不过去</td><td>导航是否在开门后重建</td><td>M1 导航是静态烘焙；M2 才做动态更新</td></tr>
+        <tr><td>改 TS 没生效</td><td>是否跑了 <code>ts-build</code></td><td><code>npm run dev</code> 或 <code>worldc ts-build --compare</code></td></tr>
+        <tr><td>预览 404 / 加载失败</td><td>是否先 <code>./web/build.sh</code></td><td>从 <code>web/</code> 起本地服务器，不要直接 file:// 打开</td></tr>
+        <tr><td>3D 打不开</td><td>WebGL2 / 是否本地服务器</td><td>换 Chrome；必须通过 http 打开</td></tr>
+        <tr><td>内容测试失败</td><td>期望的 flag / quest / inventory</td><td>先看测试的 <code>expect</code> 与规则 <code>set_flag</code> 是否一致</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="s10">
+    <h2><span class="n">09</span>词表</h2>
+    <table>
+      <thead><tr><th>词</th><th>在这套系统里指什么</th></tr></thead>
+      <tbody>
+        <tr><td><b>内容包 / pack</b></td><td>一个可版本化目录：pack.json + world/rules/quests/dialogue/...；唯一事实源。</td></tr>
+        <tr><td><b>Zone</b></td><td>区域：边界、摆放、导航引用；一个 World 可有多个 Zone。</td></tr>
+        <tr><td><b>Entity</b></td><td>运行期实例：player / actor / prop / item；内容 ID 与运行期 ID 分离。</td></tr>
+        <tr><td><b>tick</b></td><td>固定 60 Hz 逻辑步；表现层可插值，但规则不随帧率变化。</td></tr>
+        <tr><td><b>黄金 trace / hash</b></td><td>固定输入轨迹 + 状态哈希；用于回放、跨宿主对账、存档校验。</td></tr>
+        <tr><td><b>适配器</b></td><td>引擎侧薄层：输入/资产/视图/音频/存档；不含玩法规则。</td></tr>
+        <tr><td><b>烘焙</b></td><td>从内容几何生成导航等派生数据；结果可复现，不手改。</td></tr>
+      </tbody>
+    </table>
+    <div class="box tip"><h3>下一步读什么</h3><p><a href="HUB.html">项目 HUB</a>：状态/决策/风险；<a href="../docs/07_M1实现与验收.md">07 M1 验收</a>：完整证据与边界；<a href="../docs/08_两小时教程.md">08 两小时教程</a>：按步骤做一遍；<a href="../docs/02_内容作者与工具链.md">02 内容作者与工具链</a>：schema 与工具链细节。</p></div>
+    <p class="dim">本指南按 2026-11-24 的仓库状态编写；如果命令/数字变了，以 <code>games/world/README.md</code> 与 <code>test/run_m*.sh</code> 为准。</p>
+  </section>
+
+  <div class="footer">
+    <span>RefuWorld · 用户指南 · M1 主要切片</span>
+    <span><a href="HUB.html">项目 HUB</a> · <a href="../README.md">README</a> · <a href="../CHANGELOG.md">CHANGELOG</a></span>
+  </div>
+</main>
+<script src="theme.js"></script>
+</body>
+</html>

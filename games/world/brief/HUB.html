@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RefuWorld · 项目 HUB</title>
+<meta name="description" content="RefuWorld（世界层）的状态、架构、内容管线、3D 演示、决策、路线图与下一步。">
+<script>
+(function () {
+  document.documentElement.dataset.js = 'true';
+  document.documentElement.classList.add('js');
+  var KEY = 'lrds-theme', choice = 'system', saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'system' || saved === 'light' || saved === 'dark') choice = saved;
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  document.documentElement.dataset.theme = choice === 'system' ? (mql.matches ? 'dark' : 'light') : choice;
+  document.documentElement.dataset.themeChoice = choice;
+})();
+</script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="hub.css">
+</head>
+<body data-page="hub">
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topline">
+      <div class="brand">RefuWorld <span class="en">WORLD LAYER</span></div>
+      <nav class="brand-links" aria-label="相关页面">
+        <a href="GUIDE.html">用户指南 GUIDE</a>
+        <a href="../README.md">项目 README</a>
+        <a href="../docs/07_M1实现与验收.md">M1 验收</a>
+        <a href="../web/demo3d.html" title="需要本地静态服务器">3D 演示</a>
+        <a href="../web/index.html" title="需要本地静态服务器">2D 预览</a>
+      </nav>
+      <div class="stamp">M1 主要切片 · 2026-11-24</div>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+      </div>
+    </div>
+    <div class="hint">给隔了很久回来的参与者：用最少的滚动重新接上「为什么、到哪了、下一步」。</div>
+    <nav class="tabs" role="tablist" aria-label="HUB 分区">
+      <button role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview" data-panel="p-overview"><span class="n">01</span>概览</button>
+      <button role="tab" aria-selected="false" aria-controls="p-status" id="t-status" data-panel="p-status"><span class="n">02</span>到哪了</button>
+      <button role="tab" aria-selected="false" aria-controls="p-architecture" id="t-architecture" data-panel="p-architecture"><span class="n">03</span>架构</button>
+      <button role="tab" aria-selected="false" aria-controls="p-authoring" id="t-authoring" data-panel="p-authoring"><span class="n">04</span>内容与作者</button>
+      <button role="tab" aria-selected="false" aria-controls="p-3d" id="t-3d" data-panel="p-3d"><span class="n">05</span>3D 演示</button>
+      <button role="tab" aria-selected="false" aria-controls="p-decisions" id="t-decisions" data-panel="p-decisions"><span class="n">06</span>决策</button>
+      <button role="tab" aria-selected="false" aria-controls="p-roadmap" id="t-roadmap" data-panel="p-roadmap"><span class="n">07</span>路线图</button>
+      <button role="tab" aria-selected="false" aria-controls="p-risks" id="t-risks" data-panel="p-risks"><span class="n">08</span>风险/下一步</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="panel active" id="p-overview" role="tabpanel" aria-labelledby="t-overview">
+    <h2>把「世界怎么运转」从引擎里拿出来</h2>
+    <p class="lede">RefuWorld 是一个跨游戏、跨引擎的世界系统中间层：Rust 权威内核负责确定性规则、空间、时间与存档；TypeScript/JSON 内容包描述世界；引擎适配器只负责输入、画面、声音和资产。它不是另一个引擎，而是引擎与游戏内容之间的一层。</p>
+    <div class="hero">
+      <figure>
+        <img src="../docs/shots/m1_3d_harbor.png" alt="RefuWorld 港湾值班室 3D 演示">
+        <figcaption><b>港湾值班室</b> · 同一份 wasm 世界状态的 3D 表现层；不是另写一套玩法。</figcaption>
+      </figure>
+      <div>
+        <div class="stats">
+          <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
+          <div class="stat o"><div class="v">13</div><div class="l">Rust 测试</div></div>
+          <div class="stat p"><div class="v">3</div><div class="l">内容测试</div></div>
+          <div class="stat r"><div class="v">0.01<span style="font-size:12px">ms</span></div><div class="l">5k 合成 tick</div></div>
+          <div class="stat o"><div class="v">3</div><div class="l">Web 页面</div></div>
+          <div class="stat p"><div class="v">M1</div><div class="l">主要切片</div></div>
+        </div>
+        <div class="quote"><b>一句话边界：</b>核心从不回调引擎；引擎只轮询 C ABI 拿差值。换引擎时，玩法规则、导航和存档不应重写。</div>
+        <p><span class="chip ok">确定性哈希</span><span class="chip ok">C ABI</span><span class="chip acc">TS DSL</span><span class="chip acc">编辑器</span><span class="chip acc">3D 预览</span><span class="chip warn">M1 剩余</span></p>
+      </div>
+    </div>
+
+    <h3>四件“成功”而不是四张架构图</h3>
+    <div class="grid g4">
+      <div class="card"><h4>作者不需要引擎知识</h4><p>用编辑器或 TS DSL 做出 1 区、NPC、门、钥匙卡、对话、任务；目标 2 小时。</p><p><a href="GUIDE.html">先读用户指南 →</a></p></div>
+      <div class="card"><h4>两个宿主同一局</h4><p>固定种子 + 同一 trace，Headless / C ABI / wasm 跑出同一个 <code>0xc840fe…</code>。</p><p><a href="../docs/07_M1实现与验收.md">看验收证据 →</a></p></div>
+      <div class="card"><h4>换引擎只换适配器</h4><p>适配器只做输入/资产/视图/音频/存档；不允许出现玩法规则。</p><p><a href="../docs/03_引擎适配与替换.md">适配器契约 →</a></p></div>
+      <div class="card"><h4>内容迭代够快</h4><p>编辑器保存 → 校验 → 烘焙 → 构建 → 预览；错误带内容 ID，不带引擎堆栈。</p><p><a href="../web/editor.html" title="需要本地编辑器服务器">打开编辑器（需服务器）→</a></p></div>
+    </div>
+
+    <h3>项目地形图</h3>
+    <div class="projmap">
+      <div class="pm-top">
+        <div><b>从内核到 3D，再到 M2 适配器</b><span>蓝色=已落地，绿色=现在，琥珀=下一步，灰色=未做；点击可跳到对应说明。</span></div>
+        <div class="pm-legend"><span class="done"><i></i>已落地</span><span class="now"><i></i>现在</span><span class="next"><i></i>下一步</span><span class="todo"><i></i>未做</span></div>
+      </div>
+      <div class="pm-lanes">
+        <div class="pm-lane"><div class="pm-label">内核<span>权威、确定性</span></div><div class="pm-track">
+          <a class="pm-node done" href="#status"><span class="dot"></span><b>pack / core / ffi</b><em>schema · tick · C ABI</em></a>
+          <a class="pm-node done" href="../docs/06_M0实现与验收.md"><span class="dot"></span><b>M0 垂直切片</b><em>港湾值班室</em></a>
+          <a class="pm-node done" href="../code/crates/world-core/src/nav.rs"><span class="dot"></span><b>A* 寻路</b><em>MoveTo · 路径哈希</em></a>
+          <span class="pm-node next"><span class="dot"></span><b>ScriptHost</b><em>QuickJS 正式接入</em></span>
+        </div></div>
+        <div class="pm-lane"><div class="pm-label">内容<span>作者写什么</span></div><div class="pm-track">
+          <a class="pm-node done" href="../data/demo.harbor/"><span class="dot"></span><b>demo.harbor</b><em>1 区 · NPC · 门 · 任务</em></a>
+          <a class="pm-node done" href="../packages/world-authoring/"><span class="dot"></span><b>TS DSL</b><em>define* · 类型</em></a>
+          <a class="pm-node done" href="../docs/08_两小时教程.md"><span class="dot"></span><b>两小时教程</b><em>真实作者试用待做</em></a>
+          <span class="pm-node todo"><span class="dot"></span><b>编辑器 v0.6</b><em>schema 表单 · 自动布局</em></span>
+        </div></div>
+        <div class="pm-lane"><div class="pm-label">宿主<span>怎么跑起来</span></div><div class="pm-track">
+          <a class="pm-node done" href="../code/hosts/c/main.c"><span class="dot"></span><b>Headless + C</b><em>同哈希</em></a>
+          <a class="pm-node done" href="../web/"><span class="dot"></span><b>wasm 2D</b><em>Canvas + 交互</em></a>
+          <a class="pm-node done" href="../web/demo3d.html"><span class="dot"></span><b>Three.js 3D</b><em>表现层 · 本地 vendor</em></a>
+          <span class="pm-node next"><span class="dot"></span><b>Godot</b><em>M2 首个生产适配器</em></span>
+        </div></div>
+        <div class="pm-lane"><div class="pm-label">验证<span>凭什么相信</span></div><div class="pm-track">
+          <a class="pm-node done" href="../test/run_m0.sh"><span class="dot"></span><b>M0 验收</b><em>双跑 · 坏包 · ABI</em></a>
+          <a class="pm-node done" href="../test/run_m1.sh"><span class="dot"></span><b>M1 验收</b><em>DSL · 内容 · 3D 静态</em></a>
+          <a class="pm-node done" href="../CHANGELOG.md"><span class="dot"></span><b>黄金哈希</b><em>0xc840fe2090a0a085</em></a>
+          <span class="pm-node todo"><span class="dot"></span><b>真实 5k</b><em>战斗/查询/组件变更</em></span>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-status" role="tabpanel" aria-labelledby="t-status">
+    <h2>到哪了：M0 与 M1 主要切片</h2>
+    <p class="lede">这里只记录**已经跑过**的事。M1 是主要切片，不是完整 M1；把“切过”当作“全过”会掩盖剩余工作。</p>
+    <ol class="tl">
+      <li class="done"><b>M0 · 可运行内核</b> <span>2026-11-23 · 8 crates、C ABI、QuickJS spike、坏包 fixture、600 tick 双跑。</span></li>
+      <li class="done"><b>M1 · TS DSL + Web 预览</b> <span>TS 包与 JSON 包同哈希；2D 预览回放 <code>0xc840fe…</code>。</span></li>
+      <li class="done"><b>M1 · 编辑器 v0.5</b> <span>布局拖拽、字段表单、对话图、撤销/重做、保存校验回滚、构建试玩。</span></li>
+      <li class="done"><b>M1 · 移动/导航/资产</b> <span>WASD + 点击寻路；40×40 烘焙网格；逻辑资产依赖与 C ABI <code>world_zone_assets</code>。</span></li>
+      <li class="done"><b>M1 · 3D 演示</b> <span>Three.js r187 本地 vendor；同一 wasm 状态；气闸/对话/雨海灯塔。</span></li>
+      <li class="now"><b>现在 · M1 剩余与 M2 准备</b> <span>ScriptHost 正式接入、动态导航、真实 5k 基准、编辑器 v0.6。</span></li>
+      <li class="next"><b>下一步 · M2 生产适配器</b> <span>Godot GDExtension；同一个包在真实引擎跑出同一局。</span></li>
+    </ol>
+
+    <h3>可复现的证据</h3>
+    <table>
+      <thead><tr><th>证据</th><th>结果</th><th>来源</th></tr></thead>
+      <tbody>
+        <tr><td>Rust workspace 测试</td><td><b>13</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
+        <tr><td>内容测试</td><td><b>3</b> 条 PASS：first_shift / airlock_locked / pickup_keycard</td><td><code>worldc content-test</code></td></tr>
+        <tr><td>黄金回放</td><td><code>0xc840fe2090a0a085</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
+        <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:66125c46…46fe29e</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
+        <tr><td>5k 合成基准</td><td>Apple M1 Pro release ≈ <b>0.01 ms/tick</b>（仅 tick/日程/哈希）</td><td><code>worldc bench --synthetic 5000</code></td></tr>
+        <tr><td>主题与页面</td><td>R-016 五页：2D / 编辑器 / 3D / HUB / GUIDE 通过</td><td><code>check_html_theme.ts</code></td></tr>
+        <tr><td>3D 静态契约</td><td>本地 Three.js、import map、wasm 交互入口、无 CDN</td><td><code>test/demo3d_static.mjs</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>怎么复跑</h3>
+    <pre><code>cd games/world
+npm install
+./test/run_m0.sh          # 内核 / C ABI / 坏包 / QuickJS / 基准
+./test/run_m1.sh          # TS DSL / 内容 / 编辑器 / 3D / 5k / wasm
+./web/build.sh            # 2D + 3D 静态构建
+cd web &amp;&amp; python3 -m http.server 8787
+# 2D:   http://127.0.0.1:8787/
+# 3D:   http://127.0.0.1:8787/demo3d.html</code></pre>
+
+    <div class="note warn"><b>不要把 M1 主要切片当成 M1 完整验收。</b>ScriptHost 仍是 Rust 解释 JSON 规则；导航门是静态烘焙；5k 只有合成基线；编辑器还没有完整 schema 表单。</div>
+  </section>
+
+  <section class="panel" id="p-architecture" role="tabpanel" aria-labelledby="t-architecture">
+    <h2>五层架构：核心从不回调引擎</h2>
+    <p class="lede">内容包是唯一事实源；内核在固定 tick 上推进；宿主通过版本化 C ABI 轮询状态、提交命令。引擎适配器只做“表现与输入”，不拥有规则。</p>
+    <div class="arch" aria-label="五层架构">
+      <div class="layer"><b>内容包</b><span>pack / zone / actor / prop / item / rule / quest / dialogue / nav / assets</span></div>
+      <div class="layer core"><b>world-core</b><span>确定性 tick · 实体 · 命令/事件 · 碰撞 · A* · 存档 · 哈希</span></div>
+      <div class="layer"><b>world-ffi</b><span>版本化 C ABI · 轮询 · 调用方持有缓冲 · catch_unwind</span></div>
+      <div class="layer"><b>宿主/适配器</b><span>Godot / Unity / Unreal / Web / Bevy：输入、视图、音频、资产</span></div>
+      <div class="layer"><b>作者工具</b><span>TS DSL / JSON / 编辑器 / 校验 / 内容测试 / 2D/3D 预览</span></div>
+    </div>
+    <div class="note"><b>边界规则：</b>核心不做渲染、不碰引擎对象、不回调引擎；表现层不写玩法规则。适配器通过 <code>world_poll_events</code> / <code>world_copy_transforms</code> 拉取状态，通过命令入口提交输入。</div>
+
+    <h3>一次 tick 的路径</h3>
+    <ol class="tl">
+      <li class="done"><b>输入 → 命令</b><span>宿主把移动/交互/拾取转成 <code>Command</code>，进入队列。</span></li>
+      <li class="done"><b>命令校验与执行</b><span>世界检查距离、库存、规则、碰撞；非法命令返回错误，不写半状态。</span></li>
+      <li class="done"><b>固定步进</b><span>60 Hz；移动/日程/任务推进；事件进入队列。</span></li>
+      <li class="done"><b>状态哈希</b><span>规范化快照 → xxh3；用于回放、跨宿主对账、存档校验。</span></li>
+      <li class="done"><b>表现同步</b><span>宿主轮询事件与 transform；引擎只做插值、特效、音频。</span></li>
+    </ol>
+
+    <h3>Crates</h3>
+    <table>
+      <thead><tr><th>Crate</th><th>职责</th><th>不做什么</th></tr></thead>
+      <tbody>
+        <tr><td><code>world-pack</code></td><td>schema 读取、校验、哈希、导航烘焙输入</td><td>不跑世界</td></tr>
+        <tr><td><code>world-core</code></td><td>World/Session/Zone、tick、规则、碰撞、A*、快照</td><td>不依赖引擎</td></tr>
+        <tr><td><code>world-ffi</code></td><td>C ABI v0、句柄、缓冲、错误码</td><td>不写玩法</td></tr>
+        <tr><td><code>world-host-headless</code></td><td>CI / 回放 / 无头宿主</td><td>不渲染</td></tr>
+        <tr><td><code>world-cli</code></td><td>validate/build/test/editor/bake/bench/content-test</td><td>不成为运行时依赖</td></tr>
+        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS spike / 脚本宿主实验</td><td>正式规则接入待做</td></tr>
+        <tr><td><code>world-wasm</code></td><td>作者预览门面（2D/3D 共用）</td><td>不直接走 C ABI</td></tr>
+      </tbody>
+    </table>
+    <p class="dim">完整 ABI 与适配器契约见 <a href="../docs/03_引擎适配与替换.md">03 · 引擎适配与替换</a>，决策见 <a href="../plans/ADR-004-abi-v0.md">ADR-004</a>。</p>
+  </section>
+
+  <section class="panel" id="p-authoring" role="tabpanel" aria-labelledby="t-authoring">
+    <h2>内容与作者：一个包，三种写法</h2>
+    <p class="lede">同一个规范化内容包可以由 JSON、TypeScript DSL、Web 编辑器产生；三者最终必须过同一套 schema 校验与哈希。作者不需要理解引擎资源路径。</p>
+    <div class="grid g2">
+      <div class="card"><h4>JSON 包</h4><p>最直接、可 diff；适合小改与工具生成。</p><pre><code>data/demo.harbor/
+├── pack.json
+├── world/zones/harbor.zone.json
+├── world/actors/keeper.actor.json
+├── rules/airlock.rule.json
+├── dialogue/keeper.dlg.json
+└── tests/*.test.json</code></pre></div>
+      <div class="card"><h4>TypeScript DSL</h4><p>类型即文档；编译后与 JSON 包同哈希。</p><pre><code>defineRule({
+  id: "rule.airlock",
+  on: "interact",
+  target: "demo.airlock",
+  when: [{ kind: "has_item", item: "item.keycard" }],
+  then: [
+    { kind: "open_door" },
+    { kind: "set_flag", flag: "flag.airlock.open", value: true },
+  ],
+});</code></pre></div>
+    </div>
+
+    <h3>作者主循环</h3>
+    <div class="grid g4">
+      <div class="card"><h4>1 · 写</h4><p>编辑器拖摆放、改字段/对话；或改 TS/JSON。</p></div>
+      <div class="card"><h4>2 · 校验</h4><p><code>worldc validate</code>；错误码 + 内容路径；编辑器保存失败会回滚。</p></div>
+      <div class="card"><h4>3 · 烘焙</h4><p><code>worldc bake nav</code> 从 Zone/Prop AABB 生成导航网格。</p></div>
+      <div class="card"><h4>4 · 预览</h4><p>2D / 3D 同一份 <code>pack.data</code>；点击、WASD、E/F/T。</p></div>
+    </div>
+
+    <figure style="margin:14px 0 0;background:var(--sunken);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden">
+      <img src="../docs/shots/m1_editor.png" alt="RefuWorld Web 编辑器 v0.5" style="display:block;width:100%;height:auto">
+      <figcaption><b>编辑器 v0.5</b> · 布局拖拽 + 字段表单 + 对话图 + 撤销/重做 + 构建试玩。保存先写后校验，失败回滚。</figcaption>
+    </figure>
+    <p style="margin-top:12px"><a href="../docs/08_两小时教程.md">两小时教程</a> · <a href="../docs/02_内容作者与工具链.md">内容作者与工具链</a> · <a href="GUIDE.html">用户指南</a> · <a href="../web/editor.html" title="需要本地服务器">编辑器</a></p>
+    <div class="note warn"><b>教程状态：</b>功能已实现，但“2 小时”还没有真实作者计时验收；把它当目标，不当已证实的平均值。</div>
+  </section>
+
+  <section class="panel" id="p-3d" role="tabpanel" aria-labelledby="t-3d">
+    <h2>3D 演示：同一份世界，换一种看法</h2>
+    <p class="lede">3D 是表现层，不是第二套玩法。它用同一个 <code>PreviewWorld</code>、同一份 <code>pack.data</code>，所以钥匙卡、气闸、任务、对话和哈希都不会分叉。</p>
+    <div class="shots">
+      <figure><img src="../docs/shots/m1_3d_harbor.png" alt="3D 港湾值班室初始场景"><figcaption><b>初始：</b>第三人称、平台地灯、气闸、NPC、海面雨夜。</figcaption></figure>
+      <figure><img src="../docs/shots/m1_3d_airlock.png" alt="3D 气闸开启"><figcaption><b>开门：</b>规则触发 <code>open_door</code>，双门滑开、状态灯变绿。</figcaption></figure>
+    </div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><h4>场景</h4><p>程序化港湾：海面、雨、货轮、灯塔、舷窗、湿地面、雾、尘埃、Bloom；本地 Three.js r187。</p></div>
+      <div class="card"><h4>交互</h4><p>WASD / 点击地面 A*；鼠标旋转/滚轮缩放；点击实体或 E/F/T；对话字幕。</p></div>
+      <div class="card"><h4>边界</h4><p>低模、无骨骼/GLB/空间音频；NPC 还不寻路；WebGL2 是硬前提。</p></div>
+    </div>
+    <pre style="margin-top:14px"><code>cd games/world && ./web/build.sh
+cd web &amp;&amp; python3 -m http.server 8787
+# http://127.0.0.1:8787/demo3d.html</code></pre>
+    <p><a href="../web/demo3d.html" title="需要本地服务器">打开 3D 演示</a> · <a href="../docs/07_M1实现与验收.md#46-3d-沉浸式演示">实现记录</a></p>
+  </section>
+
+  <section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions">
+    <h2>已拍板：避免“又开一次会”</h2>
+    <p class="lede">完整理由与备选方案在 ADR 与 04/05；这里只留结论。改选信号也写在 04，不靠记忆。</p>
+    <table>
+      <thead><tr><th>#</th><th>问题</th><th>结论</th><th>代价/边界</th></tr></thead>
+      <tbody>
+        <tr><td class="q">D1</td><td>权威内核语言</td><td class="pick">Rust</td><td>无 GC、可产 WASM；团队要会 Rust</td></tr>
+        <tr><td class="q">D2</td><td>内容与规则</td><td class="pick">TypeScript DSL + JSON</td><td>两套前端需保持同哈希</td></tr>
+        <tr><td class="q">D3</td><td>引擎边界</td><td class="pick">版本化 C ABI + 轮询</td><td>核心不回调引擎；需要 ABI 测试</td></tr>
+        <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>正式 ScriptHost 仍未接</td></tr>
+        <tr><td class="q">D5</td><td>ECS 角色</td><td class="pick">内部细节，先 slab</td><td>M2 真实切片再复核 bevy_ecs</td></tr>
+        <tr><td class="q">D6</td><td>空间/物理</td><td class="pick">核心拥有逻辑空间/导航/碰撞</td><td>引擎只做表现；不追求跨 CPU 逐位一致</td></tr>
+        <tr><td class="q">D7</td><td>世界模型</td><td class="pick">World + Session + Zone + Entity</td><td>不绑塔防/关卡结构</td></tr>
+        <tr><td class="q">D8</td><td>首批宿主</td><td class="pick">Headless + C + Web + Godot</td><td>Godot 是 M2 首个生产适配器</td></tr>
+        <tr><td class="q">Q1–Q10</td><td>试点/平台/联网/许可/命名/团队/规模</td><td class="pick">见 ADR-001</td><td>内部私有；PC + Web；v0 不做联网</td></tr>
+      </tbody>
+    </table>
+    <p class="dim">ADR：<a href="../plans/ADR-001-m0-decisions.md">001 拍板</a> · <a href="../plans/ADR-002-pack-schema-v0.md">002 包 schema</a> · <a href="../plans/ADR-003-determinism-save-replay.md">003 确定性</a> · <a href="../plans/ADR-004-abi-v0.md">004 ABI</a> · <a href="../plans/ADR-005-slab-store.md">005 slab</a> · <a href="../plans/ADR-006-quickjs-spike.md">006 QuickJS</a> · <a href="../plans/ADR-007-m1-ts-dsl-web.md">007 M1</a></p>
+    <div class="note"><b>没拍板：</b>ScriptHost 的正式 API 边界、动态导航更新、编辑器 v0.6 的 schema 表单范围。它们应该在 M2 前用真实切片决定，而不是现在拍脑袋。</div>
+  </section>
+
+  <section class="panel" id="p-roadmap" role="tabpanel" aria-labelledby="t-roadmap">
+    <h2>路线图：先证明边界，再证明生产</h2>
+    <p class="lede">M0/M1 证明“这套边界能跑”；M2 才证明“在真实引擎里能跑同一局”。不要把 Web 预览当成生产适配器。</p>
+    <div class="grid g4">
+      <div class="card"><span class="chip ok">M0 · 已过</span><h4>可运行内核</h4><p>固定 tick、C ABI、QuickJS spike、坏包、双跑哈希。</p></div>
+      <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/3D、编辑器 v0.5、移动/寻路、导航/资产、内容测试。</p></div>
+      <div class="card"><span class="chip warn">M2 · 下一步</span><h4>Godot 生产适配器</h4><p>GDExtension、WorldNode、输入/资产/视图/音频/存档；同一包同一局。</p></div>
+      <div class="card"><span class="chip todo">M3/M4</span><h4>工具与试点</h4><p>编辑器成熟、导航/资产管线、LiveBay 切片试点。</p></div>
+    </div>
+
+    <h3>M2 的“完成”长什么样</h3>
+    <ul>
+      <li>Godot 适配器 ≤ 2,000 行，且没有一条玩法规则；</li>
+      <li>同一个包、同一 trace，在 Godot 与 Headless 得到同一哈希/事件序列；</li>
+      <li>资产按逻辑 ID 解析，不把 <code>res://</code> 写进内容；</li>
+      <li>存档/读档跨宿主一致；</li>
+      <li>真实 5k 实体场景的 tick 预算与帧时间被记录。</li>
+    </ul>
+
+    <h3>指标</h3>
+    <table>
+      <thead><tr><th>指标</th><th>目标</th><th>当前</th></tr></thead>
+      <tbody>
+        <tr><td>内容到预览</td><td>≤ 2 秒</td><td>编辑器构建→预览刷新；TS 走 <code>npm run dev</code></td></tr>
+        <tr><td>适配器规模</td><td>≤ 2,000 行</td><td>M2 验证</td></tr>
+        <tr><td>同一局哈希</td><td>Headless / C / wasm / Godot 一致</td><td>前三个一致；Godot 待做</td></tr>
+        <tr><td>规模</td><td>5k 活跃 / 20k 总 / 10 MB 存档</td><td>5k 合成 ≈0.01 ms/tick；存档未压测</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel" id="p-risks" role="tabpanel" aria-labelledby="t-risks">
+    <h2>风险与下一步：先把未知数变便宜</h2>
+    <p class="lede">最大的风险不是“架构不够漂亮”，而是把未验证的边界当成已生产。下面每项都给出最小验证动作。</p>
+    <table>
+      <thead><tr><th>风险</th><th>为什么危险</th><th>下一步</th></tr></thead>
+      <tbody>
+        <tr><td><b>ScriptHost 未接</b></td><td>规则仍由 Rust 解释 JSON；QuickJS 只有 spike，复杂内容会撞边界。</td><td>事件/命令/查询/预算最小 API；先在 demo 上用脚本替换一条规则。</td></tr>
+        <tr><td><b>导航是静态的</b></td><td>门烘焙成障碍；开门后不重建网格，NPC 不会寻路。</td><td>局部网格更新 + 动态障碍；NPC 用同一 A*。</td></tr>
+        <tr><td><b>5k 是合成基线</b></td><td>不含真实战斗/查询/组件变更，不能证明生产性能。</td><td>用真实玩法切片压测；再决定是否换 bevy_ecs。</td></tr>
+        <tr><td><b>编辑器还不够“作者友好”</b></td><td>复杂字段仍改 JSON；对话图简单；没有浏览器内实时预览。</td><td>v0.6 schema 表单、错误定位、自动布局。</td></tr>
+        <tr><td><b>3D 是表现层</b></td><td>低模、无 GLB/骨骼/空间音频；不能代表最终美术。</td><td>资产管线 + 一个真实 GLB 角色/场景。</td></tr>
+        <tr><td><b>跨平台浮点/ABI</b></td><td>只验证 macOS；三平台 CI 还没真正跑过。</td><td>推送后看 CI；固定 ABI 测试与哈希。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>下一步（按价值）</h3>
+    <ol class="tl">
+      <li class="now"><b>ScriptHost 最小接入</b><span>事件 → 脚本 → 命令；预算与错误可观测；用 demo 的一条规则验证。</span></li>
+      <li class="next"><b>动态导航</b><span>开门重建局部网格；NPC 寻路；编辑器“烘焙”可预览。</span></li>
+      <li class="next"><b>真实 5k 基准</b><span>带移动/交互/查询的切片，记录每 tick 与内存。</span></li>
+      <li class="next"><b>编辑器 v0.6</b><span>schema 表单、字段级错误、对话图自动布局。</span></li>
+      <li class="next"><b>M2 Godot 适配器</b><span>真正的“换引擎只换一层”验收。</span></li>
+    </ol>
+    <div class="note ok"><b>给回来的人：</b>先读 <a href="GUIDE.html">GUIDE</a> 跑一遍；再读 <a href="../docs/07_M1实现与验收.md">07 M1 验收</a> 看边界；最后看 <a href="../docs/05_路线图与验收.md">05 路线图</a> 决定下一步。</div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>RefuWorld · 世界系统中间层 · HUB</span>
+  <span>所有数字以仓库与 <code>test/run_m*.sh</code> 为准 · 2026-11-24</span>
+</footer>
+
+<script src="theme.js"></script>
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs button'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  function show(id, updateHash) {
+    var tab = tabs.find(function (t) { return t.dataset.panel === id; });
+    if (!tab) id = 'p-overview';
+    panels.forEach(function (p) { p.classList.toggle('active', p.id === id); });
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.panel === id)); });
+    if (updateHash) history.replaceState(null, '', '#' + id.replace(/^p-/, ''));
+    if (updateHash) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { show(tab.dataset.panel, true); });
+    tab.addEventListener('keydown', function (event) {
+      var i = tabs.indexOf(tab);
+      if (event.key === 'ArrowRight') { event.preventDefault(); tabs[(i + 1) % tabs.length].focus(); }
+      if (event.key === 'ArrowLeft') { event.preventDefault(); tabs[(i - 1 + tabs.length) % tabs.length].focus(); }
+    });
+  });
+  var initial = (location.hash || '').replace(/^#/, '');
+  show(initial ? 'p-' + initial : 'p-overview', false);
+  window.addEventListener('hashchange', function () {
+    var id = (location.hash || '').replace(/^#/, '');
+    if (id) show('p-' + id, false);
+  });
+})();
+</script>
+</body>
+</html>

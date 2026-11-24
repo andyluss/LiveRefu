@@ -42,7 +42,7 @@ echo "== 7. 3D 演示静态契约 =="
 node "$ROOT/test/demo3d_static.mjs"
 
 echo "== 8. R-016 三态主题检查 =="
-node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html" "$ROOT/web/demo3d.html"
+node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html" "$ROOT/web/demo3d.html" "$ROOT/brief/HUB.html" "$ROOT/brief/GUIDE.html"
 
 echo "== 9. wasm 预览逻辑测试 =="
 node "$ROOT/web/test_preview.cjs"

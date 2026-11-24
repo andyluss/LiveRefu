@@ -1,0 +1,49 @@
+/* RefuWorld brief · 三态主题（R-016）。
+   HUB 默认深色、GUIDE 默认浅色；system/light/dark 只覆盖 token。 */
+:root{color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+
+body[data-page="hub"]{
+  --bg:#0b1215;--panel:#121d20;--panel2:#1a292d;--sunken:#071013;
+  --ink:#e9f3ef;--dim:#a8bbb5;--faint:#81958f;
+  --line:#26383b;--line-strong:#5f7b78;
+  --teal:#5ed7c2;--orange:#f0a06e;--accent:#e88b52;
+  --focus:#8ab4f8;--amber:#e8bd6b;--ok:#8fd19a;
+  --radius:11px;
+}
+body[data-page="guide"]{
+  --bg:#f8f5ed;--panel:#fffdf8;--panel2:#f0eadf;--sunken:#f4efe4;
+  --ink:#1d2a27;--dim:#5b6964;--faint:#7b8882;
+  --line:#ddd4c4;--line-strong:#a69c88;
+  --teal:#0f766e;--orange:#b9502c;--accent:#b9502c;
+  --focus:#1d5fa8;--amber:#8a5a00;--ok:#246b3a;
+  --radius:12px;
+}
+html[data-theme="light"] body[data-page="hub"]{
+  --bg:#f6f3e9;--panel:#fffdf8;--panel2:#ede8da;--sunken:#f4efe4;
+  --ink:#17231f;--dim:#4d5b55;--faint:#6d7a73;
+  --line:#d5ccb9;--line-strong:#8a958d;
+  --teal:#0f766e;--orange:#b9502c;--accent:#b9502c;
+  --focus:#1d5fa8;--amber:#8a5a00;--ok:#246b3a;
+}
+html[data-theme="dark"] body[data-page="guide"]{
+  --bg:#0b1311;--panel:#121d1a;--panel2:#1a2924;--sunken:#16221e;
+  --ink:#eee9dc;--dim:#a9b6ae;--faint:#7d8d84;
+  --line:#32443d;--line-strong:#577067;
+  --teal:#6fe3d1;--orange:#f0a06e;--accent:#f0a06e;
+  --focus:#8ab4f8;--amber:#d9b66b;--ok:#8fd19a;
+}
+.theme-switch{display:none;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:3px;margin-left:auto;vertical-align:middle}
+html[data-js] .theme-switch{display:inline-flex}
+.theme-switch button{border:0;background:transparent;color:var(--dim);font:11px/1 -apple-system,"PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.04em;padding:6px 9px;border-radius:999px;cursor:pointer}
+.theme-switch button[aria-pressed="true"]{background:var(--teal);color:var(--bg)}
+.theme-switch button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+body[data-page="hub"] .theme-switch{margin-left:10px}
+body[data-page="guide"] .wrap{max-width:1180px;margin:0 auto;padding:42px 24px 90px}
+body[data-page="guide"] .guide-brand{text-decoration:none;border-bottom:0}
+body[data-page="guide"] .guide-brand:hover span{color:var(--orange)}
+body[data-page="guide"] h2{scroll-margin-top:76px}
+@media print{
+  .theme-switch{display:none !important}
+}
