@@ -25,6 +25,7 @@
 - **M1 剩余：5k 合成基准**：`worldc bench --synthetic 5000 --ticks 6000`，Apple M1 Pro release ≈ 0.01 ms/tick。
 - **M1 剩余：导航/寻路**：`worldc bake nav` 从 Zone/Prop AABB 烘焙 40×40 网格；核心 4 邻接确定性 A* + `Command::MoveTo`；预览点击地面沿虚线路径移动；编辑器「烘焙导航」。
 - **M1 剩余：资产依赖**：`assets/assets.index.json`、actor/prop/item `visual` 引用、校验与 `world_zone_assets` ABI；C ABI 返回 3 个逻辑资产 ID。
+- **3D 沉浸式演示**：`web/demo3d.html` + `demo3d.js`；本地 Three.js r187、第三人称/轨道相机、WASD/点击寻路、气闸滑门、对话字幕、程序化海面/雨/货轮/灯塔、Bloom/尘埃/可选 WebAudio；同一 wasm 状态与哈希。
 - **M1 剩余：编辑器 v0.5**：字段表单、对话图（节点/边、编辑/新增/删除）、撤销/重做；保存仍走「先写后校验，失败回滚」。
 - **M1 剩余：类型检查与开发监听**：`worldc ts-check`/`npm run check`（TypeScript devDependency）、`npm run dev`（TS 监听→构建→复制 pack.data）。
 - **M1 剩余：第三条内容测试与两小时教程**：`pickup_keycard`；[08 · 两小时教程](docs/08_两小时教程.md)（真实作者试用待做）。
@@ -45,7 +46,7 @@
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
 - M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xc840fe2090a0a085`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
-- M1 剩余：`content-test` 3 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.01 ms/tick；R-016 两个页面通过。
+- M1 剩余：`content-test` 3 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.01 ms/tick；R-016 三个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17
 

@@ -60,8 +60,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+      - name: 3D static contract
+        run: node games/world/test/demo3d_static.mjs
       - name: R-016 three-state theme
-        run: node design/tools/check_html_theme.ts games/world/web/index.html games/world/web/editor.html
+        run: node design/tools/check_html_theme.ts games/world/web/index.html games/world/web/editor.html games/world/web/demo3d.html
       - name: Install TS tooling
         working-directory: games/world
         run: npm ci

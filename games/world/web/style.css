@@ -49,6 +49,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
   background: var(--accent); color: var(--panel); font-weight: 800; letter-spacing: 0.06em;
 }
 .brand p { color: var(--muted); font-size: 13px; }
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.nav-link {
+  color: var(--ink); text-decoration: none; border: 1px solid var(--line);
+  border-radius: 999px; padding: 6px 11px; font-size: 13px; background: var(--panel);
+}
+.nav-link:hover { border-color: var(--accent); }
 .theme-control { display: none; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
 .js .theme-control { display: flex; }
 .theme-control button {

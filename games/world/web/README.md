@@ -2,6 +2,18 @@
 
 > 一个不依赖引擎编辑器的预览：wasm 内核 + 最小 Canvas 视图 + 点击/键盘交互 + M0 trace 回放。
 
+## 3D 演示
+
+```bash
+./web/build.sh
+cd web && python3 -m http.server 8787
+# http://127.0.0.1:8787/demo3d.html
+```
+
+同一份 wasm 世界状态，Three.js 表现层：第三人称/轨道相机、WASD/点击寻路、气闸滑门、对话字幕、
+程序化海面/雨/货轮/灯塔、Bloom、尘埃与可选 WebAudio 环境声。Three.js 已 vendor 在 `web/vendor/three/`，
+不依赖 CDN。3D 页不复制规则——所有交互仍走 `PreviewWorld`。
+
 ## 编辑器
 
 ```bash

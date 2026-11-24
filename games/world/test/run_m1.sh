@@ -38,10 +38,13 @@ echo "== 5. 构建 Web 预览（wasm + wasm-bindgen） =="
 echo "== 6. 5k 合成基准 =="
 "$CODE/run.sh" run -q --release -p world-cli -- bench --synthetic 5000 --ticks 600
 
-echo "== 7. R-016 三态主题检查 =="
-node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html"
+echo "== 7. 3D 演示静态契约 =="
+node "$ROOT/test/demo3d_static.mjs"
 
-echo "== 8. wasm 预览逻辑测试 =="
+echo "== 8. R-016 三态主题检查 =="
+node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html" "$ROOT/web/demo3d.html"
+
+echo "== 9. wasm 预览逻辑测试 =="
 node "$ROOT/web/test_preview.cjs"
 
 echo "M1 PASS"
