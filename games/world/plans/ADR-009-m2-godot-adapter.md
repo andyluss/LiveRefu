@@ -31,7 +31,7 @@ M2 先做 **Godot 4.7 的逻辑适配器**，不先做渲染/资产/音频：
   - `set_move` 后 `WORLD_MOVE_X=0.6666`
   - `play.tscn` headless 冒烟通过（无脚本错误）
   - `cts.sh`：L/T/I/E/V/S/X/D 基础组全 PASS
-  - 视图按 kind 选 Capsule/Box/Sphere，play 注册全部 mesh GLB scene；`sync_views_at` 插值，`clear_views`/`unregister_visual` 卸载；MultiMesh 批渲染 prop/item，2D/iso 轴映射；真实 WAV `airlock_open.wav` 经事件播放；CTS 增加 Z/A；play 提供 E/F/T/HUD；5k CPU benchmark 600 tick（sync P95 0.664ms）
+  - 视图按 kind 选 Capsule/Box/Sphere，play 注册全部 mesh GLB scene；`sync_views_at` 插值，`clear_views`/`unregister_visual` 卸载；MultiMesh 批渲染 prop/item，2D/iso 轴映射；真实 WAV `airlock_open.wav` 经事件播放；CTS 增加 Z/A；play 提供 E/F/T/HUD；5k CPU benchmark 600 tick（sync P95 0.656ms）
 - C ABI/Headless 同一哈希；适配器源码不 `use world_core`。
 
 ## 不包含
