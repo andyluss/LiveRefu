@@ -1,10 +1,10 @@
-name: RefuWorld M0
+name: RefuWorld CI
 
 on:
   push:
     paths:
       - "games/world/**"
-      - ".github/workflows/world-m0.yml"
+      - ".github/workflows/world.yml"
   pull_request:
     paths:
       - "games/world/**"

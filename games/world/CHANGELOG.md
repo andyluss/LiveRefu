@@ -43,7 +43,7 @@
 
 - README 状态改为 **M0 已通过 + M1 主要切片已通过**；项目名统一为 **RefuWorld**。
 - [05](docs/05_路线图与验收.md) 的待拍板问题改为已拍板结论，并补 M0 验收结果表。
-- 新增 `.github/workflows/world-m0.yml`：三 OS `cargo test`、C ABI 冒烟、wasm core 构建。
+- 新增 CI workflow（当时 `world-m0.yml`，现 `world.yml`）：三 OS `cargo test`、C ABI 冒烟、wasm core 构建。
 - 新增 `test/run_m1.sh`、`web/build.sh`、`web/README.md`、`tools/editor-server.mjs`；`worldc` 增加 `ts-build`/`content-test`/`editor`。
 - 黄金哈希因 `collider`/`move_intent`/`open_door`/`path`/`nav`/`assets` 更新：包 `sha256:66125c46…46fe29e`，600 tick `0xc840fe2090a0a085`。
 
@@ -55,7 +55,7 @@
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
 - M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xc840fe2090a0a085`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
-- GitHub Actions `RefuWorld M0`：[run 45755991019](https://github.com/andyluss/LiveRefu/actions/runs/45755991019) 在 Ubuntu/macOS/Windows 三平台全绿；8 个 job 覆盖全部内容包、R-016 8 页、Demo 静态契约、real5k smoke 与 `world-wasm` QuickJS 构建。
+- GitHub Actions `RefuWorld CI`：[run 45755991019](https://github.com/andyluss/LiveRefu/actions/runs/45755991019) 在 Ubuntu/macOS/Windows 三平台全绿；8 个 job 覆盖全部内容包、R-016 8 页、Demo 静态契约、real5k smoke 与 `world-wasm` QuickJS 构建。
 - M1 剩余：`content-test` 6 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k v1 real P95 0.239 ms/tick；R-016 八个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17

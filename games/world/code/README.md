@@ -1,4 +1,4 @@
-# code · RefuWorld M0 Rust workspace
+# code · RefuWorld Rust workspace
 
 > 入口：`./run.sh`（默认把 `CARGO_HOME` 放在本目录的 `.cargo-home/`，避免写用户目录）。
 
