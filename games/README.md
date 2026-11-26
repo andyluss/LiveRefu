@@ -1,6 +1,6 @@
 # Games · 游戏项目区
 
-> 所有游戏项目统一放在 `games/`；Godot 用户数据统一在 [`games/.godot-home/`](.godot-home/)。
+> 所有游戏项目统一放在 `games/`；Godot 用户数据统一在 `games/.godot-home/`。
 
 ## 项目
 

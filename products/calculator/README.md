@@ -90,7 +90,7 @@ products/calculator/
 
 ## 来源与许可
 
-计算核心与行为规格参考 [`indie/live-calculator`](../../indie/live-calculator/README.md)；原项目为 `UNLICENSED`。本产品保留来源说明，不改动独立仓库；正式分发前需确认许可与字体/图标权利。见 [`NOTICE.md`](NOTICE.md)。
+计算核心与行为规格参考独立仓 `indie/live-calculator`；原项目为 `UNLICENSED`。本产品保留来源说明，不改动独立仓库；正式分发前需确认许可与字体/图标权利。见 [`NOTICE.md`](NOTICE.md)。
 
 ## 文档
 

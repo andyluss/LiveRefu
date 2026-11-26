@@ -17,7 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
-- **RefuWorld CI workflow 更名**：`.github/workflows/world-m0.yml` → `.github/workflows/world.yml`，显示名 `RefuWorld M0` → `RefuWorld CI`；触发路径与文档引用同步，避免把持续覆盖误读成只覆盖 M0。
+- **RefuWorld CI workflow 更名**：`.github/workflows/world-m0.yml` → `.github/workflows/world.yml`，显示名 `RefuWorld M0` → `RefuWorld CI`；触发路径与文档引用同步，避免把持续覆盖误读成只覆盖 M0。新 run [`45757232197`](https://github.com/andyluss/LiveRefu/actions/runs/45757232197) 的 8 个 job 全绿。
 - **RefuWorld M1 主要切片（TS DSL + Web 预览 + 编辑器 v0 + 移动）**：[`games/world/`](games/world/README.md) 新增类型化 TypeScript DSL 与 `worldc ts-build`（TS 包与 JSON 包同哈希）、wasm Web 预览（移动/拾取/交互/对话/任务/回放，R-016 三态）、Web 编辑器 v0.5、3D 沉浸式演示、内容测试、TS 类型检查、导航/资产依赖与 5k 合成基准；回放同一 `0xc840fe2090a0a085`；记录见 [`07 · M1 切片`](games/world/docs/07_M1实现与验收.md)。
 - **RefuWorld M0 落地（可运行）**：[`games/world/`](games/world/README.md) 新增 Rust 无头内核、内容包校验/CLI、C ABI + C 冒烟宿主、wasm32 + QuickJS spike；Headless 与 C 宿主同一 trace 哈希一致（`0xc840fe2090a0a085`）；记录见 [`06 · M0 实现与验收`](games/world/docs/06_M0实现与验收.md)。
 - **新增 [`games/world/`](games/world/README.md) 世界系统中间层方案（方案阶段，未实现）**：介于游戏引擎与游戏内容之间的跨游戏/跨引擎层，推荐 Rust 权威内核 + TypeScript 内容层 + 版本化 C ABI + 薄引擎适配器；含问题定义、世界模型、内容作者工具链、引擎适配与替换验收、A–E 方案评分与推荐、M0–M4 路线图；项目日志见 [`games/world/CHANGELOG.md`](games/world/CHANGELOG.md)。
@@ -51,6 +51,7 @@
 - **根入口与规范**：根 [`README.md`](README.md)、[`TODO.md`](TODO.md)、[`AGENTS.md`](AGENTS.md) 与 [`rules/`](rules/README.md) 的入口/分流/记录规范收口；根日志只保留工作区级条目。
 
 ### 修复
+- **Verify 链接检查 3 个失效链接**：移除生成目录与独立仓的相对链接，改为路径文本；CI 不再因干净 checkout 缺目录报错。
 - **Verify workflow 0s / jobs 为空**：[`.github/workflows/verify.yml`](.github/workflows/verify.yml) 两个 step name 含未加引号的 `python:` / `godot:`，导致 YAML 解析失败；已加引号修复。
 
 ## [0.5.0] - 2026-10-21 13:50 · 设计系统 v0.2 与组件落地
