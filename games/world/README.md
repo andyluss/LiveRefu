@@ -2,7 +2,7 @@
 title: "RefuWorld · 跨游戏世界系统中间层"
 tagline: "让内容作者写世界，让引擎只负责把它画出来"
 form: "Rust 权威内核 + TypeScript 内容层 + 薄引擎适配器"
-status: "M0 已通过；M1 主要切片（TS DSL / 多 Demo 体系 / ScriptHost / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过"
+status: "M0 已通过；M1 主要切片（TS DSL / 多 Demo 体系 / ScriptHost / 真实 5k v1 / 三平台 CI / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过"
 stack: "Rust / TypeScript / C ABI"
 scope: "跨游戏、跨引擎"
 ---
@@ -12,7 +12,7 @@ scope: "跨游戏、跨引擎"
 > **一句话**：把「世界怎么运转」从引擎里拿出来，做成一个**确定性、可测试、可替换引擎**的 Rust 内核；
 > 内容作者用 TypeScript 与数据描述世界，引擎只负责把世界画出来、放出声音、接收输入。
 
-> **当前状态**：**M0 已通过；M1 主要切片（TS DSL / 多 Demo 体系 / ScriptHost / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过**。
+> **当前状态**：**M0 已通过；M1 主要切片（TS DSL / 多 Demo 体系 / ScriptHost / 真实 5k v1 / 三平台 CI / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过**。
 > 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm 2D/2.5D/3D 多 Demo、QuickJS ScriptHost、Web 编辑器 v0.5、移动/寻路、导航/资产依赖均可运行；
 > TS 编译包与 JSON 包同哈希，Web 预览回放得到同一 `0xc840fe2090a0a085`。
 > 记录见 [06 · M0](docs/06_M0实现与验收.md) 与 [07 · M1 切片](docs/07_M1实现与验收.md)。

@@ -55,6 +55,7 @@
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
 - M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xc840fe2090a0a085`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
+- GitHub Actions `RefuWorld M0`：[run 45754927177](https://github.com/andyluss/LiveRefu/actions/runs/45754927177) 在 Ubuntu/macOS/Windows 三平台全绿。
 - M1 剩余：`content-test` 6 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k v1 real P95 0.239 ms/tick；R-016 八个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17
