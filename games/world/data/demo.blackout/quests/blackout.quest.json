@@ -1,0 +1,23 @@
+{
+  "id": "quest.blackout",
+  "title": "loc:quest.blackout.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.blackout.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.blackout.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.blackout.done",
+      "value": true
+    }
+  ]
+}

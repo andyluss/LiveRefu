@@ -1,0 +1,17 @@
+{
+  "id": "schedule.library",
+  "entries": [
+    {
+      "from": "06:00",
+      "to": "18:00",
+      "behavior": "work",
+      "at": "zone.library"
+    },
+    {
+      "from": "18:00",
+      "to": "06:00",
+      "behavior": "wander",
+      "at": "zone.library"
+    }
+  ]
+}

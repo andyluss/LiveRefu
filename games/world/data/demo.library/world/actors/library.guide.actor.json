@@ -1,0 +1,26 @@
+{
+  "id": "demo.library.guide",
+  "name": "loc:actor.library.name",
+  "tags": [
+    "npc",
+    "human",
+    "library"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.7
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.library"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.library.intro"
+}

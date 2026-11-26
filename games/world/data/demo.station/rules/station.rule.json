@@ -1,0 +1,31 @@
+{
+  "id": "rule.station",
+  "on": "interact",
+  "target": "demo.station.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.station.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.station.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "station.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:station.locked"
+    }
+  ]
+}

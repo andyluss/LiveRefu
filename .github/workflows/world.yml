@@ -62,8 +62,9 @@ jobs:
       - name: Content tests (all packs)
         shell: bash
         run: |
-          for pack in demo.harbor demo.market demo.greenhouse demo.orbit; do
-            cargo run -q -p world-cli -- content-test --pack "../data/$pack"
+          for pack in ../data/demo.*; do
+            [ -d "$pack" ] || continue
+            cargo run -q -p world-cli -- content-test --pack "$pack"
           done
 
   c-abi:

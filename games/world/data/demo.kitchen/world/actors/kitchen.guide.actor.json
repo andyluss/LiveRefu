@@ -1,0 +1,26 @@
+{
+  "id": "demo.kitchen.guide",
+  "name": "loc:actor.kitchen.name",
+  "tags": [
+    "npc",
+    "human",
+    "kitchen"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.7
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.kitchen"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.kitchen.intro"
+}

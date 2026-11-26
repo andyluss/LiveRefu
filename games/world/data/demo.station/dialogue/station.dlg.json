@@ -1,0 +1,28 @@
+{
+  "id": "dlg.station.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.station.guide",
+      "text": "loc:dlg.station.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.station.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.station.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.station.guide",
+      "text": "loc:dlg.station.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

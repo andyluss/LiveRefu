@@ -1,0 +1,23 @@
+{
+  "id": "quest.station",
+  "title": "loc:quest.station.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.station.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.station.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.station.done",
+      "value": true
+    }
+  ]
+}

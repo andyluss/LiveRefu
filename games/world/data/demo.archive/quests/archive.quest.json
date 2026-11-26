@@ -1,0 +1,23 @@
+{
+  "id": "quest.archive",
+  "title": "loc:quest.archive.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.archive.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.archive.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.archive.done",
+      "value": true
+    }
+  ]
+}

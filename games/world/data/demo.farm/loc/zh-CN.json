@@ -1,0 +1,12 @@
+{
+  "zone.farm.name": "补给温室",
+  "actor.farm.name": "园丁",
+  "prop.farm.door.name": "种子库门",
+  "item.farm.key.name": "补给单",
+  "quest.farm.title": "温室补给",
+  "dlg.farm.greet": "园丁抬头看了你一眼。",
+  "dlg.farm.ask": "这里需要我做什么？",
+  "dlg.farm.task": "拿上补给单，去开种子库门。",
+  "dlg.farm.bye": "回头见。",
+  "farm.locked": "种子库门锁着。"
+}

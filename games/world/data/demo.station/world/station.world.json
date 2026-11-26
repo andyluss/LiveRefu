@@ -1,0 +1,14 @@
+{
+  "id": "world.station",
+  "start_zone": "zone.station",
+  "start_time": "19:40",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

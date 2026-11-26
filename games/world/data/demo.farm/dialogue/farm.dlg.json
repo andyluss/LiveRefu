@@ -1,0 +1,28 @@
+{
+  "id": "dlg.farm.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.farm.guide",
+      "text": "loc:dlg.farm.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.farm.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.farm.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.farm.guide",
+      "text": "loc:dlg.farm.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "dlg.kitchen.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.kitchen.guide",
+      "text": "loc:dlg.kitchen.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.kitchen.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.kitchen.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.kitchen.guide",
+      "text": "loc:dlg.kitchen.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

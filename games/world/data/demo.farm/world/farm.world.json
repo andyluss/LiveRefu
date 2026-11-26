@@ -1,0 +1,14 @@
+{
+  "id": "world.farm",
+  "start_zone": "zone.farm",
+  "start_time": "09:15",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

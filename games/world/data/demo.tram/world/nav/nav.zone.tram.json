@@ -1,0 +1,17 @@
+{
+  "id": "nav.zone.tram",
+  "zone": "zone.tram",
+  "cell": 1.0,
+  "origin": [
+    -12.0,
+    -12.0
+  ],
+  "width": 24,
+  "height": 24,
+  "blocked": [
+    419,
+    420,
+    443,
+    444
+  ]
+}

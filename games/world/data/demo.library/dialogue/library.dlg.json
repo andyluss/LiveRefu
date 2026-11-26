@@ -1,0 +1,28 @@
+{
+  "id": "dlg.library.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.library.guide",
+      "text": "loc:dlg.library.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.library.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.library.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.library.guide",
+      "text": "loc:dlg.library.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

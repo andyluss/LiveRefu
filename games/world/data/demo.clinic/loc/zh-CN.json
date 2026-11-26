@@ -1,0 +1,12 @@
+{
+  "zone.clinic.name": "港湾诊所",
+  "actor.clinic.name": "值班护士",
+  "prop.clinic.door.name": "药房门",
+  "item.clinic.key.name": "处方卡",
+  "quest.clinic.title": "诊所值班",
+  "dlg.clinic.greet": "值班护士抬头看了你一眼。",
+  "dlg.clinic.ask": "这里需要我做什么？",
+  "dlg.clinic.task": "拿上处方卡，去开药房门。",
+  "dlg.clinic.bye": "回头见。",
+  "clinic.locked": "药房门锁着。"
+}

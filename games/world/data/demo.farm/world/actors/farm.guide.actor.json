@@ -1,0 +1,26 @@
+{
+  "id": "demo.farm.guide",
+  "name": "loc:actor.farm.name",
+  "tags": [
+    "npc",
+    "human",
+    "farm"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.7
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.farm"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.farm.intro"
+}

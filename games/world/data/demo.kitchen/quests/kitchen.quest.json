@@ -1,0 +1,23 @@
+{
+  "id": "quest.kitchen",
+  "title": "loc:quest.kitchen.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.kitchen.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.kitchen.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.kitchen.done",
+      "value": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "zone.library.name": "旧档案馆",
+  "actor.library.name": "档案员",
+  "prop.library.door.name": "密库门",
+  "item.library.key.name": "借阅证",
+  "quest.library.title": "闭馆之后",
+  "dlg.library.greet": "档案员抬头看了你一眼。",
+  "dlg.library.ask": "这里需要我做什么？",
+  "dlg.library.task": "拿上借阅证，去开密库门。",
+  "dlg.library.bye": "回头见。",
+  "library.locked": "密库门锁着。"
+}

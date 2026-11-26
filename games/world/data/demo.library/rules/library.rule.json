@@ -1,0 +1,31 @@
+{
+  "id": "rule.library",
+  "on": "interact",
+  "target": "demo.library.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.library.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.library.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "library.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:library.locked"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "kitchen",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.kitchen.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.kitchen.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.kitchen.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.kitchen.open": true,
+      "flag.quest.kitchen.done": true
+    },
+    "quests": {
+      "quest.kitchen": "completed"
+    },
+    "inventory": {
+      "item.kitchen.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

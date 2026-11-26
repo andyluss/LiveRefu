@@ -1,0 +1,31 @@
+{
+  "id": "rule.farm",
+  "on": "interact",
+  "target": "demo.farm.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.farm.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.farm.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "farm.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:farm.locked"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "library",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.library.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.library.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.library.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.library.open": true,
+      "flag.quest.library.done": true
+    },
+    "quests": {
+      "quest.library": "completed"
+    },
+    "inventory": {
+      "item.library.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

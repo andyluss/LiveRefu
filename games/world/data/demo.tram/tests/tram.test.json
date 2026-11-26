@@ -1,0 +1,48 @@
+{
+  "name": "tram",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.tram.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.tram.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.tram.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.tram.open": true,
+      "flag.quest.tram.done": true
+    },
+    "quests": {
+      "quest.tram": "completed"
+    },
+    "inventory": {
+      "item.tram.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "world.library",
+  "start_zone": "zone.library",
+  "start_time": "18:30",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

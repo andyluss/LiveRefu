@@ -1,0 +1,23 @@
+{
+  "id": "quest.clinic",
+  "title": "loc:quest.clinic.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.clinic.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.clinic.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.clinic.done",
+      "value": true
+    }
+  ]
+}

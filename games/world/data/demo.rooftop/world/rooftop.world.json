@@ -1,0 +1,14 @@
+{
+  "id": "world.rooftop",
+  "start_zone": "zone.rooftop",
+  "start_time": "16:10",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

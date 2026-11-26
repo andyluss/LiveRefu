@@ -1,0 +1,48 @@
+{
+  "name": "clinic",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.clinic.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.clinic.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.clinic.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.clinic.open": true,
+      "flag.quest.clinic.done": true
+    },
+    "quests": {
+      "quest.clinic": "completed"
+    },
+    "inventory": {
+      "item.clinic.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

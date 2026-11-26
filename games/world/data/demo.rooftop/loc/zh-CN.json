@@ -1,0 +1,12 @@
+{
+  "zone.rooftop.name": "气象站",
+  "actor.rooftop.name": "观测员",
+  "prop.rooftop.door.name": "设备门",
+  "item.rooftop.key.name": "风速记录",
+  "quest.rooftop.title": "屋顶气象站",
+  "dlg.rooftop.greet": "观测员抬头看了你一眼。",
+  "dlg.rooftop.ask": "这里需要我做什么？",
+  "dlg.rooftop.task": "拿上风速记录，去开设备门。",
+  "dlg.rooftop.bye": "回头见。",
+  "rooftop.locked": "设备门锁着。"
+}

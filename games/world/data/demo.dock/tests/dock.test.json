@@ -1,0 +1,48 @@
+{
+  "name": "dock",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.dock.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.dock.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.dock.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.dock.open": true,
+      "flag.quest.dock.done": true
+    },
+    "quests": {
+      "quest.dock": "completed"
+    },
+    "inventory": {
+      "item.dock.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

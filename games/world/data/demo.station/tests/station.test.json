@@ -1,0 +1,48 @@
+{
+  "name": "station",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.station.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.station.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.station.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.station.open": true,
+      "flag.quest.station.done": true
+    },
+    "quests": {
+      "quest.station": "completed"
+    },
+    "inventory": {
+      "item.station.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

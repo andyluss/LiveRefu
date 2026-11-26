@@ -1,0 +1,12 @@
+{
+  "zone.tram.name": "环线电车",
+  "actor.tram.name": "司机",
+  "prop.tram.door.name": "驾驶室门",
+  "item.tram.key.name": "车票",
+  "quest.tram.title": "末班电车",
+  "dlg.tram.greet": "司机抬头看了你一眼。",
+  "dlg.tram.ask": "这里需要我做什么？",
+  "dlg.tram.task": "拿上车票，去开驾驶室门。",
+  "dlg.tram.bye": "回头见。",
+  "tram.locked": "驾驶室门锁着。"
+}

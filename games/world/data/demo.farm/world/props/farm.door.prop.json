@@ -1,0 +1,23 @@
+{
+  "id": "demo.farm.door",
+  "name": "loc:prop.farm.door.name",
+  "tags": [
+    "prop",
+    "door",
+    "farm"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.2,
+      2.2,
+      0.4
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": "item.farm.key"
+}

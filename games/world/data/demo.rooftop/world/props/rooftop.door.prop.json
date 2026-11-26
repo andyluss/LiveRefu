@@ -1,0 +1,23 @@
+{
+  "id": "demo.rooftop.door",
+  "name": "loc:prop.rooftop.door.name",
+  "tags": [
+    "prop",
+    "door",
+    "rooftop"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.2,
+      2.2,
+      0.4
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": "item.rooftop.key"
+}

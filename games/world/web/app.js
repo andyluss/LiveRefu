@@ -1,7 +1,10 @@
 import init, { PreviewWorld } from "./pkg/world_wasm.js";
+import { DEMOS } from "./demos-data.js";
 
 const EXPECTED_HASH = "0x3606a221e9990561";
 const TICK_US = 16666;
+const DEMO_ID = new URLSearchParams(location.search).get("demo") || "demo.harbor";
+const DEMO = DEMOS[DEMO_ID] ?? DEMOS["demo.harbor"];
 
 const canvas = document.getElementById("view");
 const ctx = canvas.getContext("2d");
@@ -29,6 +32,18 @@ let errorShown = false;
 let lastPackMtime = null;
 const keys = new Set();
 const MOVE_KEYS = new Set(["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"]);
+
+function bootLabels() {
+  document.title = `${DEMO.title} · RefuWorld`;
+  const subtitle = document.getElementById("demo-subtitle");
+  if (subtitle) subtitle.textContent = `${DEMO.title} · ${DEMO.subtitle}`;
+  const footPack = document.getElementById("foot-pack");
+  if (footPack) footPack.textContent = DEMO_ID;
+  if (!DEMO.trace) {
+    const replay = document.getElementById("btn-replay");
+    if (replay) replay.hidden = true;
+  }
+}
 
 function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
@@ -469,14 +484,15 @@ async function watchPack() {
 async function boot() {
   try {
     await init();
-    const [packResponse, traceResponse] = await Promise.all([
-      fetch("./pack.data"),
-      fetch("./m0.trace.json"),
-    ]);
-    if (!packResponse.ok) throw new Error(`pack.data HTTP ${packResponse.status}`);
-    if (!traceResponse.ok) throw new Error(`m0.trace.json HTTP ${traceResponse.status}`);
+    bootLabels();
+    const packResponse = await fetch(DEMO.pack);
+    if (!packResponse.ok) throw new Error(`${DEMO.pack} HTTP ${packResponse.status}`);
     const packText = await packResponse.text();
-    traceText = await traceResponse.text();
+    if (DEMO.trace) {
+      const traceResponse = await fetch("./m0.trace.json");
+      if (!traceResponse.ok) throw new Error(`m0.trace.json HTTP ${traceResponse.status}`);
+      traceText = await traceResponse.text();
+    }
     world = new PreviewWorld(packText);
     bindUi();
     current = JSON.parse(world.state());

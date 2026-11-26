@@ -1,0 +1,31 @@
+{
+  "id": "rule.blackout",
+  "on": "interact",
+  "target": "demo.blackout.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.blackout.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.blackout.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "blackout.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:blackout.locked"
+    }
+  ]
+}

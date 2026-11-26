@@ -1,0 +1,31 @@
+{
+  "id": "rule.tram",
+  "on": "interact",
+  "target": "demo.tram.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.tram.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.tram.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "tram.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:tram.locked"
+    }
+  ]
+}

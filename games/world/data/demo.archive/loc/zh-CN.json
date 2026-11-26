@@ -1,0 +1,12 @@
+{
+  "zone.archive.name": "地下档案室",
+  "actor.archive.name": "管理员",
+  "prop.archive.door.name": "影像库门",
+  "item.archive.key.name": "索引卡",
+  "quest.archive.title": "档案室",
+  "dlg.archive.greet": "管理员抬头看了你一眼。",
+  "dlg.archive.ask": "这里需要我做什么？",
+  "dlg.archive.task": "拿上索引卡，去开影像库门。",
+  "dlg.archive.bye": "回头见。",
+  "archive.locked": "影像库门锁着。"
+}

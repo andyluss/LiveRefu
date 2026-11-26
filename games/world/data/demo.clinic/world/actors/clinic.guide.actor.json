@@ -1,0 +1,26 @@
+{
+  "id": "demo.clinic.guide",
+  "name": "loc:actor.clinic.name",
+  "tags": [
+    "npc",
+    "human",
+    "clinic"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.7
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.clinic"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.clinic.intro"
+}

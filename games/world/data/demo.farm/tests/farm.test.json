@@ -1,0 +1,48 @@
+{
+  "name": "farm",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.farm.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.farm.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.farm.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.farm.open": true,
+      "flag.quest.farm.done": true
+    },
+    "quests": {
+      "quest.farm": "completed"
+    },
+    "inventory": {
+      "item.farm.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

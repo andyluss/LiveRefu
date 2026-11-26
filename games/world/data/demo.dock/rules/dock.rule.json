@@ -1,0 +1,31 @@
+{
+  "id": "rule.dock",
+  "on": "interact",
+  "target": "demo.dock.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.dock.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.dock.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "dock.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:dock.locked"
+    }
+  ]
+}

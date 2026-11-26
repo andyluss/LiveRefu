@@ -1,0 +1,14 @@
+{
+  "id": "world.blackout",
+  "start_zone": "zone.blackout",
+  "start_time": "01:20",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

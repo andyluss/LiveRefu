@@ -1,0 +1,28 @@
+{
+  "id": "dlg.blackout.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.blackout.guide",
+      "text": "loc:dlg.blackout.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.blackout.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.blackout.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.blackout.guide",
+      "text": "loc:dlg.blackout.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

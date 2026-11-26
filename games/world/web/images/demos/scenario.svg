@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-label="RefuWorld scenario">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1d22"/><stop offset="1" stop-color="#142d2d"/></linearGradient></defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <g fill="none" stroke="#5ce3cf" opacity=".5">
+    <path d="M80 350h640M120 310h560M160 270h480M200 230h400M240 190h320" stroke-width="2"/>
+    <path d="M150 350v-90h100v90M330 350v-120h140v120M540 350v-80h120v80" stroke-width="4"/>
+  </g>
+  <g fill="#ffb15c"><circle cx="400" cy="140" r="22"/><circle cx="170" cy="110" r="10"/><circle cx="650" cy="95" r="8"/></g>
+  <text x="400" y="430" text-anchor="middle" fill="#eaf5f0" font-family="system-ui,sans-serif" font-size="30" font-weight="600">RefuWorld · Scenario</text>
+</svg>

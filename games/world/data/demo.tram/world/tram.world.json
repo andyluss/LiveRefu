@@ -1,0 +1,14 @@
+{
+  "id": "world.tram",
+  "start_zone": "zone.tram",
+  "start_time": "22:50",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "quest.dock",
+  "title": "loc:quest.dock.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.dock.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.dock.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.dock.done",
+      "value": true
+    }
+  ]
+}

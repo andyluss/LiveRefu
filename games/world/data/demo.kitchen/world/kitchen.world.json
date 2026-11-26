@@ -1,0 +1,14 @@
+{
+  "id": "world.kitchen",
+  "start_zone": "zone.kitchen",
+  "start_time": "23:20",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

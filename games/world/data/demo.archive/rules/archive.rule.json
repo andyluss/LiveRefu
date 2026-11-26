@@ -1,0 +1,31 @@
+{
+  "id": "rule.archive",
+  "on": "interact",
+  "target": "demo.archive.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.archive.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.archive.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "archive.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:archive.locked"
+    }
+  ]
+}

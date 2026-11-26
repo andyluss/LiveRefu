@@ -1,0 +1,12 @@
+{
+  "zone.blackout.name": "配电间",
+  "actor.blackout.name": "电工",
+  "prop.blackout.door.name": "总闸门",
+  "item.blackout.key.name": "保险丝",
+  "quest.blackout.title": "停电夜",
+  "dlg.blackout.greet": "电工抬头看了你一眼。",
+  "dlg.blackout.ask": "这里需要我做什么？",
+  "dlg.blackout.task": "拿上保险丝，去开总闸门。",
+  "dlg.blackout.bye": "回头见。",
+  "blackout.locked": "总闸门锁着。"
+}

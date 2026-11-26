@@ -1,0 +1,31 @@
+{
+  "id": "rule.rooftop",
+  "on": "interact",
+  "target": "demo.rooftop.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.rooftop.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.rooftop.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "rooftop.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:rooftop.locked"
+    }
+  ]
+}

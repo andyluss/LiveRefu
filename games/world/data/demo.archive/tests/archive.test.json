@@ -1,0 +1,49 @@
+{
+  "name": "archive",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.archive.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.archive.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.archive.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.archive.open": true,
+      "flag.quest.archive.done": true,
+      "flag.archive.script_seen": true
+    },
+    "quests": {
+      "quest.archive": "completed"
+    },
+    "inventory": {
+      "item.archive.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

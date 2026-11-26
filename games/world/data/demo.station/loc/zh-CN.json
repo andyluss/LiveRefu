@@ -1,0 +1,12 @@
+{
+  "zone.station.name": "山顶信号站",
+  "actor.station.name": "值守员",
+  "prop.station.door.name": "机房",
+  "item.station.key.name": "频率卡",
+  "quest.station.title": "信号站",
+  "dlg.station.greet": "值守员抬头看了你一眼。",
+  "dlg.station.ask": "这里需要我做什么？",
+  "dlg.station.task": "拿上频率卡，去开机房。",
+  "dlg.station.bye": "回头见。",
+  "station.locked": "机房锁着。"
+}

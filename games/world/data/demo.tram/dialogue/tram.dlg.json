@@ -1,0 +1,28 @@
+{
+  "id": "dlg.tram.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.tram.guide",
+      "text": "loc:dlg.tram.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.tram.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.tram.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.tram.guide",
+      "text": "loc:dlg.tram.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

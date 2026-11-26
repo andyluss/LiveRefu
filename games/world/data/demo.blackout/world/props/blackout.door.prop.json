@@ -1,0 +1,23 @@
+{
+  "id": "demo.blackout.door",
+  "name": "loc:prop.blackout.door.name",
+  "tags": [
+    "prop",
+    "door",
+    "blackout"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.2,
+      2.2,
+      0.4
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": "item.blackout.key"
+}

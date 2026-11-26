@@ -1,0 +1,48 @@
+{
+  "id": "zone.archive",
+  "name": "loc:zone.archive.name",
+  "bounds": {
+    "min": [
+      -12,
+      0,
+      -12
+    ],
+    "max": [
+      12,
+      8,
+      12
+    ]
+  },
+  "placements": [
+    {
+      "actor": "demo.archive.guide",
+      "at": [
+        3,
+        0,
+        -2
+      ],
+      "yaw": 180,
+      "persistent_id": "guide"
+    },
+    {
+      "prop": "demo.archive.door",
+      "at": [
+        0,
+        0,
+        6
+      ],
+      "yaw": 0,
+      "persistent_id": "door"
+    },
+    {
+      "item": "item.archive.key",
+      "at": [
+        2,
+        0,
+        2
+      ],
+      "yaw": 0,
+      "persistent_id": "key"
+    }
+  ]
+}

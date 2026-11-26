@@ -1,0 +1,14 @@
+{
+  "id": "world.dock",
+  "start_zone": "zone.dock",
+  "start_time": "20:10",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

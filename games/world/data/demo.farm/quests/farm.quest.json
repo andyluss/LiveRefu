@@ -1,0 +1,23 @@
+{
+  "id": "quest.farm",
+  "title": "loc:quest.farm.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.farm.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.farm.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.farm.done",
+      "value": true
+    }
+  ]
+}

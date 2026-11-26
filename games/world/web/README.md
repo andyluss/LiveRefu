@@ -14,7 +14,7 @@ node tools/serve-web.mjs --port 8787
 # 3D 环形站：/web/orbit3d.html
 ```
 
-`web/build.sh` 会把 4 个内容包构建到 `web/packs/*.data`。所有 Demo 共用 `PreviewWorld`，
+`web/build.sh` 会把 14 个内容包构建到 `web/packs/*.data`。所有 Demo 共用 `PreviewWorld`，
 2.5D 与 3D 只是表现层，不复制规则。
 
 > macOS 构建 wasm QuickJS 需要 LLVM 的 `llvm-ar`（`brew install llvm`）；`build.sh` 会自动使用 Homebrew 路径。
@@ -54,7 +54,7 @@ node tools/serve-web.mjs --port 8787
 
 `web/build.sh` 会：
 
-1. `worldc bake nav` + `worldc build` 生成 4 个内容包（港湾/夜市/温室/环形站）；
+1. `worldc bake nav` + `worldc build` 生成 14 个内容包（港湾/夜市/温室/环形站 + 10 个 2D 场景）；
 2. 编译 `world-wasm` 到 `wasm32-unknown-unknown`；
 3. 用 `wasm-bindgen --target web` 生成 `web/pkg/`；
 4. 用 `wasm-bindgen --target nodejs` 生成 `web/node-pkg/`（供 `test_preview.cjs`）；

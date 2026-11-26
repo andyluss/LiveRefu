@@ -27,8 +27,9 @@ echo "== 2. TS 包跑 M0 trace =="
   --trace "$ROOT/data/demo.harbor/tests/m0.trace.json"
 
 echo "== 3. 内容测试 =="
-for id in demo.harbor demo.market demo.greenhouse demo.orbit; do
-  "$CODE/run.sh" run -q -p world-cli -- content-test --pack "$ROOT/data/$id"
+for dir in "$ROOT"/data/demo.*; do
+  [ -d "$dir" ] || continue
+  "$CODE/run.sh" run -q -p world-cli -- content-test --pack "$dir"
 done
 
 echo "== 4. 编辑器服务器冒烟 =="
@@ -36,6 +37,9 @@ node "$ROOT/test/editor_smoke.mjs"
 
 echo "== 5. 构建 Web 预览（wasm + wasm-bindgen） =="
 "$ROOT/web/build.sh"
+
+echo "== 5.5 全部 Demo 包加载（wasm） =="
+node "$ROOT/web/test_demos_load.cjs"
 
 echo "== 6. 5k 合成基准 =="
 "$CODE/run.sh" run -q --release -p world-cli -- bench --synthetic 5000 --ticks 600

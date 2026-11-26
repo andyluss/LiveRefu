@@ -1,0 +1,48 @@
+{
+  "name": "blackout",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.blackout.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.blackout.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.blackout.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.blackout.open": true,
+      "flag.quest.blackout.done": true
+    },
+    "quests": {
+      "quest.blackout": "completed"
+    },
+    "inventory": {
+      "item.blackout.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

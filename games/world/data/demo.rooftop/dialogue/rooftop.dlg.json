@@ -1,0 +1,28 @@
+{
+  "id": "dlg.rooftop.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.rooftop.guide",
+      "text": "loc:dlg.rooftop.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.rooftop.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.rooftop.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.rooftop.guide",
+      "text": "loc:dlg.rooftop.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

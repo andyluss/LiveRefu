@@ -1,0 +1,48 @@
+{
+  "name": "rooftop",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.rooftop.guide"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.rooftop.key"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.rooftop.door"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.rooftop.open": true,
+      "flag.quest.rooftop.done": true
+    },
+    "quests": {
+      "quest.rooftop": "completed"
+    },
+    "inventory": {
+      "item.rooftop.key": 1
+    },
+    "events": [
+      "door_opened",
+      "quest_completed",
+      "item_acquired",
+      "dialogue_started"
+    ]
+  }
+}

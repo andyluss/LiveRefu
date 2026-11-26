@@ -1,0 +1,28 @@
+{
+  "id": "dlg.clinic.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.clinic.guide",
+      "text": "loc:dlg.clinic.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.clinic.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.clinic.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.clinic.guide",
+      "text": "loc:dlg.clinic.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

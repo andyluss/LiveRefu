@@ -1,0 +1,23 @@
+{
+  "id": "quest.rooftop",
+  "title": "loc:quest.rooftop.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.rooftop.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.rooftop.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.rooftop.done",
+      "value": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "zone.dock.name": "货运码头",
+  "actor.dock.name": "调度员",
+  "prop.dock.door.name": "货舱门",
+  "item.dock.key.name": "通行证",
+  "quest.dock.title": "夜班货运",
+  "dlg.dock.greet": "调度员抬头看了你一眼。",
+  "dlg.dock.ask": "这里需要我做什么？",
+  "dlg.dock.task": "拿上通行证，去开货舱门。",
+  "dlg.dock.bye": "回头见。",
+  "dock.locked": "货舱门锁着。"
+}

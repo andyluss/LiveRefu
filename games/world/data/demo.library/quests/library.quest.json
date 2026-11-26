@@ -1,0 +1,23 @@
+{
+  "id": "quest.library",
+  "title": "loc:quest.library.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.library.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.library.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.library.done",
+      "value": true
+    }
+  ]
+}

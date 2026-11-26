@@ -1,0 +1,31 @@
+{
+  "id": "rule.kitchen",
+  "on": "interact",
+  "target": "demo.kitchen.door",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.kitchen.key"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.kitchen.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "kitchen.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:kitchen.locked"
+    }
+  ]
+}

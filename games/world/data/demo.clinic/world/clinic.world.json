@@ -1,0 +1,14 @@
+{
+  "id": "world.clinic",
+  "start_zone": "zone.clinic",
+  "start_time": "07:40",
+  "seed": 20261210,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "dlg.dock.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.dock.guide",
+      "text": "loc:dlg.dock.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.dock.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.dock.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.dock.guide",
+      "text": "loc:dlg.dock.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

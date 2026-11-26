@@ -1,0 +1,23 @@
+{
+  "id": "quest.tram",
+  "title": "loc:quest.tram.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.tram.guide"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.tram.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.tram.done",
+      "value": true
+    }
+  ]
+}

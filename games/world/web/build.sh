@@ -19,12 +19,12 @@ fi
 cd "$CODE"
 
 echo "== build content packs =="
-for id in demo.harbor demo.market demo.greenhouse demo.orbit; do
-  cargo run -q -p world-cli -- bake nav --pack "$ROOT/data/$id" >/dev/null
-  cargo run -q -p world-cli -- build --pack "$ROOT/data/$id" --out "$ROOT/dist/$id"
-done
 mkdir -p "$ROOT/web/packs"
-for id in demo.harbor demo.market demo.greenhouse demo.orbit; do
+for dir in "$ROOT"/data/demo.*; do
+  [ -d "$dir" ] || continue
+  id="$(basename "$dir")"
+  cargo run -q -p world-cli -- bake nav --pack "$dir" >/dev/null 2>&1 || true
+  cargo run -q -p world-cli -- build --pack "$dir" --out "$ROOT/dist/$id"
   cp "$ROOT/dist/$id/pack.data" "$ROOT/web/packs/$id.data"
 done
 
