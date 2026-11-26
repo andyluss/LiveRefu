@@ -13,5 +13,6 @@ defineZone({
     { item: "item.radio", at: [3, 0, 3], yaw: 0, persistent_id: "radio" },
     { prop: "demo.console", at: [-8, 0, 5], yaw: 0, persistent_id: "console" },
     { prop: "demo.crate", at: [7, 0, -7], yaw: 0, persistent_id: "crate" },
+    { actor: "demo.engineer", at: [-2, 0, 4], yaw: 180, persistent_id: "engineer" },
   ],
 });

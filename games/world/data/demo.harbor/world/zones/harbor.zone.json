@@ -83,6 +83,16 @@
       ],
       "yaw": 0.0,
       "persistent_id": "crate"
+    },
+    {
+      "actor": "demo.engineer",
+      "at": [
+        -2.0,
+        0.0,
+        4.0
+      ],
+      "yaw": 180.0,
+      "persistent_id": "engineer"
     }
   ],
   "nav": "nav.harbor"

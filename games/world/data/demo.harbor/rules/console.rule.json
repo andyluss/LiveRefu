@@ -1,0 +1,20 @@
+{
+  "id": "rule.console",
+  "on": "interact",
+  "target": "demo.console",
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.console.checked",
+      "value": true
+    },
+    {
+      "kind": "toast",
+      "text": "loc:console.checked"
+    },
+    {
+      "kind": "emit",
+      "event": "console.checked"
+    }
+  ]
+}

@@ -11,3 +11,15 @@ defineActor({
   dialogue: "dlg.keeper.intro",
   visual: "mesh.keeper",
 });
+
+defineActor({
+  id: "demo.engineer",
+  name: "loc:actor.engineer.name",
+  tags: ["npc", "human", "harbor", "engineer"],
+  body: { shape: "capsule", radius: 0.35, height: 1.7 },
+  stats: { health: 100, speed: 3.0 },
+  brain: { profile: "schedule", schedule: "schedule.engineer" },
+  inventory: { items: [{ item: "item.coffee", count: 1 }] },
+  dialogue: "dlg.engineer.intro",
+  visual: "mesh.keeper",
+});

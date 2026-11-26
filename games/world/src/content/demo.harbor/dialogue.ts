@@ -20,3 +20,24 @@ defineDialogue({
     end: { end: true },
   },
 });
+
+defineDialogue({
+  id: "dlg.engineer.intro",
+  start: "greet",
+  nodes: {
+    greet: {
+      speaker: "demo.engineer",
+      text: "loc:dlg.engineer.greet",
+      choices: [
+        { text: "loc:dlg.engineer.ask", next: "task" },
+        { text: "loc:dlg.engineer.bye", next: "end" },
+      ],
+    },
+    task: {
+      speaker: "demo.engineer",
+      text: "loc:dlg.engineer.task",
+      next: "end",
+    },
+    end: { end: true },
+  },
+});

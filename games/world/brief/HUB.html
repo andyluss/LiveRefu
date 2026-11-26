@@ -80,7 +80,7 @@
     <h3>四件“成功”而不是四张架构图</h3>
     <div class="grid g4">
       <div class="card"><h4>作者不需要引擎知识</h4><p>用编辑器或 TS DSL 做出 1 区、NPC、门、钥匙卡、对话、任务；目标 2 小时。</p><p><a href="GUIDE.html">先读用户指南 →</a></p></div>
-      <div class="card"><h4>两个宿主同一局</h4><p>固定种子 + 同一 trace，Headless / C ABI / wasm 跑出同一个 <code>0x7b1760…</code>。</p><p><a href="../docs/07_M1实现与验收.md">看验收证据 →</a></p></div>
+      <div class="card"><h4>两个宿主同一局</h4><p>固定种子 + 同一 trace，Headless / C ABI / wasm 跑出同一个 <code>0x3606a2…</code>。</p><p><a href="../docs/07_M1实现与验收.md">看验收证据 →</a></p></div>
       <div class="card"><h4>换引擎只换适配器</h4><p>适配器只做输入/资产/视图/音频/存档；不允许出现玩法规则。</p><p><a href="../docs/03_引擎适配与替换.md">适配器契约 →</a></p></div>
       <div class="card"><h4>内容迭代够快</h4><p>编辑器保存 → 校验 → 烘焙 → 构建 → 预览；错误带内容 ID，不带引擎堆栈。</p><p><a href="../web/editor.html" title="需要本地编辑器服务器">打开编辑器（需服务器）→</a></p></div>
     </div>
@@ -115,7 +115,7 @@
         <div class="pm-lane"><div class="pm-label">验证<span>凭什么相信</span></div><div class="pm-track">
           <a class="pm-node done" href="../test/run_m0.sh"><span class="dot"></span><b>M0 验收</b><em>双跑 · 坏包 · ABI</em></a>
           <a class="pm-node done" href="../test/run_m1.sh"><span class="dot"></span><b>M1 验收</b><em>DSL · 内容 · 3D 静态</em></a>
-          <a class="pm-node done" href="../CHANGELOG.md"><span class="dot"></span><b>黄金哈希</b><em>0x7b176031a2be41c9</em></a>
+          <a class="pm-node done" href="../CHANGELOG.md"><span class="dot"></span><b>黄金哈希</b><em>0x3606a221e9990561</em></a>
           <span class="pm-node done"><span class="dot"></span><b>5k v1</b><em>5k mixed · ADR-008</em></span>
         </div></div>
       </div>
@@ -127,7 +127,7 @@
     <p class="lede">这里只记录**已经跑过**的事。M1 是主要切片，不是完整 M1；把“切过”当作“全过”会掩盖剩余工作。</p>
     <ol class="tl">
       <li class="done"><b>M0 · 可运行内核</b> <span>2026-11-23 · 8 crates、C ABI、QuickJS spike、坏包 fixture、600 tick 双跑。</span></li>
-      <li class="done"><b>M1 · TS DSL + Web 预览</b> <span>TS 包与 JSON 包同哈希；2D 预览回放 <code>0x7b1760…</code>。</span></li>
+      <li class="done"><b>M1 · TS DSL + Web 预览</b> <span>TS 包与 JSON 包同哈希；2D 预览回放 <code>0x3606a2…</code>。</span></li>
       <li class="done"><b>M1 · 编辑器 v0.5</b> <span>布局拖拽、字段表单、对话图、撤销/重做、保存校验回滚、构建试玩。</span></li>
       <li class="done"><b>M1 · 移动/导航/资产</b> <span>WASD + 点击寻路；40×40 烘焙网格；逻辑资产依赖与 C ABI <code>world_zone_assets</code>。</span></li>
       <li class="done"><b>M1 · 3D 演示</b> <span>Three.js r187 本地 vendor；同一 wasm 状态；气闸/对话/雨海灯塔。</span></li>
@@ -144,8 +144,8 @@
       <tbody>
         <tr><td>Rust workspace 测试</td><td><b>19</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
         <tr><td>内容测试</td><td><b>6</b> 条 PASS：港湾 3 + 夜市/温室/环形站各 1</td><td><code>worldc content-test</code></td></tr>
-        <tr><td>黄金回放</td><td><code>0x7b176031a2be41c9</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
-        <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:254a4f7e…184a2ea</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
+        <tr><td>黄金回放</td><td><code>0x3606a221e9990561</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
+        <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:21569377…b7d5f9</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
         <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P95 <b>0.239 ms</b>，snapshot P95 3.086 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
         <tr><td>主题与页面</td><td>R-016 八页：2D / 编辑器 / 3D 港湾 / 2.5D / 3D 环形站 / HUB / GUIDE / Gallery 通过</td><td><code>check_html_theme.ts</code></td></tr>
         <tr><td>3D 静态契约</td><td>本地 Three.js、import map、wasm 交互入口、无 CDN</td><td><code>test/demo3d_static.mjs</code></td></tr>

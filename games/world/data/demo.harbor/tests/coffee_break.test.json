@@ -1,0 +1,14 @@
+{
+  "name": "coffee_break",
+  "ticks": 60,
+  "steps": [
+    { "tick": 10, "command": { "op": "pickup", "actor": "player", "target": "item.coffee" } },
+    { "tick": 20, "command": { "op": "talk", "actor": "player", "target": "demo.engineer" } }
+  ],
+  "expect": {
+    "flags": { "flag.quest.coffee_break.done": true },
+    "quests": { "quest.coffee_break": "completed" },
+    "inventory": { "item.coffee": 1 },
+    "events": ["item_acquired", "dialogue_started", "quest_completed"]
+  }
+}

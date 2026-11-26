@@ -1,0 +1,15 @@
+{
+  "id": "rule.crate",
+  "on": "interact",
+  "target": "demo.crate",
+  "then": [
+    {
+      "kind": "toast",
+      "text": "loc:crate.empty"
+    },
+    {
+      "kind": "emit",
+      "event": "crate.checked"
+    }
+  ]
+}

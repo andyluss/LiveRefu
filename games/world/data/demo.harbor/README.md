@@ -16,7 +16,7 @@ cd games/world/code
 - tick 29：有钥匙卡交互 → `door_opened` / `sound` / `flag_changed` / `airlock.opened`
 - tick 39：和值班员说话 → `quest_completed` / `dialogue_started`
 
-600 tick 最终哈希：`0x7b176031a2be41c9`。
+600 tick 最终哈希：`0x3606a221e9990561`。
 
 导航：`./worldc bake nav`（静态门会挡路）。
 
@@ -28,15 +28,15 @@ cd games/world/code
 | --- | --- |
 | `pack.json` | 清单：ID、版本、kits、entry、tick_hz |
 | `world/harbor.world.json` | 世界根：起始区域、时间、种子、玩家 |
-| `world/zones/harbor.zone.json` | 区域边界、导航引用与 7 个 placement |
+| `world/zones/harbor.zone.json` | 区域边界、导航引用与 8 个 placement |
 | `world/nav/nav.harbor.json` | `worldc bake nav` 生成的 40×40 导航网格 |
-| `world/actors/keeper.actor.json` | NPC：属性、日程、对话 |
+| `world/actors/*.json` | 值班员与轮机员：属性、日程、对话 |
 | `world/props/*.json` | 气闸、控制台、货箱 |
 | `world/items/*.json` | 钥匙卡、咖啡、对讲机（已放置） |
 | `assets/assets.index.json` | 逻辑资产 ID → 占位源文件 |
 | `rules/airlock.rule.json` | 有钥匙卡 → 开门；否则 toast |
-| `quests/first_shift.quest.json` | 「第一班」：说话 + 开门 |
-| `dialogue/keeper.dlg.json` | 三段对话 |
+| `quests/*.json` | 「第一班」与「咖啡休息」 |
+| `dialogue/*.json` | 值班员与轮机员对话 |
 | `schedules/keeper.schedule.json` | 工作 / 闲逛 / 睡觉 |
 | `loc/zh-CN.json` | 文案 key → 中文 |
 | `tests/m0.trace.json` | 600 tick 输入轨迹 |

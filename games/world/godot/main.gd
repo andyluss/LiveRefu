@@ -38,8 +38,8 @@ func _ready() -> void:
 	print("WORLD_VIEWS=", views)
 	var actual := world.state_hash_hex()
 	print("WORLD_HASH=", actual)
-	if actual != "0x7b176031a2be41c9":
-		push_error("hash mismatch: expected 0x7b176031a2be41c9")
+	if actual != "0x3606a221e9990561":
+		push_error("hash mismatch: expected 0x3606a221e9990561")
 		get_tree().quit(5)
 		return
 	var events := world.poll_events()

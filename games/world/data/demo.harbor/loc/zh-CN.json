@@ -14,5 +14,13 @@
   "door.locked": "锁着。",
   "door.already_open": "已经开了。",
   "prop.console.name": "控制台",
-  "prop.crate.name": "货箱"
+  "prop.crate.name": "货箱",
+  "actor.engineer.name": "轮机员",
+  "quest.coffee_break.title": "咖啡休息",
+  "dlg.engineer.greet": "控制台一直在报警。你带咖啡了吗？",
+  "dlg.engineer.task": "先去拿一杯咖啡，再回来帮我盯一会儿控制台。",
+  "dlg.engineer.ask": "我能做什么？",
+  "dlg.engineer.bye": "忙完再来。",
+  "console.checked": "控制台已检查。",
+  "crate.empty": "货箱是空的。"
 }
