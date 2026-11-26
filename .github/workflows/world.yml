@@ -132,3 +132,25 @@ jobs:
           targets: wasm32-unknown-unknown
       - name: Build world-wasm
         run: cargo build --release --target wasm32-unknown-unknown -p world-wasm
+
+  godot-cts:
+    name: Godot 4.7 CTS (ubuntu)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/world
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Godot 4.7
+        run: |
+          curl -fsSL -o /tmp/godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot-bin
+          chmod +x /tmp/godot-bin/Godot_v4.7-stable_linux.x86_64
+          sudo mv /tmp/godot-bin/Godot_v4.7-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+      - name: Build extension + run CTS
+        env:
+          GODOT_BIN: godot
+        run: ./godot/cts.sh
