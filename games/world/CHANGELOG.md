@@ -33,6 +33,8 @@
 - **项目 HUB 与用户指南**：`brief/HUB.html`、`brief/GUIDE.html`、`brief/theme.css`、`brief/theme.js`、`brief/README.md`；项目状态/架构/3D/决策/路线图/风险中心 + 内容作者上手路径，R-016 三态主题。
 
 ### 修复
+- **TS 构建门禁**：`worldc ts-build` 在本地存在 TypeScript 时先跑 `tsc --noEmit`，失败即停止；`npm run dev` 同样先类型检查。
+
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
@@ -71,6 +73,8 @@
   1 次存档/读档、1 条黄金回放，横跨世界层最核心的八项能力。
 
 ### 修复
+- **TS 构建门禁**：`worldc ts-build` 在本地存在 TypeScript 时先跑 `tsc --noEmit`，失败即停止；`npm run dev` 同样先类型检查。
+
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更

@@ -235,6 +235,24 @@ fn cmd_ts_build(args: &[String]) -> Result<(), String> {
     if !script.is_file() {
         return Err(format!("找不到 TS 编译器: {}", script.display()));
     }
+    // 本地有 TypeScript 时，ts-build 本身就是类型门禁；没装时提示并继续。
+    let root = base.join("../../..");
+    let tsc = root.join("node_modules/.bin/tsc");
+    if tsc.is_file() {
+        println!("ts-build: typecheck…");
+        let check = ProcessCommand::new(&tsc)
+            .arg("--noEmit")
+            .arg("-p")
+            .arg(root.join("tsconfig.json"))
+            .current_dir(&root)
+            .status()
+            .map_err(|e| format!("无法启动 tsc: {e}"))?;
+        if !check.success() {
+            return Err(format!("TS 类型检查失败（exit {:?}）", check.code()));
+        }
+    } else {
+        println!("ts-build: skip typecheck（在 games/world 运行 npm install 可启用）");
+    }
     let status = ProcessCommand::new("node")
         .arg(&script)
         .arg("--src")

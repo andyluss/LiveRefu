@@ -18,8 +18,15 @@ function run(command, args) {
 }
 
 function build() {
-  console.log("\n[dev] compile TS…");
-  if (!run(process.execPath, [join(ROOT, "tools/ts-build.mjs"), "--src", SRC, "--out", TS_OUT])) return;
+  console.log("\n[dev] typecheck…");
+  const tsc = join(ROOT, "node_modules/.bin/tsc");
+  if (existsSync(tsc)) {
+    if (!run(tsc, ["--noEmit", "-p", join(ROOT, "tsconfig.json")])) return;
+  } else {
+    console.log("[dev] skip typecheck（npm install 可启用）");
+  }
+  console.log("[dev] compile TS…");
+  if (!run("bash", [join(ROOT, "worldc"), "ts-build", "--src", SRC, "--out", TS_OUT])) return;
   console.log("[dev] build pack…");
   if (!run("bash", [join(ROOT, "worldc"), "build", "--pack", TS_OUT, "--out", BUILD_OUT])) return;
   const bundle = join(BUILD_OUT, "pack.data");
