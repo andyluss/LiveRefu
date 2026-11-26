@@ -4,7 +4,7 @@
 use godot::classes::{BoxMesh, CapsuleMesh, Mesh, MeshInstance3D, Node3D, PackedScene, SphereMesh, StandardMaterial3D};
 use godot::prelude::*;
 use std::collections::{HashMap, HashSet};
-use world_abi::AbiWorld;
+use world_abi::{AbiWorld, WorldTransformPod};
 
 struct WorldExtension;
 
@@ -19,6 +19,8 @@ struct WorldNode {
     views_root: Option<Gd<Node3D>>,
     views: HashMap<u64, Gd<Node3D>>,
     visual_scenes: HashMap<String, Gd<PackedScene>>,
+    prev_transforms: HashMap<u64, WorldTransformPod>,
+    target_transforms: HashMap<u64, WorldTransformPod>,
 }
 
 #[godot_api]
@@ -30,6 +32,8 @@ impl INode for WorldNode {
             views_root: None,
             views: HashMap::new(),
             visual_scenes: HashMap::new(),
+            prev_transforms: HashMap::new(),
+            target_transforms: HashMap::new(),
         }
     }
 }
@@ -39,6 +43,10 @@ impl WorldNode {
     /// 从 GDScript 传入 `pack.data` 的完整字节。
     #[func]
     fn load_pack(&mut self, bytes: PackedByteArray) -> bool {
+        self.clear_views();
+        self.visual_scenes.clear();
+        self.prev_transforms.clear();
+        self.target_transforms.clear();
         let mut world = match AbiWorld::new() {
             Ok(world) => world,
             Err(error) => {
@@ -61,8 +69,24 @@ impl WorldNode {
             godot_error!("WorldNode: load_pack not called");
             return -1;
         };
+        let before = if self.target_transforms.is_empty() {
+            world.copy_transforms().unwrap_or_default()
+        } else {
+            self.target_transforms.values().copied().collect::<Vec<_>>()
+        };
         match world.tick(1_000_000 / 60) {
-            Ok(ticks) => ticks as i64,
+            Ok(ticks) => {
+                let after = world.copy_transforms().unwrap_or_default();
+                self.prev_transforms = before
+                    .into_iter()
+                    .map(|pod| (((pod.generation as u64) << 32) | pod.index as u64, pod))
+                    .collect();
+                self.target_transforms = after
+                    .into_iter()
+                    .map(|pod| (((pod.generation as u64) << 32) | pod.index as u64, pod))
+                    .collect();
+                ticks as i64
+            }
             Err(error) => {
                 godot_error!("world_tick: {error}");
                 -1
@@ -174,13 +198,23 @@ impl WorldNode {
     /// 把 C ABI transform 快照同步为 Godot 节点；按 EntityId 做池化/回收。
     #[func]
     fn sync_views(&mut self) -> i64 {
-        let transforms = match self
-            .world
-            .as_mut()
-            .and_then(|world| world.copy_transforms().ok())
-        {
-            Some(values) => values,
-            None => return -1,
+        self.sync_views_at(1.0)
+    }
+
+    /// 在 fixed tick 之间按 alpha 插值；play 场景使用。
+    #[func]
+    fn sync_views_at(&mut self, alpha: f32) -> i64 {
+        let transforms = if self.target_transforms.is_empty() {
+            match self
+                .world
+                .as_mut()
+                .and_then(|world| world.copy_transforms().ok())
+            {
+                Some(values) => values,
+                None => return -1,
+            }
+        } else {
+            self.target_transforms.values().copied().collect()
         };
         let mut root = self.ensure_views_root();
         let mut alive = HashSet::new();
@@ -207,18 +241,35 @@ impl WorldNode {
                 self.views.insert(key, node);
             }
             if let Some(node) = self.views.get_mut(&key) {
-                node.set_position(Vector3::new(
-                    pod.position[0],
-                    pod.position[1],
-                    pod.position[2],
-                ));
-                node.set_quaternion(Quaternion::new(
-                    pod.rotation[0],
-                    pod.rotation[1],
-                    pod.rotation[2],
-                    pod.rotation[3],
-                ));
-                node.set_scale(Vector3::new(pod.scale[0], pod.scale[1], pod.scale[2]));
+                let prev = self.prev_transforms.get(&key);
+                let a = alpha.clamp(0.0, 1.0);
+                let pos = if let Some(prev) = prev {
+                    Vector3::new(prev.position[0], prev.position[1], prev.position[2]).lerp(
+                        Vector3::new(pod.position[0], pod.position[1], pod.position[2]),
+                        a,
+                    )
+                } else {
+                    Vector3::new(pod.position[0], pod.position[1], pod.position[2])
+                };
+                let rot = if let Some(prev) = prev {
+                    Quaternion::new(prev.rotation[0], prev.rotation[1], prev.rotation[2], prev.rotation[3])
+                        .slerp(
+                            Quaternion::new(pod.rotation[0], pod.rotation[1], pod.rotation[2], pod.rotation[3]),
+                            a,
+                        )
+                } else {
+                    Quaternion::new(pod.rotation[0], pod.rotation[1], pod.rotation[2], pod.rotation[3])
+                };
+                node.set_position(pos);
+                node.set_quaternion(rot);
+                node.set_scale(if let Some(prev) = prev {
+                    Vector3::new(prev.scale[0], prev.scale[1], prev.scale[2]).lerp(
+                        Vector3::new(pod.scale[0], pod.scale[1], pod.scale[2]),
+                        a,
+                    )
+                } else {
+                    Vector3::new(pod.scale[0], pod.scale[1], pod.scale[2])
+                });
             }
         }
         let stale: Vec<u64> = self
@@ -233,6 +284,28 @@ impl WorldNode {
             }
         }
         self.views.len() as i64
+    }
+
+    #[func]
+    fn unregister_visual(&mut self, source: GString) -> bool {
+        self.visual_scenes.remove(source.to_string().as_str()).is_some()
+    }
+
+    #[func]
+    fn clear_visuals(&mut self) {
+        self.visual_scenes.clear();
+    }
+
+    #[func]
+    fn clear_views(&mut self) {
+        for (_, node) in self.views.drain() {
+            node.free();
+        }
+        if let Some(root) = self.views_root.take() {
+            root.free();
+        }
+        self.prev_transforms.clear();
+        self.target_transforms.clear();
     }
 
     #[func]

@@ -86,6 +86,8 @@ func _test_views() -> void:
 	world.pickup("player", "item.keycard")
 	world.tick()
 	check("V view pool", world.sync_views() == 3)
+	world.clear_views()
+	check("V unload views", world.view_count() == 0)
 	world.queue_free()
 
 func _test_save() -> void:
@@ -111,10 +113,12 @@ func _test_zone_assets() -> void:
 	check("A mesh asset", assets.has("mesh.keeper"))
 	var source := world.entity_visual("demo.keeper")
 	check("A visual source", source == "art/keeper.glb")
-	var scene = AssetSlots.load_glb("res://assets/" + source) if source != "" else null
+	var scene = AssetSlots.load_scene("res://assets/" + source) if source != "" else null
 	check("A GLB load", scene != null)
 	if scene != null:
-		scene.queue_free()
+		check("A register scene", world.register_visual("art/keeper.glb", scene))
+		check("A unload scene", world.unregister_visual("art/keeper.glb"))
+		world.clear_visuals()
 	world.queue_free()
 
 func _test_bad_pack() -> void:

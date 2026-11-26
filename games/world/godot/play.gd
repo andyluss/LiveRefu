@@ -57,7 +57,7 @@ func _process(delta: float) -> void:
 			get_tree().quit(2)
 			return
 		accumulator -= STEP
-	world.sync_views()
+	world.sync_views_at(clamp(accumulator / STEP, 0.0, 1.0))
 	_poll_audio()
 	_update_camera()
 
