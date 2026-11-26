@@ -16,9 +16,7 @@ esac
 mkdir -p "$ROOT/dist/demo.harbor"
 "$ROOT/worldc" build --pack "$ROOT/data/demo.harbor" --out "$ROOT/dist/demo.harbor" >/dev/null
 cp "$ROOT/dist/demo.harbor/pack.data" "$HERE/pack.data"
-if command -v "${GODOT_BIN:-godot}" >/dev/null 2>&1; then
-  export HOME="${GODOT_HOME:-$HERE/.godot-home}"
-  mkdir -p "$HOME"
-  "${GODOT_BIN:-godot}" --headless --path "$HERE" --import >/dev/null
-fi
+# 直接写 GDExtension 清单，避免 Linux headless --import 在 CI 上 core dump。
+mkdir -p "$HERE/.godot"
+printf 'res://world_godot.gdextension\n' > "$HERE/.godot/extension_list.cfg"
 echo "godot adapter built: $HERE"

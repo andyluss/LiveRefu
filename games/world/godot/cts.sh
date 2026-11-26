@@ -6,5 +6,4 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export HOME="${GODOT_HOME:-$HERE/.godot-home}"
 mkdir -p "$HOME"
 GODOT_BIN="${GODOT_BIN:-godot}"
-"$GODOT_BIN" --headless --path "$HERE" --import >/dev/null
 "$GODOT_BIN" --headless --path "$HERE" cts.tscn --quit-after 60
