@@ -1,7 +1,7 @@
 //! M2 Godot GDExtension 最小适配器：只通过 world-abi 的 C ABI 驱动内核。
 //! 这里不做玩法/渲染；先证明 Godot 能加载同一包并跑出同一哈希。
 
-use godot::classes::{BoxMesh, MeshInstance3D, Node3D, StandardMaterial3D};
+use godot::classes::{BoxMesh, CapsuleMesh, Mesh, MeshInstance3D, Node3D, SphereMesh, StandardMaterial3D};
 use godot::prelude::*;
 use std::collections::{HashMap, HashSet};
 use world_abi::AbiWorld;
@@ -115,6 +115,28 @@ impl WorldNode {
         self.send_pair("talk", &actor, &target)
     }
 
+    fn make_mesh(flags: u32) -> Gd<Mesh> {
+        match flags & 0xFF {
+            1 | 2 => {
+                let mut mesh = CapsuleMesh::new_gd();
+                mesh.set_radius(0.35);
+                mesh.set_height(1.4);
+                mesh.upcast()
+            }
+            3 => {
+                let mut mesh = BoxMesh::new_gd();
+                mesh.set_size(Vector3::new(1.0, 1.2, 1.0));
+                mesh.upcast()
+            }
+            _ => {
+                let mut mesh = SphereMesh::new_gd();
+                mesh.set_radius(0.3);
+                mesh.set_height(0.6);
+                mesh.upcast()
+            }
+        }
+    }
+
     fn ensure_views_root(&mut self) -> Gd<Node3D> {
         if let Some(root) = &self.views_root {
             return root.clone();
@@ -143,12 +165,15 @@ impl WorldNode {
             alive.insert(key);
             if !self.views.contains_key(&key) {
                 let mut node = MeshInstance3D::new_alloc();
-                let mut mesh = BoxMesh::new_gd();
-                mesh.set_size(Vector3::new(0.7, 1.2, 0.7));
-                node.set_mesh(&mesh);
+                node.set_mesh(&Self::make_mesh(pod.flags));
                 let mut material = StandardMaterial3D::new_gd();
-                let hue = (pod.index % 6) as f32 / 6.0;
-                material.set_albedo(Color::from_hsv(hue as f64, 0.55, 0.85));
+                let hue = match pod.flags & 0xFF {
+                    1 => 0.58,
+                    2 => 0.33,
+                    3 => 0.10,
+                    _ => 0.78,
+                };
+                material.set_albedo(Color::from_hsv(hue, 0.55, 0.85));
                 node.set_material_override(&material);
                 root.add_child(&node);
                 self.views.insert(key, node);

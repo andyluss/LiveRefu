@@ -29,6 +29,7 @@ typedef struct {
     float    position[3];
     float    rotation[4];
     float    scale[3];
+    /* flags 低 8 位：1=player, 2=actor, 3=prop, 4=item；适配器用于视图资源选择。 */
     uint32_t flags;
 } WorldTransformPod;
 

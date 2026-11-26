@@ -4,9 +4,12 @@ const STEP := 1.0 / 60.0
 var world: WorldNode
 var accumulator := 0.0
 var camera: Camera3D
+var sfx: AudioStreamPlayer
 
 func _ready() -> void:
 	camera = $Camera
+	sfx = $Sfx
+	sfx.stream = _make_tone()
 	var file := FileAccess.open("res://pack.data", FileAccess.READ)
 	if file == null:
 		push_error("pack.data 不存在")
@@ -45,7 +48,31 @@ func _process(delta: float) -> void:
 			return
 		accumulator -= STEP
 	world.sync_views()
+	_poll_audio()
 	_update_camera()
+
+func _poll_audio() -> void:
+	for line in world.poll_events().split("\n"):
+		if line.strip_edges().is_empty():
+			continue
+		var event = JSON.parse_string(line)
+		if event is Dictionary and event.get("kind", "") in ["dialogue_started", "item_acquired"]:
+			sfx.play()
+
+func _make_tone() -> AudioStreamWAV:
+	var rate := 22050
+	var count := int(rate * 0.12)
+	var data := PackedByteArray()
+	data.resize(count * 2)
+	for i in range(count):
+		var value := int(sin(TAU * 440.0 * i / rate) * 12000.0)
+		data.encode_s16(i * 2, value)
+	var wav := AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = rate
+	wav.stereo = false
+	wav.data = data
+	return wav
 
 func _update_camera() -> void:
 	var target := world.player_position()

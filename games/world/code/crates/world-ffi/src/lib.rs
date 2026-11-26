@@ -307,7 +307,13 @@ pub extern "C" fn world_copy_transforms(
                 position: entity.transform.position,
                 rotation: [0.0, half.sin(), 0.0, half.cos()],
                 scale: [1.0, 1.0, 1.0],
-                flags: 1,
+                // flags 低 8 位：1=player, 2=actor, 3=prop, 4=item；供适配器选视图资源。
+                flags: match entity.kind {
+                    world_core::EntityKind::Player => 1,
+                    world_core::EntityKind::Actor => 2,
+                    world_core::EntityKind::Prop => 3,
+                    world_core::EntityKind::Item => 4,
+                },
             };
             unsafe { *out.add(i) = pod };
         }
