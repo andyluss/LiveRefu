@@ -22,7 +22,7 @@ offset_top = 20.0
 offset_right = 640.0
 offset_bottom = 52.0
 theme_override_font_sizes/font_size = 16
-text = "WASD 移动 · E 交互 · F 拾取 · T 对话 · ESC 退出"
+text = "WASD 移动 · E 交互 · F 拾取 · T 对话 · F5 存档 · F9 读档 · ESC 退出"
 
 [node name="Prompt" type="Label" parent="UI"]
 offset_left = 24.0

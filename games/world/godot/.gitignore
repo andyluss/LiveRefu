@@ -4,3 +4,9 @@
 /.godot-home/
 *.uid
 /assets/
+/m2-events.jsonl
+/headless-events.log
+/headless-events.jsonl
+/m2-save.bin
+/headless-save.json
+/godot-save-load.log

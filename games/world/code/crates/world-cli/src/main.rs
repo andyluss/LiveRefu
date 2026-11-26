@@ -34,6 +34,8 @@ fn run() -> Result<(), String> {
         "content-test" => cmd_content_test(&args[1..]),
         "replay" => cmd_replay(&args[1..]),
         "demo" => cmd_demo(&args[1..]),
+        "save" => cmd_save(&args[1..]),
+        "load" => cmd_load(&args[1..]),
         "bench" => cmd_bench(&args[1..]),
         "new" => cmd_new(&args[1..]),
         "header" => cmd_header(&args[1..]),
@@ -544,6 +546,60 @@ fn run_content_test(pack: &Pack, test: &ContentTest) -> Result<(), String> {
     }
 }
 
+fn cmd_save(args: &[String]) -> Result<(), String> {
+    let path = pack_path(args);
+    let pack = load_pack(&path)?;
+    require_valid(&pack)?;
+    let trace_path = parse_flag(args, "--trace")
+        .map(PathBuf::from)
+        .ok_or_else(|| "save 需要 --trace <file>".to_string())?;
+    let out = parse_flag(args, "--out")
+        .map(PathBuf::from)
+        .ok_or_else(|| "save 需要 --out <file>".to_string())?;
+    let trace = read_trace(&trace_path, 600)?;
+    let pack_hash = pack.hash().map_err(|e| e.to_string())?;
+    let mut world = World::from_pack(&pack, pack_hash)?;
+    attach_script_host(&mut world, &pack)?;
+    let mut steps = trace.steps.clone();
+    steps.sort_by_key(|s| s.tick);
+    for tick in 1..=trace.ticks {
+        for step in steps.iter().filter(|s| s.tick == tick) {
+            world.queue_command(step.command.resolve(&world)?);
+        }
+        world.tick_once();
+    }
+    let bytes = world.save_bytes()?;
+    fs::write(&out, &bytes).map_err(|e| format!("写存档失败: {e}"))?;
+    println!(
+        "save: {} ticks={} hash=0x{:016x} bytes={} out={}",
+        world.pack_id,
+        world.tick,
+        world.state_hash(),
+        bytes.len(),
+        out.display()
+    );
+    Ok(())
+}
+
+fn cmd_load(args: &[String]) -> Result<(), String> {
+    let path = pack_path(args);
+    let pack = load_pack(&path)?;
+    require_valid(&pack)?;
+    let save = parse_flag(args, "--save")
+        .map(PathBuf::from)
+        .ok_or_else(|| "load 需要 --save <file>".to_string())?;
+    let bytes = fs::read(&save).map_err(|e| format!("读存档失败: {e}"))?;
+    let world = World::load_bytes(&pack, &bytes)?;
+    println!(
+        "load: {} ticks={} hash=0x{:016x} entities={}",
+        world.pack_id,
+        world.tick,
+        world.state_hash(),
+        world.entities().count()
+    );
+    Ok(())
+}
+
 fn cmd_replay(args: &[String]) -> Result<(), String> {
     let path = pack_path(args);
     let pack = load_pack(&path)?;
@@ -817,6 +873,8 @@ fn print_help() {
   worldc content-test [--pack DIR] [--filter TEXT]
   worldc replay   --trace FILE [--pack DIR] [--expect 0xHASH]
   worldc demo     [--pack DIR] [--trace FILE] [--ticks N]
+  worldc save     [--pack DIR] [--trace FILE] [--ticks N] --out FILE
+  worldc load     [--pack DIR] --save FILE
   worldc bench    [--pack DIR] [--synthetic N] [--ticks N]
   worldc bench    --scenario real5k [--seed N] [--ticks N] [--runs N] [--json]
   worldc new      <pack.id> [--out DIR]

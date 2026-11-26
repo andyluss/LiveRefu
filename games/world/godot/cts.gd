@@ -126,6 +126,7 @@ func _test_save() -> void:
 	check("S save bytes", saved.size() > 0)
 	check("S load save", restored.load_save(saved))
 	check("S hash roundtrip", restored.state_hash_hex() == expected)
+	check("S bad save", not restored.load_save(PackedByteArray([1, 2, 3])))
 	world.queue_free()
 	restored.queue_free()
 

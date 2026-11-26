@@ -78,6 +78,7 @@ func _setup_input() -> void:
 	var keys := {
 		"move_up": KEY_W, "move_down": KEY_S, "move_left": KEY_A, "move_right": KEY_D,
 		"interact": KEY_E, "pickup": KEY_F, "talk": KEY_T,
+		"save_game": KEY_F5, "load_game": KEY_F9,
 	}
 	for action in keys:
 		if not InputMap.has_action(action):
@@ -134,8 +135,42 @@ func _unhandled_input(event: InputEvent) -> void:
 		if id != "":
 			world.talk("player", id)
 			status_label.text = "对话：" + str(targets[id])
+	elif event.is_action_pressed("save_game"):
+		_save_to_user()
+	elif event.is_action_pressed("load_game"):
+		_load_from_user()
 	elif event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
+
+func _save_to_user() -> void:
+	var data := world.save()
+	if data.is_empty():
+		status_label.text = "存档失败"
+		return
+	var path := "user://harbor.save"
+	var tmp := path + ".tmp"
+	var file := FileAccess.open(tmp, FileAccess.WRITE)
+	if file == null:
+		status_label.text = "存档失败"
+		return
+	file.store_buffer(data)
+	file.close()
+	var err := DirAccess.rename_absolute(ProjectSettings.globalize_path(tmp), ProjectSettings.globalize_path(path))
+	status_label.text = "已存档" if err == OK else "存档失败"
+	if err == OK:
+		print("PLAY_SAVE_HASH=", world.state_hash_hex())
+
+func _load_from_user() -> void:
+	var path := "user://harbor.save"
+	if not FileAccess.file_exists(path):
+		status_label.text = "没有存档"
+		return
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null or not world.load_save(file.get_buffer(file.get_length())):
+		status_label.text = "读档失败"
+		return
+	status_label.text = "已读档"
+	print("PLAY_LOAD_HASH=", world.state_hash_hex())
 
 func _nearest_of(ids: Array) -> String:
 	var player := world.player_position()

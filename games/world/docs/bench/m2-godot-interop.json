@@ -1,0 +1,10 @@
+{
+  "hash": "0x3606a221e9990561",
+  "events": 19,
+  "event_sequence_godot_vs_headless": "identical",
+  "save_headless_to_godot": "PASS",
+  "save_godot_to_headless": "PASS",
+  "adapter_lines": 1314,
+  "adapter_line_budget": 2000,
+  "forbidden_crate_imports": []
+}

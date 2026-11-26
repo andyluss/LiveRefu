@@ -182,6 +182,12 @@ jobs:
         env:
           GODOT_BIN: godot
         run: ./godot/bench5k.sh
+      - name: Headless ↔ Godot event/save interop
+        env:
+          GODOT_BIN: godot
+        run: |
+          node test/check_m2_boundary.mjs
+          ./godot/test.sh
       - name: Install Xvfb / software GL
         run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri
       - name: Frame-time under Xvfb (software GL)

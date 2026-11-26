@@ -44,7 +44,32 @@ func _ready() -> void:
 		return
 	var events := world.poll_events()
 	print("WORLD_EVENTS=", events.length())
+	var event_file := FileAccess.open("res://m2-events.jsonl", FileAccess.WRITE)
+	if event_file != null:
+		event_file.store_string(events)
 	var saved := world.save()
+	var save_file := FileAccess.open("res://m2-save.bin", FileAccess.WRITE)
+	if save_file != null:
+		save_file.store_buffer(saved)
+	var cross_file := FileAccess.open("res://headless-save.json", FileAccess.READ)
+	if cross_file != null:
+		var cross := WorldNode.new()
+		add_child(cross)
+		if not cross.load_pack(bytes):
+			push_error("cross-save load_pack failed")
+			get_tree().quit(12)
+			return
+		if not cross.load_save(cross_file.get_buffer(cross_file.get_length())):
+			push_error("cross-save load_save failed")
+			get_tree().quit(13)
+			return
+		var cross_hash := cross.state_hash_hex()
+		print("WORLD_CROSS_SAVE_HASH=", cross_hash)
+		if cross_hash != actual:
+			push_error("cross-save hash mismatch")
+			get_tree().quit(14)
+			return
+		cross.queue_free()
 	var restored := WorldNode.new()
 	if not restored.load_pack(bytes):
 		push_error("restored load_pack failed")
