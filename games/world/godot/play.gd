@@ -56,6 +56,16 @@ func _ready() -> void:
 		_add_box(Vector3(x, 2.0, 0), Vector3(0.3, 4.0, 24), Color(0.28, 0.33, 0.36))
 	_add_box(Vector3(0, 2.0, -12.0), Vector3(24, 4.0, 0.3), Color(0.28, 0.33, 0.36))
 	_add_box(Vector3(0, 1.2, 6.5), Vector3(3.0, 2.4, 0.4), Color(0.38, 0.44, 0.40))
+	for pos in [Vector3(-8, 0.6, -7), Vector3(-6, 0.6, -8), Vector3(7, 0.6, -7)]:
+		_add_box(pos, Vector3(1.2, 1.2, 1.2), Color(0.42, 0.32, 0.18))
+	_add_box(Vector3(-9, 1.1, 5), Vector3(3.0, 1.1, 1.0), Color(0.22, 0.30, 0.32))
+	_add_box(Vector3(9, 1.1, 5), Vector3(3.0, 1.1, 1.0), Color(0.22, 0.30, 0.32))
+	_add_box(Vector3(0, 3.8, 0), Vector3(0.15, 0.15, 20), Color(0.55, 0.62, 0.60))
+	var light := OmniLight3D.new()
+	light.position = Vector3(0, 5, 2)
+	light.omni_range = 18.0
+	light.light_energy = 1.2
+	add_child(light)
 	world.sync_views()
 	_update_camera()
 
