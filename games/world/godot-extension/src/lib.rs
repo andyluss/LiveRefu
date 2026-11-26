@@ -1,7 +1,8 @@
 //! M2 Godot GDExtension 最小适配器：只通过 world-abi 的 C ABI 驱动内核。
 //! 这里不做玩法/渲染；先证明 Godot 能加载同一包并跑出同一哈希。
 
-use godot::classes::{BoxMesh, CapsuleMesh, Mesh, MeshInstance3D, Node3D, PackedScene, SphereMesh, StandardMaterial3D};
+use godot::classes::multi_mesh::TransformFormat;
+use godot::classes::{BoxMesh, CapsuleMesh, Mesh, MeshInstance3D, MultiMesh, MultiMeshInstance3D, Node3D, PackedScene, SphereMesh, StandardMaterial3D};
 use godot::prelude::*;
 use std::collections::{HashMap, HashSet};
 use world_abi::{AbiWorld, WorldTransformPod};
@@ -21,6 +22,11 @@ struct WorldNode {
     visual_scenes: HashMap<String, Gd<PackedScene>>,
     prev_transforms: HashMap<u64, WorldTransformPod>,
     target_transforms: HashMap<u64, WorldTransformPod>,
+    multimesh: Option<Gd<MultiMesh>>,
+    multimesh_node: Option<Gd<MultiMeshInstance3D>>,
+    multimesh_kinds: u32,
+    multimesh_capacity: i32,
+    multimesh_count: i64,
 }
 
 #[godot_api]
@@ -34,6 +40,11 @@ impl INode for WorldNode {
             visual_scenes: HashMap::new(),
             prev_transforms: HashMap::new(),
             target_transforms: HashMap::new(),
+            multimesh: None,
+            multimesh_node: None,
+            multimesh_kinds: 0,
+            multimesh_capacity: 0,
+            multimesh_count: 0,
         }
     }
 }
@@ -141,6 +152,41 @@ impl WorldNode {
         self.send_pair("talk", &actor, &target)
     }
 
+    fn interpolated_transform(
+        pod: &WorldTransformPod,
+        prev: Option<&WorldTransformPod>,
+        alpha: f32,
+    ) -> Transform3D {
+        let a = alpha.clamp(0.0, 1.0);
+        let (position, rotation, scale) = if let Some(prev) = prev {
+            (
+                Vector3::new(prev.position[0], prev.position[1], prev.position[2]).lerp(
+                    Vector3::new(pod.position[0], pod.position[1], pod.position[2]),
+                    a,
+                ),
+                Quaternion::new(prev.rotation[0], prev.rotation[1], prev.rotation[2], prev.rotation[3])
+                    .slerp(
+                        Quaternion::new(pod.rotation[0], pod.rotation[1], pod.rotation[2], pod.rotation[3]),
+                        a,
+                    ),
+                Vector3::new(prev.scale[0], prev.scale[1], prev.scale[2]).lerp(
+                    Vector3::new(pod.scale[0], pod.scale[1], pod.scale[2]),
+                    a,
+                ),
+            )
+        } else {
+            (
+                Vector3::new(pod.position[0], pod.position[1], pod.position[2]),
+                Quaternion::new(pod.rotation[0], pod.rotation[1], pod.rotation[2], pod.rotation[3]),
+                Vector3::new(pod.scale[0], pod.scale[1], pod.scale[2]),
+            )
+        };
+        Transform3D::new(
+            Basis::from_quaternion(rotation) * Basis::from_scale(scale),
+            position + Vector3::new(0.0, 0.6, 0.0),
+        )
+    }
+
     fn make_mesh(flags: u32) -> Gd<Mesh> {
         match flags & 0xFF {
             1 | 2 => {
@@ -195,6 +241,44 @@ impl WorldNode {
         true
     }
 
+    /// 按 kind mask 批量渲染静态实体；capacity 为实例上限。
+    #[func]
+    fn enable_multimesh(&mut self, kind_flags: i64, capacity: i64) -> bool {
+        self.disable_multimesh();
+        let mut mesh = BoxMesh::new_gd();
+        mesh.set_size(Vector3::new(1.0, 1.2, 1.0));
+        let mut multimesh = MultiMesh::new_gd();
+        multimesh.set_transform_format(TransformFormat::TRANSFORM_3D);
+        multimesh.set_mesh(&mesh);
+        multimesh.set_instance_count(capacity.clamp(1, 100_000) as i32);
+        multimesh.set_visible_instance_count(0);
+        let mut node = MultiMeshInstance3D::new_alloc();
+        node.set_multimesh(&multimesh);
+        self.ensure_views_root().add_child(&node);
+        self.multimesh = Some(multimesh);
+        self.multimesh_node = Some(node);
+        self.multimesh_kinds = kind_flags as u32;
+        self.multimesh_capacity = capacity.clamp(1, 100_000) as i32;
+        self.multimesh_count = 0;
+        true
+    }
+
+    #[func]
+    fn disable_multimesh(&mut self) {
+        self.multimesh = None;
+        if let Some(node) = self.multimesh_node.take() {
+            node.free();
+        }
+        self.multimesh_kinds = 0;
+        self.multimesh_capacity = 0;
+        self.multimesh_count = 0;
+    }
+
+    #[func]
+    fn multimesh_count(&self) -> i64 {
+        self.multimesh_count
+    }
+
     /// 把 C ABI transform 快照同步为 Godot 节点；按 EntityId 做池化/回收。
     #[func]
     fn sync_views(&mut self) -> i64 {
@@ -218,8 +302,22 @@ impl WorldNode {
         };
         let mut root = self.ensure_views_root();
         let mut alive = HashSet::new();
+        let mut multimesh_count = 0i32;
+        let use_multimesh = self.multimesh.is_some() && self.multimesh_kinds != 0;
         for pod in transforms {
             let key = ((pod.generation as u64) << 32) | pod.index as u64;
+            let kind_bit = 1u32 << (pod.flags & 0xFF);
+            if use_multimesh && (self.multimesh_kinds & kind_bit) != 0 {
+                if multimesh_count < self.multimesh_capacity {
+                    let prev = self.prev_transforms.get(&key);
+                    let transform = Self::interpolated_transform(&pod, prev, alpha);
+                    if let Some(multimesh) = self.multimesh.as_mut() {
+                        multimesh.set_instance_transform(multimesh_count, transform);
+                    }
+                    multimesh_count += 1;
+                }
+                continue;
+            }
             alive.insert(key);
             if !self.views.contains_key(&key) {
                 let visual = self
@@ -283,6 +381,10 @@ impl WorldNode {
                 node.queue_free();
             }
         }
+        if let Some(multimesh) = self.multimesh.as_mut() {
+            multimesh.set_visible_instance_count(multimesh_count);
+        }
+        self.multimesh_count = multimesh_count as i64;
         self.views.len() as i64
     }
 
@@ -298,6 +400,7 @@ impl WorldNode {
 
     #[func]
     fn clear_views(&mut self) {
+        self.disable_multimesh();
         for (_, node) in self.views.drain() {
             node.free();
         }
@@ -389,8 +492,7 @@ impl WorldNode {
         Vector3::ZERO
     }
 
-    #[func]
-    fn set_move(&mut self, x: f32, z: f32) -> bool {
+    fn send_move(&mut self, x: f32, z: f32) -> bool {
         let Some(player) = self
             .world
             .as_ref()
@@ -407,6 +509,23 @@ impl WorldNode {
             Some(world) => world.command(&json).is_ok(),
             None => false,
         }
+    }
+
+    #[func]
+    fn set_move(&mut self, x: f32, z: f32) -> bool {
+        self.send_move(x, z)
+    }
+
+    /// 2D 俯视输入：屏幕 x/y 映射到世界 x/z。
+    #[func]
+    fn set_move_2d(&mut self, x: f32, y: f32) -> bool {
+        self.send_move(x, y)
+    }
+
+    /// 2.5D 等距输入：屏幕 x/y 映射到世界 x±z。
+    #[func]
+    fn set_move_iso(&mut self, x: f32, y: f32) -> bool {
+        self.send_move(x - y, x + y)
     }
 
     #[func]

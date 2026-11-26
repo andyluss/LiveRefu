@@ -6,8 +6,12 @@ var world: WorldNode
 var accumulator := 0.0
 var camera: Camera3D
 var sfx: AudioStreamPlayer
+var axis_mode := "3d"
 
 func _ready() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--axis="):
+			axis_mode = arg.trim_prefix("--axis=")
 	camera = $Camera
 	sfx = $Sfx
 	var real_audio := _load_wav("res://assets/audio/airlock_open.wav")
@@ -23,6 +27,7 @@ func _ready() -> void:
 		push_error("WorldNode.load_pack failed")
 		return
 	var pack_json = JSON.parse_string(bytes.get_string_from_utf8())
+	world.enable_multimesh((1 << 3) | (1 << 4), 64)
 	if pack_json is Dictionary:
 		for asset_id in pack_json.get("assets", {}):
 			var source: String = pack_json["assets"][asset_id].get("source", "")
@@ -51,7 +56,10 @@ func _process(delta: float) -> void:
 		return
 	accumulator += delta
 	while accumulator >= STEP:
-		world.set_move(move.x, move.y)
+		match axis_mode:
+			"2d": world.set_move_2d(move.x, move.y)
+			"iso": world.set_move_iso(move.x, move.y)
+			_: world.set_move(move.x, move.y)
 		if world.tick() < 0:
 			push_error("world tick failed")
 			get_tree().quit(2)

@@ -14,6 +14,8 @@ func _ready() -> void:
 	_test_lifecycle()
 	_test_time_and_determinism()
 	_test_input()
+	_test_axis_mapping()
+	_test_multimesh()
 	_test_events()
 	_test_views()
 	_test_save()
@@ -64,6 +66,30 @@ func _test_input() -> void:
 		world.set_move(1.0, 0.0)
 		world.tick()
 	check("I move", world.player_position().x > 0.1)
+	world.queue_free()
+
+func _test_axis_mapping() -> void:
+	var world := make_world()
+	for _i in range(10):
+		world.set_move_2d(1.0, 0.0)
+		world.tick()
+	check("I 2d axis", world.player_position().x > 0.1)
+	var iso := make_world()
+	for _i in range(10):
+		iso.set_move_iso(1.0, 0.0)
+		iso.tick()
+	var iso_pos := iso.player_position()
+	check("I iso axis", iso_pos.x > 0.1 and iso_pos.z > 0.1)
+	world.queue_free()
+	iso.queue_free()
+
+func _test_multimesh() -> void:
+	var world := make_world()
+	check("V multimesh enable", world.enable_multimesh(1 << 3, 8))
+	world.sync_views()
+	check("V multimesh count", world.multimesh_count() == 1)
+	world.clear_views()
+	check("V multimesh clear", world.multimesh_count() == 0)
 	world.queue_free()
 
 func _test_events() -> void:
