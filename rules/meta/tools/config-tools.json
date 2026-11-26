@@ -6,7 +6,7 @@
   "type_vocab": [],
   "code_types": ["hooks"],
   "empty_ok_types": [],
-  "doc_naming": { "default": ["^[a-z0-9]+([._-][a-z0-9]+)*\\.(ts|py|sh|json)$", "^README$"] },
+  "doc_naming": { "default": ["^[a-z0-9]+([._-][a-z0-9]+)*\\.(ts|js|mjs|py|sh|json)$", "^README$"] },
   "skip_dirs": [".git", "node_modules", "__pycache__"],
   "skip_prefixes": [".", "_"],
   "sub_concerns": [],
