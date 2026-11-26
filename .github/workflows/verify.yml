@@ -106,10 +106,10 @@ jobs:
       # python 门在 runner 上跑（ubuntu-latest 自带 python3），godot 门在容器里跑。
       # 两条命令都走项目自己的 `run.sh`——**不在 CI 里复制任何检查逻辑**，
       # 否则 CI 与本地会慢慢分叉（这正是"文档/配置与代码对账"要避免的事）。
-      - name: Future Debris gates 1–3 (python: file budget / data contract / visual tokens)
+      - name: "Future Debris gates 1–3 (python: file budget / data contract / visual tokens)"
         run: ./games/future-debris/run.sh check --python-only
 
-      - name: Future Debris gates 4–8 (godot: import / theme / boot / gameplay / scene)
+      - name: "Future Debris gates 4–8 (godot: import / theme / boot / gameplay / scene)"
         run: |
           # `run.sh` 靠**上溯查找 .git** 定位工作区根（不是数 `..` 层数），
           # 因此挂载到 /app 后它会自动把 HOME 指到 /app/games/.godot-home（可写）。

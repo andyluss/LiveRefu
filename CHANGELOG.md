@@ -49,6 +49,9 @@
 - **Node 22.18+ / 移除实验 flag**：当前脚本、CI、package scripts 与文档统一用 `node`；最低 Node 22.18；QC 以 Node 24 为主。
 - **根入口与规范**：根 [`README.md`](README.md)、[`TODO.md`](TODO.md)、[`AGENTS.md`](AGENTS.md) 与 [`rules/`](rules/README.md) 的入口/分流/记录规范收口；根日志只保留工作区级条目。
 
+### 修复
+- **Verify workflow 0s / jobs 为空**：[`.github/workflows/verify.yml`](.github/workflows/verify.yml) 两个 step name 含未加引号的 `python:` / `godot:`，导致 YAML 解析失败；已加引号修复。
+
 ## [0.5.0] - 2026-10-21 13:50 · 设计系统 v0.2 与组件落地
 
 ### 变更
