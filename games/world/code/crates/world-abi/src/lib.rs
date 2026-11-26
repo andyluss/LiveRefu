@@ -21,6 +21,17 @@ pub struct WorldHandle {
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+pub struct WorldTransformPod {
+    pub index: u32,
+    pub generation: u32,
+    pub position: [f32; 3],
+    pub rotation: [f32; 4],
+    pub scale: [f32; 3],
+    pub flags: u32,
+}
+
+#[repr(C)]
 pub struct WorldConfig {
     pub abi_version: u32,
     pub struct_size: u32,
@@ -50,6 +61,11 @@ extern "C" {
         out_len: *mut usize,
     ) -> i32;
     fn world_find_entity(world: *mut WorldHandle, content_id: *const c_char) -> u64;
+    fn world_copy_transforms(
+        world: *mut WorldHandle,
+        out: *mut WorldTransformPod,
+        cap: usize,
+    ) -> usize;
     fn world_save(world: *mut WorldHandle, out: *mut u8, cap: usize, out_len: *mut usize) -> i32;
     fn world_load_save(world: *mut WorldHandle, bytes: *const u8, len: usize) -> i32;
     fn world_last_error(world: *mut WorldHandle) -> *const c_char;
@@ -140,6 +156,21 @@ impl AbiWorld {
         let c = CString::new(content_id).ok()?;
         let id = unsafe { world_find_entity(self.handle, c.as_ptr()) };
         (id != WORLD_ENTITY_NONE).then_some(id)
+    }
+
+    pub fn copy_transforms(&mut self) -> Result<Vec<WorldTransformPod>, String> {
+        let required = unsafe { world_copy_transforms(self.handle, ptr::null_mut(), 0) };
+        if required == 0 {
+            return Ok(Vec::new());
+        }
+        let mut out = vec![WorldTransformPod::default(); required];
+        let copied = unsafe { world_copy_transforms(self.handle, out.as_mut_ptr(), out.len()) };
+        if copied != required {
+            return Err(format!(
+                "world_copy_transforms: expected {required}, got {copied}"
+            ));
+        }
+        Ok(out)
     }
 
     pub fn save(&mut self) -> Result<Vec<u8>, String> {

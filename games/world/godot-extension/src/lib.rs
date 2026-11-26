@@ -1,7 +1,9 @@
 //! M2 Godot GDExtension 最小适配器：只通过 world-abi 的 C ABI 驱动内核。
 //! 这里不做玩法/渲染；先证明 Godot 能加载同一包并跑出同一哈希。
 
+use godot::classes::{BoxMesh, MeshInstance3D, Node3D, StandardMaterial3D};
 use godot::prelude::*;
+use std::collections::{HashMap, HashSet};
 use world_abi::AbiWorld;
 
 struct WorldExtension;
@@ -14,12 +16,19 @@ unsafe impl ExtensionLibrary for WorldExtension {}
 struct WorldNode {
     base: Base<Node>,
     world: Option<AbiWorld>,
+    views_root: Option<Gd<Node3D>>,
+    views: HashMap<u64, Gd<MeshInstance3D>>,
 }
 
 #[godot_api]
 impl INode for WorldNode {
     fn init(base: Base<Node>) -> Self {
-        Self { base, world: None }
+        Self {
+            base,
+            world: None,
+            views_root: None,
+            views: HashMap::new(),
+        }
     }
 }
 
@@ -61,7 +70,10 @@ impl WorldNode {
 
     fn entity_pair(&self, actor: &GString, target: &GString) -> Option<(u64, u64)> {
         let world = self.world.as_ref()?;
-        Some((world.find_entity(actor.to_string().as_str())?, world.find_entity(target.to_string().as_str())?))
+        Some((
+            world.find_entity(actor.to_string().as_str())?,
+            world.find_entity(target.to_string().as_str())?,
+        ))
     }
 
     fn send_pair(&mut self, op: &str, actor: &GString, target: &GString) -> bool {
@@ -103,6 +115,116 @@ impl WorldNode {
         self.send_pair("talk", &actor, &target)
     }
 
+    fn ensure_views_root(&mut self) -> Gd<Node3D> {
+        if let Some(root) = &self.views_root {
+            return root.clone();
+        }
+        let root = Node3D::new_alloc();
+        self.base_mut().add_child(&root);
+        self.views_root = Some(root.clone());
+        root
+    }
+
+    /// 把 C ABI transform 快照同步为 Godot 节点；按 EntityId 做池化/回收。
+    #[func]
+    fn sync_views(&mut self) -> i64 {
+        let transforms = match self
+            .world
+            .as_mut()
+            .and_then(|world| world.copy_transforms().ok())
+        {
+            Some(values) => values,
+            None => return -1,
+        };
+        let mut root = self.ensure_views_root();
+        let mut alive = HashSet::new();
+        for pod in transforms {
+            let key = ((pod.generation as u64) << 32) | pod.index as u64;
+            alive.insert(key);
+            if !self.views.contains_key(&key) {
+                let mut node = MeshInstance3D::new_alloc();
+                let mut mesh = BoxMesh::new_gd();
+                mesh.set_size(Vector3::new(0.7, 1.2, 0.7));
+                node.set_mesh(&mesh);
+                let mut material = StandardMaterial3D::new_gd();
+                let hue = (pod.index % 6) as f32 / 6.0;
+                material.set_albedo(Color::from_hsv(hue as f64, 0.55, 0.85));
+                node.set_material_override(&material);
+                root.add_child(&node);
+                self.views.insert(key, node);
+            }
+            if let Some(node) = self.views.get_mut(&key) {
+                node.set_position(Vector3::new(
+                    pod.position[0],
+                    pod.position[1],
+                    pod.position[2],
+                ));
+                node.set_quaternion(Quaternion::new(
+                    pod.rotation[0],
+                    pod.rotation[1],
+                    pod.rotation[2],
+                    pod.rotation[3],
+                ));
+                node.set_scale(Vector3::new(pod.scale[0], pod.scale[1], pod.scale[2]));
+            }
+        }
+        let stale: Vec<u64> = self
+            .views
+            .keys()
+            .copied()
+            .filter(|key| !alive.contains(key))
+            .collect();
+        for key in stale {
+            if let Some(mut node) = self.views.remove(&key) {
+                node.queue_free();
+            }
+        }
+        self.views.len() as i64
+    }
+
+    #[func]
+    fn view_count(&self) -> i64 {
+        self.views.len() as i64
+    }
+
+    #[func]
+    fn player_position(&mut self) -> Vector3 {
+        let Some(world) = self.world.as_mut() else {
+            return Vector3::ZERO;
+        };
+        let Some(player) = world.find_entity("player") else {
+            return Vector3::ZERO;
+        };
+        let index = (player & 0xFFFF_FFFF) as u32;
+        let generation = (player >> 32) as u32;
+        for pod in world.copy_transforms().unwrap_or_default() {
+            if pod.index == index && pod.generation == generation {
+                return Vector3::new(pod.position[0], pod.position[1], pod.position[2]);
+            }
+        }
+        Vector3::ZERO
+    }
+
+    #[func]
+    fn set_move(&mut self, x: f32, z: f32) -> bool {
+        let Some(player) = self
+            .world
+            .as_ref()
+            .and_then(|world| world.find_entity("player"))
+        else {
+            return false;
+        };
+        let json = format!(
+            "{{\"op\":\"move\",\"actor\":{{\"index\":{},\"generation\":{}}},\"x\":{x},\"z\":{z}}}",
+            player & 0xFFFF_FFFF,
+            player >> 32
+        );
+        match self.world.as_mut() {
+            Some(world) => world.command(&json).is_ok(),
+            None => false,
+        }
+    }
+
     #[func]
     fn state_hash(&self) -> i64 {
         self.world
@@ -119,7 +241,11 @@ impl WorldNode {
 
     #[func]
     fn poll_events(&mut self) -> GString {
-        match self.world.as_mut().and_then(|world| world.poll_events().ok()) {
+        match self
+            .world
+            .as_mut()
+            .and_then(|world| world.poll_events().ok())
+        {
             Some(events) => GString::from(events.as_str()),
             None => GString::from(""),
         }

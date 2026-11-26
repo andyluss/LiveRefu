@@ -8,6 +8,7 @@ func _ready() -> void:
 		return
 	var bytes := file.get_buffer(file.get_length())
 	var world := WorldNode.new()
+	add_child(world)
 	if not world.load_pack(bytes):
 		push_error("WorldNode.load_pack failed")
 		get_tree().quit(3)
@@ -33,6 +34,8 @@ func _ready() -> void:
 			push_error("WorldNode.tick failed")
 			get_tree().quit(4)
 			return
+	var views := world.sync_views()
+	print("WORLD_VIEWS=", views)
 	var actual := world.state_hash_hex()
 	print("WORLD_HASH=", actual)
 	if actual != "0xc840fe2090a0a085":
@@ -57,6 +60,22 @@ func _ready() -> void:
 		push_error("save/load hash mismatch")
 		get_tree().quit(9)
 		return
+	var mover := WorldNode.new()
+	add_child(mover)
+	if not mover.load_pack(bytes):
+		push_error("mover load_pack failed")
+		get_tree().quit(11)
+		return
+	for _i in range(10):
+		mover.set_move(1.0, 0.0)
+		mover.tick()
+	var moved_x := mover.player_position().x
+	print("WORLD_MOVE_X=", moved_x)
+	if moved_x < 0.1:
+		push_error("player did not move")
+		get_tree().quit(10)
+		return
 	world.queue_free()
 	restored.queue_free()
+	mover.queue_free()
 	get_tree().quit(0)

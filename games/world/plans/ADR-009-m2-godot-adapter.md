@@ -10,7 +10,7 @@ M2 先做 **Godot 4.7 的逻辑适配器**，不先做渲染/资产/音频：
 
 - 新增 `world-abi`：只声明 C ABI 类型与函数，不依赖 `world-core`；`link-world-ffi` feature 只负责把 `world-ffi` 链接进来。
 - 新增独立 crate `godot-extension/`：`godot` 0.5.6 + `api-4-7`，输出 GDExtension cdylib；源码只 `use world-abi`。
-- 新增 `WorldNode`：`load_pack`、`tick`、`interact/talk/pickup`、`state_hash`、`poll_events`、`save/load_save`。
+- 新增 `WorldNode`：`load_pack`、`tick`、`interact/talk/pickup`、`set_move`、`sync_views`、`state_hash`、`poll_events`、`save/load_save`。
 - 新增 `godot/test.sh`：Godot headless 跑 600 tick + 存档往返，和 C ABI/Headless 对账。
 
 ## 为什么
@@ -24,13 +24,15 @@ M2 先做 **Godot 4.7 的逻辑适配器**，不先做渲染/资产/音频：
 - Godot `4.7.stable.official.5b4e0cb0f`
 - `godot/test.sh`：
   - 600 tick 后 `WORLD_HASH=0xc840fe2090a0a085`
+  - `WORLD_VIEWS=3`（拾取后视图池回收）
   - `WORLD_EVENTS=2025`
   - save/load 后 `WORLD_SAVE_HASH=0xc840fe2090a0a085`
+  - `set_move` 后 `WORLD_MOVE_X=0.6666`
 - C ABI/Headless 同一哈希；适配器源码不 `use world_core`。
 
 ## 不包含
 
-- 渲染、视图池、资产导入、音频、输入映射；
+- 摄像机/灯光、资产导入、音频、完整输入映射；视图池已是最小 BoxMesh 版本。
 - CTS 全组；
 - 5k 渲染帧时间；
 - Godot 打包/移动端；
