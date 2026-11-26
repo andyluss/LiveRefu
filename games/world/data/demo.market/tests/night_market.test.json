@@ -1,0 +1,46 @@
+{
+  "name": "night_market",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.vendor"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.token"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.gate"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.gate.open": true,
+      "flag.quest.night_market.done": true
+    },
+    "quests": {
+      "quest.night_market": "completed"
+    },
+    "events": [
+      "gate.opened",
+      "quest_completed"
+    ],
+    "inventory": {
+      "item.token": 1
+    }
+  }
+}

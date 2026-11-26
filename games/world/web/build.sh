@@ -7,8 +7,15 @@ export CARGO_HOME="${CARGO_HOME:-$CODE/.cargo-home}"
 
 cd "$CODE"
 
-echo "== build content pack =="
-cargo run -q -p world-cli -- build --out "$ROOT/dist/demo.harbor"
+echo "== build content packs =="
+for id in demo.harbor demo.market demo.greenhouse demo.orbit; do
+  cargo run -q -p world-cli -- bake nav --pack "$ROOT/data/$id" >/dev/null
+  cargo run -q -p world-cli -- build --pack "$ROOT/data/$id" --out "$ROOT/dist/$id"
+done
+mkdir -p "$ROOT/web/packs"
+for id in demo.harbor demo.market demo.greenhouse demo.orbit; do
+  cp "$ROOT/dist/$id/pack.data" "$ROOT/web/packs/$id.data"
+done
 
 echo "== build wasm =="
 if command -v rustup >/dev/null 2>&1; then

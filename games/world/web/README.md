@@ -2,6 +2,20 @@
 
 > 一个不依赖引擎编辑器的预览：wasm 内核 + 最小 Canvas 视图 + 点击/键盘交互 + M0 trace 回放。
 
+## Demo 体系（2D / 2.5D / 3D）
+
+```bash
+./web/build.sh
+cd web && python3 -m http.server 8787
+# 索引：http://127.0.0.1:8787/demos.html
+# 2.5D 夜市：/iso.html?demo=market
+# 2.5D 温室：/iso.html?demo=greenhouse
+# 3D 环形站：/orbit3d.html
+```
+
+`web/build.sh` 会把 4 个内容包构建到 `web/packs/*.data`。所有 Demo 共用 `PreviewWorld`，
+2.5D 与 3D 只是表现层，不复制规则。
+
 ## 3D 演示
 
 ```bash

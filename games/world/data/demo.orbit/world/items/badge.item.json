@@ -1,0 +1,9 @@
+{
+  "id": "item.badge",
+  "name": "loc:item.badge.name",
+  "stack": 1,
+  "tags": [
+    "badge",
+    "orbit"
+  ]
+}

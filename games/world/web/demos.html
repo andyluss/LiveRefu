@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · Demo 索引</title>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'light'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./gallery.css" />
+</head>
+<body class="gallery-page">
+  <header class="top gallery-top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div>
+        <h1>RefuWorld <span class="badge">DEMOS</span></h1>
+        <p>一个世界内核，多种玩法与视图</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="nav-link" href="../brief/HUB.html">项目 HUB</a>
+      <a class="nav-link" href="../brief/GUIDE.html">用户指南</a>
+      <a class="nav-link" href="./index.html">2D 预览</a>
+      <a class="nav-link" href="./demo3d.html">3D 演示</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="gallery-wrap">
+    <section class="gallery-hero">
+      <p class="eyebrow">Demo system · 2026-11-26</p>
+      <h2>同一份世界，换一种玩法与看法。</h2>
+      <p class="gallery-lede">所有 Demo 共用 Rust 权威内核、同一套内容包 schema 与 <code>PreviewWorld</code>。差别只在内容与表现层：2D 俯视、2.5D 等距、3D 沉浸。你可以先玩，再去编辑器里拆开看。</p>
+      <div class="gallery-stats">
+        <div><b>5</b><span>Demo</span></div>
+        <div><b>3</b><span>视图</span></div>
+        <div><b>4</b><span>内容包</span></div>
+        <div><b>1</b><span>内核</span></div>
+      </div>
+    </section>
+
+    <nav class="gallery-filters" aria-label="Demo 筛选">
+      <button type="button" data-filter="all" aria-pressed="true">全部</button>
+      <button type="button" data-filter="2d" aria-pressed="false">2D</button>
+      <button type="button" data-filter="2.5d" aria-pressed="false">2.5D</button>
+      <button type="button" data-filter="3d" aria-pressed="false">3D</button>
+      <button type="button" data-filter="story" aria-pressed="false">剧情</button>
+      <button type="button" data-filter="explore" aria-pressed="false">探索</button>
+    </nav>
+
+    <section class="gallery-grid" id="gallery">
+      <a class="demo-card" href="./index.html" data-view="2d" data-tags="story explore">
+        <figure><img src="../docs/shots/m1_web_light.png" alt="港湾值班室 2D 俯视预览"><span class="view-badge">2D</span></figure>
+        <div class="demo-body">
+          <div class="demo-kicker">剧情 / 交互</div>
+          <h3>港湾值班室</h3>
+          <p>最完整的垂直切片：值班员、气闸、钥匙卡、对话、任务与 600 tick 回放。适合先理解“世界层到底在做什么”。</p>
+          <div class="demo-tags"><span>2D 俯视</span><span>点击/键盘</span><span>M0 trace</span></div>
+          <span class="demo-open">打开 2D 预览 →</span>
+        </div>
+      </a>
+
+      <a class="demo-card" href="./demo3d.html" data-view="3d" data-tags="story explore">
+        <figure><img src="../docs/shots/m1_3d_harbor.png" alt="港湾值班室 3D 演示"><span class="view-badge">3D</span></figure>
+        <div class="demo-body">
+          <div class="demo-kicker">剧情 / 沉浸</div>
+          <h3>港湾值班室 · 3D</h3>
+          <p>同一份 wasm 状态的第三人称表现：气闸滑门、对话字幕、雨夜海面、灯塔与 Bloom。3D 不复制任何玩法规则。</p>
+          <div class="demo-tags"><span>Three.js</span><span>第三人称</span><span>WebGL2</span></div>
+          <span class="demo-open">打开 3D 演示 →</span>
+        </div>
+      </a>
+
+      <a class="demo-card" href="./iso.html?demo=market" data-view="2.5d" data-tags="story explore">
+        <figure><img src="../docs/shots/m1_iso_market.png" alt="霓虹夜市 2.5D 等距 Demo"><span class="view-badge">2.5D</span></figure>
+        <div class="demo-body">
+          <div class="demo-kicker">剧情 / 夜市场景</div>
+          <h3>霓虹夜市</h3>
+          <p>灯笼、摊位、蒸汽与湿地面。摊主阿岚让你拿筹码开后巷闸门；2.5D 等距视图最适合“可读的空间 + 氛围”。</p>
+          <div class="demo-tags"><span>等距</span><span>夜市场景</span><span>对话/开门</span></div>
+          <span class="demo-open">打开 2.5D 夜市 →</span>
+        </div>
+      </a>
+
+      <a class="demo-card" href="./iso.html?demo=greenhouse" data-view="2.5d" data-tags="explore story">
+        <figure><img src="../docs/shots/m1_iso_greenhouse.png" alt="温室协议 2.5D 等距 Demo"><span class="view-badge">2.5D</span></figure>
+        <div class="demo-body">
+          <div class="demo-kicker">探索 / 温室场景</div>
+          <h3>温室协议</h3>
+          <p>植物学家、发光样本、种子冷库与雾中玻璃房。同一个渲染器，用另一套内容与色调变成完全不同的场景。</p>
+          <div class="demo-tags"><span>等距</span><span>温室</span><span>发光孢子</span></div>
+          <span class="demo-open">打开 2.5D 温室 →</span>
+        </div>
+      </a>
+
+      <a class="demo-card" href="./orbit3d.html" data-view="3d" data-tags="explore">
+        <figure><img src="../docs/shots/m1_orbit3d.png" alt="环形站 3D Demo"><span class="view-badge">3D</span></figure>
+        <div class="demo-body">
+          <div class="demo-kicker">探索 / 太空场景</div>
+          <h3>环形站 · 中庭</h3>
+          <p>环形站中庭、行星与星海。值班指挥官让你带徽章去反应堆闸门；另一个 3D 场景，同一套交互契约。</p>
+          <div class="demo-tags"><span>Three.js</span><span>太空</span><span>环形站</span></div>
+          <span class="demo-open">打开环形站 →</span>
+        </div>
+      </a>
+
+      <a class="demo-card" href="./editor.html" data-view="tool" data-tags="tool">
+        <figure><img src="../docs/shots/m1_editor.png" alt="RefuWorld 编辑器"><span class="view-badge">TOOL</span></figure>
+        <div class="demo-body">
+          <div class="demo-kicker">工具 / 作者</div>
+          <h3>编辑器沙盒</h3>
+          <p>拖动摆放、字段表单、对话图、撤销/重做、烘焙导航、构建并试玩。需要 <code>worldc editor</code> 本地服务器。</p>
+          <div class="demo-tags"><span>只读预览</span><span>需服务器</span><span>v0.5</span></div>
+          <span class="demo-open">打开编辑器 →</span>
+        </div>
+      </a>
+    </section>
+
+    <section class="gallery-note">
+      <h3>怎么读这套 Demo</h3>
+      <div class="gallery-note-grid">
+        <p><b>先看差异：</b>2D 看规则与任务，2.5D 看空间与场景，3D 看氛围与镜头。三者状态来源相同。</p>
+        <p><b>再看共同点：</b>同样的 <code>PreviewWorld</code>、命令、事件、任务、哈希；表现层不写玩法。</p>
+        <p><b>然后拆开：</b>去 <a href="../brief/GUIDE.html">GUIDE</a> 跑编辑器，把某个 Demo 的规则改掉。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="gallery-foot">
+    <span>RefuWorld · Demo system · M1 主要切片</span>
+    <span><a href="../brief/HUB.html">HUB</a> · <a href="../brief/GUIDE.html">GUIDE</a> · <a href="../README.md">README</a></span>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+          b.setAttribute('aria-pressed', b.getAttribute('data-theme-choice') === mode ? 'true' : 'false');
+        });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+        b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script src="./demos.js"></script>
+</body>
+</html>

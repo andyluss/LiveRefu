@@ -1,0 +1,23 @@
+{
+  "id": "quest.night_market",
+  "title": "loc:quest.night_market.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.vendor"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.gate.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.night_market.done",
+      "value": true
+    }
+  ]
+}

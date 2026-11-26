@@ -29,6 +29,7 @@
 - **M1 剩余：编辑器 v0.5**：字段表单、对话图（节点/边、编辑/新增/删除）、撤销/重做；保存仍走「先写后校验，失败回滚」。
 - **M1 剩余：类型检查与开发监听**：`worldc ts-check`/`npm run check`（TypeScript devDependency）、`npm run dev`（TS 监听→构建→复制 pack.data）。
 - **M1 剩余：第三条内容测试与两小时教程**：`pickup_keycard`；[08 · 两小时教程](docs/08_两小时教程.md)（真实作者试用待做）。
+- **多 Demo 体系**：`web/demos.html` 索引 + 2.5D 等距 `web/iso.html` + 3D 环形站 `web/orbit3d.html`；新增 `demo.market`、`demo.greenhouse`、`demo.orbit` 内容包（各带导航/规则/对话/任务/内容测试）。
 - **项目 HUB 与用户指南**：`brief/HUB.html`、`brief/GUIDE.html`、`brief/theme.css`、`brief/theme.js`、`brief/README.md`；项目状态/架构/3D/决策/路线图/风险中心 + 内容作者上手路径，R-016 三态主题。
 
 ### 变更
@@ -47,7 +48,7 @@
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
 - M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xc840fe2090a0a085`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
-- M1 剩余：`content-test` 3 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.01 ms/tick；R-016 五个页面通过。
+- M1 剩余：`content-test` 6 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.01 ms/tick；R-016 八个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17
 

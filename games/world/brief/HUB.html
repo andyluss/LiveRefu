@@ -27,6 +27,7 @@
       <div class="brand">RefuWorld <span class="en">WORLD LAYER</span></div>
       <nav class="brand-links" aria-label="相关页面">
         <a href="GUIDE.html">用户指南 GUIDE</a>
+        <a href="../web/demos.html">Demo 索引</a>
         <a href="../README.md">项目 README</a>
         <a href="../docs/07_M1实现与验收.md">M1 验收</a>
         <a href="../web/demo3d.html" title="需要本地静态服务器">3D 演示</a>
@@ -66,9 +67,9 @@
         <div class="stats">
           <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
           <div class="stat o"><div class="v">13</div><div class="l">Rust 测试</div></div>
-          <div class="stat p"><div class="v">3</div><div class="l">内容测试</div></div>
+          <div class="stat p"><div class="v">6</div><div class="l">内容测试</div></div>
           <div class="stat r"><div class="v">0.01<span style="font-size:12px">ms</span></div><div class="l">5k 合成 tick</div></div>
-          <div class="stat o"><div class="v">3</div><div class="l">Web 页面</div></div>
+          <div class="stat o"><div class="v">5</div><div class="l">玩法 Demo</div></div>
           <div class="stat p"><div class="v">M1</div><div class="l">主要切片</div></div>
         </div>
         <div class="quote"><b>一句话边界：</b>核心从不回调引擎；引擎只轮询 C ABI 拿差值。换引擎时，玩法规则、导航和存档不应重写。</div>
@@ -106,7 +107,9 @@
         <div class="pm-lane"><div class="pm-label">宿主<span>怎么跑起来</span></div><div class="pm-track">
           <a class="pm-node done" href="../code/hosts/c/main.c"><span class="dot"></span><b>Headless + C</b><em>同哈希</em></a>
           <a class="pm-node done" href="../web/"><span class="dot"></span><b>wasm 2D</b><em>Canvas + 交互</em></a>
-          <a class="pm-node done" href="../web/demo3d.html"><span class="dot"></span><b>Three.js 3D</b><em>表现层 · 本地 vendor</em></a>
+          <a class="pm-node done" href="../web/demo3d.html"><span class="dot"></span><b>Three.js 3D</b><em>港湾 · 本地 vendor</em></a>
+          <a class="pm-node done" href="../web/iso.html?demo=market"><span class="dot"></span><b>2.5D 等距</b><em>夜市 · 温室</em></a>
+          <a class="pm-node done" href="../web/orbit3d.html"><span class="dot"></span><b>3D 环形站</b><em>太空场景</em></a>
           <span class="pm-node next"><span class="dot"></span><b>Godot</b><em>M2 首个生产适配器</em></span>
         </div></div>
         <div class="pm-lane"><div class="pm-label">验证<span>凭什么相信</span></div><div class="pm-track">
@@ -137,11 +140,11 @@
       <thead><tr><th>证据</th><th>结果</th><th>来源</th></tr></thead>
       <tbody>
         <tr><td>Rust workspace 测试</td><td><b>13</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
-        <tr><td>内容测试</td><td><b>3</b> 条 PASS：first_shift / airlock_locked / pickup_keycard</td><td><code>worldc content-test</code></td></tr>
+        <tr><td>内容测试</td><td><b>6</b> 条 PASS：港湾 3 + 夜市/温室/环形站各 1</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0xc840fe2090a0a085</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
         <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:66125c46…46fe29e</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
         <tr><td>5k 合成基准</td><td>Apple M1 Pro release ≈ <b>0.01 ms/tick</b>（仅 tick/日程/哈希）</td><td><code>worldc bench --synthetic 5000</code></td></tr>
-        <tr><td>主题与页面</td><td>R-016 五页：2D / 编辑器 / 3D / HUB / GUIDE 通过</td><td><code>check_html_theme.ts</code></td></tr>
+        <tr><td>主题与页面</td><td>R-016 八页：2D / 编辑器 / 3D 港湾 / 2.5D / 3D 环形站 / HUB / GUIDE / Gallery 通过</td><td><code>check_html_theme.ts</code></td></tr>
         <tr><td>3D 静态契约</td><td>本地 Three.js、import map、wasm 交互入口、无 CDN</td><td><code>test/demo3d_static.mjs</code></td></tr>
       </tbody>
     </table>
@@ -167,7 +170,7 @@ cd web &amp;&amp; python3 -m http.server 8787
       <div class="layer core"><b>world-core</b><span>确定性 tick · 实体 · 命令/事件 · 碰撞 · A* · 存档 · 哈希</span></div>
       <div class="layer"><b>world-ffi</b><span>版本化 C ABI · 轮询 · 调用方持有缓冲 · catch_unwind</span></div>
       <div class="layer"><b>宿主/适配器</b><span>Godot / Unity / Unreal / Web / Bevy：输入、视图、音频、资产</span></div>
-      <div class="layer"><b>作者工具</b><span>TS DSL / JSON / 编辑器 / 校验 / 内容测试 / 2D/3D 预览</span></div>
+      <div class="layer"><b>作者工具</b><span>TS DSL / JSON / 编辑器 / 校验 / 内容测试 / 2D/2.5D/3D 预览</span></div>
     </div>
     <div class="note"><b>边界规则：</b>核心不做渲染、不碰引擎对象、不回调引擎；表现层不写玩法规则。适配器通过 <code>world_poll_events</code> / <code>world_copy_transforms</code> 拉取状态，通过命令入口提交输入。</div>
 
@@ -250,7 +253,7 @@ cd web &amp;&amp; python3 -m http.server 8787
     <pre style="margin-top:14px"><code>cd games/world && ./web/build.sh
 cd web &amp;&amp; python3 -m http.server 8787
 # http://127.0.0.1:8787/demo3d.html</code></pre>
-    <p><a href="../web/demo3d.html" title="需要本地服务器">打开 3D 演示</a> · <a href="../docs/07_M1实现与验收.md#46-3d-沉浸式演示">实现记录</a></p>
+    <p><a href="../web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="../web/orbit3d.html" title="需要本地服务器">打开 3D 环形站</a> · <a href="../web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="../web/demos.html">Demo 索引</a></p>
   </section>
 
   <section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions">
@@ -279,7 +282,7 @@ cd web &amp;&amp; python3 -m http.server 8787
     <p class="lede">M0/M1 证明“这套边界能跑”；M2 才证明“在真实引擎里能跑同一局”。不要把 Web 预览当成生产适配器。</p>
     <div class="grid g4">
       <div class="card"><span class="chip ok">M0 · 已过</span><h4>可运行内核</h4><p>固定 tick、C ABI、QuickJS spike、坏包、双跑哈希。</p></div>
-      <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/3D、编辑器 v0.5、移动/寻路、导航/资产、内容测试。</p></div>
+      <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/2.5D/3D 多 Demo、编辑器 v0.5、移动/寻路、导航/资产、内容测试。</p></div>
       <div class="card"><span class="chip warn">M2 · 下一步</span><h4>Godot 生产适配器</h4><p>GDExtension、WorldNode、输入/资产/视图/音频/存档；同一包同一局。</p></div>
       <div class="card"><span class="chip todo">M3/M4</span><h4>工具与试点</h4><p>编辑器成熟、导航/资产管线、LiveBay 切片试点。</p></div>
     </div>

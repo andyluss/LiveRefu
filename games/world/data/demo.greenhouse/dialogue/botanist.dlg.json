@@ -1,0 +1,28 @@
+{
+  "id": "dlg.botanist.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.botanist",
+      "text": "loc:dlg.botanist.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.botanist.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.botanist.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.botanist",
+      "text": "loc:dlg.botanist.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 2.5D 等距 Demo</title>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'light'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./demo3d.css" />
+  <link rel="stylesheet" href="./iso.css" />
+</head>
+<body class="scene-page iso-page">
+  <canvas id="scene" aria-label="2.5D 等距世界"></canvas>
+  <div class="scene-vignette" aria-hidden="true"></div>
+  <div class="scene-grain" aria-hidden="true"></div>
+
+  <header class="scene-top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div>
+        <h1>RefuWorld <span class="badge">2.5D</span></h1>
+        <p id="scene-subtitle">霓虹夜市 · 等距视角 · 同一份 wasm 世界</p>
+      </div>
+    </div>
+    <div class="scene-top-actions">
+      <a class="button-link" href="./demos.html">Demo 索引</a>
+      <a class="button-link" href="./index.html">2D 预览</a>
+      <a class="button-link" href="./demo3d.html">3D 演示</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="scene-ui" aria-label="场景界面">
+    <section class="scene-card objective">
+      <p class="eyebrow">当前任务</p>
+      <h2 id="quest-title">加载中</h2>
+      <ul id="quest-objectives" class="objectives"></ul>
+    </section>
+    <section class="scene-card inventory-card">
+      <p class="eyebrow">随身物品</p>
+      <div id="inventory" class="inventory"></div>
+      <div id="flags" class="flags"></div>
+    </section>
+    <section class="scene-card telemetry">
+      <div><span>时间</span><strong id="clock">—</strong></div>
+      <div><span>tick</span><strong id="tick">0</strong></div>
+      <div><span>哈希</span><code id="hash">—</code></div>
+    </section>
+    <section class="scene-actions" aria-label="操作">
+      <button id="btn-interact" type="button"><kbd>E</kbd> 交互</button>
+      <button id="btn-pickup" type="button"><kbd>F</kbd> 拾取</button>
+      <button id="btn-talk" type="button"><kbd>T</kbd> 对话</button>
+      <button id="btn-reset" type="button">重置</button>
+      <button id="btn-pause" type="button">暂停</button>
+    </section>
+    <p class="scene-hint" id="hint">WASD 移动 · 点击地面寻路 · 点击实体交互 · E/F/T</p>
+  </main>
+
+  <div id="dialogue" class="dialogue" hidden>
+    <p class="eyebrow" id="dialogue-speaker">—</p>
+    <p id="dialogue-text"></p>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="loading" class="loading"><span class="loading-ring" aria-hidden="true"></span><p>正在点亮等距世界…</p></div>
+  <footer class="scene-foot">
+    <span>2.5D isometric · 内容包 <code id="foot-pack">—</code></span>
+    <span>与 2D/3D 共用 <code>PreviewWorld</code> · 60 tick/s</span>
+  </footer>
+
+  <noscript><p class="noscript">2.5D Demo 需要 JavaScript 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+          button.setAttribute('aria-pressed', button.getAttribute('data-theme-choice') === mode ? 'true' : 'false');
+        });
+        window.dispatchEvent(new CustomEvent('refu-theme', { detail: { mode: mode, dark: dark } }));
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+        button.addEventListener('click', function () { apply(button.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="module" src="./iso.js"></script>
+</body>
+</html>

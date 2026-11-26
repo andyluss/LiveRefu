@@ -1,0 +1,23 @@
+{
+  "id": "quest.greenhouse",
+  "title": "loc:quest.greenhouse.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.botanist"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.vault.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.greenhouse.done",
+      "value": true
+    }
+  ]
+}

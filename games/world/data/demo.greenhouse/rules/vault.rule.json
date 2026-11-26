@@ -1,0 +1,31 @@
+{
+  "id": "rule.vault",
+  "on": "interact",
+  "target": "demo.vault",
+  "when": [
+    {
+      "kind": "has_item",
+      "item": "item.sample"
+    }
+  ],
+  "then": [
+    {
+      "kind": "open_door"
+    },
+    {
+      "kind": "set_flag",
+      "flag": "flag.vault.open",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "vault.opened"
+    }
+  ],
+  "else": [
+    {
+      "kind": "toast",
+      "text": "loc:vault.locked"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "greenhouse",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.botanist"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.sample"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.vault"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.vault.open": true,
+      "flag.quest.greenhouse.done": true
+    },
+    "quests": {
+      "quest.greenhouse": "completed"
+    },
+    "events": [
+      "vault.opened",
+      "quest_completed"
+    ],
+    "inventory": {
+      "item.sample": 1
+    }
+  }
+}

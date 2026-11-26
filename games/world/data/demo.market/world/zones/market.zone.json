@@ -1,0 +1,49 @@
+{
+  "id": "zone.market",
+  "name": "loc:zone.market.name",
+  "bounds": {
+    "min": [
+      -16.0,
+      0.0,
+      -16.0
+    ],
+    "max": [
+      16.0,
+      10.0,
+      16.0
+    ]
+  },
+  "placements": [
+    {
+      "actor": "demo.vendor",
+      "at": [
+        5.0,
+        0.0,
+        -4.0
+      ],
+      "yaw": 180.0,
+      "persistent_id": "vendor"
+    },
+    {
+      "prop": "demo.gate",
+      "at": [
+        0.0,
+        0.0,
+        9.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "gate"
+    },
+    {
+      "item": "item.token",
+      "at": [
+        3.0,
+        0.0,
+        2.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "token"
+    }
+  ],
+  "nav": "nav.market"
+}

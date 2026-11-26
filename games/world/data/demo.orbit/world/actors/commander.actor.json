@@ -1,0 +1,26 @@
+{
+  "id": "demo.commander",
+  "name": "loc:actor.commander.name",
+  "tags": [
+    "npc",
+    "commander",
+    "orbit"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.75
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.commander"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.commander.intro"
+}

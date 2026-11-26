@@ -1,0 +1,23 @@
+{
+  "id": "schedule.vendor",
+  "entries": [
+    {
+      "from": "18:00",
+      "to": "02:00",
+      "behavior": "work",
+      "at": "zone.market"
+    },
+    {
+      "from": "02:00",
+      "to": "10:00",
+      "behavior": "sleep",
+      "at": "zone.market"
+    },
+    {
+      "from": "10:00",
+      "to": "18:00",
+      "behavior": "wander",
+      "at": "zone.market"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "item.seed",
+  "name": "loc:item.seed.name",
+  "stack": 2,
+  "tags": [
+    "seed",
+    "greenhouse"
+  ]
+}

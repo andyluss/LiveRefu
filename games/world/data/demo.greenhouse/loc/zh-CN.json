@@ -1,0 +1,15 @@
+{
+  "zone.greenhouse.name": "温室协议",
+  "actor.botanist.name": "植物学家弥夏",
+  "prop.vault.name": "种子冷库",
+  "item.sample.name": "发光样本",
+  "item.seed.name": "速生种子",
+  "quest.greenhouse.title": "温室协议",
+  "dlg.botanist.greet": "你来得正好。冷库的锁识别不了我的工牌。",
+  "dlg.botanist.ask": "我能做什么？",
+  "dlg.botanist.task": "取一份发光样本，去冷库读一下。别让它照到眼睛。",
+  "dlg.botanist.bye": "小心脚下的藤。",
+  "vault.locked": "冷库锁着。需要一份发光样本。",
+  "door.locked": "锁着。",
+  "door.already_open": "已经开了。"
+}

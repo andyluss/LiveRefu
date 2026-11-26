@@ -1,0 +1,49 @@
+{
+  "id": "zone.orbit",
+  "name": "loc:zone.orbit.name",
+  "bounds": {
+    "min": [
+      -15.0,
+      0.0,
+      -15.0
+    ],
+    "max": [
+      15.0,
+      12.0,
+      15.0
+    ]
+  },
+  "placements": [
+    {
+      "actor": "demo.commander",
+      "at": [
+        4.0,
+        0.0,
+        -2.0
+      ],
+      "yaw": 180.0,
+      "persistent_id": "commander"
+    },
+    {
+      "prop": "demo.reactor",
+      "at": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "reactor"
+    },
+    {
+      "item": "item.badge",
+      "at": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "badge"
+    }
+  ],
+  "nav": "nav.orbit"
+}

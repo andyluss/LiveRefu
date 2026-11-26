@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 环形站 3D</title>
+  <script>
+    // R-016：CSS 加载前预绘制主题；默认 system。
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {
+        root.dataset.themeMode = 'system';
+        root.dataset.theme = 'light';
+      }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./demo3d.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="scene-page">
+  <canvas id="scene" aria-label="环形站中庭 3D 场景"></canvas>
+  <div class="scene-vignette" aria-hidden="true"></div>
+  <div class="scene-grain" aria-hidden="true"></div>
+
+  <header class="scene-top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div>
+        <h1>RefuWorld <span class="badge">3D</span></h1>
+        <p>环形站·中庭 · 同一份 wasm 世界状态</p>
+      </div>
+    </div>
+    <div class="scene-top-actions">
+      <a class="button-link" href="./demos.html">Demo 索引</a>
+      <a class="button-link" href="./demo3d.html">港湾 3D</a>
+      <a class="button-link" href="./iso.html?demo=market">2.5D 夜市</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="scene-ui" aria-label="场景界面">
+    <section class="scene-card objective">
+      <p class="eyebrow">当前任务</p>
+      <h2 id="quest-title">环形站夜班</h2>
+      <ul id="quest-objectives" class="objectives"></ul>
+    </section>
+
+    <section class="scene-card inventory-card">
+      <p class="eyebrow">随身物品</p>
+      <div id="inventory" class="inventory"></div>
+      <div id="flags" class="flags"></div>
+    </section>
+
+    <section class="scene-card telemetry">
+      <div><span>时间</span><strong id="clock">08:00</strong></div>
+      <div><span>tick</span><strong id="tick">0</strong></div>
+      <div><span>哈希</span><code id="hash">—</code></div>
+    </section>
+
+    <section class="scene-actions" aria-label="操作">
+      <button id="btn-interact" type="button"><kbd>E</kbd> 交互</button>
+      <button id="btn-pickup" type="button"><kbd>F</kbd> 拾取</button>
+      <button id="btn-talk" type="button"><kbd>T</kbd> 对话</button>
+      <button id="btn-reset" type="button">重置</button>
+      <button id="btn-pause" type="button">暂停</button>
+    </section>
+
+    <p class="scene-hint" id="hint">WASD 移动 · 点击地面寻路 · 拖动旋转视角 · 滚轮缩放</p>
+  </main>
+
+  <div id="dialogue" class="dialogue" hidden>
+    <p class="eyebrow" id="dialogue-speaker">值班指挥官</p>
+    <p id="dialogue-text"></p>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="loading" class="loading">
+    <span class="loading-ring" aria-hidden="true"></span>
+    <p>正在校准环形站…</p>
+  </div>
+
+  <footer class="scene-foot">
+    <span>黄金哈希 <code id="foot-hash">—</code></span>
+    <span>Three.js r187 · 内容包 demo.orbit</span>
+  </footer>
+
+  <noscript><p class="noscript">3D 演示需要 JavaScript、WebGL 与 WebAssembly。</p></noscript>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+          button.setAttribute('aria-pressed', button.getAttribute('data-theme-choice') === mode ? 'true' : 'false');
+        });
+        window.dispatchEvent(new CustomEvent('refu-theme', { detail: { mode, dark } }));
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (button) {
+        button.addEventListener('click', function () { apply(button.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () {
+        if (root.dataset.themeMode === 'system') apply('system', false);
+      });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <!-- 动态 import：避免部分静态服务器/缓存路径下静态 module 图卡住；已验证可用。 -->
+  <script>import("./orbit3d.js").catch(function (error) { var box = document.getElementById("loading"); if (box) box.innerHTML = "<p>环形站启动失败：" + String(error) + "</p><p class=\"muted\">请先运行 ./web/build.sh，并通过本地服务器打开。</p>"; console.error(error); });</script>
+</body>
+</html>

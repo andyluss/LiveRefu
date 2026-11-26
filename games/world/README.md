@@ -2,7 +2,7 @@
 title: "RefuWorld · 跨游戏世界系统中间层"
 tagline: "让内容作者写世界，让引擎只负责把它画出来"
 form: "Rust 权威内核 + TypeScript 内容层 + 薄引擎适配器"
-status: "M0 已通过；M1 主要切片（TS DSL / Web 预览 + 3D / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过"
+status: "M0 已通过；M1 主要切片（TS DSL / 多 Demo 体系 / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过"
 stack: "Rust / TypeScript / C ABI"
 scope: "跨游戏、跨引擎"
 ---
@@ -12,8 +12,8 @@ scope: "跨游戏、跨引擎"
 > **一句话**：把「世界怎么运转」从引擎里拿出来，做成一个**确定性、可测试、可替换引擎**的 Rust 内核；
 > 内容作者用 TypeScript 与数据描述世界，引擎只负责把世界画出来、放出声音、接收输入。
 
-> **当前状态**：**M0 已通过；M1 主要切片（TS DSL / Web 预览 + 3D / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过**。
-> 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm Web 预览 + 3D 演示、Web 编辑器 v0.5、移动/寻路、导航/资产依赖均可运行；
+> **当前状态**：**M0 已通过；M1 主要切片（TS DSL / 多 Demo 体系 / 编辑器 v0.5 / 移动与寻路 / 导航与资产）已通过**。
+> 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm 2D/2.5D/3D 多 Demo、Web 编辑器 v0.5、移动/寻路、导航/资产依赖均可运行；
 > TS 编译包与 JSON 包同哈希，Web 预览回放得到同一 `0xc840fe2090a0a085`。
 > 记录见 [06 · M0](docs/06_M0实现与验收.md) 与 [07 · M1 切片](docs/07_M1实现与验收.md)。
 >
@@ -40,12 +40,15 @@ M1 预览：
 cd games/world
 ./web/build.sh
 cd web && python3 -m http.server 8787
+# Demo 索引：http://127.0.0.1:8787/demos.html
 # 2D 预览：http://127.0.0.1:8787/
-# 3D 演示：http://127.0.0.1:8787/demo3d.html
+# 3D 港湾：http://127.0.0.1:8787/demo3d.html
+# 2.5D 夜市/温室：/iso.html?demo=market / ?demo=greenhouse
+# 3D 环形站：/orbit3d.html
 # 编辑器（可保存/构建）：cd .. && ./worldc editor --port 8788
 ```
 
-> 当前有 **Web 预览** 与 **Web 编辑器 v0.5**（布局/表单/对话图/撤销）；TS 类型检查与 `npm run dev` 已可用；更完整的 schema 表单、动态导航与 ScriptHost 仍待。
+> 当前有 **2D/2.5D/3D 多 Demo** 与 **Web 编辑器 v0.5**（布局/表单/对话图/撤销）；TS 类型检查与 `npm run dev` 已可用；更完整的 schema 表单、动态导航与 ScriptHost 仍待。
 
 ## 先读哪篇
 
@@ -99,10 +102,16 @@ cd web && python3 -m http.server 8787
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |
 | [`tools/ts-build.mjs`](tools/ts-build.mjs) | TS DSL → 规范化内容包编译器 |
 | [`web/`](web/) | wasm 2D 预览 + 3D 演示 + 编辑器 v0.5（构建、页面、Node 测试） |
-| [`web/demo3d.html`](web/demo3d.html) | 3D 沉浸式演示（Three.js，本地 vendor） |
+| [`web/demos.html`](web/demos.html) | Demo 索引：2D / 2.5D / 3D、剧情/探索/工具 |
+| [`web/demo3d.html`](web/demo3d.html) | 3D 港湾值班室（Three.js，本地 vendor） |
+| [`web/iso.html`](web/iso.html) | 2.5D 等距渲染器（夜市 / 温室） |
+| [`web/orbit3d.html`](web/orbit3d.html) | 3D 环形站中庭 |
 | [`tools/editor-server.mjs`](tools/editor-server.mjs) | 本地编辑器服务器（读写/校验/构建） |
 | [`code/`](code/) | Rust workspace：pack/core/ffi/headless/cli/script/wasm |
-| [`data/demo.harbor/`](data/demo.harbor/) | 「港湾值班室」内容包（M0 垂直切片） |
+| [`data/demo.harbor/`](data/demo.harbor/) | 「港湾值班室」内容包（2D/3D） |
+| [`data/demo.market/`](data/demo.market/) | 「霓虹夜市」内容包（2.5D） |
+| [`data/demo.greenhouse/`](data/demo.greenhouse/) | 「温室协议」内容包（2.5D） |
+| [`data/demo.orbit/`](data/demo.orbit/) | 「环形站」内容包（3D） |
 | [`test/`](test/) | 一键验收脚本、坏包 fixture、wasm QuickJS 检查 |
 | [`plans/`](plans/) | ADR-001…007：拍板、包 schema、确定性、ABI、ECS 偏差、QuickJS spike、M1 DSL/Web |
 | [`CHANGELOG.md`](CHANGELOG.md) | 本项目变更日志 |

@@ -1,0 +1,17 @@
+{
+  "id": "nav.greenhouse",
+  "zone": "zone.greenhouse",
+  "cell": 1.0,
+  "origin": [
+    -14.0,
+    -14.0
+  ],
+  "width": 28,
+  "height": 28,
+  "blocked": [
+    601,
+    602,
+    629,
+    630
+  ]
+}

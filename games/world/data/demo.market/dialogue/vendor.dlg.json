@@ -1,0 +1,28 @@
+{
+  "id": "dlg.vendor.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.vendor",
+      "text": "loc:dlg.vendor.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.vendor.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.vendor.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.vendor",
+      "text": "loc:dlg.vendor.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

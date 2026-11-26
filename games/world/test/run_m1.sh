@@ -27,7 +27,9 @@ echo "== 2. TS 包跑 M0 trace =="
   --trace "$ROOT/data/demo.harbor/tests/m0.trace.json"
 
 echo "== 3. 内容测试 =="
-"$CODE/run.sh" run -q -p world-cli -- content-test --pack "$ROOT/data/demo.harbor"
+for id in demo.harbor demo.market demo.greenhouse demo.orbit; do
+  "$CODE/run.sh" run -q -p world-cli -- content-test --pack "$ROOT/data/$id"
+done
 
 echo "== 4. 编辑器服务器冒烟 =="
 node "$ROOT/test/editor_smoke.mjs"
@@ -38,11 +40,12 @@ echo "== 5. 构建 Web 预览（wasm + wasm-bindgen） =="
 echo "== 6. 5k 合成基准 =="
 "$CODE/run.sh" run -q --release -p world-cli -- bench --synthetic 5000 --ticks 600
 
-echo "== 7. 3D 演示静态契约 =="
+echo "== 7. Demo 体系静态契约 =="
 node "$ROOT/test/demo3d_static.mjs"
+node "$ROOT/test/demos_static.mjs"
 
 echo "== 8. R-016 三态主题检查 =="
-node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html" "$ROOT/web/demo3d.html" "$ROOT/brief/HUB.html" "$ROOT/brief/GUIDE.html"
+node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html" "$ROOT/web/demo3d.html" "$ROOT/web/iso.html" "$ROOT/web/orbit3d.html" "$ROOT/web/demos.html" "$ROOT/brief/HUB.html" "$ROOT/brief/GUIDE.html"
 
 echo "== 9. wasm 预览逻辑测试 =="
 node "$ROOT/web/test_preview.cjs"

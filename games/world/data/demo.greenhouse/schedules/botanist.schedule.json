@@ -1,0 +1,23 @@
+{
+  "id": "schedule.botanist",
+  "entries": [
+    {
+      "from": "05:00",
+      "to": "12:00",
+      "behavior": "work",
+      "at": "zone.greenhouse"
+    },
+    {
+      "from": "12:00",
+      "to": "20:00",
+      "behavior": "wander",
+      "at": "zone.greenhouse"
+    },
+    {
+      "from": "20:00",
+      "to": "05:00",
+      "behavior": "sleep",
+      "at": "zone.greenhouse"
+    }
+  ]
+}

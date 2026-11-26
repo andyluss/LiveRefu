@@ -1,0 +1,9 @@
+{
+  "id": "item.lantern",
+  "name": "loc:item.lantern.name",
+  "stack": 1,
+  "tags": [
+    "lantern",
+    "market"
+  ]
+}

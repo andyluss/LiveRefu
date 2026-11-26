@@ -1,0 +1,49 @@
+{
+  "id": "zone.greenhouse",
+  "name": "loc:zone.greenhouse.name",
+  "bounds": {
+    "min": [
+      -14.0,
+      0.0,
+      -14.0
+    ],
+    "max": [
+      14.0,
+      9.0,
+      14.0
+    ]
+  },
+  "placements": [
+    {
+      "actor": "demo.botanist",
+      "at": [
+        -4.0,
+        0.0,
+        -3.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "botanist"
+    },
+    {
+      "prop": "demo.vault",
+      "at": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "vault"
+    },
+    {
+      "item": "item.sample",
+      "at": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "yaw": 0.0,
+      "persistent_id": "sample"
+    }
+  ],
+  "nav": "nav.greenhouse"
+}

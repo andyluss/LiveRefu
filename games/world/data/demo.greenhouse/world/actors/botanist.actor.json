@@ -1,0 +1,31 @@
+{
+  "id": "demo.botanist",
+  "name": "loc:actor.botanist.name",
+  "tags": [
+    "npc",
+    "botanist",
+    "greenhouse"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.65
+  },
+  "stats": {
+    "health": 100,
+    "speed": 2.6
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.botanist"
+  },
+  "inventory": {
+    "items": [
+      {
+        "item": "item.seed",
+        "count": 2
+      }
+    ]
+  },
+  "dialogue": "dlg.botanist.intro"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "market.world",
+  "start_zone": "zone.market",
+  "start_time": "19:30",
+  "seed": 20261126,
+  "player": {
+    "at": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "inventory": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "demo.reactor",
+  "name": "loc:prop.reactor.name",
+  "tags": [
+    "prop",
+    "reactor",
+    "orbit"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      2.4,
+      3.0,
+      0.6
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": "item.badge"
+}

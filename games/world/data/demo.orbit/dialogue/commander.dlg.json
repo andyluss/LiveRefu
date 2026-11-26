@@ -1,0 +1,28 @@
+{
+  "id": "dlg.commander.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.commander",
+      "text": "loc:dlg.commander.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.commander.ask",
+          "next": "task"
+        },
+        {
+          "text": "loc:dlg.commander.bye",
+          "next": "end"
+        }
+      ]
+    },
+    "task": {
+      "speaker": "demo.commander",
+      "text": "loc:dlg.commander.task",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

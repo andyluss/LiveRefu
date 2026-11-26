@@ -1,0 +1,23 @@
+{
+  "id": "quest.reactor",
+  "title": "loc:quest.reactor.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.commander"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.reactor.open",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.reactor.done",
+      "value": true
+    }
+  ]
+}

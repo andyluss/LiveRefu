@@ -1,0 +1,14 @@
+{
+  "zone.orbit.name": "环形站·中庭",
+  "actor.commander.name": "值班指挥官",
+  "prop.reactor.name": "反应堆闸门",
+  "item.badge.name": "值班徽章",
+  "quest.reactor.title": "环形站夜班",
+  "dlg.commander.greet": "中庭的灯刚刚闪了一下。你带徽章了吗？",
+  "dlg.commander.ask": "需要我做什么？",
+  "dlg.commander.task": "拿上值班徽章，去反应堆闸门。别碰发光的环。",
+  "dlg.commander.bye": "保持通讯。",
+  "reactor.locked": "闸门锁着。需要值班徽章。",
+  "door.locked": "锁着。",
+  "door.already_open": "已经开了。"
+}

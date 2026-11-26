@@ -1,0 +1,14 @@
+{
+  "id": "orbit.world",
+  "start_zone": "zone.orbit",
+  "start_time": "22:10",
+  "seed": 20261128,
+  "player": {
+    "at": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "inventory": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "demo.vault",
+  "name": "loc:prop.vault.name",
+  "tags": [
+    "prop",
+    "vault",
+    "greenhouse"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.6,
+      2.4,
+      0.5
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": "item.sample"
+}

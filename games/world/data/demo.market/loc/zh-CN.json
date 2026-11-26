@@ -1,0 +1,15 @@
+{
+  "zone.market.name": "霓虹夜市",
+  "actor.vendor.name": "摊主阿岚",
+  "prop.gate.name": "后巷闸门",
+  "item.token.name": "夜市筹码",
+  "item.lantern.name": "纸灯笼",
+  "quest.night_market.title": "夜市通行",
+  "dlg.vendor.greet": "你来啦。今晚的风把后巷的闸门吹卡住了。",
+  "dlg.vendor.ask": "怎么过去？",
+  "dlg.vendor.task": "拿上柜台边的筹码，去后巷闸门试试。",
+  "dlg.vendor.bye": "先逛逛也行。",
+  "gate.locked": "闸门锁着。需要一枚夜市筹码。",
+  "door.locked": "锁着。",
+  "door.already_open": "已经开了。"
+}

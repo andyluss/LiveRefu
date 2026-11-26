@@ -1,0 +1,9 @@
+.iso-page #scene { background: #060b10; }
+.iso-page .scene-vignette { background: radial-gradient(ellipse at 50% 48%, transparent 42%, rgba(0,0,0,.58) 100%); }
+.iso-page .scene-foot { z-index: 5; }
+.iso-page .objective h2 { font-size: 18px; }
+.iso-page .telemetry { min-width: 220px; }
+.iso-page .scene-card { backdrop-filter: blur(8px); }
+@media (max-width: 760px) {
+  .iso-page .scene-actions { grid-row: 3; }
+}

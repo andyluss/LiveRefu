@@ -1,0 +1,46 @@
+{
+  "name": "reactor",
+  "ticks": 60,
+  "steps": [
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.commander"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "pickup",
+        "actor": "player",
+        "target": "item.badge"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.reactor"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.reactor.open": true,
+      "flag.quest.reactor.done": true
+    },
+    "quests": {
+      "quest.reactor": "completed"
+    },
+    "events": [
+      "reactor.opened",
+      "quest_completed"
+    ],
+    "inventory": {
+      "item.badge": 1
+    }
+  }
+}
