@@ -81,6 +81,12 @@ extern "C" {
         cap: usize,
         out_len: *mut usize,
     ) -> i32;
+    fn world_ui_state(
+        world: *mut WorldHandle,
+        out: *mut u8,
+        cap: usize,
+        out_len: *mut usize,
+    ) -> i32;
     fn world_zone_status(world: *mut WorldHandle, zone_id: *const c_char) -> i32;
     fn world_activate_zone(world: *mut WorldHandle, zone_id: *const c_char) -> i32;
     fn world_save(world: *mut WorldHandle, out: *mut u8, cap: usize, out_len: *mut usize) -> i32;
@@ -239,6 +245,21 @@ impl AbiWorld {
         }
         buf.truncate(len);
         String::from_utf8(buf).map_err(|e| format!("visual 不是 UTF-8: {e}"))
+    }
+
+    pub fn ui_state(&mut self) -> Result<String, String> {
+        let mut len = 0usize;
+        let status = unsafe { world_ui_state(self.handle, ptr::null_mut(), 0, &mut len) };
+        if status != WORLD_ERR_BUFFER_TOO_SMALL {
+            return Err(last_error(self.handle));
+        }
+        let mut buf = vec![0u8; len];
+        let status = unsafe { world_ui_state(self.handle, buf.as_mut_ptr(), buf.len(), &mut len) };
+        if status != WORLD_OK {
+            return Err(last_error(self.handle));
+        }
+        buf.truncate(len);
+        String::from_utf8(buf).map_err(|e| format!("ui_state 不是 UTF-8: {e}"))
     }
 
     pub fn zone_status(&self, zone: &str) -> i32 {

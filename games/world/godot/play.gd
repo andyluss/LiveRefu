@@ -9,6 +9,9 @@ var sfx: AudioStreamPlayer
 var axis_mode := "3d"
 var prompt_label: Label
 var status_label: Label
+var quest_label: Label
+var inventory_label: Label
+var ui_accumulator := 0.0
 var targets := {
 	"demo.airlock": "气闸",
 	"demo.keeper": "值班员",
@@ -23,6 +26,8 @@ func _ready() -> void:
 	sfx = $Sfx
 	prompt_label = $UI/Prompt
 	status_label = $UI/Status
+	quest_label = $UI/Quest
+	inventory_label = $UI/Inventory
 	var real_audio := _load_wav("res://assets/audio/airlock_open.wav")
 	sfx.stream = real_audio if real_audio != null else _make_tone()
 	var file := FileAccess.open("res://pack.data", FileAccess.READ)
@@ -122,6 +127,10 @@ func _process(delta: float) -> void:
 	world.sync_views_at(clamp(accumulator / STEP, 0.0, 1.0))
 	_poll_events()
 	_update_prompt()
+	ui_accumulator += delta
+	if ui_accumulator >= 0.2:
+		ui_accumulator = 0.0
+		_update_hud()
 	_update_camera()
 
 func _poll_events() -> void:
@@ -140,6 +149,27 @@ func _poll_events() -> void:
 			status_label.text = "获得：" + str(event.get("item", ""))
 		elif kind == "dialogue_started" and status_label != null:
 			status_label.text = "对话开始：" + str(event.get("target", ""))
+
+func _update_hud() -> void:
+	var state = JSON.parse_string(world.ui_state())
+	if not (state is Dictionary):
+		return
+	var quest_lines: Array[String] = ["任务"]
+	for quest in state.get("quests", []):
+		var title: String = quest.get("title", quest.get("id", ""))
+		if quest.get("completed", false):
+			quest_lines.append("✓ " + title)
+		elif quest.get("active", false):
+			quest_lines.append("● " + title)
+	if quest_lines.size() == 1:
+		quest_lines.append("（无）")
+	quest_label.text = "\n".join(quest_lines)
+	var inv_lines: Array[String] = ["背包"]
+	for stack in state.get("inventory", []):
+		inv_lines.append(str(stack.get("name", stack.get("item", ""))) + " ×" + str(stack.get("count", 0)))
+	if inv_lines.size() == 1:
+		inv_lines.append("（空）")
+	inventory_label.text = "\n".join(inv_lines)
 
 func _update_prompt() -> void:
 	var near := _nearest_of(["demo.airlock", "demo.keeper", "item.keycard"])

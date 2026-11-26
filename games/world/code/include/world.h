@@ -69,6 +69,8 @@ WorldStatus  world_zone_assets(WorldHandle* world, const char* zone_id,
 /* 返回实体的 visual 源路径（逻辑资产 ID 解析后的 source）；无 visual 返回空串。 */
 WorldStatus  world_entity_visual_source(WorldHandle* world, uint32_t index, uint32_t generation,
                                         uint8_t* out, size_t cap, size_t* out_len);
+/* 当前 player 的背包、任务状态、flags；JSON 供 HUD 使用。 */
+WorldStatus  world_ui_state(WorldHandle* world, uint8_t* out, size_t cap, size_t* out_len);
 int32_t      world_zone_status(WorldHandle* world, const char* zone_id);
 WorldStatus  world_set_zone_visible(WorldHandle* world, const char* zone_id, int32_t visible);
 

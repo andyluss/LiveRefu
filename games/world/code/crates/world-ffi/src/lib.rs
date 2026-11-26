@@ -1,6 +1,7 @@
 #![allow(clippy::not_unsafe_ptr_arg_deref)]
 // C ABI 的指针有效性由调用方保证；函数内部用 catch_unwind 隔离 panic。
 
+use serde_json::json;
 use std::ffi::{c_char, CStr, CString};
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::ptr;
@@ -533,6 +534,84 @@ pub extern "C" fn world_set_zone_visible(
     _visible: i32,
 ) -> i32 {
     with_world_mut(handle, |_handle| Ok(status_ok()))
+}
+
+#[no_mangle]
+pub extern "C" fn world_ui_state(
+    handle: *mut WorldHandle,
+    out: *mut u8,
+    cap: usize,
+    out_len: *mut usize,
+) -> i32 {
+    with_world_mut(handle, |handle| {
+        let world = handle
+            .world
+            .as_ref()
+            .ok_or((WORLD_ERR_STATE, "未加载内容包".to_string()))?;
+        let pack = handle
+            .pack
+            .as_ref()
+            .ok_or((WORLD_ERR_STATE, "未加载内容包".to_string()))?;
+        let locale = pack.default_locale();
+        let localize = |text: &str| {
+            text.strip_prefix("loc:")
+                .and_then(|key| locale.get(key))
+                .cloned()
+                .unwrap_or_else(|| text.to_string())
+        };
+        let inventory = world
+            .entity(world.player)
+            .map(|entity| {
+                entity
+                    .inventory
+                    .iter()
+                    .map(|stack| {
+                        let name = pack
+                            .items
+                            .get(&stack.item)
+                            .map(|item| localize(&item.name))
+                            .unwrap_or_else(|| stack.item.clone());
+                        json!({"item": stack.item, "name": name, "count": stack.count})
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
+        let quests = world
+            .quests
+            .iter()
+            .map(|(id, state)| {
+                let title = pack
+                    .quests
+                    .get(id)
+                    .map(|q| localize(&q.title))
+                    .unwrap_or_default();
+                json!({
+                    "id": id,
+                    "title": title,
+                    "active": state.active,
+                    "completed": state.completed,
+                    "progress": state.progress,
+                })
+            })
+            .collect::<Vec<_>>();
+        let value = json!({
+            "tick": world.tick,
+            "zone": world.zone_id,
+            "inventory": inventory,
+            "quests": quests,
+            "flags": world.flags,
+        });
+        let text = serde_json::to_vec(&value)
+            .map_err(|e| (WORLD_ERR_INTERNAL, format!("ui_state 序列化失败: {e}")))?;
+        if !out_len.is_null() {
+            unsafe { *out_len = text.len() };
+        }
+        if out.is_null() || cap < text.len() {
+            return Ok(WORLD_ERR_BUFFER_TOO_SMALL);
+        }
+        unsafe { ptr::copy_nonoverlapping(text.as_ptr(), out, text.len()) };
+        Ok(status_ok())
+    })
 }
 
 #[no_mangle]

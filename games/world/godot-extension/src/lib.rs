@@ -451,6 +451,14 @@ impl WorldNode {
     }
 
     #[func]
+    fn ui_state(&mut self) -> GString {
+        match self.world.as_mut().and_then(|world| world.ui_state().ok()) {
+            Some(text) => GString::from(text.as_str()),
+            None => GString::from("{}"),
+        }
+    }
+
+    #[func]
     fn zone_assets(&mut self, zone: GString) -> GString {
         match self.world.as_mut().and_then(|world| world.zone_assets(zone.to_string().as_str()).ok()) {
             Some(text) => GString::from(text.as_str()),

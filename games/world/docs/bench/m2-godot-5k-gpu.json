@@ -1,0 +1,14 @@
+{
+  "benchmark": "m2-godot-5k-gpu",
+  "date": "2026-11-26",
+  "host": "Apple M1 Pro / Metal 4.0 / Godot 4.7.stable",
+  "mode": "windowed rendering loop; frame delta wall-clock, not a vendor GPU timer",
+  "props": 5000,
+  "warmup_frames": 60,
+  "frames": 180,
+  "view_count": 1,
+  "multimesh_count": 5000,
+  "frame_ms_p50": 2.778,
+  "frame_ms_p95": 5.556,
+  "fps": 30.0
+}

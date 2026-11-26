@@ -19,6 +19,7 @@ func _ready() -> void:
 	_test_events()
 	_test_views()
 	_test_save()
+	_test_ui_state()
 	_test_zone_assets()
 	_test_bad_pack()
 	print("CTS_RESULT failures=", failures)
@@ -127,6 +128,17 @@ func _test_save() -> void:
 	check("S hash roundtrip", restored.state_hash_hex() == expected)
 	world.queue_free()
 	restored.queue_free()
+
+func _test_ui_state() -> void:
+	var world := make_world()
+	run_600(world, true)
+	var state = JSON.parse_string(world.ui_state())
+	check("U ui state", state is Dictionary)
+	if state is Dictionary:
+		check("U inventory", state.get("inventory", []).size() > 0)
+		check("U quests", state.get("quests", []).size() > 0)
+		check("U zone", state.get("zone", "") == "zone.harbor")
+	world.queue_free()
 
 func _test_zone_assets() -> void:
 	var world := make_world()
