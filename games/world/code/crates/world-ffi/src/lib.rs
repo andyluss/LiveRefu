@@ -451,6 +451,59 @@ pub extern "C" fn world_zone_assets(
 }
 
 #[no_mangle]
+pub extern "C" fn world_entity_visual_source(
+    handle: *mut WorldHandle,
+    index: u32,
+    generation: u32,
+    out: *mut u8,
+    cap: usize,
+    out_len: *mut usize,
+) -> i32 {
+    with_world_mut(handle, |handle| {
+        let world = handle
+            .world
+            .as_ref()
+            .ok_or((WORLD_ERR_STATE, "未加载内容包".to_string()))?;
+        let entity = world
+            .entity(world_core::EntityId::new(index, generation))
+            .ok_or((
+                WORLD_ERR_INVALID_ARG,
+                format!("实体不存在: {index}:{generation}"),
+            ))?;
+        let pack = handle
+            .pack
+            .as_ref()
+            .ok_or((WORLD_ERR_STATE, "未加载内容包".to_string()))?;
+        let visual = match entity.kind {
+            world_core::EntityKind::Player | world_core::EntityKind::Actor => pack
+                .actors
+                .get(&entity.content_id)
+                .and_then(|d| d.visual.clone()),
+            world_core::EntityKind::Prop => pack
+                .props
+                .get(&entity.content_id)
+                .and_then(|d| d.visual.clone()),
+            world_core::EntityKind::Item => pack
+                .items
+                .get(&entity.content_id)
+                .and_then(|d| d.visual.clone()),
+        };
+        let source = visual
+            .and_then(|id| pack.assets.get(&id).map(|a| a.source.clone()))
+            .unwrap_or_default();
+        let bytes = source.as_bytes();
+        if !out_len.is_null() {
+            unsafe { *out_len = bytes.len() };
+        }
+        if out.is_null() || cap < bytes.len() {
+            return Ok(WORLD_ERR_BUFFER_TOO_SMALL);
+        }
+        unsafe { ptr::copy_nonoverlapping(bytes.as_ptr(), out, bytes.len()) };
+        Ok(status_ok())
+    })
+}
+
+#[no_mangle]
 pub extern "C" fn world_zone_status(handle: *mut WorldHandle, zone_id: *const c_char) -> i32 {
     if handle.is_null() || zone_id.is_null() {
         return 0;

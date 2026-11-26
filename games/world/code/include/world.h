@@ -66,6 +66,9 @@ WorldStatus  world_activate_zone(WorldHandle* world, const char* zone_id);
 WorldStatus  world_deactivate_zone(WorldHandle* world, const char* zone_id);
 WorldStatus  world_zone_assets(WorldHandle* world, const char* zone_id,
                                uint8_t* out, size_t cap, size_t* out_len);
+/* 返回实体的 visual 源路径（逻辑资产 ID 解析后的 source）；无 visual 返回空串。 */
+WorldStatus  world_entity_visual_source(WorldHandle* world, uint32_t index, uint32_t generation,
+                                        uint8_t* out, size_t cap, size_t* out_len);
 int32_t      world_zone_status(WorldHandle* world, const char* zone_id);
 WorldStatus  world_set_zone_visible(WorldHandle* world, const char* zone_id, int32_t visible);
 

@@ -109,7 +109,9 @@ func _test_zone_assets() -> void:
 	var assets: Array = parsed if parsed is Array else []
 	check("A asset count", assets.size() == 3)
 	check("A mesh asset", assets.has("mesh.keeper"))
-	var scene = AssetSlots.load_glb("res://assets/art/keeper.glb")
+	var source := world.entity_visual("demo.keeper")
+	check("A visual source", source == "art/keeper.glb")
+	var scene = AssetSlots.load_glb("res://assets/" + source) if source != "" else null
 	check("A GLB load", scene != null)
 	if scene != null:
 		scene.queue_free()

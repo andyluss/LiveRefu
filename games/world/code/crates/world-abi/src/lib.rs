@@ -73,6 +73,14 @@ extern "C" {
         cap: usize,
         out_len: *mut usize,
     ) -> i32;
+    fn world_entity_visual_source(
+        world: *mut WorldHandle,
+        index: u32,
+        generation: u32,
+        out: *mut u8,
+        cap: usize,
+        out_len: *mut usize,
+    ) -> i32;
     fn world_zone_status(world: *mut WorldHandle, zone_id: *const c_char) -> i32;
     fn world_activate_zone(world: *mut WorldHandle, zone_id: *const c_char) -> i32;
     fn world_save(world: *mut WorldHandle, out: *mut u8, cap: usize, out_len: *mut usize) -> i32;
@@ -185,21 +193,52 @@ impl AbiWorld {
     pub fn zone_assets(&mut self, zone: &str) -> Result<String, String> {
         let zone = CString::new(zone).map_err(|e| format!("zone 非法: {e}"))?;
         let mut len = 0usize;
-        let status = unsafe {
-            world_zone_assets(self.handle, zone.as_ptr(), ptr::null_mut(), 0, &mut len)
-        };
+        let status =
+            unsafe { world_zone_assets(self.handle, zone.as_ptr(), ptr::null_mut(), 0, &mut len) };
         if status != WORLD_ERR_BUFFER_TOO_SMALL {
             return Err(last_error(self.handle));
         }
         let mut buf = vec![0u8; len];
         let status = unsafe {
-            world_zone_assets(self.handle, zone.as_ptr(), buf.as_mut_ptr(), buf.len(), &mut len)
+            world_zone_assets(
+                self.handle,
+                zone.as_ptr(),
+                buf.as_mut_ptr(),
+                buf.len(),
+                &mut len,
+            )
         };
         if status != WORLD_OK {
             return Err(last_error(self.handle));
         }
         buf.truncate(len);
         String::from_utf8(buf).map_err(|e| format!("assets 不是 UTF-8: {e}"))
+    }
+
+    pub fn entity_visual_source(&mut self, index: u32, generation: u32) -> Result<String, String> {
+        let mut len = 0usize;
+        let status = unsafe {
+            world_entity_visual_source(self.handle, index, generation, ptr::null_mut(), 0, &mut len)
+        };
+        if status != WORLD_ERR_BUFFER_TOO_SMALL && status != WORLD_OK {
+            return Err(last_error(self.handle));
+        }
+        let mut buf = vec![0u8; len];
+        let status = unsafe {
+            world_entity_visual_source(
+                self.handle,
+                index,
+                generation,
+                buf.as_mut_ptr(),
+                buf.len(),
+                &mut len,
+            )
+        };
+        if status != WORLD_OK {
+            return Err(last_error(self.handle));
+        }
+        buf.truncate(len);
+        String::from_utf8(buf).map_err(|e| format!("visual 不是 UTF-8: {e}"))
     }
 
     pub fn zone_status(&self, zone: &str) -> i32 {

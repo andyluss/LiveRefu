@@ -231,6 +231,22 @@ impl WorldNode {
     }
 
     #[func]
+    fn entity_visual(&mut self, content_id: GString) -> GString {
+        let Some(world) = self.world.as_mut() else {
+            return GString::from("");
+        };
+        let Some(id) = world.find_entity(content_id.to_string().as_str()) else {
+            return GString::from("");
+        };
+        let index = (id & 0xFFFF_FFFF) as u32;
+        let generation = (id >> 32) as u32;
+        match world.entity_visual_source(index, generation) {
+            Ok(source) => GString::from(source.as_str()),
+            Err(_) => GString::from(""),
+        }
+    }
+
+    #[func]
     fn zone_assets(&mut self, zone: GString) -> GString {
         match self.world.as_mut().and_then(|world| world.zone_assets(zone.to_string().as_str()).ok()) {
             Some(text) => GString::from(text.as_str()),
