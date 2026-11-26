@@ -52,4 +52,7 @@ pub enum Command {
         x: f32,
         z: f32,
     },
+    OpenDoor {
+        target: EntityId,
+    },
 }

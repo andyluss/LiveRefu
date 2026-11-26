@@ -30,7 +30,8 @@
   "expect": {
     "flags": {
       "flag.reactor.open": true,
-      "flag.quest.reactor.done": true
+      "flag.quest.reactor.done": true,
+      "flag.script.reactor_seen": true
     },
     "quests": {
       "quest.reactor": "completed"

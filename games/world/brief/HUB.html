@@ -66,7 +66,7 @@
       <div>
         <div class="stats">
           <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
-          <div class="stat o"><div class="v">13</div><div class="l">Rust 测试</div></div>
+          <div class="stat o"><div class="v">18</div><div class="l">Rust 测试</div></div>
           <div class="stat p"><div class="v">6</div><div class="l">内容测试</div></div>
           <div class="stat r"><div class="v">0.01<span style="font-size:12px">ms</span></div><div class="l">5k 合成 tick</div></div>
           <div class="stat o"><div class="v">5</div><div class="l">玩法 Demo</div></div>
@@ -96,7 +96,7 @@
           <a class="pm-node done" href="#status"><span class="dot"></span><b>pack / core / ffi</b><em>schema · tick · C ABI</em></a>
           <a class="pm-node done" href="../docs/06_M0实现与验收.md"><span class="dot"></span><b>M0 垂直切片</b><em>港湾值班室</em></a>
           <a class="pm-node done" href="../code/crates/world-core/src/nav.rs"><span class="dot"></span><b>A* 寻路</b><em>MoveTo · 路径哈希</em></a>
-          <span class="pm-node next"><span class="dot"></span><b>ScriptHost</b><em>QuickJS 正式接入</em></span>
+          <a class="pm-node done" href="../code/crates/world-script/src/lib.rs"><span class="dot"></span><b>ScriptHost</b><em>QuickJS · 事件/命令/预算</em></a>
         </div></div>
         <div class="pm-lane"><div class="pm-label">内容<span>作者写什么</span></div><div class="pm-track">
           <a class="pm-node done" href="../data/demo.harbor/"><span class="dot"></span><b>demo.harbor</b><em>1 区 · NPC · 门 · 任务</em></a>
@@ -131,7 +131,8 @@
       <li class="done"><b>M1 · 编辑器 v0.5</b> <span>布局拖拽、字段表单、对话图、撤销/重做、保存校验回滚、构建试玩。</span></li>
       <li class="done"><b>M1 · 移动/导航/资产</b> <span>WASD + 点击寻路；40×40 烘焙网格；逻辑资产依赖与 C ABI <code>world_zone_assets</code>。</span></li>
       <li class="done"><b>M1 · 3D 演示</b> <span>Three.js r187 本地 vendor；同一 wasm 状态；气闸/对话/雨海灯塔。</span></li>
-      <li class="now"><b>现在 · M1 剩余与 M2 准备</b> <span>ScriptHost 正式接入、动态导航、真实 5k 基准、编辑器 v0.6。</span></li>
+      <li class="done"><b>M1 · ScriptHost</b> <span>QuickJS 事件作用域；事件上下文 → 命令；内存/栈/命令/中断预算；wasm/C/CLI/headless 注入。</span></li>
+      <li class="now"><b>现在 · M1 剩余与 M2 准备</b> <span>真实 5k 基准、三平台 CI、作者试用；动态导航/编辑器 v0.6 暂搁置。</span></li>
       <li class="next"><b>下一步 · M2 生产适配器</b> <span>Godot GDExtension；同一个包在真实引擎跑出同一局。</span></li>
     </ol>
 
@@ -139,7 +140,7 @@
     <table>
       <thead><tr><th>证据</th><th>结果</th><th>来源</th></tr></thead>
       <tbody>
-        <tr><td>Rust workspace 测试</td><td><b>13</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
+        <tr><td>Rust workspace 测试</td><td><b>18</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
         <tr><td>内容测试</td><td><b>6</b> 条 PASS：港湾 3 + 夜市/温室/环形站各 1</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0xc840fe2090a0a085</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
         <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:66125c46…46fe29e</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
@@ -159,7 +160,7 @@ cd web &amp;&amp; python3 -m http.server 8787
 # 2D:   http://127.0.0.1:8787/
 # 3D:   http://127.0.0.1:8787/demo3d.html</code></pre>
 
-    <div class="note warn"><b>不要把 M1 主要切片当成 M1 完整验收。</b>ScriptHost 仍是 Rust 解释 JSON 规则；导航门是静态烘焙；5k 只有合成基线；编辑器还没有完整 schema 表单。</div>
+    <div class="note warn"><b>不要把 M1 主要切片当成 M1 完整验收。</b>ScriptHost 已接入但是事件作用域；导航门仍是静态烘焙；5k 只有合成基线；编辑器还没有完整 schema 表单。</div>
   </section>
 
   <section class="panel" id="p-architecture" role="tabpanel" aria-labelledby="t-architecture">
@@ -192,7 +193,7 @@ cd web &amp;&amp; python3 -m http.server 8787
         <tr><td><code>world-ffi</code></td><td>C ABI v0、句柄、缓冲、错误码</td><td>不写玩法</td></tr>
         <tr><td><code>world-host-headless</code></td><td>CI / 回放 / 无头宿主</td><td>不渲染</td></tr>
         <tr><td><code>world-cli</code></td><td>validate/build/test/editor/bake/bench/content-test</td><td>不成为运行时依赖</td></tr>
-        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS spike / 脚本宿主实验</td><td>正式规则接入待做</td></tr>
+        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS ScriptHost：事件上下文 → 命令、预算/错误隔离</td><td>无持久状态/模块/异步</td></tr>
         <tr><td><code>world-wasm</code></td><td>作者预览门面（2D/3D 共用）</td><td>不直接走 C ABI</td></tr>
       </tbody>
     </table>
@@ -265,7 +266,7 @@ cd web &amp;&amp; python3 -m http.server 8787
         <tr><td class="q">D1</td><td>权威内核语言</td><td class="pick">Rust</td><td>无 GC、可产 WASM；团队要会 Rust</td></tr>
         <tr><td class="q">D2</td><td>内容与规则</td><td class="pick">TypeScript DSL + JSON</td><td>两套前端需保持同哈希</td></tr>
         <tr><td class="q">D3</td><td>引擎边界</td><td class="pick">版本化 C ABI + 轮询</td><td>核心不回调引擎；需要 ABI 测试</td></tr>
-        <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>正式 ScriptHost 仍未接</td></tr>
+        <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>事件作用域已接；持久状态/模块/异步待 hardening</td></tr>
         <tr><td class="q">D5</td><td>ECS 角色</td><td class="pick">内部细节，先 slab</td><td>M2 真实切片再复核 bevy_ecs</td></tr>
         <tr><td class="q">D6</td><td>空间/物理</td><td class="pick">核心拥有逻辑空间/导航/碰撞</td><td>引擎只做表现；不追求跨 CPU 逐位一致</td></tr>
         <tr><td class="q">D7</td><td>世界模型</td><td class="pick">World + Session + Zone + Entity</td><td>不绑塔防/关卡结构</td></tr>
@@ -274,7 +275,7 @@ cd web &amp;&amp; python3 -m http.server 8787
       </tbody>
     </table>
     <p class="dim">ADR：<a href="../plans/ADR-001-m0-decisions.md">001 拍板</a> · <a href="../plans/ADR-002-pack-schema-v0.md">002 包 schema</a> · <a href="../plans/ADR-003-determinism-save-replay.md">003 确定性</a> · <a href="../plans/ADR-004-abi-v0.md">004 ABI</a> · <a href="../plans/ADR-005-slab-store.md">005 slab</a> · <a href="../plans/ADR-006-quickjs-spike.md">006 QuickJS</a> · <a href="../plans/ADR-007-m1-ts-dsl-web.md">007 M1</a></p>
-    <div class="note"><b>没拍板：</b>ScriptHost 的正式 API 边界、动态导航更新、编辑器 v0.6 的 schema 表单范围。它们应该在 M2 前用真实切片决定，而不是现在拍脑袋。</div>
+    <div class="note"><b>没拍板：</b>ScriptHost 的持久状态/模块/异步边界、动态导航更新、编辑器 v0.6 的 schema 表单范围。它们应该在 M2 前用真实切片决定，而不是现在拍脑袋。</div>
   </section>
 
   <section class="panel" id="p-roadmap" role="tabpanel" aria-labelledby="t-roadmap">
@@ -282,7 +283,7 @@ cd web &amp;&amp; python3 -m http.server 8787
     <p class="lede">M0/M1 证明“这套边界能跑”；M2 才证明“在真实引擎里能跑同一局”。不要把 Web 预览当成生产适配器。</p>
     <div class="grid g4">
       <div class="card"><span class="chip ok">M0 · 已过</span><h4>可运行内核</h4><p>固定 tick、C ABI、QuickJS spike、坏包、双跑哈希。</p></div>
-      <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/2.5D/3D 多 Demo、编辑器 v0.5、移动/寻路、导航/资产、内容测试。</p></div>
+      <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/2.5D/3D 多 Demo、编辑器 v0.5、移动/寻路、导航/资产、ScriptHost、内容测试。</p></div>
       <div class="card"><span class="chip warn">M2 · 下一步</span><h4>Godot 生产适配器</h4><p>GDExtension、WorldNode、输入/资产/视图/音频/存档；同一包同一局。</p></div>
       <div class="card"><span class="chip todo">M3/M4</span><h4>工具与试点</h4><p>编辑器成熟、导航/资产管线、LiveBay 切片试点。</p></div>
     </div>
@@ -314,7 +315,7 @@ cd web &amp;&amp; python3 -m http.server 8787
     <table>
       <thead><tr><th>风险</th><th>为什么危险</th><th>下一步</th></tr></thead>
       <tbody>
-        <tr><td><b>ScriptHost 未接</b></td><td>规则仍由 Rust 解释 JSON；QuickJS 只有 spike，复杂内容会撞边界。</td><td>事件/命令/查询/预算最小 API；先在 demo 上用脚本替换一条规则。</td></tr>
+        <tr><td><b>ScriptHost 仅事件作用域</b></td><td>无持久脚本状态、模块 import、异步调度、墙钟抢占；JSON 规则仍是主路径。</td><td>持久状态/模块/异步/墙钟预算作为 hardening；先用真实内容压。</td></tr>
         <tr><td><b>导航是静态的</b></td><td>门烘焙成障碍；开门后不重建网格，NPC 不会寻路。</td><td>局部网格更新 + 动态障碍；NPC 用同一 A*。</td></tr>
         <tr><td><b>5k 是合成基线</b></td><td>不含真实战斗/查询/组件变更，不能证明生产性能。</td><td>用真实玩法切片压测；再决定是否换 bevy_ecs。</td></tr>
         <tr><td><b>编辑器还不够“作者友好”</b></td><td>复杂字段仍改 JSON；对话图简单；没有浏览器内实时预览。</td><td>v0.6 schema 表单、错误定位、自动布局。</td></tr>
@@ -325,7 +326,6 @@ cd web &amp;&amp; python3 -m http.server 8787
 
     <h3>下一步（按价值）</h3>
     <ol class="tl">
-      <li class="now"><b>ScriptHost 最小接入</b><span>事件 → 脚本 → 命令；预算与错误可观测；用 demo 的一条规则验证。</span></li>
       <li class="next"><b>动态导航</b><span>开门重建局部网格；NPC 寻路；编辑器“烘焙”可预览。</span></li>
       <li class="next"><b>真实 5k 基准</b><span>带移动/交互/查询的切片，记录每 tick 与内存。</span></li>
       <li class="next"><b>编辑器 v0.6</b><span>schema 表单、字段级错误、对话图自动布局。</span></li>

@@ -1,6 +1,7 @@
 use std::path::PathBuf;
-use world_core::{run_trace, Trace};
+use world_core::Trace;
 use world_pack::Pack;
+use world_script::run_trace_with_scripts;
 
 fn main() {
     if let Err(error) = run() {
@@ -67,7 +68,7 @@ fn run() -> Result<(), String> {
     let mut trace = trace;
     trace.ticks = ticks;
 
-    let result = run_trace(&pack, &trace, keyframe_every)?;
+    let result = run_trace_with_scripts(&pack, &trace, keyframe_every)?;
     let summary = serde_json::json!({
         "pack_id": result.pack_id,
         "pack_hash": result.pack_hash,

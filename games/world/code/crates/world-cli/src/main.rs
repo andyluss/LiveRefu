@@ -4,8 +4,9 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command as ProcessCommand;
 use std::time::Instant;
-use world_core::{first_divergence, run_trace, Trace, TraceStep, World};
+use world_core::{first_divergence, Trace, TraceStep, World};
 use world_pack::{Pack, ValidationReport};
+use world_script::{attach_script_host, run_trace_with_scripts};
 
 fn main() {
     if let Err(error) = run() {
@@ -367,8 +368,8 @@ fn cmd_test(args: &[String]) -> Result<(), String> {
             .parse()
             .map_err(|e| format!("--ticks 解析失败: {e}"))?;
     }
-    let a = run_trace(&pack, &trace, 60)?;
-    let b = run_trace(&pack, &trace, 60)?;
+    let a = run_trace_with_scripts(&pack, &trace, 60)?;
+    let b = run_trace_with_scripts(&pack, &trace, 60)?;
     let same = a.final_hash == b.final_hash && a.keyframes == b.keyframes;
     println!(
         "test: {} ticks={} hash=0x{:016x} events={}",
@@ -472,6 +473,7 @@ fn cmd_content_test(args: &[String]) -> Result<(), String> {
 fn run_content_test(pack: &Pack, test: &ContentTest) -> Result<(), String> {
     let hash = pack.hash().map_err(|e| e.to_string())?;
     let mut world = World::from_pack(pack, hash)?;
+    attach_script_host(&mut world, pack)?;
     let mut steps = test.steps.clone();
     steps.sort_by_key(|s| s.tick);
     for tick in 1..=test.ticks {
@@ -548,7 +550,7 @@ fn cmd_replay(args: &[String]) -> Result<(), String> {
         .map(PathBuf::from)
         .ok_or_else(|| "replay 需要 --trace <file>".to_string())?;
     let trace = read_trace(&trace_path, 600)?;
-    let result = run_trace(&pack, &trace, 60)?;
+    let result = run_trace_with_scripts(&pack, &trace, 60)?;
     println!(
         "replay: {} ticks={} final_hash=0x{:016x} events={}",
         result.pack_id,
@@ -587,7 +589,7 @@ fn cmd_demo(args: &[String]) -> Result<(), String> {
             .parse()
             .map_err(|e| format!("--ticks 解析失败: {e}"))?;
     }
-    let result = run_trace(&pack, &trace, 60)?;
+    let result = run_trace_with_scripts(&pack, &trace, 60)?;
     for event in &result.events {
         println!("{}", serde_json::to_string(event).unwrap_or_default());
     }
@@ -637,12 +639,12 @@ fn cmd_bench(args: &[String]) -> Result<(), String> {
         steps: Vec::new(),
     };
     // 预热
-    let _ = run_trace(&pack, &trace, 600)?;
+    let _ = run_trace_with_scripts(&pack, &trace, 600)?;
     let start = Instant::now();
     let runs = 5;
     let mut last = 0;
     for _ in 0..runs {
-        last = run_trace(&pack, &trace, 600)?.final_hash;
+        last = run_trace_with_scripts(&pack, &trace, 600)?.final_hash;
     }
     let elapsed = start.elapsed();
     let total_ticks = runs * 600;

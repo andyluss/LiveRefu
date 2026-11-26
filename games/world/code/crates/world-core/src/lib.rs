@@ -4,6 +4,8 @@ pub mod event;
 pub mod ids;
 pub mod nav;
 pub mod rng;
+pub mod script;
+pub use script::ScriptHost;
 pub mod runner;
 pub mod trace;
 pub mod world;
@@ -13,7 +15,7 @@ pub use entity::{Door, Entity, EntityKind, Interactable, ItemStack, Transform};
 pub use event::EventEnvelope;
 pub use ids::EntityId;
 pub use rng::Rng;
-pub use runner::{first_divergence, run_idle, run_trace, Keyframe, RunResult};
+pub use runner::{first_divergence, run_idle, run_trace, run_trace_with_host, Keyframe, RunResult};
 pub use trace::{Trace, TraceCommand, TraceStep};
 pub use world::{QuestState, Snapshot, World};
 

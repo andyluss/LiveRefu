@@ -60,6 +60,7 @@ impl Pack {
         };
 
         let loc = read_loc(&root.join("loc"))?;
+        let scripts = read_scripts(&root.join("scripts"))?;
 
         Ok(Pack {
             manifest,
@@ -75,6 +76,7 @@ impl Pack {
             navs,
             assets,
             loc,
+            scripts,
         })
     }
 
@@ -195,6 +197,7 @@ impl Pack {
             navs: BTreeMap::new(),
             assets: BTreeMap::new(),
             loc: BTreeMap::new(),
+            scripts: BTreeMap::new(),
         }
     }
 
@@ -327,6 +330,33 @@ fn read_map<T: serde::de::DeserializeOwned>(
             let _ = prev;
             return Err(err(path.display().to_string(), format!("重复的 ID: {id}")));
         }
+    }
+    Ok(out)
+}
+
+fn read_scripts(dir: &Path) -> Result<BTreeMap<String, String>, PackError> {
+    if !dir.exists() {
+        return Ok(BTreeMap::new());
+    }
+    let mut out = BTreeMap::new();
+    let entries = fs::read_dir(dir)
+        .map_err(|e| err(dir.display().to_string(), format!("读取 scripts 失败: {e}")))?;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().and_then(|s| s.to_str()) != Some("js") {
+            continue;
+        }
+        let id = path
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .ok_or_else(|| err(path.display().to_string(), "脚本文件名无效"))?
+            .to_string();
+        let source = fs::read_to_string(&path)
+            .map_err(|e| err(path.display().to_string(), format!("读取脚本失败: {e}")))?;
+        if source.trim().is_empty() {
+            return Err(err(path.display().to_string(), "脚本为空"));
+        }
+        out.insert(id, source);
     }
     Ok(out)
 }

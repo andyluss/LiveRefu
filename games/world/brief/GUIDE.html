@@ -42,7 +42,7 @@
     <h1>你写世界，<br>引擎只负责把它画出来。</h1>
     <p class="lead">RefuWorld 把“世界怎么运转”从引擎里拿出来：Rust 内核负责确定性 tick、规则、空间、导航和存档；你用 TypeScript 或 JSON 描述内容；Web 编辑器、2D 预览和 3D 演示都只是这份内容的视图。你不需要先学 Godot 或 Unity 才能做出一个可玩的房间。</p>
     <div class="box tip"><h3>三十秒版本</h3><p>打开 Web 编辑器 → 拖一个 NPC、一扇门、一张钥匙卡 → 写一条“有钥匙卡就开门”的规则 → 接一段对话和任务 → <b>构建并试玩</b>。所有内容最终变成一个带哈希的内容包；同一条 trace 在 Headless、C ABI、wasm 预览里跑出同一局。</p></div>
-    <p class="dim">当前是 <b>M1 主要切片</b>：TS DSL、2D/2.5D/3D 多 Demo、编辑器 v0.5、移动/寻路、导航/资产、内容测试均可运行。完整 M1/M2 的边界见 <a href="HUB.html#risks">HUB 的风险页</a>。</p>
+    <p class="dim">当前是 <b>M1 主要切片</b>：TS DSL、2D/2.5D/3D 多 Demo、ScriptHost、编辑器 v0.5、移动/寻路、导航/资产、内容测试均可运行。完整 M1/M2 的边界见 <a href="HUB.html#risks">HUB 的风险页</a>。</p>
   </section>
 
   <section id="s2">
@@ -117,6 +117,16 @@ defineRule({
 ./worldc ts-build --compare data/demo.harbor
 npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</code></pre>
     <div class="box"><b>同哈希是硬约束：</b>TS 包与 JSON 包必须产生同一个规范化包哈希和同一个 600 tick 状态哈希。改内容后同时跑 <code>ts-build --compare</code> 和 <code>test</code>，不要只改一边。</div>
+    <h3>脚本规则（ScriptHost）</h3>
+    <p>事件作用域脚本放在 <code>&lt;pack&gt;/scripts/*.js</code>，定义 <code>onEvent(ctx)</code>；上下文包含 <code>tick/event/flags/quests/entities/player/zone_id</code>，返回命令数组。</p>
+    <pre><code>function onEvent(ctx) {
+  if (ctx.event.kind !== "reactor.opened") return [];
+  return [
+    { op: "set_flag", flag: "flag.script.reactor_seen", value: true },
+    { op: "toast", text: "脚本：反应堆事件已记录" }
+  ];
+}</code></pre>
+    <p class="dim">支持 <code>interact/talk/pickup/set_flag/start_quest/toast/open_door/…</code>；有内存/栈/命令/中断预算，脚本异常变成 <code>script_error</code>，不杀世界。当前没有持久脚本状态、模块 import、异步调度或热重载。</p>
   </section>
 
   <section id="s5">
@@ -183,7 +193,7 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
 ./worldc content-test # 只跑内容断言</code></pre>
     <p>当前基线：</p>
     <div class="grid3">
-      <div class="card"><h3>13 个 Rust 测试</h3><p>core / pack / ffi / script；clippy 无警告。</p></div>
+      <div class="card"><h3>18 个 Rust 测试</h3><p>core / pack / ffi / script；clippy 无警告。</p></div>
       <div class="card"><h3>6 条内容测试</h3><p>港湾 3 条 + 夜市 / 温室 / 环形站各 1 条。</p></div>
       <div class="card"><h3>黄金哈希</h3><p><code>0xc840fe2090a0a085</code>；Headless / C ABI / wasm 一致。</p></div>
     </div>
@@ -218,6 +228,7 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
         <tr><td><b>黄金 trace / hash</b></td><td>固定输入轨迹 + 状态哈希；用于回放、跨宿主对账、存档校验。</td></tr>
         <tr><td><b>适配器</b></td><td>引擎侧薄层：输入/资产/视图/音频/存档；不含玩法规则。</td></tr>
         <tr><td><b>烘焙</b></td><td>从内容几何生成导航等派生数据；结果可复现，不手改。</td></tr>
+        <tr><td><b>ScriptHost</b></td><td>把事件上下文交给脚本，脚本返回命令；核心不依赖 QuickJS，宿主负责注入。</td></tr>
       </tbody>
     </table>
     <div class="box tip"><h3>下一步读什么</h3><p><a href="HUB.html">项目 HUB</a>：状态/决策/风险；<a href="../docs/07_M1实现与验收.md">07 M1 验收</a>：完整证据与边界；<a href="../docs/08_两小时教程.md">08 两小时教程</a>：按步骤做一遍；<a href="../docs/02_内容作者与工具链.md">02 内容作者与工具链</a>：schema 与工具链细节。</p></div>

@@ -48,7 +48,7 @@ HUB/GUIDE 不复制权威内容，数字以仓库为准：
 - 测试：[`../test/run_m0.sh`](../test/run_m0.sh)、[`../test/run_m1.sh`](../test/run_m1.sh)
 - 变更：[`../CHANGELOG.md`](../CHANGELOG.md)
 
-当前基线：13 个 Rust 测试、6 条内容测试、黄金哈希 `0xc840fe2090a0a085`、5k 合成 ≈0.01 ms/tick。
+当前基线：18 个 Rust 测试、6 条内容测试、黄金哈希 `0xc840fe2090a0a085`、5k 合成 ≈0.01 ms/tick。
 
 ## 主题（R-016）
 

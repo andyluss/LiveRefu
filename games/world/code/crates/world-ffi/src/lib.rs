@@ -6,6 +6,7 @@ use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::ptr;
 use world_core::{Command, EntityId, World};
 use world_pack::Pack;
+use world_script::attach_script_host;
 
 pub const WORLD_OK: i32 = 0;
 pub const WORLD_ERR_BUFFER_TOO_SMALL: i32 = 1;
@@ -193,7 +194,8 @@ pub extern "C" fn world_load_pack(handle: *mut WorldHandle, bytes: *const u8, le
             return Err((WORLD_ERR_PACK, message));
         }
         let hash = pack.hash().map_err(|e| (WORLD_ERR_PACK, e.to_string()))?;
-        let world = World::from_pack(&pack, hash).map_err(|e| (WORLD_ERR_PACK, e))?;
+        let mut world = World::from_pack(&pack, hash).map_err(|e| (WORLD_ERR_PACK, e))?;
+        attach_script_host(&mut world, &pack).map_err(|e| (WORLD_ERR_PACK, e))?;
         handle.pack = Some(pack);
         handle.world = Some(world);
         Ok(status_ok())

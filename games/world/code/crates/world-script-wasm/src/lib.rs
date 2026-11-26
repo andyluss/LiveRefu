@@ -1,4 +1,4 @@
-//! M0 wasm 冒烟：导出无参数函数，Node 直接调用，证明 QuickJS 能在
+//! QuickJS wasm 冒烟：导出无参数函数，Node 直接调用，证明 QuickJS 能在
 //! wasm32-unknown-unknown 内实例化并执行一条规则条件。
 
 static mut ERROR_BUF: [u8; 512] = [0; 512];

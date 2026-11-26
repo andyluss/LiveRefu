@@ -12,5 +12,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 world-core = { path = "../world-core" }
 world-pack = { path = "../world-pack" }
+world-script = { path = "../world-script" }
 serde.workspace = true
 serde_json.workspace = true

@@ -49,5 +49,6 @@ node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROO
 
 echo "== 9. wasm 预览逻辑测试 =="
 node "$ROOT/web/test_preview.cjs"
+node "$ROOT/web/test_script_host.cjs"
 
 echo "M1 PASS"

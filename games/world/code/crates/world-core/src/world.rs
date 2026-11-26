@@ -4,6 +4,7 @@ use crate::event::EventEnvelope;
 use crate::ids::EntityId;
 use crate::nav;
 use crate::rng::Rng;
+use crate::script::ScriptHost;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::collections::BTreeMap;
@@ -81,6 +82,7 @@ pub struct World {
     pub max_catchup: u32,
     pub overrun_count: u32,
     pub last_error: Option<String>,
+    script_host: Option<Box<dyn ScriptHost>>,
 }
 
 impl World {
@@ -124,6 +126,7 @@ impl World {
             max_catchup: 4,
             overrun_count: 0,
             last_error: None,
+            script_host: None,
         };
 
         let player = world.spawn_entity(Entity {
@@ -177,6 +180,15 @@ impl World {
         }
 
         Ok(world)
+    }
+
+    /// 由宿主在内容包加载后注入脚本运行时；核心不依赖 QuickJS。
+    pub fn set_script_host(&mut self, host: Box<dyn ScriptHost>) {
+        self.script_host = Some(host);
+    }
+
+    pub fn has_script_host(&self) -> bool {
+        self.script_host.is_some()
     }
 
     fn load_zone(&mut self, pack: &Pack, zone_id: &str) -> Result<(), String> {
@@ -604,6 +616,7 @@ impl World {
             }
             Command::Move { actor, x, z } => self.command_move(actor, x, z),
             Command::MoveTo { actor, x, z } => self.command_move_to(actor, x, z),
+            Command::OpenDoor { target } => self.command_open_door(target),
         }
     }
 
@@ -640,6 +653,21 @@ impl World {
         self.path_index = if path.len() > 1 { 1 } else { 0 };
         self.path = path;
         self.move_intent = [0.0, 0.0];
+        Ok(())
+    }
+
+    fn command_open_door(&mut self, target: EntityId) -> Result<(), String> {
+        let opened = self
+            .entity_mut(target)
+            .and_then(|entity| entity.door.as_mut())
+            .map(|door| {
+                door.open = true;
+            })
+            .is_some();
+        if !opened {
+            return Err(format!("target 不是门: {target}"));
+        }
+        self.emit("door_opened", Some(target), json!({"target": target}));
         Ok(())
     }
 
@@ -930,6 +958,59 @@ impl World {
         self.event_seq = self.event_seq.saturating_add(1);
         self.events.push(event.clone());
         self.progress_quests(&event);
+        self.run_scripts(&event);
+    }
+
+    fn script_context(&self, event: &EventEnvelope) -> Result<String, String> {
+        let snapshot = self.snapshot();
+        serde_json::to_string(&json!({
+            "tick": self.tick,
+            "event": event,
+            "flags": snapshot.flags,
+            "quests": snapshot.quests,
+            "entities": snapshot.entities,
+            "player": snapshot.player,
+            "zone_id": snapshot.zone_id,
+        }))
+        .map_err(|e| format!("脚本上下文序列化失败: {e}"))
+    }
+
+    fn run_scripts(&mut self, event: &EventEnvelope) {
+        let Some(_) = self.script_host.as_ref() else {
+            return;
+        };
+        // 避免把脚本错误/脚本自身产生的事件再次送回脚本，形成递归。
+        if event.kind == "script_error" {
+            return;
+        }
+        let context = match self.script_context(event) {
+            Ok(value) => value,
+            Err(error) => {
+                self.last_error = Some(error);
+                return;
+            }
+        };
+        let Some(host) = self.script_host.as_mut() else {
+            return;
+        };
+        match host.on_event(&context) {
+            Ok(commands) => {
+                let take = commands.len().min(128);
+                self.pending.extend(commands.into_iter().take(take));
+            }
+            Err(error) => {
+                self.last_error = Some(format!("script: {error}"));
+                let seq = self.event_seq;
+                self.event_seq = self.event_seq.saturating_add(1);
+                self.events.push(EventEnvelope {
+                    seq,
+                    tick: self.tick,
+                    kind: "script_error".to_string(),
+                    source: event.source,
+                    data: json!({"error": error, "script_event": event.kind}),
+                });
+            }
+        }
     }
 
     pub fn drain_events(&mut self) -> Vec<EventEnvelope> {

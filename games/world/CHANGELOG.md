@@ -29,6 +29,7 @@
 - **M1 剩余：编辑器 v0.5**：字段表单、对话图（节点/边、编辑/新增/删除）、撤销/重做；保存仍走「先写后校验，失败回滚」。
 - **M1 剩余：类型检查与开发监听**：`worldc ts-check`/`npm run check`（TypeScript devDependency）、`npm run dev`（TS 监听→构建→复制 pack.data）。
 - **M1 剩余：第三条内容测试与两小时教程**：`pickup_keycard`；[08 · 两小时教程](docs/08_两小时教程.md)（真实作者试用待做）。
+- **ScriptHost（QuickJS）**：`world-script` 实现 `ScriptHost`，核心定义「事件上下文 JSON → 命令数组」；含 `scripts/*.js` 加载、内存/栈/命令/中断预算、`script_error` 隔离；wasm/C/CLI/headless 注入。Demo `demo.orbit/scripts/reactor.js` 监听开门事件写脚本 flag。
 - **多 Demo 体系**：`web/demos.html` 索引 + 2.5D 等距 `web/iso.html` + 3D 环形站 `web/orbit3d.html`；新增 `demo.market`、`demo.greenhouse`、`demo.orbit` 内容包（各带导航/规则/对话/任务/内容测试）。
 - **项目 HUB 与用户指南**：`brief/HUB.html`、`brief/GUIDE.html`、`brief/theme.css`、`brief/theme.js`、`brief/README.md`；项目状态/架构/3D/决策/路线图/风险中心 + 内容作者上手路径，R-016 三态主题。
 
@@ -47,7 +48,7 @@
 
 ### 验证
 
-- `cargo test --workspace`：13 个测试通过。
+- `cargo test --workspace`：18 个测试通过。
 - Headless 600 tick 双跑：`0xc840fe2090a0a085`。
 - C ABI 宿主：同 `0xc840fe2090a0a085`。
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。

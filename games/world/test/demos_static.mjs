@@ -29,6 +29,8 @@ check("iso wasm", isoJs.includes("new PreviewWorld") && isoJs.includes("world.mo
 check("orbit R-016", orbit.includes("data-theme-choice") && orbit.includes("lrds-theme"));
 check("orbit vendor", orbit.includes('"three": "./vendor/three/three.module.js"'));
 check("orbit wasm", orbitJs.includes("new PreviewWorld") && orbitJs.includes("demo.orbit") && orbitJs.includes("world.pickup"));
+check("orbit script", existsSync(join(ROOT, "data/demo.orbit/scripts/reactor.js")));
+check("quickjs env shim", existsSync(join(ROOT, "web/vendor/quickjs-env.js")));
 check("local only", !/https?:\/\//.test(gallery + iso + orbit));
 
 let failed = 0;

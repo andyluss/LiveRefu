@@ -3,8 +3,9 @@
 
 use std::collections::BTreeMap;
 use wasm_bindgen::prelude::*;
-use world_core::{run_trace, Command, Trace, World};
+use world_core::{Command, Trace, World};
 use world_pack::Pack;
+use world_script::{attach_script_host, run_trace_with_scripts};
 
 #[wasm_bindgen]
 pub struct PreviewWorld {
@@ -32,8 +33,10 @@ impl PreviewWorld {
         let hash = pack
             .hash()
             .map_err(|e| JsValue::from_str(&format!("包哈希失败: {e}")))?;
-        let world = World::from_pack(&pack, hash)
+        let mut world = World::from_pack(&pack, hash)
             .map_err(|e| JsValue::from_str(&format!("世界创建失败: {e}")))?;
+        attach_script_host(&mut world, &pack)
+            .map_err(|e| JsValue::from_str(&format!("脚本宿主失败: {e}")))?;
         Ok(Self {
             pack_json: pack_json.to_string(),
             pack,
@@ -46,7 +49,10 @@ impl PreviewWorld {
             .map_err(|e| JsValue::from_str(&e.to_string()))?;
         let hash = pack.hash().map_err(|e| JsValue::from_str(&e.to_string()))?;
         self.pack = pack;
-        self.world = World::from_pack(&self.pack, hash).map_err(|e| JsValue::from_str(&e))?;
+        let mut world = World::from_pack(&self.pack, hash).map_err(|e| JsValue::from_str(&e))?;
+        attach_script_host(&mut world, &self.pack)
+            .map_err(|e| JsValue::from_str(&format!("脚本宿主失败: {e}")))?;
+        self.world = world;
         Ok(())
     }
 
@@ -154,7 +160,7 @@ impl PreviewWorld {
     pub fn replay(&self, trace_json: &str) -> Result<String, JsValue> {
         let trace: Trace = serde_json::from_str(trace_json)
             .map_err(|e| JsValue::from_str(&format!("trace 解析失败: {e}")))?;
-        let result = run_trace(&self.pack, &trace, 60)
+        let result = run_trace_with_scripts(&self.pack, &trace, 60)
             .map_err(|e| JsValue::from_str(&format!("回放失败: {e}")))?;
         Ok(format!("0x{:016x}", result.final_hash))
     }

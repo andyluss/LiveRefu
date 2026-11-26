@@ -351,4 +351,6 @@ pub struct Pack {
     pub navs: BTreeMap<String, NavGridDef>,
     pub assets: BTreeMap<String, AssetDef>,
     pub loc: BTreeMap<String, BTreeMap<String, String>>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub scripts: BTreeMap<String, String>,
 }

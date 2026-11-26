@@ -1,4 +1,5 @@
 use crate::event::EventEnvelope;
+use crate::script::ScriptHost;
 use crate::trace::{Trace, TraceCommand};
 use crate::world::World;
 use serde::{Deserialize, Serialize};
@@ -21,8 +22,21 @@ pub struct RunResult {
 }
 
 pub fn run_trace(pack: &Pack, trace: &Trace, keyframe_every: u64) -> Result<RunResult, String> {
+    run_trace_with_host(pack, trace, keyframe_every, None)
+}
+
+/// 与 `run_trace` 相同，但允许宿主注入脚本运行时；用于 ScriptHost 验收。
+pub fn run_trace_with_host(
+    pack: &Pack,
+    trace: &Trace,
+    keyframe_every: u64,
+    host: Option<Box<dyn ScriptHost>>,
+) -> Result<RunResult, String> {
     let pack_hash = pack.hash().map_err(|e| e.to_string())?;
     let mut world = World::from_pack(pack, pack_hash.clone())?;
+    if let Some(host) = host {
+        world.set_script_host(host);
+    }
     let mut steps = trace.steps.clone();
     steps.sort_by_key(|s| s.tick);
 

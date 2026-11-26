@@ -5,6 +5,17 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CODE="$ROOT/code"
 export CARGO_HOME="${CARGO_HOME:-$CODE/.cargo-home}"
 
+# macOS 自带 ar 产 BSD archive；wasm 目标需要 GNU archive，QuickJS 静态库才能链接。
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  for prefix in /opt/homebrew/opt/llvm /usr/local/opt/llvm; do
+    if [[ -x "$prefix/bin/llvm-ar" ]]; then
+      export AR="${AR:-$prefix/bin/llvm-ar}"
+      export RANLIB="${RANLIB:-$prefix/bin/llvm-ranlib}"
+      break
+    fi
+  done
+fi
+
 cd "$CODE"
 
 echo "== build content packs =="
@@ -34,6 +45,8 @@ wasm-bindgen --target nodejs --out-dir "$ROOT/web/node-pkg" \
   "$CODE/target/wasm32-unknown-unknown/release/world_wasm.wasm"
 
 printf '{"type":"commonjs"}\n' > "$ROOT/web/node-pkg/package.json"
+mkdir -p "$ROOT/web/node-pkg/node_modules/env"
+printf 'exports.__rquickjs_host_now_us = () => 0;\n' > "$ROOT/web/node-pkg/node_modules/env/index.js"
 
 cp "$ROOT/dist/demo.harbor/pack.data" "$ROOT/web/pack.data"
 cp "$ROOT/data/demo.harbor/tests/m0.trace.json" "$ROOT/web/m0.trace.json"

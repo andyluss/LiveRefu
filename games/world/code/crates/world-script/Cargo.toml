@@ -7,3 +7,6 @@ authors.workspace = true
 
 [dependencies]
 rquickjs = "0.14"
+world-core = { path = "../world-core" }
+world-pack = { path = "../world-pack" }
+serde_json.workspace = true

@@ -17,6 +17,8 @@ python3 -m http.server 8787
 `web/build.sh` 会把 4 个内容包构建到 `web/packs/*.data`。所有 Demo 共用 `PreviewWorld`，
 2.5D 与 3D 只是表现层，不复制规则。
 
+> macOS 构建 wasm QuickJS 需要 LLVM 的 `llvm-ar`（`brew install llvm`）；`build.sh` 会自动使用 Homebrew 路径。
+
 ## 3D 演示
 
 ```bash
