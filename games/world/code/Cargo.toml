@@ -5,6 +5,7 @@ members = [
     "crates/world-script",
     "crates/world-script-wasm",
     "crates/world-core",
+    "crates/world-abi",
     "crates/world-ffi",
     "crates/world-host-headless",
     "crates/world-cli",

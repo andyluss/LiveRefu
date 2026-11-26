@@ -1,0 +1,5 @@
+/bin/
+/pack.data
+/.godot/
+/.godot-home/
+*.uid

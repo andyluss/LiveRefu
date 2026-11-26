@@ -334,6 +334,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "world-abi"
+version = "0.1.0"
+dependencies = [
+ "world-ffi",
+]
+
+[[package]]
 name = "world-cli"
 version = "0.1.0"
 dependencies = [
