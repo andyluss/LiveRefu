@@ -580,17 +580,15 @@ pub extern "C" fn world_ui_state(
             .quests
             .iter()
             .map(|(id, state)| {
-                let title = pack
-                    .quests
-                    .get(id)
-                    .map(|q| localize(&q.title))
-                    .unwrap_or_default();
+                let quest = pack.quests.get(id);
+                let title = quest.map(|q| localize(&q.title)).unwrap_or_default();
                 json!({
                     "id": id,
                     "title": title,
                     "active": state.active,
                     "completed": state.completed,
                     "progress": state.progress,
+                    "objective_count": quest.map(|q| q.objectives.len()).unwrap_or(0),
                 })
             })
             .collect::<Vec<_>>();

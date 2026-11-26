@@ -158,3 +158,21 @@ jobs:
         env:
           GODOT_BIN: godot
         run: ./godot/bench5k.sh
+      - name: Install Xvfb / software GL
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri
+      - name: Frame-time under Xvfb (software GL)
+        env:
+          GODOT_BIN: godot
+          GODOT_RENDER_METHOD: gl_compatibility
+          GODOT_RENDER_DRIVER: opengl3
+          BENCH_HOST: ci-ubuntu-xvfb
+          BENCH_JSON: ${{ github.workspace }}/games/world/dist/bench5k-gpu-ci.json
+        run: |
+          mkdir -p dist
+          xvfb-run -a -s "-screen 0 1280x720x24" ./godot/bench5k_gpu.sh
+          node test/bench5k_gpu_check.mjs dist/bench5k-gpu-ci.json
+      - name: Upload frame-time artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-5k-frame
+          path: games/world/dist/bench5k-gpu-ci.json

@@ -39,13 +39,22 @@ func _process(delta: float) -> void:
 		samples.sort()
 		var p50: float = samples[int(samples.size() * 0.50) - 1]
 		var p95: float = samples[int(samples.size() * 0.95) - 1]
-		print("GPU_BENCH5K_RESULT ", JSON.stringify({
+		var host := OS.get_environment("BENCH_HOST")
+		if host == "":
+			host = OS.get_name()
+		var summary := {
+			"host": host,
 			"mode": DisplayServer.get_name(),
 			"frames": samples.size(),
 			"frame_ms_p50": p50,
 			"frame_ms_p95": p95,
-			"fps": Engine.get_frames_per_second(),
 			"view_count": world.view_count(),
 			"multimesh_count": world.multimesh_count(),
-		}))
+		}
+		var json_path := OS.get_environment("BENCH_JSON")
+		if json_path != "":
+			var out := FileAccess.open(json_path, FileAccess.WRITE)
+			if out != null:
+				out.store_string(JSON.stringify(summary))
+		print("GPU_BENCH5K_RESULT ", JSON.stringify(summary))
 		get_tree().quit(0)

@@ -19,6 +19,8 @@ var targets := {
 }
 
 func _ready() -> void:
+	_setup_input()
+	_setup_touch()
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--axis="):
 			axis_mode = arg.trim_prefix("--axis=")
@@ -57,25 +59,68 @@ func _ready() -> void:
 	world.sync_views()
 	_update_camera()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if world == null or not (event is InputEventKey and event.pressed and not event.echo):
+func _setup_input() -> void:
+	var keys := {
+		"move_up": KEY_W, "move_down": KEY_S, "move_left": KEY_A, "move_right": KEY_D,
+		"interact": KEY_E, "pickup": KEY_F, "talk": KEY_T,
+	}
+	for action in keys:
+		if not InputMap.has_action(action):
+			InputMap.add_action(action, 0.2)
+		var key := InputEventKey.new()
+		key.physical_keycode = keys[action]
+		InputMap.action_add_event(action, key)
+	for action in ["interact", "pickup", "talk"]:
+		var button := InputEventJoypadButton.new()
+		button.button_index = {"interact": JOY_BUTTON_A, "pickup": JOY_BUTTON_X, "talk": JOY_BUTTON_Y}[action]
+		InputMap.action_add_event(action, button)
+	for action in ["move_left", "move_right", "move_up", "move_down"]:
+		var motion := InputEventJoypadMotion.new()
+		motion.axis = {"move_left": JOY_AXIS_LEFT_X, "move_right": JOY_AXIS_LEFT_X, "move_up": JOY_AXIS_LEFT_Y, "move_down": JOY_AXIS_LEFT_Y}[action]
+		motion.axis_value = -1.0 if action in ["move_left", "move_up"] else 1.0
+		InputMap.action_add_event(action, motion)
+
+func _setup_touch() -> void:
+	if not DisplayServer.is_touchscreen_available():
 		return
-	match event.keycode:
-		KEY_E:
-			var id := _nearest_of(["demo.airlock", "demo.keeper"])
-			if id != "":
-				world.interact("player", id)
-				status_label.text = "交互：" + str(targets[id])
-		KEY_F:
-			var id := _nearest_of(["item.keycard"])
-			if id != "":
-				world.pickup("player", id)
-				status_label.text = "拾取：" + str(targets[id])
-		KEY_T:
-			var id := _nearest_of(["demo.keeper"])
-			if id != "":
-				world.talk("player", id)
-				status_label.text = "对话：" + str(targets[id])
+	var panel := Control.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	panel.custom_minimum_size = Vector2(0, 170)
+	add_child(panel)
+	var layout := [
+		["move_left", "←", 20], ["move_up", "↑", 90], ["move_down", "↓", 160], ["move_right", "→", 230],
+		["interact", "E", 560], ["pickup", "F", 640], ["talk", "T", 720],
+	]
+	for entry in layout:
+		var action: String = entry[0]
+		var button := Button.new()
+		button.text = entry[1]
+		button.position = Vector2(entry[2], 100)
+		button.custom_minimum_size = Vector2(64, 64)
+		button.button_down.connect(func(): Input.action_press(action))
+		button.button_up.connect(func(): Input.action_release(action))
+		panel.add_child(button)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if world == null:
+		return
+	if event.is_action_pressed("interact"):
+		var id := _nearest_of(["demo.airlock", "demo.keeper"])
+		if id != "":
+			world.interact("player", id)
+			status_label.text = "交互：" + str(targets[id])
+	elif event.is_action_pressed("pickup"):
+		var id := _nearest_of(["item.keycard"])
+		if id != "":
+			world.pickup("player", id)
+			status_label.text = "拾取：" + str(targets[id])
+	elif event.is_action_pressed("talk"):
+		var id := _nearest_of(["demo.keeper"])
+		if id != "":
+			world.talk("player", id)
+			status_label.text = "对话：" + str(targets[id])
+	elif event.is_action_pressed("ui_cancel"):
+		get_tree().quit()
 
 func _nearest_of(ids: Array) -> String:
 	var player := world.player_position()
@@ -105,12 +150,8 @@ func _add_box(pos: Vector3, size: Vector3, color: Color) -> void:
 func _process(delta: float) -> void:
 	if world == null:
 		return
-	var move := Vector2.ZERO
-	if Input.is_key_pressed(KEY_W): move.y -= 1.0
-	if Input.is_key_pressed(KEY_S): move.y += 1.0
-	if Input.is_key_pressed(KEY_A): move.x -= 1.0
-	if Input.is_key_pressed(KEY_D): move.x += 1.0
-	if Input.is_key_pressed(KEY_ESCAPE):
+	var move := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 		return
 	accumulator += delta
@@ -160,7 +201,9 @@ func _update_hud() -> void:
 		if quest.get("completed", false):
 			quest_lines.append("✓ " + title)
 		elif quest.get("active", false):
-			quest_lines.append("● " + title)
+			var done: int = quest.get("progress", {}).size()
+			var total: int = quest.get("objective_count", 0)
+			quest_lines.append("● " + title + (" %d/%d" % [done, total] if total > 0 else ""))
 	if quest_lines.size() == 1:
 		quest_lines.append("（无）")
 	quest_label.text = "\n".join(quest_lines)

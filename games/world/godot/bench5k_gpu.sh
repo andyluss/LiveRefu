@@ -15,4 +15,11 @@ restore_harbor() {
   cp "$ROOT/dist/demo.harbor/pack.data" "$HERE/pack.data" 2>/dev/null || true
 }
 trap restore_harbor EXIT
-"$GODOT_BIN" --path "$HERE" bench5k_gpu.tscn --quit-after 600
+RENDER_ARGS=()
+if [[ -n "${GODOT_RENDER_METHOD:-}" ]]; then
+  RENDER_ARGS+=(--rendering-method "$GODOT_RENDER_METHOD")
+fi
+if [[ -n "${GODOT_RENDER_DRIVER:-}" ]]; then
+  RENDER_ARGS+=(--rendering-driver "$GODOT_RENDER_DRIVER")
+fi
+"$GODOT_BIN" "${RENDER_ARGS[@]}" --path "$HERE" bench5k_gpu.tscn --quit-after 600

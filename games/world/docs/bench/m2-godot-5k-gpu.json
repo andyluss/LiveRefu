@@ -9,6 +9,5 @@
   "view_count": 1,
   "multimesh_count": 5000,
   "frame_ms_p50": 2.778,
-  "frame_ms_p95": 5.556,
-  "fps": 30.0
+  "frame_ms_p95": 3.557
 }
