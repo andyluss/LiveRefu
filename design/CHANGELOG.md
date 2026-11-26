@@ -62,6 +62,7 @@
 - **状态**：尚无真实 App 消费者；不声称已接入/已验收。
 
 ### 变更
+- **design/lab 不再受 M1/M2 结构闸门约束**：`design/lab/` 是自包含的时空实验室/可视化实验区，与顶层 `lab/` 同为实验豁免；`config-design.json` 的 `skip_dirs` 增加 `lab`，避免把实验 HTML 的根文件当成设计系统结构违规。
 - **未来残片路径提升**：设计系统引用从 `games/mainline/future-debris/` 同步到 `games/future-debris/`；HUB/GUIDE 已按 R-016 三态；导览层统一到 `briefing/`。
 
 - **时间与例外表可读性**：`docs/exceptions.md` 的「已收口」表补齐原「当前例外」全部字段，并追加收口时间/方式；`design/TODO.md` 移除「最近完成」段，完成项改为在总表改状态。
