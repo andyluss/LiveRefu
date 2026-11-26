@@ -26,11 +26,12 @@ scope: "跨游戏、跨引擎"
 cd games/world
 npm install                    # TypeScript 类型检查（可选，但推荐）
 ./test/run_m0.sh          # M0：测试 / 双跑哈希 / 坏包 / C ABI / wasm+QuickJS / 基准
-./test/run_m1.sh          # M1：TS DSL / 内容测试 / 5k 基准 / 编辑器 / wasm 预览
+./test/run_m1.sh          # M1：TS DSL / 内容测试 / 5k real / 编辑器 / wasm 预览
 ./worldc ts-check                              # TypeScript 类型检查
 ./worldc bake nav                             # 从 Zone/Prop 烘焙导航
 ./worldc ts-build --compare data/demo.harbor   # 单独跑 TS DSL 编译
 ./worldc editor --port 8788                    # Web 编辑器 v0.5
+WORLDC_RELEASE=1 ./worldc bench --scenario real5k --ticks 6000 --runs 5 --json  # 真实 5k
 npm run dev                                    # TS 内容监听（编译→构建→复制 pack.data）
 ```
 
@@ -113,7 +114,7 @@ python3 -m http.server 8787
 | [`data/demo.greenhouse/`](data/demo.greenhouse/) | 「温室协议」内容包（2.5D） |
 | [`data/demo.orbit/`](data/demo.orbit/) | 「环形站」内容包（3D，含 ScriptHost 示例） |
 | [`test/`](test/) | 一键验收脚本、坏包 fixture、wasm QuickJS 检查 |
-| [`plans/`](plans/) | ADR-001…007：拍板、包 schema、确定性、ABI、ECS 偏差、QuickJS spike、M1 DSL/Web |
+| [`plans/`](plans/) | ADR-001…008：拍板、包 schema、确定性、ABI、ECS 偏差、QuickJS spike、M1 DSL/Web、真实 5k 基准 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 本项目变更日志 |
 
 ## 边界（明确不做）

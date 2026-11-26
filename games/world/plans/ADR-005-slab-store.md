@@ -30,3 +30,12 @@ M0 的 `world-core` 使用确定性的 slab 存储（`Vec<Slot>` + 世代 + 空�
   「5k 实体」本身不构成替换 ECS 的理由。
 - **结论：M1 保留 slab；M2 在真实游戏切片（查询/战斗/大量组件变更）上再复核。**
   若届时每 tick 的排序/物化成本超过预算，再引入 `bevy_ecs` 并保留排序门面。
+
+## M1 复审 · real5k v1（2026-11-26）
+
+- ADR-008 的真实 5k 场景（单 Zone 5,000 实体，2,999 Prop / 1,500 带日程 Actor / 500 Item，
+  20 规则 / 20 任务 / 10 对话 / 10 日程 / 2 脚本 / 导航）：
+  tick P50/P95/P99 = **0.184 / 0.239 / 0.580 ms**；snapshot/hash P95 3.086 ms。
+- 每 tick 碰撞/日程/命令扫描与周期 snapshot/save/load 都在正式 `World` 路径上。
+- **结论：v1 mixed load 不构成替换 ECS 的理由，继续 slab。** 5k 个 NPC 每 tick 决策、多 Zone 驻留、
+  更重的查询/组件变更留给 M2 real5k v2。

@@ -7,7 +7,7 @@ use crate::rng::Rng;
 use crate::script::ScriptHost;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use world_pack::{
     parse_hhmm, ActionDef, ActorDef, ConditionDef, DialogueDef, ItemDef, ObjectiveDef, Pack,
     PropDef, QuestDef, RewardDef, RuleDef, ScheduleDef,
@@ -83,6 +83,7 @@ pub struct World {
     pub overrun_count: u32,
     pub last_error: Option<String>,
     script_host: Option<Box<dyn ScriptHost>>,
+    script_event_filter: Option<BTreeSet<String>>,
 }
 
 impl World {
@@ -127,6 +128,7 @@ impl World {
             overrun_count: 0,
             last_error: None,
             script_host: None,
+            script_event_filter: None,
         };
 
         let player = world.spawn_entity(Entity {
@@ -189,6 +191,16 @@ impl World {
 
     pub fn has_script_host(&self) -> bool {
         self.script_host.is_some()
+    }
+
+    /// 只把指定 kind 的事件交给脚本；用于高频内部事件（日程/寻路）避免全量上下文成本。
+    /// 默认 None = 所有事件都交给脚本。
+    pub fn set_script_event_filter<I, S>(&mut self, kinds: I)
+    where
+        I: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        self.script_event_filter = Some(kinds.into_iter().map(Into::into).collect());
     }
 
     fn load_zone(&mut self, pack: &Pack, zone_id: &str) -> Result<(), String> {
@@ -981,6 +993,13 @@ impl World {
         };
         // 避免把脚本错误/脚本自身产生的事件再次送回脚本，形成递归。
         if event.kind == "script_error" {
+            return;
+        }
+        if self
+            .script_event_filter
+            .as_ref()
+            .is_some_and(|filter| !filter.contains(&event.kind))
+        {
             return;
         }
         let context = match self.script_context(event) {

@@ -66,9 +66,9 @@
       <div>
         <div class="stats">
           <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
-          <div class="stat o"><div class="v">18</div><div class="l">Rust 测试</div></div>
+          <div class="stat o"><div class="v">19</div><div class="l">Rust 测试</div></div>
           <div class="stat p"><div class="v">6</div><div class="l">内容测试</div></div>
-          <div class="stat r"><div class="v">0.01<span style="font-size:12px">ms</span></div><div class="l">5k 合成 tick</div></div>
+          <div class="stat r"><div class="v">0.24<span style="font-size:12px">ms</span></div><div class="l">5k real tick P95</div></div>
           <div class="stat o"><div class="v">5</div><div class="l">玩法 Demo</div></div>
           <div class="stat p"><div class="v">M1</div><div class="l">主要切片</div></div>
         </div>
@@ -116,7 +116,7 @@
           <a class="pm-node done" href="../test/run_m0.sh"><span class="dot"></span><b>M0 验收</b><em>双跑 · 坏包 · ABI</em></a>
           <a class="pm-node done" href="../test/run_m1.sh"><span class="dot"></span><b>M1 验收</b><em>DSL · 内容 · 3D 静态</em></a>
           <a class="pm-node done" href="../CHANGELOG.md"><span class="dot"></span><b>黄金哈希</b><em>0xc840fe2090a0a085</em></a>
-          <span class="pm-node todo"><span class="dot"></span><b>真实 5k</b><em>战斗/查询/组件变更</em></span>
+          <span class="pm-node done"><span class="dot"></span><b>5k v1</b><em>5k mixed · ADR-008</em></span>
         </div></div>
       </div>
     </div>
@@ -132,7 +132,7 @@
       <li class="done"><b>M1 · 移动/导航/资产</b> <span>WASD + 点击寻路；40×40 烘焙网格；逻辑资产依赖与 C ABI <code>world_zone_assets</code>。</span></li>
       <li class="done"><b>M1 · 3D 演示</b> <span>Three.js r187 本地 vendor；同一 wasm 状态；气闸/对话/雨海灯塔。</span></li>
       <li class="done"><b>M1 · ScriptHost</b> <span>QuickJS 事件作用域；事件上下文 → 命令；内存/栈/命令/中断预算；wasm/C/CLI/headless 注入。</span></li>
-      <li class="now"><b>现在 · M1 剩余与 M2 准备</b> <span>真实 5k 基准、三平台 CI、作者试用；动态导航/编辑器 v0.6 暂搁置。</span></li>
+      <li class="now"><b>现在 · M1 剩余与 M2 准备</b> <span>三平台 CI、作者试用；5k v2/动态导航/编辑器 v0.6 暂搁置。</span></li>
       <li class="next"><b>下一步 · M2 生产适配器</b> <span>Godot GDExtension；同一个包在真实引擎跑出同一局。</span></li>
     </ol>
 
@@ -140,11 +140,11 @@
     <table>
       <thead><tr><th>证据</th><th>结果</th><th>来源</th></tr></thead>
       <tbody>
-        <tr><td>Rust workspace 测试</td><td><b>18</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
+        <tr><td>Rust workspace 测试</td><td><b>19</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
         <tr><td>内容测试</td><td><b>6</b> 条 PASS：港湾 3 + 夜市/温室/环形站各 1</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0xc840fe2090a0a085</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
         <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:66125c46…46fe29e</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
-        <tr><td>5k 合成基准</td><td>Apple M1 Pro release ≈ <b>0.01 ms/tick</b>（仅 tick/日程/哈希）</td><td><code>worldc bench --synthetic 5000</code></td></tr>
+        <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P95 <b>0.239 ms</b>，snapshot P95 3.086 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
         <tr><td>主题与页面</td><td>R-016 八页：2D / 编辑器 / 3D 港湾 / 2.5D / 3D 环形站 / HUB / GUIDE / Gallery 通过</td><td><code>check_html_theme.ts</code></td></tr>
         <tr><td>3D 静态契约</td><td>本地 Three.js、import map、wasm 交互入口、无 CDN</td><td><code>test/demo3d_static.mjs</code></td></tr>
       </tbody>
@@ -154,13 +154,13 @@
     <pre><code>cd games/world
 npm install
 ./test/run_m0.sh          # 内核 / C ABI / 坏包 / QuickJS / 基准
-./test/run_m1.sh          # TS DSL / 内容 / 编辑器 / 3D / 5k / wasm
+./test/run_m1.sh          # TS DSL / 内容 / 编辑器 / 3D / 5k real / wasm
 ./web/build.sh            # 2D + 3D 静态构建
 cd web &amp;&amp; python3 -m http.server 8787
 # 2D:   http://127.0.0.1:8787/
 # 3D:   http://127.0.0.1:8787/demo3d.html</code></pre>
 
-    <div class="note warn"><b>不要把 M1 主要切片当成 M1 完整验收。</b>ScriptHost 已接入但是事件作用域；导航门仍是静态烘焙；5k 只有合成基线；编辑器还没有完整 schema 表单。</div>
+    <div class="note warn"><b>不要把 M1 主要切片当成 M1 完整验收。</b>ScriptHost 已接入但是事件作用域；导航门仍是静态烘焙；5k v1 是单 Zone mixed load；编辑器还没有完整 schema 表单。</div>
   </section>
 
   <section class="panel" id="p-architecture" role="tabpanel" aria-labelledby="t-architecture">
@@ -274,7 +274,7 @@ cd web &amp;&amp; python3 -m http.server 8787
         <tr><td class="q">Q1–Q10</td><td>试点/平台/联网/许可/命名/团队/规模</td><td class="pick">见 ADR-001</td><td>内部私有；PC + Web；v0 不做联网</td></tr>
       </tbody>
     </table>
-    <p class="dim">ADR：<a href="../plans/ADR-001-m0-decisions.md">001 拍板</a> · <a href="../plans/ADR-002-pack-schema-v0.md">002 包 schema</a> · <a href="../plans/ADR-003-determinism-save-replay.md">003 确定性</a> · <a href="../plans/ADR-004-abi-v0.md">004 ABI</a> · <a href="../plans/ADR-005-slab-store.md">005 slab</a> · <a href="../plans/ADR-006-quickjs-spike.md">006 QuickJS</a> · <a href="../plans/ADR-007-m1-ts-dsl-web.md">007 M1</a></p>
+    <p class="dim">ADR：<a href="../plans/ADR-001-m0-decisions.md">001 拍板</a> · <a href="../plans/ADR-002-pack-schema-v0.md">002 包 schema</a> · <a href="../plans/ADR-003-determinism-save-replay.md">003 确定性</a> · <a href="../plans/ADR-004-abi-v0.md">004 ABI</a> · <a href="../plans/ADR-005-slab-store.md">005 slab</a> · <a href="../plans/ADR-006-quickjs-spike.md">006 QuickJS</a> · <a href="../plans/ADR-007-m1-ts-dsl-web.md">007 M1</a> · <a href="../plans/ADR-008-real-5k-benchmark.md">008 真实 5k</a></p>
     <div class="note"><b>没拍板：</b>ScriptHost 的持久状态/模块/异步边界、动态导航更新、编辑器 v0.6 的 schema 表单范围。它们应该在 M2 前用真实切片决定，而不是现在拍脑袋。</div>
   </section>
 
@@ -304,7 +304,7 @@ cd web &amp;&amp; python3 -m http.server 8787
         <tr><td>内容到预览</td><td>≤ 2 秒</td><td>编辑器构建→预览刷新；TS 走 <code>npm run dev</code></td></tr>
         <tr><td>适配器规模</td><td>≤ 2,000 行</td><td>M2 验证</td></tr>
         <tr><td>同一局哈希</td><td>Headless / C / wasm / Godot 一致</td><td>前三个一致；Godot 待做</td></tr>
-        <tr><td>规模</td><td>5k 活跃 / 20k 总 / 10 MB 存档</td><td>5k 合成 ≈0.01 ms/tick；存档未压测</td></tr>
+        <tr><td>规模</td><td>5k 初始实体 / 20k 总 / 10 MB 存档</td><td>5k v1 P95 0.239 ms/tick；snapshot/save/load 已记录</td></tr>
       </tbody>
     </table>
   </section>
@@ -317,7 +317,7 @@ cd web &amp;&amp; python3 -m http.server 8787
       <tbody>
         <tr><td><b>ScriptHost 仅事件作用域</b></td><td>无持久脚本状态、模块 import、异步调度、墙钟抢占；JSON 规则仍是主路径。</td><td>持久状态/模块/异步/墙钟预算作为 hardening；先用真实内容压。</td></tr>
         <tr><td><b>导航是静态的</b></td><td>门烘焙成障碍；开门后不重建网格，NPC 不会寻路。</td><td>局部网格更新 + 动态障碍；NPC 用同一 A*。</td></tr>
-        <tr><td><b>5k 是合成基线</b></td><td>不含真实战斗/查询/组件变更，不能证明生产性能。</td><td>用真实玩法切片压测；再决定是否换 bevy_ecs。</td></tr>
+        <tr><td><b>5k v1 是单 Zone mixed load</b></td><td>不是 5k NPC 每 tick 决策，也不是多 Zone 驻留。</td><td>v2 由 M2 Adapter 触发；再决定是否换 bevy_ecs。</td></tr>
         <tr><td><b>编辑器还不够“作者友好”</b></td><td>复杂字段仍改 JSON；对话图简单；没有浏览器内实时预览。</td><td>v0.6 schema 表单、错误定位、自动布局。</td></tr>
         <tr><td><b>3D 是表现层</b></td><td>低模、无 GLB/骨骼/空间音频；不能代表最终美术。</td><td>资产管线 + 一个真实 GLB 角色/场景。</td></tr>
         <tr><td><b>跨平台浮点/ABI</b></td><td>只验证 macOS；三平台 CI 还没真正跑过。</td><td>推送后看 CI；固定 ABI 测试与哈希。</td></tr>
@@ -327,7 +327,7 @@ cd web &amp;&amp; python3 -m http.server 8787
     <h3>下一步（按价值）</h3>
     <ol class="tl">
       <li class="next"><b>动态导航</b><span>开门重建局部网格；NPC 寻路；编辑器“烘焙”可预览。</span></li>
-      <li class="next"><b>真实 5k 基准</b><span>带移动/交互/查询的切片，记录每 tick 与内存。</span></li>
+      <li class="next"><b>动态导航</b><span>开门重建局部网格；NPC 寻路。</span></li>
       <li class="next"><b>编辑器 v0.6</b><span>schema 表单、字段级错误、对话图自动布局。</span></li>
       <li class="next"><b>M2 Godot 适配器</b><span>真正的“换引擎只换一层”验收。</span></li>
     </ol>

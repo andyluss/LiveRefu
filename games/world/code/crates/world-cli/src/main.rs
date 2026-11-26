@@ -1,3 +1,5 @@
+mod bench_real5k;
+
 use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::fs;
@@ -601,6 +603,27 @@ fn cmd_demo(args: &[String]) -> Result<(), String> {
 }
 
 fn cmd_bench(args: &[String]) -> Result<(), String> {
+    if let Some(scenario) = parse_flag(args, "--scenario") {
+        if scenario != "real5k" {
+            return Err(format!(
+                "未知 benchmark scenario: {scenario}（当前支持 real5k）"
+            ));
+        }
+        let seed = parse_flag(args, "--seed")
+            .unwrap_or("42")
+            .parse()
+            .map_err(|e| format!("--seed 解析失败: {e}"))?;
+        let ticks = parse_flag(args, "--ticks")
+            .unwrap_or("6000")
+            .parse()
+            .map_err(|e| format!("--ticks 解析失败: {e}"))?;
+        let runs = parse_flag(args, "--runs")
+            .unwrap_or("5")
+            .parse()
+            .map_err(|e| format!("--runs 解析失败: {e}"))?;
+        let json_out = args.iter().any(|a| a == "--json");
+        return bench_real5k::run(seed, ticks, runs, json_out);
+    }
     if let Some(raw) = parse_flag(args, "--synthetic") {
         let entities: usize = raw
             .parse()
@@ -795,6 +818,7 @@ fn print_help() {
   worldc replay   --trace FILE [--pack DIR] [--expect 0xHASH]
   worldc demo     [--pack DIR] [--trace FILE] [--ticks N]
   worldc bench    [--pack DIR] [--synthetic N] [--ticks N]
+  worldc bench    --scenario real5k [--seed N] [--ticks N] [--runs N] [--json]
   worldc new      <pack.id> [--out DIR]
   worldc header   [--out FILE]
   worldc explain  <CODE>

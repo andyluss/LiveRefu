@@ -23,6 +23,7 @@
 - **M1 剩余：内容测试**：`worldc content-test` + `data/demo.harbor/tests/*.test.json`；`first_shift`、`airlock_locked_without_key`、`pickup_keycard`。
 - **M1 剩余：sourcemap / 热重载**：TS 编译生成 `sourcemap.json`；预览轮询 `/api/pack-version`，编辑器构建后自动刷新。
 - **M1 剩余：5k 合成基准**：`worldc bench --synthetic 5000 --ticks 6000`，Apple M1 Pro release ≈ 0.01 ms/tick。
+- **真实 5k v1 基准（ADR-008）**：`worldc bench --scenario real5k`；单 Zone 5,000 实体（2,999 Prop / 1,500 带日程 Actor / 500 Item），规则/任务/日程/脚本/导航；M1 Pro release tick P95 0.239 ms、snapshot P95 3.086 ms。
 - **M1 剩余：导航/寻路**：`worldc bake nav` 从 Zone/Prop AABB 烘焙 40×40 网格；核心 4 邻接确定性 A* + `Command::MoveTo`；预览点击地面沿虚线路径移动；编辑器「烘焙导航」。
 - **M1 剩余：资产依赖**：`assets/assets.index.json`、actor/prop/item `visual` 引用、校验与 `world_zone_assets` ABI；C ABI 返回 3 个逻辑资产 ID。
 - **3D 沉浸式演示**：`web/demo3d.html` + `demo3d.js`；本地 Three.js r187、第三人称/轨道相机、WASD/点击寻路、气闸滑门、对话字幕、程序化海面/雨/货轮/灯塔、Bloom/尘埃/可选 WebAudio；同一 wasm 状态与哈希。
@@ -48,13 +49,13 @@
 
 ### 验证
 
-- `cargo test --workspace`：18 个测试通过。
+- `cargo test --workspace`：19 个测试通过。
 - Headless 600 tick 双跑：`0xc840fe2090a0a085`。
 - C ABI 宿主：同 `0xc840fe2090a0a085`。
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
 - M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xc840fe2090a0a085`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
-- M1 剩余：`content-test` 6 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k 合成 ≈0.01 ms/tick；R-016 八个页面通过。
+- M1 剩余：`content-test` 6 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k v1 real P95 0.239 ms/tick；R-016 八个页面通过。
 
 ## [0.1.0] - 2026-11-23 12:17
 

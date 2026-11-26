@@ -50,7 +50,7 @@
     <pre><code>cd games/world
 npm install                    # TypeScript 类型检查（可选但推荐）
 ./test/run_m0.sh               # 内核 / C ABI / 坏包 / QuickJS / 基准
-./test/run_m1.sh               # TS DSL / 内容 / 编辑器 / 3D / 5k / wasm</code></pre>
+./test/run_m1.sh               # TS DSL / 内容 / 编辑器 / 3D / 5k real / wasm</code></pre>
     <p>只做内容预览时，最短路径是：</p>
     <pre><code>cd games/world
 ./web/build.sh
@@ -179,7 +179,7 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
         <tr><td><code>worldc content-test</code></td><td>跑 <code>tests/*.test.json</code> 内容断言</td><td><code>--filter</code></td></tr>
         <tr><td><code>worldc bake nav</code></td><td>从 Zone/Prop 烘焙导航网格</td><td><code>--zone --cell</code></td></tr>
         <tr><td><code>worldc editor</code></td><td>启动本地编辑器服务器</td><td><code>--port 8788</code></td></tr>
-        <tr><td><code>worldc bench</code></td><td>Demo 基准 / 合成 5k 基准</td><td><code>--synthetic 5000</code></td></tr>
+        <tr><td><code>worldc bench</code></td><td>Demo 基准 / 真实 5k 基准</td><td><code>--scenario real5k</code></td></tr>
       </tbody>
     </table>
     <p class="dim">完整命令：<code>./worldc --help</code>；错误码：<code>./worldc explain E-REF-001</code>。</p>
@@ -189,11 +189,11 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
     <h2><span class="n">07</span>测试与验收</h2>
     <pre><code>cd games/world
 ./test/run_m0.sh      # 测试 / 双跑 / 坏包 / C ABI / wasm QuickJS / 基准
-./test/run_m1.sh      # TS DSL / 内容测试 / 编辑器 / 多 Demo / 5k / R-016
+./test/run_m1.sh      # TS DSL / 内容测试 / 编辑器 / 多 Demo / 5k real / R-016
 ./worldc content-test # 只跑内容断言</code></pre>
     <p>当前基线：</p>
     <div class="grid3">
-      <div class="card"><h3>18 个 Rust 测试</h3><p>core / pack / ffi / script；clippy 无警告。</p></div>
+      <div class="card"><h3>19 个 Rust 测试</h3><p>core / pack / ffi / script；clippy 无警告。</p></div>
       <div class="card"><h3>6 条内容测试</h3><p>港湾 3 条 + 夜市 / 温室 / 环形站各 1 条。</p></div>
       <div class="card"><h3>黄金哈希</h3><p><code>0xc840fe2090a0a085</code>；Headless / C ABI / wasm 一致。</p></div>
     </div>

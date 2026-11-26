@@ -1,3 +1,4 @@
+pub mod bench;
 pub mod types;
 pub mod validate;
 
@@ -98,6 +99,12 @@ impl Pack {
 
     pub fn validate(&self) -> ValidationReport {
         validate::validate_pack(self)
+    }
+
+    /// 真实 5k 基准包：单 Zone 5,000 实体（含玩家），带碰撞/日程/规则/任务/对话/脚本/导航。
+    /// 不是正式内容；用于 `worldc bench --scenario real5k`。
+    pub fn real5k(seed: u64) -> Self {
+        bench::real5k(seed)
     }
 
     /// M1 基准用合成包：一个区域 + N 个相同 Actor 的 placement。

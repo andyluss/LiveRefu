@@ -1,0 +1,67 @@
+{
+  "command_rejected": 0,
+  "commands_enqueued": 7090,
+  "entities": 4895,
+  "entities_initial": 5000,
+  "events": 12690,
+  "final_hash": "0x523160a40071cef5",
+  "hashes_equal": true,
+  "load_ms": {
+    "max": 13.3565,
+    "mean": 11.9181,
+    "p50": 11.799,
+    "p95": 12.7368,
+    "p99": 13.3565,
+    "samples": 50
+  },
+  "machine": {
+    "arch": "aarch64",
+    "os": "macos"
+  },
+  "pack_hash": "sha256:98e9f500f2df3ba34ed93311412adddb4078f6417719bb265224a9f1b4be08de",
+  "profile": "release",
+  "query_ms": {
+    "max": 0.5908,
+    "mean": 0.0035,
+    "p50": 0.0031,
+    "p95": 0.0033,
+    "p99": 0.0161,
+    "samples": 30000
+  },
+  "runs": 5,
+  "save_ms": {
+    "max": 7.5843,
+    "mean": 6.9649,
+    "p50": 6.887,
+    "p95": 7.2871,
+    "p99": 7.5843,
+    "samples": 50
+  },
+  "scenario": "real5k",
+  "script_errors": 0,
+  "seed": 42,
+  "snapshot_hash_ms": {
+    "max": 6.8994,
+    "mean": 2.8813,
+    "p50": 2.8427,
+    "p95": 3.086,
+    "p99": 3.4542,
+    "samples": 500
+  },
+  "target": {
+    "snapshot_hash_p95_ms_max": 5.0,
+    "snapshot_hash_p95_ok": true,
+    "tick_p95_ms_max": 2.0,
+    "tick_p95_ok": true
+  },
+  "tick_ms": {
+    "max": 51.3889,
+    "mean": 0.5697,
+    "p50": 0.1835,
+    "p95": 0.239,
+    "p99": 0.5804,
+    "samples": 30000
+  },
+  "ticks": 6000,
+  "warmup_ticks": 300
+}

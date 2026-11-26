@@ -3,4 +3,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export CARGO_HOME="${CARGO_HOME:-$ROOT/code/.cargo-home}"
-exec cargo run -q --manifest-path "$ROOT/code/Cargo.toml" -p world-cli -- "$@"
+PROFILE=""
+if [[ "${WORLDC_RELEASE:-0}" == "1" ]]; then
+  PROFILE="--release"
+fi
+exec cargo run -q $PROFILE --manifest-path "$ROOT/code/Cargo.toml" -p world-cli -- "$@"
