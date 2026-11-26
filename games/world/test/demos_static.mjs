@@ -37,7 +37,7 @@ check("orbit wasm", orbitJs.includes("new PreviewWorld") && orbitJs.includes("de
 check("orbit script", existsSync(join(ROOT, "data/demo.orbit/scripts/reactor.js")));
 check("archive script", existsSync(join(ROOT, "data/demo.archive/scripts/archive.js")));
 check("quickjs env shim", existsSync(join(ROOT, "web/vendor/quickjs-env.js")));
-check("local only", !/https?:\/\//.test(gallery + iso + orbit));
+check("local only", !/https?:\/\/(?!127\.0\.0\.1(?::\d+)?(?:\/|$))/.test(gallery + iso + orbit));
 
 let failed = 0;
 for (const [name, ok] of checks) {

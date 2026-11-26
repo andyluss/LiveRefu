@@ -27,11 +27,11 @@
       <div class="brand">RefuWorld <span class="en">WORLD LAYER</span></div>
       <nav class="brand-links" aria-label="相关页面">
         <a href="GUIDE.html">用户指南 GUIDE</a>
-        <a href="../web/demos.html">Demo 索引</a>
+        <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a>
         <a href="../README.md">项目 README</a>
         <a href="../docs/07_M1实现与验收.md">M1 验收</a>
-        <a href="../web/demo3d.html" title="需要本地静态服务器">3D 演示</a>
-        <a href="../web/index.html" title="需要本地静态服务器">2D 预览</a>
+        <a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地静态服务器">3D 演示</a>
+        <a href="http://127.0.0.1:8787/web/index.html" title="需要本地静态服务器">2D 预览</a>
       </nav>
       <div class="stamp">M1 主要切片 · 2026-11-24</div>
       <div class="theme-switch" role="group" aria-label="主题">
@@ -82,7 +82,7 @@
       <div class="card"><h4>作者不需要引擎知识</h4><p>用编辑器或 TS DSL 做出 1 区、NPC、门、钥匙卡、对话、任务；目标 2 小时。</p><p><a href="GUIDE.html">先读用户指南 →</a></p></div>
       <div class="card"><h4>两个宿主同一局</h4><p>固定种子 + 同一 trace，Headless / C ABI / wasm 跑出同一个 <code>0x3606a2…</code>。</p><p><a href="../docs/07_M1实现与验收.md">看验收证据 →</a></p></div>
       <div class="card"><h4>换引擎只换适配器</h4><p>适配器只做输入/资产/视图/音频/存档；不允许出现玩法规则。</p><p><a href="../docs/03_引擎适配与替换.md">适配器契约 →</a></p></div>
-      <div class="card"><h4>内容迭代够快</h4><p>编辑器保存 → 校验 → 烘焙 → 构建 → 预览；错误带内容 ID，不带引擎堆栈。</p><p><a href="../web/editor.html" title="需要本地编辑器服务器">打开编辑器（需服务器）→</a></p></div>
+      <div class="card"><h4>内容迭代够快</h4><p>编辑器保存 → 校验 → 烘焙 → 构建 → 预览；错误带内容 ID，不带引擎堆栈。</p><p><a href="http://127.0.0.1:8788/" title="需要本地编辑器服务器">打开编辑器（需服务器）→</a></p></div>
     </div>
 
     <h3>项目地形图</h3>
@@ -106,10 +106,10 @@
         </div></div>
         <div class="pm-lane"><div class="pm-label">宿主<span>怎么跑起来</span></div><div class="pm-track">
           <a class="pm-node done" href="../code/hosts/c/main.c"><span class="dot"></span><b>Headless + C</b><em>同哈希</em></a>
-          <a class="pm-node done" href="../web/"><span class="dot"></span><b>wasm 2D</b><em>Canvas + 交互</em></a>
-          <a class="pm-node done" href="../web/demo3d.html"><span class="dot"></span><b>Three.js 3D</b><em>港湾 · 本地 vendor</em></a>
-          <a class="pm-node done" href="../web/iso.html?demo=market"><span class="dot"></span><b>2.5D 等距</b><em>夜市 · 温室</em></a>
-          <a class="pm-node done" href="../web/orbit3d.html"><span class="dot"></span><b>3D 环形站</b><em>太空场景</em></a>
+          <a class="pm-node done" href="http://127.0.0.1:8787/web/"><span class="dot"></span><b>wasm 2D</b><em>Canvas + 交互</em></a>
+          <a class="pm-node done" href="http://127.0.0.1:8787/web/demo3d.html"><span class="dot"></span><b>Three.js 3D</b><em>港湾 · 本地 vendor</em></a>
+          <a class="pm-node done" href="http://127.0.0.1:8787/web/iso.html?demo=market"><span class="dot"></span><b>2.5D 等距</b><em>夜市 · 温室</em></a>
+          <a class="pm-node done" href="http://127.0.0.1:8787/web/orbit3d.html"><span class="dot"></span><b>3D 环形站</b><em>太空场景</em></a>
           <span class="pm-node done"><span class="dot"></span><b>Godot</b><em>M2 适配器 · 已完成</em></span>
         </div></div>
         <div class="pm-lane"><div class="pm-label">验证<span>凭什么相信</span></div><div class="pm-track">
@@ -237,7 +237,7 @@ node tools/serve-web.mjs --port 8787
       <img src="../docs/shots/m1_editor.png" alt="RefuWorld Web 编辑器 v0.5" style="display:block;width:100%;height:auto">
       <figcaption><b>编辑器 v0.5</b> · 布局拖拽 + 字段表单 + 对话图 + 撤销/重做 + 构建试玩。保存先写后校验，失败回滚。</figcaption>
     </figure>
-    <p style="margin-top:12px"><a href="../docs/08_两小时教程.md">两小时教程</a> · <a href="../docs/02_内容作者与工具链.md">内容作者与工具链</a> · <a href="GUIDE.html">用户指南</a> · <a href="../web/editor.html" title="需要本地服务器">编辑器</a></p>
+    <p style="margin-top:12px"><a href="../docs/08_两小时教程.md">两小时教程</a> · <a href="../docs/02_内容作者与工具链.md">内容作者与工具链</a> · <a href="GUIDE.html">用户指南</a> · <a href="http://127.0.0.1:8788/" title="需要本地服务器">编辑器</a></p>
     <div class="note warn"><b>教程状态：</b>功能已实现，但“2 小时”还没有真实作者计时验收；把它当目标，不当已证实的平均值。</div>
   </section>
 
@@ -256,7 +256,7 @@ node tools/serve-web.mjs --port 8787
     <pre style="margin-top:14px"><code>cd games/world && ./web/build.sh
 node tools/serve-web.mjs --port 8787
 # http://127.0.0.1:8787/web/demo3d.html</code></pre>
-    <p><a href="../web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="../web/orbit3d.html" title="需要本地服务器">打开 3D 环形站</a> · <a href="../web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="../web/demos.html">Demo 索引</a></p>
+    <p><a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="http://127.0.0.1:8787/web/orbit3d.html" title="需要本地服务器">打开 3D 环形站</a> · <a href="http://127.0.0.1:8787/web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a></p>
   </section>
 
   <section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions">
