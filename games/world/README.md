@@ -39,13 +39,13 @@ M1 预览：
 ```bash
 cd games/world
 ./web/build.sh
-cd web && python3 -m http.server 8787
-# Demo 索引：http://127.0.0.1:8787/demos.html
-# 2D 预览：http://127.0.0.1:8787/
-# 3D 港湾：http://127.0.0.1:8787/demo3d.html
-# 2.5D 夜市/温室：/iso.html?demo=market / ?demo=greenhouse
-# 3D 环形站：/orbit3d.html
-# 编辑器（可保存/构建）：cd .. && ./worldc editor --port 8788
+python3 -m http.server 8787
+# Demo 索引：http://127.0.0.1:8787/web/demos.html
+# 2D 预览：http://127.0.0.1:8787/web/
+# 3D 港湾：http://127.0.0.1:8787/web/demo3d.html
+# 2.5D 夜市/温室：/web/iso.html?demo=market / ?demo=greenhouse
+# 3D 环形站：/web/orbit3d.html
+# 编辑器（另开终端）：./worldc editor --port 8788
 ```
 
 > 当前有 **2D/2.5D/3D 多 Demo** 与 **Web 编辑器 v0.5**（布局/表单/对话图/撤销）；TS 类型检查与 `npm run dev` 已可用；更完整的 schema 表单、动态导航与 ScriptHost 仍待。

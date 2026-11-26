@@ -6,11 +6,12 @@
 
 ```bash
 ./web/build.sh
-cd web && python3 -m http.server 8787
-# 索引：http://127.0.0.1:8787/demos.html
-# 2.5D 夜市：/iso.html?demo=market
-# 2.5D 温室：/iso.html?demo=greenhouse
-# 3D 环形站：/orbit3d.html
+cd games/world
+python3 -m http.server 8787
+# 索引：http://127.0.0.1:8787/web/demos.html
+# 2.5D 夜市：/web/iso.html?demo=market
+# 2.5D 温室：/web/iso.html?demo=greenhouse
+# 3D 环形站：/web/orbit3d.html
 ```
 
 `web/build.sh` 会把 4 个内容包构建到 `web/packs/*.data`。所有 Demo 共用 `PreviewWorld`，
@@ -20,8 +21,9 @@ cd web && python3 -m http.server 8787
 
 ```bash
 ./web/build.sh
-cd web && python3 -m http.server 8787
-# http://127.0.0.1:8787/demo3d.html
+cd games/world
+python3 -m http.server 8787
+# http://127.0.0.1:8787/web/demo3d.html
 ```
 
 同一份 wasm 世界状态，Three.js 表现层：第三人称/轨道相机、WASD/点击寻路、气闸滑门、对话字幕、
@@ -44,18 +46,17 @@ cd games/world
 ```bash
 cd games/world
 ./web/build.sh
-cd web
 python3 -m http.server 8787
-# 打开 http://127.0.0.1:8787/
+# 打开 http://127.0.0.1:8787/web/
 ```
 
 `web/build.sh` 会：
 
-1. `worldc build` 生成 `dist/demo.harbor/pack.data`；
+1. `worldc bake nav` + `worldc build` 生成 4 个内容包（港湾/夜市/温室/环形站）；
 2. 编译 `world-wasm` 到 `wasm32-unknown-unknown`；
 3. 用 `wasm-bindgen --target web` 生成 `web/pkg/`；
 4. 用 `wasm-bindgen --target nodejs` 生成 `web/node-pkg/`（供 `test_preview.cjs`）；
-5. 复制 `pack.data` 与 `m0.trace.json`。
+5. 复制 `pack.data`、`web/packs/*.data` 与 `m0.trace.json`。
 
 `web/pkg/`、`web/node-pkg/`、`pack.data`、`m0.trace.json` 都是生成物，已 gitignore。
 

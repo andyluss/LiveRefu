@@ -20,6 +20,9 @@ for (const id of ["demo.market", "demo.greenhouse", "demo.orbit"]) {
 }
 check("gallery cards", (gallery.match(/class="demo-card"/g) || []).length >= 5);
 check("gallery links", gallery.includes("iso.html?demo=market") && gallery.includes("iso.html?demo=greenhouse") && gallery.includes("orbit3d.html"));
+for (const image of ["harbor-2d", "harbor-3d", "market", "greenhouse", "orbit", "editor"]) {
+  check(`gallery image ${image}`, existsSync(join(ROOT, "web/images/demos", image + ".jpg")));
+}
 check("gallery R-016", gallery.includes("data-theme-choice") && gallery.includes("lrds-theme"));
 check("iso R-016", iso.includes("data-theme-choice") && iso.includes("lrds-theme"));
 check("iso wasm", isoJs.includes("new PreviewWorld") && isoJs.includes("world.move_to") && isoJs.includes("demo.market") && isoJs.includes("demo.greenhouse"));
