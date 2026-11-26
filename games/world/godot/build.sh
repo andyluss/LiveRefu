@@ -16,6 +16,10 @@ esac
 mkdir -p "$ROOT/dist/demo.harbor"
 "$ROOT/worldc" build --pack "$ROOT/data/demo.harbor" --out "$ROOT/dist/demo.harbor" >/dev/null
 cp "$ROOT/dist/demo.harbor/pack.data" "$HERE/pack.data"
+rm -rf "$HERE/assets"
+mkdir -p "$HERE/assets"
+cp -R "$ROOT/data/demo.harbor/art" "$HERE/assets/art"
+cp -R "$ROOT/data/demo.harbor/audio" "$HERE/assets/audio"
 # 直接写 GDExtension 清单，避免 Linux headless --import 在 CI 上 core dump。
 mkdir -p "$HERE/.godot"
 printf 'res://world_godot.gdextension\n' > "$HERE/.godot/extension_list.cfg"

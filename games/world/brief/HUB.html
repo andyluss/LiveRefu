@@ -133,7 +133,7 @@
       <li class="done"><b>M1 · 3D 演示</b> <span>Three.js r187 本地 vendor；同一 wasm 状态；气闸/对话/雨海灯塔。</span></li>
       <li class="done"><b>M1 · ScriptHost</b> <span>QuickJS 事件作用域；事件上下文 → 命令；内存/栈/命令/中断预算；wasm/C/CLI/headless 注入。</span></li>
       <li class="done"><b>M1 · 三平台 CI</b> <span>GitHub Actions run 45757232197：Ubuntu / macOS / Windows、C ABI、real5k、world-wasm + QuickJS、8 页 web 检查全绿。</span></li>
-      <li class="done"><b>M2 · Godot 逻辑适配器</b> <span>world-abi + GDExtension WorldNode；600 tick 哈希、save/load、BoxMesh 视图池、WASD/相机/灯光、kind 视图、程序化提示音；CTS 基础组 L/T/I/E/V/S/X/D 已过；GLB/真实音频待做。</span></li>
+      <li class="done"><b>M2 · Godot 逻辑适配器</b> <span>world-abi + GDExtension WorldNode；600 tick 哈希、save/load、BoxMesh 视图池、WASD/相机/灯光、kind 视图、GLB fixture、真实 WAV；CTS L/T/I/E/V/S/X/D/Z/A 已过；全量资产池待做。</span></li>
       <li class="now"><b>现在 · M2 适配器</b> <span>第一切片已验证边界；作者试用与 5k v2 并行待做。</span></li>
       <li class="next"><b>下一步 · M2 视图/CTS</b> <span>WorldNode 视图池、输入、资产、Godot CTS；同一包同一局。</span></li>
     </ol>
@@ -145,7 +145,7 @@
         <tr><td>Rust workspace 测试</td><td><b>19</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
         <tr><td>内容测试</td><td><b>6</b> 条 PASS：港湾 3 + 夜市/温室/环形站各 1</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0xc840fe2090a0a085</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
-        <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:66125c46…46fe29e</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
+        <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:85bfb279…13ce35</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
         <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P95 <b>0.239 ms</b>，snapshot P95 3.086 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
         <tr><td>主题与页面</td><td>R-016 八页：2D / 编辑器 / 3D 港湾 / 2.5D / 3D 环形站 / HUB / GUIDE / Gallery 通过</td><td><code>check_html_theme.ts</code></td></tr>
         <tr><td>3D 静态契约</td><td>本地 Three.js、import map、wasm 交互入口、无 CDN</td><td><code>test/demo3d_static.mjs</code></td></tr>

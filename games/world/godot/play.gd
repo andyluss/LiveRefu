@@ -1,15 +1,18 @@
 extends Node3D
 
 const STEP := 1.0 / 60.0
+const AssetSlots = preload("res://asset_slots.gd")
 var world: WorldNode
 var accumulator := 0.0
 var camera: Camera3D
 var sfx: AudioStreamPlayer
+var keeper_model: Node3D
 
 func _ready() -> void:
 	camera = $Camera
 	sfx = $Sfx
-	sfx.stream = _make_tone()
+	var real_audio := _load_wav("res://assets/audio/airlock_open.wav")
+	sfx.stream = real_audio if real_audio != null else _make_tone()
 	var file := FileAccess.open("res://pack.data", FileAccess.READ)
 	if file == null:
 		push_error("pack.data 不存在")
@@ -48,6 +51,8 @@ func _process(delta: float) -> void:
 			return
 		accumulator -= STEP
 	world.sync_views()
+	if keeper_model != null:
+		keeper_model.position = world.entity_position("demo.keeper") + Vector3(0, 0.5, 0)
 	_poll_audio()
 	_update_camera()
 
@@ -56,8 +61,40 @@ func _poll_audio() -> void:
 		if line.strip_edges().is_empty():
 			continue
 		var event = JSON.parse_string(line)
-		if event is Dictionary and event.get("kind", "") in ["dialogue_started", "item_acquired"]:
+		if event is Dictionary and event.get("kind", "") in ["dialogue_started", "item_acquired", "sound"]:
 			sfx.play()
+
+func _load_wav(path: String) -> AudioStreamWAV:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return null
+	var bytes := file.get_buffer(file.get_length())
+	if bytes.size() < 44:
+		return null
+	var rate := 22050
+	var channels := 1
+	var bits := 16
+	var pcm := PackedByteArray()
+	var i := 12
+	while i + 8 <= bytes.size():
+		var chunk := bytes.slice(i, i + 4).get_string_from_ascii()
+		var size := bytes.decode_u32(i + 4)
+		if chunk == "fmt " and i + 24 <= bytes.size():
+			channels = bytes.decode_u16(i + 10)
+			rate = bytes.decode_u32(i + 12)
+			bits = bytes.decode_u16(i + 22)
+		elif chunk == "data":
+			pcm = bytes.slice(i + 8, min(i + 8 + size, bytes.size()))
+			break
+		i += 8 + size + (size % 2)
+	if pcm.is_empty() or bits != 16:
+		return null
+	var wav := AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = rate
+	wav.stereo = channels == 2
+	wav.data = pcm
+	return wav
 
 func _make_tone() -> AudioStreamWAV:
 	var rate := 22050

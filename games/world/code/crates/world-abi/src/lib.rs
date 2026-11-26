@@ -66,6 +66,15 @@ extern "C" {
         out: *mut WorldTransformPod,
         cap: usize,
     ) -> usize;
+    fn world_zone_assets(
+        world: *mut WorldHandle,
+        zone_id: *const c_char,
+        out: *mut u8,
+        cap: usize,
+        out_len: *mut usize,
+    ) -> i32;
+    fn world_zone_status(world: *mut WorldHandle, zone_id: *const c_char) -> i32;
+    fn world_activate_zone(world: *mut WorldHandle, zone_id: *const c_char) -> i32;
     fn world_save(world: *mut WorldHandle, out: *mut u8, cap: usize, out_len: *mut usize) -> i32;
     fn world_load_save(world: *mut WorldHandle, bytes: *const u8, len: usize) -> i32;
     fn world_last_error(world: *mut WorldHandle) -> *const c_char;
@@ -171,6 +180,43 @@ impl AbiWorld {
             ));
         }
         Ok(out)
+    }
+
+    pub fn zone_assets(&mut self, zone: &str) -> Result<String, String> {
+        let zone = CString::new(zone).map_err(|e| format!("zone 非法: {e}"))?;
+        let mut len = 0usize;
+        let status = unsafe {
+            world_zone_assets(self.handle, zone.as_ptr(), ptr::null_mut(), 0, &mut len)
+        };
+        if status != WORLD_ERR_BUFFER_TOO_SMALL {
+            return Err(last_error(self.handle));
+        }
+        let mut buf = vec![0u8; len];
+        let status = unsafe {
+            world_zone_assets(self.handle, zone.as_ptr(), buf.as_mut_ptr(), buf.len(), &mut len)
+        };
+        if status != WORLD_OK {
+            return Err(last_error(self.handle));
+        }
+        buf.truncate(len);
+        String::from_utf8(buf).map_err(|e| format!("assets 不是 UTF-8: {e}"))
+    }
+
+    pub fn zone_status(&self, zone: &str) -> i32 {
+        let Ok(zone) = CString::new(zone) else {
+            return 0;
+        };
+        unsafe { world_zone_status(self.handle, zone.as_ptr()) }
+    }
+
+    pub fn activate_zone(&mut self, zone: &str) -> Result<(), String> {
+        let zone = CString::new(zone).map_err(|e| format!("zone 非法: {e}"))?;
+        let status = unsafe { world_activate_zone(self.handle, zone.as_ptr()) };
+        if status == WORLD_OK {
+            Ok(())
+        } else {
+            Err(last_error(self.handle))
+        }
     }
 
     pub fn save(&mut self) -> Result<Vec<u8>, String> {

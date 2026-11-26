@@ -31,12 +31,12 @@ M2 先做 **Godot 4.7 的逻辑适配器**，不先做渲染/资产/音频：
   - `set_move` 后 `WORLD_MOVE_X=0.6666`
   - `play.tscn` headless 冒烟通过（无脚本错误）
   - `cts.sh`：L/T/I/E/V/S/X/D 基础组全 PASS
-  - 视图按 kind 选 Capsule/Box/Sphere；dialogue/item 事件播放程序化提示音
+  - 视图按 kind 选 Capsule/Box/Sphere；真实 WAV `airlock_open.wav` 经事件播放；CTS 增加 Z/A
 - C ABI/Headless 同一哈希；适配器源码不 `use world_core`。
 
 ## 不包含
 
-- GLB 资产导入、真实音频资产、完整 Input 映射、插值/MultiMesh；视图池/相机/灯光/程序化音频已最小。
+- 全量 GLB 导入/资源池、完整 Input 映射、插值/MultiMesh；已有 keeper GLB fixture、真实 WAV 与 Z/A CTS。
 - CTS 全组（当前已有 L/T/I/E/V/S/X/D 基础组）；
 - 5k 渲染帧时间；
 - Godot 打包/移动端；

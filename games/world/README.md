@@ -110,7 +110,7 @@ python3 -m http.server 8787
 | [`tools/editor-server.mjs`](tools/editor-server.mjs) | 本地编辑器服务器（读写/校验/构建） |
 | [`code/`](code/) | Rust workspace：pack/core/abi/ffi/headless/cli/script/wasm |
 | [`godot-extension/`](godot-extension/) | M2 GDExtension：Godot 4.7 `WorldNode`，只通过 `world-abi` 调内核 |
-| [`godot/`](godot/) | M2 最小 Godot 工程；`play.tscn` 可 WASD 移动，`./godot/test.sh` 跑哈希/存档对账，`./godot/cts.sh` 跑基础 CTS；play 场景含程序化视图/提示音 |
+| [`godot/`](godot/) | M2 最小 Godot 工程；`play.tscn` 可 WASD 移动，`./godot/test.sh` 跑哈希/存档对账，`./godot/cts.sh` 跑基础 CTS；play 场景含 GLB slot/真实 WAV |
 | [`data/demo.harbor/`](data/demo.harbor/) | 「港湾值班室」内容包（2D/3D） |
 | [`data/demo.market/`](data/demo.market/) | 「霓虹夜市」内容包（2.5D） |
 | [`data/demo.greenhouse/`](data/demo.greenhouse/) | 「温室协议」内容包（2.5D） |

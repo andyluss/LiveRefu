@@ -7,7 +7,7 @@
 
 ### 新增
 
-- **M2 第一切片：Godot 逻辑适配器**：新增 `world-abi` 与独立 `godot-extension`（godot 0.5.6 / api-4-7）；`WorldNode` 通过 C ABI 完成 load/tick/interact/talk/pickup/set_move/sync_views/save/load；Godot 4.7 headless 600 tick 哈希 `0xc840fe2090a0a085`、save/load 同哈希、拾取后视图池回收为 3 个节点、移动 x=0.667；新增 Camera3D/日光/地面与 WASD `play.tscn`；`cts.sh` 的 L/T/I/E/V/S/X/D 基础组全 PASS；`world.yml` 增加 Godot 4.7 CTS job，待 push 实跑。视图按 kind 选 Capsule/Box/Sphere，dialogue/item 事件播放程序化提示音（无外部音频资产）。记录见 [09 · M2 启动](docs/09_M2适配器启动.md)；资产/音频/CTS 剩余组未做。
+- **M2 第一切片：Godot 逻辑适配器**：新增 `world-abi` 与独立 `godot-extension`（godot 0.5.6 / api-4-7）；`WorldNode` 通过 C ABI 完成 load/tick/interact/talk/pickup/set_move/sync_views/save/load；Godot 4.7 headless 600 tick 哈希 `0xc840fe2090a0a085`、save/load 同哈希、拾取后视图池回收为 3 个节点、移动 x=0.667；新增 Camera3D/日光/地面与 WASD `play.tscn`；`cts.sh` 的 L/T/I/E/V/S/X/D 基础组全 PASS；`world.yml` 增加 Godot 4.7 CTS job，待 push 实跑。视图按 kind 选 Capsule/Box/Sphere；真实 `keeper.glb` fixture 运行时加载，`airlock_open.wav` 经事件播放；CTS 增加 Z/A。记录见 [09 · M2 启动](docs/09_M2适配器启动.md)；资产/音频/CTS 剩余组未做。
 - **M0 可运行实现**：新增 `code/` Rust workspace（`world-pack`、`world-core`、`world-ffi`、`world-host-headless`、`world-cli`、`world-script`、`world-script-wasm`）。
 - **「港湾值班室」内容包**：`data/demo.harbor/`，含 1 区、NPC、气闸、钥匙卡、规则、任务、对话、日程、文案与 600 tick trace。
 - **C ABI v0 + C 冒烟宿主**：`code/include/world.h`、`code/hosts/c/main.c`；C 宿主与 Headless 同哈希。
@@ -47,7 +47,7 @@
 - [05](docs/05_路线图与验收.md) 的待拍板问题改为已拍板结论，并补 M0 验收结果表。
 - 新增 CI workflow（当时 `world-m0.yml`，现 `world.yml`）：三 OS `cargo test`、C ABI 冒烟、wasm core 构建。
 - 新增 `test/run_m1.sh`、`web/build.sh`、`web/README.md`、`tools/editor-server.mjs`；`worldc` 增加 `ts-build`/`content-test`/`editor`。
-- 黄金哈希因 `collider`/`move_intent`/`open_door`/`path`/`nav`/`assets` 更新：包 `sha256:66125c46…46fe29e`，600 tick `0xc840fe2090a0a085`。
+- 黄金哈希因 `collider`/`move_intent`/`open_door`/`path`/`nav`/`assets` 更新：包 `sha256:85bfb279…13ce35`，600 tick `0xc840fe2090a0a085`。
 
 ### 验证
 

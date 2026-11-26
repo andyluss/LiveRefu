@@ -213,6 +213,48 @@ impl WorldNode {
     }
 
     #[func]
+    fn entity_position(&mut self, content_id: GString) -> Vector3 {
+        let Some(world) = self.world.as_mut() else {
+            return Vector3::ZERO;
+        };
+        let Some(entity) = world.find_entity(content_id.to_string().as_str()) else {
+            return Vector3::ZERO;
+        };
+        let index = (entity & 0xFFFF_FFFF) as u32;
+        let generation = (entity >> 32) as u32;
+        for pod in world.copy_transforms().unwrap_or_default() {
+            if pod.index == index && pod.generation == generation {
+                return Vector3::new(pod.position[0], pod.position[1], pod.position[2]);
+            }
+        }
+        Vector3::ZERO
+    }
+
+    #[func]
+    fn zone_assets(&mut self, zone: GString) -> GString {
+        match self.world.as_mut().and_then(|world| world.zone_assets(zone.to_string().as_str()).ok()) {
+            Some(text) => GString::from(text.as_str()),
+            None => GString::from("[]"),
+        }
+    }
+
+    #[func]
+    fn zone_status(&self, zone: GString) -> i64 {
+        self.world
+            .as_ref()
+            .map(|world| world.zone_status(zone.to_string().as_str()) as i64)
+            .unwrap_or(0)
+    }
+
+    #[func]
+    fn activate_zone(&mut self, zone: GString) -> bool {
+        match self.world.as_mut() {
+            Some(world) => world.activate_zone(zone.to_string().as_str()).is_ok(),
+            None => false,
+        }
+    }
+
+    #[func]
     fn player_position(&mut self) -> Vector3 {
         let Some(world) = self.world.as_mut() else {
             return Vector3::ZERO;

@@ -1,5 +1,6 @@
 extends Node
 
+const AssetSlots = preload("res://asset_slots.gd")
 var failures := 0
 var bytes: PackedByteArray
 
@@ -16,6 +17,7 @@ func _ready() -> void:
 	_test_events()
 	_test_views()
 	_test_save()
+	_test_zone_assets()
 	_test_bad_pack()
 	print("CTS_RESULT failures=", failures)
 	get_tree().quit(0 if failures == 0 else 1)
@@ -97,6 +99,21 @@ func _test_save() -> void:
 	check("S hash roundtrip", restored.state_hash_hex() == expected)
 	world.queue_free()
 	restored.queue_free()
+
+func _test_zone_assets() -> void:
+	var world := make_world()
+	check("Z zone status", world.zone_status("zone.harbor") == 3)
+	check("Z invalid zone", world.zone_status("zone.none") == 0)
+	check("Z activate", world.activate_zone("zone.harbor"))
+	var parsed = JSON.parse_string(world.zone_assets("zone.harbor"))
+	var assets: Array = parsed if parsed is Array else []
+	check("A asset count", assets.size() == 3)
+	check("A mesh asset", assets.has("mesh.keeper"))
+	var scene = AssetSlots.load_glb("res://assets/art/keeper.glb")
+	check("A GLB load", scene != null)
+	if scene != null:
+		scene.queue_free()
+	world.queue_free()
 
 func _test_bad_pack() -> void:
 	var bad := WorldNode.new()

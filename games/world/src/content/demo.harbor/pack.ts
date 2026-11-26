@@ -28,7 +28,7 @@ defineAssets({
   "mesh.keeper": { role: "mesh", source: "art/keeper.glb" },
   "mesh.airlock": { role: "mesh", source: "art/airlock.glb" },
   "mesh.keycard": { role: "mesh", source: "art/keycard.glb" },
-  "sfx.airlock.open": { role: "sfx", source: "audio/airlock_open.ogg" },
+  "sfx.airlock.open": { role: "sfx", source: "audio/airlock_open.wav" },
 });
 
 defineLoc("zh-CN", {

@@ -13,6 +13,6 @@
   },
   "sfx.airlock.open": {
     "role": "sfx",
-    "source": "audio/airlock_open.ogg"
+    "source": "audio/airlock_open.wav"
   }
 }
