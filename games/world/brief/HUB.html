@@ -132,7 +132,7 @@
       <li class="done"><b>M1 · 移动/导航/资产</b> <span>WASD + 点击寻路；40×40 烘焙网格；逻辑资产依赖与 C ABI <code>world_zone_assets</code>。</span></li>
       <li class="done"><b>M1 · 3D 演示</b> <span>Three.js r187 本地 vendor；同一 wasm 状态；气闸/对话/雨海灯塔。</span></li>
       <li class="done"><b>M1 · ScriptHost</b> <span>QuickJS 事件作用域；事件上下文 → 命令；内存/栈/命令/中断预算；wasm/C/CLI/headless 注入。</span></li>
-      <li class="done"><b>M1 · 三平台 CI</b> <span>GitHub Actions run 45755991019：Ubuntu / macOS / Windows、C ABI、real5k、world-wasm + QuickJS、8 页 web 检查全绿。</span></li>
+      <li class="done"><b>M1 · 三平台 CI</b> <span>GitHub Actions run 45757232197：Ubuntu / macOS / Windows、C ABI、real5k、world-wasm + QuickJS、8 页 web 检查全绿。</span></li>
       <li class="now"><b>现在 · M1 剩余与 M2 准备</b> <span>真实作者试用；5k v2/动态导航/编辑器 v0.6 暂搁置。</span></li>
       <li class="next"><b>下一步 · M2 生产适配器</b> <span>Godot GDExtension；同一个包在真实引擎跑出同一局。</span></li>
     </ol>
@@ -321,7 +321,7 @@ cd web &amp;&amp; python3 -m http.server 8787
         <tr><td><b>5k v1 是单 Zone mixed load</b></td><td>不是 5k NPC 每 tick 决策，也不是多 Zone 驻留。</td><td>v2 由 M2 Adapter 触发；再决定是否换 bevy_ecs。</td></tr>
         <tr><td><b>编辑器还不够“作者友好”</b></td><td>复杂字段仍改 JSON；对话图简单；没有浏览器内实时预览。</td><td>v0.6 schema 表单、错误定位、自动布局。</td></tr>
         <tr><td><b>3D 是表现层</b></td><td>低模、无 GLB/骨骼/空间音频；不能代表最终美术。</td><td>资产管线 + 一个真实 GLB 角色/场景。</td></tr>
-        <tr><td><b>跨平台 ABI/浮点</b></td><td>三平台 cargo test 已实跑通过；real5k / ScriptHost wasm / 8 页覆盖已在 run 45755991019 验证。</td><td>保持三平台 CI；固定 ABI/哈希测试。</td></tr>
+        <tr><td><b>跨平台 ABI/浮点</b></td><td>三平台 cargo test 已实跑通过；real5k / ScriptHost wasm / 8 页覆盖已在 run 45757232197 验证。</td><td>保持三平台 CI；固定 ABI/哈希测试。</td></tr>
       </tbody>
     </table>
 
