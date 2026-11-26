@@ -35,8 +35,12 @@ jobs:
         run: cargo test --workspace
       - name: Determinism double-run
         run: cargo run -q -p world-cli -- test
-      - name: Content tests
-        run: cargo run -q -p world-cli -- content-test
+      - name: Content tests (all packs)
+        shell: bash
+        run: |
+          for pack in demo.harbor demo.market demo.greenhouse demo.orbit; do
+            cargo run -q -p world-cli -- content-test --pack "../data/$pack"
+          done
 
   c-abi:
     name: C ABI smoke (unix)
@@ -60,10 +64,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-      - name: 3D static contract
-        run: node games/world/test/demo3d_static.mjs
-      - name: R-016 three-state theme
-        run: node design/tools/check_html_theme.ts games/world/web/index.html games/world/web/editor.html games/world/web/demo3d.html
+      - name: 3D / Demo static contracts
+        run: |
+          node games/world/test/demo3d_static.mjs
+          node games/world/test/demos_static.mjs
+      - name: R-016 three-state theme (8 pages)
+        run: >-
+          node design/tools/check_html_theme.ts
+          games/world/web/index.html
+          games/world/web/editor.html
+          games/world/web/demo3d.html
+          games/world/web/iso.html
+          games/world/web/orbit3d.html
+          games/world/web/demos.html
+          games/world/brief/HUB.html
+          games/world/brief/GUIDE.html
       - name: Install TS tooling
         working-directory: games/world
         run: npm ci
@@ -86,3 +101,34 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
       - run: cargo build --target wasm32-unknown-unknown -p world-core
+
+
+  real5k:
+    name: real5k benchmark (ubuntu)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/world
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Run real5k smoke
+        run: |
+          mkdir -p dist
+          cargo run -q --release --manifest-path code/Cargo.toml -p world-cli -- \
+            bench --scenario real5k --ticks 300 --runs 1 --json > dist/bench-real5k-ci.json
+          node test/bench_real5k_check.mjs dist/bench-real5k-ci.json --no-perf
+
+  wasm-world:
+    name: wasm32 + QuickJS (world preview)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/world/code
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build world-wasm
+        run: cargo build --release --target wasm32-unknown-unknown -p world-wasm
