@@ -52,4 +52,4 @@ cp "$ROOT/dist/demo.harbor/pack.data" "$ROOT/web/pack.data"
 cp "$ROOT/data/demo.harbor/tests/m0.trace.json" "$ROOT/web/m0.trace.json"
 
 echo "web build: $ROOT/web"
-echo "run: cd $ROOT/web && python3 -m http.server 8787"
+echo "run: cd $ROOT && node tools/serve-web.mjs --port 8787"

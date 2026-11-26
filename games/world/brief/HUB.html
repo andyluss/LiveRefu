@@ -158,9 +158,9 @@ npm install
 ./test/run_m0.sh          # 内核 / C ABI / 坏包 / QuickJS / 基准
 ./test/run_m1.sh          # TS DSL / 内容 / 编辑器 / 3D / 5k real / wasm
 ./web/build.sh            # 2D + 3D 静态构建
-cd web &amp;&amp; python3 -m http.server 8787
-# 2D:   http://127.0.0.1:8787/
-# 3D:   http://127.0.0.1:8787/demo3d.html</code></pre>
+node tools/serve-web.mjs --port 8787
+# 2D:   http://127.0.0.1:8787/web/
+# 3D:   http://127.0.0.1:8787/web/demo3d.html</code></pre>
 
     <div class="note warn"><b>不要把 M1 主要切片当成 M1 完整验收。</b>ScriptHost 已接入但是事件作用域；导航门仍是静态烘焙；5k v1 是单 Zone mixed load；编辑器还没有完整 schema 表单。</div>
   </section>
@@ -254,8 +254,8 @@ cd web &amp;&amp; python3 -m http.server 8787
       <div class="card"><h4>边界</h4><p>低模、无骨骼/GLB/空间音频；NPC 还不寻路；WebGL2 是硬前提。</p></div>
     </div>
     <pre style="margin-top:14px"><code>cd games/world && ./web/build.sh
-cd web &amp;&amp; python3 -m http.server 8787
-# http://127.0.0.1:8787/demo3d.html</code></pre>
+node tools/serve-web.mjs --port 8787
+# http://127.0.0.1:8787/web/demo3d.html</code></pre>
     <p><a href="../web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="../web/orbit3d.html" title="需要本地服务器">打开 3D 环形站</a> · <a href="../web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="../web/demos.html">Demo 索引</a></p>
   </section>
 

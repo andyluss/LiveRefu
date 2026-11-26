@@ -5,9 +5,9 @@
 ## Demo 体系（2D / 2.5D / 3D）
 
 ```bash
-./web/build.sh
 cd games/world
-python3 -m http.server 8787
+./web/build.sh
+node tools/serve-web.mjs --port 8787
 # 索引：http://127.0.0.1:8787/web/demos.html
 # 2.5D 夜市：/web/iso.html?demo=market
 # 2.5D 温室：/web/iso.html?demo=greenhouse
@@ -22,9 +22,9 @@ python3 -m http.server 8787
 ## 3D 演示
 
 ```bash
-./web/build.sh
 cd games/world
-python3 -m http.server 8787
+./web/build.sh
+node tools/serve-web.mjs --port 8787
 # http://127.0.0.1:8787/web/demo3d.html
 ```
 
@@ -48,7 +48,7 @@ cd games/world
 ```bash
 cd games/world
 ./web/build.sh
-python3 -m http.server 8787
+node tools/serve-web.mjs --port 8787
 # 打开 http://127.0.0.1:8787/web/
 ```
 

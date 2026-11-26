@@ -112,6 +112,9 @@ jobs:
       - name: TypeScript DSL compiler
         working-directory: games/world
         run: node tools/ts-build.mjs --src src/content/demo.harbor --out /tmp/refuworld-ts-demo
+      - name: Node static web server smoke
+        working-directory: games/world
+        run: node test/serve_web_check.mjs
 
   wasm-core:
     name: wasm32 build (core)

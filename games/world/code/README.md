@@ -37,7 +37,7 @@ Web 预览：
 ```bash
 cd ..
 ./web/build.sh
-cd web && python3 -m http.server 8787
+node tools/serve-web.mjs --port 8787
 ```
 
 C 宿主：

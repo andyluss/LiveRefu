@@ -40,7 +40,7 @@ M1 预览：
 ```bash
 cd games/world
 ./web/build.sh
-python3 -m http.server 8787
+node tools/serve-web.mjs --port 8787
 # Demo 索引：http://127.0.0.1:8787/web/demos.html
 # 2D 预览：http://127.0.0.1:8787/web/
 # 3D 港湾：http://127.0.0.1:8787/web/demo3d.html

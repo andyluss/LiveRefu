@@ -54,10 +54,10 @@ npm install                    # TypeScript 类型检查（可选但推荐）
     <p>只做内容预览时，最短路径是：</p>
     <pre><code>cd games/world
 ./web/build.sh
-cd web &amp;&amp; python3 -m http.server 8787
-# 2D：http://127.0.0.1:8787/
-# 3D：http://127.0.0.1:8787/demo3d.html</code></pre>
-    <div class="box warn"><h3>两个入口别混淆</h3><p><b>静态预览</b>（<code>http.server</code>）只读，适合看和演示；<b>编辑器</b>（<code>./worldc editor</code>）才能保存、校验和构建。编辑器打开 <code>http://127.0.0.1:8788/</code>。</p></div>
+node tools/serve-web.mjs --port 8787
+# 2D：http://127.0.0.1:8787/web/
+# 3D：http://127.0.0.1:8787/web/demo3d.html</code></pre>
+    <div class="box warn"><h3>两个入口别混淆</h3><p><b>静态预览</b>（<code>tools/serve-web.mjs</code>）只读，适合看和演示；<b>编辑器</b>（<code>./worldc editor</code>）才能保存、校验和构建。编辑器打开 <code>http://127.0.0.1:8788/</code>。</p></div>
     <div class="grid3">
       <div class="card"><h3>2D 预览</h3><p>俯视、点击/键盘交互；最适合验证规则和任务。</p><p class="small">web/index.html</p></div>
       <div class="card"><h3>2.5D / 3D 演示</h3><p>等距夜市/温室；3D 港湾/环形站。换个视图看同一个世界。</p><p class="small">web/iso.html · demos.html</p></div>
@@ -209,7 +209,7 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
         <tr><td><code>nav 引用了不存在的导航网格</code></td><td><code>world/nav/</code></td><td>跑 <code>./worldc bake nav</code> 后重新构建</td></tr>
         <tr><td>门开了但走不过去</td><td>导航是否在开门后重建</td><td>M1 导航是静态烘焙；M2 才做动态更新</td></tr>
         <tr><td>改 TS 没生效</td><td>是否跑了 <code>ts-build</code></td><td><code>npm run dev</code> 或 <code>worldc ts-build --compare</code></td></tr>
-        <tr><td>预览 404 / 加载失败</td><td>是否先 <code>./web/build.sh</code></td><td>从 <code>web/</code> 起本地服务器，不要直接 file:// 打开</td></tr>
+        <tr><td>预览 404 / 加载失败</td><td>是否先 <code>./web/build.sh</code></td><td>从 <code>games/world</code> 起 Node 静态服务器，不要直接 file:// 打开</td></tr>
         <tr><td>3D 打不开</td><td>WebGL2 / 是否本地服务器</td><td>换 Chrome；必须通过 http 打开</td></tr>
         <tr><td>内容测试失败</td><td>期望的 flag / quest / inventory</td><td>先看测试的 <code>expect</code> 与规则 <code>set_flag</code> 是否一致</td></tr>
       </tbody>
