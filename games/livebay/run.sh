@@ -36,7 +36,7 @@ case "$CMD" in
     exec "$GODOT" --headless --path "$GAME02" --quit-after 180
     ;;
   game03)
-    exec python3 -m http.server 8033 --bind 127.0.0.1 --directory "$GAME03"
+    exec node "$WS_ROOT/tools/serve-static.mjs" --root "$GAME03" --port 8033 --bind 127.0.0.1
     ;;
   game03-test)
     exec node --test "$GAME03/tests/session.test.js"

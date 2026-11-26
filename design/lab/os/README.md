@@ -17,7 +17,7 @@ Archive（现在）、Solar（提案）、Cyber（诊断）之间切换，并始
 
 ```bash
 cd design/lab/os
-python3 -m http.server 4173
+node ../../../tools/serve-static.mjs --root . --port 4173
 # http://127.0.0.1:4173
 ```
 

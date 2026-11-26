@@ -42,7 +42,7 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
-- **Web 静态预览服务改为 Node**：新增 `tools/serve-web.mjs`（无第三方依赖，支持 root/port/bind、目录 index、MIME、路径穿越拒绝）；`package.json` 增加 `npm run serve`；文档与构建脚本不再依赖 `python3 -m http.server`；新增 `test/serve_web_check.mjs` 并接入 world CI。
+- **Web 静态预览服务改为 Node**：新增共享 `tools/serve-static.mjs`，`games/world/tools/serve-web.mjs` 作为兼容包装（无第三方依赖，支持 root/port/bind、目录 index、MIME、路径穿越拒绝）；`package.json` 增加 `npm run serve`；文档与构建脚本不再依赖 `python3 -m http.server`；新增 `test/serve_web_check.mjs` 并接入 world CI。
 
 - README 状态改为 **M0 已通过 + M1 主要切片已通过**；项目名统一为 **RefuWorld**。
 - [05](docs/05_路线图与验收.md) 的待拍板问题改为已拍板结论，并补 M0 验收结果表。

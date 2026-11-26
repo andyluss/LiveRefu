@@ -67,6 +67,8 @@ jobs:
 
       - name: Markdown link check (TS)
         run: node tools/check_links.ts -v
+      - name: Shared Node static server smoke
+        run: node tools/serve_static_check.mjs
 
       - name: Timestamp filename check (R06, TS)
         run: node tools/check_time_naming.ts --self-test && node tools/check_time_naming.ts

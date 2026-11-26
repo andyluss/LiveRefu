@@ -17,6 +17,7 @@
 > [知识库](docs/CHANGELOG.md) · [LiveDSO](design/projects/livedso/CHANGELOG.md) · [LiveLand](lab/liveland/CHANGELOG.md) · [LiveFile](lab/livefile/CHANGELOG.md) · [设计系统](design/CHANGELOG.md) · [青橙全栈](design/fullstack/CHANGELOG.md)。
 
 ### 变更
+- **Web 静态服务统一为 Node**：新增共享 [`tools/serve-static.mjs`](tools/serve-static.mjs)，支持 `--root/--port/--bind`、目录 index、MIME、路径穿越拒绝；RefuWorld、LiveBay game03、Seaside Store/Cafe、design/lab OS/Spacetime 的 `python3 -m http.server` 入口全部替换；RefuWorld 保留 [`games/world/tools/serve-web.mjs`](games/world/tools/serve-web.mjs) 兼容包装。
 - **CI 按路径触发**：`qc.yml` 只在 `design/fullstack/qc/**` 或自身变更时运行；`Verify` 只订阅文档/规则/设计/工具/项目/游戏可视面与数据；`RefuWorld CI` 只订阅代码/内容/Godot/Web/测试与 `brief`；三者加入 concurrency 取消同 ref 旧 run。
 - **RefuWorld（世界系统中间层）**：M0/M1 主要切片、真实 5k v1、三平台 CI 与 M2 Godot 适配器均已推进；项目细节统一见 [`games/world/CHANGELOG.md`](games/world/CHANGELOG.md)，根日志不再复制。
 - **新增 `products/calculator/` 手边计算器**：独立 PWA，移植纯计算核心、3 套皮肤、App Kit token 消费、纸带历史与离线缓存。

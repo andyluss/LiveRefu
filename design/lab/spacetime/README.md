@@ -42,7 +42,7 @@
 
 ```bash
 cd design/lab/spacetime
-python3 -m http.server 4177
+node ../../../tools/serve-static.mjs --root . --port 4177
 # http://127.0.0.1:4177
 ```
 

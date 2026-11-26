@@ -10,7 +10,7 @@
 cd lab/seaside-cafe
 ./run.sh              # 默认 http://127.0.0.1:8036/
 # 或
-python3 -m http.server 8036 --bind 127.0.0.1
+node ../../tools/serve-static.mjs --root . --port 8036 --bind 127.0.0.1
 ```
 
 打开 `index.html` 后点击「进入咖啡馆」。首次点击会启用 WebAudio 并请求指针锁定；若浏览器拒绝锁定，按住画面拖动也能环视。

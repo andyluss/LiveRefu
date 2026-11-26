@@ -12,6 +12,7 @@
 | [`check_changelog.ts`](check_changelog.ts) | 变更日志格式（版本头/时间倒序/标准类目/**版本号 ↔ git tag**） | [R05](../rules/R05-changelog.md) | `… --file <CHANGELOG> --tag-prefix <前缀>` |
 | [`check_time_naming.ts`](check_time_naming.ts) | **时间戳文件名**格式与"不得晚于首次提交时间" | [R06](../rules/R06-time.md) | `node tools/check_time_naming.ts` |
 | [`check_data.ts`](check_data.ts) | 数据表是否符合 schema 契约（必填/type/enum/范围） | [R04](../rules/R04-data-validation.md) | `node tools/check_data.ts -v` |
+| [`serve-static.mjs`](serve-static.mjs) | 工作区共享静态 Web 服务（替代 `python3 -m http.server`） | — | `node tools/serve-static.mjs --root <dir> --port <n>` |
 
 > **Python 版（`check_links.py` / `check_data.py`）**：与 TS 版同功能，纯标准库、无需 node，供不便装 node 的环境使用。
 > **自检是硬要求**：每个检查器都要能 `--self-test`（或 `--selftest`）——**喂已知坏数据、确认它会失败**。
