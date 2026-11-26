@@ -1,7 +1,7 @@
 //! M2 Godot GDExtension 最小适配器：只通过 world-abi 的 C ABI 驱动内核。
 //! 这里不做玩法/渲染；先证明 Godot 能加载同一包并跑出同一哈希。
 
-use godot::classes::{BoxMesh, CapsuleMesh, Mesh, MeshInstance3D, Node3D, SphereMesh, StandardMaterial3D};
+use godot::classes::{BoxMesh, CapsuleMesh, Mesh, MeshInstance3D, Node3D, PackedScene, SphereMesh, StandardMaterial3D};
 use godot::prelude::*;
 use std::collections::{HashMap, HashSet};
 use world_abi::AbiWorld;
@@ -17,7 +17,8 @@ struct WorldNode {
     base: Base<Node>,
     world: Option<AbiWorld>,
     views_root: Option<Gd<Node3D>>,
-    views: HashMap<u64, Gd<MeshInstance3D>>,
+    views: HashMap<u64, Gd<Node3D>>,
+    visual_scenes: HashMap<String, Gd<PackedScene>>,
 }
 
 #[godot_api]
@@ -28,6 +29,7 @@ impl INode for WorldNode {
             world: None,
             views_root: None,
             views: HashMap::new(),
+            visual_scenes: HashMap::new(),
         }
     }
 }
@@ -137,6 +139,21 @@ impl WorldNode {
         }
     }
 
+    fn make_fallback_view(flags: u32) -> Gd<Node3D> {
+        let mut node = MeshInstance3D::new_alloc();
+        node.set_mesh(&Self::make_mesh(flags));
+        let mut material = StandardMaterial3D::new_gd();
+        let hue = match flags & 0xFF {
+            1 => 0.58,
+            2 => 0.33,
+            3 => 0.10,
+            _ => 0.78,
+        };
+        material.set_albedo(Color::from_hsv(hue, 0.55, 0.85));
+        node.set_material_override(&material);
+        node.upcast()
+    }
+
     fn ensure_views_root(&mut self) -> Gd<Node3D> {
         if let Some(root) = &self.views_root {
             return root.clone();
@@ -145,6 +162,13 @@ impl WorldNode {
         self.base_mut().add_child(&root);
         self.views_root = Some(root.clone());
         root
+    }
+
+    /// 由 GDScript 把 logical asset source 注册为 PackedScene；view pool 优先使用它。
+    #[func]
+    fn register_visual(&mut self, source: GString, scene: Gd<PackedScene>) -> bool {
+        self.visual_scenes.insert(source.to_string(), scene);
+        true
     }
 
     /// 把 C ABI transform 快照同步为 Godot 节点；按 EntityId 做池化/回收。
@@ -164,18 +188,22 @@ impl WorldNode {
             let key = ((pod.generation as u64) << 32) | pod.index as u64;
             alive.insert(key);
             if !self.views.contains_key(&key) {
-                let mut node = MeshInstance3D::new_alloc();
-                node.set_mesh(&Self::make_mesh(pod.flags));
-                let mut material = StandardMaterial3D::new_gd();
-                let hue = match pod.flags & 0xFF {
-                    1 => 0.58,
-                    2 => 0.33,
-                    3 => 0.10,
-                    _ => 0.78,
+                let visual = self
+                    .world
+                    .as_mut()
+                    .and_then(|world| world.entity_visual_source(pod.index, pod.generation).ok())
+                    .unwrap_or_default();
+                let node: Gd<Node3D> = if let Some(scene) = self.visual_scenes.get(&visual) {
+                    match scene.instantiate().and_then(|node| node.try_cast::<Node3D>().ok()) {
+                        Some(node) => node,
+                        None => Self::make_fallback_view(pod.flags),
+                    }
+                } else {
+                    Self::make_fallback_view(pod.flags)
                 };
-                material.set_albedo(Color::from_hsv(hue, 0.55, 0.85));
-                node.set_material_override(&material);
-                root.add_child(&node);
+                if node.get_parent().is_none() {
+                    root.add_child(&node);
+                }
                 self.views.insert(key, node);
             }
             if let Some(node) = self.views.get_mut(&key) {

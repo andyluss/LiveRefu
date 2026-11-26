@@ -6,7 +6,6 @@ var world: WorldNode
 var accumulator := 0.0
 var camera: Camera3D
 var sfx: AudioStreamPlayer
-var keeper_model: Node3D
 
 func _ready() -> void:
 	camera = $Camera
@@ -23,6 +22,14 @@ func _ready() -> void:
 	if not world.load_pack(bytes):
 		push_error("WorldNode.load_pack failed")
 		return
+	var pack_json = JSON.parse_string(bytes.get_string_from_utf8())
+	if pack_json is Dictionary:
+		for asset_id in pack_json.get("assets", {}):
+			var source: String = pack_json["assets"][asset_id].get("source", "")
+			if source.ends_with(".glb"):
+				var scene = AssetSlots.load_scene("res://assets/" + source)
+				if scene != null:
+					world.register_visual(source, scene)
 	var ground := MeshInstance3D.new()
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(80, 80)
@@ -51,8 +58,6 @@ func _process(delta: float) -> void:
 			return
 		accumulator -= STEP
 	world.sync_views()
-	if keeper_model != null:
-		keeper_model.position = world.entity_position("demo.keeper") + Vector3(0, 0.5, 0)
 	_poll_audio()
 	_update_camera()
 
