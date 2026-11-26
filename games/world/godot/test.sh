@@ -7,4 +7,4 @@ export HOME="${GODOT_HOME:-$HERE/.godot-home}"
 mkdir -p "$HOME"
 GODOT_BIN="${GODOT_BIN:-godot}"
 "$GODOT_BIN" --headless --path "$HERE" --import >/dev/null
-"$GODOT_BIN" --headless --path "$HERE" --quit-after 10
+"$GODOT_BIN" --headless --path "$HERE" main.tscn --quit-after 10
