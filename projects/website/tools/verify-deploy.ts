@@ -20,7 +20,7 @@
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
-const PROJECT_ROOT = resolve(import.meta.dir, '..')
+const PROJECT_ROOT = resolve(import.meta.dirname, '..')
 const WORKSPACE_ROOT = resolve(PROJECT_ROOT, '../..')
 
 const results: Array<{ name: string; ok: boolean; detail: string }> = []

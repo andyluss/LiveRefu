@@ -22,7 +22,7 @@
 import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
-const PROJECT_ROOT = resolve(import.meta.dir, '..')
+const PROJECT_ROOT = resolve(import.meta.dirname, '..')
 const TOKENS = join(PROJECT_ROOT, 'app/assets/tokens.generated.css')
 const VERBOSE = process.argv.includes('--verbose')
 

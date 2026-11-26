@@ -27,7 +27,7 @@ import { join, resolve } from 'node:path'
 
 const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3)
 
-const PROJECT_ROOT = resolve(import.meta.dir, '..')
+const PROJECT_ROOT = resolve(import.meta.dirname, '..')
 const PORT_MAIN = Number(arg('port') ?? 3210)
 const PORT_GISCUS = PORT_MAIN + 1
 const BASE = `http://localhost:${PORT_MAIN}`

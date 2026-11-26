@@ -32,7 +32,7 @@ const record = (name: string, ok: boolean, detail: string) => {
 const WORK = mkdtempSync(join(tmpdir(), 'backup-drill-'))
 const SRC_DB = join(WORK, 'app.db')
 const OUT_DIR = join(WORK, 'backups')
-const PROJECT_ROOT = join(import.meta.dir, '..')
+const PROJECT_ROOT = join(import.meta.dirname, '..')
 
 const KEY_TABLES = ['users', 'boards', 'threads', 'posts'] as const
 

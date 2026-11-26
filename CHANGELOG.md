@@ -48,6 +48,7 @@
 - **根入口与规范**：根 [`README.md`](README.md)、[`TODO.md`](TODO.md)、[`AGENTS.md`](AGENTS.md) 与 [`rules/`](rules/README.md) 的入口/分流/记录规范收口；根日志只保留工作区级条目。
 
 ### 修复
+- **Verify website contrast 在 Node 下崩溃**：`import.meta.dir` 是 Bun 专有字段，Node 22.18 下为 undefined；website tools 统一改用 `import.meta.dirname`，contrast 本地通过。
 - **Verify 链接检查 3 个失效链接**：移除生成目录与独立仓的相对链接，改为路径文本；CI 不再因干净 checkout 缺目录报错。
 - **Verify workflow 0s / jobs 为空**：[`.github/workflows/verify.yml`](.github/workflows/verify.yml) 两个 step name 含未加引号的 `python:` / `godot:`，导致 YAML 解析失败；已加引号修复。
 

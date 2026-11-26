@@ -31,7 +31,7 @@ const arg = (name: string, def?: string) => {
   return process.argv.includes(`--${name}`) ? '' : def
 }
 
-const PROJECT_ROOT = resolve(import.meta.dir, '..')
+const PROJECT_ROOT = resolve(import.meta.dirname, '..')
 const DB_PATH = process.env.DATABASE_PATH || join(PROJECT_ROOT, 'data/app.db')
 const OUT_DIR = resolve(arg('out', join(PROJECT_ROOT, 'backups'))!)
 const KEEP = Number(arg('keep', '10'))
