@@ -5,7 +5,7 @@ const { PreviewWorld } = require("./node-pkg/world_wasm.js");
 const root = __dirname;
 const pack = fs.readFileSync(path.join(root, "pack.data"), "utf8");
 const trace = fs.readFileSync(path.join(root, "m0.trace.json"), "utf8");
-const EXPECTED = "0xc840fe2090a0a085";
+const EXPECTED = "0x7b176031a2be41c9";
 
 const w = new PreviewWorld(pack);
 const replayHash = w.replay(trace);

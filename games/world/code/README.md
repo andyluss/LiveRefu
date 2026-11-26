@@ -28,7 +28,7 @@
 ./run.sh run -q --release -p world-cli -- bench --synthetic 5000 --ticks 6000
 ./run.sh run -q -p world-cli -- editor --port 8788
 ./run.sh run -q -p world-cli -- replay \
-  --trace ../data/demo.harbor/tests/m0.trace.json --expect 0xc840fe2090a0a085
+  --trace ../data/demo.harbor/tests/m0.trace.json --expect 0x7b176031a2be41c9
 ./run.sh run -q --release -p world-cli -- bench
 ```
 

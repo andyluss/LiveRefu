@@ -16,6 +16,10 @@ var targets := {
 	"demo.airlock": "气闸",
 	"demo.keeper": "值班员",
 	"item.keycard": "钥匙卡",
+	"item.coffee": "咖啡",
+	"item.radio": "对讲机",
+	"demo.console": "控制台",
+	"demo.crate": "货箱",
 }
 
 func _ready() -> void:
@@ -115,12 +119,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if world == null:
 		return
 	if event.is_action_pressed("interact"):
-		var id := _nearest_of(["demo.airlock", "demo.keeper"])
+		var id := _nearest_of(["demo.airlock", "demo.keeper", "demo.console", "demo.crate"])
 		if id != "":
 			world.interact("player", id)
 			status_label.text = "交互：" + str(targets[id])
 	elif event.is_action_pressed("pickup"):
-		var id := _nearest_of(["item.keycard"])
+		var id := _nearest_of(["item.keycard", "item.coffee", "item.radio"])
 		if id != "":
 			world.pickup("player", id)
 			status_label.text = "拾取：" + str(targets[id])
@@ -225,7 +229,7 @@ func _update_hud() -> void:
 	inventory_label.text = "\n".join(inv_lines)
 
 func _update_prompt() -> void:
-	var near := _nearest_of(["demo.airlock", "demo.keeper", "item.keycard"])
+	var near := _nearest_of(["demo.airlock", "demo.keeper", "demo.console", "demo.crate", "item.keycard", "item.coffee", "item.radio"])
 	if near == "":
 		prompt_label.text = "靠近气闸 / 值班员 / 钥匙卡"
 	else:

@@ -7,7 +7,7 @@
 
 ### 新增
 
-- **M2 第一切片：Godot 逻辑适配器**：新增 `world-abi` 与独立 `godot-extension`（godot 0.5.6 / api-4-7）；`WorldNode` 通过 C ABI 完成 load/tick/interact/talk/pickup/set_move/sync_views/save/load；Godot 4.7 headless 600 tick 哈希 `0xc840fe2090a0a085`、save/load 同哈希、拾取后视图池回收为 3 个节点、移动 x=0.667；新增 Camera3D/日光/地面与 WASD `play.tscn`；`cts.sh` 的 L/T/I/E/V/S/X/D 基础组全 PASS；`world.yml` 增加 Godot 4.7 CTS job，run 45765036657 通过。视图按 kind 选 Capsule/Box/Sphere；`entity_visual_source` 从 pack 解析每个实体 visual source，play 注册 keeper/airlock/keycard 全部 GLB scene；`sync_views_at` 插值、`clear_views`/`unregister_visual` 卸载；MultiMesh 批渲染 prop/item、`set_move_2d`/`set_move_iso` 轴映射；play 增加 E/F/T、Quest+背包 HUD、InputMap 键盘/手柄/触屏、港湾家具/灯带/几何；`world_ui_state` ABI；5k CPU benchmark 600 tick（sync P95 0.656ms）、macOS Metal 窗口帧时间（P95 3.557ms）与 Xvfb 软件 GL CI 帧时间（ci-ubuntu-xvfb P95 12.5ms）；CI 中先构建再切 Godot HOME，避免 rustup 找不到默认 toolchain。`airlock_open.wav` 经事件播放；CTS 增加 Z/A。记录见 [09 · M2 适配器启动](docs/09_M2适配器启动.md)；完整内容量与资源预算未做。
+- **M2 第一切片：Godot 逻辑适配器**：新增 `world-abi` 与独立 `godot-extension`（godot 0.5.6 / api-4-7）；`WorldNode` 通过 C ABI 完成 load/tick/interact/talk/pickup/set_move/sync_views/save/load；Godot 4.7 headless 600 tick 哈希 `0x7b176031a2be41c9`、save/load 同哈希、拾取后视图池回收为 7 个节点、移动 x=0.667；新增 Camera3D/日光/地面与 WASD `play.tscn`；`cts.sh` 的 L/T/I/E/V/S/X/D 基础组全 PASS；`world.yml` 增加 Godot 4.7 CTS job，run 45765036657 通过。视图按 kind 选 Capsule/Box/Sphere；`entity_visual_source` 从 pack 解析每个实体 visual source，play 注册 keeper/airlock/keycard 全部 GLB scene；`sync_views_at` 插值、`clear_views`/`unregister_visual` 卸载；MultiMesh 批渲染 prop/item、`set_move_2d`/`set_move_iso` 轴映射；play 增加 E/F/T、Quest+背包 HUD、InputMap 键盘/手柄/触屏、港湾家具/灯带/几何；`world_ui_state` ABI；5k CPU benchmark 600 tick（sync P95 0.656ms）、macOS Metal 窗口帧时间（P95 3.557ms）与 Xvfb 软件 GL CI 帧时间（ci-ubuntu-xvfb P95 12.5ms）；CI 中先构建再切 Godot HOME，避免 rustup 找不到默认 toolchain。`airlock_open.wav` 经事件播放；CTS 增加 Z/A。记录见 [09 · M2 适配器启动](docs/09_M2适配器启动.md)；更多内容量与资源预算未做。
 - **M0 可运行实现**：新增 `code/` Rust workspace（`world-pack`、`world-core`、`world-ffi`、`world-host-headless`、`world-cli`、`world-script`、`world-script-wasm`）。
 - **「港湾值班室」内容包**：`data/demo.harbor/`，含 1 区、NPC、气闸、钥匙卡、规则、任务、对话、日程、文案与 600 tick trace。
 - **C ABI v0 + C 冒烟宿主**：`code/include/world.h`、`code/hosts/c/main.c`；C 宿主与 Headless 同哈希。
@@ -47,16 +47,16 @@
 - [05](docs/05_路线图与验收.md) 的待拍板问题改为已拍板结论，并补 M0 验收结果表。
 - 新增 CI workflow（当时 `world-m0.yml`，现 `world.yml`）：三 OS `cargo test`、C ABI 冒烟、wasm core 构建。
 - 新增 `test/run_m1.sh`、`web/build.sh`、`web/README.md`、`tools/editor-server.mjs`；`worldc` 增加 `ts-build`/`content-test`/`editor`。
-- 黄金哈希因 `collider`/`move_intent`/`open_door`/`path`/`nav`/`assets` 更新：包 `sha256:85bfb279…13ce35`，600 tick `0xc840fe2090a0a085`。
+- 黄金哈希因 `collider`/`move_intent`/`open_door`/`path`/`nav`/`assets` 更新：包 `sha256:254a4f7e…184a2ea`，600 tick `0x7b176031a2be41c9`。
 
 ### 验证
 
 - `cargo test --workspace`：19 个测试通过。
-- Headless 600 tick 双跑：`0xc840fe2090a0a085`。
-- C ABI 宿主：同 `0xc840fe2090a0a085`。
+- Headless 600 tick 双跑：`0x7b176031a2be41c9`。
+- C ABI 宿主：同 `0x7b176031a2be41c9`。
 - 坏包：`E-SCHEMA-001`/`E-REF-001`/`E-REF-002`/`E-TIME-001`/`E-DLG-001`/`E-LOC-001`。
 - `wasm_quickjs result=1`；release bench ≈ 0.1 µs/tick（Demo 规模，不代表上限）。
-- M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0xc840fe2090a0a085`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
+- M1：`worldc ts-build --compare data/demo.harbor` PASS；TS 包 600 tick = `0x7b176031a2be41c9`；Node wasm 预览 replay/preview 同哈希；浏览器 CDP 实测任务完成与三态主题。
 - GitHub Actions `RefuWorld CI`：[run 45757232197](https://github.com/andyluss/LiveRefu/actions/runs/45757232197) 在 Ubuntu/macOS/Windows 三平台全绿；8 个 job 覆盖全部内容包、R-016 8 页、Demo 静态契约、real5k smoke 与 `world-wasm` QuickJS 构建。
 - M1 剩余：`content-test` 6 条 PASS；编辑器保存/校验/构建 API 通过；移动碰撞 z=5.40；5k v1 real P95 0.239 ms/tick；R-016 八个页面通过。
 

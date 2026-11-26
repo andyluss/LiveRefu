@@ -1,0 +1,22 @@
+{
+  "id": "demo.console",
+  "name": "loc:prop.console.name",
+  "tags": [
+    "prop",
+    "console",
+    "harbor"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      2.0,
+      1.0,
+      1.0
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "inspect"
+    ]
+  }
+}

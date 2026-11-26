@@ -1343,7 +1343,7 @@ async function replayTrace() {
   try {
     const trace = await fetch("./m0.trace.json").then((r) => r.text());
     const hash = world.replay(trace);
-    el.replay.textContent = `M0 replay：${hash} ${hash === "0xc840fe2090a0a085" ? "PASS" : "FAIL"}`;
+    el.replay.textContent = `M0 replay：${hash} ${hash === "0x7b176031a2be41c9" ? "PASS" : "FAIL"}`;
   } catch (error) {
     el.replay.textContent = `回放失败：${error}`;
   }

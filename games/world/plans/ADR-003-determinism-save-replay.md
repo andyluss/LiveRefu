@@ -14,10 +14,10 @@
 
 ## M0 证据（M1 更新）
 
-- 同一 trace 双跑：`final_hash = 0xc840fe2090a0a085`。
+- 同一 trace 双跑：`final_hash = 0x7b176031a2be41c9`。
 - save → load → hash 一致；篡改 checksum 被拒绝。
 - C ABI 宿主同一 trace 得到相同哈希。
-- **M1 变更**：加入 `collider`、`move_intent` 与 `open_door` 动作后，状态快照包含新字段，黄金哈希更新为 `0xc840fe2090a0a085`；旧 `0xd1c6…` 只对应 M0 的历史状态。
+- **M1 变更**：加入 `collider`、`move_intent` 与 `open_door` 动作后，状态快照包含新字段，黄金哈希更新为 `0x7b176031a2be41c9`；旧 `0xd1c6…` 只对应 M0 的历史状态。
 
 ## 已知限制（M1 必须补）
 

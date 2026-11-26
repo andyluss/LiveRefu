@@ -24,10 +24,10 @@ M2 先做 **Godot 4.7 的逻辑适配器**，不先做渲染/资产/音频：
 
 - Godot `4.7.stable.official.5b4e0cb0f`
 - `godot/test.sh`：
-  - 600 tick 后 `WORLD_HASH=0xc840fe2090a0a085`
-  - `WORLD_VIEWS=3`（拾取后视图池回收）
+  - 600 tick 后 `WORLD_HASH=0x7b176031a2be41c9`
+  - `WORLD_VIEWS=7`（拾取后视图池回收）
   - `WORLD_EVENTS=2025`
-  - save/load 后 `WORLD_SAVE_HASH=0xc840fe2090a0a085`
+  - save/load 后 `WORLD_SAVE_HASH=0x7b176031a2be41c9`
   - `set_move` 后 `WORLD_MOVE_X=0.6666`
   - `play.tscn` headless 冒烟通过（无脚本错误）
   - `cts.sh`：L/T/I/E/V/S/X/D 基础组全 PASS

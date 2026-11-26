@@ -1,6 +1,6 @@
 import init, { PreviewWorld } from "./pkg/world_wasm.js";
 
-const EXPECTED_HASH = "0xc840fe2090a0a085";
+const EXPECTED_HASH = "0x7b176031a2be41c9";
 const TICK_US = 16666;
 
 const canvas = document.getElementById("view");

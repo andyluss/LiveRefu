@@ -81,7 +81,7 @@ python3 -m http.server 8787
 ## 验收
 
 - `worldc ts-build --compare ../data/demo.harbor`：TS 包与 JSON 包同哈希。
-- `node web/test_preview.cjs`：wasm 预览的 replay 与 600 tick 点击序列都得到 `0xc840fe2090a0a085`。
+- `node web/test_preview.cjs`：wasm 预览的 replay 与 600 tick 点击序列都得到 `0x7b176031a2be41c9`。
 - 浏览器 CDP 实测：拾取 → 交互 → 对话后任务完成；回放 `PASS`；`system/light/dark` 三态与 `aria-pressed` 正确。
 
 ## 主题（R-016）

@@ -1,0 +1,22 @@
+{
+  "id": "demo.crate",
+  "name": "loc:prop.crate.name",
+  "tags": [
+    "prop",
+    "crate",
+    "harbor"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.2,
+      1.2,
+      1.2
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "inspect"
+    ]
+  }
+}

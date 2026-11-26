@@ -46,4 +46,6 @@ defineLoc("zh-CN", {
   "airlock.locked": "气闸锁着。需要钥匙卡。",
   "door.locked": "锁着。",
   "door.already_open": "已经开了。",
+  "prop.console.name": "控制台",
+  "prop.crate.name": "货箱",
 });

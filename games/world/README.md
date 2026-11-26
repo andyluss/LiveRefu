@@ -14,7 +14,7 @@ scope: "跨游戏、跨引擎"
 
 > **当前状态**：**M0 已通过；M1 主要切片已通过；M2 Godot 逻辑适配器已启动（第一切片）**。
 > 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm 2D/2.5D/3D 多 Demo、QuickJS ScriptHost、Web 编辑器 v0.5、移动/寻路、导航/资产依赖均可运行；
-> TS 编译包与 JSON 包同哈希，Web 预览回放得到同一 `0xc840fe2090a0a085`。
+> TS 编译包与 JSON 包同哈希，Web 预览回放得到同一 `0x7b176031a2be41c9`。
 > 记录见 [06 · M0](docs/06_M0实现与验收.md)、[07 · M1 切片](docs/07_M1实现与验收.md) 与 [09 · M2 启动](docs/09_M2适配器启动.md)。
 >
 > 方案仍有效：推荐结论见 [04 · 选型对比与推荐](docs/04_选型对比与推荐.md)，路线见
