@@ -3,11 +3,35 @@ name: RefuWorld CI
 on:
   push:
     paths:
-      - "games/world/**"
+      - "games/world/code/**"
+      - "games/world/data/**"
+      - "games/world/godot/**"
+      - "games/world/godot-extension/**"
+      - "games/world/src/**"
+      - "games/world/web/**"
+      - "games/world/test/**"
+      - "games/world/tools/**"
+      - "games/world/package.json"
+      - "games/world/package-lock.json"
+      - "games/world/brief/**"
       - ".github/workflows/world.yml"
   pull_request:
     paths:
-      - "games/world/**"
+      - "games/world/code/**"
+      - "games/world/data/**"
+      - "games/world/godot/**"
+      - "games/world/godot-extension/**"
+      - "games/world/src/**"
+      - "games/world/web/**"
+      - "games/world/test/**"
+      - "games/world/tools/**"
+      - "games/world/package.json"
+      - "games/world/package-lock.json"
+      - "games/world/brief/**"
+
+concurrency:
+  group: world-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:

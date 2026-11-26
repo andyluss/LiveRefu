@@ -3,8 +3,18 @@ name: QC framework
 on:
   push:
     branches: [main]
+    paths:
+      - "design/fullstack/qc/**"
+      - ".github/workflows/qc.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "design/fullstack/qc/**"
+      - ".github/workflows/qc.yml"
+
+concurrency:
+  group: qc-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:

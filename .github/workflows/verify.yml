@@ -18,8 +18,36 @@ name: Verify
 on:
   push:
     branches: [main]
+    paths:
+      - "**/*.md"
+      - "**/*.html"
+      - "rules/**"
+      - "design/**"
+      - "tools/**"
+      - "lab/**"
+      - "projects/**"
+      - "games/**/brief/**"
+      - "games/**/web/**"
+      - "games/**/data/**"
+      - ".github/workflows/verify.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "**/*.md"
+      - "**/*.html"
+      - "rules/**"
+      - "design/**"
+      - "tools/**"
+      - "lab/**"
+      - "projects/**"
+      - "games/**/brief/**"
+      - "games/**/web/**"
+      - "games/**/data/**"
+      - ".github/workflows/verify.yml"
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
