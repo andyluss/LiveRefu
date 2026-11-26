@@ -7,6 +7,13 @@ var accumulator := 0.0
 var camera: Camera3D
 var sfx: AudioStreamPlayer
 var axis_mode := "3d"
+var prompt_label: Label
+var status_label: Label
+var targets := {
+	"demo.airlock": "气闸",
+	"demo.keeper": "值班员",
+	"item.keycard": "钥匙卡",
+}
 
 func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
@@ -14,6 +21,8 @@ func _ready() -> void:
 			axis_mode = arg.trim_prefix("--axis=")
 	camera = $Camera
 	sfx = $Sfx
+	prompt_label = $UI/Prompt
+	status_label = $UI/Status
 	var real_audio := _load_wav("res://assets/audio/airlock_open.wav")
 	sfx.stream = real_audio if real_audio != null else _make_tone()
 	var file := FileAccess.open("res://pack.data", FileAccess.READ)
@@ -35,13 +44,58 @@ func _ready() -> void:
 				var scene = AssetSlots.load_scene("res://assets/" + source)
 				if scene != null:
 					world.register_visual(source, scene)
-	var ground := MeshInstance3D.new()
-	var plane := PlaneMesh.new()
-	plane.size = Vector2(80, 80)
-	ground.mesh = plane
-	add_child(ground)
+	_add_box(Vector3(0, -0.1, 0), Vector3(40, 0.2, 40), Color(0.16, 0.19, 0.22))
+	for x in [-12.0, 12.0]:
+		_add_box(Vector3(x, 2.0, 0), Vector3(0.3, 4.0, 24), Color(0.28, 0.33, 0.36))
+	_add_box(Vector3(0, 2.0, -12.0), Vector3(24, 4.0, 0.3), Color(0.28, 0.33, 0.36))
+	_add_box(Vector3(0, 1.2, 6.5), Vector3(3.0, 2.4, 0.4), Color(0.38, 0.44, 0.40))
 	world.sync_views()
 	_update_camera()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if world == null or not (event is InputEventKey and event.pressed and not event.echo):
+		return
+	match event.keycode:
+		KEY_E:
+			var id := _nearest_of(["demo.airlock", "demo.keeper"])
+			if id != "":
+				world.interact("player", id)
+				status_label.text = "交互：" + str(targets[id])
+		KEY_F:
+			var id := _nearest_of(["item.keycard"])
+			if id != "":
+				world.pickup("player", id)
+				status_label.text = "拾取：" + str(targets[id])
+		KEY_T:
+			var id := _nearest_of(["demo.keeper"])
+			if id != "":
+				world.talk("player", id)
+				status_label.text = "对话：" + str(targets[id])
+
+func _nearest_of(ids: Array) -> String:
+	var player := world.player_position()
+	var best := ""
+	var best_dist := 2.8
+	for id in ids:
+		var pos := world.entity_position(id)
+		if pos == Vector3.ZERO:
+			continue
+		var dist := player.distance_to(pos)
+		if dist < best_dist:
+			best_dist = dist
+			best = id
+	return best
+
+func _add_box(pos: Vector3, size: Vector3, color: Color) -> void:
+	var mesh := BoxMesh.new()
+	mesh.size = size
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	var node := MeshInstance3D.new()
+	node.mesh = mesh
+	node.material_override = material
+	node.position = pos
+	add_child(node)
 
 func _process(delta: float) -> void:
 	if world == null:
@@ -66,16 +120,33 @@ func _process(delta: float) -> void:
 			return
 		accumulator -= STEP
 	world.sync_views_at(clamp(accumulator / STEP, 0.0, 1.0))
-	_poll_audio()
+	_poll_events()
+	_update_prompt()
 	_update_camera()
 
-func _poll_audio() -> void:
+func _poll_events() -> void:
 	for line in world.poll_events().split("\n"):
 		if line.strip_edges().is_empty():
 			continue
 		var event = JSON.parse_string(line)
-		if event is Dictionary and event.get("kind", "") in ["dialogue_started", "item_acquired", "sound"]:
+		if not (event is Dictionary):
+			continue
+		var kind: String = event.get("kind", "")
+		if kind in ["dialogue_started", "item_acquired", "sound"]:
 			sfx.play()
+		if kind == "toast" and status_label != null:
+			status_label.text = str(event.get("text", ""))
+		elif kind == "item_acquired" and status_label != null:
+			status_label.text = "获得：" + str(event.get("item", ""))
+		elif kind == "dialogue_started" and status_label != null:
+			status_label.text = "对话开始：" + str(event.get("target", ""))
+
+func _update_prompt() -> void:
+	var near := _nearest_of(["demo.airlock", "demo.keeper", "item.keycard"])
+	if near == "":
+		prompt_label.text = "靠近气闸 / 值班员 / 钥匙卡"
+	else:
+		prompt_label.text = "目标：" + str(targets[near]) + " · E/F/T"
 
 func _load_wav(path: String) -> AudioStreamWAV:
 	var file := FileAccess.open(path, FileAccess.READ)

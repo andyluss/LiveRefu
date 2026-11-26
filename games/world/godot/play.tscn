@@ -13,3 +13,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 shadow_enabled = true
 
 [node name="Sfx" type="AudioStreamPlayer" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Help" type="Label" parent="UI"]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 640.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 16
+text = "WASD 移动 · E 交互 · F 拾取 · T 对话 · ESC 退出"
+
+[node name="Prompt" type="Label" parent="UI"]
+offset_left = 24.0
+offset_top = 640.0
+offset_right = 900.0
+offset_bottom = 680.0
+theme_override_font_sizes/font_size = 20
+text = "靠近目标"
+
+[node name="Status" type="Label" parent="UI"]
+offset_left = 24.0
+offset_top = 680.0
+offset_right = 900.0
+offset_bottom = 730.0
+theme_override_font_sizes/font_size = 16
+text = ""

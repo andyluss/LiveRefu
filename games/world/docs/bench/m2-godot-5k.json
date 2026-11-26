@@ -1,0 +1,12 @@
+{
+  "benchmark": "m2-godot-5k",
+  "date": "2026-11-26",
+  "engine": "Godot 4.7.stable",
+  "mode": "headless CPU tick + view sync; not GPU frame time",
+  "props": 5000,
+  "ticks": 600,
+  "view_count": 1,
+  "multimesh_count": 5000,
+  "tick_ms_p95": 0.402,
+  "sync_ms_p95": 0.664
+}

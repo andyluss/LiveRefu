@@ -154,3 +154,7 @@ jobs:
         env:
           GODOT_BIN: godot
         run: ./godot/cts.sh
+      - name: Run 5k view benchmark
+        env:
+          GODOT_BIN: godot
+        run: ./godot/bench5k.sh
