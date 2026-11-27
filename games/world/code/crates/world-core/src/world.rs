@@ -517,9 +517,18 @@ impl World {
             .entity(actor)
             .ok_or_else(|| format!("actor 不存在: {actor}"))?;
         let from = [entity.transform.position[0], entity.transform.position[2]];
+        let mut open_boxes = Vec::new();
+        self.store.for_each_obstacle(self.player, |position, collider, open| {
+            if !open {
+                return;
+            }
+            if let Some(Collider::Aabb { half }) = collider {
+                open_boxes.push(([position[0], position[2]], [half[0], half[1]]));
+            }
+        });
         let path = self
             .spacetime
-            .find_path(from, [x, z])
+            .find_path_with_open(from, [x, z], &open_boxes)
             .ok_or_else(|| format!("区域 {} 没有导航网格或无法从 {from:?} 寻路到 ({x}, {z})", self.zone_id))?;
         self.spacetime.path_index = if path.len() > 1 { 1 } else { 0 };
         self.spacetime.path = path;

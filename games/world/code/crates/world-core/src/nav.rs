@@ -4,12 +4,42 @@ use world_pack::NavGridDef;
 
 /// 4 邻接 A*；节点用网格索引，堆按 (f, index) 排序，保证确定性。
 pub fn find_path(nav: &NavGridDef, start: [f32; 2], goal: [f32; 2]) -> Option<Vec<[f32; 2]>> {
+    find_path_with_open(nav, start, goal, &[])
+}
+
+/// A* with dynamic pass-through cells for opened doors.
+///
+/// The baked nav grid treats doors as static blockers. When a door is open its
+/// AABB no longer blocks movement, so the cells covered by that AABB must be
+/// temporarily treated as free; otherwise click-to-move around a door would
+/// still fail even though the collision layer allows walking through it.
+pub fn find_path_with_open(
+    nav: &NavGridDef,
+    start: [f32; 2],
+    goal: [f32; 2],
+    open_boxes: &[([f32; 2], [f32; 2])],
+) -> Option<Vec<[f32; 2]>> {
     let width = nav.width as i32;
     let height = nav.height as i32;
     if width <= 0 || height <= 0 {
         return None;
     }
-    let blocked = blocked_mask(nav);
+    let mut blocked = blocked_mask(nav);
+    if !open_boxes.is_empty() {
+        let total = (width * height) as usize;
+        for index in 0..total {
+            if !blocked[index] {
+                continue;
+            }
+            let center = cell_center(nav, index as i32);
+            if open_boxes
+                .iter()
+                .any(|(box_center, half)| point_in_box(center, *box_center, *half))
+            {
+                blocked[index] = false;
+            }
+        }
+    }
 
     let start_cell = nearest_free(nav, &blocked, start)?;
     let goal_cell = nearest_free(nav, &blocked, goal)?;
@@ -60,6 +90,11 @@ pub fn find_path(nav: &NavGridDef, start: [f32; 2], goal: [f32; 2]) -> Option<Ve
         }
     }
     None
+}
+
+fn point_in_box(point: [f32; 2], center: [f32; 2], half: [f32; 2]) -> bool {
+    (point[0] - center[0]).abs() <= half[0] + 1e-4
+        && (point[1] - center[1]).abs() <= half[1] + 1e-4
 }
 
 fn blocked_mask(nav: &NavGridDef) -> Vec<bool> {
@@ -179,6 +214,27 @@ mod tests {
         let path = find_path(&grid(), [1.5, 1.5], [8.5, 1.5]).unwrap();
         assert!(path.len() > 2);
         assert!(path.iter().any(|p| p[1] > 8.0));
+    }
+
+    #[test]
+    fn open_door_clears_baked_blocker() {
+        // Same wall as `grid()`: x=5 blocks every z except z=9. A door at
+        // (5.5, 5.5) would be baked into the grid; opening it should let A*
+        // cross directly through the middle instead of walking to z=9.
+        let open = [([5.5, 5.5], [0.5, 0.5])];
+        let path = find_path_with_open(&grid(), [1.5, 1.5], [8.5, 5.5], &open).unwrap();
+        assert!(path.iter().any(|p| p[0] >= 5.0 && p[1] < 8.0));
+    }
+
+    #[test]
+    fn closed_door_stays_blocked() {
+        let path = find_path_with_open(&grid(), [1.5, 1.5], [8.5, 5.5], &[]).unwrap();
+        assert!(path.iter().any(|p| p[1] > 8.0), "closed door must detour to the gap");
+        assert!(
+            path.iter()
+                .all(|p| !(p[0] > 4.5 && p[0] < 6.0 && p[1] < 8.0)),
+            "closed door must not cross the wall near the door"
+        );
     }
 
     #[test]

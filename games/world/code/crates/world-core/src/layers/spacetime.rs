@@ -198,11 +198,16 @@ impl Spacetime {
         if blocked { None } else { Some(next) }
     }
 
-    /// Deterministic A* entry point; moves to the navigation layer.
-    pub fn find_path(&self, start: [f32; 2], goal: [f32; 2]) -> Option<Vec<[f32; 2]>> {
+    /// A* that lets already-open doors through baked blocked cells.
+    pub fn find_path_with_open(
+        &self,
+        start: [f32; 2],
+        goal: [f32; 2],
+        open_boxes: &[([f32; 2], [f32; 2])],
+    ) -> Option<Vec<[f32; 2]>> {
         self.nav
             .as_ref()
-            .and_then(|nav| nav::find_path(nav, start, goal))
+            .and_then(|nav| nav::find_path_with_open(nav, start, goal, open_boxes))
     }
 }
 
