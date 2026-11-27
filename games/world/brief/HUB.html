@@ -67,9 +67,9 @@
         <div class="stats">
           <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
           <div class="stat o"><div class="v">19</div><div class="l">Rust 测试</div></div>
-          <div class="stat p"><div class="v">6</div><div class="l">内容测试</div></div>
+          <div class="stat p"><div class="v">17</div><div class="l">内容测试</div></div>
           <div class="stat r"><div class="v">0.24<span style="font-size:12px">ms</span></div><div class="l">5k real tick P95</div></div>
-          <div class="stat o"><div class="v">5</div><div class="l">玩法 Demo</div></div>
+          <div class="stat o"><div class="v">15</div><div class="l">玩法 Demo</div></div>
           <div class="stat p"><div class="v">M1</div><div class="l">主要切片</div></div>
         </div>
         <div class="quote"><b>一句话边界：</b>核心从不回调引擎；引擎只轮询 C ABI 拿差值。换引擎时，玩法规则、导航和存档不应重写。</div>
@@ -143,7 +143,7 @@
       <thead><tr><th>证据</th><th>结果</th><th>来源</th></tr></thead>
       <tbody>
         <tr><td>Rust workspace 测试</td><td><b>19</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
-        <tr><td>内容测试</td><td><b>6</b> 条 PASS：港湾 3 + 夜市/温室/环形站各 1</td><td><code>worldc content-test</code></td></tr>
+        <tr><td>内容测试</td><td><b>17</b> 条 PASS：港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0x3606a221e9990561</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
         <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:21569377…b7d5f9</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
         <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P95 <b>0.239 ms</b>，snapshot P95 3.086 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
@@ -168,13 +168,149 @@ node tools/serve-web.mjs --port 8787
   <section class="panel" id="p-architecture" role="tabpanel" aria-labelledby="t-architecture">
     <h2>五层架构：核心从不回调引擎</h2>
     <p class="lede">内容包是唯一事实源；内核在固定 tick 上推进；宿主通过版本化 C ABI 轮询状态、提交命令。引擎适配器只做“表现与输入”，不拥有规则。</p>
-    <div class="arch" aria-label="五层架构">
-      <div class="layer"><b>内容包</b><span>pack / zone / actor / prop / item / rule / quest / dialogue / nav / assets</span></div>
-      <div class="layer core"><b>world-core</b><span>确定性 tick · 实体 · 命令/事件 · 碰撞 · A* · 存档 · 哈希</span></div>
-      <div class="layer"><b>world-ffi</b><span>版本化 C ABI · 轮询 · 调用方持有缓冲 · catch_unwind</span></div>
-      <div class="layer"><b>宿主/适配器</b><span>Godot / Unity / Unreal / Web / Bevy：输入、视图、音频、资产</span></div>
-      <div class="layer"><b>作者工具</b><span>TS DSL / JSON / 编辑器 / 校验 / 内容测试 / 2D/2.5D/3D 预览</span></div>
+    <div class="arch-meta" aria-label="架构约束">
+      <span><b>内容层</b> 唯一事实源</span>
+      <span><b>内核层</b> 确定性、无引擎对象</span>
+      <span><b>ABI 层</b> 只轮询，不回调</span>
+      <span><b>宿主层</b> 输入 / 视图 / 音频 / 资产</span>
     </div>
+
+    <figure class="arch-map" aria-labelledby="arch-title" aria-describedby="arch-desc">
+      <svg class="arch-svg" viewBox="0 0 1120 740" role="img" xmlns="http://www.w3.org/2000/svg">
+        <title id="arch-title">RefuWorld 五层架构：作者工具、内容包、world-core、C ABI 与宿主适配器</title>
+        <desc id="arch-desc">作者工具产出内容包；world-core 在固定 tick 上推进规则、空间与存档；world-ffi 通过版本化 C ABI 向 Godot、Web、C/Headless 等宿主暴露命令、事件和 transform；核心不回调引擎，宿主不写玩法。</desc>
+        <defs>
+          <marker id="a-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="a-arrow-mark"/></marker>
+          <marker id="a-arrow-hot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="a-arrow-hot-mark"/></marker>
+          <marker id="a-arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="var(--amber)"/></marker>
+          <linearGradient id="a-core-fill" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" class="a-stop-a"/>
+            <stop offset="1" class="a-stop-b"/>
+          </linearGradient>
+          <filter id="a-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <text x="48" y="28" class="a-eyebrow">REFUWORLD / ARCHITECTURE</text>
+        <text x="1072" y="28" class="a-eyebrow a-end">SAME PACK · SAME WORLD · REPLACEABLE HOST</text>
+
+        <!-- 01 authoring -->
+        <text x="48" y="76" class="a-lane">01</text>
+        <text x="48" y="94" class="a-lane-sub">作者工具</text>
+        <rect x="142" y="42" width="830" height="86" rx="13" class="a-band"/>
+        <text x="164" y="68" class="a-title">写内容，不碰引擎</text>
+        <text x="164" y="88" class="a-sub">类型、校验、预览、发布共用一个内容模型</text>
+        <g class="a-node">
+          <rect x="164" y="98" width="178" height="20" rx="5" class="a-chip"/>
+          <text x="253" y="112" class="a-chip-text a-center">TS DSL</text>
+          <rect x="356" y="98" width="178" height="20" rx="5" class="a-chip"/>
+          <text x="445" y="112" class="a-chip-text a-center">JSON 包</text>
+          <rect x="548" y="98" width="178" height="20" rx="5" class="a-chip"/>
+          <text x="637" y="112" class="a-chip-text a-center">Web 编辑器</text>
+          <rect x="740" y="98" width="178" height="20" rx="5" class="a-chip"/>
+          <text x="829" y="112" class="a-chip-text a-center">CLI / 测试</text>
+        </g>
+
+        <path d="M560 128 L560 154" class="a-flow" marker-end="url(#a-arrow)"/>
+        <text x="574" y="146" class="a-flow-label">define / validate / build</text>
+
+        <!-- 02 content -->
+        <text x="48" y="190" class="a-lane">02</text>
+        <text x="48" y="208" class="a-lane-sub">内容层</text>
+        <rect x="142" y="158" width="830" height="82" rx="13" class="a-band a-band-content"/>
+        <text x="164" y="184" class="a-title">内容包 <tspan class="a-mono">/ pack</tspan></text>
+        <text x="164" y="203" class="a-sub">唯一事实源：同一份 pack 给所有宿主</text>
+        <g class="a-chip-text">
+          <rect x="164" y="214" width="72" height="17" rx="4" class="a-chip"/><text x="200" y="226" class="a-center">zone</text>
+          <rect x="244" y="214" width="78" height="17" rx="4" class="a-chip"/><text x="283" y="226" class="a-center">actor</text>
+          <rect x="330" y="214" width="68" height="17" rx="4" class="a-chip"/><text x="364" y="226" class="a-center">prop</text>
+          <rect x="406" y="214" width="68" height="17" rx="4" class="a-chip"/><text x="440" y="226" class="a-center">item</text>
+          <rect x="482" y="214" width="72" height="17" rx="4" class="a-chip"/><text x="518" y="226" class="a-center">rule</text>
+          <rect x="562" y="214" width="76" height="17" rx="4" class="a-chip"/><text x="600" y="226" class="a-center">quest</text>
+          <rect x="646" y="214" width="110" height="17" rx="4" class="a-chip"/><text x="701" y="226" class="a-center">dialogue</text>
+          <rect x="764" y="214" width="64" height="17" rx="4" class="a-chip"/><text x="796" y="226" class="a-center">nav</text>
+          <rect x="836" y="214" width="82" height="17" rx="4" class="a-chip"/><text x="877" y="226" class="a-center">assets</text>
+        </g>
+
+        <path d="M560 240 L560 268" class="a-flow" marker-end="url(#a-arrow)"/>
+        <text x="574" y="260" class="a-flow-label">load → world</text>
+
+        <!-- 03 core -->
+        <text x="48" y="310" class="a-lane">03</text>
+        <text x="48" y="328" class="a-lane-sub">权威内核</text>
+        <rect x="142" y="272" width="830" height="158" rx="15" class="a-core" fill="url(#a-core-fill)" filter="url(#a-glow)"/>
+        <text x="164" y="300" class="a-core-title">world-core</text>
+        <text x="164" y="320" class="a-core-sub">Rust · 不依赖引擎 · 不在渲染线程上工作</text>
+        <g class="a-chip-text">
+          <rect x="164" y="338" width="98" height="30" rx="6" class="a-core-chip"/><text x="213" y="357" class="a-center">60 Hz tick</text>
+          <rect x="272" y="338" width="118" height="30" rx="6" class="a-core-chip"/><text x="331" y="357" class="a-center">Entity / Zone</text>
+          <rect x="400" y="338" width="112" height="30" rx="6" class="a-core-chip"/><text x="456" y="357" class="a-center">命令 / 事件</text>
+          <rect x="522" y="338" width="118" height="30" rx="6" class="a-core-chip"/><text x="581" y="357" class="a-center">碰撞 / A*</text>
+          <rect x="650" y="338" width="126" height="30" rx="6" class="a-core-chip"/><text x="713" y="357" class="a-center">规则 / 任务</text>
+          <rect x="786" y="338" width="138" height="30" rx="6" class="a-core-chip"/><text x="855" y="357" class="a-center">快照 / xxh3</text>
+        </g>
+        <g class="a-inline-note">
+          <text x="164" y="398" class="a-sub">输入命令 → 校验 → 固定步进 → 事件 → 哈希</text>
+          <text x="820" y="398" class="a-sub a-end">save / load · 可回放</text>
+        </g>
+        <text x="48" y="454" class="a-small">核心从不回调引擎</text>
+        <text x="48" y="470" class="a-small">引擎只负责表现</text>
+
+        <path d="M560 430 L560 456" class="a-flow" marker-end="url(#a-arrow)"/>
+
+        <!-- 04 ABI -->
+        <text x="48" y="500" class="a-lane">04</text>
+        <text x="48" y="518" class="a-lane-sub">ABI 边界</text>
+        <rect x="142" y="460" width="830" height="62" rx="11" class="a-abi"/>
+        <text x="164" y="484" class="a-title">world-ffi <tspan class="a-mono">/ C ABI v0</tspan></text>
+        <text x="164" y="503" class="a-sub">handle · poll events · copy transforms · caller-owned buffers · catch_unwind</text>
+        <text x="936" y="489" class="a-end a-mono a-sub">stable boundary</text>
+
+        <path d="M250 522 L250 550" class="a-flow a-flow-hot" marker-end="url(#a-arrow-hot)"/>
+        <text x="238" y="546" class="a-flow-label a-end">command / input ↓</text>
+        <path d="M864 550 L864 522" class="a-flow a-flow-hot" marker-end="url(#a-arrow-hot)"/>
+        <text x="876" y="546" class="a-flow-label">event / transform ↑</text>
+
+        <!-- 05 hosts -->
+        <text x="48" y="596" class="a-lane">05</text>
+        <text x="48" y="614" class="a-lane-sub">宿主适配器</text>
+        <rect x="142" y="550" width="830" height="118" rx="13" class="a-host-band"/>
+        <g class="a-host">
+          <rect x="160" y="568" width="180" height="82" rx="9"/>
+          <text x="250" y="592" class="a-center a-title">Godot 4.7</text>
+          <text x="250" y="611" class="a-center a-sub">GDExtension</text>
+          <text x="250" y="630" class="a-center a-good">M2 已完成</text>
+        </g>
+        <g class="a-host">
+          <rect x="358" y="568" width="180" height="82" rx="9"/>
+          <text x="448" y="592" class="a-center a-title">Web / wasm</text>
+          <text x="448" y="611" class="a-center a-sub">Canvas / Three.js</text>
+          <text x="448" y="630" class="a-center a-good">2D / 2.5D / 3D</text>
+        </g>
+        <g class="a-host">
+          <rect x="556" y="568" width="180" height="82" rx="9"/>
+          <text x="646" y="592" class="a-center a-title">C / Headless</text>
+          <text x="646" y="611" class="a-center a-sub">CI / replay</text>
+          <text x="646" y="630" class="a-center a-good">同哈希</text>
+        </g>
+        <g class="a-host a-future">
+          <rect x="754" y="568" width="198" height="82" rx="9"/>
+          <text x="853" y="592" class="a-center a-title">Unity / Unreal / Bevy</text>
+          <text x="853" y="611" class="a-center a-sub">同一 ABI，不重写规则</text>
+          <text x="853" y="630" class="a-center a-faint">后续适配器</text>
+        </g>
+
+        <!-- footer validation -->
+        <rect x="142" y="688" width="830" height="34" rx="8" class="a-valid"/>
+        <text x="164" y="710" class="a-small">验证回路</text>
+        <text x="260" y="710" class="a-small a-faint">M0 双跑 / C ABI 同哈希</text>
+        <text x="500" y="710" class="a-small a-faint">M1 TS / Web 预览</text>
+        <text x="710" y="710" class="a-small a-faint">M2 Godot CTS / 5k</text>
+        <text x="944" y="710" class="a-end a-small a-good">CI 兜底 ✓</text>
+      </svg>
+      <figcaption><b>一句话读图：</b>作者工具把内容包送进 <code>world-core</code>；核心在固定 tick 上产生命令/事件/transform，经 <code>world-ffi</code> 的 C ABI 给宿主消费。宿主只做输入、视图、音频与资产，不拥有规则；换宿主时包、规则、存档与哈希都不重写。</figcaption>
+    </figure>
     <div class="note"><b>边界规则：</b>核心不做渲染、不碰引擎对象、不回调引擎；表现层不写玩法规则。适配器通过 <code>world_poll_events</code> / <code>world_copy_transforms</code> 拉取状态，通过命令入口提交输入。</div>
 
     <h3>一次 tick 的路径</h3>

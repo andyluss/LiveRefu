@@ -42,6 +42,7 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
+- **HUB 架构标签页可视化**：五层架构改为内联 SVG 架构图（作者工具 → 内容包 → world-core → world-ffi → 宿主适配器），带命令/事件流向、ABI 边界、验证回路与内容/内核/宿主约束标签；全部使用主题 token，支持三态、打印与移动端横向滚动。
 - **Web 静态预览服务改为 Node**：新增共享 `tools/serve-static.mjs`，`games/world/tools/serve-web.mjs` 作为兼容包装（无第三方依赖，支持 root/port/bind、目录 index、MIME、路径穿越拒绝）；`package.json` 增加 `npm run serve`；文档与构建脚本不再依赖 `python3 -m http.server`；新增 `test/serve_web_check.mjs` 并接入 world CI。
 
 - README 状态改为 **M0 已通过 + M1 主要切片已通过**；项目名统一为 **RefuWorld**。
