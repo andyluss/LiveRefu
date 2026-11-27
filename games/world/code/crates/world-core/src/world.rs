@@ -3,12 +3,12 @@ use crate::entity::{Collider, Door, Entity, EntityKind, Interactable, ItemStack,
 use crate::event::EventEnvelope;
 use crate::ids::EntityId;
 use crate::rng::Rng;
-use crate::layers::agency::Agency;
+use crate::layers::agency::{Agency, BehaviorChange};
 use crate::layers::narrative::Narrative;
 use crate::layers::social::{event_json, Social, SocialEvent, SocialSnapshot};
 use crate::layers::systems::{Systems, SystemsSnapshot};
 use crate::store::{EntityMut, EntityStore, EntityView};
-use crate::layers::spacetime::{Obstacle, Spacetime};
+use crate::layers::spacetime::{Body, Obstacle, Spacetime};
 use crate::layers::subject::{self, DoorInteraction};
 use crate::script::ScriptHost;
 use serde::{Deserialize, Serialize};
@@ -64,6 +64,8 @@ pub struct World {
     pub pack_hash: String,
     pub suspended: bool,
     pub timescale: f64,
+    movement_obstacles: Vec<Obstacle>,
+    behavior_changes: Vec<BehaviorChange>,
     pub max_catchup: u32,
     pub overrun_count: u32,
     pub last_error: Option<String>,
@@ -95,6 +97,8 @@ impl World {
             pack_hash,
             suspended: false,
             timescale: 1.0,
+            movement_obstacles: Vec::with_capacity(64),
+            behavior_changes: Vec::new(),
             max_catchup: 4,
             overrun_count: 0,
             last_error: None,
@@ -375,16 +379,22 @@ impl World {
 
     /// L0 owns the kinematic step; this method only supplies the body snapshot.
     fn apply_movement(&mut self) {
-        let Some(player) = self.entity(self.player).map(Entity::from) else {
+        let Some(player) = self.entity(self.player) else {
             return;
         };
-        let obstacles: Vec<Obstacle> = self
-            .store
-            .obstacles(self.player)
-            .into_iter()
-            .map(|(position, collider, open)| Obstacle { position, collider, open })
-            .collect();
-        if let Some(position) = self.spacetime.apply_movement(&player, &obstacles) {
+        let body = Body {
+            position: player.transform.position,
+            speed: player.speed,
+            collider: player.collider.clone(),
+        };
+        let mut obstacles = std::mem::take(&mut self.movement_obstacles);
+        obstacles.clear();
+        self.store.for_each_obstacle(self.player, |position, collider, open| {
+            obstacles.push(Obstacle { position, collider, open });
+        });
+        let moved = self.spacetime.apply_movement(&body, &obstacles);
+        self.movement_obstacles = obstacles;
+        if let Some(position) = moved {
             if let Some(player) = self.entity_mut(self.player) {
                 player.transform.position = position;
             }
@@ -407,10 +417,13 @@ impl World {
     }
 
     fn update_schedules(&mut self) {
-        let changes = self
-            .agency
-            .changes(self.spacetime.clock_minutes, self.store.schedules());
-        for change in changes {
+        let mut changes = std::mem::take(&mut self.behavior_changes);
+        self.agency.changes_into(
+            self.spacetime.clock_minutes,
+            self.store.schedules(),
+            &mut changes,
+        );
+        for change in &changes {
             if let Some(entity) = self.entity_mut(change.id) {
                 *entity.behavior = Some(change.behavior.clone());
             }
@@ -420,6 +433,7 @@ impl World {
                 json!({"entity": change.content_id, "behavior": change.behavior}),
             );
         }
+        self.behavior_changes = changes;
     }
 
     pub fn apply_command(&mut self, command: Command) -> Result<(), String> {

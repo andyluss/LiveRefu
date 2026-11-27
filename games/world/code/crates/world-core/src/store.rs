@@ -287,16 +287,20 @@ pub(crate) struct ScheduleView<'a> {
 
 impl EntityStore {
     /// Hot-path view for kinematics: avoids materializing full EntityView columns.
-    pub(crate) fn obstacles(&self, exclude: EntityId) -> Vec<([f32; 3], Option<Collider>, bool)> {
-        let mut out = Vec::new();
+
+
+    /// Allocation-free hot path: caller reuses its obstacle buffer.
+    pub(crate) fn for_each_obstacle<F>(&self, exclude: EntityId, mut f: F)
+    where
+        F: FnMut([f32; 3], Option<Collider>, bool),
+    {
         for i in 0..self.core.len() {
             let Some(core) = self.core[i].as_ref() else { continue; };
             if core.id == exclude || core.kind == EntityKind::Item { continue; }
             let Some(transform) = self.transform[i].as_ref() else { continue; };
             let open = self.door[i].as_ref().map(|d| d.open).unwrap_or(false);
-            out.push((transform.position, self.collider[i].clone(), open));
+            f(transform.position, self.collider[i].clone(), open);
         }
-        out
     }
 
     pub(crate) fn schedules(&self) -> impl Iterator<Item = ScheduleView<'_>> + '_ {

@@ -3,11 +3,18 @@
 //! This layer owns time and kinematic state only. It deliberately knows nothing
 //! about inventory, doors, schedules, quests or scripts.
 
-use crate::entity::{Collider, Entity};
+use crate::entity::Collider;
 use crate::nav;
 use world_pack::NavGridDef;
 
 /// A static obstacle snapshot used by collision resolution.
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct Body {
+    pub position: [f32; 3],
+    pub speed: f32,
+    pub collider: Option<Collider>,
+}
+
 #[derive(Clone, Debug)]
 pub(crate) struct Obstacle {
     pub position: [f32; 3],
@@ -77,7 +84,7 @@ impl Spacetime {
     ///
     /// The caller owns the entity slab; this layer only computes kinematics and
     /// collision against the supplied obstacle snapshot.
-    pub fn apply_movement(&mut self, player: &Entity, obstacles: &[Obstacle]) -> Option<[f32; 3]> {
+    pub fn apply_movement(&mut self, player: &Body, obstacles: &[Obstacle]) -> Option<[f32; 3]> {
         let [x, z] = self.move_intent;
         let len = (x * x + z * z).sqrt();
         if len > 1e-6 {
@@ -91,7 +98,7 @@ impl Spacetime {
             let magnitude = len.min(1.0);
             let dx = (x / len) * step * magnitude;
             let dz = (z / len) * step * magnitude;
-            let mut position = player.transform.position;
+            let mut position = player.position;
             if let Some(next) = self.try_move(player, obstacles, position, dx, 0.0) {
                 position = next;
             }
@@ -104,7 +111,7 @@ impl Spacetime {
         if self.path.is_empty() {
             return None;
         }
-        let mut position = player.transform.position;
+        let mut position = player.position;
         while self.path_index < self.path.len() {
             let waypoint = self.path[self.path_index];
             let dx = waypoint[0] - position[0];
@@ -150,7 +157,7 @@ impl Spacetime {
 
     fn try_move(
         &self,
-        player: &Entity,
+        player: &Body,
         obstacles: &[Obstacle],
         position: [f32; 3],
         dx: f32,
@@ -217,25 +224,12 @@ fn circle_aabb_overlap(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entity::{Entity, EntityKind, Transform};
-    use crate::ids::EntityId;
+    use crate::entity::Collider;
 
-    fn player(x: f32, z: f32) -> Entity {
-        Entity {
-            id: EntityId { index: 0, generation: 0 },
-            content_id: "player".into(),
-            persistent_id: Some("player".into()),
-            kind: EntityKind::Player,
-            transform: Transform::new([x, 0.0, z], 0.0),
-            tags: vec![],
-            health: 100,
+    fn player(x: f32, z: f32) -> Body {
+        Body {
+            position: [x, 0.0, z],
             speed: 4.0,
-            inventory: vec![],
-            interactable: None,
-            door: None,
-            schedule: None,
-            behavior: None,
-            dialogue: None,
             collider: Some(Collider::Circle { radius: 0.35 }),
         }
     }

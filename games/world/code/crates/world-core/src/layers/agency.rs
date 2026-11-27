@@ -26,12 +26,24 @@ impl Agency {
     }
 
     /// Compute deterministic behavior changes for the current clock minute.
+    #[cfg(test)]
     pub fn changes<'a>(
         &self,
         minute: u32,
         entities: impl Iterator<Item = ScheduleView<'a>>,
     ) -> Vec<BehaviorChange> {
         let mut updates = Vec::new();
+        self.changes_into(minute, entities, &mut updates);
+        updates
+    }
+
+    pub fn changes_into<'a>(
+        &self,
+        minute: u32,
+        entities: impl Iterator<Item = ScheduleView<'a>>,
+        updates: &mut Vec<BehaviorChange>,
+    ) {
+        updates.clear();
         for entity in entities {
             let schedule_id = entity.schedule;
             let Some(schedule) = self.schedules.get(schedule_id) else {
@@ -48,7 +60,6 @@ impl Agency {
                 });
             }
         }
-        updates
     }
 }
 

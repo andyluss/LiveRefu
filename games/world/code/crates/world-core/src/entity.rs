@@ -33,7 +33,7 @@ pub struct Interactable {
     pub verbs: Vec<String>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 #[serde(tag = "shape", rename_all = "snake_case")]
 pub enum Collider {
     /// 2D 俯视用的轴对齐矩形（x/z 半尺寸）。
