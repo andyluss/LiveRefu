@@ -3,6 +3,7 @@ use crate::entity::{Collider, Door, Entity, EntityKind, Interactable, ItemStack,
 use crate::event::EventEnvelope;
 use crate::ids::EntityId;
 use crate::rng::Rng;
+use crate::layers::agency::Agency;
 use crate::layers::spacetime::{Obstacle, Spacetime};
 use crate::layers::subject::{self, DoorInteraction};
 use crate::script::ScriptHost;
@@ -11,7 +12,7 @@ use serde_json::{json, Value};
 use std::collections::{BTreeMap, BTreeSet};
 use world_pack::{
     parse_hhmm, ActionDef, ActorDef, ConditionDef, DialogueDef, ItemDef, ObjectiveDef, Pack,
-    PropDef, QuestDef, RewardDef, RuleDef, ScheduleDef,
+    PropDef, QuestDef, RewardDef, RuleDef,
 };
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -62,7 +63,7 @@ pub struct World {
     pub player: EntityId,
     pub zone_id: String,
     rules: Vec<RuleDef>,
-    schedules: BTreeMap<String, ScheduleDef>,
+    agency: Agency,
     quest_defs: BTreeMap<String, QuestDef>,
     dialogues: BTreeMap<String, DialogueDef>,
     loc: BTreeMap<String, String>,
@@ -98,7 +99,7 @@ impl World {
             player: EntityId::NONE,
             zone_id: pack.world.start_zone.clone(),
             rules: pack.rules.values().cloned().collect(),
-            schedules: pack.schedules.clone(),
+            agency: Agency::new(pack.schedules.clone()),
             quest_defs: pack.quests.clone(),
             dialogues: pack.dialogues.clone(),
             loc,
@@ -435,30 +436,17 @@ impl World {
     }
 
     fn update_schedules(&mut self) {
-        let minute = self.spacetime.clock_minutes;
-        let mut updates: Vec<(EntityId, String, String)> = Vec::new();
-        for entity in self.entities() {
-            let Some(schedule_id) = &entity.schedule else {
-                continue;
-            };
-            let Some(schedule) = self.schedules.get(schedule_id) else {
-                continue;
-            };
-            let behavior = behavior_at(schedule, minute);
-            if let Some(behavior) = behavior {
-                if entity.behavior.as_deref() != Some(behavior.as_str()) {
-                    updates.push((entity.id, entity.content_id.clone(), behavior));
-                }
-            }
-        }
-        for (id, content_id, behavior) in updates {
-            if let Some(entity) = self.entity_mut(id) {
-                entity.behavior = Some(behavior.clone());
+        let changes = self
+            .agency
+            .changes(self.spacetime.clock_minutes, self.entities());
+        for change in changes {
+            if let Some(entity) = self.entity_mut(change.id) {
+                entity.behavior = Some(change.behavior.clone());
             }
             self.emit(
                 "schedule_changed",
-                Some(id),
-                json!({"entity": content_id, "behavior": behavior}),
+                Some(change.id),
+                json!({"entity": change.content_id, "behavior": change.behavior}),
             );
         }
     }
@@ -1079,18 +1067,3 @@ fn data_bool(event: &EventEnvelope, key: &str) -> Option<bool> {
     event.data.get(key).and_then(|v| v.as_bool())
 }
 
-fn behavior_at(schedule: &ScheduleDef, minute: u32) -> Option<String> {
-    for entry in &schedule.entries {
-        let from = parse_hhmm(&entry.from)?;
-        let to = parse_hhmm(&entry.to)?;
-        let inside = if from <= to {
-            minute >= from && minute < to
-        } else {
-            minute >= from || minute < to
-        };
-        if inside {
-            return Some(entry.behavior.clone());
-        }
-    }
-    None
-}
