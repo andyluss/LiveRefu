@@ -532,6 +532,7 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
       </a>
     </div>
     <div class="note"><b>Lab 与 Demo 的分工：</b>Demo 验证世界层能力；Lab 游戏验证“真的可以发布”。独立版和 RefuWorld 版共用同一套 <code>logic.mjs</code> / <code>game.mjs</code>，只在会话层是否接入 wasm 上分叉。</div>
+    <p class="case-engines"><b>同一玩法，三个宿主：</b> <a href="http://127.0.0.1:8787/lab/tetris/">Web 独立版</a> · <a href="http://127.0.0.1:8787/lab/tetris/refuworld.html">Web + RefuWorld</a> · <a href="../lab/tetris/godot/README.md">Godot 4.7 + GDExtension</a> <span>（Godot 需本地构建运行）</span></p>
 
     <h3>3D 案例：同一份世界，换一种看法</h3>
     <p class="lede">3D 是表现层，不是第二套玩法。它用同一个 <code>PreviewWorld</code>、同一份 <code>pack.data</code>；从港湾值班室到夜班货运，再到太阳城农场 / 霓虹下城，规则、L4/L5、存档与哈希都不会分叉。</p>

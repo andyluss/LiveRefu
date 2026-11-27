@@ -22,7 +22,7 @@ scope: "跨游戏、跨引擎"
 
 ## 快速开始
 
-Lab 里有一个可直接发布的完整小游戏：[NEON DRIFT · 方块坠落](lab/tetris/)（`/lab/tetris/`，独立 PWA，无需构建）；另有 [RefuWorld 内核变体](lab/tetris/refuworld.html)（L0 tick / L3 任务 / L5 能源）。
+Lab 里有一个可直接发布的完整小游戏：[NEON DRIFT · 方块坠落](lab/tetris/)（`/lab/tetris/`，独立 PWA，无需构建）；另有 [RefuWorld 内核变体](lab/tetris/refuworld.html)（L0 tick / L3 任务 / L5 能源）与 [Godot 4.7 版本](lab/tetris/godot/)。
 
 
 ```bash

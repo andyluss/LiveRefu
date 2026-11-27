@@ -1,0 +1,22 @@
+config_version=5
+
+[application]
+config/name="NEON DRIFT · Godot Lab"
+config/description="RefuWorld L0/L3/L5 + falling blocks, Godot adapter."
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.7")
+boot_splash/bg_color=Color(0.024, 0.035, 0.059, 1)
+boot_splash/show_image=false
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=800
+window/stretch/mode="canvas_items"
+window/handheld/orientation=1
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.024, 0.035, 0.059, 1)
+
+[audio]
+driver/enable_input=false

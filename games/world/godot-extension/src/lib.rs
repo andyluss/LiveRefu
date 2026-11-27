@@ -536,6 +536,21 @@ impl WorldNode {
         self.send_move(x - y, x + y)
     }
 
+    /// 通用命令入口：Lab 游戏用它推进 L3 flags；命令仍由内核校验。
+    #[func]
+    fn command_json(&mut self, json: GString) -> bool {
+        match self.world.as_mut() {
+            Some(world) => match world.command(json.to_string().as_str()) {
+                Ok(()) => true,
+                Err(error) => {
+                    godot_error!("world_command: {error}");
+                    false
+                }
+            },
+            None => false,
+        }
+    }
+
     #[func]
     fn state_hash(&self) -> i64 {
         self.world

@@ -40,6 +40,7 @@ DAS 150ms，ARR 35ms；软降重复 45ms。移动端按钮支持按住连发。
 | --- | --- | --- |
 | [`index.html`](index.html) | 无 | 独立版；纯静态，可单独发布 |
 | [`refuworld.html`](refuworld.html) | RefuWorld wasm | 同玩法，但接入 L0 固定 tick、L3 任务、L5 能源系统 |
+| [`godot/`](godot/) | RefuWorld GDExtension | Godot 4.7 原生版本；同一 `lab.tetris` 包与规则 |
 
 ![GRID//SIGNAL](refuworld-screenshot.png)
 
@@ -50,6 +51,19 @@ RefuWorld 版复用同一套 `logic.mjs` / `game.mjs` / UI，通过 `refuworld-b
 - **L5**：光伏/风电/电池/负载/天气；低电量时重力倍率上升
 
 它**不**接入 L1 主体交互、L2 行为、L4 社会关系；落块玩法与这些层没有自然依赖，不硬塞。
+
+### Godot 版
+
+`godot/` 是 Godot 4.7 原生版本：同一套 `lab.tetris` 包、同一套落块规则、L0/L3/L5 面板。
+
+```bash
+cd games/world
+./lab/tetris/godot/build.sh
+godot --path lab/tetris/godot
+./lab/tetris/godot/test.sh
+```
+
+它依赖 `world_godot` GDExtension（`godot-extension/`），发布时需要带当前平台二进制和 `refuworld.pack.data`。详见 [`godot/README.md`](godot/README.md)。
 
 ### RefuWorld 版发布
 
