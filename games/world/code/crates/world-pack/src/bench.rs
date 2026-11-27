@@ -295,6 +295,8 @@ pub fn real5k(seed: u64) -> Pack {
             at: [0.0, 0.0, 0.0],
             inventory: vec![],
         },
+        social: None,
+        systems: None,
     };
 
     let mut loc = BTreeMap::new();

@@ -592,12 +592,15 @@ pub extern "C" fn world_ui_state(
                 })
             })
             .collect::<Vec<_>>();
+        let snapshot = world.snapshot();
         let value = json!({
             "tick": world.tick(),
             "zone": world.zone_id,
             "inventory": inventory,
             "quests": quests,
             "flags": world.flags(),
+            "social": snapshot.social,
+            "systems": snapshot.systems,
         });
         let text = serde_json::to_vec(&value)
             .map_err(|e| (WORLD_ERR_INTERNAL, format!("ui_state 序列化失败: {e}")))?;

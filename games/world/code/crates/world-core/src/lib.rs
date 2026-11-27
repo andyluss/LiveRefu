@@ -20,5 +20,7 @@ pub use rng::Rng;
 pub use runner::{first_divergence, run_idle, run_trace, run_trace_with_host, Keyframe, RunResult};
 pub use trace::{Trace, TraceCommand, TraceStep};
 pub use world::{QuestState, Snapshot, World};
+pub use layers::social::SocialSnapshot;
+pub use layers::systems::SystemsSnapshot;
 
 pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");

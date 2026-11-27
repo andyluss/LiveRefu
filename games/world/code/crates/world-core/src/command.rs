@@ -55,4 +55,12 @@ pub enum Command {
     OpenDoor {
         target: EntityId,
     },
+    SocialAction {
+        actor: EntityId,
+        target: Option<EntityId>,
+        action: String,
+    },
+    SetSystemPolicy {
+        policy: String,
+    },
 }

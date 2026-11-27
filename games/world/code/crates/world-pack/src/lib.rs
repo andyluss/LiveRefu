@@ -154,6 +154,8 @@ impl Pack {
                 at: [0.0, 0.0, 0.0],
                 inventory: vec![],
             },
+            social: None,
+            systems: None,
         };
         let zone = ZoneDef {
             id: "zone.bench".to_string(),

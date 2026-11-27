@@ -44,6 +44,65 @@ pub struct WorldDef {
     pub start_time: String,
     pub seed: u64,
     pub player: PlayerSpawn,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub social: Option<SocialDef>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub systems: Option<SystemsDef>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+pub struct SocialDef {
+    #[serde(default)]
+    pub factions: BTreeMap<String, FactionDef>,
+    #[serde(default)]
+    pub relationships: Vec<RelationshipDef>,
+    #[serde(default)]
+    pub reputations: BTreeMap<String, i32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+pub struct FactionDef {
+    pub name: String,
+    #[serde(default)]
+    pub color: String,
+    #[serde(default)]
+    pub members: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+pub struct RelationshipDef {
+    pub a: String,
+    pub b: String,
+    #[serde(default)]
+    pub trust: i32,
+    #[serde(default)]
+    pub affinity: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+pub struct SystemsDef {
+    #[serde(default)]
+    pub solar_kw: f32,
+    #[serde(default)]
+    pub wind_kw: f32,
+    #[serde(default)]
+    pub battery_kwh: f32,
+    #[serde(default)]
+    pub water_m3: f32,
+    #[serde(default)]
+    pub ai_count: u32,
+    #[serde(default)]
+    pub base_load_kw: f32,
+    #[serde(default = "default_system_policy")]
+    pub policy: String,
+}
+
+fn default_system_policy() -> String {
+    "balance".to_string()
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

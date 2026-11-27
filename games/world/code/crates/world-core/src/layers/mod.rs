@@ -6,4 +6,6 @@
 pub(crate) mod spacetime;
 pub(crate) mod agency;
 pub(crate) mod narrative;
+pub(crate) mod social;
+pub(crate) mod systems;
 pub(crate) mod subject;

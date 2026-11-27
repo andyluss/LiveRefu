@@ -43,6 +43,8 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
+- **L4 社会关系层 + L5 世界系统层**：新增 `layers/social`（factions/relationships/reputation，talk 自动记录，SocialAction 支持大会提案）与 `layers/systems`（天气、光伏、风电、储能、水循环、AI 负载、energy_updated/weather_changed、能源策略）；`Snapshot` 增加可选 social/systems 字段，旧包省略、哈希/存档不变。
+- **太阳城农场旗舰 Demo**：新增 `demo.solarfarm` 内容包（3 人类 + 3 公共 AI + 光伏 canopy/风轮机/储能/滴灌/大会堂/水循环）与 `web/solarfarm3d.html`；L4 社会面板、L5 能源面板、大会提案、灌溉/储能/算力策略全部接同一 wasm 状态；Demo 索引 18 个玩法 Demo。
 - **Dock 07 环境音与镜头演出**：新增 WebAudio 程序化环境（雨声/低频码头嗡鸣/雾笛/货舱门伺服），默认关闭、点击启用；四段式镜头（码头全景→堆场→B-07→夜班）2.8–4.6s 推入，支持重看演出与拖动取消；不用外部音频文件。
 - **Entity 组件列拆分**：新增 `EntityStore` SoA 存储（core/transform/collider/speed/inventory/interactable/door/schedule/behavior/dialogue 分列）；`Entity` 保留为 Snapshot/C ABI DTO；`EntityView`/`EntityMut` 作为运行时扁平读写视图；`EntityId` 代际、spawn/despawn、快照往返与黄金哈希保持；5k tick P95 0.165ms。
 - **夜班货运旗舰 3D（Dock 07）**：专用 `web/dock3d.html` + `dock3d.js`，集装箱堆场、吊机、B-07 货舱门、雨夜/灯光/水洼/码头仓库与低模工人；任务/门禁/拾取全部来自 `demo.dock` wasm 状态；5 个通用 `scene3d` 原型从 Demo 索引移除（文件保留为实验），索引收敛到 17 个玩法 Demo。

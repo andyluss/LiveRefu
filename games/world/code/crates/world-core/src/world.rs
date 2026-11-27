@@ -5,6 +5,8 @@ use crate::ids::EntityId;
 use crate::rng::Rng;
 use crate::layers::agency::Agency;
 use crate::layers::narrative::Narrative;
+use crate::layers::social::{event_json, Social, SocialEvent, SocialSnapshot};
+use crate::layers::systems::{Systems, SystemsSnapshot};
 use crate::store::{EntityMut, EntityStore, EntityView};
 use crate::layers::spacetime::{Obstacle, Spacetime};
 use crate::layers::subject::{self, DoorInteraction};
@@ -36,6 +38,10 @@ pub struct Snapshot {
     pub path: Vec<[f32; 2]>,
     #[serde(default)]
     pub path_index: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub social: Option<SocialSnapshot>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub systems: Option<SystemsSnapshot>,
 }
 
 pub struct World {
@@ -50,6 +56,8 @@ pub struct World {
     pub zone_id: String,
     agency: Agency,
     narrative: Narrative,
+    social: Option<Social>,
+    systems: Option<Systems>,
     loc: BTreeMap<String, String>,
     pub pack_id: String,
     pub pack_version: String,
@@ -79,6 +87,8 @@ impl World {
             zone_id: pack.world.start_zone.clone(),
             agency: Agency::new(pack.schedules.clone()),
             narrative: Narrative::new(pack),
+            social: pack.world.social.as_ref().map(Social::new),
+            systems: pack.world.systems.as_ref().map(Systems::new),
             loc,
             pack_id: pack.manifest.id.clone(),
             pack_version: pack.manifest.version.clone(),
@@ -121,6 +131,9 @@ impl World {
         world.spacetime.tick_hz = tick_hz;
         world.spacetime.start_minutes = start_minutes;
         world.load_zone(pack, &pack.world.start_zone)?;
+        if let Some(systems) = world.systems.as_mut() {
+            systems.update(0, world.spacetime.clock_minutes);
+        }
         world.emit(
             "world_started",
             None,
@@ -357,6 +370,7 @@ impl World {
         self.apply_movement();
         self.spacetime.advance_tick();
         self.update_schedules();
+        self.update_systems();
     }
 
     /// L0 owns the kinematic step; this method only supplies the body snapshot.
@@ -374,6 +388,21 @@ impl World {
             if let Some(player) = self.entity_mut(self.player) {
                 player.transform.position = position;
             }
+        }
+    }
+
+    fn update_systems(&mut self) {
+        let Some(systems) = self.systems.as_mut() else { return; };
+        let events = systems.update(self.spacetime.tick, self.spacetime.clock_minutes);
+        for (kind, data) in events {
+            self.emit(kind, None, data);
+        }
+    }
+
+    fn apply_social(&mut self, events: Vec<SocialEvent>) {
+        for event in events {
+            let (kind, data) = event_json(&event);
+            self.emit(kind, None, data);
         }
     }
 
@@ -436,6 +465,17 @@ impl World {
             Command::Move { actor, x, z } => self.command_move(actor, x, z),
             Command::MoveTo { actor, x, z } => self.command_move_to(actor, x, z),
             Command::OpenDoor { target } => self.command_open_door(target),
+            Command::SocialAction { actor, target, action } => {
+                self.command_social(actor, target, &action)
+            }
+            Command::SetSystemPolicy { policy } => {
+                let Some(systems) = self.systems.as_mut() else {
+                    return Err("当前内容包未启用 L5 世界系统".to_string());
+                };
+                let (kind, data) = systems.set_policy(&policy)?;
+                self.emit(kind, None, data);
+                Ok(())
+            }
         }
     }
 
@@ -482,6 +522,32 @@ impl World {
             return Err(format!("target 不是门: {target}"));
         }
         self.emit("door_opened", Some(target), json!({"target": target}));
+        Ok(())
+    }
+
+    fn command_social(
+        &mut self,
+        actor: EntityId,
+        target: Option<EntityId>,
+        action: &str,
+    ) -> Result<(), String> {
+        let actor_id = self
+            .entity(actor)
+            .map(|e| e.content_id.to_string())
+            .ok_or_else(|| format!("actor 不存在: {actor}"))?;
+        let target_id = match target {
+            Some(id) => Some(
+                self.entity(id)
+                    .map(|e| e.content_id.to_string())
+                    .ok_or_else(|| format!("target 不存在: {id}"))?,
+            ),
+            None => None,
+        };
+        let Some(social) = self.social.as_mut() else {
+            return Err("当前内容包未启用 L4 社会层".to_string());
+        };
+        let events = social.apply_action(&actor_id, target_id.as_deref(), action)?;
+        self.apply_social(events);
         Ok(())
     }
 
@@ -548,6 +614,12 @@ impl World {
             Some(actor),
             json!({"actor": actor_entity.content_id, "target": target_entity.content_id}),
         );
+        let social_events = self
+            .social
+            .as_mut()
+            .map(|social| social.record_talk(&actor_entity.content_id, &target_entity.content_id))
+            .unwrap_or_default();
+        self.apply_social(social_events);
 
         if let Some(dialogue_id) = &target_entity.dialogue {
             if let Some(dialogue) = self.narrative.dialogue(dialogue_id) {
@@ -831,6 +903,8 @@ impl World {
             move_intent: self.spacetime.move_intent,
             path: self.spacetime.path.clone(),
             path_index: self.spacetime.path_index,
+            social: self.social.as_ref().map(Social::snapshot),
+            systems: self.systems.as_ref().map(Systems::snapshot),
         }
     }
 
@@ -864,6 +938,12 @@ impl World {
 
         self.store.from_entities(snap.entities);
         self.player = snap.player;
+        self.social = snap.social.map(Social::from_snapshot);
+        self.systems = snap.systems.and_then(|state| {
+            let mut systems = self.systems.take()?;
+            systems.restore(state);
+            Some(systems)
+        });
         if self.entity(self.player).is_none() {
             return Err("存档缺少 player 实体".to_string());
         }
