@@ -45,11 +45,12 @@
       <button role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview" data-panel="p-overview"><span class="n">01</span>概览</button>
       <button role="tab" aria-selected="false" aria-controls="p-status" id="t-status" data-panel="p-status"><span class="n">02</span>到哪了</button>
       <button role="tab" aria-selected="false" aria-controls="p-architecture" id="t-architecture" data-panel="p-architecture"><span class="n">03</span>架构</button>
-      <button role="tab" aria-selected="false" aria-controls="p-authoring" id="t-authoring" data-panel="p-authoring"><span class="n">04</span>内容与作者</button>
-      <button role="tab" aria-selected="false" aria-controls="p-3d" id="t-3d" data-panel="p-3d"><span class="n">05</span>3D 演示</button>
-      <button role="tab" aria-selected="false" aria-controls="p-decisions" id="t-decisions" data-panel="p-decisions"><span class="n">06</span>决策</button>
-      <button role="tab" aria-selected="false" aria-controls="p-roadmap" id="t-roadmap" data-panel="p-roadmap"><span class="n">07</span>路线图</button>
-      <button role="tab" aria-selected="false" aria-controls="p-risks" id="t-risks" data-panel="p-risks"><span class="n">08</span>风险/下一步</button>
+      <button role="tab" aria-selected="false" aria-controls="p-implementation" id="t-implementation" data-panel="p-implementation"><span class="n">04</span>实现</button>
+      <button role="tab" aria-selected="false" aria-controls="p-authoring" id="t-authoring" data-panel="p-authoring"><span class="n">05</span>内容与作者</button>
+      <button role="tab" aria-selected="false" aria-controls="p-3d" id="t-3d" data-panel="p-3d"><span class="n">06</span>3D 演示</button>
+      <button role="tab" aria-selected="false" aria-controls="p-decisions" id="t-decisions" data-panel="p-decisions"><span class="n">07</span>决策</button>
+      <button role="tab" aria-selected="false" aria-controls="p-roadmap" id="t-roadmap" data-panel="p-roadmap"><span class="n">08</span>路线图</button>
+      <button role="tab" aria-selected="false" aria-controls="p-risks" id="t-risks" data-panel="p-risks"><span class="n">09</span>风险/下一步</button>
     </nav>
   </div>
 </header>
@@ -336,6 +337,124 @@ node tools/serve-web.mjs --port 8787
       </tbody>
     </table>
     <p class="dim">完整 ABI 与适配器契约见 <a href="../docs/03_引擎适配与替换.md">03 · 引擎适配与替换</a>，决策见 <a href="../plans/ADR-004-abi-v0.md">ADR-004</a>。</p>
+  </section>
+
+  <section class="panel" id="p-implementation" role="tabpanel" aria-labelledby="t-implementation">
+    <h2>实现：从输入到哈希，再到宿主</h2>
+    <p class="lede">这一页不是 API 目录，而是一条可以跟着走的实现路径：命令怎样进入内核、tick 怎样推进、快照怎样变成哈希、C ABI 怎样把状态交给引擎、Godot 适配器怎样把 transform 变成视图。每一段都给出源码入口，方便人类研究者按需跳读。</p>
+    <div class="impl-kpis" aria-label="实现规模">
+      <div><b>19</b><span>Rust 测试</span></div>
+      <div><b>17</b><span>内容测试</span></div>
+      <div><b>1,314</b><span>适配器行数</span></div>
+      <div><b>3.557ms</b><span>5k frame P95</span></div>
+    </div>
+
+    <h3>1. 一次 tick：固定步进，不回调引擎</h3>
+    <figure class="impl-fig">
+      <svg class="impl-svg" viewBox="0 0 1120 190" role="img" aria-labelledby="tick-title tick-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="tick-title">一次 tick 的实现流水线</title>
+        <desc id="tick-desc">输入被转换为命令进入队列，世界校验并执行命令，推进 60 Hz 固定步进，产生事件与快照，再计算状态哈希，最后宿主轮询事件与 transform。</desc>
+        <defs><marker id="i-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" class="i-arrow-mark"/></marker></defs>
+        <rect x="24" y="42" width="1072" height="92" rx="13" class="i-band"/>
+        <g class="i-node">
+          <rect x="46" y="70" width="142" height="38" rx="7"/><text x="117" y="93" class="i-center i-title">输入</text>
+          <rect x="208" y="70" width="142" height="38" rx="7"/><text x="279" y="93" class="i-center i-title">命令队列</text>
+          <rect x="370" y="70" width="142" height="38" rx="7"/><text x="441" y="93" class="i-center i-title">校验 / 执行</text>
+          <rect x="532" y="70" width="142" height="38" rx="7"/><text x="603" y="93" class="i-center i-title">60 Hz tick</text>
+          <rect x="694" y="70" width="142" height="38" rx="7"/><text x="765" y="93" class="i-center i-title">事件 / 快照</text>
+          <rect x="856" y="70" width="168" height="38" rx="7"/><text x="940" y="93" class="i-center i-title">宿主轮询</text>
+        </g>
+        <g class="i-flow">
+          <path d="M188 89 L206 89" marker-end="url(#i-arrow)"/><path d="M350 89 L368 89" marker-end="url(#i-arrow)"/><path d="M512 89 L530 89" marker-end="url(#i-arrow)"/><path d="M674 89 L692 89" marker-end="url(#i-arrow)"/><path d="M836 89 L854 89" marker-end="url(#i-arrow)"/>
+          <path d="M940 112 C940 160 940 168 780 168 L180 168 C86 168 76 140 76 116" class="i-loop" marker-end="url(#i-arrow)"/>
+        </g>
+        <text x="46" y="28" class="i-eyebrow">TICK PIPELINE / 60 HZ</text>
+        <text x="1070" y="28" class="i-eyebrow i-end">NO RENDER CALLBACK</text>
+        <text x="180" y="181" class="i-small">下一帧：宿主把输入重新变成命令</text>
+      </svg>
+      <figcaption><b>关键点：</b>渲染线程不属于内核。宿主在每个固定步进前后拉取状态；内核不知道 Godot、Canvas 或 Three.js 的存在。</figcaption>
+    </figure>
+    <pre><code>let mut world = World::from_pack(&amp;pack, pack.hash()?)?;
+for tick in 1..=600 {
+    for step in trace.steps_at(tick) {
+        world.queue_command(step.command.resolve(&amp;world)?);
+    }
+    world.tick_once();             // 固定步进
+}
+let hash = world.state_hash();     // 规范化快照 → xxh3</code></pre>
+    <p class="dim">源码入口：<a href="../code/crates/world-core/src/world.rs"><code>world-core/src/world.rs</code></a> 的 <code>queue_command</code>、<code>tick_once</code>、<code>snapshot</code>；回放与双跑在 <a href="../code/crates/world-core/src/runner.rs"><code>runner.rs</code></a>。</p>
+
+    <h3>2. 数据模型：slab + 代际，快照可比较</h3>
+    <div class="grid g3">
+      <div class="card"><h4>实体槽</h4><p><code>Vec&lt;Slot&gt;</code> 复用索引；每个槽带 <code>generation</code>。删除实体时 generation 递增，旧句柄自然失效。</p><p class="small"><code>EntityId(index, generation)</code> 是回放、存档与视图池的共同键。</p></div>
+      <div class="card"><h4>快照</h4><p><code>Snapshot</code> 只含可序列化状态：tick、RNG、flags、quests、实体、玩家、zone、move_intent、path。</p><p class="small">字段顺序固定，<code>serde_json</code> → <code>xxh3_64</code>，因此跨宿主可比较。</p></div>
+      <div class="card"><h4>存档</h4><p><code>SaveEnvelope</code> 带包 ID/版本/哈希、快照与 checksum；读档先校验包，再校验 checksum，避免“读了一个别的世界的档”。</p><p class="small"><a href="../code/crates/world-core/src/world.rs">world-core/world.rs</a></p></div>
+    </div>
+    <div class="note"><b>为什么快照不直接存引擎对象：</b>引擎对象有线程、资源与生命周期；把它们塞进哈希会让“同一局”依赖宿主。RefuWorld 只哈希纯数据，表现层从快照重建视图。</div>
+
+    <h3>3. C ABI：调用方持有缓冲，核心不回调</h3>
+    <p>适配器只看到 <code>WorldHandle*</code> 和值类型。读数据分两次调用：先问长度，再传自己的缓冲区；写命令传 JSON 或结构化参数。所有 <code>extern "C"</code> 入口用 <code>catch_unwind</code> 隔离 panic，错误通过 <code>world_last_error</code> 返回。</p>
+    <div class="grid g2">
+      <div class="card"><h4>读：轮询而非回调</h4><pre><code>world_tick(handle, 16666);
+size_t n = world_copy_transforms(handle, buf, cap);
+uint8_t ev[4096]; size_t ev_len;
+world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
+      <div class="card"><h4>写：命令入口</h4><pre><code>{"op":"interact",
+ "actor":{"index":0,"generation":1},
+ "target":{"index":3,"generation":1}}
+</code></pre><p class="small">命令先入队，tick 时统一校验；非法命令不会写半状态。</p></div>
+    </div>
+    <p class="dim">源码入口：<a href="../code/crates/world-ffi/src/lib.rs"><code>world-ffi/src/lib.rs</code></a>；契约在 <a href="../code/include/world.h"><code>world.h</code></a> 与 <a href="../plans/ADR-004-abi-v0.md">ADR-004</a>。</p>
+
+    <h3>4. 内容到预览：两套写法，一个哈希</h3>
+    <figure class="impl-fig">
+      <svg class="impl-svg" viewBox="0 0 1120 170" role="img" aria-labelledby="content-title content-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="content-title">内容到预览的实现管线</title>
+        <desc id="content-desc">TS DSL、JSON 与 Web 编辑器产出同一规范化内容包，经校验、构建成 pack.data，再被 wasm、Godot GDExtension 与 C 宿主加载；三条路径最终应得到同一个状态哈希。</desc>
+        <defs><marker id="c-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" class="i-arrow-mark"/></marker></defs>
+        <text x="30" y="26" class="i-eyebrow">AUTHORING → PACK → HOST</text>
+        <g class="i-node">
+          <rect x="34" y="46" width="170" height="36" rx="7"/><text x="119" y="68" class="i-center i-title">TS DSL</text>
+          <rect x="34" y="94" width="170" height="36" rx="7"/><text x="119" y="116" class="i-center i-title">JSON 包</text>
+          <rect x="248" y="70" width="150" height="36" rx="7"/><text x="323" y="92" class="i-center i-title">validate</text>
+          <rect x="442" y="70" width="170" height="36" rx="7"/><text x="527" y="92" class="i-center i-title">pack.data</text>
+          <rect x="656" y="46" width="160" height="36" rx="7"/><text x="736" y="68" class="i-center i-title">wasm</text>
+          <rect x="656" y="94" width="160" height="36" rx="7"/><text x="736" y="116" class="i-center i-title">Godot</text>
+          <rect x="860" y="70" width="176" height="36" rx="7"/><text x="948" y="92" class="i-center i-title">同一 state_hash</text>
+        </g>
+        <g class="i-flow">
+          <path d="M204 64 C224 64 224 82 246 84" marker-end="url(#c-arrow)"/>
+          <path d="M204 112 C224 112 224 94 246 92" marker-end="url(#c-arrow)"/>
+          <path d="M398 88 L440 88" marker-end="url(#c-arrow)"/>
+          <path d="M612 84 L654 68" marker-end="url(#c-arrow)"/>
+          <path d="M612 92 L654 108" marker-end="url(#c-arrow)"/>
+          <path d="M816 70 C838 70 838 86 858 88" marker-end="url(#c-arrow)"/>
+          <path d="M816 116 C838 116 838 100 858 92" marker-end="url(#c-arrow)"/>
+        </g>
+        <text x="34" y="158" class="i-small">编辑器保存 → validate → bake nav → build；TS 与 JSON 的规范化包必须同哈希</text>
+      </svg>
+      <figcaption><b>一致性来自规范化，而不是“尽量一样”：</b>TS DSL 与 JSON 先归一到同一 schema，再构建；M1 用 <code>ts-build --compare</code> 校验，wasm 与 Godot 再用同一 pack + trace 比哈希。</figcaption>
+    </figure>
+    <p class="dim">源码入口：<a href="../code/crates/world-pack/src/lib.rs"><code>world-pack/src/lib.rs</code></a>、<a href="../tools/ts-build.mjs"><code>tools/ts-build.mjs</code></a>、<a href="../code/crates/world-wasm/src/lib.rs"><code>world-wasm/src/lib.rs</code></a>。</p>
+
+    <h3>5. Godot 适配器：只消费 ABI，不拥有规则</h3>
+    <div class="grid g2">
+      <div class="card"><h4>WorldNode</h4><p>持有 <code>world-abi</code> 的 <code>AbiWorld</code>，不 <code>use world_core</code>。它暴露 <code>tick</code>、命令、<code>sync_views</code>、<code>save/load</code>、<code>ui_state</code>，并把错误转成 Godot 日志。</p><p class="small">边界门禁：<code>test/check_m2_boundary.mjs</code>，1,314 行 ≤ 2,000。</p></div>
+      <div class="card"><h4>视图池</h4><p>用打包的 <code>EntityId</code> 做键；每 tick 保存 prev/target transform，<code>sync_views_at(alpha)</code> 插值；静态 prop/item 走 MultiMesh，GLB 走 GLTFDocument scene。</p><p class="small"><a href="../godot-extension/src/lib.rs">godot-extension/src/lib.rs</a></p></div>
+    </div>
+    <figure class="impl-shot">
+      <img src="../docs/shots/m1_editor.png" alt="RefuWorld Web 编辑器 v0.5：拖拽布局、字段表单与构建试玩">
+      <figcaption><b>作者侧：</b>内容在 Web 编辑器里修改；Godot 只负责把同一份包跑起来。实现研究可以先从内容管线入手，再看适配器。</figcaption>
+    </figure>
+
+    <h3>6. 从哪里读起</h3>
+    <ol class="tl">
+      <li class="done"><b>先跑一遍</b><span><a href="../test/run_m0.sh"><code>test/run_m0.sh</code></a> 看确定性；<a href="../test/run_m1.sh"><code>run_m1.sh</code></a> 看 TS / Web 同哈希。</span></li>
+      <li class="done"><b>读内核</b><span><a href="../code/crates/world-core/src/world.rs"><code>world-core/src/world.rs</code></a>：先找 <code>tick_once</code>，再找 <code>snapshot</code> / <code>state_hash</code>。</span></li>
+      <li class="done"><b>读边界</b><span><a href="../code/crates/world-ffi/src/lib.rs"><code>world-ffi/src/lib.rs</code></a> 与 <a href="../code/include/world.h"><code>world.h</code></a>；重点看缓冲两段式与错误码。</span></li>
+      <li class="done"><b>读适配器</b><span><a href="../godot-extension/src/lib.rs"><code>godot-extension/src/lib.rs</code></a> 的 <code>tick</code> / <code>sync_views_at</code>，再看 <a href="../godot/cts.gd"><code>godot/cts.gd</code></a> 如何做互操作验收。</span></li>
+      <li class="next"><b>最后再读玩法</b><span>规则、任务、对话都在 <a href="../code/crates/world-core/src/world.rs"><code>world.rs</code></a> 与内容包；不要在适配器里找规则。</span></li>
+    </ol>
   </section>
 
   <section class="panel" id="p-authoring" role="tabpanel" aria-labelledby="t-authoring">
