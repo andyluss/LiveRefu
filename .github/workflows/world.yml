@@ -89,6 +89,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+      - name: Kernel layer boundaries
+        run: node games/world/test/check_layers.mjs
       - name: 3D / Demo static contracts
         run: |
           node games/world/test/demo3d_static.mjs

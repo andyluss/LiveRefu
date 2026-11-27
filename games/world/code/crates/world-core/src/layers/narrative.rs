@@ -113,3 +113,27 @@ impl Narrative {
         self.script_host.as_mut()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn flags_are_owned_by_narrative_and_idempotent() {
+        let pack = Pack::real5k(1);
+        let mut narrative = Narrative::new(&pack);
+        assert!(narrative.set_flag("flag.test", true));
+        assert!(!narrative.set_flag("flag.test", true));
+        assert_eq!(narrative.flags.get("flag.test"), Some(&true));
+    }
+
+    #[test]
+    fn script_filter_rejects_unknown_kinds() {
+        let pack = Pack::real5k(1);
+        let mut narrative = Narrative::new(&pack);
+        narrative.set_script_event_filter(["talk"]);
+        assert!(narrative.should_run_script("talk"));
+        assert!(!narrative.should_run_script("tick"));
+        assert!(!narrative.should_run_script("script_error"));
+    }
+}

@@ -8,6 +8,9 @@ export CARGO_HOME="${CARGO_HOME:-$CODE/.cargo-home}"
 
 cd "$ROOT"
 
+echo "== 0.0 内核层边界 =="
+node "$ROOT/test/check_layers.mjs"
+
 echo "== 0. TypeScript 类型检查 =="
 if [ -x "$ROOT/node_modules/.bin/tsc" ]; then
   "$ROOT/worldc" ts-check
