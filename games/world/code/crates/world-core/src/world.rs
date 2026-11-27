@@ -4,6 +4,7 @@ use crate::event::EventEnvelope;
 use crate::ids::EntityId;
 use crate::rng::Rng;
 use crate::layers::spacetime::{Obstacle, Spacetime};
+use crate::layers::subject::{self, DoorInteraction};
 use crate::script::ScriptHost;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -471,7 +472,7 @@ impl World {
                 let entity = self
                     .entity_mut(actor)
                     .ok_or_else(|| format!("actor 不存在: {actor}"))?;
-                entity.give_item(&item, count);
+                subject::give_item(entity, &item, count);
                 self.emit(
                     "item_acquired",
                     Some(actor),
@@ -545,11 +546,8 @@ impl World {
     fn command_open_door(&mut self, target: EntityId) -> Result<(), String> {
         let opened = self
             .entity_mut(target)
-            .and_then(|entity| entity.door.as_mut())
-            .map(|door| {
-                door.open = true;
-            })
-            .is_some();
+            .map(|entity| subject::force_open_door(entity))
+            .unwrap_or(false);
         if !opened {
             return Err(format!("target 不是门: {target}"));
         }
@@ -577,34 +575,30 @@ impl World {
             return Ok(());
         }
 
-        if let Some(door) = &target_entity.door {
-            if door.open {
+        let outcome = self
+            .entity_mut(target)
+            .map(|entity| subject::interact_door(&actor_entity, entity))
+            .unwrap_or(DoorInteraction::NoDoor);
+        match outcome {
+            DoorInteraction::AlreadyOpen => {
                 self.emit(
                     "toast",
                     Some(actor),
                     json!({"text": self.localize("loc:door.already_open")}),
                 );
-                return Ok(());
             }
-            let allowed = match &door.locked_by {
-                None => true,
-                Some(item) => actor_entity.has_item(item),
-            };
-            if allowed {
-                if let Some(entity) = self.entity_mut(target) {
-                    if let Some(door) = &mut entity.door {
-                        door.open = true;
-                    }
-                }
+            DoorInteraction::Opened => {
                 self.emit(
                     "door_opened",
                     Some(target),
                     json!({"target": target_entity.content_id}),
                 );
-            } else {
+            }
+            DoorInteraction::Locked => {
                 let text = self.localize("loc:door.locked");
                 self.emit("toast", Some(actor), json!({"text": text}));
             }
+            DoorInteraction::NoDoor => {}
         }
         Ok(())
     }
@@ -654,15 +648,13 @@ impl World {
             .entity(target)
             .cloned()
             .ok_or_else(|| format!("target 不存在: {target}"))?;
-        if target_entity.kind != EntityKind::Item {
-            return Err(format!("target 不是可拾取物品: {target}"));
-        }
+        let item = {
+            let actor_entity = self
+                .entity_mut(actor)
+                .ok_or_else(|| format!("actor 不存在: {actor}"))?;
+            subject::pickup_item(actor_entity, &target_entity)?
+        };
         self.despawn(target);
-        let item = target_entity.content_id.clone();
-        let actor_entity = self
-            .entity_mut(actor)
-            .ok_or_else(|| format!("actor 不存在: {actor}"))?;
-        actor_entity.give_item(&item, 1);
         self.emit(
             "item_acquired",
             Some(actor),
@@ -700,7 +692,7 @@ impl World {
 
     fn condition_ok(&self, condition: &ConditionDef, actor: &Entity) -> bool {
         match condition {
-            ConditionDef::HasItem { item } => actor.has_item(item),
+            ConditionDef::HasItem { item } => subject::has_item(actor, item),
             ConditionDef::Flag { flag, value } => {
                 self.flags.get(flag).copied().unwrap_or(false) == *value
             }
@@ -726,7 +718,7 @@ impl World {
                 }
                 ActionDef::GiveItem { item, count } => {
                     if let Some(entity) = self.entity_mut(actor) {
-                        entity.give_item(item, *count);
+                        subject::give_item(entity, item, *count);
                     }
                     self.emit(
                         "item_acquired",
@@ -740,11 +732,8 @@ impl World {
                 ActionDef::OpenDoor => {
                     let opened = self
                         .entity_mut(target)
-                        .and_then(|entity| entity.door.as_mut())
-                        .map(|door| {
-                            door.open = true;
-                        })
-                        .is_some();
+                        .map(|entity| subject::force_open_door(entity))
+                        .unwrap_or(false);
                     if opened {
                         self.emit("door_opened", Some(target), json!({"target": target}));
                     }
@@ -819,7 +808,7 @@ impl World {
                         RewardDef::Flag { flag, value } => self.set_flag(flag, *value),
                         RewardDef::Item { item, count } => {
                             if let Some(player) = self.entity_mut(self.player) {
-                                player.give_item(item, *count);
+                                subject::give_item(player, item, *count);
                             }
                             self.emit(
                                 "item_acquired",
