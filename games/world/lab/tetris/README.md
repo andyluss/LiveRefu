@@ -1,5 +1,8 @@
 # NEON DRIFT · 方块坠落
 
+![NEON DRIFT](screenshot.png)
+
+
 一个可直接发布的落块游戏（Tetris-like）。纯静态、无构建、无外部依赖；Canvas 2D + WebAudio 合成音效 + PWA 离线缓存。
 
 > **命名与权利**：代码、视觉与音效为本项目原创。玩法属于落块品类；不包含 Tetris Company 的官方素材、商标或音乐。正式商业发行前请自行做商标/外观权利审查。
