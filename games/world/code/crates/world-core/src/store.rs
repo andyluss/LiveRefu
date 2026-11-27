@@ -188,7 +188,47 @@ impl EntityStore {
 
     pub fn from_entities(&mut self, entities: Vec<Entity>) {
         *self = Self::default();
-        for entity in entities { self.spawn(entity); }
+        let Some(max_index) = entities.iter().map(|e| e.id.index).max() else {
+            return;
+        };
+        let n = max_index as usize + 1;
+        self.core.resize_with(n, || None);
+        self.transform.resize_with(n, || None);
+        self.collider.resize_with(n, || None);
+        self.speed.resize_with(n, || None);
+        self.inventory.resize_with(n, || None);
+        self.interactable.resize_with(n, || None);
+        self.door.resize_with(n, || None);
+        self.schedule.resize_with(n, || None);
+        self.behavior.resize_with(n, || None);
+        self.dialogue.resize_with(n, || None);
+        self.generation.resize(n, 0);
+        for entity in entities {
+            let i = entity.id.index as usize;
+            self.generation[i] = entity.id.generation;
+            self.core[i] = Some(EntityCore {
+                id: entity.id,
+                content_id: entity.content_id,
+                persistent_id: entity.persistent_id,
+                kind: entity.kind,
+                tags: entity.tags,
+                health: entity.health,
+            });
+            self.transform[i] = Some(entity.transform);
+            self.collider[i] = entity.collider;
+            self.speed[i] = Some(entity.speed);
+            self.inventory[i] = Some(entity.inventory);
+            self.interactable[i] = entity.interactable;
+            self.door[i] = entity.door;
+            self.schedule[i] = entity.schedule;
+            self.behavior[i] = entity.behavior;
+            self.dialogue[i] = entity.dialogue;
+        }
+        for i in 0..n {
+            if self.core[i].is_none() {
+                self.free.push(i as u32);
+            }
+        }
     }
 
     fn view(&self, i: usize) -> Option<EntityView<'_>> {

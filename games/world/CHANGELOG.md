@@ -36,6 +36,7 @@
 - **项目 HUB 与用户指南**：`brief/HUB.html`、`brief/GUIDE.html`、`brief/theme.css`、`brief/theme.js`、`brief/README.md`；项目状态/架构/3D/决策/路线图/风险中心 + 内容作者上手路径，R-016 三态主题。
 
 ### 修复
+- **EntityStore 存档恢复槽位**：`from_entities` 改为按原 `EntityId.index/generation` 回填列，而不是重新 append；修复 Godot CTS `S hash roundtrip` 失败（存档恢复后实体 ID/player 引用变化）。
 - **Godot CI 的 headless `--import` core dump**：Linux runner 上 Godot 4.7 `--import` 会崩溃；`godot/build.sh` 改为直接写 `.godot/extension_list.cfg`，`test.sh`/`cts.sh` 去掉 import；本地 clean 目录重跑 test/CTS 通过。
 - **TS 构建门禁**：`worldc ts-build` 在本地存在 TypeScript 时先跑 `tsc --noEmit`，失败即停止；`npm run dev` 同样先类型检查。
 
