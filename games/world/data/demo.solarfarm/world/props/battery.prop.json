@@ -1,0 +1,24 @@
+{
+  "id": "demo.solarfarm.battery",
+  "name": "loc:prop.battery.name",
+  "tags": [
+    "battery",
+    "energy",
+    "machine"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.0,
+      2.0,
+      0.7
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}

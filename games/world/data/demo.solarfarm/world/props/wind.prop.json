@@ -1,0 +1,24 @@
+{
+  "id": "demo.solarfarm.wind",
+  "name": "loc:prop.wind.name",
+  "tags": [
+    "wind",
+    "energy",
+    "machine"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      0.6,
+      4.2,
+      0.6
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}

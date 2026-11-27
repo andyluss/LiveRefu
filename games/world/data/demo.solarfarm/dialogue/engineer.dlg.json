@@ -1,0 +1,19 @@
+{
+  "id": "dlg.engineer.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.solarfarm.engineer",
+      "text": "loc:dlg.engineer.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

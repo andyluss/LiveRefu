@@ -1,0 +1,79 @@
+{
+  "id": "world.solarfarm",
+  "start_zone": "zone.solarfarm",
+  "start_time": "08:30",
+  "seed": 20261127,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  },
+  "social": {
+    "factions": {
+      "faction.coop": {
+        "name": "loc:faction.coop.name",
+        "color": "#d9a441",
+        "members": [
+          "demo.solarfarm.mayor",
+          "demo.solarfarm.botanist",
+          "demo.solarfarm.engineer"
+        ]
+      },
+      "faction.ai": {
+        "name": "loc:faction.ai.name",
+        "color": "#6fe7dc",
+        "members": [
+          "demo.solarfarm.aria",
+          "demo.solarfarm.helio",
+          "demo.solarfarm.aqua"
+        ]
+      },
+      "faction.youth": {
+        "name": "loc:faction.youth.name",
+        "color": "#8fd19a",
+        "members": []
+      }
+    },
+    "relationships": [
+      {
+        "a": "demo.solarfarm.mayor",
+        "b": "demo.solarfarm.botanist",
+        "trust": 8,
+        "affinity": 6
+      },
+      {
+        "a": "demo.solarfarm.mayor",
+        "b": "demo.solarfarm.engineer",
+        "trust": 7,
+        "affinity": 3
+      },
+      {
+        "a": "demo.solarfarm.botanist",
+        "b": "demo.solarfarm.aria",
+        "trust": 5,
+        "affinity": 4
+      },
+      {
+        "a": "demo.solarfarm.engineer",
+        "b": "demo.solarfarm.helio",
+        "trust": 6,
+        "affinity": 2
+      }
+    ],
+    "reputations": {
+      "player": 0
+    }
+  },
+  "systems": {
+    "solar_kw": 140.0,
+    "wind_kw": 90.0,
+    "battery_kwh": 260.0,
+    "water_m3": 800.0,
+    "ai_count": 3,
+    "base_load_kw": 26.0,
+    "policy": "balance"
+  }
+}

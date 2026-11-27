@@ -1,0 +1,22 @@
+{
+  "id": "rule.wind",
+  "on": "interact",
+  "target": "demo.solarfarm.wind",
+  "when": [],
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.farm.wind_checked",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "farm.wind_checked"
+    },
+    {
+      "kind": "toast",
+      "text": "loc:rule.wind.checked"
+    }
+  ],
+  "else": []
+}

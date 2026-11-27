@@ -1,0 +1,22 @@
+{
+  "id": "rule.hall",
+  "on": "interact",
+  "target": "demo.solarfarm.hall",
+  "when": [],
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.farm.hall_checked",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "farm.hall_checked"
+    },
+    {
+      "kind": "toast",
+      "text": "loc:rule.hall.checked"
+    }
+  ],
+  "else": []
+}

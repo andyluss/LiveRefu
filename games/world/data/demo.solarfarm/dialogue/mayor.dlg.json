@@ -1,0 +1,19 @@
+{
+  "id": "dlg.mayor.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.solarfarm.mayor",
+      "text": "loc:dlg.mayor.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

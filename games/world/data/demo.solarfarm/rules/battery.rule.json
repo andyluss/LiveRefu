@@ -1,0 +1,22 @@
+{
+  "id": "rule.battery",
+  "on": "interact",
+  "target": "demo.solarfarm.battery",
+  "when": [],
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.farm.battery_checked",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "farm.battery_checked"
+    },
+    {
+      "kind": "toast",
+      "text": "loc:rule.battery.checked"
+    }
+  ],
+  "else": []
+}

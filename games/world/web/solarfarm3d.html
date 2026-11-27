@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 太阳城农场 3D</title>
+  <meta name="description" content="RefuWorld L4/L5 旗舰场景：太阳朋克城市农场，人、机器、AI、光伏、风电、水循环与公众大会堂。" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'light'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./demo3d.css" />
+  <link rel="stylesheet" href="./solarfarm3d.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/",
+        "env": "./vendor/quickjs-env.js"
+      }
+    }
+  </script>
+</head>
+<body class="scene-page solar-page">
+  <canvas id="scene" aria-label="太阳城城市农场 3D 场景"></canvas>
+  <div class="scene-vignette" aria-hidden="true"></div>
+  <div class="scene-grain" aria-hidden="true"></div>
+
+  <header class="scene-top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div><h1>RefuWorld <span class="badge">L4 / L5</span></h1><p>太阳城 · 城市农场</p></div>
+    </div>
+    <div class="scene-top-actions">
+      <a class="button-link" href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a>
+      <a class="button-link" href="http://127.0.0.1:8787/web/index.html?demo=demo.solarfarm">2D 对照</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="solar-ui">
+    <section class="solar-title">
+      <p class="eyebrow">FLAGSHIP / SOLARFARM 01</p>
+      <h2>太阳城农场</h2>
+      <p class="solar-sub">09:20 · 晴间多云 · 社区公共电网</p>
+      <p class="solar-copy">屋顶农场、光伏 canopy、风轮机、水循环与亲水大会堂。人、机器与公共 AI 在同一套社会关系和能源系统里生活。</p>
+    </section>
+
+    <section class="scene-card solar-objective">
+      <p class="eyebrow">当前任务</p>
+      <h2 id="quest-title">太阳城的早班</h2>
+      <ul id="quest-objectives" class="objectives"></ul>
+    </section>
+
+    <section class="solar-social" aria-label="L4 社会关系">
+      <p class="eyebrow">L4 · 社会关系</p>
+      <div class="solar-factions" id="social-factions"></div>
+      <div class="solar-rel" id="social-relations"></div>
+      <div class="solar-rep"><span>公众声望</span><b id="reputation">0</b></div>
+    </section>
+
+    <section class="solar-systems" aria-label="L5 世界系统">
+      <p class="eyebrow">L5 · 世界系统</p>
+      <div class="solar-weather"><b id="weather">晴</b><span id="weather-note">日照充足</span></div>
+      <div class="solar-meter"><label>光伏 <b id="solar-kw">0</b> kW</label><i><em id="solar-bar"></em></i></div>
+      <div class="solar-meter"><label>风电 <b id="wind-kw">0</b> kW</label><i><em id="wind-bar"></em></i></div>
+      <div class="solar-meter"><label>储能 <b id="battery-kwh">0</b> kWh</label><i><em id="battery-bar"></em></i></div>
+      <div class="solar-meter"><label>水循环 <b id="water-m3">0</b> m³</label><i><em id="water-bar"></em></i></div>
+      <div class="solar-load"><span>AI / 社区负载</span><b id="load-kw">0</b><small> kW</small></div>
+    </section>
+
+    <section class="scene-card solar-inventory">
+      <p class="eyebrow">随身物品</p><div id="inventory" class="inventory"></div><div id="flags" class="flags"></div>
+    </section>
+
+    <section class="solar-actions" aria-label="操作">
+      <button id="btn-interact" type="button"><kbd>E</kbd> 交互</button>
+      <button id="btn-talk" type="button"><kbd>T</kbd> 对话</button>
+      <button id="btn-assembly" type="button">召开大会</button>
+      <button id="btn-irrigate" type="button">灌溉优先</button>
+      <button id="btn-store" type="button">储能优先</button>
+      <button id="btn-compute" type="button">算力优先</button>
+      <button id="btn-reset" type="button">重置</button>
+      <button id="btn-pause" type="button">暂停</button>
+      <button id="btn-camera" type="button" aria-pressed="false">环绕</button>
+    </section>
+    <p class="scene-hint">WASD 移动 · 拖动旋转 · E 交互 · T 对话 · 大会/能源策略驱动 L4/L5</p>
+    <div class="solar-status"><span class="solar-dot"></span><span id="status-text">农场在线</span><span class="solar-sep">/</span><span>L4 + L5</span></div>
+  </main>
+
+  <div id="dialogue" class="dialogue" hidden><p class="eyebrow" id="dialogue-speaker">公共 AI</p><p id="dialogue-text"></p></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="loading" class="loading"><span class="loading-ring" aria-hidden="true"></span><p>正在接入太阳城公共网…</p></div>
+  <footer class="scene-foot"><span>太阳城农场 · 旗舰场景</span><span>Three.js r187 · 内容包 demo.solarfarm</span></footer>
+  <noscript><p class="noscript">3D 场景需要 JavaScript、WebGL 与 WebAssembly。</p></noscript>
+
+  <script>
+    (function () {
+      var root = document.documentElement, media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode)); });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); }); });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script>
+    window.addEventListener('error', function (e) { var l = document.getElementById('loading'); if (l) l.innerHTML = '<p style="color:#ffb4a0">脚本错误：' + (e.message || e.error) + '</p>'; });
+    window.addEventListener('unhandledrejection', function (e) { var l = document.getElementById('loading'); if (l) l.innerHTML = '<p style="color:#ffb4a0">异步错误：' + ((e.reason && (e.reason.stack || e.reason.message)) || e.reason) + '</p>'; });
+  </script>
+  <script type="module" src="./solarfarm3d.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "id": "demo.solarfarm.hall",
+  "name": "loc:prop.hall.name",
+  "tags": [
+    "assembly",
+    "public",
+    "building"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      4.0,
+      2.2,
+      3.0
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}

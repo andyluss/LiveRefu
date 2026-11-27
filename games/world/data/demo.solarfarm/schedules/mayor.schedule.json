@@ -1,0 +1,23 @@
+{
+  "id": "schedule.mayor",
+  "entries": [
+    {
+      "from": "08:00",
+      "to": "15:00",
+      "behavior": "convene",
+      "at": "zone.solarfarm"
+    },
+    {
+      "from": "15:00",
+      "to": "18:00",
+      "behavior": "assembly",
+      "at": "zone.solarfarm"
+    },
+    {
+      "from": "18:00",
+      "to": "08:00",
+      "behavior": "rest",
+      "at": "zone.solarfarm"
+    }
+  ]
+}

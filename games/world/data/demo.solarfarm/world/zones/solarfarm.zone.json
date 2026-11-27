@@ -1,0 +1,159 @@
+{
+  "id": "zone.solarfarm",
+  "name": "loc:zone.solarfarm.name",
+  "bounds": {
+    "min": [
+      -14,
+      0,
+      -10
+    ],
+    "max": [
+      14,
+      8,
+      14
+    ]
+  },
+  "nav": null,
+  "placements": [
+    {
+      "actor": "demo.solarfarm.mayor",
+      "at": [
+        -4,
+        0,
+        -3
+      ],
+      "yaw": 180,
+      "persistent_id": "mayor"
+    },
+    {
+      "actor": "demo.solarfarm.botanist",
+      "at": [
+        3,
+        0,
+        -4
+      ],
+      "yaw": 0,
+      "persistent_id": "botanist"
+    },
+    {
+      "actor": "demo.solarfarm.engineer",
+      "at": [
+        4,
+        0,
+        3
+      ],
+      "yaw": 270,
+      "persistent_id": "engineer"
+    },
+    {
+      "actor": "demo.solarfarm.aria",
+      "at": [
+        -6,
+        0,
+        4
+      ],
+      "yaw": 90,
+      "persistent_id": "aria"
+    },
+    {
+      "actor": "demo.solarfarm.helio",
+      "at": [
+        6,
+        0,
+        5
+      ],
+      "yaw": 180,
+      "persistent_id": "helio"
+    },
+    {
+      "actor": "demo.solarfarm.aqua",
+      "at": [
+        -5,
+        0,
+        7
+      ],
+      "yaw": 0,
+      "persistent_id": "aqua"
+    },
+    {
+      "prop": "demo.solarfarm.solar",
+      "at": [
+        -9,
+        0,
+        4
+      ],
+      "yaw": 0,
+      "persistent_id": "solar"
+    },
+    {
+      "prop": "demo.solarfarm.wind",
+      "at": [
+        9,
+        0,
+        2
+      ],
+      "yaw": 0,
+      "persistent_id": "wind"
+    },
+    {
+      "prop": "demo.solarfarm.battery",
+      "at": [
+        6,
+        0,
+        -5
+      ],
+      "yaw": 0,
+      "persistent_id": "battery"
+    },
+    {
+      "prop": "demo.solarfarm.irrigator",
+      "at": [
+        -3,
+        0,
+        6
+      ],
+      "yaw": 0,
+      "persistent_id": "irrigator"
+    },
+    {
+      "prop": "demo.solarfarm.hall",
+      "at": [
+        2,
+        0,
+        9
+      ],
+      "yaw": 0,
+      "persistent_id": "hall"
+    },
+    {
+      "item": "item.solarfarm.seed",
+      "at": [
+        -2,
+        0,
+        -6
+      ],
+      "yaw": 0,
+      "persistent_id": "seed"
+    },
+    {
+      "item": "item.solarfarm.cell",
+      "at": [
+        3,
+        0,
+        -1
+      ],
+      "yaw": 0,
+      "persistent_id": "cell"
+    },
+    {
+      "item": "item.solarfarm.token",
+      "at": [
+        0,
+        0,
+        7
+      ],
+      "yaw": 0,
+      "persistent_id": "token"
+    }
+  ]
+}

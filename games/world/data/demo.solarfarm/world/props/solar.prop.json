@@ -1,0 +1,24 @@
+{
+  "id": "demo.solarfarm.solar",
+  "name": "loc:prop.solar.name",
+  "tags": [
+    "solar",
+    "energy",
+    "machine"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.8,
+      0.3,
+      1.2
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}

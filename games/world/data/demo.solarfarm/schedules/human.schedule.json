@@ -1,0 +1,29 @@
+{
+  "id": "schedule.human",
+  "entries": [
+    {
+      "from": "08:00",
+      "to": "12:00",
+      "behavior": "tend",
+      "at": "zone.solarfarm"
+    },
+    {
+      "from": "12:00",
+      "to": "13:00",
+      "behavior": "lunch",
+      "at": "zone.solarfarm"
+    },
+    {
+      "from": "13:00",
+      "to": "18:00",
+      "behavior": "tend",
+      "at": "zone.solarfarm"
+    },
+    {
+      "from": "18:00",
+      "to": "08:00",
+      "behavior": "rest",
+      "at": "zone.solarfarm"
+    }
+  ]
+}

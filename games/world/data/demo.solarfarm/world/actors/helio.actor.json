@@ -1,0 +1,27 @@
+{
+  "id": "demo.solarfarm.helio",
+  "name": "loc:actor.helio.name",
+  "tags": [
+    "ai",
+    "faction.ai",
+    "solar"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.7
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.ai"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.helio.intro",
+  "visual": null
+}

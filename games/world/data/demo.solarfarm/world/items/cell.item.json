@@ -1,0 +1,10 @@
+{
+  "id": "item.solarfarm.cell",
+  "name": "loc:item.cell.name",
+  "stack": 1,
+  "tags": [
+    "battery",
+    "part"
+  ],
+  "visual": null
+}

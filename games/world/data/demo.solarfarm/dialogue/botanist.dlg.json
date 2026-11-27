@@ -1,0 +1,19 @@
+{
+  "id": "dlg.botanist.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.solarfarm.botanist",
+      "text": "loc:dlg.botanist.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

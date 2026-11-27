@@ -1,0 +1,10 @@
+{
+  "id": "item.solarfarm.seed",
+  "name": "loc:item.seed.name",
+  "stack": 1,
+  "tags": [
+    "seed",
+    "farm"
+  ],
+  "visual": null
+}

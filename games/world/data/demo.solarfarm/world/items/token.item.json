@@ -1,0 +1,10 @@
+{
+  "id": "item.solarfarm.token",
+  "name": "loc:item.token.name",
+  "stack": 1,
+  "tags": [
+    "assembly",
+    "token"
+  ],
+  "visual": null
+}

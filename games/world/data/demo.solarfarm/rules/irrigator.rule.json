@@ -1,0 +1,22 @@
+{
+  "id": "rule.irrigator",
+  "on": "interact",
+  "target": "demo.solarfarm.irrigator",
+  "when": [],
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.farm.irrigator_checked",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "farm.irrigator_checked"
+    },
+    {
+      "kind": "toast",
+      "text": "loc:rule.irrigator.checked"
+    }
+  ],
+  "else": []
+}

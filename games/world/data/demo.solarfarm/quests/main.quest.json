@@ -1,0 +1,41 @@
+{
+  "id": "quest.solarfarm",
+  "title": "loc:quest.solarfarm.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.solarfarm.mayor"
+    },
+    {
+      "kind": "talk",
+      "target": "demo.solarfarm.botanist"
+    },
+    {
+      "kind": "talk",
+      "target": "demo.solarfarm.engineer"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.farm.solar_checked",
+      "value": true
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.farm.wind_checked",
+      "value": true
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.farm.hall_checked",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.solarfarm.done",
+      "value": true
+    }
+  ]
+}

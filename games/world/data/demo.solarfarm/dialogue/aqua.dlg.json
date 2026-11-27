@@ -1,0 +1,19 @@
+{
+  "id": "dlg.aqua.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.solarfarm.aqua",
+      "text": "loc:dlg.aqua.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

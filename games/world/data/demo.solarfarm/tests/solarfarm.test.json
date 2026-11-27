@@ -1,0 +1,73 @@
+{
+  "name": "solarfarm",
+  "ticks": 600,
+  "steps": [
+    {
+      "tick": 5,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.solarfarm.mayor"
+      }
+    },
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.solarfarm.botanist"
+      }
+    },
+    {
+      "tick": 15,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.solarfarm.engineer"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.solarfarm.solar"
+      }
+    },
+    {
+      "tick": 25,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.solarfarm.wind"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.solarfarm.hall"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.farm.solar_checked": true,
+      "flag.farm.wind_checked": true,
+      "flag.farm.hall_checked": true,
+      "flag.quest.solarfarm.done": true
+    },
+    "quests": {
+      "quest.solarfarm": "completed"
+    },
+    "inventory": {},
+    "events": [
+      "relationship_changed",
+      "reputation_changed",
+      "energy_updated",
+      "weather_changed",
+      "quest_completed"
+    ]
+  }
+}

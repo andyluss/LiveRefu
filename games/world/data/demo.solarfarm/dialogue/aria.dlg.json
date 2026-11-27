@@ -1,0 +1,19 @@
+{
+  "id": "dlg.aria.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.solarfarm.aria",
+      "text": "loc:dlg.aria.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}
