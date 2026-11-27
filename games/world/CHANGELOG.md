@@ -45,6 +45,7 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
+- **HUB 顶栏与「案例」页**：顶栏收敛为 GUIDE / Demo / Lab / README 四个主入口，避免换行；「06 3D 演示」改为「06 案例」，加入 NEON DRIFT、GRID//SIGNAL、19 Demo 导览，并保留原 3D 与 L4/L5 对照内容。
 - **brief 同步最新架构**：HUB 架构图改为 L0–L5 分层 + EntityStore 列存储，实现页补 L4 社会/L5 系统、组件列与命令；GUIDE/README 更新 34 Rust 测试、19 条内容测试、19 Demo、太阳城/霓虹下城与 5k 0.129/0.18ms 口径。
 - **L4 社会关系层 + L5 世界系统层**：新增 `layers/social`（factions/relationships/reputation，talk 自动记录，SocialAction 支持大会提案）与 `layers/systems`（天气、光伏、风电、储能、水循环、AI 负载、energy_updated/weather_changed、能源策略）；`Snapshot` 增加可选 social/systems 字段，旧包省略、哈希/存档不变。
 - **5k 热路径优化**：L0 运动改用 `Body` 轻量视图，避免每 tick 物化完整 Entity；碰撞障碍改用可复用缓冲 `for_each_obstacle`；L2 行为变化改用 `changes_into` 复用 Vec；`Collider` 改为 Copy。p50 0.139→0.129ms，p95 在 0.17–0.19ms 波动，无 M0/M1/哈希回归。

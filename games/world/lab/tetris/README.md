@@ -41,6 +41,8 @@ DAS 150ms，ARR 35ms；软降重复 45ms。移动端按钮支持按住连发。
 | [`index.html`](index.html) | 无 | 独立版；纯静态，可单独发布 |
 | [`refuworld.html`](refuworld.html) | RefuWorld wasm | 同玩法，但接入 L0 固定 tick、L3 任务、L5 能源系统 |
 
+![GRID//SIGNAL](refuworld-screenshot.png)
+
 RefuWorld 版复用同一套 `logic.mjs` / `game.mjs` / UI，通过 `refuworld-bridge.mjs` 把会话接到内核：
 
 - **L0**：60Hz tick / 时间推进

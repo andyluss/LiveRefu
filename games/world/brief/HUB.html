@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RefuWorld · 项目 HUB</title>
-<meta name="description" content="RefuWorld（世界层）的状态、架构、内容管线、3D 演示、决策、路线图与下一步。">
+<meta name="description" content="RefuWorld（世界层）的状态、架构、实现、Lab 游戏、Demo 案例、决策、路线图与下一步。">
 <script>
 (function () {
   document.documentElement.dataset.js = 'true';
@@ -26,15 +26,10 @@
     <div class="topline">
       <div class="brand">RefuWorld <span class="en">WORLD LAYER</span></div>
       <nav class="brand-links" aria-label="相关页面">
-        <a href="GUIDE.html">用户指南 GUIDE</a>
+        <a href="GUIDE.html">用户指南</a>
         <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a>
         <a href="http://127.0.0.1:8787/lab/tetris/">Lab 游戏</a>
-        <a href="http://127.0.0.1:8787/lab/tetris/refuworld.html">GRID//SIGNAL</a>
-        <a href="../README.md">项目 README</a>
-        <a href="../docs/09_M2适配器启动.md">M2 适配器</a>
-        <a href="../docs/11_内核分层与迁移.md">内核分层</a>
-        <a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地静态服务器">3D 演示</a>
-        <a href="http://127.0.0.1:8787/web/index.html" title="需要本地静态服务器">2D 预览</a>
+        <a href="../README.md">README</a>
       </nav>
       <div class="stamp">M2 + L4/L5 · 2026-11-27</div>
       <div class="theme-switch" role="group" aria-label="主题">
@@ -50,7 +45,7 @@
       <button role="tab" aria-selected="false" aria-controls="p-architecture" id="t-architecture" data-panel="p-architecture"><span class="n">03</span>架构</button>
       <button role="tab" aria-selected="false" aria-controls="p-implementation" id="t-implementation" data-panel="p-implementation"><span class="n">04</span>实现</button>
       <button role="tab" aria-selected="false" aria-controls="p-authoring" id="t-authoring" data-panel="p-authoring"><span class="n">05</span>内容与作者</button>
-      <button role="tab" aria-selected="false" aria-controls="p-3d" id="t-3d" data-panel="p-3d"><span class="n">06</span>3D 演示</button>
+      <button role="tab" aria-selected="false" aria-controls="p-cases" id="t-cases" data-panel="p-cases"><span class="n">06</span>案例</button>
       <button role="tab" aria-selected="false" aria-controls="p-decisions" id="t-decisions" data-panel="p-decisions"><span class="n">07</span>决策</button>
       <button role="tab" aria-selected="false" aria-controls="p-roadmap" id="t-roadmap" data-panel="p-roadmap"><span class="n">08</span>路线图</button>
       <button role="tab" aria-selected="false" aria-controls="p-risks" id="t-risks" data-panel="p-risks"><span class="n">09</span>风险/下一步</button>
@@ -519,8 +514,26 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
     <div class="note warn"><b>教程状态：</b>功能已实现，但“2 小时”还没有真实作者计时验收；把它当目标，不当已证实的平均值。</div>
   </section>
 
-  <section class="panel" id="p-3d" role="tabpanel" aria-labelledby="t-3d">
-    <h2>3D 演示：同一份世界，换一种看法</h2>
+  <section class="panel" id="p-cases" role="tabpanel" aria-labelledby="t-cases">
+    <h2>案例：从可发布 Lab 游戏到 3D 世界</h2>
+    <p class="lede">这里不是“更多截图”，而是三类可验证案例：独立发布的 Lab 游戏、接入 RefuWorld 内核的同一玩法变体、以及共用 wasm 世界的 2D/2.5D/3D Demo。</p>
+    <div class="case-grid">
+      <a class="case-card" href="http://127.0.0.1:8787/lab/tetris/" aria-label="打开独立版 NEON DRIFT">
+        <figure><img src="../lab/tetris/screenshot.png" alt="NEON DRIFT 独立版游戏菜单"><span class="case-badge">LAB / 独立</span></figure>
+        <div class="case-body"><p class="case-kicker">PWA · 纯静态 · 10 条逻辑测试</p><h3>NEON DRIFT</h3><p>完整落块游戏：7-bag、SRS、Hold、T-Spin、Combo/B2B、音效、触屏与离线。不依赖 RefuWorld。</p><span class="case-open">打开游戏 →</span></div>
+      </a>
+      <a class="case-card" href="http://127.0.0.1:8787/lab/tetris/refuworld.html" aria-label="打开 RefuWorld 版 GRID SIGNAL">
+        <figure><img src="../lab/tetris/refuworld-screenshot.png" alt="GRID//SIGNAL RefuWorld 版游戏菜单"><span class="case-badge">LAB / RW CORE</span></figure>
+        <div class="case-body"><p class="case-kicker">L0 tick · L3 任务 · L5 能源</p><h3>GRID//SIGNAL</h3><p>同一套落块逻辑，接 RefuWorld wasm：低电量提高重力，清行推进公共任务；入口独立于独立版。</p><span class="case-open">打开内核版 →</span></div>
+      </a>
+      <a class="case-card" href="http://127.0.0.1:8787/web/demos.html" aria-label="打开 Demo 索引">
+        <figure><img src="../web/images/demos/cybercity.jpg" alt="霓虹下城 Demo"><span class="case-badge">DEMO / 19</span></figure>
+        <div class="case-body"><p class="case-kicker">16 内容包 · 3 视图 · 19 个玩法 Demo</p><h3>Demo 体系</h3><p>从港湾、夜市、货运到太阳城与霓虹下城；同一内核、同一内容 schema，不同表现与场景。</p><span class="case-open">打开 Demo 索引 →</span></div>
+      </a>
+    </div>
+    <div class="note"><b>Lab 与 Demo 的分工：</b>Demo 验证世界层能力；Lab 游戏验证“真的可以发布”。独立版和 RefuWorld 版共用同一套 <code>logic.mjs</code> / <code>game.mjs</code>，只在会话层是否接入 wasm 上分叉。</div>
+
+    <h3>3D 案例：同一份世界，换一种看法</h3>
     <p class="lede">3D 是表现层，不是第二套玩法。它用同一个 <code>PreviewWorld</code>、同一份 <code>pack.data</code>；从港湾值班室到夜班货运，再到太阳城农场 / 霓虹下城，规则、L4/L5、存档与哈希都不会分叉。</p>
     <div class="shots">
       <figure><img src="../docs/shots/m1_3d_harbor.png" alt="3D 港湾值班室初始场景"><figcaption><b>初始：</b>第三人称、平台地灯、气闸、NPC、海面雨夜。</figcaption></figure>
