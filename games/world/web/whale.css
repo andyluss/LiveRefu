@@ -1,0 +1,35 @@
+/* Character showcase: R-016; scene uses demo3d.css, this is UI-specific. */
+.whale-page { --whale-glow: #6fe7dc; }
+.whale-ui { position: fixed; inset: 0; z-index: 4; pointer-events: none; padding: 104px 26px 64px; display: grid; grid-template-columns: minmax(260px, 380px) 1fr minmax(210px, 260px); grid-template-rows: 1fr auto auto; gap: 16px; }
+.whale-title { grid-column: 1; grid-row: 1; align-self: start; pointer-events: auto; padding: 14px 16px; border: 1px solid rgba(190,222,218,.16); border-radius: 16px; background: linear-gradient(155deg, rgba(7,18,22,.72), rgba(5,12,16,.44)); backdrop-filter: blur(12px); box-shadow: 0 18px 60px rgba(0,0,0,.35); }
+.whale-title h2 { margin: 0; font-size: clamp(30px, 4vw, 54px); line-height: 1.02; letter-spacing: .04em; color: #eef8f5; font-weight: 850; }
+.whale-sub { margin: 8px 0 0; color: #6fe7dc; font-size: 12px; letter-spacing: .1em; }
+.whale-copy { margin: 12px 0 0; color: #a9c2be; font-size: 12.8px; line-height: 1.65; }
+.whale-specs { grid-column: 3; grid-row: 1; align-self: start; justify-self: end; pointer-events: auto; width: 100%; padding: 12px 14px; border: 1px solid rgba(190,222,218,.16); border-radius: 14px; background: rgba(7,18,22,.6); backdrop-filter: blur(10px); }
+.whale-specs div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid rgba(190,222,218,.1); font-size: 11.5px; }
+.whale-specs div:last-child { border-bottom: 0; }
+.whale-specs span { color: #78938e; }
+.whale-specs b { color: #d9eeea; font-weight: 600; text-align: right; }
+.whale-controls { grid-column: 1 / 4; grid-row: 2; align-self: end; justify-self: center; pointer-events: auto; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; justify-content: center; }
+.whale-controls button { border: 1px solid rgba(190,222,218,.26); background: rgba(7,18,22,.72); color: #dcebe8; border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 12.5px; cursor: pointer; backdrop-filter: blur(8px); }
+.whale-controls button:hover, .whale-controls button[aria-pressed="true"] { border-color: #6fe7dc; color: #071014; background: #6fe7dc; }
+.whale-hint { color: #6f8984; font-size: 11px; margin-left: 4px; }
+.whale-swatches { grid-column: 1 / 4; grid-row: 3; align-self: end; justify-self: center; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; color: #89a5a0; font-size: 10.5px; pointer-events: auto; }
+.whale-swatches span { display: inline-flex; align-items: center; gap: 5px; }
+.whale-swatches i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--sw); border: 1px solid rgba(255,255,255,.25); box-shadow: 0 0 10px color-mix(in srgb, var(--sw) 45%, transparent); }
+.whale-page .scene-foot { color: #5f7773; }
+@media (max-width: 900px) {
+  .whale-ui { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto auto; padding: 92px 16px 52px; }
+  .whale-title { grid-column: 1; grid-row: 1; max-width: 100%; }
+  .whale-specs { grid-column: 1; grid-row: 2; justify-self: stretch; align-self: end; max-width: 320px; }
+  .whale-controls { grid-column: 1; grid-row: 3; }
+  .whale-swatches { grid-column: 1; grid-row: 4; gap: 8px; }
+}
+@media (max-width: 560px) {
+  .whale-title h2 { font-size: 36px; }
+  .whale-title { padding: 11px 12px; }
+  .whale-copy { font-size: 12px; }
+  .whale-specs { display: none; }
+  .whale-swatches { font-size: 9.5px; }
+}
+@media print { .whale-ui { display: none; } }

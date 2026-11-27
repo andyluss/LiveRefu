@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 小鲸鱼娘 3D</title>
+  <meta name="description" content="RefuWorld 3D 角色展示：深海小鲸鱼娘，社区二创，原创几何与材质。" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'light'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./demo3d.css" />
+  <link rel="stylesheet" href="./whale.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="scene-page whale-page">
+  <canvas id="scene" aria-label="DeepSeek 小鲸鱼娘 3D 角色展示"></canvas>
+  <div class="scene-vignette" aria-hidden="true"></div>
+  <div class="scene-grain" aria-hidden="true"></div>
+
+  <header class="scene-top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div><h1>RefuWorld <span class="badge">3D</span></h1><p>小鲸鱼娘 · 社区二创角色</p></div>
+    </div>
+    <div class="scene-top-actions">
+      <a class="button-link" href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a>
+      <a class="button-link" href="http://127.0.0.1:8787/web/scene3d.html?demo=demo.station">3D 信号站</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="whale-ui">
+    <section class="whale-title">
+      <p class="eyebrow">DEEP-SEA CHARACTER / 01</p>
+      <h2>小鲸鱼娘</h2>
+      <p class="whale-sub">深海鲸鱼少女 · 非官方社区二创</p>
+      <p class="whale-copy">蓝发渐变、鲸鱼耳鳍与尾鳍、深蓝女仆长裙。聪明但懒，傲娇嘴甜，主食白米饭，管用户叫“鱼片”。</p>
+    </section>
+    <aside class="whale-specs">
+      <div><span>角色</span><b>DeepSeek 鲸鱼娘</b></div>
+      <div><span>性质</span><b>非官方二创</b></div>
+      <div><span>建模</span><b>Blender 程序化</b></div>
+      <div><span>渲染</span><b>Three.js · GLB</b></div>
+    </aside>
+    <div class="whale-controls">
+      <button id="btn-rotate" type="button" aria-pressed="true">自动旋转</button>
+      <button id="btn-wave" type="button">打个招呼</button>
+      <span class="whale-hint">拖动旋转 · 滚轮缩放 · 双指平移</span>
+    </div>
+    <div class="whale-swatches" aria-label="角色色板">
+      <span style="--sw:#071a33"><i></i>深海靛蓝</span>
+      <span style="--sw:#1e5d8c"><i></i>海水蓝</span>
+      <span style="--sw:#6fe7dc"><i></i>月光青</span>
+      <span style="--sw:#f4f1e8"><i></i>珍珠白</span>
+      <span style="--sw:#d9a441"><i></i>暖金</span>
+    </div>
+  </main>
+
+  <div id="loading" class="loading"><span class="loading-ring" aria-hidden="true"></span><p>正在唤醒小鲸鱼娘…</p></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer class="scene-foot"><span>原创几何 / 材质 · 非官方角色</span><span>Three.js r187 · deepseek-whale-girl.glb</span></footer>
+  <noscript><p class="noscript">角色展示需要 JavaScript、WebGL 与 WebAssembly。</p></noscript>
+
+  <script>
+    (function () {
+      var root = document.documentElement, media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode)); });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); }); });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="module" src="./whale.js"></script>
+</body>
+</html>

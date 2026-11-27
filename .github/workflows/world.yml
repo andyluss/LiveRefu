@@ -93,7 +93,7 @@ jobs:
         run: |
           node games/world/test/demo3d_static.mjs
           node games/world/test/demos_static.mjs
-      - name: R-016 three-state theme (9 pages)
+      - name: R-016 three-state theme (10 pages)
         run: >-
           node design/tools/check_html_theme.ts
           games/world/web/index.html
@@ -102,6 +102,7 @@ jobs:
           games/world/web/iso.html
           games/world/web/orbit3d.html
           games/world/web/scene3d.html
+          games/world/web/whale.html
           games/world/web/demos.html
           games/world/brief/HUB.html
           games/world/brief/GUIDE.html

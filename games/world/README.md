@@ -98,11 +98,13 @@ node tools/serve-web.mjs --port 8787
 | [`docs/06_M0实现与验收.md`](docs/06_M0实现与验收.md) | M0 实际架构、验收对照、基准、偏差与已知限制 |
 | [`docs/07_M1实现与验收.md`](docs/07_M1实现与验收.md) | M1 切片：TS DSL、Web 预览、截图、验收与剩余 M1 |
 | [`docs/08_两小时教程.md`](docs/08_两小时教程.md) | 用 Web 编辑器做出「港湾值班室」的两小时教程 |
+| [`docs/09_M2适配器启动.md`](docs/09_M2适配器启动.md) | Godot 4.7 适配器、CTS、5k 帧时间与 M2 验收 |
+| [`docs/10_3D角色_小鲸鱼娘提示词.md`](docs/10_3D角色_小鲸鱼娘提示词.md) | 小鲸鱼娘社区设定、视觉规格、提示词与 3D 验收 |
 | [`brief/`](brief/) | 项目 HUB 与用户指南（R-016 三态主题） |
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |
 | [`tools/ts-build.mjs`](tools/ts-build.mjs) | TS DSL → 规范化内容包编译器 |
-| [`web/`](web/) | wasm 2D 预览 + 3D 演示 + 编辑器 v0.5（构建、页面、Node 测试） |
+| [`web/`](web/) | wasm 2D 预览 + 3D 场景/角色展示 + 编辑器 v0.5（构建、页面、Node 测试） |
 | [`web/demos.html`](web/demos.html) | Demo 索引：2D / 2.5D / 3D、剧情/探索/工具 |
 | [`web/demo3d.html`](web/demo3d.html) | 3D 港湾值班室（Three.js，本地 vendor） |
 | [`web/iso.html`](web/iso.html) | 2.5D 等距渲染器（夜市 / 温室） |
