@@ -6,7 +6,17 @@ const TICK_US = 16666;
 const canvas = document.getElementById("scene");
 const el = Object.fromEntries(["quest-title","quest-objectives","inventory","flags","clock","tick","hash","toast","dialogue","dialogue-speaker","dialogue-text","loading","status-text","btn-pause"].map((id) => [id, document.getElementById(id)]));
 let world, current, renderer, scene, camera, controls;
-let paused = false, last = performance.now(), acc = 0, toastTimer = 0, dialogTimer = 0, intro = 0;
+let paused = false, last = performance.now(), acc = 0, toastTimer = 0, dialogTimer = 0;
+let cinematic = true, cinematicTime = 0, cinematicLength = 4.6;
+let soundOn = false;
+const SHOTS = [
+  { at: 0.0, pos: [15, 10, -16], target: [0, 1.6, 4.2], label: "01 / QUAY OVERVIEW" },
+  { at: 1.35, pos: [11, 6.2, -10], target: [0, 1.4, 3.2], label: "02 / CONTAINER YARD" },
+  { at: 2.85, pos: [7.8, 4.4, -7.2], target: [0, 1.3, 4.2], label: "03 / B-07 CARGO GATE" },
+  { at: 4.1, pos: [8.2, 5.2, -9], target: [0, 1.4, 2.5], label: "04 / NIGHT SHIFT" },
+];
+const shotLabel = document.getElementById("shot-label");
+let audio = null;
 let controlsAuto = false;
 const keys = new Set();
 const views = new Map();
@@ -100,6 +110,56 @@ function makeKeycard() {
   g.position.y = 0.7; return g;
 }
 
+class DockAudio {
+  constructor() { this.ctx = null; this.master = null; this.rainGain = null; this.hum = []; this.timer = null; }
+  async enable() {
+    if (!this.ctx) this.build();
+    await this.ctx.resume();
+    this.master.gain.setTargetAtTime(0.55, this.ctx.currentTime, 0.25);
+    this.startFoghorn();
+  }
+  disable() {
+    if (!this.ctx || !this.master) return;
+    this.master.gain.setTargetAtTime(0, this.ctx.currentTime, 0.18);
+    if (this.timer) { clearInterval(this.timer); this.timer = null; }
+  }
+  build() {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    this.ctx = new Ctx();
+    this.master = this.ctx.createGain(); this.master.gain.value = 0; this.master.connect(this.ctx.destination);
+    const len = this.ctx.sampleRate * 2;
+    const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < len; i++) { const white = Math.random() * 2 - 1; last = last * 0.94 + white * 0.06; data[i] = last; }
+    const rain = this.ctx.createBufferSource(); rain.buffer = buf; rain.loop = true;
+    const filter = this.ctx.createBiquadFilter(); filter.type = "lowpass"; filter.frequency.value = 1200; filter.Q.value = 0.5;
+    this.rainGain = this.ctx.createGain(); this.rainGain.gain.value = 0.15;
+    rain.connect(filter).connect(this.rainGain).connect(this.master); rain.start();
+    for (const [freq, amp] of [[48, 0.045], [73, 0.022]]) {
+      const osc = this.ctx.createOscillator(); osc.type = "sine"; osc.frequency.value = freq;
+      const g = this.ctx.createGain(); g.gain.value = amp; osc.connect(g).connect(this.master); osc.start(); this.hum.push(osc);
+    }
+  }
+  startFoghorn() {
+    if (this.timer || !this.ctx) return;
+    const play = () => {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator(); osc.type = "sine"; osc.frequency.setValueAtTime(92, now); osc.frequency.exponentialRampToValueAtTime(78, now + 1.6);
+      const g = this.ctx.createGain(); g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(0.08, now + 0.25); g.gain.setValueAtTime(0.08, now + 1.2); g.gain.exponentialRampToValueAtTime(0.001, now + 3.0);
+      osc.connect(g).connect(this.master); osc.start(now); osc.stop(now + 3.1);
+    };
+    play(); this.timer = setInterval(play, 15000);
+  }
+  door() {
+    if (!this.ctx || !soundOn) return;
+    const now = this.ctx.currentTime; const osc = this.ctx.createOscillator(); osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(110, now); osc.frequency.exponentialRampToValueAtTime(310, now + 0.7); osc.frequency.exponentialRampToValueAtTime(160, now + 1.2);
+    const g = this.ctx.createGain(); g.gain.setValueAtTime(0.0001, now); g.gain.exponentialRampToValueAtTime(0.060, now + 0.08); g.gain.exponentialRampToValueAtTime(0.0001, now + 1.35);
+    osc.connect(g).connect(this.master); osc.start(now); osc.stop(now + 1.4);
+  }
+}
+
 function buildScene() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x030b10);
@@ -115,6 +175,7 @@ function buildScene() {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
   controls = new OrbitControls(camera, canvas);
+  controls.enabled = false;
   controls.target.set(0, 1.4, 4);
   controls.enableDamping = true; controls.dampingFactor = 0.05;
   controls.minDistance = 3.5; controls.maxDistance = 22; controls.maxPolarAngle = Math.PI * 0.49;
@@ -309,6 +370,14 @@ function bindUi() {
   document.getElementById("btn-reset").addEventListener("click", () => { world.reset(); current = JSON.parse(world.state()); views.forEach((g) => scene.remove(g)); views.clear(); syncViews(); renderHud(); });
   el["btn-pause"].addEventListener("click", () => { paused = !paused; el["btn-pause"].textContent = paused ? "继续" : "暂停"; });
   document.getElementById("btn-camera").addEventListener("click", (e) => { controlsAuto = !controlsAuto; controls.autoRotate = controlsAuto; e.currentTarget.setAttribute("aria-pressed", String(controlsAuto)); });
+  document.getElementById("btn-replay").addEventListener("click", () => { cinematic = true; cinematicTime = 0; controls.enabled = false; controlsAuto = false; controls.autoRotate = false; document.getElementById("btn-camera").setAttribute("aria-pressed", "false"); });
+  document.getElementById("btn-sound").addEventListener("click", async (e) => {
+    soundOn = !soundOn;
+    if (soundOn) { if (!audio) audio = new DockAudio(); await audio.enable(); } else if (audio) audio.disable();
+    e.currentTarget.setAttribute("aria-pressed", String(soundOn));
+    e.currentTarget.textContent = soundOn ? "声音：开" : "声音：关";
+  });
+  controls.addEventListener("start", () => { if (cinematic) { cinematic = false; shotLabel.style.opacity = "0"; controls.enabled = true; } });
   window.addEventListener("keydown", (e) => {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
     const k = e.key.toLowerCase();
@@ -327,7 +396,7 @@ function handleEvents() {
     if (event.kind === "toast") showToast(event.data?.text ?? "");
     else if (event.kind === "dialogue_started") showDialogue(event);
     else if (event.kind === "item_acquired") showToast(`获得：${String(event.data?.item ?? "").replace("item.dock.", "")}`);
-    else if (event.kind === "door_opened") showToast("B 舱门开启");
+    else if (event.kind === "door_opened") { showToast("B 舱门开启"); audio?.door(); }
   }
 }
 
@@ -336,14 +405,27 @@ function animate(dt, now) {
   if (stars) stars.rotation.y += dt * 0.003;
   if (craneHook) craneHook.position.y = 5.4 + Math.sin(now * 0.0003) * 0.15;
   for (const p of gate.panels) p.rotation.z = Math.sin(now * 0.001) * 0.0015;
-  if (intro < 1) {
-    intro = Math.min(1, intro + dt / 2.8);
-    const e = 1 - Math.pow(1 - intro, 3);
-    camera.position.lerpVectors(new THREE.Vector3(13, 9, -14), new THREE.Vector3(8, 5.2, -9), e);
-    controls.target.lerpVectors(new THREE.Vector3(0, 1.4, 4), new THREE.Vector3(0, 1.4, 2.5), e);
+  if (cinematic) {
+    cinematicTime += dt;
+    let a = SHOTS[0], b = SHOTS[SHOTS.length - 1];
+    if (cinematicTime >= SHOTS[SHOTS.length - 1].at) { a = SHOTS[SHOTS.length - 1]; b = a; }
+    else {
+      for (let i = 0; i < SHOTS.length - 1; i++) {
+        if (cinematicTime >= SHOTS[i].at && cinematicTime <= SHOTS[i + 1].at) { a = SHOTS[i]; b = SHOTS[i + 1]; break; }
+      }
+    }
+    const span = Math.max(0.001, b.at - a.at);
+    const u = Math.min(1, (cinematicTime - a.at) / span);
+    const e = u * u * (3 - 2 * u);
+    camera.position.lerpVectors(new THREE.Vector3(...a.pos), new THREE.Vector3(...b.pos), e);
+    controls.target.lerpVectors(new THREE.Vector3(...a.target), new THREE.Vector3(...b.target), e);
+    shotLabel.textContent = b.label;
+    shotLabel.style.opacity = "1";
+    if (cinematicTime >= cinematicLength) { cinematic = false; shotLabel.style.opacity = "0"; controls.enabled = true; }
+  } else {
+    const p = playerEntity();
+    if (p) controls.target.lerp(new THREE.Vector3(p.transform.position[0], 1.4, p.transform.position[2] + 2.8), 0.06);
   }
-  const p = playerEntity();
-  if (p) controls.target.lerp(new THREE.Vector3(p.transform.position[0], 1.4, p.transform.position[2] + 2.8), 0.06);
 }
 
 function loop(now) {

@@ -42,6 +42,7 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
+- **Dock 07 环境音与镜头演出**：新增 WebAudio 程序化环境（雨声/低频码头嗡鸣/雾笛/货舱门伺服），默认关闭、点击启用；四段式镜头（码头全景→堆场→B-07→夜班）2.8–4.6s 推入，支持重看演出与拖动取消；不用外部音频文件。
 - **Entity 组件列拆分**：新增 `EntityStore` SoA 存储（core/transform/collider/speed/inventory/interactable/door/schedule/behavior/dialogue 分列）；`Entity` 保留为 Snapshot/C ABI DTO；`EntityView`/`EntityMut` 作为运行时扁平读写视图；`EntityId` 代际、spawn/despawn、快照往返与黄金哈希保持；5k tick P95 0.165ms。
 - **夜班货运旗舰 3D（Dock 07）**：专用 `web/dock3d.html` + `dock3d.js`，集装箱堆场、吊机、B-07 货舱门、雨夜/灯光/水洼/码头仓库与低模工人；任务/门禁/拾取全部来自 `demo.dock` wasm 状态；5 个通用 `scene3d` 原型从 Demo 索引移除（文件保留为实验），索引收敛到 17 个玩法 Demo。
 - **内核分层 Phase 5（边界门）**：新增 `test/check_layers.mjs`，静态拒绝 L0/L1/L2/L3 向上 import；接入 `run_m1.sh` 与 RefuWorld CI；为 Narrative 补 flags/脚本过滤单测。四层边界与黄金门全部绿。

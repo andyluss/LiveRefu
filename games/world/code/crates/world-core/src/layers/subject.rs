@@ -18,6 +18,7 @@ pub(crate) fn has_item(entity: &Entity, item: &str) -> bool {
     entity.inventory.iter().any(|s| s.item == item && s.count > 0)
 }
 
+#[cfg(test)]
 pub(crate) fn give_item(entity: &mut Entity, item: &str, count: u32) {
     if count == 0 {
         return;

@@ -382,7 +382,7 @@ impl World {
             .agency
             .changes(self.spacetime.clock_minutes, self.store.schedules());
         for change in changes {
-            if let Some(mut entity) = self.entity_mut(change.id) {
+            if let Some(entity) = self.entity_mut(change.id) {
                 *entity.behavior = Some(change.behavior.clone());
             }
             self.emit(

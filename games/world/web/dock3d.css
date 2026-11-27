@@ -32,3 +32,8 @@
 .dock-page .inventory span, .dock-page .flags span { color: #d8e8e4; background: rgba(111,231,220,.08); border-color: rgba(111,231,220,.25); }
 .dock-page .telemetry span { color: #77928d; }
 .dock-page .telemetry strong, .dock-page .telemetry code { color: #e7f7f2; }
+
+
+.dock-shot { position:fixed; top:92px; left:50%; transform:translateX(-50%); z-index:5; color:rgba(201,231,226,.68); font:10px var(--mono,Menlo,monospace); letter-spacing:.18em; pointer-events:none; transition:opacity .5s; }
+@media(max-width:620px){.dock-shot{top:auto;bottom:100px;font-size:9px}}
+.dock-actions #btn-sound[aria-pressed="true"] { background:#6fe7dc; color:#061114; border-color:#6fe7dc; }
