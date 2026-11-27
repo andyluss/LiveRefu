@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 3D 场景</title>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'light'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./demo3d.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/",
+        "env": "./vendor/quickjs-env.js"
+      }
+    }
+  </script>
+</head>
+<body class="scene-page">
+  <canvas id="scene" aria-label="RefuWorld 3D 场景"></canvas>
+  <div class="scene-vignette" aria-hidden="true"></div>
+  <div class="scene-grain" aria-hidden="true"></div>
+
+  <header class="scene-top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div><h1>RefuWorld <span class="badge">3D</span></h1><p id="scene-subtitle">3D 场景 · 同一份 wasm 世界状态</p></div>
+    </div>
+    <div class="scene-top-actions">
+      <a class="button-link" href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a>
+      <a class="button-link" href="http://127.0.0.1:8787/web/index.html">2D 预览</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="scene-ui" aria-label="场景界面">
+    <section class="scene-card objective"><p class="eyebrow">当前任务</p><h2 id="quest-title">场景</h2><ul id="quest-objectives" class="objectives"></ul></section>
+    <section class="scene-card inventory-card"><p class="eyebrow">随身物品</p><div id="inventory" class="inventory"></div><div id="flags" class="flags"></div></section>
+    <section class="scene-card telemetry"><div><span>时间</span><strong id="clock">08:00</strong></div><div><span>tick</span><strong id="tick">0</strong></div><div><span>哈希</span><code id="hash">—</code></div></section>
+    <section class="scene-actions" aria-label="操作">
+      <button id="btn-interact" type="button"><kbd>E</kbd> 交互</button>
+      <button id="btn-pickup" type="button"><kbd>F</kbd> 拾取</button>
+      <button id="btn-talk" type="button"><kbd>T</kbd> 对话</button>
+      <button id="btn-reset" type="button">重置</button>
+      <button id="btn-pause" type="button">暂停</button>
+    </section>
+    <p class="scene-hint" id="hint">WASD 移动 · 拖动旋转 · 滚轮缩放 · E/F/T 交互</p>
+  </main>
+
+  <div id="dialogue" class="dialogue" hidden><p class="eyebrow" id="dialogue-speaker">场景</p><p id="dialogue-text"></p></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="loading" class="loading"><span class="loading-ring" aria-hidden="true"></span><p>正在点亮场景…</p></div>
+  <footer class="scene-foot"><span>Three.js r187 · 同一份 wasm 状态</span><span>内容包 <code id="foot-pack">—</code></span></footer>
+  <noscript><p class="noscript">3D 演示需要 JavaScript、WebGL 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement, media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode)); });
+        window.dispatchEvent(new CustomEvent('refu-theme', { detail: { mode, dark } }));
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); }); });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="module" src="./scene3d.js"></script>
+</body>
+</html>
