@@ -29,11 +29,12 @@
         <a href="GUIDE.html">用户指南 GUIDE</a>
         <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a>
         <a href="../README.md">项目 README</a>
-        <a href="../docs/07_M1实现与验收.md">M1 验收</a>
+        <a href="../docs/09_M2适配器启动.md">M2 适配器</a>
+        <a href="../docs/11_内核分层与迁移.md">内核分层</a>
         <a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地静态服务器">3D 演示</a>
         <a href="http://127.0.0.1:8787/web/index.html" title="需要本地静态服务器">2D 预览</a>
       </nav>
-      <div class="stamp">M1 主要切片 · 2026-11-24</div>
+      <div class="stamp">M2 + L4/L5 · 2026-11-27</div>
       <div class="theme-switch" role="group" aria-label="主题">
         <button type="button" data-theme-choice="system" aria-pressed="true">系统</button>
         <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
@@ -67,14 +68,14 @@
       <div>
         <div class="stats">
           <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
-          <div class="stat o"><div class="v">19</div><div class="l">Rust 测试</div></div>
+          <div class="stat o"><div class="v">34</div><div class="l">Rust 测试</div></div>
           <div class="stat p"><div class="v">19</div><div class="l">内容测试</div></div>
           <div class="stat r"><div class="v">0.24<span style="font-size:12px">ms</span></div><div class="l">5k real tick P95</div></div>
           <div class="stat o"><div class="v">19</div><div class="l">玩法 Demo</div></div>
-          <div class="stat p"><div class="v">M1</div><div class="l">主要切片</div></div>
+          <div class="stat p"><div class="v">L0–L5</div><div class="l">内核分层</div></div>
         </div>
         <div class="quote"><b>一句话边界：</b>核心从不回调引擎；引擎只轮询 C ABI 拿差值。换引擎时，玩法规则、导航和存档不应重写。</div>
-        <p><span class="chip ok">确定性哈希</span><span class="chip ok">C ABI</span><span class="chip acc">TS DSL</span><span class="chip acc">编辑器</span><span class="chip acc">3D 预览</span><span class="chip warn">M1 剩余</span></p>
+        <p><span class="chip ok">确定性哈希</span><span class="chip ok">C ABI</span><span class="chip acc">TS DSL</span><span class="chip acc">编辑器</span><span class="chip acc">3D 预览</span><span class="chip ok">L4 社会</span><span class="chip ok">L5 系统</span><span class="chip acc">EntityStore</span></p>
       </div>
     </div>
 
@@ -124,8 +125,8 @@
   </section>
 
   <section class="panel" id="p-status" role="tabpanel" aria-labelledby="t-status">
-    <h2>到哪了：M0 与 M1 主要切片</h2>
-    <p class="lede">这里只记录**已经跑过**的事。M1 是主要切片，不是完整 M1；把“切过”当作“全过”会掩盖剩余工作。</p>
+    <h2>到哪了：M0 → M1 → M2 → L4/L5</h2>
+    <p class="lede">这里只记录**已经跑过**的事。内核已从单体 World 拆成 L0–L5 与 EntityStore；M2 Godot 适配器、L4 社会关系、L5 世界系统和 19 个 Demo 都已有本地/CI 证据。</p>
     <ol class="tl">
       <li class="done"><b>M0 · 可运行内核</b> <span>2026-11-23 · 8 crates、C ABI、QuickJS spike、坏包 fixture、600 tick 双跑。</span></li>
       <li class="done"><b>M1 · TS DSL + Web 预览</b> <span>TS 包与 JSON 包同哈希；2D 预览回放 <code>0x3606a2…</code>。</span></li>
@@ -135,7 +136,11 @@
       <li class="done"><b>M1 · ScriptHost</b> <span>QuickJS 事件作用域；事件上下文 → 命令；内存/栈/命令/中断预算；wasm/C/CLI/headless 注入。</span></li>
       <li class="done"><b>M1 · 三平台 CI</b> <span>GitHub Actions run 45757232197：Ubuntu / macOS / Windows、C ABI、real5k、world-wasm + QuickJS、8 页 web 检查全绿。</span></li>
       <li class="done"><b>M2 · Godot 逻辑适配器</b> <span>world-abi + GDExtension WorldNode；600 tick 哈希、save/load、BoxMesh 视图池、WASD/相机/灯光、kind 视图、GLB scene 池、真实 WAV；CTS L/T/I/E/V/S/X/D/Z/A/U 已过；事件/存档互通；5k 帧时间已采集。</span></li>
-      <li class="now"><b>现在 · M2 完成</b> <span>边界、CTS、事件/存档互通与 5k 基线均已验证；作者试用待做。</span></li>
+      <li class="done"><b>L0–L3 · 内核分层</b> <span>时空物理 / 主体交互 / 行为能动 / 叙事规则；单向依赖、边界门、黄金哈希与事件序列保持。</span></li>
+      <li class="done"><b>EntityStore · 组件列</b> <span>SoA 列存储 + EntityView/EntityMut；Entity 只作为 Snapshot/C ABI DTO；spawn/despawn 保留代际。</span></li>
+      <li class="done"><b>L4 · 社会关系</b> <span>factions / relationships / reputation；talk 自动记录，SocialAction 支持大会提案；旧包不序列化。</span></li>
+      <li class="done"><b>L5 · 世界系统</b> <span>天气、光伏、风电、储能、水循环、AI 负载；energy_updated / weather_changed 与 SetSystemPolicy。</span></li>
+      <li class="now"><b>现在 · 19 Demo + L4/L5</b> <span>太阳城农场与霓虹下城作为正反旗舰；CI 已全绿；5k p50 0.129 ms，p95 0.17–0.19 ms。</span></li>
       <li class="next"><b>下一步 · 作者试用/内容</b> <span>真实作者 2 小时试用与更多内容量。</span></li>
     </ol>
 
@@ -147,7 +152,7 @@
         <tr><td>内容测试</td><td><b>19</b> 条 PASS：港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城农场 + 霓虹下城</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0x3606a221e9990561</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
         <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:21569377…b7d5f9</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
-        <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P95 <b>0.239 ms</b>，snapshot P95 3.086 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
+        <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P50 <b>0.129 ms</b>、P95 <b>0.17–0.19 ms</b>，snapshot P95 ≈3.4 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
         <tr><td>主题与页面</td><td>R-016 八页：2D / 编辑器 / 3D 港湾 / 2.5D / 3D 环形站 / HUB / GUIDE / Gallery 通过</td><td><code>check_html_theme.ts</code></td></tr>
         <tr><td>3D 静态契约</td><td>本地 Three.js、import map、wasm 交互入口、无 CDN</td><td><code>test/demo3d_static.mjs</code></td></tr>
       </tbody>
@@ -163,23 +168,24 @@ node tools/serve-web.mjs --port 8787
 # 2D:   http://127.0.0.1:8787/web/
 # 3D:   http://127.0.0.1:8787/web/demo3d.html</code></pre>
 
-    <div class="note warn"><b>不要把 M1 主要切片当成 M1 完整验收。</b>ScriptHost 已接入但是事件作用域；导航门仍是静态烘焙；5k v1 是单 Zone mixed load；编辑器还没有完整 schema 表单。</div>
+    <div class="note warn"><b>不要把原型当生产。</b>ScriptHost 仍是事件作用域；导航门是静态烘焙；5k v1 是单 Zone mixed load；L4/L5 只在显式内容包中启用；作者试用与真实外机 GPU 复测仍待做。</div>
   </section>
 
   <section class="panel" id="p-architecture" role="tabpanel" aria-labelledby="t-architecture">
-    <h2>五层架构：核心从不回调引擎</h2>
-    <p class="lede">内容包是唯一事实源；内核在固定 tick 上推进；宿主通过版本化 C ABI 轮询状态、提交命令。引擎适配器只做“表现与输入”，不拥有规则。</p>
+    <h2>分层内核 + 宿主边界：核心从不回调引擎</h2>
+    <p class="lede">内容包是唯一事实源；内核从时空物理 L0 逐层叠到世界系统 L5；宿主通过版本化 C ABI 轮询状态、提交命令。引擎适配器只做“表现与输入”，不拥有规则。</p>
     <div class="arch-meta" aria-label="架构约束">
-      <span><b>内容层</b> 唯一事实源</span>
-      <span><b>内核层</b> 确定性、无引擎对象</span>
-      <span><b>ABI 层</b> 只轮询，不回调</span>
-      <span><b>宿主层</b> 输入 / 视图 / 音频 / 资产</span>
+      <span><b>L0–L3</b> 必需内核层</span>
+      <span><b>L4/L5</b> 可选社会 / 世界系统</span>
+      <span><b>EntityStore</b> 列式组件 + DTO</span>
+      <span><b>ABI</b> 只轮询，不回调</span>
+      <span><b>宿主</b> 输入 / 视图 / 音频 / 资产</span>
     </div>
 
     <figure class="arch-map" aria-labelledby="arch-title" aria-describedby="arch-desc">
       <svg class="arch-svg" viewBox="0 0 1120 740" role="img" xmlns="http://www.w3.org/2000/svg">
-        <title id="arch-title">RefuWorld 五层架构：作者工具、内容包、world-core、C ABI 与宿主适配器</title>
-        <desc id="arch-desc">作者工具产出内容包；world-core 在固定 tick 上推进规则、空间与存档；world-ffi 通过版本化 C ABI 向 Godot、Web、C/Headless 等宿主暴露命令、事件和 transform；核心不回调引擎，宿主不写玩法。</desc>
+        <title id="arch-title">RefuWorld 分层架构：作者工具、内容包、L0–L5 内核、C ABI 与宿主适配器</title>
+        <desc id="arch-desc">作者工具产出内容包；world-core 从 L0 时空物理、L1 主体交互、L2 行为能动、L3 叙事规则，叠到可选的 L4 社会关系与 L5 世界系统；world-ffi 通过版本化 C ABI 向 Godot、Web、C/Headless 等宿主暴露命令、事件和 transform；核心不回调引擎，宿主不写玩法。</desc>
         <defs>
           <marker id="a-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="a-arrow-mark"/></marker>
           <marker id="a-arrow-hot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="a-arrow-hot-mark"/></marker>
@@ -241,19 +247,20 @@ node tools/serve-web.mjs --port 8787
         <text x="48" y="310" class="a-lane">03</text>
         <text x="48" y="328" class="a-lane-sub">权威内核</text>
         <rect x="142" y="272" width="830" height="158" rx="15" class="a-core" fill="url(#a-core-fill)" filter="url(#a-glow)"/>
-        <text x="164" y="300" class="a-core-title">world-core</text>
-        <text x="164" y="320" class="a-core-sub">Rust · 不依赖引擎 · 不在渲染线程上工作</text>
+        <text x="164" y="300" class="a-core-title">world-core · L0–L5</text>
+        <text x="164" y="320" class="a-core-sub">EntityStore 列式组件 · 固定 tick · 无引擎对象</text>
         <g class="a-chip-text">
-          <rect x="164" y="338" width="98" height="30" rx="6" class="a-core-chip"/><text x="213" y="357" class="a-center">60 Hz tick</text>
-          <rect x="272" y="338" width="118" height="30" rx="6" class="a-core-chip"/><text x="331" y="357" class="a-center">Entity / Zone</text>
-          <rect x="400" y="338" width="112" height="30" rx="6" class="a-core-chip"/><text x="456" y="357" class="a-center">命令 / 事件</text>
-          <rect x="522" y="338" width="118" height="30" rx="6" class="a-core-chip"/><text x="581" y="357" class="a-center">碰撞 / A*</text>
-          <rect x="650" y="338" width="126" height="30" rx="6" class="a-core-chip"/><text x="713" y="357" class="a-center">规则 / 任务</text>
-          <rect x="786" y="338" width="138" height="30" rx="6" class="a-core-chip"/><text x="855" y="357" class="a-center">快照 / xxh3</text>
+          <rect x="164" y="338" width="120" height="30" rx="6" class="a-core-chip"/><text x="224" y="357" class="a-center">L0 时空物理</text>
+          <rect x="296" y="338" width="120" height="30" rx="6" class="a-core-chip"/><text x="356" y="357" class="a-center">L1 主体交互</text>
+          <rect x="428" y="338" width="120" height="30" rx="6" class="a-core-chip"/><text x="488" y="357" class="a-center">L2 行为能动</text>
+          <rect x="560" y="338" width="120" height="30" rx="6" class="a-core-chip"/><text x="620" y="357" class="a-center">L3 叙事规则</text>
+          <rect x="692" y="338" width="120" height="30" rx="6" class="a-core-chip"/><text x="752" y="357" class="a-center">L4 社会关系</text>
+          <rect x="824" y="338" width="120" height="30" rx="6" class="a-core-chip"/><text x="884" y="357" class="a-center">L5 世界系统</text>
         </g>
         <g class="a-inline-note">
-          <text x="164" y="398" class="a-sub">输入命令 → 校验 → 固定步进 → 事件 → 哈希</text>
-          <text x="820" y="398" class="a-sub a-end">save / load · 可回放</text>
+          <text x="164" y="386" class="a-sub">L0 → L1 → L2 → L3 → L4 → L5；上层依赖下层，下层不 import 上层</text>
+          <text x="164" y="408" class="a-sub">EntityStore：core / transform / collider / subject / agency / narrative 列 · Snapshot 仍是 v1 DTO</text>
+          <text x="936" y="408" class="a-sub a-end">save / load · 可回放</text>
         </g>
         <text x="48" y="454" class="a-small">核心从不回调引擎</text>
         <text x="48" y="470" class="a-small">引擎只负责表现</text>
@@ -306,20 +313,23 @@ node tools/serve-web.mjs --port 8787
         <rect x="142" y="688" width="830" height="34" rx="8" class="a-valid"/>
         <text x="164" y="710" class="a-small">验证回路</text>
         <text x="260" y="710" class="a-small a-faint">M0 双跑 / C ABI 同哈希</text>
-        <text x="500" y="710" class="a-small a-faint">M1 TS / Web 预览</text>
-        <text x="710" y="710" class="a-small a-faint">M2 Godot CTS / 5k</text>
-        <text x="944" y="710" class="a-end a-small a-good">CI 兜底 ✓</text>
+        <text x="500" y="710" class="a-small a-faint">M1 TS / Web / 19 Demo</text>
+        <text x="680" y="710" class="a-small a-faint">M2 CTS / 5k</text>
+        <text x="944" y="710" class="a-end a-small a-good">L4/L5 可选 · 旧包不变 ✓</text>
       </svg>
-      <figcaption><b>一句话读图：</b>作者工具把内容包送进 <code>world-core</code>；核心在固定 tick 上产生命令/事件/transform，经 <code>world-ffi</code> 的 C ABI 给宿主消费。宿主只做输入、视图、音频与资产，不拥有规则；换宿主时包、规则、存档与哈希都不重写。</figcaption>
+      <figcaption><b>一句话读图：</b>作者工具把内容包送进 <code>world-core</code>；L0 时空物理提供时间/空间/碰撞，L1 主体交互、L2 行为、L3 叙事逐层叠加，L4 社会关系与 L5 世界系统可选启用；经 <code>world-ffi</code> 的 C ABI 给宿主消费。宿主只做输入、视图、音频与资产，不拥有规则。</figcaption>
     </figure>
     <div class="note"><b>边界规则：</b>核心不做渲染、不碰引擎对象、不回调引擎；表现层不写玩法规则。适配器通过 <code>world_poll_events</code> / <code>world_copy_transforms</code> 拉取状态，通过命令入口提交输入。</div>
 
     <h3>一次 tick 的路径</h3>
     <ol class="tl">
-      <li class="done"><b>输入 → 命令</b><span>宿主把移动/交互/拾取转成 <code>Command</code>，进入队列。</span></li>
-      <li class="done"><b>命令校验与执行</b><span>世界检查距离、库存、规则、碰撞；非法命令返回错误，不写半状态。</span></li>
-      <li class="done"><b>固定步进</b><span>60 Hz；移动/日程/任务推进；事件进入队列。</span></li>
-      <li class="done"><b>状态哈希</b><span>规范化快照 → xxh3；用于回放、跨宿主对账、存档校验。</span></li>
+      <li class="done"><b>输入 → 命令</b><span>宿主把移动/交互/拾取/大会/能源策略转成 <code>Command</code>，进入确定性队列。</span></li>
+      <li class="done"><b>L0 · 时空物理</b><span>固定步进、时钟、Transform、路径跟随、碰撞、Zone 边界与 A*；只接收轻量 Body 视图。</span></li>
+      <li class="done"><b>L1 · 主体交互</b><span>Interact / Talk / Pickup / OpenDoor / GiveItem；背包、门锁、物品转移在独立列上完成。</span></li>
+      <li class="done"><b>L2 · 行为/能动</b><span>日程与 behavior 变化；复用缓冲计算，不拥有任务与对话。</span></li>
+      <li class="done"><b>L3 · 叙事/规则</b><span>flags / quests / dialogue / rules / ScriptHost；只通过命令与事件影响下层。</span></li>
+      <li class="done"><b>L4/L5 · 可选层</b><span>L4 阵营/关系/声望；L5 天气/能源/水/AI 负载；旧包不序列化，保持 v1 哈希。</span></li>
+      <li class="done"><b>状态哈希</b><span>Snapshot v1 DTO → xxh3；用于回放、跨宿主对账、存档校验。</span></li>
       <li class="done"><b>表现同步</b><span>宿主轮询事件与 transform；引擎只做插值、特效、音频。</span></li>
     </ol>
 
@@ -328,7 +338,8 @@ node tools/serve-web.mjs --port 8787
       <thead><tr><th>Crate</th><th>职责</th><th>不做什么</th></tr></thead>
       <tbody>
         <tr><td><code>world-pack</code></td><td>schema 读取、校验、哈希、导航烘焙输入</td><td>不跑世界</td></tr>
-        <tr><td><code>world-core</code></td><td>World/Session/Zone、tick、规则、碰撞、A*、快照</td><td>不依赖引擎</td></tr>
+        <tr><td><code>world-core</code></td><td>L0–L5、EntityStore、tick、碰撞/A*、快照与存档</td><td>不依赖引擎；不渲染</td></tr>
+        <tr><td><code>world-abi</code></td><td>安全 Rust ABI 封装、适配器共用</td><td>不依赖具体引擎</td></tr>
         <tr><td><code>world-ffi</code></td><td>C ABI v0、句柄、缓冲、错误码</td><td>不写玩法</td></tr>
         <tr><td><code>world-host-headless</code></td><td>CI / 回放 / 无头宿主</td><td>不渲染</td></tr>
         <tr><td><code>world-cli</code></td><td>validate/build/test/editor/bake/bench/content-test</td><td>不成为运行时依赖</td></tr>
@@ -341,12 +352,12 @@ node tools/serve-web.mjs --port 8787
 
   <section class="panel" id="p-implementation" role="tabpanel" aria-labelledby="t-implementation">
     <h2>实现：从输入到哈希，再到宿主</h2>
-    <p class="lede">这一页不是 API 目录，而是一条可以跟着走的实现路径：命令怎样进入内核、tick 怎样推进、快照怎样变成哈希、C ABI 怎样把状态交给引擎、Godot 适配器怎样把 transform 变成视图。每一段都给出源码入口，方便人类研究者按需跳读。</p>
+    <p class="lede">这一页不是 API 目录，而是一条可以跟着走的实现路径：命令怎样进入 L0–L5、EntityStore 怎样组织组件、快照怎样变成哈希、L4/L5 怎样按需叠加、C ABI 怎样把状态交给引擎。每一段都给出源码入口，方便人类研究者按需跳读。</p>
     <div class="impl-kpis" aria-label="实现规模">
-      <div><b>19</b><span>Rust 测试</span></div>
+      <div><b>34</b><span>Rust 测试</span></div>
       <div><b>19</b><span>内容测试</span></div>
       <div><b>1,314</b><span>适配器行数</span></div>
-      <div><b>3.557ms</b><span>5k frame P95</span></div>
+      <div><b>0.18ms</b><span>5k tick P95</span></div>
     </div>
 
     <h3>1. 一次 tick：固定步进，不回调引擎</h3>
@@ -384,15 +395,25 @@ for tick in 1..=600 {
 let hash = world.state_hash();     // 规范化快照 → xxh3</code></pre>
     <p class="dim">源码入口：<a href="../code/crates/world-core/src/world.rs"><code>world-core/src/world.rs</code></a> 的 <code>queue_command</code>、<code>tick_once</code>、<code>snapshot</code>；回放与双跑在 <a href="../code/crates/world-core/src/runner.rs"><code>runner.rs</code></a>。</p>
 
-    <h3>2. 数据模型：slab + 代际，快照可比较</h3>
+    <h3>2. 数据模型：EntityStore 组件列 + Snapshot v1 DTO</h3>
     <div class="grid g3">
-      <div class="card"><h4>实体槽</h4><p><code>Vec&lt;Slot&gt;</code> 复用索引；每个槽带 <code>generation</code>。删除实体时 generation 递增，旧句柄自然失效。</p><p class="small"><code>EntityId(index, generation)</code> 是回放、存档与视图池的共同键。</p></div>
-      <div class="card"><h4>快照</h4><p><code>Snapshot</code> 只含可序列化状态：tick、RNG、flags、quests、实体、玩家、zone、move_intent、path。</p><p class="small">字段顺序固定，<code>serde_json</code> → <code>xxh3_64</code>，因此跨宿主可比较。</p></div>
-      <div class="card"><h4>存档</h4><p><code>SaveEnvelope</code> 带包 ID/版本/哈希、快照与 checksum；读档先校验包，再校验 checksum，避免“读了一个别的世界的档”。</p><p class="small"><a href="../code/crates/world-core/src/world.rs">world-core/world.rs</a></p></div>
+      <div class="card"><h4>EntityStore · 列</h4><p><code>core / transform / collider / speed / inventory / interactable / door / schedule / behavior / dialogue</code> 分列；<code>EntityView</code> / <code>EntityMut</code> 提供扁平读写。</p><p class="small"><code>EntityId(index, generation)</code> 仍是回放、存档与视图池的共同键。</p></div>
+      <div class="card"><h4>Snapshot · v1</h4><p><code>Entity</code> 只作为快照/C ABI DTO；字段顺序固定。L4/L5 的 <code>social</code> / <code>systems</code> 是可选字段，旧包不序列化。</p><p class="small"><code>serde_json</code> → <code>xxh3_64</code>，旧包黄金哈希不变。</p></div>
+      <div class="card"><h4>存档</h4><p><code>SaveEnvelope</code> 带包 ID/版本/哈希、快照与 checksum；读档按原 <code>index/generation</code> 回填列，再校验 player 引用。</p><p class="small"><a href="../code/crates/world-core/src/store.rs">store.rs</a> · <a href="../code/crates/world-core/src/world.rs">world.rs</a></p></div>
     </div>
     <div class="note"><b>为什么快照不直接存引擎对象：</b>引擎对象有线程、资源与生命周期；把它们塞进哈希会让“同一局”依赖宿主。RefuWorld 只哈希纯数据，表现层从快照重建视图。</div>
 
-    <h3>3. C ABI：调用方持有缓冲，核心不回调</h3>
+    <h3>3. L4/L5：社会关系与世界系统</h3>
+    <div class="grid g2">
+      <div class="card"><h4>L4 · 社会</h4><p><code>factions / relationships / reputation</code>；<code>talk</code> 自动记录信任与互动次数，<code>SocialAction</code> 支持大会提案/支持。只依赖 L1/L2 的事实，不拥有空间。</p><p class="small">太阳城：3 人类 + 3 公共 AI；霓虹下城：企业/街坊/城市 AI。</p></div>
+      <div class="card"><h4>L5 · 系统</h4><p>天气循环、光伏、风电、储能、水循环、AI 负载；每 60 tick <code>energy_updated</code>，每 600 tick <code>weather_changed</code>。策略 <code>balance / irrigate / compute / profit / commons</code>。</p><p class="small">旧包没有 systems 定义时完全跳过；不增加事件或哈希。</p></div>
+    </div>
+    <pre><code>{"op":"social_action","actor":player,"target":mayor,"action":"propose"}
+{"op":"set_system_policy","policy":"commons"}
+</code></pre>
+    <p class="dim">源码入口：<a href="../code/crates/world-core/src/layers/social.rs"><code>layers/social.rs</code></a>、<a href="../code/crates/world-core/src/layers/systems.rs"><code>layers/systems.rs</code></a>；迁移记录见 <a href="../docs/11_内核分层与迁移.md">11 · 内核分层与迁移</a>。</p>
+
+    <h3>4. C ABI：调用方持有缓冲，核心不回调</h3>
     <p>适配器只看到 <code>WorldHandle*</code> 和值类型。读数据分两次调用：先问长度，再传自己的缓冲区；写命令传 JSON 或结构化参数。所有 <code>extern "C"</code> 入口用 <code>catch_unwind</code> 隔离 panic，错误通过 <code>world_last_error</code> 返回。</p>
     <div class="grid g2">
       <div class="card"><h4>读：轮询而非回调</h4><pre><code>world_tick(handle, 16666);
@@ -406,7 +427,7 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
     </div>
     <p class="dim">源码入口：<a href="../code/crates/world-ffi/src/lib.rs"><code>world-ffi/src/lib.rs</code></a>；契约在 <a href="../code/include/world.h"><code>world.h</code></a> 与 <a href="../plans/ADR-004-abi-v0.md">ADR-004</a>。</p>
 
-    <h3>4. 内容到预览：两套写法，一个哈希</h3>
+    <h3>5. 内容到预览：两套写法，一个哈希</h3>
     <figure class="impl-fig">
       <svg class="impl-svg" viewBox="0 0 1120 170" role="img" aria-labelledby="content-title content-desc" xmlns="http://www.w3.org/2000/svg">
         <title id="content-title">内容到预览的实现管线</title>
@@ -437,7 +458,7 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
     </figure>
     <p class="dim">源码入口：<a href="../code/crates/world-pack/src/lib.rs"><code>world-pack/src/lib.rs</code></a>、<a href="../tools/ts-build.mjs"><code>tools/ts-build.mjs</code></a>、<a href="../code/crates/world-wasm/src/lib.rs"><code>world-wasm/src/lib.rs</code></a>。</p>
 
-    <h3>5. Godot 适配器：只消费 ABI，不拥有规则</h3>
+    <h3>6. Godot 适配器：只消费 ABI，不拥有规则</h3>
     <div class="grid g2">
       <div class="card"><h4>WorldNode</h4><p>持有 <code>world-abi</code> 的 <code>AbiWorld</code>，不 <code>use world_core</code>。它暴露 <code>tick</code>、命令、<code>sync_views</code>、<code>save/load</code>、<code>ui_state</code>，并把错误转成 Godot 日志。</p><p class="small">边界门禁：<code>test/check_m2_boundary.mjs</code>，1,314 行 ≤ 2,000。</p></div>
       <div class="card"><h4>视图池</h4><p>用打包的 <code>EntityId</code> 做键；每 tick 保存 prev/target transform，<code>sync_views_at(alpha)</code> 插值；静态 prop/item 走 MultiMesh，GLB 走 GLTFDocument scene。</p><p class="small"><a href="../godot-extension/src/lib.rs">godot-extension/src/lib.rs</a></p></div>
@@ -447,10 +468,10 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
       <figcaption><b>作者侧：</b>内容在 Web 编辑器里修改；Godot 只负责把同一份包跑起来。实现研究可以先从内容管线入手，再看适配器。</figcaption>
     </figure>
 
-    <h3>6. 从哪里读起</h3>
+    <h3>7. 从哪里读起</h3>
     <ol class="tl">
       <li class="done"><b>先跑一遍</b><span><a href="../test/run_m0.sh"><code>test/run_m0.sh</code></a> 看确定性；<a href="../test/run_m1.sh"><code>run_m1.sh</code></a> 看 TS / Web 同哈希。</span></li>
-      <li class="done"><b>读内核</b><span><a href="../code/crates/world-core/src/world.rs"><code>world-core/src/world.rs</code></a>：先找 <code>tick_once</code>，再找 <code>snapshot</code> / <code>state_hash</code>。</span></li>
+      <li class="done"><b>读内核</b><span><a href="../code/crates/world-core/src/world.rs"><code>world.rs</code></a> 找 <code>tick_once</code> / <code>snapshot</code>；<a href="../code/crates/world-core/src/store.rs"><code>store.rs</code></a> 看组件列；<a href="../code/crates/world-core/src/layers/"><code>layers/</code></a> 按 L0–L5 读。</span></li>
       <li class="done"><b>读边界</b><span><a href="../code/crates/world-ffi/src/lib.rs"><code>world-ffi/src/lib.rs</code></a> 与 <a href="../code/include/world.h"><code>world.h</code></a>；重点看缓冲两段式与错误码。</span></li>
       <li class="done"><b>读适配器</b><span><a href="../godot-extension/src/lib.rs"><code>godot-extension/src/lib.rs</code></a> 的 <code>tick</code> / <code>sync_views_at</code>，再看 <a href="../godot/cts.gd"><code>godot/cts.gd</code></a> 如何做互操作验收。</span></li>
       <li class="next"><b>最后再读玩法</b><span>规则、任务、对话都在 <a href="../code/crates/world-core/src/world.rs"><code>world.rs</code></a> 与内容包；不要在适配器里找规则。</span></li>
@@ -498,15 +519,21 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
 
   <section class="panel" id="p-3d" role="tabpanel" aria-labelledby="t-3d">
     <h2>3D 演示：同一份世界，换一种看法</h2>
-    <p class="lede">3D 是表现层，不是第二套玩法。它用同一个 <code>PreviewWorld</code>、同一份 <code>pack.data</code>，所以钥匙卡、气闸、任务、对话和哈希都不会分叉。</p>
+    <p class="lede">3D 是表现层，不是第二套玩法。它用同一个 <code>PreviewWorld</code>、同一份 <code>pack.data</code>；从港湾值班室到夜班货运，再到太阳城农场 / 霓虹下城，规则、L4/L5、存档与哈希都不会分叉。</p>
     <div class="shots">
       <figure><img src="../docs/shots/m1_3d_harbor.png" alt="3D 港湾值班室初始场景"><figcaption><b>初始：</b>第三人称、平台地灯、气闸、NPC、海面雨夜。</figcaption></figure>
       <figure><img src="../docs/shots/m1_3d_airlock.png" alt="3D 气闸开启"><figcaption><b>开门：</b>规则触发 <code>open_door</code>，双门滑开、状态灯变绿。</figcaption></figure>
     </div>
+    <h3>L4/L5 对照：太阳城 vs 霓虹下城</h3>
+    <div class="shots">
+      <figure><img src="../web/images/demos/solarfarm.jpg" alt="太阳城农场 3D 旗舰"><figcaption><b>太阳城：</b>开放、水平、公共；光伏/风电/储能/水循环 + 公众大会堂。</figcaption></figure>
+      <figure><img src="../web/images/demos/cybercity.jpg" alt="霓虹下城 3D 对照"><figcaption><b>霓虹下城：</b>封闭、垂直、企业租界；私有电网 + 城市 AI + 信用社会。</figcaption></figure>
+    </div>
+    <p style="margin-top:10px"><a href="http://127.0.0.1:8787/web/solarfarm3d.html" title="需要本地服务器">打开太阳城农场</a> · <a href="http://127.0.0.1:8787/web/cybercity3d.html" title="需要本地服务器">打开霓虹下城</a> · 两页共用 L4 社会关系与 L5 世界系统。</p>
     <div class="grid g3" style="margin-top:14px">
       <div class="card"><h4>场景</h4><p>程序化港湾：海面、雨、货轮、灯塔、舷窗、湿地面、雾、尘埃、Bloom；本地 Three.js r187。</p></div>
       <div class="card"><h4>交互</h4><p>WASD / 点击地面 A*；鼠标旋转/滚轮缩放；点击实体或 E/F/T；对话字幕。</p></div>
-      <div class="card"><h4>边界</h4><p>低模、无骨骼/GLB/空间音频；NPC 还不寻路；WebGL2 是硬前提。</p></div>
+      <div class="card"><h4>边界</h4><p>低模/程序化场景；有 GLB 角色但不含骨骼动画；无空间音频；NPC 还不寻路；WebGL2 是硬前提。</p></div>
     </div>
     <pre style="margin-top:14px"><code>cd games/world && ./web/build.sh
 node tools/serve-web.mjs --port 8787
@@ -524,7 +551,7 @@ node tools/serve-web.mjs --port 8787
         <tr><td class="q">D2</td><td>内容与规则</td><td class="pick">TypeScript DSL + JSON</td><td>两套前端需保持同哈希</td></tr>
         <tr><td class="q">D3</td><td>引擎边界</td><td class="pick">版本化 C ABI + 轮询</td><td>核心不回调引擎；需要 ABI 测试</td></tr>
         <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>事件作用域已接；持久状态/模块/异步待 hardening</td></tr>
-        <tr><td class="q">D5</td><td>ECS 角色</td><td class="pick">内部细节，先 slab</td><td>M2 真实切片再复核 bevy_ecs</td></tr>
+        <tr><td class="q">D5</td><td>ECS 角色</td><td class="pick">内部 EntityStore 列存储</td><td>Entity 仅 DTO；暂不引入 bevy_ecs</td></tr>
         <tr><td class="q">D6</td><td>空间/物理</td><td class="pick">核心拥有逻辑空间/导航/碰撞</td><td>引擎只做表现；不追求跨 CPU 逐位一致</td></tr>
         <tr><td class="q">D7</td><td>世界模型</td><td class="pick">World + Session + Zone + Entity</td><td>不绑塔防/关卡结构</td></tr>
         <tr><td class="q">D8</td><td>首批宿主</td><td class="pick">Headless + C + Web + Godot</td><td>Godot 是 M2 首个生产适配器</td></tr>
@@ -532,16 +559,17 @@ node tools/serve-web.mjs --port 8787
       </tbody>
     </table>
     <p class="dim">ADR：<a href="../plans/ADR-001-m0-decisions.md">001 拍板</a> · <a href="../plans/ADR-002-pack-schema-v0.md">002 包 schema</a> · <a href="../plans/ADR-003-determinism-save-replay.md">003 确定性</a> · <a href="../plans/ADR-004-abi-v0.md">004 ABI</a> · <a href="../plans/ADR-005-slab-store.md">005 slab</a> · <a href="../plans/ADR-006-quickjs-spike.md">006 QuickJS</a> · <a href="../plans/ADR-007-m1-ts-dsl-web.md">007 M1</a> · <a href="../plans/ADR-008-real-5k-benchmark.md">008 真实 5k</a></p>
-    <div class="note"><b>没拍板：</b>ScriptHost 的持久状态/模块/异步边界、动态导航更新、编辑器 v0.6 的 schema 表单范围。它们应该在 M2 中用真实切片决定，而不是现在拍脑袋。</div>
+    <div class="note"><b>下一步未拍板：</b>ScriptHost 持久状态/模块/异步、动态导航、编辑器 v0.6 schema 表单、L4/L5 的 mod 能力边界。</div>
   </section>
 
   <section class="panel" id="p-roadmap" role="tabpanel" aria-labelledby="t-roadmap">
     <h2>路线图：先证明边界，再证明生产</h2>
-    <p class="lede">M0/M1 证明“这套边界能跑”；M2 才证明“在真实引擎里能跑同一局”。不要把 Web 预览当成生产适配器。</p>
+    <p class="lede">M0/M1 证明“这套边界能跑”；M2 证明“在真实引擎里能跑同一局”；L4/L5 再证明“同一内核能承载社会关系与世界系统”。不要把 Web 预览当成生产适配器。</p>
     <div class="grid g4">
       <div class="card"><span class="chip ok">M0 · 已过</span><h4>可运行内核</h4><p>固定 tick、C ABI、QuickJS spike、坏包、双跑哈希。</p></div>
       <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/2.5D/3D 多 Demo、编辑器 v0.5、移动/寻路、导航/资产、ScriptHost、内容测试。</p></div>
-      <div class="card"><span class="chip ok">M2 · 已启动</span><h4>Godot 生产适配器</h4><p>逻辑适配器第一切片已过 hash/save；渲染/资产/音频/CTS 待做。</p></div>
+      <div class="card"><span class="chip ok">M2 · 已完成</span><h4>Godot 生产适配器</h4><p>CTS、事件/存档互通、5k 帧时间已过；1,314 行 ≤ 2,000。</p></div>
+      <div class="card"><span class="chip ok">L4/L5 · 已完成</span><h4>社会 + 世界系统</h4><p>社会关系、天气、光伏/风电/储能/水/AI 负载；太阳城与霓虹下城对照。</p></div>
       <div class="card"><span class="chip todo">M3/M4</span><h4>工具与试点</h4><p>编辑器成熟、导航/资产管线、LiveBay 切片试点。</p></div>
     </div>
 
@@ -560,8 +588,8 @@ node tools/serve-web.mjs --port 8787
       <tbody>
         <tr><td>内容到预览</td><td>≤ 2 秒</td><td>编辑器构建→预览刷新；TS 走 <code>npm run dev</code></td></tr>
         <tr><td>适配器规模</td><td>≤ 2,000 行</td><td>M2 验证</td></tr>
-        <tr><td>同一局哈希</td><td>Headless / C / wasm / Godot 一致</td><td>前三个一致；Godot 待做</td></tr>
-        <tr><td>规模</td><td>5k 初始实体 / 20k 总 / 10 MB 存档</td><td>5k v1 P95 0.239 ms/tick；snapshot/save/load 已记录</td></tr>
+        <tr><td>同一局哈希</td><td>Headless / C / wasm / Godot 一致</td><td>四者一致；CTS 通过</td></tr>
+        <tr><td>规模</td><td>5k 初始实体 / 20k 总 / 10 MB 存档</td><td>5k tick P50 0.129 ms / P95 0.17–0.19 ms；snapshot/save/load 已记录</td></tr>
       </tbody>
     </table>
   </section>
@@ -588,13 +616,13 @@ node tools/serve-web.mjs --port 8787
       <li class="next"><b>编辑器 v0.6</b><span>schema 表单、字段级错误、对话图自动布局。</span></li>
       <li class="next"><b>M2 Godot 适配器</b><span>真正的“换引擎只换一层”验收。</span></li>
     </ol>
-    <div class="note ok"><b>给回来的人：</b>先读 <a href="GUIDE.html">GUIDE</a> 跑一遍；再读 <a href="../docs/07_M1实现与验收.md">07 M1 验收</a> 看边界；最后看 <a href="../docs/05_路线图与验收.md">05 路线图</a> 决定下一步。</div>
+    <div class="note ok"><b>给回来的人：</b>先读 <a href="GUIDE.html">GUIDE</a> 跑一遍；再读 <a href="../docs/11_内核分层与迁移.md">11 内核分层</a> 看 L0–L5 边界；最后看 <a href="../docs/05_路线图与验收.md">05 路线图</a> 决定下一步。</div>
   </section>
 </main>
 
 <footer class="foot">
   <span>RefuWorld · 世界系统中间层 · HUB</span>
-  <span>所有数字以仓库与 <code>test/run_m*.sh</code> 为准 · 2026-11-24</span>
+  <span>所有数字以仓库与 <code>test/run_m*.sh</code> 为准 · 2026-11-27</span>
 </footer>
 
 <script src="theme.js"></script>

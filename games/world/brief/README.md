@@ -42,13 +42,13 @@ node tools/serve-web.mjs --port 8799
 
 HUB/GUIDE 不复制权威内容，数字以仓库为准：
 
-- 状态与验收：[`../docs/07_M1实现与验收.md`](../docs/07_M1实现与验收.md)
+- 状态与验收：[`../docs/07_M1实现与验收.md`](../docs/07_M1实现与验收.md)、[`../docs/11_内核分层与迁移.md`](../docs/11_内核分层与迁移.md)
 - 路线/决策：[`../docs/05_路线图与验收.md`](../docs/05_路线图与验收.md)、[`../plans/`](../plans/)
 - 运行命令：[`../README.md`](../README.md)
 - 测试：[`../test/run_m0.sh`](../test/run_m0.sh)、[`../test/run_m1.sh`](../test/run_m1.sh)
 - 变更：[`../CHANGELOG.md`](../CHANGELOG.md)
 
-当前基线：19 个 Rust 测试、4 条内容测试、黄金哈希 `0x3606a221e9990561`、5k v1 real P95 0.239 ms/tick。
+当前基线：34 个 Rust 测试、19 条内容测试、L0–L5 内核分层、黄金哈希 `0x3606a221e9990561`、5k tick P50 0.129 ms / P95 0.17–0.19 ms。
 
 ## 主题（R-016）
 

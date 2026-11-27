@@ -42,7 +42,8 @@
     <h1>你写世界，<br>引擎只负责把它画出来。</h1>
     <p class="lead">RefuWorld 把“世界怎么运转”从引擎里拿出来：Rust 内核负责确定性 tick、规则、空间、导航和存档；你用 TypeScript 或 JSON 描述内容；Web 编辑器、2D 预览和 3D 演示都只是这份内容的视图。你不需要先学 Godot 或 Unity 才能做出一个可玩的房间。</p>
     <div class="box tip"><h3>三十秒版本</h3><p>打开 Web 编辑器 → 拖一个 NPC、一扇门、一张钥匙卡 → 写一条“有钥匙卡就开门”的规则 → 接一段对话和任务 → <b>构建并试玩</b>。所有内容最终变成一个带哈希的内容包；同一条 trace 在 Headless、C ABI、wasm 预览里跑出同一局。</p></div>
-    <p class="dim">当前是 <b>M1 主要切片</b>：TS DSL、2D/2.5D/3D 多 Demo、ScriptHost、编辑器 v0.5、移动/寻路、导航/资产、内容测试均可运行。完整 M1/M2 的边界见 <a href="HUB.html#risks">HUB 的风险页</a>。</p>
+    <p class="dim">当前是 <b>M2 完成 + L4/L5</b>：TS DSL、19 个 2D/2.5D/3D Demo、ScriptHost、编辑器 v0.5、移动/寻路、导航/资产、社会关系、世界系统与内容测试均可运行。架构与迁移见 <a href="../docs/11_内核分层与迁移.md">11 · 内核分层与迁移</a>；剩余边界见 <a href="HUB.html#risks">HUB 风险页</a>。</p>
+    <div class="box"><h3>内核分层</h3><p><b>L0 时空物理</b>（tick/空间/碰撞/导航）→ <b>L1 主体交互</b>（背包/门/物品）→ <b>L2 行为能动</b>（日程/行为）→ <b>L3 叙事规则</b>（flags/quests/dialogue/script）→ <b>L4 社会关系</b>（阵营/关系/声望）→ <b>L5 世界系统</b>（天气/能源/水/AI 负载）。上层依赖下层；EntityStore 用组件列存储，Snapshot 仍是 v1 DTO。</p></div>
   </section>
 
   <section id="s2">
@@ -60,7 +61,7 @@ node tools/serve-web.mjs --port 8787
     <div class="box warn"><h3>两个入口别混淆</h3><p><b>静态预览</b>（<code>tools/serve-web.mjs</code>）只读，适合看和演示；<b>编辑器</b>（<code>./worldc editor</code>）才能保存、校验和构建。编辑器打开 <code>http://127.0.0.1:8788/</code>。</p></div>
     <div class="grid3">
       <div class="card"><h3>2D 预览</h3><p>俯视、点击/键盘交互；最适合验证规则和任务。</p><p class="small">web/index.html</p></div>
-      <div class="card"><h3>2.5D / 3D 演示</h3><p>等距夜市/温室；3D 港湾/环形站。换个视图看同一个世界。</p><p class="small">web/iso.html · demos.html</p></div>
+      <div class="card"><h3>2.5D / 3D 演示</h3><p>等距夜市/温室；3D 港湾、夜班货运、太阳城农场、霓虹下城。换个视图看同一个世界。</p><p class="small">web/iso.html · demos.html</p></div>
       <div class="card"><h3>Web 编辑器</h3><p>拖摆放、改字段/对话、校验、构建并试玩。</p><p class="small">worldc editor --port 8788</p></div>
     </div>
   </section>
@@ -160,10 +161,10 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
     <h2><span class="n">05</span>预览里能做什么</h2>
     <div class="grid2">
       <div class="card"><h3>2D 预览</h3><p><span class="kbd">WASD</span> / 方向键移动；点击地面寻路；点击物品/NPC/门；<span class="kbd">E</span> 交互、<span class="kbd">F</span> 拾取、<span class="kbd">T</span> 对话；<span class="kbd">P</span> 暂停、<span class="kbd">R</span> 重置。</p><p class="small">目标是 8 米内可交互；关闭的门会挡路，开门后可通过。</p></div>
-      <div class="card"><h3>3D 演示</h3><p>第三人称跟随；鼠标拖动旋转、滚轮缩放；WASD/点击地面；E/F/T；气闸、对话字幕、任务/背包同步。</p><p class="small">3D 只是表现层；规则仍在同一个 wasm 世界。</p></div>
+      <div class="card"><h3>3D 演示</h3><p>港湾/货运/太阳城/霓虹下城；第三人称或环绕镜头、WASD、E/F/T；L4 社会面板与 L5 能源/城市面板。</p><p class="small">3D 只是表现层；规则、社会关系与系统状态仍在同一个 wasm 世界。</p></div>
     </div>
     <figure class="shot"><img src="../docs/shots/m1_3d_dialogue.png" alt="3D 预览中的对话字幕"><figcaption><b>同一份状态：</b>2D 与 3D 都读取 <code>PreviewWorld.state()</code>；3D 不复制规则。</figcaption></figure>
-    <p><a href="http://127.0.0.1:8787/web/index.html" title="需要本地服务器">打开 2D 预览</a> · <a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="http://127.0.0.1:8787/web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a></p>
+    <p><a href="http://127.0.0.1:8787/web/index.html" title="需要本地服务器">打开 2D 预览</a> · <a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="http://127.0.0.1:8787/web/dock3d.html" title="需要本地服务器">夜班货运旗舰</a> · <a href="http://127.0.0.1:8787/web/solarfarm3d.html" title="需要本地服务器">太阳城农场</a> · <a href="http://127.0.0.1:8787/web/cybercity3d.html" title="需要本地服务器">霓虹下城</a> · <a href="http://127.0.0.1:8787/web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a></p>
   </section>
 
   <section id="s7">
@@ -193,9 +194,9 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
 ./worldc content-test # 只跑内容断言</code></pre>
     <p>当前基线：</p>
     <div class="grid3">
-      <div class="card"><h3>19 个 Rust 测试</h3><p>core / pack / ffi / script；clippy 无警告。</p></div>
-      <div class="card"><h3>17 条内容测试</h3><p>港湾 4 条 + 夜市 / 温室 / 环形站各 1 条 + 10 个 2D 场景各 1 条。</p></div>
-      <div class="card"><h3>黄金哈希</h3><p><code>0x3606a221e9990561</code>；Headless / C ABI / wasm 一致。</p></div>
+      <div class="card"><h3>34 个 Rust 测试</h3><p>core / pack / ffi / script / EntityStore / L4/L5；clippy 无警告。</p></div>
+      <div class="card"><h3>19 条内容测试</h3><p>港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城 + 霓虹下城。</p></div>
+      <div class="card"><h3>黄金哈希</h3><p><code>0x3606a221e9990561</code>；Headless / C ABI / wasm / Godot 一致。</p></div>
     </div>
     <div class="box"><b>改内容后的最小自检：</b><code>worldc validate</code> → <code>worldc content-test</code> → <code>worldc test</code> → <code>./test/run_m1.sh</code>。只跑预览不跑测试，很容易把哈希漂移带进提交。</div>
   </section>
@@ -236,7 +237,7 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
   </section>
 
   <div class="footer">
-    <span>RefuWorld · 用户指南 · M1 主要切片</span>
+    <span>RefuWorld · 用户指南 · M2 + L4/L5</span>
     <span><a href="HUB.html">项目 HUB</a> · <a href="../README.md">README</a> · <a href="../CHANGELOG.md">CHANGELOG</a></span>
   </div>
 </main>
