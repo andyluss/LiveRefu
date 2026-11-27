@@ -5,6 +5,7 @@
 | 项目 | 类型 | 状态 | 入口 |
 | --- | --- | --- | --- |
 | [`tetris/`](tetris/) | 完整可发布落块游戏 | 可玩 / PWA / 离线 | `http://127.0.0.1:8787/lab/tetris/` |
+| [`tetris/refuworld.html`](tetris/refuworld.html) | RefuWorld 内核落块变体 | L0/L3/L5 接入 | `http://127.0.0.1:8787/lab/tetris/refuworld.html` |
 
 ## 与 Demo 的区别
 

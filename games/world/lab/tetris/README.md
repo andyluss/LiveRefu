@@ -34,6 +34,50 @@
 
 DAS 150ms，ARR 35ms；软降重复 45ms。移动端按钮支持按住连发。
 
+## 两个入口
+
+| 入口 | 依赖 | 说明 |
+| --- | --- | --- |
+| [`index.html`](index.html) | 无 | 独立版；纯静态，可单独发布 |
+| [`refuworld.html`](refuworld.html) | RefuWorld wasm | 同玩法，但接入 L0 固定 tick、L3 任务、L5 能源系统 |
+
+RefuWorld 版复用同一套 `logic.mjs` / `game.mjs` / UI，通过 `refuworld-bridge.mjs` 把会话接到内核：
+
+- **L0**：60Hz tick / 时间推进
+- **L3**：`quest.tetris.grid`；清 1 行、Tetris、低电量锁块三个目标
+- **L5**：光伏/风电/电池/负载/天气；低电量时重力倍率上升
+
+它**不**接入 L1 主体交互、L2 行为、L4 社会关系；落块玩法与这些层没有自然依赖，不硬塞。
+
+### RefuWorld 版发布
+
+`refuworld.html` 不是单文件独立版，需要把以下内容一起部署：
+
+```text
+lab/tetris/refuworld.html
+lab/tetris/refuworld.css
+lab/tetris/refuworld-bridge.mjs
+lab/tetris/refuworld.pack.data
+lab/tetris/game.mjs / logic.mjs / audio.mjs / style.css
+web/pkg/world_wasm.js + .wasm
+web/vendor/quickjs-env.js
+```
+
+用仓库根服务即可：
+
+```bash
+cd games/world
+node tools/serve-web.mjs --port 8787
+# http://127.0.0.1:8787/lab/tetris/refuworld.html
+```
+
+重新生成 pack：
+
+```bash
+cd games/world
+./lab/tetris/build-refuworld.sh
+```
+
 ## 本地运行
 
 ```bash
@@ -49,6 +93,8 @@ node tools/serve-web.mjs --port 8787
 
 ```bash
 node lab/tetris/test/logic.test.mjs
+node lab/tetris/test/static.test.mjs
+node lab/tetris/test/refuworld.test.mjs
 ```
 
 覆盖：

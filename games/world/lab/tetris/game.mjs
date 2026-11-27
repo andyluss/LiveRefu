@@ -24,6 +24,8 @@ const SOFT_REPEAT_MS = 45;
 
 let game;
 let seed;
+let bridge = null;
+const rwUi = { power: $("rw-power"), battery: $("rw-battery"), load: $("rw-load"), weather: $("rw-weather"), solar: $("rw-solar"), wind: $("rw-wind"), batteryBar: $("rw-battery-bar"), solarBar: $("rw-solar-bar"), quest: $("rw-quest"), objectives: $("rw-objectives"), tick: $("rw-tick"), core: $("rw-core") };
 let audio;
 let last = performance.now();
 let dasDir = 0;
@@ -245,6 +247,7 @@ function showOverlay(kind) {
 function hideOverlay() { overlay.hidden = true; }
 
 function startGame() {
+  bridge?.onStart();
   game.start(seed);
   lastClearKey = "";
   particles = []; rowFlashes = [];
@@ -253,10 +256,10 @@ function startGame() {
   announce("游戏开始");
   audio?.level();
 }
-function resumeGame() { if (game.state === "paused") { game.pause(); hideOverlay(); } }
+function resumeGame() { if (game.state === "paused") { game.pause(); bridge?.pause(false); hideOverlay(); } }
 function pauseGame() {
-  if (game.state === "playing") { game.pause(); showOverlay("paused"); announce("已暂停"); }
-  else if (game.state === "paused") { game.pause(); hideOverlay(); announce("继续"); }
+  if (game.state === "playing") { game.pause(); bridge?.pause(true); showOverlay("paused"); announce("已暂停"); }
+  else if (game.state === "paused") { game.pause(); bridge?.pause(false); hideOverlay(); announce("继续"); }
 }
 function restart() { startGame(); }
 function menu() { game.reset(); showOverlay("menu"); updateHud(); drawBoard(); drawSidePanels(); }
@@ -278,6 +281,7 @@ function handleClear() {
   else { setMessage(`${lc.count === 3 ? "TRIPLE" : lc.count === 2 ? "DOUBLE" : "SINGLE"}  +${format(lc.points)}`, 1600); audio?.clear(lc.count); }
   if (lc.perfect) { setMessage(`PERFECT CLEAR  +${format(lc.points)}`, 2600); }
   if (lc.levelUp) { setMessage(`LEVEL ${String(game.level).padStart(2, "0")}  SPEED UP`, 1800); audio?.level(); }
+  bridge?.onClear(lc);
   if (lc.count >= 3) { ui.shell.classList.remove("shake"); void ui.shell.offsetWidth; ui.shell.classList.add("shake"); shakeUntil = performance.now() + 260; }
 }
 function syncState() {
@@ -361,7 +365,9 @@ function frame(now) {
   requestAnimationFrame(frame);
   const dt = Math.min(now - last, 50); last = now;
   effectsTime += dt;
-  if (game && game.state === "playing") { game.update(dt); inputLoop(dt); }
+  if (bridge && game?.state === "playing") bridge.tick(dt);
+  if (bridge) bridge.render(rwUi);
+  if (game && game.state === "playing") { game.update(dt * (bridge ? bridge.gravityMultiplier() : 1)); inputLoop(dt); }
   handleClear(); syncState(); updateHud();
   rowFlashes = rowFlashes.filter((f) => (f.life -= dt) > 0);
   for (const p of particles) { p.life -= dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 0.00035 * dt; }
@@ -403,8 +409,21 @@ function setupAudio() {
   });
 }
 
-function boot() {
+async function boot() {
   setupCtx(); setupTheme(); setupAudio(); bindTouch();
+  if (window.__REFUWORLD_MODE__) {
+    try {
+      const mod = await import("./refuworld-bridge.mjs");
+      bridge = await new mod.RefuWorldBridge().init();
+      bridge.render(rwUi);
+    } catch (error) {
+      game = new TetrisGame({ seed: 1 }); showOverlay("menu");
+      ui.kicker.textContent = "CORE LINK FAILED";
+      ui.copy.textContent = `RefuWorld 内核未加载：${String(error)}`;
+      primary.disabled = true;
+      throw error;
+    }
+  }
   const stored = Number(localStorage.getItem("neon-drift-best") || 0);
   bestScore = Number.isFinite(stored) ? stored : 0;
   seed = (crypto.getRandomValues(new Uint32Array(1))[0] >>> 0);
@@ -426,7 +445,7 @@ function boot() {
   document.addEventListener("visibilitychange", () => { if (document.hidden && game.state === "playing") { game.pause(); showOverlay("paused"); } });
   window.addEventListener("resize", () => { palette = readPalette(); });
   requestAnimationFrame(frame);
-  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  if (!bridge && "serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   }
 }

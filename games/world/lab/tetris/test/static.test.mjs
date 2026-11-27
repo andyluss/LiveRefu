@@ -11,7 +11,7 @@ const game = read("game.mjs");
 const sw = read("sw.js");
 const manifest = JSON.parse(read("manifest.webmanifest"));
 
-for (const file of ["index.html", "style.css", "logic.mjs", "audio.mjs", "game.mjs", "manifest.webmanifest", "sw.js", "icon.svg", "icon-192.png", "icon-512.png"]) {
+for (const file of ["index.html", "refuworld.html", "style.css", "refuworld.css", "logic.mjs", "audio.mjs", "game.mjs", "refuworld-bridge.mjs", "refuworld.pack.data", "manifest.webmanifest", "sw.js", "icon.svg", "icon-192.png", "icon-512.png"]) {
   assert.ok(existsSync(join(ROOT, file)), `missing ${file}`);
 }
 for (const id of ["board", "hold", "next", "score", "level", "lines", "overlay", "primary", "sound", "status"]) {
@@ -28,5 +28,8 @@ assert.ok(!game.includes("https://") && !html.includes("https://"), "no external
 assert.equal(manifest.display, "standalone");
 assert.ok(manifest.icons.some((i) => i.sizes === "192x192") && manifest.icons.some((i) => i.sizes === "512x512"));
 assert.ok(sw.includes("./index.html") && sw.includes("./game.mjs"));
+const refu = read("refuworld.html");
+assert.ok(refu.includes("__REFUWORLD_MODE__") && refu.includes("rw-panel") && refu.includes("refuworld.css"));
+assert.ok(refu.includes('"env"'), "import map for wasm env");
 console.log("✓ tetris files / UI / R-016 / PWA / offline shell");
 console.log("static PASS");

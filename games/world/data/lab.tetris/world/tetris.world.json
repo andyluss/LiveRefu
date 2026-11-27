@@ -1,0 +1,16 @@
+{
+  "id": "world.tetris",
+  "start_zone": "zone.tetris",
+  "start_time": "22:00",
+  "seed": 20261127,
+  "player": { "at": [0, 0, 0], "inventory": [] },
+  "systems": {
+    "solar_kw": 64.0,
+    "wind_kw": 42.0,
+    "battery_kwh": 42.0,
+    "water_m3": 24.0,
+    "ai_count": 1,
+    "base_load_kw": 48.0,
+    "policy": "balance"
+  }
+}

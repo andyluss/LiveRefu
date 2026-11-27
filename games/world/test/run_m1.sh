@@ -14,6 +14,7 @@ node "$ROOT/test/check_layers.mjs"
 echo "== 0.1 Lab 游戏逻辑 =="
 node "$ROOT/lab/tetris/test/logic.test.mjs"
 node "$ROOT/lab/tetris/test/static.test.mjs"
+node "$ROOT/lab/tetris/test/refuworld.test.mjs"
 
 echo "== 0. TypeScript 类型检查 =="
 if [ -x "$ROOT/node_modules/.bin/tsc" ]; then
@@ -61,7 +62,7 @@ node "$ROOT/test/demo3d_static.mjs"
 node "$ROOT/test/demos_static.mjs"
 
 echo "== 9. R-016 三态主题检查 =="
-node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html" "$ROOT/web/demo3d.html" "$ROOT/web/iso.html" "$ROOT/web/orbit3d.html" "$ROOT/web/scene3d.html" "$ROOT/web/dock3d.html" "$ROOT/web/solarfarm3d.html" "$ROOT/web/cybercity3d.html" "$ROOT/web/whale.html" "$ROOT/web/demos.html" "$ROOT/brief/HUB.html" "$ROOT/brief/GUIDE.html" "$ROOT/lab/tetris/index.html"
+node "$ROOT/../../design/tools/check_html_theme.ts" "$ROOT/web/index.html" "$ROOT/web/editor.html" "$ROOT/web/demo3d.html" "$ROOT/web/iso.html" "$ROOT/web/orbit3d.html" "$ROOT/web/scene3d.html" "$ROOT/web/dock3d.html" "$ROOT/web/solarfarm3d.html" "$ROOT/web/cybercity3d.html" "$ROOT/web/whale.html" "$ROOT/web/demos.html" "$ROOT/brief/HUB.html" "$ROOT/brief/GUIDE.html" "$ROOT/lab/tetris/index.html" "$ROOT/lab/tetris/refuworld.html"
 
 echo "== 10. wasm 预览逻辑测试 =="
 node "$ROOT/web/test_preview.cjs"

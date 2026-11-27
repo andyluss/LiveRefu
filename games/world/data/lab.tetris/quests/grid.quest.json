@@ -1,0 +1,13 @@
+{
+  "id": "quest.tetris.grid",
+  "title": "loc:quest.tetris.title",
+  "auto_start": true,
+  "objectives": [
+    { "kind": "flag", "flag": "flag.tetris.first_clear", "value": true },
+    { "kind": "flag", "flag": "flag.tetris.tetris", "value": true },
+    { "kind": "flag", "flag": "flag.tetris.power_saved", "value": true }
+  ],
+  "rewards": [
+    { "kind": "flag", "flag": "flag.quest.tetris.done", "value": true }
+  ]
+}
