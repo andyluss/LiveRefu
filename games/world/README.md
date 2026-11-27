@@ -22,6 +22,9 @@ scope: "跨游戏、跨引擎"
 
 ## 快速开始
 
+Lab 里有一个可直接发布的完整小游戏：[NEON DRIFT · 方块坠落](lab/tetris/)（`/lab/tetris/`，独立 PWA，无需构建）。
+
+
 ```bash
 cd games/world
 npm install                    # TypeScript 类型检查（可选，但推荐）

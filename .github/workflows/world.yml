@@ -10,6 +10,7 @@ on:
       - "games/world/src/**"
       - "games/world/web/**"
       - "games/world/test/**"
+      - "games/world/lab/**"
       - "games/world/tools/**"
       - "games/world/package.json"
       - "games/world/package-lock.json"
@@ -24,6 +25,7 @@ on:
       - "games/world/src/**"
       - "games/world/web/**"
       - "games/world/test/**"
+      - "games/world/lab/**"
       - "games/world/tools/**"
       - "games/world/package.json"
       - "games/world/package-lock.json"
@@ -95,7 +97,11 @@ jobs:
         run: |
           node games/world/test/demo3d_static.mjs
           node games/world/test/demos_static.mjs
-      - name: R-016 three-state theme (13 pages)
+      - name: Lab game logic + static contracts
+        run: |
+          node games/world/lab/tetris/test/logic.test.mjs
+          node games/world/lab/tetris/test/static.test.mjs
+      - name: R-016 three-state theme (14 pages)
         run: >-
           node design/tools/check_html_theme.ts
           games/world/web/index.html
@@ -111,6 +117,7 @@ jobs:
           games/world/web/demos.html
           games/world/brief/HUB.html
           games/world/brief/GUIDE.html
+          games/world/lab/tetris/index.html
       - name: Install TS tooling
         working-directory: games/world
         run: npm ci

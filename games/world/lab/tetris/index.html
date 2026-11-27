@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>NEON DRIFT · 方块坠落</title>
+  <meta name="description" content="NEON DRIFT：一款可直接发布的俄罗斯方块式落块游戏。7-bag、SRS 踢墙、Hold、幽灵块、T-Spin、连击与 B2B，离线可玩。" />
+  <meta name="theme-color" content="#070a12" />
+  <meta property="og:title" content="NEON DRIFT · 方块坠落" />
+  <meta property="og:description" content="完整的落块玩法、SRS 踢墙、T-Spin、连击与离线 PWA。" />
+  <meta property="og:type" content="website" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'dark'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="topbar">
+    <a class="brand" href="../README.md" aria-label="RefuWorld Lab">
+      <span class="brand-mark" aria-hidden="true">RW</span>
+      <span><b>NEON DRIFT</b><small>LAB / FALLING BLOCKS</small></span>
+    </a>
+    <div class="top-actions">
+      <a class="quiet-link" href="../../brief/HUB.html">RefuWorld HUB</a>
+      <button id="sound" class="quiet-button" type="button" aria-pressed="false">声音：关</button>
+      <div class="theme-switch" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system" aria-pressed="false">系统</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">浅色</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="game-layout">
+    <aside class="rail left" aria-label="预览">
+      <section class="panel hold-panel">
+        <p class="eyebrow">HOLD</p>
+        <canvas id="hold" width="120" height="120" aria-label="暂存方块"></canvas>
+        <p class="micro">C / 点击</p>
+      </section>
+      <section class="panel next-panel">
+        <p class="eyebrow">NEXT / 5</p>
+        <canvas id="next" width="120" height="420" aria-label="后续方块"></canvas>
+      </section>
+      <section class="panel route-panel">
+        <p class="eyebrow">RUN</p>
+        <div class="route"><span>LEVEL</span><b id="level">01</b></div>
+        <div class="route"><span>LINES</span><b id="lines">0</b></div>
+        <div class="route"><span>TIME</span><b id="time">00:00</b></div>
+      </section>
+    </aside>
+
+    <section class="play-column">
+      <div class="mode-strip"><span>// LAB 001 · DETERMINISTIC FALL</span><span id="status" aria-live="polite">READY</span></div>
+      <div class="board-shell" id="board-shell">
+        <canvas id="board" width="300" height="600" aria-label="俄罗斯方块游戏棋盘"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="overlay" id="overlay">
+          <p class="kicker" id="overlay-kicker">REFUWORLD LAB / 001</p>
+          <h1 id="overlay-title">NEON<br><em>DRIFT</em></h1>
+          <p id="overlay-copy">稳住。清行。让霓虹继续下落。</p>
+          <div class="overlay-actions">
+            <button id="primary" class="primary" type="button">开始游戏 <kbd>↵</kbd></button>
+            <button id="secondary" class="secondary" type="button" hidden>继续</button>
+          </div>
+          <div class="overlay-keys"><span><kbd>←</kbd><kbd>→</kbd> 移动</span><span><kbd>Z</kbd><kbd>X</kbd> 旋转</span><span><kbd>Space</kbd> 硬降</span><span><kbd>C</kbd> 暂存</span><span><kbd>P</kbd> 暂停</span></div>
+        </div>
+      </div>
+      <div class="under-board"><span id="message" aria-live="polite">按 Enter 开始</span><span>60 FPS · OFFLINE READY</span></div>
+    </section>
+
+    <aside class="rail right" aria-label="计分">
+      <section class="panel score-panel">
+        <p class="eyebrow">SCORE</p>
+        <b id="score">0</b>
+        <div class="best"><span>BEST</span><strong id="best">0</strong></div>
+        <div class="mobile-meta"><span>LV <b id="level-mobile">01</b></span><span>LINES <b id="lines-mobile">0</b></span><span>TIME <b id="time-mobile">00:00</b></span></div>
+      </section>
+      <section class="panel streak-panel">
+        <p class="eyebrow">STREAK</p>
+        <div class="metric"><span>COMBO</span><b id="combo">—</b></div>
+        <div class="metric"><span>B2B</span><b id="b2b">—</b></div>
+        <div class="metric"><span>PPS</span><b id="pps">0.0</b></div>
+      </section>
+      <section class="panel keys-panel">
+        <p class="eyebrow">KEYS</p>
+        <div class="key-row"><span>移动</span><kbd>← →</kbd></div>
+        <div class="key-row"><span>旋转</span><kbd>Z / X</kbd></div>
+        <div class="key-row"><span>软降</span><kbd>↓</kbd></div>
+        <div class="key-row"><span>硬降</span><kbd>Space</kbd></div>
+        <div class="key-row"><span>暂存</span><kbd>C</kbd></div>
+        <div class="key-row"><span>暂停</span><kbd>P / Esc</kbd></div>
+        <div class="key-row"><span>重开</span><kbd>R</kbd></div>
+      </section>
+    </aside>
+  </main>
+
+  <nav class="touch-controls" aria-label="触屏操作">
+    <button type="button" data-action="left" aria-label="左移">←</button>
+    <button type="button" data-action="right" aria-label="右移">→</button>
+    <button type="button" data-action="down" aria-label="软降">↓</button>
+    <button type="button" data-action="rotate" aria-label="旋转">⟳</button>
+    <button type="button" data-action="hold" aria-label="暂存">H</button>
+    <button type="button" data-action="drop" class="drop" aria-label="硬降">DROP</button>
+  </nav>
+
+  <footer class="foot">
+    <span>NEON DRIFT · RefuWorld Lab · 原创落块游戏</span>
+    <span id="seed-label">SEED —</span>
+  </footer>
+  <div class="sr-only" id="live" aria-live="assertive"></div>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        var color = dark ? '#070a12' : '#f4efe3';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', color);
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode));
+        });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+        b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="module" src="./game.mjs"></script>
+</body>
+</html>

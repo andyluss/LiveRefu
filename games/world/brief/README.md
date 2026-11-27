@@ -46,6 +46,7 @@ HUB/GUIDE 不复制权威内容，数字以仓库为准：
 - 路线/决策：[`../docs/05_路线图与验收.md`](../docs/05_路线图与验收.md)、[`../plans/`](../plans/)
 - 运行命令：[`../README.md`](../README.md)
 - 测试：[`../test/run_m0.sh`](../test/run_m0.sh)、[`../test/run_m1.sh`](../test/run_m1.sh)
+- Lab 游戏：[`../lab/tetris/`](../lab/tetris/)
 - 变更：[`../CHANGELOG.md`](../CHANGELOG.md)
 
 当前基线：34 个 Rust 测试、19 条内容测试、L0–L5 内核分层、黄金哈希 `0x3606a221e9990561`、5k tick P50 0.129 ms / P95 0.17–0.19 ms。
