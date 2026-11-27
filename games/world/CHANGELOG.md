@@ -42,6 +42,7 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
+- **内核分层 Phase 4（L3 叙事/规则层）**：新增 `layers/narrative`，持有 flags/quests/rules/quest_defs/dialogues/ScriptHost；`World` 仅做命令、事件与快照编排，`flags()`/`quests()` 改为只读访问；M0/M1、哈希与 19 个事件保持。
 - **内核分层 Phase 3（L2 行为/能动层）**：新增 `layers/agency`，持有日程定义并从世界时间计算行为变化；`World` 只应用 behavior 与发事件；跨夜时段、重复计划有单测；哈希/事件保持。
 - **内核分层 Phase 2（L1 主体交互层）**：新增 `layers/subject`，收拢背包、拾取、门/锁、开门与物品转移；`Entity` 只保留数据，原方法移入 L1；规则/任务/对话仍留在上层，黄金哈希与事件序列保持。
 - **内核分层 Phase 1（L0 时空物理层）**：新增 `layers/spacetime`，收拢固定 tick/时钟、Zone 边界、运动积分、路径跟随、碰撞与 A*；`World` 保留门面并委托；`World::tick()` 取代公开字段，Rust 调用点同步；黄金哈希、600 tick 事件序列与 M0/M1 全部保持。

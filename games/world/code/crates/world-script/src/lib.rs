@@ -230,6 +230,6 @@ mod tests {
         for _ in 0..5 {
             world.tick_once();
         }
-        assert_eq!(world.flags.get("flag.script.reactor_seen"), Some(&true));
+        assert_eq!(world.flags().get("flag.script.reactor_seen"), Some(&true));
     }
 }

@@ -493,14 +493,14 @@ fn run_content_test(pack: &Pack, test: &ContentTest) -> Result<(), String> {
 
     let mut errors = Vec::new();
     for (flag, expected) in &test.expect.flags {
-        let actual = world.flags.get(flag).copied().unwrap_or(false);
+        let actual = world.flags().get(flag).copied().unwrap_or(false);
         if actual != *expected {
             errors.push(format!("flag {flag}: 期望 {expected}，实际 {actual}"));
         }
     }
     for (quest, expected) in &test.expect.quests {
         let actual = world
-            .quests
+            .quests()
             .get(quest)
             .map(|q| {
                 if q.completed {

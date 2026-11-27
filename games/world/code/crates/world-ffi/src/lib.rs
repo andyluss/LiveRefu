@@ -577,7 +577,7 @@ pub extern "C" fn world_ui_state(
             })
             .unwrap_or_default();
         let quests = world
-            .quests
+            .quests()
             .iter()
             .map(|(id, state)| {
                 let quest = pack.quests.get(id);
@@ -597,7 +597,7 @@ pub extern "C" fn world_ui_state(
             "zone": world.zone_id,
             "inventory": inventory,
             "quests": quests,
-            "flags": world.flags,
+            "flags": world.flags(),
         });
         let text = serde_json::to_vec(&value)
             .map_err(|e| (WORLD_ERR_INTERNAL, format!("ui_state 序列化失败: {e}")))?;

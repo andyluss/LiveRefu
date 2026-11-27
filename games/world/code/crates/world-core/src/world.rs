@@ -4,24 +4,18 @@ use crate::event::EventEnvelope;
 use crate::ids::EntityId;
 use crate::rng::Rng;
 use crate::layers::agency::Agency;
+use crate::layers::narrative::Narrative;
 use crate::layers::spacetime::{Obstacle, Spacetime};
 use crate::layers::subject::{self, DoorInteraction};
 use crate::script::ScriptHost;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 use world_pack::{
-    parse_hhmm, ActionDef, ActorDef, ConditionDef, DialogueDef, ItemDef, ObjectiveDef, Pack,
-    PropDef, QuestDef, RewardDef, RuleDef,
+    parse_hhmm, ActionDef, ActorDef, ItemDef, ObjectiveDef, Pack, PropDef, RewardDef,
 };
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
-pub struct QuestState {
-    pub active: bool,
-    pub completed: bool,
-    pub progress: BTreeMap<String, u32>,
-}
-
+pub use crate::layers::narrative::QuestState;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Snapshot {
     pub tick: u64,
@@ -55,17 +49,13 @@ pub struct World {
     pub rng: Rng,
     slots: Vec<Slot>,
     free: Vec<u32>,
-    pub flags: BTreeMap<String, bool>,
-    pub quests: BTreeMap<String, QuestState>,
     pub events: Vec<EventEnvelope>,
     pub event_seq: u64,
     pending: Vec<Command>,
     pub player: EntityId,
     pub zone_id: String,
-    rules: Vec<RuleDef>,
     agency: Agency,
-    quest_defs: BTreeMap<String, QuestDef>,
-    dialogues: BTreeMap<String, DialogueDef>,
+    narrative: Narrative,
     loc: BTreeMap<String, String>,
     pub pack_id: String,
     pub pack_version: String,
@@ -75,8 +65,6 @@ pub struct World {
     pub max_catchup: u32,
     pub overrun_count: u32,
     pub last_error: Option<String>,
-    script_host: Option<Box<dyn ScriptHost>>,
-    script_event_filter: Option<BTreeSet<String>>,
 }
 
 impl World {
@@ -91,17 +79,13 @@ impl World {
             rng: Rng::new(pack.world.seed),
             slots: Vec::new(),
             free: Vec::new(),
-            flags: BTreeMap::new(),
-            quests: BTreeMap::new(),
             events: Vec::new(),
             event_seq: 0,
             pending: Vec::new(),
             player: EntityId::NONE,
             zone_id: pack.world.start_zone.clone(),
-            rules: pack.rules.values().cloned().collect(),
             agency: Agency::new(pack.schedules.clone()),
-            quest_defs: pack.quests.clone(),
-            dialogues: pack.dialogues.clone(),
+            narrative: Narrative::new(pack),
             loc,
             pack_id: pack.manifest.id.clone(),
             pack_version: pack.manifest.version.clone(),
@@ -111,8 +95,6 @@ impl World {
             max_catchup: 4,
             overrun_count: 0,
             last_error: None,
-            script_host: None,
-            script_event_filter: None,
         };
 
         let player = world.spawn_entity(Entity {
@@ -158,6 +140,7 @@ impl World {
         );
 
         let auto: Vec<String> = world
+            .narrative
             .quest_defs
             .iter()
             .filter(|(_, q)| q.auto_start)
@@ -172,11 +155,11 @@ impl World {
 
     /// 由宿主在内容包加载后注入脚本运行时；核心不依赖 QuickJS。
     pub fn set_script_host(&mut self, host: Box<dyn ScriptHost>) {
-        self.script_host = Some(host);
+        self.narrative.set_script_host(host);
     }
 
     pub fn has_script_host(&self) -> bool {
-        self.script_host.is_some()
+        self.narrative.has_script_host()
     }
 
     /// 只把指定 kind 的事件交给脚本；用于高频内部事件（日程/寻路）避免全量上下文成本。
@@ -186,7 +169,7 @@ impl World {
         I: IntoIterator<Item = S>,
         S: Into<String>,
     {
-        self.script_event_filter = Some(kinds.into_iter().map(Into::into).collect());
+        self.narrative.set_script_event_filter(kinds);
     }
 
     fn load_zone(&mut self, pack: &Pack, zone_id: &str) -> Result<(), String> {
@@ -608,7 +591,7 @@ impl World {
         );
 
         if let Some(dialogue_id) = &target_entity.dialogue {
-            if let Some(dialogue) = self.dialogues.get(dialogue_id) {
+            if let Some(dialogue) = self.narrative.dialogue(dialogue_id) {
                 if let Some(node) = dialogue.nodes.get(&dialogue.start) {
                     let text = self.localize(&node.text);
                     self.emit(
@@ -657,7 +640,7 @@ impl World {
     }
 
     fn try_rules(&mut self, on: &str, actor: &Entity, target: &Entity) -> bool {
-        let rules = self.rules.clone();
+        let rules = self.narrative.rules.clone();
         for rule in &rules {
             if rule.on != on {
                 continue;
@@ -667,7 +650,10 @@ impl World {
                     continue;
                 }
             }
-            let passes = rule.when.iter().all(|c| self.condition_ok(c, actor));
+            let passes = rule
+                .when
+                .iter()
+                .all(|c| self.narrative.condition_ok(c, actor));
             let actions = if passes { &rule.then } else { &rule.otherwise };
             if !actions.is_empty() {
                 let actions = actions.clone();
@@ -678,17 +664,6 @@ impl World {
         false
     }
 
-    fn condition_ok(&self, condition: &ConditionDef, actor: &Entity) -> bool {
-        match condition {
-            ConditionDef::HasItem { item } => subject::has_item(actor, item),
-            ConditionDef::Flag { flag, value } => {
-                self.flags.get(flag).copied().unwrap_or(false) == *value
-            }
-            ConditionDef::QuestActive { quest } => {
-                self.quests.get(quest).map(|q| q.active).unwrap_or(false)
-            }
-        }
-    }
 
     fn run_actions(&mut self, actions: &[ActionDef], actor: EntityId, target: EntityId) {
         for action in actions {
@@ -731,37 +706,30 @@ impl World {
     }
 
     pub fn set_flag(&mut self, flag: &str, value: bool) {
-        let old = self.flags.insert(flag.to_string(), value).unwrap_or(false);
-        if old != value {
+        if self.narrative.set_flag(flag, value) {
             self.emit("flag_changed", None, json!({"flag": flag, "value": value}));
         }
     }
 
     pub fn start_quest(&mut self, quest: &str) -> Result<(), String> {
-        if !self.quest_defs.contains_key(quest) {
-            return Err(format!("任务不存在: {quest}"));
+        if self.narrative.start_quest(quest)? {
+            self.emit("quest_started", None, json!({"quest": quest}));
         }
-        if let Some(state) = self.quests.get(quest) {
-            if state.active || state.completed {
-                return Ok(());
-            }
-        }
-        self.quests.insert(
-            quest.to_string(),
-            QuestState {
-                active: true,
-                completed: false,
-                progress: BTreeMap::new(),
-            },
-        );
-        self.emit("quest_started", None, json!({"quest": quest}));
         Ok(())
     }
 
+    pub fn flags(&self) -> &BTreeMap<String, bool> {
+        &self.narrative.flags
+    }
+
+    pub fn quests(&self) -> &BTreeMap<String, QuestState> {
+        &self.narrative.quests
+    }
+
     fn progress_quests(&mut self, event: &EventEnvelope) {
-        let defs = self.quest_defs.clone();
+        let defs = self.narrative.quest_defs.clone();
         let mut completed = Vec::new();
-        for (id, state) in self.quests.iter_mut() {
+        for (id, state) in self.narrative.quests.iter_mut() {
             if !state.active || state.completed {
                 continue;
             }
@@ -829,8 +797,8 @@ impl World {
         serde_json::to_string(&json!({
             "tick": self.spacetime.tick,
             "event": event,
-            "flags": snapshot.flags,
-            "quests": snapshot.quests,
+            "flags": self.narrative.flags,
+            "quests": self.narrative.quests,
             "entities": snapshot.entities,
             "player": snapshot.player,
             "zone_id": snapshot.zone_id,
@@ -839,18 +807,7 @@ impl World {
     }
 
     fn run_scripts(&mut self, event: &EventEnvelope) {
-        let Some(_) = self.script_host.as_ref() else {
-            return;
-        };
-        // 避免把脚本错误/脚本自身产生的事件再次送回脚本，形成递归。
-        if event.kind == "script_error" {
-            return;
-        }
-        if self
-            .script_event_filter
-            .as_ref()
-            .is_some_and(|filter| !filter.contains(&event.kind))
-        {
+        if !self.narrative.should_run_script(&event.kind) {
             return;
         }
         let context = match self.script_context(event) {
@@ -860,7 +817,7 @@ impl World {
                 return;
             }
         };
-        let Some(host) = self.script_host.as_mut() else {
+        let Some(host) = self.narrative.script_host_mut() else {
             return;
         };
         match host.on_event(&context) {
@@ -906,8 +863,8 @@ impl World {
             clock_minutes: self.spacetime.clock_minutes,
             seed: self.seed,
             rng_state: self.rng.state,
-            flags: self.flags.clone(),
-            quests: self.quests.clone(),
+            flags: self.narrative.flags.clone(),
+            quests: self.narrative.quests.clone(),
             entities,
             player: self.player,
             zone_id: self.zone_id.clone(),
@@ -935,8 +892,8 @@ impl World {
         self.spacetime.clock_minutes = snap.clock_minutes;
         self.seed = snap.seed;
         self.rng.state = snap.rng_state;
-        self.flags = snap.flags;
-        self.quests = snap.quests;
+        self.narrative.flags = snap.flags;
+        self.narrative.quests = snap.quests;
         self.zone_id = snap.zone_id;
         self.suspended = snap.suspended;
         self.timescale = (snap.timescale_milli as f64) / 1000.0;

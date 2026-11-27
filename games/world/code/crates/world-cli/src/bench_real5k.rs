@@ -70,7 +70,7 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
             let _ = world.find_by_content_id("bench.prop");
             let _ = world.find_by_content_id("bench.actor.0");
             let _ = world.entities().count();
-            let _ = world.flags.len();
+            let _ = world.flags().len();
             query_ms.push(q.elapsed().as_secs_f64() * 1000.0);
 
             if world.tick().is_multiple_of(60) {
