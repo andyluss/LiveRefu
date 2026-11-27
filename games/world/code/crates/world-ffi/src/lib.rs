@@ -593,7 +593,7 @@ pub extern "C" fn world_ui_state(
             })
             .collect::<Vec<_>>();
         let value = json!({
-            "tick": world.tick,
+            "tick": world.tick(),
             "zone": world.zone_id,
             "inventory": inventory,
             "quests": quests,

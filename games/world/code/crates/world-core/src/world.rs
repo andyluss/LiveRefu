@@ -2,8 +2,8 @@ use crate::command::Command;
 use crate::entity::{Collider, Door, Entity, EntityKind, Interactable, ItemStack, Transform};
 use crate::event::EventEnvelope;
 use crate::ids::EntityId;
-use crate::nav;
 use crate::rng::Rng;
+use crate::layers::spacetime::{Obstacle, Spacetime};
 use crate::script::ScriptHost;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -48,10 +48,7 @@ struct Slot {
 }
 
 pub struct World {
-    pub tick: u64,
-    pub tick_hz: u32,
-    pub start_minutes: u32,
-    pub clock_minutes: u32,
+    pub(crate) spacetime: Spacetime,
     pub seed: u64,
     pub rng: Rng,
     slots: Vec<Slot>,
@@ -73,12 +70,6 @@ pub struct World {
     pub pack_hash: String,
     pub suspended: bool,
     pub timescale: f64,
-    pub move_intent: [f32; 2],
-    pub path: Vec<[f32; 2]>,
-    pub path_index: usize,
-    nav: Option<world_pack::NavGridDef>,
-    zone_bounds: Option<([f32; 3], [f32; 3])>,
-    accumulator_us: u64,
     pub max_catchup: u32,
     pub overrun_count: u32,
     pub last_error: Option<String>,
@@ -93,10 +84,7 @@ impl World {
             .ok_or_else(|| "start_time 不是 HH:MM".to_string())?;
         let loc = pack.default_locale().clone();
         let mut world = Self {
-            tick: 0,
-            tick_hz,
-            start_minutes,
-            clock_minutes: start_minutes,
+            spacetime: Spacetime::new(tick_hz, start_minutes),
             seed: pack.world.seed,
             rng: Rng::new(pack.world.seed),
             slots: Vec::new(),
@@ -118,12 +106,6 @@ impl World {
             pack_hash,
             suspended: false,
             timescale: 1.0,
-            move_intent: [0.0, 0.0],
-            path: Vec::new(),
-            path_index: 0,
-            nav: None,
-            zone_bounds: None,
-            accumulator_us: 0,
             max_catchup: 4,
             overrun_count: 0,
             last_error: None,
@@ -159,6 +141,8 @@ impl World {
         });
         world.player = player;
 
+        world.spacetime.tick_hz = tick_hz;
+        world.spacetime.start_minutes = start_minutes;
         world.load_zone(pack, &pack.world.start_zone)?;
         world.emit(
             "world_started",
@@ -208,8 +192,8 @@ impl World {
             .zones
             .get(zone_id)
             .ok_or_else(|| format!("区域不存在: {zone_id}"))?;
-        self.zone_bounds = Some((zone.bounds.min, zone.bounds.max));
-        self.nav = zone.nav.as_ref().and_then(|id| pack.navs.get(id)).cloned();
+        self.spacetime.zone_bounds = Some((zone.bounds.min, zone.bounds.max));
+        self.spacetime.nav = zone.nav.as_ref().and_then(|id| pack.navs.get(id)).cloned();
         for p in &zone.placements {
             let transform = Transform::new(p.at, p.yaw);
             let entity = if let Some(id) = &p.actor {
@@ -393,21 +377,22 @@ impl World {
         self.pending.push(command);
     }
 
+    /// Public read-only tick counter; C ABI remains unchanged.
+    pub fn tick(&self) -> u64 {
+        self.spacetime.tick
+    }
+
     pub fn advance(&mut self, frame_dt_us: u64) -> u32 {
         if self.suspended {
             return 0;
         }
-        let scaled = (frame_dt_us as f64 * self.timescale).max(0.0) as u64;
-        self.accumulator_us = self.accumulator_us.saturating_add(scaled);
-        let tick_us = 1_000_000u64 / self.tick_hz.max(1) as u64;
-        let mut n = 0;
-        while self.accumulator_us >= tick_us && n < self.max_catchup {
+        let (n, exhausted) = self
+            .spacetime
+            .accumulate(frame_dt_us, self.timescale, self.max_catchup);
+        for _ in 0..n {
             self.tick_once();
-            self.accumulator_us -= tick_us;
-            n += 1;
         }
-        if n == self.max_catchup && self.accumulator_us >= tick_us {
-            self.accumulator_us = 0;
+        if exhausted {
             self.overrun_count += 1;
         }
         n
@@ -423,142 +408,33 @@ impl World {
         }
 
         self.apply_movement();
-        self.tick = self.tick.saturating_add(1);
-        let seconds = self.tick.saturating_mul(60) / self.tick_hz.max(1) as u64;
-        self.clock_minutes = (self.start_minutes + (seconds / 60) as u32) % 1440;
+        self.spacetime.advance_tick();
         self.update_schedules();
     }
 
+    /// L0 owns the kinematic step; this method only supplies the body snapshot.
     fn apply_movement(&mut self) {
-        let [x, z] = self.move_intent;
-        let len = (x * x + z * z).sqrt();
-        if len > 1e-6 {
-            self.path.clear();
-            self.path_index = 0;
-            let Some(player) = self.entity(self.player) else {
-                return;
-            };
-            let speed = player.speed.max(0.0);
-            if speed <= 0.0 {
-                return;
-            }
-            let step = speed / self.tick_hz.max(1) as f32;
-            let magnitude = len.min(1.0);
-            let dx = (x / len) * step * magnitude;
-            let dz = (z / len) * step * magnitude;
-            self.try_move_player(dx, 0.0);
-            self.try_move_player(0.0, dz);
-            return;
-        }
-
-        if self.path.is_empty() {
-            return;
-        }
-        while self.path_index < self.path.len() {
-            let waypoint = self.path[self.path_index];
-            let Some(player) = self.entity(self.player) else {
-                self.path.clear();
-                return;
-            };
-            let dx = waypoint[0] - player.transform.position[0];
-            let dz = waypoint[1] - player.transform.position[2];
-            if dx * dx + dz * dz <= 0.04 {
-                self.path_index += 1;
-            } else {
-                break;
-            }
-        }
-        if self.path_index >= self.path.len() {
-            self.path.clear();
-            self.path_index = 0;
-            return;
-        }
-        let waypoint = self.path[self.path_index];
-        let Some(player) = self.entity(self.player) else {
-            self.path.clear();
+        let Some(player) = self.entity(self.player).cloned() else {
             return;
         };
-        let speed = player.speed.max(0.0);
-        if speed <= 0.0 {
-            return;
-        }
-        let dx = waypoint[0] - player.transform.position[0];
-        let dz = waypoint[1] - player.transform.position[2];
-        let distance = (dx * dx + dz * dz).sqrt();
-        if distance <= 1e-6 {
-            self.path_index += 1;
-            return;
-        }
-        let step = (speed / self.tick_hz.max(1) as f32).min(distance);
-        let moved_x = self.try_move_player(dx / distance * step, 0.0);
-        let moved_z = self.try_move_player(0.0, dz / distance * step);
-        if !moved_x && !moved_z {
-            self.path.clear();
-            self.path_index = 0;
-        }
-    }
-
-    fn try_move_player(&mut self, dx: f32, dz: f32) -> bool {
-        let Some(player) = self.entity(self.player) else {
-            return false;
-        };
-        let radius = player
-            .collider
-            .as_ref()
-            .map(|c| c.radius())
-            .unwrap_or(0.35)
-            .max(0.05);
-        let mut next = [
-            player.transform.position[0] + dx,
-            player.transform.position[2] + dz,
-        ];
-
-        if let Some((min, max)) = self.zone_bounds {
-            next[0] = next[0].clamp(min[0] + radius, max[0] - radius);
-            next[1] = next[1].clamp(min[2] + radius, max[2] - radius);
-        }
-
-        let obstacles: Vec<([f32; 3], Option<Collider>, bool)> = self
+        let obstacles: Vec<Obstacle> = self
             .entities()
             .filter(|e| e.id != self.player && e.kind != EntityKind::Item)
-            .map(|e| {
-                (
-                    e.transform.position,
-                    e.collider.clone(),
-                    e.door.as_ref().map(|d| d.open).unwrap_or(false),
-                )
+            .map(|e| Obstacle {
+                position: e.transform.position,
+                collider: e.collider.clone(),
+                open: e.door.as_ref().map(|d| d.open).unwrap_or(false),
             })
             .collect();
-
-        let blocked = obstacles.iter().any(|(position, collider, open)| {
-            if *open {
-                return false;
-            }
-            match collider {
-                Some(Collider::Aabb { half }) => {
-                    circle_aabb_overlap(next, radius, [position[0], position[2]], *half)
-                }
-                Some(Collider::Circle { radius: other }) => {
-                    let ddx = next[0] - position[0];
-                    let ddz = next[1] - position[2];
-                    (ddx * ddx + ddz * ddz).sqrt() < radius + other
-                }
-                None => false,
-            }
-        });
-
-        if !blocked {
+        if let Some(position) = self.spacetime.apply_movement(&player, &obstacles) {
             if let Some(player) = self.entity_mut(self.player) {
-                player.transform.position[0] = next[0];
-                player.transform.position[2] = next[1];
+                player.transform.position = position;
             }
-            return true;
         }
-        false
     }
 
     fn update_schedules(&mut self) {
-        let minute = self.clock_minutes;
+        let minute = self.spacetime.clock_minutes;
         let mut updates: Vec<(EntityId, String, String)> = Vec::new();
         for entity in self.entities() {
             let Some(schedule_id) = &entity.schedule else {
@@ -641,9 +517,9 @@ impl World {
         }
         let len = (x * x + z * z).sqrt();
         if len > 1.0 {
-            self.move_intent = [x / len, z / len];
+            self.spacetime.move_intent = [x / len, z / len];
         } else {
-            self.move_intent = [x, z];
+            self.spacetime.move_intent = [x, z];
         }
         Ok(())
     }
@@ -656,15 +532,13 @@ impl World {
             .entity(actor)
             .ok_or_else(|| format!("actor 不存在: {actor}"))?;
         let from = [entity.transform.position[0], entity.transform.position[2]];
-        let nav = self
-            .nav
-            .as_ref()
-            .ok_or_else(|| format!("区域 {} 没有导航网格", self.zone_id))?;
-        let path = nav::find_path(nav, from, [x, z])
-            .ok_or_else(|| format!("无法从 {from:?} 寻路到 ({x}, {z})"))?;
-        self.path_index = if path.len() > 1 { 1 } else { 0 };
-        self.path = path;
-        self.move_intent = [0.0, 0.0];
+        let path = self
+            .spacetime
+            .find_path(from, [x, z])
+            .ok_or_else(|| format!("区域 {} 没有导航网格或无法从 {from:?} 寻路到 ({x}, {z})", self.zone_id))?;
+        self.spacetime.path_index = if path.len() > 1 { 1 } else { 0 };
+        self.spacetime.path = path;
+        self.spacetime.move_intent = [0.0, 0.0];
         Ok(())
     }
 
@@ -962,7 +836,7 @@ impl World {
     pub fn emit(&mut self, kind: &str, source: Option<EntityId>, data: Value) {
         let event = EventEnvelope {
             seq: self.event_seq,
-            tick: self.tick,
+            tick: self.spacetime.tick,
             kind: kind.to_string(),
             source,
             data,
@@ -976,7 +850,7 @@ impl World {
     fn script_context(&self, event: &EventEnvelope) -> Result<String, String> {
         let snapshot = self.snapshot();
         serde_json::to_string(&json!({
-            "tick": self.tick,
+            "tick": self.spacetime.tick,
             "event": event,
             "flags": snapshot.flags,
             "quests": snapshot.quests,
@@ -1023,7 +897,7 @@ impl World {
                 self.event_seq = self.event_seq.saturating_add(1);
                 self.events.push(EventEnvelope {
                     seq,
-                    tick: self.tick,
+                    tick: self.spacetime.tick,
                     kind: "script_error".to_string(),
                     source: event.source,
                     data: json!({"error": error, "script_event": event.kind}),
@@ -1051,8 +925,8 @@ impl World {
         let mut entities: Vec<Entity> = self.entities().cloned().collect();
         entities.sort_by_key(|e| e.id);
         Snapshot {
-            tick: self.tick,
-            clock_minutes: self.clock_minutes,
+            tick: self.spacetime.tick,
+            clock_minutes: self.spacetime.clock_minutes,
             seed: self.seed,
             rng_state: self.rng.state,
             flags: self.flags.clone(),
@@ -1062,9 +936,9 @@ impl World {
             zone_id: self.zone_id.clone(),
             suspended: self.suspended,
             timescale_milli: (self.timescale * 1000.0).round() as i64,
-            move_intent: self.move_intent,
-            path: self.path.clone(),
-            path_index: self.path_index,
+            move_intent: self.spacetime.move_intent,
+            path: self.spacetime.path.clone(),
+            path_index: self.spacetime.path_index,
         }
     }
 
@@ -1080,8 +954,8 @@ impl World {
     }
 
     fn restore_snapshot(&mut self, snap: Snapshot) -> Result<(), String> {
-        self.tick = snap.tick;
-        self.clock_minutes = snap.clock_minutes;
+        self.spacetime.tick = snap.tick;
+        self.spacetime.clock_minutes = snap.clock_minutes;
         self.seed = snap.seed;
         self.rng.state = snap.rng_state;
         self.flags = snap.flags;
@@ -1089,9 +963,9 @@ impl World {
         self.zone_id = snap.zone_id;
         self.suspended = snap.suspended;
         self.timescale = (snap.timescale_milli as f64) / 1000.0;
-        self.move_intent = snap.move_intent;
-        self.path = snap.path;
-        self.path_index = snap.path_index;
+        self.spacetime.move_intent = snap.move_intent;
+        self.spacetime.path = snap.path;
+        self.spacetime.path_index = snap.path_index;
         self.events.clear();
         self.event_seq = 0;
         self.pending.clear();
@@ -1131,7 +1005,7 @@ impl World {
             pack_version: self.pack_version.clone(),
             pack_hash: self.pack_hash.clone(),
             seed: self.seed,
-            tick: self.tick,
+            tick: self.spacetime.tick,
             snapshot: self.snapshot(),
             checksum: 0,
         };
@@ -1230,12 +1104,4 @@ fn behavior_at(schedule: &ScheduleDef, minute: u32) -> Option<String> {
         }
     }
     None
-}
-
-fn circle_aabb_overlap(point: [f32; 2], radius: f32, center: [f32; 2], half: [f32; 2]) -> bool {
-    let dx = (point[0] - center[0]).abs() - half[0];
-    let dz = (point[1] - center[1]).abs() - half[1];
-    let nx = dx.max(0.0);
-    let nz = dz.max(0.0);
-    nx * nx + nz * nz < radius * radius
 }

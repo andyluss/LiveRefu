@@ -73,12 +73,12 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
             let _ = world.flags.len();
             query_ms.push(q.elapsed().as_secs_f64() * 1000.0);
 
-            if world.tick.is_multiple_of(60) {
+            if world.tick().is_multiple_of(60) {
                 let s = Instant::now();
                 let _ = world.state_hash();
                 snapshot_ms.push(s.elapsed().as_secs_f64() * 1000.0);
             }
-            if world.tick.is_multiple_of(600) {
+            if world.tick().is_multiple_of(600) {
                 let s = Instant::now();
                 let bytes = world.save_bytes()?;
                 save_ms.push(s.elapsed().as_secs_f64() * 1000.0);
@@ -156,7 +156,7 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
 }
 
 fn enqueue_workload(world: &mut World, commands_enqueued: &mut usize) {
-    let tick = world.tick;
+    let tick = world.tick();
     if tick.is_multiple_of(6) {
         let lane = (tick / 6) as usize % 4;
         let [x, z] = [[40.0, 0.0], [-40.0, 0.0], [0.0, 40.0], [0.0, -40.0]][lane];

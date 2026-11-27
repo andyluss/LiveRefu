@@ -2,6 +2,7 @@ pub mod command;
 pub mod entity;
 pub mod event;
 pub mod ids;
+mod layers;
 pub mod nav;
 pub mod rng;
 pub mod script;

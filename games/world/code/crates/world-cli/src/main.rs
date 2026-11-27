@@ -573,7 +573,7 @@ fn cmd_save(args: &[String]) -> Result<(), String> {
     println!(
         "save: {} ticks={} hash=0x{:016x} bytes={} out={}",
         world.pack_id,
-        world.tick,
+        world.tick(),
         world.state_hash(),
         bytes.len(),
         out.display()
@@ -593,7 +593,7 @@ fn cmd_load(args: &[String]) -> Result<(), String> {
     println!(
         "load: {} ticks={} hash=0x{:016x} entities={}",
         world.pack_id,
-        world.tick,
+        world.tick(),
         world.state_hash(),
         world.entities().count()
     );
