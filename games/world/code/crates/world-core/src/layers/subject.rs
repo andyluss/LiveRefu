@@ -4,6 +4,7 @@
 //! quests, flags, dialogue text, schedules or the renderer.
 
 use crate::entity::{Entity, EntityKind};
+use crate::store::EntityMut;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum DoorInteraction {
@@ -50,6 +51,7 @@ pub(crate) fn take_item(entity: &mut Entity, item: &str, count: u32) -> bool {
 }
 
 /// Open a door without inventory/lock checks. Used by the ABI/command path.
+#[cfg(test)]
 pub(crate) fn force_open_door(target: &mut Entity) -> bool {
     let Some(door) = target.door.as_mut() else {
         return false;
@@ -59,6 +61,7 @@ pub(crate) fn force_open_door(target: &mut Entity) -> bool {
 }
 
 /// Resolve an `Interact` against a door, including the locked_by item check.
+#[cfg(test)]
 pub(crate) fn interact_door(actor: &Entity, target: &mut Entity) -> DoorInteraction {
     let Some(door) = target.door.as_ref() else {
         return DoorInteraction::NoDoor;
@@ -80,6 +83,7 @@ pub(crate) fn interact_door(actor: &Entity, target: &mut Entity) -> DoorInteract
 }
 
 /// Validate and perform pickup into the actor inventory. Returns the item id.
+#[cfg(test)]
 pub(crate) fn pickup_item(actor: &mut Entity, target: &Entity) -> Result<String, String> {
     if target.kind != EntityKind::Item {
         return Err(format!("target 不是可拾取物品: {:?}", target.id));
@@ -144,4 +148,42 @@ mod tests {
         assert_eq!(interact_door(&actor, &mut door), DoorInteraction::Opened);
         assert_eq!(interact_door(&actor, &mut door), DoorInteraction::AlreadyOpen);
     }
+}
+
+// --- mutable column views (runtime) ---
+
+pub(crate) fn give_item_mut(entity: &mut EntityMut<'_>, item: &str, count: u32) {
+    if count == 0 { return; }
+    if let Some(stack) = entity.inventory.iter_mut().find(|s| s.item == item) {
+        stack.count = stack.count.saturating_add(count);
+    } else {
+        entity.inventory.push(crate::entity::ItemStack { item: item.to_string(), count });
+    }
+}
+
+pub(crate) fn force_open_door_mut(target: &mut EntityMut<'_>) -> bool {
+    let Some(door) = target.door.as_mut() else { return false; };
+    door.open = true;
+    true
+}
+
+pub(crate) fn interact_door_mut(actor: &Entity, target: &mut EntityMut<'_>) -> DoorInteraction {
+    let Some(door) = target.door.as_ref() else { return DoorInteraction::NoDoor; };
+    if door.open { return DoorInteraction::AlreadyOpen; }
+    let allowed = match &door.locked_by {
+        None => true,
+        Some(item) => has_item(actor, item),
+    };
+    if !allowed { return DoorInteraction::Locked; }
+    if let Some(door) = target.door.as_mut() { door.open = true; }
+    DoorInteraction::Opened
+}
+
+pub(crate) fn pickup_item_mut(actor: &mut EntityMut<'_>, target: &Entity) -> Result<String, String> {
+    if target.kind != EntityKind::Item {
+        return Err(format!("target 不是可拾取物品: {:?}", target.id));
+    }
+    let item = target.content_id.clone();
+    give_item_mut(actor, &item, 1);
+    Ok(item)
 }

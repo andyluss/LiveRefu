@@ -6,6 +6,7 @@ mod layers;
 pub mod nav;
 pub mod rng;
 pub mod script;
+pub mod store;
 pub use script::ScriptHost;
 pub mod runner;
 pub mod trace;

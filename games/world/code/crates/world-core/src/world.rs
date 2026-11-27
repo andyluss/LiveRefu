@@ -5,6 +5,7 @@ use crate::ids::EntityId;
 use crate::rng::Rng;
 use crate::layers::agency::Agency;
 use crate::layers::narrative::Narrative;
+use crate::store::{EntityMut, EntityStore, EntityView};
 use crate::layers::spacetime::{Obstacle, Spacetime};
 use crate::layers::subject::{self, DoorInteraction};
 use crate::script::ScriptHost;
@@ -37,18 +38,11 @@ pub struct Snapshot {
     pub path_index: usize,
 }
 
-#[derive(Clone, Debug)]
-struct Slot {
-    generation: u32,
-    entity: Option<Entity>,
-}
-
 pub struct World {
     pub(crate) spacetime: Spacetime,
+    store: EntityStore,
     pub seed: u64,
     pub rng: Rng,
-    slots: Vec<Slot>,
-    free: Vec<u32>,
     pub events: Vec<EventEnvelope>,
     pub event_seq: u64,
     pending: Vec<Command>,
@@ -75,10 +69,9 @@ impl World {
         let loc = pack.default_locale().clone();
         let mut world = Self {
             spacetime: Spacetime::new(tick_hz, start_minutes),
+            store: EntityStore::default(),
             seed: pack.world.seed,
             rng: Rng::new(pack.world.seed),
-            slots: Vec::new(),
-            free: Vec::new(),
             events: Vec::new(),
             event_seq: 0,
             pending: Vec::new(),
@@ -284,55 +277,24 @@ impl World {
         Ok(())
     }
 
-    fn spawn_entity(&mut self, mut entity: Entity) -> EntityId {
-        let index = if let Some(index) = self.free.pop() {
-            let slot = &mut self.slots[index as usize];
-            slot.generation = slot.generation.wrapping_add(1);
-            index
-        } else {
-            let index = self.slots.len() as u32;
-            self.slots.push(Slot {
-                generation: 0,
-                entity: None,
-            });
-            index
-        };
-        let generation = self.slots[index as usize].generation;
-        let id = EntityId::new(index, generation);
-        entity.id = id;
-        self.slots[index as usize].entity = Some(entity);
-        id
+    fn spawn_entity(&mut self, entity: Entity) -> EntityId {
+        self.store.spawn(entity)
     }
 
     fn despawn(&mut self, id: EntityId) -> Option<Entity> {
-        let slot = self.slots.get_mut(id.index as usize)?;
-        if slot.generation != id.generation {
-            return None;
-        }
-        let entity = slot.entity.take()?;
-        slot.generation = slot.generation.wrapping_add(1);
-        self.free.push(id.index);
-        Some(entity)
+        self.store.despawn(id)
     }
 
-    pub fn entity(&self, id: EntityId) -> Option<&Entity> {
-        let slot = self.slots.get(id.index as usize)?;
-        if slot.generation != id.generation {
-            return None;
-        }
-        slot.entity.as_ref()
+    pub fn entity(&self, id: EntityId) -> Option<EntityView<'_>> {
+        self.store.get(id)
     }
 
-    pub fn entity_mut(&mut self, id: EntityId) -> Option<&mut Entity> {
-        let slot = self.slots.get_mut(id.index as usize)?;
-        if slot.generation != id.generation {
-            return None;
-        }
-        slot.entity.as_mut()
+    pub fn entity_mut(&mut self, id: EntityId) -> Option<EntityMut<'_>> {
+        self.store.get_mut(id)
     }
 
-    pub fn entities(&self) -> impl Iterator<Item = &Entity> {
-        self.slots.iter().filter_map(|s| s.entity.as_ref())
+    pub fn entities(&self) -> impl Iterator<Item = EntityView<'_>> + '_ {
+        self.store.iter()
     }
 
     pub fn find_by_content_id(&self, content_id: &str) -> Option<EntityId> {
@@ -399,17 +361,14 @@ impl World {
 
     /// L0 owns the kinematic step; this method only supplies the body snapshot.
     fn apply_movement(&mut self) {
-        let Some(player) = self.entity(self.player).cloned() else {
+        let Some(player) = self.entity(self.player).map(Entity::from) else {
             return;
         };
         let obstacles: Vec<Obstacle> = self
-            .entities()
-            .filter(|e| e.id != self.player && e.kind != EntityKind::Item)
-            .map(|e| Obstacle {
-                position: e.transform.position,
-                collider: e.collider.clone(),
-                open: e.door.as_ref().map(|d| d.open).unwrap_or(false),
-            })
+            .store
+            .obstacles(self.player)
+            .into_iter()
+            .map(|(position, collider, open)| Obstacle { position, collider, open })
             .collect();
         if let Some(position) = self.spacetime.apply_movement(&player, &obstacles) {
             if let Some(player) = self.entity_mut(self.player) {
@@ -421,10 +380,10 @@ impl World {
     fn update_schedules(&mut self) {
         let changes = self
             .agency
-            .changes(self.spacetime.clock_minutes, self.entities());
+            .changes(self.spacetime.clock_minutes, self.store.schedules());
         for change in changes {
-            if let Some(entity) = self.entity_mut(change.id) {
-                entity.behavior = Some(change.behavior.clone());
+            if let Some(mut entity) = self.entity_mut(change.id) {
+                *entity.behavior = Some(change.behavior.clone());
             }
             self.emit(
                 "schedule_changed",
@@ -440,10 +399,10 @@ impl World {
             Command::Talk { actor, target } => self.command_talk(actor, target),
             Command::Pickup { actor, target } => self.command_pickup(actor, target),
             Command::GiveItem { actor, item, count } => {
-                let entity = self
+                let mut entity = self
                     .entity_mut(actor)
                     .ok_or_else(|| format!("actor 不存在: {actor}"))?;
-                subject::give_item(entity, &item, count);
+                subject::give_item_mut(&mut entity, &item, count);
                 self.emit(
                     "item_acquired",
                     Some(actor),
@@ -517,7 +476,7 @@ impl World {
     fn command_open_door(&mut self, target: EntityId) -> Result<(), String> {
         let opened = self
             .entity_mut(target)
-            .map(|entity| subject::force_open_door(entity))
+            .map(|mut entity| subject::force_open_door_mut(&mut entity))
             .unwrap_or(false);
         if !opened {
             return Err(format!("target 不是门: {target}"));
@@ -529,11 +488,11 @@ impl World {
     fn command_interact(&mut self, actor: EntityId, target: EntityId) -> Result<(), String> {
         let actor_entity = self
             .entity(actor)
-            .cloned()
+            .map(Entity::from)
             .ok_or_else(|| format!("actor 不存在: {actor}"))?;
         let target_entity = self
             .entity(target)
-            .cloned()
+            .map(Entity::from)
             .ok_or_else(|| format!("target 不存在: {target}"))?;
 
         self.emit(
@@ -548,7 +507,7 @@ impl World {
 
         let outcome = self
             .entity_mut(target)
-            .map(|entity| subject::interact_door(&actor_entity, entity))
+            .map(|mut entity| subject::interact_door_mut(&actor_entity, &mut entity))
             .unwrap_or(DoorInteraction::NoDoor);
         match outcome {
             DoorInteraction::AlreadyOpen => {
@@ -577,11 +536,11 @@ impl World {
     fn command_talk(&mut self, actor: EntityId, target: EntityId) -> Result<(), String> {
         let actor_entity = self
             .entity(actor)
-            .cloned()
+            .map(Entity::from)
             .ok_or_else(|| format!("actor 不存在: {actor}"))?;
         let target_entity = self
             .entity(target)
-            .cloned()
+            .map(Entity::from)
             .ok_or_else(|| format!("target 不存在: {target}"))?;
 
         self.emit(
@@ -617,13 +576,13 @@ impl World {
     fn command_pickup(&mut self, actor: EntityId, target: EntityId) -> Result<(), String> {
         let target_entity = self
             .entity(target)
-            .cloned()
+            .map(Entity::from)
             .ok_or_else(|| format!("target 不存在: {target}"))?;
         let item = {
-            let actor_entity = self
+            let mut actor_entity = self
                 .entity_mut(actor)
                 .ok_or_else(|| format!("actor 不存在: {actor}"))?;
-            subject::pickup_item(actor_entity, &target_entity)?
+            subject::pickup_item_mut(&mut actor_entity, &target_entity)?
         };
         self.despawn(target);
         self.emit(
@@ -680,8 +639,8 @@ impl World {
                     self.emit(event, Some(target), json!({}));
                 }
                 ActionDef::GiveItem { item, count } => {
-                    if let Some(entity) = self.entity_mut(actor) {
-                        subject::give_item(entity, item, *count);
+                    if let Some(mut entity) = self.entity_mut(actor) {
+                        subject::give_item_mut(&mut entity, item, *count);
                     }
                     self.emit(
                         "item_acquired",
@@ -695,7 +654,7 @@ impl World {
                 ActionDef::OpenDoor => {
                     let opened = self
                         .entity_mut(target)
-                        .map(|entity| subject::force_open_door(entity))
+                        .map(|mut entity| subject::force_open_door_mut(&mut entity))
                         .unwrap_or(false);
                     if opened {
                         self.emit("door_opened", Some(target), json!({"target": target}));
@@ -763,8 +722,8 @@ impl World {
                     match reward {
                         RewardDef::Flag { flag, value } => self.set_flag(flag, *value),
                         RewardDef::Item { item, count } => {
-                            if let Some(player) = self.entity_mut(self.player) {
-                                subject::give_item(player, item, *count);
+                            if let Some(mut player) = self.entity_mut(self.player) {
+                                subject::give_item_mut(&mut player, item, *count);
                             }
                             self.emit(
                                 "item_acquired",
@@ -856,8 +815,7 @@ impl World {
     }
 
     pub fn snapshot(&self) -> Snapshot {
-        let mut entities: Vec<Entity> = self.entities().cloned().collect();
-        entities.sort_by_key(|e| e.id);
+        let entities: Vec<Entity> = self.store.to_entities();
         Snapshot {
             tick: self.spacetime.tick,
             clock_minutes: self.spacetime.clock_minutes,
@@ -903,27 +861,8 @@ impl World {
         self.events.clear();
         self.event_seq = 0;
         self.pending.clear();
-        self.slots.clear();
-        self.free.clear();
 
-        let max_index = snap.entities.iter().map(|e| e.id.index).max();
-        if let Some(max_index) = max_index {
-            self.slots.resize_with((max_index + 1) as usize, || Slot {
-                generation: 0,
-                entity: None,
-            });
-            for entity in snap.entities {
-                let index = entity.id.index as usize;
-                let generation = entity.id.generation;
-                if index >= self.slots.len() {
-                    return Err("存档实体索引越界".to_string());
-                }
-                self.slots[index] = Slot {
-                    generation,
-                    entity: Some(entity),
-                };
-            }
-        }
+        self.store.from_entities(snap.entities);
         self.player = snap.player;
         if self.entity(self.player).is_none() {
             return Err("存档缺少 player 实体".to_string());

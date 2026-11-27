@@ -3,7 +3,7 @@
 //! The layer owns schedule definitions and decides behavior from world time.
 //! It does not mutate entities or know about quests/dialogue.
 
-use crate::entity::Entity;
+use crate::store::ScheduleView;
 use crate::ids::EntityId;
 use std::collections::BTreeMap;
 use world_pack::{parse_hhmm, ScheduleDef};
@@ -29,23 +29,21 @@ impl Agency {
     pub fn changes<'a>(
         &self,
         minute: u32,
-        entities: impl Iterator<Item = &'a Entity>,
+        entities: impl Iterator<Item = ScheduleView<'a>>,
     ) -> Vec<BehaviorChange> {
         let mut updates = Vec::new();
         for entity in entities {
-            let Some(schedule_id) = &entity.schedule else {
-                continue;
-            };
+            let schedule_id = entity.schedule;
             let Some(schedule) = self.schedules.get(schedule_id) else {
                 continue;
             };
             let Some(behavior) = behavior_at(schedule, minute) else {
                 continue;
             };
-            if entity.behavior.as_deref() != Some(behavior.as_str()) {
+            if entity.behavior != Some(behavior.as_str()) {
                 updates.push(BehaviorChange {
                     id: entity.id,
-                    content_id: entity.content_id.clone(),
+                    content_id: entity.content_id.to_string(),
                     behavior,
                 });
             }
@@ -73,7 +71,8 @@ fn behavior_at(schedule: &ScheduleDef, minute: u32) -> Option<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entity::{Collider, EntityKind, Transform};
+    use crate::entity::{Collider, Entity, EntityKind, Transform};
+    use crate::store::EntityStore;
     use world_pack::{ScheduleDef, ScheduleEntry};
 
     fn actor(behavior: Option<&str>) -> Entity {
@@ -111,12 +110,16 @@ mod tests {
         let mut map = BTreeMap::new();
         map.insert("schedule.day".into(), schedule());
         let agency = Agency::new(map);
-        let npc = actor(None);
-        let changes = agency.changes(9 * 60, std::iter::once(&npc));
+        let mut store = EntityStore::default();
+        let id = store.spawn(actor(None));
+        let _ = store.get(id);
+        let changes = agency.changes(9 * 60, store.schedules());
         assert_eq!(changes.len(), 1);
         assert_eq!(changes[0].behavior, "work");
-        let same = actor(Some("work"));
-        assert!(agency.changes(9 * 60, std::iter::once(&same)).is_empty());
+        let mut store2 = EntityStore::default();
+        let id2 = store2.spawn(actor(Some("work")));
+        let _ = store2.get(id2);
+        assert!(agency.changes(9 * 60, store2.schedules()).is_empty());
     }
 
     #[test]
@@ -124,8 +127,10 @@ mod tests {
         let mut map = BTreeMap::new();
         map.insert("schedule.day".into(), schedule());
         let agency = Agency::new(map);
-        let npc = actor(None);
-        assert_eq!(agency.changes(23 * 60, std::iter::once(&npc))[0].behavior, "rest");
-        assert_eq!(agency.changes(2 * 60, std::iter::once(&npc))[0].behavior, "rest");
+        let mut store = EntityStore::default();
+        let id = store.spawn(actor(None));
+        let _ = store.get(id);
+        assert_eq!(agency.changes(23 * 60, store.schedules())[0].behavior, "rest");
+        assert_eq!(agency.changes(2 * 60, store.schedules())[0].behavior, "rest");
     }
 }

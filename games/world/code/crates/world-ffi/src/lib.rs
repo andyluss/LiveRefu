@@ -295,7 +295,7 @@ pub extern "C" fn world_copy_transforms(
             set_error(handle, "未加载内容包");
             return 0;
         };
-        let entities: Vec<&world_core::Entity> = world.entities().collect();
+        let entities: Vec<_> = world.entities().collect();
         let required = entities.len();
         if out.is_null() || cap < required {
             return required;
@@ -478,15 +478,15 @@ pub extern "C" fn world_entity_visual_source(
         let visual = match entity.kind {
             world_core::EntityKind::Player | world_core::EntityKind::Actor => pack
                 .actors
-                .get(&entity.content_id)
+                .get(entity.content_id)
                 .and_then(|d| d.visual.clone()),
             world_core::EntityKind::Prop => pack
                 .props
-                .get(&entity.content_id)
+                .get(entity.content_id)
                 .and_then(|d| d.visual.clone()),
             world_core::EntityKind::Item => pack
                 .items
-                .get(&entity.content_id)
+                .get(entity.content_id)
                 .and_then(|d| d.visual.clone()),
         };
         let source = visual
