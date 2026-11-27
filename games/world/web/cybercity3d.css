@@ -1,0 +1,56 @@
+.cyber-page { --cy-neon:#ff4fa7; --cy-cyan:#54e7ff; --cy-amber:#ffc15a; --cy-ink:#edf7ff; }
+.cyber-ui { position:fixed; inset:0; z-index:4; pointer-events:none; padding:100px 24px 54px; display:grid; grid-template-columns:minmax(250px,350px) 1fr minmax(220px,260px); grid-template-rows:auto 1fr auto auto; gap:12px; }
+.cyber-title { grid-column:1; grid-row:1; pointer-events:auto; padding:14px 15px; border:1px solid rgba(90,220,255,.25); border-radius:14px; background:linear-gradient(145deg,rgba(9,10,22,.92),rgba(18,8,24,.7)); box-shadow:0 0 34px rgba(255,79,167,.16),inset 0 0 24px rgba(84,231,255,.05); }
+.cyber-title h2 { margin:0; font-size:clamp(30px,4vw,52px); line-height:1.02; color:#fff0fa; letter-spacing:.08em; text-shadow:0 0 18px rgba(255,79,167,.5); }
+.cyber-sub { margin:8px 0 0; color:var(--cy-cyan); font:10.5px var(--mono,Menlo,monospace); letter-spacing:.1em; }
+.cyber-copy { margin:11px 0 0; color:#a8bdd2; font-size:12.5px; line-height:1.65; }
+.cyber-objective { grid-column:3; grid-row:1; justify-self:end; width:100%; pointer-events:auto; background:rgba(9,10,22,.82); border-color:rgba(90,220,255,.22); }
+.cyber-page .scene-card { color:#dceaf7; }
+.cyber-page .scene-card h2 { color:#f2fbff; }
+.cyber-page .scene-card .eyebrow { color:var(--cy-neon); }
+.cyber-page .objectives li { color:#9fb4c8; }
+.cyber-page .objectives li.done { color:var(--cy-cyan); }
+.cyber-social { grid-column:1; grid-row:2; align-self:end; pointer-events:auto; padding:11px 12px; border:1px solid rgba(90,220,255,.22); border-radius:12px; background:rgba(9,10,22,.82); }
+.cyber-social .eyebrow,.cyber-systems .eyebrow { margin:0 0 7px; color:var(--cy-neon); }
+.cyber-factions { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:6px; }
+.cyber-factions span { border:1px solid rgba(90,220,255,.25); border-radius:4px; padding:2px 6px; color:#b6d8e8; font-size:9.5px; }
+.cyber-rel { display:flex; flex-direction:column; gap:3px; margin:4px 0; }
+.cyber-rel span { display:flex; justify-content:space-between; gap:8px; color:#8fa8bd; font-size:10px; }
+.cyber-rel b { color:var(--cy-cyan); }
+.cyber-rep { display:flex; justify-content:space-between; border-top:1px solid rgba(90,220,255,.15); padding-top:6px; margin-top:4px; color:#8fa8bd; font-size:10.5px; }
+.cyber-rep b { color:var(--cy-amber); font:14px var(--mono,Menlo,monospace); }
+.cyber-systems { grid-column:3; grid-row:2; align-self:end; pointer-events:auto; padding:11px 12px; border:1px solid rgba(90,220,255,.22); border-radius:12px; background:rgba(9,10,22,.82); }
+.cyber-weather { display:flex; align-items:baseline; gap:7px; margin-bottom:6px; }
+.cyber-weather b { color:var(--cy-cyan); font-size:16px; }
+.cyber-weather span { color:#8fa8bd; font-size:9.5px; }
+.cyber-meter { margin:5px 0; }
+.cyber-meter label { display:flex; justify-content:space-between; color:#8fa8bd; font-size:9.8px; }
+.cyber-meter label b { color:#e9f7ff; font:10.5px var(--mono,Menlo,monospace); }
+.cyber-meter i { display:block; height:3px; background:rgba(90,220,255,.12); border-radius:2px; margin-top:3px; overflow:hidden; }
+.cyber-meter em { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--cy-neon),var(--cy-cyan)); transition:width .4s; }
+.cyber-meter:nth-of-type(3) em { background:linear-gradient(90deg,#6a7dff,#54e7ff); }
+.cyber-meter:nth-of-type(4) em { background:linear-gradient(90deg,#ffc15a,#ff7f50); }
+.cyber-load { display:flex; align-items:baseline; gap:4px; margin-top:7px; padding-top:6px; border-top:1px solid rgba(90,220,255,.15); color:#8fa8bd; font-size:9.8px; }
+.cyber-load b { margin-left:auto; color:#e9f7ff; font:12px var(--mono,Menlo,monospace); }
+.cyber-load small { color:#8fa8bd; font-size:8.5px; }
+.cyber-inventory { grid-column:1; grid-row:3; justify-self:start; pointer-events:auto; background:rgba(9,10,22,.8); border-color:rgba(90,220,255,.2); }
+.cyber-page .inventory span,.cyber-page .flags span { color:#d9ecf7; background:rgba(84,231,255,.08); border-color:rgba(84,231,255,.3); }
+.cyber-actions { grid-column:1/4; grid-row:4; justify-self:center; pointer-events:auto; display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+.cyber-actions button { border:1px solid rgba(90,220,255,.3); background:rgba(9,10,22,.88); color:#dff6ff; border-radius:3px; padding:7px 11px; font:inherit; font-size:11.5px; cursor:pointer; }
+.cyber-actions button:hover { border-color:var(--cy-neon); color:#fff; box-shadow:0 0 18px rgba(255,79,167,.35); }
+.cyber-actions #btn-contract { border-color:rgba(255,193,90,.55); color:var(--cy-amber); }
+.cyber-page .scene-hint { grid-column:1/4; grid-row:4; align-self:end; justify-self:center; transform:translateY(30px); color:#6e8599; }
+.cyber-status { position:fixed; left:24px; bottom:19px; z-index:5; display:flex; gap:7px; align-items:center; color:#72889d; font:10px var(--mono,Menlo,monospace); letter-spacing:.05em; }
+.cyber-dot { width:6px; height:6px; border-radius:50%; background:var(--cy-cyan); box-shadow:0 0 9px var(--cy-cyan); }
+.cyber-sep { opacity:.4; }
+.cyber-page .scene-foot { color:#5f7488; }
+@media(max-width:1000px){.cyber-ui{grid-template-columns:1fr minmax(190px,230px);padding:92px 14px 50px}.cyber-title{grid-column:1}.cyber-objective{grid-column:2}.cyber-social{grid-column:1;grid-row:2}.cyber-systems{grid-column:2;grid-row:2}.cyber-inventory{grid-column:1;grid-row:3}.cyber-actions{grid-column:1/3}.cyber-page .scene-hint{grid-column:1/3}.cyber-copy{display:none}}
+@media(max-width:650px){.cyber-ui{display:block;padding:86px 12px 50px;overflow:auto}.cyber-title,.cyber-social,.cyber-inventory{width:auto;margin-bottom:7px}.cyber-objective,.cyber-systems{display:none}.cyber-actions{position:fixed;left:12px;right:12px;bottom:40px;justify-content:flex-start}.cyber-page .scene-hint{display:none}.cyber-status{left:12px;bottom:13px}.cyber-actions button{font-size:10px;padding:6px 8px}}
+@media print{.cyber-ui,.cyber-status{display:none}}
+
+
+/* Keep HUD dark against neon. */
+.cyber-page .scene-card { background: rgba(9,10,22,.86) !important; border-color: rgba(90,220,255,.22) !important; color: #dceaf7 !important; }
+.cyber-page .scene-card h2 { color: #f2fbff !important; }
+.cyber-page .scene-card .objectives li { color: #a8bdd2 !important; }
+.cyber-page .scene-card .inventory span { color: #d9ecf7 !important; }

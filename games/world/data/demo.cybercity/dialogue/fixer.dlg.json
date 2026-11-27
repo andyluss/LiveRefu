@@ -1,0 +1,19 @@
+{
+  "id": "dlg.fixer.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.cybercity.fixer",
+      "text": "loc:dlg.fixer.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

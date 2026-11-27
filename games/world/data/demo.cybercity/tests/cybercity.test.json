@@ -1,0 +1,73 @@
+{
+  "name": "cybercity",
+  "ticks": 600,
+  "steps": [
+    {
+      "tick": 5,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.cybercity.fixer"
+      }
+    },
+    {
+      "tick": 10,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.cybercity.medic"
+      }
+    },
+    {
+      "tick": 15,
+      "command": {
+        "op": "talk",
+        "actor": "player",
+        "target": "demo.cybercity.runner"
+      }
+    },
+    {
+      "tick": 20,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.cybercity.billboard"
+      }
+    },
+    {
+      "tick": 25,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.cybercity.substation"
+      }
+    },
+    {
+      "tick": 30,
+      "command": {
+        "op": "interact",
+        "actor": "player",
+        "target": "demo.cybercity.elevator"
+      }
+    }
+  ],
+  "expect": {
+    "flags": {
+      "flag.cyber.billboard_checked": true,
+      "flag.cyber.substation_checked": true,
+      "flag.cyber.elevator_checked": true,
+      "flag.quest.cybercity.done": true
+    },
+    "quests": {
+      "quest.cybercity": "completed"
+    },
+    "inventory": {},
+    "events": [
+      "relationship_changed",
+      "reputation_changed",
+      "energy_updated",
+      "weather_changed",
+      "quest_completed"
+    ]
+  }
+}

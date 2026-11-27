@@ -1,0 +1,24 @@
+{
+  "id": "demo.cybercity.substation",
+  "name": "loc:prop.substation.name",
+  "tags": [
+    "power",
+    "machine",
+    "corp"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.6,
+      2.8,
+      1.6
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}

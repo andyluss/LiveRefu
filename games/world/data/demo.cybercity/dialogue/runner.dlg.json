@@ -1,0 +1,19 @@
+{
+  "id": "dlg.runner.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.cybercity.runner",
+      "text": "loc:dlg.runner.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

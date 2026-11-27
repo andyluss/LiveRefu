@@ -1,0 +1,82 @@
+{
+  "id": "world.cybercity",
+  "start_zone": "zone.cybercity",
+  "start_time": "21:40",
+  "seed": 20261127,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  },
+  "social": {
+    "factions": {
+      "faction.corp": {
+        "name": "loc:faction.corp.name",
+        "color": "#e04b8a",
+        "members": [
+          "demo.cybercity.fixer",
+          "demo.cybercity.warden",
+          "demo.cybercity.muse"
+        ]
+      },
+      "faction.street": {
+        "name": "loc:faction.street.name",
+        "color": "#f3c969",
+        "members": [
+          "demo.cybercity.medic",
+          "demo.cybercity.runner"
+        ]
+      },
+      "faction.ai": {
+        "name": "loc:faction.ai.name",
+        "color": "#69e4de",
+        "members": [
+          "demo.cybercity.warden",
+          "demo.cybercity.muse",
+          "demo.cybercity.transit"
+        ]
+      }
+    },
+    "relationships": [
+      {
+        "a": "demo.cybercity.fixer",
+        "b": "demo.cybercity.runner",
+        "trust": -4,
+        "affinity": 2
+      },
+      {
+        "a": "demo.cybercity.medic",
+        "b": "demo.cybercity.runner",
+        "trust": 8,
+        "affinity": 6
+      },
+      {
+        "a": "demo.cybercity.fixer",
+        "b": "demo.cybercity.warden",
+        "trust": 6,
+        "affinity": 1
+      },
+      {
+        "a": "demo.cybercity.medic",
+        "b": "demo.cybercity.transit",
+        "trust": 3,
+        "affinity": 2
+      }
+    ],
+    "reputations": {
+      "player": 0
+    }
+  },
+  "systems": {
+    "solar_kw": 12.0,
+    "wind_kw": 60.0,
+    "battery_kwh": 180.0,
+    "water_m3": 120.0,
+    "ai_count": 3,
+    "base_load_kw": 92.0,
+    "policy": "profit"
+  }
+}

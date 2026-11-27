@@ -1,0 +1,10 @@
+{
+  "id": "item.cybercity.medkit",
+  "name": "loc:item.medkit.name",
+  "stack": 1,
+  "tags": [
+    "med",
+    "street"
+  ],
+  "visual": null
+}

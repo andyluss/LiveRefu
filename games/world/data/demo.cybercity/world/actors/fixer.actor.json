@@ -1,0 +1,27 @@
+{
+  "id": "demo.cybercity.fixer",
+  "name": "loc:actor.fixer.name",
+  "tags": [
+    "human",
+    "faction.corp",
+    "fixer"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.7
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.corp"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.fixer.intro",
+  "visual": null
+}

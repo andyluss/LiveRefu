@@ -1,0 +1,41 @@
+{
+  "id": "quest.cybercity",
+  "title": "loc:quest.cybercity.title",
+  "auto_start": true,
+  "objectives": [
+    {
+      "kind": "talk",
+      "target": "demo.cybercity.fixer"
+    },
+    {
+      "kind": "talk",
+      "target": "demo.cybercity.medic"
+    },
+    {
+      "kind": "talk",
+      "target": "demo.cybercity.runner"
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.cyber.billboard_checked",
+      "value": true
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.cyber.substation_checked",
+      "value": true
+    },
+    {
+      "kind": "flag",
+      "flag": "flag.cyber.elevator_checked",
+      "value": true
+    }
+  ],
+  "rewards": [
+    {
+      "kind": "flag",
+      "flag": "flag.quest.cybercity.done",
+      "value": true
+    }
+  ]
+}

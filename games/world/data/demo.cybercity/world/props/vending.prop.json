@@ -1,0 +1,24 @@
+{
+  "id": "demo.cybercity.vending",
+  "name": "loc:prop.vending.name",
+  "tags": [
+    "food",
+    "street",
+    "machine"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1.0,
+      2.0,
+      0.8
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}

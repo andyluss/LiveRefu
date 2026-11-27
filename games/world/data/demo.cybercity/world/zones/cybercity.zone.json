@@ -1,0 +1,159 @@
+{
+  "id": "zone.cybercity",
+  "name": "loc:zone.cybercity.name",
+  "bounds": {
+    "min": [
+      -12,
+      0,
+      -10
+    ],
+    "max": [
+      12,
+      30,
+      14
+    ]
+  },
+  "nav": null,
+  "placements": [
+    {
+      "actor": "demo.cybercity.fixer",
+      "at": [
+        -4,
+        0,
+        -3
+      ],
+      "yaw": 180,
+      "persistent_id": "fixer"
+    },
+    {
+      "actor": "demo.cybercity.medic",
+      "at": [
+        3,
+        0,
+        -4
+      ],
+      "yaw": 0,
+      "persistent_id": "medic"
+    },
+    {
+      "actor": "demo.cybercity.runner",
+      "at": [
+        4,
+        0,
+        3
+      ],
+      "yaw": 270,
+      "persistent_id": "runner"
+    },
+    {
+      "actor": "demo.cybercity.warden",
+      "at": [
+        -6,
+        0,
+        4
+      ],
+      "yaw": 90,
+      "persistent_id": "warden"
+    },
+    {
+      "actor": "demo.cybercity.muse",
+      "at": [
+        6,
+        0,
+        5
+      ],
+      "yaw": 180,
+      "persistent_id": "muse"
+    },
+    {
+      "actor": "demo.cybercity.transit",
+      "at": [
+        -5,
+        0,
+        7
+      ],
+      "yaw": 0,
+      "persistent_id": "transit"
+    },
+    {
+      "prop": "demo.cybercity.billboard",
+      "at": [
+        8,
+        0,
+        -1
+      ],
+      "yaw": 0,
+      "persistent_id": "billboard"
+    },
+    {
+      "prop": "demo.cybercity.substation",
+      "at": [
+        -8,
+        0,
+        1
+      ],
+      "yaw": 0,
+      "persistent_id": "substation"
+    },
+    {
+      "prop": "demo.cybercity.drone",
+      "at": [
+        0,
+        0,
+        -6
+      ],
+      "yaw": 0,
+      "persistent_id": "drone"
+    },
+    {
+      "prop": "demo.cybercity.vending",
+      "at": [
+        5,
+        0,
+        1
+      ],
+      "yaw": 0,
+      "persistent_id": "vending"
+    },
+    {
+      "prop": "demo.cybercity.elevator",
+      "at": [
+        6,
+        0,
+        9
+      ],
+      "yaw": 0,
+      "persistent_id": "elevator"
+    },
+    {
+      "item": "item.cybercity.shard",
+      "at": [
+        -2,
+        0,
+        -6
+      ],
+      "yaw": 0,
+      "persistent_id": "shard"
+    },
+    {
+      "item": "item.cybercity.medkit",
+      "at": [
+        3,
+        0,
+        -1
+      ],
+      "yaw": 0,
+      "persistent_id": "medkit"
+    },
+    {
+      "item": "item.cybercity.token",
+      "at": [
+        0,
+        0,
+        7
+      ],
+      "yaw": 0,
+      "persistent_id": "token"
+    }
+  ]
+}

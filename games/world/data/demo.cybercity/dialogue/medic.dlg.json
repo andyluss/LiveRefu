@@ -1,0 +1,19 @@
+{
+  "id": "dlg.medic.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.cybercity.medic",
+      "text": "loc:dlg.medic.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

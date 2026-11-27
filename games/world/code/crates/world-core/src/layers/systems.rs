@@ -65,6 +65,8 @@ impl Systems {
         let policy_load = match self.state.policy.as_str() {
             "irrigate" => 8.0,
             "compute" => 12.0,
+            "profit" => -6.0,
+            "commons" => 9.0,
             _ => 0.0,
         };
         let load = self.def.base_load_kw + ai_load + policy_load;
@@ -92,7 +94,7 @@ impl Systems {
     }
 
     pub fn set_policy(&mut self, policy: &str) -> Result<(&'static str, Value), String> {
-        if !["balance", "irrigate", "compute"].contains(&policy) {
+        if !["balance", "irrigate", "compute", "profit", "commons"].contains(&policy) {
             return Err(format!("未知能源策略: {policy}"));
         }
         self.state.policy = policy.to_string();
@@ -135,6 +137,8 @@ mod tests {
     fn policy_is_validated() {
         let mut systems = Systems::new(&def());
         assert!(systems.set_policy("compute").is_ok());
+        assert!(systems.set_policy("profit").is_ok());
+        assert!(systems.set_policy("commons").is_ok());
         assert!(systems.set_policy("burn-coal").is_err());
     }
 }

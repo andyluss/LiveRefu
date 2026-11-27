@@ -1,0 +1,17 @@
+{
+  "id": "schedule.street",
+  "entries": [
+    {
+      "from": "18:00",
+      "to": "04:00",
+      "behavior": "night",
+      "at": "zone.cybercity"
+    },
+    {
+      "from": "04:00",
+      "to": "18:00",
+      "behavior": "rest",
+      "at": "zone.cybercity"
+    }
+  ]
+}

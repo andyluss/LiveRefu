@@ -1,0 +1,22 @@
+{
+  "id": "rule.billboard",
+  "on": "interact",
+  "target": "demo.cybercity.billboard",
+  "when": [],
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.cyber.billboard_checked",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "cyber.billboard_checked"
+    },
+    {
+      "kind": "toast",
+      "text": "loc:rule.billboard.checked"
+    }
+  ],
+  "else": []
+}

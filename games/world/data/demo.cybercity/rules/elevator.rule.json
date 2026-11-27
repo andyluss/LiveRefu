@@ -1,0 +1,22 @@
+{
+  "id": "rule.elevator",
+  "on": "interact",
+  "target": "demo.cybercity.elevator",
+  "when": [],
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.cyber.elevator_checked",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "cyber.elevator_checked"
+    },
+    {
+      "kind": "toast",
+      "text": "loc:rule.elevator.checked"
+    }
+  ],
+  "else": []
+}

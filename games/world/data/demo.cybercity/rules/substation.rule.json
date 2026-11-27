@@ -1,0 +1,22 @@
+{
+  "id": "rule.substation",
+  "on": "interact",
+  "target": "demo.cybercity.substation",
+  "when": [],
+  "then": [
+    {
+      "kind": "set_flag",
+      "flag": "flag.cyber.substation_checked",
+      "value": true
+    },
+    {
+      "kind": "emit",
+      "event": "cyber.substation_checked"
+    },
+    {
+      "kind": "toast",
+      "text": "loc:rule.substation.checked"
+    }
+  ],
+  "else": []
+}

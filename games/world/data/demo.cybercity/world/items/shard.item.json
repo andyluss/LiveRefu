@@ -1,0 +1,10 @@
+{
+  "id": "item.cybercity.shard",
+  "name": "loc:item.shard.name",
+  "stack": 1,
+  "tags": [
+    "key",
+    "data"
+  ],
+  "visual": null
+}

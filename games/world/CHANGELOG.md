@@ -44,6 +44,7 @@
 
 ### 变更
 - **L4 社会关系层 + L5 世界系统层**：新增 `layers/social`（factions/relationships/reputation，talk 自动记录，SocialAction 支持大会提案）与 `layers/systems`（天气、光伏、风电、储能、水循环、AI 负载、energy_updated/weather_changed、能源策略）；`Snapshot` 增加可选 social/systems 字段，旧包省略、哈希/存档不变。
+- **霓虹下城赛博朋克对照 Demo**：新增 `demo.cybercity`（3 人类 + 3 城市 AI + 广告牌/配电站/无人机/贩卖机/轨道电梯）；`web/cybercity3d.html` 用雨夜、霓虹、垂直楼群、企业租界、私有电网与信用社会对比太阳城；L4 信用/关系、L5 公司优先/公共供电/算力优先全部接同一 wasm。
 - **太阳城农场旗舰 Demo**：新增 `demo.solarfarm` 内容包（3 人类 + 3 公共 AI + 光伏 canopy/风轮机/储能/滴灌/大会堂/水循环）与 `web/solarfarm3d.html`；L4 社会面板、L5 能源面板、大会提案、灌溉/储能/算力策略全部接同一 wasm 状态；Demo 索引 18 个玩法 Demo。
 - **Dock 07 环境音与镜头演出**：新增 WebAudio 程序化环境（雨声/低频码头嗡鸣/雾笛/货舱门伺服），默认关闭、点击启用；四段式镜头（码头全景→堆场→B-07→夜班）2.8–4.6s 推入，支持重看演出与拖动取消；不用外部音频文件。
 - **Entity 组件列拆分**：新增 `EntityStore` SoA 存储（core/transform/collider/speed/inventory/interactable/door/schedule/behavior/dialogue 分列）；`Entity` 保留为 Snapshot/C ABI DTO；`EntityView`/`EntityMut` 作为运行时扁平读写视图；`EntityId` 代际、spawn/despawn、快照往返与黄金哈希保持；5k tick P95 0.165ms。

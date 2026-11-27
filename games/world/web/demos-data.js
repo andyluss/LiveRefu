@@ -12,4 +12,5 @@ export const DEMOS = {
   "demo.farm": { title: "温室补给", subtitle: "补给 / 种子库 / 任务", pack: "./packs/demo.farm.data" },
   "demo.station": { title: "信号站", subtitle: "值守 / 频率卡 / 机房", pack: "./packs/demo.station.data" },
   "demo.solarfarm": { title: "太阳城农场", subtitle: "L4 社会 / L5 能源 / 城市农场", pack: "./packs/demo.solarfarm.data" },
+  "demo.cybercity": { title: "霓虹下城", subtitle: "L4 信用 / L5 私有电网 / 赛博朋克", pack: "./packs/demo.cybercity.data" },
 };

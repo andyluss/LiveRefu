@@ -1,0 +1,24 @@
+{
+  "id": "demo.cybercity.elevator",
+  "name": "loc:prop.elevator.name",
+  "tags": [
+    "transit",
+    "building",
+    "corp"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      2.0,
+      3.0,
+      2.0
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "interact"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}

@@ -19,25 +19,28 @@ const dock = readFileSync(join(ROOT, "web/dock3d.html"), "utf8");
 const dockJs = readFileSync(join(ROOT, "web/dock3d.js"), "utf8");
 const solar = readFileSync(join(ROOT, "web/solarfarm3d.html"), "utf8");
 const solarJs = readFileSync(join(ROOT, "web/solarfarm3d.js"), "utf8");
+const cyber = readFileSync(join(ROOT, "web/cybercity3d.html"), "utf8");
+const cyberJs = readFileSync(join(ROOT, "web/cybercity3d.js"), "utf8");
 const whale = readFileSync(join(ROOT, "web/whale.html"), "utf8");
 const whaleJs = readFileSync(join(ROOT, "web/whale.js"), "utf8");
 
-const scenarioIds = ["dock", "kitchen", "clinic", "tram", "library", "rooftop", "archive", "blackout", "farm", "station", "solarfarm"];
+const scenarioIds = ["dock", "kitchen", "clinic", "tram", "library", "rooftop", "archive", "blackout", "farm", "station", "solarfarm", "cybercity"];
 for (const id of ["market", "greenhouse", "orbit", ...scenarioIds]) {
   check(`pack demo.${id}`, existsSync(join(ROOT, "data", `demo.${id}`, "pack.json")));
 }
 for (const id of ["market", "greenhouse", "orbit"]) {
   check(`nav demo.${id}`, existsSync(join(ROOT, "data", `demo.${id}`, "world/nav/nav." + id + ".json")));
 }
-check("gallery cards", (gallery.match(/class="demo-card"/g) || []).length >= 18);
-check("gallery 3d cards", (gallery.match(/data-view="3d"/g) || []).length >= 5);
+check("gallery cards", (gallery.match(/class="demo-card"/g) || []).length >= 19);
+check("gallery 3d cards", (gallery.match(/data-view="3d"/g) || []).length >= 6);
 check("gallery dock flagship", gallery.includes("dock3d.html"));
 check("gallery solar flagship", gallery.includes("solarfarm3d.html"));
+check("gallery cyber contrast", gallery.includes("cybercity3d.html"));
 check("gallery prototypes retired", !gallery.includes("scene3d.html?demo="));
 check("gallery links", gallery.includes("iso.html?demo=market") && gallery.includes("iso.html?demo=greenhouse") && gallery.includes("orbit3d.html"));
-for (const id of scenarioIds.filter((id) => id !== "solarfarm")) check(`gallery scenario ${id}`, gallery.includes(`index.html?demo=demo.${id}`));
+for (const id of scenarioIds.filter((id) => !["solarfarm", "cybercity"].includes(id))) check(`gallery scenario ${id}`, gallery.includes(`index.html?demo=demo.${id}`));
 
-for (const image of ["harbor-2d", "harbor-3d", "market", "greenhouse", "orbit", "editor", "scenario", "scene3d", "dock3d", "solarfarm"]) {
+for (const image of ["harbor-2d", "harbor-3d", "market", "greenhouse", "orbit", "editor", "scenario", "scene3d", "dock3d", "solarfarm", "cybercity"]) {
   check(`gallery image ${image}`, existsSync(join(ROOT, "web/images/demos", image + (["scenario", "scene3d"].includes(image) ? ".svg" : ".jpg"))));
 }
 check("demo catalog", existsSync(join(ROOT, "web/demos-data.js")));
@@ -58,13 +61,16 @@ check("dock3d art", dockJs.includes("container(") && dockJs.includes("crane") &&
 check("solar R-016", solar.includes("data-theme-choice") && solar.includes("lrds-theme"));
 check("solar wasm", solarJs.includes("new PreviewWorld") && solarJs.includes("demo.solarfarm"));
 check("solar L4/L5", solarJs.includes("social") && solarJs.includes("systems") && solarJs.includes("set_system_policy"));
+check("cyber R-016", cyber.includes("data-theme-choice") && cyber.includes("lrds-theme"));
+check("cyber wasm", cyberJs.includes("new PreviewWorld") && cyberJs.includes("demo.cybercity"));
+check("cyber L4/L5", cyberJs.includes("social_action") && cyberJs.includes("set_system_policy") && cyberJs.includes("profit"));
 check("whale R-016", whale.includes("data-theme-choice") && whale.includes("lrds-theme"));
 check("whale loader", whaleJs.includes("GLTFLoader") && whaleJs.includes("deepseek-whale-girl.glb"));
 check("whale glb", existsSync(join(ROOT, "web/models/deepseek-whale-girl.glb")));
 check("whale preview", existsSync(join(ROOT, "docs/shots/whale-girl-preview.png")));
 check("archive script", existsSync(join(ROOT, "data/demo.archive/scripts/archive.js")));
 check("quickjs env shim", existsSync(join(ROOT, "web/vendor/quickjs-env.js")));
-check("local only", !/https?:\/\/(?!127\.0\.0\.1(?::\d+)?(?:\/|$))/.test(gallery + iso + orbit + scene + whale + dock + solar));
+check("local only", !/https?:\/\/(?!127\.0\.0\.1(?::\d+)?(?:\/|$))/.test(gallery + iso + orbit + scene + whale + dock + solar + cyber));
 
 let failed = 0;
 for (const [name, ok] of checks) {

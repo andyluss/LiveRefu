@@ -1,0 +1,27 @@
+{
+  "id": "demo.cybercity.runner",
+  "name": "loc:actor.runner.name",
+  "tags": [
+    "human",
+    "faction.street",
+    "runner"
+  ],
+  "body": {
+    "shape": "capsule",
+    "radius": 0.35,
+    "height": 1.7
+  },
+  "stats": {
+    "health": 100,
+    "speed": 3.0
+  },
+  "brain": {
+    "profile": "schedule",
+    "schedule": "schedule.street"
+  },
+  "inventory": {
+    "items": []
+  },
+  "dialogue": "dlg.runner.intro",
+  "visual": null
+}

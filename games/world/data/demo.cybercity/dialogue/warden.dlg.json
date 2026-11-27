@@ -1,0 +1,19 @@
+{
+  "id": "dlg.warden.intro",
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "demo.cybercity.warden",
+      "text": "loc:dlg.warden.greet",
+      "choices": [
+        {
+          "text": "loc:dlg.node.ok",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

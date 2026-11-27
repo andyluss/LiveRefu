@@ -1,0 +1,17 @@
+{
+  "id": "schedule.corp",
+  "entries": [
+    {
+      "from": "18:00",
+      "to": "06:00",
+      "behavior": "work",
+      "at": "zone.cybercity"
+    },
+    {
+      "from": "06:00",
+      "to": "18:00",
+      "behavior": "rest",
+      "at": "zone.cybercity"
+    }
+  ]
+}

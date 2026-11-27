@@ -68,9 +68,9 @@
         <div class="stats">
           <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
           <div class="stat o"><div class="v">19</div><div class="l">Rust 测试</div></div>
-          <div class="stat p"><div class="v">18</div><div class="l">内容测试</div></div>
+          <div class="stat p"><div class="v">19</div><div class="l">内容测试</div></div>
           <div class="stat r"><div class="v">0.24<span style="font-size:12px">ms</span></div><div class="l">5k real tick P95</div></div>
-          <div class="stat o"><div class="v">18</div><div class="l">玩法 Demo</div></div>
+          <div class="stat o"><div class="v">19</div><div class="l">玩法 Demo</div></div>
           <div class="stat p"><div class="v">M1</div><div class="l">主要切片</div></div>
         </div>
         <div class="quote"><b>一句话边界：</b>核心从不回调引擎；引擎只轮询 C ABI 拿差值。换引擎时，玩法规则、导航和存档不应重写。</div>
@@ -144,7 +144,7 @@
       <thead><tr><th>证据</th><th>结果</th><th>来源</th></tr></thead>
       <tbody>
         <tr><td>Rust workspace 测试</td><td><b>19</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
-        <tr><td>内容测试</td><td><b>18</b> 条 PASS：港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城农场</td><td><code>worldc content-test</code></td></tr>
+        <tr><td>内容测试</td><td><b>19</b> 条 PASS：港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城农场 + 霓虹下城</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0x3606a221e9990561</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
         <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:21569377…b7d5f9</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
         <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P95 <b>0.239 ms</b>，snapshot P95 3.086 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
@@ -344,7 +344,7 @@ node tools/serve-web.mjs --port 8787
     <p class="lede">这一页不是 API 目录，而是一条可以跟着走的实现路径：命令怎样进入内核、tick 怎样推进、快照怎样变成哈希、C ABI 怎样把状态交给引擎、Godot 适配器怎样把 transform 变成视图。每一段都给出源码入口，方便人类研究者按需跳读。</p>
     <div class="impl-kpis" aria-label="实现规模">
       <div><b>19</b><span>Rust 测试</span></div>
-      <div><b>18</b><span>内容测试</span></div>
+      <div><b>19</b><span>内容测试</span></div>
       <div><b>1,314</b><span>适配器行数</span></div>
       <div><b>3.557ms</b><span>5k frame P95</span></div>
     </div>
@@ -511,7 +511,7 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
     <pre style="margin-top:14px"><code>cd games/world && ./web/build.sh
 node tools/serve-web.mjs --port 8787
 # http://127.0.0.1:8787/web/demo3d.html</code></pre>
-    <p><a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="http://127.0.0.1:8787/web/orbit3d.html" title="需要本地服务器">打开 3D 环形站</a> · <a href="http://127.0.0.1:8787/web/scene3d.html?demo=demo.dock" title="需要本地服务器">打开 3D 货运场景</a> · <a href="http://127.0.0.1:8787/web/dock3d.html" title="需要本地服务器">夜班货运旗舰</a> · <a href="http://127.0.0.1:8787/web/solarfarm3d.html" title="需要本地服务器">太阳城农场</a> · <a href="http://127.0.0.1:8787/web/whale.html" title="需要本地服务器">小鲸鱼娘角色</a> · <a href="http://127.0.0.1:8787/web/scene3d.html?demo=demo.station" title="需要本地服务器">打开 3D 信号站</a> · <a href="http://127.0.0.1:8787/web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a></p>
+    <p><a href="http://127.0.0.1:8787/web/demo3d.html" title="需要本地服务器">打开 3D 港湾</a> · <a href="http://127.0.0.1:8787/web/orbit3d.html" title="需要本地服务器">打开 3D 环形站</a> · <a href="http://127.0.0.1:8787/web/scene3d.html?demo=demo.dock" title="需要本地服务器">打开 3D 货运场景</a> · <a href="http://127.0.0.1:8787/web/dock3d.html" title="需要本地服务器">夜班货运旗舰</a> · <a href="http://127.0.0.1:8787/web/solarfarm3d.html" title="需要本地服务器">太阳城农场</a> · <a href="http://127.0.0.1:8787/web/cybercity3d.html" title="需要本地服务器">霓虹下城</a> · <a href="http://127.0.0.1:8787/web/whale.html" title="需要本地服务器">小鲸鱼娘角色</a> · <a href="http://127.0.0.1:8787/web/scene3d.html?demo=demo.station" title="需要本地服务器">打开 3D 信号站</a> · <a href="http://127.0.0.1:8787/web/iso.html?demo=market" title="需要本地服务器">2.5D 夜市</a> · <a href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a></p>
   </section>
 
   <section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions">
