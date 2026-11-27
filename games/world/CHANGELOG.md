@@ -42,6 +42,7 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
+- **夜班货运旗舰 3D（Dock 07）**：专用 `web/dock3d.html` + `dock3d.js`，集装箱堆场、吊机、B-07 货舱门、雨夜/灯光/水洼/码头仓库与低模工人；任务/门禁/拾取全部来自 `demo.dock` wasm 状态；5 个通用 `scene3d` 原型从 Demo 索引移除（文件保留为实验），索引收敛到 17 个玩法 Demo。
 - **内核分层 Phase 5（边界门）**：新增 `test/check_layers.mjs`，静态拒绝 L0/L1/L2/L3 向上 import；接入 `run_m1.sh` 与 RefuWorld CI；为 Narrative 补 flags/脚本过滤单测。四层边界与黄金门全部绿。
 - **内核分层 Phase 4（L3 叙事/规则层）**：新增 `layers/narrative`，持有 flags/quests/rules/quest_defs/dialogues/ScriptHost；`World` 仅做命令、事件与快照编排，`flags()`/`quests()` 改为只读访问；M0/M1、哈希与 19 个事件保持。
 - **内核分层 Phase 3（L2 行为/能动层）**：新增 `layers/agency`，持有日程定义并从世界时间计算行为变化；`World` 只应用 behavior 与发事件；跨夜时段、重复计划有单测；哈希/事件保持。

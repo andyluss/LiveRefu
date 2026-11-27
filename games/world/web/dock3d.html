@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RefuWorld · 夜班货运 3D</title>
+  <meta name="description" content="RefuWorld 3D 旗舰场景：夜班货运。码头、集装箱、吊机、货舱门与通行证，同一个 wasm 世界。" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'light'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./demo3d.css" />
+  <link rel="stylesheet" href="./dock3d.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/",
+        "env": "./vendor/quickjs-env.js"
+      }
+    }
+  </script>
+</head>
+<body class="scene-page dock-page">
+  <canvas id="scene" aria-label="夜班货运码头 3D 场景"></canvas>
+  <div class="scene-vignette" aria-hidden="true"></div>
+  <div class="scene-grain" aria-hidden="true"></div>
+
+  <header class="scene-top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">RW</span>
+      <div><h1>RefuWorld <span class="badge">3D</span></h1><p>夜班货运 · Dock 07</p></div>
+    </div>
+    <div class="scene-top-actions">
+      <a class="button-link" href="http://127.0.0.1:8787/web/demos.html">Demo 索引</a>
+      <a class="button-link" href="http://127.0.0.1:8787/web/index.html?demo=demo.dock">2D 对照</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dock-ui">
+    <section class="dock-title">
+      <p class="eyebrow">FLAGSHIP / DOCK 07</p>
+      <h2>夜班货运</h2>
+      <p class="dock-sub">20:10 · 雨 · 东南风 4 级</p>
+      <p class="dock-copy">先找调度员报到，再拿到通行证，打开 B 舱门。码头的每一盏灯、每一道门都不属于渲染器，它们来自同一份世界状态。</p>
+    </section>
+
+    <section class="scene-card objective dock-objective">
+      <p class="eyebrow">当前任务</p>
+      <h2 id="quest-title">第一班</h2>
+      <ul id="quest-objectives" class="objectives"></ul>
+    </section>
+    <section class="scene-card inventory-card dock-inventory">
+      <p class="eyebrow">随身物品</p>
+      <div id="inventory" class="inventory"></div>
+      <div id="flags" class="flags"></div>
+    </section>
+    <section class="scene-card telemetry dock-telemetry">
+      <div><span>时间</span><strong id="clock">20:10</strong></div>
+      <div><span>tick</span><strong id="tick">0</strong></div>
+      <div><span>哈希</span><code id="hash">—</code></div>
+    </section>
+
+    <section class="scene-actions dock-actions" aria-label="操作">
+      <button id="btn-interact" type="button"><kbd>E</kbd> 交互</button>
+      <button id="btn-pickup" type="button"><kbd>F</kbd> 拾取</button>
+      <button id="btn-talk" type="button"><kbd>T</kbd> 对话</button>
+      <button id="btn-reset" type="button">重置</button>
+      <button id="btn-pause" type="button">暂停</button>
+      <button id="btn-camera" type="button" aria-pressed="false">环绕</button>
+    </section>
+    <p class="scene-hint">WASD 移动 · 拖动旋转 · 滚轮缩放 · E/F/T 交互</p>
+    <div class="dock-status"><span class="dock-dot"></span><span id="status-text">码头在线</span><span class="dock-sep">/</span><span>WASM 同步</span></div>
+  </main>
+
+  <div id="dialogue" class="dialogue" hidden><p class="eyebrow" id="dialogue-speaker">调度员</p><p id="dialogue-text"></p></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="loading" class="loading"><span class="loading-ring" aria-hidden="true"></span><p>正在接管 Dock 07…</p></div>
+  <footer class="scene-foot"><span>夜班货运 · 旗舰 3D 场景</span><span>Three.js r187 · 内容包 demo.dock</span></footer>
+  <noscript><p class="noscript">3D 场景需要 JavaScript、WebGL 与 WebAssembly。</p></noscript>
+
+  <script>
+    (function () {
+      var root = document.documentElement, media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode)); });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); }); });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script>
+    window.addEventListener('error', function (e) {
+      var l = document.getElementById('loading');
+      if (l) l.innerHTML = '<p style="color:#ffb4a0;max-width:80vw">脚本错误：' + (e.message || e.error) + '</p>';
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+      var l = document.getElementById('loading');
+      if (l) l.innerHTML = '<p style="color:#ffb4a0;max-width:80vw">异步错误：' + (e.reason && (e.reason.stack || e.reason.message) || e.reason) + '</p>';
+    });
+  </script>
+  <script type="module" src="./dock3d.js"></script>
+</body>
+</html>

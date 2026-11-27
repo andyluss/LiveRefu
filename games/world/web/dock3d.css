@@ -1,0 +1,34 @@
+/* Dock 07 flagship scene. R-016 tokens stay in the shared shell. */
+.dock-page { --dock-teal:#6fe7dc; --dock-amber:#ffb15c; --dock-red:#d95b4c; }
+.dock-ui { position:fixed; inset:0; z-index:4; pointer-events:none; padding:104px 26px 58px; display:grid; grid-template-columns:minmax(250px,360px) 1fr minmax(190px,230px); grid-template-rows:1fr auto auto; gap:14px; }
+.dock-title { grid-column:1; grid-row:1; align-self:start; pointer-events:auto; padding:15px 16px; border:1px solid rgba(199,226,220,.18); border-radius:15px; background:linear-gradient(150deg,rgba(5,16,20,.82),rgba(5,12,15,.48)); backdrop-filter:blur(14px); box-shadow:0 20px 70px rgba(0,0,0,.42); }
+.dock-title h2 { margin:0; font-size:clamp(32px,4vw,56px); line-height:1.02; color:#f0faf6; font-weight:850; letter-spacing:.06em; }
+.dock-sub { margin:8px 0 0; color:#6fe7dc; font-size:11px; letter-spacing:.12em; }
+.dock-copy { margin:12px 0 0; color:#a6beb9; font-size:12.7px; line-height:1.65; }
+.dock-objective { grid-column:3; grid-row:1; align-self:start; justify-self:end; width:100%; pointer-events:auto; background:rgba(5,15,19,.76); border-color:rgba(199,226,220,.2); backdrop-filter:blur(12px); }
+.dock-inventory { grid-column:1; grid-row:2; align-self:end; pointer-events:auto; background:rgba(5,15,19,.72); border-color:rgba(199,226,220,.18); }
+.dock-telemetry { grid-column:3; grid-row:2; align-self:end; pointer-events:auto; background:rgba(5,15,19,.72); border-color:rgba(199,226,220,.18); }
+.dock-actions { grid-column:1 / 4; grid-row:3; align-self:end; justify-self:center; pointer-events:auto; }
+.dock-actions button { border-color:rgba(199,226,220,.25); background:rgba(5,15,19,.78); color:#d8e8e4; backdrop-filter:blur(10px); }
+.dock-actions button:hover { border-color:#6fe7dc; color:#061114; background:#6fe7dc; }
+.dock-page .scene-hint { grid-column:1 / 4; grid-row:3; align-self:end; justify-self:center; transform:translateY(38px); color:#718a85; }
+.dock-status { position:fixed; left:26px; bottom:22px; z-index:5; display:flex; gap:7px; align-items:center; color:#6b8580; font:10.5px var(--mono,Menlo,monospace); letter-spacing:.04em; }
+.dock-dot { width:6px; height:6px; border-radius:50%; background:#6fe7dc; box-shadow:0 0 9px #6fe7dc; }
+.dock-sep { opacity:.45; }
+.dock-objective .eyebrow { color:#ffb15c; }
+.dock-page .scene-foot { color:#5e7772; }
+.dock-page .dialogue { border-color:rgba(255,177,92,.35); }
+@media(max-width:980px){.dock-ui{grid-template-columns:1fr minmax(180px,220px);padding:96px 16px 54px}.dock-title{grid-column:1;grid-row:1}.dock-objective{grid-column:2;grid-row:1}.dock-inventory{grid-column:1;grid-row:2}.dock-telemetry{grid-column:2;grid-row:2}.dock-actions{grid-column:1/3}.dock-page .scene-hint{grid-column:1/3}.dock-copy{display:none}}
+@media(max-width:620px){.dock-ui{display:block;padding:88px 13px 54px;overflow:auto}.dock-title,.dock-objective,.dock-inventory,.dock-telemetry{width:auto;margin-bottom:8px}.dock-actions{justify-content:flex-start;margin-top:8px;position:fixed;left:13px;right:13px;bottom:44px}.dock-page .scene-hint{display:none}.dock-status{left:13px;bottom:16px}.dock-objective{display:none}.dock-telemetry{display:none}.dock-inventory{margin-top:8px}}
+@media print{.dock-ui,.dock-status{display:none}}
+
+
+/* Keep the dock HUD dark even under the shared light shell. */
+.dock-page .scene-card { background: rgba(5,15,19,.76) !important; border-color: rgba(199,226,220,.2) !important; color: #d7e9e4; backdrop-filter: blur(12px); }
+.dock-page .scene-card h2, .dock-page .scene-card .eyebrow { color: #dff4ee; }
+.dock-page .scene-card .eyebrow { color: #ffb15c; }
+.dock-page .objectives li { color: #a9c0bb; }
+.dock-page .objectives li.done { color: #6fe7dc; }
+.dock-page .inventory span, .dock-page .flags span { color: #d8e8e4; background: rgba(111,231,220,.08); border-color: rgba(111,231,220,.25); }
+.dock-page .telemetry span { color: #77928d; }
+.dock-page .telemetry strong, .dock-page .telemetry code { color: #e7f7f2; }
