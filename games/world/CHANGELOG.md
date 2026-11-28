@@ -6,6 +6,8 @@
 ## [未发布]
 
 ### 新增
+- **ScriptHost 真异步/定时器收尾**：`ctx.delay` 挂起 Promise、`globalThis.setTimeout` 映射 tick、命令 timer 跨 reload、`on_tick` has_work 短路；模块循环依赖可读错误。仍无真实墙钟计时/函数 timer 迁移。
+- **ScriptHost 模块循环诊断**：加载前遍历 import 图，发现循环时返回可读链路（如 `a -> b -> a`），避免 QuickJS 只报泛化加载错误。
 - **ScriptHost 跨 tick async**：`ctx.delay(ticks)` Promise 在后续 tick 恢复；`globalThis.setTimeout` 映射到 60Hz tick；命令 timer 跨热重载迁移；`on_tick` 驱动到期任务并 drain async 结果。仍不支持真实墙钟计时。
 - **ScriptHost 确定性 tick timer**：`ctx.after(ticks, commands)` / `ctx.setTimeout(fn, ticks)`；World 每 tick 调 `ScriptHost::on_tick` 投递到期命令；跨 tick 测试通过。
 - **ScriptHost 模块/异步/热重载**：支持 ES module import（`scripts/lib/*.js`，demo.orbit 已启用）、`async onEvent` 微任务、`ScriptHost::reload`/`World::reload_scripts` 保留 `ctx.state`；仍无真实定时器/跨 tick Promise。

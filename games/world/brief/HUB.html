@@ -340,7 +340,7 @@ node tools/serve-web.mjs --port 8787
         <tr><td><code>world-ffi</code></td><td>C ABI v0、句柄、缓冲、错误码</td><td>不写玩法</td></tr>
         <tr><td><code>world-host-headless</code></td><td>CI / 回放 / 无头宿主</td><td>不渲染</td></tr>
         <tr><td><code>world-cli</code></td><td>validate/build/test/editor/bake/bench/content-test</td><td>不成为运行时依赖</td></tr>
-        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS ScriptHost：ES module import、async onEvent/跨 tick delay、tick timer、持久状态、热重载</td><td>墙钟 setTimeout 映射为 tick；函数回调不跨 reload</td></tr>
+        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS ScriptHost：ES module + 循环诊断、async/跨 tick delay、tick timer、持久状态、热重载</td><td>墙钟 setTimeout 映射为 tick；函数回调不跨 reload</td></tr>
         <tr><td><code>world-wasm</code></td><td>作者预览门面（2D/3D 共用）</td><td>不直接走 C ABI</td></tr>
       </tbody>
     </table>

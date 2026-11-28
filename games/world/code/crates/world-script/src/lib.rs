@@ -123,6 +123,9 @@ globalThis.__dshSetTimers = function (input) {
     globalThis.__dshTimers.push({ id: globalThis.__dshNextTimer++, due: items[i].due, work: items[i].commands });
   }
 };
+globalThis.__dshHasWork = function () {
+  return globalThis.__dshTimers.length > 0 || globalThis.__dshWaits.length > 0;
+};
 globalThis.__dshDrain = function () {
   var commands = [];
   for (var i = 0; i < globalThis.__dshResults.length; i++) {
@@ -211,6 +214,87 @@ impl Loader for ScriptLoader {
     }
 }
 
+fn module_dependencies(name: &str, source: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut rest = source;
+    while let Some(index) = rest.find("from") {
+        rest = &rest[index + 4..];
+        let Some(start) = rest.find('"').or_else(|| rest.find('\'')) else {
+            continue;
+        };
+        let quote = rest.as_bytes()[start] as char;
+        rest = &rest[start + 1..];
+        let Some(end) = rest.find(quote) else {
+            continue;
+        };
+        let spec = &rest[..end];
+        rest = &rest[end + 1..];
+        if !spec.starts_with('.') {
+            continue;
+        }
+        let dir = name.rsplit_once('/').map(|(dir, _)| dir).unwrap_or("");
+        let mut parts: Vec<&str> = if dir.is_empty() {
+            Vec::new()
+        } else {
+            dir.split('/').collect()
+        };
+        for part in spec.split('/') {
+            match part {
+                "." | "" => {}
+                ".." => {
+                    parts.pop();
+                }
+                _ => parts.push(part.trim_end_matches(".js")),
+            }
+        }
+        out.push(parts.join("/"));
+    }
+    out
+}
+
+fn check_module_cycles(scripts: &BTreeMap<String, String>) -> Result<(), String> {
+    let graph: BTreeMap<String, Vec<String>> = scripts
+        .iter()
+        .map(|(name, source)| {
+            (
+                name.trim_end_matches(".js").to_string(),
+                module_dependencies(name, source),
+            )
+        })
+        .collect();
+    fn visit(
+        node: &str,
+        graph: &BTreeMap<String, Vec<String>>,
+        visiting: &mut Vec<String>,
+        done: &mut std::collections::BTreeSet<String>,
+    ) -> Result<(), String> {
+        if done.contains(node) {
+            return Ok(());
+        }
+        if let Some(index) = visiting.iter().position(|item| item == node) {
+            let mut cycle = visiting[index..].to_vec();
+            cycle.push(node.to_string());
+            return Err(format!("脚本模块循环依赖: {}", cycle.join(" -> ")));
+        }
+        visiting.push(node.to_string());
+        if let Some(next) = graph.get(node) {
+            for child in next {
+                if graph.contains_key(child) {
+                    visit(child, graph, visiting, done)?;
+                }
+            }
+        }
+        visiting.pop();
+        done.insert(node.to_string());
+        Ok(())
+    }
+    let mut done = std::collections::BTreeSet::new();
+    for name in graph.keys() {
+        visit(name, &graph, &mut Vec::new(), &mut done)?;
+    }
+    Ok(())
+}
+
 pub struct QuickJsHost {
     // 先 drop contexts，最后 drop runtime；避免 Context 访问已释放的 Runtime。
     contexts: Vec<(String, Context)>,
@@ -218,6 +302,7 @@ pub struct QuickJsHost {
     max_commands: usize,
     budget: Arc<AtomicU64>,
     states: Vec<String>,
+    has_work: bool,
     #[cfg(not(target_arch = "wasm32"))]
     deadline: Arc<Mutex<Instant>>,
 }
@@ -228,6 +313,7 @@ impl QuickJsHost {
     }
 
     pub fn from_scripts(scripts: &BTreeMap<String, String>) -> Result<Self, String> {
+        check_module_cycles(scripts)?;
         let runtime = Runtime::new().map_err(|e| format!("QuickJS Runtime: {e}"))?;
         runtime.set_memory_limit(16 * 1024 * 1024);
         runtime.set_max_stack_size(1024 * 1024);
@@ -306,6 +392,7 @@ impl QuickJsHost {
             max_commands: MAX_COMMANDS_PER_EVENT,
             budget,
             states,
+            has_work: false,
             #[cfg(not(target_arch = "wasm32"))]
             deadline,
         })
@@ -346,6 +433,7 @@ impl QuickJsHost {
             }
         }
         let mut next = Self::from_scripts(scripts)?;
+        next.has_work = !old_timers.is_empty();
         for (index, (name, _)) in next.contexts.iter().enumerate() {
             if let Some(state) = old_states.get(name) {
                 next.states[index] = state.clone();
@@ -391,7 +479,11 @@ pub fn run_trace_with_scripts(
 
 impl ScriptHost for QuickJsHost {
     fn on_tick(&mut self, tick: u64) -> Result<Vec<Command>, String> {
+        if !self.has_work {
+            return Ok(Vec::new());
+        }
         let mut commands = Vec::new();
+        let mut work = false;
         for (index, (name, context)) in self.contexts.iter().enumerate() {
             let state = self.states[index].clone();
             let (text, drained, next_state) = context.with(|ctx| {
@@ -411,6 +503,7 @@ impl ScriptHost for QuickJsHost {
                     .map_err(|e| format_script_error(&ctx, name, e))?;
                 while ctx.execute_pending_job() {}
                 let drained = drain_js(&ctx, name)?;
+                work |= has_work_js(&ctx, name)?;
                 let get_state: Function = ctx
                     .globals()
                     .get("__dshGetState")
@@ -459,6 +552,7 @@ impl ScriptHost for QuickJsHost {
             *deadline = Instant::now() + Duration::from_millis(MAX_WALL_MS);
         }
         let mut commands = Vec::new();
+        let mut work = self.has_work;
         for (index, (name, context)) in self.contexts.iter().enumerate() {
             let state = self.states[index].clone();
             let (text, drained, next_state) = context.with(|ctx| {
@@ -478,6 +572,7 @@ impl ScriptHost for QuickJsHost {
                     .map_err(|e| format_script_error(&ctx, name, e))?;
                 while ctx.execute_pending_job() {}
                 let drained = drain_js(&ctx, name)?;
+                work |= has_work_js(&ctx, name)?;
                 let get_state: Function = ctx
                     .globals()
                     .get("__dshGetState")
@@ -499,8 +594,18 @@ impl ScriptHost for QuickJsHost {
             commands.extend(parsed);
             commands.extend(drained);
         }
+        self.has_work = work;
         Ok(commands)
     }
+}
+
+fn has_work_js(ctx: &rquickjs::Ctx<'_>, name: &str) -> Result<bool, String> {
+    let get: Function = ctx
+        .globals()
+        .get("__dshHasWork")
+        .map_err(|e| format!("脚本 {name} 缺少 work getter: {e}"))?;
+    get.call::<_, bool>(())
+        .map_err(|e| format_script_error(ctx, name, e))
 }
 
 fn drain_js(ctx: &rquickjs::Ctx<'_>, name: &str) -> Result<Vec<Command>, String> {
@@ -581,6 +686,27 @@ mod tests {
         );
         let mut host = QuickJsHost::from_scripts(&scripts).unwrap();
         assert!(host.on_event("{}").is_err());
+    }
+
+    #[test]
+    fn rejects_module_cycles_with_a_readable_error() {
+        let mut scripts = BTreeMap::new();
+        scripts.insert(
+            "a".to_string(),
+            "import { b } from './b.js'; export function onEvent(){return [];}".to_string(),
+        );
+        scripts.insert(
+            "b".to_string(),
+            "import { a } from './a.js'; export function onEvent(){return [];}".to_string(),
+        );
+        let error = match QuickJsHost::from_scripts(&scripts) {
+            Ok(_) => panic!("cycle should fail"),
+            Err(error) => error,
+        };
+        assert!(
+            error.contains("循环依赖") && error.contains("a -> b"),
+            "{error}"
+        );
     }
 
     #[test]
