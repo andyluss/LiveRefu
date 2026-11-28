@@ -16,6 +16,7 @@ const el = {
   undo: document.getElementById("undo"),
   redo: document.getElementById("redo"),
   dataForm: document.getElementById("data-form"),
+  schemaForm: document.getElementById("schema-form"),
   dialogueSelect: document.getElementById("dialogue-select"),
   dialogueCanvas: document.getElementById("dialogue-canvas"),
   nodeId: document.getElementById("node-id"),
@@ -202,6 +203,90 @@ function formField(labelText, value, onInput, options = {}) {
   return label;
 }
 
+function schemaLabel(path) {
+  return path.replace(/\./g, " · ").replace(/\[\d+\]/g, "[]");
+}
+
+function schemaInput(path, value, parent, key, onChange) {
+  const label = document.createElement("label");
+  label.className = "schema-field";
+  label.dataset.path = path;
+  label.append(document.createTextNode(schemaLabel(path)));
+  if (value !== null && typeof value === "object") {
+    if (Array.isArray(value)) {
+      const input = document.createElement("textarea");
+      input.rows = Math.min(6, Math.max(2, JSON.stringify(value).length / 60 + 1));
+      input.value = JSON.stringify(value, null, 2);
+      input.spellcheck = false;
+      input.addEventListener("focus", pushUndo);
+      input.addEventListener("change", () => {
+        try {
+          const parsed = JSON.parse(input.value);
+          if (!Array.isArray(parsed)) throw new Error("必须是数组");
+          input.classList.remove("invalid");
+          onChange(parsed);
+        } catch (error) {
+          input.classList.add("invalid");
+          log(`Schema ${path}: ${error.message}`);
+        }
+      });
+      label.append(input);
+      return label;
+    }
+    const fieldset = document.createElement("fieldset");
+    fieldset.className = "schema-group";
+    const legend = document.createElement("legend");
+    legend.textContent = schemaLabel(path);
+    fieldset.append(legend);
+    for (const [childKey, child] of Object.entries(value)) {
+      fieldset.append(schemaInput(`${path}.${childKey}`, child, value, childKey, (next) => {
+        value[childKey] = next;
+        onChange(value);
+      }));
+    }
+    return fieldset;
+  }
+  let input;
+  if (typeof value === "boolean") {
+    input = document.createElement("select");
+    for (const option of ["true", "false"]) {
+      const node = document.createElement("option");
+      node.value = option; node.textContent = option; input.append(node);
+    }
+    input.value = String(value);
+  } else {
+    input = document.createElement("input");
+    input.type = typeof value === "number" ? "number" : "text";
+    if (typeof value === "number") input.step = "any";
+    input.value = value === null || value === undefined ? "" : String(value);
+    if (path === "id") input.readOnly = true;
+  }
+  input.addEventListener("focus", pushUndo);
+  const apply = () => {
+    let next = input.value;
+    if (typeof value === "number") next = Number(next);
+    if (typeof value === "boolean") next = next === "true";
+    if (value === null && next === "") next = null;
+    parent[key] = next;
+    onChange(parent);
+  };
+  input.addEventListener("change", apply);
+  label.append(input);
+  return label;
+}
+
+function renderSchemaForm(def, path) {
+  if (!el.schemaForm) return;
+  el.schemaForm.replaceChildren();
+  const update = () => { markDirty(path); el.definition.value = JSON.stringify(def, null, 2); };
+  for (const [key, value] of Object.entries(def)) {
+    el.schemaForm.append(schemaInput(key, value, def, key, update));
+  }
+  if (Object.keys(def).length === 0) {
+    el.schemaForm.innerHTML = '<p class="muted">定义为空</p>';
+  }
+}
+
 function renderDataForm() {
   el.dataForm.replaceChildren();
   const placement = currentPlacement();
@@ -209,6 +294,7 @@ function renderDataForm() {
   const def = path ? packData.files[path] : null;
   if (!def) {
     el.dataForm.innerHTML = '<p class="muted">未选中实体</p>';
+    if (el.schemaForm) el.schemaForm.innerHTML = '<p class="muted">未选中实体</p>';
     return;
   }
   const isActor = path.includes("/actors/");

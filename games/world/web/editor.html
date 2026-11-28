@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RefuWorld · 世界编辑器 v0.5</title>
+  <title>RefuWorld · 世界编辑器 v0.6</title>
   <script>
     (function () {
       var root = document.documentElement;
@@ -30,7 +30,7 @@
     <div class="brand">
       <span class="mark" aria-hidden="true">RW</span>
       <div>
-        <h1>RefuWorld Editor <span class="badge">v0.5</span></h1>
+        <h1>RefuWorld Editor <span class="badge">v0.6</span></h1>
         <p>编辑 JSON 内容包 · 拖动摆放 · 构建并试玩</p>
       </div>
     </div>
@@ -82,6 +82,12 @@
       <section>
         <h2>字段</h2>
         <div id="data-form" class="fields"></div>
+      </section>
+
+      <section>
+        <h2>Schema 字段 <span class="badge">v0.6</span></h2>
+        <p class="hint">递归编辑嵌套对象与数组；数组用 JSON，非法值不会写入。</p>
+        <div id="schema-form" class="fields schema-fields"></div>
       </section>
 
       <section>

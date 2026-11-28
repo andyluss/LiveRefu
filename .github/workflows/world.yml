@@ -132,6 +132,36 @@ jobs:
       - name: Node static web server smoke
         working-directory: games/world
         run: node test/serve_web_check.mjs
+      - name: Editor v0.6 static contract
+        working-directory: games/world
+        run: node test/editor_static.mjs
+
+  browser-runtime:
+    name: browser runtime (2D/2.5D/3D)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/world
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Install wasm-bindgen 0.2.129
+        run: cargo install wasm-bindgen-cli --version 0.2.129 --locked
+      - name: Build web wasm + packs
+        run: ./web/build.sh
+      - id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+      - name: Browser smoke (2D / 2.5D / 3D)
+        env:
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: node web/test_browser_runtime.mjs
 
   wasm-core:
     name: wasm32 build (core)
@@ -162,6 +192,11 @@ jobs:
           cargo run -q --release --manifest-path code/Cargo.toml -p world-cli -- \
             bench --scenario real5k --ticks 300 --runs 1 --json > dist/bench-real5k-ci.json
           node test/bench_real5k_check.mjs dist/bench-real5k-ci.json --no-perf
+      - name: Run real5k-v2 smoke
+        run: |
+          cargo run -q --release --manifest-path code/Cargo.toml -p world-cli -- \
+            bench --scenario real5k-v2 --ticks 300 --runs 1 --json > dist/bench-real5k-v2-ci.json
+          node test/bench_real5k_check.mjs dist/bench-real5k-v2-ci.json --no-perf --v2
 
   wasm-world:
     name: wasm32 + QuickJS (world preview)

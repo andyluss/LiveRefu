@@ -42,6 +42,7 @@ done
 
 echo "== 4. 编辑器服务器冒烟 =="
 node "$ROOT/test/editor_smoke.mjs"
+node "$ROOT/test/editor_static.mjs"
 
 echo "== 5. 构建 Web 预览（wasm + wasm-bindgen） =="
 "$ROOT/web/build.sh"
