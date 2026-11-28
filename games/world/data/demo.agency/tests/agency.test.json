@@ -1,0 +1,11 @@
+{
+  "name": "agency_l2",
+  "ticks": 400,
+  "steps": [],
+  "expect": {
+    "flags": {},
+    "quests": {},
+    "inventory": {},
+    "events": ["schedule_changed"]
+  }
+}

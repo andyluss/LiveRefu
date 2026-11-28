@@ -1,0 +1,11 @@
+{
+  "id": "zone.agency",
+  "name": "loc:zone.agency.name",
+  "bounds": { "min": [-12, 0, -8], "max": [12, 4, 8] },
+  "nav": "nav.agency",
+  "placements": [
+    { "actor": "demo.agency.worker", "at": [-9, 0, -6], "yaw": 0, "persistent_id": "worker" },
+    { "actor": "demo.agency.courier", "at": [-7, 0, 5], "yaw": 0, "persistent_id": "courier" },
+    { "actor": "demo.agency.guard", "at": [0, 0, 7], "yaw": 0, "persistent_id": "guard" }
+  ]
+}

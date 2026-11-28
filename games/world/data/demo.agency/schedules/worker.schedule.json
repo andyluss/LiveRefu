@@ -1,0 +1,10 @@
+{
+  "id": "schedule.worker",
+  "entries": [
+    { "from": "06:00", "to": "08:00", "behavior": "rest", "at": "zone.agency", "target": [-9, -6] },
+    { "from": "08:00", "to": "10:00", "behavior": "work", "at": "zone.agency", "target": [-2, 2] },
+    { "from": "10:00", "to": "12:00", "behavior": "break", "at": "zone.agency", "target": [6, 5] },
+    { "from": "12:00", "to": "14:00", "behavior": "work", "at": "zone.agency", "target": [8, -5] },
+    { "from": "14:00", "to": "06:00", "behavior": "rest", "at": "zone.agency", "target": [-9, -6] }
+  ]
+}

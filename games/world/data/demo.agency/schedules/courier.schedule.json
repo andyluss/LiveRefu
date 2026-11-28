@@ -1,0 +1,9 @@
+{
+  "id": "schedule.courier",
+  "entries": [
+    { "from": "07:00", "to": "09:00", "behavior": "deliver", "at": "zone.agency", "target": [-6, 4] },
+    { "from": "09:00", "to": "11:00", "behavior": "pickup", "at": "zone.agency", "target": [6, 4] },
+    { "from": "11:00", "to": "13:00", "behavior": "break", "at": "zone.agency", "target": [0, 0] },
+    { "from": "13:00", "to": "07:00", "behavior": "rest", "at": "zone.agency", "target": [-7, 5] }
+  ]
+}

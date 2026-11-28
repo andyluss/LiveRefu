@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L2 行为实验室 · RefuWorld</title>
+  <meta name="description" content="RefuWorld L2 行为/能动层独立演示：日程时间窗、behavior、目标、A* 路径与逐 tick 移动；不加载 L3–L5。" />
+  <meta name="theme-color" content="#070a12" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'dark'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./spacetime.css" />
+  <link rel="stylesheet" href="./agency.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">L2</span>
+      <div><b>AGENCY LAB</b><small>REFUWORLD / LAYER TWO ONLY</small></div>
+    </div>
+    <div class="top-links">
+      <a href="./demos.html">Demo 索引</a>
+      <a href="./subject.html">L1 交互室</a>
+      <a href="../brief/HUB.html">HUB</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sandbox agency-layout">
+    <aside class="side left">
+      <section class="panel">
+        <p class="eyebrow">L2 CONTRACT</p>
+        <h1>时间到了，<br><em>人就动了。</em></h1>
+        <p class="lede">日程把世界分钟映射到 behavior，behavior 选目标，L0 的 A* 把 NPC 走过去。这个包没有规则、任务、对话、脚本、社会关系或世界系统。</p>
+        <div class="capabilities">
+          <div><span class="dot"></span><span><b>Schedule</b><small>时间窗 → behavior</small></span></div>
+          <div><span class="dot"></span><span><b>Intent</b><small>behavior → target</small></span></div>
+          <div><span class="dot"></span><span><b>Path</b><small>target → A* → 逐 tick 移动</small></span></div>
+          <div><span class="dot"></span><span><b>Determinism</b><small>tick / seed / hash 可回放</small></span></div>
+        </div>
+      </section>
+      <section class="panel layer-proof">
+        <p class="eyebrow">INDEPENDENCE CHECK</p>
+        <div class="proof-row"><span>L1 主体交互</span><b id="l1-proof">0 commands</b></div>
+        <div class="proof-row"><span>L3 叙事/规则</span><b id="l3-proof">0 flags / 0 quests</b></div>
+        <div class="proof-row"><span>L4 社会</span><b id="l4-proof">absent</b></div>
+        <div class="proof-row"><span>L5 世界系统</span><b id="l5-proof">absent</b></div>
+        <p class="micro">L2 只依赖 L0 的时间、导航与移动；L3–L5 没有内容，也没有被调用。</p>
+      </section>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-head"><span>ZONE.AGENCY / 24 × 16 m</span><span id="mode">SIM ×1 · 60 Hz</span></div>
+      <div class="canvas-wrap">
+        <canvas id="view" width="900" height="650" aria-label="L2 行为实验室：日程、NPC、目标与路径"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="stage-tip">时间轴加速观察换班 · 点击角色查看目标 · Space 暂停</div>
+      </div>
+      <div class="stage-foot"><span id="event-line">07:55 · 早班前休息</span><span id="pack-line">demo.agency · L2 only</span></div>
+    </section>
+
+    <aside class="side right">
+      <section class="panel telemetry">
+        <p class="eyebrow">AGENCY STATE</p>
+        <div class="metric big"><span>CLOCK</span><b id="clock">07:55</b></div>
+        <div class="metric"><span>TICK</span><b id="tick">0</b></div>
+        <div class="metric"><span>ACTORS</span><b id="actors">3</b></div>
+        <div class="metric"><span>PATHS</span><b id="paths">—</b></div>
+        <div class="metric"><span>BEHAVIOR</span><b id="behaviors">rest / deliver / patrol</b></div>
+      </section>
+      <section class="panel">
+        <p class="eyebrow">TIME CONTROLS</p>
+        <div class="action-grid">
+          <button id="pause" type="button">暂停</button>
+          <button id="speed" type="button">×1</button>
+          <button id="jump5" type="button">跳到 08:00</button>
+          <button id="jump9" type="button">跳到 09:00</button>
+          <button id="reset" type="button" class="wide">重置世界</button>
+        </div>
+        <p class="micro">时间加速仍按固定 60Hz tick 推演，不改变每个 tick 的结果。</p>
+      </section>
+      <section class="panel schedule-panel">
+        <p class="eyebrow">SCHEDULES</p>
+        <div id="schedule-list"></div>
+      </section>
+      <section class="panel log-panel">
+        <p class="eyebrow">EVENTS</p>
+        <pre id="events">—</pre>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot"><span>RefuWorld · L2 Agency Lab · core + agency</span><span>WASM + Canvas 2D</span></footer>
+  <noscript><p class="noscript">这个演示需要 JavaScript 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = dark ? '#070a12' : '#f2eee5';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode));
+        });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+        b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="importmap">
+    {"imports":{"env":"./vendor/quickjs-env.js"}}
+  </script>
+  <script type="module" src="./agency.js"></script>
+</body>
+</html>

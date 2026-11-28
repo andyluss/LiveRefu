@@ -1,0 +1,6 @@
+{
+  "id": "schedule.guard",
+  "entries": [
+    { "from": "00:00", "to": "23:59", "behavior": "patrol", "at": "zone.agency", "target": [7, 7] }
+  ]
+}

@@ -1,0 +1,17 @@
+@import url("./spacetime.css");
+.brand-mark { color: var(--pink); border-color: color-mix(in srgb, var(--pink) 50%, var(--line)); }
+.agency-layout .stage-head #mode { color: var(--pink); }
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.action-grid button { border: 1px solid var(--line-strong); border-radius: 8px; background: color-mix(in srgb, var(--solid) 74%, transparent); color: var(--ink); padding: 7px 5px; font: 9px var(--mono); cursor: pointer; }
+.action-grid button:hover { border-color: var(--pink); color: var(--pink); }
+.action-grid button.wide { grid-column: 1 / -1; }
+.schedule-panel { padding-bottom: 9px; }
+.schedule-row { border-bottom: 1px solid var(--line); padding: 6px 0; }
+.schedule-row:last-child { border-bottom: 0; }
+.schedule-row b { display: flex; justify-content: space-between; color: var(--ink); font-size: 10px; }
+.schedule-row b em { font: 9px var(--mono); color: var(--faint); font-style: normal; }
+.schedule-entry { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; color: var(--faint); font: 8.5px var(--mono); }
+.schedule-entry.active { color: var(--pink); }
+.schedule-entry span:last-child { color: var(--amber); }
+.log-panel pre { margin: 0; max-height: 100px; overflow: auto; color: var(--dim); font: 9px/1.5 var(--mono); white-space: pre-wrap; }
+@media print { body { background: #fff; color: #000; } .topbar, .canvas-wrap, .side, .foot { display: none; } }

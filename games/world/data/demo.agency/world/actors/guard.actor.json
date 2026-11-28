@@ -1,0 +1,11 @@
+{
+  "id": "demo.agency.guard",
+  "name": "loc:actor.guard.name",
+  "tags": ["l2", "guard"],
+  "body": { "shape": "capsule", "radius": 0.35, "height": 1.7, "size": null },
+  "stats": { "health": 100, "speed": 1.5 },
+  "brain": { "profile": "schedule", "schedule": "schedule.guard" },
+  "inventory": null,
+  "dialogue": null,
+  "visual": null
+}

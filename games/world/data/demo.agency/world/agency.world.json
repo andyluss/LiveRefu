@@ -1,0 +1,7 @@
+{
+  "id": "world.agency",
+  "start_zone": "zone.agency",
+  "start_time": "07:55",
+  "seed": 20261128,
+  "player": { "at": [0, 0, -6], "inventory": [] }
+}

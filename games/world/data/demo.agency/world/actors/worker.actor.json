@@ -1,0 +1,11 @@
+{
+  "id": "demo.agency.worker",
+  "name": "loc:actor.worker.name",
+  "tags": ["l2", "worker"],
+  "body": { "shape": "capsule", "radius": 0.35, "height": 1.7, "size": null },
+  "stats": { "health": 100, "speed": 2.2 },
+  "brain": { "profile": "schedule", "schedule": "schedule.worker" },
+  "inventory": null,
+  "dialogue": null,
+  "visual": null
+}
