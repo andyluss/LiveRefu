@@ -35,18 +35,45 @@ pub fn eval_bool(source: &str) -> Result<bool, String> {
 
 const DISPATCH: &str = r#"
 globalThis.__dshState = globalThis.__dshState || {};
+globalThis.__dshTimers = globalThis.__dshTimers || [];
+globalThis.__dshNow = 0;
 globalThis.__dshGetState = function () { return JSON.stringify(globalThis.__dshState || {}); };
 globalThis.__dshSetState = function (input) { globalThis.__dshState = JSON.parse(input || "{}"); };
+globalThis.__dshSchedule = function (ticks, work) {
+  globalThis.__dshTimers.push({
+    due: globalThis.__dshNow + Math.max(0, Number(ticks) || 0),
+    work: work
+  });
+};
 globalThis.__dshDispatch = function (input) {
   var fn = globalThis.__dshOnEvent || (typeof onEvent === "function" ? onEvent : null);
   if (typeof fn !== "function") return "[]";
   var ctx = JSON.parse(input);
+  globalThis.__dshNow = Number(ctx.tick) || globalThis.__dshNow;
   ctx.state = globalThis.__dshState;
+  ctx.after = function (ticks, commands) { globalThis.__dshSchedule(ticks, commands); };
+  ctx.setTimeout = function (callback, ticks) { globalThis.__dshSchedule(ticks, callback); };
   var out = fn(ctx);
   if (out && typeof out.then === "function") {
     return out.then(function (value) { return JSON.stringify(value == null ? [] : value); });
   }
   return JSON.stringify(out == null ? [] : out);
+};
+globalThis.__dshTick = function (tick) {
+  globalThis.__dshNow = tick;
+  var due = [];
+  var keep = [];
+  for (var i = 0; i < globalThis.__dshTimers.length; i++) {
+    var timer = globalThis.__dshTimers[i];
+    if (timer.due <= tick) due.push(timer); else keep.push(timer);
+  }
+  globalThis.__dshTimers = keep;
+  var out = [];
+  for (var j = 0; j < due.length; j++) {
+    var value = typeof due[j].work === "function" ? due[j].work() : due[j].work;
+    if (Array.isArray(value)) out = out.concat(value);
+  }
+  return JSON.stringify(out);
 };
 "#;
 
@@ -275,6 +302,42 @@ pub fn run_trace_with_scripts(
 }
 
 impl ScriptHost for QuickJsHost {
+    fn on_tick(&mut self, tick: u64) -> Result<Vec<Command>, String> {
+        let mut commands = Vec::new();
+        for (index, (name, context)) in self.contexts.iter().enumerate() {
+            let state = self.states[index].clone();
+            let (text, next_state) = context.with(|ctx| {
+                let set_state: Function = ctx
+                    .globals()
+                    .get("__dshSetState")
+                    .map_err(|e| format!("脚本 {name} 缺少 state dispatcher: {e}"))?;
+                set_state
+                    .call::<_, ()>((state,))
+                    .map_err(|e| format_script_error(&ctx, name, e))?;
+                let tick_fn: Function = ctx
+                    .globals()
+                    .get("__dshTick")
+                    .map_err(|e| format!("脚本 {name} 缺少 tick dispatcher: {e}"))?;
+                let text = tick_fn
+                    .call::<_, String>((tick,))
+                    .map_err(|e| format_script_error(&ctx, name, e))?;
+                let get_state: Function = ctx
+                    .globals()
+                    .get("__dshGetState")
+                    .map_err(|e| format!("脚本 {name} 缺少 state getter: {e}"))?;
+                let next_state = get_state
+                    .call::<_, String>(())
+                    .map_err(|e| format_script_error(&ctx, name, e))?;
+                Ok::<_, String>((text, next_state))
+            })?;
+            self.states[index] = next_state;
+            let parsed: Vec<Command> = serde_json::from_str(&text)
+                .map_err(|e| format!("脚本 {name} tick 返回的不是命令数组: {e}"))?;
+            commands.extend(parsed);
+        }
+        Ok(commands)
+    }
+
     fn reload(&mut self, scripts: &BTreeMap<String, String>) -> Result<(), String> {
         self.reload_from_scripts(scripts)
     }
@@ -449,6 +512,32 @@ mod tests {
         assert_eq!(state, restored);
         let second = host.on_event("{}").unwrap();
         assert!(matches!(&second[0], Command::Toast { text, .. } if text == "11"));
+    }
+
+    #[test]
+    fn deferred_commands_fire_on_future_tick() {
+        let pack = orbit_pack();
+        let mut world = World::from_pack(&pack, pack.hash().unwrap()).unwrap();
+        let mut scripts = BTreeMap::new();
+        scripts.insert(
+            "timer".to_string(),
+            "function onEvent(ctx) { if (ctx.event.kind === 'timer.start') { ctx.after(3, [{op:'toast', text:'after 3'}]); } return []; }".to_string(),
+        );
+        world.set_script_host(Box::new(QuickJsHost::from_scripts(&scripts).unwrap()));
+        world.emit("timer.start", None, serde_json::json!({}));
+        for _ in 0..5 {
+            world.tick_once();
+        }
+        let fired = world
+            .events
+            .iter()
+            .find(|event| event.kind == "toast" && event.data["text"] == "after 3");
+        assert!(
+            fired.is_some(),
+            "deferred command did not fire: {:?}",
+            world.events
+        );
+        assert!(fired.unwrap().tick >= 3);
     }
 
     #[test]

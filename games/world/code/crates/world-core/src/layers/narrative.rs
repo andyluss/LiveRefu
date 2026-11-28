@@ -123,6 +123,13 @@ impl Narrative {
             None => Ok(()),
         }
     }
+
+    pub fn script_tick(&mut self, tick: u64) -> Result<Vec<crate::command::Command>, String> {
+        match self.script_host.as_mut() {
+            Some(host) => host.on_tick(tick),
+            None => Ok(Vec::new()),
+        }
+    }
 }
 
 #[cfg(test)]

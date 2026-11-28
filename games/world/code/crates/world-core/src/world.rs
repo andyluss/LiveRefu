@@ -407,6 +407,27 @@ impl World {
         self.update_schedules();
         self.advance_npc_paths();
         self.update_systems();
+        self.run_script_tick();
+    }
+
+    fn run_script_tick(&mut self) {
+        if !self.has_script_host() {
+            return;
+        }
+        match self.narrative.script_tick(self.spacetime.tick) {
+            Ok(commands) => {
+                let take = commands.len().min(128);
+                self.pending.extend(commands.into_iter().take(take));
+            }
+            Err(error) => {
+                self.last_error = Some(format!("script tick: {error}"));
+                self.emit(
+                    "script_error",
+                    None,
+                    json!({"error": error, "script_event": "tick"}),
+                );
+            }
+        }
     }
 
     /// L0 owns the kinematic step; this method only supplies the body snapshot.

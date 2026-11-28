@@ -340,7 +340,7 @@ node tools/serve-web.mjs --port 8787
         <tr><td><code>world-ffi</code></td><td>C ABI v0、句柄、缓冲、错误码</td><td>不写玩法</td></tr>
         <tr><td><code>world-host-headless</code></td><td>CI / 回放 / 无头宿主</td><td>不渲染</td></tr>
         <tr><td><code>world-cli</code></td><td>validate/build/test/editor/bake/bench/content-test</td><td>不成为运行时依赖</td></tr>
-        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS ScriptHost：ES module import、async onEvent、持久状态、热重载、预算/错误隔离</td><td>无真实定时器/跨 tick Promise</td></tr>
+        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS ScriptHost：ES module import、async onEvent、确定性 tick 定时器、持久状态、热重载</td><td>无真实墙钟定时器/挂起 Promise</td></tr>
         <tr><td><code>world-wasm</code></td><td>作者预览门面（2D/3D 共用）</td><td>不直接走 C ABI</td></tr>
       </tbody>
     </table>
@@ -567,7 +567,7 @@ node tools/serve-web.mjs --port 8787
         <tr><td class="q">D1</td><td>权威内核语言</td><td class="pick">Rust</td><td>无 GC、可产 WASM；团队要会 Rust</td></tr>
         <tr><td class="q">D2</td><td>内容与规则</td><td class="pick">TypeScript DSL + JSON</td><td>两套前端需保持同哈希</td></tr>
         <tr><td class="q">D3</td><td>引擎边界</td><td class="pick">版本化 C ABI + 轮询</td><td>核心不回调引擎；需要 ABI 测试</td></tr>
-        <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>模块/async/持久状态/热重载已接；真实定时器待补</td></tr>
+        <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>模块/async/确定性 tick timer/持久状态/热重载已接；墙钟定时器待补</td></tr>
         <tr><td class="q">D5</td><td>ECS 角色</td><td class="pick">内部 EntityStore 列存储</td><td>Entity 仅 DTO；暂不引入 bevy_ecs</td></tr>
         <tr><td class="q">D6</td><td>空间/物理</td><td class="pick">核心拥有逻辑空间/导航/碰撞</td><td>引擎只做表现；不追求跨 CPU 逐位一致</td></tr>
         <tr><td class="q">D7</td><td>世界模型</td><td class="pick">World + Session + Zone + Entity</td><td>不绑塔防/关卡结构</td></tr>
@@ -617,7 +617,7 @@ node tools/serve-web.mjs --port 8787
     <table>
       <thead><tr><th>风险</th><th>为什么危险</th><th>下一步</th></tr></thead>
       <tbody>
-        <tr><td><b>ScriptHost 仍有真实定时器缺口</b></td><td>模块 import、async 微任务、持久状态、热重载已接；真实 setTimeout/跨 tick Promise 仍未支持。</td><td>只用确定性事件/微任务；真实定时器作为后续。</td></tr>
+        <tr><td><b>ScriptHost 仍有墙钟定时器缺口</b></td><td>模块 import、async 微任务、确定性 tick timer、持久状态、热重载已接；真实 setTimeout/挂起 Promise 仍未支持。</td><td>只用确定性 tick timer；墙钟定时器作为后续。</td></tr>
         <tr><td><b>导航是静态的</b></td><td>门按 AABB 临时放行；非门动态 Prop 通过 <code>MoveProp</code> 做局部 nav 重建；NPC 可按日程 target 走同一 A*，但没有完整避让。</td><td>完整 NPC 避让 + 更多动态障碍形状。</td></tr>
         <tr><td><b>5k v1 是单 Zone mixed load</b></td><td>v2 已加 4 个 NPC 路径/动态 Prop，但仍不是 5k NPC 每 tick 决策或多 Zone 驻留。</td><td>再做多 Zone/全量决策压测；再决定是否换 bevy_ecs。</td></tr>
         <tr><td><b>编辑器还不够“作者友好”</b></td><td>复杂字段仍改 JSON；对话图简单；没有浏览器内实时预览。</td><td>v0.6 schema 表单、错误定位、自动布局。</td></tr>

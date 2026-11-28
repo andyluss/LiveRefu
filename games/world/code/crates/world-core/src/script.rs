@@ -5,6 +5,11 @@ use crate::command::Command;
 pub trait ScriptHost {
     fn on_event(&mut self, context_json: &str) -> Result<Vec<Command>, String>;
 
+    /// Deterministic per-tick hook. Used for delayed commands/timers; default no-op.
+    fn on_tick(&mut self, _tick: u64) -> Result<Vec<Command>, String> {
+        Ok(Vec::new())
+    }
+
     /// Optional persistent state. Return `None` when the host has no state.
     fn state_json(&self) -> Option<String> {
         None
