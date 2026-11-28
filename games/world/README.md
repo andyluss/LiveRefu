@@ -104,6 +104,7 @@ node tools/serve-web.mjs --port 8787
 | [`docs/09_M2适配器启动.md`](docs/09_M2适配器启动.md) | Godot 4.7 适配器、CTS、5k 帧时间与 M2 验收 |
 | [`docs/10_3D角色_小鲸鱼娘提示词.md`](docs/10_3D角色_小鲸鱼娘提示词.md) | 小鲸鱼娘社区设定、视觉规格、提示词与 3D 验收 |
 | [`docs/11_内核分层与迁移.md`](docs/11_内核分层与迁移.md) | 内核 L0–L3 分层、依赖方向、v1 兼容与迁移门 |
+| [`docs/12_活NPC与行为层方案.md`](docs/12_活NPC与行为层方案.md) | M3 候选：L2 活 NPC、效用/活动/记忆、LOD、确定性与验收 |
 | [`brief/`](brief/) | 项目 HUB 与用户指南（R-016 三态主题） |
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |

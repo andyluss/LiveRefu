@@ -6,6 +6,7 @@
 ## [未发布]
 
 ### 新增
+- **M3 活 NPC 方案**：新增 `docs/12_活NPC与行为层方案.md`；确定 L2 负责需求/目标/活动/记忆，L0 负责路径与移动，L1 负责动作，L3/L4/L5 只通过 `AgentContext` 提供上下文；含 LOD、确定性、存档、验收与分阶段计划。
 - **Lab · Godot 落块版**：`lab/tetris/godot/` 使用同一 `lab.tetris` 包与落块规则，通过 `world_godot` GDExtension 接入 L0/L3/L5；新增 `command_json` 通用命令入口；Godot 4.7 Control 三栏 UI、键盘操作、任务/能源面板、构建与 headless 测试。
 - **Lab · RefuWorld 落块变体**：`lab/tetris/refuworld.html` 复用 NEON DRIFT 玩法，通过 `refuworld-bridge.mjs` 接入 L0 固定 tick、L3 公共任务、L5 光伏/风电/电池/负载/天气；不硬塞 L1/L2/L4；`data/lab.tetris` 生成独立 `refuworld.pack.data`。
 - **Lab · NEON DRIFT 方块坠落**：`lab/tetris/` 完整可发布落块游戏；Canvas 2D、7-bag、SRS 踢墙、Hold/Next/Ghost、Lock Delay、T-Spin、Combo/B2B、等级/重力、最高分；WebAudio 合成音效、触屏、R-016 三态、PWA 离线；10 条逻辑测试与静态契约。
