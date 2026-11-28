@@ -13,7 +13,7 @@ scope: "跨游戏、跨引擎"
 > 内容作者用 TypeScript 与数据描述世界，引擎只负责把世界画出来、放出声音、接收输入。
 
 > **当前状态**：**M0 已通过；M1 主要切片已通过；M2 Godot 适配器已完成**。
-> 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm 2D/2.5D/3D 多 Demo、QuickJS ScriptHost、Web 编辑器 v0.5、移动/寻路、导航/资产依赖均可运行；
+> 无头内核、C ABI、wasm + QuickJS、TypeScript DSL、wasm 2D/2.5D/3D 多 Demo、QuickJS ScriptHost、Web 编辑器 v0.6、移动/寻路、导航/资产依赖均可运行；
 > TS 编译包与 JSON 包同哈希，Web 预览回放得到同一 `0x3606a221e9990561`。
 > 记录见 [06 · M0](docs/06_M0实现与验收.md)、[07 · M1 切片](docs/07_M1实现与验收.md) 与 [09 · M2 适配器](docs/09_M2适配器启动.md)。
 >
@@ -33,7 +33,7 @@ npm install                    # TypeScript 类型检查（可选，但推荐）
 ./worldc ts-check                              # TypeScript 类型检查
 ./worldc bake nav                             # 从 Zone/Prop 烘焙导航
 ./worldc ts-build --compare data/demo.harbor   # 单独跑 TS DSL 编译
-./worldc editor --port 8788                    # Web 编辑器 v0.5
+./worldc editor --port 8788                    # Web 编辑器 v0.6
 WORLDC_RELEASE=1 ./worldc bench --scenario real5k --ticks 6000 --runs 5 --json  # 真实 5k
 npm run dev                                    # TS 内容监听（编译→构建→复制 pack.data）
 ```
@@ -52,7 +52,7 @@ node tools/serve-web.mjs --port 8787
 # 编辑器（另开终端）：./worldc editor --port 8788
 ```
 
-> 当前有 **2D/2.5D/3D 多 Demo** 与 **Web 编辑器 v0.5**（布局/表单/对话图/撤销）；TS 类型检查与 `npm run dev` 已可用；更完整的 schema 表单、动态导航与 ScriptHost hardening 仍待。
+> 当前有 **2D/2.5D/3D 多 Demo** 与 **Web 编辑器 v0.6**（布局/表单/对话图/撤销）；TS 类型检查与 `npm run dev` 已可用；动态导航/5k v2/浏览器运行时 CI/ScriptHost 持久状态已补做；真实作者试用仍待。
 
 ## 先读哪篇
 
@@ -109,7 +109,7 @@ node tools/serve-web.mjs --port 8787
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |
 | [`tools/ts-build.mjs`](tools/ts-build.mjs) | TS DSL → 规范化内容包编译器 |
-| [`web/`](web/) | wasm 2D 预览 + 3D 场景/角色展示 + 编辑器 v0.5（构建、页面、Node 测试） |
+| [`web/`](web/) | wasm 2D 预览 + 3D 场景/角色展示 + 编辑器 v0.6（递归 Schema 表单、构建、页面、Node 测试） |
 | [`web/demos.html`](web/demos.html) | Demo 索引：2D / 2.5D / 3D、剧情/探索/工具 |
 | [`web/demo3d.html`](web/demo3d.html) | 3D 港湾值班室（Three.js，本地 vendor） |
 | [`web/iso.html`](web/iso.html) | 2.5D 等距渲染器（夜市 / 温室） |

@@ -127,10 +127,10 @@
     <ol class="tl">
       <li class="done"><b>M0 · 可运行内核</b> <span>2026-11-23 · 8 crates、C ABI、QuickJS spike、坏包 fixture、600 tick 双跑。</span></li>
       <li class="done"><b>M1 · TS DSL + Web 预览</b> <span>TS 包与 JSON 包同哈希；2D 预览回放 <code>0x3606a2…</code>。</span></li>
-      <li class="done"><b>M1 · 编辑器 v0.5</b> <span>布局拖拽、字段表单、对话图、撤销/重做、保存校验回滚、构建试玩。</span></li>
+      <li class="done"><b>M1 · 编辑器 v0.6</b> <span>布局拖拽、字段表单、对话图、撤销/重做、保存校验回滚、构建试玩。</span></li>
       <li class="done"><b>M1 · 移动/导航/资产</b> <span>WASD + 点击寻路；40×40 烘焙网格；逻辑资产依赖与 C ABI <code>world_zone_assets</code>。</span></li>
       <li class="done"><b>M1 · 3D 演示</b> <span>Three.js r187 本地 vendor；同一 wasm 状态；气闸/对话/雨海灯塔。</span></li>
-      <li class="done"><b>M1 · ScriptHost</b> <span>QuickJS 事件作用域；事件上下文 → 命令；内存/栈/命令/中断预算；wasm/C/CLI/headless 注入。</span></li>
+      <li class="done"><b>M1 · ScriptHost</b> <span>QuickJS 事件 → 命令；每脚本持久状态随快照；100ms 墙钟/中断/内存/栈/命令预算；wasm/C/CLI/headless 注入。</span></li>
       <li class="done"><b>M1 · 三平台 CI</b> <span>GitHub Actions run 45757232197：Ubuntu / macOS / Windows、C ABI、real5k、world-wasm + QuickJS、8 页 web 检查全绿。</span></li>
       <li class="done"><b>M2 · Godot 逻辑适配器</b> <span>world-abi + GDExtension WorldNode；600 tick 哈希、save/load、BoxMesh 视图池、WASD/相机/灯光、kind 视图、GLB scene 池、真实 WAV；CTS L/T/I/E/V/S/X/D/Z/A/U 已过；事件/存档互通；5k 帧时间已采集。</span></li>
       <li class="done"><b>L0–L3 · 内核分层</b> <span>时空物理 / 主体交互 / 行为能动 / 叙事规则；单向依赖、边界门、黄金哈希与事件序列保持。</span></li>
@@ -165,7 +165,7 @@ node tools/serve-web.mjs --port 8787
 # 2D:   http://127.0.0.1:8787/web/
 # 3D:   http://127.0.0.1:8787/web/demo3d.html</code></pre>
 
-    <div class="note warn"><b>不要把原型当生产。</b>ScriptHost 仍是事件作用域；导航门是静态烘焙；5k v1 是单 Zone mixed load；L4/L5 只在显式内容包中启用；作者试用与真实外机 GPU 复测仍待做。</div>
+    <div class="note warn"><b>不要把原型当生产。</b>ScriptHost 已有持久脚本状态与墙钟护栏；导航支持开门/非门动态 Prop 的局部重建；5k v2 已跑路径/动态障碍负载；L4/L5 只在显式内容包中启用；真实作者试用与外机 GPU 复测仍待做。</div>
   </section>
 
   <section class="panel" id="p-architecture" role="tabpanel" aria-labelledby="t-architecture">
@@ -340,7 +340,7 @@ node tools/serve-web.mjs --port 8787
         <tr><td><code>world-ffi</code></td><td>C ABI v0、句柄、缓冲、错误码</td><td>不写玩法</td></tr>
         <tr><td><code>world-host-headless</code></td><td>CI / 回放 / 无头宿主</td><td>不渲染</td></tr>
         <tr><td><code>world-cli</code></td><td>validate/build/test/editor/bake/bench/content-test</td><td>不成为运行时依赖</td></tr>
-        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS ScriptHost：事件上下文 → 命令、预算/错误隔离</td><td>无持久状态/模块/异步</td></tr>
+        <tr><td><code>world-script</code> / <code>-wasm</code></td><td>QuickJS ScriptHost：事件上下文 → 命令、持久状态、预算/错误隔离</td><td>无模块/异步/热重载</td></tr>
         <tr><td><code>world-wasm</code></td><td>作者预览门面（2D/3D 共用）</td><td>不直接走 C ABI</td></tr>
       </tbody>
     </table>
@@ -461,7 +461,7 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
       <div class="card"><h4>视图池</h4><p>用打包的 <code>EntityId</code> 做键；每 tick 保存 prev/target transform，<code>sync_views_at(alpha)</code> 插值；静态 prop/item 走 MultiMesh，GLB 走 GLTFDocument scene。</p><p class="small"><a href="../godot-extension/src/lib.rs">godot-extension/src/lib.rs</a></p></div>
     </div>
     <figure class="impl-shot">
-      <img src="../docs/shots/m1_editor.png" alt="RefuWorld Web 编辑器 v0.5：拖拽布局、字段表单与构建试玩">
+      <img src="../docs/shots/m1_editor_v06.png" alt="RefuWorld Web 编辑器 v0.6：拖拽布局、字段表单与构建试玩">
       <figcaption><b>作者侧：</b>内容在 Web 编辑器里修改；Godot 只负责把同一份包跑起来。实现研究可以先从内容管线入手，再看适配器。</figcaption>
     </figure>
 
@@ -507,8 +507,8 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
     </div>
 
     <figure style="margin:14px 0 0;background:var(--sunken);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden">
-      <img src="../docs/shots/m1_editor.png" alt="RefuWorld Web 编辑器 v0.5" style="display:block;width:100%;height:auto">
-      <figcaption><b>编辑器 v0.5</b> · 布局拖拽 + 字段表单 + 对话图 + 撤销/重做 + 构建试玩。保存先写后校验，失败回滚。</figcaption>
+      <img src="../docs/shots/m1_editor_v06.png" alt="RefuWorld Web 编辑器 v0.6" style="display:block;width:100%;height:auto">
+      <figcaption><b>编辑器 v0.6</b> · 布局拖拽 + 字段表单 + 对话图 + 撤销/重做 + 构建试玩。保存先写后校验，失败回滚。</figcaption>
     </figure>
     <p style="margin-top:12px"><a href="../docs/08_两小时教程.md">两小时教程</a> · <a href="../docs/02_内容作者与工具链.md">内容作者与工具链</a> · <a href="GUIDE.html">用户指南</a> · <a href="http://127.0.0.1:8788/" title="需要本地服务器">编辑器</a></p>
     <div class="note warn"><b>教程状态：</b>功能已实现，但“2 小时”还没有真实作者计时验收；把它当目标，不当已证实的平均值。</div>
@@ -567,7 +567,7 @@ node tools/serve-web.mjs --port 8787
         <tr><td class="q">D1</td><td>权威内核语言</td><td class="pick">Rust</td><td>无 GC、可产 WASM；团队要会 Rust</td></tr>
         <tr><td class="q">D2</td><td>内容与规则</td><td class="pick">TypeScript DSL + JSON</td><td>两套前端需保持同哈希</td></tr>
         <tr><td class="q">D3</td><td>引擎边界</td><td class="pick">版本化 C ABI + 轮询</td><td>核心不回调引擎；需要 ABI 测试</td></tr>
-        <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>事件作用域已接；持久状态/模块/异步待 hardening</td></tr>
+        <tr><td class="q">D4</td><td>脚本运行时</td><td class="pick">QuickJS-NG</td><td>事件作用域 + 持久状态/墙钟已接；模块/异步待 hardening</td></tr>
         <tr><td class="q">D5</td><td>ECS 角色</td><td class="pick">内部 EntityStore 列存储</td><td>Entity 仅 DTO；暂不引入 bevy_ecs</td></tr>
         <tr><td class="q">D6</td><td>空间/物理</td><td class="pick">核心拥有逻辑空间/导航/碰撞</td><td>引擎只做表现；不追求跨 CPU 逐位一致</td></tr>
         <tr><td class="q">D7</td><td>世界模型</td><td class="pick">World + Session + Zone + Entity</td><td>不绑塔防/关卡结构</td></tr>
@@ -576,7 +576,7 @@ node tools/serve-web.mjs --port 8787
       </tbody>
     </table>
     <p class="dim">ADR：<a href="../plans/ADR-001-m0-decisions.md">001 拍板</a> · <a href="../plans/ADR-002-pack-schema-v0.md">002 包 schema</a> · <a href="../plans/ADR-003-determinism-save-replay.md">003 确定性</a> · <a href="../plans/ADR-004-abi-v0.md">004 ABI</a> · <a href="../plans/ADR-005-slab-store.md">005 slab</a> · <a href="../plans/ADR-006-quickjs-spike.md">006 QuickJS</a> · <a href="../plans/ADR-007-m1-ts-dsl-web.md">007 M1</a> · <a href="../plans/ADR-008-real-5k-benchmark.md">008 真实 5k</a></p>
-    <div class="note"><b>下一步未拍板：</b>ScriptHost 持久状态/模块/异步、动态导航、编辑器 v0.6 schema 表单、L4/L5 的 mod 能力边界。</div>
+    <div class="note"><b>下一步未拍板：</b>ScriptHost 模块/异步、L4/L5 的 mod 能力边界、完整 NPC 避让。</div>
   </section>
 
   <section class="panel" id="p-roadmap" role="tabpanel" aria-labelledby="t-roadmap">
@@ -584,7 +584,7 @@ node tools/serve-web.mjs --port 8787
     <p class="lede">M0/M1 证明“这套边界能跑”；M2 证明“在真实引擎里能跑同一局”；L4/L5 再证明“同一内核能承载社会关系与世界系统”。不要把 Web 预览当成生产适配器。</p>
     <div class="grid g4">
       <div class="card"><span class="chip ok">M0 · 已过</span><h4>可运行内核</h4><p>固定 tick、C ABI、QuickJS spike、坏包、双跑哈希。</p></div>
-      <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/2.5D/3D 多 Demo、编辑器 v0.5、移动/寻路、导航/资产、ScriptHost、内容测试。</p></div>
+      <div class="card"><span class="chip ok">M1 · 主要切片</span><h4>作者闭环</h4><p>TS DSL、2D/2.5D/3D 多 Demo、编辑器 v0.6、移动/寻路、导航/资产、ScriptHost、内容测试。</p></div>
       <div class="card"><span class="chip ok">M2 · 已完成</span><h4>Godot 生产适配器</h4><p>CTS、事件/存档互通、5k 帧时间已过；1,314 行 ≤ 2,000。</p></div>
       <div class="card"><span class="chip ok">L4/L5 · 已完成</span><h4>社会 + 世界系统</h4><p>社会关系、天气、光伏/风电/储能/水/AI 负载；太阳城与霓虹下城对照。</p></div>
       <div class="card"><span class="chip todo">M3/M4</span><h4>工具与试点</h4><p>编辑器成熟、导航/资产管线、LiveBay 切片试点。</p></div>
@@ -617,9 +617,9 @@ node tools/serve-web.mjs --port 8787
     <table>
       <thead><tr><th>风险</th><th>为什么危险</th><th>下一步</th></tr></thead>
       <tbody>
-        <tr><td><b>ScriptHost 仅事件作用域</b></td><td>无持久脚本状态、模块 import、异步调度、墙钟抢占；JSON 规则仍是主路径。</td><td>持久状态/模块/异步/墙钟预算作为 hardening；先用真实内容压。</td></tr>
-        <tr><td><b>导航是静态的</b></td><td>门烘焙成障碍；开门寻路已按 AABB 临时放行；NPC 可按日程 target 走同一 A*，但没有局部网格重建和完整避让。</td><td>局部网格更新 + 非门动态障碍 + 完整 NPC 避让。</td></tr>
-        <tr><td><b>5k v1 是单 Zone mixed load</b></td><td>不是 5k NPC 每 tick 决策，也不是多 Zone 驻留。</td><td>v2 由 M2 Adapter 触发；再决定是否换 bevy_ecs。</td></tr>
+        <tr><td><b>ScriptHost 仍有模块/异步缺口</b></td><td>每脚本持久状态与墙钟护栏已补；模块 import、异步调度、热重载仍无；JSON 规则仍是主路径。</td><td>模块/异步/热重载作为后续 hardening；先用真实内容压。</td></tr>
+        <tr><td><b>导航是静态的</b></td><td>门按 AABB 临时放行；非门动态 Prop 通过 <code>MoveProp</code> 做局部 nav 重建；NPC 可按日程 target 走同一 A*，但没有完整避让。</td><td>完整 NPC 避让 + 更多动态障碍形状。</td></tr>
+        <tr><td><b>5k v1 是单 Zone mixed load</b></td><td>v2 已加 4 个 NPC 路径/动态 Prop，但仍不是 5k NPC 每 tick 决策或多 Zone 驻留。</td><td>再做多 Zone/全量决策压测；再决定是否换 bevy_ecs。</td></tr>
         <tr><td><b>编辑器还不够“作者友好”</b></td><td>复杂字段仍改 JSON；对话图简单；没有浏览器内实时预览。</td><td>v0.6 schema 表单、错误定位、自动布局。</td></tr>
         <tr><td><b>3D 是表现层</b></td><td>低模、无 GLB/骨骼/空间音频；不能代表最终美术。</td><td>资产管线 + 一个真实 GLB 角色/场景。</td></tr>
         <tr><td><b>跨平台 ABI/浮点</b></td><td>三平台 cargo test 已实跑通过；real5k / ScriptHost wasm / 8 页覆盖已在 run 45757232197 验证。</td><td>保持三平台 CI；固定 ABI/哈希测试。</td></tr>
@@ -628,7 +628,7 @@ node tools/serve-web.mjs --port 8787
 
     <h3>下一步（按价值）</h3>
     <ol class="tl">
-      <li class="next"><b>动态导航</b><span>开门后的导航已放行；下一步做非门动态障碍/局部网格重建与完整 NPC 避让。</span></li>
+      <li class="next"><b>动态导航</b><span>开门与非门动态 Prop 的局部 nav 已补；下一步做完整 NPC 避让与更多动态形状。</span></li>
       <li class="next"><b>活 NPC · M3 方案</b><span>L2 utility/activity/memory，L0 腿 + L1 手；见 <a href="../docs/12_活NPC与行为层方案.md">12</a>。</span></li>
       <li class="next"><b>编辑器 v0.6</b><span>schema 表单、字段级错误、对话图自动布局。</span></li>
       <li class="next"><b>M3 · 活 NPC 试点</b><span>先冻结方案，再决定是否在 M3 做；不改变 M3 三宿主验收。</span></li>

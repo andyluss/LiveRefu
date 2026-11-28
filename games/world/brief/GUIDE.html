@@ -42,7 +42,7 @@
     <h1>你写世界，<br>引擎只负责把它画出来。</h1>
     <p class="lead">RefuWorld 把“世界怎么运转”从引擎里拿出来：Rust 内核负责确定性 tick、规则、空间、导航和存档；你用 TypeScript 或 JSON 描述内容；Web 编辑器、2D 预览和 3D 演示都只是这份内容的视图。你不需要先学 Godot 或 Unity 才能做出一个可玩的房间。</p>
     <div class="box tip"><h3>三十秒版本</h3><p>打开 Web 编辑器 → 拖一个 NPC、一扇门、一张钥匙卡 → 写一条“有钥匙卡就开门”的规则 → 接一段对话和任务 → <b>构建并试玩</b>。所有内容最终变成一个带哈希的内容包；同一条 trace 在 Headless、C ABI、wasm 预览里跑出同一局。</p></div>
-    <p class="dim">当前是 <b>M2 完成 + L4/L5</b>：TS DSL、19 个 2D/2.5D/3D Demo、ScriptHost、编辑器 v0.5、移动/寻路、导航/资产、社会关系、世界系统与内容测试均可运行。架构与迁移见 <a href="../docs/11_内核分层与迁移.md">11 · 内核分层与迁移</a>；剩余边界见 <a href="HUB.html#risks">HUB 风险页</a>。</p>
+    <p class="dim">当前是 <b>M2 完成 + L4/L5</b>：TS DSL、19 个 2D/2.5D/3D Demo、ScriptHost、编辑器 v0.6、移动/寻路、导航/资产、社会关系、世界系统与内容测试均可运行。架构与迁移见 <a href="../docs/11_内核分层与迁移.md">11 · 内核分层与迁移</a>；剩余边界见 <a href="HUB.html#risks">HUB 风险页</a>。</p>
     <div class="box"><h3>内核分层</h3><p><b>L0 时空物理</b>（tick/空间/碰撞/导航）→ <b>L1 主体交互</b>（背包/门/物品）→ <b>L2 行为能动</b>（日程/行为）→ <b>L3 叙事规则</b>（flags/quests/dialogue/script）→ <b>L4 社会关系</b>（阵营/关系/声望）→ <b>L5 世界系统</b>（天气/能源/水/AI 负载）。上层依赖下层；EntityStore 用组件列存储，Snapshot 仍是 v1 DTO。</p></div>
   </section>
 
@@ -72,7 +72,7 @@ node tools/serve-web.mjs --port 8787
     <pre><code>cd games/world
 ./worldc editor --port 8788
 # 浏览器打开 http://127.0.0.1:8788/</code></pre>
-    <figure class="shot"><img src="../docs/shots/m1_editor.png" alt="RefuWorld Web 编辑器 v0.5"><figcaption><b>编辑器 v0.5</b> · 左：布局；右：实体列表、摆放字段、字段表单、定义/规则 JSON、对话图。</figcaption></figure>
+    <figure class="shot"><img src="../docs/shots/m1_editor_v06.png" alt="RefuWorld Web 编辑器 v0.6"><figcaption><b>编辑器 v0.6</b> · 左：布局；右：实体列表、摆放字段、字段表单、定义/规则 JSON、对话图。</figcaption></figure>
     <div class="flow">
       <div class="step"><b>选中实体</b><span>右侧列表或画布点击</span></div>
       <div class="step"><b>拖动摆放</b><span>0.5m 网格，Shift 微调</span></div>
