@@ -218,7 +218,7 @@ impl Spacetime {
         path: &[[f32; 2]],
         mut index: usize,
         obstacles: &[Obstacle],
-    ) -> (Option<[f32; 3]>, usize, bool) {
+    ) -> (Option<[f32; 3]>, usize, bool, bool) {
         let mut position = body.position;
         while index < path.len() {
             let waypoint = path[index];
@@ -231,18 +231,18 @@ impl Spacetime {
             }
         }
         if index >= path.len() {
-            return (Some(position), index, true);
+            return (Some(position), index, true, false);
         }
         let waypoint = path[index];
         let dx = waypoint[0] - position[0];
         let dz = waypoint[1] - position[2];
         let distance = (dx * dx + dz * dz).sqrt();
         if distance <= 1e-6 {
-            return (Some(position), index + 1, index + 1 >= path.len());
+            return (Some(position), index + 1, index + 1 >= path.len(), false);
         }
         let speed = body.speed.max(0.0);
         if speed <= 0.0 {
-            return (Some(position), index, false);
+            return (Some(position), index, false, false);
         }
         let step = (speed / self.tick_hz.max(1) as f32).min(distance);
         let moved_x = self
@@ -272,16 +272,16 @@ impl Spacetime {
                     .map(|next| position = next)
                     .is_some()
             {
-                return (Some(position), index, false);
+                return (Some(position), index, false, true);
             }
-            return (Some(position), index, false);
+            return (Some(position), index, false, false);
         }
         let remaining_x = waypoint[0] - position[0];
         let remaining_z = waypoint[1] - position[2];
         if remaining_x * remaining_x + remaining_z * remaining_z <= 0.04 {
             index += 1;
         }
-        (Some(position), index, index >= path.len())
+        (Some(position), index, index >= path.len(), false)
     }
 
     /// Rebuild only the cells touched by a moved prop (old + new AABB).
@@ -432,7 +432,9 @@ mod tests {
             collider: Some(Collider::Circle { radius: 0.5 }),
             open: false,
         };
-        let (position, _, completed) = space.advance_path(&body, &[[4.0, 0.0]], 0, &[obstacle]);
+        let (position, _, completed, avoided) =
+            space.advance_path(&body, &[[4.0, 0.0]], 0, &[obstacle]);
+        assert!(avoided, "must report local avoidance");
         let position = position.expect("position");
         assert!(!completed);
         assert!(position[2].abs() > 0.05, "must sidestep in z: {position:?}");

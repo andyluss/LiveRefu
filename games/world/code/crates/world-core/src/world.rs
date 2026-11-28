@@ -81,6 +81,7 @@ pub struct World {
     movement_obstacles: Vec<Obstacle>,
     behavior_changes: Vec<BehaviorChange>,
     npc_paths: BTreeMap<String, NpcPath>,
+    npc_stuck: BTreeMap<String, u32>,
     pending_script_state: Option<String>,
     pub max_catchup: u32,
     pub interaction_range: f32,
@@ -117,6 +118,7 @@ impl World {
             movement_obstacles: Vec::with_capacity(64),
             behavior_changes: Vec::new(),
             npc_paths: BTreeMap::new(),
+            npc_stuck: BTreeMap::new(),
             pending_script_state: None,
             max_catchup: 4,
             interaction_range: pack.world.interaction_range.unwrap_or(f32::INFINITY),
@@ -539,6 +541,7 @@ impl World {
             return;
         };
         let open_boxes = self.open_door_boxes();
+        self.npc_stuck.remove(&key);
         match self
             .spacetime
             .find_path_with_open(from, target, &open_boxes)
@@ -591,9 +594,13 @@ impl World {
                         open,
                     });
                 });
-            let (position, next_index, completed) =
+            let (position, next_index, completed, avoided) =
                 self.spacetime
                     .advance_path(&body, &path_state.path, path_state.index, &obstacles);
+            if avoided {
+                self.emit("npc_avoided", Some(id), json!({"entity": content_id}));
+            }
+            let before = body.position;
             if let Some(position) = position {
                 if let Some(entity) = self.entity_mut(id) {
                     entity.transform.position = position;
@@ -601,8 +608,44 @@ impl World {
             }
             if completed {
                 self.npc_paths.remove(&content_id);
+                self.npc_stuck.remove(&content_id);
             } else if let Some(state) = self.npc_paths.get_mut(&content_id) {
                 state.index = next_index;
+                let moved = self
+                    .entity(id)
+                    .map(|entity| {
+                        let x = entity.transform.position[0] - before[0];
+                        let z = entity.transform.position[2] - before[2];
+                        x * x + z * z > 1e-6
+                    })
+                    .unwrap_or(false);
+                if moved {
+                    self.npc_stuck.remove(&content_id);
+                } else {
+                    let stuck = {
+                        let count = self.npc_stuck.entry(content_id.clone()).or_insert(0);
+                        *count = count.saturating_add(1);
+                        *count
+                    };
+                    if stuck % 20 == 0 {
+                        if stuck >= 60 {
+                            self.npc_paths.remove(&content_id);
+                            self.npc_stuck.remove(&content_id);
+                            self.emit(
+                                "npc_stuck",
+                                Some(id),
+                                json!({"entity": content_id, "target": path_state.target}),
+                            );
+                        } else {
+                            self.set_npc_path(id, &content_id, path_state.target);
+                            self.emit(
+                                "npc_retry",
+                                Some(id),
+                                json!({"entity": content_id, "target": path_state.target}),
+                            );
+                        }
+                    }
+                }
             }
         }
     }

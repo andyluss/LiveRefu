@@ -127,6 +127,7 @@
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
 ### 变更
+- **W-004 拍板**：真实墙钟 `setTimeout` 明确不提供；timer 只按确定性 tick 调度，墙钟仅用于护栏/诊断。
 
 - **推荐方案定稿（待人类拍板）**：Rust 权威内核 + TypeScript 内容层 + 版本化 C ABI + 薄引擎适配器；
   首批宿主为 Headless（CI）/ Web（作者预览）/ Godot（首个生产适配器）。
