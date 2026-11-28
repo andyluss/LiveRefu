@@ -11,14 +11,18 @@ use world_script::attach_script_host;
 
 const WARMUP_TICKS: u64 = 300;
 
-pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), String> {
+pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool, v2: bool) -> Result<(), String> {
     if ticks == 0 {
         return Err("--ticks 必须大于 0".to_string());
     }
     if runs == 0 {
         return Err("--runs 必须大于 0".to_string());
     }
-    let pack = Pack::real5k(seed);
+    let pack = if v2 {
+        Pack::real5k_v2(seed)
+    } else {
+        Pack::real5k(seed)
+    };
     let report = pack.validate();
     if !report.is_ok() {
         let errors = report
@@ -43,6 +47,7 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
     let mut command_rejected = 0usize;
     let mut script_errors = 0usize;
     let mut commands_enqueued = 0usize;
+    let mut final_npc_paths = 0usize;
 
     for _ in 0..runs {
         let mut world = World::from_pack(&pack, pack_hash.clone())?;
@@ -54,12 +59,12 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
         world.set_script_event_filter(["bench.pulse"]);
 
         for _ in 0..WARMUP_TICKS {
-            enqueue_workload(&mut world, &mut commands_enqueued);
+            enqueue_workload(&mut world, &mut commands_enqueued, v2);
             world.tick_once();
         }
 
         for _ in 0..ticks {
-            enqueue_workload(&mut world, &mut commands_enqueued);
+            enqueue_workload(&mut world, &mut commands_enqueued, v2);
 
             let start = Instant::now();
             world.tick_once();
@@ -91,6 +96,7 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
 
         final_entities = world.entities().count();
         final_events = world.events.len();
+        final_npc_paths = world.snapshot().npc_paths.len();
         command_rejected = world
             .events
             .iter()
@@ -115,7 +121,7 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
     let tick_p95 = tick_stats["p95"].as_f64().unwrap_or(f64::INFINITY);
     let snapshot_p95 = snapshot_stats["p95"].as_f64().unwrap_or(f64::INFINITY);
     let report = json!({
-        "scenario": "real5k",
+        "scenario": if v2 { "real5k-v2" } else { "real5k" },
         "profile": if cfg!(debug_assertions) { "debug" } else { "release" },
         "machine": {"os": std::env::consts::OS, "arch": std::env::consts::ARCH},
         "seed": seed,
@@ -127,6 +133,7 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
         "entities": final_entities,
         "commands_enqueued": commands_enqueued,
         "events": final_events,
+        "npc_paths": final_npc_paths,
         "command_rejected": command_rejected,
         "script_errors": script_errors,
         "hashes_equal": hashes_equal,
@@ -155,7 +162,7 @@ pub fn run(seed: u64, ticks: u64, runs: usize, json_out: bool) -> Result<(), Str
     Ok(())
 }
 
-fn enqueue_workload(world: &mut World, commands_enqueued: &mut usize) {
+fn enqueue_workload(world: &mut World, commands_enqueued: &mut usize, v2: bool) {
     let tick = world.tick();
     if tick.is_multiple_of(6) {
         let lane = (tick / 6) as usize % 4;
@@ -200,6 +207,17 @@ fn enqueue_workload(world: &mut World, commands_enqueued: &mut usize) {
         });
         *commands_enqueued += 1;
     }
+    if v2 && tick.is_multiple_of(90) {
+        if let Some(prop) = world.find_by_content_id("bench.prop") {
+            let lane = (tick / 90) as i32 % 4;
+            world.queue_command(Command::MoveProp {
+                target: prop,
+                x: (lane as f32 - 1.5) * 4.0,
+                z: 3.0,
+            });
+            *commands_enqueued += 1;
+        }
+    }
 }
 
 fn stats(samples: &mut [f64]) -> Value {
@@ -234,8 +252,9 @@ fn print_human(report: &Value) {
         }
         value.to_string()
     };
+    let scenario = report["scenario"].as_str().unwrap_or("real5k");
     println!(
-        "bench real5k: entities={}→{} ticks={} runs={} commands={} events={} rejected={} script_errors={}",
+        "bench {scenario}: entities={}→{} ticks={} runs={} commands={} events={} rejected={} script_errors={}",
         field(&["entities_initial"]),
         field(&["entities"]),
         field(&["ticks"]),

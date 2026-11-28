@@ -264,6 +264,95 @@ impl Spacetime {
         (Some(position), index, index >= path.len())
     }
 
+    /// Rebuild only the cells touched by a moved prop (old + new AABB).
+    ///
+    /// This keeps the baked nav grid for untouched cells while making
+    /// non-door dynamic props visible to A* without a full-zone rebake.
+    pub(crate) fn rebuild_nav_local(
+        &mut self,
+        old: Option<([f32; 2], [f32; 2])>,
+        new: ([f32; 2], [f32; 2]),
+        obstacles: &[Obstacle],
+    ) {
+        let Some(nav) = self.nav.as_mut() else {
+            return;
+        };
+        let width = nav.width as i32;
+        let height = nav.height as i32;
+        if width <= 0 || height <= 0 || nav.cell <= 0.0 {
+            return;
+        }
+        let expansion = 1.0;
+        let mut min_x = (new.0[0] - new.1[0] - expansion - nav.origin[0]) / nav.cell;
+        let mut max_x = (new.0[0] + new.1[0] + expansion - nav.origin[0]) / nav.cell;
+        let mut min_z = (new.0[1] - new.1[1] - expansion - nav.origin[1]) / nav.cell;
+        let mut max_z = (new.0[1] + new.1[1] + expansion - nav.origin[1]) / nav.cell;
+        if let Some((center, half)) = old {
+            min_x = min_x.min((center[0] - half[0] - expansion - nav.origin[0]) / nav.cell);
+            max_x = max_x.max((center[0] + half[0] + expansion - nav.origin[0]) / nav.cell);
+            min_z = min_z.min((center[1] - half[1] - expansion - nav.origin[1]) / nav.cell);
+            max_z = max_z.max((center[1] + half[1] + expansion - nav.origin[1]) / nav.cell);
+        }
+        let min_x = (min_x.floor() as i32).clamp(0, width - 1);
+        let max_x = (max_x.ceil() as i32).clamp(0, width - 1);
+        let min_z = (min_z.floor() as i32).clamp(0, height - 1);
+        let max_z = (max_z.ceil() as i32).clamp(0, height - 1);
+        for z in min_z..=max_z {
+            for x in min_x..=max_x {
+                let center = [
+                    nav.origin[0] + (x as f32 + 0.5) * nav.cell,
+                    nav.origin[1] + (z as f32 + 0.5) * nav.cell,
+                ];
+                let in_old = old
+                    .map(|(c, h)| point_in_box(center, c, h))
+                    .unwrap_or(false);
+                if !in_old && !point_in_box(center, new.0, new.1) {
+                    continue;
+                }
+                let blocked = obstacles.iter().any(|obstacle| {
+                    if obstacle.open {
+                        return false;
+                    }
+                    match &obstacle.collider {
+                        Some(Collider::Aabb { half }) => point_in_box(
+                            center,
+                            [obstacle.position[0], obstacle.position[2]],
+                            *half,
+                        ),
+                        Some(Collider::Circle { radius }) => {
+                            let dx = center[0] - obstacle.position[0];
+                            let dz = center[1] - obstacle.position[2];
+                            dx * dx + dz * dz <= radius * radius
+                        }
+                        None => false,
+                    }
+                });
+                let index = (z * width + x) as u32;
+                if blocked {
+                    if !nav.blocked.contains(&index) {
+                        nav.blocked.push(index);
+                    }
+                } else {
+                    nav.blocked.retain(|cell| *cell != index);
+                }
+            }
+        }
+        nav.blocked.sort_unstable();
+        nav.blocked.dedup();
+    }
+
+    /// Debug/test helper: is the nav cell containing this point blocked?
+    pub fn nav_blocked_at(&self, point: [f32; 2]) -> Option<bool> {
+        let nav = self.nav.as_ref()?;
+        let x = ((point[0] - nav.origin[0]) / nav.cell).floor() as i32;
+        let z = ((point[1] - nav.origin[1]) / nav.cell).floor() as i32;
+        if x < 0 || z < 0 || x >= nav.width as i32 || z >= nav.height as i32 {
+            return None;
+        }
+        let index = (z * nav.width as i32 + x) as u32;
+        Some(nav.blocked.contains(&index))
+    }
+
     /// A* that lets already-open doors through baked blocked cells.
     pub fn find_path_with_open(
         &self,
@@ -275,6 +364,10 @@ impl Spacetime {
             .as_ref()
             .and_then(|nav| nav::find_path_with_open(nav, start, goal, open_boxes))
     }
+}
+
+fn point_in_box(point: [f32; 2], center: [f32; 2], half: [f32; 2]) -> bool {
+    (point[0] - center[0]).abs() <= half[0] + 1e-4 && (point[1] - center[1]).abs() <= half[1] + 1e-4
 }
 
 fn circle_aabb_overlap(

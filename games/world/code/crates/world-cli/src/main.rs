@@ -660,9 +660,9 @@ fn cmd_demo(args: &[String]) -> Result<(), String> {
 
 fn cmd_bench(args: &[String]) -> Result<(), String> {
     if let Some(scenario) = parse_flag(args, "--scenario") {
-        if scenario != "real5k" {
+        if scenario != "real5k" && scenario != "real5k-v2" {
             return Err(format!(
-                "未知 benchmark scenario: {scenario}（当前支持 real5k）"
+                "未知 benchmark scenario: {scenario}（当前支持 real5k / real5k-v2）"
             ));
         }
         let seed = parse_flag(args, "--seed")
@@ -678,7 +678,7 @@ fn cmd_bench(args: &[String]) -> Result<(), String> {
             .parse()
             .map_err(|e| format!("--runs 解析失败: {e}"))?;
         let json_out = args.iter().any(|a| a == "--json");
-        return bench_real5k::run(seed, ticks, runs, json_out);
+        return bench_real5k::run(seed, ticks, runs, json_out, scenario == "real5k-v2");
     }
     if let Some(raw) = parse_flag(args, "--synthetic") {
         let entities: usize = raw
@@ -876,7 +876,7 @@ fn print_help() {
   worldc save     [--pack DIR] [--trace FILE] [--ticks N] --out FILE
   worldc load     [--pack DIR] --save FILE
   worldc bench    [--pack DIR] [--synthetic N] [--ticks N]
-  worldc bench    --scenario real5k [--seed N] [--ticks N] [--runs N] [--json]
+  worldc bench    --scenario real5k|real5k-v2 [--seed N] [--ticks N] [--runs N] [--json]
   worldc new      <pack.id> [--out DIR]
   worldc header   [--out FILE]
   worldc explain  <CODE>

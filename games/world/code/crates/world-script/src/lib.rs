@@ -5,12 +5,18 @@ use rquickjs::{CaughtError, Context, Function, Runtime};
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
+#[cfg(not(target_arch = "wasm32"))]
+use std::sync::Mutex;
+#[cfg(not(target_arch = "wasm32"))]
+use std::time::{Duration, Instant};
 use world_core::{run_trace, run_trace_with_host, Command, RunResult, ScriptHost, Trace, World};
 use world_pack::Pack;
 
 pub const MAX_COMMANDS_PER_EVENT: usize = 128;
 /// QuickJS 中断回调的粗粒度工作预算（不是墙钟）；防止脚本死循环卡住 tick。
 const MAX_INTERRUPT_STEPS: u64 = 20_000;
+#[cfg(not(target_arch = "wasm32"))]
+const MAX_WALL_MS: u64 = 100;
 
 /// M0 遗留的纯表达式评估，保留给 wasm spike/独立测试。
 pub fn eval_bool(source: &str) -> Result<bool, String> {
@@ -26,9 +32,13 @@ pub fn eval_bool(source: &str) -> Result<bool, String> {
 }
 
 const DISPATCH: &str = r#"
+globalThis.__dshState = globalThis.__dshState || {};
+globalThis.__dshGetState = function () { return JSON.stringify(globalThis.__dshState || {}); };
+globalThis.__dshSetState = function (input) { globalThis.__dshState = JSON.parse(input || "{}"); };
 globalThis.__dshDispatch = function (input) {
   if (typeof onEvent !== "function") return "[]";
   var ctx = JSON.parse(input);
+  ctx.state = globalThis.__dshState;
   var out = onEvent(ctx);
   return JSON.stringify(out == null ? [] : out);
 };
@@ -40,6 +50,9 @@ pub struct QuickJsHost {
     runtime: Runtime,
     max_commands: usize,
     budget: Arc<AtomicU64>,
+    states: Vec<String>,
+    #[cfg(not(target_arch = "wasm32"))]
+    deadline: Arc<Mutex<Instant>>,
 }
 
 impl QuickJsHost {
@@ -52,9 +65,28 @@ impl QuickJsHost {
         runtime.set_memory_limit(16 * 1024 * 1024);
         runtime.set_max_stack_size(1024 * 1024);
         let budget = Arc::new(AtomicU64::new(0));
+        #[cfg(not(target_arch = "wasm32"))]
+        let deadline = Arc::new(Mutex::new(
+            Instant::now() + Duration::from_millis(MAX_WALL_MS),
+        ));
         let budget_for_interrupt = Arc::clone(&budget);
+        #[cfg(not(target_arch = "wasm32"))]
+        let deadline_for_interrupt = Arc::clone(&deadline);
         runtime.set_interrupt_handler(Some(Box::new(move || {
-            budget_for_interrupt.fetch_add(1, Ordering::Relaxed) > MAX_INTERRUPT_STEPS
+            if budget_for_interrupt.fetch_add(1, Ordering::Relaxed) > MAX_INTERRUPT_STEPS {
+                return true;
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                return deadline_for_interrupt
+                    .lock()
+                    .map(|deadline| Instant::now() > *deadline)
+                    .unwrap_or(true);
+            }
+            #[cfg(target_arch = "wasm32")]
+            {
+                false
+            }
         })));
         let mut contexts = Vec::new();
         for (name, source) in scripts {
@@ -70,11 +102,15 @@ impl QuickJsHost {
             })?;
             contexts.push((name.clone(), context));
         }
+        let states = contexts.iter().map(|_| "{}".to_string()).collect();
         Ok(Self {
             runtime,
             contexts,
             max_commands: MAX_COMMANDS_PER_EVENT,
             budget,
+            states,
+            #[cfg(not(target_arch = "wasm32"))]
+            deadline,
         })
     }
 
@@ -82,6 +118,14 @@ impl QuickJsHost {
         self.contexts
             .iter()
             .map(|(name, _)| name.as_str())
+            .collect()
+    }
+
+    fn state_map(&self) -> BTreeMap<String, String> {
+        self.contexts
+            .iter()
+            .enumerate()
+            .map(|(index, (name, _))| (name.clone(), self.states[index].clone()))
             .collect()
     }
 }
@@ -107,20 +151,61 @@ pub fn run_trace_with_scripts(
 }
 
 impl ScriptHost for QuickJsHost {
+    fn state_json(&self) -> Option<String> {
+        let states = self.state_map();
+        if states.values().all(|state| state == "{}") {
+            return None;
+        }
+        serde_json::to_string(&states).ok()
+    }
+
+    fn restore_state(&mut self, state: &str) -> Result<(), String> {
+        let states: BTreeMap<String, String> =
+            serde_json::from_str(state).map_err(|e| format!("脚本状态 JSON 解析失败: {e}"))?;
+        for (index, (name, _)) in self.contexts.iter().enumerate() {
+            if let Some(value) = states.get(name) {
+                self.states[index] = value.clone();
+            }
+        }
+        Ok(())
+    }
+
     fn on_event(&mut self, context_json: &str) -> Result<Vec<Command>, String> {
         let _ = &self.runtime;
         self.budget.store(0, Ordering::Relaxed);
+        #[cfg(not(target_arch = "wasm32"))]
+        #[cfg(not(target_arch = "wasm32"))]
+        if let Ok(mut deadline) = self.deadline.lock() {
+            *deadline = Instant::now() + Duration::from_millis(MAX_WALL_MS);
+        }
         let mut commands = Vec::new();
-        for (name, context) in &self.contexts {
-            let text = context.with(|ctx| {
+        for (index, (name, context)) in self.contexts.iter().enumerate() {
+            let state = self.states[index].clone();
+            let (text, next_state) = context.with(|ctx| {
+                let set_state: Function = ctx
+                    .globals()
+                    .get("__dshSetState")
+                    .map_err(|e| format!("脚本 {name} 缺少 state dispatcher: {e}"))?;
+                set_state
+                    .call::<_, ()>((state,))
+                    .map_err(|e| format_script_error(&ctx, name, e))?;
                 let dispatch: Function = ctx
                     .globals()
                     .get("__dshDispatch")
                     .map_err(|e| format!("脚本 {name} 缺少 dispatch: {e}"))?;
-                dispatch
+                let text = dispatch
                     .call::<_, String>((context_json,))
-                    .map_err(|e| format_script_error(&ctx, name, e))
+                    .map_err(|e| format_script_error(&ctx, name, e))?;
+                let get_state: Function = ctx
+                    .globals()
+                    .get("__dshGetState")
+                    .map_err(|e| format!("脚本 {name} 缺少 state getter: {e}"))?;
+                let next_state = get_state
+                    .call::<_, String>(())
+                    .map_err(|e| format_script_error(&ctx, name, e))?;
+                Ok::<_, String>((text, next_state))
             })?;
+            self.states[index] = next_state;
             let parsed: Vec<Command> = serde_json::from_str(&text)
                 .map_err(|e| format!("脚本 {name} 返回的不是命令数组: {e}"))?;
             if commands.len() + parsed.len() > self.max_commands {
@@ -180,6 +265,28 @@ mod tests {
         );
         let mut host = QuickJsHost::from_scripts(&scripts).unwrap();
         assert!(host.on_event("{}").is_err());
+    }
+
+    #[test]
+    fn persistent_state_survives_events_and_restore() {
+        let mut scripts = BTreeMap::new();
+        scripts.insert(
+            "state".to_string(),
+            "function onEvent(ctx) { ctx.state.n = (ctx.state.n || 0) + 1; return [{op:'toast', text:String(ctx.state.n)}]; }".to_string(),
+        );
+        let mut host = QuickJsHost::from_scripts(&scripts).unwrap();
+        let first = host.on_event("{}").unwrap();
+        assert!(matches!(&first[0], Command::Toast { text, .. } if text == "1"));
+        let second = host.on_event("{}").unwrap();
+        assert!(matches!(&second[0], Command::Toast { text, .. } if text == "2"));
+        let state = host.state_json().expect("state exists");
+        let state_map: BTreeMap<String, String> = serde_json::from_str(&state).unwrap();
+        assert!(state_map["state"].contains("\"n\":2"), "{state}");
+
+        let mut restored = QuickJsHost::from_scripts(&scripts).unwrap();
+        restored.restore_state(&state).unwrap();
+        let third = restored.on_event("{}").unwrap();
+        assert!(matches!(&third[0], Command::Toast { text, .. } if text == "3"));
     }
 
     #[test]

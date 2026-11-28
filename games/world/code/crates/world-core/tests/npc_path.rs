@@ -1,5 +1,5 @@
 use std::path::PathBuf;
-use world_core::World;
+use world_core::{Command, World};
 use world_pack::Pack;
 
 fn solar_pack() -> Pack {
@@ -48,4 +48,27 @@ fn legacy_harbor_has_no_npc_paths_and_keeps_golden_hash() {
     assert!(snap.npc_paths.is_empty());
     let json = serde_json::to_string(&snap).unwrap();
     assert!(!json.contains("\"npc_paths\""));
+}
+
+#[test]
+fn moving_a_non_door_prop_updates_local_nav() {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../data/demo.harbor");
+    let pack = Pack::load_dir(root).unwrap();
+    let mut world = World::from_pack(&pack, pack.hash().unwrap()).unwrap();
+    let crate_id = world.find_by_content_id("demo.crate").unwrap();
+    assert_eq!(world.nav_blocked_at(1.0, 4.0), Some(false));
+    world.queue_command(Command::MoveProp {
+        target: crate_id,
+        x: 1.0,
+        z: 4.0,
+    });
+    world.tick_once();
+    assert_eq!(world.nav_blocked_at(1.0, 4.0), Some(true));
+    world.queue_command(Command::MoveProp {
+        target: crate_id,
+        x: 7.0,
+        z: -7.0,
+    });
+    world.tick_once();
+    assert_eq!(world.nav_blocked_at(1.0, 4.0), Some(false));
 }

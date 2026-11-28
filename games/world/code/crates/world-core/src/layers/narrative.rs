@@ -112,6 +112,17 @@ impl Narrative {
     pub fn script_host_mut(&mut self) -> Option<&mut Box<dyn ScriptHost>> {
         self.script_host.as_mut()
     }
+
+    pub fn script_state(&self) -> Option<String> {
+        self.script_host.as_ref().and_then(|host| host.state_json())
+    }
+
+    pub fn restore_script_state(&mut self, state: &str) -> Result<(), String> {
+        match self.script_host.as_mut() {
+            Some(host) => host.restore_state(state),
+            None => Ok(()),
+        }
+    }
 }
 
 #[cfg(test)]

@@ -3,8 +3,11 @@ import { readFileSync } from "node:fs";
 
 const report = JSON.parse(readFileSync(process.argv[2], "utf8"));
 const noPerf = process.argv.includes("--no-perf");
+const v2 = process.argv.includes("--v2");
 const checks = [
+  ["scenario", report.scenario === (v2 ? "real5k-v2" : "real5k")],
   ["initial 5000 entities", report.entities_initial === 5000],
+  ...(v2 ? [["v2 npc paths", report.npc_paths >= 1]] : []),
   ["5 runs", report.runs >= 1],
   ["hash equal", report.hashes_equal === true],
   ["no rejected commands", report.command_rejected === 0],
@@ -24,4 +27,4 @@ for (const [name, ok] of checks) {
   if (!ok) failed += 1;
 }
 if (failed) process.exit(1);
-console.log(`real5k PASS: tick p95=${report.tick_ms.p95}ms, hash=${report.final_hash}`);
+console.log(`real5k${v2 ? "-v2" : ""} PASS: tick p95=${report.tick_ms.p95}ms, hash=${report.final_hash}`);

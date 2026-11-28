@@ -55,6 +55,11 @@ pub enum Command {
     OpenDoor {
         target: EntityId,
     },
+    MoveProp {
+        target: EntityId,
+        x: f32,
+        z: f32,
+    },
     SocialAction {
         actor: EntityId,
         target: Option<EntityId>,

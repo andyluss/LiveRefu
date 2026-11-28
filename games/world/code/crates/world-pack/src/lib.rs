@@ -107,6 +107,11 @@ impl Pack {
         bench::real5k(seed)
     }
 
+    /// 5k v2: v1 mixed load + sustained NPC paths / dynamic prop moves.
+    pub fn real5k_v2(seed: u64) -> Self {
+        bench::real5k_v2(seed)
+    }
+
     /// M1 基准用合成包：一个区域 + N 个相同 Actor 的 placement。
     /// 不写文件，也不进入正式内容；只用于量级/性能基线。
     pub fn synthetic(entities: usize) -> Self {

@@ -54,6 +54,8 @@ pub struct Snapshot {
     pub systems: Option<SystemsSnapshot>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub npc_paths: BTreeMap<String, NpcPath>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub script_state: Option<String>,
 }
 
 pub struct World {
@@ -79,6 +81,7 @@ pub struct World {
     movement_obstacles: Vec<Obstacle>,
     behavior_changes: Vec<BehaviorChange>,
     npc_paths: BTreeMap<String, NpcPath>,
+    pending_script_state: Option<String>,
     pub max_catchup: u32,
     pub overrun_count: u32,
     pub last_error: Option<String>,
@@ -113,6 +116,7 @@ impl World {
             movement_obstacles: Vec::with_capacity(64),
             behavior_changes: Vec::new(),
             npc_paths: BTreeMap::new(),
+            pending_script_state: None,
             max_catchup: 4,
             overrun_count: 0,
             last_error: None,
@@ -180,6 +184,11 @@ impl World {
     /// 由宿主在内容包加载后注入脚本运行时；核心不依赖 QuickJS。
     pub fn set_script_host(&mut self, host: Box<dyn ScriptHost>) {
         self.narrative.set_script_host(host);
+        if let Some(state) = self.pending_script_state.take() {
+            if let Err(error) = self.narrative.restore_script_state(&state) {
+                self.last_error = Some(format!("script state restore: {error}"));
+            }
+        }
     }
 
     pub fn has_script_host(&self) -> bool {
@@ -404,14 +413,7 @@ impl World {
         };
         let mut obstacles = std::mem::take(&mut self.movement_obstacles);
         obstacles.clear();
-        self.store
-            .for_each_obstacle(self.player, |position, collider, open| {
-                obstacles.push(Obstacle {
-                    position,
-                    collider,
-                    open,
-                });
-            });
+        obstacles.extend(self.collect_obstacles(self.player));
         let moved = self.spacetime.apply_movement(&body, &obstacles);
         self.movement_obstacles = obstacles;
         if let Some(position) = moved {
@@ -457,7 +459,9 @@ impl World {
             match change.target {
                 Some(target) => self.set_npc_path(change.id, &change.content_id, target),
                 None => {
-                    self.npc_paths.remove(&change.content_id);
+                    if let Some(key) = self.npc_key(change.id, &change.content_id) {
+                        self.npc_paths.remove(&key);
+                    }
                 }
             }
         }
@@ -478,12 +482,23 @@ impl World {
         boxes
     }
 
+    fn npc_key(&self, id: EntityId, content_id: &str) -> Option<String> {
+        self.entity(id).map(|entity| {
+            entity
+                .persistent_id
+                .clone()
+                .unwrap_or_else(|| content_id.to_string())
+        })
+    }
+
     fn set_npc_path(&mut self, id: EntityId, content_id: &str, target: [f32; 2]) {
         let from = self
             .entity(id)
             .map(|entity| [entity.transform.position[0], entity.transform.position[2]]);
         let Some(from) = from else {
-            self.npc_paths.remove(content_id);
+            return;
+        };
+        let Some(key) = self.npc_key(id, content_id) else {
             return;
         };
         let open_boxes = self.open_door_boxes();
@@ -494,7 +509,7 @@ impl World {
             Some(path) if !path.is_empty() => {
                 let index = if path.len() > 1 { 1 } else { 0 };
                 self.npc_paths.insert(
-                    content_id.to_string(),
+                    key,
                     NpcPath {
                         path,
                         index,
@@ -503,7 +518,7 @@ impl World {
                 );
             }
             _ => {
-                self.npc_paths.remove(content_id);
+                self.npc_paths.remove(&key);
             }
         }
     }
@@ -514,7 +529,10 @@ impl World {
             let Some(path_state) = self.npc_paths.get(&content_id).cloned() else {
                 continue;
             };
-            let Some(id) = self.find_by_content_id(&content_id) else {
+            let Some(id) = self
+                .find_by_persistent_id(&content_id)
+                .or_else(|| self.find_by_content_id(&content_id))
+            else {
                 self.npc_paths.remove(&content_id);
                 continue;
             };
@@ -595,6 +613,7 @@ impl World {
             Command::Move { actor, x, z } => self.command_move(actor, x, z),
             Command::MoveTo { actor, x, z } => self.command_move_to(actor, x, z),
             Command::OpenDoor { target } => self.command_open_door(target),
+            Command::MoveProp { target, x, z } => self.command_move_prop(target, x, z),
             Command::SocialAction {
                 actor,
                 target,
@@ -661,6 +680,70 @@ impl World {
         }
         self.emit("door_opened", Some(target), json!({"target": target}));
         Ok(())
+    }
+
+    fn command_move_prop(&mut self, target: EntityId, x: f32, z: f32) -> Result<(), String> {
+        if !x.is_finite() || !z.is_finite() {
+            return Err("move_prop 输入必须是有限数值".to_string());
+        }
+        let (old_position, old_half, new_half) = {
+            let entity = self
+                .entity(target)
+                .ok_or_else(|| format!("target 不存在: {target}"))?;
+            if entity.kind != EntityKind::Prop {
+                return Err(format!("target 不是 Prop: {target}"));
+            }
+            if entity.tags.iter().any(|tag| tag == "door") {
+                return Err("门请使用 open_door，不要用 move_prop".to_string());
+            }
+            let half = entity
+                .collider
+                .as_ref()
+                .map(|collider| match collider {
+                    Collider::Aabb { half } => [half[0], half[1]],
+                    Collider::Circle { radius } => [*radius, *radius],
+                })
+                .unwrap_or([0.0, 0.0]);
+            (
+                [entity.transform.position[0], entity.transform.position[2]],
+                half,
+                half,
+            )
+        };
+        if let Some(entity) = self.entity_mut(target) {
+            entity.transform.position[0] = x;
+            entity.transform.position[2] = z;
+        }
+        let obstacles = self.collect_obstacles(self.player);
+        self.spacetime.rebuild_nav_local(
+            Some((old_position, old_half)),
+            ([x, z], new_half),
+            &obstacles,
+        );
+        self.emit(
+            "prop_moved",
+            Some(target),
+            json!({"target": target, "x": x, "z": z}),
+        );
+        Ok(())
+    }
+
+    fn collect_obstacles(&self, exclude: EntityId) -> Vec<Obstacle> {
+        let mut obstacles = Vec::new();
+        self.store
+            .for_each_obstacle(exclude, |position, collider, open| {
+                obstacles.push(Obstacle {
+                    position,
+                    collider,
+                    open,
+                });
+            });
+        obstacles
+    }
+
+    /// Debug/test helper for dynamic nav checks.
+    pub fn nav_blocked_at(&self, x: f32, z: f32) -> Option<bool> {
+        self.spacetime.nav_blocked_at([x, z])
     }
 
     fn command_social(
@@ -1043,6 +1126,7 @@ impl World {
             social: self.social.as_ref().map(Social::snapshot),
             systems: self.systems.as_ref().map(Systems::snapshot),
             npc_paths: self.npc_paths.clone(),
+            script_state: self.narrative.script_state(),
         }
     }
 
@@ -1071,6 +1155,7 @@ impl World {
         self.spacetime.path = snap.path;
         self.spacetime.path_index = snap.path_index;
         self.npc_paths = snap.npc_paths;
+        self.pending_script_state = snap.script_state;
         self.events.clear();
         self.event_seq = 0;
         self.pending.clear();

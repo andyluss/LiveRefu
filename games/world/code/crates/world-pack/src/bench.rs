@@ -17,11 +17,22 @@ pub const REAL5K_SCHEDULE_PREFIX: &str = "bench.schedule.";
 
 const PROP_COUNT: usize = 2_999;
 const ACTOR_COUNT: usize = 1_500;
+const V2_ACTOR_COUNT: usize = 4;
 const ITEM_COUNT: usize = 500;
 const ZONE_HALF: f32 = 120.0;
 const NAV_CELL: f32 = 1.0;
 
 pub fn real5k(seed: u64) -> Pack {
+    real5k_with(seed, false)
+}
+
+/// v2: 150 actors have a schedule target and speed, so the benchmark includes
+/// sustained NPC path-following in addition to the v1 mixed load.
+pub fn real5k_v2(seed: u64) -> Pack {
+    real5k_with(seed, true)
+}
+
+fn real5k_with(seed: u64, v2: bool) -> Pack {
     let mut placements = Vec::with_capacity(PROP_COUNT + ACTOR_COUNT + ITEM_COUNT);
 
     // 2999 个静态 Prop：留出中央区域和 z=0 走廊，保证玩家初始可达。
@@ -52,7 +63,7 @@ pub fn real5k(seed: u64) -> Pack {
     }
 
     // 1500 个 Actor，均匀分布在半径 30..90 的环上。
-    let actor_defs = (0..10)
+    let mut actor_defs = (0..10)
         .map(|i| {
             let id = format!("{REAL5K_ACTOR_PREFIX}{i}");
             let def = ActorDef {
@@ -80,14 +91,32 @@ pub fn real5k(seed: u64) -> Pack {
             (id, def)
         })
         .collect::<BTreeMap<_, _>>();
+    if v2 {
+        let mut def = actor_defs
+            .get("bench.actor.0")
+            .expect("actor.0 exists")
+            .clone();
+        def.id = "bench.actor.v2".to_string();
+        def.stats.speed = 1.0;
+        def.brain = Some(BrainDef {
+            profile: "bench".to_string(),
+            schedule: Some("bench.schedule.v2".to_string()),
+        });
+        actor_defs.insert(def.id.clone(), def);
+    }
 
     for i in 0..ACTOR_COUNT {
         let angle = (i as f32 / ACTOR_COUNT as f32) * std::f32::consts::TAU;
         let radius = 30.0 + (i % 20) as f32 * 3.0;
         let x = angle.cos() * radius;
         let z = angle.sin() * radius;
+        let actor_id = if v2 && i < V2_ACTOR_COUNT {
+            "bench.actor.v2".to_string()
+        } else {
+            format!("{REAL5K_ACTOR_PREFIX}{}", i % 10)
+        };
         placements.push(Placement {
-            actor: Some(format!("{REAL5K_ACTOR_PREFIX}{}", i % 10)),
+            actor: Some(actor_id),
             prop: None,
             item: None,
             at: [x, 0.0, z],
@@ -203,6 +232,21 @@ pub fn real5k(seed: u64) -> Pack {
         })
         .collect();
         schedules.insert(id.clone(), ScheduleDef { id, entries });
+    }
+    if v2 {
+        schedules.insert(
+            "bench.schedule.v2".to_string(),
+            ScheduleDef {
+                id: "bench.schedule.v2".to_string(),
+                entries: vec![ScheduleEntry {
+                    from: "00:00".to_string(),
+                    to: "23:59".to_string(),
+                    behavior: "patrol".to_string(),
+                    at: Some(REAL5K_ZONE.to_string()),
+                    target: Some([40.0, 0.0]),
+                }],
+            },
+        );
     }
 
     let mut rules = BTreeMap::new();
