@@ -42,7 +42,7 @@
     <h1>你写世界，<br>引擎只负责把它画出来。</h1>
     <p class="lead">RefuWorld 把“世界怎么运转”从引擎里拿出来：Rust 内核负责确定性 tick、规则、空间、导航和存档；你用 TypeScript 或 JSON 描述内容；Web 编辑器、2D 预览和 3D 演示都只是这份内容的视图。你不需要先学 Godot 或 Unity 才能做出一个可玩的房间。</p>
     <div class="box tip"><h3>三十秒版本</h3><p>打开 Web 编辑器 → 拖一个 NPC、一扇门、一张钥匙卡 → 写一条“有钥匙卡就开门”的规则 → 接一段对话和任务 → <b>构建并试玩</b>。所有内容最终变成一个带哈希的内容包；同一条 trace 在 Headless、C ABI、wasm 预览里跑出同一局。</p></div>
-    <p class="dim">当前是 <b>M2 完成 + L4/L5</b>：TS DSL、23 个 2D/2.5D/3D Demo、ScriptHost、编辑器 v0.6、移动/寻路、导航/资产、社会关系、世界系统与内容测试均可运行。架构与迁移见 <a href="../docs/11_内核分层与迁移.md">11 · 内核分层与迁移</a>；剩余边界见 <a href="HUB.html#risks">HUB 风险页</a>。</p>
+    <p class="dim">当前是 <b>M2 完成 + L4/L5</b>：TS DSL、24 个 2D/2.5D/3D Demo、ScriptHost、编辑器 v0.6、移动/寻路、导航/资产、社会关系、世界系统与内容测试均可运行。架构与迁移见 <a href="../docs/11_内核分层与迁移.md">11 · 内核分层与迁移</a>；剩余边界见 <a href="HUB.html#risks">HUB 风险页</a>。</p>
     <div class="box"><h3>内核分层</h3><p><b>L0 时空物理</b>（tick/空间/碰撞/导航）→ <b>L1 主体交互</b>（背包/门/物品）→ <b>L2 行为能动</b>（日程/行为）→ <b>L3 叙事规则</b>（flags/quests/dialogue/script）→ <b>L4 社会关系</b>（阵营/关系/声望）→ <b>L5 世界系统</b>（天气/能源/水/AI 负载）。上层依赖下层；EntityStore 用组件列存储，Snapshot 仍是 v1 DTO。</p></div>
   </section>
 
@@ -195,7 +195,7 @@ npm run dev          # 改 TS → 编译 → 构建 → 复制 web/pack.data</co
     <p>当前基线：</p>
     <div class="grid3">
       <div class="card"><h3>34 个 Rust 测试</h3><p>core / pack / ffi / script / EntityStore / L4/L5；clippy 无警告。</p></div>
-      <div class="card"><h3>23 条内容测试</h3><p>港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城 + 霓虹下城 + L0/L1/L2 内核演示。</p></div>
+      <div class="card"><h3>24 条内容测试</h3><p>港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城 + 霓虹下城 + L0/L1/L2 内核演示。</p></div>
       <div class="card"><h3>黄金哈希</h3><p><code>0x3606a221e9990561</code>；Headless / C ABI / wasm / Godot 一致。</p></div>
     </div>
     <div class="box"><b>改内容后的最小自检：</b><code>worldc validate</code> → <code>worldc content-test</code> → <code>worldc test</code> → <code>./test/run_m1.sh</code>。只跑预览不跑测试，很容易把哈希漂移带进提交。</div>

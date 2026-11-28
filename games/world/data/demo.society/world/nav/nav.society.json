@@ -1,0 +1,12 @@
+{
+  "id": "nav.society",
+  "zone": "zone.society",
+  "cell": 1.0,
+  "origin": [
+    -10.0,
+    -7.0
+  ],
+  "width": 20,
+  "height": 14,
+  "blocked": []
+}

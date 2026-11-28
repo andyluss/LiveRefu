@@ -1,0 +1,9 @@
+{
+  "zone.society.name": "L4 社会关系室",
+  "faction.growers.name": "种植者",
+  "faction.engineers.name": "工程师",
+  "actor.grower_a.name": "播种者",
+  "actor.grower_b.name": "水培师",
+  "actor.engineer_a.name": "电网工程师",
+  "actor.engineer_b.name": "协议工程师"
+}

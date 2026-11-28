@@ -32,6 +32,11 @@ pub enum TraceCommand {
         node: String,
         choice: usize,
     },
+    SocialAction {
+        actor: String,
+        target: String,
+        action: String,
+    },
     Pickup {
         actor: String,
         target: String,
@@ -93,6 +98,15 @@ impl TraceCommand {
                 dialogue: dialogue.clone(),
                 node: node.clone(),
                 choice: *choice,
+            },
+            TraceCommand::SocialAction {
+                actor,
+                target,
+                action,
+            } => Command::SocialAction {
+                actor: find(world, actor)?,
+                target: Some(find(world, target)?),
+                action: action.clone(),
             },
             TraceCommand::Pickup { actor, target } => Command::Pickup {
                 actor: find(world, actor)?,

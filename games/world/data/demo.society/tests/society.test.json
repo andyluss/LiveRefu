@@ -1,0 +1,15 @@
+{
+  "name": "society_l4",
+  "ticks": 40,
+  "steps": [
+    { "tick": 5, "command": { "op": "talk", "actor": "player", "target": "demo.society.grower_a" } },
+    { "tick": 10, "command": { "op": "social_action", "actor": "player", "target": "demo.society.grower_a", "action": "support" } },
+    { "tick": 15, "command": { "op": "social_action", "actor": "player", "target": "demo.society.engineer_a", "action": "insult" } }
+  ],
+  "expect": {
+    "flags": {},
+    "quests": {},
+    "inventory": {},
+    "events": ["relationship_changed", "reputation_changed", "faction_trust_changed"]
+  }
+}

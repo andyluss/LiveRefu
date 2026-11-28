@@ -72,6 +72,28 @@ impl PreviewWorld {
         Ok(())
     }
 
+    pub fn social_action(
+        &mut self,
+        actor: &str,
+        target: &str,
+        action: &str,
+    ) -> Result<(), JsValue> {
+        let actor_id = self
+            .world
+            .find_by_content_id(actor)
+            .ok_or_else(|| JsValue::from_str("actor not found"))?;
+        let target_id = self
+            .world
+            .find_by_content_id(target)
+            .ok_or_else(|| JsValue::from_str("target not found"))?;
+        self.world.queue_command(Command::SocialAction {
+            actor: actor_id,
+            target: Some(target_id),
+            action: action.to_string(),
+        });
+        Ok(())
+    }
+
     pub fn choose_dialogue(
         &mut self,
         dialogue: &str,

@@ -116,6 +116,13 @@ fn describe_command(cmd: &TraceCommand) -> String {
         } => {
             format!("choose {dialogue}/{node} #{choice}")
         }
+        TraceCommand::SocialAction {
+            actor,
+            target,
+            action,
+        } => {
+            format!("social {actor} -{action}-> {target}")
+        }
         TraceCommand::Pickup { actor, target } => format!("pickup {actor} <- {target}"),
         TraceCommand::GiveItem { actor, item, count } => {
             format!("give {item} x{count} -> {actor}")

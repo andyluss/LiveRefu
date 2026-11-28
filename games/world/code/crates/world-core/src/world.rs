@@ -799,11 +799,14 @@ impl World {
             .map(|e| e.content_id.to_string())
             .ok_or_else(|| format!("actor 不存在: {actor}"))?;
         let target_id = match target {
-            Some(id) => Some(
-                self.entity(id)
-                    .map(|e| e.content_id.to_string())
-                    .ok_or_else(|| format!("target 不存在: {id}"))?,
-            ),
+            Some(id) => {
+                self.ensure_interaction_range(actor, id)?;
+                Some(
+                    self.entity(id)
+                        .map(|e| e.content_id.to_string())
+                        .ok_or_else(|| format!("target 不存在: {id}"))?,
+                )
+            }
             None => None,
         };
         let Some(social) = self.social.as_mut() else {

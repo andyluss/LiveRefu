@@ -1,0 +1,12 @@
+{
+  "id": "zone.society",
+  "name": "loc:zone.society.name",
+  "bounds": { "min": [-10, 0, -7], "max": [10, 4, 7] },
+  "nav": "nav.society",
+  "placements": [
+    { "actor": "demo.society.grower_a", "at": [-6, 0, -2], "yaw": 0, "persistent_id": "grower_a" },
+    { "actor": "demo.society.grower_b", "at": [-5, 0, 2], "yaw": 0, "persistent_id": "grower_b" },
+    { "actor": "demo.society.engineer_a", "at": [6, 0, -2], "yaw": 0, "persistent_id": "engineer_a" },
+    { "actor": "demo.society.engineer_b", "at": [5, 0, 2], "yaw": 0, "persistent_id": "engineer_b" }
+  ]
+}

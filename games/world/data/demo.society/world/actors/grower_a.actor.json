@@ -1,0 +1,11 @@
+{
+  "id": "demo.society.grower_a",
+  "name": "loc:actor.grower_a.name",
+  "tags": ["l4", "society"],
+  "body": { "shape": "capsule", "radius": 0.35, "height": 1.7, "size": null },
+  "stats": { "health": 100, "speed": 0 },
+  "brain": null,
+  "inventory": null,
+  "dialogue": null,
+  "visual": null
+}

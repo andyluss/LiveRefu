@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "demo.society",
+  "version": "0.1.0",
+  "core_api": ">=0.1 <0.2",
+  "kits": ["core", "interaction"],
+  "entry": { "world": "world/society.world.json", "start_zone": "zone.society" },
+  "sim_profile": "arcade",
+  "tick_hz": 60,
+  "loc": ["loc/zh-CN.json"],
+  "requires": [],
+  "optional": [],
+  "conflicts": []
+}

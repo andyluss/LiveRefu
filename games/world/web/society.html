@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L4 社会关系室 · RefuWorld</title>
+  <meta name="description" content="RefuWorld L4 社会层独立演示：派系、关系、声望与社会动作；不加载 L5 世界系统。" />
+  <meta name="theme-color" content="#070a12" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'dark'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./spacetime.css" />
+  <link rel="stylesheet" href="./society.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">L4</span>
+      <div><b>SOCIETY LAB</b><small>REFUWORLD / LAYER FOUR ONLY</small></div>
+    </div>
+    <div class="top-links">
+      <a href="./demos.html">Demo 索引</a>
+      <a href="./narrative.html">L3 叙事</a>
+      <a href="../brief/HUB.html">HUB</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sandbox society-layout">
+    <aside class="side left">
+      <section class="panel">
+        <p class="eyebrow">L4 CONTRACT</p>
+        <h1>关系，<br><em>会留下数值。</em></h1>
+        <p class="lede">派系、成员、关系、声望与社会动作。这个包没有 L5 的天气/能源/水/系统策略，也没有任务、规则或脚本。</p>
+        <div class="capabilities">
+          <div><span class="dot"></span><span><b>Factions</b><small>成员 → 派系 trust</small></span></div>
+          <div><span class="dot"></span><span><b>Relationships</b><small>trust / affinity / interactions</small></span></div>
+          <div><span class="dot"></span><span><b>Reputation</b><small>player 声望，-100…100</small></span></div>
+          <div><span class="dot"></span><span><b>Actions</b><small>support / thank / propose / insult</small></span></div>
+        </div>
+      </section>
+      <section class="panel layer-proof">
+        <p class="eyebrow">INDEPENDENCE CHECK</p>
+        <div class="proof-row"><span>L2 日程</span><b id="l2-proof">0 schedules</b></div>
+        <div class="proof-row"><span>L3 叙事/规则</span><b id="l3-proof">0 flags · 0 quests</b></div>
+        <div class="proof-row"><span>L5 世界系统</span><b id="l5-proof">absent</b></div>
+        <p class="micro">L4 观察 L1 的交谈/社会动作，维护耐久社会状态；不依赖 L5。</p>
+      </section>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-head"><span>ZONE.SOCIETY / TWO FACTIONS</span><span id="mode">RUNNING · 60 Hz</span></div>
+      <div class="canvas-wrap">
+        <canvas id="view" width="900" height="650" aria-label="L4 社会关系室：种植者与工程师两个派系、关系线与玩家"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="stage-tip">点击 NPC 选择目标 · WASD 接近 · 右侧选择社会动作</div>
+      </div>
+      <div class="stage-foot"><span id="event-line">选择一个 NPC，观察关系线。</span><span id="pack-line">demo.society · L4 only</span></div>
+    </section>
+
+    <aside class="side right">
+      <section class="panel telemetry">
+        <p class="eyebrow">SOCIAL STATE</p>
+        <div class="metric big"><span>REPUTATION</span><b id="reputation">0</b></div>
+        <div class="metric"><span>TARGET</span><b id="target-name">—</b></div>
+        <div class="metric"><span>RELATION</span><b id="relation">—</b></div>
+        <div class="metric"><span>FACTIONS</span><b id="faction-count">2</b></div>
+      </section>
+      <section class="panel faction-panel">
+        <p class="eyebrow">FACTIONS</p>
+        <div id="factions"></div>
+      </section>
+      <section class="panel">
+        <p class="eyebrow">SOCIAL ACTIONS</p>
+        <div class="action-grid">
+          <button id="talk" type="button">交谈</button>
+          <button id="support" type="button">支持</button>
+          <button id="thank" type="button">感谢</button>
+          <button id="propose" type="button">提议</button>
+          <button id="mediate" type="button">调停</button>
+          <button id="insult" type="button">侮辱</button>
+          <button id="pause" type="button">暂停</button>
+          <button id="reset" type="button">重置</button>
+        </div>
+        <p class="micro">support +2 · thank +1 · propose +3 · insult -4；目标所属 faction 同步变化。</p>
+      </section>
+      <section class="panel log-panel">
+        <p class="eyebrow">EVENTS</p>
+        <pre id="events">—</pre>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot"><span>RefuWorld · L4 Society Lab · core + interaction</span><span>WASM + Canvas 2D</span></footer>
+  <noscript><p class="noscript">这个演示需要 JavaScript 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = dark ? '#070a12' : '#f2eee5';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode)); });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); }); });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="importmap">
+    {"imports":{"env":"./vendor/quickjs-env.js"}}
+  </script>
+  <script type="module" src="./society.js"></script>
+</body>
+</html>

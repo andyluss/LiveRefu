@@ -1,0 +1,58 @@
+{
+  "id": "world.society",
+  "start_zone": "zone.society",
+  "start_time": "10:00",
+  "seed": 20261128,
+  "player": {
+    "at": [
+      0,
+      0,
+      -4
+    ],
+    "inventory": []
+  },
+  "interaction_range": 7.0,
+  "social": {
+    "factions": {
+      "faction.growers": {
+        "name": "loc:faction.growers.name",
+        "color": "#ffc36a",
+        "members": [
+          "demo.society.grower_a",
+          "demo.society.grower_b"
+        ]
+      },
+      "faction.engineers": {
+        "name": "loc:faction.engineers.name",
+        "color": "#5ee7ff",
+        "members": [
+          "demo.society.engineer_a",
+          "demo.society.engineer_b"
+        ]
+      }
+    },
+    "relationships": [
+      {
+        "a": "demo.society.grower_a",
+        "b": "demo.society.grower_b",
+        "trust": 6,
+        "affinity": 5
+      },
+      {
+        "a": "demo.society.engineer_a",
+        "b": "demo.society.engineer_b",
+        "trust": 5,
+        "affinity": 4
+      },
+      {
+        "a": "demo.society.grower_a",
+        "b": "demo.society.engineer_a",
+        "trust": -4,
+        "affinity": -3
+      }
+    ],
+    "reputations": {
+      "player": 0
+    }
+  }
+}

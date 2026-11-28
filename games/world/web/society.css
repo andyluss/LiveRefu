@@ -1,0 +1,14 @@
+@import url("./spacetime.css");
+.brand-mark { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 50%, var(--line)); }
+.society-layout .stage-head #mode { color: var(--amber); }
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.action-grid button { border: 1px solid var(--line-strong); border-radius: 8px; background: color-mix(in srgb, var(--solid) 74%, transparent); color: var(--ink); padding: 7px 5px; font: 9px var(--mono); cursor: pointer; }
+.action-grid button:hover { border-color: var(--amber); color: var(--amber); }
+.faction-row { margin-bottom: 9px; }
+.faction-head { display: flex; justify-content: space-between; gap: 8px; color: var(--ink); font-size: 10px; }
+.faction-head b { font: 9px var(--mono); color: var(--amber); }
+.faction-bar { height: 4px; border-radius: 999px; background: var(--line); overflow: hidden; margin: 5px 0; }
+.faction-bar i { display: block; height: 100%; background: var(--amber); border-radius: 999px; transition: width .25s; }
+.faction-meta { color: var(--faint); font: 8px var(--mono); }
+.log-panel pre { margin: 0; max-height: 145px; overflow: auto; color: var(--dim); font: 8.5px/1.5 var(--mono); white-space: pre-wrap; }
+@media print { body { background: #fff; color: #000; } .topbar, .canvas-wrap, .side, .foot { display: none; } }
