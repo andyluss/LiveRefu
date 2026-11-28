@@ -366,6 +366,10 @@ pub struct ScheduleEntry {
     pub behavior: String,
     #[serde(default)]
     pub at: Option<String>,
+    /// Optional patrol/anchor point in zone X/Z coordinates.
+    /// Existing packs omit it, so they keep their golden hashes and behavior.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub target: Option<[f32; 2]>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

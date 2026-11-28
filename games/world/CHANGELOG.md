@@ -45,7 +45,8 @@
 
 - **Demo 索引缩略图 404**：`web/demos.html` 改用本地 `web/images/demos/*.jpg`，避免从 `web/` 根目录服务时 `../docs/shots` 越界；README 统一从 `games/world` 根目录启动静态服务器。
 
-### 变更
+### 新增
+- **NPC 日程寻路**：`ScheduleEntry.target` 可选 X/Z；Agency 在行为切换时产出 target；World 用门感知 A* 生成路径，逐 tick 沿路移动并写入 `npc_paths` 快照（旧包空 map 省略，哈希不变）；solarfarm 默认启用；新增 `npc_path.rs` 移动/存档/旧 pack 哈希测试。
 - **M1 开门动态寻路**：A* 新增 `find_path_with_open`；门打开后按 AABB 临时放行烘焙 nav 格子，门未开仍绕行；world `MoveTo` 收集已开门 AABB；新增开/关两态测试。
 - **M2 资源预算门**：`test/m2_budget.mjs` 检查适配器 ≤2,000 行/不 import core/pack、pack ≤10MB、CI/GPU 5k 帧 P95 ≤16.67ms；纳入 `godot/test.sh`。
 - **HUB 顶栏与「案例」页**：顶栏收敛为 GUIDE / Demo / Lab / README 四个主入口，避免换行；「06 3D 演示」改为「06 案例」，加入 NEON DRIFT、GRID//SIGNAL、19 Demo 导览，并保留原 3D 与 L4/L5 对照内容。

@@ -64,7 +64,12 @@ impl Spacetime {
     }
 
     /// Frame accumulator. Returns completed fixed ticks and whether catch-up was exhausted.
-    pub fn accumulate(&mut self, frame_dt_us: u64, timescale: f64, max_catchup: u32) -> (u32, bool) {
+    pub fn accumulate(
+        &mut self,
+        frame_dt_us: u64,
+        timescale: f64,
+        max_catchup: u32,
+    ) -> (u32, bool) {
         let scaled = (frame_dt_us as f64 * timescale).max(0.0) as u64;
         self.accumulator_us = self.accumulator_us.saturating_add(scaled);
         let tick_us = self.tick_us();
@@ -195,7 +200,68 @@ impl Spacetime {
                 None => false,
             }
         });
-        if blocked { None } else { Some(next) }
+        if blocked {
+            None
+        } else {
+            Some(next)
+        }
+    }
+
+    /// Advance one NPC body along a path without touching the player's path.
+    ///
+    /// Returns `(new_position, next_index, completed)`. The caller owns the
+    /// per-NPC path storage and writes the resulting transform back to the
+    /// entity store.
+    pub(crate) fn advance_path(
+        &self,
+        body: &Body,
+        path: &[[f32; 2]],
+        mut index: usize,
+        obstacles: &[Obstacle],
+    ) -> (Option<[f32; 3]>, usize, bool) {
+        let mut position = body.position;
+        while index < path.len() {
+            let waypoint = path[index];
+            let dx = waypoint[0] - position[0];
+            let dz = waypoint[1] - position[2];
+            if dx * dx + dz * dz <= 0.04 {
+                index += 1;
+            } else {
+                break;
+            }
+        }
+        if index >= path.len() {
+            return (Some(position), index, true);
+        }
+        let waypoint = path[index];
+        let dx = waypoint[0] - position[0];
+        let dz = waypoint[1] - position[2];
+        let distance = (dx * dx + dz * dz).sqrt();
+        if distance <= 1e-6 {
+            return (Some(position), index + 1, index + 1 >= path.len());
+        }
+        let speed = body.speed.max(0.0);
+        if speed <= 0.0 {
+            return (Some(position), index, false);
+        }
+        let step = (speed / self.tick_hz.max(1) as f32).min(distance);
+        let moved_x = self
+            .try_move(body, obstacles, position, dx / distance * step, 0.0)
+            .map(|next| position = next)
+            .is_some();
+        let moved_z = self
+            .try_move(body, obstacles, position, 0.0, dz / distance * step)
+            .map(|next| position = next)
+            .is_some();
+        if !moved_x && !moved_z {
+            return (Some(position), index, false);
+        }
+        let remaining_x = waypoint[0] - position[0];
+        let remaining_z = waypoint[1] - position[2];
+        if remaining_x * remaining_x + remaining_z * remaining_z <= 0.04 {
+            index += 1;
+        }
+        (Some(position), index, index >= path.len())
     }
 
     /// A* that lets already-open doors through baked blocked cells.
@@ -242,7 +308,9 @@ mod tests {
     #[test]
     fn clock_advances_one_minute_per_sixty_ticks() {
         let mut space = Spacetime::new(60, 8 * 60);
-        for _ in 0..60 { space.advance_tick(); }
+        for _ in 0..60 {
+            space.advance_tick();
+        }
         assert_eq!(space.clock_minutes, 8 * 60 + 1);
     }
 

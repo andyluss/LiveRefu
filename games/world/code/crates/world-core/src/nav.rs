@@ -93,8 +93,7 @@ pub fn find_path_with_open(
 }
 
 fn point_in_box(point: [f32; 2], center: [f32; 2], half: [f32; 2]) -> bool {
-    (point[0] - center[0]).abs() <= half[0] + 1e-4
-        && (point[1] - center[1]).abs() <= half[1] + 1e-4
+    (point[0] - center[0]).abs() <= half[0] + 1e-4 && (point[1] - center[1]).abs() <= half[1] + 1e-4
 }
 
 fn blocked_mask(nav: &NavGridDef) -> Vec<bool> {
@@ -229,7 +228,10 @@ mod tests {
     #[test]
     fn closed_door_stays_blocked() {
         let path = find_path_with_open(&grid(), [1.5, 1.5], [8.5, 5.5], &[]).unwrap();
-        assert!(path.iter().any(|p| p[1] > 8.0), "closed door must detour to the gap");
+        assert!(
+            path.iter().any(|p| p[1] > 8.0),
+            "closed door must detour to the gap"
+        );
         assert!(
             path.iter()
                 .all(|p| !(p[0] > 4.5 && p[0] < 6.0 && p[1] < 8.0)),

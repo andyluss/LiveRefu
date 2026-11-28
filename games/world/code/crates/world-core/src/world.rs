@@ -2,15 +2,15 @@ use crate::command::Command;
 use crate::entity::{Collider, Door, Entity, EntityKind, Interactable, ItemStack, Transform};
 use crate::event::EventEnvelope;
 use crate::ids::EntityId;
-use crate::rng::Rng;
 use crate::layers::agency::{Agency, BehaviorChange};
 use crate::layers::narrative::Narrative;
 use crate::layers::social::{event_json, Social, SocialEvent, SocialSnapshot};
-use crate::layers::systems::{Systems, SystemsSnapshot};
-use crate::store::{EntityMut, EntityStore, EntityView};
 use crate::layers::spacetime::{Body, Obstacle, Spacetime};
 use crate::layers::subject::{self, DoorInteraction};
+use crate::layers::systems::{Systems, SystemsSnapshot};
+use crate::rng::Rng;
 use crate::script::ScriptHost;
+use crate::store::{EntityMut, EntityStore, EntityView};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::collections::BTreeMap;
@@ -19,6 +19,16 @@ use world_pack::{
 };
 
 pub use crate::layers::narrative::QuestState;
+
+/// Per-NPC path state. Keyed by content ID so the snapshot stays JSON-friendly.
+/// Old packs have no targets, so this map stays empty and omitted from the hash.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct NpcPath {
+    pub path: Vec<[f32; 2]>,
+    pub index: usize,
+    pub target: [f32; 2],
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Snapshot {
     pub tick: u64,
@@ -42,6 +52,8 @@ pub struct Snapshot {
     pub social: Option<SocialSnapshot>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub systems: Option<SystemsSnapshot>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub npc_paths: BTreeMap<String, NpcPath>,
 }
 
 pub struct World {
@@ -66,6 +78,7 @@ pub struct World {
     pub timescale: f64,
     movement_obstacles: Vec<Obstacle>,
     behavior_changes: Vec<BehaviorChange>,
+    npc_paths: BTreeMap<String, NpcPath>,
     pub max_catchup: u32,
     pub overrun_count: u32,
     pub last_error: Option<String>,
@@ -99,6 +112,7 @@ impl World {
             timescale: 1.0,
             movement_obstacles: Vec::with_capacity(64),
             behavior_changes: Vec::new(),
+            npc_paths: BTreeMap::new(),
             max_catchup: 4,
             overrun_count: 0,
             last_error: None,
@@ -350,9 +364,9 @@ impl World {
         if self.suspended {
             return 0;
         }
-        let (n, exhausted) = self
-            .spacetime
-            .accumulate(frame_dt_us, self.timescale, self.max_catchup);
+        let (n, exhausted) =
+            self.spacetime
+                .accumulate(frame_dt_us, self.timescale, self.max_catchup);
         for _ in 0..n {
             self.tick_once();
         }
@@ -374,6 +388,7 @@ impl World {
         self.apply_movement();
         self.spacetime.advance_tick();
         self.update_schedules();
+        self.advance_npc_paths();
         self.update_systems();
     }
 
@@ -389,9 +404,14 @@ impl World {
         };
         let mut obstacles = std::mem::take(&mut self.movement_obstacles);
         obstacles.clear();
-        self.store.for_each_obstacle(self.player, |position, collider, open| {
-            obstacles.push(Obstacle { position, collider, open });
-        });
+        self.store
+            .for_each_obstacle(self.player, |position, collider, open| {
+                obstacles.push(Obstacle {
+                    position,
+                    collider,
+                    open,
+                });
+            });
         let moved = self.spacetime.apply_movement(&body, &obstacles);
         self.movement_obstacles = obstacles;
         if let Some(position) = moved {
@@ -402,7 +422,9 @@ impl World {
     }
 
     fn update_systems(&mut self) {
-        let Some(systems) = self.systems.as_mut() else { return; };
+        let Some(systems) = self.systems.as_mut() else {
+            return;
+        };
         let events = systems.update(self.spacetime.tick, self.spacetime.clock_minutes);
         for (kind, data) in events {
             self.emit(kind, None, data);
@@ -432,8 +454,102 @@ impl World {
                 Some(change.id),
                 json!({"entity": change.content_id, "behavior": change.behavior}),
             );
+            match change.target {
+                Some(target) => self.set_npc_path(change.id, &change.content_id, target),
+                None => {
+                    self.npc_paths.remove(&change.content_id);
+                }
+            }
         }
         self.behavior_changes = changes;
+    }
+
+    fn open_door_boxes(&self) -> Vec<([f32; 2], [f32; 2])> {
+        let mut boxes = Vec::new();
+        self.store
+            .for_each_obstacle(self.player, |position, collider, open| {
+                if !open {
+                    return;
+                }
+                if let Some(Collider::Aabb { half }) = collider {
+                    boxes.push(([position[0], position[2]], [half[0], half[1]]));
+                }
+            });
+        boxes
+    }
+
+    fn set_npc_path(&mut self, id: EntityId, content_id: &str, target: [f32; 2]) {
+        let from = self
+            .entity(id)
+            .map(|entity| [entity.transform.position[0], entity.transform.position[2]]);
+        let Some(from) = from else {
+            self.npc_paths.remove(content_id);
+            return;
+        };
+        let open_boxes = self.open_door_boxes();
+        match self
+            .spacetime
+            .find_path_with_open(from, target, &open_boxes)
+        {
+            Some(path) if !path.is_empty() => {
+                let index = if path.len() > 1 { 1 } else { 0 };
+                self.npc_paths.insert(
+                    content_id.to_string(),
+                    NpcPath {
+                        path,
+                        index,
+                        target,
+                    },
+                );
+            }
+            _ => {
+                self.npc_paths.remove(content_id);
+            }
+        }
+    }
+
+    fn advance_npc_paths(&mut self) {
+        let keys: Vec<String> = self.npc_paths.keys().cloned().collect();
+        for content_id in keys {
+            let Some(path_state) = self.npc_paths.get(&content_id).cloned() else {
+                continue;
+            };
+            let Some(id) = self.find_by_content_id(&content_id) else {
+                self.npc_paths.remove(&content_id);
+                continue;
+            };
+            let Some(entity) = self.entity(id) else {
+                self.npc_paths.remove(&content_id);
+                continue;
+            };
+            let body = Body {
+                position: entity.transform.position,
+                speed: entity.speed,
+                collider: entity.collider.clone(),
+            };
+            let mut obstacles = Vec::new();
+            self.store
+                .for_each_obstacle(id, |position, collider, open| {
+                    obstacles.push(Obstacle {
+                        position,
+                        collider,
+                        open,
+                    });
+                });
+            let (position, next_index, completed) =
+                self.spacetime
+                    .advance_path(&body, &path_state.path, path_state.index, &obstacles);
+            if let Some(position) = position {
+                if let Some(entity) = self.entity_mut(id) {
+                    entity.transform.position = position;
+                }
+            }
+            if completed {
+                self.npc_paths.remove(&content_id);
+            } else if let Some(state) = self.npc_paths.get_mut(&content_id) {
+                state.index = next_index;
+            }
+        }
     }
 
     pub fn apply_command(&mut self, command: Command) -> Result<(), String> {
@@ -479,9 +595,11 @@ impl World {
             Command::Move { actor, x, z } => self.command_move(actor, x, z),
             Command::MoveTo { actor, x, z } => self.command_move_to(actor, x, z),
             Command::OpenDoor { target } => self.command_open_door(target),
-            Command::SocialAction { actor, target, action } => {
-                self.command_social(actor, target, &action)
-            }
+            Command::SocialAction {
+                actor,
+                target,
+                action,
+            } => self.command_social(actor, target, &action),
             Command::SetSystemPolicy { policy } => {
                 let Some(systems) = self.systems.as_mut() else {
                     return Err("当前内容包未启用 L5 世界系统".to_string());
@@ -517,19 +635,16 @@ impl World {
             .entity(actor)
             .ok_or_else(|| format!("actor 不存在: {actor}"))?;
         let from = [entity.transform.position[0], entity.transform.position[2]];
-        let mut open_boxes = Vec::new();
-        self.store.for_each_obstacle(self.player, |position, collider, open| {
-            if !open {
-                return;
-            }
-            if let Some(Collider::Aabb { half }) = collider {
-                open_boxes.push(([position[0], position[2]], [half[0], half[1]]));
-            }
-        });
+        let open_boxes = self.open_door_boxes();
         let path = self
             .spacetime
             .find_path_with_open(from, [x, z], &open_boxes)
-            .ok_or_else(|| format!("区域 {} 没有导航网格或无法从 {from:?} 寻路到 ({x}, {z})", self.zone_id))?;
+            .ok_or_else(|| {
+                format!(
+                    "区域 {} 没有导航网格或无法从 {from:?} 寻路到 ({x}, {z})",
+                    self.zone_id
+                )
+            })?;
         self.spacetime.path_index = if path.len() > 1 { 1 } else { 0 };
         self.spacetime.path = path;
         self.spacetime.move_intent = [0.0, 0.0];
@@ -717,7 +832,6 @@ impl World {
         }
         false
     }
-
 
     fn run_actions(&mut self, actions: &[ActionDef], actor: EntityId, target: EntityId) {
         for action in actions {
@@ -928,6 +1042,7 @@ impl World {
             path_index: self.spacetime.path_index,
             social: self.social.as_ref().map(Social::snapshot),
             systems: self.systems.as_ref().map(Systems::snapshot),
+            npc_paths: self.npc_paths.clone(),
         }
     }
 
@@ -955,6 +1070,7 @@ impl World {
         self.spacetime.move_intent = snap.move_intent;
         self.spacetime.path = snap.path;
         self.spacetime.path_index = snap.path_index;
+        self.npc_paths = snap.npc_paths;
         self.events.clear();
         self.event_seq = 0;
         self.pending.clear();
@@ -1065,4 +1181,3 @@ fn data_str(event: &EventEnvelope, key: &str) -> Option<String> {
 fn data_bool(event: &EventEnvelope, key: &str) -> Option<bool> {
     event.data.get(key).and_then(|v| v.as_bool())
 }
-

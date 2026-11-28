@@ -5,25 +5,41 @@
       "from": "08:00",
       "to": "12:00",
       "behavior": "tend",
-      "at": "zone.solarfarm"
+      "at": "zone.solarfarm",
+      "target": [
+        -2,
+        2
+      ]
     },
     {
       "from": "12:00",
       "to": "13:00",
       "behavior": "lunch",
-      "at": "zone.solarfarm"
+      "at": "zone.solarfarm",
+      "target": [
+        2,
+        8
+      ]
     },
     {
       "from": "13:00",
       "to": "18:00",
       "behavior": "tend",
-      "at": "zone.solarfarm"
+      "at": "zone.solarfarm",
+      "target": [
+        -5,
+        4
+      ]
     },
     {
       "from": "18:00",
       "to": "08:00",
       "behavior": "rest",
-      "at": "zone.solarfarm"
+      "at": "zone.solarfarm",
+      "target": [
+        -6,
+        -4
+      ]
     }
   ]
 }

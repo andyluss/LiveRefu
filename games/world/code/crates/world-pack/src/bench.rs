@@ -199,6 +199,7 @@ pub fn real5k(seed: u64) -> Pack {
             to: (*to).to_string(),
             behavior: (*behavior).to_string(),
             at: None,
+            target: None,
         })
         .collect();
         schedules.insert(id.clone(), ScheduleDef { id, entries });

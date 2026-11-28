@@ -549,7 +549,7 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
     <div class="grid g3" style="margin-top:14px">
       <div class="card"><h4>场景</h4><p>程序化港湾：海面、雨、货轮、灯塔、舷窗、湿地面、雾、尘埃、Bloom；本地 Three.js r187。</p></div>
       <div class="card"><h4>交互</h4><p>WASD / 点击地面 A*；鼠标旋转/滚轮缩放；点击实体或 E/F/T；对话字幕。</p></div>
-      <div class="card"><h4>边界</h4><p>低模/程序化场景；有 GLB 角色但不含骨骼动画；无空间音频；NPC 还不寻路；WebGL2 是硬前提。</p></div>
+      <div class="card"><h4>边界</h4><p>低模/程序化场景；有 GLB 角色但不含骨骼动画；无空间音频；NPC 按日程 target 寻路，但无完整感知/避让；WebGL2 是硬前提。</p></div>
     </div>
     <pre style="margin-top:14px"><code>cd games/world && ./web/build.sh
 node tools/serve-web.mjs --port 8787
@@ -618,7 +618,7 @@ node tools/serve-web.mjs --port 8787
       <thead><tr><th>风险</th><th>为什么危险</th><th>下一步</th></tr></thead>
       <tbody>
         <tr><td><b>ScriptHost 仅事件作用域</b></td><td>无持久脚本状态、模块 import、异步调度、墙钟抢占；JSON 规则仍是主路径。</td><td>持久状态/模块/异步/墙钟预算作为 hardening；先用真实内容压。</td></tr>
-        <tr><td><b>导航是静态的</b></td><td>门烘焙成障碍；开门后不重建网格，NPC 不会寻路。</td><td>局部网格更新 + 动态障碍；NPC 用同一 A*。</td></tr>
+        <tr><td><b>导航是静态的</b></td><td>门烘焙成障碍；开门寻路已按 AABB 临时放行；NPC 可按日程 target 走同一 A*，但没有局部网格重建和完整避让。</td><td>局部网格更新 + 非门动态障碍 + 完整 NPC 避让。</td></tr>
         <tr><td><b>5k v1 是单 Zone mixed load</b></td><td>不是 5k NPC 每 tick 决策，也不是多 Zone 驻留。</td><td>v2 由 M2 Adapter 触发；再决定是否换 bevy_ecs。</td></tr>
         <tr><td><b>编辑器还不够“作者友好”</b></td><td>复杂字段仍改 JSON；对话图简单；没有浏览器内实时预览。</td><td>v0.6 schema 表单、错误定位、自动布局。</td></tr>
         <tr><td><b>3D 是表现层</b></td><td>低模、无 GLB/骨骼/空间音频；不能代表最终美术。</td><td>资产管线 + 一个真实 GLB 角色/场景。</td></tr>
@@ -628,8 +628,7 @@ node tools/serve-web.mjs --port 8787
 
     <h3>下一步（按价值）</h3>
     <ol class="tl">
-      <li class="next"><b>动态导航</b><span>开门重建局部网格；NPC 寻路；编辑器“烘焙”可预览。</span></li>
-      <li class="next"><b>动态导航</b><span>开门重建局部网格；NPC 寻路。</span></li>
+      <li class="next"><b>动态导航</b><span>开门后的导航已放行；下一步做非门动态障碍/局部网格重建与完整 NPC 避让。</span></li>
       <li class="next"><b>编辑器 v0.6</b><span>schema 表单、字段级错误、对话图自动布局。</span></li>
       <li class="next"><b>M2 Godot 适配器</b><span>真正的“换引擎只换一层”验收。</span></li>
     </ol>

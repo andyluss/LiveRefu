@@ -3,16 +3,17 @@
 //! The layer owns schedule definitions and decides behavior from world time.
 //! It does not mutate entities or know about quests/dialogue.
 
-use crate::store::ScheduleView;
 use crate::ids::EntityId;
+use crate::store::ScheduleView;
 use std::collections::BTreeMap;
-use world_pack::{parse_hhmm, ScheduleDef};
+use world_pack::{parse_hhmm, ScheduleDef, ScheduleEntry};
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq)]
 pub(crate) struct BehaviorChange {
     pub id: EntityId,
     pub content_id: String,
     pub behavior: String,
+    pub target: Option<[f32; 2]>,
 }
 
 #[derive(Clone, Debug)]
@@ -49,21 +50,22 @@ impl Agency {
             let Some(schedule) = self.schedules.get(schedule_id) else {
                 continue;
             };
-            let Some(behavior) = behavior_at(schedule, minute) else {
+            let Some(entry) = entry_at(schedule, minute) else {
                 continue;
             };
-            if entity.behavior != Some(behavior.as_str()) {
+            if entity.behavior != Some(entry.behavior.as_str()) {
                 updates.push(BehaviorChange {
                     id: entity.id,
                     content_id: entity.content_id.to_string(),
-                    behavior,
+                    behavior: entry.behavior.clone(),
+                    target: entry.target,
                 });
             }
         }
     }
 }
 
-fn behavior_at(schedule: &ScheduleDef, minute: u32) -> Option<String> {
+fn entry_at(schedule: &ScheduleDef, minute: u32) -> Option<&ScheduleEntry> {
     for entry in &schedule.entries {
         let from = parse_hhmm(&entry.from)?;
         let to = parse_hhmm(&entry.to)?;
@@ -73,7 +75,7 @@ fn behavior_at(schedule: &ScheduleDef, minute: u32) -> Option<String> {
             minute >= from || minute < to
         };
         if inside {
-            return Some(entry.behavior.clone());
+            return Some(entry);
         }
     }
     None
@@ -88,7 +90,10 @@ mod tests {
 
     fn actor(behavior: Option<&str>) -> Entity {
         Entity {
-            id: EntityId { index: 7, generation: 0 },
+            id: EntityId {
+                index: 7,
+                generation: 0,
+            },
             content_id: "npc".into(),
             persistent_id: Some("npc".into()),
             kind: EntityKind::Actor,
@@ -110,8 +115,20 @@ mod tests {
         ScheduleDef {
             id: "schedule.day".into(),
             entries: vec![
-                ScheduleEntry { from: "08:00".into(), to: "18:00".into(), behavior: "work".into(), at: None },
-                ScheduleEntry { from: "18:00".into(), to: "08:00".into(), behavior: "rest".into(), at: None },
+                ScheduleEntry {
+                    from: "08:00".into(),
+                    to: "18:00".into(),
+                    behavior: "work".into(),
+                    at: None,
+                    target: None,
+                },
+                ScheduleEntry {
+                    from: "18:00".into(),
+                    to: "08:00".into(),
+                    behavior: "rest".into(),
+                    at: None,
+                    target: None,
+                },
             ],
         }
     }
@@ -141,7 +158,13 @@ mod tests {
         let mut store = EntityStore::default();
         let id = store.spawn(actor(None));
         let _ = store.get(id);
-        assert_eq!(agency.changes(23 * 60, store.schedules())[0].behavior, "rest");
-        assert_eq!(agency.changes(2 * 60, store.schedules())[0].behavior, "rest");
+        assert_eq!(
+            agency.changes(23 * 60, store.schedules())[0].behavior,
+            "rest"
+        );
+        assert_eq!(
+            agency.changes(2 * 60, store.schedules())[0].behavior,
+            "rest"
+        );
     }
 }

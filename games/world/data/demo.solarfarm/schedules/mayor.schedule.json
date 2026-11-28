@@ -5,19 +5,31 @@
       "from": "08:00",
       "to": "15:00",
       "behavior": "convene",
-      "at": "zone.solarfarm"
+      "at": "zone.solarfarm",
+      "target": [
+        2,
+        8
+      ]
     },
     {
       "from": "15:00",
       "to": "18:00",
       "behavior": "assembly",
-      "at": "zone.solarfarm"
+      "at": "zone.solarfarm",
+      "target": [
+        0,
+        8
+      ]
     },
     {
       "from": "18:00",
       "to": "08:00",
       "behavior": "rest",
-      "at": "zone.solarfarm"
+      "at": "zone.solarfarm",
+      "target": [
+        -4,
+        -3
+      ]
     }
   ]
 }
