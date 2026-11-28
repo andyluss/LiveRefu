@@ -22,6 +22,8 @@ pub struct SystemsSnapshot {
 pub(crate) struct Systems {
     def: SystemsDef,
     state: SystemsSnapshot,
+    battery_low_warned: bool,
+    water_low_warned: bool,
 }
 
 impl Systems {
@@ -32,17 +34,26 @@ impl Systems {
                 weather: "clear".to_string(),
                 solar_kw: 0.0,
                 wind_kw: 0.0,
-                battery_kwh: def.battery_kwh,
-                water_m3: def.water_m3,
+                battery_kwh: def
+                    .initial_battery_kwh
+                    .unwrap_or(def.battery_kwh)
+                    .clamp(0.0, def.battery_kwh.max(1.0)),
+                water_m3: def
+                    .initial_water_m3
+                    .unwrap_or(def.water_m3)
+                    .clamp(0.0, def.water_m3.max(1.0)),
                 load_kw: def.base_load_kw,
                 policy: def.policy.clone(),
                 last_update_tick: 0,
             },
+            battery_low_warned: false,
+            water_low_warned: false,
         }
     }
 
     /// Advance every fixed tick; emit coarse (1 s) events only.
     pub fn update(&mut self, tick: u64, clock_minutes: u32) -> Vec<(&'static str, Value)> {
+        const DT: f32 = 1.0 / 60.0;
         let weather = weather_at(tick).to_string();
         let daylight = daylight_factor(clock_minutes);
         let weather_factor = match weather.as_str() {
@@ -61,7 +72,12 @@ impl Systems {
         };
         let solar = self.def.solar_kw * daylight * weather_factor;
         let wind = self.def.wind_kw * wind_factor;
-        let ai_load = self.def.ai_count as f32 * 1.8;
+        let compute_ai = if self.state.policy == "compute" {
+            self.def.ai_count as f32 * 0.8
+        } else {
+            0.0
+        };
+        let ai_load = self.def.ai_count as f32 * 1.8 + compute_ai;
         let policy_load = match self.state.policy.as_str() {
             "irrigate" => 8.0,
             "compute" => 12.0,
@@ -71,24 +87,70 @@ impl Systems {
         };
         let load = self.def.base_load_kw + ai_load + policy_load;
         let net = solar + wind - load;
-        self.state.battery_kwh = (self.state.battery_kwh + net / 3600.0)
-            .clamp(0.0, self.def.battery_kwh.max(1.0));
-        let rain = if weather == "rain" { 0.03 } else { -0.006 };
-        self.state.water_m3 = (self.state.water_m3 + rain).clamp(0.0, self.def.water_m3.max(1.0));
-        self.state.weather = weather;
+        self.state.battery_kwh =
+            (self.state.battery_kwh + net * DT / 3600.0).clamp(0.0, self.def.battery_kwh.max(1.0));
+
+        // Water is a rate, not a per-tick absolute: rain recharges, every policy draws.
+        let water_rate = match self.state.policy.as_str() {
+            "irrigate" => -0.08,
+            "commons" => -0.02,
+            "profit" => -0.004,
+            "compute" => -0.012,
+            _ => -0.006,
+        };
+        let rain_rate = if weather == "rain" { 0.06 } else { 0.0 };
+        self.state.water_m3 = (self.state.water_m3 + (rain_rate + water_rate) * DT)
+            .clamp(0.0, self.def.water_m3.max(1.0));
+
+        self.state.weather = weather.clone();
         self.state.solar_kw = solar;
         self.state.wind_kw = wind;
         self.state.load_kw = load;
         self.state.last_update_tick = tick;
+
+        let battery_pct = if self.def.battery_kwh > 0.0 {
+            self.state.battery_kwh / self.def.battery_kwh * 100.0
+        } else {
+            0.0
+        };
+        let water_pct = if self.def.water_m3 > 0.0 {
+            self.state.water_m3 / self.def.water_m3 * 100.0
+        } else {
+            0.0
+        };
         let mut events = Vec::new();
         if tick % 60 == 0 {
             events.push((
                 "energy_updated",
-                json!({"solar_kw": solar, "wind_kw": wind, "battery_kwh": self.state.battery_kwh, "load_kw": load, "weather": self.state.weather}),
+                json!({
+                    "solar_kw": solar, "wind_kw": wind, "battery_kwh": self.state.battery_kwh,
+                    "battery_pct": battery_pct, "water_m3": self.state.water_m3,
+                    "water_pct": water_pct, "load_kw": load, "net_kw": net,
+                    "ai_load_kw": ai_load, "daylight": daylight,
+                    "weather": self.state.weather, "policy": self.state.policy
+                }),
             ));
         }
         if tick % 600 == 0 {
             events.push(("weather_changed", json!({"weather": self.state.weather})));
+        }
+        if tick > 0 && battery_pct < 10.0 && !self.battery_low_warned {
+            self.battery_low_warned = true;
+            events.push((
+                "system_warning",
+                json!({"system": "battery", "level": "low", "value": self.state.battery_kwh, "pct": battery_pct}),
+            ));
+        } else if battery_pct >= 20.0 {
+            self.battery_low_warned = false;
+        }
+        if tick > 0 && water_pct < 10.0 && !self.water_low_warned {
+            self.water_low_warned = true;
+            events.push((
+                "system_warning",
+                json!({"system": "water", "level": "low", "value": self.state.water_m3, "pct": water_pct}),
+            ));
+        } else if water_pct >= 20.0 {
+            self.water_low_warned = false;
         }
         events
     }
@@ -121,7 +183,17 @@ mod tests {
     use super::*;
 
     fn def() -> SystemsDef {
-        SystemsDef { solar_kw: 100.0, wind_kw: 80.0, battery_kwh: 200.0, water_m3: 500.0, ai_count: 3, base_load_kw: 20.0, policy: "balance".into() }
+        SystemsDef {
+            solar_kw: 100.0,
+            wind_kw: 80.0,
+            battery_kwh: 200.0,
+            initial_battery_kwh: None,
+            water_m3: 500.0,
+            initial_water_m3: None,
+            ai_count: 3,
+            base_load_kw: 20.0,
+            policy: "balance".into(),
+        }
     }
 
     #[test]
@@ -131,6 +203,24 @@ mod tests {
         assert!(systems.snapshot().solar_kw > 50.0);
         systems.update(120, 0);
         assert_eq!(systems.snapshot().solar_kw, 0.0);
+    }
+
+    #[test]
+    fn policy_affects_water_and_ai_load() {
+        let mut balanced = Systems::new(&def());
+        let mut irrigating = Systems::new(&def());
+        let mut computing = Systems::new(&def());
+        balanced.set_policy("balance").unwrap();
+        irrigating.set_policy("irrigate").unwrap();
+        computing.set_policy("compute").unwrap();
+        for tick in 1..=120 {
+            balanced.update(tick, 12 * 60);
+            irrigating.update(tick, 12 * 60);
+            computing.update(tick, 12 * 60);
+        }
+        assert!(irrigating.snapshot().water_m3 < balanced.snapshot().water_m3);
+        assert!(computing.snapshot().load_kw > balanced.snapshot().load_kw);
+        assert!(balanced.snapshot().battery_kwh >= 0.0);
     }
 
     #[test]
@@ -146,5 +236,7 @@ mod tests {
 impl Systems {
     pub fn restore(&mut self, state: SystemsSnapshot) {
         self.state = state;
+        self.battery_low_warned = false;
+        self.water_low_warned = false;
     }
 }

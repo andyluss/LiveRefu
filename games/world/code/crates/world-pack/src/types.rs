@@ -94,8 +94,12 @@ pub struct SystemsDef {
     pub wind_kw: f32,
     #[serde(default)]
     pub battery_kwh: f32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub initial_battery_kwh: Option<f32>,
     #[serde(default)]
     pub water_m3: f32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub initial_water_m3: Option<f32>,
     #[serde(default)]
     pub ai_count: u32,
     #[serde(default)]

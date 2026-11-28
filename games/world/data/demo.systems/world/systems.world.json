@@ -1,0 +1,25 @@
+{
+  "id": "world.systems",
+  "start_zone": "zone.systems",
+  "start_time": "12:00",
+  "seed": 20261128,
+  "player": {
+    "at": [
+      0,
+      0,
+      0
+    ],
+    "inventory": []
+  },
+  "systems": {
+    "solar_kw": 180.0,
+    "wind_kw": 120.0,
+    "battery_kwh": 240.0,
+    "initial_battery_kwh": 60.0,
+    "water_m3": 600.0,
+    "initial_water_m3": 30.0,
+    "ai_count": 4,
+    "base_load_kw": 30.0,
+    "policy": "balance"
+  }
+}

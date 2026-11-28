@@ -1,0 +1,9 @@
+{
+  "id": "demo.systems.console",
+  "name": "loc:prop.systems.console",
+  "tags": ["l5", "console"],
+  "body": { "shape": "aabb", "size": [1.6, 1.2, 1.0] },
+  "interactable": { "verbs": ["inspect"] },
+  "locked_by": null,
+  "visual": null
+}

@@ -1,0 +1,17 @@
+{
+  "id": "nav.zone.systems",
+  "zone": "zone.systems",
+  "cell": 1.0,
+  "origin": [
+    -10.0,
+    -6.0
+  ],
+  "width": 20,
+  "height": 12,
+  "blocked": [
+    149,
+    150,
+    169,
+    170
+  ]
+}

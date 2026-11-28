@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L5 世界系统控制室 · RefuWorld</title>
+  <meta name="description" content="RefuWorld L5 世界系统独立演示：天气、光伏、风电、储能、水、AI 负载与能源策略；只有 L5 在运行。" />
+  <meta name="theme-color" content="#070a12" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'dark'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./spacetime.css" />
+  <link rel="stylesheet" href="./systems.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">L5</span>
+      <div><b>SYSTEMS CONTROL</b><small>REFUWORLD / LAYER FIVE ONLY</small></div>
+    </div>
+    <div class="top-links">
+      <a href="./demos.html">Demo 索引</a>
+      <a href="./society.html">L4 社会</a>
+      <a href="../brief/HUB.html">HUB</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sandbox systems-layout">
+    <aside class="side left">
+      <section class="panel">
+        <p class="eyebrow">L5 CONTRACT</p>
+        <h1>世界，<br><em>在预算里呼吸。</em></h1>
+        <p class="lede">天气、光伏、风电、储能、水与 AI 负载。这个包只有 systems；没有 actor、item、rule、quest、dialogue、script、schedule 或 social。</p>
+        <div class="capabilities">
+          <div><span class="dot"></span><span><b>Weather</b><small>clear / breezy / cloudy / rain</small></span></div>
+          <div><span class="dot"></span><span><b>Energy</b><small>solar + wind − load</small></span></div>
+          <div><span class="dot"></span><span><b>Storage</b><small>battery kWh + water m³</small></span></div>
+          <div><span class="dot"></span><span><b>Policy</b><small>balance / irrigate / compute / profit / commons</small></span></div>
+        </div>
+      </section>
+      <section class="panel layer-proof">
+        <p class="eyebrow">INDEPENDENCE CHECK</p>
+        <div class="proof-row"><span>L1 主体交互</span><b id="l1-proof">0 commands</b></div>
+        <div class="proof-row"><span>L2 行为/日程</span><b id="l2-proof">0 schedules</b></div>
+        <div class="proof-row"><span>L3 叙事/规则</span><b id="l3-proof">0 flags · 0 quests</b></div>
+        <div class="proof-row"><span>L4 社会</span><b id="l4-proof">absent</b></div>
+        <p class="micro">L5 只观察时钟/天气并更新世界级资源，不依赖任何上层；这里也没有上层内容。</p>
+      </section>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-head"><span>ZONE.SYSTEMS / MICROGRID</span><span id="mode">SIM ×1 · 60 Hz</span></div>
+      <div class="canvas-wrap">
+        <canvas id="view" width="900" height="650" aria-label="L5 世界系统控制室：天气、光伏、风电、储能、水和 AI 负载"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="stage-tip">切换策略观察负载/水耗 · 加速时间看昼夜与天气</div>
+      </div>
+      <div class="stage-foot"><span id="event-line">水储量偏低，注意灌溉策略。</span><span id="pack-line">demo.systems · L5 only</span></div>
+    </section>
+
+    <aside class="side right">
+      <section class="panel telemetry">
+        <p class="eyebrow">SYSTEMS</p>
+        <div class="metric big"><span>CLOCK</span><b id="clock">06:00</b></div>
+        <div class="metric"><span>WEATHER</span><b id="weather">clear</b></div>
+        <div class="metric"><span>SOLAR / WIND</span><b id="generation">0 / 42 kW</b></div>
+        <div class="metric"><span>LOAD</span><b id="load">37.2 kW</b></div>
+        <div class="metric"><span>NET</span><b id="net">+4.8 kW</b></div>
+        <div class="metric"><span>AI LOAD</span><b id="ai-load">7.2 kW</b></div>
+      </section>
+      <section class="panel resource-panel">
+        <div class="resource"><div><span>BATTERY</span><b id="battery-pct">25%</b></div><div class="resource-bar"><i id="battery-bar"></i></div><small id="battery-value">60.0 / 240 kWh</small></div>
+        <div class="resource"><div><span>WATER</span><b id="water-pct">5%</b></div><div class="resource-bar water"><i id="water-bar"></i></div><small id="water-value">30.0 / 600 m³</small></div>
+      </section>
+      <section class="panel">
+        <p class="eyebrow">POLICY</p>
+        <div class="policy-grid" id="policies">
+          <button type="button" data-policy="balance">平衡</button>
+          <button type="button" data-policy="irrigate">灌溉</button>
+          <button type="button" data-policy="compute">算力</button>
+          <button type="button" data-policy="profit">利润</button>
+          <button type="button" data-policy="commons">公共</button>
+        </div>
+        <div class="action-grid">
+          <button id="pause" type="button">暂停</button>
+          <button id="speed" type="button">×1</button>
+          <button id="reset" type="button">重置</button>
+        </div>
+      </section>
+      <section class="panel log-panel">
+        <p class="eyebrow">EVENTS</p>
+        <pre id="events">—</pre>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot"><span>RefuWorld · L5 Systems Control · core only · systems enabled</span><span>WASM + Canvas 2D</span></footer>
+  <noscript><p class="noscript">这个演示需要 JavaScript 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = dark ? '#070a12' : '#f2eee5';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode)); });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); }); });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="importmap">
+    {"imports":{"env":"./vendor/quickjs-env.js"}}
+  </script>
+  <script type="module" src="./systems.js"></script>
+</body>
+</html>

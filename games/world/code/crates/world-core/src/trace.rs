@@ -37,6 +37,9 @@ pub enum TraceCommand {
         target: String,
         action: String,
     },
+    SetSystemPolicy {
+        policy: String,
+    },
     Pickup {
         actor: String,
         target: String,
@@ -107,6 +110,9 @@ impl TraceCommand {
                 actor: find(world, actor)?,
                 target: Some(find(world, target)?),
                 action: action.clone(),
+            },
+            TraceCommand::SetSystemPolicy { policy } => Command::SetSystemPolicy {
+                policy: policy.clone(),
             },
             TraceCommand::Pickup { actor, target } => Command::Pickup {
                 actor: find(world, actor)?,

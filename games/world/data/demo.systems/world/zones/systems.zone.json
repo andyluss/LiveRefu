@@ -1,0 +1,28 @@
+{
+  "id": "zone.systems",
+  "name": "loc:zone.systems.name",
+  "bounds": {
+    "min": [
+      -10,
+      0,
+      -6
+    ],
+    "max": [
+      10,
+      6,
+      6
+    ]
+  },
+  "placements": [
+    {
+      "prop": "demo.systems.console",
+      "at": [
+        0,
+        0,
+        2
+      ],
+      "yaw": 0,
+      "persistent_id": "console"
+    }
+  ]
+}

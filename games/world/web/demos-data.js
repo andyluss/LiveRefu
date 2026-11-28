@@ -5,6 +5,7 @@ export const DEMOS = {
   "demo.agency": { title: "L2 行为实验室", subtitle: "日程 / behavior / 目标 / A* 路径", pack: "./packs/demo.agency.data" },
   "demo.narrative": { title: "L3 叙事实验室", subtitle: "对话分支 / 规则 / 任务 / ScriptHost", pack: "./packs/demo.narrative.data" },
   "demo.society": { title: "L4 社会关系室", subtitle: "派系 / 关系 / 声望 / 社会动作", pack: "./packs/demo.society.data" },
+  "demo.systems": { title: "L5 世界系统控制室", subtitle: "天气 / 能源 / 水 / AI 负载 / 策略", pack: "./packs/demo.systems.data" },
   "demo.harbor": { title: "港湾值班室", subtitle: "剧情 / 交互 / 完整垂直切片", pack: "./pack.data", trace: true },
   "demo.dock": { title: "夜班货运", subtitle: "货运 / 通行证 / 开关门", pack: "./packs/demo.dock.data" },
   "demo.kitchen": { title: "午夜食堂", subtitle: "库存 / 餐券 / 对话", pack: "./packs/demo.kitchen.data" },

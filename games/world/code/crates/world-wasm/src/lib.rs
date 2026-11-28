@@ -72,6 +72,13 @@ impl PreviewWorld {
         Ok(())
     }
 
+    pub fn set_system_policy(&mut self, policy: &str) -> Result<(), JsValue> {
+        self.world.queue_command(Command::SetSystemPolicy {
+            policy: policy.to_string(),
+        });
+        Ok(())
+    }
+
     pub fn social_action(
         &mut self,
         actor: &str,

@@ -102,7 +102,7 @@ jobs:
           node games/world/lab/tetris/test/logic.test.mjs
           node games/world/lab/tetris/test/static.test.mjs
           node games/world/lab/tetris/test/refuworld.test.mjs
-      - name: R-016 three-state theme (20 pages)
+      - name: R-016 three-state theme (21 pages)
         run: >-
           node design/tools/check_html_theme.ts
           games/world/web/index.html
@@ -125,6 +125,7 @@ jobs:
           games/world/web/agency.html
           games/world/web/narrative.html
           games/world/web/society.html
+          games/world/web/systems.html
       - name: Install TS tooling
         working-directory: games/world
         run: npm ci

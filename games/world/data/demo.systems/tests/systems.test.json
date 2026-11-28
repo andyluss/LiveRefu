@@ -1,0 +1,14 @@
+{
+  "name": "systems_l5",
+  "ticks": 700,
+  "steps": [
+    { "tick": 5, "command": { "op": "set_system_policy", "policy": "compute" } },
+    { "tick": 100, "command": { "op": "set_system_policy", "policy": "irrigate" } }
+  ],
+  "expect": {
+    "flags": {},
+    "quests": {},
+    "inventory": {},
+    "events": ["system_policy_changed", "energy_updated", "weather_changed", "system_warning"]
+  }
+}

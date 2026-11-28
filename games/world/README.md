@@ -114,6 +114,7 @@ node tools/serve-web.mjs --port 8787
 | [`docs/15_L2行为实验室.md`](docs/15_L2行为实验室.md) | L2 独立 Demo：日程 → behavior → target → A* → 移动；不加载 L3–L5 |
 | [`docs/16_L3叙事实验室.md`](docs/16_L3叙事实验室.md) | L3 独立 Demo：对话分支、规则、任务、flags、ScriptHost；不加载 L4/L5 |
 | [`docs/17_L4社会关系室.md`](docs/17_L4社会关系室.md) | L4 独立 Demo：派系、关系、声望、社会动作；不加载 L5 |
+| [`docs/18_L5世界系统控制室.md`](docs/18_L5世界系统控制室.md) | L5 独立 Demo：天气、能源、水、AI 负载、策略；只有 L5 |
 | [`brief/`](brief/) | 项目 HUB 与用户指南（R-016 三态主题） |
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |

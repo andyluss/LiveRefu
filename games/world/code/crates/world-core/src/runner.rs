@@ -123,6 +123,7 @@ fn describe_command(cmd: &TraceCommand) -> String {
         } => {
             format!("social {actor} -{action}-> {target}")
         }
+        TraceCommand::SetSystemPolicy { policy } => format!("policy {policy}"),
         TraceCommand::Pickup { actor, target } => format!("pickup {actor} <- {target}"),
         TraceCommand::GiveItem { actor, item, count } => {
             format!("give {item} x{count} -> {actor}")
