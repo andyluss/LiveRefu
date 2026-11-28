@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command as ProcessCommand;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 use world_core::{first_divergence, Trace, TraceStep, World};
 use world_pack::{Pack, ValidationReport};
 use world_script::{attach_script_host, run_trace_with_scripts};
@@ -37,6 +37,7 @@ fn run() -> Result<(), String> {
         "save" => cmd_save(&args[1..]),
         "load" => cmd_load(&args[1..]),
         "bench" => cmd_bench(&args[1..]),
+        "watch-scripts" => cmd_watch_scripts(&args[1..]),
         "new" => cmd_new(&args[1..]),
         "header" => cmd_header(&args[1..]),
         "explain" => cmd_explain(&args[1..]),
@@ -858,6 +859,114 @@ fn cmd_explain(args: &[String]) -> Result<(), String> {
     Ok(())
 }
 
+fn script_fingerprint(root: &Path) -> Result<u64, String> {
+    use std::collections::hash_map::DefaultHasher;
+    use std::hash::{Hash, Hasher};
+    let mut files = Vec::new();
+    fn collect(dir: &Path, out: &mut Vec<PathBuf>) -> Result<(), String> {
+        if !dir.exists() {
+            return Ok(());
+        }
+        for entry in fs::read_dir(dir).map_err(|e| format!("读取脚本目录失败: {e}"))? {
+            let path = entry.map_err(|e| e.to_string())?.path();
+            if path.is_dir() {
+                collect(&path, out)?;
+            } else if path.extension().and_then(|s| s.to_str()) == Some("js") {
+                out.push(path);
+            }
+        }
+        Ok(())
+    }
+    collect(root, &mut files)?;
+    files.sort();
+    let mut hasher = DefaultHasher::new();
+    for path in files {
+        path.to_string_lossy().hash(&mut hasher);
+        fs::read(&path)
+            .map_err(|e| format!("读取脚本失败 {}: {e}", path.display()))?
+            .hash(&mut hasher);
+    }
+    Ok(hasher.finish())
+}
+
+fn cmd_watch_scripts(args: &[String]) -> Result<(), String> {
+    let path = pack_path(args);
+    let ticks: u64 = parse_flag(args, "--ticks")
+        .and_then(|value| value.parse().ok())
+        .unwrap_or(600);
+    let interval_ms: u64 = parse_flag(args, "--interval-ms")
+        .and_then(|value| value.parse().ok())
+        .unwrap_or(16);
+    let quiet = has_flag(args, "--quiet");
+    let scripts_dir = path.join("scripts");
+    let mut pack = load_pack(&path)?;
+    require_valid(&pack)?;
+    let hash = pack.hash().map_err(|e| e.to_string())?;
+    let mut world = World::from_pack(&pack, hash)?;
+    attach_script_host(&mut world, &pack)?;
+    if !world.has_script_host() {
+        return Err(format!("{} 没有 scripts/，无需 watcher", path.display()));
+    }
+    let mut fingerprint = script_fingerprint(&scripts_dir)?;
+    if !quiet {
+        println!(
+            "[watch] {} · scripts={} · ticks={ticks} · interval={interval_ms}ms",
+            path.display(),
+            pack.scripts.len()
+        );
+    }
+    for tick in 1..=ticks {
+        if tick % 10 == 0 {
+            match script_fingerprint(&scripts_dir) {
+                Ok(next) if next != fingerprint => {
+                    fingerprint = next;
+                    match Pack::load_dir(&path) {
+                        Ok(next_pack) => {
+                            let report = next_pack.validate();
+                            if !report.is_ok() {
+                                eprintln!("[watch] 脚本变化但包校验失败，保留旧 runtime");
+                            } else if let Err(error) = world.reload_scripts(&next_pack) {
+                                eprintln!("[watch] reload 失败: {error}");
+                            } else {
+                                pack = next_pack;
+                                if !quiet {
+                                    println!(
+                                        "[watch] tick {tick}: 热重载 {} 个脚本（状态/命令 timer 保留）",
+                                        pack.scripts.len()
+                                    );
+                                }
+                            }
+                        }
+                        Err(error) => eprintln!("[watch] 重新加载包失败: {error}"),
+                    }
+                }
+                Ok(_) => {}
+                Err(error) => eprintln!("[watch] fingerprint: {error}"),
+            }
+        }
+        world.tick_once();
+        for event in world.drain_events() {
+            if event.kind == "script_error" || event.kind == "toast" {
+                println!(
+                    "[event] tick {} {} {:?}",
+                    event.tick, event.kind, event.data
+                );
+            }
+        }
+        if interval_ms > 0 {
+            std::thread::sleep(Duration::from_millis(interval_ms));
+        }
+    }
+    if !quiet {
+        println!(
+            "[watch] stopped at tick {} · hash {}",
+            world.tick(),
+            world.state_hash()
+        );
+    }
+    Ok(())
+}
+
 fn print_help() {
     println!(
         r#"worldc — RefuWorld 内容工具链
@@ -877,6 +986,7 @@ fn print_help() {
   worldc load     [--pack DIR] --save FILE
   worldc bench    [--pack DIR] [--synthetic N] [--ticks N]
   worldc bench    --scenario real5k|real5k-v2 [--seed N] [--ticks N] [--runs N] [--json]
+  worldc watch-scripts [--pack DIR] [--ticks N] [--interval-ms N]
   worldc new      <pack.id> [--out DIR]
   worldc header   [--out FILE]
   worldc explain  <CODE>

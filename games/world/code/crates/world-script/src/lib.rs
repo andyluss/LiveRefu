@@ -113,14 +113,28 @@ globalThis.__dshGetTimers = function () {
   var out = [];
   for (var i = 0; i < globalThis.__dshTimers.length; i++) {
     var timer = globalThis.__dshTimers[i];
-    if (Array.isArray(timer.work)) out.push({ due: timer.due, commands: timer.work });
+    if (Array.isArray(timer.work)) {
+      out.push({ due: timer.due, commands: timer.work });
+    } else if (typeof timer.work === "function") {
+      try { out.push({ due: timer.due, source: Function.prototype.toString.call(timer.work) }); } catch (e) {}
+    }
   }
   return JSON.stringify(out);
 };
 globalThis.__dshSetTimers = function (input) {
   var items = JSON.parse(input || "[]");
   for (var i = 0; i < items.length; i++) {
-    globalThis.__dshTimers.push({ id: globalThis.__dshNextTimer++, due: items[i].due, work: items[i].commands });
+    var item = items[i];
+    if (Array.isArray(item.commands)) {
+      globalThis.__dshTimers.push({ id: globalThis.__dshNextTimer++, due: item.due, work: item.commands });
+    } else if (typeof item.source === "string") {
+      try {
+        var fn = (0, eval)("(" + item.source + ")");
+        if (typeof fn === "function") {
+          globalThis.__dshTimers.push({ id: globalThis.__dshNextTimer++, due: item.due, work: fn });
+        }
+      } catch (e) {}
+    }
   }
 };
 globalThis.__dshHasWork = function () {
@@ -761,6 +775,21 @@ mod tests {
         assert_eq!(state, restored);
         let second = host.on_event("{}").unwrap();
         assert!(matches!(&second[0], Command::Toast { text, .. } if text == "11"));
+    }
+
+    #[test]
+    fn function_timers_survive_hot_reload_when_self_contained() {
+        let mut scripts = BTreeMap::new();
+        scripts.insert(
+            "timer".to_string(),
+            "function onEvent(ctx) { if (ctx.event.kind === 'schedule') ctx.setTimeout(function () { return [{op:'toast', text:'function survived'}]; }, 3); return []; }".to_string(),
+        );
+        let mut host = QuickJsHost::from_scripts(&scripts).unwrap();
+        host.on_event("{\"tick\":0,\"event\":{\"kind\":\"schedule\"}}")
+            .unwrap();
+        host.reload(&scripts).unwrap();
+        let commands = host.on_tick(3).unwrap();
+        assert!(matches!(&commands[0], Command::Toast { text, .. } if text == "function survived"));
     }
 
     #[test]

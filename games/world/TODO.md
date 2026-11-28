@@ -8,7 +8,7 @@
 | ID | 事项 | 状态 | 下一步 | 详情 |
 | --- | --- | --- | --- | --- |
 | W-001 | 真实作者 2h 试用 | 待开始 | 找非工程作者按 `08_两小时教程.md` 完成可玩房间；记录卡点 | [08](docs/08_两小时教程.md) |
-| W-002 | ScriptHost 文件系统 watcher | 待开始 | 监听 `scripts/**/*.js`，变化后调用 `World::reload_scripts(&pack)`；保留状态与命令 timer | [07 §4.8](docs/07_M1实现与验收.md) |
+| W-002 | ScriptHost 文件系统 watcher | 已完成 | `worldc watch-scripts` 轮询 `scripts/**/*.js`，变化后重新校验并 `World::reload_scripts`；状态/命令 timer 保留 | [07 §4.8](docs/07_M1实现与验收.md) |
 | W-003 | 完整 NPC 避让/感知 | 进行中 | 局部侧移避让已加；仍需感知/失败重试/多 NPC 协同 | [12](docs/12_活NPC与行为层方案.md) |
 
 ## P2 · 硬化 / 扩展
@@ -16,7 +16,7 @@
 | ID | 事项 | 状态 | 下一步 | 详情 |
 | --- | --- | --- | --- | --- |
 | W-004 | 真实墙钟 `setTimeout` | 待决策 | 当前确定性要求下映射为 tick；若确需墙钟，只用于非状态副作用 | [07 §4.8](docs/07_M1实现与验收.md) |
-| W-005 | 函数型 timer 跨 reload | 待开始 | 序列化 callback 或限制为命令型 timer；先定安全边界 | [07 §4.8](docs/07_M1实现与验收.md) |
+| W-005 | 函数型 timer 跨 reload | 已完成 | 自包含函数按源码迁移；闭包函数明确不支持，留作安全边界 | [07 §4.8](docs/07_M1实现与验收.md) |
 | W-006 | 多 Zone / 5k 全量决策 | 待开始 | 在 real5k-v2 上增加多 Zone 驻留与全量 NPC 决策，复核 bevy_ecs | [07 §4.10](docs/07_M1实现与验收.md) |
 | W-007 | Windows Godot 导出验证 | 待开始 | 补 `.dll` 打包与导出预设；在 Windows 跑 600 tick/存档 | [09](docs/09_M2适配器启动.md) |
 | W-008 | 外机 GPU timer 复测 | 待开始 | 用厂商 GPU timer 而非 wall-clock；记录 P50/P95 | [09](docs/09_M2适配器启动.md) |
