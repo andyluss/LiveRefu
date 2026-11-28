@@ -6,6 +6,7 @@
 ## [未发布]
 
 ### 新增
+- **分层适配分析**：新增 `docs/19_分层适配与游戏类型.md`，按 L0–L5 总结各层适合的游戏类型、最小栈、实现成熟度、不适用边界与研究问题。
 - **函数型 timer 跨 reload**：`ctx.setTimeout(fn, ticks)` 的自包含函数按源码迁移；闭包函数仍明确不支持。
 - **ScriptHost 文件 watcher**：新增 `worldc watch-scripts`，在 headless 世界里轮询 `scripts/**/*.js`，热重载并保留状态/命令 timer；加入 M1 smoke。
 - **编辑器对话图**：自动布局改为分层 + barycenter 排序，边改为正交箭头；新增字段级错误面板、保存前校验与「自动布局」按钮。
