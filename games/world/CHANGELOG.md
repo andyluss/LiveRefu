@@ -6,6 +6,7 @@
 ## [未发布]
 
 ### 新增
+- **ScriptHost 跨 tick async**：`ctx.delay(ticks)` Promise 在后续 tick 恢复；`globalThis.setTimeout` 映射到 60Hz tick；命令 timer 跨热重载迁移；`on_tick` 驱动到期任务并 drain async 结果。仍不支持真实墙钟计时。
 - **ScriptHost 确定性 tick timer**：`ctx.after(ticks, commands)` / `ctx.setTimeout(fn, ticks)`；World 每 tick 调 `ScriptHost::on_tick` 投递到期命令；跨 tick 测试通过。
 - **ScriptHost 模块/异步/热重载**：支持 ES module import（`scripts/lib/*.js`，demo.orbit 已启用）、`async onEvent` 微任务、`ScriptHost::reload`/`World::reload_scripts` 保留 `ctx.state`；仍无真实定时器/跨 tick Promise。
 - **M1 剩余项补做**：`Command::MoveProp` + 局部 nav 重建；编辑器 v0.6 递归 Schema 表单；2D/2.5D/3D 浏览器运行时 CI；`real5k-v2` 基准（4 NPC 路径 + 动态 Prop）；ScriptHost 每脚本持久状态/快照与 100ms 墙钟护栏。

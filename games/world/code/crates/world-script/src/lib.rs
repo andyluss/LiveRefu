@@ -2,7 +2,6 @@
 //! 运行时只认识 `world_core::Command`；玩法规则/空间查询仍由世界层执行。
 
 use rquickjs::loader::{ImportAttributes, Loader, Resolver};
-use rquickjs::promise::MaybePromise;
 use rquickjs::{CaughtError, Context, Ctx, Function, Module, Result as JsResult, Runtime};
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -36,13 +35,36 @@ pub fn eval_bool(source: &str) -> Result<bool, String> {
 const DISPATCH: &str = r#"
 globalThis.__dshState = globalThis.__dshState || {};
 globalThis.__dshTimers = globalThis.__dshTimers || [];
+globalThis.__dshWaits = globalThis.__dshWaits || [];
+globalThis.__dshResults = [];
+globalThis.__dshErrors = [];
 globalThis.__dshNow = 0;
+globalThis.__dshNextTimer = 1;
 globalThis.__dshGetState = function () { return JSON.stringify(globalThis.__dshState || {}); };
 globalThis.__dshSetState = function (input) { globalThis.__dshState = JSON.parse(input || "{}"); };
+globalThis.__dshCollect = function (value) {
+  if (value && typeof value.then === "function") {
+    value.then(
+      function (next) { globalThis.__dshResults.push(JSON.stringify(next == null ? [] : next)); },
+      function (error) { globalThis.__dshErrors.push(String(error)); }
+    );
+  } else if (Array.isArray(value)) {
+    globalThis.__dshResults.push(JSON.stringify(value));
+  }
+};
 globalThis.__dshSchedule = function (ticks, work) {
+  var id = globalThis.__dshNextTimer++;
   globalThis.__dshTimers.push({
+    id: id,
     due: globalThis.__dshNow + Math.max(0, Number(ticks) || 0),
     work: work
+  });
+  return id;
+};
+globalThis.__dshDelay = function (ticks) {
+  var due = globalThis.__dshNow + Math.max(0, Number(ticks) || 0);
+  return new Promise(function (resolve) {
+    globalThis.__dshWaits.push({ due: due, resolve: resolve });
   });
 };
 globalThis.__dshDispatch = function (input) {
@@ -51,30 +73,70 @@ globalThis.__dshDispatch = function (input) {
   var ctx = JSON.parse(input);
   globalThis.__dshNow = Number(ctx.tick) || globalThis.__dshNow;
   ctx.state = globalThis.__dshState;
-  ctx.after = function (ticks, commands) { globalThis.__dshSchedule(ticks, commands); };
-  ctx.setTimeout = function (callback, ticks) { globalThis.__dshSchedule(ticks, callback); };
+  ctx.after = function (ticks, commands) { return globalThis.__dshSchedule(ticks, commands); };
+  ctx.delay = function (ticks) { return globalThis.__dshDelay(ticks); };
+  ctx.setTimeout = function (callback, ticks) { return globalThis.__dshSchedule(ticks, callback); };
   var out = fn(ctx);
   if (out && typeof out.then === "function") {
-    return out.then(function (value) { return JSON.stringify(value == null ? [] : value); });
+    globalThis.__dshCollect(out);
+    return "[]";
   }
   return JSON.stringify(out == null ? [] : out);
 };
 globalThis.__dshTick = function (tick) {
   globalThis.__dshNow = tick;
-  var due = [];
-  var keep = [];
+  var dueWaits = [];
+  var keepWaits = [];
+  for (var w = 0; w < globalThis.__dshWaits.length; w++) {
+    var wait = globalThis.__dshWaits[w];
+    if (wait.due <= tick) dueWaits.push(wait); else keepWaits.push(wait);
+  }
+  globalThis.__dshWaits = keepWaits;
+  for (var r = 0; r < dueWaits.length; r++) dueWaits[r].resolve();
+
+  var dueTimers = [];
+  var keepTimers = [];
   for (var i = 0; i < globalThis.__dshTimers.length; i++) {
     var timer = globalThis.__dshTimers[i];
-    if (timer.due <= tick) due.push(timer); else keep.push(timer);
+    if (timer.due <= tick) dueTimers.push(timer); else keepTimers.push(timer);
   }
-  globalThis.__dshTimers = keep;
+  globalThis.__dshTimers = keepTimers;
   var out = [];
-  for (var j = 0; j < due.length; j++) {
-    var value = typeof due[j].work === "function" ? due[j].work() : due[j].work;
+  for (var j = 0; j < dueTimers.length; j++) {
+    var value = typeof dueTimers[j].work === "function" ? dueTimers[j].work() : dueTimers[j].work;
     if (Array.isArray(value)) out = out.concat(value);
+    else globalThis.__dshCollect(value);
   }
   return JSON.stringify(out);
 };
+globalThis.__dshGetTimers = function () {
+  var out = [];
+  for (var i = 0; i < globalThis.__dshTimers.length; i++) {
+    var timer = globalThis.__dshTimers[i];
+    if (Array.isArray(timer.work)) out.push({ due: timer.due, commands: timer.work });
+  }
+  return JSON.stringify(out);
+};
+globalThis.__dshSetTimers = function (input) {
+  var items = JSON.parse(input || "[]");
+  for (var i = 0; i < items.length; i++) {
+    globalThis.__dshTimers.push({ id: globalThis.__dshNextTimer++, due: items[i].due, work: items[i].commands });
+  }
+};
+globalThis.__dshDrain = function () {
+  var commands = [];
+  for (var i = 0; i < globalThis.__dshResults.length; i++) {
+    try { commands = commands.concat(JSON.parse(globalThis.__dshResults[i])); } catch (e) {}
+  }
+  var errors = globalThis.__dshErrors.slice();
+  globalThis.__dshResults = [];
+  globalThis.__dshErrors = [];
+  return JSON.stringify({ commands: commands, errors: errors });
+};
+globalThis.setTimeout = function (callback, ms) {
+  return globalThis.__dshSchedule(Math.ceil((Number(ms) || 0) / (1000 / 60)), callback);
+};
+globalThis.clearTimeout = function () {};
 "#;
 
 #[derive(Clone, Debug)]
@@ -270,10 +332,36 @@ impl QuickJsHost {
         scripts: &BTreeMap<String, String>,
     ) -> Result<(), String> {
         let old_states = self.state_map();
+        let mut old_timers: Vec<(String, String)> = Vec::new();
+        for (name, context) in &self.contexts {
+            if let Ok(json) = context.with(|ctx| {
+                let get: Function = ctx
+                    .globals()
+                    .get("__dshGetTimers")
+                    .map_err(|e| format!("脚本 {name} 缺少 timer getter: {e}"))?;
+                get.call::<_, String>(())
+                    .map_err(|e| format_script_error(&ctx, name, e))
+            }) {
+                old_timers.push((name.clone(), json));
+            }
+        }
         let mut next = Self::from_scripts(scripts)?;
         for (index, (name, _)) in next.contexts.iter().enumerate() {
             if let Some(state) = old_states.get(name) {
                 next.states[index] = state.clone();
+            }
+            if let Some((_, timers)) = old_timers.iter().find(|(old, _)| old == name) {
+                let restore = next.contexts[index].1.with(|ctx| {
+                    let set: Function = ctx
+                        .globals()
+                        .get("__dshSetTimers")
+                        .map_err(|e| format!("脚本 {name} 缺少 timer setter: {e}"))?;
+                    set.call::<_, ()>((timers.clone(),))
+                        .map_err(|e| format_script_error(&ctx, name, e))
+                });
+                if let Err(error) = restore {
+                    return Err(error);
+                }
             }
         }
         *self = next;
@@ -306,7 +394,7 @@ impl ScriptHost for QuickJsHost {
         let mut commands = Vec::new();
         for (index, (name, context)) in self.contexts.iter().enumerate() {
             let state = self.states[index].clone();
-            let (text, next_state) = context.with(|ctx| {
+            let (text, drained, next_state) = context.with(|ctx| {
                 let set_state: Function = ctx
                     .globals()
                     .get("__dshSetState")
@@ -321,6 +409,8 @@ impl ScriptHost for QuickJsHost {
                 let text = tick_fn
                     .call::<_, String>((tick,))
                     .map_err(|e| format_script_error(&ctx, name, e))?;
+                while ctx.execute_pending_job() {}
+                let drained = drain_js(&ctx, name)?;
                 let get_state: Function = ctx
                     .globals()
                     .get("__dshGetState")
@@ -328,16 +418,16 @@ impl ScriptHost for QuickJsHost {
                 let next_state = get_state
                     .call::<_, String>(())
                     .map_err(|e| format_script_error(&ctx, name, e))?;
-                Ok::<_, String>((text, next_state))
+                Ok::<_, String>((text, drained, next_state))
             })?;
             self.states[index] = next_state;
             let parsed: Vec<Command> = serde_json::from_str(&text)
                 .map_err(|e| format!("脚本 {name} tick 返回的不是命令数组: {e}"))?;
             commands.extend(parsed);
+            commands.extend(drained);
         }
         Ok(commands)
     }
-
     fn reload(&mut self, scripts: &BTreeMap<String, String>) -> Result<(), String> {
         self.reload_from_scripts(scripts)
     }
@@ -365,14 +455,13 @@ impl ScriptHost for QuickJsHost {
         let _ = &self.runtime;
         self.budget.store(0, Ordering::Relaxed);
         #[cfg(not(target_arch = "wasm32"))]
-        #[cfg(not(target_arch = "wasm32"))]
         if let Ok(mut deadline) = self.deadline.lock() {
             *deadline = Instant::now() + Duration::from_millis(MAX_WALL_MS);
         }
         let mut commands = Vec::new();
         for (index, (name, context)) in self.contexts.iter().enumerate() {
             let state = self.states[index].clone();
-            let (text, next_state) = context.with(|ctx| {
+            let (text, drained, next_state) = context.with(|ctx| {
                 let set_state: Function = ctx
                     .globals()
                     .get("__dshSetState")
@@ -385,10 +474,10 @@ impl ScriptHost for QuickJsHost {
                     .get("__dshDispatch")
                     .map_err(|e| format!("脚本 {name} 缺少 dispatch: {e}"))?;
                 let text = dispatch
-                    .call::<_, MaybePromise>((context_json,))
-                    .map_err(|e| format_script_error(&ctx, name, e))?
-                    .finish::<String>()
+                    .call::<_, String>((context_json,))
                     .map_err(|e| format_script_error(&ctx, name, e))?;
+                while ctx.execute_pending_job() {}
+                let drained = drain_js(&ctx, name)?;
                 let get_state: Function = ctx
                     .globals()
                     .get("__dshGetState")
@@ -396,21 +485,55 @@ impl ScriptHost for QuickJsHost {
                 let next_state = get_state
                     .call::<_, String>(())
                     .map_err(|e| format_script_error(&ctx, name, e))?;
-                Ok::<_, String>((text, next_state))
+                Ok::<_, String>((text, drained, next_state))
             })?;
             self.states[index] = next_state;
             let parsed: Vec<Command> = serde_json::from_str(&text)
                 .map_err(|e| format!("脚本 {name} 返回的不是命令数组: {e}"))?;
-            if commands.len() + parsed.len() > self.max_commands {
+            if commands.len() + parsed.len() + drained.len() > self.max_commands {
                 return Err(format!(
                     "脚本 {name} 产生命令过多：单事件上限 {}",
                     self.max_commands
                 ));
             }
             commands.extend(parsed);
+            commands.extend(drained);
         }
         Ok(commands)
     }
+}
+
+fn drain_js(ctx: &rquickjs::Ctx<'_>, name: &str) -> Result<Vec<Command>, String> {
+    let drain: Function = ctx
+        .globals()
+        .get("__dshDrain")
+        .map_err(|e| format!("脚本 {name} 缺少 drain: {e}"))?;
+    let text: String = drain
+        .call::<_, String>(())
+        .map_err(|e| format_script_error(ctx, name, e))?;
+    let value: serde_json::Value =
+        serde_json::from_str(&text).map_err(|e| format!("脚本 {name} drain 不是 JSON: {e}"))?;
+    let errors = value["errors"]
+        .as_array()
+        .map(|items| {
+            items
+                .iter()
+                .filter_map(|item| item.as_str().map(str::to_string))
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    if !errors.is_empty() {
+        return Err(errors.join("; "));
+    }
+    let commands = value["commands"]
+        .as_array()
+        .cloned()
+        .unwrap_or_default()
+        .into_iter()
+        .map(serde_json::from_value)
+        .collect::<Result<Vec<Command>, _>>()
+        .map_err(|e| format!("脚本 {name} drain 命令解析失败: {e}"))?;
+    Ok(commands)
 }
 
 fn format_script_error(ctx: &rquickjs::Ctx<'_>, name: &str, error: rquickjs::Error) -> String {
@@ -512,6 +635,45 @@ mod tests {
         assert_eq!(state, restored);
         let second = host.on_event("{}").unwrap();
         assert!(matches!(&second[0], Command::Toast { text, .. } if text == "11"));
+    }
+
+    #[test]
+    fn command_timers_survive_hot_reload() {
+        let mut scripts = BTreeMap::new();
+        scripts.insert(
+            "timer".to_string(),
+            "function onEvent(ctx) { if (ctx.event.kind === 'schedule') ctx.after(3, [{op:'toast', text:'survived'}]); return []; }".to_string(),
+        );
+        let mut host = QuickJsHost::from_scripts(&scripts).unwrap();
+        host.on_event("{\"tick\":0,\"event\":{\"kind\":\"schedule\"}}")
+            .unwrap();
+        host.reload(&scripts).unwrap();
+        let commands = host.on_tick(3).unwrap();
+        assert!(matches!(&commands[0], Command::Toast { text, .. } if text == "survived"));
+    }
+
+    #[test]
+    fn await_delay_resumes_on_future_tick() {
+        let pack = orbit_pack();
+        let mut world = World::from_pack(&pack, pack.hash().unwrap()).unwrap();
+        let mut scripts = BTreeMap::new();
+        scripts.insert(
+            "delay".to_string(),
+            "async function onEvent(ctx) { if (ctx.event.kind !== 'delay.start') return []; await ctx.delay(3); return [{op:'toast', text:'async delayed'}]; }".to_string(),
+        );
+        world.set_script_host(Box::new(QuickJsHost::from_scripts(&scripts).unwrap()));
+        world.emit("delay.start", None, serde_json::json!({}));
+        for _ in 0..6 {
+            world.tick_once();
+        }
+        assert!(
+            world
+                .events
+                .iter()
+                .any(|event| event.kind == "toast" && event.data["text"] == "async delayed"),
+            "async delay did not resume: {:?}",
+            world.events
+        );
     }
 
     #[test]
