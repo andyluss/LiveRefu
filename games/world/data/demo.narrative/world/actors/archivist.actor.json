@@ -1,0 +1,11 @@
+{
+  "id": "demo.narrative.archivist",
+  "name": "loc:actor.archivist.name",
+  "tags": ["l3", "archivist"],
+  "body": { "shape": "capsule", "radius": 0.35, "height": 1.7, "size": null },
+  "stats": { "health": 100, "speed": 0 },
+  "brain": null,
+  "inventory": null,
+  "dialogue": "dialogue.narrative",
+  "visual": null
+}

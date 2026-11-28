@@ -1,0 +1,17 @@
+{
+  "id": "nav.narrative",
+  "zone": "zone.narrative",
+  "cell": 1.0,
+  "origin": [
+    -10.0,
+    -8.0
+  ],
+  "width": 20,
+  "height": 16,
+  "blocked": [
+    173,
+    174,
+    193,
+    194
+  ]
+}

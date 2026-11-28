@@ -6,6 +6,7 @@
 ## [未发布]
 
 ### 新增
+- **L3 叙事实验室**：新增 `data/demo.narrative` 与 `web/narrative.html`；补 `ChooseDialogue` 命令（core / trace / wasm），展示对话分支、规则、任务目标、flags 与 ScriptHost `ctx.after`；L2 日程和 L4/L5 为空。
 - **L2 行为实验室**：新增 `data/demo.agency`（core + agency）与 `web/agency.html`；3 个 NPC 的日程时间窗驱动 behavior/target/A* 路径；时间加速、schedule HUD、L3–L5 为空证明；`web/test_l2.cjs` 验证 08:00 换班与移动。
 - **L0 动态障碍可视化**：L0 沙盒增加「移动障碍」按钮与实时 nav 快照；`MoveProp` 后页面重绘 blocked 格，A* 使用更新后的网格。
 - **L1 主体交互室**：新增 `data/demo.subject`（core + interaction + inventory）与 `web/subject.html`；`WorldDef.interaction_range` 可选距离门槛（旧包默认无限）；`web/test_l1.cjs` 验证拾取/背包/门锁/超距拒绝，L2–L5 为空。

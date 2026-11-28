@@ -611,6 +611,11 @@ impl World {
         match command {
             Command::Interact { actor, target } => self.command_interact(actor, target),
             Command::Talk { actor, target } => self.command_talk(actor, target),
+            Command::ChooseDialogue {
+                dialogue,
+                node,
+                choice,
+            } => self.command_choose_dialogue(&dialogue, &node, choice),
             Command::Pickup { actor, target } => self.command_pickup(actor, target),
             Command::GiveItem { actor, item, count } => {
                 let mut entity = self
@@ -925,6 +930,60 @@ impl World {
                     );
                 }
             }
+        }
+        Ok(())
+    }
+
+    fn command_choose_dialogue(
+        &mut self,
+        dialogue_id: &str,
+        node_id: &str,
+        choice: usize,
+    ) -> Result<(), String> {
+        let dialogue = self
+            .narrative
+            .dialogue(dialogue_id)
+            .ok_or_else(|| format!("对话不存在: {dialogue_id}"))?
+            .clone();
+        let node = dialogue
+            .nodes
+            .get(node_id)
+            .ok_or_else(|| format!("对话节点不存在: {node_id}"))?;
+        let next_id = node
+            .choices
+            .get(choice)
+            .map(|choice| choice.next.clone())
+            .ok_or_else(|| format!("对话选项越界: {choice}"))?;
+        let Some(next) = dialogue.nodes.get(&next_id) else {
+            self.emit(
+                "dialogue_ended",
+                None,
+                json!({"dialogue": dialogue_id, "node": node_id}),
+            );
+            return Ok(());
+        };
+        let text = self.localize(&next.text);
+        self.emit(
+            "dialogue_node",
+            None,
+            json!({
+                "dialogue": dialogue_id,
+                "node": next_id,
+                "speaker": next.speaker,
+                "text": text,
+                "choices": next.choices.iter().map(|c| json!({
+                    "text": self.localize(&c.text),
+                    "next": c.next
+                })).collect::<Vec<_>>(),
+                "end": next.end.unwrap_or(false)
+            }),
+        );
+        if next.end.unwrap_or(false) || next.choices.is_empty() {
+            self.emit(
+                "dialogue_ended",
+                None,
+                json!({"dialogue": dialogue_id, "node": next_id}),
+            );
         }
         Ok(())
     }

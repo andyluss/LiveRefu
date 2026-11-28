@@ -1,0 +1,13 @@
+{
+  "id": "quest.narrative",
+  "title": "loc:quest.narrative.title",
+  "auto_start": true,
+  "objectives": [
+    { "kind": "talk", "target": "demo.narrative.archivist" },
+    { "kind": "acquire", "item": "item.narrative.shard" },
+    { "kind": "flag", "flag": "flag.narrative.terminal", "value": true }
+  ],
+  "rewards": [
+    { "kind": "flag", "flag": "flag.quest.narrative.done", "value": true }
+  ]
+}

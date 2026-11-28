@@ -12,6 +12,11 @@ pub enum Command {
         actor: EntityId,
         target: EntityId,
     },
+    ChooseDialogue {
+        dialogue: String,
+        node: String,
+        choice: usize,
+    },
     Pickup {
         actor: EntityId,
         target: EntityId,

@@ -1,0 +1,7 @@
+{
+  "id": "item.narrative.shard",
+  "name": "loc:item.narrative.shard",
+  "stack": 1,
+  "tags": ["l3", "memory"],
+  "visual": null
+}

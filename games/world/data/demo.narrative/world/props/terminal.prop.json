@@ -1,0 +1,9 @@
+{
+  "id": "demo.narrative.terminal",
+  "name": "loc:prop.narrative.terminal",
+  "tags": ["prop", "terminal", "l3"],
+  "body": { "shape": "aabb", "size": [1.6, 1.2, 1.0] },
+  "interactable": { "verbs": ["inspect"] },
+  "locked_by": null,
+  "visual": null
+}

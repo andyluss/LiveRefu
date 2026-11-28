@@ -72,6 +72,20 @@ impl PreviewWorld {
         Ok(())
     }
 
+    pub fn choose_dialogue(
+        &mut self,
+        dialogue: &str,
+        node: &str,
+        choice: usize,
+    ) -> Result<(), JsValue> {
+        self.world.queue_command(Command::ChooseDialogue {
+            dialogue: dialogue.to_string(),
+            node: node.to_string(),
+            choice,
+        });
+        Ok(())
+    }
+
     pub fn talk(&mut self, actor: &str, target: &str) -> Result<(), JsValue> {
         let actor = self.find(actor)?;
         let target = self.find(target)?;

@@ -1,0 +1,11 @@
+{
+  "id": "zone.narrative",
+  "name": "loc:zone.narrative.name",
+  "bounds": { "min": [-10, 0, -8], "max": [10, 4, 8] },
+  "nav": "nav.narrative",
+  "placements": [
+    { "actor": "demo.narrative.archivist", "at": [-3, 0, -2], "yaw": 0, "persistent_id": "archivist" },
+    { "prop": "demo.narrative.terminal", "at": [4, 0, 1], "yaw": 0, "persistent_id": "terminal" },
+    { "item": "item.narrative.shard", "at": [2, 0, -2], "yaw": 0, "persistent_id": "shard" }
+  ]
+}

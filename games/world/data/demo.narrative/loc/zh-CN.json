@@ -1,0 +1,13 @@
+{
+  "zone.narrative.name": "L3 叙事实验室",
+  "actor.archivist.name": "档案员",
+  "prop.narrative.terminal": "记忆终端",
+  "item.narrative.shard": "记忆碎片",
+  "dlg.narrative.intro": "你带来了那块记忆吗？",
+  "dlg.narrative.trust": "我相信记忆。",
+  "dlg.narrative.doubt": "记忆也会骗人。",
+  "dlg.narrative.trust_reply": "那就把它插进终端。真相会自己说话。",
+  "dlg.narrative.doubt_reply": "怀疑是对的。但你先得看见它。",
+  "toast.narrative.terminal": "终端启动了。",
+  "quest.narrative.title": "把记忆带回终端"
+}

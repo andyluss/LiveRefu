@@ -1,0 +1,24 @@
+@import url("./spacetime.css");
+.brand-mark { color: #c6a7ff; border-color: color-mix(in srgb, #c6a7ff 50%, var(--line)); }
+.narrative-layout .stage-head #mode { color: #c6a7ff; }
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.action-grid button { border: 1px solid var(--line-strong); border-radius: 8px; background: color-mix(in srgb, var(--solid) 74%, transparent); color: var(--ink); padding: 7px 4px; font: 9px var(--mono); cursor: pointer; }
+.action-grid button:hover { border-color: #c6a7ff; color: #c6a7ff; }
+.action-grid button.wide { grid-column: 1 / -1; }
+.dialogue { position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%); width: min(560px, 82%); border: 1px solid color-mix(in srgb, #c6a7ff 65%, transparent); border-radius: 10px; background: rgba(8, 10, 22, .92); padding: 12px; color: #edf8ff; box-shadow: 0 16px 44px rgba(0,0,0,.4); z-index: 3; }
+html[data-theme="light"] .dialogue { background: rgba(255, 252, 246, .98); color: #17212b; }
+.dialogue p { margin: 0 0 6px; }
+#dialogue-speaker { color: #c6a7ff; font: 9px var(--mono); letter-spacing: .08em; }
+#dialogue-text { font-size: 12px; line-height: 1.6; }
+#dialogue-choices { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+#dialogue-choices button { border: 1px solid color-mix(in srgb, #c6a7ff 40%, transparent); background: transparent; color: inherit; border-radius: 999px; padding: 5px 9px; font: 9px var(--mono); cursor: pointer; }
+#dialogue-choices button:hover { background: color-mix(in srgb, #c6a7ff 18%, transparent); }
+.quest-panel h3 { margin: 0 0 8px; color: var(--ink); font: 11px var(--mono); }
+.objective { display: flex; gap: 7px; align-items: flex-start; padding: 4px 0; color: var(--dim); font-size: 10px; }
+.objective i { width: 7px; height: 7px; border: 1px solid #c6a7ff; border-radius: 50%; margin-top: 4px; flex: 0 0 auto; }
+.objective.done { color: var(--green); text-decoration: line-through; }
+.objective.done i { background: var(--green); border-color: var(--green); }
+.flag-panel #flags { display: flex; flex-direction: column; gap: 3px; max-height: 100px; overflow: auto; color: var(--dim); font: 8.5px var(--mono); }
+.flag-panel #flags span.ok { color: var(--green); }
+.log-panel pre { margin: 0; max-height: 130px; overflow: auto; color: var(--dim); font: 8.5px/1.5 var(--mono); white-space: pre-wrap; }
+@media print { body { background: #fff; color: #000; } .topbar, .canvas-wrap, .side, .foot { display: none; } }

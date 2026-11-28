@@ -1,0 +1,24 @@
+{
+  "id": "dialogue.narrative",
+  "start": "intro",
+  "nodes": {
+    "intro": {
+      "speaker": "demo.narrative.archivist",
+      "text": "loc:dlg.narrative.intro",
+      "choices": [
+        { "text": "loc:dlg.narrative.trust", "next": "trust" },
+        { "text": "loc:dlg.narrative.doubt", "next": "doubt" }
+      ]
+    },
+    "trust": {
+      "speaker": "demo.narrative.archivist",
+      "text": "loc:dlg.narrative.trust_reply",
+      "end": true
+    },
+    "doubt": {
+      "speaker": "demo.narrative.archivist",
+      "text": "loc:dlg.narrative.doubt_reply",
+      "end": true
+    }
+  }
+}

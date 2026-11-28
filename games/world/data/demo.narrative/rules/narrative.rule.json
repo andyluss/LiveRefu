@@ -1,0 +1,12 @@
+{
+  "id": "rule.narrative.terminal",
+  "on": "interact",
+  "target": "demo.narrative.terminal",
+  "when": [],
+  "then": [
+    { "kind": "set_flag", "flag": "flag.narrative.terminal", "value": true },
+    { "kind": "toast", "text": "loc:toast.narrative.terminal" },
+    { "kind": "emit", "event": "narrative.terminal_opened" }
+  ],
+  "else": []
+}

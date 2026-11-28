@@ -112,6 +112,7 @@ node tools/serve-web.mjs --port 8787
 | [`docs/13_L0时空沙盒.md`](docs/13_L0时空沙盒.md) | L0 独立 Demo：固定 tick、Zone、A*、碰撞、哈希；只加载 core kit |
 | [`docs/14_L1主体交互演示.md`](docs/14_L1主体交互演示.md) | L1 独立 Demo：拾取、背包、门锁、距离门槛；不加载 L2–L5 |
 | [`docs/15_L2行为实验室.md`](docs/15_L2行为实验室.md) | L2 独立 Demo：日程 → behavior → target → A* → 移动；不加载 L3–L5 |
+| [`docs/16_L3叙事实验室.md`](docs/16_L3叙事实验室.md) | L3 独立 Demo：对话分支、规则、任务、flags、ScriptHost；不加载 L4/L5 |
 | [`brief/`](brief/) | 项目 HUB 与用户指南（R-016 三态主题） |
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |

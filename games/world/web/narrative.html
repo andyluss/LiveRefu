@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L3 叙事实验室 · RefuWorld</title>
+  <meta name="description" content="RefuWorld L3 叙事层独立演示：对话分支、规则、任务目标、flags 与 ScriptHost 延迟命令；不加载 L4/L5。" />
+  <meta name="theme-color" content="#070a12" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'dark'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./spacetime.css" />
+  <link rel="stylesheet" href="./narrative.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">L3</span>
+      <div><b>NARRATIVE LAB</b><small>REFUWORLD / LAYER THREE ONLY</small></div>
+    </div>
+    <div class="top-links">
+      <a href="./demos.html">Demo 索引</a>
+      <a href="./agency.html">L2 行为</a>
+      <a href="../brief/HUB.html">HUB</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sandbox narrative-layout">
+    <aside class="side left">
+      <section class="panel">
+        <p class="eyebrow">L3 CONTRACT</p>
+        <h1>故事，<br><em>可被验证。</em></h1>
+        <p class="lede">对话分支、规则、任务目标、flags 与 ScriptHost 延迟命令。这个包没有社会关系、声望或世界系统；也没有日程。</p>
+        <div class="capabilities">
+          <div><span class="dot"></span><span><b>Dialogue</b><small>节点 / 选项 / 结束</small></span></div>
+          <div><span class="dot"></span><span><b>Rules</b><small>interact → flags / emit</small></span></div>
+          <div><span class="dot"></span><span><b>Quest</b><small>talk / acquire / flag 目标</small></span></div>
+          <div><span class="dot"></span><span><b>Script</b><small>事件 → ctx.after → 命令</small></span></div>
+        </div>
+      </section>
+      <section class="panel layer-proof">
+        <p class="eyebrow">INDEPENDENCE CHECK</p>
+        <div class="proof-row"><span>L2 日程</span><b id="l2-proof">0 schedules</b></div>
+        <div class="proof-row"><span>L4 社会</span><b id="l4-proof">absent</b></div>
+        <div class="proof-row"><span>L5 世界系统</span><b id="l5-proof">absent</b></div>
+        <p class="micro">L3 观察 L0/L1 的事实，发出命令；不直接改写 transform 或背包。L4/L5 为空。</p>
+      </section>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-head"><span>ZONE.NARRATIVE / L3 STORY ROOM</span><span id="mode">RUNNING · 60 Hz</span></div>
+      <div class="canvas-wrap">
+        <canvas id="view" width="900" height="650" aria-label="L3 叙事实验室：档案员、记忆终端、记忆碎片与玩家"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="stage-tip">WASD 接近 · 点击地面寻路 · 与档案员交谈 · Space 暂停</div>
+        <div id="dialogue" class="dialogue" hidden>
+          <p id="dialogue-speaker"></p>
+          <p id="dialogue-text"></p>
+          <div id="dialogue-choices"></div>
+        </div>
+      </div>
+      <div class="stage-foot"><span id="event-line">09:00 · 找到档案员</span><span id="pack-line">demo.narrative · L3 only</span></div>
+    </section>
+
+    <aside class="side right">
+      <section class="panel telemetry">
+        <p class="eyebrow">NARRATIVE STATE</p>
+        <div class="metric big"><span>TICK</span><b id="tick">0</b></div>
+        <div class="metric"><span>QUEST</span><b id="quest-state">active</b></div>
+        <div class="metric"><span>FLAGS</span><b id="flag-count">0</b></div>
+        <div class="metric"><span>SCRIPT</span><b id="script-state">idle</b></div>
+        <div class="metric"><span>DIALOGUE</span><b id="dialogue-state">closed</b></div>
+      </section>
+      <section class="panel">
+        <p class="eyebrow">ACTIONS</p>
+        <div class="action-grid">
+          <button id="talk" type="button">与档案员交谈</button>
+          <button id="pickup" type="button">拾取记忆碎片</button>
+          <button id="terminal" type="button">读取终端</button>
+          <button id="pause" type="button">暂停</button>
+          <button id="reset" type="button" class="wide">重置世界</button>
+        </div>
+        <p class="micro">对话选项会发送 `choose_dialogue`；任务目标由 L3 事件推进。</p>
+      </section>
+      <section class="panel quest-panel">
+        <p class="eyebrow">QUEST</p>
+        <h3 id="quest-title">把记忆带回终端</h3>
+        <div id="objectives"></div>
+      </section>
+      <section class="panel flag-panel">
+        <p class="eyebrow">FLAGS</p>
+        <div id="flags">—</div>
+      </section>
+      <section class="panel log-panel">
+        <p class="eyebrow">EVENTS</p>
+        <pre id="events">—</pre>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot"><span>RefuWorld · L3 Narrative Lab · core + interaction + inventory + quest + dialogue + script</span><span>WASM + Canvas 2D</span></footer>
+  <noscript><p class="noscript">这个演示需要 JavaScript 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode; root.dataset.theme = dark ? 'dark' : 'light';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = dark ? '#070a12' : '#f2eee5';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode)); });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); }); });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="importmap">
+    {"imports":{"env":"./vendor/quickjs-env.js"}}
+  </script>
+  <script type="module" src="./narrative.js"></script>
+</body>
+</html>
