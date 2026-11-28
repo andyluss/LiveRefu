@@ -1,0 +1,16 @@
+{
+  "name": "spacetime_core_only",
+  "ticks": 120,
+  "steps": [
+    {
+      "tick": 5,
+      "command": { "op": "move_to", "actor": "player", "x": 8, "z": 6 }
+    }
+  ],
+  "expect": {
+    "flags": {},
+    "quests": {},
+    "inventory": {},
+    "events": []
+  }
+}

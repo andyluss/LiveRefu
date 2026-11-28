@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "demo.spacetime",
+  "version": "0.1.0",
+  "core_api": ">=0.1 <0.2",
+  "kits": ["core"],
+  "entry": { "world": "world/spacetime.world.json", "start_zone": "zone.spacetime" },
+  "sim_profile": "arcade",
+  "tick_hz": 60,
+  "loc": ["loc/zh-CN.json"],
+  "requires": [],
+  "optional": [],
+  "conflicts": []
+}

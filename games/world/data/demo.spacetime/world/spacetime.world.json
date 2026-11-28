@@ -1,0 +1,7 @@
+{
+  "id": "world.spacetime",
+  "start_zone": "zone.spacetime",
+  "start_time": "08:00",
+  "seed": 20261128,
+  "player": { "at": [-8, 0, -6], "inventory": [] }
+}

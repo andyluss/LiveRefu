@@ -6,6 +6,7 @@
 ## [未发布]
 
 ### 新增
+- **L0 时空沙盒**：新增 `data/demo.spacetime`（仅 core kit）与 `web/spacetime.html`；展示固定 tick、Zone、A*、碰撞、路径与哈希，HUD 实时证明 L1–L5 为空；`web/test_l0.cjs` 验证移动/重置哈希与上层内容为空。
 - **ScriptHost 真异步/定时器收尾**：`ctx.delay` 挂起 Promise、`globalThis.setTimeout` 映射 tick、命令 timer 跨 reload、`on_tick` has_work 短路；模块循环依赖可读错误。仍无真实墙钟计时/函数 timer 迁移。
 - **ScriptHost 模块循环诊断**：加载前遍历 import 图，发现循环时返回可读链路（如 `a -> b -> a`），避免 QuickJS 只报泛化加载错误。
 - **ScriptHost 跨 tick async**：`ctx.delay(ticks)` Promise 在后续 tick 恢复；`globalThis.setTimeout` 映射到 60Hz tick；命令 timer 跨热重载迁移；`on_tick` 驱动到期任务并 drain async 结果。仍不支持真实墙钟计时。

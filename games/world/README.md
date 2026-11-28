@@ -88,6 +88,10 @@ node tools/serve-web.mjs --port 8787
 3. **换引擎基本只换适配器**：新增一个引擎的基础适配器（输入/资产/视图/音频/存档）**≤ 2,000 行**，且适配器里**没有一条玩法规则**。
 4. **内容迭代足够快**：改一个定义到预览可见 **≤ 2 秒**；内容错误在编辑器里指出具体内容 ID，而不是引擎堆栈。
 
+## 当前待办
+
+项目内部剩余项见 [`TODO.md`](TODO.md)：真实作者试用、ScriptHost watcher、完整 NPC 避让、多 Zone 5k、Windows Godot 导出等。
+
 ## 目录
 
 | 路径 | 是什么 |
@@ -105,6 +109,7 @@ node tools/serve-web.mjs --port 8787
 | [`docs/10_3D角色_小鲸鱼娘提示词.md`](docs/10_3D角色_小鲸鱼娘提示词.md) | 小鲸鱼娘社区设定、视觉规格、提示词与 3D 验收 |
 | [`docs/11_内核分层与迁移.md`](docs/11_内核分层与迁移.md) | 内核 L0–L3 分层、依赖方向、v1 兼容与迁移门 |
 | [`docs/12_活NPC与行为层方案.md`](docs/12_活NPC与行为层方案.md) | M3 候选：L2 活 NPC、效用/活动/记忆、LOD、确定性与验收 |
+| [`docs/13_L0时空沙盒.md`](docs/13_L0时空沙盒.md) | L0 独立 Demo：固定 tick、Zone、A*、碰撞、哈希；只加载 core kit |
 | [`brief/`](brief/) | 项目 HUB 与用户指南（R-016 三态主题） |
 | [`packages/world-authoring/`](packages/world-authoring/) | 类型化 TS DSL 与注册表 |
 | [`src/content/demo.harbor/`](src/content/demo.harbor/) | TS 版「港湾值班室」内容源 |

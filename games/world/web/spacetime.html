@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L0 时空沙盒 · RefuWorld</title>
+  <meta name="description" content="RefuWorld L0 时空层独立演示：固定 tick、Zone、A* 寻路、碰撞、边界与确定性哈希；不加载 L1–L5 内容。" />
+  <meta name="theme-color" content="#070a12" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'dark'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./spacetime.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">L0</span>
+      <div><b>SPACETIME SANDBOX</b><small>REFUWORLD / LAYER ZERO ONLY</small></div>
+    </div>
+    <div class="top-links">
+      <a href="./demos.html">Demo 索引</a>
+      <a href="./index.html">2D 预览</a>
+      <a href="../brief/HUB.html">HUB</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sandbox">
+    <aside class="side left">
+      <section class="panel">
+        <p class="eyebrow">L0 CONTRACT</p>
+        <h1>没有任务，<br><em>只有时空。</em></h1>
+        <p class="lede">固定 60 Hz、Zone 边界、A*、碰撞与确定性哈希。这个包没有 actors、items、rules、quests、dialogue、schedules 或 scripts。</p>
+        <div class="capabilities">
+          <div><span class="dot"></span><span><b>固定 tick</b><small>60 Hz 确定性步进</small></span></div>
+          <div><span class="dot"></span><span><b>空间</b><small>Zone 边界 + AABB 碰撞</small></span></div>
+          <div><span class="dot"></span><span><b>导航</b><small>4 邻接 A*，逐 tick 跟随</small></span></div>
+          <div><span class="dot"></span><span><b>可回放</b><small>同 seed / 同 hash</small></span></div>
+        </div>
+      </section>
+      <section class="panel layer-proof">
+        <p class="eyebrow">INDEPENDENCE CHECK</p>
+        <div class="proof-row"><span>L1 主体交互</span><b id="l1-proof">0 commands</b></div>
+        <div class="proof-row"><span>L2 行为/日程</span><b id="l2-proof">0 schedules</b></div>
+        <div class="proof-row"><span>L3 叙事/规则</span><b id="l3-proof">0 flags / 0 quests</b></div>
+        <div class="proof-row"><span>L4 社会</span><b id="l4-proof">absent</b></div>
+        <div class="proof-row"><span>L5 世界系统</span><b id="l5-proof">absent</b></div>
+        <p class="micro">这些层没有内容，也没有被调用；L0 仍然能移动、碰撞、寻路。</p>
+      </section>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-head">
+        <span>ZONE.SPACETIME / 24 × 18 m</span>
+        <span id="mode">RUNNING · 60 Hz</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="view" width="900" height="650" aria-label="L0 时空沙盒：Zone、障碍、路径和玩家"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="stage-tip">WASD 移动 · 点击地面寻路 · Space 暂停 · R 重置</div>
+      </div>
+      <div class="stage-foot">
+        <span id="event-line">点击地面，观察 A* 路径与分轴碰撞。</span>
+        <span id="pack-line">demo.spacetime · seed 20261128</span>
+      </div>
+    </section>
+
+    <aside class="side right">
+      <section class="panel telemetry">
+        <p class="eyebrow">TELEMETRY</p>
+        <div class="metric big"><span>TICK</span><b id="tick">0</b></div>
+        <div class="metric"><span>CLOCK</span><b id="clock">08:00</b></div>
+        <div class="metric"><span>POSITION</span><b id="position">-8.0, -6.0</b></div>
+        <div class="metric"><span>SPEED</span><b id="speed">4.0 m/s</b></div>
+        <div class="metric"><span>PATH</span><b id="path">idle</b></div>
+        <div class="metric"><span>HASH</span><b id="hash" class="mono">—</b></div>
+      </section>
+      <section class="panel">
+        <p class="eyebrow">CONTROLS</p>
+        <div class="controls">
+          <button id="pause" type="button">暂停</button>
+          <button id="route" type="button">A* 路径</button>
+          <button id="reset" type="button">重置世界</button>
+        </div>
+        <div class="legend">
+          <span><i class="swatch path"></i>导航路径</span>
+          <span><i class="swatch blocked"></i>nav blocked</span>
+          <span><i class="swatch player"></i>玩家</span>
+        </div>
+      </section>
+      <section class="panel quote">
+        <p>“上层是内容，<br>下层是事实。”</p>
+        <small>L0 只认识时间、空间、路径和碰撞。</small>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot">
+    <span>RefuWorld · L0 Spacetime Sandbox · 仅加载 core kit</span>
+    <span>WASM + Canvas 2D · deterministic</span>
+  </footer>
+  <noscript><p class="noscript">这个演示需要 JavaScript 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = dark ? '#070a12' : '#f2eee5';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode));
+        });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+        b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="importmap">
+    {"imports":{"env":"./vendor/quickjs-env.js"}}
+  </script>
+  <script type="module" src="./spacetime.js"></script>
+</body>
+</html>

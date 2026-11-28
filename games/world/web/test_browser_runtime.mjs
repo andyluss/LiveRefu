@@ -90,6 +90,7 @@ try {
   await send("Log.enable");
 
   const pagesToCheck = [
+    ["L0", "/web/spacetime.html"],
     ["2D", "/web/index.html"],
     ["2.5D", "/web/iso.html?demo=market"],
     ["3D", "/web/solarfarm3d.html"],
@@ -129,7 +130,7 @@ try {
     console.error(errors.slice(-8).join("\n"));
     process.exitCode = 1;
   } else {
-    console.log("browser runtime PASS (2D / 2.5D / 3D)");
+    console.log("browser runtime PASS (L0 / 2D / 2.5D / 3D)");
   }
 } catch (error) {
   console.error("browser runtime FAIL:", error.message);

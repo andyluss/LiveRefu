@@ -1,0 +1,23 @@
+{
+  "id": "demo.spacetime.obstacle",
+  "name": "loc:prop.spacetime.obstacle",
+  "tags": [
+    "obstacle",
+    "l0"
+  ],
+  "body": {
+    "shape": "aabb",
+    "size": [
+      1,
+      2,
+      1
+    ]
+  },
+  "interactable": {
+    "verbs": [
+      "inspect"
+    ]
+  },
+  "locked_by": null,
+  "visual": null
+}
