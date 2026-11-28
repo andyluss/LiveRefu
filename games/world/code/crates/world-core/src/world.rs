@@ -195,6 +195,14 @@ impl World {
         self.narrative.has_script_host()
     }
 
+    /// Hot-reload script sources from a pack while preserving persistent state.
+    pub fn reload_scripts(&mut self, pack: &Pack) -> Result<(), String> {
+        let Some(host) = self.narrative.script_host_mut() else {
+            return Err("当前世界没有 ScriptHost".to_string());
+        };
+        host.reload(&pack.scripts)
+    }
+
     /// 只把指定 kind 的事件交给脚本；用于高频内部事件（日程/寻路）避免全量上下文成本。
     /// 默认 None = 所有事件都交给脚本。
     pub fn set_script_event_filter<I, S>(&mut self, kinds: I)

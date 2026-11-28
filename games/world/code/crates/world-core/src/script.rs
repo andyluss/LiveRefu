@@ -14,4 +14,12 @@ pub trait ScriptHost {
     fn restore_state(&mut self, _state: &str) -> Result<(), String> {
         Ok(())
     }
+
+    /// Hot-reload script sources while keeping the host's persistent state.
+    fn reload(
+        &mut self,
+        _scripts: &std::collections::BTreeMap<String, String>,
+    ) -> Result<(), String> {
+        Ok(())
+    }
 }

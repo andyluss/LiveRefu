@@ -6,7 +6,7 @@ license.workspace = true
 authors.workspace = true
 
 [dependencies]
-rquickjs = "0.14"
+rquickjs = { version = "0.14", features = ["loader"] }
 world-core = { path = "../world-core" }
 world-pack = { path = "../world-pack" }
 serde_json.workspace = true

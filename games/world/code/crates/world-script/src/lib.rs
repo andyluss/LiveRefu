@@ -1,7 +1,9 @@
 //! QuickJS ScriptHost：事件上下文 JSON → 命令数组。
 //! 运行时只认识 `world_core::Command`；玩法规则/空间查询仍由世界层执行。
 
-use rquickjs::{CaughtError, Context, Function, Runtime};
+use rquickjs::loader::{ImportAttributes, Loader, Resolver};
+use rquickjs::promise::MaybePromise;
+use rquickjs::{CaughtError, Context, Ctx, Function, Module, Result as JsResult, Runtime};
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
@@ -36,13 +38,89 @@ globalThis.__dshState = globalThis.__dshState || {};
 globalThis.__dshGetState = function () { return JSON.stringify(globalThis.__dshState || {}); };
 globalThis.__dshSetState = function (input) { globalThis.__dshState = JSON.parse(input || "{}"); };
 globalThis.__dshDispatch = function (input) {
-  if (typeof onEvent !== "function") return "[]";
+  var fn = globalThis.__dshOnEvent || (typeof onEvent === "function" ? onEvent : null);
+  if (typeof fn !== "function") return "[]";
   var ctx = JSON.parse(input);
   ctx.state = globalThis.__dshState;
-  var out = onEvent(ctx);
+  var out = fn(ctx);
+  if (out && typeof out.then === "function") {
+    return out.then(function (value) { return JSON.stringify(value == null ? [] : value); });
+  }
   return JSON.stringify(out == null ? [] : out);
 };
 "#;
+
+#[derive(Clone, Debug)]
+struct ModuleSources(BTreeMap<String, Vec<u8>>);
+
+impl ModuleSources {
+    fn from_scripts(scripts: &BTreeMap<String, String>) -> Self {
+        let mut sources = BTreeMap::new();
+        for (name, source) in scripts {
+            let key = name.trim_end_matches(".js").to_string();
+            sources.insert(key.clone(), source.as_bytes().to_vec());
+            sources
+                .entry(name.clone())
+                .or_insert_with(|| source.as_bytes().to_vec());
+        }
+        Self(sources)
+    }
+
+    fn get(&self, path: &str) -> Option<Vec<u8>> {
+        let key = path
+            .trim_start_matches("./")
+            .trim_start_matches("scripts/")
+            .trim_end_matches(".js");
+        self.0
+            .get(key)
+            .cloned()
+            .or_else(|| self.0.get(path).cloned())
+    }
+}
+
+#[derive(Debug)]
+struct ScriptResolver;
+
+impl Resolver for ScriptResolver {
+    fn resolve<'js>(
+        &mut self,
+        _ctx: &Ctx<'js>,
+        base: &str,
+        name: &str,
+        _attributes: Option<ImportAttributes<'js>>,
+    ) -> JsResult<String> {
+        if !name.starts_with('.') {
+            return Ok(name.to_string());
+        }
+        let dir = base.rsplit_once('/').map(|(dir, _)| dir).unwrap_or("");
+        let path = if dir.is_empty() {
+            name.to_string()
+        } else {
+            format!("{dir}/{name}")
+        };
+        Ok(path.replace("/./", "/"))
+    }
+}
+
+#[derive(Debug)]
+struct ScriptLoader {
+    sources: ModuleSources,
+}
+
+impl Loader for ScriptLoader {
+    fn load<'js>(
+        &mut self,
+        ctx: &Ctx<'js>,
+        path: &str,
+        _attributes: Option<ImportAttributes<'js>>,
+    ) -> JsResult<Module<'js, rquickjs::module::Declared>> {
+        let source = self
+            .sources
+            .get(path)
+            .ok_or_else(|| rquickjs::Error::new_loading(path))?;
+        Module::declare(ctx.clone(), path, source)
+    }
+}
 
 pub struct QuickJsHost {
     // 先 drop contexts，最后 drop runtime；避免 Context 访问已释放的 Runtime。
@@ -64,6 +142,12 @@ impl QuickJsHost {
         let runtime = Runtime::new().map_err(|e| format!("QuickJS Runtime: {e}"))?;
         runtime.set_memory_limit(16 * 1024 * 1024);
         runtime.set_max_stack_size(1024 * 1024);
+        runtime.set_loader(
+            ScriptResolver,
+            ScriptLoader {
+                sources: ModuleSources::from_scripts(scripts),
+            },
+        );
         let budget = Arc::new(AtomicU64::new(0));
         #[cfg(not(target_arch = "wasm32"))]
         let deadline = Arc::new(Mutex::new(
@@ -90,12 +174,36 @@ impl QuickJsHost {
         })));
         let mut contexts = Vec::new();
         for (name, source) in scripts {
+            let is_module = source.contains("export ") || source.contains("import ");
+            if is_module && !source.contains("onEvent") {
+                // Imported helper modules are loaded on demand by the module
+                // loader; they are not top-level event handlers.
+                continue;
+            }
             budget.store(0, Ordering::Relaxed);
             let context =
                 Context::full(&runtime).map_err(|e| format!("QuickJS Context {name}: {e}"))?;
             context.with(|ctx| {
-                ctx.eval::<(), _>(source.as_bytes())
-                    .map_err(|e| format_script_error(&ctx, name, e))?;
+                if is_module {
+                    let module_name = format!("scripts/{name}.js");
+                    let (module, promise) =
+                        Module::declare(ctx.clone(), module_name, source.as_bytes())
+                            .map_err(|e| format_script_error(&ctx, name, e))?
+                            .eval()
+                            .map_err(|e| format_script_error(&ctx, name, e))?;
+                    promise
+                        .finish::<()>()
+                        .map_err(|e| format_script_error(&ctx, name, e))?;
+                    let handler: Function = module
+                        .get("onEvent")
+                        .map_err(|e| format!("脚本 {name} 没有导出 onEvent: {e}"))?;
+                    ctx.globals()
+                        .set("__dshOnEvent", handler)
+                        .map_err(|e| format!("脚本 {name} 绑定 onEvent: {e}"))?;
+                } else {
+                    ctx.eval::<(), _>(source.as_bytes())
+                        .map_err(|e| format_script_error(&ctx, name, e))?;
+                }
                 ctx.eval::<(), _>(DISPATCH.as_bytes())
                     .map_err(|e| format_script_error(&ctx, name, e))?;
                 Ok::<(), String>(())
@@ -128,6 +236,22 @@ impl QuickJsHost {
             .map(|(index, (name, _))| (name.clone(), self.states[index].clone()))
             .collect()
     }
+
+    /// Rebuild contexts/runtime from new sources, preserving per-script state.
+    pub fn reload_from_scripts(
+        &mut self,
+        scripts: &BTreeMap<String, String>,
+    ) -> Result<(), String> {
+        let old_states = self.state_map();
+        let mut next = Self::from_scripts(scripts)?;
+        for (index, (name, _)) in next.contexts.iter().enumerate() {
+            if let Some(state) = old_states.get(name) {
+                next.states[index] = state.clone();
+            }
+        }
+        *self = next;
+        Ok(())
+    }
 }
 
 pub fn attach_script_host(world: &mut World, pack: &Pack) -> Result<(), String> {
@@ -151,6 +275,10 @@ pub fn run_trace_with_scripts(
 }
 
 impl ScriptHost for QuickJsHost {
+    fn reload(&mut self, scripts: &BTreeMap<String, String>) -> Result<(), String> {
+        self.reload_from_scripts(scripts)
+    }
+
     fn state_json(&self) -> Option<String> {
         let states = self.state_map();
         if states.values().all(|state| state == "{}") {
@@ -194,7 +322,9 @@ impl ScriptHost for QuickJsHost {
                     .get("__dshDispatch")
                     .map_err(|e| format!("脚本 {name} 缺少 dispatch: {e}"))?;
                 let text = dispatch
-                    .call::<_, String>((context_json,))
+                    .call::<_, MaybePromise>((context_json,))
+                    .map_err(|e| format_script_error(&ctx, name, e))?
+                    .finish::<String>()
                     .map_err(|e| format_script_error(&ctx, name, e))?;
                 let get_state: Function = ctx
                     .globals()
@@ -287,6 +417,38 @@ mod tests {
         restored.restore_state(&state).unwrap();
         let third = restored.on_event("{}").unwrap();
         assert!(matches!(&third[0], Command::Toast { text, .. } if text == "3"));
+    }
+
+    #[test]
+    fn supports_modules_async_and_hot_reload() {
+        let mut scripts = BTreeMap::new();
+        scripts.insert(
+            "helper".to_string(),
+            "export function bump(n) { return n + 1; }".to_string(),
+        );
+        scripts.insert(
+            "main".to_string(),
+            "import { bump } from './helper.js'; export async function onEvent(ctx) { await Promise.resolve(); ctx.state.n = bump(ctx.state.n || 0); return [{op:'toast', text:String(ctx.state.n)}]; }".to_string(),
+        );
+        let mut host = QuickJsHost::from_scripts(&scripts).unwrap();
+        let first = host.on_event("{}").unwrap();
+        assert!(matches!(&first[0], Command::Toast { text, .. } if text == "1"));
+        let state = host.state_json().expect("state exists");
+
+        let mut reloaded = BTreeMap::new();
+        reloaded.insert(
+            "helper".to_string(),
+            "export function bump(n) { return n + 10; }".to_string(),
+        );
+        reloaded.insert(
+            "main".to_string(),
+            "import { bump } from './helper.js'; export async function onEvent(ctx) { ctx.state.n = bump(ctx.state.n || 0); return [{op:'toast', text:String(ctx.state.n)}]; }".to_string(),
+        );
+        host.reload(&reloaded).unwrap();
+        let restored = host.state_json().expect("state survives reload");
+        assert_eq!(state, restored);
+        let second = host.on_event("{}").unwrap();
+        assert!(matches!(&second[0], Command::Toast { text, .. } if text == "11"));
     }
 
     #[test]

@@ -353,18 +353,32 @@ fn read_scripts(dir: &Path) -> Result<BTreeMap<String, String>, PackError> {
         return Ok(BTreeMap::new());
     }
     let mut out = BTreeMap::new();
+    collect_scripts(dir, dir, &mut out)?;
+    Ok(out)
+}
+
+fn collect_scripts(
+    root: &Path,
+    dir: &Path,
+    out: &mut BTreeMap<String, String>,
+) -> Result<(), PackError> {
     let entries = fs::read_dir(dir)
         .map_err(|e| err(dir.display().to_string(), format!("读取 scripts 失败: {e}")))?;
     for entry in entries.flatten() {
         let path = entry.path();
+        if path.is_dir() {
+            collect_scripts(root, &path, out)?;
+            continue;
+        }
         if path.extension().and_then(|s| s.to_str()) != Some("js") {
             continue;
         }
-        let id = path
-            .file_stem()
-            .and_then(|s| s.to_str())
+        let rel = path.strip_prefix(root).unwrap_or(&path);
+        let id = rel
+            .with_extension("")
+            .to_str()
             .ok_or_else(|| err(path.display().to_string(), "脚本文件名无效"))?
-            .to_string();
+            .replace('\\', "/");
         let source = fs::read_to_string(&path)
             .map_err(|e| err(path.display().to_string(), format!("读取脚本失败: {e}")))?;
         if source.trim().is_empty() {
@@ -372,7 +386,7 @@ fn read_scripts(dir: &Path) -> Result<BTreeMap<String, String>, PackError> {
         }
         out.insert(id, source);
     }
-    Ok(out)
+    Ok(())
 }
 
 fn read_loc(dir: &Path) -> Result<BTreeMap<String, BTreeMap<String, String>>, PackError> {
