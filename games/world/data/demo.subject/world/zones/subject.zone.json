@@ -1,0 +1,11 @@
+{
+  "id": "zone.subject",
+  "name": "loc:zone.subject.name",
+  "bounds": { "min": [-10, 0, -8], "max": [10, 4, 8] },
+  "nav": "nav.subject",
+  "placements": [
+    { "item": "item.subject.keycard", "at": [0, 0, -2], "yaw": 0, "persistent_id": "keycard" },
+    { "prop": "demo.subject.door", "at": [0, 0, 2], "yaw": 0, "persistent_id": "door" },
+    { "prop": "demo.subject.console", "at": [4, 0, -2], "yaw": 0, "persistent_id": "console" }
+  ]
+}

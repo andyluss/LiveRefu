@@ -1,0 +1,21 @@
+{
+  "id": "nav.subject",
+  "zone": "zone.subject",
+  "cell": 1.0,
+  "origin": [
+    -10.0,
+    -8.0
+  ],
+  "width": 20,
+  "height": 16,
+  "blocked": [
+    113,
+    114,
+    133,
+    134,
+    189,
+    190,
+    209,
+    210
+  ]
+}

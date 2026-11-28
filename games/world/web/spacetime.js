@@ -21,6 +21,7 @@ const el = {
   l4: document.getElementById("l4-proof"),
   l5: document.getElementById("l5-proof"),
   pause: document.getElementById("pause"),
+  obstacle: document.getElementById("obstacle"),
   route: document.getElementById("route"),
   reset: document.getElementById("reset"),
 };
@@ -41,6 +42,7 @@ let fps = 60;
 let fpsAcc = 0;
 let fpsFrames = 0;
 let error = "";
+let obstacleFar = false;
 
 function setupCanvas() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -127,6 +129,7 @@ function draw() {
   ctx.fillStyle = c.bg;
   ctx.fillRect(0, 0, W, H);
   if (!zone) return;
+  const liveNav = current?.nav ?? nav;
   const m = map();
   const [x0, z0] = m.toScreen(m.minX, m.minZ);
   const [x1, z1] = m.toScreen(m.maxX, m.maxZ);
@@ -146,13 +149,13 @@ function draw() {
   }
 
   // nav blocked cells
-  if (nav) {
-    const cell = nav.cell;
-    for (const index of nav.blocked) {
-      const nx = index % nav.width;
-      const nz = Math.floor(index / nav.width);
-      const wx = nav.origin[0] + nx * cell;
-      const wz = nav.origin[1] + nz * cell;
+  if (liveNav) {
+    const cell = liveNav.cell;
+    for (const index of liveNav.blocked) {
+      const nx = index % liveNav.width;
+      const nz = Math.floor(index / liveNav.width);
+      const wx = liveNav.origin[0] + nx * cell;
+      const wz = liveNav.origin[1] + nz * cell;
       const [sx, sz] = m.toScreen(wx, wz);
       ctx.fillStyle = "rgba(150, 55, 55, .18)";
       ctx.fillRect(sx, sz, cell * m.scale, cell * m.scale);
@@ -309,6 +312,18 @@ function bindInput() {
     current = JSON.parse(world.state());
   });
   el.pause.addEventListener("click", () => { paused = !paused; el.pause.textContent = paused ? "继续" : "暂停"; });
+  el.obstacle.addEventListener("click", () => {
+    if (!world || !current) return;
+    const pillar = current.state.entities.find((entity) => entity.persistent_id === "pillar.center");
+    if (!pillar) { error = "找不到动态障碍"; return; }
+    obstacleFar = !obstacleFar;
+    const [x, z] = obstacleFar ? [-8, -2] : [0, 0];
+    world.command(JSON.stringify({ op: "move_prop", target: pillar.id, x, z }));
+    world.tick(TICK_US);
+    current = JSON.parse(world.state());
+    nav = current.nav ?? nav;
+    el.event.textContent = `MoveProp · nav 局部重建 · ${obstacleFar ? "障碍已移开" : "障碍回到中央"}`;
+  });
   el.route.addEventListener("click", () => {
     if (!world) return;
     paused = false;

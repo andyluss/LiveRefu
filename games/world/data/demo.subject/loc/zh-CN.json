@@ -1,0 +1,8 @@
+{
+  "zone.subject.name": "L1 主体交互室",
+  "prop.subject.door": "L1 气闸",
+  "prop.subject.console": "L1 控制台",
+  "item.subject.keycard": "L1 钥匙卡",
+  "door.locked": "门锁着。需要钥匙卡。",
+  "door.already_open": "门已经开了。"
+}

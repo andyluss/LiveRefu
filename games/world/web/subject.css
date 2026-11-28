@@ -1,0 +1,13 @@
+@import url("./spacetime.css");
+.brand-mark { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 50%, var(--line)); }
+.eyebrow { color: var(--faint); }
+.subject-layout .stage-head #mode { color: var(--amber); }
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.action-grid button { border: 1px solid var(--line-strong); border-radius: 8px; background: color-mix(in srgb, var(--solid) 74%, transparent); color: var(--ink); padding: 7px 5px; font: 9px var(--mono); cursor: pointer; }
+.action-grid button:hover { border-color: var(--amber); color: var(--amber); }
+.action-grid button.wide { grid-column: 1 / -1; }
+.log-panel pre { margin: 0; max-height: 140px; overflow: auto; color: var(--dim); font: 9px/1.5 var(--mono); white-space: pre-wrap; }
+#door-state { color: var(--amber); }
+.range-good { color: var(--green) !important; }
+.range-bad { color: var(--danger) !important; }
+@media print { body { background: #fff; color: #000; } .topbar, .canvas-wrap, .side, .foot { display: none; } }

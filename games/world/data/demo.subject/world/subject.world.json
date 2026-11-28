@@ -1,0 +1,8 @@
+{
+  "id": "world.subject",
+  "start_zone": "zone.subject",
+  "start_time": "09:00",
+  "seed": 20261128,
+  "player": { "at": [0, 0, -5], "inventory": [] },
+  "interaction_range": 6.0
+}

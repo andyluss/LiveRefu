@@ -1,0 +1,16 @@
+{
+  "name": "subject_l1",
+  "ticks": 140,
+  "steps": [
+    { "tick": 5, "command": { "op": "pickup", "actor": "player", "target": "item.subject.keycard" } },
+    { "tick": 20, "command": { "op": "move", "actor": "player", "x": 0, "z": 1 } },
+    { "tick": 80, "command": { "op": "move", "actor": "player", "x": 0, "z": 0 } },
+    { "tick": 95, "command": { "op": "interact", "actor": "player", "target": "demo.subject.door" } }
+  ],
+  "expect": {
+    "flags": {},
+    "quests": {},
+    "inventory": { "item.subject.keycard": 1 },
+    "events": ["item_acquired", "entity_despawned", "door_opened"]
+  }
+}

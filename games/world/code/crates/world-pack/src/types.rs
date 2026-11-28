@@ -44,6 +44,9 @@ pub struct WorldDef {
     pub start_time: String,
     pub seed: u64,
     pub player: PlayerSpawn,
+    /// Optional L1 affordance distance. Omitted/None keeps legacy unlimited range.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interaction_range: Option<f32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub social: Option<SocialDef>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

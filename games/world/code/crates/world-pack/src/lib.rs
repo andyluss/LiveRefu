@@ -159,6 +159,7 @@ impl Pack {
                 at: [0.0, 0.0, 0.0],
                 inventory: vec![],
             },
+            interaction_range: None,
             social: None,
             systems: None,
         };

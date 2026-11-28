@@ -1,0 +1,9 @@
+{
+  "id": "demo.subject.door",
+  "name": "loc:prop.subject.door",
+  "tags": ["prop", "door", "l1"],
+  "body": { "shape": "aabb", "size": [1.2, 2.2, 0.5] },
+  "interactable": { "verbs": ["interact"] },
+  "locked_by": "item.subject.keycard",
+  "visual": null
+}

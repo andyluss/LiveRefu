@@ -141,6 +141,7 @@ impl PreviewWorld {
             "pack_hash": self.world.pack_hash,
             "final_hash": format!("0x{:016x}", self.world.state_hash()),
             "state": self.world.snapshot(),
+            "nav": self.world.nav_grid(),
             "names": names,
             "quest_titles": quest_titles,
             "zones": zones,

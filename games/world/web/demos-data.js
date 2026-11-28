@@ -1,6 +1,7 @@
 // Demo 目录：内容包 → 标题/加载路径。新增场景只需在这里登记并加入 data/demo.*。
 export const DEMOS = {
   "demo.spacetime": { title: "L0 时空沙盒", subtitle: "固定 tick / Zone / A* / 碰撞 / 哈希", pack: "./packs/demo.spacetime.data" },
+  "demo.subject": { title: "L1 主体交互室", subtitle: "拾取 / 背包 / 门锁 / 距离门槛", pack: "./packs/demo.subject.data" },
   "demo.harbor": { title: "港湾值班室", subtitle: "剧情 / 交互 / 完整垂直切片", pack: "./pack.data", trace: true },
   "demo.dock": { title: "夜班货运", subtitle: "货运 / 通行证 / 开关门", pack: "./packs/demo.dock.data" },
   "demo.kitchen": { title: "午夜食堂", subtitle: "库存 / 餐券 / 对话", pack: "./packs/demo.kitchen.data" },

@@ -1,0 +1,9 @@
+{
+  "id": "demo.subject.console",
+  "name": "loc:prop.subject.console",
+  "tags": ["prop", "console", "l1"],
+  "body": { "shape": "aabb", "size": [1.5, 1.1, 1.0] },
+  "interactable": { "verbs": ["inspect"] },
+  "locked_by": null,
+  "visual": null
+}

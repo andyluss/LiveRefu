@@ -83,6 +83,7 @@ pub struct World {
     npc_paths: BTreeMap<String, NpcPath>,
     pending_script_state: Option<String>,
     pub max_catchup: u32,
+    pub interaction_range: f32,
     pub overrun_count: u32,
     pub last_error: Option<String>,
 }
@@ -118,6 +119,7 @@ impl World {
             npc_paths: BTreeMap::new(),
             pending_script_state: None,
             max_catchup: 4,
+            interaction_range: pack.world.interaction_range.unwrap_or(f32::INFINITY),
             overrun_count: 0,
             last_error: None,
         };
@@ -349,6 +351,12 @@ impl World {
         self.entities()
             .find(|e| e.content_id == content_id)
             .map(|e| e.id)
+    }
+
+    /// Read-only nav snapshot for adapters/debug views. The runtime may mutate it
+    /// through `MoveProp`, so this is intentionally a clone.
+    pub fn nav_grid(&self) -> Option<world_pack::NavGridDef> {
+        self.spacetime.nav.clone()
     }
 
     pub fn find_by_persistent_id(&self, persistent_id: &str) -> Option<EntityId> {
@@ -801,7 +809,32 @@ impl World {
         Ok(())
     }
 
+    fn ensure_interaction_range(&self, actor: EntityId, target: EntityId) -> Result<(), String> {
+        if !self.interaction_range.is_finite() {
+            return Ok(());
+        }
+        let from = self
+            .entity(actor)
+            .map(|entity| entity.transform.position)
+            .ok_or_else(|| format!("actor 不存在: {actor}"))?;
+        let to = self
+            .entity(target)
+            .map(|entity| entity.transform.position)
+            .ok_or_else(|| format!("target 不存在: {target}"))?;
+        let dx = from[0] - to[0];
+        let dz = from[2] - to[2];
+        let distance = (dx * dx + dz * dz).sqrt();
+        if distance > self.interaction_range {
+            return Err(format!(
+                "交互距离过远：{distance:.2}m > {:.2}m",
+                self.interaction_range
+            ));
+        }
+        Ok(())
+    }
+
     fn command_interact(&mut self, actor: EntityId, target: EntityId) -> Result<(), String> {
+        self.ensure_interaction_range(actor, target)?;
         let actor_entity = self
             .entity(actor)
             .map(Entity::from)
@@ -850,6 +883,7 @@ impl World {
     }
 
     fn command_talk(&mut self, actor: EntityId, target: EntityId) -> Result<(), String> {
+        self.ensure_interaction_range(actor, target)?;
         let actor_entity = self
             .entity(actor)
             .map(Entity::from)
@@ -896,6 +930,7 @@ impl World {
     }
 
     fn command_pickup(&mut self, actor: EntityId, target: EntityId) -> Result<(), String> {
+        self.ensure_interaction_range(actor, target)?;
         let target_entity = self
             .entity(target)
             .map(Entity::from)

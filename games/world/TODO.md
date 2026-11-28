@@ -21,7 +21,7 @@
 | W-007 | Windows Godot 导出验证 | 待开始 | 补 `.dll` 打包与导出预设；在 Windows 跑 600 tick/存档 | [09](docs/09_M2适配器启动.md) |
 | W-008 | 外机 GPU timer 复测 | 待开始 | 用厂商 GPU timer 而非 wall-clock；记录 P50/P95 | [09](docs/09_M2适配器启动.md) |
 | W-009 | 编辑器复杂对话图自动布局 | 待开始 | 节点/边布局、字段级错误定位；保持 v0.6 Schema 表单 | [07 §4.4](docs/07_M1实现与验收.md) |
-| W-010 | L0 动态障碍可视化 | 待开始 | 在 L0 沙盒展示 `MoveProp` 局部 nav 重建与路径失败/重试 | [13](docs/13_L0时空沙盒.md) |
+| W-010 | L0 动态障碍可视化 | 已完成 | `web/spacetime.html` 的「移动障碍」按钮通过 `MoveProp` 展示局部 nav 重建与实时 blocked 格 | [13](docs/13_L0时空沙盒.md) |
 
 ## 维护
 

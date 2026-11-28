@@ -36,6 +36,17 @@ const p2 = after.state.entities.find((e) => e.id.index === after.state.player.in
 assert.ok(Math.hypot(p2.transform.position[0] - before[0], p2.transform.position[2] - before[1]) > 1,
   "player should move along A* path");
 
+const pillar = s.entities.find((e) => e.persistent_id === "pillar.center");
+assert.ok(pillar, "dynamic obstacle exists");
+const blockedBefore = new Set(initial.nav.blocked);
+world.command(JSON.stringify({ op: "move_prop", target: pillar.id, x: -8, z: -2 }));
+world.tick(16666);
+const moved = JSON.parse(world.state());
+assert.ok(moved.nav, "live nav snapshot exposed");
+const blockedAfter = new Set(moved.nav.blocked);
+assert.notDeepEqual([...blockedBefore].sort(), [...blockedAfter].sort(), "MoveProp must rebuild blocked cells");
+assert.ok(moved.state.entities.find((e) => e.persistent_id === "pillar.center").transform.position[0] === -8);
+
 world.reset();
 const reset = JSON.parse(world.state());
 assert.equal(reset.final_hash, hashBefore, "reset must return to the same deterministic state");

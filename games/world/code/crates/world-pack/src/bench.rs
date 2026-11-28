@@ -340,6 +340,7 @@ fn real5k_with(seed: u64, v2: bool) -> Pack {
             at: [0.0, 0.0, 0.0],
             inventory: vec![],
         },
+        interaction_range: None,
         social: None,
         systems: None,
     };

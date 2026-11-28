@@ -66,9 +66,9 @@
         <div class="stats">
           <div class="stat p"><div class="v">8</div><div class="l">Rust crates</div></div>
           <div class="stat o"><div class="v">34</div><div class="l">Rust 测试</div></div>
-          <div class="stat p"><div class="v">20</div><div class="l">内容测试</div></div>
+          <div class="stat p"><div class="v">21</div><div class="l">内容测试</div></div>
           <div class="stat r"><div class="v">0.24<span style="font-size:12px">ms</span></div><div class="l">5k real tick P95</div></div>
-          <div class="stat o"><div class="v">20</div><div class="l">玩法 Demo</div></div>
+          <div class="stat o"><div class="v">21</div><div class="l">玩法 Demo</div></div>
           <div class="stat p"><div class="v">L0–L5</div><div class="l">内核分层</div></div>
         </div>
         <div class="quote"><b>一句话边界：</b>核心从不回调引擎；引擎只轮询 C ABI 拿差值。换引擎时，玩法规则、导航和存档不应重写。</div>
@@ -123,7 +123,7 @@
 
   <section class="panel" id="p-status" role="tabpanel" aria-labelledby="t-status">
     <h2>到哪了：M0 → M1 → M2 → L4/L5</h2>
-    <p class="lede">这里只记录**已经跑过**的事。内核已从单体 World 拆成 L0–L5 与 EntityStore；M2 Godot 适配器、L4 社会关系、L5 世界系统和 20 个 Demo 都已有本地/CI 证据。</p>
+    <p class="lede">这里只记录**已经跑过**的事。内核已从单体 World 拆成 L0–L5 与 EntityStore；M2 Godot 适配器、L4 社会关系、L5 世界系统和 21 个 Demo 都已有本地/CI 证据。</p>
     <ol class="tl">
       <li class="done"><b>M0 · 可运行内核</b> <span>2026-11-23 · 8 crates、C ABI、QuickJS spike、坏包 fixture、600 tick 双跑。</span></li>
       <li class="done"><b>M1 · TS DSL + Web 预览</b> <span>TS 包与 JSON 包同哈希；2D 预览回放 <code>0x3606a2…</code>。</span></li>
@@ -137,7 +137,7 @@
       <li class="done"><b>EntityStore · 组件列</b> <span>SoA 列存储 + EntityView/EntityMut；Entity 只作为 Snapshot/C ABI DTO；spawn/despawn 保留代际。</span></li>
       <li class="done"><b>L4 · 社会关系</b> <span>factions / relationships / reputation；talk 自动记录，SocialAction 支持大会提案；旧包不序列化。</span></li>
       <li class="done"><b>L5 · 世界系统</b> <span>天气、光伏、风电、储能、水循环、AI 负载；energy_updated / weather_changed 与 SetSystemPolicy。</span></li>
-      <li class="now"><b>现在 · 20 Demo + L4/L5</b> <span>太阳城农场与霓虹下城作为正反旗舰；CI 已全绿；5k p50 0.129 ms，p95 0.17–0.19 ms。</span></li>
+      <li class="now"><b>现在 · 21 Demo + L4/L5</b> <span>太阳城农场与霓虹下城作为正反旗舰；CI 已全绿；5k p50 0.129 ms，p95 0.17–0.19 ms。</span></li>
       <li class="next"><b>下一步 · 作者试用/内容</b> <span>真实作者 2 小时试用与更多内容量。</span></li>
     </ol>
 
@@ -146,7 +146,7 @@
       <thead><tr><th>证据</th><th>结果</th><th>来源</th></tr></thead>
       <tbody>
         <tr><td>Rust workspace 测试</td><td><b>19</b> 个通过；clippy 干净</td><td><code>cargo test --workspace</code></td></tr>
-        <tr><td>内容测试</td><td><b>20</b> 条 PASS：港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城农场 + 霓虹下城 + L0 时空沙盒</td><td><code>worldc content-test</code></td></tr>
+        <tr><td>内容测试</td><td><b>21</b> 条 PASS：港湾 4 + 夜市/温室/环形站各 1 + 10 个 2D 场景 + 太阳城农场 + 霓虹下城 + L0 时空沙盒 + L1 交互室</td><td><code>worldc content-test</code></td></tr>
         <tr><td>黄金回放</td><td><code>0x3606a221e9990561</code>（Headless / C ABI / wasm）</td><td><code>run_m0.sh</code> / <code>run_m1.sh</code></td></tr>
         <tr><td>TS 包一致性</td><td>包哈希 <code>sha256:21569377…b7d5f9</code>，与 JSON 包一致</td><td><code>worldc ts-build --compare</code></td></tr>
         <tr><td>5k 真实基准</td><td>Apple M1 Pro release：5,000 初始实体，tick P50 <b>0.129 ms</b>、P95 <b>0.17–0.19 ms</b>，snapshot P95 ≈3.4 ms</td><td><code>worldc bench --scenario real5k</code></td></tr>
@@ -310,7 +310,7 @@ node tools/serve-web.mjs --port 8787
         <rect x="142" y="688" width="830" height="34" rx="8" class="a-valid"/>
         <text x="164" y="710" class="a-small">验证回路</text>
         <text x="260" y="710" class="a-small a-faint">M0 双跑 / C ABI 同哈希</text>
-        <text x="500" y="710" class="a-small a-faint">M1 TS / Web / 20 Demo</text>
+        <text x="500" y="710" class="a-small a-faint">M1 TS / Web / 21 Demo</text>
         <text x="680" y="710" class="a-small a-faint">M2 CTS / 5k</text>
         <text x="944" y="710" class="a-end a-small a-good">L4/L5 可选 · 旧包不变 ✓</text>
       </svg>
@@ -352,7 +352,7 @@ node tools/serve-web.mjs --port 8787
     <p class="lede">这一页不是 API 目录，而是一条可以跟着走的实现路径：命令怎样进入 L0–L5、EntityStore 怎样组织组件、快照怎样变成哈希、L4/L5 怎样按需叠加、C ABI 怎样把状态交给引擎。每一段都给出源码入口，方便人类研究者按需跳读。</p>
     <div class="impl-kpis" aria-label="实现规模">
       <div><b>34</b><span>Rust 测试</span></div>
-      <div><b>20</b><span>内容测试</span></div>
+      <div><b>21</b><span>内容测试</span></div>
       <div><b>1,314</b><span>适配器行数</span></div>
       <div><b>0.18ms</b><span>5k tick P95</span></div>
     </div>
@@ -527,12 +527,12 @@ world_poll_events(handle, ev, sizeof ev, &amp;ev_len);</code></pre></div>
         <div class="case-body"><p class="case-kicker">L0 tick · L3 任务 · L5 能源</p><h3>GRID//SIGNAL</h3><p>同一套落块逻辑，接 RefuWorld wasm：低电量提高重力，清行推进公共任务；入口独立于独立版。</p><span class="case-open">打开内核版 →</span></div>
       </a>
       <a class="case-card" href="http://127.0.0.1:8787/web/demos.html" aria-label="打开 Demo 索引">
-        <figure><img src="../web/images/demos/cybercity.jpg" alt="霓虹下城 Demo"><span class="case-badge">DEMO / 20</span></figure>
-        <div class="case-body"><p class="case-kicker">17 内容包 · 3 视图 · 20 个玩法 Demo</p><h3>Demo 体系</h3><p>从港湾、夜市、货运到太阳城与霓虹下城；同一内核、同一内容 schema，不同表现与场景。</p><span class="case-open">打开 Demo 索引 →</span></div>
+        <figure><img src="../web/images/demos/cybercity.jpg" alt="霓虹下城 Demo"><span class="case-badge">DEMO / 21</span></figure>
+        <div class="case-body"><p class="case-kicker">18 内容包 · 3 视图 · 21 个玩法 Demo</p><h3>Demo 体系</h3><p>从港湾、夜市、货运到太阳城与霓虹下城；同一内核、同一内容 schema，不同表现与场景。</p><span class="case-open">打开 Demo 索引 →</span></div>
       </a>
     </div>
     <div class="note"><b>Lab 与 Demo 的分工：</b>Demo 验证世界层能力；Lab 游戏验证“真的可以发布”。独立版和 RefuWorld 版共用同一套 <code>logic.mjs</code> / <code>game.mjs</code>，只在会话层是否接入 wasm 上分叉。</div>
-    <p class="case-engines"><b>同一玩法，三个宿主：</b> <a href="http://127.0.0.1:8787/lab/tetris/">Web 独立版</a> · <a href="http://127.0.0.1:8787/lab/tetris/refuworld.html">Web + RefuWorld</a> · <a href="http://127.0.0.1:8787/web/spacetime.html">L0 时空沙盒</a> · <a href="../lab/tetris/godot/README.md">Godot 4.7 + GDExtension</a> <span>（Godot 需本地构建运行）</span></p>
+    <p class="case-engines"><b>同一玩法，三个宿主：</b> <a href="http://127.0.0.1:8787/lab/tetris/">Web 独立版</a> · <a href="http://127.0.0.1:8787/lab/tetris/refuworld.html">Web + RefuWorld</a> · <a href="http://127.0.0.1:8787/web/spacetime.html">L0 时空沙盒</a> · <a href="http://127.0.0.1:8787/web/subject.html">L1 交互室</a> · <a href="../lab/tetris/godot/README.md">Godot 4.7 + GDExtension</a> <span>（Godot 需本地构建运行）</span></p>
 
     <h3>3D 案例：同一份世界，换一种看法</h3>
     <p class="lede">3D 是表现层，不是第二套玩法。它用同一个 <code>PreviewWorld</code>、同一份 <code>pack.data</code>；从港湾值班室到夜班货运，再到太阳城农场 / 霓虹下城，规则、L4/L5、存档与哈希都不会分叉。</p>

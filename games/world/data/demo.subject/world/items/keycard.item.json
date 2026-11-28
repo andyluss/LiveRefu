@@ -1,0 +1,7 @@
+{
+  "id": "item.subject.keycard",
+  "name": "loc:item.subject.keycard",
+  "stack": 1,
+  "tags": ["key", "l1"],
+  "visual": null
+}

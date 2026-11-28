@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L1 主体交互室 · RefuWorld</title>
+  <meta name="description" content="RefuWorld L1 主体交互层独立演示：拾取、背包、门锁、距离门槛与交互事件；不加载 L2–L5 内容。" />
+  <meta name="theme-color" content="#070a12" />
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem('lrds-theme');
+        var mode = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+        var dark = mode === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) { root.dataset.themeMode = 'system'; root.dataset.theme = 'dark'; }
+      root.classList.add('js');
+    })();
+  </script>
+  <link rel="stylesheet" href="./spacetime.css" />
+  <link rel="stylesheet" href="./subject.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">L1</span>
+      <div><b>SUBJECT INTERACTION</b><small>REFUWORLD / LAYER ONE ONLY</small></div>
+    </div>
+    <div class="top-links">
+      <a href="./demos.html">Demo 索引</a>
+      <a href="./spacetime.html">L0 沙盒</a>
+      <a href="../brief/HUB.html">HUB</a>
+      <div class="theme-control" role="group" aria-label="主题">
+        <button type="button" data-theme-choice="system">系统</button>
+        <button type="button" data-theme-choice="light">浅色</button>
+        <button type="button" data-theme-choice="dark">深色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="sandbox subject-layout">
+    <aside class="side left">
+      <section class="panel">
+        <p class="eyebrow">L1 CONTRACT</p>
+        <h1>先靠近，<br><em>再交互。</em></h1>
+        <p class="lede">拾取、背包、门锁与距离门槛。这个包没有 actor 日程、规则、任务、对话、脚本、社会关系或世界系统。</p>
+        <div class="capabilities">
+          <div><span class="dot"></span><span><b>Pickup</b><small>物品进入背包，实体移除</small></span></div>
+          <div><span class="dot"></span><span><b>Door lock</b><small>钥匙卡满足 locked_by</small></span></div>
+          <div><span class="dot"></span><span><b>Range gate</b><small>6m 内才允许交互</small></span></div>
+          <div><span class="dot"></span><span><b>Events</b><small>interact / door_opened / item_acquired</small></span></div>
+        </div>
+      </section>
+      <section class="panel layer-proof">
+        <p class="eyebrow">INDEPENDENCE CHECK</p>
+        <div class="proof-row"><span>L2 行为/日程</span><b id="l2-proof">0 schedules / 0 actors</b></div>
+        <div class="proof-row"><span>L3 叙事/规则</span><b id="l3-proof">0 flags / 0 quests</b></div>
+        <div class="proof-row"><span>L4 社会</span><b id="l4-proof">absent</b></div>
+        <div class="proof-row"><span>L5 世界系统</span><b id="l5-proof">absent</b></div>
+        <p class="micro">L1 只依赖 L0 的空间与 tick；L2–L5 没有内容，也没有被调用。</p>
+      </section>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-head"><span>ZONE.SUBJECT / L1 INTERACTION ROOM</span><span id="mode">RUNNING · 60 Hz</span></div>
+      <div class="canvas-wrap">
+        <canvas id="view" width="900" height="650" aria-label="L1 主体交互室：玩家、钥匙卡、门和控制台"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="stage-tip">WASD 接近 · 点击地面寻路 · 距离 ≤ 6m 才能拾取/开门</div>
+      </div>
+      <div class="stage-foot"><span id="event-line">先用 W/S 靠近钥匙卡。</span><span id="pack-line">demo.subject · L1 only</span></div>
+    </section>
+
+    <aside class="side right">
+      <section class="panel telemetry">
+        <p class="eyebrow">SUBJECT STATE</p>
+        <div class="metric big"><span>RANGE</span><b id="range">—</b></div>
+        <div class="metric"><span>POSITION</span><b id="position">0.0, -5.0</b></div>
+        <div class="metric"><span>INVENTORY</span><b id="inventory">empty</b></div>
+        <div class="metric"><span>DOOR</span><b id="door-state">locked</b></div>
+        <div class="metric"><span>TICK</span><b id="tick">0</b></div>
+      </section>
+      <section class="panel">
+        <p class="eyebrow">ACTIONS</p>
+        <div class="action-grid">
+          <button id="pickup" type="button">拾取钥匙卡</button>
+          <button id="open-door" type="button">开门</button>
+          <button id="inspect" type="button">检查控制台</button>
+          <button id="pause" type="button">暂停</button>
+          <button id="reset" type="button">重置世界</button>
+        </div>
+        <p class="micro">距离超过 6m 时命令会被内核拒绝，不是 UI 假装禁用。</p>
+      </section>
+      <section class="panel log-panel">
+        <p class="eyebrow">EVENTS</p>
+        <pre id="events">—</pre>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot"><span>RefuWorld · L1 Subject Interaction · core + interaction + inventory</span><span>WASM + Canvas 2D</span></footer>
+  <noscript><p class="noscript">这个演示需要 JavaScript 与 WebAssembly。</p></noscript>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      function apply(mode, persist) {
+        var dark = mode === 'system' ? media.matches : mode === 'dark';
+        root.dataset.themeMode = mode;
+        root.dataset.theme = dark ? 'dark' : 'light';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = dark ? '#070a12' : '#f2eee5';
+        if (persist) { try { localStorage.setItem('lrds-theme', mode); } catch (e) {} }
+        document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-choice') === mode));
+        });
+      }
+      document.querySelectorAll('[data-theme-choice]').forEach(function (b) {
+        b.addEventListener('click', function () { apply(b.getAttribute('data-theme-choice'), true); });
+      });
+      media.addEventListener('change', function () { if (root.dataset.themeMode === 'system') apply('system', false); });
+      apply(root.dataset.themeMode || 'system', false);
+    })();
+  </script>
+  <script type="importmap">
+    {"imports":{"env":"./vendor/quickjs-env.js"}}
+  </script>
+  <script type="module" src="./subject.js"></script>
+</body>
+</html>

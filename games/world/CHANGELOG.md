@@ -6,6 +6,8 @@
 ## [未发布]
 
 ### 新增
+- **L0 动态障碍可视化**：L0 沙盒增加「移动障碍」按钮与实时 nav 快照；`MoveProp` 后页面重绘 blocked 格，A* 使用更新后的网格。
+- **L1 主体交互室**：新增 `data/demo.subject`（core + interaction + inventory）与 `web/subject.html`；`WorldDef.interaction_range` 可选距离门槛（旧包默认无限）；`web/test_l1.cjs` 验证拾取/背包/门锁/超距拒绝，L2–L5 为空。
 - **L0 时空沙盒**：新增 `data/demo.spacetime`（仅 core kit）与 `web/spacetime.html`；展示固定 tick、Zone、A*、碰撞、路径与哈希，HUD 实时证明 L1–L5 为空；`web/test_l0.cjs` 验证移动/重置哈希与上层内容为空。
 - **ScriptHost 真异步/定时器收尾**：`ctx.delay` 挂起 Promise、`globalThis.setTimeout` 映射 tick、命令 timer 跨 reload、`on_tick` has_work 短路；模块循环依赖可读错误。仍无真实墙钟计时/函数 timer 迁移。
 - **ScriptHost 模块循环诊断**：加载前遍历 import 图，发现循环时返回可读链路（如 `a -> b -> a`），避免 QuickJS 只报泛化加载错误。
