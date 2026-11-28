@@ -6,6 +6,8 @@
 ## [未发布]
 
 ### 新增
+- **编辑器对话图**：自动布局改为分层 + barycenter 排序，边改为正交箭头；新增字段级错误面板、保存前校验与「自动布局」按钮。
+- **NPC 局部避让**：路径下一步被邻近 actor 挡住时尝试确定性垂直侧移；补 core 测试。
 - **L5 世界系统控制室**：新增 `data/demo.systems` 与 `web/systems.html`；修正 60Hz 能量积分、策略水耗/AI 负载、低量警告；新增初始电量/水量、`set_system_policy` wasm/trace；只有 L5 运行。
 - **L4 社会关系室**：新增 `data/demo.society` 与 `web/society.html`；补齐差异化社会动作、目标 faction trust 变化与 `faction_trust_changed`；`social_action` 增加距离门槛并接入 wasm/trace；L5 为空。
 - **L3 叙事实验室**：新增 `data/demo.narrative` 与 `web/narrative.html`；补 `ChooseDialogue` 命令（core / trace / wasm），展示对话分支、规则、任务目标、flags 与 ScriptHost `ctx.after`；L2 日程和 L4/L5 为空。

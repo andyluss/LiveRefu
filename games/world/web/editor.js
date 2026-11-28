@@ -19,6 +19,7 @@ const el = {
   schemaForm: document.getElementById("schema-form"),
   dialogueSelect: document.getElementById("dialogue-select"),
   dialogueCanvas: document.getElementById("dialogue-canvas"),
+  dialogueErrors: document.getElementById("dialogue-errors"),
   nodeId: document.getElementById("node-id"),
   nodeSpeaker: document.getElementById("node-speaker"),
   nodeNext: document.getElementById("node-next"),
@@ -724,63 +725,160 @@ function syncNodeFields() {
   el.nodeChoices.value = (node.choices ?? []).map((c) => `${c.text} => ${c.next}`).join("\n");
 }
 
+function dialogueGraph(dialogue) {
+  const ids = Object.keys(dialogue.nodes);
+  const edges = new Map(ids.map((id) => [id, []]));
+  for (const id of ids) {
+    const node = dialogue.nodes[id];
+    if (!node) continue;
+    if (node.next) edges.get(id).push(node.next);
+    for (const choice of node.choices ?? []) edges.get(id).push(choice.next);
+  }
+  return { ids, edges };
+}
+
+function dialogueErrors(dialogue) {
+  const errors = [];
+  if (!dialogue) return errors;
+  if (!dialogue.nodes[dialogue.start]) errors.push(`起点不存在：${dialogue.start}`);
+  for (const [id, node] of Object.entries(dialogue.nodes)) {
+    if (node.next && !dialogue.nodes[node.next]) errors.push(`${id}: next 指向不存在的 ${node.next}`);
+    (node.choices ?? []).forEach((choice, index) => {
+      if (!choice.text) errors.push(`${id}: 选项 ${index + 1} 缺少文本`);
+      if (!dialogue.nodes[choice.next]) errors.push(`${id}: 选项 ${index + 1} 指向不存在的 ${choice.next}`);
+    });
+    if (!node.next && !(node.choices ?? []).length && !node.end) errors.push(`${id}: 没有出口，也不是结束节点`);
+    if (node.end && (node.next || (node.choices ?? []).length)) errors.push(`${id}: 结束节点不应再有 next/choices`);
+  }
+  const seen = new Set();
+  const queue = [dialogue.start];
+  while (queue.length) {
+    const id = queue.shift();
+    if (seen.has(id) || !dialogue.nodes[id]) continue;
+    seen.add(id);
+    const node = dialogue.nodes[id];
+    if (node.next) queue.push(node.next);
+    for (const choice of node.choices ?? []) queue.push(choice.next);
+  }
+  for (const id of Object.keys(dialogue.nodes)) {
+    if (!seen.has(id)) errors.push(`${id}: 从起点不可达`);
+  }
+  return errors;
+}
+
 function dialogueNodeRects() {
   const dialogue = currentDialogue();
   const rects = [];
   if (!dialogue) return rects;
+  const { ids, edges } = dialogueGraph(dialogue);
+  const parents = new Map(ids.map((id) => [id, []]));
+  for (const [from, nexts] of edges) for (const to of nexts) if (parents.has(to)) parents.get(to).push(from);
+
+  // Longest-path levels with a visited guard for cycles.
   const levels = new Map();
-  const start = dialogue.start;
-  levels.set(start, 0);
-  const queue = [start];
+  levels.set(dialogue.start, 0);
+  const queue = [dialogue.start];
   while (queue.length) {
     const id = queue.shift();
-    const node = dialogue.nodes[id];
-    if (!node) continue;
-    const nexts = [];
-    if (node.next) nexts.push(node.next);
-    for (const choice of node.choices ?? []) nexts.push(choice.next);
-    for (const next of nexts) {
-      if (!levels.has(next)) {
-        levels.set(next, (levels.get(id) ?? 0) + 1);
+    const depth = levels.get(id) ?? 0;
+    for (const next of edges.get(id) ?? []) {
+      if (!dialogue.nodes[next]) continue;
+      const previous = levels.get(next);
+      if (previous === undefined || previous < depth + 1) {
+        levels.set(next, depth + 1);
         queue.push(next);
       }
     }
   }
-  let fallback = 0;
+  const maxLevel = Math.max(0, ...levels.values());
+  let fallback = maxLevel + 1;
+  for (const id of ids) if (!levels.has(id)) levels.set(id, fallback++);
+
   const byLevel = new Map();
-  for (const id of Object.keys(dialogue.nodes)) {
-    const level = levels.get(id) ?? fallback++;
+  for (const id of ids) {
+    const level = levels.get(id) ?? 0;
     if (!byLevel.has(level)) byLevel.set(level, []);
     byLevel.get(level).push(id);
   }
-  for (const [level, ids] of byLevel) {
-    ids.sort();
-    ids.forEach((id, index) => {
+  const ordered = [...byLevel.keys()].sort((a, b) => a - b);
+  const position = new Map();
+  ordered.forEach((level) => byLevel.get(level).sort());
+  ordered.forEach((level) => byLevel.get(level).forEach((id, index) => position.set(id, index)));
+
+  // Barycenter: pull nodes toward the average parent row, then children row.
+  for (let pass = 0; pass < 2; pass++) {
+    for (const level of ordered.slice(1)) {
+      const row = byLevel.get(level);
+      row.sort((a, b) => {
+        const score = (id) => {
+          const ps = parents.get(id) ?? [];
+          return ps.length ? ps.reduce((sum, p) => sum + (position.get(p) ?? 0), 0) / ps.length : position.get(id) ?? 0;
+        };
+        return score(a) - score(b) || a.localeCompare(b);
+      });
+      row.forEach((id, index) => position.set(id, index));
+    }
+    for (const level of ordered.slice().reverse()) {
+      const row = byLevel.get(level);
+      row.sort((a, b) => {
+        const score = (id) => {
+          const ns = (edges.get(id) ?? []).filter((n) => levels.get(n) > level);
+          return ns.length ? ns.reduce((sum, n) => sum + (position.get(n) ?? 0), 0) / ns.length : position.get(id) ?? 0;
+        };
+        return score(a) - score(b) || a.localeCompare(b);
+      });
+      row.forEach((id, index) => position.set(id, index));
+    }
+  }
+
+  ordered.forEach((level) => {
+    byLevel.get(level).forEach((id, index) => {
       rects.push({
         id,
-        x: 18 + level * 132,
+        x: 18 + level * 152,
         y: 22 + index * 62,
-        w: 112,
-        h: 38,
+        w: 124,
+        h: 44,
       });
     });
-  }
+  });
   return rects;
+}
+
+function arrow(ctx2, x1, y1, x2, y2, color) {
+  ctx2.strokeStyle = color;
+  ctx2.fillStyle = color;
+  ctx2.lineWidth = 1.4;
+  const midX = (x1 + x2) / 2;
+  ctx2.beginPath();
+  ctx2.moveTo(x1, y1);
+  ctx2.lineTo(midX, y1);
+  ctx2.lineTo(midX, y2);
+  ctx2.lineTo(x2, y2);
+  ctx2.stroke();
+  ctx2.beginPath();
+  ctx2.moveTo(x2, y2);
+  ctx2.lineTo(x2 - 6, y2 - 3);
+  ctx2.lineTo(x2 - 6, y2 + 3);
+  ctx2.closePath();
+  ctx2.fill();
 }
 
 function drawDialogue() {
   const canvas = el.dialogueCanvas;
-  const ctx2 = canvas.getContext("2d");
   const dialogue = currentDialogue();
+  const errors = dialogueErrors(dialogue);
+  if (el.dialogueErrors) el.dialogueErrors.textContent = errors.slice(0, 6).join("\n");
+  const rects = dialogueNodeRects();
+  const maxX = Math.max(400, ...rects.map((r) => r.x + r.w + 20));
+  const maxY = Math.max(220, ...rects.map((r) => r.y + r.h + 20));
+  if (canvas.width !== maxX || canvas.height !== maxY) { canvas.width = maxX; canvas.height = maxY; }
+  const ctx2 = canvas.getContext("2d");
   ctx2.clearRect(0, 0, canvas.width, canvas.height);
   ctx2.fillStyle = css("--bg");
   ctx2.fillRect(0, 0, canvas.width, canvas.height);
   if (!dialogue) return;
-  const rects = dialogueNodeRects();
   const byId = new Map(rects.map((r) => [r.id, r]));
-  ctx2.strokeStyle = css("--line");
-  ctx2.fillStyle = css("--muted");
-  ctx2.lineWidth = 1.5;
   for (const [id, node] of Object.entries(dialogue.nodes)) {
     const from = byId.get(id);
     if (!from) continue;
@@ -790,10 +888,7 @@ function drawDialogue() {
     for (const next of nexts) {
       const to = byId.get(next);
       if (!to) continue;
-      ctx2.beginPath();
-      ctx2.moveTo(from.x + from.w, from.y + from.h / 2);
-      ctx2.lineTo(to.x, to.y + to.h / 2);
-      ctx2.stroke();
+      arrow(ctx2, from.x + from.w, from.y + from.h / 2, to.x, to.y + to.h / 2, css("--line"));
     }
   }
   for (const rect of rects) {
@@ -850,6 +945,14 @@ function bindDialogue() {
     input.addEventListener("change", update);
     input.addEventListener("input", update);
   });
+  document.getElementById("auto-layout").addEventListener("click", () => {
+    const dialogue = currentDialogue();
+    if (!dialogue) return;
+    selectedNode = dialogue.nodes[selectedNode] ? selectedNode : (dialogue.start ?? null);
+    drawDialogue();
+    syncNodeFields();
+    log(`自动布局：${Object.keys(dialogue.nodes).length} 个节点 / ${dialogueErrors(dialogue).length} 个问题`);
+  });
   document.getElementById("node-add").addEventListener("click", () => {
     const dialogue = currentDialogue();
     if (!dialogue) return;
@@ -878,6 +981,11 @@ function bindDialogue() {
 
 async function saveDialogue() {
   if (!currentDialogueKey) return false;
+  const errors = dialogueErrors(currentDialogue());
+  if (errors.length) {
+    log(`对话未保存：${errors[0]}${errors.length > 1 ? `（共 ${errors.length} 个问题）` : ""}`);
+    return false;
+  }
   try {
     await saveFile(currentDialogueKey, currentDialogue());
     return true;

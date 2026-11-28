@@ -15,5 +15,8 @@ assert.ok(js.includes("function renderSchemaForm"));
 assert.ok(js.includes("schemaInput") && js.includes("Array.isArray"));
 assert.ok(css.includes(".schema-group"));
 assert.ok(html.includes('data-theme-choice="system"'));
+assert.ok(html.includes('id="auto-layout"') && html.includes('id="dialogue-errors"'));
+assert.ok(js.includes("function dialogueErrors") && js.includes("Barycenter"));
+assert.ok(css.includes(".graph-errors"));
 assert.ok(!/https?:\/\//.test(html), "editor must not depend on external runtime assets");
 console.log("editor static PASS (v0.6 recursive schema form)");

@@ -254,6 +254,26 @@ impl Spacetime {
             .map(|next| position = next)
             .is_some();
         if !moved_x && !moved_z {
+            // Local avoidance: a neighbouring actor can occupy the next step.
+            // Try a deterministic perpendicular sidestep before reporting no progress.
+            let side = if index % 2 == 0 { 1.0 } else { -1.0 };
+            let sx = -dz / distance * step * side;
+            let sz = dx / distance * step * side;
+            if self
+                .try_move(body, obstacles, position, sx, 0.0)
+                .map(|next| position = next)
+                .is_some()
+                || self
+                    .try_move(body, obstacles, position, 0.0, sz)
+                    .map(|next| position = next)
+                    .is_some()
+                || self
+                    .try_move(body, obstacles, position, sx, sz)
+                    .map(|next| position = next)
+                    .is_some()
+            {
+                return (Some(position), index, false);
+            }
             return (Some(position), index, false);
         }
         let remaining_x = waypoint[0] - position[0];
@@ -396,6 +416,26 @@ mod tests {
             speed: 4.0,
             collider: Some(Collider::Circle { radius: 0.35 }),
         }
+    }
+
+    #[test]
+    fn path_sidesteps_a_blocking_actor() {
+        let mut space = Spacetime::new(60, 0);
+        space.zone_bounds = Some(([-10.0, 0.0, -10.0], [10.0, 5.0, 10.0]));
+        let body = Body {
+            position: [0.0, 0.0, 0.0],
+            speed: 60.0,
+            collider: Some(Collider::Circle { radius: 0.35 }),
+        };
+        let obstacle = Obstacle {
+            position: [0.8, 0.0, 0.0],
+            collider: Some(Collider::Circle { radius: 0.5 }),
+            open: false,
+        };
+        let (position, _, completed) = space.advance_path(&body, &[[4.0, 0.0]], 0, &[obstacle]);
+        let position = position.expect("position");
+        assert!(!completed);
+        assert!(position[2].abs() > 0.05, "must sidestep in z: {position:?}");
     }
 
     #[test]

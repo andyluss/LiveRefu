@@ -65,3 +65,5 @@ select { font-family: inherit; }
 .schema-group legend { color: var(--accent-2); font-size: 10px; padding: 0 4px; }
 .schema-field textarea { font-family: var(--mono, monospace); font-size: 10px; min-height: 38px; }
 .schema-field textarea.invalid { border-color: var(--danger, #c33); }
+.graph-errors { min-height: 0; color: var(--danger, #b33937); font: 10px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; }
+.graph-errors:empty { display: none; }

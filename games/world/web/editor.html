@@ -106,6 +106,7 @@
         <h2>对话</h2>
         <select id="dialogue-select"></select>
         <canvas id="dialogue-canvas" width="400" height="220" aria-label="对话图"></canvas>
+        <div id="dialogue-errors" class="graph-errors" role="status" aria-live="polite"></div>
         <div class="fields">
           <label>节点 <input id="node-id" type="text" readonly /></label>
           <label>Speaker <input id="node-speaker" type="text" /></label>
@@ -117,6 +118,7 @@
         <div class="actions">
           <button id="node-add" type="button">新增节点</button>
           <button id="node-delete" type="button">删除节点</button>
+          <button id="auto-layout" type="button">自动布局</button>
           <button id="save-dialogue" type="button">保存对话</button>
         </div>
       </section>
